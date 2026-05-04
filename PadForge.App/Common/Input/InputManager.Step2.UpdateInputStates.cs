@@ -34,7 +34,21 @@ namespace PadForge.Common.Input
             // when audio is silent — collapsing bass energy between hits
             // and weakening audio rumble. The detector docstring spells
             // out "once per frame"; this is that one frame call.
-            AudioBassDetector?.DecayIfSilent();
+            //
+            // Same reasoning for Sensitivity / CutoffHz: the detector
+            // applies these IN the WASAPI callback (rms × _sensitivity).
+            // Setting them many times per polling tick from per-device
+            // PadSettings creates a race with the audio thread and
+            // (when devices have different sensitivities) lets the
+            // last-call-wins value bleed into the next callback. Set
+            // them once per tick from the slot's primary audio-enabled
+            // device — matches the 3.1.0 path exactly.
+            var det = AudioBassDetector;
+            if (det != null)
+            {
+                det.DecayIfSilent();
+                ApplyDetectorSettingsForTick(det);
+            }
 
             // Refresh per-slot post-mix-post-gain rumble before the per-device
             // FFB loop reads it. One pass per polling tick — every consumer
@@ -224,6 +238,47 @@ namespace PadForge.Common.Input
 
         private Vibration _combinedVibration;
 
+        /// <summary>Pushes the audio detector's per-tick parameters
+        /// (Sensitivity, CutoffHz) from the first audio-rumble-enabled
+        /// PadSetting found across all slots. The detector is shared
+        /// app-wide; ScaleRumbleForDevice's per-device call sites
+        /// previously fought over these properties, racing the WASAPI
+        /// callback's read of <c>_sensitivity</c>. One write per tick
+        /// matches 3.1.0's contract.</summary>
+        private void ApplyDetectorSettingsForTick(AudioBassDetector detector)
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return;
+            for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+            {
+                Guid selected = SelectedDeviceGuids[padIndex];
+                var slotSettings = settings.FindByPadIndex(padIndex);
+                if (slotSettings == null || slotSettings.Count == 0) continue;
+                // Prefer SelectedMappedDevice's PadSetting (matches the
+                // FFB tab the user is editing); fall back to the first
+                // mapped device on the slot.
+                PadSetting ps = null;
+                if (selected != Guid.Empty)
+                {
+                    for (int i = 0; i < slotSettings.Count; i++)
+                    {
+                        if (slotSettings[i].InstanceGuid == selected)
+                        {
+                            ps = slotSettings[i].GetPadSetting();
+                            break;
+                        }
+                    }
+                }
+                if (ps == null) ps = slotSettings[0].GetPadSetting();
+                if (ps == null) continue;
+                if (ps.AudioRumbleEnabled != "1") continue;
+
+                detector.Sensitivity = TryParseFloat(ps.AudioRumbleSensitivity, 4f);
+                detector.CutoffHz = TryParseFloat(ps.AudioRumbleCutoffHz, 80f);
+                return; // first audio-enabled slot wins
+            }
+        }
+
         private static float TryParseFloat(string value, float defaultValue)
         {
             return float.TryParse(value, System.Globalization.NumberStyles.Float,
@@ -333,20 +388,12 @@ namespace PadForge.Common.Input
             var detector = AudioBassDetector;
             if (detector != null && ps != null && ps.AudioRumbleEnabled == "1")
             {
-                // NOTE: detector.DecayIfSilent() must NOT be called here.
-                // ScaleRumbleForDevice is invoked many times per polling
-                // tick (once per slot in ComputeFinalVibrationStates,
-                // once per (slot, device) in ApplyForceFeedback, plus
-                // once per (slot, device) in SlotRumbleForDeviceProvider
-                // for the dispatcher's per-device synthesis). Calling
-                // DecayIfSilent here would multiply the per-tick decay
-                // rate and collapse audio rumble between bass hits —
-                // exactly the regression the docstring warns against
-                // ("Call from the polling thread once per frame.").
-                // The single per-tick decay is invoked from
-                // UpdateInputStates above.
-                detector.Sensitivity = TryParseFloat(ps.AudioRumbleSensitivity, 4f);
-                detector.CutoffHz = TryParseFloat(ps.AudioRumbleCutoffHz, 80f);
+                // detector.DecayIfSilent / Sensitivity / CutoffHz are set
+                // ONCE per polling tick by UpdateInputStates +
+                // ApplyDetectorSettingsForTick. Calling them here would
+                // multiply the decay rate and race the WASAPI callback's
+                // read of _sensitivity, weakening audio rumble between
+                // hits. ScaleRumbleForDevice just consumes MotorValue.
                 ushort motorVal = detector.MotorValue;
                 float leftScale = TryParseFloat(ps.AudioRumbleLeftMotor, 100f) / 100f;
                 float rightScale = TryParseFloat(ps.AudioRumbleRightMotor, 100f) / 100f;

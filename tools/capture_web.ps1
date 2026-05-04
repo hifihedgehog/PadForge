@@ -55,14 +55,18 @@ public class W3W {
     Start-Sleep -Seconds 8
     "Browser opened" | Out-File $logFile -Encoding ascii -Append
 
-    # Find Edge window
-    $edgeProcs = Get-Process msedge -EA SilentlyContinue | Where-Object { $_.MainWindowHandle -ne 0 }
-    $edgeProc = $edgeProcs | Sort-Object StartTime -Descending | Select-Object -First 1
+    # Find the Edge window by TITLE — Edge --app spawns several processes,
+    # only one of which owns the visible content HWND. Match titles
+    # starting with "PadForge".
+    $edgeProc = Get-Process msedge -EA SilentlyContinue |
+        Where-Object { $_.MainWindowHandle -ne 0 -and $_.MainWindowTitle -like 'PadForge*' } |
+        Sort-Object StartTime -Descending | Select-Object -First 1
     if (-not $edgeProc) {
-        "Edge not found" | Out-File $logFile -Encoding ascii -Append
+        "Edge content window not found" | Out-File $logFile -Encoding ascii -Append
         exit
     }
     $hwnd = $edgeProc.MainWindowHandle
+    "Edge HWND: $hwnd, Title: $($edgeProc.MainWindowTitle)" | Out-File $logFile -Encoding ascii -Append
     # Don't maximize — the controller view auto-rotates in oversized
     # windows. Just bring to top at the size Edge launched with.
     [W3W]::SwitchToThisWindow($hwnd, $true)

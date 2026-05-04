@@ -474,6 +474,15 @@
   <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Input Reactive — Random Color per Press</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Input Reactive — Cycle Through Palette</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Input Reactive — Single Color per Press</value></data>
+
+  <!-- v3.2+ Input Reactive overlay (separate dropdown layered on top of base mode) -->
+  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Input Reactive</value></data>
+  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Off</value></data>
+  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Random Color per Press</value></data>
+  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Cycle Through Palette</value></data>
+  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Base Color per Press</value></data>
+  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Reset Input Reactive</value></data>
+
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Period (ms):</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palette</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Color 1</value></data>

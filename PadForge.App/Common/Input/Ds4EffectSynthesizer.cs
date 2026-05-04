@@ -207,8 +207,7 @@ namespace PadForge.Common.Input
             // Priority 1: macro-driven override. Intensity = 1.0 for
             // Sticky holds, fades 1.0 → 0.0 over the Reactive decay
             // window. RGB scaled by intensity so a Reactive flash fades
-            // out smoothly the same way the InputReactive lightbar mode
-            // does on DualSense.
+            // out smoothly. Macro override always wins.
             float overrideIntensity = cfg.ComputeMacroOverrideIntensity();
             if (overrideIntensity > 0f)
             {
@@ -218,18 +217,33 @@ namespace PadForge.Common.Input
                 return;
             }
 
-            // Priority 2: configured mode. Reuse the DS5 synthesizer's
-            // ComputeLightbarColor — the per-mode logic is device-agnostic.
+            // Priority 2: configured base mode (animated / static / audio).
+            // Off collapses to a black base — the overlay below can still
+            // flash a reactive color over it.
+            byte baseR = 0, baseG = 0, baseB = 0;
             if (cfg.LightbarMode != LightbarMode.Off)
             {
-                var (cr, cg, cb) = Ds5EffectSynthesizer.ComputeLightbarColorPublic(
+                (baseR, baseG, baseB) = Ds5EffectSynthesizer.ComputeLightbarColorPublic(
                     cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity);
-                r = cr; g = cg; b = cb;
+            }
+
+            // Priority 3: input-reactive overlay. Lerps from the base
+            // color toward the overlay color by pulseIntensity, so a
+            // press flashes the reactive flavor and decays back to the
+            // base. Off + reactive collapses to a black base, matching
+            // legacy InputReactive*-as-base behaviour.
+            if (cfg.InputReactiveMode != InputReactiveMode.Off && pulseIntensity > 0f)
+            {
+                var (rR, rG, rB) = Ds5EffectSynthesizer.ResolveReactiveOverlayColorPublic(
+                    cfg, randomColor, pulseColor);
+                float t = Math.Clamp(pulseIntensity, 0f, 1f);
+                r = (byte)Math.Round(baseR + (rR - baseR) * t);
+                g = (byte)Math.Round(baseG + (rG - baseG) * t);
+                b = (byte)Math.Round(baseB + (rB - baseB) * t);
                 return;
             }
 
-            // Priority 3: off.
-            r = 0; g = 0; b = 0;
+            r = baseR; g = baseG; b = baseB;
         }
 
         // ────────────────────────────────────────────────

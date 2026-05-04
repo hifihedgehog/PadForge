@@ -81,7 +81,7 @@ namespace PadForge.ViewModels
         }
 
         // ═══════════════════════════════════════════════
-        //  Output type (Xbox 360 / DualShock 4)
+        //  Output type (Xbox / PlayStation)
         // ═══════════════════════════════════════════════
 
         private VirtualControllerType _outputType;
@@ -166,7 +166,7 @@ namespace PadForge.ViewModels
         /// — first four axes pair into two sticks (LX/LY/RX/RY), remaining
         /// axes are triggers; POVs come from HasHat; buttons from ButtonCount.
         /// Sets Preset to Custom so downstream isExtended checks route
-        /// through the dynamic mapping path rather than the Xbox 360 layout.
+        /// through the dynamic mapping path rather than the fixed Xbox layout.
         /// </summary>
         private void SyncExtendedConfigFromProfile()
         {
@@ -216,7 +216,7 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _typeInstanceLabel, value);
         }
 
-        /// <summary>Int binding for ComboBox SelectedIndex (0=Xbox 360, 1=DualShock 4).</summary>
+        /// <summary>Int binding for ComboBox SelectedIndex (0=Xbox, 1=PlayStation).</summary>
         public int OutputTypeIndex
         {
             get => (int)_outputType;
@@ -575,7 +575,7 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Rebuilds the Mappings collection based on the current OutputType and Extended config.
-        /// Labels follow the output type's convention (Xbox 360 / DualShock 4 / Extended numbered).
+        /// Labels follow the output type's convention (Xbox / PlayStation / Extended numbered).
         /// </summary>
         public void RebuildMappings()
         {
@@ -1161,7 +1161,7 @@ namespace PadForge.ViewModels
             if (isExtended && count > 0)
                 ExtendedConfig.ComputeAxisLayout(out axX, out axY, out trAx);
 
-            bool isSony = OutputType == VirtualControllerType.PlayStation;
+            bool isPlayStation = OutputType == VirtualControllerType.PlayStation;
             for (int i = 0; i < count; i++)
             {
                 string title = isExtended
@@ -1175,7 +1175,7 @@ namespace PadForge.ViewModels
                     iconLabel = (i + 1).ToString();
                     iconRightSide = (i % 2) == 1;
                 }
-                else if (isSony)
+                else if (isPlayStation)
                 {
                     iconLabel = i == 0 ? "L2" : "R2";
                     iconRightSide = i == 1;

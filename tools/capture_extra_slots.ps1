@@ -36,18 +36,24 @@ public class W32 {
         System.Threading.Thread.Sleep(50);
         mouse_event(0x04, 0, 0, 0, 0);
     }
+    [DllImport("user32.dll")] public static extern bool SetWindowPos(IntPtr h, IntPtr hAfter, int x, int y, int cx, int cy, uint flags);
+    [DllImport("user32.dll")] public static extern void SwitchToThisWindow(IntPtr h, bool fAltTab);
+    public static readonly IntPtr HWND_TOPMOST = (IntPtr)(-1);
+    public static readonly IntPtr HWND_NOTOPMOST = (IntPtr)(-2);
     public static void ForceFG(IntPtr h) {
+        ShowWindow(h, 3);
+        SwitchToThisWindow(h, true);
+        SetWindowPos(h, HWND_TOPMOST, 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0040);
+        SetWindowPos(h, HWND_NOTOPMOST, 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0040);
         IntPtr fg = GetForegroundWindow();
+        if (fg == h) return;
         uint pidTmp;
         uint fgTid = GetWindowThreadProcessId(fg, out pidTmp);
         uint targetTid = GetWindowThreadProcessId(h, out pidTmp);
         uint myTid = GetCurrentThreadId();
         AttachThreadInput(myTid, fgTid, true);
         AttachThreadInput(myTid, targetTid, true);
-        ShowWindow(h, 9);
         BringWindowToTop(h);
-        keybd_event(0x12, 0, 0, 0);
-        keybd_event(0x12, 0, 0x02, 0);
         SetForegroundWindow(h);
         AttachThreadInput(myTid, fgTid, false);
         AttachThreadInput(myTid, targetTid, false);

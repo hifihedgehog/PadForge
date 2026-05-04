@@ -931,7 +931,7 @@
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Per stick: deadzones, anti-deadzones, gevoeligheidskrommen en centeroffset-kalibratie. Elke sectie hieronder geldt voor één analoge stick op de actieve uitvoer. Uitgebreide profielen kunnen tot vier sticks hebben. Standaardcontrollers hebben er twee.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Triggers</value></data>
   <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Per trigger: deadzones, anti-deadzones, schaling van het maximale bereik en gevoeligheidskrommen. Elke sectie hieronder geldt voor één trigger-as op de actieve uitvoer. Uitgebreide profielen kunnen tot acht assen blootstellen, gedeeld met het Sticks-tabblad.</value></data>
-  <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force feedback</value></data>
+  <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Regelt hoe PadForge force feedback-gebeurtenissen vanuit het spel schaalt en routeert naar de rumble-motoren of haptische actuatoren van de fysieke controller. Audio-rumble voegt daar een door systeemaudio aangestuurde laag bovenop toe.</value></data>
   <data name="Pad_LeftTrigger" xml:space="preserve"><value>Linker trigger</value></data>
   <data name="Pad_RightTrigger" xml:space="preserve"><value>Rechter trigger</value></data>
@@ -1032,6 +1032,10 @@
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>Rechter trigger herstellen</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>Sterkte herstellen</value></data>
   <data name="Pad_ResetFrequency" xml:space="preserve"><value>Frequentie herstellen</value></data>
+  <data name="Pad_ResetLightbarMode" xml:space="preserve"><value>Lichtbalkmodus herstellen</value></data>
+  <data name="Pad_ResetLedBrightness" xml:space="preserve"><value>LED-helderheid herstellen</value></data>
+  <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>Spelerpatroon herstellen</value></data>
+  <data name="Pad_ResetMuteLedMode" xml:space="preserve"><value>Mute-LED-modus herstellen</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>Periode herstellen</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>Pulsverval herstellen</value></data>
   <data name="Pad_ResetAudioLightbarSensitivity" xml:space="preserve"><value>Gevoeligheid herstellen</value></data>

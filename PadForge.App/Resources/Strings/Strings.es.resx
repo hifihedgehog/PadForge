@@ -1014,6 +1014,10 @@
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>Restablecer gatillo derecho</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>Restablecer intensidad</value></data>
   <data name="Pad_ResetFrequency" xml:space="preserve"><value>Restablecer frecuencia</value></data>
+  <data name="Pad_ResetLightbarMode" xml:space="preserve"><value>Restablecer modo de barra de luz</value></data>
+  <data name="Pad_ResetLedBrightness" xml:space="preserve"><value>Restablecer brillo del LED</value></data>
+  <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>Restablecer patrón de jugador</value></data>
+  <data name="Pad_ResetMuteLedMode" xml:space="preserve"><value>Restablecer modo del LED de silencio</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>Restablecer período</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>Restablecer decaimiento del pulso</value></data>
   <data name="Pad_ResetAudioLightbarSensitivity" xml:space="preserve"><value>Restablecer sensibilidad</value></data>

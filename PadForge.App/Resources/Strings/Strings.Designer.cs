@@ -1022,6 +1022,10 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetRightTrigger => Get("Pad_ResetRightTrigger");
     public string Pad_ResetStrength => Get("Pad_ResetStrength");
     public string Pad_ResetFrequency => Get("Pad_ResetFrequency");
+    public string Pad_ResetLightbarMode => Get("Pad_ResetLightbarMode");
+    public string Pad_ResetLedBrightness => Get("Pad_ResetLedBrightness");
+    public string Pad_ResetPlayerPattern => Get("Pad_ResetPlayerPattern");
+    public string Pad_ResetMuteLedMode => Get("Pad_ResetMuteLedMode");
     public string Pad_ResetLightbarPeriod => Get("Pad_ResetLightbarPeriod");
     public string Pad_ResetLightbarInputDecay => Get("Pad_ResetLightbarInputDecay");
     public string Pad_ResetAudioLightbarSensitivity => Get("Pad_ResetAudioLightbarSensitivity");

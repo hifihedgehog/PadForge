@@ -1014,6 +1014,10 @@
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>右トリガーをリセット</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>強度をリセット</value></data>
   <data name="Pad_ResetFrequency" xml:space="preserve"><value>周波数をリセット</value></data>
+  <data name="Pad_ResetLightbarMode" xml:space="preserve"><value>ライトバーモードをリセット</value></data>
+  <data name="Pad_ResetLedBrightness" xml:space="preserve"><value>LEDの明るさをリセット</value></data>
+  <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>プレイヤーパターンをリセット</value></data>
+  <data name="Pad_ResetMuteLedMode" xml:space="preserve"><value>ミュートLEDモードをリセット</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>周期をリセット</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>パルス減衰をリセット</value></data>
   <data name="Pad_ResetAudioLightbarSensitivity" xml:space="preserve"><value>感度をリセット</value></data>

@@ -39,7 +39,13 @@ namespace PadForge.Engine
             { "A", "B", "X", "Y", "Left Shoulder", "Right Shoulder", "Back", "Start", "Left Stick Button", "Right Stick Button", "Guide" };
 
         // Thread-safe state: written by WebSocket thread, read by polling thread.
-        private volatile CustomInputState _currentState = new CustomInputState();
+        // _currentState is non-volatile; the lock-protected writes (UpdateAxis /
+        // UpdateButton mutate under _stateLock) and Volatile.Read on the get
+        // path provide the memory ordering. Marking the field volatile AND
+        // passing it to Volatile.Read by ref triggered CS0420 because the
+        // ref takes the field's address, dropping the volatile contract at
+        // the call site.
+        private CustomInputState _currentState = new CustomInputState();
         private readonly object _stateLock = new object();
         private volatile bool _connected;
 

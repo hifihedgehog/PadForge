@@ -19,7 +19,12 @@ namespace PadForge.Engine
         public static readonly Guid OverlayInstanceGuid =
             new Guid("BEBC0001-0000-0000-0000-CAFEFACE0002");
 
-        private volatile CustomInputState _currentState = new CustomInputState();
+        // The lock-protected write + Volatile.Read on the get path
+        // already provide full memory ordering; the `volatile` keyword
+        // here was redundant and triggered CS0420 because Volatile.Read
+        // takes the field by `ref`, which strips the volatile contract
+        // at the call site anyway.
+        private CustomInputState _currentState = new CustomInputState();
         private readonly object _stateLock = new object();
 
         public uint SdlInstanceId => 0xFFFFFFFE;

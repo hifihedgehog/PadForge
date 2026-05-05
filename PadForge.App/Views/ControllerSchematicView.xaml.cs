@@ -57,7 +57,7 @@ namespace PadForge.Views
         private const double ButtonSize = 22;
         private const double SectionGap = 24;
         private const double LabelHeight = 18;
-        private const double Padding = 12;
+        private const double LayoutPadding = 12;
         private const int ButtonsPerRow = 8;
 
         public ControllerSchematicView()
@@ -163,8 +163,8 @@ namespace PadForge.Views
 
             cfg.ComputeAxisLayout(out var stickAxisX, out var stickAxisY, out var triggerAxis);
 
-            double x = Padding;
-            double topY = Padding + LabelHeight;
+            double x = LayoutPadding;
+            double topY = LayoutPadding + LabelHeight;
 
             // ── Sticks ──
             for (int i = 0; i < cfg.ThumbstickCount; i++)
@@ -191,7 +191,7 @@ namespace PadForge.Views
             }
 
             // ── Buttons ── (wrap to rows)
-            double btnStartX = Padding;
+            double btnStartX = LayoutPadding;
             double btnStartY = topY + Math.Max(StickSize, TriggerHeight) + SectionGap + LabelHeight;
 
             // Section label
@@ -209,9 +209,9 @@ namespace PadForge.Views
             }
 
             // Set canvas size for Viewbox scaling
-            double totalWidth = Math.Max(x, btnStartX + ButtonsPerRow * (ButtonSize + 6)) + Padding;
+            double totalWidth = Math.Max(x, btnStartX + ButtonsPerRow * (ButtonSize + 6)) + LayoutPadding;
             int btnRows = cfg.ButtonCount > 0 ? ((cfg.ButtonCount - 1) / ButtonsPerRow + 1) : 0;
-            double totalHeight = btnStartY + btnRows * (ButtonSize + 6) + Padding;
+            double totalHeight = btnStartY + btnRows * (ButtonSize + 6) + LayoutPadding;
 
             SchematicCanvas.Width = totalWidth;
             SchematicCanvas.Height = totalHeight;

@@ -60,7 +60,7 @@ namespace PadForge.Views
         private const double CcBarHeight = 100;
         private const double SectionGap = 20;
         private const double LabelHeight = 16;
-        private const double Padding = 12;
+        private const double LayoutPadding = 12;
 
         // Note layout: which notes in an octave are white keys
         // 0=C, 1=C#, 2=D, 3=D#, 4=E, 5=F, 6=F#, 7=G, 8=G#, 9=A, 10=A#, 11=B
@@ -159,8 +159,8 @@ namespace PadForge.Views
             if (_vm == null || _vm.OutputType != VirtualControllerType.Midi) return;
             var mc = _vm.MidiConfig;
 
-            double x = Padding;
-            double topY = Padding;
+            double x = LayoutPadding;
+            double topY = LayoutPadding;
 
             // ── CC Sliders section ──
             if (mc.CcCount > 0)
@@ -183,7 +183,7 @@ namespace PadForge.Views
             // ── Piano Keyboard section ──
             if (mc.NoteCount > 0)
             {
-                double pianoX = Padding;
+                double pianoX = LayoutPadding;
                 var pianoLabel = CreateLabel(Strings.Instance.Preview_NoteOutputs, pianoX, topY);
                 MidiCanvas.Children.Add(pianoLabel);
                 topY += LabelHeight + 4;
@@ -196,12 +196,12 @@ namespace PadForge.Views
                 for (int i = 0; i < noteNumbers.Length; i++)
                     if (!IsBlackKey[noteNumbers[i] % 12]) whiteCount++;
                 double pianoWidth = whiteCount * WhiteKeyWidth;
-                x = Math.Max(x, pianoX + pianoWidth + Padding);
+                x = Math.Max(x, pianoX + pianoWidth + LayoutPadding);
                 topY += WhiteKeyHeight + LabelHeight + 4;
             }
 
-            MidiCanvas.Width = x + Padding;
-            MidiCanvas.Height = topY + Padding;
+            MidiCanvas.Width = x + LayoutPadding;
+            MidiCanvas.Height = topY + LayoutPadding;
             _layoutBuilt = true;
             _lastTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
             _dirty = true;

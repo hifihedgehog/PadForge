@@ -151,7 +151,10 @@ namespace PadForge.Common.Input
         internal static bool TrySetSessionVolume(IntPtr pSession, float volume)
         {
             var iidVol = IID_SimpleAudioVolume;
-            int hr = Marshal.QueryInterface(pSession, ref iidVol, out IntPtr pVol);
+            // Marshal.QueryInterface declares the IID as `in Guid` — passing
+            // it bare lets the compiler insert the in-pass; an explicit `ref`
+            // here was a CS9191 warning (silently downgraded to in-pass).
+            int hr = Marshal.QueryInterface(pSession, in iidVol, out IntPtr pVol);
             if (hr != 0) return false;
             try
             {

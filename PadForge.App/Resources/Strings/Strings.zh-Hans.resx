@@ -591,6 +591,22 @@
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>模式</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>选择宏要循环的灯条模式。每次触发跳到下一个已勾选模式。</value></data>
 
+  <!-- ═══ Macro action — Rumble ═══ -->
+  <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>震动</value></data>
+  <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>从宏驱动该插槽物理设备的震动。Reactive 在保持窗口内以全强度运行，然后在淡出窗口内线性降至零。Sticky 保持全强度，直到执行停止震动动作。通过 max() 覆盖到游戏驱动的震动之上，确保用户驱动的反馈始终能感受到。</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>震动 {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>震动 {0} 保持至清除</value></data>
+  <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>停止震动</value></data>
+  <data name="MacroAction_RumbleStop" xml:space="preserve"><value>停止震动</value></data>
+  <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>释放分配插槽上任何活跃的震动覆盖。与 Sticky 震动动作搭配，通过另一个宏解除保持。</value></data>
+  <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>保持</value></data>
+  <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>反应式（淡出）</value></data>
+  <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>持续（保持）</value></data>
+  <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>左马达</value></data>
+  <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>右马达</value></data>
+  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>保持</value></data>
+  <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>淡出</value></data>
+
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>居中</value></data>
   <data name="POV_Up" xml:space="preserve"><value>上</value></data>

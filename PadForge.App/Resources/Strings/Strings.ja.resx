@@ -591,6 +591,22 @@
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>モード</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>マクロが循環するライトバーモードを選択します。発火ごとに次のチェック済みモードへ進みます。</value></data>
 
+  <!-- ═══ Macro action — Rumble ═══ -->
+  <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>ランブル</value></data>
+  <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>マクロからスロットの物理デバイスのランブルを駆動します。Reactive はホールド時間中フルストレングスで動作し、その後フェード時間で線形に0へ減衰します。Sticky はランブル停止アクションが実行されるまでフルストレングスで保持します。ゲーム駆動のランブルに max() で重ねるため、ユーザー駆動のフィードバックは常に感じられます。</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>ランブル {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>ランブル {0} を解除まで保持</value></data>
+  <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>ランブル停止</value></data>
+  <data name="MacroAction_RumbleStop" xml:space="preserve"><value>ランブル停止</value></data>
+  <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>割り当てられたスロットでアクティブなランブル オーバーライドを解除します。Sticky ランブル アクションと組み合わせて、別のマクロから保持を解除できます。</value></data>
+  <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>保持</value></data>
+  <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>リアクティブ（フェード）</value></data>
+  <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>スティッキー（保持）</value></data>
+  <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>左モーター</value></data>
+  <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>右モーター</value></data>
+  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>保持</value></data>
+  <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>フェード</value></data>
+
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>中央</value></data>
   <data name="POV_Up" xml:space="preserve"><value>上</value></data>

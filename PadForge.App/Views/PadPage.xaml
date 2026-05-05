@@ -821,6 +821,12 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_LightbarModeCycle, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.LightbarModeCycle}"
                                                           ToolTip="{Binding MacroAction_LightbarModeCycle_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_Rumble, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.Rumble}"
+                                                          ToolTip="{Binding MacroAction_Rumble_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_RumbleStop, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.RumbleStop}"
+                                                          ToolTip="{Binding MacroAction_RumbleStop_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         </ComboBox>
                                     </StackPanel>
 
@@ -1050,6 +1056,78 @@
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Rumble card (Reactive | Sticky) -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsRumbleType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_Rumble, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,6"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                <TextBlock Text="{Binding Macro_RumbleHold_Label, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="100" Margin="0,0,8,0"/>
+                                                <ComboBox SelectedValue="{Binding RumbleHoldMode, Mode=TwoWay}"
+                                                          SelectedValuePath="Tag" MinWidth="140">
+                                                    <ComboBoxItem Content="{Binding Macro_RumbleHold_Reactive, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroRumbleHoldMode.Reactive}"/>
+                                                    <ComboBoxItem Content="{Binding Macro_RumbleHold_Sticky, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroRumbleHoldMode.Sticky}"/>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <!-- Left motor strength -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                <TextBlock Text="{Binding Macro_RumbleStrengthLeft_Label, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="100" Margin="0,0,8,0"/>
+                                                <Slider Value="{Binding RumbleStrengthLeft, Mode=TwoWay}"
+                                                        Minimum="0" Maximum="100" Width="220"
+                                                        VerticalAlignment="Center"/>
+                                                <TextBox Text="{Binding RumbleStrengthLeft, Mode=TwoWay}" Width="60" Margin="8,0,0,0"/>
+                                                <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                            </StackPanel>
+                                            <!-- Right motor strength -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                <TextBlock Text="{Binding Macro_RumbleStrengthRight_Label, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="100" Margin="0,0,8,0"/>
+                                                <Slider Value="{Binding RumbleStrengthRight, Mode=TwoWay}"
+                                                        Minimum="0" Maximum="100" Width="220"
+                                                        VerticalAlignment="Center"/>
+                                                <TextBox Text="{Binding RumbleStrengthRight, Mode=TwoWay}" Width="60" Margin="8,0,0,0"/>
+                                                <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                            </StackPanel>
+                                            <!-- Hold ms — Reactive only -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                                        Visibility="{Binding IsRumbleReactiveHold, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Text="{Binding Macro_RumbleHoldMs_Label, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="100" Margin="0,0,8,0"/>
+                                                <Slider Value="{Binding RumbleHoldMs, Mode=TwoWay}"
+                                                        Minimum="0" Maximum="5000" Width="220"
+                                                        VerticalAlignment="Center"/>
+                                                <TextBox Text="{Binding RumbleHoldMs, Mode=TwoWay}" Width="80" Margin="8,0,0,0"/>
+                                                <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                            </StackPanel>
+                                            <!-- Fade ms — Reactive only -->
+                                            <StackPanel Orientation="Horizontal"
+                                                        Visibility="{Binding IsRumbleReactiveHold, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Text="{Binding Macro_RumbleFadeMs_Label, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="100" Margin="0,0,8,0"/>
+                                                <Slider Value="{Binding RumbleFadeMs, Mode=TwoWay}"
+                                                        Minimum="0" Maximum="5000" Width="220"
+                                                        VerticalAlignment="Center"/>
+                                                <TextBox Text="{Binding RumbleFadeMs, Mode=TwoWay}" Width="80" Margin="8,0,0,0"/>
+                                                <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Rumble Stop card -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsRumbleStopType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_RumbleStop, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                            <TextBlock Text="{Binding MacroAction_RumbleStop_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                       FontSize="11" TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
                                     </Border>
 
@@ -1323,7 +1401,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <TextBlock Text="{Binding Macro_Count, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                           Margin="0,0,8,0" Width="50"/>
+                                           Margin="0,0,8,0" Width="90"/>
                                 <TextBox Text="{Binding RepeatCount, Mode=TwoWay}"
                                          Width="60"/>
                                 <TextBlock Text="{Binding Macro_DelayMs, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"

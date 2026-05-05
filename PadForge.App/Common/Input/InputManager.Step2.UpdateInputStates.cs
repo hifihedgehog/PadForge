@@ -171,6 +171,13 @@ namespace PadForge.Common.Input
             {
                 var raw = VibrationStates[padIndex];
                 bool hasGameRumble = raw != null && (raw.LeftMotorSpeed > 0 || raw.RightMotorSpeed > 0);
+                // An active macro rumble override on a Sony slot needs
+                // the dispatcher's timer running so the override actually
+                // reaches the motors. Treat it as game-rumble equivalent
+                // for timer-keepalive purposes — the dispatcher's per-
+                // device rumble pump merges them via max() at write time.
+                if (!hasGameRumble && MacroRumbleOverrides[padIndex].IsActive)
+                    hasGameRumble = true;
 
                 bool hasAudioRumbleEnabled = false;
                 if (settingsForPoke != null)
@@ -297,13 +304,17 @@ namespace PadForge.Common.Input
 
                 var devicePs = us.GetPadSetting();
 
-                // Per-slot constant-force override resolves here so the
-                // override-with-resume rule applies at the slot granularity:
-                // if a different slot the device maps to has live game force,
-                // that slot's max() still wins; only the slots where the
-                // game went silent get the user's constant injected.
+                // Macro rumble layers on top of game force via max() so
+                // user-driven feedback is always felt even mid-game-rumble.
+                // Constant force then resolves over the merged result with
+                // override-with-resume semantics: if game OR macro is
+                // producing force this tick, the constant force stays
+                // dormant; the moment both go silent it kicks back in.
+                if (_macroRumbleScratch == null) _macroRumbleScratch = new Vibration();
+                var withMacro = MacroRumbleOverride.Merge(raw, MacroRumbleOverrides[padIndex], _macroRumbleScratch);
+
                 if (_constantForceScratch == null) _constantForceScratch = new Vibration();
-                var effective = ConstantForceEvaluator.Resolve(raw, devicePs, _constantForceScratch);
+                var effective = ConstantForceEvaluator.Resolve(withMacro, devicePs, _constantForceScratch);
 
                 ScaleRumbleForDevice(effective.LeftMotorSpeed, effective.RightMotorSpeed,
                     devicePs, out ushort scaledL, out ushort scaledR);
@@ -359,6 +370,10 @@ namespace PadForge.Common.Input
         // unchanged. Populating a fresh Vibration per tick would allocate
         // on every device with multi-slot mappings.
         private Vibration _constantForceScratch;
+
+        // Same shape as _constantForceScratch but for the macro rumble
+        // merge layer that runs ahead of constant-force resolution.
+        private Vibration _macroRumbleScratch;
 
         /// <summary>Pushes the audio detector's per-tick parameters
         /// (Sensitivity, CutoffHz) from the first audio-rumble-enabled
@@ -469,16 +484,19 @@ namespace PadForge.Common.Input
                     }
                 }
 
-                // Apply the same constant-force override here so the
-                // FFB-tab Motor Activity meter reflects what's actually
-                // being sent to the physical device — Step 2's per-device
-                // ApplyForceFeedback path and InputService's Sony rumble
-                // pump both already inject the user's constant force when
-                // game force is silent. Reading raw here would leave the
-                // meter at zero whenever the constant is the only writer,
-                // which mismatches the real motor state.
+                // Apply the same macro-rumble + constant-force layering
+                // here so the FFB-tab Motor Activity meter reflects what's
+                // actually being sent to the physical device — Step 2's
+                // per-device ApplyForceFeedback path and InputService's
+                // Sony rumble pump both already inject macro and constant
+                // force. Reading raw here would leave the meter at zero
+                // whenever those overrides are the only writers, which
+                // mismatches the real motor state.
+                if (_macroRumbleScratch == null) _macroRumbleScratch = new Vibration();
+                var withMacro = MacroRumbleOverride.Merge(raw, MacroRumbleOverrides[padIndex], _macroRumbleScratch);
+
                 if (_constantForceScratch == null) _constantForceScratch = new Vibration();
-                var effective = ConstantForceEvaluator.Resolve(raw, ps, _constantForceScratch);
+                var effective = ConstantForceEvaluator.Resolve(withMacro, ps, _constantForceScratch);
 
                 ScaleRumbleForDevice(effective.LeftMotorSpeed, effective.RightMotorSpeed,
                     ps, out ushort finalL, out ushort finalR);

@@ -421,6 +421,31 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _enableInputHiding, value);
         }
 
+        private bool _keepHidHideCloaksBetweenLaunches = false;
+
+        /// <summary>
+        /// When on, PadForge does NOT clear its HidHide-managed cloaks at
+        /// shutdown — they persist between sessions so processes that scan
+        /// for controllers while PadForge is closed (e.g. Steam launching
+        /// after PadForge exits) still see the physicals as cloaked. The
+        /// next PadForge start skips the stale-entry sweep so the
+        /// persisted cloaks survive into the new session without a visible
+        /// decloak window.
+        ///
+        /// When off (default — previous behavior), PadForge clears its
+        /// cloaks on Stop / shutdown so non-PadForge sessions don't have
+        /// the controllers hidden.
+        ///
+        /// The runtime master toggle (EnableInputHiding) is unaffected:
+        /// flipping it off mid-session always decloaks immediately
+        /// regardless of this setting.
+        /// </summary>
+        public bool KeepHidHideCloaksBetweenLaunches
+        {
+            get => _keepHidHideCloaksBetweenLaunches;
+            set => SetProperty(ref _keepHidHideCloaksBetweenLaunches, value);
+        }
+
         // ─────────────────────────────────────────────
         //  Settings file
         // ─────────────────────────────────────────────

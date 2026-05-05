@@ -239,7 +239,7 @@
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>配置轮询行为和后台处理。</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>启动时自动运行引擎</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>窗口失去焦点时继续轮询</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>轮询间隔：</value></data>
+  <data name="Settings_PollingInterval" xml:space="preserve"><value>轮询间隔</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>对游戏隐藏设备</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide 设备隐藏和底层输入钩子的总开关。关闭后，无论单个设备设置如何，所有设备都不会被隐藏。</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>窗口</value></data>
@@ -923,7 +923,7 @@
   <data name="Key_Apostrophe" xml:space="preserve"><value>撇号</value></data>
   <data name="Common_Stopping" xml:space="preserve"><value>正在停止…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>正在停止引擎…</value></data>
-  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>非活动销毁超时：</value></data>
+  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>非活动超时</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>当所有映射设备都离线时，虚拟控制器被销毁前的秒数。0 表示禁用。剩余的控制器会上移以填补空缺，并重新绑定到较低的 XInput 槽位。</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>秒（0 = 永不）</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
@@ -1066,7 +1066,9 @@
   <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>重置中声频带 — 蓝</value></data>
   <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>重置强声频带 — 红</value></data>
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>重置强声频带 — 绿</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>重置强声频带 — 蓝</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>输入响应</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>关闭</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>每次按下随机颜色</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>循环调色板</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>每次按下单一颜色</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>重置输入响应</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>按下时闪烁颜色</value></data>  <data name="Pad_ResetInputReactiveColor" xml:space="preserve"><value>重置输入响应颜色</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>重置强声频带 — 蓝</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>输入响应</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>关闭</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>每次按下随机颜色</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>循环调色板</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>每次按下单一颜色</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>重置输入响应</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>按下时闪烁颜色</value></data>  <data name="Pad_ResetInputReactiveColor" xml:space="preserve"><value>重置输入响应颜色</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>在 PadForge 会话之间保持 HidHide 的隐藏。当 PadForge 关闭时，另一个应用（例如 Steam）扫描手柄并希望它仍然把物理设备视为隐藏，这很有用。默认关闭。会话中关闭上方的总开关会立即取消隐藏设备。</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>在两次启动之间保持设备隐藏</value></data>
+
+
 
 
 

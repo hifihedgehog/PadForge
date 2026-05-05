@@ -241,9 +241,11 @@
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Configure polling behavior and background processing.</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Auto-start engine on launch</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continue polling when window loses focus</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Polling interval:</value></data>
+  <data name="Settings_PollingInterval" xml:space="preserve"><value>Polling interval</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Hide devices from games</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Master switch for HidHide device hiding and low-level input hooks. When off, no devices are hidden regardless of per-device settings.</value></data>
+  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Keep devices cloaked between launches</value></data>
+  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>Persist HidHide cloaks across PadForge sessions. Useful when another app (e.g. Steam) scans for controllers while PadForge is closed and you want it to still see the physicals as cloaked. Off by default; flipping the master switch above off mid-session always decloaks immediately.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Window</value></data>
   <data name="Settings_WindowDesc" xml:space="preserve"><value>Startup and minimize behavior.</value></data>
   <data name="Settings_MinimizeToTray" xml:space="preserve"><value>Minimize to system tray</value></data>
@@ -1109,7 +1111,7 @@
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Left Motor</value></data>
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Right Motor</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Level</value></data>
-  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Inactivity destroy timeout:</value></data>
+  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Inactivity timeout</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Seconds before a virtual controller is destroyed when all mapped devices are offline. 0 disables. Surviving controllers shift up to fill the gap and re-bind to lower XInput slots.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>seconds (0 = never)</value></data>
 

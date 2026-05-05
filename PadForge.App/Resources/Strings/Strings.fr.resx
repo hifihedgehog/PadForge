@@ -239,7 +239,7 @@
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Configurer le comportement de scrutation et le traitement en arrière-plan.</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Démarrer automatiquement le moteur au lancement</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continuer la scrutation en arrière-plan</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervalle de scrutation :</value></data>
+  <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervalle de scrutation</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Masquer les appareils des jeux</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Commutateur principal pour le masquage des appareils HidHide et les hooks d'entrée bas niveau. Lorsque désactivé, aucun appareil n'est masqué quels que soient les paramètres individuels.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Fenêtre</value></data>
@@ -923,7 +923,7 @@
   <data name="Key_Apostrophe" xml:space="preserve"><value>Apostrophe</value></data>
   <data name="Common_Stopping" xml:space="preserve"><value>Arrêt en cours…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Arrêt du moteur…</value></data>
-  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Délai de destruction par inactivité :</value></data>
+  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Délai d'inactivité</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Secondes avant qu'un contrôleur virtuel soit détruit lorsque tous les appareils mappés sont hors ligne. 0 désactive. Les contrôleurs restants remontent pour combler le vide et se relient aux slots XInput inférieurs.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>secondes (0 = jamais)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
@@ -1066,7 +1066,9 @@
   <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Réinitialiser la bande moyenne — bleu</value></data>
   <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Réinitialiser la bande forte — rouge</value></data>
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Réinitialiser la bande forte — vert</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Réinitialiser la bande forte — bleu</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Réactif aux entrées</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Désactivé</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Couleur aléatoire par appui</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Parcourir la palette</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Couleur unique par appui</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Réinitialiser réactif aux entrées</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Couleur du flash par appui</value></data>  <data name="Pad_ResetInputReactiveColor" xml:space="preserve"><value>Réinitialiser la couleur réactive aux entrées</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Réinitialiser la bande forte — bleu</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Réactif aux entrées</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Désactivé</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Couleur aléatoire par appui</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Parcourir la palette</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Couleur unique par appui</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Réinitialiser réactif aux entrées</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Couleur du flash par appui</value></data>  <data name="Pad_ResetInputReactiveColor" xml:space="preserve"><value>Réinitialiser la couleur réactive aux entrées</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>Conserve les masquages HidHide entre les sessions PadForge. Utile quand une autre application (par ex. Steam) recherche des manettes pendant que PadForge est fermé et que vous voulez qu'elle continue à voir les périphériques physiques comme masqués. Désactivé par défaut. Désactiver l'interrupteur principal ci-dessus en cours de session affiche immédiatement les périphériques.</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Conserver le masquage des périphériques entre les lancements</value></data>
+
+
 
 
 

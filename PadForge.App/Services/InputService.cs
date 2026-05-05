@@ -327,12 +327,21 @@ namespace PadForge.Services
             // Clear stale HidHide blacklist entries from previous crash/kill.
             // _managedDeviceIds is in-memory so entries are lost on restart,
             // making RemoveManagedDevices() unable to clean up stale entries.
-            try
+            //
+            // Skipped when KeepHidHideCloaksBetweenLaunches is on so the
+            // persisted cloaks survive into the new session and
+            // ApplyDeviceHiding's per-device walk re-asserts them
+            // idempotently — without a visible decloak window between
+            // PadForge restarts.
+            if (!_mainVm.Settings.KeepHidHideCloaksBetweenLaunches)
             {
-                if (HidHideController.IsAvailable())
-                    HidHideController.ClearAll();
+                try
+                {
+                    if (HidHideController.IsAvailable())
+                        HidHideController.ClearAll();
+                }
+                catch { /* best effort */ }
             }
-            catch { /* best effort */ }
             _managedWhitelistDosPaths.Clear();
 
             // Apply device hiding (HidHide + input hooks) if master switch is on.
@@ -425,7 +434,11 @@ namespace PadForge.Services
             StopDsuServer();
             StopWebServer();
             StopAudioBassDetector();
-            RemoveDeviceHiding();
+            // Honor the persistent-cloaks setting on shutdown only.
+            // Mid-session toggling EnableInputHiding off still decloaks
+            // immediately (handled by the property-change branch around
+            // line ~2080), as expected.
+            RemoveDeviceHiding(keepCloaks: _mainVm.Settings.KeepHidHideCloaksBetweenLaunches);
 
             // Heavy engine teardown — InputManager.Stop calls
             // AwaitPendingLifecycleTasks (waits for in-flight HM connect /
@@ -2872,16 +2885,25 @@ namespace PadForge.Services
         /// Removes all device hiding: clears PadForge-managed HidHide blacklist entries
         /// and stops input hooks.
         /// </summary>
-        public void RemoveDeviceHiding()
+        /// <param name="keepCloaks">When true, the HidHide-removal portion is
+        /// skipped — managed device entries stay asserted and the in-memory
+        /// whitelist DOS paths are kept so a follow-up reapply doesn't have
+        /// to re-walk every device. Input hooks are still torn down (they're
+        /// in-process state with nothing to persist). Used by the
+        /// shutdown path when KeepHidHideCloaksBetweenLaunches is on.</param>
+        public void RemoveDeviceHiding(bool keepCloaks = false)
         {
             // ── HidHide ──
-            try
+            if (!keepCloaks)
             {
-                if (HidHideController.IsAvailable())
-                    HidHideController.RemoveManagedDevices();
+                try
+                {
+                    if (HidHideController.IsAvailable())
+                        HidHideController.RemoveManagedDevices();
+                }
+                catch { /* Best effort — driver may not be available */ }
+                _managedWhitelistDosPaths.Clear();
             }
-            catch { /* Best effort — driver may not be available */ }
-            _managedWhitelistDosPaths.Clear();
 
             // ── Input hooks ──
             if (_hookManager != null)

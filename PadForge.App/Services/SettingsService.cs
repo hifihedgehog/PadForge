@@ -284,6 +284,7 @@ namespace PadForge.Services
             vm.HmInactivityDestroyTimeoutSeconds = appSettings.HmInactivityDestroyTimeoutSeconds;
             vm.SelectedThemeIndex = appSettings.ThemeIndex;
             vm.EnableInputHiding = appSettings.EnableInputHiding;
+            vm.KeepHidHideCloaksBetweenLaunches = appSettings.KeepHidHideCloaksBetweenLaunches;
             vm.HidHideWhitelistPaths.Clear();
             if (appSettings.HidHideWhitelistPaths != null)
             {
@@ -1423,6 +1424,7 @@ namespace PadForge.Services
                 Use2DControllerView = vm.Use2DControllerView,
                 LegacyDriverCleanupOffered = vm.LegacyDriverCleanupOffered,
                 EnableInputHiding = vm.EnableInputHiding,
+                KeepHidHideCloaksBetweenLaunches = vm.KeepHidHideCloaksBetweenLaunches,
                 HidHideWhitelistPaths = vm.HidHideWhitelistPaths.Count > 0
                     ? vm.HidHideWhitelistPaths.ToArray()
                     : null,
@@ -2398,6 +2400,16 @@ namespace PadForge.Services
         /// </summary>
         [XmlElement]
         public bool EnableInputHiding { get; set; } = true;
+
+        /// <summary>
+        /// When true, PadForge keeps its HidHide-managed cloaks asserted
+        /// across shutdowns instead of clearing them on Stop. Lets
+        /// non-PadForge sessions still see the physicals cloaked (e.g.
+        /// Steam scanning controllers after PadForge exits). Default
+        /// false matches the previous shutdown-decloak behavior.
+        /// </summary>
+        [XmlElement]
+        public bool KeepHidHideCloaksBetweenLaunches { get; set; } = false;
 
         /// <summary>
         /// User-specified application paths to whitelist in HidHide.

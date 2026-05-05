@@ -239,7 +239,7 @@
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Configure el comportamiento de sondeo y el procesamiento en segundo plano.</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Iniciar motor automáticamente al abrir</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continuar sondeo cuando la ventana pierde el foco</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervalo de sondeo:</value></data>
+  <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervalo de sondeo</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Ocultar dispositivos de los juegos</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Interruptor principal para la ocultación de dispositivos con HidHide y los hooks de entrada de bajo nivel. Cuando está desactivado, no se oculta ningún dispositivo independientemente de la configuración individual.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Ventana</value></data>
@@ -923,7 +923,7 @@
   <data name="Key_Apostrophe" xml:space="preserve"><value>Apóstrofo</value></data>
   <data name="Common_Stopping" xml:space="preserve"><value>Deteniendo…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Deteniendo motor…</value></data>
-  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Tiempo de inactividad para destruir:</value></data>
+  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Tiempo de inactividad</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Segundos antes de que un controlador virtual sea destruido cuando todos los dispositivos asignados están desconectados. 0 lo deshabilita. Los controladores restantes suben para llenar el hueco y se vuelven a vincular a slots XInput inferiores.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>segundos (0 = nunca)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
@@ -1066,7 +1066,9 @@
   <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Restablecer banda media — azul</value></data>
   <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Restablecer banda alta — rojo</value></data>
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Restablecer banda alta — verde</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Restablecer banda alta — azul</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Reactivo a entrada</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Desactivado</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Color aleatorio por pulsación</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Recorrer la paleta</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Color único por pulsación</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Restablecer reactivo a entrada</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Color del destello por pulsación</value></data>  <data name="Pad_ResetInputReactiveColor" xml:space="preserve"><value>Restablecer color reactivo a entrada</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Restablecer banda alta — azul</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Reactivo a entrada</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Desactivado</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Color aleatorio por pulsación</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Recorrer la paleta</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Color único por pulsación</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Restablecer reactivo a entrada</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Color del destello por pulsación</value></data>  <data name="Pad_ResetInputReactiveColor" xml:space="preserve"><value>Restablecer color reactivo a entrada</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>Mantén los ocultamientos de HidHide entre sesiones de PadForge. Útil cuando otra aplicación (p. ej. Steam) busca controladores mientras PadForge está cerrado y quieres que siga viendo los físicos como ocultos. Desactivado por defecto. Si desactivas el interruptor principal de arriba durante la sesión, los dispositivos se desocultarán al instante.</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Mantener dispositivos ocultos entre inicios</value></data>
+
+
 
 
 

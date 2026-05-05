@@ -469,7 +469,18 @@ namespace PadForge.Common.Input
                     }
                 }
 
-                ScaleRumbleForDevice(raw.LeftMotorSpeed, raw.RightMotorSpeed,
+                // Apply the same constant-force override here so the
+                // FFB-tab Motor Activity meter reflects what's actually
+                // being sent to the physical device — Step 2's per-device
+                // ApplyForceFeedback path and InputService's Sony rumble
+                // pump both already inject the user's constant force when
+                // game force is silent. Reading raw here would leave the
+                // meter at zero whenever the constant is the only writer,
+                // which mismatches the real motor state.
+                if (_constantForceScratch == null) _constantForceScratch = new Vibration();
+                var effective = ConstantForceEvaluator.Resolve(raw, ps, _constantForceScratch);
+
+                ScaleRumbleForDevice(effective.LeftMotorSpeed, effective.RightMotorSpeed,
                     ps, out ushort finalL, out ushort finalR);
                 final.LeftMotorSpeed = finalL;
                 final.RightMotorSpeed = finalR;
@@ -477,15 +488,15 @@ namespace PadForge.Common.Input
                 // Directional / condition data passes through unchanged —
                 // ForceFeedbackState handles overallGain on those branches
                 // via SignedMagnitude scaling, which we leave as-is.
-                final.HasDirectionalData = raw.HasDirectionalData;
-                final.HasConditionData = raw.HasConditionData;
-                final.EffectType = raw.EffectType;
-                final.SignedMagnitude = raw.SignedMagnitude;
-                final.Direction = raw.Direction;
-                final.Period = raw.Period;
-                final.DeviceGain = raw.DeviceGain;
-                final.ConditionAxisCount = raw.ConditionAxisCount;
-                final.ConditionAxes = raw.ConditionAxes;
+                final.HasDirectionalData = effective.HasDirectionalData;
+                final.HasConditionData = effective.HasConditionData;
+                final.EffectType = effective.EffectType;
+                final.SignedMagnitude = effective.SignedMagnitude;
+                final.Direction = effective.Direction;
+                final.Period = effective.Period;
+                final.DeviceGain = effective.DeviceGain;
+                final.ConditionAxisCount = effective.ConditionAxisCount;
+                final.ConditionAxes = effective.ConditionAxes;
             }
         }
 

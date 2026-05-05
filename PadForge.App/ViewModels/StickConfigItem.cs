@@ -33,6 +33,17 @@ namespace PadForge.ViewModels
         public int Index { get; }
         public string IconLabel { get; }
 
+        /// <summary>Per-card "Reset {Title}" tooltip — composes the localized
+        /// section reset format with the stick's own localized name so the
+        /// tooltip reads "Reset Left Stick" / "Reset Right Stick" / etc.
+        /// matching the Pad_ResetLeftTrigger / Pad_ResetRightTrigger style
+        /// used by the Adaptive Triggers tab. Recomputed on culture change
+        /// would require notification, but Title is set at construction
+        /// from the localized resource and stays valid for the lifetime
+        /// of the slot's stick set.</summary>
+        public string ResetAllToolTip
+            => string.Format(Resources.Strings.Strings.Instance.Pad_ResetSection_Format, Title);
+
         // ── Digit conversion helpers (stick axes use signed 16-bit: ±32768) ──
         private static int PctToDigit(double pct) => (int)Math.Round(pct / 100.0 * 32768.0);
         private static double DigitToPct(int digit) => digit / 32768.0 * 100.0;

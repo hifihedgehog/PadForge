@@ -1009,6 +1009,12 @@
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>Cinq petites LED blanches sous le pavé tactile. Choisissez le motif de joueur à afficher et son intensité.</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LED indicatrices</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Rangée du numéro de joueur (5 LED sous le pavé tactile) et la LED de mute au-dessus du micro. Le contrôle de luminosité n'agit physiquement que sur la rangée joueur. Le firmware expose les états de la LED de mute (Éteint / Fixe / Pulsé) mais pas de registre de luminosité distinct.</value></data>
+  <data name="Pad_ResetLightbar" xml:space="preserve"><value>Réinitialiser la barre lumineuse</value></data>
+  <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Réinitialiser les LED indicatrices</value></data>
+  <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>Réinitialiser le retour de force</value></data>
+  <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Réinitialiser la vibration audio</value></data>
+  <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Réinitialiser {0}</value></data>
+  <data name="Pad_ClearMappings" xml:space="preserve"><value>Effacer les affectations</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Motif joueur </value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mode LED de mute </value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Luminosité de la LED </value></data>

@@ -312,6 +312,7 @@ namespace PadForge
                      or nameof(SettingsViewModel.PollingRateMs)
                      or nameof(SettingsViewModel.HmInactivityDestroyTimeoutSeconds)
                      or nameof(SettingsViewModel.EnableInputHiding)
+                     or nameof(SettingsViewModel.KeepHidHideCloaksBetweenLaunches)
                      or nameof(SettingsViewModel.Use2DControllerView)
                      or nameof(SettingsViewModel.EnableAutoProfileSwitching))
                     _settingsService.MarkDirty();

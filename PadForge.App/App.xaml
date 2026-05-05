@@ -119,6 +119,7 @@
             <conv:BoolToColorConverter x:Key="BoolToColorConverter" />
             <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <conv:NormToCanvasConverter x:Key="NormToCanvasConverter" />
+            <conv:SignedNormToCanvasConverter x:Key="SignedNormToCanvasConverter" />
             <conv:PercentToSizeConverter x:Key="PercentToSizeConverter" />
             <conv:CrossGeometryConverter x:Key="CrossGeometryConverter" />
             <conv:SlopedWedgeGeometryConverter x:Key="SlopedWedgeGeometryConverter" />

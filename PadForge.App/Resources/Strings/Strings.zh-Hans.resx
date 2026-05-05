@@ -686,6 +686,15 @@
   <data name="Pad_SwapMotors" xml:space="preserve"><value>交换左右马达</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>测试振动</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>马达活动</value></data>
+  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>恒力</value></data>
+  <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>持续向此设备施加力，直到你关闭开关。游戏发出的力在生效期间优先，游戏停止后恒力会自动恢复。</value></data>
+  <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>应用恒力</value></data>
+  <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>在网格中拖动以设置方向和强度。</value></data>
+  <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
+  <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
+  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>重置恒力</value></data>
+  <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>重置恒力 X</value></data>
+  <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>重置恒力 Y</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>重置中心偏移 X</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>重置中心偏移 Y</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>重置为缩放径向</value></data>

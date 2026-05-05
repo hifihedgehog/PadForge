@@ -2107,6 +2107,98 @@
                             </StackPanel>
                         </Border>
 
+                        <!-- ── Constant Force section ── -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="&#xE9D5;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_ConstantForce_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding ResetConstantForceCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetConstantForce, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_ConstantForce_Description, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+
+                                <CheckBox Content="{Binding Pad_ConstantForce_Toggle, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding ConstantForceEnabled, Mode=TwoWay}"
+                                          Margin="0,0,0,12"/>
+
+                                <Grid Margin="0,0,0,8" IsEnabled="{Binding ConstantForceEnabled}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Interactive grid -->
+                                    <Border x:Name="ConstantForcePadBorder" Grid.Column="0"
+                                            BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
+                                            Padding="4" Width="212" Height="212"
+                                            Cursor="Cross"
+                                            ClipToBounds="True"
+                                            MouseLeftButtonDown="ConstantForcePad_MouseLeftButtonDown"
+                                            MouseMove="ConstantForcePad_MouseMove"
+                                            MouseLeftButtonUp="ConstantForcePad_MouseLeftButtonUp">
+                                        <Grid Width="200" Height="200">
+                                            <Ellipse Width="200" Height="200"
+                                                     Fill="{DynamicResource ControlFillColorDefaultBrush}"/>
+                                            <Line X1="50" Y1="0" X2="50" Y2="200" Stroke="#40FFFFFF" StrokeDashArray="2 4" StrokeThickness="0.5"/>
+                                            <Line X1="150" Y1="0" X2="150" Y2="200" Stroke="#40FFFFFF" StrokeDashArray="2 4" StrokeThickness="0.5"/>
+                                            <Line X1="0" Y1="50" X2="200" Y2="50" Stroke="#40FFFFFF" StrokeDashArray="2 4" StrokeThickness="0.5"/>
+                                            <Line X1="0" Y1="150" X2="200" Y2="150" Stroke="#40FFFFFF" StrokeDashArray="2 4" StrokeThickness="0.5"/>
+                                            <Line X1="100" Y1="0" X2="100" Y2="200" Stroke="#60FFFFFF" StrokeThickness="0.75"/>
+                                            <Line X1="0" Y1="100" X2="200" Y2="100" Stroke="#60FFFFFF" StrokeThickness="0.75"/>
+                                            <Canvas>
+                                                <Ellipse Width="196" Height="196" Canvas.Left="2" Canvas.Top="2"
+                                                         Stroke="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                                         StrokeThickness="1.5" Fill="Transparent"/>
+                                                <!-- Force vector line from center to handle (signed [-1..+1] → canvas, dot size 0 = use raw position) -->
+                                                <Line Stroke="{DynamicResource AccentFillColorDefaultBrush}" StrokeThickness="2"
+                                                      X1="100" Y1="100"
+                                                      X2="{Binding ConstantForceX, Converter={StaticResource SignedNormToCanvasConverter}, ConverterParameter='200,0'}"
+                                                      Y2="{Binding ConstantForceY, Converter={StaticResource SignedNormToCanvasConverter}, ConverterParameter='200,0'}"/>
+                                                <!-- Force handle dot -->
+                                                <Ellipse Width="13" Height="13"
+                                                         Fill="{DynamicResource AccentFillColorDefaultBrush}"
+                                                         Stroke="{DynamicResource AccentFillColorSecondaryBrush}" StrokeThickness="1.5"
+                                                         Canvas.Left="{Binding ConstantForceX, Converter={StaticResource SignedNormToCanvasConverter}, ConverterParameter='200,13'}"
+                                                         Canvas.Top="{Binding ConstantForceY, Converter={StaticResource SignedNormToCanvasConverter}, ConverterParameter='200,13'}"/>
+                                            </Canvas>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Numeric readout + sliders -->
+                                    <StackPanel Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Top">
+                                        <TextBlock Text="{Binding Pad_ConstantForce_Position, Source={x:Static strings:Strings.Instance}}"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   TextWrapping="Wrap" Margin="0,0,0,12"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                            <TextBlock Text="{Binding Pad_ConstantForce_X, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                            <Slider Value="{Binding ConstantForceX, Mode=TwoWay}"
+                                                    Minimum="-1" Maximum="1" SmallChange="0.01" LargeChange="0.1"
+                                                    Style="{StaticResource DzSlider}"/>
+                                            <TextBox Text="{Binding ConstantForceX, Mode=TwoWay, StringFormat=F2, UpdateSourceTrigger=LostFocus}"
+                                                     Style="{StaticResource DzValueEdit}"/>
+                                            <Button Command="{Binding ResetConstantForceXCommand}" Style="{StaticResource ResetButton}"
+                                                    ToolTip="{Binding Pad_ResetConstantForceX, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                            <TextBlock Text="{Binding Pad_ConstantForce_Y, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                            <Slider Value="{Binding ConstantForceY, Mode=TwoWay}"
+                                                    Minimum="-1" Maximum="1" SmallChange="0.01" LargeChange="0.1"
+                                                    Style="{StaticResource DzSlider}"/>
+                                            <TextBox Text="{Binding ConstantForceY, Mode=TwoWay, StringFormat=F2, UpdateSourceTrigger=LostFocus}"
+                                                     Style="{StaticResource DzValueEdit}"/>
+                                            <Button Command="{Binding ResetConstantForceYCommand}" Style="{StaticResource ResetButton}"
+                                                    ToolTip="{Binding Pad_ResetConstantForceY, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
                         <!-- ── Audio Bass Rumble section ── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>

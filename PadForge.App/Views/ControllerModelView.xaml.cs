@@ -331,7 +331,7 @@ namespace PadForge.Views
             // changes.
             const double xInsetFrac      = 0.03; // ~1.6 mm bezel each X side
             const double zTopInsetFrac   = 0.12; // ~4 mm — pad surface extends up to where the lightbar curve begins
-            const double zBottomInsetFrac = 0.08; // ~2.6 mm bezel below
+            const double zBottomInsetFrac = 0.12; // ~3.9 mm — bottom bezel runs longer than visual mesh suggests; raises the lower edge of the finger map so touches at normY=1 sit above the bottom curve, matching where a real DS4 v2 finger would land
 
             double touchX0 = bounds.X + bounds.SizeX * xInsetFrac;
             double touchXSize = bounds.SizeX * (1.0 - 2 * xInsetFrac);

@@ -591,6 +591,22 @@
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modo</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Selecciona qué modos de barra de luz debe ciclar el macro. Cada disparo avanza al siguiente modo marcado.</value></data>
 
+  <!-- ═══ Macro action — Rumble ═══ -->
+  <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Vibración</value></data>
+  <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Activa la vibración del dispositivo físico del slot desde una macro. Reactive funciona a plena intensidad durante la ventana de retención y luego baja linealmente a cero. Sticky mantiene la intensidad completa hasta que se ejecute una acción Detener vibración. Se superpone con la vibración del juego mediante max() para que la respuesta del usuario siempre se note.</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Pulso de vibración {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Mantener vibración {0} hasta liberar</value></data>
+  <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Detener vibración</value></data>
+  <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Detener vibración</value></data>
+  <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Libera cualquier reemplazo activo de vibración en el slot asignado. Combínalo con una acción Sticky de vibración para liberar el mantenimiento desde otra macro.</value></data>
+  <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Modo</value></data>
+  <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>Reactivo (atenuar)</value></data>
+  <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Permanente (mantener)</value></data>
+  <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Motor izquierdo</value></data>
+  <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Motor derecho</value></data>
+  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Modo</value></data>
+  <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Desvanecer</value></data>
+
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Centrado</value></data>
   <data name="POV_Up" xml:space="preserve"><value>Arriba</value></data>

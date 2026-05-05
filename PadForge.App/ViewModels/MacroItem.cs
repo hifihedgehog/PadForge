@@ -703,6 +703,11 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsLightbarStickyHold));
                     OnPropertyChanged(nameof(IsLightbarFixedColorVisible));
                     OnPropertyChanged(nameof(IsLightbarPaletteVisible));
+                    OnPropertyChanged(nameof(IsRumbleType));
+                    OnPropertyChanged(nameof(IsRumbleStopType));
+                    OnPropertyChanged(nameof(IsAnyRumbleType));
+                    OnPropertyChanged(nameof(IsRumbleReactiveHold));
+                    OnPropertyChanged(nameof(IsRumbleStickyHold));
                 }
             }
         }
@@ -747,6 +752,34 @@ namespace PadForge.ViewModels
         /// <summary>True when Type is LightbarColor (PlayStation slot RGB override).</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsLightbarType => _type == MacroActionType.LightbarColor;
+
+        /// <summary>True when Type is Rumble.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsRumbleType => _type == MacroActionType.Rumble;
+
+        /// <summary>True when Type is RumbleStop.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsRumbleStopType => _type == MacroActionType.RumbleStop;
+
+        /// <summary>True when Type is any rumble-related action — drives
+        /// the macro editor's grouping into a single CardBorder.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAnyRumbleType
+            => _type == MacroActionType.Rumble
+            || _type == MacroActionType.RumbleStop;
+
+        /// <summary>True when the Rumble action is in Reactive hold mode —
+        /// drives visibility of the hold/fade sliders in the editor.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsRumbleReactiveHold
+            => _type == MacroActionType.Rumble
+               && _rumbleHoldMode == MacroRumbleHoldMode.Reactive;
+
+        /// <summary>True when the Rumble action is in Sticky hold mode.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsRumbleStickyHold
+            => _type == MacroActionType.Rumble
+               && _rumbleHoldMode == MacroRumbleHoldMode.Sticky;
 
         /// <summary>True when Type is LightbarColorClear.</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -1465,6 +1498,90 @@ namespace PadForge.ViewModels
             }
         }
 
+        // ── Rumble action fields ──
+        // Mirrors the LightbarColor block above. Reactive holds run at
+        // full strength for RumbleHoldMs then linearly fade to 0 across
+        // RumbleFadeMs; Sticky holds at full strength until a RumbleStop
+        // action releases.
+
+        private MacroRumbleHoldMode _rumbleHoldMode = MacroRumbleHoldMode.Reactive;
+        /// <summary>Reactive (decay-fade pulse) or Sticky (held until a
+        /// <see cref="MacroActionType.RumbleStop"/> runs).</summary>
+        public MacroRumbleHoldMode RumbleHoldMode
+        {
+            get => _rumbleHoldMode;
+            set
+            {
+                if (SetProperty(ref _rumbleHoldMode, value))
+                {
+                    OnPropertyChanged(nameof(IsRumbleReactiveHold));
+                    OnPropertyChanged(nameof(IsRumbleStickyHold));
+                    OnPropertyChanged(nameof(DisplayText));
+                }
+            }
+        }
+
+        private int _rumbleStrengthLeft = 100;
+        /// <summary>Left (heavy / low-frequency) motor strength as a
+        /// percentage 0..100 of the device's full output. Combined with
+        /// the FFB-tab per-motor gain at injection time.</summary>
+        public int RumbleStrengthLeft
+        {
+            get => _rumbleStrengthLeft;
+            set
+            {
+                int clamped = Math.Clamp(value, 0, 100);
+                if (SetProperty(ref _rumbleStrengthLeft, clamped))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private int _rumbleStrengthRight = 100;
+        /// <summary>Right (light / high-frequency) motor strength as a
+        /// percentage 0..100. Set 0 with <c>RumbleStrengthLeft</c> > 0
+        /// (or vice versa) to fire one motor in isolation.</summary>
+        public int RumbleStrengthRight
+        {
+            get => _rumbleStrengthRight;
+            set
+            {
+                int clamped = Math.Clamp(value, 0, 100);
+                if (SetProperty(ref _rumbleStrengthRight, clamped))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private int _rumbleHoldMs = 100;
+        /// <summary>Full-strength hold window for Reactive rumble (ms).
+        /// Default 100 — short enough that a button tap feels punchy
+        /// without bleeding into the next press. Clamped 0..5000.</summary>
+        public int RumbleHoldMs
+        {
+            get => _rumbleHoldMs;
+            set
+            {
+                int clamped = Math.Clamp(value, 0, 5000);
+                if (SetProperty(ref _rumbleHoldMs, clamped))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private int _rumbleFadeMs = 200;
+        /// <summary>Fade-out window for Reactive rumble (ms). After
+        /// <c>RumbleHoldMs</c> elapses, both motors ramp linearly to 0
+        /// over this duration. 0 means cut directly to off. Clamped
+        /// 0..5000.</summary>
+        public int RumbleFadeMs
+        {
+            get => _rumbleFadeMs;
+            set
+            {
+                int clamped = Math.Clamp(value, 0, 5000);
+                if (SetProperty(ref _rumbleFadeMs, clamped))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
         private string _lightbarPaletteCsv = string.Empty;
         /// <summary>CSV of "R,G,B" hex triplets defining the per-macro
         /// palette for <see cref="MacroLightbarColorSource.PaletteStep"/>.
@@ -1752,6 +1869,8 @@ namespace PadForge.ViewModels
                     MacroActionType.LightbarModeCycle => string.Format(
                         Strings.Instance.MacroAction_LightbarModeCycle_Format,
                         CountSelectedCycleModes()),
+                    MacroActionType.Rumble => FormatRumbleSummary(),
+                    MacroActionType.RumbleStop => Strings.Instance.MacroAction_RumbleStop,
                     _ => Strings.Instance.Macro_UnknownAction
                 };
             }
@@ -1773,6 +1892,18 @@ namespace PadForge.ViewModels
             return _lightbarHoldMode == MacroLightbarHoldMode.Sticky
                 ? string.Format(Strings.Instance.MacroAction_LightbarColor_Sticky_Format, colorPart)
                 : string.Format(Strings.Instance.MacroAction_LightbarColor_Reactive_Format, colorPart, _lightbarHoldMs + _lightbarFadeMs);
+        }
+
+        // ── Rumble action display helper ──
+
+        private string FormatRumbleSummary()
+        {
+            // "L100/R100" style motor descriptor — concise and reads
+            // identically across locales without needing translation.
+            string motors = $"L{_rumbleStrengthLeft}/R{_rumbleStrengthRight}";
+            return _rumbleHoldMode == MacroRumbleHoldMode.Sticky
+                ? string.Format(Strings.Instance.MacroAction_Rumble_Sticky_Format, motors)
+                : string.Format(Strings.Instance.MacroAction_Rumble_Reactive_Format, motors, _rumbleHoldMs + _rumbleFadeMs);
         }
 
         /// <summary>Counts the modes selected in
@@ -1954,7 +2085,38 @@ namespace PadForge.ViewModels
         /// user-selected subset of modes. Each fire advances to the
         /// next checked mode. Cycle position is per-action and
         /// volatile — resets on app restart.</summary>
-        LightbarModeCycle
+        LightbarModeCycle,
+
+        /// <summary>Drives the slot's macro rumble override. Two hold
+        /// modes parallel <see cref="LightbarColor"/>:
+        /// <see cref="MacroRumbleHoldMode.Reactive"/> fires a one-shot
+        /// pulse with full-intensity hold + decay-fade tail (configurable
+        /// via <c>RumbleHoldMs</c> / <c>RumbleFadeMs</c>);
+        /// <see cref="MacroRumbleHoldMode.Sticky"/> holds at full
+        /// intensity until a <see cref="RumbleStop"/> action releases
+        /// it. Per-motor strength via <c>RumbleStrengthLeft</c> /
+        /// <c>RumbleStrengthRight</c>. Combines with game-driven rumble
+        /// via max() so user-driven feedback is always felt.</summary>
+        Rumble,
+
+        /// <summary>Releases any active rumble override on the slot.
+        /// Pair with <see cref="Rumble"/> Sticky to give the user a
+        /// deliberate way to undo the hold via another macro.</summary>
+        RumbleStop
+    }
+
+    /// <summary>Hold mode for <see cref="MacroActionType.Rumble"/>.
+    /// Parallel to <see cref="MacroLightbarHoldMode"/>; intensity is
+    /// applied to both motors equally over the same hold/fade window.</summary>
+    public enum MacroRumbleHoldMode
+    {
+        /// <summary>Decay-fade pulse. Motors run at full configured
+        /// strength across the hold window, then ramp to zero across
+        /// the fade window. Mirrors the lightbar Reactive hold.</summary>
+        Reactive = 0,
+        /// <summary>Held at full strength until a
+        /// <see cref="MacroActionType.RumbleStop"/> action runs.</summary>
+        Sticky = 1
     }
 
     /// <summary>Hold mode for <see cref="MacroActionType.LightbarColor"/>.</summary>

@@ -823,6 +823,52 @@ namespace PadForge.ViewModels
             });
         private RelayCommand _resetLightbar;
 
+        /// <summary>Section-level reset for the lightbar card on the
+        /// Lighting tab. Restores every lightbar field to its initial
+        /// value: base mode + per-press overlay + palette + base color +
+        /// input-reactive color + period + smooth toggle + hold/decay
+        /// timing + audio threshold colors + audio mid/high split and
+        /// crossfade. Mirrors the catch-all "Reset All" buttons on the
+        /// FFB / Sticks / Triggers tabs so users have one button to undo
+        /// a slot's lighting tweaks without walking the per-row resets.</summary>
+        public RelayCommand ResetLightbarAllCommand =>
+            _resetLightbarAll ??= new RelayCommand(() =>
+            {
+                LightbarMode = LightbarMode.Off;
+                InputReactiveMode = InputReactiveMode.Off;
+                LightbarRed = 0;
+                LightbarGreen = 0;
+                LightbarBlue = 0xFF;
+                InputReactiveR = 0xFF;
+                InputReactiveG = 0xFF;
+                InputReactiveB = 0xFF;
+                LightbarPeriodMs = 3000;
+                LightbarColorCycleSmooth = true;
+                LightbarInputHoldMs = 0;
+                LightbarInputDecayMs = 600;
+                AudioLightbarSensitivity = 4.0;
+                AudioLowR = 0; AudioLowG = 0xFF; AudioLowB = 0;
+                AudioMidR = 0xFF; AudioMidG = 0xFF; AudioMidB = 0;
+                AudioHighR = 0xFF; AudioHighG = 0; AudioHighB = 0;
+                AudioLowToMidPercent = 33;
+                AudioMidToHighPercent = 66;
+                AudioCrossFadePercent = 5.0;
+                ResetPaletteCommand?.Execute(null);
+            });
+        private RelayCommand _resetLightbarAll;
+
+        /// <summary>Section-level reset for the indicator-LEDs card on
+        /// the Lighting tab. Player number row brightness + mode + mic
+        /// mute LED state. Mirrors the lightbar card's Reset All shape.</summary>
+        public RelayCommand ResetIndicatorLedsAllCommand =>
+            _resetIndicatorLedsAll ??= new RelayCommand(() =>
+            {
+                PlayerLedBrightness = PlayerLedBrightness.High;
+                PlayerLedMode = PlayerLedMode.Off;
+                MicLedMode = MicLedMode.Off;
+            });
+        private RelayCommand _resetIndicatorLedsAll;
+
         public RelayCommand ResetLightbarRedCommand =>
             _resetLightbarR ??= new RelayCommand(() => LightbarRed = 0);
         private RelayCommand _resetLightbarR;

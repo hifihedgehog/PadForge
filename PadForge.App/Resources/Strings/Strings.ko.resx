@@ -1009,6 +1009,12 @@
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>터치패드 아래의 다섯 개 작은 흰색 LED. 표시할 플레이어 슬롯 패턴과 밝기를 선택합니다.</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>표시 LED</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>플레이어 번호 행(터치패드 아래 5개 LED)과 마이크 위의 음소거 LED. 밝기 제어는 물리적으로 플레이어 행에만 영향을 줍니다. 펌웨어는 음소거 LED 상태(끔 / 켜짐 / 깜박임)를 노출하지만 별도의 음소거 밝기 레지스터는 제공하지 않습니다.</value></data>
+  <data name="Pad_ResetLightbar" xml:space="preserve"><value>라이트바 재설정</value></data>
+  <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>표시 LED 재설정</value></data>
+  <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>포스 피드백 재설정</value></data>
+  <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>오디오 진동 재설정</value></data>
+  <data name="Pad_ResetSection_Format" xml:space="preserve"><value>{0} 재설정</value></data>
+  <data name="Pad_ClearMappings" xml:space="preserve"><value>매핑 지우기</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>플레이어 패턴</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>음소거 LED 모드</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED 밝기</value></data>

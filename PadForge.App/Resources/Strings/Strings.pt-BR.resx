@@ -1009,6 +1009,12 @@
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>Cinco LEDs brancos pequenos abaixo do touchpad. Escolha qual padrão de jogador exibir e o brilho.</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LEDs Indicadores</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Fileira de número do jogador (5 LEDs abaixo do touchpad) e o LED de mudo acima do microfone. O controle de brilho afeta fisicamente apenas a fileira do jogador. O firmware expõe estados do LED de mudo (Desligado / Aceso / Pulsando), mas nenhum registro de brilho separado para mudo.</value></data>
+  <data name="Pad_ResetLightbar" xml:space="preserve"><value>Redefinir Barra de Luz</value></data>
+  <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Redefinir LEDs Indicadores</value></data>
+  <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>Redefinir Force Feedback</value></data>
+  <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Redefinir Vibração por Áudio</value></data>
+  <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Redefinir {0}</value></data>
+  <data name="Pad_ClearMappings" xml:space="preserve"><value>Limpar Mapeamentos</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Padrão do Jogador</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Modo do LED de Mudo</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Brilho do LED</value></data>

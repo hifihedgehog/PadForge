@@ -1009,6 +1009,12 @@
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>Fünf kleine weiße LEDs unter dem Touchpad. Wähle, welches Spielerplatz-Muster angezeigt werden soll und wie hell.</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Indikator-LEDs</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Spielernummern-Reihe (5 LEDs unter dem Touchpad) und die Mute-LED über dem Mikrofon. Die Helligkeitsregelung wirkt physikalisch nur auf die Spielerreihe. Die Firmware unterstützt für die Mute-LED die Zustände (Aus / Dauerlicht / Pulsieren), aber kein separates Helligkeitsregister.</value></data>
+  <data name="Pad_ResetLightbar" xml:space="preserve"><value>Lightbar zurücksetzen</value></data>
+  <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Indikator-LEDs zurücksetzen</value></data>
+  <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>Force Feedback zurücksetzen</value></data>
+  <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Audio-Vibration zurücksetzen</value></data>
+  <data name="Pad_ResetSection_Format" xml:space="preserve"><value>{0} zurücksetzen</value></data>
+  <data name="Pad_ClearMappings" xml:space="preserve"><value>Zuordnungen löschen</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Spielermuster</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mute-LED-Modus</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED-Helligkeit</value></data>

@@ -1029,6 +1029,12 @@
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>Cinque piccoli LED bianchi sotto il touchpad. Scegli quale pattern di slot giocatore visualizzare e quanto luminoso.</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LED indicatori</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Riga del numero giocatore (5 LED sotto il touchpad) e il LED del muto sopra il microfono. Il controllo della luminosità agisce fisicamente solo sulla riga giocatore. Il firmware espone gli stati del LED muto (Spento / Fisso / Pulsante) ma nessun registro di luminosità separato.</value></data>
+  <data name="Pad_ResetLightbar" xml:space="preserve"><value>Ripristina barra luminosa</value></data>
+  <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Ripristina LED indicatori</value></data>
+  <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>Ripristina force feedback</value></data>
+  <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Ripristina vibrazione audio</value></data>
+  <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Ripristina {0}</value></data>
+  <data name="Pad_ClearMappings" xml:space="preserve"><value>Cancella mappature</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Pattern giocatore</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Modalità LED muto</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Luminosità LED</value></data>

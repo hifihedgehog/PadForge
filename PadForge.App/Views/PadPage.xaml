@@ -1425,7 +1425,8 @@
                     <!-- Toolbar -->
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
                         <Button Content="{Binding Pad_ClearAll, Source={x:Static strings:Strings.Instance}}" Command="{Binding ClearMappingsCommand}"
-                                Padding="8,4" Margin="0,0,8,0"/>
+                                Padding="8,4" Margin="0,0,8,0"
+                                ToolTip="{Binding Pad_ClearMappings, Source={x:Static strings:Strings.Instance}}"/>
                         <Button Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopySettingsCommand}"
                                 Padding="8,4" Margin="0,0,4,0"
                                 ToolTip="{Binding Pad_CopyTooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -1608,7 +1609,8 @@
                                         <TextBlock Text="{Binding Title}"
                                                    Style="{StaticResource CardTitle}"/>
                                         <Button Command="{Binding ResetAllCommand}" Style="{StaticResource ResetAllButton}"
-                                                Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
+                                                Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                                ToolTip="{Binding ResetAllToolTip}"/>
                                     </StackPanel>
 
                                     <Grid>
@@ -1993,7 +1995,8 @@
                                         <TextBlock Text="{Binding Title}"
                                                    Style="{StaticResource CardTitle}"/>
                                         <Button Command="{Binding ResetAllCommand}" Style="{StaticResource ResetAllButton}"
-                                                Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
+                                                Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                                ToolTip="{Binding ResetAllToolTip}"/>
                                     </StackPanel>
 
                                     <Grid>
@@ -2115,7 +2118,8 @@
                             <TextBlock Text="{Binding Pad_ForceFeedbackRumble, Source={x:Static strings:Strings.Instance}}"
                                        Style="{StaticResource CardTitle}"/>
                             <Button Command="{Binding ResetForceAllCommand}" Style="{StaticResource ResetAllButton}"
-                                    Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
+                                    Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                    ToolTip="{Binding Pad_ResetForceFeedback, Source={x:Static strings:Strings.Instance}}"/>
                         </StackPanel>
 
                         <!-- Overall gain -->
@@ -2282,7 +2286,8 @@
                             <TextBlock Text="{Binding Settings_AudioRumble, Source={x:Static strings:Strings.Instance}}"
                                        Style="{StaticResource CardTitle}"/>
                             <Button Command="{Binding ResetAudioRumbleAllCommand}" Style="{StaticResource ResetAllButton}"
-                                    Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
+                                    Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                    ToolTip="{Binding Pad_ResetAudioRumble, Source={x:Static strings:Strings.Instance}}"/>
                         </StackPanel>
                         <TextBlock Text="{Binding Settings_AudioRumbleDesc, Source={x:Static strings:Strings.Instance}}"
                                    Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
@@ -2381,6 +2386,9 @@
                                                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_LeftTrigger, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding PlayStationConfig.ResetLeftTriggerCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetLeftTrigger, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <!-- Mode -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
@@ -2468,6 +2476,9 @@
                                                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_RightTrigger, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding PlayStationConfig.ResetRightTriggerCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetRightTrigger, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <!-- Mode -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
@@ -2577,6 +2588,9 @@
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Lighting_BaseColor, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding PlayStationConfig.ResetLightbarAllCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetLightbar, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <!-- Mode picker -->
@@ -2637,6 +2651,34 @@
                                           Margin="0,0,0,8"
                                           Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ColorCycle}"/>
 
+                                <!-- InputReactive controls. Hold + Decay sliders show whenever
+                                     the input-reactive overlay (v3.2+) is enabled in any
+                                     variant — Random / Cycle / Fixed. Hold may be 0 for
+                                     instant fade; Decay may be 0 for clean on/off with no
+                                     fade. Placed before the Fixed color picker so the
+                                     timing controls (which apply to every variant) read
+                                     ahead of the variant-specific color block. -->
+                                <StackPanel Visibility="{Binding PlayStationConfig.IsInputReactiveActive, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Lighting_InputHold, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding PlayStationConfig.LightbarInputHoldMs, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}"
+                                                Minimum="0" Maximum="5000" TickFrequency="50"/>
+                                        <TextBox Text="{Binding PlayStationConfig.LightbarInputHoldMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <Button Command="{Binding PlayStationConfig.ResetLightbarInputHoldCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarInputHold, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Lighting_InputDecay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}"
+                                                Minimum="0" Maximum="5000" TickFrequency="50"/>
+                                        <TextBox Text="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <Button Command="{Binding PlayStationConfig.ResetLightbarInputDecayCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarInputDecay, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                </StackPanel>
+
                                 <!-- Per-press flash color for the Fixed overlay variant.
                                      Independent of LightbarRed/Green/Blue (which drives
                                      the base mode color), so users can layer a base
@@ -2671,32 +2713,6 @@
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>
-
-                                <!-- InputReactive controls. Hold + Decay sliders show whenever
-                                     the input-reactive overlay (v3.2+) is enabled in any
-                                     variant — Random / Cycle / Fixed. Hold may be 0 for
-                                     instant fade; Decay may be 0 for clean on/off with no
-                                     fade. -->
-                                <StackPanel Visibility="{Binding PlayStationConfig.IsInputReactiveActive, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <TextBlock Text="{Binding Pad_Lighting_InputHold, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                        <Slider Value="{Binding PlayStationConfig.LightbarInputHoldMs, Mode=TwoWay}"
-                                                Style="{StaticResource DzSlider}"
-                                                Minimum="0" Maximum="5000" TickFrequency="50"/>
-                                        <TextBox Text="{Binding PlayStationConfig.LightbarInputHoldMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzValueEdit}"/>
-                                        <Button Command="{Binding PlayStationConfig.ResetLightbarInputHoldCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarInputHold, Source={x:Static strings:Strings.Instance}}"/>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <TextBlock Text="{Binding Pad_Lighting_InputDecay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                        <Slider Value="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay}"
-                                                Style="{StaticResource DzSlider}"
-                                                Minimum="0" Maximum="5000" TickFrequency="50"/>
-                                        <TextBox Text="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzValueEdit}"/>
-                                        <Button Command="{Binding PlayStationConfig.ResetLightbarInputDecayCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarInputDecay, Source={x:Static strings:Strings.Instance}}"/>
-                                    </StackPanel>
-                                </StackPanel>
 
                                 <!-- Palette (variable count): ColorCycle base mode and the
                                      v3.2+ Cycle input-reactive overlay both consume it. The
@@ -3094,6 +3110,9 @@
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Lighting_IndicatorLeds, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding PlayStationConfig.ResetIndicatorLedsAllCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetIndicatorLeds, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Pad_Lighting_IndicatorLeds_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>

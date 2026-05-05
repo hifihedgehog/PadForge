@@ -1009,6 +1009,12 @@
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>Cinco pequeños LEDs blancos bajo el touchpad. Elige qué patrón de plaza de jugador mostrar y con qué brillo.</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LEDs indicadores</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Fila de número de jugador (5 LEDs bajo el touchpad) y el LED de silencio sobre el micrófono. El control de brillo afecta físicamente solo a la fila de jugador. El firmware expone estados del LED de silencio (Apagado / Fijo / Pulsante) pero no un registro de brillo independiente.</value></data>
+  <data name="Pad_ResetLightbar" xml:space="preserve"><value>Restablecer barra de luz</value></data>
+  <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Restablecer LEDs indicadores</value></data>
+  <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>Restablecer force feedback</value></data>
+  <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Restablecer vibración por audio</value></data>
+  <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Restablecer {0}</value></data>
+  <data name="Pad_ClearMappings" xml:space="preserve"><value>Borrar asignaciones</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Patrón de jugador</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Modo del LED de silencio</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Brillo del LED</value></data>

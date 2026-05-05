@@ -434,6 +434,12 @@
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>Five small white LEDs below the touchpad. Pick which player slot pattern to display and how bright it should be.</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Indicator LEDs</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Player number row (5 LEDs below the touchpad) and the mute LED above the mic. The brightness control physically only affects the player row. The firmware exposes mute LED states (Off / Solid / Pulse) but no separate mute brightness register.</value></data>
+  <data name="Pad_ResetLightbar" xml:space="preserve"><value>Reset Lightbar</value></data>
+  <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Reset Indicator LEDs</value></data>
+  <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>Reset Force Feedback</value></data>
+  <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Reset Audio Rumble</value></data>
+  <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Reset {0}</value></data>
+  <data name="Pad_ClearMappings" xml:space="preserve"><value>Clear Mappings</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Player Pattern</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mute LED Mode</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED Brightness</value></data>

@@ -1029,6 +1029,12 @@
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>Vijf kleine witte LED's onder het touchpad. Kies welk spelerslotpatroon en welke helderheid je wilt.</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Indicator-LED's</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Rij met spelernummer (5 LED's onder het touchpad) en de mute-LED boven de microfoon. De helderheidsregeling werkt fysiek alleen op de spelerrij. De firmware ondersteunt mute-LED-toestanden (Uit / Aan / Pulserend) maar geen apart helderheidsregister voor mute.</value></data>
+  <data name="Pad_ResetLightbar" xml:space="preserve"><value>Lightbar resetten</value></data>
+  <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>Indicator-LED's resetten</value></data>
+  <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>Force feedback resetten</value></data>
+  <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Audio-trillingen resetten</value></data>
+  <data name="Pad_ResetSection_Format" xml:space="preserve"><value>{0} resetten</value></data>
+  <data name="Pad_ClearMappings" xml:space="preserve"><value>Toewijzingen wissen</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Spelerpatroon</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mute-LED-modus</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED-helderheid</value></data>

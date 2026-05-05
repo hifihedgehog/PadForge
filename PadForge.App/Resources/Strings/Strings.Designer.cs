@@ -451,6 +451,12 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_PlayerLeds_Subtitle => Get("Pad_Lighting_PlayerLeds_Subtitle");
     public string Pad_Lighting_IndicatorLeds => Get("Pad_Lighting_IndicatorLeds");
     public string Pad_Lighting_IndicatorLeds_Subtitle => Get("Pad_Lighting_IndicatorLeds_Subtitle");
+    public string Pad_ResetLightbar => Get("Pad_ResetLightbar");
+    public string Pad_ResetIndicatorLeds => Get("Pad_ResetIndicatorLeds");
+    public string Pad_ResetForceFeedback => Get("Pad_ResetForceFeedback");
+    public string Pad_ResetAudioRumble => Get("Pad_ResetAudioRumble");
+    public string Pad_ResetSection_Format => Get("Pad_ResetSection_Format");
+    public string Pad_ClearMappings => Get("Pad_ClearMappings");
     public string Pad_Lighting_PlayerPattern => Get("Pad_Lighting_PlayerPattern");
     public string Pad_Lighting_MuteLedMode => Get("Pad_Lighting_MuteLedMode");
     public string Pad_Lighting_LedBrightness => Get("Pad_Lighting_LedBrightness");

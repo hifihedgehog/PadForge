@@ -35,7 +35,15 @@ namespace PadForge.Views
         private int? _finger1TouchId;
         private float _x0, _y0, _x1, _y1;
         private bool _down0, _down1;
-        private bool _click;
+        // Click bar: held while the user presses the bottom strip (mouse
+        // or touch) — reported as a sustained TouchpadClick=true so
+        // click-and-hold patterns (click-drag, sustained context input)
+        // work. _clickPulse is the legacy double-tap-on-surface pulse,
+        // single-frame, kept as a quick momentary fallback. Both feed
+        // TouchpadClick via OR in GetTouchpadState.
+        private bool _clickBarHeld;
+        private int? _clickBarTouchId;
+        private bool _clickPulse;
         private DateTime _lastTapTime = DateTime.MinValue;
         private const double DoubleTapMs = 300;
 
@@ -75,7 +83,9 @@ namespace PadForge.Views
                 _down0 = false;
                 _down1 = false;
                 _x0 = _y0 = _x1 = _y1 = 0f;
-                _click = false;
+                _clickPulse = false;
+                _clickBarHeld = false;
+                _clickBarTouchId = null;
                 _activeTouchIds.Clear();
                 _isDragging = false;
                 _isMouseDragging = false;
@@ -103,8 +113,82 @@ namespace PadForge.Views
 
         private void UpdateSurfaceSize()
         {
-            Surface.Width = ActualWidth;
-            Surface.Height = ActualHeight;
+            // No-op now that the inner Grid handles row sizing — kept as a
+            // wired method so OnLoaded / OnSizeChanged callers don't need
+            // to know the layout strategy changed. The Surface and ClickBar
+            // both stretch to fill their respective Grid rows.
+        }
+
+        // ─────────────────────────────────────────────
+        //  Click bar (touchpad click)
+        // ─────────────────────────────────────────────
+
+        private void ClickBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            lock (_stateLock) _clickBarHeld = true;
+            ClickBar.CaptureMouse();
+            UpdateClickBarVisual();
+            e.Handled = true;
+        }
+
+        private void ClickBar_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            lock (_stateLock) _clickBarHeld = false;
+            ClickBar.ReleaseMouseCapture();
+            UpdateClickBarVisual();
+            e.Handled = true;
+        }
+
+        private void ClickBar_MouseLeave(object sender, MouseEventArgs e)
+        {
+            // Release if the mouse drags off the bar with the button still
+            // down — keeps the click from latching past where the user
+            // actually wanted to release it.
+            if (!ClickBar.IsMouseCaptured) return;
+            lock (_stateLock) _clickBarHeld = false;
+            ClickBar.ReleaseMouseCapture();
+            UpdateClickBarVisual();
+        }
+
+        private void ClickBar_TouchDown(object sender, TouchEventArgs e)
+        {
+            // Setting Handled here stops the touch from bubbling up to the
+            // Window's OnTouchDown override (where it would otherwise be
+            // claimed as a finger).
+            e.Handled = true;
+            lock (_stateLock)
+            {
+                if (_clickBarTouchId == null)
+                {
+                    _clickBarTouchId = e.TouchDevice.Id;
+                    _clickBarHeld = true;
+                }
+            }
+            UpdateClickBarVisual();
+        }
+
+        private void ClickBar_TouchUp(object sender, TouchEventArgs e)
+        {
+            e.Handled = true;
+            lock (_stateLock)
+            {
+                if (_clickBarTouchId == e.TouchDevice.Id)
+                {
+                    _clickBarTouchId = null;
+                    _clickBarHeld = false;
+                }
+            }
+            UpdateClickBarVisual();
+        }
+
+        private void UpdateClickBarVisual()
+        {
+            Dispatcher.BeginInvoke(() =>
+            {
+                ClickBar.Background = _clickBarHeld
+                    ? new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(0xC0, 0xFF, 0xFF, 0xFF))
+                    : new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(0x40, 0xFF, 0xFF, 0xFF));
+            });
         }
 
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -359,9 +443,18 @@ namespace PadForge.Views
 
             if (_isDragging) return;
 
-            var pos = e.GetTouchPoint(this).Position;
-            float nx = (float)(pos.X / ActualWidth);
-            float ny = (float)(pos.Y / ActualHeight);
+            // Click-bar touches are intercepted by ClickBar_TouchDown so
+            // they never reach this override. Anything that does reach
+            // here came from inside RootCanvas (the surface area), so we
+            // normalize against RootCanvas's bounds — this is the visual
+            // surface region the finger dots live in. Window-relative
+            // coordinates would include the click bar strip and skew the
+            // normalization.
+            var pos = e.GetTouchPoint(RootCanvas).Position;
+            double surfaceWidth = Math.Max(1.0, RootCanvas.ActualWidth);
+            double surfaceHeight = Math.Max(1.0, RootCanvas.ActualHeight);
+            float nx = (float)(pos.X / surfaceWidth);
+            float ny = (float)(pos.Y / surfaceHeight);
 
             lock (_stateLock)
             {
@@ -392,9 +485,14 @@ namespace PadForge.Views
                 return;
             }
 
-            var pos = e.GetTouchPoint(this).Position;
-            float nx = (float)(pos.X / ActualWidth);
-            float ny = (float)(pos.Y / ActualHeight);
+            // Click-bar touches are intercepted by ClickBar_TouchDown / Up;
+            // their move events route to the captured ClickBar element and
+            // never reach this override. Same normalization as OnTouchDown.
+            var pos = e.GetTouchPoint(RootCanvas).Position;
+            double surfaceWidth = Math.Max(1.0, RootCanvas.ActualWidth);
+            double surfaceHeight = Math.Max(1.0, RootCanvas.ActualHeight);
+            float nx = (float)(pos.X / surfaceWidth);
+            float ny = (float)(pos.Y / surfaceHeight);
 
             lock (_stateLock)
             {
@@ -432,13 +530,13 @@ namespace PadForge.Views
                     var now = DateTime.UtcNow;
                     if ((now - _lastTapTime).TotalMilliseconds < DoubleTapMs)
                     {
-                        _click = true;
+                        _clickPulse = true;
                         _lastTapTime = DateTime.MinValue;
                     }
                     else
                     {
                         _lastTapTime = now;
-                        _click = false;
+                        _clickPulse = false;
                     }
                 }
                 else if (_finger1TouchId == e.TouchDevice.Id)
@@ -455,6 +553,11 @@ namespace PadForge.Views
         {
             lock (_stateLock)
             {
+                // Click is true while the dedicated click bar is held OR
+                // during a single-frame pulse from the surface double-tap
+                // gesture. The held branch supports click-and-hold patterns
+                // (drag, hold-to-context); the pulse branch preserves the
+                // double-tap-to-click muscle memory.
                 var tp = new TouchpadState
                 {
                     X0 = Math.Clamp(_x0, 0f, 1f),
@@ -463,9 +566,9 @@ namespace PadForge.Views
                     Y1 = Math.Clamp(_y1, 0f, 1f),
                     Down0 = _down0,
                     Down1 = _down1,
-                    Click = _click
+                    Click = _clickBarHeld || _clickPulse
                 };
-                _click = false;
+                _clickPulse = false;
                 return tp;
             }
         }
@@ -474,13 +577,18 @@ namespace PadForge.Views
         {
             Dispatcher.BeginInvoke(() =>
             {
+                // Finger dots are children of RootCanvas; normalize coords
+                // against RootCanvas's dimensions so the dot lands under
+                // the user's finger on the visible surface.
+                double w = Math.Max(1.0, RootCanvas.ActualWidth);
+                double h = Math.Max(1.0, RootCanvas.ActualHeight);
                 lock (_stateLock)
                 {
                     if (_down0)
                     {
                         Finger0Dot.Visibility = Visibility.Visible;
-                        Canvas.SetLeft(Finger0Dot, _x0 * ActualWidth - 10);
-                        Canvas.SetTop(Finger0Dot, _y0 * ActualHeight - 10);
+                        Canvas.SetLeft(Finger0Dot, _x0 * w - 10);
+                        Canvas.SetTop(Finger0Dot, _y0 * h - 10);
                     }
                     else
                     {
@@ -490,8 +598,8 @@ namespace PadForge.Views
                     if (_down1)
                     {
                         Finger1Dot.Visibility = Visibility.Visible;
-                        Canvas.SetLeft(Finger1Dot, _x1 * ActualWidth - 10);
-                        Canvas.SetTop(Finger1Dot, _y1 * ActualHeight - 10);
+                        Canvas.SetLeft(Finger1Dot, _x1 * w - 10);
+                        Canvas.SetTop(Finger1Dot, _y1 * h - 10);
                     }
                     else
                     {

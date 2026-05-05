@@ -3291,16 +3291,23 @@ namespace PadForge.Services
                     }
 
                     // If the selected item was overwritten in-place (e.g. a device was
-                    // deleted and the next device slid into index 0), reload the correct
-                    // PadSetting so stale mappings don't bleed into another device.
+                    // deleted and the next device slid into index 0), fire the same
+                    // notification chain the SelectedMappedDevice setter would. The
+                    // OnSelectedDeviceChanged listener picks the event up and runs
+                    // LoadPadSettingToViewModel + PopulateAvailableInputs + the HM
+                    // dispatcher anchor reattach, and PadPage's SyncTabVisibility
+                    // listens to SelectedMappedDevice PropertyChanged so the FFB /
+                    // Lighting / Adaptive Triggers tabs refresh against the device's
+                    // actual capabilities. Without this, the in-place mutation kept
+                    // tabs pinned to the unassigned device's capability mask (e.g.
+                    // a kbm "All Keyboards (Merged)" hide of FFB / Lighting / AT
+                    // would persist after the keyboard was unassigned, even though
+                    // a DualSense was still mapped to the slot).
                     if (padVm.SelectedMappedDevice != null
                         && prevSelectedGuid != Guid.Empty
                         && padVm.SelectedMappedDevice.InstanceGuid != prevSelectedGuid)
                     {
-                        var devGuid = padVm.SelectedMappedDevice.InstanceGuid;
-                        LoadPadSettingToViewModel(padVm, devGuid);
-                        PopulateAvailableInputs(padVm, FindUserDevice(devGuid));
-                        _previousSelectedDevice[i] = devGuid;
+                        padVm.NotifySelectedMappedDeviceIdentityChanged();
                     }
 
                     // Initialize the previous-device tracker if not set, and populate

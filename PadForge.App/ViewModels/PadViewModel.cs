@@ -493,6 +493,29 @@ namespace PadForge.ViewModels
         /// </summary>
         public event EventHandler<MappedDeviceInfo> SelectedDeviceChanged;
 
+        /// <summary>
+        /// Forces the same notification chain the setter would fire when
+        /// <see cref="SelectedMappedDevice"/>'s underlying device changes
+        /// without the object reference itself changing. InputService's
+        /// SyncMappedDevices mutates existing MappedDeviceInfo entries in
+        /// place to minimize ObservableCollection churn, so unassigning a
+        /// device that sat above the previously-selected one (e.g. removing
+        /// "All Keyboards (Merged)" from a slot that also has a DualSense)
+        /// rewrites the selected entry's Name + InstanceGuid + IsOnline
+        /// while keeping the same object — without this nudge, listeners
+        /// that gate on PropertyChanged (PadPage.SyncTabVisibility, the
+        /// FFB / Lighting / Adaptive Triggers tabs, the HM dispatcher
+        /// re-attachment) miss the device identity swap and stay pinned
+        /// to the prior device's capabilities.
+        /// </summary>
+        public void NotifySelectedMappedDeviceIdentityChanged()
+        {
+            BindPlayStationConfigForDevice(_selectedMappedDevice?.InstanceGuid ?? Guid.Empty);
+            OnPropertyChanged(nameof(HasSelectedDevice));
+            OnPropertyChanged(nameof(SelectedMappedDevice));
+            SelectedDeviceChanged?.Invoke(this, _selectedMappedDevice);
+        }
+
         private string _mappedDeviceName = Strings.Instance.Mapping_NoDeviceMapped;
 
         public string MappedDeviceName

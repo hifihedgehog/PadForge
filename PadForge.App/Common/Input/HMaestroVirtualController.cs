@@ -375,22 +375,39 @@ namespace PadForge.Common.Input
 
                 // DualShock 4 / DualSense (Sony VID 0x054C) HID output report:
                 // Report ID 0x05 (DS4) / 0x02 (DS5 USB), bytes [2]/[3] are
-                // the rumble motors.  Skipped when the slot has an assigned
-                // physical DualSense — pass-through above already carries
-                // the rumble bytes inside the DS5 effect message and a
-                // parallel SDL_RumbleGamepad write here would double-fire
-                // the motors.  When no DS5 is assigned, the rumble bytes
-                // route to whatever non-DS5 device is mapped (e.g. a DS4
-                // or Xbox controller standing in for a DualSense slot).
+                // the rumble motors.
+                //
+                // The skip below applies ONLY when this is a DualSense
+                // virtual (_ds5Dispatcher non-null) AND a DualSense
+                // physical is mapped to receive the passthrough above —
+                // in that one case the game's full effect packet
+                // (Report 0x02 / 0x31) is forwarded verbatim via
+                // SDL_SendGamepadEffect, which already carries the
+                // rumble bytes; writing motors here too would let the
+                // SDL rumble path on Step 2's ApplyForceFeedback
+                // double-fire on the DS5.
+                //
+                // For a DS4 virtual the passthrough doesn't fire
+                // (Report 0x05 isn't in the 0x02 / 0x31 set, and
+                // _ds5Dispatcher is null because IsDualSenseVirtual is
+                // false), so even when an assigned physical DS5 exists,
+                // the rumble bytes have to flow through vibrationStates —
+                // otherwise the assigned Xbox / DS5 / generic pad gets
+                // nothing. The pre-fix gate keyed only on
+                // HasAssignedDualSense, which silently broke DS4 virtual
+                // FFB pass-through whenever any DS5 was mapped to the
+                // same slot.
                 //
                 // Latent BT bug noted in the dualsense-adaptive-triggers
                 // recipe: data[2]/data[3] aren't motor bytes for DS5 BT
                 // (ReportId 0x31, BT framing offset shifts everything).
                 // Tracked for the v3.1.0 Commit 3 polish pass.
+                bool ds5PassthroughHandlesThis = _ds5Dispatcher != null
+                    && DualSensePassthroughDispatcher.HasAssignedDualSense(idx);
                 if (pkt.Source == HMOutputSource.HidOutput
                     && _profile.VendorId == 0x054C
                     && data.Length >= 4
-                    && !DualSensePassthroughDispatcher.HasAssignedDualSense(idx))
+                    && !ds5PassthroughHandlesThis)
                 {
                     vibrationStates[idx].LeftMotorSpeed = (ushort)(data[2] * 257);
                     vibrationStates[idx].RightMotorSpeed = (ushort)(data[3] * 257);

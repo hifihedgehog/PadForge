@@ -54,7 +54,7 @@ Fork of [x360ce](https://github.com/x360ce/x360ce), rewritten on SDL3, [HIDMaest
 ### DualSense adaptive triggers and lighting
 
 - Seven trigger effect modes for slots with a DualSense assigned: Off, Feedback (constant resistance), Weapon (soft zone + click), Vibration (continuous buzz), Multi-Position Feedback (ratcheting bumps), Slope Feedback (gradient ramp), and Multi-Position Vibration (stuttering bursts). A live effect-profile preview draws the resistance / amplitude shape across the trigger pull and updates as you drag the Range, Strength, and Frequency sliders. Game-driven trigger effects pass through unchanged via a separate dispatch path.
-- Thirteen lightbar modes for slots with a DualShock 4, DualSense, or DualSense Edge assigned: Static Color, Breathing, Rainbow Cycle, palette-based Color Cycle, three Audio Pulse variants (static / random / rainbow), three Audio Bands variants (hard transitions / smooth gradient / crossfade at boundaries), and two Input Reactive variants (random color per press / cycle through palette). Variable-length palette, per-band thresholds with crossfade width, pulse decay slider, plus the Indicator LEDs card for the player-pattern row, mute LED mode, and brightness.
+- Eleven base lightbar modes for slots with a DualShock 4, DualSense, or DualSense Edge assigned: Static Color, Breathing, Rainbow Cycle, palette-based Color Cycle, three Audio Pulse variants (static / random / rainbow), and three Audio Bands variants (hard transitions / smooth gradient / crossfade at boundaries). A separate Input Reactive overlay dropdown layers per-press flashes (random color / palette cycle / configurable fixed color) over any base mode and decays back. Per-(slot, device) Lighting configuration so two Sony pads on one slot can carry different modes; macro lightbar actions fan out across them.
 
 ### Visualization
 
@@ -77,7 +77,7 @@ Fork of [x360ce](https://github.com/x360ce/x360ce), rewritten on SDL3, [HIDMaest
 
 ### System integration
 
-- HidHide driver-level hiding of physical controllers so games don't see double input. Low-level hooks consume only mapped keyboard and mouse input. Per-device toggles auto-enable for gamepads, with warnings for mice and keyboards.
+- HidHide driver-level hiding of physical controllers so games don't see double input. Low-level hooks consume only mapped keyboard and mouse input. Per-device toggles auto-enable for gamepads, with warnings for mice and keyboards. Optional "Keep devices cloaked between launches" leaves the cloaks asserted across PadForge sessions for setups where another launcher (e.g. Steam) scans for controllers while PadForge is closed.
 - Built-in installer for HIDMaestro, HidHide, and Windows MIDI Services. Status, version info, and device blacklist / app whitelist controls live in Settings.
 
 ### MIDI output

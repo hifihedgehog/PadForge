@@ -412,6 +412,8 @@
   <data name="Pad_AT_MultiPosFeedback_Tooltip" xml:space="preserve"><value>Ratcheting resistance — discrete force bumps across the start-to-end range. Pulling the trigger feels like clicking through detents instead of pushing through one continuous wall.</value></data>
   <data name="Pad_AT_Slope_Tooltip" xml:space="preserve"><value>Resistance ramps from light at the start position to full at the end position. Past the end position the trigger holds at peak strength.</value></data>
   <data name="Pad_AT_MultiPosVibration_Tooltip" xml:space="preserve"><value>Stuttering vibration — short buzz bursts spaced across the start-to-end range. Pulling the trigger feels like crossing distinct vibration zones, not one continuous buzz.</value></data>
+  <data name="Pad_AT_LoadGameCubePreset" xml:space="preserve"><value>Load GameCube preset</value></data>
+  <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>Fills Range and Strength with values that match the physical click-feel of a real GameCube trigger (start ~56%, end ~63%, max force). Tweak the sliders afterwards if you want a different feel.</value></data>
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Lighting</value></data>

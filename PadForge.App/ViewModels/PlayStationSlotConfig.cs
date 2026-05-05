@@ -789,6 +789,30 @@ namespace PadForge.ViewModels
             _resetRightFrequency ??= new RelayCommand(() => RightFrequency = 10);
         private RelayCommand _resetRightFrequency;
 
+        // GameCube sub-preset for Weapon mode — fills the Range + Strength
+        // sliders with byte values that match DualSenseSupport / DSY's
+        // GameCube preset (start ≈ 56 %, end ≈ 63 %, max force) so the
+        // physical click feel matches a real GameCube trigger. The user
+        // can still tweak the sliders afterwards; this is a one-click
+        // loader, not a lock.
+        public RelayCommand ApplyLeftGameCubePresetCommand =>
+            _applyLeftGameCubePreset ??= new RelayCommand(() =>
+            {
+                LeftStartPosition = 0x90; // 144 / 255 ≈ 56 %
+                LeftEndPosition   = 0xA0; // 160 / 255 ≈ 63 %
+                LeftStrength      = 0xFF; // max force
+            });
+        private RelayCommand _applyLeftGameCubePreset;
+
+        public RelayCommand ApplyRightGameCubePresetCommand =>
+            _applyRightGameCubePreset ??= new RelayCommand(() =>
+            {
+                RightStartPosition = 0x90;
+                RightEndPosition   = 0xA0;
+                RightStrength      = 0xFF;
+            });
+        private RelayCommand _applyRightGameCubePreset;
+
         /// <summary>Reset lightbar to the Sony player-1 default (solid blue).</summary>
         public RelayCommand ResetLightbarColorCommand =>
             _resetLightbar ??= new RelayCommand(() =>

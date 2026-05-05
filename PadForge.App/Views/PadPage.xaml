@@ -2238,6 +2238,18 @@
                                     </ComboBox>
                                     <Button Command="{Binding PlayStationConfig.ResetLeftTriggerCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLeftTrigger, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
+                                <!-- Weapon-mode quick preset row. Indented 200 DIP to align
+                                     with the Mode dropdown above. Visible only when the
+                                     active mode is Weapon — the GameCube preset is a
+                                     specific Weapon-parameter configuration that mimics the
+                                     physical click feel of a real GameCube trigger. -->
+                                <StackPanel Orientation="Horizontal" Margin="200,0,0,8"
+                                            Visibility="{Binding PlayStationConfig.LeftTriggerMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Weapon}">
+                                    <Button Content="{Binding Pad_AT_LoadGameCubePreset, Source={x:Static strings:Strings.Instance}}"
+                                            Command="{Binding PlayStationConfig.ApplyLeftGameCubePresetCommand}"
+                                            ToolTip="{Binding Pad_AT_LoadGameCubePreset_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                            Padding="10,4"/>
+                                </StackPanel>
                                 <!-- Effect-profile preview: shows the resistance / vibration
                                      pattern across the trigger throw for the selected mode. -->
                                 <viewControls:TriggerEffectGraph
@@ -2312,6 +2324,15 @@
                                                       ToolTip="{Binding Pad_AT_MultiPosVibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
                                     <Button Command="{Binding PlayStationConfig.ResetRightTriggerCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetRightTrigger, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <!-- Weapon-mode quick preset row (right trigger). Mirrors
+                                     the left-trigger layout above. -->
+                                <StackPanel Orientation="Horizontal" Margin="200,0,0,8"
+                                            Visibility="{Binding PlayStationConfig.RightTriggerMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Weapon}">
+                                    <Button Content="{Binding Pad_AT_LoadGameCubePreset, Source={x:Static strings:Strings.Instance}}"
+                                            Command="{Binding PlayStationConfig.ApplyRightGameCubePresetCommand}"
+                                            ToolTip="{Binding Pad_AT_LoadGameCubePreset_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                            Padding="10,4"/>
                                 </StackPanel>
                                 <viewControls:TriggerEffectGraph
                                     Mode="{Binding PlayStationConfig.RightTriggerMode}"

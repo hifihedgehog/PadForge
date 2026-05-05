@@ -1416,15 +1416,25 @@ namespace PadForge.Common.Input
                      || userPovs != profPovs
                      || userButtons != profButtons);
 
-                // FFB toggle. Disabling FFB requires a custom descriptor build
-                // even when no other override is in effect, because the only
-                // way to drop the PID block is to regenerate the descriptor.
-                // Customize-gated by the outer if; SyncExtendedConfigToSlot
-                // pushes true (catalog default) for SlotExtendedFfbEnabled
-                // whenever Customize is off, so this branch only sees the
-                // user's stored value when it should take effect.
+                // FFB toggle. When Customize is on, the user's checkbox is
+                // the source of truth in BOTH directions. Most HIDMaestro
+                // catalog profiles ship without a PID FFB block — only the
+                // `padforge-custom` synthetic profile and a small handful
+                // of catalog profiles include it — so we cannot assume
+                // catalog defaults match the user's intent. Treat FFB as
+                // an override unconditionally and rebuild the descriptor
+                // (with AddPidFfbBlock when forceFeedbackEnabled is true,
+                // without when false) so the wire descriptor always
+                // reflects the checkbox.
+                //
+                // Previously this read `ffbOverrides = !forceFeedbackEnabled`
+                // — only rebuilt when DISABLING FFB. That left FFB silently
+                // broken on catalog-derived Extended profiles whenever the
+                // user enabled the FFB checkbox: ffbOverrides was false,
+                // descriptor was reused as-is, and a no-FFB catalog
+                // descriptor stayed no-FFB regardless of the toggle.
                 bool forceFeedbackEnabled = SlotExtendedFfbEnabled[padIndex];
-                bool ffbOverrides = !forceFeedbackEnabled;
+                bool ffbOverrides = true;
 
                 if (productStringOverrides || layoutOverrides || ffbOverrides)
                 {

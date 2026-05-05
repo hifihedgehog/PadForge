@@ -327,7 +327,7 @@ namespace PadForge.Common.Input
                         HIDMaestro.HMOemNameOverride.Set(vid, pid, desiredLabel);
                         _lastAppliedOemLabel[padIndex] = desiredLabel;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                     }
                 }
@@ -345,7 +345,7 @@ namespace PadForge.Common.Input
                 _oemOverrideClaimedVidPid[padIndex] = key;
                 _lastAppliedOemLabel[padIndex] = label;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
         }
@@ -365,7 +365,7 @@ namespace PadForge.Common.Input
                     ushort pid = (ushort)(claimedKey & 0xFFFF);
                     HIDMaestro.HMOemNameOverride.Clear(vid, pid);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }
@@ -991,6 +991,13 @@ namespace PadForge.Common.Input
             }
 
             // --- Pass 3: Submit reports for active slots ---
+            // Sony raw-report scratch buffer hoisted out of the loop:
+            // stackalloc inside a per-slot loop accumulates across
+            // iterations until the method returns (CA2014). With
+            // MaxPads=16 × 63 bytes the worst-case stack lifetime is
+            // ~1KB, but reusing one span keeps it bounded as the loop
+            // bound grows.
+            Span<byte> rawReportScratch = stackalloc byte[63];
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {
                 try
@@ -1068,7 +1075,11 @@ namespace PadForge.Common.Input
                                 var packer = SonyReportPackers.ForProfile(hmPs.ProfileId);
                                 if (packer != null)
                                 {
-                                    Span<byte> raw = stackalloc byte[63];
+                                    // rawReportScratch is hoisted above the
+                                    // for-loop. Each call overwrites all 63
+                                    // bytes via the packer; SubmitRawReport
+                                    // copies the span into native memory and
+                                    // does not retain a reference.
                                     int pct = BatteryPercents[padIndex];
                                     byte battery = pct < 0 ? (byte)100 : (byte)Math.Clamp(pct, 0, 100);
                                     packer(
@@ -1078,8 +1089,8 @@ namespace PadForge.Common.Input
                                         battery,
                                         BatteryCharging[padIndex],
                                         unchecked((uint)_sonyFrameCounter++),
-                                        raw);
-                                    hmPs.SubmitRawReport(raw);
+                                        rawReportScratch);
+                                    hmPs.SubmitRawReport(rawReportScratch);
                                 }
                             }
                         }
@@ -1121,7 +1132,7 @@ namespace PadForge.Common.Input
                     // still reference the old driver package. Matches the HIDMaestro
                     // test app pattern (test/Program.cs:94) and SDK contract.
                     try { HMContext.RemoveAllVirtualControllers(); }
-                    catch (Exception cleanEx)
+                    catch (Exception)
                     {
                     }
 
@@ -1456,7 +1467,7 @@ namespace PadForge.Common.Input
 
                         effectiveProfile = builder.Build();
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         effectiveProfile = baseProfile;
                     }

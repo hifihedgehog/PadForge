@@ -445,6 +445,61 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
+        //  Constant Force grid
+        // ─────────────────────────────────────────────
+        // Click + drag inside the 200x200 visual area maps to signed
+        // [-1..+1] X/Y on the active PadViewModel. The Border hosting
+        // the grid has 4 px Padding around the visual; subtract that
+        // when reading mouse coordinates so cursor-at-center reads
+        // exactly (0, 0).
+
+        private const double ConstantForcePadVisualSize = 200.0;
+        private const double ConstantForcePadPadding = 4.0;
+
+        private void ConstantForcePad_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement fe)
+            {
+                fe.CaptureMouse();
+                ApplyConstantForceFromPointer(fe, e);
+                e.Handled = true;
+            }
+        }
+
+        private void ConstantForcePad_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (sender is FrameworkElement fe && fe.IsMouseCaptured)
+            {
+                ApplyConstantForceFromPointer(fe, e);
+            }
+        }
+
+        private void ConstantForcePad_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement fe && fe.IsMouseCaptured)
+            {
+                fe.ReleaseMouseCapture();
+                e.Handled = true;
+            }
+        }
+
+        private void ApplyConstantForceFromPointer(FrameworkElement pad, MouseEventArgs e)
+        {
+            if (DataContext is not PadViewModel padVm) return;
+            // Skip pointer-driven edits when the toggle is off — avoids
+            // priming a force that won't apply and matches the disabled
+            // visual state in XAML (Grid IsEnabled="{Binding ConstantForceEnabled}").
+            if (!padVm.ConstantForceEnabled) return;
+
+            var p = e.GetPosition(pad);
+            // Map padding-inset coordinates to [-1, +1] across both axes.
+            double x = (p.X - ConstantForcePadPadding) / ConstantForcePadVisualSize * 2.0 - 1.0;
+            double y = (p.Y - ConstantForcePadPadding) / ConstantForcePadVisualSize * 2.0 - 1.0;
+            padVm.ConstantForceX = System.Math.Clamp(x, -1.0, 1.0);
+            padVm.ConstantForceY = System.Math.Clamp(y, -1.0, 1.0);
+        }
+
+        // ─────────────────────────────────────────────
         //  Map All stop button
         // ─────────────────────────────────────────────
 

@@ -738,6 +738,11 @@ namespace PadForge.Services
                 padVm.AudioRumbleLeftMotor = TryParseInt(ps.AudioRumbleLeftMotor, 100);
                 padVm.AudioRumbleRightMotor = TryParseInt(ps.AudioRumbleRightMotor, 100);
 
+                // Load constant force settings.
+                padVm.ConstantForceEnabled = ps.ConstantForceEnabled == "1";
+                padVm.ConstantForceX = TryParseDouble(ps.ConstantForceX, 0.0);
+                padVm.ConstantForceY = TryParseDouble(ps.ConstantForceY, 0.0);
+
                 // Load deadzone settings (independent X/Y).
                 padVm.LeftDeadZoneShape = (int)InputManager.ParseDeadZoneShape(ps.LeftThumbDeadZoneShape);
                 padVm.LeftDeadZoneX = TryParseDouble(ps.LeftThumbDeadZoneX, 0);
@@ -1712,6 +1717,11 @@ namespace PadForge.Services
                     ps.AudioRumbleLeftMotor = padVm.AudioRumbleLeftMotor.ToString();
                     ps.AudioRumbleRightMotor = padVm.AudioRumbleRightMotor.ToString();
 
+                    // Write constant force settings.
+                    ps.ConstantForceEnabled = padVm.ConstantForceEnabled ? "1" : "0";
+                    ps.ConstantForceX = padVm.ConstantForceX.ToString("F4", ic);
+                    ps.ConstantForceY = padVm.ConstantForceY.ToString("F4", ic);
+
                     // Write deadzone settings (independent X/Y).
                     ps.LeftThumbDeadZoneShape = padVm.LeftDeadZoneShape.ToString();
                     ps.LeftThumbDeadZoneX = padVm.LeftDeadZoneX.ToString(ic);
@@ -1832,6 +1842,9 @@ namespace PadForge.Services
                 padVm.AudioRumbleCutoffHz = 80.0;
                 padVm.AudioRumbleLeftMotor = 100;
                 padVm.AudioRumbleRightMotor = 100;
+                padVm.ConstantForceEnabled = false;
+                padVm.ConstantForceX = 0;
+                padVm.ConstantForceY = 0;
                 padVm.LeftDeadZoneX = 0;
                 padVm.LeftDeadZoneY = 0;
                 padVm.RightDeadZoneX = 0;

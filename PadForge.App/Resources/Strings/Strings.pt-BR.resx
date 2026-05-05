@@ -686,6 +686,15 @@
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Trocar motores esquerdo/direito</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Testar Vibração</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Atividade do Motor</value></data>
+  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Força Constante</value></data>
+  <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Aplica uma força contínua a este dispositivo até você desativar. A força enviada por um jogo tem prioridade enquanto estiver ativa e retoma quando o jogo para.</value></data>
+  <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Aplicar força constante</value></data>
+  <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Arraste dentro da grade para definir direção e intensidade.</value></data>
+  <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
+  <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
+  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Redefinir Força Constante</value></data>
+  <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Redefinir Força Constante X</value></data>
+  <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Redefinir Força Constante Y</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Redefinir Deslocamento Central X</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Redefinir Deslocamento Central Y</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Redefinir para Radial Escalada</value></data>

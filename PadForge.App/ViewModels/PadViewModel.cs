@@ -947,6 +947,9 @@ namespace PadForge.ViewModels
             AudioRumbleCutoffHz = 80.0;
             AudioRumbleLeftMotor = 100;
             AudioRumbleRightMotor = 100;
+            ConstantForceEnabled = false;
+            ConstantForceX = 0;
+            ConstantForceY = 0;
         });
 
         private ICommand _resetOverallGainCommand;
@@ -1001,6 +1004,36 @@ namespace PadForge.ViewModels
         private ICommand _resetAudioRightMotorCommand;
         public ICommand ResetAudioRightMotorCommand => _resetAudioRightMotorCommand ??= new RelayCommand(() => AudioRumbleRightMotor = 100);
 
+        // ── Constant Force (per-device) ──
+        // PadForge-driven continuous force on the physical device. When
+        // enabled, applies until toggled off OR until a game/program
+        // emits its own non-zero force; resumes when the game returns
+        // to zero. X and Y are normalized [-1, +1]; Y+ is up in the UI
+        // grid (engine converts to HID polar internally).
+
+        private bool _constantForceEnabled;
+        public bool ConstantForceEnabled { get => _constantForceEnabled; set => SetProperty(ref _constantForceEnabled, value); }
+
+        private double _constantForceX;
+        public double ConstantForceX { get => _constantForceX; set => SetProperty(ref _constantForceX, Math.Clamp(value, -1.0, 1.0)); }
+
+        private double _constantForceY;
+        public double ConstantForceY { get => _constantForceY; set => SetProperty(ref _constantForceY, Math.Clamp(value, -1.0, 1.0)); }
+
+        private ICommand _resetConstantForceCommand;
+        public ICommand ResetConstantForceCommand => _resetConstantForceCommand ??= new RelayCommand(() =>
+        {
+            ConstantForceEnabled = false;
+            ConstantForceX = 0;
+            ConstantForceY = 0;
+        });
+
+        private ICommand _resetConstantForceXCommand;
+        public ICommand ResetConstantForceXCommand => _resetConstantForceXCommand ??= new RelayCommand(() => ConstantForceX = 0);
+
+        private ICommand _resetConstantForceYCommand;
+        public ICommand ResetConstantForceYCommand => _resetConstantForceYCommand ??= new RelayCommand(() => ConstantForceY = 0);
+
         // ═══════════════════════════════════════════════
         //  #2: Expanded deadzone settings
         //  Per-axis X/Y, anti-deadzone, linear, trigger deadzones
@@ -1022,6 +1055,9 @@ namespace PadForge.ViewModels
             ForceOverallGain = 100;
             LeftMotorStrength = 100;
             RightMotorStrength = 100;
+            ConstantForceEnabled = false;
+            ConstantForceX = 0;
+            ConstantForceY = 0;
             // Macros are bound to the slot, not the physical device, so a
             // slot deletion has to drop them. Otherwise the next VC created
             // at this pad index inherits the deleted slot's macros.

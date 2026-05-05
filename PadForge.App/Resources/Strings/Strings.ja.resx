@@ -686,6 +686,15 @@
   <data name="Pad_SwapMotors" xml:space="preserve"><value>左右モーターを入れ替える</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>振動テスト</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>モーター動作</value></data>
+  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>定常フォース</value></data>
+  <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>オフにするまでこのデバイスに継続的なフォースを適用します。ゲームからのフォースが入っている間はそちらが優先され、ゲームが停止したら再開します。</value></data>
+  <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>定常フォースを適用</value></data>
+  <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>グリッド内をドラッグして方向と強さを設定します。</value></data>
+  <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
+  <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
+  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>定常フォースをリセット</value></data>
+  <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>定常フォース X をリセット</value></data>
+  <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>定常フォース Y をリセット</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>センターオフセット X をリセット</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>センターオフセット Y をリセット</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>スケール付き放射状にリセット</value></data>

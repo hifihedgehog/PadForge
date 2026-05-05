@@ -50,6 +50,7 @@ Fork of [x360ce](https://github.com/x360ce/x360ce), rewritten on SDL3, [HIDMaest
 - Rumble passthrough with per-motor strength, overall gain, and motor swap. Haptic fallback for devices without native rumble.
 - HID PID 1.0 force feedback on Extended controllers: constant, ramp, periodic (sine, square, triangle, sawtooth), and condition effects (spring, damper, friction, inertia) decoded and routed to physical wheels and joysticks with directional pass-through.
 - Audio bass rumble: captures system audio and converts bass frequencies to per-device vibration through a 48 dB/octave filter with configurable sensitivity and cutoff.
+- Constant force per device. A toggle plus a 2D X / Y grid drives a continuous force or scalar rumble until disabled or until a game sends its own non-zero force; resumes when the game returns to silence. Real `DICONSTANTFORCE` for FFB-capable wheels and joysticks (single-axis devices project the angle onto the steering axis), quadrant motor mapping for rumble-only pads. Solves the "wheel mapped to a virtual Xbox controller needs a centering pull" case (issue #29).
 
 ### DualSense adaptive triggers and lighting
 
@@ -68,7 +69,7 @@ Fork of [x360ce](https://github.com/x360ce/x360ce), rewritten on SDL3, [HIDMaest
 ### Macros
 
 - Combo triggers built from up to 8 buttons, axes (with configurable threshold), and POV directions, sourced from the virtual output or a physical input device.
-- Action sequences: button presses, key presses, mouse move / click / scroll, delays, system and per-app volume, and axis manipulation. Four fire modes (on press, on release, while held, always). Supports 128 buttons on Extended controllers and repeat modes.
+- Action sequences: button presses, key presses, mouse move / click / scroll, delays, system and per-app volume, axis manipulation, lightbar overrides (Reactive flash / Sticky hold), and rumble overrides (Reactive pulse with hold + decay-fade, or Sticky hold-until-stop). Four fire modes (on press, on release, while held, always). Supports 128 buttons on Extended controllers and repeat modes.
 
 ### Profiles
 

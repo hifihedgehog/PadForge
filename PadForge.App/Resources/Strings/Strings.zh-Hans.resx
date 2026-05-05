@@ -1009,6 +1009,12 @@
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>触摸板下方的五个小白色 LED。选择要显示的玩家位次图案及亮度。</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>指示 LED</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>玩家编号一排(触摸板下的 5 个 LED)和麦克风上方的静音 LED。亮度控制实际上只影响玩家排。固件提供静音 LED 状态(关闭 / 常亮 / 脉冲),但没有独立的静音亮度寄存器。</value></data>
+  <data name="Pad_ResetLightbar" xml:space="preserve"><value>重置灯条</value></data>
+  <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>重置指示 LED</value></data>
+  <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>重置力反馈</value></data>
+  <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>重置音频震动</value></data>
+  <data name="Pad_ResetSection_Format" xml:space="preserve"><value>重置{0}</value></data>
+  <data name="Pad_ClearMappings" xml:space="preserve"><value>清除映射</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>玩家图案</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>静音 LED 模式</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED 亮度</value></data>

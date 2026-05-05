@@ -1009,6 +1009,12 @@
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>タッチパッドの下にある 5 つの小さな白い LED。表示するプレイヤースロットのパターンと明るさを選びます。</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>インジケーターLED</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>プレイヤー番号の列 (タッチパッド下の 5 つの LED) とマイク上のミュート LED。明るさのコントロールは物理的にプレイヤー列にのみ影響します。ファームウェアはミュート LED の状態 (オフ / 点灯 / パルス) を公開していますが、ミュート用の独立した明るさレジスタはありません。</value></data>
+  <data name="Pad_ResetLightbar" xml:space="preserve"><value>ライトバーをリセット</value></data>
+  <data name="Pad_ResetIndicatorLeds" xml:space="preserve"><value>インジケーター LED をリセット</value></data>
+  <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>フォースフィードバックをリセット</value></data>
+  <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>オーディオ振動をリセット</value></data>
+  <data name="Pad_ResetSection_Format" xml:space="preserve"><value>{0} をリセット</value></data>
+  <data name="Pad_ClearMappings" xml:space="preserve"><value>マッピングをクリア</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>プレイヤーパターン</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>ミュートLEDモード</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LEDの明るさ</value></data>

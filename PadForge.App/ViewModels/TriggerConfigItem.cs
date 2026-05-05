@@ -30,6 +30,11 @@ namespace PadForge.ViewModels
         public string IconLabel { get; }
         public bool IconRightSide { get; }
 
+        /// <summary>Per-card "Reset {Title}" tooltip — see StickConfigItem
+        /// for the format-string rationale.</summary>
+        public string ResetAllToolTip
+            => string.Format(Resources.Strings.Strings.Instance.Pad_ResetSection_Format, Title);
+
         // ── Digit conversion helpers (triggers use unsigned 16-bit: 0–65535) ──
         private static int PctToDigit(double pct) => (int)Math.Round(pct / 100.0 * 65535.0);
         private static double DigitToPct(int digit) => digit / 65535.0 * 100.0;

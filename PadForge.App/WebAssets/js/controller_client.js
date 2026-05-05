@@ -328,17 +328,25 @@
     }
 
     function bindTouchpadClickZone(zone, ov) {
-        var code = ov.inputCode;
+        // Touchpad click is its own discrete input in PadForge — distinct
+        // from the gamepad button enumeration. Sending "type: touchpad,
+        // click: true/false" routes it to UpdateTouchpadClick on the
+        // server so the PlayStation slot's automap and the Touchpad Click
+        // mapping target both pick it up. Pre-fix this sent
+        // "type: input, kind: button, code: 11" which left the click as
+        // a generic button 11 press, so a DS4 web controller assigned to
+        // a PlayStation virtual controller never automapped it onto the
+        // touchpad-click output.
         function down(e) {
             e.preventDefault();
             zone.style.opacity = "1";
-            send({ type: "input", kind: "button", code: code, value: 1 });
+            send({ type: "touchpad", click: true });
             haptic();
         }
         function up(e) {
             e.preventDefault();
             zone.style.opacity = "0";
-            send({ type: "input", kind: "button", code: code, value: 0 });
+            send({ type: "touchpad", click: false });
         }
         zone.addEventListener("touchstart", down, { passive: false });
         zone.addEventListener("touchend", up, { passive: false });

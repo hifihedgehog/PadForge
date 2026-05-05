@@ -17,26 +17,56 @@
         WindowStartupLocation="Manual">
 
     <Grid>
-        <Canvas x:Name="RootCanvas" ClipToBounds="True">
-            <!-- Touchpad surface (drag region) -->
-            <Border x:Name="Surface"
-                    Canvas.Left="0" Canvas.Top="0"
-                    Background="#30FFFFFF"
-                    CornerRadius="8"
-                    BorderBrush="#60FFFFFF" BorderThickness="1"
-                    ToolTip="{Binding TouchpadOverlay_DragTooltip, Source={x:Static strings:Strings.Instance}}"
-                    MouseRightButtonDown="Surface_MouseRightButtonDown"
-                    MouseMove="Surface_MouseMove"
-                    MouseRightButtonUp="Surface_MouseRightButtonUp"/>
+        <!-- Two-row inner layout: surface fills the top row; click bar is
+             a fixed-height strip in the bottom row. The bar carries no
+             label — its visible tint is enough of an affordance and a
+             label would obscure whatever the overlay is sitting on. -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="32"/>
+            </Grid.RowDefinitions>
 
-            <!-- Finger indicators -->
-            <Ellipse x:Name="Finger0Dot" Width="20" Height="20"
-                     Fill="#80FF6600" Visibility="Collapsed"
-                     IsHitTestVisible="False"/>
-            <Ellipse x:Name="Finger1Dot" Width="20" Height="20"
-                     Fill="#800066FF" Visibility="Collapsed"
-                     IsHitTestVisible="False"/>
-        </Canvas>
+            <!-- Surface (drag region) + Canvas overlay for finger dots. -->
+            <Grid Grid.Row="0">
+                <Border x:Name="Surface"
+                        Background="#30FFFFFF"
+                        CornerRadius="8"
+                        BorderBrush="#60FFFFFF" BorderThickness="1"
+                        ToolTip="{Binding TouchpadOverlay_DragTooltip, Source={x:Static strings:Strings.Instance}}"
+                        MouseRightButtonDown="Surface_MouseRightButtonDown"
+                        MouseMove="Surface_MouseMove"
+                        MouseRightButtonUp="Surface_MouseRightButtonUp"/>
+                <!-- Finger-dot host. IsHitTestVisible="False" so right-
+                     click drag and the surface's drag tooltip pass through
+                     to the Surface Border underneath; the Canvas itself is
+                     just a positioning surface for the dots. -->
+                <Canvas x:Name="RootCanvas" ClipToBounds="True"
+                        IsHitTestVisible="False">
+                    <Ellipse x:Name="Finger0Dot" Width="20" Height="20"
+                             Fill="#80FF6600" Visibility="Collapsed"/>
+                    <Ellipse x:Name="Finger1Dot" Width="20" Height="20"
+                             Fill="#800066FF" Visibility="Collapsed"/>
+                </Canvas>
+            </Grid>
+
+            <!-- Click bar (bottom row).  Hold mouse-left or touch to set
+                 state.TouchpadClick; releases when the touch lifts or the
+                 mouse button rises. Required for click-and-hold operations
+                 (drags, sustained context input) that the surface's
+                 momentary double-tap pulse can't cover. -->
+            <Border x:Name="ClickBar"
+                    Grid.Row="1"
+                    Background="#40FFFFFF"
+                    CornerRadius="6"
+                    BorderBrush="#60FFFFFF" BorderThickness="1"
+                    Cursor="Hand"
+                    MouseLeftButtonDown="ClickBar_MouseLeftButtonDown"
+                    MouseLeftButtonUp="ClickBar_MouseLeftButtonUp"
+                    MouseLeave="ClickBar_MouseLeave"
+                    TouchDown="ClickBar_TouchDown"
+                    TouchUp="ClickBar_TouchUp"/>
+        </Grid>
 
         <!-- Resize grip (bottom-right corner) -->
         <Path x:Name="ResizeGrip"

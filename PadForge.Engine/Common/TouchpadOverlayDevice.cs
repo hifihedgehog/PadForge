@@ -69,8 +69,12 @@ namespace PadForge.Engine
                 s.TouchpadFingers[5] = tp.Down1 ? 1f : 0f;
                 s.TouchpadDown[0] = tp.Down0;
                 s.TouchpadDown[1] = tp.Down1;
-                // Map click to button 20 (touchpad click, same as web controller)
-                if (tp.Click) s.Buttons[20] = true;
+                // Touchpad click goes to the dedicated TouchpadClick state
+                // field, not state.Buttons[20]. The numbered-button scheme
+                // was a v2-era artifact; auto-map and Step 3 both consume
+                // state.TouchpadClick via the canonical "Touchpad N Click"
+                // descriptor now.
+                s.TouchpadClick = tp.Click;
                 _currentState = s;
             }
         }

@@ -44,6 +44,9 @@ namespace PadForge.Services
         private readonly MainViewModel _mainVm;
         private readonly Dispatcher _dispatcher;
         private InputManager _inputManager;
+        // Reused across SlotRumbleForDeviceProvider invocations so the
+        // dispatcher's per-device rumble pump doesn't allocate per tick.
+        private Vibration _constantForceScratchSony;
         private DispatcherTimer _uiTimer;
         private ForegroundMonitorService _foregroundMonitor;
         private ProfileData _defaultProfileSnapshot;
@@ -245,8 +248,19 @@ namespace PadForge.Services
                     }
                 }
 
+                // Sony dispatcher path: same override-with-resume rule
+                // as the SDL physical-rumble path in Step 2's
+                // ApplyForceFeedback. Game-driven rumble bytes win when
+                // present; otherwise the user's constant force feeds
+                // the dispatcher's per-device rumble pump as scalar L/R
+                // (the dispatcher consumes only the scalar fields here —
+                // directional FFB doesn't apply to two-motor pads).
+                if (_constantForceScratchSony == null)
+                    _constantForceScratchSony = new Vibration();
+                var effective = ConstantForceEvaluator.Resolve(raw, devicePs, _constantForceScratchSony);
+
                 _inputManager.ScaleRumbleForDevice(
-                    raw.LeftMotorSpeed, raw.RightMotorSpeed,
+                    effective.LeftMotorSpeed, effective.RightMotorSpeed,
                     devicePs, out ushort scaledL, out ushort scaledR);
                 return ((byte)(scaledR >> 8), (byte)(scaledL >> 8));
             };
@@ -1332,6 +1346,11 @@ namespace PadForge.Services
             ps.AudioRumbleLeftMotor = padVm.AudioRumbleLeftMotor.ToString();
             ps.AudioRumbleRightMotor = padVm.AudioRumbleRightMotor.ToString();
 
+            // Constant force (per-device override).
+            ps.ConstantForceEnabled = padVm.ConstantForceEnabled ? "1" : "0";
+            ps.ConstantForceX = padVm.ConstantForceX.ToString("F4", ic);
+            ps.ConstantForceY = padVm.ConstantForceY.ToString("F4", ic);
+
             // Mapping descriptors: clear + rewrite only when explicitly requested.
             // The 30Hz SyncViewModelToPadSettings path passes syncMappings=false
             // because ClearMappingDescriptors() creates a race window — the polling
@@ -1460,6 +1479,11 @@ namespace PadForge.Services
             padVm.AudioRumbleCutoffHz = TryParseDouble(ps.AudioRumbleCutoffHz, 80.0);
             padVm.AudioRumbleLeftMotor = TryParseInt(ps.AudioRumbleLeftMotor, 100);
             padVm.AudioRumbleRightMotor = TryParseInt(ps.AudioRumbleRightMotor, 100);
+
+            // Constant force.
+            padVm.ConstantForceEnabled = ps.ConstantForceEnabled == "1";
+            padVm.ConstantForceX = TryParseDouble(ps.ConstantForceX, 0.0);
+            padVm.ConstantForceY = TryParseDouble(ps.ConstantForceY, 0.0);
 
             // Sync dynamic stick/trigger config items.
             padVm.SyncAllConfigItemsFromVm();

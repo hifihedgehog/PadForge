@@ -682,6 +682,17 @@
   <data name="Pad_TestRumble" xml:space="preserve"><value>Trillen testen</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoractiviteit</value></data>
 
+  <!-- ═══ Pad — Constant Force ═══ -->
+  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Constante kracht</value></data>
+  <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Past een continue kracht op dit apparaat toe tot je deze uitschakelt. Door een spel verstuurde kracht heeft voorrang zolang die actief is en wordt hervat zodra het spel stopt.</value></data>
+  <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Constante kracht toepassen</value></data>
+  <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Sleep binnen het raster om richting en sterkte in te stellen.</value></data>
+  <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
+  <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
+  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Constante kracht resetten</value></data>
+  <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Constante kracht X resetten</value></data>
+  <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Constante kracht Y resetten</value></data>
+
   <!-- ═══ Pad — Reset Tooltips ═══ -->
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Middenverschuiving X herstellen</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Middenverschuiving Y herstellen</value></data>

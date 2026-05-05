@@ -682,6 +682,17 @@
   <data name="Pad_TestRumble" xml:space="preserve"><value>Prova vibrazione</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Attività motori</value></data>
 
+  <!-- ═══ Pad — Constant Force ═══ -->
+  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Forza costante</value></data>
+  <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Applica una forza continua a questo dispositivo finché non la disattivi. La forza generata da un gioco ha la priorità mentre è attiva e riprende quando il gioco si ferma.</value></data>
+  <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Applica forza costante</value></data>
+  <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Trascina nella griglia per impostare direzione e intensità.</value></data>
+  <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
+  <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
+  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Reimposta forza costante</value></data>
+  <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Reimposta forza costante X</value></data>
+  <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Reimposta forza costante Y</value></data>
+
   <!-- ═══ Pad — Reset Tooltips ═══ -->
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Ripristina offset centro X</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Ripristina offset centro Y</value></data>

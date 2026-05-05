@@ -686,6 +686,15 @@
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Inverser les moteurs gauche/droit</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Tester la vibration</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Activité moteur</value></data>
+  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Force constante</value></data>
+  <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Applique une force continue à ce périphérique jusqu'à ce que vous la désactiviez. La force émise par un jeu prend le dessus tant qu'elle est active et reprend dès que le jeu s'arrête.</value></data>
+  <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Appliquer une force constante</value></data>
+  <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Faites glisser dans la grille pour définir la direction et l'intensité.</value></data>
+  <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
+  <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
+  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Réinitialiser la force constante</value></data>
+  <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Réinitialiser la force constante X</value></data>
+  <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Réinitialiser la force constante Y</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Réinitialiser le décalage centre X</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Réinitialiser le décalage centre Y</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Réinitialiser en Radiale mise à l'échelle</value></data>

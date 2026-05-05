@@ -686,6 +686,15 @@
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Linken/rechten Motor tauschen</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Vibration testen</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoraktivität</value></data>
+  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Konstante Kraft</value></data>
+  <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Wendet eine kontinuierliche Kraft auf dieses Gerät an, bis du sie ausschaltest. Spielgesteuerte Kraft hat während ihrer Aktivität Vorrang und wird fortgesetzt, sobald das Spiel stoppt.</value></data>
+  <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Konstante Kraft anwenden</value></data>
+  <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Im Raster ziehen, um Richtung und Stärke festzulegen.</value></data>
+  <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
+  <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
+  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Konstante Kraft zurücksetzen</value></data>
+  <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Konstante Kraft X zurücksetzen</value></data>
+  <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Konstante Kraft Y zurücksetzen</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Mittenversatz X zurücksetzen</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Mittenversatz Y zurücksetzen</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Auf Skaliert Radial zurücksetzen</value></data>

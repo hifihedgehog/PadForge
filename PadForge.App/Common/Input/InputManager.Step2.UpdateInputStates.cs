@@ -296,15 +296,24 @@ namespace PadForge.Common.Input
                 if (raw == null) continue;
 
                 var devicePs = us.GetPadSetting();
-                ScaleRumbleForDevice(raw.LeftMotorSpeed, raw.RightMotorSpeed,
+
+                // Per-slot constant-force override resolves here so the
+                // override-with-resume rule applies at the slot granularity:
+                // if a different slot the device maps to has live game force,
+                // that slot's max() still wins; only the slots where the
+                // game went silent get the user's constant injected.
+                if (_constantForceScratch == null) _constantForceScratch = new Vibration();
+                var effective = ConstantForceEvaluator.Resolve(raw, devicePs, _constantForceScratch);
+
+                ScaleRumbleForDevice(effective.LeftMotorSpeed, effective.RightMotorSpeed,
                     devicePs, out ushort scaledL, out ushort scaledR);
 
                 if (scaledL > combinedL) combinedL = scaledL;
                 if (scaledR > combinedR) combinedR = scaledR;
 
                 if (directionalSource == null
-                    && (raw.HasDirectionalData || raw.HasConditionData))
-                    directionalSource = raw;
+                    && (effective.HasDirectionalData || effective.HasConditionData))
+                    directionalSource = effective;
 
                 if (firstPadSetting == null)
                     firstPadSetting = devicePs;
@@ -343,6 +352,13 @@ namespace PadForge.Common.Input
         }
 
         private Vibration _combinedVibration;
+
+        // Per-slot scratch buffer reused across iterations of the
+        // ApplyForceFeedback per-slot loop — the evaluator only writes
+        // when the override fires, otherwise it returns the raw input
+        // unchanged. Populating a fresh Vibration per tick would allocate
+        // on every device with multi-slot mappings.
+        private Vibration _constantForceScratch;
 
         /// <summary>Pushes the audio detector's per-tick parameters
         /// (Sensitivity, CutoffHz) from the first audio-rumble-enabled

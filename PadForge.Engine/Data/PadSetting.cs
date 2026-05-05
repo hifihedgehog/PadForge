@@ -274,6 +274,23 @@ namespace PadForge.Engine.Data
         /// <summary>Audio rumble right motor scale (0–100%, default 100).</summary>
         [XmlElement] public string AudioRumbleRightMotor { get; set; } = "100";
 
+        /// <summary>Constant force toggle. "0" = off (default), "1" = on.
+        /// When on, PadForge applies a continuous force to the physical
+        /// device at the angle/magnitude defined by ConstantForceX/Y. Game-
+        /// driven force from any source overrides while non-zero, then
+        /// the constant force resumes.</summary>
+        [XmlElement] public string ConstantForceEnabled { get; set; } = "0";
+
+        /// <summary>Constant force X component, signed (-1.0..+1.0).
+        /// Default 0. Combined with ConstantForceY into a polar
+        /// magnitude+direction; magnitude clamps to 1.0.</summary>
+        [XmlElement] public string ConstantForceX { get; set; } = "0";
+
+        /// <summary>Constant force Y component, signed (-1.0..+1.0). Y+
+        /// is "up" in the UI grid; the engine converts to HID polar
+        /// (0=N CW). Default 0.</summary>
+        [XmlElement] public string ConstantForceY { get; set; } = "0";
+
         // ─────────────────────────────────────────────
         //  Axis-to-button threshold
         // ─────────────────────────────────────────────
@@ -726,6 +743,11 @@ namespace PadForge.Engine.Data
             sb.Append(AudioRumbleLeftMotor); sb.Append('|');
             sb.Append(AudioRumbleRightMotor); sb.Append('|');
 
+            // Constant force
+            sb.Append(ConstantForceEnabled); sb.Append('|');
+            sb.Append(ConstantForceX); sb.Append('|');
+            sb.Append(ConstantForceY); sb.Append('|');
+
             // Inversion overrides
             sb.Append(LeftThumbAxisXInvert); sb.Append('|');
             sb.Append(LeftThumbAxisYInvert); sb.Append('|');
@@ -1001,6 +1023,8 @@ namespace PadForge.Engine.Data
             // Audio bass rumble
             nameof(AudioRumbleEnabled), nameof(AudioRumbleSensitivity),
             nameof(AudioRumbleCutoffHz), nameof(AudioRumbleLeftMotor), nameof(AudioRumbleRightMotor),
+            // Constant force
+            nameof(ConstantForceEnabled), nameof(ConstantForceX), nameof(ConstantForceY),
             // Axis inversion
             nameof(LeftThumbAxisXInvert), nameof(LeftThumbAxisYInvert),
             nameof(RightThumbAxisXInvert), nameof(RightThumbAxisYInvert),

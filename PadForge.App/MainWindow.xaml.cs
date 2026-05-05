@@ -526,6 +526,8 @@ namespace PadForge
                         nameof(PadViewModel.AudioRumbleEnabled) or nameof(PadViewModel.AudioRumbleSensitivity) or
                         nameof(PadViewModel.AudioRumbleCutoffHz) or nameof(PadViewModel.AudioRumbleLeftMotor) or
                         nameof(PadViewModel.AudioRumbleRightMotor) or
+                        nameof(PadViewModel.ConstantForceEnabled) or
+                        nameof(PadViewModel.ConstantForceX) or nameof(PadViewModel.ConstantForceY) or
                         nameof(PadViewModel.OutputType))
                         _settingsService.MarkDirty();
                 };

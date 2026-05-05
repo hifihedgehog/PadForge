@@ -686,6 +686,15 @@
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Intercambiar motores izquierdo/derecho</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Probar vibración</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Actividad del motor</value></data>
+  <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Fuerza constante</value></data>
+  <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Aplica una fuerza continua a este dispositivo hasta que la desactives. La fuerza generada por un juego prevalece mientras esté activa y se reanuda cuando el juego se detiene.</value></data>
+  <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Aplicar fuerza constante</value></data>
+  <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Arrastra dentro de la cuadrícula para fijar dirección y fuerza.</value></data>
+  <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
+  <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
+  <data name="Pad_ResetConstantForce" xml:space="preserve"><value>Restablecer fuerza constante</value></data>
+  <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Restablecer fuerza constante X</value></data>
+  <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Restablecer fuerza constante Y</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Restablecer desplazamiento central X</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Restablecer desplazamiento central Y</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Restablecer a Radial escalada</value></data>

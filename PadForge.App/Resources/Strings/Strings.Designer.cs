@@ -656,6 +656,15 @@ public class Strings : INotifyPropertyChanged
     public string Pad_SwapMotors => Get("Pad_SwapMotors");
     public string Pad_TestRumble => Get("Pad_TestRumble");
     public string Pad_MotorActivity => Get("Pad_MotorActivity");
+    public string Pad_ConstantForce_Header => Get("Pad_ConstantForce_Header");
+    public string Pad_ConstantForce_Description => Get("Pad_ConstantForce_Description");
+    public string Pad_ConstantForce_Toggle => Get("Pad_ConstantForce_Toggle");
+    public string Pad_ConstantForce_Position => Get("Pad_ConstantForce_Position");
+    public string Pad_ConstantForce_X => Get("Pad_ConstantForce_X");
+    public string Pad_ConstantForce_Y => Get("Pad_ConstantForce_Y");
+    public string Pad_ResetConstantForce => Get("Pad_ResetConstantForce");
+    public string Pad_ResetConstantForceX => Get("Pad_ResetConstantForceX");
+    public string Pad_ResetConstantForceY => Get("Pad_ResetConstantForceY");
     public string Pad_ResetCenterOffsetX => Get("Pad_ResetCenterOffsetX");
     public string Pad_ResetCenterOffsetY => Get("Pad_ResetCenterOffsetY");
     public string Pad_ResetDeadZoneShape => Get("Pad_ResetDeadZoneShape");

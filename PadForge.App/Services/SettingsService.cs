@@ -1343,11 +1343,24 @@ namespace PadForge.Services
             // Collect per-(slot, device) PlayStation configurations.
             // Lighting tab is per-device — different physical devices
             // mapped to the same slot can have different mode / colors
-            // / palette. One DTO per (slot, device) pair, plus a
-            // single legacy slot-level entry per slot (DeviceGuid empty)
-            // so older PadForge installs reading the new XML still get
-            // a usable default. App-exit teardown sets SlotCreated=false,
-            // so we save unconditionally rather than gate on it.
+            // / palette. We write:
+            //   1. ONE slot-level entry (DeviceGuid = Empty) holding
+            //      the slot's anchor PlayStationConfig — this is a
+            //      pre-v3.1 compat row so older PadForge installs
+            //      reading the new XML still get a usable default.
+            //   2. ONE per-device entry per dict entry, INCLUDING the
+            //      one whose instance the anchor currently references.
+            //
+            // Do NOT dedup the active-device's per-device entry against
+            // the anchor by reference equality — they're the same
+            // instance in memory but the saved per-device entry is
+            // what gets reapplied to dict[active device's GUID] on
+            // reload. Without it, the active device's settings live
+            // ONLY in the slot-level entry, and ApplyPlayStationConfigs's
+            // fan-out skip (which prevents the slot-level entry from
+            // bleeding into other devices' dict entries) leaves the
+            // active device's dict entry at defaults. Result: user's
+            // Lighting tab edits don't survive an app restart.
             var playStationConfigs = new System.Collections.Generic.List<ViewModels.PlayStationSlotConfigData>();
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
@@ -1357,7 +1370,6 @@ namespace PadForge.Services
                 foreach (var kvp in padVm.PerDevicePlayStationConfigs)
                 {
                     if (kvp.Key == Guid.Empty || kvp.Value == null) continue;
-                    if (ReferenceEquals(kvp.Value, padVm.PlayStationConfig)) continue;
                     playStationConfigs.Add(BuildPlayStationConfigData(kvp.Value, i, kvp.Key));
                 }
             }
@@ -1469,10 +1481,14 @@ namespace PadForge.Services
                 var padVm = _mainVm.Pads[i];
                 if (padVm.PlayStationConfig != null)
                     list.Add(BuildPlayStationConfigData(padVm.PlayStationConfig, i, Guid.Empty));
+                // Always emit every per-device entry. See the comment
+                // in BuildAppSettingsForActiveProfile's main collector
+                // for why we don't dedup against the anchor — the
+                // active device's per-device entry is what reloads
+                // back into its dict slot on next launch.
                 foreach (var kvp in padVm.PerDevicePlayStationConfigs)
                 {
                     if (kvp.Key == Guid.Empty || kvp.Value == null) continue;
-                    if (ReferenceEquals(kvp.Value, padVm.PlayStationConfig)) continue;
                     list.Add(BuildPlayStationConfigData(kvp.Value, i, kvp.Key));
                 }
             }

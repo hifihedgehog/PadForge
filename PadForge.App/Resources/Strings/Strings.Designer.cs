@@ -282,6 +282,8 @@ public class Strings : INotifyPropertyChanged
     public string Settings_PollingInterval => Get("Settings_PollingInterval");
     public string Settings_HideDevices => Get("Settings_HideDevices");
     public string Settings_HideDevicesTooltip => Get("Settings_HideDevicesTooltip");
+    public string Settings_KeepCloaksBetweenLaunches => Get("Settings_KeepCloaksBetweenLaunches");
+    public string Settings_KeepCloaksBetweenLaunchesTooltip => Get("Settings_KeepCloaksBetweenLaunchesTooltip");
     public string Settings_Window => Get("Settings_Window");
     public string Settings_WindowDesc => Get("Settings_WindowDesc");
     public string Settings_MinimizeToTray => Get("Settings_MinimizeToTray");

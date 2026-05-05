@@ -239,7 +239,7 @@
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>폴링 동작 및 백그라운드 처리를 구성합니다.</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>실행 시 엔진 자동 시작</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>창이 포커스를 잃어도 폴링 계속</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>폴링 간격:</value></data>
+  <data name="Settings_PollingInterval" xml:space="preserve"><value>폴링 간격</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>게임에서 장치 숨기기</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide 장치 숨김 및 저수준 입력 후킹의 마스터 스위치입니다. 끄면 장치별 설정에 관계없이 장치가 숨겨지지 않습니다.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>창</value></data>
@@ -923,7 +923,7 @@
   <data name="Key_Apostrophe" xml:space="preserve"><value>아포스트로피</value></data>
   <data name="Common_Stopping" xml:space="preserve"><value>중지 중…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>엔진 중지 중…</value></data>
-  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>비활성 제거 시간:</value></data>
+  <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>비활성 시간 초과</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>매핑된 모든 장치가 오프라인일 때 가상 컨트롤러가 제거되기까지의 시간(초)입니다. 0이면 비활성화됩니다. 남은 컨트롤러는 빈 자리를 메우기 위해 위로 이동하고 더 낮은 XInput 슬롯에 다시 바인딩됩니다.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>초 (0 = 안 함)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
@@ -1066,7 +1066,9 @@
   <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>중음 밴드 — 파랑 초기화</value></data>
   <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>고음 밴드 — 빨강 초기화</value></data>
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>고음 밴드 — 초록 초기화</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>고음 밴드 — 파랑 초기화</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>입력 반응</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>끔</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>누를 때마다 랜덤 색상</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>팔레트 순회</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>누름마다 단일 색상</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>입력 반응 초기화</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>누름당 플래시 색상</value></data>  <data name="Pad_ResetInputReactiveColor" xml:space="preserve"><value>입력 반응 색상 초기화</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>고음 밴드 — 파랑 초기화</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>입력 반응</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>끔</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>누를 때마다 랜덤 색상</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>팔레트 순회</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>누름마다 단일 색상</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>입력 반응 초기화</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>누름당 플래시 색상</value></data>  <data name="Pad_ResetInputReactiveColor" xml:space="preserve"><value>입력 반응 색상 초기화</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>PadForge 세션 사이에도 HidHide 숨김을 유지합니다. PadForge가 닫혀 있는 동안 다른 앱(예: Steam)이 컨트롤러를 검색해도 물리 장치를 계속 숨김 상태로 보여주려는 경우에 유용합니다. 기본값은 끄기. 세션 중 위의 마스터 스위치를 끄면 장치가 즉시 다시 표시됩니다.</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>실행 간 장치 숨김 유지</value></data>
+
+
 
 
 

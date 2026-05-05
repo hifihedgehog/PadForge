@@ -591,6 +591,22 @@
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Kies welke lightbar-modi de macro moet doorlopen. Elke activering springt naar de volgende aangevinkte modus.</value></data>
 
+  <!-- ═══ Macro action — Rumble ═══ -->
+  <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Trillen</value></data>
+  <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Stuurt het trillen van het fysieke apparaat van de slot vanuit een macro. Reactive draait op volle sterkte gedurende het houdvenster en faden vervolgens lineair naar nul. Sticky houdt op volle sterkte totdat een Trillen stoppen-actie loopt. Wordt via max() over door spel gegenereerd trillen gelegd, zodat door de gebruiker gestuurde feedback altijd voelbaar blijft.</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Trilpuls {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Trillen {0} houden tot opheffen</value></data>
+  <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Trillen stoppen</value></data>
+  <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Trillen stoppen</value></data>
+  <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Maakt elke actieve trillingsoverschrijving op de toegewezen slot vrij. Combineer met een Sticky trilactie om het houden via een andere macro op te heffen.</value></data>
+  <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Houden</value></data>
+  <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>Reactief (vervagen)</value></data>
+  <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Plakkerig (vasthouden)</value></data>
+  <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Linkermotor</value></data>
+  <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Rechtermotor</value></data>
+  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Houden</value></data>
+  <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Vervagen</value></data>
+
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Gecentreerd</value></data>
   <data name="POV_Up" xml:space="preserve"><value>Omhoog</value></data>

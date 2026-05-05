@@ -648,6 +648,26 @@ namespace PadForge.Common.Input
                     break;
                 }
 
+                case MacroActionType.Rumble:
+                {
+                    // Same single-frame-fire shape as LightbarColor: stamp
+                    // the override and advance. The FFB pipeline reads
+                    // MacroRumbleOverrides[slot] on each subsequent tick
+                    // and combines via max() with the game's rumble.
+                    ApplyRumbleAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.RumbleStop:
+                {
+                    int slotIndex = macro.PadIndex;
+                    if (slotIndex >= 0 && slotIndex < MaxPads)
+                        MacroRumbleOverrides[slotIndex].Clear();
+                    AdvanceAction(macro);
+                    break;
+                }
+
                 case MacroActionType.LightbarColorClear:
                 {
                     int slotIndex = macro.PadIndex;
@@ -802,6 +822,38 @@ namespace PadForge.Common.Input
                 psCfg.MacroOverrideStartUtc = now;
                 psCfg.MacroOverrideHoldEndUtc = holdEnd;
                 psCfg.MacroOverrideExpiresAtUtc = expiresAt;
+            }
+        }
+
+        /// <summary>Pushes a Rumble action's override into the slot's
+        /// <see cref="MacroRumbleOverride"/>. Reactive holds use the
+        /// action's <c>RumbleHoldMs</c> + <c>RumbleFadeMs</c> for the
+        /// hold + decay-fade window; Sticky holds latch at full strength
+        /// until a <see cref="MacroActionType.RumbleStop"/> action runs.
+        /// Both motors are scaled per <c>RumbleStrengthLeft/Right</c>
+        /// (0..100 percent).</summary>
+        private void ApplyRumbleAction(MacroItem macro, MacroAction action)
+        {
+            int slotIndex = macro.PadIndex;
+            if (slotIndex < 0 || slotIndex >= MaxPads) return;
+
+            byte left = (byte)Math.Clamp(action.RumbleStrengthLeft, 0, 100);
+            byte right = (byte)Math.Clamp(action.RumbleStrengthRight, 0, 100);
+            var ovr = MacroRumbleOverrides[slotIndex];
+
+            if (action.RumbleHoldMode == MacroRumbleHoldMode.Sticky)
+            {
+                ovr.FireSticky(left, right);
+            }
+            else
+            {
+                int holdMs = Math.Max(action.RumbleHoldMs, 0);
+                int fadeMs = Math.Max(action.RumbleFadeMs, 0);
+                // Mirror the lightbar Reactive minimum-1ms guard so a
+                // Hold=0 / Fade=0 pulse still registers active for at
+                // least one tick.
+                if (holdMs == 0 && fadeMs == 0) holdMs = 1;
+                ovr.FireReactive(left, right, holdMs, fadeMs);
             }
         }
 
@@ -1247,6 +1299,20 @@ namespace PadForge.Common.Input
                         foreach (var devCfg in EnumerateSlotPlayStationConfigs(slotIndex))
                             devCfg.ClearMacroOverride();
                     }
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.Rumble:
+                    ApplyRumbleAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.RumbleStop:
+                {
+                    int slotIndex = macro.PadIndex;
+                    if (slotIndex >= 0 && slotIndex < MaxPads)
+                        MacroRumbleOverrides[slotIndex].Clear();
                     AdvanceAction(macro);
                     break;
                 }

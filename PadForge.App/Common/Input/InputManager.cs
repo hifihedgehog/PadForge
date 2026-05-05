@@ -182,6 +182,25 @@ namespace PadForge.Common.Input
         public Vibration[] VibrationStates { get; } = new Vibration[MaxPads];
 
         /// <summary>
+        /// Per-slot ephemeral macro rumble overrides driven by
+        /// <c>MacroActionType.Rumble</c> (set) and
+        /// <c>MacroActionType.RumbleStop</c> (clear). Read at the
+        /// three FFB injection points (Step 2 ApplyForceFeedback,
+        /// InputService's Sony dispatcher rumble pump, and
+        /// ComputeFinalVibrationStates for the FFB-tab meter) and
+        /// combined with raw game-driven rumble via <c>max()</c>.
+        /// </summary>
+        public MacroRumbleOverride[] MacroRumbleOverrides { get; }
+            = InitMacroRumbleOverrides();
+
+        private static MacroRumbleOverride[] InitMacroRumbleOverrides()
+        {
+            var arr = new MacroRumbleOverride[MaxPads];
+            for (int i = 0; i < arr.Length; i++) arr[i] = new MacroRumbleOverride();
+            return arr;
+        }
+
+        /// <summary>
         /// Per-slot post-processed vibration *as seen by the slot's
         /// <see cref="SelectedDeviceGuids"/> device* — audio bass mix and
         /// gain/balance/swap applied per the SelectedMappedDevice's

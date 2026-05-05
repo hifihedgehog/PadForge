@@ -725,6 +725,22 @@
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Pick which lightbar modes the macro should cycle through. Each fire advances to the next checked mode.</value></data>
 
+  <!-- ═══ Macro action — Rumble ═══ -->
+  <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Rumble</value></data>
+  <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Drives the slot's physical device rumble from a macro. Reactive runs at full strength for the hold window then fades to zero across the fade window. Sticky holds at full strength until a Stop Rumble action runs. Layers on top of game-driven rumble via max() so user-driven feedback is always felt.</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Pulse rumble {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Hold rumble {0} until cleared</value></data>
+  <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Stop Rumble</value></data>
+  <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Stop rumble</value></data>
+  <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Releases any active rumble override on the assigned slot. Pair with a Sticky Rumble action to undo the hold via another macro.</value></data>
+  <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Hold</value></data>
+  <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>Reactive (fade)</value></data>
+  <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Sticky (hold)</value></data>
+  <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Left motor</value></data>
+  <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Right motor</value></data>
+  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Hold</value></data>
+  <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Fade</value></data>
+
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Centered</value></data>
   <data name="POV_Up" xml:space="preserve"><value>Up</value></data>

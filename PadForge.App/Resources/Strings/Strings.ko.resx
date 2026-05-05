@@ -591,6 +591,22 @@
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>모드</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>매크로가 순환할 라이트바 모드를 선택하세요. 발화할 때마다 다음 체크된 모드로 이동합니다.</value></data>
 
+  <!-- ═══ Macro action — Rumble ═══ -->
+  <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>진동</value></data>
+  <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>매크로에서 슬롯의 물리 기기 진동을 구동합니다. Reactive는 유지 시간 동안 최대 강도로 작동한 다음 페이드 구간 동안 선형으로 0까지 감소합니다. Sticky는 진동 정지 액션이 실행될 때까지 최대 강도를 유지합니다. 게임 구동 진동 위에 max()로 겹쳐지므로 사용자 피드백은 항상 느껴집니다.</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>진동 {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>진동 {0} 해제까지 유지</value></data>
+  <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>진동 정지</value></data>
+  <data name="MacroAction_RumbleStop" xml:space="preserve"><value>진동 정지</value></data>
+  <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>할당된 슬롯에서 활성 상태인 진동 오버라이드를 해제합니다. Sticky 진동 액션과 짝지어 다른 매크로에서 유지를 해제하세요.</value></data>
+  <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>유지</value></data>
+  <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>반응형 (페이드)</value></data>
+  <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>고정형 (유지)</value></data>
+  <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>왼쪽 모터</value></data>
+  <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>오른쪽 모터</value></data>
+  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>유지</value></data>
+  <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>페이드</value></data>
+
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>중립</value></data>
   <data name="POV_Up" xml:space="preserve"><value>위</value></data>

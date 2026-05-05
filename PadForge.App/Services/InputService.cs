@@ -47,6 +47,7 @@ namespace PadForge.Services
         // Reused across SlotRumbleForDeviceProvider invocations so the
         // dispatcher's per-device rumble pump doesn't allocate per tick.
         private Vibration _constantForceScratchSony;
+        private Vibration _macroRumbleScratchSony;
         private DispatcherTimer _uiTimer;
         private ForegroundMonitorService _foregroundMonitor;
         private ProfileData _defaultProfileSnapshot;
@@ -248,16 +249,20 @@ namespace PadForge.Services
                     }
                 }
 
-                // Sony dispatcher path: same override-with-resume rule
-                // as the SDL physical-rumble path in Step 2's
-                // ApplyForceFeedback. Game-driven rumble bytes win when
-                // present; otherwise the user's constant force feeds
-                // the dispatcher's per-device rumble pump as scalar L/R
-                // (the dispatcher consumes only the scalar fields here —
-                // directional FFB doesn't apply to two-motor pads).
+                // Sony dispatcher path: layer the macro rumble override
+                // via max() over raw, then apply the constant-force
+                // override-with-resume rule. Same shape as Step 2's
+                // ApplyForceFeedback so DS5 / DS4 motors respond to
+                // macro rumble identically to non-Sony pads.
+                if (_macroRumbleScratchSony == null)
+                    _macroRumbleScratchSony = new Vibration();
+                var withMacro = MacroRumbleOverride.Merge(raw,
+                    _inputManager.MacroRumbleOverrides[padIndex],
+                    _macroRumbleScratchSony);
+
                 if (_constantForceScratchSony == null)
                     _constantForceScratchSony = new Vibration();
-                var effective = ConstantForceEvaluator.Resolve(raw, devicePs, _constantForceScratchSony);
+                var effective = ConstantForceEvaluator.Resolve(withMacro, devicePs, _constantForceScratchSony);
 
                 _inputManager.ScaleRumbleForDevice(
                     effective.LeftMotorSpeed, effective.RightMotorSpeed,

@@ -34,7 +34,7 @@
             background: #16213e;
             border: 1px solid #0f3460;
             border-radius: 8px;
-            margin: 8px;
+            margin: 8px 8px 4px 8px;
         }
         .finger-dot {
             position: absolute;
@@ -46,6 +46,24 @@
         }
         .finger-dot.f0 { background: rgba(255, 102, 0, 0.6); border: 2px solid #ff6600; }
         .finger-dot.f1 { background: rgba(0, 102, 255, 0.6); border: 2px solid #0066ff; }
+        .click-button {
+            margin: 0 8px 8px 8px;
+            padding: 14px 0;
+            background: #0f3460;
+            border: 1px solid #0f3460;
+            border-radius: 8px;
+            color: #eee;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            user-select: none;
+            -webkit-user-select: none;
+            cursor: pointer;
+        }
+        .click-button.active {
+            background: #1f5cae;
+            border-color: #4ade80;
+        }
     </style>
 </head>
 <body>
@@ -58,6 +76,7 @@
         <div class="finger-dot f0" id="dot0" style="display:none;"></div>
         <div class="finger-dot f1" id="dot1" style="display:none;"></div>
     </div>
+    <div class="click-button" id="clickButton">Click</div>
 
     <script>
     // iOS Safari: WebSocket upgrades fail after page navigation but work
@@ -75,6 +94,7 @@
         var ws = null;
         var statusEl = document.getElementById('status');
         var touchpad = document.getElementById('touchpad');
+        var clickButton = document.getElementById('clickButton');
         var dot0 = document.getElementById('dot0');
         var dot1 = document.getElementById('dot1');
 
@@ -82,6 +102,10 @@
         var finger0Id = null;
         var finger1Id = null;
         var lastTap = 0;
+        // Track the touch identifier currently held on the click button so
+        // multi-touch (finger on touchpad + thumb on click) doesn't release
+        // the click on the wrong finger's touchend.
+        var clickTouchId = null;
 
         // Per-tab client identity (survives refresh, unique per tab and type).
         var clientId = sessionStorage.getItem('padforge_client_id_touchpad');
@@ -220,6 +244,46 @@
                     updateDot(dot1, null, false);
                 }
             }
+        });
+
+        // Dedicated click button — sends a press/release pair so the
+        // engine sees a sustained TouchpadClick=true. Supports both touch
+        // (primary on mobile) and mouse (desktop browsers). The double-
+        // tap-to-click path on the touchpad surface above stays as a
+        // momentary fallback for single-handed use.
+        function clickDown(e) {
+            e.preventDefault();
+            clickButton.classList.add('active');
+            send({ type: 'touchpad', click: true });
+        }
+        function clickUp(e) {
+            e.preventDefault();
+            clickButton.classList.remove('active');
+            send({ type: 'touchpad', click: false });
+        }
+        clickButton.addEventListener('touchstart', function(e) {
+            if (e.changedTouches.length > 0)
+                clickTouchId = e.changedTouches[0].identifier;
+            clickDown(e);
+        }, { passive: false });
+        clickButton.addEventListener('touchend', function(e) {
+            for (var i = 0; i < e.changedTouches.length; i++) {
+                if (e.changedTouches[i].identifier === clickTouchId) {
+                    clickTouchId = null;
+                    clickUp(e);
+                    return;
+                }
+            }
+        }, { passive: false });
+        clickButton.addEventListener('touchcancel', function(e) {
+            clickTouchId = null;
+            clickUp(e);
+        }, { passive: false });
+        clickButton.addEventListener('mousedown', clickDown);
+        clickButton.addEventListener('mouseup', clickUp);
+        clickButton.addEventListener('mouseleave', function(e) {
+            if (clickButton.classList.contains('active'))
+                clickUp(e);
         });
 
         connect();

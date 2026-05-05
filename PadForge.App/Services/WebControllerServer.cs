@@ -302,7 +302,16 @@ namespace PadForge.Services
                     name = $"DualShock 4 Web Controller {padId}";
                 else
                     name = $"Xbox 360 Web Controller {padId}";
-                var device = new WebControllerDevice(compositeKey, name, isTouchpadClient);
+                // Pass typeKey explicitly so each layout (xbox360 / ds4 /
+                // touchpad) carries a distinct ProductGuid. Without this,
+                // FindOrCreateUserDevice's BT-reconnect fallback would
+                // migrate one layout's offline UserDevice row onto a
+                // freshly-connecting client of a different layout (the
+                // fallback gates on ProductGuid + offline status only),
+                // which is the source of issue: switching layouts in the
+                // browser silently overwrote the previous layout's row in
+                // the Devices list.
+                var device = new WebControllerDevice(compositeKey, name, isTouchpadClient, typeKey);
                 if (hasTouchpad && !isTouchpadClient)
                     device.HasTouchpad = true; // DS4 gamepad with touchpad zone
                 device.SetConnected(true);
@@ -409,9 +418,18 @@ namespace PadForge.Services
                     // connection — enable touchpad capability on first touch.
                     device.HasTouchpad = true;
 
-                    if (root.TryGetProperty("click", out _))
+                    if (root.TryGetProperty("click", out var clickProp))
                     {
-                        device.UpdateTouchpadClick(true);
+                        // controller_client.js's DS4 touchpad zone sends a
+                        // press/release pair as "click: true / click: false"
+                        // so the touchpad-click output toggles cleanly.
+                        // touchpad.html's double-tap-to-click only emits
+                        // "click: true" — that path stays a press without
+                        // a matching release (separate UX, not in scope).
+                        bool down = clickProp.ValueKind == System.Text.Json.JsonValueKind.True
+                                  || (clickProp.ValueKind == System.Text.Json.JsonValueKind.Number
+                                      && clickProp.GetInt32() != 0);
+                        device.UpdateTouchpadClick(down);
                     }
                     else
                     {
@@ -501,7 +519,13 @@ namespace PadForge.Services
             ["RightTrigger"] = ("axis", 5),
             ["LeftThumbRing"] = ("stick", 0),   // axes 0,1
             ["RightThumbRing"] = ("stick", 3),  // axes 3,4
-            ["TouchpadClick"] = ("button", 11),
+            // TouchpadClick deliberately absent — the JS handles the
+            // overlay specially via target-name dispatch in
+            // bindTouchpadClickZone, sending "type: touchpad, click: bool"
+            // directly. Routing it through inputCode 11 (the historical
+            // value here) re-introduced the regression where DS4 web
+            // controllers reported touchpad click as a generic button 11
+            // press, blocking the PlayStation auto-map.
         };
 
         private void ServeLayoutApi(HttpListenerContext ctx)

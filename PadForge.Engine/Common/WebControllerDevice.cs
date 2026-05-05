@@ -21,8 +21,19 @@ namespace PadForge.Engine
         private const ushort WebVendorId = 0xBEEF;
         private const ushort WebProductId = 0xCA7E;
 
-        /// <summary>Fixed ProductGuid shared by all web controller instances.</summary>
-        public static readonly Guid WebProductGuid =
+        /// <summary>Base ProductGuid for web controllers. The instance
+        /// <see cref="ProductGuid"/> property mixes the layout key into
+        /// this so xbox360 / ds4 / touchpad clients each carry a distinct
+        /// product identity. Without per-layout differentiation, the
+        /// FindOrCreateUserDevice "BT reconnect" fallback in
+        /// InputManager.Step1 would migrate an offline xbox360 web
+        /// device's slot mapping onto a freshly-connecting ds4 web
+        /// device (and vice versa), since the fallback gates only on
+        /// ProductGuid + offline status. Real hardware distinct enough
+        /// to share a layout still shares a ProductGuid; web layouts are
+        /// software constructs and are deliberately treated as separate
+        /// products.</summary>
+        private static readonly Guid WebProductGuidBase =
             new Guid("BEBC0000-0000-0000-0000-CAFEFACE0001");
 
         // Axis names matching the standard gamepad layout (LX, LY, LT, RX, RY, RT).
@@ -52,8 +63,14 @@ namespace PadForge.Engine
         public uint SdlInstanceId { get; }
         public string Name { get; }
         public int NumAxes => _isTouchpadDevice ? 0 : NumGamepadAxes;
-        public int NumButtons => _isTouchpadDevice ? 0 : (HasTouchpad ? NumGamepadButtons + 1 : NumGamepadButtons);
-        public int RawButtonCount => _isTouchpadDevice ? 0 : (HasTouchpad ? NumGamepadButtons + 1 : NumGamepadButtons);
+        // Button count stays at NumGamepadButtons (11) regardless of
+        // touchpad capability. Touchpad click is its own discrete input
+        // routed through state.TouchpadClick, not through the button
+        // enumeration — adding +1 for HasTouchpad here was leftover from
+        // the legacy "touchpad click is button 11" scheme and surfaced
+        // a phantom 12th button in the Devices preview.
+        public int NumButtons => _isTouchpadDevice ? 0 : NumGamepadButtons;
+        public int RawButtonCount => _isTouchpadDevice ? 0 : NumGamepadButtons;
         public int NumHats => _isTouchpadDevice ? 0 : NumGamepadPovs;
         public int[] SupportedButtonIndices
         {
@@ -81,7 +98,7 @@ namespace PadForge.Engine
         public string SerialNumber => string.Empty;
         public string SdlGuid => string.Empty;
         public Guid InstanceGuid { get; }
-        public Guid ProductGuid => WebProductGuid;
+        public Guid ProductGuid { get; }
 
         public bool IsAttached => _connected;
 
@@ -97,11 +114,18 @@ namespace PadForge.Engine
         /// <param name="clientId">Unique client identifier (from browser localStorage).</param>
         /// <param name="displayName">Human-readable name (e.g. "Web Controller 1").</param>
         /// <param name="isTouchpad">When true, device reports as touchpad type with HasTouchpad=true.</param>
-        public WebControllerDevice(string clientId, string displayName, bool isTouchpad = false)
+        /// <param name="layoutKey">Layout discriminator ("xbox360" / "ds4" / "touchpad").
+        /// Mixed into <see cref="ProductGuid"/> so different layouts read as different products
+        /// and the BT-reconnect fallback in <c>FindOrCreateUserDevice</c> doesn't migrate one
+        /// layout's slot mapping onto another. Defaults to "xbox360" for back-compat with any
+        /// historical caller that didn't pass a layout (kept just so the constructor signature
+        /// is additive — every WebControllerServer call site passes the explicit value).</param>
+        public WebControllerDevice(string clientId, string displayName, bool isTouchpad = false, string layoutKey = "xbox360")
         {
             Name = displayName;
             DevicePath = $"web://{clientId}";
             InstanceGuid = BuildGuid(clientId);
+            ProductGuid = BuildProductGuid(layoutKey);
             SdlInstanceId = (uint)clientId.GetHashCode();
             HasTouchpad = isTouchpad;
             _isTouchpadDevice = isTouchpad;
@@ -195,8 +219,21 @@ namespace PadForge.Engine
 
         public DeviceObjectItem[] GetDeviceObjects()
         {
-            int touchpadItems = HasTouchpad ? 7 : 0; // 6 finger descriptors + 1 click button
-            var items = new DeviceObjectItem[NumGamepadAxes + NumGamepadButtons + NumGamepadPovs + touchpadItems];
+            // Gamepad-shaped surface only (6 axes + 11 buttons + 1 POV).
+            // Touchpad finger axes and the touchpad click button do NOT
+            // belong here — the live touchpad data flows through
+            // UpdateTouchpadFinger / UpdateTouchpadClick into the
+            // CustomInputState.Touchpad / TouchpadClick fields, not into
+            // the axis / button arrays this list describes. Adding them
+            // here doubled the mapping dropdown: BuildInputChoices walks
+            // DeviceObjects AND has its own canonical "Touchpad 0
+            // Finger N X/Y/Down" + "Touchpad 0 Click" block for any
+            // HasTouchpad device, so the same inputs appeared twice
+            // (once as numbered Axis 18..23 / Button 11, once with the
+            // canonical touchpad descriptors). The touchpad descriptors
+            // are the right source for mappings; this surface stays
+            // gamepad-shaped.
+            var items = new DeviceObjectItem[NumGamepadAxes + NumGamepadButtons + NumGamepadPovs];
             int idx = 0;
 
             // Axes.
@@ -235,40 +272,6 @@ namespace PadForge.Engine
                 Offset = (NumGamepadAxes + NumGamepadButtons) * 4
             };
 
-            // Touchpad descriptors (when device has touchpad capability).
-            if (HasTouchpad)
-            {
-                string[] tpNames = {
-                    "Touchpad 0 Finger 0 X", "Touchpad 0 Finger 0 Y", "Touchpad 0 Finger 0 Down",
-                    "Touchpad 0 Finger 1 X", "Touchpad 0 Finger 1 Y", "Touchpad 0 Finger 1 Down"
-                };
-                for (int i = 0; i < tpNames.Length; i++)
-                {
-                    items[idx++] = new DeviceObjectItem
-                    {
-                        InputIndex = NumGamepadAxes + NumGamepadButtons + NumGamepadPovs + i,
-                        ObjectTypeGuid = ObjectGuid.Unknown,
-                        Name = tpNames[i],
-                        ObjectType = DeviceObjectTypeFlags.AbsoluteAxis,
-                        Offset = (NumGamepadAxes + NumGamepadButtons + NumGamepadPovs + i) * 4
-                    };
-                }
-
-                // Touchpad click as the button immediately after the standard
-                // 11 XInput buttons (index 11). Aligns with Gamepad.TOUCHPAD =
-                // 0x0800 (= bit 11) in the OutputState bitmap and avoids the
-                // dead 11..19 holes that the previous code-20 scheme left in
-                // the Devices-page raw-input preview.
-                items[idx++] = new DeviceObjectItem
-                {
-                    InputIndex = NumGamepadButtons,
-                    ObjectTypeGuid = ObjectGuid.Button,
-                    Name = "Touchpad Click",
-                    ObjectType = DeviceObjectTypeFlags.PushButton,
-                    Offset = (NumGamepadAxes + NumGamepadButtons + NumGamepadPovs + 6) * 4 + 4
-                };
-            }
-
             return items;
         }
 
@@ -296,6 +299,24 @@ namespace PadForge.Engine
         {
             using var md5 = MD5.Create();
             byte[] hash = md5.ComputeHash(Encoding.UTF8.GetBytes(identifier));
+            return new Guid(hash);
+        }
+
+        /// <summary>Mixes the layout key into <see cref="WebProductGuidBase"/>
+        /// so each web layout reports a distinct ProductGuid. Hashed
+        /// rather than indexed so adding a future layout (e.g. "joycon")
+        /// doesn't shift any existing product identity.</summary>
+        private static Guid BuildProductGuid(string layoutKey)
+        {
+            string normalized = (layoutKey ?? "xbox360").Trim().ToLowerInvariant();
+            if (normalized.Length == 0) normalized = "xbox360";
+            using var md5 = MD5.Create();
+            byte[] basebytes = WebProductGuidBase.ToByteArray();
+            byte[] saltbytes = Encoding.UTF8.GetBytes(":" + normalized);
+            byte[] combined = new byte[basebytes.Length + saltbytes.Length];
+            Buffer.BlockCopy(basebytes, 0, combined, 0, basebytes.Length);
+            Buffer.BlockCopy(saltbytes, 0, combined, basebytes.Length, saltbytes.Length);
+            byte[] hash = md5.ComputeHash(combined);
             return new Guid(hash);
         }
     }

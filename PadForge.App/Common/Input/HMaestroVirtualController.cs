@@ -16,10 +16,6 @@ namespace PadForge.Common.Input
     /// </summary>
     internal sealed class HMaestroVirtualController : IVirtualController
     {
-        // PadForge Custom-profile VID. Matches HMaestroProfileCatalog.BuildCustomProfile.
-        // Used to gate the PID FFB packet decoder so only Extended/custom slots run it.
-        private const ushort CustomProfileVid = 0xBEEF;
-
         private readonly HMContext _ctx;
         private readonly HMProfile _profile;
         private readonly VirtualControllerType _type;
@@ -67,7 +63,16 @@ namespace PadForge.Common.Input
             // up to host enumeration. Lazy init on first OutputReceived was
             // too late — the first GetFeature can land before the first
             // SetFeature/Output packet ever does.
-            if (_profile.VendorId == CustomProfileVid)
+            //
+            // Gate on the descriptor carrying the PID FFB block, not on VID.
+            // The synthetic Custom profile (0xBEEF) ships with FFB built in,
+            // but Extended slots that customize a non-Custom catalog profile
+            // also rebuild the descriptor with AddPidFfbBlock when the user
+            // ticks the FFB checkbox — those keep the catalog VID/PID (so
+            // games still recognize the original device's signature) but
+            // need the same decoder + PID-state publish path. Inspecting
+            // the descriptor catches both cases without coupling to VID.
+            if (DescriptorHasPidFfbBlock(_profile.DescriptorHex))
             {
                 _ffbDecoder = new HMaestroFfbDecoder(_controller);
                 _ffbDecoder.PublishInitialState();
@@ -420,13 +425,18 @@ namespace PadForge.Common.Input
                     return;
                 }
 
-                // PadForge Custom (Extended) profile: full HID PID FFB. Decode
+                // PID FFB-capable Extended profile (Custom synthetic OR a
+                // catalog profile with Customize+FFB on, where Step 5
+                // rebuilt the descriptor with AddPidFfbBlock). Decode
                 // Set Effect / Set Constant / Set Periodic / Set Condition /
                 // Effect Operation / Block Free / Device Control / Device Gain
                 // packets, aggregate running effects into the Vibration with
                 // directional + condition data so SetDirectionalHapticForces
                 // can route real DirectInput FFB to physical wheels and sticks.
-                if (_profile.VendorId == CustomProfileVid && _ffbDecoder != null)
+                // _ffbDecoder is non-null iff Connect() detected the PID FFB
+                // block in the descriptor — that's the gate that matters,
+                // not the VID (catalog profiles keep their original VID/PID).
+                if (_ffbDecoder != null)
                 {
                     if (pkt.Source == HMOutputSource.HidOutput)
                     {
@@ -459,6 +469,22 @@ namespace PadForge.Common.Input
             if ((xinputButtons & Gamepad.GUIDE) != 0) b |= HMButton.Guide;
             if ((xinputButtons & Gamepad.TOUCHPAD) != 0) b |= HMButton.Touchpad;
             return b;
+        }
+
+        /// <summary>True when the descriptor declares a HID PID FFB block.
+        /// Detected by the canonical opening signature
+        /// <c>05 0F 09 21 A1 02</c> — Usage Page (Physical Interface),
+        /// Usage (Set Effect Report), Collection (Logical) — which begins
+        /// <see cref="HidDescriptorBuilder.MinimumViablePidFfbBlock"/>. The
+        /// Physical Interface usage page (0x0F) is reserved for PID and
+        /// doesn't appear in non-FFB controller descriptors, so the leading
+        /// pair alone would suffice; matching three bytes deeper just makes
+        /// false positives from coincidental byte sequences impossible.
+        /// Returns false when the descriptor hex is empty/null.</summary>
+        private static bool DescriptorHasPidFfbBlock(string descriptorHex)
+        {
+            if (string.IsNullOrEmpty(descriptorHex)) return false;
+            return descriptorHex.IndexOf("050f0921a102", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         private static HMHat MapHat(ushort xinputButtons)

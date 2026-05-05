@@ -212,7 +212,7 @@
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Bewegungsserver</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU-/CemuHook-Motion-Provider-Protokollserver für Gyroskop- und Beschleunigungsdaten.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-Bewegungsserver aktivieren (CemuHook-Motion-Provider-Protokoll)</value></data>
-  <data name="Dashboard_Port" xml:space="preserve"><value>Port:</value></data>
+  <data name="Dashboard_Port" xml:space="preserve"><value>Port</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Stellt Gyro-/Beschleunigungsdaten für Cemu, Dolphin, Yuzu usw. bereit.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Web-Controller</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Stellt eine Gamepad-Oberfläche für Browser in Ihrem lokalen Netzwerk bereit.</value></data>
@@ -221,7 +221,7 @@
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Bildschirm-Touchoberfläche für PlayStation-kompatible Touchpad-Emulation.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay aktivieren</value></data>
-  <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Deckkraft:</value></data>
+  <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Deckkraft</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Position zurücksetzen</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>Rechtsklick gedrückt halten zum Ziehen</value></data>
   <data name="Dashboard_Drivers" xml:space="preserve"><value>Treiber</value></data>

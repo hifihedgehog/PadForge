@@ -430,6 +430,8 @@ public class Strings : INotifyPropertyChanged
     public string Pad_AT_MultiPosFeedback_Tooltip => Get("Pad_AT_MultiPosFeedback_Tooltip");
     public string Pad_AT_Slope_Tooltip => Get("Pad_AT_Slope_Tooltip");
     public string Pad_AT_MultiPosVibration_Tooltip => Get("Pad_AT_MultiPosVibration_Tooltip");
+    public string Pad_AT_LoadGameCubePreset => Get("Pad_AT_LoadGameCubePreset");
+    public string Pad_AT_LoadGameCubePreset_Tooltip => Get("Pad_AT_LoadGameCubePreset_Tooltip");
     public string Pad_Lighting => Get("Pad_Lighting");
     public string Pad_Lighting_Header => Get("Pad_Lighting_Header");
     public string Pad_Lighting_Subtitle => Get("Pad_Lighting_Subtitle");

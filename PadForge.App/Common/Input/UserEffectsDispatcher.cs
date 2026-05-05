@@ -401,6 +401,17 @@ namespace PadForge.Common.Input
             }
             else if (!wantTimer && _animTickActive)
             {
+                // Dispatch a final snapshot before stopping so the rumble
+                // bytes (now zeroed) reach the firmware. Without this,
+                // the dispatcher's last per-tick write was the live
+                // rumble; when the polling thread reports gameRumble=false
+                // and we stop the timer here, the controller never gets
+                // a "rumble = 0" packet and keeps rumbling until the next
+                // dispatch (which can be 6-8s away if the user has no
+                // animated lightbar / audio rumble running). This is the
+                // OnPollingTickInstance counterpart to OnAnimTick's
+                // early-exit final snapshot at line ~479.
+                DispatchSnapshot();
                 StopAnimTimer();
             }
         }

@@ -1005,6 +1005,8 @@
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>オフ</value></data>
   <data name="Pad_Lighting_MicLed_Solid" xml:space="preserve"><value>点灯</value></data>
   <data name="Pad_Lighting_MicLed_Pulse" xml:space="preserve"><value>パルス</value></data>
+  <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>オーディオデバイスに追従</value></data>
+  <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>オーディオデバイス</value></data>
   <data name="Pad_Lighting_PlayerLeds" xml:space="preserve"><value>プレイヤーLED</value></data>
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>タッチパッドの下にある 5 つの小さな白い LED。表示するプレイヤースロットのパターンと明るさを選びます。</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>インジケーターLED</value></data>
@@ -1056,9 +1058,16 @@
   <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>オーディオバンド — 3 色、ハードな切り替え</value></data>
   <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>オーディオバンド — 3 色、滑らかなグラデーション</value></data>
   <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>オーディオバンド — 3 色、境界でクロスフェード</value></data>
-  <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>インプットリアクティブ — 押すたびにランダムカラー</value></data>
+  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>バッテリー — 残量に応じたグラデーション</value></data>
+  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>ストロボ — 矩形波点滅</value></data>
+  <data name="Pad_Lighting_BatteryLowColor" xml:space="preserve"><value>低残量</value></data>
+  <data name="Pad_Lighting_BatteryHighColor" xml:space="preserve"><value>満充電</value></data>
+  <data name="Pad_ResetBatteryLowColor" xml:space="preserve"><value>低残量カラーをリセット</value></data>
+  <data name="Pad_ResetBatteryHighColor" xml:space="preserve"><value>満充電カラーをリセット</value></data>
+    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>インプットリアクティブ — 押すたびにランダムカラー</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>インプットリアクティブ — パレットを巡回</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>インプットリアクティブ — 押下ごとに単色</value></data>
+  <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>明るさ</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期 (ms)</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>パレット</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>カラー 1</value></data>
@@ -1079,6 +1088,7 @@
   <data name="Pad_ResetLedBrightness" xml:space="preserve"><value>LEDの明るさをリセット</value></data>
   <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>プレイヤーパターンをリセット</value></data>
   <data name="Pad_ResetMuteLedMode" xml:space="preserve"><value>ミュートLEDモードをリセット</value></data>
+  <data name="Pad_ResetLightbarRainbowBrightness" xml:space="preserve"><value>明るさをリセット</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>周期をリセット</value></data>
   <data name="Pad_ResetLightbarInputHold" xml:space="preserve"><value>パルス保持をリセット</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>パルス減衰をリセット</value></data>

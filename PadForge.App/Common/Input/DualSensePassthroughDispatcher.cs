@@ -260,5 +260,51 @@ namespace PadForge.Common.Input
             var targets = ResolveAssignedDualSenseHandles(padIndex);
             return targets != null && targets.Count > 0;
         }
+
+        /// <summary>Returns true when the specific device identified by
+        /// <paramref name="deviceGuid"/> is a passthrough target for
+        /// <paramref name="padIndex"/>. Used by
+        /// <c>SlotRumbleForDeviceProvider</c> to zero out rumble bytes for
+        /// the device that the passthrough dispatcher is also writing —
+        /// avoiding the dispatcher / passthrough double-fire on real
+        /// DualSenses while still letting non-DualSense Sony devices on
+        /// the same slot (DS4) and non-Sony devices (Xbox via Step 2)
+        /// receive rumble normally.</summary>
+        public static bool IsPassthroughTarget(int padIndex, Guid deviceGuid)
+        {
+            if (deviceGuid == Guid.Empty) return false;
+
+            var settings = SettingsManager.UserSettings;
+            var devices = SettingsManager.UserDevices;
+            if (settings == null || devices == null) return false;
+
+            // Cheap path: must be mapped to the slot.
+            bool mapped = false;
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                {
+                    if (us == null) continue;
+                    if (us.MapTo != padIndex) continue;
+                    if (us.InstanceGuid != deviceGuid) continue;
+                    mapped = true;
+                    break;
+                }
+            }
+            if (!mapped) return false;
+
+            lock (devices.SyncRoot)
+            {
+                foreach (var ud in devices.Items)
+                {
+                    if (ud == null) continue;
+                    if (ud.InstanceGuid != deviceGuid) continue;
+                    if (!ud.IsOnline) return false;
+                    if (ud.VendorId != SonyVid) return false;
+                    return ud.ProdId == PidStandard || ud.ProdId == PidEdge;
+                }
+            }
+            return false;
+        }
     }
 }

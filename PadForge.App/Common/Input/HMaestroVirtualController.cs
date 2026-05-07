@@ -1,6 +1,7 @@
 using System;
 using HIDMaestro;
 using PadForge.Engine;
+using PadForge.Services;
 
 namespace PadForge.Common.Input
 {
@@ -55,6 +56,26 @@ namespace PadForge.Common.Input
         {
             if (IsConnected) return;
             _controller = _ctx.CreateController(_profile);
+
+            // HM v1.3.5 round-2 timing hook for issue #21 (USB virtual
+            // input regression). Fires on the submit thread inline; we
+            // log only outliers (> 1 ms) to keep volume bounded — at
+            // 250 Hz polling, even a 1-in-100 outlier rate produces
+            // ~2.5 lines/sec which is fine for the diag file. HM uses
+            // these to localize whether the jerk lives in WriteInputFrame
+            // (P/Invoke / kernel-section / SetEvent) or BuildReportInto
+            // (managed encoder).
+            _controller.OnSubmitLatencyMicros = micros =>
+            {
+                if (micros < 1000) return;
+                try
+                {
+                    System.IO.File.AppendAllText(
+                        System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-submit-latency.log"),
+                        $"{DateTime.UtcNow:HH:mm:ss.fff} pad={FeedbackPadIndex} profile={_profile.Id} latency_us={micros}\n");
+                }
+                catch { }
+            };
 
             // Publish PID Pool + initial PID State BEFORE any GetFeature can
             // race in. DirectInput's CDIEffect::CreateEffect issues
@@ -206,6 +227,128 @@ namespace PadForge.Common.Input
             _controller.SubmitState(state);
         }
 
+        // Sony int16 sensor scaling — matches SonyReportPackers.ScaleGyro
+        // and ScaleAccel exactly, which is the working USB path's known-
+        // good conversion:
+        //   Gyro range ±2000 deg/s → int16 (scale 32767/2000 ≈ 16.38)
+        //   Accel range ±4 g       → int16 (scale 32767/4    ≈ 8191.75)
+        // Don't reinvent: BT virtuals must produce the same byte values
+        // the USB SubmitRawReport path produces, just at different byte
+        // positions (the BT Report 0x31 vendor-blob layout).
+        private const float GyroScale  = 32767f / 2000f;
+        private const float AccelScale = 32767f / 4f;
+
+        // Counters for the touchpad packet sequence + finger tracking IDs.
+        // PadForge's TouchpadState carries down/up bools per finger but no
+        // tracking ID; we synthesize one that increments on each new touch
+        // so consumers see a stable ID while a finger is held and a fresh
+        // one on each new press.
+        private byte _touchpadPacketCounter;
+        private byte _touchpadFinger0Id;
+        private byte _touchpadFinger1Id;
+        private bool _touchpadFinger0PrevDown;
+        private bool _touchpadFinger1PrevDown;
+
+        /// <summary>HM v1.3.5+ overload that submits gamepad state PLUS
+        /// touchpad / IMU / battery / mic-mute / headphone data via the
+        /// extended <c>HMGamepadState</c> fields. Sony BT virtuals (Report
+        /// 0x31 vendor-blob) light up touchpad / gyro / accel / battery on
+        /// the consumer side from this path; SubmitRawReport (called
+        /// separately for USB profiles) covers the same surface for the
+        /// USB Report 0x01 layout. Pass through whatever the assigned
+        /// physical pad reported via SDL — for non-Sony or sensor-less
+        /// physicals, supply zeros / Has=false and the encoder writes
+        /// zeros to those positions.</summary>
+        public void SubmitGamepadState(
+            Gamepad gp,
+            in TouchpadState tp,
+            in MotionSnapshot motion,
+            byte batteryPercent,
+            bool batteryCharging)
+        {
+            if (_controller == null) return;
+
+            // Tracking-ID synthesis. Bump each finger's ID on rising edge of
+            // its down state; keep stable while held; ID stays at last value
+            // (with active bit cleared via TouchpadFingerNActive=false) on
+            // release so the consumer sees a clean lift then a new press
+            // gets a new ID next time.
+            if (tp.Down0 && !_touchpadFinger0PrevDown) _touchpadFinger0Id++;
+            if (tp.Down1 && !_touchpadFinger1PrevDown) _touchpadFinger1Id++;
+            _touchpadFinger0PrevDown = tp.Down0;
+            _touchpadFinger1PrevDown = tp.Down1;
+            if (tp.PacketCounter != _touchpadPacketCounter) _touchpadPacketCounter = tp.PacketCounter;
+
+            byte battery10 = (byte)Math.Clamp(batteryPercent / 10, 0, 10);
+            bool batteryFull = batteryPercent >= 100;
+
+            var state = new HMGamepadState
+            {
+                LeftStickX = gp.ThumbLX / 32767f,
+                LeftStickY = -gp.ThumbLY / 32767f,
+                RightStickX = gp.ThumbRX / 32767f,
+                RightStickY = -gp.ThumbRY / 32767f,
+                LeftTrigger = gp.LeftTrigger / 65535f,
+                RightTrigger = gp.RightTrigger / 65535f,
+                Buttons = MapButtons(gp.Buttons),
+                Hat = MapHat(gp.Buttons),
+
+                TouchpadFinger0Active = tp.Down0,
+                TouchpadFinger0X = (ushort)Math.Clamp((int)Math.Round(tp.X0 * 1919f), 0, 1919),
+                TouchpadFinger0Y = (ushort)Math.Clamp((int)Math.Round(tp.Y0 * 1079f), 0, 1079),
+                TouchpadFinger0Id = (byte)(_touchpadFinger0Id & 0x7F),
+                TouchpadFinger1Active = tp.Down1,
+                TouchpadFinger1X = (ushort)Math.Clamp((int)Math.Round(tp.X1 * 1919f), 0, 1919),
+                TouchpadFinger1Y = (ushort)Math.Clamp((int)Math.Round(tp.Y1 * 1079f), 0, 1079),
+                TouchpadFinger1Id = (byte)(_touchpadFinger1Id & 0x7F),
+                TouchpadPacketCounter = _touchpadPacketCounter,
+
+                GyroPitch = motion.HasMotion ? (short)Math.Clamp((int)Math.Round(motion.GyroPitch * GyroScale), short.MinValue, short.MaxValue) : (short)0,
+                GyroYaw   = motion.HasMotion ? (short)Math.Clamp((int)Math.Round(motion.GyroYaw   * GyroScale), short.MinValue, short.MaxValue) : (short)0,
+                GyroRoll  = motion.HasMotion ? (short)Math.Clamp((int)Math.Round(motion.GyroRoll  * GyroScale), short.MinValue, short.MaxValue) : (short)0,
+                AccelX    = motion.HasMotion ? (short)Math.Clamp((int)Math.Round(motion.AccelX    * AccelScale), short.MinValue, short.MaxValue) : (short)0,
+                AccelY    = motion.HasMotion ? (short)Math.Clamp((int)Math.Round(motion.AccelY    * AccelScale), short.MinValue, short.MaxValue) : (short)0,
+                AccelZ    = motion.HasMotion ? (short)Math.Clamp((int)Math.Round(motion.AccelZ    * AccelScale), short.MinValue, short.MaxValue) : (short)0,
+                SensorTimestamp = (uint)(motion.TimestampUs & 0xFFFFFFFF),
+
+                BatteryLevel    = battery10,
+                BatteryCharging = batteryCharging,
+                BatteryFull     = batteryFull,
+
+                // Not currently sourced from PadForge's input pipeline — SDL3
+                // doesn't surface DS5's MIC_MUTE state or the headphones-
+                // connected bit through the gamepad API. Leave at default
+                // (false) until we add a side-channel read; HM's encoder
+                // writes zero to the corresponding bits.
+                MicMuted = false,
+                HeadphonesConnected = false,
+            };
+
+            // One-line per-second diag — tells us whether the new overload
+            // is being hit and whether we're feeding non-zero data into the
+            // encoder. Sampled at ~1 Hz so it doesn't drown the log.
+            long nowTickMs = Environment.TickCount64;
+            if (nowTickMs - _lastExtendedDiagTickMs > 1000)
+            {
+                _lastExtendedDiagTickMs = nowTickMs;
+                try
+                {
+                    System.IO.File.AppendAllText(
+                        System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-ds5-passthrough.log"),
+                        $"{DateTime.UtcNow:HH:mm:ss.fff} [submit-ext] pad={FeedbackPadIndex} profile={_profile.Id} " +
+                        $"tp0=({state.TouchpadFinger0Active},{state.TouchpadFinger0X},{state.TouchpadFinger0Y}) " +
+                        $"gyro=({state.GyroPitch},{state.GyroYaw},{state.GyroRoll}) " +
+                        $"accel=({state.AccelX},{state.AccelY},{state.AccelZ}) " +
+                        $"battery=({state.BatteryLevel},charging={state.BatteryCharging},full={state.BatteryFull})\n");
+                }
+                catch { }
+            }
+
+            _controller.SubmitState(state);
+        }
+
+        private long _lastExtendedDiagTickMs;
+
         /// <summary>
         /// Submit an ExtendedRawState (produced by the Extended dynamic
         /// mapping path) directly to HIDMaestro. Covers the full HMGamepadState
@@ -333,27 +476,66 @@ namespace PadForge.Common.Input
                 _ds5Dispatcher.Start();
             }
 
+            // Sony pads (DS5, DS4 in either transport) consume HM v1.3.5's
+            // OutputDecoded event for both the rumble decode AND the DS5
+            // passthrough forward. The decoded fields surface parsed
+            // `leftMotor` / `rightMotor` (transport-agnostic) plus a
+            // pre-stripped `sdlPassthrough` byte[] (47 bytes for DS5, 31
+            // for DS4) that's already in USB-equivalent form regardless
+            // of whether the host wrote Report 0x02 (USB) or Report 0x31
+            // (BT framing + CRC32). PadForge forwards `sdlPassthrough`
+            // verbatim via SDL_SendGamepadEffect — SDL handles the
+            // transport-specific framing for the destination physical pad.
+            //
+            // Compared to the prior byte-offset approach this also resolves
+            // the latent DS5 BT bug where Report 0x31's framing offset
+            // shifted every byte by two, plus the off-by-one DS4 read
+            // where the old code read the reserved byte instead of
+            // leftMotor.
+            //
+            // vibrationStates is written for every Sony virtual regardless
+            // of whether a DualSense passthrough is in flight. Step 2's
+            // ApplyForceFeedback reads it to fire SDL_RumbleJoystick on
+            // non-Sony devices on the same slot (Xbox, third-party, etc.).
+            // Double-fire on the real DualSense is prevented at a different
+            // layer: SlotRumbleForDeviceProvider returns (0,0) for any
+            // device that's a passthrough target, so the Sony dispatcher
+            // emits zero rumble bytes for that specific device while the
+            // passthrough dispatcher carries the game's actual rumble.
+            _controller.OutputDecoded += (ctrl, e) =>
+            {
+                int idx = FeedbackPadIndex;
+                if (idx < 0 || idx >= vibrationStates.Length) return;
+
+                if (e.Fields.TryGetValue("leftMotor", out var lmObj) && lmObj is byte left
+                 && e.Fields.TryGetValue("rightMotor", out var rmObj) && rmObj is byte right)
+                {
+                    vibrationStates[idx].LeftMotorSpeed  = (ushort)(left  * 257);
+                    vibrationStates[idx].RightMotorSpeed = (ushort)(right * 257);
+                }
+
+                if (_ds5Dispatcher != null
+                    && _profile.VendorId == SonyVid
+                    && e.Fields.TryGetValue("effectPayload", out var epObj)
+                    && epObj is byte[] effectPayload
+                    && effectPayload.Length > 0)
+                {
+                    _ds5Dispatcher.Enqueue(0x02, effectPayload);
+                    // Capture per-subsystem state from the external write.
+                    // The user-effects dispatcher mirrors each touched
+                    // subsystem (rumble / triggers / mic / lightbar /
+                    // player) verbatim for the grace window, while still
+                    // animating subsystems the writer didn't touch.
+                    UserEffectsDispatcher.NotifyExternalSubsystems(idx, effectPayload);
+                }
+            };
+
             _controller.OutputReceived += (ctrl, pkt) =>
             {
                 int idx = FeedbackPadIndex;
                 if (idx < 0 || idx >= vibrationStates.Length) return;
 
                 var data = pkt.Data.Span;
-
-                // DualSense pass-through (Feature A — issue #6).  Capture
-                // every Sony output report 0x02 / 0x31 into the dispatcher
-                // channel; the worker forwards it via SDL_SendGamepadEffect
-                // to every assigned physical DualSense / DualSense Edge.
-                // No return — falls through to the rumble handler below,
-                // which is gated on no-assigned-DS5 to avoid double-firing
-                // the motors (the DS5 message already carries them).
-                if (_ds5Dispatcher != null
-                    && pkt.Source == HMOutputSource.HidOutput
-                    && _profile.VendorId == SonyVid
-                    && (pkt.ReportId == 0x02 || pkt.ReportId == 0x31))
-                {
-                    _ds5Dispatcher.Enqueue(pkt.ReportId, data);
-                }
 
                 // XInput vibration packet layout (from IOCTL_XUSB_SET_STATE):
                 //   data[0] = 0x00 (command)
@@ -367,47 +549,6 @@ namespace PadForge.Common.Input
                 // NOT filter packets where both bytes are 0 (that's the "off"
                 // phase of the duty cycle).
                 if (pkt.Source == HMOutputSource.XInput && data.Length >= 5)
-                {
-                    vibrationStates[idx].LeftMotorSpeed = (ushort)(data[2] * 257);
-                    vibrationStates[idx].RightMotorSpeed = (ushort)(data[3] * 257);
-                    return;
-                }
-
-                // DualShock 4 / DualSense (Sony VID 0x054C) HID output report:
-                // Report ID 0x05 (DS4) / 0x02 (DS5 USB), bytes [2]/[3] are
-                // the rumble motors.
-                //
-                // The skip below applies ONLY when this is a DualSense
-                // virtual (_ds5Dispatcher non-null) AND a DualSense
-                // physical is mapped to receive the passthrough above —
-                // in that one case the game's full effect packet
-                // (Report 0x02 / 0x31) is forwarded verbatim via
-                // SDL_SendGamepadEffect, which already carries the
-                // rumble bytes; writing motors here too would let the
-                // SDL rumble path on Step 2's ApplyForceFeedback
-                // double-fire on the DS5.
-                //
-                // For a DS4 virtual the passthrough doesn't fire
-                // (Report 0x05 isn't in the 0x02 / 0x31 set, and
-                // _ds5Dispatcher is null because IsDualSenseVirtual is
-                // false), so even when an assigned physical DS5 exists,
-                // the rumble bytes have to flow through vibrationStates —
-                // otherwise the assigned Xbox / DS5 / generic pad gets
-                // nothing. The pre-fix gate keyed only on
-                // HasAssignedDualSense, which silently broke DS4 virtual
-                // FFB pass-through whenever any DS5 was mapped to the
-                // same slot.
-                //
-                // Latent BT bug noted in the dualsense-adaptive-triggers
-                // recipe: data[2]/data[3] aren't motor bytes for DS5 BT
-                // (ReportId 0x31, BT framing offset shifts everything).
-                // Tracked for the v3.1.0 Commit 3 polish pass.
-                bool ds5PassthroughHandlesThis = _ds5Dispatcher != null
-                    && DualSensePassthroughDispatcher.HasAssignedDualSense(idx);
-                if (pkt.Source == HMOutputSource.HidOutput
-                    && _profile.VendorId == 0x054C
-                    && data.Length >= 4
-                    && !ds5PassthroughHandlesThis)
                 {
                     vibrationStates[idx].LeftMotorSpeed = (ushort)(data[2] * 257);
                     vibrationStates[idx].RightMotorSpeed = (ushort)(data[3] * 257);

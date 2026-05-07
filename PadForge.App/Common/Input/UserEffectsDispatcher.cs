@@ -1100,6 +1100,26 @@ namespace PadForge.Common.Input
                     byte rR = deliverRumble ? perDevRumble.right : (byte)0;
                     byte rL = deliverRumble ? perDevRumble.left  : (byte)0;
 
+                    // Game-driven passthrough: when a game wrote to the
+                    // virtual DualSense, OutputDecoded enqueues the full
+                    // effect payload to the passthrough dispatcher AND
+                    // the per-subsystem mirror captures the rumble bytes
+                    // as overrides.RumbleRight/Left. For the specific
+                    // real DualSense the passthrough targets, zero our
+                    // rumble bytes so the Sony dispatcher's effect packet
+                    // doesn't race the passthrough write to the same
+                    // device. Test rumble doesn't go through OutputDecoded,
+                    // so the override is null and this branch is skipped —
+                    // the bytes flow through to the real DualSense via
+                    // the dispatcher path, which is the only writer.
+                    bool gameDrivenRumble = overrides.RumbleRight.HasValue && overrides.RumbleLeft.HasValue;
+                    if (gameDrivenRumble && isDs5
+                        && DualSensePassthroughDispatcher.IsPassthroughTarget(_padIndex, ud.InstanceGuid))
+                    {
+                        rR = 0;
+                        rL = 0;
+                    }
+
                     // Resolve this device's per-device lighting config.
                     // Falls back to the slot's anchor config if missing
                     // (transient case before the dictionary is wired).

@@ -189,17 +189,43 @@ namespace PadForge.Common.Input
                             var us = settingsForPoke.Items[i];
                             if (us == null || us.MapTo != padIndex) continue;
                             var ps = us.GetPadSetting();
-                            if (ps != null && ps.AudioRumbleEnabled == "1")
+                            if (ps == null) continue;
+                            if (ps.AudioRumbleEnabled == "1") hasAudioRumbleEnabled = true;
+                            // Constant force: when any per-device PadSetting on
+                            // this slot has it enabled with nonzero X or Y,
+                            // treat as game-rumble-equivalent so the Sony
+                            // dispatcher's effect-packet timer runs and the
+                            // synthesized motor bytes from
+                            // ConstantForceEvaluator.Resolve actually reach
+                            // the wire. Without this poke, a slot that's
+                            // game-silent and lightbar-static parks the
+                            // dispatcher and constant force never fires on
+                            // DualSense / DS4.
+                            if (!hasGameRumble && ps.ConstantForceEnabled == "1"
+                                && (ParseConstantForceComponent(ps.ConstantForceX) != 0.0
+                                    || ParseConstantForceComponent(ps.ConstantForceY) != 0.0))
                             {
-                                hasAudioRumbleEnabled = true;
-                                break;
+                                hasGameRumble = true;
                             }
+                            if (hasAudioRumbleEnabled && hasGameRumble) break;
                         }
                     }
                 }
 
                 UserEffectsDispatcher.OnPollingTick(padIndex, hasGameRumble, hasAudioRumbleEnabled);
             }
+        }
+
+        // PadSetting stores ConstantForceX/Y as InvariantCulture strings
+        // (XmlElement-serialized). Parse defensively: anything we can't
+        // turn into a number reads as zero so the dispatcher-timer poke
+        // logic above never trips on a malformed setting.
+        private static double ParseConstantForceComponent(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return 0.0;
+            return double.TryParse(s, System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out double v)
+                ? v : 0.0;
         }
 
         /// <summary>Finds the PTP device handle for a given InstanceGuid.</summary>

@@ -537,6 +537,30 @@ namespace PadForge.Common.Input
 
                 var data = pkt.Data.Span;
 
+                // Diagnostic capture — every output report that reaches the
+                // virtual, with source / report ID / length / first-16-byte
+                // hex. Used to diagnose why some HID consumers (Chromium's
+                // DualShock4 driver in particular) write to a virtual pad
+                // but the rumble doesn't propagate. Compare a known-good
+                // writer's bytes (Steam Input) against the suspect
+                // writer's bytes to see whether the report ID, transport
+                // shape, or framing differs. Cheap enough to leave on
+                // through the v3.1.4 dev cycle; strip at release prep.
+                try
+                {
+                    int dump = Math.Min(data.Length, 16);
+                    var sb = new System.Text.StringBuilder(dump * 3);
+                    for (int i = 0; i < dump; i++)
+                    {
+                        if (i > 0) sb.Append(' ');
+                        sb.Append(data[i].ToString("X2"));
+                    }
+                    System.IO.File.AppendAllText(
+                        System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-output-capture.log"),
+                        $"{DateTime.UtcNow:HH:mm:ss.fff} pad={idx} profile={_profile.Id} src={pkt.Source} rpt=0x{pkt.ReportId:X2} len={data.Length} bytes=[{sb}]\n");
+                }
+                catch { }
+
                 // XInput vibration packet layout (from IOCTL_XUSB_SET_STATE):
                 //   data[0] = 0x00 (command)
                 //   data[1] = 0x08 (size)

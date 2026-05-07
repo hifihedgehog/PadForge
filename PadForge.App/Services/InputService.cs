@@ -231,15 +231,6 @@ namespace PadForge.Services
                 var raw = _inputManager.VibrationStates[padIndex];
                 if (raw == null) return ((byte)0, (byte)0);
 
-                // If this specific device is a DualSense passthrough target,
-                // zero rumble bytes so the Sony dispatcher's effect packet
-                // doesn't race the passthrough dispatcher writing the same
-                // device. The passthrough carries the game's rumble; the
-                // dispatcher carries lightbar / triggers / mic / player
-                // animation that's PadForge-driven.
-                if (DualSensePassthroughDispatcher.IsPassthroughTarget(padIndex, deviceGuid))
-                    return ((byte)0, (byte)0);
-
                 PadSetting devicePs = null;
                 var settings = SettingsManager.UserSettings;
                 if (settings != null && deviceGuid != Guid.Empty)

@@ -467,7 +467,6 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _lightbarMode, value))
                 {
-                    OnPropertyChanged(nameof(ShowPaletteEditor));
                     OnPropertyChanged(nameof(ShowPaletteForBase));
                     OnPropertyChanged(nameof(ShowPaletteForOverlay));
                 }
@@ -489,7 +488,6 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _inputReactiveMode, value))
                 {
                     OnPropertyChanged(nameof(IsInputReactiveActive));
-                    OnPropertyChanged(nameof(ShowPaletteEditor));
                     OnPropertyChanged(nameof(ShowPaletteForBase));
                     OnPropertyChanged(nameof(ShowPaletteForOverlay));
                     OnPropertyChanged(nameof(IsInputReactiveFixed));
@@ -501,13 +499,6 @@ namespace PadForge.ViewModels
         /// (any non-Off variant). UI binds Hold / Decay slider
         /// visibility to this.</summary>
         public bool IsInputReactiveActive => _inputReactiveMode != InputReactiveMode.Off;
-
-        /// <summary>True when either the base mode is ColorCycle or
-        /// the input-reactive overlay is Cycle. The palette editor
-        /// shows when either consumer is active.</summary>
-        public bool ShowPaletteEditor =>
-            _lightbarMode == LightbarMode.ColorCycle
-            || _inputReactiveMode == InputReactiveMode.Cycle;
 
         /// <summary>True when the palette editor is owned by the
         /// LightbarMode = ColorCycle base mode. Drives the palette
@@ -1051,15 +1042,6 @@ namespace PadForge.ViewModels
             _resetInputReactiveMode ??= new RelayCommand(() => InputReactiveMode = InputReactiveMode.Off);
         private RelayCommand _resetInputReactiveMode;
 
-        public RelayCommand ResetInputReactiveColorCommand =>
-            _resetInputReactiveColor ??= new RelayCommand(() =>
-            {
-                InputReactiveR = 0xFF;
-                InputReactiveG = 0xFF;
-                InputReactiveB = 0xFF;
-            });
-        private RelayCommand _resetInputReactiveColor;
-
         public RelayCommand ResetInputReactiveRCommand =>
             _resetInputReactiveR ??= new RelayCommand(() => InputReactiveR = 0xFF);
         private RelayCommand _resetInputReactiveR;
@@ -1089,14 +1071,6 @@ namespace PadForge.ViewModels
         public RelayCommand ResetLightbarRainbowBrightnessCommand =>
             _resetLightbarRainbowBrightness ??= new RelayCommand(() => LightbarRainbowBrightness = 100);
         private RelayCommand _resetLightbarRainbowBrightness;
-
-        private RelayCommand _resetLightbarBatteryLow;
-        public RelayCommand ResetLightbarBatteryLowCommand =>
-            _resetLightbarBatteryLow ??= new RelayCommand(() => { LightbarBatteryLowR = 0xFF; LightbarBatteryLowG = 0; LightbarBatteryLowB = 0; });
-
-        private RelayCommand _resetLightbarBatteryHigh;
-        public RelayCommand ResetLightbarBatteryHighCommand =>
-            _resetLightbarBatteryHigh ??= new RelayCommand(() => { LightbarBatteryHighR = 0; LightbarBatteryHighG = 0xFF; LightbarBatteryHighB = 0; });
 
         // Per-channel resets for the Battery low/high picker — matches
         // the inline ResetButtonTight layout used by the Static base

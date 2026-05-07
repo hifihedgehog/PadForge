@@ -504,8 +504,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_Mode_Strobe => Get("Pad_Lighting_Mode_Strobe");
     public string Pad_Lighting_BatteryLowColor => Get("Pad_Lighting_BatteryLowColor");
     public string Pad_Lighting_BatteryHighColor => Get("Pad_Lighting_BatteryHighColor");
-    public string Pad_ResetBatteryLowColor => Get("Pad_ResetBatteryLowColor");
-    public string Pad_ResetBatteryHighColor => Get("Pad_ResetBatteryHighColor");
     public string Pad_Lighting_Mode_InputReactive => Get("Pad_Lighting_Mode_InputReactive");
     public string Pad_Lighting_Mode_InputReactiveCycle => Get("Pad_Lighting_Mode_InputReactiveCycle");
     public string Pad_Lighting_Mode_InputReactiveFixed => Get("Pad_Lighting_Mode_InputReactiveFixed");
@@ -516,7 +514,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_InputReactive_Fixed => Get("Pad_Lighting_InputReactive_Fixed");
     public string Pad_ResetInputReactive => Get("Pad_ResetInputReactive");
     public string Pad_Lighting_InputReactive_FixedColor => Get("Pad_Lighting_InputReactive_FixedColor");
-    public string Pad_ResetInputReactiveColor => Get("Pad_ResetInputReactiveColor");
     public string Pad_Lighting_Period => Get("Pad_Lighting_Period");
     public string Pad_Lighting_RainbowBrightness => Get("Pad_Lighting_RainbowBrightness");
     public string Pad_Lighting_PaletteHeader => Get("Pad_Lighting_PaletteHeader");

@@ -231,6 +231,15 @@ namespace PadForge.Services
                 var raw = _inputManager.VibrationStates[padIndex];
                 if (raw == null) return ((byte)0, (byte)0);
 
+                // If this specific device is a DualSense passthrough target,
+                // zero rumble bytes so the Sony dispatcher's effect packet
+                // doesn't race the passthrough dispatcher writing the same
+                // device. The passthrough carries the game's rumble; the
+                // dispatcher carries lightbar / triggers / mic / player
+                // animation that's PadForge-driven.
+                if (DualSensePassthroughDispatcher.IsPassthroughTarget(padIndex, deviceGuid))
+                    return ((byte)0, (byte)0);
+
                 PadSetting devicePs = null;
                 var settings = SettingsManager.UserSettings;
                 if (settings != null && deviceGuid != Guid.Empty)
@@ -290,6 +299,19 @@ namespace PadForge.Services
                 if (_inputManager == null) return Guid.Empty;
                 if (padIndex < 0 || padIndex >= InputManager.MaxPads) return Guid.Empty;
                 return _inputManager.TestRumbleTargetGuid[padIndex];
+            };
+
+            // Per-slot battery percent for Battery lightbar mode. Clamp
+            // negative ("unknown") to 100 so unknown reads as full charge,
+            // matching the SlotBatteryPercentProvider default.
+            UserEffectsDispatcher.SlotBatteryPercentProvider = padIndex =>
+            {
+                if (_inputManager == null) return (byte)100;
+                if (padIndex < 0 || padIndex >= InputManager.MaxPads) return (byte)100;
+                int pct = _inputManager.BatteryPercents[padIndex];
+                if (pct < 0) return (byte)100;
+                if (pct > 100) return (byte)100;
+                return (byte)pct;
             };
 
             // Per-(slot, device) lightbar configs — drives the
@@ -482,6 +504,7 @@ namespace PadForge.Services
                 UserEffectsDispatcher.SlotRumbleForDeviceProvider = null;
                 UserEffectsDispatcher.SlotRawRumbleProvider = null;
                 UserEffectsDispatcher.TestRumbleTargetGuidProvider = null;
+                UserEffectsDispatcher.SlotBatteryPercentProvider = null;
                 UserEffectsDispatcher.SlotPerDeviceConfigsProvider = null;
             }
 

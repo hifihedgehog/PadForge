@@ -1005,6 +1005,8 @@
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>끔</value></data>
   <data name="Pad_Lighting_MicLed_Solid" xml:space="preserve"><value>켜짐</value></data>
   <data name="Pad_Lighting_MicLed_Pulse" xml:space="preserve"><value>깜박임</value></data>
+  <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>오디오 장치 따라가기</value></data>
+  <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>오디오 장치</value></data>
   <data name="Pad_Lighting_PlayerLeds" xml:space="preserve"><value>플레이어 LED</value></data>
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>터치패드 아래의 다섯 개 작은 흰색 LED. 표시할 플레이어 슬롯 패턴과 밝기를 선택합니다.</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>표시 LED</value></data>
@@ -1056,9 +1058,16 @@
   <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>오디오 밴드 — 세 가지 색, 즉시 전환</value></data>
   <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>오디오 밴드 — 세 가지 색, 부드러운 그라데이션</value></data>
   <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>오디오 밴드 — 세 가지 색, 경계에서 크로스페이드</value></data>
-  <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>입력 반응 — 누를 때마다 랜덤 색상</value></data>
+  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>배터리 — 충전 레벨에 따른 그라데이션</value></data>
+  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>스트로보 — 사각파 점멸</value></data>
+  <data name="Pad_Lighting_BatteryLowColor" xml:space="preserve"><value>배터리 부족</value></data>
+  <data name="Pad_Lighting_BatteryHighColor" xml:space="preserve"><value>완전 충전</value></data>
+  <data name="Pad_ResetBatteryLowColor" xml:space="preserve"><value>배터리 부족 색상 초기화</value></data>
+  <data name="Pad_ResetBatteryHighColor" xml:space="preserve"><value>완전 충전 색상 초기화</value></data>
+    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>입력 반응 — 누를 때마다 랜덤 색상</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>입력 반응 — 팔레트 순회</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>입력 반응 — 누름마다 단일 색상</value></data>
+  <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>밝기</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>주기 (ms)</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>팔레트</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>색상 1</value></data>
@@ -1079,6 +1088,7 @@
   <data name="Pad_ResetLedBrightness" xml:space="preserve"><value>LED 밝기 초기화</value></data>
   <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>플레이어 패턴 초기화</value></data>
   <data name="Pad_ResetMuteLedMode" xml:space="preserve"><value>음소거 LED 모드 초기화</value></data>
+  <data name="Pad_ResetLightbarRainbowBrightness" xml:space="preserve"><value>밝기 초기화</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>주기 초기화</value></data>
   <data name="Pad_ResetLightbarInputHold" xml:space="preserve"><value>펄스 유지 초기화</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>펄스 감쇠 초기화</value></data>

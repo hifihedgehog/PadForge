@@ -135,7 +135,7 @@ namespace PadForge.Engine
         /// for Sony VID 0x054C with DS5 / DS5 Edge / DS4 PIDs before this
         /// method is called. Sony pads receive their entire effect packet
         /// (rumble + lightbar + AT + mic LED) from
-        /// <c>UserEffectsDispatcher</c> via <c>Ds5RawHidWriter</c>. SDL is
+        /// <c>UserEffectsDispatcher</c> via <c>SonyEffectWriter</c>. SDL is
         /// the sole writer for Xbox / generic gamepads / FFB joysticks —
         /// never for Sony.</para>
         /// <para>If a future change wants to route Sony pads through this

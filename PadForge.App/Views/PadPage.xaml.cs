@@ -1151,6 +1151,16 @@ namespace PadForge.Views
         }
 
         /// <summary>
+        /// Refresh the audio endpoint list backing the mic-LED FollowDeviceMute
+        /// picker so unplug / replug between settings opens reflects in the UI.
+        /// </summary>
+        private void MicLedDevicePicker_DropDownOpened(object sender, EventArgs e)
+        {
+            if (_currentPadVm?.PlayStationConfig is { } cfg)
+                cfg.RefreshMicLedDevices();
+        }
+
+        /// <summary>
         /// Populates the device axis picker ComboBox with devices assigned to the current slot.
         /// </summary>
         private void DeviceAxisPicker_DropDownOpened(object sender, EventArgs e)

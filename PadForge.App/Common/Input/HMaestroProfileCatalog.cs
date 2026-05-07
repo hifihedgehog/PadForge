@@ -58,29 +58,32 @@ namespace PadForge.Common.Input
             get { EnsureInitialized(); return _allProfiles; }
         }
 
-        /// <summary>Profiles in the Xbox family (HIDMaestro's JSON tags these
-        /// with vendor "Microsoft"; PadForge surfaces the category as "Xbox"
-        /// in the UI). Covers Xbox 360, Xbox One, Xbox Series, Elite, Adaptive,
-        /// etc.</summary>
+        /// <summary>Xbox-family controller profiles. Filter is the
+        /// intersection of "vendor is Microsoft" AND "name or id contains
+        /// Xbox" — keeps the bucket honest to its category label and
+        /// drops any Microsoft-vendor profiles that aren't Xbox controllers
+        /// (Surface peripherals, generic HID devices, etc.) into Extended.</summary>
         public static IReadOnlyList<HMProfile> XboxProfiles
         {
             get { EnsureInitialized(); return _xboxProfiles; }
         }
 
-        /// <summary>Profiles where vendor == "Sony" (HIDMaestro's JSON still
-        /// uses the Sony vendor string; PadForge surfaces the category as
-        /// "PlayStation" in the UI). Covers DualShock 3/4, DualSense,
-        /// DualSense Edge, PS Move, PS3 Remote, PS Classic.</summary>
+        /// <summary>PlayStation-family controller profiles. Filter is the
+        /// intersection of "vendor is Sony" AND "name or id contains
+        /// DualShock or DualSense" — covers DualShock 3/4 + DualSense /
+        /// DualSense Edge only. Non-controller Sony profiles (PS Move,
+        /// PS3 Remote, PS Classic, etc.) drop to Extended.</summary>
         public static IReadOnlyList<HMProfile> PlayStationProfiles
         {
             get { EnsureInitialized(); return _playStationProfiles; }
         }
 
-        /// <summary>Profiles that are NEITHER Xbox nor PlayStation family —
-        /// third-party gamepads, flight sticks, wheels, HOTAS, etc. Mutually
-        /// exclusive with <see cref="XboxProfiles"/> and
-        /// <see cref="PlayStationProfiles"/> so each profile appears in exactly
-        /// one category bucket.</summary>
+        /// <summary>Profiles that don't match the strict Xbox or PlayStation
+        /// filters above — third-party gamepads, flight sticks, wheels,
+        /// HOTAS, plus any vendor-Microsoft / vendor-Sony profiles whose
+        /// name doesn't carry the canonical product family (Surface, PS
+        /// Move, PS Classic, etc.). Mutually exclusive with the other two
+        /// buckets so each profile appears in exactly one category.</summary>
         public static IReadOnlyList<HMProfile> ExtendedProfiles
         {
             get { EnsureInitialized(); return _extendedProfiles; }
@@ -188,12 +191,21 @@ namespace PadForge.Common.Input
                     // Microsoft if a future HM rev ships "Microsoft Corporation".
                     // StartsWith keeps both variants in the right family bucket
                     // without us needing to chase upstream string changes.
+                    //
+                    // Xbox / PlayStation buckets additionally require the
+                    // profile name (or id slug) to carry the canonical
+                    // product family — "Xbox" for Microsoft, "DualShock" or
+                    // "DualSense" for Sony. Vendor-only matching pulled in
+                    // peripherals that share the brand but aren't gamepads
+                    // (Surface, PS Move, PS3 Remote, PS Classic), which
+                    // confused the user-facing pickers; those drop to
+                    // Extended now.
                     _xboxProfiles = _allProfiles
-                        .Where(p => IsXboxVendor(p.Vendor))
+                        .Where(IsXboxProfile)
                         .ToList();
 
                     _playStationProfiles = _allProfiles
-                        .Where(p => IsPlayStationVendor(p.Vendor))
+                        .Where(IsPlayStationProfile)
                         .ToList();
 
                     // Extended = everything that's not Xbox or PlayStation,
@@ -212,8 +224,8 @@ namespace PadForge.Common.Input
                     extended.AddRange(_allProfiles
                         .Where(p =>
                             p.Id != CustomProfileId &&
-                            !IsXboxVendor(p.Vendor) &&
-                            !IsPlayStationVendor(p.Vendor)));
+                            !IsXboxProfile(p) &&
+                            !IsPlayStationProfile(p)));
                     _extendedProfiles = extended;
                 }
                 catch
@@ -241,6 +253,19 @@ namespace PadForge.Common.Input
         private static bool IsPlayStationVendor(string vendor) =>
             !string.IsNullOrEmpty(vendor) &&
             vendor.StartsWith("Sony", StringComparison.OrdinalIgnoreCase);
+
+        private static bool ContainsToken(string s, string token) =>
+            !string.IsNullOrEmpty(s) &&
+            s.IndexOf(token, StringComparison.OrdinalIgnoreCase) >= 0;
+
+        private static bool IsXboxProfile(HMProfile p) =>
+            IsXboxVendor(p.Vendor) &&
+            (ContainsToken(p.Name, "Xbox") || ContainsToken(p.Id, "xbox"));
+
+        private static bool IsPlayStationProfile(HMProfile p) =>
+            IsPlayStationVendor(p.Vendor) &&
+            (ContainsToken(p.Name, "DualShock") || ContainsToken(p.Name, "DualSense")
+             || ContainsToken(p.Id, "dualshock") || ContainsToken(p.Id, "dualsense"));
 
         /// <summary>
         /// Build the synthetic "Custom" profile that anchors the Extended

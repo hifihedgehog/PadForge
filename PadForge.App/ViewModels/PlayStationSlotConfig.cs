@@ -340,8 +340,31 @@ namespace PadForge.ViewModels
         public MicLedMode MicLedMode
         {
             get => _micLedMode;
-            set => SetProperty(ref _micLedMode, value);
+            set
+            {
+                if (SetProperty(ref _micLedMode, value))
+                    OnPropertyChanged(nameof(IsMicLedFollowDevice));
+            }
         }
+
+        private string _micLedFollowDeviceId = string.Empty;
+        /// <summary>CoreAudio endpoint id (the same string returned by
+        /// MMDevice.ID) the FollowDeviceMute mode polls for mute state.
+        /// Empty string means "no device picked yet" — synthesizer falls
+        /// back to Off in that case. Persisted as a plain string so
+        /// settings round-trip survives endpoint reconnects (Windows
+        /// keeps the same id for a given physical device across
+        /// unplug / replug cycles).</summary>
+        public string MicLedFollowDeviceId
+        {
+            get => _micLedFollowDeviceId;
+            set => SetProperty(ref _micLedFollowDeviceId, value ?? string.Empty);
+        }
+
+        /// <summary>Bound to the Mic LED follow-device dropdown's
+        /// visibility — only show the picker when the user has picked
+        /// FollowDeviceMute as the mic-LED mode.</summary>
+        public bool IsMicLedFollowDevice => _micLedMode == MicLedMode.FollowDeviceMute;
 
         // Backwards-compat shim. Old XML uses bool MicLightOn; we keep
         // the property for round-tripping but route it through MicLedMode.
@@ -356,6 +379,47 @@ namespace PadForge.ViewModels
                 if (_micLedMode != target)
                     MicLedMode = target;
             }
+        }
+
+        private System.Collections.Generic.List<MicLedDeviceItem> _micLedAvailableDevices;
+        /// <summary>List of audio endpoints the mic-LED FollowDeviceMute
+        /// dropdown picks from. Lazily populated on first access; the
+        /// PadPage's DropDownOpened handler calls
+        /// <see cref="RefreshMicLedDevices"/> so the user always sees the
+        /// current device list when they open the picker (covers
+        /// post-launch unplug / replug).</summary>
+        public System.Collections.Generic.List<MicLedDeviceItem> MicLedAvailableDevices
+        {
+            get
+            {
+                _micLedAvailableDevices ??= BuildMicLedDeviceList();
+                return _micLedAvailableDevices;
+            }
+        }
+
+        public void RefreshMicLedDevices()
+        {
+            _micLedAvailableDevices = BuildMicLedDeviceList();
+            OnPropertyChanged(nameof(MicLedAvailableDevices));
+        }
+
+        private static System.Collections.Generic.List<MicLedDeviceItem> BuildMicLedDeviceList()
+        {
+            var list = new System.Collections.Generic.List<MicLedDeviceItem>();
+            try
+            {
+                var endpoints = PadForge.Common.Input.AudioMuteService.EnumerateEndpoints();
+                foreach (var ep in endpoints)
+                {
+                    string tag = ep.IsInput ? "[In]" : "[Out]";
+                    list.Add(new MicLedDeviceItem(ep.Id, $"{tag} {ep.FriendlyName}"));
+                }
+            }
+            catch
+            {
+                // Audio stack unavailable — combo just shows empty.
+            }
+            return list;
         }
 
         private PlayerLedMode _playerLedMode;
@@ -402,7 +466,11 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _lightbarMode, value))
+                {
                     OnPropertyChanged(nameof(ShowPaletteEditor));
+                    OnPropertyChanged(nameof(ShowPaletteForBase));
+                    OnPropertyChanged(nameof(ShowPaletteForOverlay));
+                }
             }
         }
 
@@ -422,6 +490,8 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(IsInputReactiveActive));
                     OnPropertyChanged(nameof(ShowPaletteEditor));
+                    OnPropertyChanged(nameof(ShowPaletteForBase));
+                    OnPropertyChanged(nameof(ShowPaletteForOverlay));
                     OnPropertyChanged(nameof(IsInputReactiveFixed));
                 }
             }
@@ -438,6 +508,23 @@ namespace PadForge.ViewModels
         public bool ShowPaletteEditor =>
             _lightbarMode == LightbarMode.ColorCycle
             || _inputReactiveMode == InputReactiveMode.Cycle;
+
+        /// <summary>True when the palette editor is owned by the
+        /// LightbarMode = ColorCycle base mode. Drives the palette
+        /// instance that lives under the LightbarMode dropdown so its
+        /// settings sit directly below the dropdown that revealed them.</summary>
+        public bool ShowPaletteForBase =>
+            _lightbarMode == LightbarMode.ColorCycle;
+
+        /// <summary>True when the palette editor is owned by the
+        /// InputReactive = Cycle overlay AND ColorCycle isn't the base
+        /// (so the palette never renders twice). Drives the palette
+        /// instance that lives under the InputReactive dropdown so a
+        /// user picking Cycle there gets the editor next to the dropdown
+        /// they just used.</summary>
+        public bool ShowPaletteForOverlay =>
+            _inputReactiveMode == InputReactiveMode.Cycle
+            && _lightbarMode != LightbarMode.ColorCycle;
 
         /// <summary>True when the input-reactive overlay is the
         /// Fixed variant — the color picker for the per-press flash
@@ -492,6 +579,40 @@ namespace PadForge.ViewModels
             get => _lightbarColorCycleSmooth;
             set => SetProperty(ref _lightbarColorCycleSmooth, value);
         }
+
+        private int _lightbarRainbowBrightness = 100;
+        /// <summary>Rainbow mode brightness, 0..100. The base Rainbow effect
+        /// runs at full HSV value (V=1.0) which the firmware renders as
+        /// peak brightness — fine for showcasing the lightbar but visually
+        /// loud at night / desk distance. This scales the final RGB output
+        /// linearly so the user can dim Rainbow without affecting other
+        /// modes' colors. Static / Breathing / AudioPulse already let the
+        /// user pick a darker base RGB; Rainbow has hardcoded saturation
+        /// and hue progression so it's the one mode that needs an explicit
+        /// brightness control.</summary>
+        public int LightbarRainbowBrightness
+        {
+            get => _lightbarRainbowBrightness;
+            set => SetProperty(ref _lightbarRainbowBrightness, Math.Clamp(value, 0, 100));
+        }
+
+        // Battery-mode endpoint colors. Defaults to red @ 0% → green @ 100%
+        // matching the canonical "low fuel = red, full = green" convention.
+        // The synthesizer linearly interpolates between Low and High using
+        // the current per-device battery percent.
+        private byte _lightbarBatteryLowR  = 0xFF;
+        public byte LightbarBatteryLowR  { get => _lightbarBatteryLowR;  set => SetProperty(ref _lightbarBatteryLowR,  value); }
+        private byte _lightbarBatteryLowG;
+        public byte LightbarBatteryLowG  { get => _lightbarBatteryLowG;  set => SetProperty(ref _lightbarBatteryLowG,  value); }
+        private byte _lightbarBatteryLowB;
+        public byte LightbarBatteryLowB  { get => _lightbarBatteryLowB;  set => SetProperty(ref _lightbarBatteryLowB,  value); }
+
+        private byte _lightbarBatteryHighR;
+        public byte LightbarBatteryHighR { get => _lightbarBatteryHighR; set => SetProperty(ref _lightbarBatteryHighR, value); }
+        private byte _lightbarBatteryHighG = 0xFF;
+        public byte LightbarBatteryHighG { get => _lightbarBatteryHighG; set => SetProperty(ref _lightbarBatteryHighG, value); }
+        private byte _lightbarBatteryHighB;
+        public byte LightbarBatteryHighB { get => _lightbarBatteryHighB; set => SetProperty(ref _lightbarBatteryHighB, value); }
 
         // Variable-length palette shared by ColorCycle and InputReactive
         // modes. Defaults to four primaries (red, green, blue, yellow);
@@ -844,6 +965,9 @@ namespace PadForge.ViewModels
                 InputReactiveB = 0xFF;
                 LightbarPeriodMs = 3000;
                 LightbarColorCycleSmooth = true;
+                LightbarRainbowBrightness = 100;
+                LightbarBatteryLowR = 0xFF; LightbarBatteryLowG = 0; LightbarBatteryLowB = 0;
+                LightbarBatteryHighR = 0; LightbarBatteryHighG = 0xFF; LightbarBatteryHighB = 0;
                 LightbarInputHoldMs = 0;
                 LightbarInputDecayMs = 600;
                 AudioLightbarSensitivity = 4.0;
@@ -936,6 +1060,16 @@ namespace PadForge.ViewModels
             });
         private RelayCommand _resetInputReactiveColor;
 
+        public RelayCommand ResetInputReactiveRCommand =>
+            _resetInputReactiveR ??= new RelayCommand(() => InputReactiveR = 0xFF);
+        private RelayCommand _resetInputReactiveR;
+        public RelayCommand ResetInputReactiveGCommand =>
+            _resetInputReactiveG ??= new RelayCommand(() => InputReactiveG = 0xFF);
+        private RelayCommand _resetInputReactiveG;
+        public RelayCommand ResetInputReactiveBCommand =>
+            _resetInputReactiveB ??= new RelayCommand(() => InputReactiveB = 0xFF);
+        private RelayCommand _resetInputReactiveB;
+
         public RelayCommand ResetPlayerLedBrightnessCommand =>
             _resetPlayerLedBrightness ??= new RelayCommand(() => PlayerLedBrightness = PlayerLedBrightness.High);
         private RelayCommand _resetPlayerLedBrightness;
@@ -951,6 +1085,41 @@ namespace PadForge.ViewModels
         public RelayCommand ResetLightbarPeriodCommand =>
             _resetLightbarPeriod ??= new RelayCommand(() => LightbarPeriodMs = 3000);
         private RelayCommand _resetLightbarPeriod;
+
+        public RelayCommand ResetLightbarRainbowBrightnessCommand =>
+            _resetLightbarRainbowBrightness ??= new RelayCommand(() => LightbarRainbowBrightness = 100);
+        private RelayCommand _resetLightbarRainbowBrightness;
+
+        private RelayCommand _resetLightbarBatteryLow;
+        public RelayCommand ResetLightbarBatteryLowCommand =>
+            _resetLightbarBatteryLow ??= new RelayCommand(() => { LightbarBatteryLowR = 0xFF; LightbarBatteryLowG = 0; LightbarBatteryLowB = 0; });
+
+        private RelayCommand _resetLightbarBatteryHigh;
+        public RelayCommand ResetLightbarBatteryHighCommand =>
+            _resetLightbarBatteryHigh ??= new RelayCommand(() => { LightbarBatteryHighR = 0; LightbarBatteryHighG = 0xFF; LightbarBatteryHighB = 0; });
+
+        // Per-channel resets for the Battery low/high picker — matches
+        // the inline ResetButtonTight layout used by the Static base
+        // color and the audio-band pickers.
+        public RelayCommand ResetLightbarBatteryLowRCommand =>
+            _resetBatLowR ??= new RelayCommand(() => LightbarBatteryLowR = 0xFF);
+        private RelayCommand _resetBatLowR;
+        public RelayCommand ResetLightbarBatteryLowGCommand =>
+            _resetBatLowG ??= new RelayCommand(() => LightbarBatteryLowG = 0);
+        private RelayCommand _resetBatLowG;
+        public RelayCommand ResetLightbarBatteryLowBCommand =>
+            _resetBatLowB ??= new RelayCommand(() => LightbarBatteryLowB = 0);
+        private RelayCommand _resetBatLowB;
+
+        public RelayCommand ResetLightbarBatteryHighRCommand =>
+            _resetBatHighR ??= new RelayCommand(() => LightbarBatteryHighR = 0);
+        private RelayCommand _resetBatHighR;
+        public RelayCommand ResetLightbarBatteryHighGCommand =>
+            _resetBatHighG ??= new RelayCommand(() => LightbarBatteryHighG = 0xFF);
+        private RelayCommand _resetBatHighG;
+        public RelayCommand ResetLightbarBatteryHighBCommand =>
+            _resetBatHighB ??= new RelayCommand(() => LightbarBatteryHighB = 0);
+        private RelayCommand _resetBatHighB;
 
         public RelayCommand ResetLightbarInputHoldCommand =>
             _resetLightbarInputHold ??= new RelayCommand(() => LightbarInputHoldMs = 0);
@@ -1010,14 +1179,30 @@ namespace PadForge.ViewModels
         MultiplePositionVibration = 6,
     }
 
-    /// <summary>Mic mute LED mode. Maps directly to byte 8
-    /// (muteLedControl) values per dualsense-tester's
-    /// MuteButtonLedControl: 0=Off, 1=Solid, 2=Pulse.</summary>
+    /// <summary>Mic mute LED mode. Values 0-2 map directly to byte 8
+    /// (muteLedControl) per dualsense-tester's MuteButtonLedControl
+    /// (0=Off, 1=Solid, 2=Pulse). FollowDeviceMute is resolved by the
+    /// synthesizer via <c>AudioMuteService.GetMuteState</c> against
+    /// <c>MicLedFollowDeviceId</c> — muted endpoint -> Solid (1),
+    /// unmuted -> Off (0). Unknown / disconnected device falls back to
+    /// Off so a stale config doesn't strand the LED in a wrong state.</summary>
     public enum MicLedMode
     {
         Off = 0,
         Solid = 1,
         Pulse = 2,
+        FollowDeviceMute = 3,
+    }
+
+    /// <summary>One row in the mic-LED FollowDeviceMute device-picker
+    /// ComboBox. Display carries the user-facing label (already prefixed
+    /// with [In] / [Out]); Id is the CoreAudio endpoint string the
+    /// synthesizer hands to <c>AudioMuteService.GetMuteState</c>.</summary>
+    public sealed class MicLedDeviceItem
+    {
+        public string Id { get; }
+        public string Display { get; }
+        public MicLedDeviceItem(string id, string display) { Id = id; Display = display; }
     }
 
     /// <summary>Player indicator LED selection. Sequential 0-5 to map
@@ -1133,6 +1318,9 @@ namespace PadForge.ViewModels
         InputReactive = 11,           // (legacy) random hue per press
         InputReactiveCycle = 12,      // (legacy) step through the configured palette per press
         InputReactiveFixed = 13,      // (legacy) single color (LightbarRed/Green/Blue) flashed per press
+        // v3.3+ additions
+        Battery = 14,                 // gradient between Battery Low / High colors driven by current battery level
+        Strobe = 15,                  // square-wave on/off at LightbarPeriodMs cadence using LightbarRed/Green/Blue
     }
 
     /// <summary>Input-reactive overlay variant. Independent of the
@@ -1206,6 +1394,7 @@ namespace PadForge.ViewModels
         [XmlAttribute] public byte LightbarBlue { get; set; } = 0xFF;
         [XmlAttribute] public bool LightbarEnabled { get; set; }
         [XmlAttribute] public MicLedMode MicLedMode { get; set; } = MicLedMode.Off;
+        [XmlAttribute] public string MicLedFollowDeviceId { get; set; } = string.Empty;
         [XmlAttribute] public PlayerLedMode PlayerLedMode { get; set; } = PlayerLedMode.Off;
         [XmlAttribute] public PlayerLedBrightness PlayerLedBrightness { get; set; } = PlayerLedBrightness.High;
         // Round-trip the legacy MicLightOn so old XML still loads. Mapped
@@ -1236,6 +1425,13 @@ namespace PadForge.ViewModels
         [XmlAttribute] public LightbarMode LightbarMode { get; set; } = LightbarMode.Off;
         [XmlAttribute] public int LightbarPeriodMs { get; set; } = 3000;
         [XmlAttribute] public bool LightbarColorCycleSmooth { get; set; } = true;
+        [XmlAttribute] public int LightbarRainbowBrightness { get; set; } = 100;
+        [XmlAttribute] public byte LightbarBatteryLowR  { get; set; } = 0xFF;
+        [XmlAttribute] public byte LightbarBatteryLowG  { get; set; } = 0x00;
+        [XmlAttribute] public byte LightbarBatteryLowB  { get; set; } = 0x00;
+        [XmlAttribute] public byte LightbarBatteryHighR { get; set; } = 0x00;
+        [XmlAttribute] public byte LightbarBatteryHighG { get; set; } = 0xFF;
+        [XmlAttribute] public byte LightbarBatteryHighB { get; set; } = 0x00;
         [XmlArray("LightbarPalette")]
         [XmlArrayItem("Color")]
         public LightbarPaletteEntryData[] LightbarPalette { get; set; }

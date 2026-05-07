@@ -1005,6 +1005,8 @@
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Éteint</value></data>
   <data name="Pad_Lighting_MicLed_Solid" xml:space="preserve"><value>Fixe</value></data>
   <data name="Pad_Lighting_MicLed_Pulse" xml:space="preserve"><value>Pulsé</value></data>
+  <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Suivre le périphérique audio</value></data>
+  <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Périphérique audio</value></data>
   <data name="Pad_Lighting_PlayerLeds" xml:space="preserve"><value>LED de joueur</value></data>
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>Cinq petites LED blanches sous le pavé tactile. Choisissez le motif de joueur à afficher et son intensité.</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LED indicatrices</value></data>
@@ -1056,9 +1058,16 @@
   <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Bandes audio — trois couleurs, transitions nettes</value></data>
   <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Bandes audio — trois couleurs, dégradé doux</value></data>
   <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Bandes audio — trois couleurs, fondu enchaîné aux limites</value></data>
-  <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Réactif aux entrées — couleur aléatoire par appui</value></data>
+  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>Batterie — Dégradé selon le niveau de charge</value></data>
+  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>Stroboscope — Clignotement carré</value></data>
+  <data name="Pad_Lighting_BatteryLowColor" xml:space="preserve"><value>Batterie Faible</value></data>
+  <data name="Pad_Lighting_BatteryHighColor" xml:space="preserve"><value>Batterie Pleine</value></data>
+  <data name="Pad_ResetBatteryLowColor" xml:space="preserve"><value>Réinitialiser la couleur de batterie faible</value></data>
+  <data name="Pad_ResetBatteryHighColor" xml:space="preserve"><value>Réinitialiser la couleur de batterie pleine</value></data>
+    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Réactif aux entrées — couleur aléatoire par appui</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Réactif aux entrées — parcourir la palette</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Réactif aux entrées — couleur unique par pression</value></data>
+  <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Luminosité</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Période (ms) </value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palette</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Couleur 1</value></data>
@@ -1079,6 +1088,7 @@
   <data name="Pad_ResetLedBrightness" xml:space="preserve"><value>Réinitialiser la luminosité de la LED</value></data>
   <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>Réinitialiser le motif joueur</value></data>
   <data name="Pad_ResetMuteLedMode" xml:space="preserve"><value>Réinitialiser le mode LED de mute</value></data>
+  <data name="Pad_ResetLightbarRainbowBrightness" xml:space="preserve"><value>Réinitialiser la luminosité</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>Réinitialiser la période</value></data>
   <data name="Pad_ResetLightbarInputHold" xml:space="preserve"><value>Réinitialiser le maintien du pulse</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>Réinitialiser l'atténuation du pulse</value></data>

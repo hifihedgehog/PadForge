@@ -524,6 +524,7 @@ namespace PadForge.Services
                         cfg.MicLedMode = cfgData.MicLedMode;
                     else
                         cfg.MicLightOn = cfgData.MicLightOn;
+                    cfg.MicLedFollowDeviceId = cfgData.MicLedFollowDeviceId ?? string.Empty;
                     cfg.PlayerLedMode = cfgData.PlayerLedMode;
                     cfg.PlayerLedBrightness = cfgData.PlayerLedBrightness;
                     cfg.AudioLightbarEnabled = cfgData.AudioLightbarEnabled;
@@ -560,6 +561,13 @@ namespace PadForge.Services
                                 : ViewModels.LightbarMode.Off;
                     cfg.LightbarPeriodMs = cfgData.LightbarPeriodMs;
                     cfg.LightbarColorCycleSmooth = cfgData.LightbarColorCycleSmooth;
+                    cfg.LightbarRainbowBrightness = cfgData.LightbarRainbowBrightness;
+                    cfg.LightbarBatteryLowR  = cfgData.LightbarBatteryLowR;
+                    cfg.LightbarBatteryLowG  = cfgData.LightbarBatteryLowG;
+                    cfg.LightbarBatteryLowB  = cfgData.LightbarBatteryLowB;
+                    cfg.LightbarBatteryHighR = cfgData.LightbarBatteryHighR;
+                    cfg.LightbarBatteryHighG = cfgData.LightbarBatteryHighG;
+                    cfg.LightbarBatteryHighB = cfgData.LightbarBatteryHighB;
                     if (cfgData.LightbarPalette != null && cfgData.LightbarPalette.Length > 0)
                     {
                         cfg.ReplaceLightbarPalette(cfgData.LightbarPalette
@@ -1528,6 +1536,7 @@ namespace PadForge.Services
                 LightbarBlue = cfg.LightbarBlue,
                 LightbarEnabled = cfg.LightbarEnabled,
                 MicLedMode = cfg.MicLedMode,
+                MicLedFollowDeviceId = cfg.MicLedFollowDeviceId ?? string.Empty,
                 MicLightOn = cfg.MicLightOn,
                 PlayerLedMode = cfg.PlayerLedMode,
                 PlayerLedBrightness = cfg.PlayerLedBrightness,
@@ -1549,6 +1558,13 @@ namespace PadForge.Services
                 LightbarMode = cfg.LightbarMode,
                 LightbarPeriodMs = cfg.LightbarPeriodMs,
                 LightbarColorCycleSmooth = cfg.LightbarColorCycleSmooth,
+                LightbarRainbowBrightness = cfg.LightbarRainbowBrightness,
+                LightbarBatteryLowR  = cfg.LightbarBatteryLowR,
+                LightbarBatteryLowG  = cfg.LightbarBatteryLowG,
+                LightbarBatteryLowB  = cfg.LightbarBatteryLowB,
+                LightbarBatteryHighR = cfg.LightbarBatteryHighR,
+                LightbarBatteryHighG = cfg.LightbarBatteryHighG,
+                LightbarBatteryHighB = cfg.LightbarBatteryHighB,
                 LightbarPalette = cfg.LightbarPalette
                     .Select(e => new ViewModels.LightbarPaletteEntryData { R = e.R, G = e.G, B = e.B })
                     .ToArray(),

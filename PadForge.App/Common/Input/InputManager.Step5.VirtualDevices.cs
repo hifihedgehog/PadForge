@@ -122,6 +122,7 @@ namespace PadForge.Common.Input
         /// top of this file (rules b, c, d).
         /// </summary>
         private IVirtualController[] _virtualControllers = new IVirtualController[MaxPads];
+        private readonly int[] _step5DiagCounters = new int[MaxPads];
 
         /// <summary>Read-only access to the per-pad virtual controller
         /// array for InputService's device-update hook so it can dispatch
@@ -1017,6 +1018,31 @@ namespace PadForge.Common.Input
                         {
                             _loggedFirstSubmit[padIndex] = true;
                         }
+
+                        // Routing-trace diag: which branch does this pad enter?
+                        // Static per-pad counter logs every 250th call (~1Hz at
+                        // 250Hz polling) regardless of which branch fires below.
+                        if (++_step5DiagCounters[padIndex] >= 250)
+                        {
+                            _step5DiagCounters[padIndex] = 0;
+                            try
+                            {
+                                string branch =
+                                    vc is MidiVirtualController ? "Midi"
+                                    : vc is KeyboardMouseVirtualController ? "Kbm"
+                                    : SlotControllerTypes[padIndex] == VirtualControllerType.Extended && SlotExtendedIsCustom[padIndex] && vc is HMaestroVirtualController ? "ExtCustom"
+                                    : "GenericGamepad";
+                                var motionDiag = MotionSnapshots[padIndex];
+                                var tpDiag = CombinedTouchpadStates[padIndex];
+                                System.IO.File.AppendAllText(
+                                    System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-ds5-passthrough.log"),
+                                    $"{DateTime.UtcNow:HH:mm:ss.fff} [step5] pad={padIndex} branch={branch} type={SlotControllerTypes[padIndex]} vc={vc?.GetType().Name} extCustom={SlotExtendedIsCustom[padIndex]} " +
+                                    $"motionHas={motionDiag.HasMotion} gyro=({motionDiag.GyroPitch:F1},{motionDiag.GyroYaw:F1},{motionDiag.GyroRoll:F1}) " +
+                                    $"tp=down0={tpDiag.Down0},X0={tpDiag.X0:F2},Y0={tpDiag.Y0:F2}\n");
+                            }
+                            catch { }
+                        }
+
                         // MIDI slots use SubmitMidiRawState for dynamic CC/note output.
                         // KBM slots use SubmitKbmState for keyboard/mouse output.
                         // PlayStation slots whose HIDMaestro profile matches a
@@ -1067,7 +1093,36 @@ namespace PadForge.Common.Input
                             {
                                 gpOut.Buttons |= Gamepad.TOUCHPAD;
                             }
-                            vc.SubmitGamepadState(gpOut);
+
+                            // PlayStation slots backed by an HM virtual go
+                            // through the extended SubmitGamepadState overload
+                            // so HMGamepadState's touchpad / IMU / battery
+                            // fields populate from the assigned physical pad's
+                            // SDL sensor reads. BT profiles depend on this
+                            // entirely (no SubmitRawReport packer for BT —
+                            // their input report is the vendor-blob 0x31
+                            // shape, written by HM's encoder from the state
+                            // fields). USB profiles pick up the same data
+                            // here too, then SubmitRawReport below overrides
+                            // the byte layout with the full Sony USB Report
+                            // 0x01 packing — both paths consistent.
+                            int pctNow = BatteryPercents[padIndex];
+                            byte pctByte = pctNow < 0 ? (byte)100 : (byte)Math.Clamp(pctNow, 0, 100);
+
+                            if (SlotControllerTypes[padIndex] == VirtualControllerType.PlayStation
+                                && vc is HMaestroVirtualController hmExtState)
+                            {
+                                hmExtState.SubmitGamepadState(
+                                    gpOut,
+                                    CombinedTouchpadStates[padIndex],
+                                    MotionSnapshots[padIndex],
+                                    pctByte,
+                                    BatteryCharging[padIndex]);
+                            }
+                            else
+                            {
+                                vc.SubmitGamepadState(gpOut);
+                            }
 
                             if (SlotControllerTypes[padIndex] == VirtualControllerType.PlayStation
                                 && vc is HMaestroVirtualController hmPs)

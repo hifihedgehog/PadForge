@@ -1,45 +1,22 @@
 using System;
+using System.Collections.Generic;
 using PadForge.ViewModels;
 
 namespace PadForge.Common.Input
 {
     /// <summary>
-    /// Builds DualSense USB Report 0x02 effect messages from a
-    /// <see cref="PlayStationSlotConfig"/>. Wire format reference is the
-    /// DS5 SDK's 47-byte effect-state layout — same form that
-    /// game-driven effect output uses (which the
-    /// <see cref="DualSensePassthroughDispatcher"/> forwards verbatim).
+    /// Resolves <see cref="PlayStationSlotConfig"/> into a parsed-field
+    /// dictionary for DualSense effect output. The dictionary is fed to
+    /// <c>HMOutputEncoder.Encode(profile, fields)</c>, which packs the bytes
+    /// per the active profile's <c>extendedOutputReport</c> spec — USB
+    /// (Report 0x02, 48B) or BT (Report 0x31, 78B with CRC32). The same
+    /// dictionary serves both transports; the encoder picks the fields it
+    /// needs from the profile spec and ignores the rest.
     ///
-    /// <para>Standard 47-byte payload byte map (consensus across DS5W,
-    /// dualsensectl, DSY, AntiMicroX's EffectMessagePs5):</para>
-    /// <code>
-    /// [0]      EnableBits1 — bit 0=R rumble, 1=L rumble, 2=R trigger,
-    ///                       3=L trigger, 4=headphone vol, 5=speaker vol,
-    ///                       6=mic vol, 7=audio control flags
-    /// [1]      EnableBits2 — bit 0=mic mute light, 1=power save,
-    ///                       2=lightbar (RGB), 3=release lights,
-    ///                       4=player indicator, 5=motor scale,
-    ///                       6=trigger scale, 7=audio mute
-    /// [2]      RumbleRight
-    /// [3]      RumbleLeft
-    /// [4]      HeadphoneVolume
-    /// [5]      SpeakerVolume
-    /// [6]      MicVolume
-    /// [7]      AudioControlFlags
-    /// [8]      MicLightMode    (0=off, 1=on, 2=pulse)
-    /// [9]      AudioMuteBits   (bit 4 = mic mute)
-    /// [10..20] RightTriggerEffect (mode + 10 param bytes)
-    /// [21..31] LeftTriggerEffect  (mode + 10 param bytes)
-    /// [32..37] reserved
-    /// [38]     LightbarSetupFlags  (0x02 = enable RGB write)
-    /// [39..40] reserved
-    /// [41]     LedAnimation
-    /// [42]     LedBrightness
-    /// [43]     PlayerIndicator
-    /// [44]     LedRed
-    /// [45]     LedGreen
-    /// [46]     LedBlue
-    /// </code>
+    /// <para>HIDMaestro v1.3.5 introduced the data-driven encoder; the
+    /// pre-v1.3.5 implementation hand-packed a 47-byte <c>Span&lt;byte&gt;</c>
+    /// at compile-time-known offsets, plus a separate BT-envelope wrapper
+    /// with hand-rolled CRC32. Now: one dictionary, the SDK does the rest.</para>
     ///
     /// <para>══════════════════════════════════════════════════════════════</para>
     /// <para><b>SOLE-WRITER CONTRACT — read before changing rumble bytes.</b></para>
@@ -52,8 +29,8 @@ namespace PadForge.Common.Input
     /// an asynchronously-sampled audio peak (<see cref="AudioBassDetector"/>)
     /// produced the v3.1.x audio-rumble + animated-lightbar regression.
     /// One writer cannot race with itself.</para>
-    /// <para>Therefore: the rumble bytes (offsets 2/3) and bit 0 of
-    /// validFlag0 are written UNCONDITIONALLY in every dispatch. The
+    /// <para>Therefore: the rumble bytes (rightMotor / leftMotor) and bit
+    /// 0 of validFlag0 are written UNCONDITIONALLY in every dispatch. The
     /// dispatcher computes audio-mix + per-device gain in
     /// <c>InputService.SlotRumbleForDeviceProvider</c> and feeds those
     /// bytes here. Do NOT add conditional gating "for safety" — there is
@@ -63,37 +40,41 @@ namespace PadForge.Common.Input
     /// </summary>
     internal static class Ds5EffectSynthesizer
     {
-        /// <summary>Length of the standard DualSense USB output report
-        /// payload (excluding the Report ID prefix that SDL prepends).</summary>
-        public const int PayloadSize = 47;
-
-        // EnableBits1 (low byte of the u16 LE header).
-        private const ushort EnableRumbleEmulation  = 0x0001;  // bit 0 — gates bytes 2-3 (right/left motor)
+        // EnableBits1 (low byte of the u16 LE header; HM field "validFlag0").
+        // Bits 0 + 1 both engage motor rumble per Linux's hid-playstation
+        // (bit 0 = COMPATIBLE_VIBRATION, bit 1 = HAPTICS_SELECT). Steam
+        // Input asserts bit 1 on its DS5 effect writes; OpenRGB sets all
+        // 8 bits (0xFF). Setting both is defensive — whichever bit any
+        // host firmware actually keys on, the rumble bytes apply.
+        private const ushort EnableRumbleEmulation  = 0x0003;  // bits 0 + 1
         private const ushort EnableRightTrigger     = 0x0004;
         private const ushort EnableLeftTrigger      = 0x0008;
 
-        // EnableBits2 (high byte).
-        private const ushort EnableMicLight         = 0x0100;  // byte[1] bit 0
-        private const ushort EnableLightbar         = 0x0400;  // byte[1] bit 2
-        private const ushort EnablePlayerIndicator  = 0x1000;  // byte[1] bit 4
+        // EnableBits2 (high byte; HM field "validFlag1").
+        private const ushort EnableMicLight         = 0x0100;
+        private const ushort EnableLightbar         = 0x0400;
+        private const ushort EnablePlayerIndicator  = 0x1000;
 
-        // Byte-offset constants — verified against
-        // daidr/dualsense-tester's outputStruct.ts. See memory:
-        // dualsense-tester-byte-layout-reference.md.
-        private const int OffEnableLow       = 0;   // validFlag0
-        private const int OffEnableHigh      = 1;   // validFlag1 (0xF7 = permissive default)
-        private const int OffRumbleRight     = 2;   // compatibility rumble — right motor (high-frequency)
-        private const int OffRumbleLeft      = 3;   // compatibility rumble — left motor (low-frequency)
-        private const int OffMicLight        = 8;   // muteLedControl
-        private const int OffRightTrig       = 10;  // mode + 10 params
-        private const int OffLeftTrig        = 21;  // mode + 10 params
-        private const int OffValidFlag2      = 38;  // ledBrightness gate
-        private const int OffLightbarSetup   = 41;
-        private const int OffLedBrightness   = 42;
-        private const int OffPlayerIndicator = 43;
-        private const int OffLedRed          = 44;
-        private const int OffLedGreen        = 45;
-        private const int OffLedBlue         = 46;
+        // BT DS5 framing tag — byte 1 of Report 0x31. Real Sony DS5 BT
+        // firmware infers header length from byte 1's low nibble:
+        //   - low nibble nonzero (e.g. 0x02): 1-byte header → firmware
+        //     reads validFlag0 at byte 2 of the on-wire packet.
+        //   - low nibble zero (e.g. 0x10, 0x20, …, 0xF0): 2-byte header
+        //     → firmware reads byte 2 as a framing flag (must be 0x10)
+        //     and validFlag0 at byte 3.
+        // HM v1.3.5's extendedOutputReport places validFlag0 at byte 3
+        // and writes 0x10 at byte 2, so we MUST signal 2-byte header
+        // mode via a rolling (seq << 4) counter at byte 1. A constant
+        // like 0x02 here mixes the two conventions and the firmware
+        // silently drops the effect packet (no lightbar, no AT, no
+        // rumble enable). Cycles 0x10, 0x20, …, 0xF0, then wraps.
+        // dualsense-tester reference: ds.util.ts sendOutputReport.
+        private static int s_btSeqCounter;
+        private static byte NextBtSeqTag()
+        {
+            int s = System.Threading.Interlocked.Increment(ref s_btSeqCounter);
+            return (byte)((s & 0x0F) << 4);
+        }
 
         // playerIndicator bit 5 (0x20) is the "no fade" flag — tells the
         // firmware to skip any in-progress lightbar fade animation
@@ -124,12 +105,11 @@ namespace PadForge.Common.Input
         private const byte HidModeFeedback      = 0x21;  // multi-position resistance
         private const byte HidModeVibration     = 0x26;  // multi-position vibration
 
-        /// <summary>Builds a single DS5 effect packet from the user's
-        /// configuration into <paramref name="dst"/>. Returns the number
-        /// of bytes written (always <see cref="PayloadSize"/>).
-        /// <paramref name="dst"/> must be at least <c>PayloadSize</c>
-        /// bytes. The buffer is fully written; no need to zero it
-        /// beforehand.</summary>
+        /// <summary>Builds the parsed-field dictionary for one DualSense
+        /// effect packet. Pass to <c>HMOutputEncoder.Encode</c> with either
+        /// the USB (Report 0x02) or BT (Report 0x31) DualSense profile —
+        /// the dict carries both transports' fields and the encoder picks
+        /// what it needs.</summary>
         /// <param name="audioPeak">System audio peak in 0..1. Used by
         /// the AudioPulse* and AudioThresholds/Gradient/CrossFade modes
         /// only; ignored by static / time-based / input-reactive modes.</param>
@@ -145,95 +125,109 @@ namespace PadForge.Common.Input
         /// <param name="pulseIntensity">Decay envelope of the current
         /// input-reactive pulse, 0..1. Read by
         /// <see cref="LightbarMode.InputReactive"/>.</param>
-        public static int Build(
+        public static Dictionary<string, object> BuildFields(
             PlayStationSlotConfig cfg,
-            Span<byte> dst,
             float audioPeak = 0f,
             long nowMs = 0,
             uint randomColor = 0,
             uint pulseColor = 0,
             float pulseIntensity = 0f,
             byte rumbleRight = 0,
-            byte rumbleLeft = 0)
+            byte rumbleLeft = 0,
+            bool assertRumbleEnable = true,
+            bool assertRightTriggerEnable = true,
+            bool assertLeftTriggerEnable = true,
+            UserEffectsDispatcher.ExternalSubsystemOverrides overrides = default,
+            byte batteryPercent = 100)
         {
-            if (cfg == null) return 0;
-            if (dst.Length < PayloadSize) return 0;
-
-            dst.Slice(0, PayloadSize).Clear();
-
             ushort enableBits = 0;
 
-            // Rumble passthrough. The dispatcher is now the SOLE writer
-            // of DS5/DS4 effect packets — Step 2's ApplyForceFeedback
-            // skips SDL_RumbleJoystick for Sony VID/PID devices. There
-            // is no second writer to race with, so bit 0 stays asserted
-            // unconditionally and the bytes the dispatcher carries
-            // (audio-mix + per-device gain, computed in
-            // InputService.SlotRumbleForDeviceProvider) are what the
-            // firmware applies. Both audio and game rumble flow through
-            // this one path.
-            dst[OffRumbleRight] = rumbleRight;
-            dst[OffRumbleLeft]  = rumbleLeft;
-            enableBits |= EnableRumbleEmulation;
+            // Per-subsystem external mirroring: when a host has recently
+            // written a particular subsystem to the virtual, our dispatch
+            // mirrors that subsystem's bytes verbatim instead of writing
+            // our own animated / configured value. PadForge keeps owning
+            // every subsystem the external writer didn't touch, so the
+            // animation lightbar (or any other unaffected subsystem)
+            // continues running while rumble / triggers / mic stay under
+            // the external writer's control. Each PadForge packet always
+            // carries a complete validFlag bitset and field dict — this
+            // is just about which value goes in for each owned subsystem.
 
-            // Lightbar / player-LED block. Reference: OpenRGB's
-            // SonyDualSenseController.cpp + dualsense-tester's
-            // OutputPanel.vue. The firmware needs ALL of:
-            //   - validFlag1 bit 2 (lightbar enable) — gate for byte 44-46 RGB
-            //   - validFlag1 bit 4 (player indicator) — gate for byte 43
-            //   - validFlag2 = 0xFF — without higher bits set, hot-plug
-            //     locks the lightbar even though SDL_SendGamepadEffect
-            //     succeeds. Matched OpenRGB exactly to fix this.
-            //   - byte 41 lightbarSetup = 0x02 — bypass BT default blue
-            //   - byte 43 bit 0x20 — "no fade" flag, releases the
-            //     in-progress connection animation. SDL3's PS5 driver
-            //     also ORs this bit in SetLightsForPlayerIndex.
-            // The player-LED bits 0-4 of byte 43 select which of the 5
-            // bottom-row LEDs are lit (PlayerLedMode enum). Bit 0x20
-            // is always set when ANY lightbar/player feature is active.
+            // Rumble: when external owns it, mirror their bytes and assert
+            // bit 0 so the firmware applies the mirrored values. When
+            // PadForge owns it, gate bit 0 on PadForge's own rumble state
+            // (drop-frame already handled by the caller).
+            bool rumbleExternal = overrides.RumbleRight.HasValue && overrides.RumbleLeft.HasValue;
+            byte effectiveRumbleR = rumbleExternal ? overrides.RumbleRight.Value : rumbleRight;
+            byte effectiveRumbleL = rumbleExternal ? overrides.RumbleLeft.Value  : rumbleLeft;
+            if (rumbleExternal || assertRumbleEnable)
+                enableBits |= EnableRumbleEmulation;
+
             // Snapshot the override window once so the rest of the function
-            // sees a single time-of-check (the UtcNow comparison can flip
-            // between calls within the same packet build). Intensity is
-            // 1.0 for Sticky, ramps 1.0 → 0.0 over the decay window for
-            // Reactive, and is 0 when no override is active.
-            float macroOverrideIntensity = cfg.ComputeMacroOverrideIntensity();
+            // sees a single time-of-check. Intensity is 1.0 for Sticky,
+            // ramps 1.0 → 0.0 over the decay window for Reactive, 0 when
+            // no override is active.
+            float macroOverrideIntensity = cfg?.ComputeMacroOverrideIntensity() ?? 0f;
             bool macroOverrideActive = macroOverrideIntensity > 0f;
-            bool inputReactiveActive = cfg.InputReactiveMode != InputReactiveMode.Off;
+            bool inputReactiveActive = cfg != null && cfg.InputReactiveMode != InputReactiveMode.Off;
 
-            bool anyLightFeature =
+            bool anyLightFeature = cfg != null && (
                 cfg.LightbarMode != LightbarMode.Off
                 || cfg.PlayerLedMode != PlayerLedMode.Off
                 || macroOverrideActive
-                || inputReactiveActive;
+                || inputReactiveActive);
 
-            // Always assert the player-indicator update bit and write byte
-            // 43, even when PlayerLedMode == Off. Without setting validFlag1
-            // bit 4 the firmware ignores byte 43 entirely, so a transition
-            // from a pattern (say, Player1) back to Off would leave the row
-            // stuck on the previous pattern. PlayerLedBits[Off] is 0, so the
-            // byte degenerates to PlayerIndicatorNoFade alone (0x20) — no
-            // LED bits set, no-fade asserted — which cleanly extinguishes
-            // the row.
+            // Always assert the player-indicator update bit and write the
+            // playerIndicator byte, even when PlayerLedMode == Off. Without
+            // setting validFlag1 bit 4 the firmware ignores the byte
+            // entirely, so a transition from a pattern (say, Player1) back
+            // to Off would leave the row stuck on the previous pattern.
+            // PlayerLedBits[Off] is 0, so the byte degenerates to
+            // PlayerIndicatorNoFade alone (0x20) — no LED bits set, no-fade
+            // asserted — which cleanly extinguishes the row.
+            // Mirror the external writer's value when they own this
+            // subsystem.
+            enableBits |= EnablePlayerIndicator;
+            byte playerIndicator;
+            if (overrides.PlayerIndicator.HasValue)
             {
-                enableBits |= EnablePlayerIndicator;
-                dst[OffValidFlag2]      = 0xFF;
-                dst[OffLightbarSetup]   = 0x02;
-                dst[OffLedBrightness]   = (byte)cfg.PlayerLedBrightness;
-                int ledIdx = (int)cfg.PlayerLedMode;
-                if (ledIdx < 0 || ledIdx >= PlayerLedBits.Length) ledIdx = 0;
-                dst[OffPlayerIndicator] = (byte)(PlayerIndicatorNoFade | PlayerLedBits[ledIdx]);
+                playerIndicator = overrides.PlayerIndicator.Value;
             }
+            else
+            {
+                int ledIdx = cfg != null ? (int)cfg.PlayerLedMode : 0;
+                if (ledIdx < 0 || ledIdx >= PlayerLedBits.Length) ledIdx = 0;
+                playerIndicator = (byte)(PlayerIndicatorNoFade | PlayerLedBits[ledIdx]);
+            }
+            byte ledBrightness = overrides.LedBrightness
+                ?? (cfg != null ? (byte)cfg.PlayerLedBrightness : (byte)0);
 
-            // Set the lightbar-enable bit whenever any LED feature is in
-            // play, not just when the user toggled the base-color override.
-            // Byte 42 (ledBrightness) only takes effect when validFlag1
-            // bit 2 is set — without this, brightness writes are silently
-            // ignored, so changing High/Medium/Low looked like a no-op
-            // unless the user also turned on the base-color toggle. The
-            // saved RGB is written in the else branch below, so the
-            // lightbar shows the user's configured colour rather than
-            // black when an indicator feature is on without the toggle.
-            if (anyLightFeature)
+            // Lightbar / RGB block. Reference: OpenRGB's
+            // SonyDualSenseController.cpp + dualsense-tester's
+            // OutputPanel.vue. The firmware needs ALL of:
+            //   - validFlag1 bit 2 (lightbar enable) — gate for the RGB bytes
+            //   - validFlag1 bit 4 (player indicator) — already set above
+            //   - validFlag2 = 0xFF — without higher bits set, hot-plug
+            //     locks the lightbar even though SDL_SendGamepadEffect
+            //     succeeds. Matched OpenRGB exactly to fix this.
+            //   - lightbarSetup = 0x02 — bypass BT default blue
+            //   - playerIndicator bit 0x20 (PlayerIndicatorNoFade) —
+            //     releases the in-progress connection animation. SDL3's
+            //     PS5 driver also ORs this bit in SetLightsForPlayerIndex.
+            byte ledR = 0, ledG = 0, ledB = 0;
+            bool lightbarExternal = overrides.LightbarRgb != null && overrides.LightbarRgb.Length >= 3;
+            if (lightbarExternal)
+            {
+                // External writer owns the lightbar this frame: mirror their
+                // RGB verbatim and assert the lightbar enable bit so the
+                // firmware applies it. PadForge's animation pauses on this
+                // subsystem only — every other subsystem still updates.
+                enableBits |= EnableLightbar;
+                ledR = overrides.LightbarRgb[0];
+                ledG = overrides.LightbarRgb[1];
+                ledB = overrides.LightbarRgb[2];
+            }
+            else if (anyLightFeature)
             {
                 enableBits |= EnableLightbar;
 
@@ -249,9 +243,9 @@ namespace PadForge.Common.Input
                 // InputReactive*-as-base-mode behaviour.
                 if (macroOverrideActive)
                 {
-                    dst[OffLedRed]   = (byte)Math.Round(cfg.MacroOverrideR * macroOverrideIntensity);
-                    dst[OffLedGreen] = (byte)Math.Round(cfg.MacroOverrideG * macroOverrideIntensity);
-                    dst[OffLedBlue]  = (byte)Math.Round(cfg.MacroOverrideB * macroOverrideIntensity);
+                    ledR = (byte)Math.Round(cfg.MacroOverrideR * macroOverrideIntensity);
+                    ledG = (byte)Math.Round(cfg.MacroOverrideG * macroOverrideIntensity);
+                    ledB = (byte)Math.Round(cfg.MacroOverrideB * macroOverrideIntensity);
                 }
                 else
                 {
@@ -259,7 +253,7 @@ namespace PadForge.Common.Input
                     if (cfg.LightbarMode != LightbarMode.Off)
                     {
                         (baseR, baseG, baseB) = ComputeLightbarColor(
-                            cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity);
+                            cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity, batteryPercent);
                     }
 
                     if (inputReactiveActive && pulseIntensity > 0f)
@@ -269,53 +263,109 @@ namespace PadForge.Common.Input
                         LerpColor(pulseIntensity,
                             baseR, baseG, baseB,
                             rR, rG, rB,
-                            out byte fR, out byte fG, out byte fB);
-                        dst[OffLedRed]   = fR;
-                        dst[OffLedGreen] = fG;
-                        dst[OffLedBlue]  = fB;
+                            out ledR, out ledG, out ledB);
                     }
                     else
                     {
-                        dst[OffLedRed]   = baseR;
-                        dst[OffLedGreen] = baseG;
-                        dst[OffLedBlue]  = baseB;
+                        ledR = baseR; ledG = baseG; ledB = baseB;
                     }
                 }
             }
 
-            // Mic LED mode @ byte 8: 0 = off, 1 = solid, 2 = pulse.
-            // Maps directly from MicLedMode enum.
-            dst[OffMicLight] = (byte)cfg.MicLedMode;
+            // Mic LED mode: 0 = off, 1 = solid, 2 = pulse. Values 0-2
+            // map directly from MicLedMode enum. FollowDeviceMute (3) is
+            // resolved at write-time via AudioMuteService — muted
+            // endpoint -> Solid (1), unmuted -> Off (0). External
+            // writer's value (overrides.MuteLed) wins when they own the
+            // mic-LED subsystem during the grace window.
+            byte muteLed;
+            if (overrides.MuteLed.HasValue)
+            {
+                muteLed = overrides.MuteLed.Value;
+            }
+            else if (cfg != null && cfg.MicLedMode == MicLedMode.FollowDeviceMute)
+            {
+                bool? muted = AudioMuteService.GetMuteState(cfg.MicLedFollowDeviceId);
+                muteLed = (muted == true) ? (byte)1 : (byte)0;
+            }
+            else
+            {
+                muteLed = cfg != null ? (byte)cfg.MicLedMode : (byte)0;
+            }
             enableBits |= EnableMicLight;
 
-            // Triggers — 11 bytes per trigger (mode + 10 param bytes)
-            // at the canonical Right=10, Left=21 offsets.  Encoding for
-            // the four scalar modes shipping in v3.1.0 is in
-            // EncodeTrigger; multi-position modes need parameter arrays
-            // plumbed through PlayStationSlotConfig in a follow-up.
-            EncodeTrigger(cfg.RightTriggerMode,
-                cfg.RightStartPosition, cfg.RightEndPosition,
-                cfg.RightStrength, cfg.RightFrequency,
-                dst.Slice(OffRightTrig, 11));
-            EncodeTrigger(cfg.LeftTriggerMode,
-                cfg.LeftStartPosition, cfg.LeftEndPosition,
-                cfg.LeftStrength, cfg.LeftFrequency,
-                dst.Slice(OffLeftTrig, 11));
-            // Always assert the trigger-write enable bits when User
-            // Effects are on. Without these, switching the mode to
-            // Off doesn't release the trigger because the firmware
-            // ignores the trigger bytes entirely (mode byte 0x00 +
-            // zeros never reaches the haptic motor). Setting the
-            // enable bit unconditionally tells the firmware "process
-            // the trigger bytes," which carries the 0x00 mode through
-            // and releases.
-            enableBits |= EnableRightTrigger | EnableLeftTrigger;
+            // Triggers — 11 bytes per trigger (mode + 10 param bytes). The
+            // simple modes (Feedback / Weapon / Vibration) use scalar
+            // opcodes 0x01/0x02/0x06; multi-position modes (MultiplePosition*,
+            // Slope) use the official 0x21/0x26 zone-bitmap encoding.
+            // Always assert the trigger-write enable bits when User Effects
+            // are on. Without these, switching the mode to Off doesn't
+            // release the trigger because the firmware ignores the trigger
+            // bytes entirely (mode byte 0x00 + zeros never reaches the
+            // haptic motor). Setting the enable bit unconditionally tells
+            // the firmware "process the trigger bytes," which carries the
+            // 0x00 mode through and releases.
+            byte[] rightTrig;
+            byte[] leftTrig;
+            if (overrides.RightTriggerEffect != null && overrides.RightTriggerEffect.Length >= 11)
+            {
+                rightTrig = overrides.RightTriggerEffect;
+            }
+            else
+            {
+                rightTrig = new byte[11];
+                if (cfg != null)
+                {
+                    EncodeTrigger(cfg.RightTriggerMode,
+                        cfg.RightStartPosition, cfg.RightEndPosition,
+                        cfg.RightStrength, cfg.RightFrequency,
+                        rightTrig);
+                }
+            }
+            if (overrides.LeftTriggerEffect != null && overrides.LeftTriggerEffect.Length >= 11)
+            {
+                leftTrig = overrides.LeftTriggerEffect;
+            }
+            else
+            {
+                leftTrig = new byte[11];
+                if (cfg != null)
+                {
+                    EncodeTrigger(cfg.LeftTriggerMode,
+                        cfg.LeftStartPosition, cfg.LeftEndPosition,
+                        cfg.LeftStrength, cfg.LeftFrequency,
+                        leftTrig);
+                }
+            }
+            // AT trigger enable bits are gated by the dispatcher's
+            // per-device tracking. Asserted when PadForge wants AT (cfg
+            // mode != Off), when external is currently mirroring, or for
+            // a one-shot drop frame on cfg's Off-transition. Otherwise
+            // cleared so the firmware retains the last applied state —
+            // critical for letting an external program's AT engagement
+            // persist past our 1500ms mirror grace window when the user
+            // has no PadForge-side AT configured.
+            if (assertRightTriggerEnable) enableBits |= EnableRightTrigger;
+            if (assertLeftTriggerEnable)  enableBits |= EnableLeftTrigger;
 
-            // Header — pack the u16 enable bits LE.
-            dst[OffEnableLow]  = (byte)(enableBits & 0xFF);
-            dst[OffEnableHigh] = (byte)((enableBits >> 8) & 0xFF);
-
-            return PayloadSize;
+            // BT DS5 spec adds "btTag" at byte 1 (USB spec ignores it).
+            // The encoder writes only the fields its profile declares.
+            return new Dictionary<string, object>
+            {
+                { "btTag",            NextBtSeqTag() },
+                { "validFlag0",       (byte)(enableBits & 0xFF) },
+                { "validFlag1",       (byte)((enableBits >> 8) & 0xFF) },
+                { "rightMotor",       effectiveRumbleR },
+                { "leftMotor",        effectiveRumbleL },
+                { "muteLed",          muteLed },
+                { "rightTriggerEffect", rightTrig },
+                { "leftTriggerEffect",  leftTrig  },
+                { "validFlag2",       (byte)0xFF },
+                { "lightbarSetup",    overrides.LightbarSetup ?? (byte)0x02 },
+                { "ledBrightness",    ledBrightness },
+                { "playerIndicator",  playerIndicator },
+                { "lightbar",         new byte[] { ledR, ledG, ledB } },
+            };
         }
 
         // Linear interpolation between two RGB colors. t is clamped
@@ -347,8 +397,9 @@ namespace PadForge.Common.Input
             long nowMs,
             uint randomColor,
             uint pulseColor,
-            float pulseIntensity)
-            => ComputeLightbarColor(cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity);
+            float pulseIntensity,
+            byte batteryPercent = 100)
+            => ComputeLightbarColor(cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity, batteryPercent);
 
         /// <summary>Public adapter for <see cref="ResolveReactiveOverlayColor"/>
         /// so the DS4 synthesizer can compose the same overlay logic
@@ -391,15 +442,16 @@ namespace PadForge.Common.Input
         /// <summary>Reduces the active <see cref="LightbarMode"/> plus
         /// dynamic inputs (audio peak, wall-clock timestamp, dispatcher-
         /// rolled random color, dispatcher-tracked input pulse) to a final
-        /// RGB triple for bytes 44-46 of the effect packet. Stateless;
-        /// the dispatcher owns all state.</summary>
+        /// RGB triple for the lightbar field. Stateless; the dispatcher
+        /// owns all state.</summary>
         private static (byte r, byte g, byte b) ComputeLightbarColor(
             PlayStationSlotConfig cfg,
             float audioPeak,
             long nowMs,
             uint randomColor,
             uint pulseColor,
-            float pulseIntensity)
+            float pulseIntensity,
+            byte batteryPercent = 100)
         {
             float p = Math.Clamp(audioPeak, 0f, 1f);
             int periodMs = Math.Max(cfg.LightbarPeriodMs, 250);
@@ -421,7 +473,13 @@ namespace PadForge.Common.Input
                 }
 
                 case LightbarMode.Rainbow:
-                    return HsvToRgb(phase * 360.0, 1.0, 1.0);
+                {
+                    // Scale HSV V by user-configured brightness (0..100 →
+                    // 0..1.0). Rainbow has no per-color picker for the user
+                    // to dim explicitly, so this slider is the only knob.
+                    double rainbowV = Math.Clamp(cfg.LightbarRainbowBrightness / 100.0, 0.0, 1.0);
+                    return HsvToRgb(phase * 360.0, 1.0, rainbowV);
+                }
 
                 case LightbarMode.ColorCycle:
                 {
@@ -497,6 +555,35 @@ namespace PadForge.Common.Input
                         (byte)Math.Round(cfg.LightbarRed * i),
                         (byte)Math.Round(cfg.LightbarGreen * i),
                         (byte)Math.Round(cfg.LightbarBlue * i));
+                }
+
+                case LightbarMode.Battery:
+                {
+                    // Linear interpolation between the user-configured Low
+                    // (default red @ 0%) and High (default green @ 100%)
+                    // colors driven by the per-device battery percent. -1
+                    // sentinel from SDL ("unknown") falls back to High so
+                    // the user sees the full-charge color rather than the
+                    // empty-battery red on a controller that's plugged in
+                    // but not yet reporting.
+                    float t = batteryPercent >= 100 ? 1f
+                            : batteryPercent <=   0 ? 0f
+                            : batteryPercent / 100f;
+                    return (
+                        (byte)Math.Round(cfg.LightbarBatteryLowR  + (cfg.LightbarBatteryHighR - cfg.LightbarBatteryLowR) * t),
+                        (byte)Math.Round(cfg.LightbarBatteryLowG  + (cfg.LightbarBatteryHighG - cfg.LightbarBatteryLowG) * t),
+                        (byte)Math.Round(cfg.LightbarBatteryLowB  + (cfg.LightbarBatteryHighB - cfg.LightbarBatteryLowB) * t));
+                }
+
+                case LightbarMode.Strobe:
+                {
+                    // Square wave at LightbarPeriodMs cadence: first half
+                    // of the period shows the configured base color, second
+                    // half is off. Phase already wraps via the period
+                    // calculation at the top of this method.
+                    if (phase < 0.5)
+                        return (cfg.LightbarRed, cfg.LightbarGreen, cfg.LightbarBlue);
+                    return (0, 0, 0);
                 }
 
                 default:

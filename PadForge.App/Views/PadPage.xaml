@@ -2597,45 +2597,47 @@
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                                     <TextBlock Text="{Binding Pad_Lighting_Mode, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource DzLabel}"/>
-                                    <ComboBox SelectedIndex="{Binding PlayStationConfig.LightbarMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
+                                    <!-- SelectedValue + Tag binding (rather than SelectedIndex
+                                         + EnumIndexConverter): the LightbarMode enum has gaps
+                                         (11..13 are legacy InputReactive values not exposed in
+                                         this dropdown), so item index ≠ enum value. Tag-driven
+                                         binding lets us reorder freely without breaking the
+                                         enum mapping. Order is grouped by feel: simple time-
+                                         based on a single color (Static/Breathing/Strobe),
+                                         multi-color time-based (Rainbow/ColorCycle), battery
+                                         indicator, then the audio-reactive cluster. -->
+                                    <ComboBox SelectedValue="{Binding PlayStationConfig.LightbarMode, Mode=TwoWay}"
+                                              SelectedValuePath="Tag"
                                               Width="320" VerticalAlignment="Center">
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Off, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Static, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Breathing, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Rainbow, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_ColorCycle, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulse, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulseRandom, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulseRainbow, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioThresholds, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioGradient, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioCrossFade, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Off, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Off}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Static, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Static}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Breathing, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Breathing}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Strobe, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Strobe}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Rainbow, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Rainbow}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_ColorCycle, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.ColorCycle}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Battery, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Battery}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulse, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioPulse}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulseRandom, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioPulseRandom}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulseRainbow, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioPulseRainbow}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioThresholds, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioThresholds}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioGradient, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioGradient}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioCrossFade, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioCrossFade}"/>
                                     </ComboBox>
                                     <Button Command="{Binding PlayStationConfig.ResetLightbarModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarMode, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <!-- Input Reactive overlay (v3.2+). Layered on top of the
-                                     base mode above: a button-press flashes the chosen
-                                     reactive color and decays back to the base. Off keeps
-                                     the base mode untouched. Random rolls a hue per press,
-                                     Cycle steps through the palette, Fixed flashes the
-                                     base RGB color. -->
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                    <TextBlock Text="{Binding Pad_Lighting_InputReactive, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource DzLabel}"/>
-                                    <ComboBox SelectedIndex="{Binding PlayStationConfig.InputReactiveMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
-                                              Width="320" VerticalAlignment="Center">
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Off, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Random, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Cycle, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Fixed, Source={x:Static strings:Strings.Instance}}"/>
-                                    </ComboBox>
-                                    <Button Command="{Binding PlayStationConfig.ResetInputReactiveModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetInputReactive, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
+                                <!-- LightbarMode-dependent controls live directly under
+                                     the mode dropdown so the user reads "I picked Mode X
+                                     → here are X's settings" without the InputReactive
+                                     dropdown breaking the visual flow. The InputReactive
+                                     dropdown + its dependent Hold/Decay/Fixed-color block
+                                     moves to the bottom of the card; palette stays in
+                                     the middle since it's shared between ColorCycle (base
+                                     mode) and InputReactive Cycle (overlay). -->
 
-                                <!-- Period: Breathing / Rainbow / ColorCycle / AudioPulseRainbow -->
+                                <!-- Period: Breathing / Rainbow / ColorCycle / AudioPulseRainbow / Strobe -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
-                                            Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Breathing|Rainbow|ColorCycle|AudioPulseRainbow}">
+                                            Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Breathing|Rainbow|ColorCycle|AudioPulseRainbow|Strobe}">
                                     <TextBlock Text="{Binding Pad_Lighting_Period, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <Slider Value="{Binding PlayStationConfig.LightbarPeriodMs, Mode=TwoWay}"
                                             Style="{StaticResource DzSlider}"
@@ -2645,79 +2647,37 @@
                                     <Button Command="{Binding PlayStationConfig.ResetLightbarPeriodCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarPeriod, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
+                                <!-- Brightness: Rainbow only (no per-color picker so the
+                                     user has no other way to dim the effect). -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                            Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Rainbow}">
+                                    <TextBlock Text="{Binding Pad_Lighting_RainbowBrightness, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding PlayStationConfig.LightbarRainbowBrightness, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}"
+                                            Minimum="0" Maximum="100" TickFrequency="1"/>
+                                    <TextBox Text="{Binding PlayStationConfig.LightbarRainbowBrightness, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                    <Button Command="{Binding PlayStationConfig.ResetLightbarRainbowBrightnessCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarRainbowBrightness, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
                                 <!-- Smooth toggle (ColorCycle): blend or hop between palette colors -->
                                 <CheckBox IsChecked="{Binding PlayStationConfig.LightbarColorCycleSmooth, Mode=TwoWay}"
                                           Content="{Binding Pad_Lighting_ColorCycleSmooth, Source={x:Static strings:Strings.Instance}}"
                                           Margin="0,0,0,8"
                                           Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ColorCycle}"/>
 
-                                <!-- InputReactive controls. Hold + Decay sliders show whenever
-                                     the input-reactive overlay (v3.2+) is enabled in any
-                                     variant — Random / Cycle / Fixed. Hold may be 0 for
-                                     instant fade; Decay may be 0 for clean on/off with no
-                                     fade. Placed before the Fixed color picker so the
-                                     timing controls (which apply to every variant) read
-                                     ahead of the variant-specific color block. -->
-                                <StackPanel Visibility="{Binding PlayStationConfig.IsInputReactiveActive, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <TextBlock Text="{Binding Pad_Lighting_InputHold, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                        <Slider Value="{Binding PlayStationConfig.LightbarInputHoldMs, Mode=TwoWay}"
-                                                Style="{StaticResource DzSlider}"
-                                                Minimum="0" Maximum="5000" TickFrequency="50"/>
-                                        <TextBox Text="{Binding PlayStationConfig.LightbarInputHoldMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzValueEdit}"/>
-                                        <Button Command="{Binding PlayStationConfig.ResetLightbarInputHoldCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarInputHold, Source={x:Static strings:Strings.Instance}}"/>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <TextBlock Text="{Binding Pad_Lighting_InputDecay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                        <Slider Value="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay}"
-                                                Style="{StaticResource DzSlider}"
-                                                Minimum="0" Maximum="5000" TickFrequency="50"/>
-                                        <TextBox Text="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                 Style="{StaticResource DzValueEdit}"/>
-                                        <Button Command="{Binding PlayStationConfig.ResetLightbarInputDecayCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarInputDecay, Source={x:Static strings:Strings.Instance}}"/>
-                                    </StackPanel>
-                                </StackPanel>
-
-                                <!-- Per-press flash color for the Fixed overlay variant.
-                                     Independent of LightbarRed/Green/Blue (which drives
-                                     the base mode color), so users can layer a base
-                                     color with a different flash color. -->
-                                <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,8"
-                                        HorizontalAlignment="Left"
-                                        BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
-                                        Visibility="{Binding PlayStationConfig.IsInputReactiveFixed, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding Pad_Lighting_InputReactive_FixedColor, Source={x:Static strings:Strings.Instance}}"
-                                                   FontWeight="SemiBold" Margin="0,0,0,8"/>
-                                        <views:ColorPickerControl Margin="0,0,0,12"
-                                            HorizontalAlignment="Left"
-                                            Red="{Binding PlayStationConfig.InputReactiveR, Mode=TwoWay}"
-                                            Green="{Binding PlayStationConfig.InputReactiveG, Mode=TwoWay}"
-                                            Blue="{Binding PlayStationConfig.InputReactiveB, Mode=TwoWay}"/>
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
-                                            <Slider Value="{Binding PlayStationConfig.InputReactiveR, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
-                                            <TextBox Text="{Binding PlayStationConfig.InputReactiveR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
-                                            <Slider Value="{Binding PlayStationConfig.InputReactiveG, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
-                                            <TextBox Text="{Binding PlayStationConfig.InputReactiveG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
-                                            <Slider Value="{Binding PlayStationConfig.InputReactiveB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
-                                            <TextBox Text="{Binding PlayStationConfig.InputReactiveB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                                            <Button Command="{Binding PlayStationConfig.ResetInputReactiveColorCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetInputReactiveColor, Source={x:Static strings:Strings.Instance}}"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                </Border>
-
-                                <!-- Palette (variable count): ColorCycle base mode and the
-                                     v3.2+ Cycle input-reactive overlay both consume it. The
-                                     ShowPaletteEditor derived bool flips when either trips. -->
-                                <StackPanel Visibility="{Binding PlayStationConfig.ShowPaletteEditor, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <!-- Palette (variable count) — Base instance.
+                                     Visible only when LightbarMode = ColorCycle so the
+                                     palette sits directly below the dropdown that
+                                     reveals it. The InputReactive Cycle overlay has
+                                     its own palette instance below the InputReactive
+                                     dropdown (same data, different position) so the
+                                     editor doesn't appear above the dropdown that
+                                     summoned it. ShowPaletteForBase / ShowPaletteForOverlay
+                                     are mutually exclusive — palette renders exactly
+                                     once at any time. -->
+                                <StackPanel Visibility="{Binding PlayStationConfig.ShowPaletteForBase, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Pad_Lighting_PaletteHeader, Source={x:Static strings:Strings.Instance}}"
                                                FontWeight="SemiBold" Margin="0,0,0,6"/>
                                     <ItemsControl ItemsSource="{Binding PlayStationConfig.LightbarPalette}" Margin="0,0,0,8">
@@ -2851,14 +2811,17 @@
                                     <Button Command="{Binding PlayStationConfig.ResetAudioCrossFadePercentCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioCrossFadePercent, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <!-- Single colour: Static / Breathing / AudioPulse base modes.
+                                <!-- Single colour: Static / Breathing / AudioPulse / Strobe base modes.
+                                     Strobe square-waves between the configured RGB and
+                                     black at LightbarPeriodMs cadence, so it uses the
+                                     same base color as the static / breathing modes.
                                      The Input Reactive Fixed overlay has its own color
                                      picker below so users can pick a separate flash
                                      color independent of the base. -->
                                 <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,8"
                                         HorizontalAlignment="Left"
                                         BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
-                                        Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Static|Breathing|AudioPulse}">
+                                        Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Static|Breathing|AudioPulse|Strobe}">
                                     <StackPanel>
                                         <views:ColorPickerControl Margin="0,0,0,12"
                                             HorizontalAlignment="Left"
@@ -2911,6 +2874,121 @@
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>
+
+                                <!-- Battery mode: Low / Full color pair. Lightbar lerps
+                                     from Low (0%) to Full (100%) based on the live
+                                     battery percent reported by the controller. Two
+                                     side-by-side cards mirror the audio-bands layout
+                                     so a user familiar with that pattern immediately
+                                     understands the picker. Per-channel ResetButtonTight
+                                     next to each R/G/B slider matches the Static base
+                                     and audio-band pickers (no standalone "reset all
+                                     three" button — there's no precedent for one). -->
+                                <StackPanel Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Battery}">
+                                    <Grid Margin="0,4,0,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="8"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- LOW (empty) color -->
+                                        <Border Grid.Column="0" BorderThickness="1" CornerRadius="4" Padding="10"
+                                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Pad_Lighting_BatteryLowColor, Source={x:Static strings:Strings.Instance}}"
+                                                           FontWeight="SemiBold" Margin="0,0,0,8"/>
+                                                <views:ColorPickerControl Margin="0,0,0,8"
+                                                    HorizontalAlignment="Left"
+                                                    Red="{Binding PlayStationConfig.LightbarBatteryLowR, Mode=TwoWay}"
+                                                    Green="{Binding PlayStationConfig.LightbarBatteryLowG, Mode=TwoWay}"
+                                                    Blue="{Binding PlayStationConfig.LightbarBatteryLowB, Mode=TwoWay}"/>
+                                                <Grid Margin="0,0,0,8">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Border Grid.Column="0" Width="36" Height="28" CornerRadius="4"
+                                                            BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                        <Border.Background>
+                                                            <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                                <Binding Path="PlayStationConfig.LightbarBatteryLowR" />
+                                                                <Binding Path="PlayStationConfig.LightbarBatteryLowG" />
+                                                                <Binding Path="PlayStationConfig.LightbarBatteryLowB" />
+                                                            </MultiBinding>
+                                                        </Border.Background>
+                                                    </Border>
+                                                </Grid>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                    <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                                    <Slider Value="{Binding PlayStationConfig.LightbarBatteryLowR, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                                    <TextBox Text="{Binding PlayStationConfig.LightbarBatteryLowR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                                    <Button Command="{Binding PlayStationConfig.ResetLightbarBatteryLowRCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                    <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                                    <Slider Value="{Binding PlayStationConfig.LightbarBatteryLowG, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                                    <TextBox Text="{Binding PlayStationConfig.LightbarBatteryLowG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                                    <Button Command="{Binding PlayStationConfig.ResetLightbarBatteryLowGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                    <Slider Value="{Binding PlayStationConfig.LightbarBatteryLowB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                                    <TextBox Text="{Binding PlayStationConfig.LightbarBatteryLowB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                                    <Button Command="{Binding PlayStationConfig.ResetLightbarBatteryLowBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <!-- HIGH (full) color -->
+                                        <Border Grid.Column="2" BorderThickness="1" CornerRadius="4" Padding="10"
+                                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Pad_Lighting_BatteryHighColor, Source={x:Static strings:Strings.Instance}}"
+                                                           FontWeight="SemiBold" Margin="0,0,0,8"/>
+                                                <views:ColorPickerControl Margin="0,0,0,8"
+                                                    HorizontalAlignment="Left"
+                                                    Red="{Binding PlayStationConfig.LightbarBatteryHighR, Mode=TwoWay}"
+                                                    Green="{Binding PlayStationConfig.LightbarBatteryHighG, Mode=TwoWay}"
+                                                    Blue="{Binding PlayStationConfig.LightbarBatteryHighB, Mode=TwoWay}"/>
+                                                <Grid Margin="0,0,0,8">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Border Grid.Column="0" Width="36" Height="28" CornerRadius="4"
+                                                            BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                        <Border.Background>
+                                                            <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                                <Binding Path="PlayStationConfig.LightbarBatteryHighR" />
+                                                                <Binding Path="PlayStationConfig.LightbarBatteryHighG" />
+                                                                <Binding Path="PlayStationConfig.LightbarBatteryHighB" />
+                                                            </MultiBinding>
+                                                        </Border.Background>
+                                                    </Border>
+                                                </Grid>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                    <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                                    <Slider Value="{Binding PlayStationConfig.LightbarBatteryHighR, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                                    <TextBox Text="{Binding PlayStationConfig.LightbarBatteryHighR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                                    <Button Command="{Binding PlayStationConfig.ResetLightbarBatteryHighRCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                    <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                                    <Slider Value="{Binding PlayStationConfig.LightbarBatteryHighG, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                                    <TextBox Text="{Binding PlayStationConfig.LightbarBatteryHighG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                                    <Button Command="{Binding PlayStationConfig.ResetLightbarBatteryHighGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                    <Slider Value="{Binding PlayStationConfig.LightbarBatteryHighB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                                    <TextBox Text="{Binding PlayStationConfig.LightbarBatteryHighB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                                    <Button Command="{Binding PlayStationConfig.ResetLightbarBatteryHighBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </StackPanel>
 
                                 <!-- Audio bands: 3 colors with thresholds, only visible
                                      when LightbarMode is AudioThresholds, AudioGradient,
@@ -3091,6 +3169,183 @@
                                     </Grid>
 
                                 </StackPanel>
+
+                                <!-- Input Reactive overlay (v3.2+). Layered on top of the
+                                     base mode above: a button-press flashes the chosen
+                                     reactive color and decays back to the base. Off keeps
+                                     the base mode untouched. Random rolls a hue per press,
+                                     Cycle steps through the palette, Fixed flashes the
+                                     base RGB color. Placed at the bottom of the lightbar
+                                     card so the LightbarMode dropdown's mode-specific
+                                     settings sit immediately under it without the
+                                     InputReactive controls breaking up the visual flow. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,12,0,12">
+                                    <TextBlock Text="{Binding Pad_Lighting_InputReactive, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource DzLabel}"/>
+                                    <ComboBox SelectedIndex="{Binding PlayStationConfig.InputReactiveMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
+                                              Width="320" VerticalAlignment="Center">
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Off, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Random, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Cycle, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Fixed, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ComboBox>
+                                    <Button Command="{Binding PlayStationConfig.ResetInputReactiveModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetInputReactive, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <!-- InputReactive controls. Hold + Decay sliders show whenever
+                                     the input-reactive overlay is enabled in any variant —
+                                     Random / Cycle / Fixed. Hold may be 0 for instant fade;
+                                     Decay may be 0 for clean on/off with no fade. Placed
+                                     before the Fixed color picker so the timing controls
+                                     (which apply to every variant) read ahead of the
+                                     variant-specific color block. -->
+                                <StackPanel Visibility="{Binding PlayStationConfig.IsInputReactiveActive, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Lighting_InputHold, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding PlayStationConfig.LightbarInputHoldMs, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}"
+                                                Minimum="0" Maximum="5000" TickFrequency="50"/>
+                                        <TextBox Text="{Binding PlayStationConfig.LightbarInputHoldMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <Button Command="{Binding PlayStationConfig.ResetLightbarInputHoldCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarInputHold, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Lighting_InputDecay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}"
+                                                Minimum="0" Maximum="5000" TickFrequency="50"/>
+                                        <TextBox Text="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <Button Command="{Binding PlayStationConfig.ResetLightbarInputDecayCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarInputDecay, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <!-- Palette (variable count) — Overlay instance.
+                                     Visible only when InputReactive = Cycle AND
+                                     LightbarMode != ColorCycle (so this never co-renders
+                                     with the Base palette instance above). Same data,
+                                     placed here so the palette sits directly below the
+                                     InputReactive dropdown that revealed it. -->
+                                <StackPanel Visibility="{Binding PlayStationConfig.ShowPaletteForOverlay, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding Pad_Lighting_PaletteHeader, Source={x:Static strings:Strings.Instance}}"
+                                               FontWeight="SemiBold" Margin="0,0,0,6"/>
+                                    <ItemsControl ItemsSource="{Binding PlayStationConfig.LightbarPalette}" Margin="0,0,0,8">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type vm:LightbarPaletteEntry}">
+                                                <Border BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,8,8"
+                                                        BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                                    <StackPanel>
+                                                        <Button Command="{Binding DataContext.PlayStationConfig.RemovePaletteColorCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                CommandParameter="{Binding}"
+                                                                HorizontalAlignment="Right" Margin="0,0,0,4"
+                                                                Padding="4,0" MinWidth="24"
+                                                                ToolTip="{Binding Pad_Lighting_RemoveColor, Source={x:Static strings:Strings.Instance}}">
+                                                            <TextBlock Text="&#xE738;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                                                        </Button>
+                                                        <views:ColorPickerControl HorizontalAlignment="Left" Margin="0,0,0,8"
+                                                            Red="{Binding R, Mode=TwoWay}"
+                                                            Green="{Binding G, Mode=TwoWay}"
+                                                            Blue="{Binding B, Mode=TwoWay}"/>
+                                                        <Grid Margin="0,0,0,8">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Border Grid.Column="0" Width="36" Height="28" CornerRadius="4"
+                                                                    BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                                <Border.Background>
+                                                                    <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                                        <Binding Path="R"/>
+                                                                        <Binding Path="G"/>
+                                                                        <Binding Path="B"/>
+                                                                    </MultiBinding>
+                                                                </Border.Background>
+                                                            </Border>
+                                                            <TextBox Grid.Column="1" Margin="6,0,0,0" VerticalAlignment="Center"
+                                                                     FontFamily="Consolas" Padding="6,2"
+                                                                     Text="{Binding Hex, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                                     ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                        </Grid>
+                                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                                            <Slider Value="{Binding R, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                                            <TextBox Text="{Binding R, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                                        </StackPanel>
+                                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                                            <Slider Value="{Binding G, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                                            <TextBox Text="{Binding G, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                                        </StackPanel>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                            <Slider Value="{Binding B, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                                            <TextBox Text="{Binding B, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <Button Command="{Binding PlayStationConfig.AddPaletteColorCommand}"
+                                                Padding="10,4">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding Pad_Lighting_AddColor, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Command="{Binding PlayStationConfig.ResetPaletteCommand}"
+                                                Margin="8,0,0,0" Padding="10,4"
+                                                ToolTip="{Binding Pad_Lighting_ResetPaletteTooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding Pad_Lighting_ResetPalette, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <!-- Per-press flash color for the Fixed overlay variant.
+                                     Independent of LightbarRed/Green/Blue (which drives
+                                     the base mode color), so users can layer a base
+                                     color with a different flash color. -->
+                                <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,8"
+                                        HorizontalAlignment="Left"
+                                        BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
+                                        Visibility="{Binding PlayStationConfig.IsInputReactiveFixed, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Pad_Lighting_InputReactive_FixedColor, Source={x:Static strings:Strings.Instance}}"
+                                                   FontWeight="SemiBold" Margin="0,0,0,8"/>
+                                        <views:ColorPickerControl Margin="0,0,0,12"
+                                            HorizontalAlignment="Left"
+                                            Red="{Binding PlayStationConfig.InputReactiveR, Mode=TwoWay}"
+                                            Green="{Binding PlayStationConfig.InputReactiveG, Mode=TwoWay}"
+                                            Blue="{Binding PlayStationConfig.InputReactiveB, Mode=TwoWay}"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                            <Slider Value="{Binding PlayStationConfig.InputReactiveR, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                            <TextBox Text="{Binding PlayStationConfig.InputReactiveR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                            <Button Command="{Binding PlayStationConfig.ResetInputReactiveRCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                            <Slider Value="{Binding PlayStationConfig.InputReactiveG, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                            <TextBox Text="{Binding PlayStationConfig.InputReactiveG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                            <Button Command="{Binding PlayStationConfig.ResetInputReactiveGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                            <Slider Value="{Binding PlayStationConfig.InputReactiveB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                            <TextBox Text="{Binding PlayStationConfig.InputReactiveB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                            <Button Command="{Binding PlayStationConfig.ResetInputReactiveBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
                             </StackPanel>
                         </Border>
 
@@ -3151,12 +3406,32 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Pad_Lighting_MuteLedMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <ComboBox SelectedIndex="{Binding PlayStationConfig.MicLedMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
-                                              Width="140" VerticalAlignment="Center">
+                                              Width="220" VerticalAlignment="Center">
                                         <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Off, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Solid, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Pulse, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_FollowDevice, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
                                     <Button Command="{Binding PlayStationConfig.ResetMicLedModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetMuteLedMode, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <!-- Audio endpoint picker, only visible when MicLed mode
+                                     is FollowDeviceMute. Lists every active input + output
+                                     endpoint (each prefixed [In] / [Out]); the synthesizer
+                                     polls the picked endpoint's mute state at 4 Hz and
+                                     drives the LED Solid (muted) or Off (unmuted). The
+                                     DropDownOpened handler refreshes the list so unplug /
+                                     replug between settings opens is reflected. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0"
+                                            Visibility="{Binding PlayStationConfig.IsMicLedFollowDevice, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding Pad_Lighting_MicLed_FollowDevice_Picker, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ComboBox x:Name="MicLedDevicePicker"
+                                              ItemsSource="{Binding PlayStationConfig.MicLedAvailableDevices}"
+                                              DisplayMemberPath="Display"
+                                              SelectedValuePath="Id"
+                                              SelectedValue="{Binding PlayStationConfig.MicLedFollowDeviceId, Mode=TwoWay}"
+                                              DropDownOpened="MicLedDevicePicker_DropDownOpened"
+                                              Width="320" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

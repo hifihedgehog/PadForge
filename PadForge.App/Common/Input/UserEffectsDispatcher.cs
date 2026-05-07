@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using HIDMaestro;
 using PadForge.Common;
 using PadForge.Engine;
 using PadForge.Engine.Data;
@@ -25,11 +26,12 @@ namespace PadForge.Common.Input
     /// are what the physical pad reflects.</para>
     ///
     /// <para>The dispatcher writes synchronously on the UI thread when
-    /// PropertyChanged fires. The cost is one byte-array allocation
-    /// (47 bytes), one synthesizer call, and one
-    /// <see cref="SDL_SendGamepadEffect"/> per assigned physical DS5.
-    /// Total is well under a millisecond per user-interaction event,
-    /// which is bounded by how fast a human can drag a slider.</para>
+    /// PropertyChanged fires. The cost is one parsed-field dictionary
+    /// allocation, one synthesizer call, and one
+    /// <see cref="HMOutputEncoder.Encode"/> + raw HID write per assigned
+    /// physical DualSense / DualShock 4. Total is well under a
+    /// millisecond per user-interaction event, which is bounded by how
+    /// fast a human can drag a slider.</para>
     ///
     /// <para>══════════════════════════════════════════════════════════════</para>
     /// <para><b>SOLE WRITER FOR DS5 / DS4 — DO NOT REINTRODUCE SDL RUMBLE.</b></para>
@@ -69,6 +71,25 @@ namespace PadForge.Common.Input
         private const ushort Ds4Pid_V1     = 0x05C4;
         private const ushort Ds4Pid_V1Alt  = 0x09CC;
         private const ushort Ds4Pid_V2     = 0x0BA0;
+
+        // Map (PID, transport) → HM profile id. Each device's
+        // extendedOutputReport spec tells HMOutputEncoder how to pack the
+        // semantic fields into wire-format bytes for that transport. There
+        // is no "dualshock-4-v1-bt" profile — DS4 v1 over BT uses the v2-bt
+        // descriptor, which has the same effect-report layout.
+        private static HMProfile ResolveSonyProfile(ushort pid, bool isBluetooth)
+        {
+            string id = pid switch
+            {
+                PidStandard   => isBluetooth ? "dualsense-bt-full" : "dualsense",
+                PidEdge       => isBluetooth ? "dualsense-edge-bt" : "dualsense-edge",
+                Ds4Pid_V1     => isBluetooth ? "dualshock-4-v2-bt" : "dualshock-4-v1",
+                Ds4Pid_V1Alt  => isBluetooth ? "dualshock-4-v2-bt" : "dualshock-4-v2",
+                Ds4Pid_V2     => isBluetooth ? "dualshock-4-v2-bt" : "dualshock-4-v2",
+                _ => null,
+            };
+            return id != null ? HMaestroProfileCatalog.GetProfileById(id) : null;
+        }
 
         /// <summary>Static provider for the system audio peak (0..1).
         /// InputService wires this to <c>AudioBassDetector.FullSpectrumPeak</c>
@@ -115,6 +136,13 @@ namespace PadForge.Common.Input
         /// <c>InputManager.TestRumbleTargetGuid</c>.</summary>
         public static Func<int, Guid> TestRumbleTargetGuidProvider { get; set; }
 
+        /// <summary>Static provider for the slot's reported battery percent
+        /// (0..100). Drives the Battery lightbar mode's low→full gradient
+        /// lerp. Returns 100 when the slot has no battery info (defaults to
+        /// "full" so the lightbar shows the high-charge color rather than
+        /// the empty color when battery telemetry is unavailable).</summary>
+        public static Func<int, byte> SlotBatteryPercentProvider { get; set; }
+
         // Animated-lightbar polling cadence — 30Hz is enough to feel
         // responsive without flooding the BT HID write path. WriteFile
         // open+close is ~1ms per call; 30Hz = 30ms budget.
@@ -156,6 +184,237 @@ namespace PadForge.Common.Input
             public int PalettePulseIndex;
         }
         private readonly Dictionary<Guid, DeviceState> _deviceStates = new();
+
+        // Per-device flag remembering whether PadForge's last dispatched
+        // packet carried non-zero rumble. Drives the validFlag0 bit-0
+        // gating: assert the rumble enable bit when current frame has
+        // rumble OR previous frame had rumble (the one-shot drop frame
+        // that lets the firmware actually zero the motors before we stop
+        // touching them). Clearing bit 0 in subsequent idle frames lets
+        // external writers paint rumble without our 30 Hz animation
+        // packets clobbering their values. Accessed only inside the
+        // devices.SyncRoot lock during DispatchSnapshot.
+        private readonly Dictionary<Guid, bool> _prevHadRumble = new();
+
+        // Per-device "did the user have AT engaged on the previous packet"
+        // tracking — drives the trigger-enable drop-frame logic the same
+        // way _prevHadRumble does for rumble. Asserted when PadForge wants
+        // AT this frame OR external is mirroring OR we asserted last
+        // frame and now don't (so the cfg-toggle-to-Off transition fires
+        // one disengage packet then stops). Cleared steady-state idle so
+        // an external program's AT engagement persists in the firmware
+        // past our mirror grace.
+        private readonly Dictionary<Guid, bool> _prevPadForgeWantsRightTrig = new();
+        private readonly Dictionary<Guid, bool> _prevPadForgeWantsLeftTrig = new();
+
+        // Per-subsystem external-writer mirroring. When a host (game,
+        // ds.daidr.me, any WebHID / hidapi consumer granted access to a
+        // PadForge virtual) writes an effect packet, the validFlag bits
+        // tell us which subsystems it's updating. Each subsystem touched
+        // is captured here with its on-wire bytes and a refresh
+        // timestamp; PadForge's own dispatch then mirrors those bytes
+        // for as long as the timestamp stays fresh, so PadForge keeps
+        // animating subsystems the external writer DIDN'T touch (e.g.
+        // ds.daidr.me's rumble button doesn't pause our lightbar
+        // animation) while subsystems it DID touch retain the external
+        // writer's intent across our 30 Hz cadence (every PadForge
+        // packet carries the mirrored bytes, so the firmware sees a
+        // stable value across our writes instead of being fought between
+        // our animation defaults and the external writer's commands).
+        // After the grace window expires without a refresh, ownership
+        // returns to PadForge for that subsystem.
+        private const long ExternalSubsystemGraceMs = 1500;
+
+        private struct ExternalSubsystemState
+        {
+            public long RumbleTick;
+            public byte RumbleRight;
+            public byte RumbleLeft;
+
+            public long RightTrigTick;
+            public byte[] RightTrig;     // 11 bytes (mode + 10 params)
+
+            public long LeftTrigTick;
+            public byte[] LeftTrig;
+
+            public long MicLedTick;
+            public byte MicLed;
+
+            public long LightbarTick;
+            public byte LightbarR, LightbarG, LightbarB;
+
+            public long PlayerIndTick;
+            public byte PlayerInd;
+
+            // validFlag2-gated subsystems. PadForge always writes
+            // validFlag2 = 0xFF in its own packets so brightness +
+            // setup go through; when an external writer asserts
+            // validFlag2 (any nonzero) we capture both bytes and mirror
+            // them so the writer's intent (no-fade vs forced-fade
+            // lightbar setup, dim/medium/bright player-LED brightness)
+            // survives PadForge's animation cadence.
+            public long LightbarSetupTick;
+            public byte LightbarSetup;
+
+            public long LedBrightnessTick;
+            public byte LedBrightness;
+        }
+
+        private static readonly Dictionary<int, ExternalSubsystemState> s_externalState = new();
+        private static readonly object s_externalStateLock = new();
+
+        /// <summary>Captured external-write overrides that this dispatch
+        /// frame should honor. Null fields mean "PadForge owns this
+        /// subsystem this frame — use our own animated / configured
+        /// value." Non-null fields carry the most recent external
+        /// writer's bytes for subsystems we should mirror.</summary>
+        public struct ExternalSubsystemOverrides
+        {
+            public byte? RumbleRight;
+            public byte? RumbleLeft;
+            public byte[] RightTriggerEffect;   // 11 bytes when present
+            public byte[] LeftTriggerEffect;
+            public byte? MuteLed;
+            public byte[] LightbarRgb;          // 3 bytes when present
+            public byte? PlayerIndicator;
+            public byte? LightbarSetup;
+            public byte? LedBrightness;
+        }
+
+        /// <summary>Called by <c>HMaestroVirtualController.OutputDecoded</c>
+        /// for every external host write to a Sony virtual. Inspects the
+        /// 47-byte USB-shape effect payload's validFlag bits to identify
+        /// which subsystems the writer touched; captures their bytes and
+        /// refreshes a per-subsystem timestamp. Subsequent
+        /// <see cref="DispatchSnapshot"/> calls within the grace window
+        /// mirror those bytes (per subsystem, independently) so PadForge
+        /// keeps animating subsystems the writer didn't touch while
+        /// preserving the writer's intent for the ones it did.</summary>
+        public static void NotifyExternalSubsystems(int padIndex, ReadOnlySpan<byte> effectPayload)
+        {
+            if (effectPayload.Length < 47) return;
+            byte vf0 = effectPayload[0];
+            byte vf1 = effectPayload[1];
+            long now = Environment.TickCount64;
+
+            try
+            {
+                var path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-ds5-passthrough.log");
+                System.IO.File.AppendAllText(path,
+                    $"{DateTime.UtcNow:HH:mm:ss.fff} [ext-write] pad={padIndex} vf0=0x{vf0:X2} vf1=0x{vf1:X2} " +
+                    $"rumble=({effectPayload[2]},{effectPayload[3]}) lightbar=({effectPayload[44]},{effectPayload[45]},{effectPayload[46]})\n");
+            }
+            catch { }
+
+            lock (s_externalStateLock)
+            {
+                if (!s_externalState.TryGetValue(padIndex, out var st))
+                    st = default;
+
+                // validFlag0 bits 0 + 1: rumble. Bit 0 is "compatible
+                // vibration" (DS4-style motor rumble) and bit 1 is
+                // "haptics select" per Linux's hid-playstation; either
+                // engages the motors. Steam Input asserts bit 1 only on
+                // its DS5 rumble writes (verified in the dispatcher diag
+                // log: vf0=0x02 with rumble=(127,127)). Capturing only
+                // bit 0 missed Steam entirely. Motor bytes at payload[2]
+                // (right) and payload[3] (left).
+                if ((vf0 & 0x03) != 0)
+                {
+                    st.RumbleTick = now;
+                    st.RumbleRight = effectPayload[2];
+                    st.RumbleLeft = effectPayload[3];
+                }
+                // validFlag0 bit 2: right trigger effect. 11 bytes at
+                // payload[10..20].
+                if ((vf0 & 0x04) != 0)
+                {
+                    st.RightTrigTick = now;
+                    st.RightTrig ??= new byte[11];
+                    effectPayload.Slice(10, 11).CopyTo(st.RightTrig);
+                }
+                // validFlag0 bit 3: left trigger effect. 11 bytes at
+                // payload[21..31].
+                if ((vf0 & 0x08) != 0)
+                {
+                    st.LeftTrigTick = now;
+                    st.LeftTrig ??= new byte[11];
+                    effectPayload.Slice(21, 11).CopyTo(st.LeftTrig);
+                }
+                // validFlag1 bit 0: mic LED. Single byte at payload[8].
+                if ((vf1 & 0x01) != 0)
+                {
+                    st.MicLedTick = now;
+                    st.MicLed = effectPayload[8];
+                }
+                // validFlag1 bit 2: lightbar RGB. 3 bytes at payload[44..46].
+                if ((vf1 & 0x04) != 0)
+                {
+                    st.LightbarTick = now;
+                    st.LightbarR = effectPayload[44];
+                    st.LightbarG = effectPayload[45];
+                    st.LightbarB = effectPayload[46];
+                }
+                // validFlag1 bit 4: player indicator. Single byte at payload[43].
+                if ((vf1 & 0x10) != 0)
+                {
+                    st.PlayerIndTick = now;
+                    st.PlayerInd = effectPayload[43];
+                }
+
+                // validFlag2 (payload[38]) gates lightbarSetup (payload[41])
+                // and ledBrightness (payload[42]). We don't enumerate
+                // individual validFlag2 bits — Sony's bit map for this byte
+                // is documented inconsistently across community sources.
+                // Defensive heuristic: any nonzero validFlag2 means the
+                // external writer is asserting at least one of the
+                // lightbarSetup / ledBrightness updates, so capture both
+                // bytes. PadForge writes validFlag2 = 0xFF in its own
+                // packets so this clause won't loop back on us — OutputDecoded
+                // only fires for the virtual's host writes, not PadForge's
+                // raw HID output to the physical pad.
+                byte vf2 = effectPayload[38];
+                if (vf2 != 0)
+                {
+                    st.LightbarSetupTick = now;
+                    st.LightbarSetup = effectPayload[41];
+                    st.LedBrightnessTick = now;
+                    st.LedBrightness = effectPayload[42];
+                }
+
+                s_externalState[padIndex] = st;
+            }
+        }
+
+        private static ExternalSubsystemOverrides GetActiveOverrides(int padIndex)
+        {
+            var ov = default(ExternalSubsystemOverrides);
+            lock (s_externalStateLock)
+            {
+                if (!s_externalState.TryGetValue(padIndex, out var st)) return ov;
+                long now = Environment.TickCount64;
+                if (now - st.RumbleTick < ExternalSubsystemGraceMs)
+                {
+                    ov.RumbleRight = st.RumbleRight;
+                    ov.RumbleLeft  = st.RumbleLeft;
+                }
+                if (now - st.RightTrigTick < ExternalSubsystemGraceMs && st.RightTrig != null)
+                    ov.RightTriggerEffect = st.RightTrig;
+                if (now - st.LeftTrigTick < ExternalSubsystemGraceMs && st.LeftTrig != null)
+                    ov.LeftTriggerEffect = st.LeftTrig;
+                if (now - st.MicLedTick < ExternalSubsystemGraceMs)
+                    ov.MuteLed = st.MicLed;
+                if (now - st.LightbarTick < ExternalSubsystemGraceMs)
+                    ov.LightbarRgb = new byte[] { st.LightbarR, st.LightbarG, st.LightbarB };
+                if (now - st.PlayerIndTick < ExternalSubsystemGraceMs)
+                    ov.PlayerIndicator = st.PlayerInd;
+                if (now - st.LightbarSetupTick < ExternalSubsystemGraceMs)
+                    ov.LightbarSetup = st.LightbarSetup;
+                if (now - st.LedBrightnessTick < ExternalSubsystemGraceMs)
+                    ov.LedBrightness = st.LedBrightness;
+            }
+            return ov;
+        }
 
         private DeviceState GetOrCreateDeviceState(Guid deviceGuid)
         {
@@ -735,6 +994,19 @@ namespace PadForge.Common.Input
             // the same filter via InputManager.TestRumbleTargetGuid.
             Guid testTarget = TestRumbleTargetGuidProvider?.Invoke(_padIndex) ?? Guid.Empty;
 
+            // Per-subsystem override snapshot for this dispatch. Subsystems
+            // the external writer recently touched are mirrored from their
+            // captured bytes; subsystems they didn't touch keep flowing
+            // PadForge's own animated / configured values. Test rumble
+            // (user-initiated inside PadForge) bypasses external rumble
+            // mirroring so the user's test always wins.
+            var overrides = GetActiveOverrides(_padIndex);
+            if (testTarget != Guid.Empty)
+            {
+                overrides.RumbleRight = null;
+                overrides.RumbleLeft  = null;
+            }
+
             // Per-(slot, device) lighting configs — each Sony device on
             // the slot synthesizes from its own LightbarMode / colors /
             // palette / decay so two DualSenses can light up
@@ -768,9 +1040,6 @@ namespace PadForge.Common.Input
 
             int sent = 0, skippedNotPs = 0, skippedOffline = 0, skippedNoHandle = 0, errors = 0;
             int allPsOnline = 0, allPsOnlineMapped = 0;
-            byte[] ds5Buffer = new byte[Ds5EffectSynthesizer.PayloadSize];
-            byte[] ds4UsbBuf = null;
-            byte[] ds4BtBuf = null;
             lock (devices.SyncRoot)
             {
                 foreach (var ud in devices.Items)
@@ -789,7 +1058,7 @@ namespace PadForge.Common.Input
 
                     if (isPs)
                     {
-                        bool isBt = Ds5RawHidWriter.IsBluetoothPath(ud.DevicePath);
+                        bool isBt = SonyEffectWriter.IsBluetoothPath(ud.DevicePath);
                         string family = isDs5 ? "DS5" : "DS4";
                         DiagLog($"  device {family} guid={ud.InstanceGuid} vid={ud.VendorId:X4} pid={ud.ProdId:X4} online={ud.IsOnline} mapped={inMappedGuids} bt={isBt} path={ud.DevicePath}");
                     }
@@ -800,7 +1069,22 @@ namespace PadForge.Common.Input
 
                     string path = ud.DevicePath;
                     if (string.IsNullOrEmpty(path)) { skippedNoHandle++; continue; }
-                    bool isBluetooth = Ds5RawHidWriter.IsBluetoothPath(path);
+                    bool isBluetooth = SonyEffectWriter.IsBluetoothPath(path);
+
+                    // Resolve the HM profile whose extendedOutputReport spec
+                    // describes this device's wire format. The synthesizer
+                    // emits semantic fields (rightMotor / leftMotor /
+                    // lightbar / triggers / ...); SonyEffectWriter feeds them
+                    // through HMOutputEncoder to produce the on-wire bytes
+                    // including BT framing and CRC32 footer where the spec
+                    // declares them.
+                    var profile = ResolveSonyProfile(ud.ProdId, isBluetooth);
+                    if (profile == null)
+                    {
+                        DiagLog($"  no HM profile for vid={ud.VendorId:X4} pid={ud.ProdId:X4} bt={isBluetooth} — skipping");
+                        skippedNotPs++;
+                        continue;
+                    }
 
                     // Per-device rumble bytes — each Sony device on the
                     // slot pulls its OWN PadSetting (audio rumble + gain
@@ -840,95 +1124,111 @@ namespace PadForge.Common.Input
                     uint devPulseColor = devState?.PulseColor ?? 0;
                     float devPulseIntensity = ComputePulseIntensity(nowMs, devCfg);
 
+                    // Rumble enable gating — clear validFlag0 bit 0 once
+                    // PadForge's own rumble has been zero for one full
+                    // frame. The transition frame still asserts the enable
+                    // bit with motor=0 so the firmware actually drops the
+                    // motor; subsequent idle frames clear bit 0 entirely
+                    // and stop touching the rumble bytes, which lets
+                    // external writers (ds.daidr.me, OpenRGB, dualsensectl,
+                    // game-side hidapi callers) paint rumble without
+                    // PadForge's 30 Hz animation cadence clobbering it.
+                    bool padForgeHasRumble = (rR | rL) != 0;
+                    bool prevHadRumble = _prevHadRumble.TryGetValue(ud.InstanceGuid, out var phr) && phr;
+                    bool assertRumbleEnable = padForgeHasRumble || prevHadRumble;
+                    _prevHadRumble[ud.InstanceGuid] = padForgeHasRumble;
+
+                    // AT trigger enable gating — same shape as rumble.
+                    // Assert when PadForge has AT configured OR external
+                    // is currently mirroring OR we need a one-shot drop
+                    // frame to disengage on a cfg→Off transition. Idle
+                    // (no PadForge AT, no override, no transition): don't
+                    // assert, firmware retains whatever was last written
+                    // (which may be an external program's AT engagement
+                    // we want to preserve indefinitely).
+                    bool padForgeWantsRightAt = devCfg != null && devCfg.RightTriggerMode != AdaptiveTriggerMode.Off;
+                    bool padForgeWantsLeftAt  = devCfg != null && devCfg.LeftTriggerMode  != AdaptiveTriggerMode.Off;
+                    bool prevPadForgeWantsRightAt = _prevPadForgeWantsRightTrig.TryGetValue(ud.InstanceGuid, out var pr) && pr;
+                    bool prevPadForgeWantsLeftAt  = _prevPadForgeWantsLeftTrig.TryGetValue(ud.InstanceGuid, out var pl) && pl;
+
+                    // Slot's reported battery percent (clamped 0..100) for
+                    // the synthesizer's Battery lightbar mode lerp. Default
+                    // to 100 ("full") when the provider isn't wired so a
+                    // misconfigured slot doesn't paint empty-battery red.
+                    byte pctByte = SlotBatteryPercentProvider?.Invoke(_padIndex) ?? (byte)100;
+                    bool assertRightTrig = padForgeWantsRightAt
+                        || overrides.RightTriggerEffect != null
+                        || prevPadForgeWantsRightAt;
+                    bool assertLeftTrig  = padForgeWantsLeftAt
+                        || overrides.LeftTriggerEffect != null
+                        || prevPadForgeWantsLeftAt;
+                    _prevPadForgeWantsRightTrig[ud.InstanceGuid] = padForgeWantsRightAt;
+                    _prevPadForgeWantsLeftTrig[ud.InstanceGuid]  = padForgeWantsLeftAt;
+
                     try
                     {
-                        bool ok;
-                        if (isDs5)
-                        {
-                            // ── CRITICAL: DS5 effect packet rumble byte contract ──
-                            //
-                            // PadForge writes DS5 effect packets via raw HID
-                            // (Ds5RawHidWriter) at up to 30 Hz, BYPASSING SDL3
-                            // entirely. SDL3's PS5 driver also writes effect
-                            // packets — for SDL_RumbleJoystick calls the SDL
-                            // path carries the audio-mixed rumble bytes from
-                            // ForceFeedbackState.SetDeviceForces. Two writers,
-                            // same DS5: per Ds5RawHidWriter's own docstring,
-                            // "the firmware applies whichever WriteFile lands
-                            // most recently."
-                            //
-                            // That means: every PadForge dispatcher write is
-                            // ALSO writing rumble bytes from this packet's
-                            // perspective. If the dispatcher writes 0 motor
-                            // values 30 Hz between SDL's audio-rumble writes,
-                            // motors pulse audio→0→audio→0 — average strength
-                            // collapses (the v3.1.x audio-rumble regression).
-                            //
-                            // Two rules that MUST hold for audio rumble to
-                            // feel right:
-                            //   1. Bit 0 of validFlag1 (EnableRumbleEmulation)
-                            //      stays set unconditionally on every
-                            //      dispatcher packet. Clearing it ("disable
-                            //      compatibility motor mode") races SDL's
-                            //      bit-0-set writes off the channel.
-                            //   2. The rumble bytes the dispatcher carries
-                            //      MUST include audio mix (when audio rumble
-                            //      is enabled) so the dispatcher reinforces
-                            //      SDL's audio rumble rather than fighting
-                            //      it. SlotRumbleForDeviceProvider runs
-                            //      ScaleRumbleForDevice for this — it pulls
-                            //      raw VibrationStates (game rumble) and
-                            //      mixes audio in, yielding the same value
-                            //      SDL sends.
-                            //
-                            // For test-rumble target gating (only the picked
-                            // device should rumble), we still zero rR/rL on
-                            // non-target devices — but bit 0 stays set so the
-                            // firmware applies our zero in compatibility mode
-                            // (a transient zero SDL's next write can replace
-                            // if it really wants to drive that device). That
-                            // matches 3.1.0 behavior; it does NOT compound
-                            // into a steady-state motor kill.
-                            int ds5Len = Ds5EffectSynthesizer.Build(
-                                devCfg, ds5Buffer, devPeak, nowMs,
+                        // ── CRITICAL: rumble-byte contract for DS5/DS4 ──
+                        //
+                        // PadForge writes DS5/DS4 effect packets via raw HID
+                        // at up to 30 Hz, BYPASSING SDL3 entirely. SDL3's
+                        // PS5/PS4 driver also writes effect packets — for
+                        // SDL_RumbleJoystick calls the SDL path carries the
+                        // audio-mixed rumble bytes from
+                        // ForceFeedbackState.SetDeviceForces. Two writers,
+                        // same device: per SonyEffectWriter's docstring,
+                        // "the firmware applies whichever WriteFile lands
+                        // most recently."
+                        //
+                        // That means: every PadForge dispatcher write is
+                        // ALSO writing rumble bytes from this packet's
+                        // perspective. If the dispatcher writes 0 motor
+                        // values 30 Hz between SDL's audio-rumble writes,
+                        // motors pulse audio→0→audio→0 — average strength
+                        // collapses (the v3.1.x audio-rumble regression).
+                        //
+                        // Two rules that MUST hold for audio rumble to
+                        // feel right:
+                        //   1. Bit 0 of validFlag0 (EnableRumbleEmulation)
+                        //      stays set unconditionally on every dispatcher
+                        //      packet. Clearing it ("disable compatibility
+                        //      motor mode") races SDL's bit-0-set writes off
+                        //      the channel.
+                        //   2. The rumble bytes the dispatcher carries MUST
+                        //      include audio mix (when audio rumble is
+                        //      enabled) so the dispatcher reinforces SDL's
+                        //      audio rumble rather than fighting it.
+                        //      SlotRumbleForDeviceProvider runs
+                        //      ScaleRumbleForDevice for this — it pulls raw
+                        //      VibrationStates (game rumble) and mixes audio
+                        //      in, yielding the same value SDL sends.
+                        //
+                        // For test-rumble target gating, we still zero rR/rL
+                        // on non-target devices — but bit 0 stays set so the
+                        // firmware applies our zero in compatibility mode
+                        // (a transient zero SDL's next write can replace if
+                        // it really wants to drive that device). Matches
+                        // 3.1.0 behavior; does NOT compound into a steady-
+                        // state motor kill.
+                        var fields = isDs5
+                            ? Ds5EffectSynthesizer.BuildFields(
+                                devCfg, devPeak, nowMs,
                                 _randomColor, devPulseColor, devPulseIntensity,
-                                rR, rL);
-                            if (ds5Len <= 0) { errors++; continue; }
-                            ok = Ds5RawHidWriter.Write(path, ds5Buffer.AsSpan(0, ds5Len));
-                            DiagLog($"  raw-write ds5 ok={ok} rumble=({rR},{rL}) testTarget={testTarget != Guid.Empty} deliverRumble={deliverRumble} diag='{Ds5RawHidWriter.LastWriteDiag}'");
-                        }
-                        else
-                        {
-                            // DS4 path — full output report built inline
-                            // (USB report 0x05 = 32 bytes, BT report 0x11
-                            // = 78 bytes with CRC32 trailer). Synthesizes
-                            // per-device using each DS4's own config so
-                            // mode / colors / palette match the
-                            // Lighting tab for that device.
-                            byte[] packet;
-                            if (isBluetooth)
-                            {
-                                if (ds4BtBuf == null) ds4BtBuf = new byte[Ds4EffectSynthesizer.BluetoothPacketSize];
-                                int n = Ds4EffectSynthesizer.BuildBluetooth(
-                                    devCfg, ds4BtBuf, devPeak, nowMs,
-                                    _randomColor, devPulseColor, devPulseIntensity,
-                                    rR, rL);
-                                if (n <= 0) { errors++; continue; }
-                                packet = ds4BtBuf;
-                            }
-                            else
-                            {
-                                if (ds4UsbBuf == null) ds4UsbBuf = new byte[Ds4EffectSynthesizer.UsbPacketSize];
-                                int n = Ds4EffectSynthesizer.BuildUsb(
-                                    devCfg, ds4UsbBuf, devPeak, nowMs,
-                                    _randomColor, devPulseColor, devPulseIntensity,
-                                    rR, rL);
-                                if (n <= 0) { errors++; continue; }
-                                packet = ds4UsbBuf;
-                            }
-                            ok = Ds5RawHidWriter.WriteFullPacket(path, packet);
-                            DiagLog($"  raw-write ds4 bt={isBluetooth} ok={ok} rumble=({rR},{rL}) testTarget={testTarget != Guid.Empty} deliverRumble={deliverRumble} diag='{Ds5RawHidWriter.LastWriteDiag}'");
-                        }
+                                rR, rL, assertRumbleEnable,
+                                assertRightTrig, assertLeftTrig, overrides, pctByte)
+                            : Ds4EffectSynthesizer.BuildFields(
+                                devCfg, devPeak, nowMs,
+                                _randomColor, devPulseColor, devPulseIntensity,
+                                rR, rL, assertRumbleEnable, overrides, pctByte);
+                        bool ok = SonyEffectWriter.Write(path, profile, fields);
+                        string family = isDs5 ? "ds5" : "ds4";
+                        string ovStr = "";
+                        if (overrides.RumbleRight.HasValue) ovStr += $" extRumble=({overrides.RumbleRight},{overrides.RumbleLeft})";
+                        if (overrides.LightbarRgb != null) ovStr += $" extLightbar=({overrides.LightbarRgb[0]},{overrides.LightbarRgb[1]},{overrides.LightbarRgb[2]})";
+                        if (overrides.RightTriggerEffect != null) ovStr += " extRightTrig";
+                        if (overrides.LeftTriggerEffect != null) ovStr += " extLeftTrig";
+                        if (overrides.MuteLed.HasValue) ovStr += $" extMicLed={overrides.MuteLed}";
+                        if (overrides.PlayerIndicator.HasValue) ovStr += $" extPlayer={overrides.PlayerIndicator}";
+                        DiagLog($"  raw-write {family} bt={isBluetooth} profile={profile.Id} ok={ok} rumble=({rR},{rL}){ovStr} testTarget={testTarget != Guid.Empty} deliverRumble={deliverRumble} diag='{SonyEffectWriter.LastWriteDiag}'");
 
                         if (ok) sent++;
                         else errors++;

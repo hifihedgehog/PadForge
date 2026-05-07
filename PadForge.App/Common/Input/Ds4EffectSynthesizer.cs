@@ -1,30 +1,34 @@
 using System;
+using System.Collections.Generic;
 using PadForge.ViewModels;
 
 namespace PadForge.Common.Input
 {
     /// <summary>
-    /// Builds DualShock 4 output report packets (lightbar RGB, rumble,
-    /// flash). Stateless. Reads <see cref="PlayStationSlotConfig"/> for
-    /// the configured base color, audio-driven mode, palette, and
-    /// macro-driven override; the dispatcher feeds in the audio peak,
-    /// random/pulse colour memory, and the slot's rumble state.
+    /// Resolves <see cref="PlayStationSlotConfig"/> into a parsed-field
+    /// dictionary for DualShock 4 effect output. The dictionary is fed to
+    /// <c>HMOutputEncoder.Encode(profile, fields)</c>, which packs the bytes
+    /// per the active profile's <c>extendedOutputReport</c> spec — USB
+    /// (Report 0x05, 32B) or BT (Report 0x11, 78B with CRC32). The same
+    /// dictionary serves both transports; the encoder picks the fields it
+    /// needs from the profile spec and ignores the rest.
+    ///
+    /// <para>HIDMaestro v1.3.5 introduced the data-driven encoder; the
+    /// pre-v1.3.5 implementation hand-packed the full 32 / 78-byte report
+    /// at compile-time-known offsets, plus a separate hand-rolled CRC32
+    /// for the BT envelope. Now: one dictionary, the SDK does the rest.</para>
     ///
     /// <para>DS4 is much simpler than DualSense — no adaptive triggers,
     /// no player-indicator row, no mic LED, no audio output. Two output
-    /// report shapes:</para>
+    /// report shapes (both expressed via a single dictionary):</para>
     ///
     /// <list type="bullet">
-    /// <item><b>USB Report 0x05</b> — 32 bytes total. Byte 0 = report ID,
-    /// byte 1 = validity flags (0xF7 = enable rumble + lightbar + flash),
-    /// bytes 2-3 = reserved, byte 4 = small (right) motor, byte 5 = big
-    /// (left) motor, bytes 6-8 = R/G/B, bytes 9-10 = flash on/off
-    /// duration in 100 ms units.</item>
-    /// <item><b>Bluetooth Report 0x11</b> — 78 bytes total. Byte 0 =
-    /// report ID, bytes 1-2 = poll-rate / feature header, byte 3 = same
-    /// validity flags, bytes 6-12 = same rumble/lightbar/flash payload
-    /// at +2 offset, bytes 74-77 = CRC32 over (0xA2 prefix + bytes 0..73).
-    /// Same CRC seed and polynomial as the DS5 BT path.</item>
+    /// <item><b>USB Report 0x05</b> — 32 bytes. Encoder consumes
+    /// <c>validFlag0 / validFlag1 / rightMotor / leftMotor / lightbar /
+    /// flashOn / flashOff</c>.</item>
+    /// <item><b>Bluetooth Report 0x11</b> — 78 bytes. Encoder additionally
+    /// consumes <c>btTag / btReserved</c> (the ds4drv two-byte BT framing
+    /// header) and writes the CRC32 footer at bytes 74-77.</item>
     /// </list>
     ///
     /// <para>Lightbar override priority matches the DS5 synthesizer:</para>
@@ -46,149 +50,98 @@ namespace PadForge.Common.Input
     /// / DS4 PIDs so SDL_RumbleJoystick is never called for these
     /// devices. This synthesizer's packet is the ONLY DS4 effect write
     /// from PadForge — rumble + lightbar + flash, all in one.</para>
-    /// <para>Therefore: ValidFlags = 0xF7 unconditionally (bit 0 = rumble
+    /// <para>Therefore: validFlag0 = 0xF7 unconditionally (bit 0 = rumble
     /// enable, bits 1-2 = lightbar/flash enable). Rumble bytes are always
     /// carried; the dispatcher produces audio-mixed + gain-scaled values
     /// via <c>InputService.SlotRumbleForDeviceProvider</c>. Do NOT clear
     /// bit 0 "when rumble is silent" — the firmware retains the last
     /// applied value, and gating bit 0 just creates dead zones in the
     /// dispatch stream.</para>
-    /// <para>Garbage-color bug history: with two writers, SDL's DS4
-    /// effect packet alongside its rumble update could carry stale or
-    /// zeroed lightbar bytes that raced the dispatcher's animated colors
-    /// at 30 Hz, producing what users perceived as "fast cycling" or
-    /// "random colors." Sole-writer mode resolved this. Don't reintroduce
-    /// SDL DS4 writes.</para>
     /// <para>See memory: sony-rumble-sole-writer-architecture.md.</para>
     /// </summary>
     internal static class Ds4EffectSynthesizer
     {
-        // USB: report ID + 31 payload bytes.
-        public const int UsbPacketSize = 32;
-        // BT: report ID + 1 (poll/config) + 1 (header) + 31 payload + reserved + 4 CRC = 78.
-        public const int BluetoothPacketSize = 78;
-
-        // USB report-byte offsets (from start of full 32-byte packet).
-        private const int OffUsbReportId    = 0;
-        private const int OffUsbValidFlags1 = 1;  // 0xF7 = rumble + lightbar + flash
-        private const int OffUsbReserved2   = 2;
-        private const int OffUsbReserved3   = 3;
-        private const int OffUsbRumbleSmall = 4;  // right-side high-freq motor
-        private const int OffUsbRumbleBig   = 5;  // left-side low-freq motor
-        private const int OffUsbLedR        = 6;
-        private const int OffUsbLedG        = 7;
-        private const int OffUsbLedB        = 8;
-        private const int OffUsbFlashOn     = 9;
-        private const int OffUsbFlashOff    = 10;
-
-        // BT report-byte offsets (from start of full 78-byte packet).
-        // Same payload structure shifted by +2 (poll + header bytes).
-        private const int OffBtReportId    = 0;   // 0x11
-        private const int OffBtPollRate    = 1;   // 0xC0
-        private const int OffBtHeader      = 2;   // 0xA0
-        private const int OffBtValidFlags1 = 3;   // 0xF7 — same value as USB byte 1
-        private const int OffBtReserved4   = 4;
-        private const int OffBtReserved5   = 5;
-        private const int OffBtRumbleSmall = 6;
-        private const int OffBtRumbleBig   = 7;
-        private const int OffBtLedR        = 8;
-        private const int OffBtLedG        = 9;
-        private const int OffBtLedB        = 10;
-        private const int OffBtFlashOn     = 11;
-        private const int OffBtFlashOff    = 12;
-
         // Validity flags. 0xF7 enables rumble (bit 0), lightbar RGB (bit 1),
         // lightbar flash (bit 2), and a few additional update bits the
         // firmware checks. OpenRGB uses 0xF7 for both USB and BT.
         private const byte ValidFlagsAll = 0xF7;
 
-        /// <summary>Builds the full 32-byte USB output report into
-        /// <paramref name="dst"/>. Returns the number of bytes written
-        /// (always <see cref="UsbPacketSize"/>) on success, 0 on
-        /// validation failure.</summary>
-        public static int BuildUsb(
+        // BT framing header bytes — placed at byte 1 (btTag) and byte 2
+        // (btReserved) of Report 0x11 by the encoder when the BT profile
+        // is selected. ds4drv's reference implementation uses 0xC0 / 0xA0;
+        // OpenRGB matches. The USB profile encoder ignores these fields
+        // because they aren't declared in the USB spec.
+        private const byte BtFramingTag      = 0xC0;
+        private const byte BtFramingReserved = 0xA0;
+
+        /// <summary>Builds the parsed-field dictionary for one DualShock 4
+        /// effect packet. Pass to <c>HMOutputEncoder.Encode</c> with either
+        /// the USB (Report 0x05) or BT (Report 0x11) DS4 profile — the dict
+        /// carries both transports' fields and the encoder picks what it
+        /// needs.</summary>
+        public static Dictionary<string, object> BuildFields(
             PlayStationSlotConfig cfg,
-            byte[] dst,
             float audioPeak,
             long nowMs,
             uint randomColor,
             uint pulseColor,
             float pulseIntensity,
             byte rumbleRight,
-            byte rumbleLeft)
+            byte rumbleLeft,
+            bool assertRumbleEnable = true,
+            UserEffectsDispatcher.ExternalSubsystemOverrides overrides = default,
+            byte batteryPercent = 100)
         {
-            if (cfg == null || dst == null || dst.Length < UsbPacketSize) return 0;
+            // Per-subsystem mirroring: when a host has recently written
+            // rumble or lightbar to our virtual, mirror their bytes
+            // verbatim instead of overwriting with PadForge's own values.
+            // PadForge keeps owning whichever subsystems the external
+            // writer DIDN'T touch (animation continues on lightbar if the
+            // writer only sent rumble, and vice versa). Same pattern as
+            // Ds5EffectSynthesizer — see there for the long version.
 
-            Array.Clear(dst, 0, UsbPacketSize);
-            dst[OffUsbReportId]    = 0x05;
-            // The dispatcher is now the sole writer of DS4 effect
-            // packets — see Step 2 ApplyForceFeedback skip for Sony
-            // VID. Always assert all valid flags + carry the
-            // dispatcher-computed rumble bytes (audio-mix + per-device
-            // gain). No second writer to race with.
-            dst[OffUsbValidFlags1] = ValidFlagsAll;
-            dst[OffUsbRumbleSmall] = rumbleRight;
-            dst[OffUsbRumbleBig]   = rumbleLeft;
+            bool rumbleExternal = overrides.RumbleRight.HasValue && overrides.RumbleLeft.HasValue;
+            byte effectiveRumbleR = rumbleExternal ? overrides.RumbleRight.Value : rumbleRight;
+            byte effectiveRumbleL = rumbleExternal ? overrides.RumbleLeft.Value  : rumbleLeft;
 
-            ResolveLightbarRgb(cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity,
-                out byte r, out byte g, out byte b);
-            dst[OffUsbLedR] = r;
-            dst[OffUsbLedG] = g;
-            dst[OffUsbLedB] = b;
+            byte r, g, bRgb;
+            if (overrides.LightbarRgb != null && overrides.LightbarRgb.Length >= 3)
+            {
+                r = overrides.LightbarRgb[0];
+                g = overrides.LightbarRgb[1];
+                bRgb = overrides.LightbarRgb[2];
+            }
+            else
+            {
+                ResolveLightbarRgb(cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity, batteryPercent,
+                    out r, out g, out bRgb);
+            }
+
+            // Rumble enable bit (validFlag0 bit 0) is asserted whenever
+            // rumble is owned by either side (PadForge or external) so the
+            // firmware applies the bytes the dict carries. PadForge's
+            // own-rumble drop-frame logic is in the dispatcher upstream;
+            // external mirroring forces the bit on for the duration of
+            // the grace window.
+            bool emitRumble = rumbleExternal || assertRumbleEnable;
+            byte validFlag0 = emitRumble
+                ? ValidFlagsAll
+                : (byte)(ValidFlagsAll & ~0x01);
 
             // No user-configurable flash for now — leave on/off zeroed so
             // the firmware holds the chosen colour without blinking.
-            dst[OffUsbFlashOn]  = 0;
-            dst[OffUsbFlashOff] = 0;
-
-            return UsbPacketSize;
-        }
-
-        /// <summary>Builds the full 78-byte Bluetooth output report into
-        /// <paramref name="dst"/> including the CRC32 trailer. Returns
-        /// the number of bytes written on success, 0 on validation
-        /// failure.</summary>
-        public static int BuildBluetooth(
-            PlayStationSlotConfig cfg,
-            byte[] dst,
-            float audioPeak,
-            long nowMs,
-            uint randomColor,
-            uint pulseColor,
-            float pulseIntensity,
-            byte rumbleRight,
-            byte rumbleLeft)
-        {
-            if (cfg == null || dst == null || dst.Length < BluetoothPacketSize) return 0;
-
-            Array.Clear(dst, 0, BluetoothPacketSize);
-            dst[OffBtReportId]    = 0x11;
-            dst[OffBtPollRate]    = 0xC0;
-            dst[OffBtHeader]      = 0xA0;
-            // Sole-writer model — see USB path above for rationale.
-            dst[OffBtValidFlags1] = ValidFlagsAll;
-            dst[OffBtRumbleSmall] = rumbleRight;
-            dst[OffBtRumbleBig]   = rumbleLeft;
-
-            ResolveLightbarRgb(cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity,
-                out byte r, out byte g, out byte b);
-            dst[OffBtLedR] = r;
-            dst[OffBtLedG] = g;
-            dst[OffBtLedB] = b;
-
-            dst[OffBtFlashOn]  = 0;
-            dst[OffBtFlashOff] = 0;
-
-            // CRC32 trailer over (0xA2 + bytes 0..73). Matches OpenRGB's
-            // SonyDualShock4Controller — same algorithm and 0xA2 seed
-            // prefix used for DS5.
-            uint crc = ComputeBtCrc(dst, BluetoothPacketSize - 4);
-            dst[BluetoothPacketSize - 4] = (byte)(crc & 0xFF);
-            dst[BluetoothPacketSize - 3] = (byte)((crc >> 8) & 0xFF);
-            dst[BluetoothPacketSize - 2] = (byte)((crc >> 16) & 0xFF);
-            dst[BluetoothPacketSize - 1] = (byte)((crc >> 24) & 0xFF);
-
-            return BluetoothPacketSize;
+            return new Dictionary<string, object>
+            {
+                { "btTag",       BtFramingTag      },  // BT only
+                { "btReserved",  BtFramingReserved },  // BT only
+                { "validFlag0",  validFlag0        },
+                { "validFlag1",  (byte)0           },
+                { "rightMotor",  effectiveRumbleR  },
+                { "leftMotor",   effectiveRumbleL  },
+                { "lightbar",    new byte[] { r, g, bRgb } },
+                { "flashOn",     (byte)0           },
+                { "flashOff",    (byte)0           },
+            };
         }
 
         // ────────────────────────────────────────────────
@@ -202,8 +155,12 @@ namespace PadForge.Common.Input
             uint randomColor,
             uint pulseColor,
             float pulseIntensity,
+            byte batteryPercent,
             out byte r, out byte g, out byte b)
         {
+            r = 0; g = 0; b = 0;
+            if (cfg == null) return;
+
             // Priority 1: macro-driven override. Intensity = 1.0 for
             // Sticky holds, fades 1.0 → 0.0 over the Reactive decay
             // window. RGB scaled by intensity so a Reactive flash fades
@@ -224,7 +181,7 @@ namespace PadForge.Common.Input
             if (cfg.LightbarMode != LightbarMode.Off)
             {
                 (baseR, baseG, baseB) = Ds5EffectSynthesizer.ComputeLightbarColorPublic(
-                    cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity);
+                    cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity, batteryPercent);
             }
 
             // Priority 3: input-reactive overlay. Lerps from the base
@@ -244,37 +201,6 @@ namespace PadForge.Common.Input
             }
 
             r = baseR; g = baseG; b = baseB;
-        }
-
-        // ────────────────────────────────────────────────
-        //  CRC32 — same poly / seed as Ds5RawHidWriter
-        // ────────────────────────────────────────────────
-
-        private static readonly uint[] _crc32Table = BuildCrc32Table();
-
-        private static uint[] BuildCrc32Table()
-        {
-            var t = new uint[256];
-            for (uint i = 0; i < 256; i++)
-            {
-                uint c = i;
-                for (int k = 0; k < 8; k++)
-                    c = ((c & 1) != 0) ? (0xEDB88320u ^ (c >> 1)) : (c >> 1);
-                t[i] = c;
-            }
-            return t;
-        }
-
-        /// <summary>CRC32 over the 0xA2 output-report prefix concatenated
-        /// with the first <paramref name="length"/> bytes of
-        /// <paramref name="buf"/>.</summary>
-        private static uint ComputeBtCrc(byte[] buf, int length)
-        {
-            uint crc = 0xFFFFFFFFu;
-            crc = _crc32Table[(crc ^ 0xA2) & 0xFF] ^ (crc >> 8);
-            for (int i = 0; i < length; i++)
-                crc = _crc32Table[(crc ^ buf[i]) & 0xFF] ^ (crc >> 8);
-            return crc ^ 0xFFFFFFFFu;
         }
     }
 }

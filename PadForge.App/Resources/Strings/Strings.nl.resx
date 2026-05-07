@@ -1025,6 +1025,8 @@
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Uit</value></data>
   <data name="Pad_Lighting_MicLed_Solid" xml:space="preserve"><value>Aan</value></data>
   <data name="Pad_Lighting_MicLed_Pulse" xml:space="preserve"><value>Pulserend</value></data>
+  <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Audioapparaat volgen</value></data>
+  <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Audioapparaat</value></data>
   <data name="Pad_Lighting_PlayerLeds" xml:space="preserve"><value>Speler-LED's</value></data>
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>Vijf kleine witte LED's onder het touchpad. Kies welk spelerslotpatroon en welke helderheid je wilt.</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Indicator-LED's</value></data>
@@ -1076,9 +1078,16 @@
   <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Audiobanden — drie kleuren, harde overgangen</value></data>
   <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Audiobanden — drie kleuren, vloeiend verloop</value></data>
   <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Audiobanden — drie kleuren, crossfade bij grenzen</value></data>
-  <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Invoerreactief — willekeurige kleur per druk</value></data>
+  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>Batterij — Verloop op basis van laadniveau</value></data>
+  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>Stroboscoop — Blokgolf-knipperlicht</value></data>
+  <data name="Pad_Lighting_BatteryLowColor" xml:space="preserve"><value>Lage Batterij</value></data>
+  <data name="Pad_Lighting_BatteryHighColor" xml:space="preserve"><value>Volle Batterij</value></data>
+  <data name="Pad_ResetBatteryLowColor" xml:space="preserve"><value>Kleur lage batterij herstellen</value></data>
+  <data name="Pad_ResetBatteryHighColor" xml:space="preserve"><value>Kleur volle batterij herstellen</value></data>
+    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Invoerreactief — willekeurige kleur per druk</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Invoerreactief — door palet bladeren</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Invoerreactief — één kleur per druk</value></data>
+  <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Helderheid</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Periode (ms)</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palet</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Kleur 1</value></data>
@@ -1099,6 +1108,7 @@
   <data name="Pad_ResetLedBrightness" xml:space="preserve"><value>LED-helderheid herstellen</value></data>
   <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>Spelerpatroon herstellen</value></data>
   <data name="Pad_ResetMuteLedMode" xml:space="preserve"><value>Mute-LED-modus herstellen</value></data>
+  <data name="Pad_ResetLightbarRainbowBrightness" xml:space="preserve"><value>Helderheid herstellen</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>Periode herstellen</value></data>
   <data name="Pad_ResetLightbarInputHold" xml:space="preserve"><value>Pulsbehoud herstellen</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>Pulsverval herstellen</value></data>

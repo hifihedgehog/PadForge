@@ -1005,6 +1005,8 @@
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>关闭</value></data>
   <data name="Pad_Lighting_MicLed_Solid" xml:space="preserve"><value>常亮</value></data>
   <data name="Pad_Lighting_MicLed_Pulse" xml:space="preserve"><value>脉冲</value></data>
+  <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>跟随音频设备</value></data>
+  <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>音频设备</value></data>
   <data name="Pad_Lighting_PlayerLeds" xml:space="preserve"><value>玩家 LED</value></data>
   <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>触摸板下方的五个小白色 LED。选择要显示的玩家位次图案及亮度。</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>指示 LED</value></data>
@@ -1056,9 +1058,16 @@
   <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>音频频带 — 三色,硬切换</value></data>
   <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>音频频带 — 三色,平滑渐变</value></data>
   <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>音频频带 — 三色,边界交叉淡化</value></data>
-  <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>输入响应 — 每次按下随机颜色</value></data>
+  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>电池 — 按电量渐变</value></data>
+  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>频闪 — 方波闪烁</value></data>
+  <data name="Pad_Lighting_BatteryLowColor" xml:space="preserve"><value>低电量</value></data>
+  <data name="Pad_Lighting_BatteryHighColor" xml:space="preserve"><value>满电量</value></data>
+  <data name="Pad_ResetBatteryLowColor" xml:space="preserve"><value>重置低电量颜色</value></data>
+  <data name="Pad_ResetBatteryHighColor" xml:space="preserve"><value>重置满电量颜色</value></data>
+    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>输入响应 — 每次按下随机颜色</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>输入响应 — 循环调色板</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>输入响应 — 每次按下单一颜色</value></data>
+  <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>亮度</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期 (ms)</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>调色板</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>颜色 1</value></data>
@@ -1079,6 +1088,7 @@
   <data name="Pad_ResetLedBrightness" xml:space="preserve"><value>重置LED亮度</value></data>
   <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>重置玩家图案</value></data>
   <data name="Pad_ResetMuteLedMode" xml:space="preserve"><value>重置静音LED模式</value></data>
+  <data name="Pad_ResetLightbarRainbowBrightness" xml:space="preserve"><value>重置亮度</value></data>
   <data name="Pad_ResetLightbarPeriod" xml:space="preserve"><value>重置周期</value></data>
   <data name="Pad_ResetLightbarInputHold" xml:space="preserve"><value>重置脉冲保持</value></data>
   <data name="Pad_ResetLightbarInputDecay" xml:space="preserve"><value>重置脉冲衰减</value></data>

@@ -108,7 +108,12 @@ namespace PadForge.Common.Input
                             }
                             else
                             {
-                                MergeExtendedRaw(ref combinedRaw, ref rawState);
+                                // Pass the slot's layout so the merge can
+                                // distinguish trigger slots from stick slots
+                                // and use the right comparison rule per slot
+                                // (pressed-wins for triggers, magnitude-wins
+                                // for sticks). See MergeExtendedRaw docstring.
+                                MergeExtendedRaw(ref combinedRaw, ref rawState, SlotCustomLayouts[padIndex]);
                             }
                         }
 
@@ -212,18 +217,82 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Merges a source ExtendedRawState into a destination.
-        /// Axes: largest magnitude wins. Buttons: OR. POVs: first non-centered.
+        /// <summary>
+        /// Merges a source ExtendedRawState into a destination, layout-aware
+        /// so stick axes and trigger axes use different comparison rules.
+        /// Buttons: OR. POVs: first non-centered.
+        ///
+        /// <para><b>Why per-axis-type rules.</b> ExtendedRawState stores both
+        /// stick axes and trigger axes in the same <c>Axes</c> array, with
+        /// values centered at different points:</para>
+        ///
+        /// <list type="bullet">
+        /// <item>Stick axis: signed short, <b>centered at 0</b>, range
+        /// <c>-32768..+32767</c>. "Most-deflected wins" is the natural
+        /// merge — a stick fully right (<c>+32767</c>, magnitude
+        /// <c>32767</c>) beats a stick centered (<c>0</c>, magnitude
+        /// <c>0</c>), regardless of which physical device produced it.</item>
+        /// <item>Trigger axis: signed short, <b>released at -32768</b>,
+        /// range <c>-32768</c> (released) <c>..+32767</c> (fully pressed).
+        /// The "pressed" direction is one-sided. "Most-deflected wins"
+        /// would be wrong: a released trigger has magnitude
+        /// <c>|-32768| = 32768</c>, which is larger than any pressed value's
+        /// magnitude <c>|32767| = 32767</c>, so a released trigger would
+        /// always beat a pressed one. The correct rule is "highest value
+        /// wins" — pressed (<c>+32767</c>) numerically beats released
+        /// (<c>-32768</c>) and beats any partial press.</item>
+        /// </list>
+        ///
+        /// <para><b>The bug this fixes.</b> Pre-fix, the merge applied
+        /// magnitude-wins to every axis index. When two devices were
+        /// mapped to the same Custom Extended slot — e.g. a joystick whose
+        /// auto-mapped Axis 5 (LT) sat at released <c>-32768</c> and a
+        /// keyboard key mapped to <c>ExtendedAxis2</c> that the user
+        /// pressed — the merge picked the joystick's released
+        /// <c>-32768</c> (magnitude <c>32768</c>) over the keyboard's
+        /// pressed <c>+32767</c> (magnitude <c>32767</c>). The wire-side
+        /// trigger appeared stuck at 0% no matter how hard the user hit
+        /// the keyboard key. Joystick-button-to-trigger and
+        /// joystick-axis-to-trigger paths happened to work because only
+        /// one device populated <c>ExtendedAxis2</c> in those cases, so
+        /// no race occurred.</para>
+        ///
+        /// <para><b>Layout-aware indexing.</b> Trigger axis indices are
+        /// computed from <see cref="CustomControllerLayout"/>'s sticks +
+        /// triggers counts using the same interleaved formula as
+        /// <c>ExtendedSlotConfig.ComputeAxisLayout</c> — groups of
+        /// <c>(stickX, stickY, trigger)</c> while both are available, then
+        /// trailing sticks pack pairwise, then trailing triggers one at a
+        /// time. Any axis index not in the trigger set is treated as a
+        /// stick axis. Layout passed via <paramref name="layout"/>; the
+        /// caller (<c>CombineOutputStates</c>) reads it from
+        /// <c>SlotCustomLayouts[padIndex]</c>.</para>
         /// </summary>
-        private static void MergeExtendedRaw(ref ExtendedRawState dest, ref ExtendedRawState src)
+        private static void MergeExtendedRaw(
+            ref ExtendedRawState dest,
+            ref ExtendedRawState src,
+            CustomControllerLayout layout)
         {
             if (src.Axes != null && dest.Axes != null)
             {
                 int len = Math.Min(src.Axes.Length, dest.Axes.Length);
                 for (int i = 0; i < len; i++)
                 {
-                    if (Math.Abs((int)src.Axes[i]) > Math.Abs((int)dest.Axes[i]))
-                        dest.Axes[i] = src.Axes[i];
+                    if (layout.IsTriggerSlot(i))
+                    {
+                        // Pressed-wins (highest value). Released is at
+                        // short.MinValue, so any partial / full press
+                        // anywhere in [-32767, +32767] wins over it; the
+                        // most-pressed press wins among multiple devices.
+                        if (src.Axes[i] > dest.Axes[i])
+                            dest.Axes[i] = src.Axes[i];
+                    }
+                    else
+                    {
+                        // Stick axis: most-deflected wins.
+                        if (Math.Abs((int)src.Axes[i]) > Math.Abs((int)dest.Axes[i]))
+                            dest.Axes[i] = src.Axes[i];
+                    }
                 }
             }
 

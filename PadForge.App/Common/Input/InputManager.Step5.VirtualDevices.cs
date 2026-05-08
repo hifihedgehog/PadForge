@@ -1455,12 +1455,18 @@ namespace PadForge.Common.Input
                 int userPovs = layout.Povs;
                 int userButtons = layout.Buttons;
 
-                // Compare against the profile's declared layout. Extended
-                // profiles have an AxisCount/ButtonCount/HasHat on HMProfile;
-                // if any user value differs from what the catalog descriptor
+                // Compare against the profile's declared layout. Counts
+                // come from HMProfile's v1.3.9 simple-view StickCount /
+                // TriggerCount which honor the descriptor's role tags
+                // (1 stick + 2 triggers for a wheel, 1 stick + throttle
+                // for a flight stick, etc.) — not the earlier formula
+                // that bucketed AxisCount as "first 4 axes are sticks,
+                // remainder triggers" and silently misreported wheel /
+                // flight-stick / HOTAS shapes as 2 sticks. If any user
+                // value differs from what the catalog descriptor
                 // declares, regenerate.
-                int profSticks = Math.Min(baseProfile.AxisCount, 4) / 2;
-                int profTriggers = Math.Max(0, baseProfile.AxisCount - profSticks * 2);
+                int profSticks = baseProfile.StickCount;
+                int profTriggers = baseProfile.TriggerCount;
                 int profPovs = baseProfile.HasHat ? 1 : 0;
                 int profButtons = baseProfile.ButtonCount;
 

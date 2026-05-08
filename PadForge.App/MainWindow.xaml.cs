@@ -70,6 +70,63 @@ namespace PadForge
         private InsertionLineAdorner _insertionAdorner;
         private System.Windows.Documents.AdornerLayer _dragAdornerLayer;
 
+        /// <summary>
+        /// Window-level PreviewMouseDown handler that drops WPF keyboard
+        /// focus when the user clicks anywhere that doesn't legitimately
+        /// need sustained keyboard input. Wired in the constructor; see
+        /// the comment block there for the rationale (the assigned-
+        /// devices ComboBox is the primary offender, but the same logic
+        /// keeps focus from sticking on any control whose default
+        /// keyboard handling would intercept the user's next key press).
+        ///
+        /// <para>Tunneling event: runs on the way down, before the
+        /// click target's bubbling MouseDown handler. Our ClearFocus
+        /// happens first; if the click target is an input element that
+        /// genuinely needs focus, its own handler reasserts focus during
+        /// the bubbling phase. Net effect: focus correctly tracks the
+        /// most recently-clicked focusable input, and parks at "no
+        /// focus" when the user clicks neutral surfaces.</para>
+        ///
+        /// <para>Preserve list = controls that consume keyboard input
+        /// after the click and would otherwise be broken by losing
+        /// focus mid-interaction:
+        /// <list type="bullet">
+        /// <item><c>ComboBox</c> — text-search and arrow navigation</item>
+        /// <item><c>TextBoxBase</c> (TextBox, RichTextBox) — text entry</item>
+        /// <item><c>PasswordBox</c> — password entry</item>
+        /// <item><c>ListBox</c> / <c>ListView</c> — arrow-key item selection</item>
+        /// </list>
+        /// Other controls (Button, CheckBox, Slider, RadioButton, tabs,
+        /// nav items, Border, Grid, TextBlock, etc.) either fire their
+        /// effect on click without needing follow-up keyboard input, or
+        /// don't take keyboard focus at all.</para>
+        ///
+        /// <para>Walk includes both visual and logical tree: ComboBoxes
+        /// dropped down via popup live in a separate visual tree, but
+        /// their template parts inside the main window do live in the
+        /// visual tree. The logical-tree fallback covers cases where
+        /// VisualTreeHelper.GetParent returns null (Run, Hyperlink,
+        /// templated content roots).</para>
+        /// </summary>
+        private static void MainWindow_PreviewMouseDown_ClearFocus(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var d = e.OriginalSource as System.Windows.DependencyObject;
+            while (d != null)
+            {
+                if (d is System.Windows.Controls.ComboBox
+                    || d is System.Windows.Controls.Primitives.TextBoxBase
+                    || d is System.Windows.Controls.PasswordBox
+                    || d is System.Windows.Controls.ListBox)
+                    return;
+
+                var parent = System.Windows.Media.VisualTreeHelper.GetParent(d);
+                if (parent == null && d is System.Windows.FrameworkElement fe)
+                    parent = System.Windows.LogicalTreeHelper.GetParent(fe);
+                d = parent;
+            }
+            System.Windows.Input.Keyboard.ClearFocus();
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -90,6 +147,33 @@ namespace PadForge
             // straight touch promotion.
             AppTitleBar.PreviewTouchDown += (_, e) => e.Handled = true;
             AppTitleBar.PreviewTouchUp   += (_, e) => e.Handled = true;
+
+            // Click-outside-clears-keyboard-focus.
+            //
+            // WPF's default: keyboard focus stays on whatever was last
+            // clicked-into until the user clicks another focusable
+            // element. The assigned-devices ComboBox at the top of the
+            // controller page is the worst offender — once focused, its
+            // built-in arrow-key navigation and letter-key text-search
+            // swallow keys aimed at anything else. After mapping a key
+            // and trying to test the mapping, the user's test presses
+            // shift the dropdown selection (each letter / arrow jumps
+            // the ComboBox to a different device entry) instead of
+            // visibly exercising the mapping.
+            //
+            // Clicking the surrounding page should drop ComboBox focus
+            // — but Grid / StackPanel / Border aren't focusable, so a
+            // click on them doesn't move WPF's keyboard focus off the
+            // ComboBox. This handler simulates the click-outside-clears-
+            // focus behavior every other Windows app has by default.
+            //
+            // Preserve focus only when the click hits something that
+            // legitimately needs sustained keyboard input (text entry,
+            // ComboBox text-search, list arrow navigation). Clear focus
+            // for everything else (background canvas, labels, buttons
+            // whose handlers fire on click without follow-up keyboard
+            // input, etc.).
+            PreviewMouseDown += MainWindow_PreviewMouseDown_ClearFocus;
 
             // Wire NavigationView events in code-behind (WPF UI uses TypedEventHandler).
             NavView.SelectionChanged += NavView_SelectionChanged;

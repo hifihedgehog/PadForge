@@ -162,11 +162,24 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Populates ExtendedConfig's layout counts from the active HIDMaestro
         /// profile so the dynamic Extended mapping grid auto-sizes to match
-        /// the profile's actual HID descriptor. Follows the gamepad convention
-        /// — first four axes pair into two sticks (LX/LY/RX/RY), remaining
-        /// axes are triggers; POVs come from HasHat; buttons from ButtonCount.
-        /// Sets Preset to Custom so downstream isExtended checks route
-        /// through the dynamic mapping path rather than the fixed Xbox layout.
+        /// the profile's actual HID descriptor. Counts come from
+        /// HMProfile's v1.3.9 simple-view properties (StickCount /
+        /// TriggerCount) which derive from the profile's Layout block
+        /// when authored, falling back to the descriptor-shape classifier
+        /// otherwise. POVs come from HasHat; buttons from ButtonCount.
+        ///
+        /// <para>The earlier <c>AxisCount / 2</c> formula assumed every
+        /// profile fit the canonical "two sticks then trailing triggers"
+        /// gamepad convention. That breaks on wheels (Logitech G25 reports
+        /// 4 axes that are actually 1 stick + 2 triggers, not 2 + 0),
+        /// flight sticks (1 stick + throttle, not 0.5 stick + ...), and
+        /// every other non-gamepad shape. v1.3.9's StickCount/TriggerCount
+        /// account for the descriptor's role tags (HMSimpleStick is paired
+        /// X+Y, HMSimpleTrigger is single-axis) so the row count finally
+        /// matches the physical device.</para>
+        ///
+        /// <para>Sets Preset to Custom so downstream isExtended checks route
+        /// through the dynamic mapping path rather than the fixed Xbox layout.</para>
         /// </summary>
         private void SyncExtendedConfigFromProfile()
         {
@@ -174,12 +187,8 @@ namespace PadForge.ViewModels
                 string.Equals(p.Id, _profileId, System.StringComparison.OrdinalIgnoreCase));
             if (profile == null) return;
 
-            int axes = profile.AxisCount;
-            int sticks = System.Math.Min(axes, 4) / 2;
-            int triggers = System.Math.Max(0, axes - sticks * 2);
-
-            _extendedConfig.ThumbstickCount = sticks;
-            _extendedConfig.TriggerCount = triggers;
+            _extendedConfig.ThumbstickCount = profile.StickCount;
+            _extendedConfig.TriggerCount = profile.TriggerCount;
             _extendedConfig.PovCount = profile.HasHat ? 1 : 0;
             _extendedConfig.ButtonCount = profile.ButtonCount;
         }

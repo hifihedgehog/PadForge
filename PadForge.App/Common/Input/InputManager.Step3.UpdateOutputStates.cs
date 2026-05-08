@@ -706,6 +706,69 @@ namespace PadForge.Common.Input
             return 0;
         }
 
+        /// <summary>
+        /// Maps a Custom Extended trigger-axis input descriptor pair to a
+        /// signed short suitable for a trigger slot in
+        /// <see cref="ExtendedRawState.Axes"/>. The companion to
+        /// <see cref="MapToThumbAxisWithNeg"/> for the trigger half of the
+        /// dispatch in <see cref="MapInputToExtendedRaw"/>.
+        ///
+        /// <para><b>Why a separate mapper.</b> The signed-short axis
+        /// representation puts the unsigned 16-bit zero point at
+        /// <c>short.MinValue</c> (-32768). A stick with no input rests at
+        /// signed <c>0</c> (= wire 50%, centered) — that's the correct rest
+        /// for a stick. A trigger with no input rests at signed
+        /// <c>short.MinValue</c> (= wire 0%, released) — that's the correct
+        /// rest for a trigger. The thumbstick mapper inherits "0 = rest"
+        /// from <see cref="MapToThumbAxisSingle"/>'s
+        /// <c>if (!desc.IsValid) return 0;</c> guard, which is wrong for
+        /// trigger slots; an unmapped Custom Extended trigger axis routed
+        /// through the stick mapper paints the wire at 50% (centered)
+        /// instead of 0% (released). This mapper substitutes
+        /// <see cref="short.MinValue"/> in every "no measurable input" path
+        /// so a trigger slot rests at released regardless of how the user
+        /// configured (or didn't configure) the descriptor pair.</para>
+        ///
+        /// <para><b>Valid-descriptor paths are unchanged.</b> A mapped
+        /// physical trigger axis goes through the same
+        /// <c>MapToThumbAxis</c> codepath the stick mapper uses (raw 0..65535
+        /// shifted to signed -32768..+32767), which the trigger slot already
+        /// expects: released physical trigger (raw 0) lands at
+        /// short.MinValue, fully pressed (raw 65535) at short.MaxValue.
+        /// Buttons mapped to a trigger axis behave identically — released
+        /// button (raw 0) → short.MinValue, pressed (raw 65535) →
+        /// short.MaxValue. Only the rest-when-empty fallback differs.</para>
+        ///
+        /// <para><b>Pos+neg digital pair.</b> Trigger Mappings don't expose
+        /// a negative-direction descriptor (triggers are unidirectional),
+        /// so the pair branch shouldn't fire in normal use. Handled defensively
+        /// for users who set both via XML edit or a future feature: only
+        /// posActive presses the trigger; negActive alone or neither active
+        /// reads as released. There's no "negative trigger" to push the
+        /// value below released, unlike a stick's left/right pair.</para>
+        /// </summary>
+        private static short MapToExtendedTriggerAxis(CustomInputState state, string posDescriptor, string negDescriptor)
+        {
+            if (string.IsNullOrWhiteSpace(negDescriptor))
+            {
+                // Single descriptor: empty → released; valid → analog read;
+                // invalid → released (the stick mapper would have returned
+                // 0 here, which is wrong for trigger rest).
+                if (string.IsNullOrWhiteSpace(posDescriptor))
+                    return short.MinValue;
+                var desc = ParseDescriptor(posDescriptor);
+                if (!desc.IsValid)
+                    return short.MinValue;
+                return MapToThumbAxis(state, posDescriptor);
+            }
+
+            // Pos+neg digital pair. Triggers are unidirectional, so neg
+            // doesn't push below released; it only fails to press.
+            bool posActive = MapToButtonPressed(state, posDescriptor);
+            if (posActive) return short.MaxValue;
+            return short.MinValue;
+        }
+
         // ─────────────────────────────────────────────
         //  Raw value extraction
         // ─────────────────────────────────────────────
@@ -1131,11 +1194,24 @@ namespace PadForge.Common.Input
             // No NegateAxis needed here — unlike the gamepad path (which applies NegateAxis
             // + HID Y inversion in SubmitGamepadState), the raw path has no second inversion.
             // The display layer (UpdateFromExtendedRawState) applies its own 1.0-Y for LiveY.
+            // Stick slots and trigger slots need different "rest" values.
+            // Sticks are centered at signed 0 (= ushort 32768 = wire 50%);
+            // triggers are released at signed short.MinValue (= ushort 0 =
+            // wire 0%). MapToThumbAxisWithNeg returns 0 for any descriptor
+            // that doesn't yield a measurable value (empty / invalid /
+            // both-pos-and-neg-buttons-released), which is correct for
+            // sticks but wrong for triggers — an unmapped Custom Extended
+            // trigger would otherwise sit at 50% on the wire instead of
+            // released. Dispatch per slot type so each gets the correct
+            // rest and so a stick mapping pipe-tee'd through the trigger
+            // path doesn't accidentally lift the trigger floor.
             for (int i = 0; i < cfg.Axes && i < raw.Axes.Length; i++)
             {
                 string posDesc = ps.GetExtendedMapping($"ExtendedAxis{i}");
                 string negDesc = ps.GetExtendedMapping($"ExtendedAxis{i}Neg");
-                raw.Axes[i] = MapToThumbAxisWithNeg(state, posDesc, negDesc);
+                raw.Axes[i] = cfg.IsTriggerSlot(i)
+                    ? MapToExtendedTriggerAxis(state, posDesc, negDesc)
+                    : MapToThumbAxisWithNeg(state, posDesc, negDesc);
             }
 
             // ── Buttons ──

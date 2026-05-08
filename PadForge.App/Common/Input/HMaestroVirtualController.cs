@@ -45,11 +45,51 @@ namespace PadForge.Common.Input
         public ushort ProfileVendorId => _profile.VendorId;
         public ushort ProfileProductId => _profile.ProductId;
 
+        // Cached HMAxis keys for the active profile's first two sticks +
+        // first two triggers, resolved once at construction so the 1 kHz
+        // SubmitGamepadState hot path doesn't repeatedly walk
+        // _profile.Sticks / _profile.Triggers (each property access
+        // allocates a fresh List). HMAxis.None means "this slot doesn't
+        // exist on the profile" (e.g. wheels with no second stick); the
+        // hot path skips writes to such slots.
+        //
+        // The standard 6-slot canonical surface maps to whatever HID
+        // usages the active profile actually uses — Sony's Z=right-stick
+        // and Rx=left-trigger axisMap overrides resolve through
+        // _profile.Sticks/_profile.Triggers automatically, so callers
+        // pass XInput-convention LX/LY/RX/RY/LT/RT and the profile's
+        // simple-view derivation lands them on the right wire axes.
+        private HMAxis _axLeftStickX, _axLeftStickY;
+        private HMAxis _axRightStickX, _axRightStickY;
+        private HMAxis _axLeftTrigger, _axRightTrigger;
+
+        // Per-call axes scratch dict, allocated once and reused across
+        // every SubmitGamepadState / SubmitExtendedRawState frame to
+        // keep the 1 kHz hot path allocation-free. HMGamepadState.Axes
+        // is a Dictionary<HMAxis, float>; the encoder consumes the dict
+        // by key lookup and is fine with reused references.
+        private readonly Dictionary<HMAxis, float> _axesScratch = new();
+
         public HMaestroVirtualController(HMContext ctx, HMProfile profile, VirtualControllerType type)
         {
             _ctx = ctx ?? throw new ArgumentNullException(nameof(ctx));
             _profile = profile ?? throw new ArgumentNullException(nameof(profile));
             _type = type;
+
+            // Resolve the 6-slot canonical axis keys from the profile's
+            // Sticks / Triggers simple-view lists once. Sticks beyond
+            // index 1 and triggers beyond index 1 don't fit the canonical
+            // gamepad surface and are left unresolved (HMAxis.None) — the
+            // Custom Extended path uses _profile.Sticks / .Triggers
+            // directly to address every available axis.
+            var sticks = _profile.Sticks;
+            var triggers = _profile.Triggers;
+            _axLeftStickX  = sticks.Count   > 0 ? sticks[0].XAxis  : HMAxis.None;
+            _axLeftStickY  = sticks.Count   > 0 ? sticks[0].YAxis  : HMAxis.None;
+            _axRightStickX = sticks.Count   > 1 ? sticks[1].XAxis  : HMAxis.None;
+            _axRightStickY = sticks.Count   > 1 ? sticks[1].YAxis  : HMAxis.None;
+            _axLeftTrigger  = triggers.Count > 0 ? triggers[0].Axis : HMAxis.None;
+            _axRightTrigger = triggers.Count > 1 ? triggers[1].Axis : HMAxis.None;
         }
 
         public void Connect()
@@ -207,19 +247,41 @@ namespace PadForge.Common.Input
             // unchanged state risked dropping rapid press+release bursts
             // between the game's HID reads.
 
-            // XInput convention: Y+ = stick up. HIDMaestro maps LeftStickY=+1
-            // straight to HID logical max (Y-down in HID convention), and the
-            // XUSB companion in driver/companion.c:387 computes sThumbLY as
-            // `32767 - gipLy`, also inverted relative to XInput. Negate Y at
-            // the boundary so both paths report Y+ = up to the game.
+            // HM v1.3.9: HMGamepadState.Axes is a Dictionary<HMAxis, float>
+            // keyed by HID usage; named LeftStickX / LeftStickY / RightStickX /
+            // RightStickY / LeftTrigger / RightTrigger slots are gone. All
+            // values normalize to [0, 1] uniformly:
+            //   sticks: 0.5 = center, 0.0 = leftmost / topmost, 1.0 = rightmost / bottommost
+            //   triggers: 0.0 = released, 1.0 = fully pressed
+            //
+            // PadForge's source convention here is XInput (signed -32768..+32767
+            // for sticks, ushort 0..65535 for triggers, Y+ = stick up).
+            //   * Stick X: shift signed range to unsigned [0..1] —
+            //       (v + 32768) / 65535
+            //   * Stick Y: Y+ = up in XInput, Y+ = down in HID convention
+            //     (which is what HM's encoder writes to the wire), so flip:
+            //       (32768 - v) / 65535
+            //     ThumbLY=+32767 (XInput up)   -> 0.0 (HM up)
+            //     ThumbLY=-32768 (XInput down) -> 1.0 (HM down)
+            //     ThumbLY=0      (centered)    -> 0.5
+            //   * Trigger: already unsigned, just divide.
+            //
+            // Hot-path: clear and repopulate the cached _axesScratch dict.
+            // Cached HMAxis keys (resolved at construction from the profile's
+            // simple-view Sticks/Triggers lists) skip the per-call list walk
+            // and let Sony's Z=right-stick / Rx=left-trigger remap land
+            // automatically.
+            _axesScratch.Clear();
+            if (_axLeftStickX  != HMAxis.None) _axesScratch[_axLeftStickX]  = (gp.ThumbLX  + 32768f) / 65535f;
+            if (_axLeftStickY  != HMAxis.None) _axesScratch[_axLeftStickY]  = (32768f - gp.ThumbLY)  / 65535f;
+            if (_axRightStickX != HMAxis.None) _axesScratch[_axRightStickX] = (gp.ThumbRX  + 32768f) / 65535f;
+            if (_axRightStickY != HMAxis.None) _axesScratch[_axRightStickY] = (32768f - gp.ThumbRY)  / 65535f;
+            if (_axLeftTrigger  != HMAxis.None) _axesScratch[_axLeftTrigger]  = gp.LeftTrigger  / 65535f;
+            if (_axRightTrigger != HMAxis.None) _axesScratch[_axRightTrigger] = gp.RightTrigger / 65535f;
+
             var state = new HMGamepadState
             {
-                LeftStickX = gp.ThumbLX / 32767f,
-                LeftStickY = -gp.ThumbLY / 32767f,
-                RightStickX = gp.ThumbRX / 32767f,
-                RightStickY = -gp.ThumbRY / 32767f,
-                LeftTrigger = gp.LeftTrigger / 65535f,
-                RightTrigger = gp.RightTrigger / 65535f,
+                Axes = _axesScratch,
                 Buttons = MapButtons(gp.Buttons),
                 Hat = MapHat(gp.Buttons),
             };
@@ -282,14 +344,21 @@ namespace PadForge.Common.Input
             byte battery10 = (byte)Math.Clamp(batteryPercent / 10, 0, 10);
             bool batteryFull = batteryPercent >= 100;
 
+            // Same axis-dict population as the basic SubmitGamepadState
+            // overload — see the explanatory comment block there for the
+            // XInput → HM v1.3.9 [0..1] conversion rules and why the
+            // cached HMAxis keys avoid the per-call list-walk allocation.
+            _axesScratch.Clear();
+            if (_axLeftStickX  != HMAxis.None) _axesScratch[_axLeftStickX]  = (gp.ThumbLX  + 32768f) / 65535f;
+            if (_axLeftStickY  != HMAxis.None) _axesScratch[_axLeftStickY]  = (32768f - gp.ThumbLY)  / 65535f;
+            if (_axRightStickX != HMAxis.None) _axesScratch[_axRightStickX] = (gp.ThumbRX  + 32768f) / 65535f;
+            if (_axRightStickY != HMAxis.None) _axesScratch[_axRightStickY] = (32768f - gp.ThumbRY)  / 65535f;
+            if (_axLeftTrigger  != HMAxis.None) _axesScratch[_axLeftTrigger]  = gp.LeftTrigger  / 65535f;
+            if (_axRightTrigger != HMAxis.None) _axesScratch[_axRightTrigger] = gp.RightTrigger / 65535f;
+
             var state = new HMGamepadState
             {
-                LeftStickX = gp.ThumbLX / 32767f,
-                LeftStickY = -gp.ThumbLY / 32767f,
-                RightStickX = gp.ThumbRX / 32767f,
-                RightStickY = -gp.ThumbRY / 32767f,
-                LeftTrigger = gp.LeftTrigger / 65535f,
-                RightTrigger = gp.RightTrigger / 65535f,
+                Axes = _axesScratch,
                 Buttons = MapButtons(gp.Buttons),
                 Hat = MapHat(gp.Buttons),
 
@@ -377,13 +446,16 @@ namespace PadForge.Common.Input
 
             short Ax(int i) => (raw.Axes != null && i >= 0 && i < raw.Axes.Length) ? raw.Axes[i] : (short)0;
 
-            // Normalize signed short to -1..+1 float.
-            float Norm(short v) => v / 32767f;
-
-            // Triggers arrive as signed short in the raw state; shift the
-            // zero point so a released trigger (raw -32768) maps to 0.0 and
-            // fully pressed (raw 32767) maps to 1.0.
-            float Trig(short v) => (v + 32768) / 65535f;
+            // Convert raw signed short (-32768..+32767) to HM v1.3.9's
+            // unified [0..1] axis range. Stick rest is at signed 0
+            // -> 0.5, fully positive -> 1.0, fully negative -> 0.0;
+            // trigger rest is at signed -32768 -> 0.0, fully pressed
+            // (signed +32767) -> 1.0. Both shapes use the same shift
+            // because raw.Axes is already centered on signed zero for
+            // sticks (per ExtendedSlotConfig's signed-short convention)
+            // and on short.MinValue for triggers (per
+            // MapToExtendedTriggerAxis's released-rest contract).
+            float ToHmRange(short v) => (v + 32768f) / 65535f;
 
             // Replicate ExtendedSlotConfig.ComputeAxisLayout. Interleaved
             // groups of (stickX, stickY, trigger) while both sticks and
@@ -400,10 +472,6 @@ namespace PadForge.Common.Input
                 g < interleave ? g * 3 + 2
                 : g < triggers ? interleave * 3 + System.Math.Max(0, sticks - interleave) * 2 + (g - interleave)
                                : -1;
-
-            int lxi = StickX(0), lyi = StickY(0);
-            int rxi = StickX(1), ryi = StickY(1);
-            int lti = TriggerIdx(0), rti = TriggerIdx(1);
 
             // HMButton is a [Flags] uint enum with named members for bits 0..12
             // (A..Share). HidReportBuilder iterates bits 0..31 of the mask
@@ -444,14 +512,46 @@ namespace PadForge.Common.Input
                 }
             }
 
+            // HM v1.3.9: address every analog axis the profile exposes
+            // by HMAxis key, not the canonical 6-slot named surface. For
+            // Custom Extended layouts (1 stick + 1 trigger, 4 sticks +
+            // 0 triggers, 0 sticks + 3 triggers, etc.) there can be
+            // more or fewer axes than the 6-slot surface accommodates,
+            // and the synthetic profile's descriptor regenerates
+            // whenever the user changes counts. Use the profile's
+            // simple-view Sticks / Triggers lists to drive the dict so
+            // the wire-side axes match whatever the descriptor declares,
+            // bounded by the consumer's own (sticks, triggers) layout
+            // counts that drive raw.Axes' positional indexing.
+            //
+            // raw.Axes is HID-convention (Y+ = down) per Step 3, so no
+            // additional Y inversion vs. the basic SubmitGamepadState
+            // path's XInput→HID flip — both stick X and stick Y use
+            // the same plain ToHmRange shift.
+            var profileSticks = _profile.Sticks;
+            var profileTriggers = _profile.Triggers;
+            _axesScratch.Clear();
+            int sticksToWrite = System.Math.Min(sticks, profileSticks.Count);
+            for (int s = 0; s < sticksToWrite; s++)
+            {
+                int xi = StickX(s);
+                int yi = StickY(s);
+                if (profileSticks[s].XAxis != HMAxis.None && xi >= 0)
+                    _axesScratch[profileSticks[s].XAxis] = ToHmRange(Ax(xi));
+                if (profileSticks[s].YAxis != HMAxis.None && yi >= 0)
+                    _axesScratch[profileSticks[s].YAxis] = ToHmRange(Ax(yi));
+            }
+            int triggersToWrite = System.Math.Min(triggers, profileTriggers.Count);
+            for (int t = 0; t < triggersToWrite; t++)
+            {
+                int ti = TriggerIdx(t);
+                if (profileTriggers[t].Axis != HMAxis.None && ti >= 0)
+                    _axesScratch[profileTriggers[t].Axis] = ToHmRange(Ax(ti));
+            }
+
             var state = new HMGamepadState
             {
-                LeftStickX = Norm(Ax(lxi)),
-                LeftStickY = Norm(Ax(lyi)),
-                RightStickX = Norm(Ax(rxi)),
-                RightStickY = Norm(Ax(ryi)),
-                LeftTrigger = Trig(Ax(lti)),
-                RightTrigger = Trig(Ax(rti)),
+                Axes = _axesScratch,
                 Buttons = buttons,
                 Hat = hat,
             };

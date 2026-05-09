@@ -88,13 +88,23 @@ namespace PadForge.Views
         private readonly Transform3DGroup _modelRotation = new();
         private readonly AxisAngleRotation3D _yawRotation = new(new Vector3D(0, 0, 1), 0);
         private readonly AxisAngleRotation3D _pitchRotation = new(new Vector3D(1, 0, 0), 0);
+        // Per-model uniform scale, composed into the same Transform3DGroup
+        // so the rotation and scale share one assignment to ModelVisual3D's
+        // Transform property. Setting Transform = scale-only would clobber
+        // the rotation children and break left-drag camera rotation.
+        private readonly ScaleTransform3D _modelScaleTransform = new(1, 1, 1);
 
         public ControllerModelView()
         {
             InitializeComponent();
             CompositionTarget.Rendering += OnRendering;
 
-            // Set up model rotation transform (turntable-style via right-drag)
+            // Order matters: scale first so it applies in the model's local
+            // frame, then yaw/pitch rotate the scaled model around its
+            // (post-scale) center. With rotation first the rotated controller
+            // would scale around its rotated bounding-box center, which
+            // shifts when yaw isn't zero.
+            _modelRotation.Children.Add(_modelScaleTransform);
             _modelRotation.Children.Add(new RotateTransform3D(_yawRotation));
             _modelRotation.Children.Add(new RotateTransform3D(_pitchRotation));
             ModelVisual3D.Transform = _modelRotation;
@@ -203,16 +213,16 @@ namespace PadForge.Views
                 };
 
                 ModelVisual3D.Content = _currentModel.model3DGroup;
-                // Apply the model's uniform scale at the parent level so
-                // sibling finger-sphere visuals scale with the controller
-                // mesh together. Putting the scale on model3DGroup.Transform
-                // alone leaves finger dots and stick hover highlights
-                // un-scaled, drifting away from the (scaled) touchpad and
-                // stick rings.
+                // Update the per-model uniform scale on the existing
+                // Transform3DGroup that ModelVisual3D.Transform points at.
+                // Don't replace ModelVisual3D.Transform — that's the
+                // rotation group used by left-drag turntable rotation; a
+                // fresh ScaleTransform3D would un-wire the yaw/pitch
+                // children and break rotation.
                 double s = _currentModel.ModelScale;
-                ModelVisual3D.Transform = (Math.Abs(s - 1.0) > 0.0001)
-                    ? new ScaleTransform3D(s, s, s)
-                    : Transform3D.Identity;
+                _modelScaleTransform.ScaleX = s;
+                _modelScaleTransform.ScaleY = s;
+                _modelScaleTransform.ScaleZ = s;
                 BuildTouchpadFingerVisuals();
                 _dirty = true;
             }
@@ -1031,10 +1041,16 @@ namespace PadForge.Views
             // so quadrant detection works correctly when the model is rotated.
             var localHitPos = TransformToLocal(hitPos);
 
-            // Check left stick ring
+            // Check left stick ring — use the visible mesh's centroid for
+            // quadrant math, not JoystickRotationPointCenter*. The rotation
+            // pivot is the deflection axis (where the stick tilts from), not
+            // the geometric center of the ring; on DualSense the left stick
+            // mesh sits at X=-33.25 but the rotation pivot is at X=-30.34,
+            // a 2.9 mm offset that skews quadrant detection ~10° toward
+            // NNE/SSE on the user-perceived "up" / "down" hits.
             if (_currentModel.LeftThumbRing?.Children.Contains(hitGeo) == true)
             {
-                var center = _currentModel.JoystickRotationPointCenterLeftMillimeter;
+                var center = MeshCentroid(_currentModel.LeftThumbRing);
                 axis = DetermineAxisFromQuadrant(localHitPos, center, "LeftThumbAxisX", "LeftThumbAxisY");
                 return true;
             }
@@ -1042,12 +1058,21 @@ namespace PadForge.Views
             // Check right stick ring
             if (_currentModel.RightThumbRing?.Children.Contains(hitGeo) == true)
             {
-                var center = _currentModel.JoystickRotationPointCenterRightMillimeter;
+                var center = MeshCentroid(_currentModel.RightThumbRing);
                 axis = DetermineAxisFromQuadrant(localHitPos, center, "RightThumbAxisX", "RightThumbAxisY");
                 return true;
             }
 
             return false;
+        }
+
+        /// <summary>Bounding-box centroid of a Model3DGroup in its own local
+        /// coordinate system. Used to anchor click-quadrant detection on the
+        /// visible mesh rather than a rotation pivot that may sit off-center.</summary>
+        private static Vector3D MeshCentroid(Model3DGroup group)
+        {
+            var b = group.Bounds;
+            return new Vector3D(b.X + b.SizeX / 2.0, b.Y + b.SizeY / 2.0, b.Z + b.SizeZ / 2.0);
         }
 
         /// <summary>

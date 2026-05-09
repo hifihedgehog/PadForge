@@ -651,8 +651,37 @@ def process_xbox360():
     # differs from the dark label glyph; centroid-of-dark-spot is more
     # robust for tiny labeled buttons.
     results = _xbox360_align_back_start_to_dark_spots(base_path, results)
+    # Trigger / bumper de-overlap: the asset pack ships the trigger press
+    # overlay tall enough that its bottom edge extends below the bumper's
+    # top, so pressing LT/RT visibly overlaps the LB/RB region. Clip each
+    # trigger's height to the bumper's top edge so the two highlights are
+    # exclusive. Y stays at the asset-pack position (top of controller);
+    # only the lower portion of the highlight is dropped.
+    results = _clip_triggers_above_bumpers(results)
 
     return {"base_width": base.shape[1], "base_height": base.shape[0], "results": results}
+
+
+def _clip_triggers_above_bumpers(results):
+    """Mutate LeftTrigger / RightTrigger entries so their bottom edge sits
+    one pixel above the matching shoulder's top edge."""
+    bumper_top = {"LeftShoulder": None, "RightShoulder": None}
+    for filename, target, etype, x, y, w, h in results:
+        if target in bumper_top:
+            bumper_top[target] = y
+    pair = {"LeftTrigger": "LeftShoulder", "RightTrigger": "RightShoulder"}
+    out = []
+    for filename, target, etype, x, y, w, h in results:
+        if target in pair and bumper_top[pair[target]] is not None:
+            limit = bumper_top[pair[target]] - 1
+            if y + h > limit:
+                new_h = max(1, limit - y)
+                if new_h != h:
+                    print(f"  CLIP-TRIG  {target:20s}: ({x},{y}) {w}x{h} -> {w}x{new_h}  (above {pair[target]} top {limit+1})")
+                out.append((filename, target, etype, x, y, w, new_h))
+                continue
+        out.append((filename, target, etype, x, y, w, h))
+    return out
 
 
 def _xbox360_align_back_start_to_dark_spots(base_path, results):
@@ -1054,7 +1083,12 @@ def process_xbox_one_s():
         stick_click_filename="XB1_LeftStick_Click.png",
         guide_filename="XB1_HomeButton.png",
         menu_filename="XB1_MenuButton.png",
-        view_filename="XB1_ViewButton.png")
+        view_filename="XB1_ViewButton.png",
+        # Xbox One bumpers visually wrap further than the Xbox 360 reference
+        # 0.202 — bump to 0.22 so the highlight covers the full visible
+        # shoulder shape on the rendered controller. PNG aspect ratio is
+        # preserved so the height grows proportionally.
+        bumper_width_frac=0.22)
 
 
 def process_xbox_series():

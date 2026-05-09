@@ -651,13 +651,12 @@ def process_xbox360():
     # differs from the dark label glyph; centroid-of-dark-spot is more
     # robust for tiny labeled buttons.
     results = _xbox360_align_back_start_to_dark_spots(base_path, results)
-    # Trigger / bumper de-overlap: the asset pack ships the trigger press
-    # overlay tall enough that its bottom edge extends below the bumper's
-    # top, so pressing LT/RT visibly overlaps the LB/RB region. Clip each
-    # trigger's height to the bumper's top edge so the two highlights are
-    # exclusive. Y stays at the asset-pack position (top of controller);
-    # only the lower portion of the highlight is dropped.
-    results = _clip_triggers_above_bumpers(results)
+    # NOTE: don't clip trigger height to "above bumper top". The asset
+    # pack's trigger PNG is rounded-bottom and the bumper PNG is curved-
+    # top — they're authored to OVERLAP so their curved borders merge
+    # into a single continuous outline. Clipping leaves a visible white
+    # gap at the corners (where neither shape's opaque content reaches).
+    # Render both at native PNG size; the rounded shapes meet cleanly.
 
     return {"base_width": base.shape[1], "base_height": base.shape[0], "results": results}
 
@@ -1089,10 +1088,11 @@ def process_xbox_one_s():
         menu_filename="XB1_MenuButton.png",
         view_filename="XB1_ViewButton.png",
         # Xbox One bumpers visually wrap further than the Xbox 360 reference
-        # 0.202; bumping to 0.235 (same target Xbox Series uses) covers the
-        # full visible shoulder shape on the rendered controller. PNG aspect
-        # ratio is preserved so the height grows proportionally.
-        bumper_width_frac=0.235)
+        # 0.202. Visual analysis with the bumper PNG composited over the
+        # base showed 0.27 fills the full bumper silhouette from inner edge
+        # to where it meets the trigger area. PNG aspect ratio is preserved
+        # so the height grows proportionally.
+        bumper_width_frac=0.27)
 
 
 def process_xbox_series():

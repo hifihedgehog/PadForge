@@ -258,7 +258,22 @@ namespace PadForge.Common.Input
             !string.IsNullOrEmpty(s) &&
             s.IndexOf(token, StringComparison.OrdinalIgnoreCase) >= 0;
 
-        private static bool IsXboxProfile(HMProfile p) =>
+        /// <summary>
+        /// True when the profile is a Microsoft-vendor Xbox controller —
+        /// the canonical "Xbox 360 / One / Series" rumble shape applies.
+        /// Used both by the Extended dropdown bucket filter (where this
+        /// gate keeps non-Xbox Microsoft peripherals like the SideWinder
+        /// out of the Xbox profile list) AND by HMaestroVirtualController's
+        /// HID-output rumble dispatch (where the same gate keeps SideWinder
+        /// PID FFB output reports from being misread as Xbox Series BT
+        /// rumble or Xbox HID legacy rumble).
+        ///
+        /// Single-source-of-truth definition so the two consumers stay in
+        /// sync — adding a new non-Xbox Microsoft profile (a future SideWinder
+        /// variant, a Surface peripheral, etc.) only needs the JSON's name
+        /// to omit "Xbox" for both consumers to ignore it correctly.
+        /// </summary>
+        internal static bool IsXboxProfile(HMProfile p) =>
             IsXboxVendor(p.Vendor) &&
             (ContainsToken(p.Name, "Xbox") || ContainsToken(p.Id, "xbox"));
 

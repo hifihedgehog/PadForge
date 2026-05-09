@@ -651,14 +651,69 @@ def process_xbox360():
     # differs from the dark label glyph; centroid-of-dark-spot is more
     # robust for tiny labeled buttons.
     results = _xbox360_align_back_start_to_dark_spots(base_path, results)
-    # NOTE: don't clip trigger height to "above bumper top". The asset
-    # pack's trigger PNG is rounded-bottom and the bumper PNG is curved-
-    # top — they're authored to OVERLAP so their curved borders merge
-    # into a single continuous outline. Clipping leaves a visible white
-    # gap at the corners (where neither shape's opaque content reaches).
-    # Render both at native PNG size; the rounded shapes meet cleanly.
+    # Trigger / bumper / stick canonical positions: detected by sampling
+    # the dark outlines in the asset pack's "Xbox 360 Controller Overlay"
+    # composite (the inactive-state design). SVG-based bbox + composite
+    # alpha-template matching land close but miss the silhouette edges by
+    # 5-30 px because the overlay PNGs include curved alpha falloff that
+    # confuses geometric centroid alignment. The canonical bboxes match
+    # the trigger curve to the bumper curve with neither overlap nor gap.
+    results = _xbox360_apply_canonical_overrides(results)
 
     return {"base_width": base.shape[1], "base_height": base.shape[0], "results": results}
+
+
+def _xbox360_apply_canonical_overrides(results):
+    """Override trigger / stick positions with values detected from the
+    asset pack's inactive-state composite outline. Triggers extend
+    dynamically so their bottom edge meets the (un-touched) shoulder
+    overlay top. Sticks are sized to the actual housing silhouette so
+    the press highlight doesn't extend past the rendered stick."""
+    # Shoulders are NOT overridden — the SVG-bbox + base-template path
+    # already lands them correctly and the user has signed off on their
+    # current size/position.
+    shoulder_y = {}
+    for filename, target, etype, x, y, w, h in results:
+        if target in ("LeftShoulder", "RightShoulder"):
+            shoulder_y[target] = y
+
+    # Trigger: x and width come from the canonical outline detection.
+    # The trigger PNG has alpha falloff at its bottom edge, so when the
+    # bbox meets the shoulder bbox flush there's a visible 5-10 px gap
+    # between the silhouettes. Shift the bbox down by TRIGGER_OVERLAP
+    # so the bottom extends past the shoulder top — the visible (opaque)
+    # parts of the two silhouettes then meet without a gap.
+    TRIGGER_OVERLAP = 8
+    trigger_x_w = {
+        "LeftTrigger":  (284, 132, "LeftShoulder"),
+        "RightTrigger": (1160, 132, "RightShoulder"),
+    }
+    # Both sticks oval (wider than tall, perspective angle on the
+    # controller body). Right at 180x160 covers the housing without
+    # overshoot. Left at 185x165 matches right's aspect ratio with
+    # slightly larger size since the left housing is drawn marginally
+    # bigger on the controller body.
+    stick_overrides = {
+        "LeftThumbRing":    (206, 451, 185, 165),
+        "RightThumbRing":   (920, 690, 180, 160),
+        "LeftThumbButton":  (206, 451, 185, 165),
+        "RightThumbButton": (920, 690, 180, 160),
+    }
+    out = []
+    for filename, target, etype, x, y, w, h in results:
+        if target in trigger_x_w:
+            nx, nw, partner = trigger_x_w[target]
+            ny = TRIGGER_OVERLAP
+            nh = shoulder_y.get(partner, 130) + TRIGGER_OVERLAP - ny
+            print(f"  CANONICAL  {target:20s}: ({x},{y}) {w}x{h} -> ({nx},{ny}) {nw}x{nh}  (flush to {partner} top, {TRIGGER_OVERLAP}px overlap)")
+            out.append((filename, target, etype, nx, ny, nw, nh))
+        elif target in stick_overrides:
+            nx, ny, nw, nh = stick_overrides[target]
+            print(f"  CANONICAL  {target:20s}: ({x},{y}) {w}x{h} -> ({nx},{ny}) {nw}x{nh}")
+            out.append((filename, target, etype, nx, ny, nw, nh))
+        else:
+            out.append((filename, target, etype, x, y, w, h))
+    return out
 
 
 def _clip_triggers_above_bumpers(results):
@@ -1065,7 +1120,7 @@ def process_xbox_one_s():
     svg_path = os.path.join(ASSET_PACK,
         "Xbox Wireless Controller Images", "Default Theme", "Theme SVG",
         "Xbox One Color", "Xbox One Controller VSCView White.svg")
-    return _process_xbox_modern(
+    data = _process_xbox_modern(
         profile_name="Xbox One S",
         svg_path=svg_path,
         base_relpath="2DModels/XBOXONE/XB1_S_base.png",
@@ -1087,12 +1142,33 @@ def process_xbox_one_s():
         guide_filename="XB1_HomeButton.png",
         menu_filename="XB1_MenuButton.png",
         view_filename="XB1_ViewButton.png",
-        # Xbox One bumpers visually wrap further than the Xbox 360 reference
-        # 0.202. Visual analysis with the bumper PNG composited over the
-        # base showed 0.27 fills the full bumper silhouette from inner edge
-        # to where it meets the trigger area. PNG aspect ratio is preserved
-        # so the height grows proportionally.
-        bumper_width_frac=0.27)
+        # Xbox One bumpers wrap further than the Xbox 360 reference 0.202.
+        # Visual rendering compared 0.235/0.240/0.245/0.250/0.270 — 0.245
+        # covers the bumper silhouette without overshooting into the trigger
+        # well. PNG aspect ratio is preserved so the height grows
+        # proportionally.
+        bumper_width_frac=0.245)
+
+    # Shift bumpers outward (5 px each) so their outer edges align with
+    # the controller body silhouette. The base-template refine lands a
+    # few pixels short of the body edge because the bumper highlight has
+    # a soft alpha falloff that biases the match inward.
+    data["results"] = _shift_bumpers_outward(data["results"], shift=5)
+    return data
+
+
+def _shift_bumpers_outward(results, shift):
+    out = []
+    for filename, target, etype, x, y, w, h in results:
+        if target == "LeftShoulder":
+            out.append((filename, target, etype, x - shift, y, w, h))
+            print(f"  SHIFT-OUT  {target:20s}: ({x},{y}) -> ({x-shift},{y})")
+        elif target == "RightShoulder":
+            out.append((filename, target, etype, x + shift, y, w, h))
+            print(f"  SHIFT-OUT  {target:20s}: ({x},{y}) -> ({x+shift},{y})")
+        else:
+            out.append((filename, target, etype, x, y, w, h))
+    return out
 
 
 def process_xbox_series():

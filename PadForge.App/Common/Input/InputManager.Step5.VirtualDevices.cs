@@ -1456,17 +1456,18 @@ namespace PadForge.Common.Input
                 int userButtons = layout.Buttons;
 
                 // Compare against the profile's declared layout. Counts
-                // come from HMProfile's v1.3.9 simple-view StickCount /
-                // TriggerCount which honor the descriptor's role tags
-                // (1 stick + 2 triggers for a wheel, 1 stick + throttle
-                // for a flight stick, etc.) — not the earlier formula
-                // that bucketed AxisCount as "first 4 axes are sticks,
-                // remainder triggers" and silently misreported wheel /
-                // flight-stick / HOTAS shapes as 2 sticks. If any user
-                // value differs from what the catalog descriptor
-                // declares, regenerate.
-                int profSticks = baseProfile.StickCount;
-                int profTriggers = baseProfile.TriggerCount;
+                // come from HMaestroProfileCatalog.GetLayoutCounts which
+                // prefers the v1.3.9 HMProfile.Layout block (wheel +
+                // pedals, HOTAS stick + throttle module, etc.) over the
+                // classifier's simple view — the classifier mis-paints
+                // wheels as 2 sticks because it uses the Chromium
+                // standard-gamepad heuristic (no Rx/Ry + Z+Rz both
+                // present == 4-axis DInput right-stick), which doesn't
+                // hold for wheels. Same helper feeds
+                // PadViewModel.SyncExtendedConfigFromProfile so the user-
+                // visible row count and the customize-compare values
+                // stay in lock-step.
+                var (profSticks, profTriggers) = HMaestroProfileCatalog.GetLayoutCounts(baseProfile);
                 int profPovs = baseProfile.HasHat ? 1 : 0;
                 int profButtons = baseProfile.ButtonCount;
 

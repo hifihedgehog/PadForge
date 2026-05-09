@@ -187,8 +187,17 @@ namespace PadForge.ViewModels
                 string.Equals(p.Id, _profileId, System.StringComparison.OrdinalIgnoreCase));
             if (profile == null) return;
 
-            _extendedConfig.ThumbstickCount = profile.StickCount;
-            _extendedConfig.TriggerCount = profile.TriggerCount;
+            // Counts come from the v1.3.9 Layout block when authored, with
+            // a classifier-derived fallback otherwise. See
+            // HMaestroProfileCatalog.GetLayoutCounts for why the layout
+            // matters here: HM's classifier follows the Chromium standard-
+            // gamepad heuristic (X+Y plus Z+Rz with no Rx/Ry == 4-axis
+            // DInput right-stick), which fires on wheels too — the G25
+            // would otherwise read as 2 sticks + 0 triggers despite its
+            // Layout block declaring wheel + 3 pedals.
+            var (sticks, triggers) = Common.Input.HMaestroProfileCatalog.GetLayoutCounts(profile);
+            _extendedConfig.ThumbstickCount = sticks;
+            _extendedConfig.TriggerCount = triggers;
             _extendedConfig.PovCount = profile.HasHat ? 1 : 0;
             _extendedConfig.ButtonCount = profile.ButtonCount;
         }

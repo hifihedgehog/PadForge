@@ -246,6 +246,125 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>
+        /// Resolve a profile's PadForge "row count" — how many paired
+        /// stick rows and unipolar trigger rows the Extended UI should
+        /// expose for it. Prefers the v1.3.9 <see cref="HMProfile.Layout"/>
+        /// block when authored (so a wheel reports its wheel + pedals,
+        /// a HOTAS reports its stick + throttle module, etc.), and falls
+        /// back to the simple-view <see cref="HMProfile.StickCount"/> /
+        /// <see cref="HMProfile.TriggerCount"/> classifier-derived values
+        /// when no layout is authored.
+        ///
+        /// <para>The fallback path matters: HM's classifier uses the
+        /// Chromium-standard-gamepad heuristic (no Rx/Ry + Z+Rz both
+        /// present means 4-axis DInput right-stick layout). That fires
+        /// on wheels too — Logitech G25 has X/Y/Z/Rz where Y is the
+        /// clutch pedal and Z/Rz are accelerator/brake, but the
+        /// classifier paints Z+Rz as a second stick because no Rx/Ry
+        /// exists. The Layout block is the authoritative source for
+        /// these cases; the classifier is best-effort for profiles
+        /// without one.</para>
+        ///
+        /// <para>Mapping per layout kind, primitives-only (PadForge keeps
+        /// stick / trigger / POV / button widgets, no specialised wheel
+        /// gauge or HOTAS panel — that's parked for a later release):</para>
+        /// <list type="bullet">
+        /// <item><see cref="HMGamepadLayout"/>: layout's Sticks.Count + Triggers.Count.</item>
+        /// <item><see cref="HMWheelLayout"/>: 1 paired stick (wheel X carried in stick X; Y free for the user to bind to whatever, including a clutch pedal) + Pedals.Count triggers.</item>
+        /// <item><see cref="HMFlightStickLayout"/> / <see cref="HMJoystickLayout"/>: 1 stick + 1 trigger per Throttle / per separate-Rudder.</item>
+        /// <item><see cref="HMHotasLayout"/>: 1 stick + 1 throttle + ThrottleSecondary.Count + 1 rudder-module trigger.</item>
+        /// <item><see cref="HMPedalsLayout"/>: 0 sticks + Pedals.Count triggers.</item>
+        /// <item><see cref="HMHandbrakeLayout"/> / <see cref="HMSingleAxisAccessoryLayout"/>: 0 sticks + 1 trigger.</item>
+        /// <item><see cref="HMShifterLayout"/> / <see cref="HMArcadeStickLayout"/> / <see cref="HMDancePadLayout"/> / <see cref="HMRemoteLayout"/>: 0 sticks + 0 triggers (everything is buttons).</item>
+        /// <item><see cref="HMGuitarLayout"/>: 0 sticks + (1 if WhammyAxis else 0) triggers.</item>
+        /// <item><see cref="HMMotionWandLayout"/>: 0 sticks + (1 if TriggerAxis else 0) triggers.</item>
+        /// <item><see cref="HMUnspecifiedLayout"/> or null: fall back to <c>profile.StickCount</c> + <c>profile.TriggerCount</c>.</item>
+        /// </list>
+        ///
+        /// <para>Returned counts are clamped to <see cref="ExtendedSlotConfig.MaxAxes"/>
+        /// across the (sticks*2 + triggers) total so PadForge's 8-axis UI
+        /// budget isn't exceeded by an unusually rich HOTAS profile. Triggers
+        /// give way to sticks during the clamp because losing a trigger
+        /// loses one mappable input while losing a stick loses two.</para>
+        /// </summary>
+        public static (int sticks, int triggers) GetLayoutCounts(HMProfile profile)
+        {
+            if (profile == null) return (0, 0);
+
+            int sticks, triggers;
+            switch (profile.Layout)
+            {
+                case HMGamepadLayout gp:
+                    sticks = gp.Sticks?.Count ?? 0;
+                    triggers = gp.Triggers?.Count ?? 0;
+                    break;
+                case HMWheelLayout w:
+                    sticks = 1;
+                    triggers = w.Pedals?.Count ?? 0;
+                    break;
+                case HMJoystickLayout j:
+                    sticks = 1;
+                    triggers = (j.Throttle != null ? 1 : 0)
+                             + (j.Rudder?.Kind == HMRudderKind.Pedals ? 1 : 0);
+                    break;
+                case HMFlightStickLayout fs:
+                    sticks = 1;
+                    triggers = (fs.Throttle != null ? 1 : 0)
+                             + (fs.Rudder?.Kind == HMRudderKind.Pedals ? 1 : 0);
+                    break;
+                case HMHotasLayout h:
+                    sticks = 1;
+                    triggers = (h.ThrottlePrimary != null ? 1 : 0)
+                             + (h.ThrottleSecondary?.Count ?? 0)
+                             + (h.RudderModule != null ? 1 : 0);
+                    break;
+                case HMPedalsLayout p:
+                    sticks = 0;
+                    triggers = p.Pedals?.Count ?? 0;
+                    break;
+                case HMHandbrakeLayout:
+                case HMSingleAxisAccessoryLayout:
+                    sticks = 0;
+                    triggers = 1;
+                    break;
+                case HMShifterLayout:
+                case HMArcadeStickLayout:
+                case HMDancePadLayout:
+                case HMRemoteLayout:
+                    sticks = 0;
+                    triggers = 0;
+                    break;
+                case HMGuitarLayout g:
+                    sticks = 0;
+                    triggers = g.WhammyAxis.HasValue ? 1 : 0;
+                    break;
+                case HMMotionWandLayout m:
+                    sticks = 0;
+                    triggers = m.TriggerAxis.HasValue ? 1 : 0;
+                    break;
+                case HMControllerAdapterLayout:
+                case HMUnspecifiedLayout:
+                case null:
+                default:
+                    // No structured layout authored, or the kind is one
+                    // we haven't enumerated. Fall back to the classifier's
+                    // simple view; better than guessing zero.
+                    sticks = profile.StickCount;
+                    triggers = profile.TriggerCount;
+                    break;
+            }
+
+            // Clamp to PadForge's 8-axis Extended budget. Drop triggers
+            // first when the (sticks*2 + triggers) total overflows; sticks
+            // are a paired (X, Y) input and dropping one loses two
+            // mappable axes vs. a trigger's one.
+            const int MaxAxes = 8;
+            while (sticks * 2 + triggers > MaxAxes && triggers > 0) triggers--;
+            while (sticks * 2 + triggers > MaxAxes && sticks   > 0) sticks--;
+            return (sticks, triggers);
+        }
+
         private static bool IsXboxVendor(string vendor) =>
             !string.IsNullOrEmpty(vendor) &&
             vendor.StartsWith("Microsoft", StringComparison.OrdinalIgnoreCase);

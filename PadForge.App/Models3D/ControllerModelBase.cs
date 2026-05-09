@@ -48,6 +48,18 @@ namespace PadForge.Models3D
         public Model3DGroup model3DGroup = new();
         public string ModelName;
 
+        /// <summary>Uniform scale to apply at the host ModelVisual3D level
+        /// (the parent of model3DGroup AND the sibling finger-sphere
+        /// visuals) so the model and its overlay visuals scale together.
+        /// Default 1.0; subclasses override when their mesh authoring scale
+        /// doesn't match the shared camera framing (DualSense's HC mesh is
+        /// ~21 % larger than DS4's, for example). Setting this on
+        /// model3DGroup.Transform alone breaks finger-sphere positioning
+        /// because the sphere visuals are siblings of model3DGroup, not
+        /// children — they don't pick up the same transform unless it's
+        /// applied at the ModelVisual3D level.</summary>
+        public virtual double ModelScale => 1.0;
+
         public Model3DGroup MainBody;
         public Model3DGroup LeftThumb, LeftThumbRing;
         public Model3DGroup RightThumb, RightThumbRing;

@@ -673,11 +673,15 @@ def _clip_triggers_above_bumpers(results):
     out = []
     for filename, target, etype, x, y, w, h in results:
         if target in pair and bumper_top[pair[target]] is not None:
-            limit = bumper_top[pair[target]] - 1
+            # End the trigger exactly at the bumper's top edge (flush) — no
+            # 1 px gap. The asset pack's trigger PNG has internal padding,
+            # so a flush layout means the visible trigger highlight just
+            # meets the bumper edge without a visible seam.
+            limit = bumper_top[pair[target]]
             if y + h > limit:
                 new_h = max(1, limit - y)
                 if new_h != h:
-                    print(f"  CLIP-TRIG  {target:20s}: ({x},{y}) {w}x{h} -> {w}x{new_h}  (above {pair[target]} top {limit+1})")
+                    print(f"  CLIP-TRIG  {target:20s}: ({x},{y}) {w}x{h} -> {w}x{new_h}  (flush to {pair[target]} top {limit})")
                 out.append((filename, target, etype, x, y, w, new_h))
                 continue
         out.append((filename, target, etype, x, y, w, h))
@@ -1085,10 +1089,10 @@ def process_xbox_one_s():
         menu_filename="XB1_MenuButton.png",
         view_filename="XB1_ViewButton.png",
         # Xbox One bumpers visually wrap further than the Xbox 360 reference
-        # 0.202 — bump to 0.22 so the highlight covers the full visible
-        # shoulder shape on the rendered controller. PNG aspect ratio is
-        # preserved so the height grows proportionally.
-        bumper_width_frac=0.22)
+        # 0.202; bumping to 0.235 (same target Xbox Series uses) covers the
+        # full visible shoulder shape on the rendered controller. PNG aspect
+        # ratio is preserved so the height grows proportionally.
+        bumper_width_frac=0.235)
 
 
 def process_xbox_series():

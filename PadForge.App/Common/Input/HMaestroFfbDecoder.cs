@@ -46,16 +46,29 @@ namespace PadForge.Common.Input
         // magnitudes overflow when read as 16-bit (concatenating magnitude +
         // offset bytes) and saturate Apply's clamp at +10000 regardless of the
         // game's intended amplitude.
-        private readonly bool _periodicMag8Bit;
         private readonly double _constantMagScale;
-        private readonly double _periodicMagScale;
         private readonly double _rampMagScale;
-        // RIDs we should decode with the periodic-magnitude path. Populated
-        // by ParseFfbScales — typically the canonical 0x14 (Set Periodic) for
-        // HM-built descriptors AND any RID where the descriptor places Set
-        // Envelope / Set Periodic. SideWinder's shipping descriptor puts Set
-        // Envelope at 0x14 and Set Periodic at 0x16; both feed magnitudes.
-        private readonly HashSet<byte> _periodicReportIds = new();
+        // Per-RID magnitude format for periodic-style reports (Set Periodic
+        // OR Set Envelope, depending on the descriptor). Different RIDs
+        // can have completely different field shapes:
+        //   SideWinder RID 0x14 (Set Envelope AttackLevel): 8-bit, unsigned,
+        //                                                    LogMax=255 → scale ≈ 39.2
+        //   SideWinder RID 0x16 (Set Periodic Magnitude):    8-bit, signed,
+        //                                                    LogMax=127 → scale ≈ 78.7
+        //   Canonical  RID 0x14 (Set Periodic Magnitude):    16-bit unsigned,
+        //                                                    LogMax=10000 → scale 1.0
+        // Storing one shared scale lost the unsigned-vs-signed distinction
+        // and let last-write-wins clobber the right scale for the wrong RID,
+        // which inverted the SideWinder intense-sine magnitude.
+        private readonly struct PeriodicFmt
+        {
+            public PeriodicFmt(bool mag8Bit, bool magSigned, double scale)
+            { Mag8Bit = mag8Bit; MagSigned = magSigned; Scale = scale; }
+            public bool Mag8Bit { get; }
+            public bool MagSigned { get; }
+            public double Scale { get; }
+        }
+        private readonly Dictionary<byte, PeriodicFmt> _periodicFormats = new();
 
         public HMaestroFfbDecoder(HMController controller)
             : this(controller, descriptorHex: null) { }
@@ -63,11 +76,7 @@ namespace PadForge.Common.Input
         public HMaestroFfbDecoder(HMController controller, string descriptorHex)
         {
             _controller = controller;
-            ParseFfbScales(descriptorHex,
-                out _periodicMag8Bit,
-                out _constantMagScale,
-                out _periodicMagScale,
-                out _rampMagScale);
+            ParseFfbScales(descriptorHex, out _constantMagScale, out _rampMagScale);
         }
 
         /// <summary>Publish initial PID state. Call from HMaestroVirtualController.Connect()
@@ -177,14 +186,15 @@ namespace PadForge.Common.Input
             {
                 lock (_lock)
                 {
-                    // Periodic-magnitude RIDs come first — for SideWinder,
-                    // the descriptor places Set Envelope at canonical's
-                    // 0x14, so we can't fall through the canonical case
-                    // first or DecodeSetEffect / SetCondition would never
-                    // see profile-specific RIDs.
-                    if (_periodicReportIds.Contains(reportId))
+                    // Periodic-style RIDs (Set Periodic OR Set Envelope —
+                    // per-profile via descriptor parse) take priority over
+                    // canonical hardcoded IDs. SideWinder places Set
+                    // Envelope at canonical 0x14, so we must dispatch with
+                    // the parsed per-RID format before falling into the
+                    // canonical switch.
+                    if (_periodicFormats.ContainsKey(reportId))
                     {
-                        DecodeSetPeriodic(data);
+                        DecodeSetPeriodic(reportId, data);
                         return;
                     }
 
@@ -192,7 +202,7 @@ namespace PadForge.Common.Input
                     {
                         case HMaestroFfbDescriptor.OutputReportId.SetEffect:        DecodeSetEffect(data); break;
                         case HMaestroFfbDescriptor.OutputReportId.SetCondition:     DecodeSetCondition(data); break;
-                        case HMaestroFfbDescriptor.OutputReportId.SetPeriodic:      DecodeSetPeriodic(data); break;
+                        case HMaestroFfbDescriptor.OutputReportId.SetPeriodic:      DecodeSetPeriodic(reportId, data); break;
                         case HMaestroFfbDescriptor.OutputReportId.SetConstantForce: DecodeSetConstant(data); break;
                         case HMaestroFfbDescriptor.OutputReportId.SetRampForce:     DecodeSetRamp(data); break;
                         case HMaestroFfbDescriptor.OutputReportId.EffectOperation:  DecodeEffectOperation(data); break;
@@ -394,33 +404,58 @@ namespace PadForge.Common.Input
             _pending = null;
         }
 
-        // Set Periodic: canonical [EBI][Magnitude:2 unsigned 0-10000][Offset:2 signed][Phase:2][Period:4 ms]
-        // SideWinder: [EBI][Magnitude:1 signed][Offset:1 signed][Phase:1][Period:2 LE]
-        // Field width is descriptor-dependent (_periodicMag8Bit). Scale the
-        // wire magnitude into canonical 0..10000 via _periodicMagScale.
-        private void DecodeSetPeriodic(ReadOnlySpan<byte> d)
+        // Set Periodic / Set Envelope. Field shape and signedness are
+        // per-RID and resolved from the descriptor at construction. For
+        // canonical HM-built profiles the entry at 0x14 is 16-bit unsigned
+        // LogMax=10000 (scale 1.0), so wire magnitudes pass through
+        // unchanged. For SideWinder, RID 0x14 is Set Envelope's
+        // AttackLevel (8-bit unsigned LogMax=255 → ~39.2x scale) and RID
+        // 0x16 would be Set Periodic Magnitude (8-bit signed LogMax=127 →
+        // ~78.7x). Reading 0xCC=204 unsigned (envelope) gives 8001; reading
+        // it signed (periodic) gave -52 / abs(52) → ~4063, smaller than
+        // gentle 0x4C → 5938, which inverted intense vs. gentle force.
+        private void DecodeSetPeriodic(byte rid, ReadOnlySpan<byte> d)
         {
             if (d.Length < 2) return;
             byte ebi = d[0];
 
-            int wireMag;
-            if (_periodicMag8Bit)
+            // Default to canonical 16-bit unsigned scale 1.0 if the RID
+            // wasn't found in the parsed dictionary (defensive — the
+            // canonical HM 0x14 RID always parses, but a stray non-FFB
+            // report on an unknown RID shouldn't crash).
+            bool mag8Bit = false;
+            bool magSigned = false;
+            double scale = 1.0;
+            if (_periodicFormats.TryGetValue(rid, out var fmt))
             {
-                wireMag = (sbyte)d[1];
+                mag8Bit = fmt.Mag8Bit;
+                magSigned = fmt.MagSigned;
+                scale = fmt.Scale;
+            }
+
+            int wireMag;
+            if (mag8Bit)
+            {
+                wireMag = magSigned ? (int)(sbyte)d[1] : (int)d[1];
             }
             else
             {
                 if (d.Length < 3) return;
-                wireMag = ReadU16(d, 1);
+                wireMag = magSigned ? (int)ReadI16(d, 1) : (int)ReadU16(d, 1);
             }
 
-            // Canonical Set Periodic magnitude is unsigned 0..10000; if any
-            // descriptor declares it signed (SideWinder), use abs value
-            // before scaling so amplitude works regardless of sign.
-            int canonicalMag = (int)Math.Round(Math.Abs(wireMag) * _periodicMagScale);
+            int canonicalMag = (int)Math.Round(Math.Abs(wireMag) * scale);
             canonicalMag = Math.Clamp(canonicalMag, 0, 10000);
 
-            uint period = d.Length >= 11 ? ReadU32(d, 7) : 0;
+            // Period: canonical Set Periodic carries 32-bit ms at d[7..10].
+            // SideWinder's 6-byte Set Envelope places FadeTime (16-bit ms)
+            // at d[4..5]; pid.dll empirically uses it to convey the
+            // periodic effect's period when Set Periodic is unreachable
+            // (RID 0x16 in this profile, never written by pid.dll for our
+            // test app). Read whichever is in range.
+            uint period = 0;
+            if (d.Length >= 11) period = ReadU32(d, 7);
+            else if (d.Length >= 6) period = ReadU16(d, 4);
 
             var es = GetOrCreateForUpdate(ebi);
             es.Magnitude = canonicalMag;
@@ -705,14 +740,10 @@ namespace PadForge.Common.Input
         // OnHidOutput can switch on it.
         private void ParseFfbScales(
             string descriptorHex,
-            out bool periodicMag8Bit,
             out double constantScale,
-            out double periodicScale,
             out double rampScale)
         {
-            periodicMag8Bit = false;
             constantScale = 1.0;
-            periodicScale = 1.0;
             rampScale = 1.0;
 
             if (string.IsNullOrEmpty(descriptorHex)) return;
@@ -792,9 +823,16 @@ namespace PadForge.Common.Input
                             // Set Periodic OR Set Envelope — whichever owns
                             // the magnitude-bearing Output for this profile.
                             // SideWinder uses Envelope; HM-built uses Periodic.
-                            periodicMag8Bit = (reportSize == 8);
-                            periodicScale = 10000.0 / absMax;
-                            _periodicReportIds.Add(currentRid);
+                            // Per-RID format because SideWinder's two periodic
+                            // RIDs (0x14 envelope unsigned, 0x16 periodic
+                            // signed) need different scales and signedness;
+                            // a shared scale produced inverted intense-sine
+                            // magnitudes when the second walk overwrote the
+                            // first.
+                            _periodicFormats[currentRid] = new PeriodicFmt(
+                                mag8Bit: reportSize == 8,
+                                magSigned: logMin < 0,
+                                scale: 10000.0 / absMax);
                         }
                         else if (parent == 0x7C && sawMagUsage && absMax > 0)
                         {

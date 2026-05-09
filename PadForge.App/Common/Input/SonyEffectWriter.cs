@@ -113,29 +113,20 @@ namespace PadForge.Common.Input
         {
             if (string.IsNullOrEmpty(devicePath)) return false;
             if (profile == null || fields == null) return false;
-            if (!profile.HasExtendedOutput)
-            {
-                LastWriteDiag = $"profile '{profile.Id}' has no extendedOutputReport spec";
-                return false;
-            }
+            if (!profile.HasExtendedOutput) return false;
 
             byte[] packet;
             try
             {
                 packet = HMOutputEncoder.Encode(profile, fields);
             }
-            catch (Exception ex)
+            catch
             {
-                LastWriteDiag = $"Encode threw: {ex.GetType().Name} {ex.Message}";
                 return false;
             }
 
             return WriteRaw(devicePath, packet);
         }
-
-        /// <summary>Last write outcome — exposed for the dispatcher's
-        /// per-write log line. Updated on every <see cref="Write"/> call.</summary>
-        public static string LastWriteDiag { get; private set; } = "";
 
         private static bool WriteRaw(string devicePath, byte[] buf)
         {
@@ -151,20 +142,12 @@ namespace PadForge.Common.Input
                 FILE_FLAG_OVERLAPPED,
                 IntPtr.Zero);
 
-            if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE)
-            {
-                LastWriteDiag = $"CreateFile failed err={Marshal.GetLastWin32Error()}";
-                return false;
-            }
+            if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE) return false;
 
             try
             {
                 IntPtr ev = CreateEventW(IntPtr.Zero, true, false, null);
-                if (ev == IntPtr.Zero)
-                {
-                    LastWriteDiag = $"CreateEvent failed err={Marshal.GetLastWin32Error()}";
-                    return false;
-                }
+                if (ev == IntPtr.Zero) return false;
 
                 try
                 {
@@ -173,23 +156,14 @@ namespace PadForge.Common.Input
                     if (!ok)
                     {
                         int err = Marshal.GetLastWin32Error();
-                        if (err != ERROR_IO_PENDING)
-                        {
-                            LastWriteDiag = $"WriteFile failed err={err}";
-                            return false;
-                        }
+                        if (err != ERROR_IO_PENDING) return false;
                         if (WaitForSingleObject(ev, 1000) != WAIT_OBJECT_0)
                         {
                             CancelIo(handle);
-                            LastWriteDiag = "WriteFile timed out 1s";
                             return false;
                         }
                     }
-                    bool gor = GetOverlappedResult(handle, ref ol, out uint bytes, true);
-                    LastWriteDiag = gor
-                        ? $"WriteFile ok bytes={bytes}"
-                        : $"GetOverlappedResult failed err={Marshal.GetLastWin32Error()}";
-                    return gor;
+                    return GetOverlappedResult(handle, ref ol, out _, true);
                 }
                 finally
                 {

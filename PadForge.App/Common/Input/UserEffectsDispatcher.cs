@@ -297,15 +297,6 @@ namespace PadForge.Common.Input
             byte vf1 = effectPayload[1];
             long now = Environment.TickCount64;
 
-            try
-            {
-                var path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-ds5-passthrough.log");
-                System.IO.File.AppendAllText(path,
-                    $"{DateTime.UtcNow:HH:mm:ss.fff} [ext-write] pad={padIndex} vf0=0x{vf0:X2} vf1=0x{vf1:X2} " +
-                    $"rumble=({effectPayload[2]},{effectPayload[3]}) lightbar=({effectPayload[44]},{effectPayload[45]},{effectPayload[46]})\n");
-            }
-            catch { }
-
             lock (s_externalStateLock)
             {
                 if (!s_externalState.TryGetValue(padIndex, out var st))
@@ -452,7 +443,6 @@ namespace PadForge.Common.Input
             _instances[padIndex] = this;
             RollRandomColor();
             UpdateAnimTimer();
-            DiagLog($"ctor padIndex={padIndex} config={(config == null ? "null" : "ok")}");
         }
 
         /// <summary>Polling-thread broadcast — Step 2 calls this every
@@ -478,29 +468,6 @@ namespace PadForge.Common.Input
                 _slotNeedsRumbleTimer = need;
                 UpdateAnimTimer();
             }
-        }
-
-        // ────────────────────────────────────────────────
-        //  Diagnostic file log
-        // ────────────────────────────────────────────────
-        // Writes to %TEMP%\padforge-ds5-passthrough.log so the developer
-        // can inspect the Feature B dispatch chain without attaching a
-        // debugger. Best-effort — IO failures are swallowed.
-        private static readonly string DiagLogPath =
-            System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-ds5-passthrough.log");
-        private static readonly object DiagLock = new();
-
-        private void DiagLog(string line)
-        {
-            try
-            {
-                lock (DiagLock)
-                {
-                    System.IO.File.AppendAllText(DiagLogPath,
-                        $"{DateTime.UtcNow:HH:mm:ss.fff} pad={_padIndex} {line}\n");
-                }
-            }
-            catch { }
         }
 
         /// <summary>Re-binds to a new <see cref="PlayStationSlotConfig"/>
@@ -546,7 +513,6 @@ namespace PadForge.Common.Input
 
         private void OnConfigChanged(object sender, PropertyChangedEventArgs e)
         {
-            DiagLog($"OnConfigChanged property={e.PropertyName}");
             // Mode / period / overlay / macro-override changes can flip
             // whether the periodic timer should be running. Without
             // re-evaluating, enabling the input-reactive overlay on a
@@ -656,7 +622,6 @@ namespace PadForge.Common.Input
                 _animTickActive = true;
                 _animTimer = new System.Threading.Timer(
                     OnAnimTick, null, AnimTickMs, AnimTickMs);
-                DiagLog($"anim timer started anchorMode={_config?.LightbarMode}");
             }
             else if (!wantTimer && _animTickActive)
             {
@@ -966,7 +931,7 @@ namespace PadForge.Common.Input
 
         private void DispatchSnapshot(float audioPeak = -1f)
         {
-            if (_config == null) { DiagLog("DispatchSnapshot config=null"); return; }
+            if (_config == null) return;
 
             // For non-tick dispatches (slider drag, OnDevicesUpdated re-
             // apply, etc.), pull the current peak so the audio path
@@ -1017,11 +982,7 @@ namespace PadForge.Common.Input
 
             var settings = SettingsManager.UserSettings;
             var devices = SettingsManager.UserDevices;
-            if (settings == null || devices == null)
-            {
-                DiagLog($"DispatchSnapshot settings={(settings == null ? "null" : "ok")} devices={(devices == null ? "null" : "ok")}");
-                return;
-            }
+            if (settings == null || devices == null) return;
 
             // Resolve assigned DS5 GUIDs.
             var guids = new System.Collections.Generic.List<Guid>(4);
@@ -1035,11 +996,8 @@ namespace PadForge.Common.Input
                     guids.Add(us.InstanceGuid);
                 }
             }
-            DiagLog($"DispatchSnapshot mappedGuids={guids.Count}");
             if (guids.Count == 0) return;
 
-            int sent = 0, skippedNotPs = 0, skippedOffline = 0, skippedNoHandle = 0, errors = 0;
-            int allPsOnline = 0, allPsOnlineMapped = 0;
             lock (devices.SyncRoot)
             {
                 foreach (var ud in devices.Items)
@@ -1051,24 +1009,13 @@ namespace PadForge.Common.Input
                     bool isDs4 = ud.VendorId == SonyVid &&
                                  (ud.ProdId == Ds4Pid_V1 || ud.ProdId == Ds4Pid_V1Alt || ud.ProdId == Ds4Pid_V2);
                     bool isPs = isDs5 || isDs4;
-                    if (isPs && ud.IsOnline) allPsOnline++;
 
-                    bool inMappedGuids = guids.Contains(ud.InstanceGuid);
-                    if (isPs && ud.IsOnline && inMappedGuids) allPsOnlineMapped++;
-
-                    if (isPs)
-                    {
-                        bool isBt = SonyEffectWriter.IsBluetoothPath(ud.DevicePath);
-                        string family = isDs5 ? "DS5" : "DS4";
-                        DiagLog($"  device {family} guid={ud.InstanceGuid} vid={ud.VendorId:X4} pid={ud.ProdId:X4} online={ud.IsOnline} mapped={inMappedGuids} bt={isBt} path={ud.DevicePath}");
-                    }
-
-                    if (!inMappedGuids) continue;
-                    if (!ud.IsOnline) { skippedOffline++; continue; }
-                    if (!isPs) { skippedNotPs++; continue; }
+                    if (!guids.Contains(ud.InstanceGuid)) continue;
+                    if (!ud.IsOnline) continue;
+                    if (!isPs) continue;
 
                     string path = ud.DevicePath;
-                    if (string.IsNullOrEmpty(path)) { skippedNoHandle++; continue; }
+                    if (string.IsNullOrEmpty(path)) continue;
                     bool isBluetooth = SonyEffectWriter.IsBluetoothPath(path);
 
                     // Resolve the HM profile whose extendedOutputReport spec
@@ -1079,12 +1026,7 @@ namespace PadForge.Common.Input
                     // including BT framing and CRC32 footer where the spec
                     // declares them.
                     var profile = ResolveSonyProfile(ud.ProdId, isBluetooth);
-                    if (profile == null)
-                    {
-                        DiagLog($"  no HM profile for vid={ud.VendorId:X4} pid={ud.ProdId:X4} bt={isBluetooth} — skipping");
-                        skippedNotPs++;
-                        continue;
-                    }
+                    if (profile == null) continue;
 
                     // Per-device rumble bytes — each Sony device on the
                     // slot pulls its OWN PadSetting (audio rumble + gain
@@ -1239,28 +1181,16 @@ namespace PadForge.Common.Input
                                 devCfg, devPeak, nowMs,
                                 _randomColor, devPulseColor, devPulseIntensity,
                                 rR, rL, assertRumbleEnable, overrides, pctByte);
-                        bool ok = SonyEffectWriter.Write(path, profile, fields);
-                        string family = isDs5 ? "ds5" : "ds4";
-                        string ovStr = "";
-                        if (overrides.RumbleRight.HasValue) ovStr += $" extRumble=({overrides.RumbleRight},{overrides.RumbleLeft})";
-                        if (overrides.LightbarRgb != null) ovStr += $" extLightbar=({overrides.LightbarRgb[0]},{overrides.LightbarRgb[1]},{overrides.LightbarRgb[2]})";
-                        if (overrides.RightTriggerEffect != null) ovStr += " extRightTrig";
-                        if (overrides.LeftTriggerEffect != null) ovStr += " extLeftTrig";
-                        if (overrides.MuteLed.HasValue) ovStr += $" extMicLed={overrides.MuteLed}";
-                        if (overrides.PlayerIndicator.HasValue) ovStr += $" extPlayer={overrides.PlayerIndicator}";
-                        DiagLog($"  raw-write {family} bt={isBluetooth} profile={profile.Id} ok={ok} rumble=({rR},{rL}){ovStr} testTarget={testTarget != Guid.Empty} deliverRumble={deliverRumble} diag='{SonyEffectWriter.LastWriteDiag}'");
-
-                        if (ok) sent++;
-                        else errors++;
+                        SonyEffectWriter.Write(path, profile, fields);
                     }
-                    catch (Exception ex)
+                    catch
                     {
-                        errors++;
-                        DiagLog($"raw-write threw: {ex.GetType().Name} {ex.Message}");
+                        // Best-effort: a failed write on one device shouldn't
+                        // prevent the dispatcher from servicing the rest of
+                        // the slot's mapped Sony pads on the next tick.
                     }
                 }
             }
-            DiagLog($"DispatchSnapshot sent={sent} skipped(not-ps)={skippedNotPs} skipped(offline)={skippedOffline} skipped(no-handle)={skippedNoHandle} errors={errors} allPsOnline={allPsOnline} allPsOnlineMapped={allPsOnlineMapped}");
         }
     }
 }

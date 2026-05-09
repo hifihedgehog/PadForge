@@ -246,12 +246,13 @@ namespace PadForge.Views
             // Touchpad preview: a full-zone blue highlight (shown when
             // TouchpadClick is held) plus two finger dots positioned by the
             // VM's TouchpadFingerN(X,Y,Down) properties. Mirrors the DS4 web
-            // controller's preview shape.
+            // controller's preview shape. DualSense uses the same surface,
+            // so build the preview for both PlayStation 2D layouts.
             _touchpadClickHighlight = null;
             _touchpadFinger0Dot = null;
             _touchpadFinger1Dot = null;
             _touchpadOverlay = default;
-            if (modelName == "DS4")
+            if (modelName == "DS4" || modelName == "DualSense")
             {
                 foreach (var ov in overlays)
                 {

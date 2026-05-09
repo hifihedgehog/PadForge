@@ -102,6 +102,20 @@ namespace PadForge.Models3D
             B3ButtonSymbol = LoadModel("B3ButtonSymbol.obj");
             B4ButtonSymbol = LoadModel("B4ButtonSymbol.obj");
 
+            // HC's DualSense mesh has no dedicated touchpad geometry (no
+            // Touchpad.obj or Screen.obj — DS4 has Screen.obj, DualSense
+            // does not). Bind the front-shell mesh as the touchpad target
+            // so click-mapping, the touchpad-pressed accent highlight,
+            // and the floating finger-dot visualization in
+            // ControllerModelView all light up on a DualSense profile.
+            // Bounds are coarser than DS4's tight Screen.obj — finger
+            // dots span the whole front face rather than just the
+            // touchpad region — but the 2D view (which has tight
+            // touchpad-zone rectangles) handles fine-grained touchpad
+            // interaction.
+            Touchpad = MainBodyFront;
+            ClickMap[MainBodyFront] = "TouchpadClick";
+
             // ── Add to scene graph (HC ordering) ────────
             model3DGroup.Children.Add(AudioJack);
             model3DGroup.Children.Add(Charger);

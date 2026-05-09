@@ -217,6 +217,80 @@ def fit_overlay_to_bbox(bbox, overlay_path, scale=1.0):
     return (round(cx - new_w / 2.0), round(cy - new_h / 2.0), new_w, new_h)
 
 
+def refine_via_base_template(base_path, results, ov_dir, targets, search_radius=80, conf_threshold=0.4):
+    """For each named target, template-match its press-overlay alpha against
+    the BASE PNG's dark-detail map (small drawn details like button labels,
+    Start/Back glyphs, screen edges show up as dark on the white body).
+    Restricted to a small radius around the current (SVG-derived) position
+    to keep matches local. Updates the layout entry's (x, y) when a
+    high-confidence match is found; size is left alone since this refines
+    POSITION only, not scale.
+
+    Used for tiny buttons (Start / Back / Create / Option) whose SVG
+    inkscape:label can sit on the wrong element (a text label, an icon
+    centroid, etc.) and produce a position that's a few-to-many pixels
+    off from the actual visible button on the rendered controller body.
+    Asset-pack composite overlays don't help because they're just the body
+    silhouette without highlights, but the BASE PNG itself has the small
+    button drawn as detail."""
+    base = cv2.imread(base_path, cv2.IMREAD_UNCHANGED)
+    if base is None: return results
+    gray = cv2.cvtColor(base[:, :, :3], cv2.COLOR_BGR2GRAY).astype(np.float32)
+    dark = 255.0 - gray
+    if base.shape[2] >= 4:
+        dark[base[:, :, 3] < 200] = 0
+    H, W = dark.shape
+    target_set = set(targets)
+
+    refined = []
+    for filename, target, etype, x, y, w, h in results:
+        if target not in target_set or not filename:
+            refined.append((filename, target, etype, x, y, w, h))
+            continue
+
+        ov = cv2.imread(os.path.join(ov_dir, filename), cv2.IMREAD_UNCHANGED)
+        if ov is None or ov.shape[2] < 4:
+            refined.append((filename, target, etype, x, y, w, h))
+            continue
+
+        ov_alpha = ov[:, :, 3].astype(np.float32)
+        oh, ow = ov_alpha.shape
+        if oh > H or ow > W:
+            refined.append((filename, target, etype, x, y, w, h))
+            continue
+
+        try:
+            result = cv2.matchTemplate(dark, ov_alpha, cv2.TM_CCOEFF_NORMED)
+        except cv2.error:
+            refined.append((filename, target, etype, x, y, w, h))
+            continue
+
+        # Restrict candidate positions by centroid distance to the current
+        # (SVG-derived) target centroid.
+        ref_cx = x + w / 2.0
+        ref_cy = y + h / 2.0
+        rh_, rw_ = result.shape
+        ty_ix, tx_ix = np.indices((rh_, rw_))
+        cxs = tx_ix + ow / 2.0
+        cys = ty_ix + oh / 2.0
+        dist = np.hypot(cxs - ref_cx, cys - ref_cy)
+        masked = np.where(dist <= search_radius, result, -np.inf)
+        if not np.isfinite(masked).any():
+            refined.append((filename, target, etype, x, y, w, h))
+            continue
+        max_val = float(masked.max())
+        idx = np.unravel_index(np.argmax(masked), masked.shape)
+        rx, ry = int(idx[1]), int(idx[0])
+
+        if max_val >= conf_threshold and (abs(rx - x) > 1 or abs(ry - y) > 1):
+            print(f"  BASE-MATCH {target:20s}: ({x},{y}) -> ({rx},{ry}) conf={max_val:.3f}")
+            refined.append((filename, target, etype, rx, ry, w, h))
+        else:
+            refined.append((filename, target, etype, x, y, w, h))
+
+    return refined
+
+
 def refine_via_alpha_diff(base_path, composite_path, results, ov_dir):
     """Visual analysis: the asset pack's "Controller Overlay" PNG is the
     base body + every press highlight composited together. Subtract the
@@ -560,7 +634,67 @@ def process_xbox360():
     print("\nRefining Xbox 360 positions via alpha-channel template matching...")
     results = refine_with_composite(composite_path, results)
 
+    # Tighten Start/Back/Guide positions against the base PNG — the SVG
+    # labels for these tiny buttons sit on label-text centroids that are
+    # a few px off the button silhouette. The press-overlay vs base
+    # template match has lower confidence here because the highlight
+    # shape doesn't match the dark button label exactly, but a 0.3
+    # threshold is reliable enough for the small allowed shift.
+    base_path = os.path.join(MODELS_DIR, "XBOX360", "XB360_base.png")
+    print("Refining Xbox 360 small-button positions via base alpha template...")
+    results = refine_via_base_template(base_path, results, ov_dir,
+        targets={"ButtonBack", "ButtonStart", "ButtonGuide"},
+        search_radius=40, conf_threshold=0.3)
+    # Final fallback: locate Back/Start by detecting their drawn dark
+    # silhouette in the base PNG's middle band. The press-overlay
+    # template-match can land 10+ px off because the highlight shape
+    # differs from the dark label glyph; centroid-of-dark-spot is more
+    # robust for tiny labeled buttons.
+    results = _xbox360_align_back_start_to_dark_spots(base_path, results)
+
     return {"base_width": base.shape[1], "base_height": base.shape[0], "results": results}
+
+
+def _xbox360_align_back_start_to_dark_spots(base_path, results):
+    """Snap Back / Start positions to the centroids of their drawn dark
+    label silhouettes in the Xbox 360 base PNG. Each label is a tiny dark
+    oval on the white body between the analog sticks and the guide; find
+    it by searching the dark-pixel components within ~80 px of the layout
+    entry's current centroid (so we don't pick up handle outlines / charger
+    holes that sit at similar y values closer to the controller edges)."""
+    base = cv2.imread(base_path, cv2.IMREAD_UNCHANGED)
+    if base is None: return results
+    gray = cv2.cvtColor(base[:, :, :3], cv2.COLOR_BGR2GRAY)
+    dark = (gray < 80).astype(np.uint8)
+    n, _, stats, centroids = cv2.connectedComponentsWithStats(dark, connectivity=8)
+
+    refined = []
+    for filename, target, etype, x, y, w, h in results:
+        if target not in ("ButtonBack", "ButtonStart"):
+            refined.append((filename, target, etype, x, y, w, h))
+            continue
+        ref_cx = x + w / 2.0
+        ref_cy = y + h / 2.0
+        best = None
+        for li in range(1, n):
+            bx, by, bw, bh, area = stats[li]
+            if not (80 < area < 4000 and 20 < bw < 120 and 15 < bh < 100):
+                continue
+            cx, cy = float(centroids[li][0]), float(centroids[li][1])
+            d = ((cx - ref_cx) ** 2 + (cy - ref_cy) ** 2) ** 0.5
+            if d > 80: continue
+            if best is None or area > best[2]:
+                best = (cx, cy, area)
+        if best is None:
+            refined.append((filename, target, etype, x, y, w, h))
+            continue
+        cx, cy, _ = best
+        new_x = round(cx - w / 2.0)
+        new_y = round(cy - h / 2.0)
+        if (new_x, new_y) != (x, y):
+            print(f"  DARK-SPOT  {target:20s}: ({x},{y}) -> ({new_x},{new_y}) centroid=({cx:.0f},{cy:.0f})")
+        refined.append((filename, target, etype, new_x, new_y, w, h))
+    return refined
 
 
 def process_ds4():
@@ -722,6 +856,14 @@ def process_dualsense():
         results.append(("DualSense_AnalogStick_Click.png", "RightThumbButton", "StickClick", pos[0], pos[1], pos[2], pos[3]))
         print(f"  {'RightThumbButton':20s} ({'Right Stick':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
 
+    # Refine Create/Option/PS via base alpha template — same situation as
+    # Xbox 360's Start/Back: the SVG labels sit on text or icon centroids
+    # that are slightly offset from the visible button silhouette.
+    base_path = os.path.join(MODELS_DIR, "DualSense", "DualSense_base.png")
+    print("Refining DualSense small-button positions via base alpha template...")
+    results = refine_via_base_template(base_path, results, ov_dir,
+        targets={"ButtonBack", "ButtonStart", "ButtonGuide"})
+
     # Touchpad zones — no SVG label, use rectangle estimates derived from the
     # DualSense layout (touchpad surface sits between the Create + Option
     # buttons, with a click strip running along its top edge below the
@@ -872,6 +1014,16 @@ def _process_xbox_modern(profile_name, svg_path, base_relpath, ov_subdir,
             pos = fit_overlay_to_bbox(sub, os.path.join(ov_dir, fn))
             results.append((fn, target, "Button", pos[0], pos[1], pos[2], pos[3]))
             print(f"  {target:20s} ({'D-PAD '+direction:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+
+    # Refine bumper positions against the base PNG. The SVG bumper-group
+    # bbox spans the empty middle between the two bumpers, so simply
+    # pinning to its outer edges puts each bumper at a coarse position;
+    # template-matching the bumper highlight shape against the base
+    # locates the actual visible bumper on the controller silhouette.
+    base_path = os.path.join(MODELS_DIR, ov_subdir, os.path.basename(base_relpath))
+    print(f"Refining {profile_name} bumper positions via base alpha template...")
+    results = refine_via_base_template(base_path, results, ov_dir,
+        targets={"LeftShoulder", "RightShoulder"}, search_radius=120)
 
     return {"base_width": base_w, "base_height": base_h, "results": results}
 

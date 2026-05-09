@@ -133,11 +133,31 @@ namespace PadForge.Common.Input
             // games still recognize the original device's signature) but
             // need the same decoder + PID-state publish path. Inspecting
             // the descriptor catches both cases without coupling to VID.
-            if (DescriptorHasPidFfbBlock(_profile.DescriptorHex))
+            string descriptorHex = _profile.DescriptorHex;
+            bool hasFfb = DescriptorHasPidFfbBlock(descriptorHex);
+            if (hasFfb)
             {
                 _ffbDecoder = new HMaestroFfbDecoder(_controller);
                 _ffbDecoder.PublishInitialState();
             }
+
+            // One-shot diagnostic at Connect: did the heuristic match the
+            // profile's descriptor? Records a short prefix so we can confirm
+            // what HM SDK actually returned for DescriptorHex (the catalog
+            // SideWinder JSON has "0921a102" multiple times — if hasFfb is
+            // false here, the SDK is returning something other than the
+            // shipping `descriptor` field).
+            try
+            {
+                string prefix = string.IsNullOrEmpty(descriptorHex)
+                    ? "<null/empty>"
+                    : descriptorHex.Substring(0, Math.Min(48, descriptorHex.Length));
+                int len = descriptorHex?.Length ?? 0;
+                System.IO.File.AppendAllText(
+                    System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-output-capture.log"),
+                    $"{DateTime.UtcNow:HH:mm:ss.fff} CONNECT pad={FeedbackPadIndex} profile={_profile.Id} vid=0x{_profile.VendorId:X4} pid=0x{_profile.ProductId:X4} ffb={hasFfb} descLen={len} descPrefix={prefix}\n");
+            }
+            catch { }
 
             IsConnected = true;
         }
@@ -628,15 +648,85 @@ namespace PadForge.Common.Input
 
                 var data = pkt.Data.Span;
 
-                // Diagnostic capture — every output report that reaches the
-                // virtual, with source / report ID / length / first-16-byte
-                // hex. Used to diagnose why some HID consumers (Chromium's
-                // DualShock4 driver in particular) write to a virtual pad
-                // but the rumble doesn't propagate. Compare a known-good
-                // writer's bytes (Steam Input) against the suspect
-                // writer's bytes to see whether the report ID, transport
-                // shape, or framing differs. Cheap enough to leave on
-                // through the v3.1.4 dev cycle; strip at release prep.
+                // Dispatch to the matching branch FIRST, then write a single
+                // capture line that records (source/RID/len/bytes) PLUS the
+                // chosen branch and (for ffb-out) the post-Apply motor values.
+                // Per-packet route + outcome in one place is what made the
+                // earlier "is _ffbDecoder firing for SideWinder?" question
+                // ambiguous when the capture only showed inputs.
+                string branch;
+                ushort postLeft = 0, postRight = 0;
+                bool postDirectional = false;
+
+                bool isXbox = HMaestroProfileCatalog.IsXboxProfile(_profile);
+
+                if (pkt.Source == HMOutputSource.XInput && data.Length >= 5)
+                {
+                    // XInput vibration packet (IOCTL_XUSB_SET_STATE):
+                    // [00, 08, leftHi, rightHi, reserved]. Chromium browser
+                    // Gamepad API sends dual-rumble through this path with
+                    // alternating hi=127 / hi=0 — that's a square-wave
+                    // duty cycle, not keepalive noise; don't filter zeros.
+                    vibrationStates[idx].LeftMotorSpeed = (ushort)(data[2] * 257);
+                    vibrationStates[idx].RightMotorSpeed = (ushort)(data[3] * 257);
+                    branch = "xinput";
+                }
+                else if (isXbox
+                         && pkt.Source == HMOutputSource.HidOutput
+                         && data.Length >= 4
+                         && data.Length < 8)
+                {
+                    // Xbox Series BT browser-Gamepad short HID rumble:
+                    // [trigL, trigR, motorL, motorR, dur, delay, loop].
+                    // Motors are 0..100; scale to ushort (~655x).
+                    vibrationStates[idx].LeftMotorSpeed = (ushort)(data[2] * 655);
+                    vibrationStates[idx].RightMotorSpeed = (ushort)(data[3] * 655);
+                    branch = "xbox-short";
+                }
+                else if (isXbox
+                         && pkt.Source == HMOutputSource.HidOutput
+                         && data.Length >= 8)
+                {
+                    // Xbox wired / wireless-receiver legacy HID rumble:
+                    // motor magnitudes at vendor-specific bytes 5/6.
+                    vibrationStates[idx].LeftMotorSpeed = (ushort)(data[5] * 257);
+                    vibrationStates[idx].RightMotorSpeed = (ushort)(data[6] * 257);
+                    branch = "xbox-long";
+                }
+                else if (_ffbDecoder != null && pkt.Source == HMOutputSource.HidOutput)
+                {
+                    // PID FFB-capable profile (Custom synthetic, catalog
+                    // profile with the FFB block in its descriptor, OR a
+                    // Customized+FFB Extended slot rebuilt with
+                    // AddPidFfbBlock). Decode Set Effect / Set Constant /
+                    // Set Periodic / Set Condition / Effect Operation /
+                    // Block Free / Device Control / Device Gain. Apply()
+                    // aggregates running effects into the Vibration with
+                    // directional + condition data so
+                    // SetDirectionalHapticForces routes DirectInput FFB to
+                    // physical wheels and sticks. Gate is descriptor
+                    // presence, not VID — catalog profiles keep their
+                    // original VID/PID.
+                    _ffbDecoder.OnHidOutput(pkt.ReportId, data);
+                    _ffbDecoder.Apply(vibrationStates[idx]);
+                    postLeft = vibrationStates[idx].LeftMotorSpeed;
+                    postRight = vibrationStates[idx].RightMotorSpeed;
+                    postDirectional = vibrationStates[idx].HasDirectionalData;
+                    branch = "ffb-out";
+                }
+                else if (_ffbDecoder != null && pkt.Source == HMOutputSource.HidFeature)
+                {
+                    _ffbDecoder.OnHidFeature(pkt.ReportId, data);
+                    branch = "ffb-feat";
+                }
+                else
+                {
+                    branch = _ffbDecoder == null ? "fallthrough(no-decoder)" : "fallthrough";
+                }
+
+                // Diagnostic capture — single line per packet, including the
+                // dispatch decision. Cheap enough to leave on through the
+                // v3.1.4 dev cycle; strip at release prep.
                 try
                 {
                     int dump = Math.Min(data.Length, 16);
@@ -646,96 +736,14 @@ namespace PadForge.Common.Input
                         if (i > 0) sb.Append(' ');
                         sb.Append(data[i].ToString("X2"));
                     }
+                    string post = branch == "ffb-out"
+                        ? $" postL={postLeft} postR={postRight} dir={postDirectional}"
+                        : "";
                     System.IO.File.AppendAllText(
                         System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-output-capture.log"),
-                        $"{DateTime.UtcNow:HH:mm:ss.fff} pad={idx} profile={_profile.Id} src={pkt.Source} rpt=0x{pkt.ReportId:X2} len={data.Length} bytes=[{sb}]\n");
+                        $"{DateTime.UtcNow:HH:mm:ss.fff} pad={idx} profile={_profile.Id} src={pkt.Source} rpt=0x{pkt.ReportId:X2} len={data.Length} bytes=[{sb}] branch={branch}{post}\n");
                 }
                 catch { }
-
-                // XInput vibration packet layout (from IOCTL_XUSB_SET_STATE):
-                //   data[0] = 0x00 (command)
-                //   data[1] = 0x08 (size)
-                //   data[2] = left motor byte  (wLeftMotorSpeed  >> 8)
-                //   data[3] = right motor byte (wRightMotorSpeed >> 8)
-                //   data[4] = reserved
-                // Chromium's browser Gamepad API sends dual-rumble via this
-                // path; the alternating hi=127 / hi=0 pattern IS the browser's
-                // square-wave vibration waveform (not keep-alive noise) — do
-                // NOT filter packets where both bytes are 0 (that's the "off"
-                // phase of the duty cycle).
-                if (pkt.Source == HMOutputSource.XInput && data.Length >= 5)
-                {
-                    vibrationStates[idx].LeftMotorSpeed = (ushort)(data[2] * 257);
-                    vibrationStates[idx].RightMotorSpeed = (ushort)(data[3] * 257);
-                    return;
-                }
-
-                // Xbox Series Bluetooth — browser Gamepad API on Chromium
-                // sends vibration to Xbox Series BT via a HID output
-                // report (NOT XInput, unlike wired Xbox 360). Layout is
-                // 7 bytes: [trigL, trigR, motorL, motorR, duration,
-                // startDelay, loopCount]. Motor bytes are 0..100
-                // magnitudes; scale to ushort range (~655x). Verified
-                // against HM test app log of xbox-series-xs-bt +
-                // gamepad-tester.com.
-                //
-                // Gate on IsXboxProfile (Microsoft vendor AND name/id
-                // contains "Xbox") rather than the bare 0x045E VID. The
-                // SideWinder Force Feedback 2 also ships under Microsoft
-                // VID 0x045E and emits 4..7-byte PID FFB reports that
-                // would otherwise be misread by this branch. Same
-                // single-source gate as the Extended dropdown's Xbox
-                // bucket filter — see HMaestroProfileCatalog.IsXboxProfile.
-                bool isXbox = HMaestroProfileCatalog.IsXboxProfile(_profile);
-                if (isXbox
-                    && pkt.Source == HMOutputSource.HidOutput
-                    && data.Length >= 4
-                    && data.Length < 8)
-                {
-                    vibrationStates[idx].LeftMotorSpeed = (ushort)(data[2] * 655);
-                    vibrationStates[idx].RightMotorSpeed = (ushort)(data[3] * 655);
-                    return;
-                }
-
-                // Xbox wired / wireless-receiver long HID rumble report
-                // (legacy format, vendor-specific bytes 5/6). Same
-                // IsXboxProfile gate so a 15-byte SideWinder PID Set
-                // Effect Report doesn't get misread as Xbox 8+-byte
-                // rumble.
-                if (isXbox
-                    && pkt.Source == HMOutputSource.HidOutput
-                    && data.Length >= 8)
-                {
-                    vibrationStates[idx].LeftMotorSpeed = (ushort)(data[5] * 257);
-                    vibrationStates[idx].RightMotorSpeed = (ushort)(data[6] * 257);
-                    return;
-                }
-
-                // PID FFB-capable Extended profile (Custom synthetic OR a
-                // catalog profile with Customize+FFB on, where Step 5
-                // rebuilt the descriptor with AddPidFfbBlock). Decode
-                // Set Effect / Set Constant / Set Periodic / Set Condition /
-                // Effect Operation / Block Free / Device Control / Device Gain
-                // packets, aggregate running effects into the Vibration with
-                // directional + condition data so SetDirectionalHapticForces
-                // can route real DirectInput FFB to physical wheels and sticks.
-                // _ffbDecoder is non-null iff Connect() detected the PID FFB
-                // block in the descriptor — that's the gate that matters,
-                // not the VID (catalog profiles keep their original VID/PID).
-                if (_ffbDecoder != null)
-                {
-                    if (pkt.Source == HMOutputSource.HidOutput)
-                    {
-                        _ffbDecoder.OnHidOutput(pkt.ReportId, data);
-                        _ffbDecoder.Apply(vibrationStates[idx]);
-                        return;
-                    }
-                    if (pkt.Source == HMOutputSource.HidFeature)
-                    {
-                        _ffbDecoder.OnHidFeature(pkt.ReportId, data);
-                        return;
-                    }
-                }
             };
         }
 

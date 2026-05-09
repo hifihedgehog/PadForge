@@ -96,7 +96,8 @@ namespace PadForge.Views
 
         private void OnVmPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(PadViewModel.OutputType))
+            if (e.PropertyName == nameof(PadViewModel.OutputType)
+                || e.PropertyName == nameof(PadViewModel.ProfileId))
             {
                 Dispatcher.Invoke(EnsureModel);
                 return;
@@ -119,11 +120,10 @@ namespace PadForge.Views
         {
             if (_vm == null) return;
 
-            string needed = _vm.OutputType switch
-            {
-                VirtualControllerType.PlayStation => "DS4",
-                _ => "XBOX360"
-            };
+            // Per-profile asset selection (DualSense, Xbox One S, Xbox Series,
+            // ...). Falls back to DS4 / Xbox 360 for unrecognized profiles.
+            var (needed, _) = PadForge.Common.Input.HMaestroProfileCatalog.ResolveAssetFolders(
+                _vm.ProfileId, _vm.OutputType);
 
             if (_loadedModel == needed) return;
             _loadedModel = needed;
@@ -142,27 +142,39 @@ namespace PadForge.Views
             _stickHighlights.Clear();
             _hoverTarget = null;
 
-            string folder = modelName == "DS4" ? "DS4" : "XBOX360";
             int baseW, baseH;
             string basePath;
             OverlayElement[] overlays;
 
-            if (modelName == "DS4")
+            switch (modelName)
             {
-                baseW = DS4Layout.BaseWidth;
-                baseH = DS4Layout.BaseHeight;
-                basePath = DS4Layout.BasePath;
-                overlays = DS4Layout.Overlays;
-                _stickMaxTravel = DS4Layout.StickMaxTravel;
+                case "DS4":
+                    baseW = DS4Layout.BaseWidth; baseH = DS4Layout.BaseHeight;
+                    basePath = DS4Layout.BasePath; overlays = DS4Layout.Overlays;
+                    _stickMaxTravel = DS4Layout.StickMaxTravel;
+                    break;
+                case "DualSense":
+                    baseW = DualSenseLayout.BaseWidth; baseH = DualSenseLayout.BaseHeight;
+                    basePath = DualSenseLayout.BasePath; overlays = DualSenseLayout.Overlays;
+                    _stickMaxTravel = DualSenseLayout.StickMaxTravel;
+                    break;
+                case "XBOXONE":
+                    baseW = XboxOneSLayout.BaseWidth; baseH = XboxOneSLayout.BaseHeight;
+                    basePath = XboxOneSLayout.BasePath; overlays = XboxOneSLayout.Overlays;
+                    _stickMaxTravel = XboxOneSLayout.StickMaxTravel;
+                    break;
+                case "XBOXSERIES":
+                    baseW = XboxSeriesXLayout.BaseWidth; baseH = XboxSeriesXLayout.BaseHeight;
+                    basePath = XboxSeriesXLayout.BasePath; overlays = XboxSeriesXLayout.Overlays;
+                    _stickMaxTravel = XboxSeriesXLayout.StickMaxTravel;
+                    break;
+                default:
+                    baseW = Xbox360Layout.BaseWidth; baseH = Xbox360Layout.BaseHeight;
+                    basePath = Xbox360Layout.BasePath; overlays = Xbox360Layout.Overlays;
+                    _stickMaxTravel = Xbox360Layout.StickMaxTravel;
+                    break;
             }
-            else
-            {
-                baseW = Xbox360Layout.BaseWidth;
-                baseH = Xbox360Layout.BaseHeight;
-                basePath = Xbox360Layout.BasePath;
-                overlays = Xbox360Layout.Overlays;
-                _stickMaxTravel = Xbox360Layout.StickMaxTravel;
-            }
+            string folder = modelName;
 
             ModelCanvas.Width = baseW;
             ModelCanvas.Height = baseH;

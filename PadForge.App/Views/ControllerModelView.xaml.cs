@@ -145,7 +145,8 @@ namespace PadForge.Views
         private void OnVmPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             // Model type change
-            if (e.PropertyName == nameof(PadViewModel.OutputType))
+            if (e.PropertyName == nameof(PadViewModel.OutputType)
+                || e.PropertyName == nameof(PadViewModel.ProfileId))
             {
                 Dispatcher.Invoke(EnsureModel);
                 return;
@@ -175,12 +176,12 @@ namespace PadForge.Views
         {
             if (_vm == null) return;
 
-            var type = _vm.OutputType;
-            string needed = type switch
-            {
-                VirtualControllerType.PlayStation => "DS4",
-                _ => "XBOX360"
-            };
+            // Per-profile asset selection — DualSense profiles get the
+            // DualSense mesh, Xbox One/Elite/Series/Adaptive profiles get
+            // the Xbox One mesh (HC has no Series-specific 3D), DualShock
+            // and Xbox 360 fall through unchanged.
+            var (_, needed) = PadForge.Common.Input.HMaestroProfileCatalog.ResolveAssetFolders(
+                _vm.ProfileId, _vm.OutputType);
 
             if (_currentModel?.ModelName == needed)
                 return;
@@ -196,6 +197,8 @@ namespace PadForge.Views
                 _currentModel = needed switch
                 {
                     "DS4" => new ControllerModelDS4(),
+                    "DualSense" => new ControllerModelDualSense(),
+                    "XBOXONE" => new ControllerModelXboxOne(),
                     _ => new ControllerModelXbox360()
                 };
 

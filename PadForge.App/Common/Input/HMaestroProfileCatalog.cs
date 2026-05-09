@@ -283,6 +283,51 @@ namespace PadForge.Common.Input
              || ContainsToken(p.Id, "dualshock") || ContainsToken(p.Id, "dualsense"));
 
         /// <summary>
+        /// Resolve a profile id to the 2D + 3D asset folders PadForge should
+        /// render for that controller. Profile-id prefixes match HM's catalog
+        /// slugs (sony/, microsoft/) so adding a new profile in HM
+        /// automatically falls through to the right family without code
+        /// changes here. The two folders can differ — Xbox Series uses its
+        /// own 2D layout but borrows Xbox One's 3D mesh because HC has no
+        /// dedicated Series 3D model. Falls back to the existing DS4 /
+        /// XBOX360 assets for unrecognized PlayStation / Xbox profiles so
+        /// future HM additions degrade gracefully instead of going blank.
+        /// </summary>
+        public static (string Name2D, string Name3D) ResolveAssetFolders(
+            string profileId, PadForge.Engine.VirtualControllerType slotType)
+        {
+            profileId ??= string.Empty;
+
+            // PlayStation
+            if (profileId.StartsWith("dualsense", StringComparison.OrdinalIgnoreCase))
+                return ("DualSense", "DualSense");
+            if (profileId.StartsWith("dualshock", StringComparison.OrdinalIgnoreCase))
+                return ("DS4", "DS4");
+
+            // Xbox One / Elite / Series / Adaptive — all share the Xbox One
+            // 3D mesh (HC ships no Series-specific 3D). 2D layouts diverge:
+            // Series profiles get their own white asset set.
+            if (profileId.StartsWith("xbox-series-", StringComparison.OrdinalIgnoreCase))
+                return ("XBOXSERIES", "XBOXONE");
+            if (profileId.StartsWith("xbox-one-", StringComparison.OrdinalIgnoreCase)
+                || profileId.StartsWith("xbox-elite-", StringComparison.OrdinalIgnoreCase)
+                || profileId.Equals("xbox-adaptive", StringComparison.OrdinalIgnoreCase))
+                return ("XBOXONE", "XBOXONE");
+
+            // Xbox 360 family + arcade-stick / dance-pad / wheel siblings.
+            if (profileId.StartsWith("xbox-360", StringComparison.OrdinalIgnoreCase))
+                return ("XBOX360", "XBOX360");
+
+            // Fallback per slot type — preserves existing behavior for
+            // Custom / Extended / unrecognized profiles.
+            return slotType switch
+            {
+                PadForge.Engine.VirtualControllerType.PlayStation => ("DS4", "DS4"),
+                _ => ("XBOX360", "XBOX360"),
+            };
+        }
+
+        /// <summary>
         /// Build the synthetic "Custom" profile that anchors the Extended
         /// dropdown. Standard Xbox 360-like layout: 2 16-bit sticks, 2
         /// 8-bit triggers, 1 hat switch, 11 buttons. Matches the default

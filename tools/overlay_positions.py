@@ -432,13 +432,304 @@ def process_ds4():
     return {"base_width": base.shape[1], "base_height": base.shape[0], "results": results}
 
 
-def generate_csharp(xbox_data, ds4_data, output_path):
+def process_dualsense():
+    """Extract DualSense overlay positions. SVG units = mm; default theme PNG
+    is 1467x816 → scale ≈ 2.6932 px/mm. Touchpad-click and touchpad zones are
+    injected manually since the SVG doesn't label them."""
+    svg_path = os.path.join(ASSET_PACK,
+        "DualSense Controller Image", "Default", "Theme SVG",
+        "DualSense VSCView SVG.svg")
+
+    tree = etree.parse(svg_path)
+    root = tree.getroot()
+
+    base = cv2.imread(os.path.join(MODELS_DIR, "DualSense", "DualSense_base.png"), cv2.IMREAD_UNCHANGED)
+    base_w, base_h = base.shape[1], base.shape[0]
+
+    # SVG declares 544.7066 mm width; PNG is 1467 px → 2.6932 px/mm.
+    scale = base_w / 544.7066
+
+    ov_dir = os.path.join(MODELS_DIR, "DualSense")
+    results = []
+
+    def add(svg_label, filename, target, elem_type):
+        bbox = get_element_pixel_bbox(root, svg_label, scale)
+        if bbox is None:
+            print(f"  MISS: {svg_label}")
+            return None
+        overlay_path = os.path.join(ov_dir, filename)
+        pos = center_overlay_on_bbox(bbox, overlay_path)
+        results.append((filename, target, elem_type, pos[0], pos[1], pos[2], pos[3]))
+        print(f"  {target:20s} ({svg_label:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+        return bbox
+
+    print("Parsing DualSense SVG elements...")
+
+    # Face buttons — separate PNG per button (Cross/Circle/Square/Triangle).
+    # Note SVG label "Crosss" has an extra 's' (asset-pack typo).
+    add("Crosss", "DualSense_Cross.png", "ButtonA", "Button")
+    add("Circle", "DualSense_Circle.png", "ButtonB", "Button")
+    add("Square", "DualSense_Square.png", "ButtonX", "Button")
+    add("Triangle ", "DualSense_Triangle.png", "ButtonY", "Button")  # trailing space in label
+
+    # D-Pad
+    add("D-PAD Up", "DualSense_D-PAD_Up.png", "DPadUp", "Button")
+    add("D-PAD Down", "DualSense_D-PAD_Down.png", "DPadDown", "Button")
+    add("D-PAD Left", "DualSense_D-PAD_Left.png", "DPadLeft", "Button")
+    add("D-PAD Right", "DualSense_D-PAD_Right.png", "DPadRight", "Button")
+
+    # Bumpers
+    add("L1", "DualSense_L1-Active.png", "LeftShoulder", "Button")
+    add("R1", "DualSense_R1-Active.png", "RightShoulder", "Button")
+
+    # Triggers (note SVG plurality typos: "L2 Triggers", "R2 Trigger")
+    add("L2 Triggers", "DualSense_L2-Active.png", "LeftTrigger", "Trigger")
+    add("R2 Trigger", "DualSense_R2-Active.png", "RightTrigger", "Trigger")
+
+    # Create / Option / PS buttons
+    add("Create Button", "DualSense_Create_Button.png", "ButtonBack", "Button")
+    add("Option Button", "DualSense_Option_Button.png", "ButtonStart", "Button")
+    add("PS Button", "DualSense_Home_Button.png", "ButtonGuide", "Button")
+
+    # Sticks (rings) and stick clicks share the same SVG bbox
+    add("Left Stick", "DualSense_LeftAnalogStick.png", "LeftThumbRing", "StickRing")
+    add("Right Stick", "DualSense_RightAnalogStick.png", "RightThumbRing", "StickRing")
+    left_bbox = get_element_pixel_bbox(root, "Left Stick", scale)
+    right_bbox = get_element_pixel_bbox(root, "Right Stick", scale)
+    if left_bbox:
+        pos = center_overlay_on_bbox(left_bbox, os.path.join(ov_dir, "DualSense_AnalogStick_Click.png"))
+        results.append(("DualSense_AnalogStick_Click.png", "LeftThumbButton", "StickClick", pos[0], pos[1], pos[2], pos[3]))
+        print(f"  {'LeftThumbButton':20s} ({'Left Stick':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+    if right_bbox:
+        pos = center_overlay_on_bbox(right_bbox, os.path.join(ov_dir, "DualSense_AnalogStick_Click.png"))
+        results.append(("DualSense_AnalogStick_Click.png", "RightThumbButton", "StickClick", pos[0], pos[1], pos[2], pos[3]))
+        print(f"  {'RightThumbButton':20s} ({'Right Stick':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+
+    # Refine via composite alpha-channel template matching.
+    composite_path = os.path.join(ov_dir, "DualSense Controller Overlay.png")
+    print("\nRefining DualSense positions via alpha-channel template matching...")
+    results = refine_with_composite(composite_path, results)
+
+    # Touchpad zones — no SVG label, use rectangle estimates derived from the
+    # DualSense layout (touchpad surface sits between the Create + Option
+    # buttons, with a click strip running along its top edge below the
+    # lightbar). Same shape as DS4Layout. Tweak in-app if alignment drifts.
+    tp_w = round(base_w * 0.34)         # ~0.34 of base width
+    tp_h = round(base_h * 0.27)         # ~0.27 of base height
+    tp_x = round((base_w - tp_w) / 2)   # horizontally centered
+    tp_y = round(base_h * 0.27)         # below the lightbar
+    click_h = round(tp_h * 0.16)
+    click_y = max(0, tp_y - click_h - 4)
+    results.append(("", "TouchpadClick", "Button", tp_x, click_y, tp_w, click_h))
+    results.append(("", "Touchpad", "Touchpad", tp_x, tp_y, tp_w, tp_h))
+    print(f"  {'TouchpadClick':20s} (manual zone)         -> ({tp_x}, {click_y}) {tp_w}x{click_h}")
+    print(f"  {'Touchpad':20s} (manual zone)         -> ({tp_x}, {tp_y}) {tp_w}x{tp_h}")
+
+    return {"base_width": base_w, "base_height": base_h, "results": results}
+
+
+def _process_xbox_modern(profile_name, svg_path, base_relpath, ov_subdir,
+                        composite_filename, prefix,
+                        face_btn_filenames, dpad_filenames,
+                        bumper_filenames, trigger_filenames,
+                        stick_filenames, stick_click_filename,
+                        guide_filename, menu_filename, view_filename,
+                        share_filename=None):
+    """Shared driver for Xbox One and Xbox Series X SVGs. Both have viewBox
+    units that map 1:1 to PNG pixels, similar SVG label conventions, and
+    the same press-overlay shape (face buttons + sticks have individual
+    labels; bumpers + d-pad need bbox splitting / quadrant computation)."""
+    tree = etree.parse(svg_path)
+    root = tree.getroot()
+
+    base = cv2.imread(os.path.join(MODELS_DIR, ov_subdir, os.path.basename(base_relpath)), cv2.IMREAD_UNCHANGED)
+    base_w, base_h = base.shape[1], base.shape[0]
+
+    # viewBox-units already match PNG pixel coordinates closely; scale = 1.
+    scale = 1.0
+    ov_dir = os.path.join(MODELS_DIR, ov_subdir)
+    results = []
+
+    def add(svg_label, filename, target, elem_type):
+        bbox = get_element_pixel_bbox(root, svg_label, scale)
+        if bbox is None:
+            print(f"  MISS: {svg_label}")
+            return None
+        overlay_path = os.path.join(ov_dir, filename)
+        pos = center_overlay_on_bbox(bbox, overlay_path)
+        results.append((filename, target, elem_type, pos[0], pos[1], pos[2], pos[3]))
+        print(f"  {target:20s} ({svg_label:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+        return bbox
+
+    print(f"Parsing {profile_name} SVG elements...")
+
+    # Face buttons (individual labels in both SVGs).
+    add("A Button", face_btn_filenames["A"], "ButtonA", "Button")
+    add("B Button", face_btn_filenames["B"], "ButtonB", "Button")
+    add("X Button", face_btn_filenames["X"], "ButtonX", "Button")
+    add("Y Button", face_btn_filenames["Y"], "ButtonY", "Button")
+
+    # Bumpers — split the group bbox into left/right halves since neither SVG
+    # tags individual L/R bumpers. The press overlay PNG carries the right
+    # shape; we just need to land it in roughly the correct half.
+    bumper_label = bumper_filenames["GroupLabel"]
+    bumper_bbox = get_element_pixel_bbox(root, bumper_label, scale)
+    if bumper_bbox:
+        bx, by, bw, bh = bumper_bbox
+        for side, fn, target in [("L", bumper_filenames["L"], "LeftShoulder"),
+                                 ("R", bumper_filenames["R"], "RightShoulder")]:
+            ov = cv2.imread(os.path.join(ov_dir, fn), cv2.IMREAD_UNCHANGED)
+            half_x = bx if side == "L" else bx + bw / 2
+            cx = half_x + bw / 4
+            cy = by + bh / 2
+            x = round(cx - ov.shape[1] / 2)
+            y = round(cy - ov.shape[0] / 2)
+            results.append((fn, target, "Button", x, y, ov.shape[1], ov.shape[0]))
+            print(f"  {target:20s} ({bumper_label} half {side}) -> ({x:4d}, {y:4d}) {ov.shape[1]:4d}x{ov.shape[0]:3d}")
+
+    # Triggers
+    add(trigger_filenames["LLabel"], trigger_filenames["L"], "LeftTrigger", "Trigger")
+    add(trigger_filenames["RLabel"], trigger_filenames["R"], "RightTrigger", "Trigger")
+
+    # System buttons — Xbox Series adds Share; both have Menu / View / Guide.
+    add("Menu Button", menu_filename, "ButtonStart", "Button")
+    add("View Button", view_filename, "ButtonBack", "Button")
+    # Guide button — group has hub LEDs; prefer the "Xbox Button" inner label
+    # if present, fall back to the full guide group label.
+    guide_bbox = get_element_pixel_bbox(root, "Xbox Button", scale)
+    if guide_bbox is None:
+        guide_bbox = get_element_pixel_bbox(root, "Xbox Guide Button", scale)
+    if guide_bbox:
+        pos = center_overlay_on_bbox(guide_bbox, os.path.join(ov_dir, guide_filename))
+        results.append((guide_filename, "ButtonGuide", "Button", pos[0], pos[1], pos[2], pos[3]))
+        print(f"  {'ButtonGuide':20s} ({'Xbox Button/Guide':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+
+    # Sticks
+    add("Left Stick", stick_filenames["L"], "LeftThumbRing", "StickRing")
+    add("Right Stick", stick_filenames["R"], "RightThumbRing", "StickRing")
+    left_bbox = get_element_pixel_bbox(root, "Left Stick", scale)
+    right_bbox = get_element_pixel_bbox(root, "Right Stick", scale)
+    if left_bbox:
+        pos = center_overlay_on_bbox(left_bbox, os.path.join(ov_dir, stick_click_filename))
+        results.append((stick_click_filename, "LeftThumbButton", "StickClick", pos[0], pos[1], pos[2], pos[3]))
+        print(f"  {'LeftThumbButton':20s} ({'Left Stick':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+    if right_bbox:
+        pos = center_overlay_on_bbox(right_bbox, os.path.join(ov_dir, stick_click_filename))
+        results.append((stick_click_filename, "RightThumbButton", "StickClick", pos[0], pos[1], pos[2], pos[3]))
+        print(f"  {'RightThumbButton':20s} ({'Right Stick':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+
+    # D-PAD — pick whichever group label exists in this SVG and split into
+    # quadrants. Same approach Xbox 360 uses.
+    dpad_bbox = None
+    for label in dpad_filenames["GroupLabels"]:
+        dpad_bbox = get_element_pixel_bbox(root, label, scale)
+        if dpad_bbox:
+            print(f"  D-PAD using group label: {label}")
+            break
+    if dpad_bbox:
+        dx, dy, dw, dh = dpad_bbox
+        cx, cy = dx + dw / 2, dy + dh / 2
+        for direction, fn, target in [("Up", dpad_filenames["Up"], "DPadUp"),
+                                       ("Down", dpad_filenames["Down"], "DPadDown"),
+                                       ("Left", dpad_filenames["Left"], "DPadLeft"),
+                                       ("Right", dpad_filenames["Right"], "DPadRight")]:
+            ov = cv2.imread(os.path.join(ov_dir, fn), cv2.IMREAD_UNCHANGED)
+            ov_w, ov_h = ov.shape[1], ov.shape[0]
+            if direction == "Up":
+                x = round(cx - ov_w / 2); y = round(dy - ov_h * 0.1)
+            elif direction == "Down":
+                x = round(cx - ov_w / 2); y = round(dy + dh - ov_h * 0.9)
+            elif direction == "Left":
+                x = round(dx - ov_w * 0.1); y = round(cy - ov_h / 2)
+            else:  # Right
+                x = round(dx + dw - ov_w * 0.9); y = round(cy - ov_h / 2)
+            results.append((fn, target, "Button", x, y, ov_w, ov_h))
+            print(f"  {target:20s} ({'D-PAD computed':20s}) -> ({x:4d}, {y:4d}) {ov_w:4d}x{ov_h:3d}")
+
+    # Refine via composite alpha-channel template matching.
+    composite_path = os.path.join(ov_dir, composite_filename)
+    print(f"\nRefining {profile_name} positions via alpha-channel template matching...")
+    results = refine_with_composite(composite_path, results)
+
+    return {"base_width": base_w, "base_height": base_h, "results": results}
+
+
+def process_xbox_one_s():
+    """Extract Xbox One S overlay positions."""
+    svg_path = os.path.join(ASSET_PACK,
+        "Xbox Wireless Controller Images", "Default Theme", "Theme SVG",
+        "Xbox One Color", "Xbox One Controller VSCView White.svg")
+    return _process_xbox_modern(
+        profile_name="Xbox One S",
+        svg_path=svg_path,
+        base_relpath="2DModels/XBOXONE/XB1_S_base.png",
+        ov_subdir="XBOXONE",
+        composite_filename="Xbox One S Controller Overlay.png",
+        prefix="XB1",
+        face_btn_filenames={"A": "XB1_A_Button.png", "B": "XB1_B_Button.png",
+                            "X": "XB1_X_Button.png", "Y": "XB1_Y_Button.png"},
+        dpad_filenames={"GroupLabels": ["D-PAD"],
+                        "Up": "XB1_D-PAD_Up.png", "Down": "XB1_D-PAD_Down.png",
+                        "Left": "XB1_D-PAD_Left.png", "Right": "XB1_D-PAD_Right.png"},
+        bumper_filenames={"GroupLabel": "Xbox One Bumpers",
+                          "L": "XB1_LeftBumper_Active.png",
+                          "R": "XB1_RightBumper_Active.png"},
+        trigger_filenames={"L": "XB1_LeftTrigger_Active.png", "LLabel": "Left Trigger",
+                           "R": "XB1_RightTrigger_Active.png", "RLabel": "Right Triggers"},
+        stick_filenames={"L": "XB1_LeftStick.png", "R": "XB1_RightStick.png"},
+        stick_click_filename="XB1_LeftStick_Click.png",
+        guide_filename="XB1_HomeButton.png",
+        menu_filename="XB1_MenuButton.png",
+        view_filename="XB1_ViewButton.png")
+
+
+def process_xbox_series():
+    """Extract Xbox Series X overlay positions."""
+    svg_path = os.path.join(ASSET_PACK,
+        "Xbox Wireless Controller Images", "Default Theme", "Theme SVG",
+        "Xbox Series X Color", "Xbox Series X Controller VSCView White.svg")
+    data = _process_xbox_modern(
+        profile_name="Xbox Series X",
+        svg_path=svg_path,
+        base_relpath="2DModels/XBOXSERIES/XBSeries_base.png",
+        ov_subdir="XBOXSERIES",
+        composite_filename="Xbox Series X Controller Overlay.png",
+        prefix="XBSeries",
+        face_btn_filenames={"A": "XBSeries_A_Button.png", "B": "XBSeries_B_Button.png",
+                            "X": "XBSeries_X_Button.png", "Y": "XBSeries_Y_Button.png"},
+        dpad_filenames={"GroupLabels": ["Main D-PAD", "Xbox Series Controller D-PAD", "Front D-PAD"],
+                        "Up": "XBSeries_D-PAD_Up.png", "Down": "XBSeries_D-PAD_Down.png",
+                        "Left": "XBSeries_D-PAD_Left.png", "Right": "XBSeries_D-PAD_Right.png"},
+        bumper_filenames={"GroupLabel": "Bumpers",
+                          "L": "XBSeries_LeftBumper_Active.png",
+                          "R": "XBSeries_RightBumper_Active.png"},
+        trigger_filenames={"L": "XBSeries_LeftTrigger_Active.png", "LLabel": "Left Trigger",
+                           "R": "XBSeries_RightTrigger_Active.png", "RLabel": "Right Trigger"},
+        stick_filenames={"L": "XBSeries_LeftStick.png", "R": "XBSeries_RightStick.png"},
+        stick_click_filename="XBSeries_LeftStick_Click.png",
+        guide_filename="XBSeries_HomeButton.png",
+        menu_filename="XBSeries_MenuButton.png",
+        view_filename="XBSeries_ViewButton.png")
+    # Xbox Series has a dedicated Share button between Menu and View.
+    root = etree.parse(os.path.join(ASSET_PACK,
+        "Xbox Wireless Controller Images", "Default Theme", "Theme SVG",
+        "Xbox Series X Color", "Xbox Series X Controller VSCView White.svg")).getroot()
+    share_bbox = get_element_pixel_bbox(root, "Share Button", 1.0)
+    if share_bbox:
+        ov_dir = os.path.join(MODELS_DIR, "XBOXSERIES")
+        pos = center_overlay_on_bbox(share_bbox, os.path.join(ov_dir, "XBSeries_ShareButton.png"))
+        data["results"].append(("XBSeries_ShareButton.png", "ButtonShare", "Button", pos[0], pos[1], pos[2], pos[3]))
+        print(f"  {'ButtonShare':20s} ({'Share Button':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+    return data
+
+
+def generate_csharp(layouts, output_path):
     """Generate C# source file with overlay position data."""
     lines = [
         "// AUTO-GENERATED by tools/overlay_positions.py -- do not edit manually",
         "namespace PadForge.Models2D;",
         "",
-        "public enum OverlayElementType { Button, Trigger, StickRing, StickClick, FaceButtonGroup }",
+        "public enum OverlayElementType { Button, Trigger, StickRing, StickClick, FaceButtonGroup, Touchpad }",
         "",
         "public record OverlayElement(string ImageFile, string TargetName, OverlayElementType ElementType, double X, double Y, double Width, double Height);",
         "",
@@ -459,9 +750,10 @@ def generate_csharp(xbox_data, ds4_data, output_path):
         lines.append("    };")
         lines.append("}")
 
-    emit("Xbox360Layout", xbox_data, "2DModels/XBOX360/XB360_base.png", 30)
-    lines.append("")
-    emit("DS4Layout", ds4_data, "2DModels/DS4/DS4_V2_base.png", 25)
+    for i, (class_name, data, base_path, stick_travel) in enumerate(layouts):
+        if i > 0:
+            lines.append("")
+        emit(class_name, data, base_path, stick_travel)
 
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
@@ -471,14 +763,29 @@ def generate_csharp(xbox_data, ds4_data, output_path):
 def main():
     print("=== Xbox 360 Controller ===")
     xbox_data = process_xbox360()
-    print(f"\n  Total Xbox overlays: {len(xbox_data['results'])}")
+    print(f"\n  Total Xbox 360 overlays: {len(xbox_data['results'])}")
 
     print("\n=== DualShock 4 Controller ===")
     ds4_data = process_ds4()
     print(f"\n  Total DS4 overlays: {len(ds4_data['results'])}")
 
+    print("\n=== DualSense Controller ===")
+    dualsense_data = process_dualsense()
+    print(f"\n  Total DualSense overlays: {len(dualsense_data['results'])}")
+
+    print("\n=== Xbox One S Controller ===")
+    xbone_data = process_xbox_one_s()
+    print(f"\n  Total Xbox One S overlays: {len(xbone_data['results'])}")
+
+    print("\n=== Xbox Series X Controller ===")
+    xbseries_data = process_xbox_series()
+    print(f"\n  Total Xbox Series X overlays: {len(xbseries_data['results'])}")
+
     # Sanity checks
-    for name, data in [("Xbox 360", xbox_data), ("DS4", ds4_data)]:
+    for name, data in [("Xbox 360", xbox_data), ("DS4", ds4_data),
+                       ("DualSense", dualsense_data),
+                       ("Xbox One S", xbone_data),
+                       ("Xbox Series X", xbseries_data)]:
         bw, bh = data["base_width"], data["base_height"]
         for fn, target, _, x, y, w, h in data["results"]:
             if x < -10 or y < -10 or x + w > bw + 10 or y + h > bh + 10:
@@ -486,7 +793,14 @@ def main():
 
     output_dir = os.path.join(PROJ_ROOT, "PadForge.App", "Models2D")
     os.makedirs(output_dir, exist_ok=True)
-    generate_csharp(xbox_data, ds4_data, os.path.join(output_dir, "ControllerOverlayLayout.cs"))
+    layouts = [
+        ("Xbox360Layout",       xbox_data,      "2DModels/XBOX360/XB360_base.png",         30),
+        ("DS4Layout",           ds4_data,       "2DModels/DS4/DS4_V2_base.png",            25),
+        ("DualSenseLayout",     dualsense_data, "2DModels/DualSense/DualSense_base.png",   25),
+        ("XboxOneSLayout",      xbone_data,     "2DModels/XBOXONE/XB1_S_base.png",         30),
+        ("XboxSeriesXLayout",   xbseries_data,  "2DModels/XBOXSERIES/XBSeries_base.png",   30),
+    ]
+    generate_csharp(layouts, os.path.join(output_dir, "ControllerOverlayLayout.cs"))
     print("\nDone!")
 
 

@@ -64,9 +64,101 @@ public static class DS4Layout
         new("DS4_V2_RightAnalogStick.png", "RightThumbRing", OverlayElementType.StickRing, 874, 530, 165, 147),
         new("DS4_AnalogStick_Click.png", "LeftThumbButton", OverlayElementType.StickClick, 411, 503, 196, 172),
         new("DS4_AnalogStick_Click.png", "RightThumbButton", OverlayElementType.StickClick, 859, 503, 196, 172),
-        // Touchpad click zone: strip between lightbar and touchpad
-        new("", "TouchpadClick", OverlayElementType.Button, 500, 165, 465, 52),
-        // Touchpad zone: rectangular area between Share and Options buttons
-        new("", "Touchpad", OverlayElementType.Touchpad, 500, 225, 465, 205),
+    };
+}
+
+public static class DualSenseLayout
+{
+    public const int BaseWidth = 1467;
+    public const int BaseHeight = 816;
+    public const string BasePath = "2DModels/DualSense/DualSense_base.png";
+    public const double StickMaxTravel = 25;
+
+    public static readonly OverlayElement[] Overlays =
+    {
+        new("DualSense_Cross.png", "ButtonA", OverlayElementType.Button, 1162, 485, 81, 70),
+        new("DualSense_Circle.png", "ButtonB", OverlayElementType.Button, 1276, 388, 80, 76),
+        new("DualSense_Square.png", "ButtonX", OverlayElementType.Button, 1055, 394, 80, 72),
+        new("DualSense_Triangle.png", "ButtonY", OverlayElementType.Button, 1168, 298, 81, 77),
+        new("DualSense_D-PAD_Up.png", "DPadUp", OverlayElementType.Button, 214, 317, 91, 104),
+        new("DualSense_D-PAD_Down.png", "DPadDown", OverlayElementType.Button, 216, 438, 91, 100),
+        new("DualSense_D-PAD_Left.png", "DPadLeft", OverlayElementType.Button, 130, 386, 113, 87),
+        new("DualSense_D-PAD_Right.png", "DPadRight", OverlayElementType.Button, 278, 386, 114, 87),
+        new("DualSense_L1-Active.png", "LeftShoulder", OverlayElementType.Button, 126, 107, 222, 131),
+        new("DualSense_R1-Active.png", "RightShoulder", OverlayElementType.Button, 1121, 108, 222, 131),
+        new("DualSense_L2-Active.png", "LeftTrigger", OverlayElementType.Trigger, 171, 1, 201, 152),
+        new("DualSense_R2-Active.png", "RightTrigger", OverlayElementType.Trigger, 1096, 1, 201, 152),
+        new("DualSense_Create_Button.png", "ButtonBack", OverlayElementType.Button, 349, 237, 55, 74),
+        new("DualSense_Option_Button.png", "ButtonStart", OverlayElementType.Button, 1064, 236, 55, 74),
+        new("DualSense_Home_Button.png", "ButtonGuide", OverlayElementType.Button, 688, 546, 98, 54),
+        new("DualSense_LeftAnalogStick.png", "LeftThumbRing", OverlayElementType.StickRing, 410, 553, 175, 148),
+        new("DualSense_RightAnalogStick.png", "RightThumbRing", OverlayElementType.StickRing, 883, 553, 175, 148),
+        new("DualSense_AnalogStick_Click.png", "LeftThumbButton", OverlayElementType.StickClick, 396, 528, 196, 170),
+        new("DualSense_AnalogStick_Click.png", "RightThumbButton", OverlayElementType.StickClick, 875, 528, 196, 170),
+        new("", "TouchpadClick", OverlayElementType.Button, 484, 181, 499, 35),
+        new("", "Touchpad", OverlayElementType.Touchpad, 484, 220, 499, 220),
+    };
+}
+
+public static class XboxOneSLayout
+{
+    public const int BaseWidth = 1543;
+    public const int BaseHeight = 956;
+    public const string BasePath = "2DModels/XBOXONE/XB1_S_base.png";
+    public const double StickMaxTravel = 30;
+
+    public static readonly OverlayElement[] Overlays =
+    {
+        new("XB1_A_Button.png", "ButtonA", OverlayElementType.Button, 1160, 548, 86, 80),
+        new("XB1_B_Button.png", "ButtonB", OverlayElementType.Button, 1284, 439, 86, 81),
+        new("XB1_X_Button.png", "ButtonX", OverlayElementType.Button, 1047, 452, 90, 82),
+        new("XB1_Y_Button.png", "ButtonY", OverlayElementType.Button, 1173, 346, 89, 83),
+        new("XB1_LeftBumper_Active.png", "LeftShoulder", OverlayElementType.Button, 331, 174, 272, 105),
+        new("XB1_RightBumper_Active.png", "RightShoulder", OverlayElementType.Button, 941, 174, 274, 105),
+        new("XB1_LeftTrigger_Active.png", "LeftTrigger", OverlayElementType.Trigger, 209, 8, 151, 139),
+        new("XB1_RightTrigger_Active.png", "RightTrigger", OverlayElementType.Trigger, 1182, 6, 153, 139),
+        new("XB1_MenuButton.png", "ButtonStart", OverlayElementType.Button, 865, 468, 58, 54),
+        new("XB1_ViewButton.png", "ButtonBack", OverlayElementType.Button, 618, 468, 58, 54),
+        new("XB1_HomeButton.png", "ButtonGuide", OverlayElementType.Button, 723, 290, 95, 90),
+        new("XB1_LeftStick.png", "LeftThumbRing", OverlayElementType.StickRing, 254, 422, 181, 180),
+        new("XB1_RightStick.png", "RightThumbRing", OverlayElementType.StickRing, 892, 658, 186, 176),
+        new("XB1_LeftStick_Click.png", "LeftThumbButton", OverlayElementType.StickClick, 270, 442, 150, 141),
+        new("XB1_LeftStick_Click.png", "RightThumbButton", OverlayElementType.StickClick, 910, 676, 150, 141),
+        new("XB1_D-PAD_Up.png", "DPadUp", OverlayElementType.Button, 502, 614, 99, 100),
+        new("XB1_D-PAD_Down.png", "DPadDown", OverlayElementType.Button, 502, 721, 97, 104),
+        new("XB1_D-PAD_Left.png", "DPadLeft", OverlayElementType.Button, 420, 675, 127, 89),
+        new("XB1_D-PAD_Right.png", "DPadRight", OverlayElementType.Button, 557, 676, 124, 88),
+    };
+}
+
+public static class XboxSeriesXLayout
+{
+    public const int BaseWidth = 1534;
+    public const int BaseHeight = 954;
+    public const string BasePath = "2DModels/XBOXSERIES/XBSeries_base.png";
+    public const double StickMaxTravel = 30;
+
+    public static readonly OverlayElement[] Overlays =
+    {
+        new("XBSeries_A_Button.png", "ButtonA", OverlayElementType.Button, 1096, 436, 162, 157),
+        new("XBSeries_B_Button.png", "ButtonB", OverlayElementType.Button, 1204, 327, 166, 159),
+        new("XBSeries_X_Button.png", "ButtonX", OverlayElementType.Button, 986, 338, 169, 160),
+        new("XBSeries_Y_Button.png", "ButtonY", OverlayElementType.Button, 1094, 230, 175, 163),
+        new("XBSeries_LeftBumper_Active.png", "LeftShoulder", OverlayElementType.Button, 231, 35, 498, 172),
+        new("XBSeries_RightBumper_Active.png", "RightShoulder", OverlayElementType.Button, 803, 36, 501, 171),
+        new("XBSeries_LeftTrigger_Active.png", "LeftTrigger", OverlayElementType.Trigger, 188, 10, 245, 190),
+        new("XBSeries_RightTrigger_Active.png", "RightTrigger", OverlayElementType.Trigger, 1093, 13, 241, 168),
+        new("XBSeries_MenuButton.png", "ButtonStart", OverlayElementType.Button, 826, 367, 115, 106),
+        new("XBSeries_ViewButton.png", "ButtonBack", OverlayElementType.Button, 592, 367, 115, 106),
+        new("XBSeries_HomeButton.png", "ButtonGuide", OverlayElementType.Button, 674, 178, 187, 177),
+        new("XBSeries_LeftStick.png", "LeftThumbRing", OverlayElementType.StickRing, 264, 355, 177, 176),
+        new("XBSeries_RightStick.png", "RightThumbRing", OverlayElementType.StickRing, 886, 586, 180, 170),
+        new("XBSeries_LeftStick_Click.png", "LeftThumbButton", OverlayElementType.StickClick, 205, 304, 295, 278),
+        new("XBSeries_LeftStick_Click.png", "RightThumbButton", OverlayElementType.StickClick, 828, 532, 295, 278),
+        new("XBSeries_D-PAD_Up.png", "DPadUp", OverlayElementType.Button, 503, 552, 110, 100),
+        new("XBSeries_D-PAD_Down.png", "DPadDown", OverlayElementType.Button, 506, 664, 105, 105),
+        new("XBSeries_D-PAD_Left.png", "DPadLeft", OverlayElementType.Button, 430, 610, 126, 100),
+        new("XBSeries_D-PAD_Right.png", "DPadRight", OverlayElementType.Button, 562, 611, 123, 98),
+        new("XBSeries_ShareButton.png", "ButtonShare", OverlayElementType.Button, 698, 465, 136, 77),
     };
 }

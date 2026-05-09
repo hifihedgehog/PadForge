@@ -757,7 +757,22 @@ namespace PadForge.Common.Input
         private static bool DescriptorHasPidFfbBlock(string descriptorHex)
         {
             if (string.IsNullOrEmpty(descriptorHex)) return false;
-            return descriptorHex.IndexOf("050f0921a102", StringComparison.OrdinalIgnoreCase) >= 0;
+            // Detect the PID FFB Set Effect Report Collection signature:
+            //   09 21        Usage (Set Effect Report)            -- PID 0x21
+            //   A1 02        Collection (Logical)
+            // Every HID PID FFB descriptor — synthetic or hand-authored —
+            // emits this collection inside the PID Usage Page. Matching
+            // it directly also catches descriptors that declare Usage
+            // Page 0x0F once at the top of their PID block and then have
+            // intervening C0 end-collections before each sub-report
+            // (SideWinder Force Feedback 2 is the canonical case: the
+            // earlier check for the literal "050f0921a102" sequence
+            // wanted Usage Page directly adjacent to the Set Effect
+            // collection, which AddPidFfbBlock-built profiles satisfy
+            // but hand-authored ones don't). False-positive risk is
+            // negligible — Usage 0x21 with a Logical Collection has no
+            // common meaning outside the PID page.
+            return descriptorHex.IndexOf("0921a102", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         private static HMHat MapHat(ushort xinputButtons)

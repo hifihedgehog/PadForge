@@ -137,7 +137,7 @@ namespace PadForge.Common.Input
             bool hasFfb = DescriptorHasPidFfbBlock(descriptorHex);
             if (hasFfb)
             {
-                _ffbDecoder = new HMaestroFfbDecoder(_controller);
+                _ffbDecoder = new HMaestroFfbDecoder(_controller, descriptorHex);
                 _ffbDecoder.PublishInitialState();
             }
 

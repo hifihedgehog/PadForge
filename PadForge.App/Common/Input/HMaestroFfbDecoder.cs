@@ -34,9 +34,40 @@ namespace PadForge.Common.Input
         private byte _lastEbi;
         private PidStateFlags _stateFlags = PidStateFlags.ActuatorsEnabled | PidStateFlags.ActuatorPower;
 
+        // Per-report magnitude scaling, derived from the descriptor at construction.
+        // Canonical PID FFB descriptors declare Magnitude as 16-bit signed with
+        // LogicalMin/Max = ±10000 (matches PhysicalMin/Max). Hand-authored
+        // descriptors (Microsoft SideWinder Force Feedback 2) shrink the field:
+        //   Set Constant — 16-bit signed, Logical ±255   (PhysicalMax/LogicalMax = 39.2x)
+        //   Set Periodic — 8-bit  signed, Logical ±127   (78.7x), Offset packed at d[2]
+        // Apply expects EffectState.Magnitude in canonical units, so we scale
+        // wire magnitudes into that range here. Without this, SideWinder's
+        // small-range constants produce ~1.6 % force, and its 8-bit periodic
+        // magnitudes overflow when read as 16-bit (concatenating magnitude +
+        // offset bytes) and saturate Apply's clamp at +10000 regardless of the
+        // game's intended amplitude.
+        private readonly bool _periodicMag8Bit;
+        private readonly double _constantMagScale;
+        private readonly double _periodicMagScale;
+        private readonly double _rampMagScale;
+        // RIDs we should decode with the periodic-magnitude path. Populated
+        // by ParseFfbScales — typically the canonical 0x14 (Set Periodic) for
+        // HM-built descriptors AND any RID where the descriptor places Set
+        // Envelope / Set Periodic. SideWinder's shipping descriptor puts Set
+        // Envelope at 0x14 and Set Periodic at 0x16; both feed magnitudes.
+        private readonly HashSet<byte> _periodicReportIds = new();
+
         public HMaestroFfbDecoder(HMController controller)
+            : this(controller, descriptorHex: null) { }
+
+        public HMaestroFfbDecoder(HMController controller, string descriptorHex)
         {
             _controller = controller;
+            ParseFfbScales(descriptorHex,
+                out _periodicMag8Bit,
+                out _constantMagScale,
+                out _periodicMagScale,
+                out _rampMagScale);
         }
 
         /// <summary>Publish initial PID state. Call from HMaestroVirtualController.Connect()
@@ -146,6 +177,17 @@ namespace PadForge.Common.Input
             {
                 lock (_lock)
                 {
+                    // Periodic-magnitude RIDs come first — for SideWinder,
+                    // the descriptor places Set Envelope at canonical's
+                    // 0x14, so we can't fall through the canonical case
+                    // first or DecodeSetEffect / SetCondition would never
+                    // see profile-specific RIDs.
+                    if (_periodicReportIds.Contains(reportId))
+                    {
+                        DecodeSetPeriodic(data);
+                        return;
+                    }
+
                     switch (reportId)
                     {
                         case HMaestroFfbDescriptor.OutputReportId.SetEffect:        DecodeSetEffect(data); break;
@@ -352,35 +394,57 @@ namespace PadForge.Common.Input
             _pending = null;
         }
 
-        // Set Periodic: [EBI][Magnitude:2 unsigned 0-10000][Offset:2 signed][Phase:2][Period:4 ms]
-        // SideWinder's 6-byte hand-authored report drops Phase + truncates
-        // Period to 16 bits, so only the magnitude is reliably positioned.
-        // Read magnitude unconditionally (3 bytes minimum); skip Period when
-        // the report is too short to contain the canonical 32-bit field.
+        // Set Periodic: canonical [EBI][Magnitude:2 unsigned 0-10000][Offset:2 signed][Phase:2][Period:4 ms]
+        // SideWinder: [EBI][Magnitude:1 signed][Offset:1 signed][Phase:1][Period:2 LE]
+        // Field width is descriptor-dependent (_periodicMag8Bit). Scale the
+        // wire magnitude into canonical 0..10000 via _periodicMagScale.
         private void DecodeSetPeriodic(ReadOnlySpan<byte> d)
         {
-            if (d.Length < 3) return;
+            if (d.Length < 2) return;
             byte ebi = d[0];
-            ushort magnitude = ReadU16(d, 1);
+
+            int wireMag;
+            if (_periodicMag8Bit)
+            {
+                wireMag = (sbyte)d[1];
+            }
+            else
+            {
+                if (d.Length < 3) return;
+                wireMag = ReadU16(d, 1);
+            }
+
+            // Canonical Set Periodic magnitude is unsigned 0..10000; if any
+            // descriptor declares it signed (SideWinder), use abs value
+            // before scaling so amplitude works regardless of sign.
+            int canonicalMag = (int)Math.Round(Math.Abs(wireMag) * _periodicMagScale);
+            canonicalMag = Math.Clamp(canonicalMag, 0, 10000);
+
             uint period = d.Length >= 11 ? ReadU32(d, 7) : 0;
 
             var es = GetOrCreateForUpdate(ebi);
-            es.Magnitude = magnitude;
+            es.Magnitude = canonicalMag;
             es.Period = period;
         }
 
-        // Set Constant Force: [EBI][Magnitude:2 signed -10000..+10000]
+        // Set Constant Force: [EBI][Magnitude:2 signed]. Wire magnitude
+        // logical range varies by descriptor (canonical ±10000, SideWinder
+        // ±255). _constantMagScale normalizes both into canonical units.
         private void DecodeSetConstant(ReadOnlySpan<byte> d)
         {
             if (d.Length < 3) return;
             byte ebi = d[0];
-            short magnitude = ReadI16(d, 1);
+            short wireMag = ReadI16(d, 1);
+
+            int canonicalMag = (int)Math.Round(wireMag * _constantMagScale);
+            canonicalMag = Math.Clamp(canonicalMag, -10000, 10000);
 
             var es = GetOrCreateForUpdate(ebi);
-            es.Magnitude = magnitude;
+            es.Magnitude = canonicalMag;
         }
 
-        // Set Ramp Force: [EBI][Start:2 signed][End:2 signed]
+        // Set Ramp Force: [EBI][Start:2 signed][End:2 signed]. Same scaling
+        // posture as Set Constant — pull both endpoints into canonical units.
         private void DecodeSetRamp(ReadOnlySpan<byte> d)
         {
             if (d.Length < 5) return;
@@ -388,8 +452,13 @@ namespace PadForge.Common.Input
             short start = ReadI16(d, 1);
             short end = ReadI16(d, 3);
 
+            int canonicalStart = (int)Math.Round(start * _rampMagScale);
+            int canonicalEnd = (int)Math.Round(end * _rampMagScale);
+            int peak = Math.Max(Math.Abs(canonicalStart), Math.Abs(canonicalEnd));
+            peak = Math.Clamp(peak, 0, 10000);
+
             var es = GetOrCreateForUpdate(ebi);
-            es.Magnitude = Math.Max(Math.Abs(start), Math.Abs(end));
+            es.Magnitude = peak;
         }
 
         // Set Condition Report (0x13). Bit layout pinned to HIDMaestro
@@ -602,6 +671,168 @@ namespace PadForge.Common.Input
             if (width > 0 && width < 32 && (u & (1u << (width - 1))) != 0)
                 u |= ~((1u << width) - 1);
             return (int)u;
+        }
+
+        // ── HID descriptor walker: extract per-FFB-report magnitude scaling ─
+        //
+        // Walks the descriptor bytes once at construction. Tracks running
+        // ReportID, LogicalMin/Max, ReportSize, pending Usages, and the
+        // collection-defining Usage (the Usage that opened each Logical
+        // Collection — that's how we know what each Report ID represents).
+        //
+        // For each Output we land on, we look up which kind of FFB report
+        // we're inside via the collection-defining Usage:
+        //   0x21 Set Effect              → wire reports use the canonical layout
+        //   0x6E Set Envelope            → AttackLevel proxies as magnitude
+        //   0x73 Set Constant Force      → magnitude at d[1..2]
+        //   0x74 Set Periodic            → magnitude at d[1..(2|1)] (size varies)
+        //   0x7C Set Ramp Force          → start/end magnitudes
+        //
+        // For SideWinder the report-ID-to-purpose mapping is non-canonical:
+        // Set Envelope lands on RID 0x14 (which canonical descriptors give
+        // to Set Periodic), and Set Periodic moves to 0x16. pid.dll uses
+        // Set Envelope's AttackLevel to convey periodic amplitude, so
+        // dispatching SideWinder's RID 0x14 as "Set Periodic" with the
+        // canonical 16-bit magnitude offset combines AttackLevel + FadeLevel
+        // bytes into one ushort and saturates Apply. Treat Envelope's
+        // AttackLevel the same as Periodic's Magnitude — both feed
+        // EffectState.Magnitude. The semantic difference (envelope shape
+        // vs steady amplitude) doesn't survive the per-report Apply pass
+        // anyway.
+        //
+        // Fills _periodicReportIds with every RID that should be decoded as
+        // periodic-style magnitude (Set Periodic + Set Envelope), so
+        // OnHidOutput can switch on it.
+        private void ParseFfbScales(
+            string descriptorHex,
+            out bool periodicMag8Bit,
+            out double constantScale,
+            out double periodicScale,
+            out double rampScale)
+        {
+            periodicMag8Bit = false;
+            constantScale = 1.0;
+            periodicScale = 1.0;
+            rampScale = 1.0;
+
+            if (string.IsNullOrEmpty(descriptorHex)) return;
+
+            byte[] desc;
+            try { desc = HexToBytes(descriptorHex); }
+            catch { return; }
+
+            byte currentRid = 0;
+            int logMin = 0, logMax = 0;
+            int reportSize = 0;
+            var pendingUsages = new List<byte>();
+            // Stack of collection-defining usages — pushed on Collection,
+            // popped on EndCollection. Top of stack is the Usage that owns
+            // the current report's purpose (e.g., 0x73 for Set Constant Force).
+            var collectionStack = new Stack<byte>();
+
+            int i = 0;
+            while (i < desc.Length)
+            {
+                byte prefix = desc[i++];
+                int rawSize = prefix & 0x03;
+                int size = rawSize == 3 ? 4 : rawSize;
+                int type = (prefix >> 2) & 0x03;
+                int tag  = (prefix >> 4) & 0x0F;
+
+                if (i + size > desc.Length) break;
+
+                long data = 0;
+                for (int b = 0; b < size; b++)
+                    data |= (long)desc[i + b] << (b * 8);
+                i += size;
+
+                if (type == 1) // Global
+                {
+                    switch (tag)
+                    {
+                        case 0x1: logMin = SignExtend(data, size); break;
+                        case 0x2: logMax = SignExtend(data, size); break;
+                        case 0x7: reportSize = (int)data; break;
+                        case 0x9: /* ReportCount unused for scale */ break;
+                        case 0x8: currentRid = (byte)data; break;
+                    }
+                }
+                else if (type == 2) // Local
+                {
+                    if (tag == 0x0) pendingUsages.Add((byte)data);
+                }
+                else if (type == 0) // Main item
+                {
+                    if (tag == 0xA) // Collection
+                    {
+                        // Push the most recent Usage as the collection's
+                        // defining purpose. Per HID, the Usage just before
+                        // a Collection identifies what that collection is.
+                        byte defining = pendingUsages.Count > 0
+                            ? pendingUsages[pendingUsages.Count - 1]
+                            : (byte)0;
+                        collectionStack.Push(defining);
+                    }
+                    else if (tag == 0xC) // EndCollection
+                    {
+                        if (collectionStack.Count > 0) collectionStack.Pop();
+                    }
+                    else if (tag == 0x9) // Output
+                    {
+                        byte parent = collectionStack.Count > 0 ? collectionStack.Peek() : (byte)0;
+                        bool sawMagUsage = pendingUsages.Contains(0x70) || pendingUsages.Contains(0x75);
+                        int absMax = Math.Max(Math.Abs(logMin), Math.Abs(logMax));
+
+                        if (parent == 0x73 && sawMagUsage && absMax > 0)
+                        {
+                            constantScale = 10000.0 / absMax;
+                        }
+                        else if ((parent == 0x74 || parent == 0x6E) && sawMagUsage && absMax > 0)
+                        {
+                            // Set Periodic OR Set Envelope — whichever owns
+                            // the magnitude-bearing Output for this profile.
+                            // SideWinder uses Envelope; HM-built uses Periodic.
+                            periodicMag8Bit = (reportSize == 8);
+                            periodicScale = 10000.0 / absMax;
+                            _periodicReportIds.Add(currentRid);
+                        }
+                        else if (parent == 0x7C && sawMagUsage && absMax > 0)
+                        {
+                            rampScale = 10000.0 / absMax;
+                        }
+                    }
+                    pendingUsages.Clear();
+                }
+            }
+        }
+
+        private static int SignExtend(long value, int bytes)
+        {
+            if (bytes <= 0) return (int)value;
+            int bits = bytes * 8;
+            if (bits >= 32) return (int)value;
+            long signBit = 1L << (bits - 1);
+            long mask = (1L << bits) - 1;
+            value &= mask;
+            if ((value & signBit) != 0) value |= ~mask;
+            return (int)value;
+        }
+
+        private static byte[] HexToBytes(string hex)
+        {
+            int len = hex.Length / 2;
+            var bytes = new byte[len];
+            for (int i = 0; i < len; i++)
+                bytes[i] = (byte)((HexDigit(hex[i * 2]) << 4) | HexDigit(hex[i * 2 + 1]));
+            return bytes;
+        }
+
+        private static int HexDigit(char c)
+        {
+            if (c >= '0' && c <= '9') return c - '0';
+            if (c >= 'a' && c <= 'f') return 10 + (c - 'a');
+            if (c >= 'A' && c <= 'F') return 10 + (c - 'A');
+            throw new FormatException();
         }
 
         // HID PID Effect Type → FfbEffectTypes constants

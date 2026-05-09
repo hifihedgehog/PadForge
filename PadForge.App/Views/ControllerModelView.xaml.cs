@@ -981,9 +981,13 @@ namespace PadForge.Views
             var ring = isLeft ? _currentModel.LeftThumbRing : _currentModel.RightThumbRing;
             if (ring == null) return;
 
-            Vector3D center = isLeft
-                ? _currentModel.JoystickRotationPointCenterLeftMillimeter
-                : _currentModel.JoystickRotationPointCenterRightMillimeter;
+            // Anchor the quadrant wedge on the visible ring mesh's centroid,
+            // not the deflection rotation pivot. Same reason as the click-
+            // detection fix: those two points can be several mm apart on
+            // models like DualSense (left ring centroid X=-33.25, rotation
+            // pivot X=-30.34), and the wedge geometry winds up askew if
+            // built from the pivot.
+            var center = MeshCentroid(ring);
 
             var quadrantMesh = BuildClippedQuadrantMesh(ring, center, isX, isNeg);
             if (quadrantMesh.Positions.Count == 0) return;
@@ -1208,9 +1212,16 @@ namespace PadForge.Views
 
             bool isX = baseTarget.Contains("AxisX");
 
-            Vector3D center = isLeftStick
-                ? _currentModel.JoystickRotationPointCenterLeftMillimeter
-                : _currentModel.JoystickRotationPointCenterRightMillimeter;
+            // Anchor on the visible ring mesh's centroid so the direction
+            // arrow sits over the stick the user sees, not the deflection
+            // pivot which can be offset (DualSense pivot is 2.9 mm right
+            // of the visible ring center).
+            var ring = isLeftStick ? _currentModel.LeftThumbRing : _currentModel.RightThumbRing;
+            Vector3D center = ring != null
+                ? MeshCentroid(ring)
+                : (isLeftStick
+                    ? _currentModel.JoystickRotationPointCenterLeftMillimeter
+                    : _currentModel.JoystickRotationPointCenterRightMillimeter);
 
             // Place arrow at stick center, floating well in front of the model surface.
             // Rotation center Y is inside the body (~-6); use a large offset to ensure
@@ -1267,9 +1278,8 @@ namespace PadForge.Views
             var ring = isLeftStick ? _currentModel.LeftThumbRing : _currentModel.RightThumbRing;
             if (ring == null) return;
 
-            Vector3D center = isLeftStick
-                ? _currentModel.JoystickRotationPointCenterLeftMillimeter
-                : _currentModel.JoystickRotationPointCenterRightMillimeter;
+            // Visible-mesh centroid, same reason as ShowHoverQuadrant.
+            var center = MeshCentroid(ring);
 
             var quadrantMesh = BuildClippedQuadrantMesh(ring, center, isX, isNeg);
             if (quadrantMesh.Positions.Count == 0) return;

@@ -203,6 +203,16 @@ namespace PadForge.Views
                 };
 
                 ModelVisual3D.Content = _currentModel.model3DGroup;
+                // Apply the model's uniform scale at the parent level so
+                // sibling finger-sphere visuals scale with the controller
+                // mesh together. Putting the scale on model3DGroup.Transform
+                // alone leaves finger dots and stick hover highlights
+                // un-scaled, drifting away from the (scaled) touchpad and
+                // stick rings.
+                double s = _currentModel.ModelScale;
+                ModelVisual3D.Transform = (Math.Abs(s - 1.0) > 0.0001)
+                    ? new ScaleTransform3D(s, s, s)
+                    : Transform3D.Identity;
                 BuildTouchpadFingerVisuals();
                 _dirty = true;
             }

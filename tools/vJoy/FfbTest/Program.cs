@@ -230,12 +230,33 @@ class Program
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"  FAIL: {tag} — {ex.Message}");
+                    Console.WriteLine($"  FAIL: {tag} - {ex.Message}");
                 }
             }
         }
         Console.WriteLine("All sine probes failed.");
         SineDone:
+
+        // Reuse the flags/axes/directions from the sine probe success for
+        // the rest. Periodics share the PeriodicForce parameter shape, so
+        // the same parameter set works for Square/Triangle/Saw{Up,Down}.
+        // Conditions use ConditionSet (per-axis Coefficients/Saturation/etc.).
+        // Ramp uses RampForce (Start/End magnitudes).
+        Effect? squareEffect   = TryCreatePeriodic(joystick, EffectGuid.Square,        "Square",   axisOffsets, 5000, 200_000);
+        Effect? triangleEffect = TryCreatePeriodic(joystick, EffectGuid.Triangle,      "Triangle", axisOffsets, 5000, 200_000);
+        Effect? sawUpEffect    = TryCreatePeriodic(joystick, EffectGuid.SawtoothUp,    "SawUp",    axisOffsets, 5000, 200_000);
+        Effect? sawDownEffect  = TryCreatePeriodic(joystick, EffectGuid.SawtoothDown,  "SawDown",  axisOffsets, 5000, 200_000);
+
+        // Conditions push back when the stick moves (spring) or opposes
+        // velocity (damper / friction / inertia). Coefficient 5000 = 50 %
+        // of max return force.
+        Effect? springEffect   = TryCreateCondition(joystick, EffectGuid.Spring,   "Spring",   axisOffsets, 5000);
+        Effect? damperEffect   = TryCreateCondition(joystick, EffectGuid.Damper,   "Damper",   axisOffsets, 5000);
+        Effect? inertiaEffect  = TryCreateCondition(joystick, EffectGuid.Inertia,  "Inertia",  axisOffsets, 5000);
+        Effect? frictionEffect = TryCreateCondition(joystick, EffectGuid.Friction, "Friction", axisOffsets, 5000);
+
+        // Ramp climbs from 0 to 10000 over the effect's 1-second duration.
+        Effect? rampEffect = TryCreateRamp(joystick, axisOffsets, 0, 10000, 1_000_000);
 
         // Direction: Polar angle in hundredths of degrees.
         // DirectInput convention: direction = where force COMES FROM.
@@ -248,11 +269,31 @@ class Program
         Console.WriteLine("  [3] Constant - strong  (10000)");
         Console.WriteLine("  [4] Sine wave - gentle  (3000, 300ms)");
         Console.WriteLine("  [5] Sine wave - intense (8000, 100ms)");
-        Console.WriteLine("  [L] Direction: Push left   (from East, 90°)");
-        Console.WriteLine("  [R] Direction: Push right  (from West, 270°)");
-        Console.WriteLine("  [B] Direction: Push south  (from North, 0°)");
+        Console.WriteLine("  [6] Square   (5000, 200ms)");
+        Console.WriteLine("  [7] Triangle (5000, 200ms)");
+        Console.WriteLine("  [8] Sawtooth Up   (5000, 200ms)");
+        Console.WriteLine("  [9] Sawtooth Down (5000, 200ms)");
+        Console.WriteLine("  [A] Spring   (coeff 5000)");
+        Console.WriteLine("  [S] Damper   (coeff 5000)");
+        Console.WriteLine("  [D] Inertia  (coeff 5000)");
+        Console.WriteLine("  [F] Friction (coeff 5000)");
+        Console.WriteLine("  [P] Ramp (0 -> 10000 over 1s)");
+        Console.WriteLine("  [L] Direction: Push left   (from East, 90 deg)");
+        Console.WriteLine("  [R] Direction: Push right  (from West, 270 deg)");
+        Console.WriteLine("  [B] Direction: Push south  (from North, 0 deg)");
         Console.WriteLine("  [0] Stop all");
         Console.WriteLine("  [Q] Quit\n");
+
+        // Every effect we created lands in this list so direction switches,
+        // a-key dispatches, and final cleanup don't drift out of sync as
+        // we add more shapes. StopAll iterates this list.
+        var allEffects = new List<Effect?>
+        {
+            constantEffect, sineEffect,
+            squareEffect, triangleEffect, sawUpEffect, sawDownEffect,
+            springEffect, damperEffect, inertiaEffect, frictionEffect,
+            rampEffect,
+        };
 
         while (true)
         {
@@ -265,45 +306,89 @@ class Program
                 switch (char.ToLower(key.KeyChar))
                 {
                     case '1':
+                        StopAll(allEffects);
                         SetConstantForce(constantEffect, 2500, currentDirection, axisOffsets);
-                        StopEffect(sineEffect);
                         Console.WriteLine($"Constant: light (2500) dir={currentDirection}");
                         break;
                     case '2':
+                        StopAll(allEffects);
                         SetConstantForce(constantEffect, 5000, currentDirection, axisOffsets);
-                        StopEffect(sineEffect);
                         Console.WriteLine($"Constant: medium (5000) dir={currentDirection}");
                         break;
                     case '3':
+                        StopAll(allEffects);
                         SetConstantForce(constantEffect, 10000, currentDirection, axisOffsets);
-                        StopEffect(sineEffect);
                         Console.WriteLine($"Constant: strong (10000) dir={currentDirection}");
                         break;
                     case '4':
-                        StopEffect(constantEffect);
-                        SetSineForce(sineEffect, 3000, 300_000, currentDirection, axisOffsets);
+                        StopAll(allEffects);
+                        SetPeriodic(sineEffect, 3000, 300_000, currentDirection, axisOffsets);
                         Console.WriteLine($"Sine: gentle (3000, 300ms) dir={currentDirection}");
                         break;
                     case '5':
-                        StopEffect(constantEffect);
-                        SetSineForce(sineEffect, 8000, 100_000, currentDirection, axisOffsets);
+                        StopAll(allEffects);
+                        SetPeriodic(sineEffect, 8000, 100_000, currentDirection, axisOffsets);
                         Console.WriteLine($"Sine: intense (8000, 100ms) dir={currentDirection}");
+                        break;
+                    case '6':
+                        StopAll(allEffects);
+                        SetPeriodic(squareEffect, 5000, 200_000, currentDirection, axisOffsets);
+                        Console.WriteLine($"Square (5000, 200ms) dir={currentDirection}");
+                        break;
+                    case '7':
+                        StopAll(allEffects);
+                        SetPeriodic(triangleEffect, 5000, 200_000, currentDirection, axisOffsets);
+                        Console.WriteLine($"Triangle (5000, 200ms) dir={currentDirection}");
+                        break;
+                    case '8':
+                        StopAll(allEffects);
+                        SetPeriodic(sawUpEffect, 5000, 200_000, currentDirection, axisOffsets);
+                        Console.WriteLine($"Sawtooth Up (5000, 200ms) dir={currentDirection}");
+                        break;
+                    case '9':
+                        StopAll(allEffects);
+                        SetPeriodic(sawDownEffect, 5000, 200_000, currentDirection, axisOffsets);
+                        Console.WriteLine($"Sawtooth Down (5000, 200ms) dir={currentDirection}");
+                        break;
+                    case 'a':
+                        StopAll(allEffects);
+                        SetCondition(springEffect, 5000, axisOffsets);
+                        Console.WriteLine("Spring (coeff 5000) - move stick to feel it pull back");
+                        break;
+                    case 's':
+                        StopAll(allEffects);
+                        SetCondition(damperEffect, 5000, axisOffsets);
+                        Console.WriteLine("Damper (coeff 5000) - oppose stick velocity");
+                        break;
+                    case 'd':
+                        StopAll(allEffects);
+                        SetCondition(inertiaEffect, 5000, axisOffsets);
+                        Console.WriteLine("Inertia (coeff 5000) - oppose acceleration");
+                        break;
+                    case 'f':
+                        StopAll(allEffects);
+                        SetCondition(frictionEffect, 5000, axisOffsets);
+                        Console.WriteLine("Friction (coeff 5000) - velocity-independent drag");
+                        break;
+                    case 'p':
+                        StopAll(allEffects);
+                        SetRamp(rampEffect, 0, 10000, currentDirection, axisOffsets);
+                        Console.WriteLine($"Ramp (0 -> 10000, 1s) dir={currentDirection}");
                         break;
                     case 'l':
                         currentDirection = 9000;
-                        Console.WriteLine("Direction: Push LEFT (from East, 9000 = 90°)");
+                        Console.WriteLine("Direction: Push LEFT (from East, 9000 = 90 deg)");
                         break;
                     case 'r':
                         currentDirection = 27000;
-                        Console.WriteLine("Direction: Push RIGHT (from West, 27000 = 270°)");
+                        Console.WriteLine("Direction: Push RIGHT (from West, 27000 = 270 deg)");
                         break;
                     case 'b':
                         currentDirection = 0;
-                        Console.WriteLine("Direction: Push SOUTH (from North, 0 = 0°)");
+                        Console.WriteLine("Direction: Push SOUTH (from North, 0 = 0 deg)");
                         break;
                     case '0':
-                        StopEffect(constantEffect);
-                        StopEffect(sineEffect);
+                        StopAll(allEffects);
                         Console.WriteLine("Stopped");
                         break;
                 }
@@ -311,10 +396,8 @@ class Program
             catch (Exception ex) { Console.WriteLine($"Error: {ex.Message}"); }
         }
 
-        StopEffect(constantEffect);
-        StopEffect(sineEffect);
-        constantEffect?.Dispose();
-        sineEffect?.Dispose();
+        StopAll(allEffects);
+        foreach (var e in allEffects) e?.Dispose();
         joystick.Unacquire();
         if (hwnd != IntPtr.Zero) DestroyWindow(hwnd);
         Console.WriteLine("\nDone.");
@@ -336,7 +419,7 @@ class Program
             EffectParameterFlags.Start);
     }
 
-    static void SetSineForce(Effect? effect, int magnitude, int periodMicroseconds, int direction, int[] axisOffsets)
+    static void SetPeriodic(Effect? effect, int magnitude, int periodMicroseconds, int direction, int[] axisOffsets)
     {
         if (effect == null) return;
         var ep = new EffectParameters
@@ -358,8 +441,166 @@ class Program
             EffectParameterFlags.Start);
     }
 
-    static void StopEffect(Effect? effect)
+    // Conditions don't carry a polar direction the way periodics/constants
+    // do; they're per-axis and apply Cartesian coefficients. ConditionSet
+    // wants one Condition per actuator axis, so duplicate the same
+    // coefficient set across however many axes the device exposes.
+    static void SetCondition(Effect? effect, int coefficient, int[] axisOffsets)
     {
-        try { effect?.Stop(); } catch { }
+        if (effect == null) return;
+        int axes = Math.Min(axisOffsets.Length, 2);
+        var conditions = new Condition[axes];
+        for (int i = 0; i < axes; i++)
+        {
+            conditions[i] = new Condition
+            {
+                DeadBand = 0,
+                Offset = 0,
+                NegativeCoefficient = coefficient,
+                PositiveCoefficient = coefficient,
+                NegativeSaturation = 10000,
+                PositiveSaturation = 10000,
+            };
+        }
+        var ep = new EffectParameters
+        {
+            Flags = EffectFlags.Cartesian | EffectFlags.ObjectOffsets,
+            Axes = axisOffsets.Take(axes).ToArray(),
+            Directions = new int[axes],
+            Parameters = new ConditionSet { Conditions = conditions }
+        };
+        effect.SetParameters(ep,
+            EffectParameterFlags.TypeSpecificParameters |
+            EffectParameterFlags.Axes |
+            EffectParameterFlags.Direction |
+            EffectParameterFlags.Start);
+    }
+
+    static void SetRamp(Effect? effect, int startMag, int endMag, int direction, int[] axisOffsets)
+    {
+        if (effect == null) return;
+        var ep = new EffectParameters
+        {
+            Flags = EffectFlags.Polar | EffectFlags.ObjectOffsets,
+            Axes = axisOffsets.Take(2).ToArray(),
+            Directions = new[] { direction, 0 },
+            Parameters = new RampForce { Start = startMag, End = endMag }
+        };
+        effect.SetParameters(ep,
+            EffectParameterFlags.TypeSpecificParameters |
+            EffectParameterFlags.Direction |
+            EffectParameterFlags.Start);
+    }
+
+    static Effect? TryCreatePeriodic(Joystick joy, Guid guid, string name, int[] axisOffsets, int magnitude, int periodMicroseconds)
+    {
+        try
+        {
+            var ep = new EffectParameters
+            {
+                Flags = EffectFlags.Polar | EffectFlags.ObjectOffsets,
+                Duration = -1,
+                Gain = 10000,
+                SamplePeriod = 0,
+                StartDelay = 0,
+                TriggerButton = -1,
+                TriggerRepeatInterval = 0,
+                Axes = axisOffsets.Take(2).ToArray(),
+                Directions = new[] { 0, 0 },
+                Parameters = new PeriodicForce
+                {
+                    Magnitude = magnitude,
+                    Offset = 0,
+                    Phase = 0,
+                    Period = periodMicroseconds
+                }
+            };
+            var eff = new Effect(joy, guid, ep);
+            Console.WriteLine($"  SUCCESS: {name}");
+            return eff;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"  FAIL: {name} - {ex.Message}");
+            return null;
+        }
+    }
+
+    static Effect? TryCreateCondition(Joystick joy, Guid guid, string name, int[] axisOffsets, int coefficient)
+    {
+        try
+        {
+            int axes = Math.Min(axisOffsets.Length, 2);
+            var conditions = new Condition[axes];
+            for (int i = 0; i < axes; i++)
+            {
+                conditions[i] = new Condition
+                {
+                    DeadBand = 0,
+                    Offset = 0,
+                    NegativeCoefficient = coefficient,
+                    PositiveCoefficient = coefficient,
+                    NegativeSaturation = 10000,
+                    PositiveSaturation = 10000,
+                };
+            }
+            var ep = new EffectParameters
+            {
+                Flags = EffectFlags.Cartesian | EffectFlags.ObjectOffsets,
+                Duration = -1,
+                Gain = 10000,
+                SamplePeriod = 0,
+                StartDelay = 0,
+                TriggerButton = -1,
+                TriggerRepeatInterval = 0,
+                Axes = axisOffsets.Take(axes).ToArray(),
+                Directions = new int[axes],
+                Parameters = new ConditionSet { Conditions = conditions }
+            };
+            var eff = new Effect(joy, guid, ep);
+            Console.WriteLine($"  SUCCESS: {name}");
+            return eff;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"  FAIL: {name} - {ex.Message}");
+            return null;
+        }
+    }
+
+    static Effect? TryCreateRamp(Joystick joy, int[] axisOffsets, int startMag, int endMag, int durationMicroseconds)
+    {
+        try
+        {
+            var ep = new EffectParameters
+            {
+                Flags = EffectFlags.Polar | EffectFlags.ObjectOffsets,
+                Duration = durationMicroseconds,
+                Gain = 10000,
+                SamplePeriod = 0,
+                StartDelay = 0,
+                TriggerButton = -1,
+                TriggerRepeatInterval = 0,
+                Axes = axisOffsets.Take(2).ToArray(),
+                Directions = new[] { 0, 0 },
+                Parameters = new RampForce { Start = startMag, End = endMag }
+            };
+            var eff = new Effect(joy, EffectGuid.RampForce, ep);
+            Console.WriteLine($"  SUCCESS: Ramp");
+            return eff;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"  FAIL: Ramp - {ex.Message}");
+            return null;
+        }
+    }
+
+    static void StopAll(IEnumerable<Effect?> effects)
+    {
+        foreach (var e in effects)
+        {
+            try { e?.Stop(); } catch { }
+        }
     }
 }

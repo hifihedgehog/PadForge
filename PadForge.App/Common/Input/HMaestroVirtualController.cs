@@ -670,23 +670,25 @@ namespace PadForge.Common.Input
                     return;
                 }
 
-                // Xbox Series Bluetooth (Microsoft VID 0x045E) — browser
-                // Gamepad API on Chromium sends vibration to Xbox Series BT
-                // via a HID output report (NOT XInput, unlike wired Xbox 360).
-                // Layout is 7 bytes: [trigL, trigR, motorL, motorR, duration,
-                // startDelay, loopCount]. Motor bytes are 0..100 magnitudes.
-                // Scale to ushort range (~655x). Verified against HIDMaestro
-                // test app log of xbox-series-xs-bt + gamepad-tester.com.
+                // Xbox Series Bluetooth — browser Gamepad API on Chromium
+                // sends vibration to Xbox Series BT via a HID output
+                // report (NOT XInput, unlike wired Xbox 360). Layout is
+                // 7 bytes: [trigL, trigR, motorL, motorR, duration,
+                // startDelay, loopCount]. Motor bytes are 0..100
+                // magnitudes; scale to ushort range (~655x). Verified
+                // against HM test app log of xbox-series-xs-bt +
+                // gamepad-tester.com.
                 //
-                // Gate on _ffbDecoder == null so Microsoft-VID profiles that
-                // implement PID FFB (the SideWinder Force Feedback 2 is the
-                // canonical case — Microsoft VID 0x045E, hand-authored PID
-                // descriptor) don't get their 4..7-byte PID FFB reports
-                // stolen by this rumble shape. Xbox 360 / One / Series
-                // pads don't have PID FFB so the gate is invisible there.
-                if (_ffbDecoder == null
+                // Gate on IsXboxProfile (Microsoft vendor AND name/id
+                // contains "Xbox") rather than the bare 0x045E VID. The
+                // SideWinder Force Feedback 2 also ships under Microsoft
+                // VID 0x045E and emits 4..7-byte PID FFB reports that
+                // would otherwise be misread by this branch. Same
+                // single-source gate as the Extended dropdown's Xbox
+                // bucket filter — see HMaestroProfileCatalog.IsXboxProfile.
+                bool isXbox = HMaestroProfileCatalog.IsXboxProfile(_profile);
+                if (isXbox
                     && pkt.Source == HMOutputSource.HidOutput
-                    && _profile.VendorId == 0x045E
                     && data.Length >= 4
                     && data.Length < 8)
                 {
@@ -697,12 +699,11 @@ namespace PadForge.Common.Input
 
                 // Xbox wired / wireless-receiver long HID rumble report
                 // (legacy format, vendor-specific bytes 5/6). Same
-                // _ffbDecoder gate as above — the SideWinder's 15-byte
-                // PID Set Effect Report would otherwise be misread as
-                // an Xbox 8+-byte rumble packet here.
-                if (_ffbDecoder == null
+                // IsXboxProfile gate so a 15-byte SideWinder PID Set
+                // Effect Report doesn't get misread as Xbox 8+-byte
+                // rumble.
+                if (isXbox
                     && pkt.Source == HMOutputSource.HidOutput
-                    && _profile.VendorId == 0x045E
                     && data.Length >= 8)
                 {
                     vibrationStates[idx].LeftMotorSpeed = (ushort)(data[5] * 257);

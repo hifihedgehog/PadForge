@@ -285,15 +285,16 @@ namespace PadForge.Common.Input
         // report-specific fields.
 
         // Set Effect: [EBI][EffectType][Duration:2][TriggerRpt:2][SamplePeriod:2][StartDelay:2][Gain][TriggerButton][AxesEnable+DirEnable bits][Direction[0]:2][Direction[1]:2][TypeSpecific[0]:2][TypeSpecific[1]:2]
+        // Canonical layout is 21 bytes. Some hand-authored descriptors
+        // (Microsoft SideWinder Force Feedback 2: 15 bytes) drop StartDelay
+        // / Direction[1] / TypeSpecific[1] to save report space. Read EBI
+        // + Type + Duration unconditionally; everything else is optional.
         private void DecodeSetEffect(ReadOnlySpan<byte> d)
         {
-            if (d.Length < 18) return;
+            if (d.Length < 4) return;
             byte ebi = d[0];
             byte effectType = d[1];
             ushort duration = ReadU16(d, 2);
-            byte gain = d[10];
-            // d[11] = TriggerButton, d[12] = AxesEnable+DirEnable bits
-            ushort direction = ReadU16(d, 13);
 
             // Without the Block Load Feature report (0x12) in the descriptor,
             // dinput8 picks EBIs internally and never round-trips through
@@ -306,9 +307,16 @@ namespace PadForge.Common.Input
             if (_effects.TryGetValue(ebi, out var es))
             {
                 es.Type = MapEffectType(effectType);
-                es.Gain = gain;
                 es.Duration = duration;
-                es.Direction = direction;
+                // Gain at d[10], Direction[0] at d[13..14] in the canonical
+                // layout. SideWinder's 15-byte report uses different offsets;
+                // when fields aren't safely readable, default to full gain
+                // (no attenuation) and centered direction (balanced rumble).
+                // For Constant Force the Set Constant Force report (0x15)
+                // carries the magnitude separately, so a defaulted direction
+                // here doesn't suppress force, just routes it centrally.
+                es.Gain = d.Length > 10 ? d[10] : (byte)255;
+                es.Direction = d.Length >= 15 ? ReadU16(d, 13) : (ushort)0;
             }
         }
 
@@ -330,12 +338,16 @@ namespace PadForge.Common.Input
         }
 
         // Set Periodic: [EBI][Magnitude:2 unsigned 0-10000][Offset:2 signed][Phase:2][Period:4 ms]
+        // SideWinder's 6-byte hand-authored report drops Phase + truncates
+        // Period to 16 bits, so only the magnitude is reliably positioned.
+        // Read magnitude unconditionally (3 bytes minimum); skip Period when
+        // the report is too short to contain the canonical 32-bit field.
         private void DecodeSetPeriodic(ReadOnlySpan<byte> d)
         {
-            if (d.Length < 11) return;
+            if (d.Length < 3) return;
             byte ebi = d[0];
             ushort magnitude = ReadU16(d, 1);
-            uint period = ReadU32(d, 7);
+            uint period = d.Length >= 11 ? ReadU32(d, 7) : 0;
 
             var es = GetOrCreateForUpdate(ebi);
             es.Magnitude = magnitude;
@@ -435,19 +447,24 @@ namespace PadForge.Common.Input
                 if (op == 2)
                     foreach (var kv in _effects)
                         if (kv.Key != ebi) kv.Value.Running = false;
-                if (_effects.TryGetValue(ebi, out var es))
-                {
-                    // pid.dll's SetParameters update path writes Set
-                    // Constant / Set Periodic / Set Ramp / Set Condition
-                    // with EBI=0 immediately before Effect Operation Start
-                    // EBI=N. Bind the pending magnitude/period to the
-                    // about-to-start effect.
-                    DrainPendingInto(es);
-                    es.Running = true;
-                    _lastEbi = ebi;
-                    _stateFlags |= PidStateFlags.EffectPlaying;
-                    _controller?.PublishPidState(_lastEbi, _stateFlags);
-                }
+                // GetOrCreate (not TryGetValue) — when Set Effect's report
+                // length was below the canonical minimum and DecodeSetEffect
+                // bailed without registering the EBI, Effect Operation Start
+                // is the last chance to instantiate the effect. Without
+                // this, SideWinder's 15-byte Set Effect produces a chain
+                // where _pending.Magnitude (from Set Constant) accumulates
+                // forever and never binds to a running effect.
+                var es = GetOrCreate(ebi);
+                // pid.dll's SetParameters update path writes Set
+                // Constant / Set Periodic / Set Ramp / Set Condition
+                // with EBI=0 immediately before Effect Operation Start
+                // EBI=N. Bind the pending magnitude/period to the
+                // about-to-start effect.
+                DrainPendingInto(es);
+                es.Running = true;
+                _lastEbi = ebi;
+                _stateFlags |= PidStateFlags.EffectPlaying;
+                _controller?.PublishPidState(_lastEbi, _stateFlags);
             }
             else if (op == 3) // EFF_STOP
             {

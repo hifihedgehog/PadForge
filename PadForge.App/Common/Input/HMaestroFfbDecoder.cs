@@ -192,9 +192,22 @@ namespace PadForge.Common.Input
                     // Envelope at canonical 0x14, so we must dispatch with
                     // the parsed per-RID format before falling into the
                     // canonical switch.
+                    //
+                    // Exception: pid.dll empirically writes canonical Set
+                    // Ramp Force (5-byte EBI+Start:2+End:2) to RID 0x16
+                    // even when SideWinder's descriptor declares 0x16 as
+                    // Set Periodic (Usage 0x74). Length-disambiguate:
+                    // SideWinder Set Periodic is 3 bytes (EBI+Mag1+Off1)
+                    // and any descriptor-canonical Set Periodic is 11 bytes
+                    // (EBI+Mag2+Off2+Phase2+Period4); only canonical Set
+                    // Ramp Force lands at exactly 5. Route those to
+                    // DecodeSetRamp regardless of the periodic RID claim.
                     if (_periodicFormats.ContainsKey(reportId))
                     {
-                        DecodeSetPeriodic(reportId, data);
+                        if (data.Length == 5)
+                            DecodeSetRamp(data);
+                        else
+                            DecodeSetPeriodic(reportId, data);
                         return;
                     }
 

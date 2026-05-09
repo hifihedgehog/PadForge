@@ -469,9 +469,11 @@ class Program
             Directions = new int[axes],
             Parameters = new ConditionSet { Conditions = conditions }
         };
+        // Don't pass EffectParameterFlags.Axes here — Axes can only be set
+        // at effect creation. Including it on an already-created effect
+        // produces DIERR_ALREADYINITIALIZED.
         effect.SetParameters(ep,
             EffectParameterFlags.TypeSpecificParameters |
-            EffectParameterFlags.Axes |
             EffectParameterFlags.Direction |
             EffectParameterFlags.Start);
     }

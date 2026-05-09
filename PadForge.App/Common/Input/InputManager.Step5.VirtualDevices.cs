@@ -47,9 +47,8 @@ namespace PadForge.Common.Input
         //      profile slug, the VC at slot V is reused. Pure pointer
         //      swap in _virtualControllers[] plus FeedbackPadIndex update
         //      on the moved VC. Per-VC state arrays follow the VC:
-        //      _loggedFirstSubmit, _extendedAppliedProductString,
-        //      _extendedAppliedLayout, _oemOverrideClaimedVidPid,
-        //      _lastAppliedOemLabel.
+        //      _extendedAppliedProductString, _extendedAppliedLayout,
+        //      _oemOverrideClaimedVidPid, _lastAppliedOemLabel.
         //
         //  (e) Different-profile positions destroy + recreate.
         //      Only the positions whose profile actually changed.
@@ -122,7 +121,6 @@ namespace PadForge.Common.Input
         /// top of this file (rules b, c, d).
         /// </summary>
         private IVirtualController[] _virtualControllers = new IVirtualController[MaxPads];
-        private readonly int[] _step5DiagCounters = new int[MaxPads];
 
         /// <summary>Read-only access to the per-pad virtual controller
         /// array for InputService's device-update hook so it can dispatch
@@ -431,11 +429,6 @@ namespace PadForge.Common.Input
         // (WaitForHidChild 10s, WaitForDeviceStarted 5s, WaitForXInputSlotClaim
         // 15s) and a failure is a real failure, not a timing flake.
         private readonly bool[] _createFailed = new bool[MaxPads];
-
-        // Debug: track "first submit after create" per slot so the lifecycle
-        // log captures whether Pass 3 is actually reaching the new VC after a
-        // profile change. Cleared whenever a VC is destroyed.
-        private readonly bool[] _loggedFirstSubmit = new bool[MaxPads];
 
         /// <summary>
         /// Per-slot async-dispose tracker. When a user-initiated swap/move
@@ -1012,37 +1005,6 @@ namespace PadForge.Common.Input
 
                     if (vc != null && _slotInactiveCounter[padIndex] == 0)
                     {
-                        // Log first submit after create so we can verify the
-                        // input path is actually running for the new VC.
-                        if (!_loggedFirstSubmit[padIndex])
-                        {
-                            _loggedFirstSubmit[padIndex] = true;
-                        }
-
-                        // Routing-trace diag: which branch does this pad enter?
-                        // Static per-pad counter logs every 250th call (~1Hz at
-                        // 250Hz polling) regardless of which branch fires below.
-                        if (++_step5DiagCounters[padIndex] >= 250)
-                        {
-                            _step5DiagCounters[padIndex] = 0;
-                            try
-                            {
-                                string branch =
-                                    vc is MidiVirtualController ? "Midi"
-                                    : vc is KeyboardMouseVirtualController ? "Kbm"
-                                    : SlotControllerTypes[padIndex] == VirtualControllerType.Extended && SlotExtendedIsCustom[padIndex] && vc is HMaestroVirtualController ? "ExtCustom"
-                                    : "GenericGamepad";
-                                var motionDiag = MotionSnapshots[padIndex];
-                                var tpDiag = CombinedTouchpadStates[padIndex];
-                                System.IO.File.AppendAllText(
-                                    System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-ds5-passthrough.log"),
-                                    $"{DateTime.UtcNow:HH:mm:ss.fff} [step5] pad={padIndex} branch={branch} type={SlotControllerTypes[padIndex]} vc={vc?.GetType().Name} extCustom={SlotExtendedIsCustom[padIndex]} " +
-                                    $"motionHas={motionDiag.HasMotion} gyro=({motionDiag.GyroPitch:F1},{motionDiag.GyroYaw:F1},{motionDiag.GyroRoll:F1}) " +
-                                    $"tp=down0={tpDiag.Down0},X0={tpDiag.X0:F2},Y0={tpDiag.Y0:F2}\n");
-                            }
-                            catch { }
-                        }
-
                         // MIDI slots use SubmitMidiRawState for dynamic CC/note output.
                         // KBM slots use SubmitKbmState for keyboard/mouse output.
                         // PlayStation slots whose HIDMaestro profile matches a
@@ -1698,7 +1660,6 @@ namespace PadForge.Common.Input
             // kernel slot, or destroy it. Snapshot the per-VC state at
             // the same time so we can move it with the VC.
             var reuseAtPosition = new IVirtualController[n];
-            var stateLoggedFirstSubmit = new bool[n];
             var stateExtendedAppliedProductString = new string[n];
             var stateExtendedAppliedLayout = new CustomControllerLayout[n];
             var stateExtendedAppliedFfbEnabled = new bool[n];
@@ -1726,7 +1687,6 @@ namespace PadForge.Common.Input
                 if (string.Equals(oldProfile ?? string.Empty, newProfile ?? string.Empty, StringComparison.Ordinal))
                 {
                     reuseAtPosition[V] = oldVC;
-                    stateLoggedFirstSubmit[V] = _loggedFirstSubmit[oldPad];
                     stateExtendedAppliedProductString[V] = _extendedAppliedProductString[oldPad];
                     stateExtendedAppliedLayout[V] = _extendedAppliedLayout[oldPad];
                     stateExtendedAppliedFfbEnabled[V] = _extendedAppliedFfbEnabled[oldPad];
@@ -1758,7 +1718,6 @@ namespace PadForge.Common.Input
                 int newPad = newOrder[V];
                 if (oldPad == newPad) continue;
                 _virtualControllers[oldPad] = null;
-                _loggedFirstSubmit[oldPad] = false;
                 _extendedAppliedProductString[oldPad] = null;
                 _extendedAppliedLayout[oldPad] = default;
                 _extendedAppliedFfbEnabled[oldPad] = false;
@@ -1779,7 +1738,6 @@ namespace PadForge.Common.Input
                 if (vc == null) continue;
 
                 _virtualControllers[newPad] = vc;
-                _loggedFirstSubmit[newPad] = stateLoggedFirstSubmit[V];
                 _extendedAppliedProductString[newPad] = stateExtendedAppliedProductString[V];
                 _extendedAppliedLayout[newPad] = stateExtendedAppliedLayout[V];
                 _extendedAppliedFfbEnabled[newPad] = stateExtendedAppliedFfbEnabled[V];
@@ -1890,8 +1848,6 @@ namespace PadForge.Common.Input
         {
             var vc = _virtualControllers[padIndex];
             if (vc == null) return;
-
-            _loggedFirstSubmit[padIndex] = false;
 
             // Release this slot's OEM-name claim, if it held one. Ref count
             // gates the actual HMOemNameOverride.Clear call so sibling slots

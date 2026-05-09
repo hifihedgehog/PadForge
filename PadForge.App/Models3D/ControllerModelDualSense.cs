@@ -102,20 +102,19 @@ namespace PadForge.Models3D
             B3ButtonSymbol = LoadModel("B3ButtonSymbol.obj");
             B4ButtonSymbol = LoadModel("B4ButtonSymbol.obj");
 
-            // HC's DualSense mesh has no dedicated touchpad geometry. The
-            // controller's front face is one big MainBodyFront mesh that
-            // covers the whole grip area — using it as Touchpad highlights
-            // far too much and puts finger dots in the wrong places.
-            // Synthesize a thin quad at the touchpad's actual position
-            // instead, derived from the surrounding meshes' bounds:
-            //   - X centered ±27 mm (slightly inside LED1 X[-43,40] which
-            //     traces the lightbar around the touchpad)
-            //   - Y just outside the front face (MainBody Y_min = -30.5)
-            //   - Z above Special PS-button (Special Z_max = 5.95) and below
-            //     the L1/R1 shoulder Z plane (~Z=49)
-            Touchpad = BuildSyntheticTouchpad();
+            // HC's MainBody.obj is one file with multiple connected
+            // components — both grip handles, the central front-face area,
+            // dpad pieces, and face-button pieces are all joined together.
+            // The central front-face component IS the touchpad surface
+            // (Comp02 from the connectivity analysis: 2720 faces, X∈[-42,38]
+            // Y∈[-30.5,-18.1] Z∈[19,63]). tools/overlay_positions.py runs
+            // a one-time split that writes MainBody.obj minus that
+            // component AND a separate Touchpad.obj with just the
+            // touchpad surface — load both here so MainBody renders the
+            // grip + button areas, Touchpad is its own click-mappable +
+            // highlight-able mesh.
+            Touchpad = LoadModel("Touchpad.obj");
             ClickMap[Touchpad] = "TouchpadClick";
-            DefaultMaterials[Touchpad] = MaterialPlasticBlack;
             model3DGroup.Children.Add(Touchpad);
 
             // ── Add to scene graph (HC ordering) ────────
@@ -172,9 +171,11 @@ namespace PadForge.Models3D
                 if (DefaultMaterials.ContainsKey(child)) continue;
 
                 // Black body parts (front shell, accent rings, jack/USB).
+                // Touchpad surface is matte black on a real DualSense.
                 if (child == MainBodyFront || child == AudioJack || child == USBPort
                     || child == LeftThumbRing || child == RightThumbRing
-                    || child == LeftShoulderTrigger || child == RightShoulderTrigger)
+                    || child == LeftShoulderTrigger || child == RightShoulderTrigger
+                    || child == Touchpad)
                 {
                     SetMaterial(child, MaterialPlasticBlack);
                     DefaultMaterials[child] = MaterialPlasticBlack;
@@ -243,45 +244,5 @@ namespace PadForge.Models3D
             }
         }
 
-        /// <summary>Build a thin quad covering the actual touchpad surface
-        /// of the DualSense's front face. Coordinates measured against the
-        /// surrounding mesh bounds (LED1/LED2 lightbar, Special PS button,
-        /// L1/R1 shoulder plane, MainBody front face). Output is a single-
-        /// triangle-pair Model3DGroup compatible with the click-map and
-        /// finger-sphere positioning paths inherited from ControllerModelBase.</summary>
-        private static Model3DGroup BuildSyntheticTouchpad()
-        {
-            // Real DualSense touchpad is ~52 mm wide x 36 mm tall, sitting
-            // upper-center on the front face. Pad the X bounds slightly so
-            // hit-test feels generous; keep Z (vertical on controller) tight
-            // so finger dots map to roughly the right spots.
-            const double xMin = -27.0, xMax = 27.0;
-            const double zMin = 10.0, zMax = 47.0;
-            // Y is the depth axis. Front face = Y_min ≈ -30.5; place the
-            // quad slightly OUTSIDE that (more negative) so it renders just
-            // proud of the front shell rather than z-fighting with it.
-            const double y = -32.5;
-
-            var mesh = new MeshGeometry3D();
-            mesh.Positions.Add(new Point3D(xMin, y, zMin));
-            mesh.Positions.Add(new Point3D(xMax, y, zMin));
-            mesh.Positions.Add(new Point3D(xMax, y, zMax));
-            mesh.Positions.Add(new Point3D(xMin, y, zMax));
-            mesh.TriangleIndices.Add(0); mesh.TriangleIndices.Add(2); mesh.TriangleIndices.Add(1);
-            mesh.TriangleIndices.Add(0); mesh.TriangleIndices.Add(3); mesh.TriangleIndices.Add(2);
-            // Outward-facing normals (camera looks from -Y direction).
-            for (int i = 0; i < 4; i++)
-                mesh.Normals.Add(new Vector3D(0, -1, 0));
-
-            var geo = new GeometryModel3D
-            {
-                Geometry = mesh,
-                Material = new DiffuseMaterial(new SolidColorBrush(Color.FromRgb(0x21, 0x24, 0x2E))),
-                BackMaterial = new DiffuseMaterial(new SolidColorBrush(Color.FromRgb(0x21, 0x24, 0x2E))),
-            };
-            var group = new Model3DGroup();
-            group.Children.Add(geo);
-            return group;
-        }
     }
 }

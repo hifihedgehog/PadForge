@@ -171,11 +171,9 @@ namespace PadForge.Models3D
                 if (DefaultMaterials.ContainsKey(child)) continue;
 
                 // Black body parts (front shell, accent rings, jack/USB).
-                // Touchpad surface is matte black on a real DualSense.
                 if (child == MainBodyFront || child == AudioJack || child == USBPort
                     || child == LeftThumbRing || child == RightThumbRing
-                    || child == LeftShoulderTrigger || child == RightShoulderTrigger
-                    || child == Touchpad)
+                    || child == LeftShoulderTrigger || child == RightShoulderTrigger)
                 {
                     SetMaterial(child, MaterialPlasticBlack);
                     DefaultMaterials[child] = MaterialPlasticBlack;
@@ -233,6 +231,16 @@ namespace PadForge.Models3D
             }
 
             DrawAccentHighlights();
+
+            // HC modeled the DualSense larger than the DS4 in raw mesh
+            // units — DualSense MainBody width 199.9 mm vs DS4's 165.7 mm
+            // (21 % bigger) — even though the real-world physical
+            // controllers are nearly identical in width. The shared
+            // viewport camera (fixed at Position=0,-172,132) is sized for
+            // DS4-class meshes, so DualSense renders too zoomed-in.
+            // Uniform-scale the entire model down by 165.7/199.9 ≈ 0.83
+            // so it occupies the same screen footprint as DS4.
+            model3DGroup.Transform = new ScaleTransform3D(0.83, 0.83, 0.83);
         }
 
         private static void SetMaterial(Model3DGroup group, Material material)

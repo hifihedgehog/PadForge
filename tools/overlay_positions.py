@@ -569,9 +569,12 @@ def _process_xbox_modern(profile_name, svg_path, base_relpath, ov_subdir,
     add("X Button", face_btn_filenames["X"], "ButtonX", "Button")
     add("Y Button", face_btn_filenames["Y"], "ButtonY", "Button")
 
-    # Bumpers — split the group bbox into left/right halves since neither SVG
-    # tags individual L/R bumpers. The press overlay PNG carries the right
-    # shape; we just need to land it in roughly the correct half.
+    # Bumpers — neither Xbox SVG labels individual L/R bumpers, only the
+    # shoulder group as a whole. Pin each bumper PNG to the corresponding
+    # OUTER edge of the group bbox: L flush against the left edge,
+    # R flush against the right edge. Centering each PNG within its own
+    # half of the group puts them too inward (the group bbox spans the
+    # empty middle between the two bumpers as well).
     bumper_label = bumper_filenames["GroupLabel"]
     bumper_bbox = get_element_pixel_bbox(root, bumper_label, scale)
     if bumper_bbox:
@@ -579,13 +582,11 @@ def _process_xbox_modern(profile_name, svg_path, base_relpath, ov_subdir,
         for side, fn, target in [("L", bumper_filenames["L"], "LeftShoulder"),
                                  ("R", bumper_filenames["R"], "RightShoulder")]:
             ov = cv2.imread(os.path.join(ov_dir, fn), cv2.IMREAD_UNCHANGED)
-            half_x = bx if side == "L" else bx + bw / 2
-            cx = half_x + bw / 4
-            cy = by + bh / 2
-            x = round(cx - ov.shape[1] / 2)
-            y = round(cy - ov.shape[0] / 2)
-            results.append((fn, target, "Button", x, y, ov.shape[1], ov.shape[0]))
-            print(f"  {target:20s} ({bumper_label} half {side}) -> ({x:4d}, {y:4d}) {ov.shape[1]:4d}x{ov.shape[0]:3d}")
+            ov_w, ov_h = ov.shape[1], ov.shape[0]
+            x = round(bx) if side == "L" else round(bx + bw - ov_w)
+            y = round(by + (bh - ov_h) / 2)
+            results.append((fn, target, "Button", x, y, ov_w, ov_h))
+            print(f"  {target:20s} ({bumper_label} edge {side}) -> ({x:4d}, {y:4d}) {ov_w:4d}x{ov_h:3d}")
 
     # Triggers
     add(trigger_filenames["LLabel"], trigger_filenames["L"], "LeftTrigger", "Trigger")

@@ -155,10 +155,10 @@ public static class XboxSeriesXLayout
         new("XBSeries_RightStick.png", "RightThumbRing", OverlayElementType.StickRing, 886, 586, 180, 170),
         new("XBSeries_LeftStick_Click.png", "LeftThumbButton", OverlayElementType.StickClick, 264, 360, 177, 167),
         new("XBSeries_LeftStick_Click.png", "RightThumbButton", OverlayElementType.StickClick, 886, 586, 180, 170),
-        new("XBSeries_D-PAD_Up.png", "DPadUp", OverlayElementType.Button, 520, 576, 76, 69),
-        new("XBSeries_D-PAD_Down.png", "DPadDown", OverlayElementType.Button, 524, 674, 69, 69),
-        new("XBSeries_D-PAD_Left.png", "DPadLeft", OverlayElementType.Button, 460, 628, 80, 63),
-        new("XBSeries_D-PAD_Right.png", "DPadRight", OverlayElementType.Button, 576, 628, 80, 64),
+        new("XBSeries_D-PAD_Up.png", "DPadUp", OverlayElementType.Button, 520, 562, 76, 69),
+        new("XBSeries_D-PAD_Down.png", "DPadDown", OverlayElementType.Button, 524, 689, 69, 69),
+        new("XBSeries_D-PAD_Left.png", "DPadLeft", OverlayElementType.Button, 443, 628, 80, 63),
+        new("XBSeries_D-PAD_Right.png", "DPadRight", OverlayElementType.Button, 593, 628, 80, 64),
         new("XBSeries_ShareButton.png", "ButtonShare", OverlayElementType.Button, 722, 479, 87, 49),
     };
 }

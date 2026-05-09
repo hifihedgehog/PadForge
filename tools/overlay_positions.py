@@ -854,16 +854,22 @@ def _process_xbox_modern(profile_name, svg_path, base_relpath, ov_subdir,
     if dpad_bbox:
         dx, dy, dw, dh = dpad_bbox
         half_w, half_h = dw / 2.0, dh / 2.0
-        # Up = top half of full width / Down = bottom / Left = left half full height / Right = right.
-        # The PNG aspect inside fit_overlay_to_bbox controls the actual
-        # shape inside each quadrant rect.
+        # Up/Down/Left/Right overlays should sit AT the outer edge of the
+        # d-pad bbox, not centered in their half. fit_overlay_to_bbox
+        # centers within the supplied sub-rect, so we shape each sub-rect
+        # so its center IS the desired anchor point: outer-edge-of-half
+        # (vs middle-of-half). Combined with dpad_fit_scale<1 this places
+        # each press overlay flush with its arm tip rather than floating
+        # in the middle of the arm.
         for direction, fn, target, sub in [
-            ("Up",    dpad_filenames["Up"],    "DPadUp",    (dx,          dy,           dw,     half_h)),
-            ("Down",  dpad_filenames["Down"],  "DPadDown",  (dx,          dy + half_h,  dw,     half_h)),
-            ("Left",  dpad_filenames["Left"],  "DPadLeft",  (dx,          dy,           half_w, dh)),
-            ("Right", dpad_filenames["Right"], "DPadRight", (dx + half_w, dy,           half_w, dh)),
+            # Up: sub-rect occupies upper portion only — top edge anchored,
+            # height = scaled overlay height, so fit centers on the rim.
+            ("Up",    dpad_filenames["Up"],    "DPadUp",    (dx,                    dy,                     dw,                  half_h * dpad_fit_scale)),
+            ("Down",  dpad_filenames["Down"],  "DPadDown",  (dx,                    dy + dh - half_h*dpad_fit_scale, dw,         half_h * dpad_fit_scale)),
+            ("Left",  dpad_filenames["Left"],  "DPadLeft",  (dx,                    dy,                     half_w * dpad_fit_scale, dh)),
+            ("Right", dpad_filenames["Right"], "DPadRight", (dx + dw - half_w*dpad_fit_scale, dy,           half_w * dpad_fit_scale, dh)),
         ]:
-            pos = fit_overlay_to_bbox(sub, os.path.join(ov_dir, fn), scale=dpad_fit_scale)
+            pos = fit_overlay_to_bbox(sub, os.path.join(ov_dir, fn))
             results.append((fn, target, "Button", pos[0], pos[1], pos[2], pos[3]))
             print(f"  {target:20s} ({'D-PAD '+direction:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
 

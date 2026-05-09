@@ -1455,19 +1455,8 @@ namespace PadForge.Common.Input
                 int userPovs = layout.Povs;
                 int userButtons = layout.Buttons;
 
-                // Compare against the profile's declared layout. Counts
-                // come from HMaestroProfileCatalog.GetLayoutCounts which
-                // prefers the v1.3.9 HMProfile.Layout block (wheel +
-                // pedals, HOTAS stick + throttle module, etc.) over the
-                // classifier's simple view — the classifier mis-paints
-                // wheels as 2 sticks because it uses the Chromium
-                // standard-gamepad heuristic (no Rx/Ry + Z+Rz both
-                // present == 4-axis DInput right-stick), which doesn't
-                // hold for wheels. Same helper feeds
-                // PadViewModel.SyncExtendedConfigFromProfile so the user-
-                // visible row count and the customize-compare values
-                // stay in lock-step.
-                var (profSticks, profTriggers) = HMaestroProfileCatalog.GetLayoutCounts(baseProfile);
+                int profSticks = baseProfile.StickCount;
+                int profTriggers = baseProfile.TriggerCount;
                 int profPovs = baseProfile.HasHat ? 1 : 0;
                 int profButtons = baseProfile.ButtonCount;
 

@@ -664,13 +664,16 @@ def process_dualsense():
     ov_dir = os.path.join(MODELS_DIR, "DualSense")
     results = []
 
-    def add(svg_label, filename, target, elem_type):
+    def add(svg_label, filename, target, elem_type, fit_scale=1.0):
+        """Resize the press-overlay PNG to fit the SVG label's bbox so size
+        and position both come from visual analysis of the SVG silhouette,
+        not from whatever scale the asset-pack author chose for the PNG."""
         bbox = get_element_pixel_bbox(root, svg_label, scale)
         if bbox is None:
             print(f"  MISS: {svg_label}")
             return None
         overlay_path = os.path.join(ov_dir, filename)
-        pos = center_overlay_on_bbox(bbox, overlay_path)
+        pos = fit_overlay_to_bbox(bbox, overlay_path, scale=fit_scale)
         results.append((filename, target, elem_type, pos[0], pos[1], pos[2], pos[3]))
         print(f"  {target:20s} ({svg_label:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
         return bbox
@@ -678,11 +681,12 @@ def process_dualsense():
     print("Parsing DualSense SVG elements...")
 
     # Face buttons — separate PNG per button (Cross/Circle/Square/Triangle).
-    # Note SVG label "Crosss" has an extra 's' (asset-pack typo).
+    # SVG label "Crosss" has an extra 's' (asset-pack typo); "Triangle " has
+    # a trailing space.
     add("Crosss", "DualSense_Cross.png", "ButtonA", "Button")
     add("Circle", "DualSense_Circle.png", "ButtonB", "Button")
     add("Square", "DualSense_Square.png", "ButtonX", "Button")
-    add("Triangle ", "DualSense_Triangle.png", "ButtonY", "Button")  # trailing space in label
+    add("Triangle ", "DualSense_Triangle.png", "ButtonY", "Button")
 
     # D-Pad
     add("D-PAD Up", "DualSense_D-PAD_Up.png", "DPadUp", "Button")
@@ -690,11 +694,12 @@ def process_dualsense():
     add("D-PAD Left", "DualSense_D-PAD_Left.png", "DPadLeft", "Button")
     add("D-PAD Right", "DualSense_D-PAD_Right.png", "DPadRight", "Button")
 
-    # Bumpers
+    # Bumpers — SVG labels "L1"/"R1" trace the entire shoulder bumper
+    # outline; the bbox center is the right anchor for the bumper PNG.
     add("L1", "DualSense_L1-Active.png", "LeftShoulder", "Button")
     add("R1", "DualSense_R1-Active.png", "RightShoulder", "Button")
 
-    # Triggers (note SVG plurality typos: "L2 Triggers", "R2 Trigger")
+    # Triggers (note SVG label typos: "L2 Triggers", "R2 Trigger")
     add("L2 Triggers", "DualSense_L2-Active.png", "LeftTrigger", "Trigger")
     add("R2 Trigger", "DualSense_R2-Active.png", "RightTrigger", "Trigger")
 
@@ -703,24 +708,19 @@ def process_dualsense():
     add("Option Button", "DualSense_Option_Button.png", "ButtonStart", "Button")
     add("PS Button", "DualSense_Home_Button.png", "ButtonGuide", "Button")
 
-    # Sticks (rings) and stick clicks share the same SVG bbox
+    # Sticks (rings) and stick clicks share the same SVG bbox.
     add("Left Stick", "DualSense_LeftAnalogStick.png", "LeftThumbRing", "StickRing")
     add("Right Stick", "DualSense_RightAnalogStick.png", "RightThumbRing", "StickRing")
     left_bbox = get_element_pixel_bbox(root, "Left Stick", scale)
     right_bbox = get_element_pixel_bbox(root, "Right Stick", scale)
     if left_bbox:
-        pos = center_overlay_on_bbox(left_bbox, os.path.join(ov_dir, "DualSense_AnalogStick_Click.png"))
+        pos = fit_overlay_to_bbox(left_bbox, os.path.join(ov_dir, "DualSense_AnalogStick_Click.png"))
         results.append(("DualSense_AnalogStick_Click.png", "LeftThumbButton", "StickClick", pos[0], pos[1], pos[2], pos[3]))
         print(f"  {'LeftThumbButton':20s} ({'Left Stick':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
     if right_bbox:
-        pos = center_overlay_on_bbox(right_bbox, os.path.join(ov_dir, "DualSense_AnalogStick_Click.png"))
+        pos = fit_overlay_to_bbox(right_bbox, os.path.join(ov_dir, "DualSense_AnalogStick_Click.png"))
         results.append(("DualSense_AnalogStick_Click.png", "RightThumbButton", "StickClick", pos[0], pos[1], pos[2], pos[3]))
         print(f"  {'RightThumbButton':20s} ({'Right Stick':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
-
-    # Refine via composite alpha-channel template matching.
-    composite_path = os.path.join(ov_dir, "DualSense Controller Overlay.png")
-    print("\nRefining DualSense positions via alpha-channel template matching...")
-    results = refine_with_composite(composite_path, results)
 
     # Touchpad zones — no SVG label, use rectangle estimates derived from the
     # DualSense layout (touchpad surface sits between the Create + Option
@@ -746,7 +746,9 @@ def _process_xbox_modern(profile_name, svg_path, base_relpath, ov_subdir,
                         bumper_filenames, trigger_filenames,
                         stick_filenames, stick_click_filename,
                         guide_filename, menu_filename, view_filename,
-                        share_filename=None):
+                        share_filename=None,
+                        bumper_width_frac=0.202,
+                        dpad_fit_scale=1.0):
     """Shared driver for Xbox One and Xbox Series X SVGs. Both have viewBox
     units that map 1:1 to PNG pixels, similar SVG label conventions, and
     the same press-overlay shape (face buttons + sticks have individual
@@ -796,7 +798,7 @@ def _process_xbox_modern(profile_name, svg_path, base_relpath, ov_subdir,
     bumper_bbox = get_element_pixel_bbox(root, bumper_label, scale)
     if bumper_bbox:
         bx, by, bw, bh = bumper_bbox
-        target_bumper_w = int(round(base_w * 0.202))
+        target_bumper_w = int(round(base_w * bumper_width_frac))
         for side, fn, target in [("L", bumper_filenames["L"], "LeftShoulder"),
                                  ("R", bumper_filenames["R"], "RightShoulder")]:
             overlay_path = os.path.join(ov_dir, fn)
@@ -861,7 +863,7 @@ def _process_xbox_modern(profile_name, svg_path, base_relpath, ov_subdir,
             ("Left",  dpad_filenames["Left"],  "DPadLeft",  (dx,          dy,           half_w, dh)),
             ("Right", dpad_filenames["Right"], "DPadRight", (dx + half_w, dy,           half_w, dh)),
         ]:
-            pos = fit_overlay_to_bbox(sub, os.path.join(ov_dir, fn))
+            pos = fit_overlay_to_bbox(sub, os.path.join(ov_dir, fn), scale=dpad_fit_scale)
             results.append((fn, target, "Button", pos[0], pos[1], pos[2], pos[3]))
             print(f"  {target:20s} ({'D-PAD '+direction:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
 
@@ -923,7 +925,16 @@ def process_xbox_series():
         stick_click_filename="XBSeries_LeftStick_Click.png",
         guide_filename="XBSeries_HomeButton.png",
         menu_filename="XBSeries_MenuButton.png",
-        view_filename="XBSeries_ViewButton.png")
+        view_filename="XBSeries_ViewButton.png",
+        # Xbox Series bumpers wrap further around the controller's top
+        # corners than Xbox One/360 — bump the width target to match.
+        bumper_width_frac=0.235,
+        # The "Main D-PAD" SVG group bbox spans the full hybrid disc on
+        # Series; halving it leaves each direction overlay covering ~half
+        # the disc, which reads as too big over the smaller visible button.
+        # Shrink each quadrant fit by 30% so the overlay fits the visible
+        # arrow rather than the entire arm.
+        dpad_fit_scale=0.7)
     # Xbox Series has a dedicated Share button between Menu and View.
     root = etree.parse(os.path.join(ASSET_PACK,
         "Xbox Wireless Controller Images", "Default Theme", "Theme SVG",

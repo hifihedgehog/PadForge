@@ -677,7 +677,15 @@ namespace PadForge.Common.Input
                 // startDelay, loopCount]. Motor bytes are 0..100 magnitudes.
                 // Scale to ushort range (~655x). Verified against HIDMaestro
                 // test app log of xbox-series-xs-bt + gamepad-tester.com.
-                if (pkt.Source == HMOutputSource.HidOutput
+                //
+                // Gate on _ffbDecoder == null so Microsoft-VID profiles that
+                // implement PID FFB (the SideWinder Force Feedback 2 is the
+                // canonical case — Microsoft VID 0x045E, hand-authored PID
+                // descriptor) don't get their 4..7-byte PID FFB reports
+                // stolen by this rumble shape. Xbox 360 / One / Series
+                // pads don't have PID FFB so the gate is invisible there.
+                if (_ffbDecoder == null
+                    && pkt.Source == HMOutputSource.HidOutput
                     && _profile.VendorId == 0x045E
                     && data.Length >= 4
                     && data.Length < 8)
@@ -688,8 +696,12 @@ namespace PadForge.Common.Input
                 }
 
                 // Xbox wired / wireless-receiver long HID rumble report
-                // (legacy format, vendor-specific bytes 5/6).
-                if (pkt.Source == HMOutputSource.HidOutput
+                // (legacy format, vendor-specific bytes 5/6). Same
+                // _ffbDecoder gate as above — the SideWinder's 15-byte
+                // PID Set Effect Report would otherwise be misread as
+                // an Xbox 8+-byte rumble packet here.
+                if (_ffbDecoder == null
+                    && pkt.Source == HMOutputSource.HidOutput
                     && _profile.VendorId == 0x045E
                     && data.Length >= 8)
                 {

@@ -176,13 +176,163 @@ def center_overlay_on_bbox(bbox, overlay_path):
     return (round(cx - ov_w / 2), round(cy - ov_h / 2), ov_w, ov_h)
 
 
-def refine_with_composite(composite_path, results, search_radius=40):
-    """Refine overlay positions using alpha-channel template matching against full composite.
+def fit_overlay_to_bbox(bbox, overlay_path, scale=1.0):
+    """Resize the overlay PNG to fit the SVG bbox (preserving the asset's
+    aspect ratio) and center it on the bbox center. Returns (x, y, w, h)
+    using the FITTED size — which then becomes the rendered overlay's size.
 
-    The composite overlay image has all highlights pre-positioned correctly.
-    For each overlay, we search in a neighborhood around the SVG-derived position
-    and use the best alpha-channel match as the refined position.
+    The asset pack's per-target press-overlay PNGs ship at scales that
+    sometimes match the base (Xbox 360, DS4) and sometimes don't (Xbox One
+    face buttons authored too small, Xbox Series authored at 2x). The SVG's
+    inkscape:label bbox is the authoritative measurement of where and how
+    big each button appears on the controller, so we resize the PNG to fit
+    the bbox rather than trusting the PNG's native dimensions.
+
+    `scale` lets callers nudge a category-wide multiplier (e.g., bumpers
+    sometimes want to overflow their SVG group bbox slightly).
     """
+    if bbox is None or not os.path.exists(overlay_path):
+        return bbox
+    ov = cv2.imread(overlay_path, cv2.IMREAD_UNCHANGED)
+    if ov is None:
+        return bbox
+    bx, by, bw, bh = bbox
+    target_w = max(1, int(round(bw * scale)))
+    target_h = max(1, int(round(bh * scale)))
+    # Preserve PNG aspect ratio: pick the dimension that fills the bbox
+    # without overflowing, then center.
+    ov_aspect = ov.shape[1] / ov.shape[0]
+    box_aspect = target_w / target_h
+    if ov_aspect > box_aspect:
+        new_w = target_w
+        new_h = max(1, int(round(target_w / ov_aspect)))
+    else:
+        new_h = target_h
+        new_w = max(1, int(round(target_h * ov_aspect)))
+    if (ov.shape[1], ov.shape[0]) != (new_w, new_h):
+        scaled = cv2.resize(ov, (new_w, new_h), interpolation=cv2.INTER_LANCZOS4)
+        cv2.imwrite(overlay_path, scaled)
+    cx = bx + bw / 2.0
+    cy = by + bh / 2.0
+    return (round(cx - new_w / 2.0), round(cy - new_h / 2.0), new_w, new_h)
+
+
+def refine_via_alpha_diff(base_path, composite_path, results, ov_dir):
+    """Visual analysis: the asset pack's "Controller Overlay" PNG is the
+    base body + every press highlight composited together. Subtract the
+    base alpha channel from the overlay alpha and the residual is exactly
+    the union of press highlights. Connected-component labeling of that
+    residual gives one bbox per highlight, which we match to each layout
+    target by proximity to the SVG-derived centroid.
+
+    This replaces guesswork (per-element scale percentages) and per-target
+    template matching with one direct measurement of where and how big
+    each highlight ACTUALLY appears in the asset pack's composite. As a
+    side effect the press overlay PNGs on disk are resized to match their
+    measured bbox, so subsequent rendering uses the right pixel sizes."""
+    base = cv2.imread(base_path, cv2.IMREAD_UNCHANGED)
+    comp = cv2.imread(composite_path, cv2.IMREAD_UNCHANGED)
+    if base is None or comp is None:
+        print("  WARNING: base or composite missing; skipping alpha-diff refinement")
+        return results
+    if base.shape != comp.shape:
+        print(f"  WARNING: base {base.shape} != composite {comp.shape}; skipping alpha-diff refinement")
+        return results
+
+    base_alpha = base[:, :, 3].astype(int)
+    comp_alpha = comp[:, :, 3].astype(int)
+    # Pixels where the composite is more opaque than the base ARE the
+    # press-highlight regions. Threshold above anti-alias noise.
+    diff = (comp_alpha - base_alpha).astype(np.int32)
+    mask = (diff > 16).astype(np.uint8)
+
+    # Connected components — one blob per visible highlight.
+    num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(mask, connectivity=8)
+    blobs = []  # list of (cx, cy, x, y, w, h, area)
+    for li in range(1, num_labels):
+        x, y, w, h, area = stats[li]
+        if area < 80:  # discard tiny anti-alias specks
+            continue
+        blobs.append((float(centroids[li][0]), float(centroids[li][1]), int(x), int(y), int(w), int(h), int(area)))
+    print(f"  alpha-diff blobs: {len(blobs)}")
+
+    used = set()
+    refined = []
+    for filename, target, etype, x, y, w, h in results:
+        if not filename:
+            # Manual zone (e.g., DualSense touchpad) — pass through unchanged.
+            refined.append((filename, target, etype, x, y, w, h))
+            continue
+
+        ref_cx = x + w / 2.0
+        ref_cy = y + h / 2.0
+
+        # Score blobs: distance + a small size-penalty for blobs that are
+        # *much* bigger than the target's hint size, so a single huge blob
+        # (e.g., a full Xbox guide LED ring) doesn't capture small targets
+        # that happen to sit nearby.
+        best = None  # (score, blob_idx)
+        for bi, (bcx, bcy, bx, by, bw, bh, area) in enumerate(blobs):
+            if bi in used: continue
+            dist = ((bcx - ref_cx) ** 2 + (bcy - ref_cy) ** 2) ** 0.5
+            # Cap distance to a reasonable physical neighborhood — we
+            # allow ~150 px movement which covers any plausible scale
+            # change but rejects far-side matches.
+            if dist > 200: continue
+            if best is None or dist < best[0]:
+                best = (dist, bi)
+
+        if best is None:
+            print(f"  KEEP   {target:20s}: no blob within range, keeping SVG position {ov_w0_str(filename, ov_dir)}")
+            refined.append((filename, target, etype, x, y, w, h))
+            continue
+
+        used.add(best[1])
+        bcx, bcy, bx, by, bw, bh, area = blobs[best[1]]
+
+        # Resize the source PNG to the measured blob size so that when the
+        # 2D view paints the overlay at this rect, it fills the correct
+        # area without aspect distortion. Preserve the PNG's aspect: pick
+        # the dimension closest to the blob's aspect.
+        ov_path = os.path.join(ov_dir, filename)
+        ov = cv2.imread(ov_path, cv2.IMREAD_UNCHANGED)
+        if ov is not None and ov.shape[2] >= 4 and (ov.shape[1] != bw or ov.shape[0] != bh):
+            scaled = cv2.resize(ov, (bw, bh), interpolation=cv2.INTER_LANCZOS4)
+            cv2.imwrite(ov_path, scaled)
+            print(f"  BLOB   {target:20s}: bbox=({bx},{by}) {bw}x{bh}  PNG {ov.shape[1]}x{ov.shape[0]} -> {bw}x{bh}  dist={best[0]:.0f}")
+        else:
+            print(f"  BLOB   {target:20s}: bbox=({bx},{by}) {bw}x{bh}  dist={best[0]:.0f}")
+
+        refined.append((filename, target, etype, bx, by, bw, bh))
+
+    return refined
+
+
+def ov_w0_str(filename, ov_dir):
+    p = os.path.join(ov_dir, filename)
+    if not os.path.exists(p): return "(missing)"
+    im = cv2.imread(p, cv2.IMREAD_UNCHANGED)
+    return f"({im.shape[1]}x{im.shape[0]})" if im is not None else "(unreadable)"
+
+
+def refine_with_composite(composite_path, results, search_radius=40, multiscale=False,
+                          scale_min=0.5, scale_max=2.0, scale_step=0.05,
+                          confidence_threshold=0.3):
+    """Refine overlay positions (and optionally sizes) by alpha-channel
+    template matching against the composite overlay PNG.
+
+    Default mode (multiscale=False): single-scale matching at the overlay's
+    native pixel size, restricted to a neighborhood of the SVG-derived
+    position. This is what Xbox 360 / DS4 / DualSense use — their press
+    overlays already ship at the right scale.
+
+    Multi-scale mode: try a range of scale factors against the entire
+    composite, pick the best (scale, position) per overlay, AND resize the
+    overlay PNG on disk to match the chosen scale. Used by Xbox One / Xbox
+    Series, where the asset pack ships press overlays at scales that don't
+    match the base PNG (Xbox One face buttons authored at ~5.6% of base
+    width vs Xbox 360's 8.2%, Xbox Series press overlays authored at 2x of
+    base scale). Visual analysis instead of hand-tuned percentages."""
     composite = cv2.imread(composite_path, cv2.IMREAD_UNCHANGED)
     if composite is None or composite.shape[2] < 4:
         print("  WARNING: Could not load composite overlay for refinement")
@@ -193,6 +343,11 @@ def refine_with_composite(composite_path, results, search_radius=40):
 
     refined = []
     for filename, target, etype, x, y, w, h in results:
+        if not filename:
+            # Manual zone (e.g., DualSense touchpad); no PNG to match.
+            refined.append((filename, target, etype, x, y, w, h))
+            continue
+
         overlay_path = os.path.join(os.path.dirname(composite_path), filename)
         ov = cv2.imread(overlay_path, cv2.IMREAD_UNCHANGED)
         if ov is None or ov.shape[2] < 4:
@@ -200,26 +355,83 @@ def refine_with_composite(composite_path, results, search_radius=40):
             continue
 
         ov_alpha = ov[:, :, 3].astype(np.float32)
-        ov_h, ov_w = ov_alpha.shape
+        ov_h0, ov_w0 = ov_alpha.shape
 
-        # Define search region around SVG position
-        sx = max(0, x - search_radius)
-        sy = max(0, y - search_radius)
-        ex = min(comp_w, x + ov_w + search_radius)
-        ey = min(comp_h, y + ov_h + search_radius)
+        if multiscale:
+            # Center the search around the SVG-derived (x, y) so we don't
+            # match a stylistically-similar highlight on the OTHER side of
+            # the controller. Reference position = the centroid of the SVG
+            # element, scaled to PNG pixels:
+            ref_cx = x + ov_w0 / 2.0
+            ref_cy = y + ov_h0 / 2.0
+            # Allow a generous radius — scaled overlays can shift position
+            # several tens of pixels when growing/shrinking, but not jump
+            # to a completely different button.
+            position_radius = max(80, max(ov_w0, ov_h0))
 
-        # Ensure search region can fit the template
-        if ex - sx < ov_w or ey - sy < ov_h:
-            refined.append((filename, target, etype, x, y, w, h))
+            best = None  # (confidence, scale, x_pos, y_pos, scaled_w, scaled_h)
+            for scale_pct in range(int(scale_min * 100), int(scale_max * 100) + 1, int(scale_step * 100)):
+                s = scale_pct / 100.0
+                new_w = max(1, int(round(ov_w0 * s)))
+                new_h = max(1, int(round(ov_h0 * s)))
+                if new_w > comp_w or new_h > comp_h:
+                    continue
+                scaled = cv2.resize(ov_alpha, (new_w, new_h), interpolation=cv2.INTER_LANCZOS4)
+                try:
+                    result = cv2.matchTemplate(comp_alpha, scaled, cv2.TM_CCOEFF_NORMED)
+                except cv2.error:
+                    continue
+                # Restrict candidate positions: the matched template's
+                # CENTER must lie within position_radius of the reference
+                # centroid. matchTemplate result[ty,tx] = match score for
+                # template's TOP-LEFT at (tx,ty); convert to center.
+                rh, rw = result.shape
+                # Build mask of valid (tx, ty)
+                tys, txs = np.indices((rh, rw))
+                cxs = txs + new_w / 2.0
+                cys = tys + new_h / 2.0
+                dist = np.hypot(cxs - ref_cx, cys - ref_cy)
+                masked = np.where(dist <= position_radius, result, -np.inf)
+                if not np.isfinite(masked).any():
+                    continue
+                max_val = float(masked.max())
+                idx = np.unravel_index(np.argmax(masked), masked.shape)
+                tx_best, ty_best = int(idx[1]), int(idx[0])
+                if best is None or max_val > best[0]:
+                    best = (max_val, s, tx_best, ty_best, new_w, new_h)
+
+            if best is not None and best[0] > confidence_threshold:
+                conf, s, rx, ry, new_w, new_h = best
+                if abs(s - 1.0) > 0.02:
+                    # Resize the source PNG on disk to the matched scale so
+                    # subsequent rendering uses the correct pixel size.
+                    scaled_full = cv2.resize(ov, (new_w, new_h), interpolation=cv2.INTER_LANCZOS4)
+                    cv2.imwrite(overlay_path, scaled_full)
+                    print(f"  RESIZE {target:20s}: {ov_w0}x{ov_h0} -> {new_w}x{new_h} @ s={s:.2f} conf={conf:.3f} pos=({rx},{ry})")
+                else:
+                    print(f"  REFINE {target:20s}: pos=({x},{y}) -> ({rx},{ry}) conf={conf:.3f}")
+                refined.append((filename, target, etype, rx, ry, new_w, new_h))
+            else:
+                conf = best[0] if best else 0.0
+                print(f"  SKIP   {target:20s}: low multi-scale confidence {conf:.3f}, keeping SVG position")
+                refined.append((filename, target, etype, x, y, w, h))
             continue
 
+        # Single-scale (default) — search around SVG-derived position.
+        sx = max(0, x - search_radius)
+        sy = max(0, y - search_radius)
+        ex = min(comp_w, x + ov_w0 + search_radius)
+        ey = min(comp_h, y + ov_h0 + search_radius)
+        if ex - sx < ov_w0 or ey - sy < ov_h0:
+            refined.append((filename, target, etype, x, y, w, h))
+            continue
         search_region = comp_alpha[sy:ey, sx:ex]
 
         try:
             result = cv2.matchTemplate(search_region, ov_alpha, cv2.TM_CCOEFF_NORMED)
             _, max_val, _, max_loc = cv2.minMaxLoc(result)
 
-            if max_val > 0.3:
+            if max_val > confidence_threshold:
                 rx = sx + max_loc[0]
                 ry = sy + max_loc[1]
                 delta = abs(rx - x) + abs(ry - y)
@@ -550,43 +762,53 @@ def _process_xbox_modern(profile_name, svg_path, base_relpath, ov_subdir,
     ov_dir = os.path.join(MODELS_DIR, ov_subdir)
     results = []
 
-    def add(svg_label, filename, target, elem_type):
+    def add(svg_label, filename, target, elem_type, fit_scale=1.0):
+        """Place the press-overlay PNG sized to the SVG label's bbox.
+        Resizes the PNG on disk so the layout entry's width/height match
+        the actual button region drawn on the controller silhouette."""
         bbox = get_element_pixel_bbox(root, svg_label, scale)
         if bbox is None:
             print(f"  MISS: {svg_label}")
             return None
         overlay_path = os.path.join(ov_dir, filename)
-        pos = center_overlay_on_bbox(bbox, overlay_path)
+        pos = fit_overlay_to_bbox(bbox, overlay_path, scale=fit_scale)
         results.append((filename, target, elem_type, pos[0], pos[1], pos[2], pos[3]))
         print(f"  {target:20s} ({svg_label:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
         return bbox
 
     print(f"Parsing {profile_name} SVG elements...")
 
-    # Face buttons (individual labels in both SVGs).
+    # Face buttons (individual labels in both SVGs). Sized to the SVG
+    # element's own bbox; PNG is resized on disk to match.
     add("A Button", face_btn_filenames["A"], "ButtonA", "Button")
     add("B Button", face_btn_filenames["B"], "ButtonB", "Button")
     add("X Button", face_btn_filenames["X"], "ButtonX", "Button")
     add("Y Button", face_btn_filenames["Y"], "ButtonY", "Button")
 
-    # Bumpers — neither Xbox SVG labels individual L/R bumpers, only the
-    # shoulder group as a whole. Pin each bumper PNG to the corresponding
-    # OUTER edge of the group bbox: L flush against the left edge,
-    # R flush against the right edge. Centering each PNG within its own
-    # half of the group puts them too inward (the group bbox spans the
-    # empty middle between the two bumpers as well).
+    # Bumpers — the SVG only labels the bumper PAIR as one group; that
+    # group's bbox spans the wide empty zone between the two bumpers, so
+    # fitting a PNG to half the group oversizes it ~2x. The Xbox 360 layout
+    # (which renders correctly) ships its bumper PNG at ~20% of base width;
+    # use the same target width for Xbox One/Series and pin each PNG to the
+    # corresponding outer edge of the bumper group bbox. PNG aspect ratio is
+    # preserved so the highlight shape stays correct.
     bumper_label = bumper_filenames["GroupLabel"]
     bumper_bbox = get_element_pixel_bbox(root, bumper_label, scale)
     if bumper_bbox:
         bx, by, bw, bh = bumper_bbox
+        target_bumper_w = int(round(base_w * 0.202))
         for side, fn, target in [("L", bumper_filenames["L"], "LeftShoulder"),
                                  ("R", bumper_filenames["R"], "RightShoulder")]:
-            ov = cv2.imread(os.path.join(ov_dir, fn), cv2.IMREAD_UNCHANGED)
-            ov_w, ov_h = ov.shape[1], ov.shape[0]
-            x = round(bx) if side == "L" else round(bx + bw - ov_w)
-            y = round(by + (bh - ov_h) / 2)
-            results.append((fn, target, "Button", x, y, ov_w, ov_h))
-            print(f"  {target:20s} ({bumper_label} edge {side}) -> ({x:4d}, {y:4d}) {ov_w:4d}x{ov_h:3d}")
+            overlay_path = os.path.join(ov_dir, fn)
+            ov = cv2.imread(overlay_path, cv2.IMREAD_UNCHANGED)
+            if ov is None: continue
+            target_h = max(1, int(round(target_bumper_w * ov.shape[0] / ov.shape[1])))
+            scaled = cv2.resize(ov, (target_bumper_w, target_h), interpolation=cv2.INTER_LANCZOS4)
+            cv2.imwrite(overlay_path, scaled)
+            x = round(bx) if side == "L" else round(bx + bw - target_bumper_w)
+            y = round(by + (bh - target_h) / 2)
+            results.append((fn, target, "Button", x, y, target_bumper_w, target_h))
+            print(f"  {target:20s} ({bumper_label} edge {side}) -> ({x:4d}, {y:4d}) {target_bumper_w:4d}x{target_h:3d}")
 
     # Triggers
     add(trigger_filenames["LLabel"], trigger_filenames["L"], "LeftTrigger", "Trigger")
@@ -595,13 +817,14 @@ def _process_xbox_modern(profile_name, svg_path, base_relpath, ov_subdir,
     # System buttons — Xbox Series adds Share; both have Menu / View / Guide.
     add("Menu Button", menu_filename, "ButtonStart", "Button")
     add("View Button", view_filename, "ButtonBack", "Button")
-    # Guide button — group has hub LEDs; prefer the "Xbox Button" inner label
-    # if present, fall back to the full guide group label.
+    # Guide button — group bbox includes hub LEDs; prefer the "Xbox Button"
+    # inner label (= the Xbox-logo button itself, no LED ring) if present,
+    # else fall back to the full guide group.
     guide_bbox = get_element_pixel_bbox(root, "Xbox Button", scale)
     if guide_bbox is None:
         guide_bbox = get_element_pixel_bbox(root, "Xbox Guide Button", scale)
     if guide_bbox:
-        pos = center_overlay_on_bbox(guide_bbox, os.path.join(ov_dir, guide_filename))
+        pos = fit_overlay_to_bbox(guide_bbox, os.path.join(ov_dir, guide_filename))
         results.append((guide_filename, "ButtonGuide", "Button", pos[0], pos[1], pos[2], pos[3]))
         print(f"  {'ButtonGuide':20s} ({'Xbox Button/Guide':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
 
@@ -611,16 +834,15 @@ def _process_xbox_modern(profile_name, svg_path, base_relpath, ov_subdir,
     left_bbox = get_element_pixel_bbox(root, "Left Stick", scale)
     right_bbox = get_element_pixel_bbox(root, "Right Stick", scale)
     if left_bbox:
-        pos = center_overlay_on_bbox(left_bbox, os.path.join(ov_dir, stick_click_filename))
+        pos = fit_overlay_to_bbox(left_bbox, os.path.join(ov_dir, stick_click_filename))
         results.append((stick_click_filename, "LeftThumbButton", "StickClick", pos[0], pos[1], pos[2], pos[3]))
         print(f"  {'LeftThumbButton':20s} ({'Left Stick':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
     if right_bbox:
-        pos = center_overlay_on_bbox(right_bbox, os.path.join(ov_dir, stick_click_filename))
+        pos = fit_overlay_to_bbox(right_bbox, os.path.join(ov_dir, stick_click_filename))
         results.append((stick_click_filename, "RightThumbButton", "StickClick", pos[0], pos[1], pos[2], pos[3]))
         print(f"  {'RightThumbButton':20s} ({'Right Stick':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
 
-    # D-PAD — pick whichever group label exists in this SVG and split into
-    # quadrants. Same approach Xbox 360 uses.
+    # D-PAD — same group-split approach as bumpers, but four quadrants.
     dpad_bbox = None
     for label in dpad_filenames["GroupLabels"]:
         dpad_bbox = get_element_pixel_bbox(root, label, scale)
@@ -629,28 +851,19 @@ def _process_xbox_modern(profile_name, svg_path, base_relpath, ov_subdir,
             break
     if dpad_bbox:
         dx, dy, dw, dh = dpad_bbox
-        cx, cy = dx + dw / 2, dy + dh / 2
-        for direction, fn, target in [("Up", dpad_filenames["Up"], "DPadUp"),
-                                       ("Down", dpad_filenames["Down"], "DPadDown"),
-                                       ("Left", dpad_filenames["Left"], "DPadLeft"),
-                                       ("Right", dpad_filenames["Right"], "DPadRight")]:
-            ov = cv2.imread(os.path.join(ov_dir, fn), cv2.IMREAD_UNCHANGED)
-            ov_w, ov_h = ov.shape[1], ov.shape[0]
-            if direction == "Up":
-                x = round(cx - ov_w / 2); y = round(dy - ov_h * 0.1)
-            elif direction == "Down":
-                x = round(cx - ov_w / 2); y = round(dy + dh - ov_h * 0.9)
-            elif direction == "Left":
-                x = round(dx - ov_w * 0.1); y = round(cy - ov_h / 2)
-            else:  # Right
-                x = round(dx + dw - ov_w * 0.9); y = round(cy - ov_h / 2)
-            results.append((fn, target, "Button", x, y, ov_w, ov_h))
-            print(f"  {target:20s} ({'D-PAD computed':20s}) -> ({x:4d}, {y:4d}) {ov_w:4d}x{ov_h:3d}")
-
-    # Refine via composite alpha-channel template matching.
-    composite_path = os.path.join(ov_dir, composite_filename)
-    print(f"\nRefining {profile_name} positions via alpha-channel template matching...")
-    results = refine_with_composite(composite_path, results)
+        half_w, half_h = dw / 2.0, dh / 2.0
+        # Up = top half of full width / Down = bottom / Left = left half full height / Right = right.
+        # The PNG aspect inside fit_overlay_to_bbox controls the actual
+        # shape inside each quadrant rect.
+        for direction, fn, target, sub in [
+            ("Up",    dpad_filenames["Up"],    "DPadUp",    (dx,          dy,           dw,     half_h)),
+            ("Down",  dpad_filenames["Down"],  "DPadDown",  (dx,          dy + half_h,  dw,     half_h)),
+            ("Left",  dpad_filenames["Left"],  "DPadLeft",  (dx,          dy,           half_w, dh)),
+            ("Right", dpad_filenames["Right"], "DPadRight", (dx + half_w, dy,           half_w, dh)),
+        ]:
+            pos = fit_overlay_to_bbox(sub, os.path.join(ov_dir, fn))
+            results.append((fn, target, "Button", pos[0], pos[1], pos[2], pos[3]))
+            print(f"  {target:20s} ({'D-PAD '+direction:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
 
     return {"base_width": base_w, "base_height": base_h, "results": results}
 
@@ -718,7 +931,7 @@ def process_xbox_series():
     share_bbox = get_element_pixel_bbox(root, "Share Button", 1.0)
     if share_bbox:
         ov_dir = os.path.join(MODELS_DIR, "XBOXSERIES")
-        pos = center_overlay_on_bbox(share_bbox, os.path.join(ov_dir, "XBSeries_ShareButton.png"))
+        pos = fit_overlay_to_bbox(share_bbox, os.path.join(ov_dir, "XBSeries_ShareButton.png"))
         data["results"].append(("XBSeries_ShareButton.png", "ButtonShare", "Button", pos[0], pos[1], pos[2], pos[3]))
         print(f"  {'ButtonShare':20s} ({'Share Button':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
     return data

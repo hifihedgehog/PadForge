@@ -70,6 +70,27 @@ namespace PadForge.Common.Input
         // by key lookup and is fine with reused references.
         private readonly Dictionary<HMAxis, float> _axesScratch = new();
 
+        // Per-row HMAxis assignments for the Custom Extended path,
+        // resolved once at construction from
+        // HMaestroProfileCatalog.GetLayoutAxisMap. Indexed by PadForge's
+        // (stick row, trigger row) order — stick row 0's X+Y go to
+        // _layoutStickAxes[0].x / .y; trigger row N goes to
+        // _layoutTriggerAxes[N]. Caching here keeps the 1 kHz
+        // SubmitExtendedRawState path off the layout-pattern-match
+        // dispatch on every frame.
+        //
+        // Layout-derived (preferred) when the profile authors a Layout
+        // block; falls back to the classifier-derived simple view
+        // otherwise. The fallback path matters for non-gamepad shapes
+        // — wheels in particular fool the classifier into reporting two
+        // sticks (Z+Rz misclassified as right-stick in the 4-axis
+        // DInput heuristic), but the authored Layout knows the wheel
+        // uses X for steering and Z/Rz/Y for the three pedals. Without
+        // this map, PadForge's Trigger 1/2/3 rows had nothing to write
+        // to on the wire and the wheel mappings silently dropped.
+        private (HMAxis x, HMAxis y)[] _layoutStickAxes = System.Array.Empty<(HMAxis, HMAxis)>();
+        private HMAxis[] _layoutTriggerAxes = System.Array.Empty<HMAxis>();
+
         public HMaestroVirtualController(HMContext ctx, HMProfile profile, VirtualControllerType type)
         {
             _ctx = ctx ?? throw new ArgumentNullException(nameof(ctx));
@@ -90,6 +111,14 @@ namespace PadForge.Common.Input
             _axRightStickY = sticks.Count   > 1 ? sticks[1].YAxis  : HMAxis.None;
             _axLeftTrigger  = triggers.Count > 0 ? triggers[0].Axis : HMAxis.None;
             _axRightTrigger = triggers.Count > 1 ? triggers[1].Axis : HMAxis.None;
+
+            // Layout-aware per-row axis map for the Custom Extended path.
+            // GetLayoutAxisMap prefers the profile's Layout block when
+            // authored (so a wheel's pedals correctly route to Z/Rz/Y
+            // instead of being dropped on the floor by the classifier
+            // that thinks Z+Rz form a second stick).
+            (_layoutStickAxes, _layoutTriggerAxes) =
+                HMaestroProfileCatalog.GetLayoutAxisMap(_profile);
         }
 
         public void Connect()
@@ -518,35 +547,44 @@ namespace PadForge.Common.Input
             // 0 triggers, 0 sticks + 3 triggers, etc.) there can be
             // more or fewer axes than the 6-slot surface accommodates,
             // and the synthetic profile's descriptor regenerates
-            // whenever the user changes counts. Use the profile's
-            // simple-view Sticks / Triggers lists to drive the dict so
-            // the wire-side axes match whatever the descriptor declares,
-            // bounded by the consumer's own (sticks, triggers) layout
-            // counts that drive raw.Axes' positional indexing.
+            // whenever the user changes counts.
+            //
+            // Per-row HMAxis assignments come from _layoutStickAxes /
+            // _layoutTriggerAxes, cached at construction by
+            // HMaestroProfileCatalog.GetLayoutAxisMap. That helper reads
+            // the profile's authored Layout block when available — which
+            // matters for non-gamepad shapes (wheels, HOTAS, pedals)
+            // whose classifier-derived simple view drops axes on the
+            // floor. With the layout-derived map, PadForge's Trigger
+            // 1 / 2 / 3 rows on a G25 correctly write to HMAxis.Z / Rz /
+            // Y (accelerator / brake / clutch) instead of writing
+            // nowhere.
             //
             // raw.Axes is HID-convention (Y+ = down) per Step 3, so no
             // additional Y inversion vs. the basic SubmitGamepadState
             // path's XInput→HID flip — both stick X and stick Y use
-            // the same plain ToHmRange shift.
-            var profileSticks = _profile.Sticks;
-            var profileTriggers = _profile.Triggers;
+            // the same plain ToHmRange shift. HMAxis.None entries (e.g.
+            // a wheel's stick row carries the wheel on X but no
+            // wheel-side Y) are skipped.
             _axesScratch.Clear();
-            int sticksToWrite = System.Math.Min(sticks, profileSticks.Count);
+            int sticksToWrite = System.Math.Min(sticks, _layoutStickAxes.Length);
             for (int s = 0; s < sticksToWrite; s++)
             {
                 int xi = StickX(s);
                 int yi = StickY(s);
-                if (profileSticks[s].XAxis != HMAxis.None && xi >= 0)
-                    _axesScratch[profileSticks[s].XAxis] = ToHmRange(Ax(xi));
-                if (profileSticks[s].YAxis != HMAxis.None && yi >= 0)
-                    _axesScratch[profileSticks[s].YAxis] = ToHmRange(Ax(yi));
+                var (xAxis, yAxis) = _layoutStickAxes[s];
+                if (xAxis != HMAxis.None && xi >= 0)
+                    _axesScratch[xAxis] = ToHmRange(Ax(xi));
+                if (yAxis != HMAxis.None && yi >= 0)
+                    _axesScratch[yAxis] = ToHmRange(Ax(yi));
             }
-            int triggersToWrite = System.Math.Min(triggers, profileTriggers.Count);
+            int triggersToWrite = System.Math.Min(triggers, _layoutTriggerAxes.Length);
             for (int t = 0; t < triggersToWrite; t++)
             {
                 int ti = TriggerIdx(t);
-                if (profileTriggers[t].Axis != HMAxis.None && ti >= 0)
-                    _axesScratch[profileTriggers[t].Axis] = ToHmRange(Ax(ti));
+                var tAxis = _layoutTriggerAxes[t];
+                if (tAxis != HMAxis.None && ti >= 0)
+                    _axesScratch[tAxis] = ToHmRange(Ax(ti));
             }
 
             var state = new HMGamepadState

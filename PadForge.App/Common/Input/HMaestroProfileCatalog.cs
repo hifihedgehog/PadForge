@@ -365,6 +365,165 @@ namespace PadForge.Common.Input
             return (sticks, triggers);
         }
 
+        /// <summary>
+        /// Resolve the per-row HID axis usages PadForge's Extended pipeline
+        /// should drive on the wire. Companion to <see cref="GetLayoutCounts"/>:
+        /// <c>GetLayoutCounts</c> produces the row count the UI exposes;
+        /// <c>GetLayoutAxisMap</c> produces the <see cref="HMAxis"/> each row
+        /// writes through. Both prefer the v1.3.9
+        /// <see cref="HMProfile.Layout"/> block when authored and fall back
+        /// to the classifier-derived simple view otherwise.
+        ///
+        /// <para>The layout-vs-classifier distinction matters for non-
+        /// gamepad shapes. A wheel like the Logitech G25 has X/Y/Z/Rz
+        /// where Y is the clutch pedal and Z/Rz are accelerator/brake;
+        /// the classifier paints Z+Rz as a second stick (4-axis DInput
+        /// heuristic), so <c>HMProfile.Triggers</c> reads as empty. Routing
+        /// PadForge's Trigger 1 / 2 / 3 rows through that empty list silently
+        /// drops every trigger on the way to the wire — which is exactly
+        /// what surfaced after the row-count fix landed first. The
+        /// authored Layout block knows the wheel uses X for steering and
+        /// Z/Rz/Y for the three pedals; this helper hands those usages
+        /// back per-row in PadForge's row order.</para>
+        ///
+        /// <para>Returns:</para>
+        /// <list type="bullet">
+        /// <item><c>stickAxes[i]</c> = (XAxis, YAxis) tuple for stick row <c>i</c>.
+        /// <c>YAxis</c> may be <see cref="HMAxis.None"/> when the layout's
+        /// stick is single-axis (a wheel's wheel axis, a single-axis
+        /// accessory, etc.) — the caller skips writing the Y position
+        /// to the wire when so flagged.</item>
+        /// <item><c>triggerAxes[i]</c> = the <see cref="HMAxis"/> for trigger row <c>i</c>.</item>
+        /// </list>
+        ///
+        /// <para>The returned arrays' lengths match the
+        /// <c>(sticks, triggers)</c> tuple from <see cref="GetLayoutCounts"/>
+        /// for the same profile (after the 8-axis clamp). Callers in
+        /// <c>SubmitExtendedRawState</c> iterate by row and write
+        /// <c>state.Axes[stickAxes[i].x] = ...</c> directly, bypassing
+        /// <see cref="HMProfile.Sticks"/> / <see cref="HMProfile.Triggers"/>
+        /// entirely so the classifier's misclassification never bites the
+        /// wire layer.</para>
+        /// </summary>
+        public static ((HMAxis x, HMAxis y)[] stickAxes, HMAxis[] triggerAxes) GetLayoutAxisMap(HMProfile profile)
+        {
+            if (profile == null) return (System.Array.Empty<(HMAxis, HMAxis)>(), System.Array.Empty<HMAxis>());
+
+            var (sticks, triggers) = GetLayoutCounts(profile);
+            var stickAxes = new (HMAxis, HMAxis)[sticks];
+            var triggerAxes = new HMAxis[triggers];
+
+            switch (profile.Layout)
+            {
+                case HMGamepadLayout gp:
+                    for (int s = 0; s < sticks; s++)
+                    {
+                        var st = (s < (gp.Sticks?.Count ?? 0)) ? gp.Sticks[s] : null;
+                        stickAxes[s] = st != null ? (st.XAxis, st.YAxis) : (HMAxis.None, HMAxis.None);
+                    }
+                    for (int t = 0; t < triggers; t++)
+                    {
+                        var tr = (t < (gp.Triggers?.Count ?? 0)) ? gp.Triggers[t] : null;
+                        triggerAxes[t] = tr?.Axis ?? HMAxis.None;
+                    }
+                    break;
+
+                case HMWheelLayout w:
+                    // 1 stick row carrying the steering axis on X; Y has no
+                    // wheel-side counterpart (the layout's Y, when present,
+                    // is a pedal rather than a paired stick axis). The
+                    // submit path skips writing Y when YAxis is None, so
+                    // the user's binding for the row's Y position is
+                    // silently dropped — fine, since the profile didn't
+                    // declare anything Y-shaped on the steering side.
+                    if (sticks > 0) stickAxes[0] = (w.Wheel?.Axis ?? HMAxis.None, HMAxis.None);
+                    for (int t = 0; t < triggers; t++)
+                        triggerAxes[t] = (t < (w.Pedals?.Count ?? 0)) ? w.Pedals[t].Axis : HMAxis.None;
+                    break;
+
+                case HMJoystickLayout j:
+                    if (sticks > 0) stickAxes[0] = (j.Stick?.XAxis ?? HMAxis.None, j.Stick?.YAxis ?? HMAxis.None);
+                    {
+                        int t = 0;
+                        if (t < triggers && j.Throttle != null) triggerAxes[t++] = j.Throttle.Axis;
+                        if (t < triggers && j.Rudder?.Kind == HMRudderKind.Pedals) triggerAxes[t++] = j.Rudder.Axis;
+                        for (; t < triggers; t++) triggerAxes[t] = HMAxis.None;
+                    }
+                    break;
+
+                case HMFlightStickLayout fs:
+                    if (sticks > 0) stickAxes[0] = (fs.Stick?.XAxis ?? HMAxis.None, fs.Stick?.YAxis ?? HMAxis.None);
+                    {
+                        int t = 0;
+                        if (t < triggers && fs.Throttle != null) triggerAxes[t++] = fs.Throttle.Axis;
+                        if (t < triggers && fs.Rudder?.Kind == HMRudderKind.Pedals) triggerAxes[t++] = fs.Rudder.Axis;
+                        for (; t < triggers; t++) triggerAxes[t] = HMAxis.None;
+                    }
+                    break;
+
+                case HMHotasLayout h:
+                    if (sticks > 0) stickAxes[0] = (h.Stick?.XAxis ?? HMAxis.None, h.Stick?.YAxis ?? HMAxis.None);
+                    {
+                        int t = 0;
+                        if (t < triggers && h.ThrottlePrimary != null) triggerAxes[t++] = h.ThrottlePrimary.Axis;
+                        if (h.ThrottleSecondary != null)
+                            for (int k = 0; k < h.ThrottleSecondary.Count && t < triggers; k++)
+                                triggerAxes[t++] = h.ThrottleSecondary[k].Axis;
+                        if (t < triggers && h.RudderModule != null) triggerAxes[t++] = h.RudderModule.Axis;
+                        for (; t < triggers; t++) triggerAxes[t] = HMAxis.None;
+                    }
+                    break;
+
+                case HMPedalsLayout p:
+                    for (int t = 0; t < triggers; t++)
+                        triggerAxes[t] = (t < (p.Pedals?.Count ?? 0)) ? p.Pedals[t].Axis : HMAxis.None;
+                    break;
+
+                case HMHandbrakeLayout hb:
+                    if (triggers > 0) triggerAxes[0] = hb.Axis;
+                    break;
+
+                case HMSingleAxisAccessoryLayout sa:
+                    if (triggers > 0) triggerAxes[0] = sa.Axis;
+                    break;
+
+                case HMGuitarLayout g:
+                    if (triggers > 0 && g.WhammyAxis.HasValue) triggerAxes[0] = g.WhammyAxis.Value;
+                    break;
+
+                case HMMotionWandLayout m:
+                    if (triggers > 0 && m.TriggerAxis.HasValue) triggerAxes[0] = m.TriggerAxis.Value;
+                    break;
+
+                case HMShifterLayout:
+                case HMArcadeStickLayout:
+                case HMDancePadLayout:
+                case HMRemoteLayout:
+                case HMControllerAdapterLayout:
+                    // No analog axes; arrays stay empty per GetLayoutCounts.
+                    break;
+
+                case HMUnspecifiedLayout:
+                case null:
+                default:
+                    // Fall back to the classifier's simple view. Same as
+                    // the GetLayoutCounts fallback path so per-row HMAxis
+                    // assignment matches the row count the UI exposes.
+                    var simpleSticks = profile.Sticks;
+                    var simpleTriggers = profile.Triggers;
+                    for (int s = 0; s < sticks; s++)
+                    {
+                        var st = (s < simpleSticks.Count) ? simpleSticks[s] : null;
+                        stickAxes[s] = st != null ? (st.XAxis, st.YAxis) : (HMAxis.None, HMAxis.None);
+                    }
+                    for (int t = 0; t < triggers; t++)
+                        triggerAxes[t] = (t < simpleTriggers.Count) ? simpleTriggers[t].Axis : HMAxis.None;
+                    break;
+            }
+
+            return (stickAxes, triggerAxes);
+        }
+
         private static bool IsXboxVendor(string vendor) =>
             !string.IsNullOrEmpty(vendor) &&
             vendor.StartsWith("Microsoft", StringComparison.OrdinalIgnoreCase);

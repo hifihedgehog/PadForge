@@ -485,15 +485,19 @@ namespace PadForge.Services
                 catch { }
             }
 
-            // Xbox 360
-            Load(Xbox360Layout.BasePath);
-            foreach (var ov in Xbox360Layout.Overlays)
-                Load($"2DModels/XBOX360/{ov.ImageFile}");
+            void LoadAll(string folder, string basePath, OverlayElement[] overlays)
+            {
+                Load(basePath);
+                foreach (var ov in overlays)
+                    if (!string.IsNullOrEmpty(ov.ImageFile))
+                        Load($"2DModels/{folder}/{ov.ImageFile}");
+            }
 
-            // DS4
-            Load(DS4Layout.BasePath);
-            foreach (var ov in DS4Layout.Overlays)
-                Load($"2DModels/DS4/{ov.ImageFile}");
+            LoadAll("XBOX360",    Xbox360Layout.BasePath,     Xbox360Layout.Overlays);
+            LoadAll("DS4",        DS4Layout.BasePath,         DS4Layout.Overlays);
+            LoadAll("DualSense",  DualSenseLayout.BasePath,   DualSenseLayout.Overlays);
+            LoadAll("XBOXONE",    XboxOneSLayout.BasePath,    XboxOneSLayout.Overlays);
+            LoadAll("XBOXSERIES", XboxSeriesXLayout.BasePath, XboxSeriesXLayout.Overlays);
 
             return cache;
         }
@@ -532,15 +536,44 @@ namespace PadForge.Services
         {
             try
             {
+                // Type aliases match the 2D-model folder names so URL queries
+                // can request "?type=DualSense" or "?type=XBOXSERIES" directly.
+                // Legacy "ds4" / "xbox360" still work for older clients.
                 var type = ctx.Request.QueryString["type"] ?? "xbox360";
-                var isDs4 = type.Equals("ds4", StringComparison.OrdinalIgnoreCase);
-
-                var baseWidth = isDs4 ? DS4Layout.BaseWidth : Xbox360Layout.BaseWidth;
-                var baseHeight = isDs4 ? DS4Layout.BaseHeight : Xbox360Layout.BaseHeight;
-                var basePath = isDs4 ? DS4Layout.BasePath : Xbox360Layout.BasePath;
-                var stickMaxTravel = isDs4 ? DS4Layout.StickMaxTravel : Xbox360Layout.StickMaxTravel;
-                var overlays = isDs4 ? DS4Layout.Overlays : Xbox360Layout.Overlays;
-                var folder = isDs4 ? "DS4" : "XBOX360";
+                int baseWidth, baseHeight;
+                string basePath, folder;
+                double stickMaxTravel;
+                OverlayElement[] overlays;
+                if (type.Equals("ds4", StringComparison.OrdinalIgnoreCase) || type.Equals("DS4", StringComparison.OrdinalIgnoreCase))
+                {
+                    baseWidth = DS4Layout.BaseWidth; baseHeight = DS4Layout.BaseHeight;
+                    basePath = DS4Layout.BasePath; overlays = DS4Layout.Overlays;
+                    stickMaxTravel = DS4Layout.StickMaxTravel; folder = "DS4";
+                }
+                else if (type.Equals("DualSense", StringComparison.OrdinalIgnoreCase))
+                {
+                    baseWidth = DualSenseLayout.BaseWidth; baseHeight = DualSenseLayout.BaseHeight;
+                    basePath = DualSenseLayout.BasePath; overlays = DualSenseLayout.Overlays;
+                    stickMaxTravel = DualSenseLayout.StickMaxTravel; folder = "DualSense";
+                }
+                else if (type.Equals("XBOXONE", StringComparison.OrdinalIgnoreCase))
+                {
+                    baseWidth = XboxOneSLayout.BaseWidth; baseHeight = XboxOneSLayout.BaseHeight;
+                    basePath = XboxOneSLayout.BasePath; overlays = XboxOneSLayout.Overlays;
+                    stickMaxTravel = XboxOneSLayout.StickMaxTravel; folder = "XBOXONE";
+                }
+                else if (type.Equals("XBOXSERIES", StringComparison.OrdinalIgnoreCase))
+                {
+                    baseWidth = XboxSeriesXLayout.BaseWidth; baseHeight = XboxSeriesXLayout.BaseHeight;
+                    basePath = XboxSeriesXLayout.BasePath; overlays = XboxSeriesXLayout.Overlays;
+                    stickMaxTravel = XboxSeriesXLayout.StickMaxTravel; folder = "XBOXSERIES";
+                }
+                else
+                {
+                    baseWidth = Xbox360Layout.BaseWidth; baseHeight = Xbox360Layout.BaseHeight;
+                    basePath = Xbox360Layout.BasePath; overlays = Xbox360Layout.Overlays;
+                    stickMaxTravel = Xbox360Layout.StickMaxTravel; folder = "XBOX360";
+                }
 
                 var sb = new StringBuilder(4096);
                 sb.Append("{\"baseWidth\":").Append(baseWidth)

@@ -308,15 +308,30 @@ namespace PadForge.Common.Input
             {
                 es.Type = MapEffectType(effectType);
                 es.Duration = duration;
-                // Gain at d[10], Direction[0] at d[13..14] in the canonical
-                // layout. SideWinder's 15-byte report uses different offsets;
-                // when fields aren't safely readable, default to full gain
-                // (no attenuation) and centered direction (balanced rumble).
-                // For Constant Force the Set Constant Force report (0x15)
-                // carries the magnitude separately, so a defaulted direction
-                // here doesn't suppress force, just routes it centrally.
-                es.Gain = d.Length > 10 ? d[10] : (byte)255;
-                es.Direction = d.Length >= 15 ? ReadU16(d, 13) : (ushort)0;
+                // Gain at d[10] and Direction[0] at d[13..14] hold ONLY for
+                // the canonical 21-byte layout. SideWinder's 15-byte report
+                // (no StartDelay / Direction[1] / TypeSpecific[1]) shifts
+                // fields earlier — d[10] becomes AxesEnable+DirEnable bits
+                // (0x04 = DirEnable) and d[13..14] are TypeSpecific[0].
+                // Reading them at canonical offsets on a short report is
+                // wrong AND silently attenuates force: byte 0x04 read as
+                // Gain produces a 4/255 ≈ 1.6% scaling that crushes all
+                // rumble to near-zero (observed postL=3..13 in capture).
+                // Default to full gain + centered direction for any
+                // non-canonical length; the per-effect magnitude rides
+                // through Set Constant / Set Periodic separately, so
+                // defaulting here doesn't suppress force, just routes it
+                // centrally with no attenuation.
+                if (d.Length >= 21)
+                {
+                    es.Gain = d[10];
+                    es.Direction = ReadU16(d, 13);
+                }
+                else
+                {
+                    es.Gain = 255;
+                    es.Direction = 0;
+                }
             }
         }
 

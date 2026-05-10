@@ -26,8 +26,59 @@ namespace PadForge.ViewModels
 
         public string Kind { get => _kind; set => SetProperty(ref _kind, value ?? "Direct"); }
         public string DeviceGuid { get => _deviceGuid; set => SetProperty(ref _deviceGuid, value ?? ""); }
-        public string Descriptor { get => _descriptor; set => SetProperty(ref _descriptor, value ?? ""); }
-        public bool Invert { get => _invert; set => SetProperty(ref _invert, value); }
+        public string Descriptor
+        {
+            get => _descriptor;
+            set
+            {
+                if (SetProperty(ref _descriptor, value ?? ""))
+                {
+                    OnPropertyChanged(nameof(IsButtonClassDescriptor));
+                    OnPropertyChanged(nameof(DirectionBadge));
+                }
+            }
+        }
+        public bool Invert
+        {
+            get => _invert;
+            set
+            {
+                if (SetProperty(ref _invert, value))
+                    OnPropertyChanged(nameof(DirectionBadge));
+            }
+        }
+
+        /// <summary>True when the descriptor is button-class (button,
+        /// POV direction, or touchpad click) — bool-yielding sources for
+        /// which a direction badge on a bipolar-axis target makes sense.
+        /// Axis / Slider sources encode their own sign so they get no
+        /// direction badge.</summary>
+        public bool IsButtonClassDescriptor
+        {
+            get
+            {
+                var d = _descriptor?.Trim() ?? "";
+                if (d.Length == 0) return false;
+                if (d.StartsWith("Button ", System.StringComparison.Ordinal)) return true;
+                if (d.StartsWith("POV ", System.StringComparison.Ordinal)) return true;
+                if (d.StartsWith("Touchpad ", System.StringComparison.Ordinal)) return true;
+                return false;
+            }
+        }
+
+        /// <summary>"→ +" or "← −" for button-class sources, depending
+        /// on the Invert flag. Empty for non-button-class sources. The
+        /// XAML-level visibility check still gates this on the parent
+        /// MappingItem.IsBipolarAxisTarget so the badge only renders on
+        /// stick-axis rows.</summary>
+        public string DirectionBadge
+        {
+            get
+            {
+                if (!IsButtonClassDescriptor) return "";
+                return _invert ? "← −" : "→ +";
+            }
+        }
         public bool HalfAxis { get => _halfAxis; set => SetProperty(ref _halfAxis, value); }
         public int DeadZone { get => _deadZone; set => SetProperty(ref _deadZone, value); }
 

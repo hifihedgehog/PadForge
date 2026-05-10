@@ -558,6 +558,16 @@ namespace PadForge.ViewModels
         public ObservableCollection<MappingSourceItem> ExtraSources { get; }
             = new ObservableCollection<MappingSourceItem>();
 
+        /// <summary>True when this row's Target is a bipolar stick axis
+        /// (LeftThumbAxisX/Y, RightThumbAxisX/Y). Drives the per-source
+        /// direction-badge visibility — badges only make sense for the
+        /// "+/−" interpretation of button sources on a bipolar axis.</summary>
+        public bool IsBipolarAxisTarget =>
+            string.Equals(TargetSettingName, "LeftThumbAxisX", StringComparison.Ordinal)
+         || string.Equals(TargetSettingName, "LeftThumbAxisY", StringComparison.Ordinal)
+         || string.Equals(TargetSettingName, "RightThumbAxisX", StringComparison.Ordinal)
+         || string.Equals(TargetSettingName, "RightThumbAxisY", StringComparison.Ordinal);
+
         private string _primarySourceDeviceGuid = "";
         /// <summary>Phase 2C — DeviceGuid of the primary source
         /// (Sources[0]) on the per-VC MappingSet row. Surfaces in the

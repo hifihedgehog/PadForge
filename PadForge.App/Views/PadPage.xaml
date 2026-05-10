@@ -1564,6 +1564,31 @@
                                                         <TextBlock Text="↳" FontSize="14"
                                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                                    Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                        <!-- Direction badge: visible only when the parent target is
+                                                             a bipolar stick axis AND this source is button-class.
+                                                             Derived from per-source Invert flag. -->
+                                                        <Border Background="{DynamicResource ControlFillColorSecondaryBrush}"
+                                                                CornerRadius="3" Padding="4,1" Margin="0,0,4,0"
+                                                                VerticalAlignment="Center">
+                                                            <Border.Style>
+                                                                <Style TargetType="Border">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                    <Style.Triggers>
+                                                                        <MultiDataTrigger>
+                                                                            <MultiDataTrigger.Conditions>
+                                                                                <Condition Binding="{Binding DataContext.IsBipolarAxisTarget,
+                                                                                            RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}" Value="True"/>
+                                                                                <Condition Binding="{Binding IsButtonClassDescriptor}" Value="True"/>
+                                                                            </MultiDataTrigger.Conditions>
+                                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                                        </MultiDataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Border.Style>
+                                                            <TextBlock Text="{Binding DirectionBadge}" FontSize="11"
+                                                                       FontWeight="SemiBold"
+                                                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                                        </Border>
                                                         <ComboBox ItemsSource="{Binding DataContext.AvailableInputs,
                                                                     RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                   SelectedValuePath="Descriptor"

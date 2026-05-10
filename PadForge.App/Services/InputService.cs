@@ -1376,50 +1376,98 @@ namespace PadForge.Services
             // thread can read the PadSetting between the clear and the rewrite,
             // seeing empty mapping strings → zero Gamepad output.
             // Mappings are only synced on explicit save, preset change, or device switch.
+            //
+            // Phase 2C — issue #61: a mapping descriptor authored via the
+            // unified-view picker can target a DIFFERENT device than the
+            // slot's currently-selected one (the user can pick from any
+            // device's grouped section). Writing all descriptors
+            // unconditionally to the selected device's PadSetting bled
+            // gamepad-class descriptors (Axis 0, Button N) into a
+            // keyboard's fields — and once the gamepad was unassigned,
+            // those stale fields became the row's "primary" via the
+            // legacy fallback, sticking the joystick at -1. Now we
+            // route each descriptor to the OWNING device's PadSetting
+            // and explicitly clear the same target on every OTHER
+            // device in the slot so any historical bleed heals over
+            // saves.
             if (syncMappings)
             {
-                ps.ClearMappingDescriptors();
+                // Snapshot every assigned device for this slot so the
+                // bleed-cleanup pass can iterate without re-locking.
+                var slotDevices = new System.Collections.Generic.List<(Guid g, PadSetting devPs)>();
+                lock (SettingsManager.UserSettings.SyncRoot)
+                {
+                    foreach (var devUs in SettingsManager.UserSettings.Items)
+                    {
+                        if (devUs == null || devUs.MapTo != padVm.PadIndex) continue;
+                        var devPs = devUs.GetPadSetting();
+                        if (devPs == null) continue;
+                        slotDevices.Add((devUs.InstanceGuid, devPs));
+                    }
+                }
+
+                // Clear every assigned device's mapping fields. We'll
+                // rewrite below on the owning device only; everyone
+                // else stays cleared.
+                foreach (var (_, devPs) in slotDevices)
+                    devPs.ClearMappingDescriptors();
 
                 foreach (var mapping in padVm.Mappings)
                 {
                     string target = mapping.TargetSettingName;
+
+                    // Resolve the owning device's PadSetting from the
+                    // row's PrimarySourceDeviceGuid. Falls back to the
+                    // passed instanceGuid (selected device) when the
+                    // row has no recorded source device, which keeps
+                    // the legacy single-device flow working.
+                    PadSetting owningPs = ps;
+                    if (!string.IsNullOrEmpty(mapping.PrimarySourceDeviceGuid)
+                        && Guid.TryParse(mapping.PrimarySourceDeviceGuid, out var owningGuid))
+                    {
+                        foreach (var (g, devPs) in slotDevices)
+                        {
+                            if (g == owningGuid) { owningPs = devPs; break; }
+                        }
+                    }
+
                     if (target.StartsWith("Extended", StringComparison.Ordinal))
                     {
-                        ps.SetExtendedMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                        owningPs.SetExtendedMapping(target, mapping.SourceDescriptor ?? string.Empty);
                         if (mapping.NegSettingName != null)
-                            ps.SetExtendedMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
+                            owningPs.SetExtendedMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
                     }
                     else if (target.StartsWith("Midi", StringComparison.Ordinal))
                     {
-                        ps.SetMidiMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                        owningPs.SetMidiMapping(target, mapping.SourceDescriptor ?? string.Empty);
                         if (mapping.NegSettingName != null)
-                            ps.SetMidiMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
+                            owningPs.SetMidiMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
                     }
                     else if (target.StartsWith("Kbm", StringComparison.Ordinal))
                     {
-                        ps.SetKbmMapping(target, mapping.SourceDescriptor ?? string.Empty);
+                        owningPs.SetKbmMapping(target, mapping.SourceDescriptor ?? string.Empty);
                         if (mapping.NegSettingName != null)
-                            ps.SetKbmMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
+                            owningPs.SetKbmMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
                     }
                     else
                     {
                         var prop = typeof(PadSetting).GetProperty(target);
                         if (prop != null && prop.PropertyType == typeof(string) && prop.CanWrite)
-                            prop.SetValue(ps, mapping.SourceDescriptor ?? string.Empty);
+                            prop.SetValue(owningPs, mapping.SourceDescriptor ?? string.Empty);
 
                         if (mapping.NegSettingName != null)
                         {
                             var negProp = typeof(PadSetting).GetProperty(mapping.NegSettingName);
                             if (negProp != null && negProp.PropertyType == typeof(string) && negProp.CanWrite)
-                                negProp.SetValue(ps, mapping.NegSourceDescriptor ?? string.Empty);
+                                negProp.SetValue(owningPs, mapping.NegSourceDescriptor ?? string.Empty);
                         }
                     }
 
-                    // Save per-mapping deadzone.
+                    // Save per-mapping deadzone on the owning device.
                     if (mapping.MappingDeadZone > 0)
-                        ps.SetMappingDeadZone(target, mapping.MappingDeadZone.ToString());
+                        owningPs.SetMappingDeadZone(target, mapping.MappingDeadZone.ToString());
                     else
-                        ps.SetMappingDeadZone(target, "");
+                        owningPs.SetMappingDeadZone(target, "");
                 }
             }
         }
@@ -1590,15 +1638,26 @@ namespace PadForge.Services
                     // Mappings tab stays per-VC: pick the first device
                     // whose PadSetting has a non-empty descriptor for
                     // this target, and resolve the display text against
-                    // that device. This stops the Device dropdown from
-                    // being able to flip the displayed mapping when no
-                    // MappingSet row exists yet.
+                    // that device.
+                    //
+                    // Skip non-gamepad devices for gamepad-class
+                    // targets — keyboards / mice / touchpads with
+                    // stale gamepad descriptors (left over from earlier
+                    // bleed bugs in v3-dev) would otherwise become the
+                    // row's primary, sticking joystick targets at the
+                    // device's default Axis[0] = 0 (bipolar -1) every
+                    // poll.
+                    bool gamepadOnly = IsGamepadClassTarget(target);
                     string value = "";
                     Guid winningGuid = Guid.Empty;
                     UserDevice winningUd = null;
                     foreach (var md in padVm.MappedDevices)
                     {
                         if (md == null || md.InstanceGuid == Guid.Empty) continue;
+                        var udLookup = FindUserDevice(md.InstanceGuid);
+                        if (gamepadOnly && (udLookup == null
+                            || udLookup.CapType != InputDeviceType.Gamepad))
+                            continue;
                         var devUs = SettingsManager.FindSettingByInstanceGuidAndSlot(md.InstanceGuid, padVm.PadIndex);
                         var devPs = devUs?.GetPadSetting();
                         if (devPs == null) continue;
@@ -1606,7 +1665,7 @@ namespace PadForge.Services
                         if (string.IsNullOrEmpty(v)) continue;
                         value = v;
                         winningGuid = md.InstanceGuid;
-                        winningUd = FindUserDevice(md.InstanceGuid);
+                        winningUd = udLookup;
                         break;
                     }
                     mapping.LoadDescriptor(value);
@@ -1750,6 +1809,22 @@ namespace PadForge.Services
             // legible.
             string s = deviceGuid;
             return s.Length > 8 ? s.Substring(0, 8) + "…" : s;
+        }
+
+        /// <summary>True when the mapping target is a gamepad-class
+        /// output (button, d-pad, stick axis, trigger). Mirrors the
+        /// migrator's filter — non-gamepad devices (keyboard / mouse /
+        /// touchpad) must never contribute a Source for these targets,
+        /// because their PadSetting may carry stale auto-mapped
+        /// gamepad descriptors that have no real backing input.</summary>
+        private static bool IsGamepadClassTarget(string target)
+        {
+            if (string.IsNullOrEmpty(target)) return false;
+            if (target.StartsWith("Kbm", StringComparison.Ordinal)) return false;
+            if (target.StartsWith("Midi", StringComparison.Ordinal)) return false;
+            if (target.StartsWith("Extended", StringComparison.Ordinal)) return false;
+            if (target.StartsWith("Touchpad", StringComparison.Ordinal)) return false;
+            return true;
         }
 
         private static string GetMappingValue(PadSetting ps, string key)

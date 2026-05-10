@@ -1503,6 +1503,86 @@
                                 </Style.Triggers>
                             </Style>
                         </DataGrid.RowStyle>
+                        <DataGrid.RowDetailsVisibilityMode>VisibleWhenSelected</DataGrid.RowDetailsVisibilityMode>
+                        <DataGrid.RowDetailsTemplate>
+                            <!-- Issue #61 multi-source: per-row details
+                                 visible when the row is selected. Shows
+                                 the row's combine mode, the list of
+                                 ExtraSources (sources beyond the primary
+                                 single-source), and a + Add source link
+                                 to append a new source. -->
+                            <DataTemplate>
+                                <Border Padding="20,4,8,8"
+                                        BorderBrush="{DynamicResource ControlElevationBorderBrush}"
+                                        BorderThickness="0,1,0,0">
+                                    <StackPanel Orientation="Vertical">
+                                        <!-- Combine pill row -->
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                                    Visibility="{Binding IsMultiSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <TextBlock Text="Combine:" FontSize="11"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       Margin="0,0,6,0"/>
+                                            <ComboBox SelectedItem="{Binding CombineMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      MinWidth="100" Margin="0" Padding="4,2"
+                                                      VerticalAlignment="Center">
+                                                <ComboBoxItem Content=""/>
+                                                <ComboBoxItem Content="MaxAbs"/>
+                                                <ComboBoxItem Content="Sum"/>
+                                                <ComboBoxItem Content="Average"/>
+                                                <ComboBoxItem Content="OR"/>
+                                                <ComboBoxItem Content="AND"/>
+                                                <ComboBoxItem Content="XOR"/>
+                                                <ComboBoxItem Content="Custom"/>
+                                            </ComboBox>
+                                        </StackPanel>
+
+                                        <!-- Custom expression box -->
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                                    Visibility="{Binding IsCustomCombine, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <TextBlock Text="f(x):" FontSize="11" VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       Margin="0,0,6,0"/>
+                                            <TextBox Text="{Binding CombineExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     MinWidth="320" Padding="4,2"
+                                                     VerticalAlignment="Center"
+                                                     FontFamily="Consolas"/>
+                                        </StackPanel>
+
+                                        <!-- ExtraSources list -->
+                                        <ItemsControl ItemsSource="{Binding ExtraSources}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                                                        <TextBlock Text="↳" FontSize="14"
+                                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                   Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                        <TextBox Text="{Binding Descriptor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                 MinWidth="180" Padding="4,2" Margin="0,0,4,0"
+                                                                 ToolTip="Source descriptor (e.g. 'Button 5', 'Axis 2')"/>
+                                                        <CheckBox Content="Inv" IsChecked="{Binding Invert, Mode=TwoWay}"
+                                                                  VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                        <CheckBox Content="Half" IsChecked="{Binding HalfAxis, Mode=TwoWay}"
+                                                                  VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                        <Button Content="✕" Padding="6,2"
+                                                                Command="{Binding DataContext.RemoveExtraSourceCommand,
+                                                                          RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                                CommandParameter="{Binding}"
+                                                                ToolTip="Remove this source"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+
+                                        <!-- + Add source -->
+                                        <Button Content="+ Add source" Padding="6,2"
+                                                HorizontalAlignment="Left" Margin="0,4,0,0"
+                                                Command="{Binding AddExtraSourceCommand}"
+                                                ToolTip="Add another physical input to this row"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="{Binding Pad_HeaderOutput, Source={x:Static strings:Strings.Instance}}"
                                                 Binding="{Binding TargetLabel}"

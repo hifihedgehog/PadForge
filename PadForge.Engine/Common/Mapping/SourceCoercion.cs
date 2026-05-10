@@ -218,12 +218,19 @@ namespace PadForge.Engine.Common.Mapping
                     int av = state.Axis[idx];
                     if (src.HalfAxis)
                     {
+                        // Half-axis trigger: clip to the upper half. Lets a
+                        // bipolar stick axis feed a trigger sensibly (rest =
+                        // 0, full deflection one way = 1).
                         if (av >= 32768)
                             return Math.Min(1f, (av - 32768) / 32767f);
                         return Math.Min(1f, (32767 - av) / 32767f);
                     }
-                    // Bipolar axis sourcing a trigger contributes magnitude.
-                    return Math.Min(1f, Math.Abs((av - 32768) / 32767f));
+                    // Trigger axes are unipolar 0..65535 with 0 = released
+                    // (matches the legacy MapToTriggerSingle clamp). Stick
+                    // axes mapped to triggers without HalfAxis sit at ~50 %
+                    // at rest — same as legacy; users who want a clean
+                    // stick→trigger map opt in via HalfAxis.
+                    return Math.Max(0f, Math.Min(1f, av / 65535f));
 
                 case SourceType.Slider:
                     if (idx < 0 || idx >= CustomInputState.MaxSliders) return 0f;

@@ -1518,26 +1518,36 @@
                                         BorderThickness="0,1,0,0">
                                     <StackPanel Orientation="Vertical">
                                         <!-- Combine row — visible only on multi-source rows.
-                                             Blank entry was removed: every multi-source row
-                                             needs an explicit combine mode and EnsureCombineModeDefault
-                                             auto-picks MaxAbs/OR per target class. -->
+                                             Bound to AvailableCombineModes which pairs the
+                                             engine's name (MaxAbs / OR / XOR…) with a layman
+                                             label + one-line description so non-STEM users
+                                             aren't staring at acronyms. EnsureCombineModeDefault
+                                             auto-picks MaxAbs/OR per target class on first
+                                             multi-source transition. -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                                     Visibility="{Binding IsMultiSource, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <TextBlock Text="Combine" FontSize="11"
                                                        VerticalAlignment="Center"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        Margin="0,0,6,0"/>
-                                            <ComboBox SelectedValue="{Binding CombineMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      SelectedValuePath="Content"
-                                                      MinWidth="100" Margin="0" Padding="4,2"
-                                                      VerticalAlignment="Center">
-                                                <ComboBoxItem Content="MaxAbs"/>
-                                                <ComboBoxItem Content="Sum"/>
-                                                <ComboBoxItem Content="Average"/>
-                                                <ComboBoxItem Content="OR"/>
-                                                <ComboBoxItem Content="AND"/>
-                                                <ComboBoxItem Content="XOR"/>
-                                                <ComboBoxItem Content="Custom"/>
+                                            <ComboBox ItemsSource="{Binding AvailableCombineModes}"
+                                                      SelectedValue="{Binding CombineMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      SelectedValuePath="Value"
+                                                      DisplayMemberPath="Name"
+                                                      MinWidth="200" Margin="0" Padding="4,2"
+                                                      VerticalAlignment="Center"
+                                                      ToolTip="How to merge sources on this row.">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Vertical" Margin="0,2,0,2">
+                                                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
+                                                            <TextBlock Text="{Binding Description}"
+                                                                       FontSize="10"
+                                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                       TextWrapping="Wrap"/>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
                                             </ComboBox>
                                         </StackPanel>
 

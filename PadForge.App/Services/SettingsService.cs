@@ -356,6 +356,11 @@ namespace PadForge.Services
                 if (writeIdx < row.Sources.Count)
                     row.Sources.RemoveRange(writeIdx, row.Sources.Count - writeIdx);
             }
+
+            // Drop rows whose sources were all filtered out — leaves the
+            // engine and UI to fall back to legacy PadSetting fields for
+            // those targets instead of seeing an empty MappingSet row.
+            ms.Rows.RemoveAll(r => r?.Sources == null || r.Sources.Count == 0);
         }
 
         private static bool IsGamepadOnlyTarget(string target)

@@ -154,6 +154,14 @@ namespace PadForge.ViewModels
                         RebuildStickConfigs();
                         RebuildTriggerConfigs();
                     }
+                    else if (_outputType == VirtualControllerType.Xbox)
+                    {
+                        // Xbox Series profiles add a Share row that other
+                        // Xbox profiles (360 / One / Wireless) don't expose,
+                        // so the Mappings list must rebuild when the profile
+                        // selection changes (xbox-series-* ↔ anything else).
+                        RebuildMappings();
+                    }
                     ConfigItemDirtyCallback?.Invoke();
                 }
             }
@@ -586,6 +594,12 @@ namespace PadForge.ViewModels
         private bool _buttonGuide;
         public bool ButtonGuide { get => _buttonGuide; set => SetProperty(ref _buttonGuide, value); }
 
+        private bool _buttonShare;
+        /// <summary>Xbox Series Share button live state. Mirrored from
+        /// <see cref="Gamepad.Share"/> in <c>UpdateFromGamepad</c>; drives
+        /// 2D overlay + 3D mesh accent on press.</summary>
+        public bool ButtonShare { get => _buttonShare; set => SetProperty(ref _buttonShare, value); }
+
         private bool _dpadUp;
         public bool DPadUp { get => _dpadUp; set => SetProperty(ref _dpadUp, value); }
 
@@ -770,6 +784,19 @@ namespace PadForge.ViewModels
                 Mappings.Add(new MappingItem(Strings.Instance.Btn_Back, "ButtonBack", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem(Strings.Instance.Btn_Start, "ButtonStart", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem(Strings.Instance.Btn_Guide, "ButtonGuide", MappingCategory.Buttons));
+
+                // Share — Xbox Series profiles only. Sits after Guide,
+                // before the stick buttons. HM drops the bit on profiles
+                // that don't declare button 13, so limiting the UI row to
+                // Series-only avoids surfacing a non-functional slot on
+                // Xbox 360 / Xbox One profiles.
+                if (!string.IsNullOrEmpty(ProfileId) &&
+                    ProfileId.StartsWith("xbox-series-", StringComparison.OrdinalIgnoreCase))
+                {
+                    Mappings.Add(new MappingItem("Share", "ButtonShare", MappingCategory.Buttons,
+                        includeInMapAll: false));
+                }
+
                 Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickButton, "LeftThumbButton", MappingCategory.Buttons));
                 Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickButton, "RightThumbButton", MappingCategory.Buttons));
             }
@@ -1844,8 +1871,11 @@ namespace PadForge.ViewModels
 
             var mapping = Mappings[MapAllCurrentIndex];
 
-            // Skip non-recordable categories (touchpad inputs can't be isolated by touch).
-            if (!mapping.IsRecordable)
+            // Skip non-recordable categories (touchpad inputs can't be
+            // isolated by touch) and rows opted out of the bulk Map All
+            // walk (e.g., the optional Xbox Series Share button — visible
+            // and individually mappable but not in the default sequence).
+            if (!mapping.IsRecordable || !mapping.IncludeInMapAll)
             {
                 MapAllCurrentIndex++;
                 AdvanceMapAll();
@@ -1961,6 +1991,7 @@ namespace PadForge.ViewModels
             LeftThumbButton = gp.IsButtonPressed(Gamepad.LEFT_THUMB);
             RightThumbButton = gp.IsButtonPressed(Gamepad.RIGHT_THUMB);
             ButtonGuide = gp.IsButtonPressed(Gamepad.GUIDE);
+            ButtonShare = gp.Share;
             DPadUp = gp.IsButtonPressed(Gamepad.DPAD_UP);
             DPadDown = gp.IsButtonPressed(Gamepad.DPAD_DOWN);
             DPadLeft = gp.IsButtonPressed(Gamepad.DPAD_LEFT);

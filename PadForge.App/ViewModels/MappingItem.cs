@@ -546,6 +546,67 @@ namespace PadForge.ViewModels
         public event EventHandler StopRecordingRequested;
 
         // ─────────────────────────────────────────────
+        //  Phase 2C — multi-source extras (Issue #61)
+        //
+        //  ExtraSources holds the rest of the row's sources beyond the
+        //  primary, which stays bound to SourceDescriptor for legacy
+        //  single-source UI compatibility. CombineMode applies to the row
+        //  when ExtraSources.Count > 0; the engine's CombineHelper /
+        //  MappingExpression consumes it in Step 3.
+        // ─────────────────────────────────────────────
+
+        public ObservableCollection<MappingSourceItem> ExtraSources { get; }
+            = new ObservableCollection<MappingSourceItem>();
+
+        private string _combineMode = "";
+        /// <summary>Per-row combine mode. Empty = the per-target-type
+        /// default (MaxAbs for axes, OR for buttons). Other named modes:
+        /// MaxAbs, Sum, Average, OR, AND, XOR, Custom.</summary>
+        public string CombineMode
+        {
+            get => _combineMode;
+            set
+            {
+                if (SetProperty(ref _combineMode, value ?? ""))
+                {
+                    OnPropertyChanged(nameof(IsCustomCombine));
+                }
+            }
+        }
+
+        private string _combineExpression = "";
+        /// <summary>Custom combine expression, only meaningful when
+        /// <see cref="CombineMode"/> == "Custom".</summary>
+        public string CombineExpression
+        {
+            get => _combineExpression;
+            set => SetProperty(ref _combineExpression, value ?? "");
+        }
+
+        public bool IsMultiSource => ExtraSources.Count > 0;
+        public bool IsCustomCombine => string.Equals(_combineMode, "Custom", StringComparison.Ordinal);
+
+        private RelayCommand _addExtraSourceCommand;
+        /// <summary>Appends a blank <see cref="MappingSourceItem"/> to
+        /// <see cref="ExtraSources"/>. The user fills it in via the
+        /// per-source picker.</summary>
+        public RelayCommand AddExtraSourceCommand =>
+            _addExtraSourceCommand ??= new RelayCommand(() =>
+            {
+                ExtraSources.Add(new MappingSourceItem());
+                OnPropertyChanged(nameof(IsMultiSource));
+            });
+
+        private RelayCommand<MappingSourceItem> _removeExtraSourceCommand;
+        public RelayCommand<MappingSourceItem> RemoveExtraSourceCommand =>
+            _removeExtraSourceCommand ??= new RelayCommand<MappingSourceItem>(item =>
+            {
+                if (item == null) return;
+                ExtraSources.Remove(item);
+                OnPropertyChanged(nameof(IsMultiSource));
+            });
+
+        // ─────────────────────────────────────────────
         //  Display
         // ─────────────────────────────────────────────
 

@@ -1473,15 +1473,43 @@ namespace PadForge.Services
         }
 
         /// <summary>
+        /// Refreshes only the per-VC mappings on the PadViewModel from
+        /// the slot's MappingSet. Safe to call when no device is
+        /// selected (e.g. after unassigning the only / last device on
+        /// a slot) — mappings are per-VC so they're authoritative
+        /// regardless of which physical device the dropdown is on.
+        /// Use this on device-assignment changes to keep the
+        /// Mappings tab in sync without forcing a per-device-tuning
+        /// reload.
+        /// </summary>
+        internal static void RefreshMappingsToViewModel(PadViewModel padVm)
+        {
+            if (padVm == null) return;
+            // Pass Guid.Empty so the per-device tuning fields short-
+            // circuit but the mapping pass still runs. Resolves the
+            // "Mappings tab doesn't refresh after unassign" bug.
+            LoadPadSettingToViewModel(padVm, Guid.Empty);
+        }
+
+        /// <summary>
         /// Loads a specific device's PadSetting into the PadViewModel.
         /// </summary>
         internal static void LoadPadSettingToViewModel(PadViewModel padVm, Guid instanceGuid)
         {
-            var us = SettingsManager.FindSettingByInstanceGuidAndSlot(instanceGuid, padVm.PadIndex);
-            if (us == null) return;
-
-            var ps = us.GetPadSetting();
-            if (ps == null) return;
+            // Per-device tuning fields (deadzones, FFB, sensitivity,
+            // etc.) only make sense in the context of a real device.
+            // The mapping pass below runs regardless so the Mappings
+            // tab stays current even after the slot's only device
+            // gets unassigned.
+            var us = instanceGuid == Guid.Empty
+                ? null
+                : SettingsManager.FindSettingByInstanceGuidAndSlot(instanceGuid, padVm.PadIndex);
+            var ps = us?.GetPadSetting();
+            if (ps == null)
+            {
+                RefreshMappingsCore(padVm, ud: null, ps: null);
+                return;
+            }
 
             // Dead zones.
             padVm.LeftDeadZoneShape = (int)Common.Input.InputManager.ParseDeadZoneShape(ps.LeftThumbDeadZoneShape);
@@ -1555,8 +1583,23 @@ namespace PadForge.Services
             // Sync dynamic stick/trigger config items.
             padVm.SyncAllConfigItemsFromVm();
 
-            // Mapping descriptors.
-            var ud = FindUserDevice(instanceGuid);
+            // Mapping descriptors are per-VC, factored out so callers
+            // can refresh them independently of the per-device tuning
+            // pass above.
+            RefreshMappingsCore(padVm, FindUserDevice(instanceGuid), ps);
+        }
+
+        /// <summary>Per-VC mapping refresh. Reads the slot's MappingSet
+        /// and per-device PadSetting fallback to populate every
+        /// MappingItem in <paramref name="padVm"/>. Tolerates
+        /// <paramref name="ud"/> = null (no device selected) and
+        /// <paramref name="ps"/> = null (no PadSetting available) —
+        /// in those cases the legacy fallback walks the slot's
+        /// MappedDevices instead, and per-mapping deadzones default to
+        /// 50.</summary>
+        private static void RefreshMappingsCore(PadViewModel padVm, UserDevice ud, PadSetting ps)
+        {
+            if (padVm == null) return;
 
             // Phase 2C — index this slot's MappingSet rows by Target so
             // we can populate MappingItem.ExtraSources alongside the
@@ -1735,10 +1778,11 @@ namespace PadForge.Services
                 }
 
                 // Per-mapping deadzone (legacy fallback when MappingSet
-                // didn't supply one above).
+                // didn't supply one above). ps is null when the slot
+                // has no selected device — fall back to the default.
                 if (!primaryFromMappingSet)
                 {
-                    string dzStr = ps.GetMappingDeadZone(target);
+                    string dzStr = ps != null ? ps.GetMappingDeadZone(target) : null;
                     mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
                 }
 
@@ -1892,6 +1936,27 @@ namespace PadForge.Services
         /// numbered names for raw/non-gamepad devices). Also wires the dropdown selection
         /// event for display text resolution.
         /// </summary>
+        /// <summary>Public entry point for the assignment-change path:
+        /// rebuilds <see cref="MappingItem.AvailableInputs"/> from the
+        /// slot's current device list without requiring a specific
+        /// "primary" device. Resolves stale dropdown selections that
+        /// would otherwise survive an unassign — the previously
+        /// selected source's InputChoice gets dropped from the rebuilt
+        /// list, so SyncSelectedInputFromDescriptor clears
+        /// SelectedInput when no device-matched choice remains.</summary>
+        public void RefreshAvailableInputsForSlot(PadViewModel padVm)
+        {
+            if (padVm == null) return;
+            // PopulateAvailableInputs orders the slot's primary device
+            // first; pass null to use MappedDevices order alone, which
+            // is what callers want when no device is selected.
+            UserDevice ud = null;
+            var sel = padVm.SelectedMappedDevice;
+            if (sel != null && sel.InstanceGuid != Guid.Empty)
+                ud = FindUserDevice(sel.InstanceGuid);
+            PopulateAvailableInputs(padVm, ud);
+        }
+
         private void PopulateAvailableInputs(PadViewModel padVm, UserDevice ud)
         {
             if (padVm == null) return;

@@ -1517,6 +1517,21 @@ namespace PadForge.Services
                 && padVm.PadIndex < SettingsManager.SlotMappingSets.Length)
                 ? SettingsManager.SlotMappingSets[padVm.PadIndex]
                 : null;
+
+            // Phase 6 — pull the Shift activator config into PadViewModel
+            // so the activator picker UI binds against it.
+            if (slotMs?.ShiftButton != null)
+            {
+                padVm.ShiftDeviceGuid = slotMs.ShiftButton.DeviceGuid ?? "";
+                padVm.ShiftDescriptor = slotMs.ShiftButton.Descriptor ?? "";
+                padVm.ShiftMode = string.IsNullOrEmpty(slotMs.ShiftButton.Mode) ? "Hold" : slotMs.ShiftButton.Mode;
+            }
+            else
+            {
+                padVm.ShiftDeviceGuid = "";
+                padVm.ShiftDescriptor = "";
+                padVm.ShiftMode = "Hold";
+            }
             var msRowsByTarget = new System.Collections.Generic.Dictionary<string, Engine.Data.MappingRow>(
                 StringComparer.Ordinal);
             if (slotMs?.Rows != null)

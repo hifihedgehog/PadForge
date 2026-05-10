@@ -677,35 +677,56 @@ def _xbox360_apply_canonical_overrides(results):
         if target in ("LeftShoulder", "RightShoulder"):
             shoulder_y[target] = y
 
-    # Trigger: x and width come from the canonical outline detection.
-    # The trigger PNG has alpha falloff at its bottom edge, so when the
-    # bbox meets the shoulder bbox flush there's a visible 5-10 px gap
-    # between the silhouettes. Shift the bbox down by TRIGGER_OVERLAP
-    # so the bottom extends past the shoulder top — the visible (opaque)
-    # parts of the two silhouettes then meet without a gap.
-    TRIGGER_OVERLAP = 8
-    trigger_x_w = {
-        "LeftTrigger":  (284, 132, "LeftShoulder"),
-        "RightTrigger": (1160, 132, "RightShoulder"),
+    # D-pad: position each arrow INSIDE the rendered cross silhouette
+    # so its outer edge sits on the cross arm tip (not on the
+    # surrounding well rim, where the SVG-bbox places it). Cross
+    # silhouette body detected by connected-component analysis at
+    # bbox (414, 626) 247x202; with outline buffer the visible cross
+    # extends roughly to (410, 622)-(665, 832). Each arrow bbox is
+    # sized so its rendered alpha shape fills its arm without
+    # crossing the arm tip outline.
+    dpad_overrides = {
+        # Up: bottom anchored at y=732, stretched upward to h=122 (top y=610).
+        "DPadUp":    (482, 610, 110, 122),
+        # Down: unchanged from previously confirmed-good position.
+        "DPadDown":  (482, 720, 110, 112),
+        # Left/Right: top anchored at y=672, extended downward to h=105.
+        "DPadLeft":  (410, 672, 134, 105),
+        "DPadRight": (530, 672, 135, 105),
     }
-    # Both sticks oval (wider than tall, perspective angle on the
-    # controller body). Right at 180x160 covers the housing without
-    # overshoot. Left at 185x165 matches right's aspect ratio with
-    # slightly larger size since the left housing is drawn marginally
-    # bigger on the controller body.
+    out2 = []
+    for filename, target, etype, x, y, w, h in results:
+        if target in dpad_overrides:
+            nx, ny, nw, nh = dpad_overrides[target]
+            out2.append((filename, target, etype, nx, ny, nw, nh))
+        else:
+            out2.append((filename, target, etype, x, y, w, h))
+    results = out2
+
+    # Trigger: position and width from canonical match (280, 1159 / w=137).
+    # Height tuned so the bottom alpha curve meets the bumper alpha curve
+    # at their visible edges (canonical has visible trigger bottom ~y=144,
+    # visible bumper top ~y=140 — they meet at the rounded seam).
+    trigger_overrides_xy_wh = {
+        "LeftTrigger":  (280, 0, 137, 144),
+        "RightTrigger": (1153, 2, 137, 141),
+    }
+    # Stick centers from the asset pack diff between
+    # "Xbox 360 Controller Overlay (No Thumbstick).png" and the full
+    # overlay: L at (296.5, 530.5), R at (997.5, 763.5). Sizes kept
+    # at user-approved 185x165 (L) / 180x160 (R) — bbox centered on
+    # those diff-derived stick centers.
     stick_overrides = {
-        "LeftThumbRing":    (206, 451, 185, 165),
-        "RightThumbRing":   (920, 690, 180, 160),
-        "LeftThumbButton":  (206, 451, 185, 165),
-        "RightThumbButton": (920, 690, 180, 160),
+        "LeftThumbRing":    (204, 448, 185, 165),
+        "RightThumbRing":   (908, 684, 180, 160),
+        "LeftThumbButton":  (204, 448, 185, 165),
+        "RightThumbButton": (908, 684, 180, 160),
     }
     out = []
     for filename, target, etype, x, y, w, h in results:
-        if target in trigger_x_w:
-            nx, nw, partner = trigger_x_w[target]
-            ny = TRIGGER_OVERLAP
-            nh = shoulder_y.get(partner, 130) + TRIGGER_OVERLAP - ny
-            print(f"  CANONICAL  {target:20s}: ({x},{y}) {w}x{h} -> ({nx},{ny}) {nw}x{nh}  (flush to {partner} top, {TRIGGER_OVERLAP}px overlap)")
+        if target in trigger_overrides_xy_wh:
+            nx, ny, nw, nh = trigger_overrides_xy_wh[target]
+            print(f"  CANONICAL  {target:20s}: ({x},{y}) {w}x{h} -> ({nx},{ny}) {nw}x{nh}  (composite-matched)")
             out.append((filename, target, etype, nx, ny, nw, nh))
         elif target in stick_overrides:
             nx, ny, nw, nh = stick_overrides[target]
@@ -862,7 +883,91 @@ def process_ds4():
     print("\nRefining DS4 positions via alpha-channel template matching...")
     results = refine_with_composite(composite_path, results)
 
-    return {"base_width": base.shape[1], "base_height": base.shape[0], "results": results}
+    base_w, base_h = base.shape[1], base.shape[0]
+
+    # DS4 post-pass overrides:
+    # - Pull each d-pad cardinal 20 px toward the d-pad center (so the
+    #   four arrows meet in the middle like a continuous + cross
+    #   instead of four detached buttons).
+    # - Shrink stick ring/click to 150x145 / 165x160 — the SVG bbox
+    #   yields 165/196, which extends past the visible stick well.
+    # - Lower Share/Options by 20 px — the SVG label sits on the text
+    #   ("SHARE" / "OPTIONS"), not on the actual button bump below it.
+    # - Add Touchpad + TouchpadClick zones (was lost during the v3 SVG
+    #   rewrite — DS4 had a manual zone in v2).
+    results = _ds4_post_pass(results, base_w, base_h)
+
+    return {"base_width": base_w, "base_height": base_h, "results": results}
+
+
+def _ds4_post_pass(results, base_w, base_h):
+    # D-pad: pull all four cardinals inward toward the d-pad center.
+    # Up/Down need a smaller pull-in than Left/Right (the up/down
+    # arrows are taller than they are wide; an aggressive pull
+    # collapses them onto each other). All four scaled 0.93 to fit
+    # their silhouettes more tightly.
+    DPAD_LR_INWARD = 15
+    DPAD_UD_INWARD = 10
+    DPAD_SCALE = 0.93
+    # Share / Options: drop 15 px so the highlight lands on the actual
+    # button bump (the SVG label sits on the "SHARE" / "OPTIONS" text
+    # above the bump).
+    SHARE_OPTIONS_DROP = 15
+    # Sticks: ThumbRing is the gray thumbstick face (DS4_V2_*AnalogStick
+    # .png) — NOT a blue overlay. Keep at native size and SVG position.
+    # ThumbButton is the BLUE click highlight (DS4_AnalogStick_Click.png)
+    # — narrow/shorten to match the thumbstick face. Bottom anchored at
+    # original y=675; width/height reduced symmetrically.
+    # Match the rendered thumbstick face (165x147) — that IS the
+    # visible target the blue press highlight should sit on.
+    # Bottom anchored at original y=675; centers x=509/957.
+    STICK_OVERRIDES = {
+        "LeftThumbButton":  (427, 528, 165, 147),
+        "RightThumbButton": (875, 528, 165, 147),
+    }
+    # Triggers: positions and size from the asset pack's V2 canonical
+    # composite (DualShock 4 Controller V2 Model Overlay.png).
+    # Template-match of DS4_L2.png (164x94 native) against the
+    # composite locates L2 at (217, 0) and R2 at (1085, 0). The
+    # active PNG (134x80 native) gets resized to the same bbox so
+    # the press highlight covers the rest-state silhouette exactly.
+    TRIGGER_OVERRIDES = {
+        "LeftTrigger":  (217, 0, 164, 94),
+        "RightTrigger": (1085, 0, 164, 94),
+    }
+    out = []
+    for filename, target, etype, x, y, w, h in results:
+        if target in ("DPadUp", "DPadDown", "DPadLeft", "DPadRight"):
+            cx, cy = x + w / 2, y + h / 2
+            nw, nh = int(w * DPAD_SCALE), int(h * DPAD_SCALE)
+            if target == "DPadUp":    cy += DPAD_UD_INWARD
+            if target == "DPadDown":  cy -= DPAD_UD_INWARD
+            if target == "DPadLeft":  cx += DPAD_LR_INWARD
+            if target == "DPadRight": cx -= DPAD_LR_INWARD
+            nx, ny = round(cx - nw / 2), round(cy - nh / 2)
+            out.append((filename, target, etype, nx, ny, nw, nh))
+        elif target in ("ButtonBack", "ButtonStart"):
+            out.append((filename, target, etype, x, y + SHARE_OPTIONS_DROP, w, h))
+        elif target in STICK_OVERRIDES:
+            nx, ny, nw, nh = STICK_OVERRIDES[target]
+            out.append((filename, target, etype, nx, ny, nw, nh))
+        elif target in TRIGGER_OVERRIDES:
+            nx, ny, nw, nh = TRIGGER_OVERRIDES[target]
+            out.append((filename, target, etype, nx, ny, nw, nh))
+        else:
+            out.append((filename, target, etype, x, y, w, h))
+
+    # TouchpadClick = click highlight PNG bounds. Sized to native PNG
+    # (482x289). Visually tuned position so PNG traces the touchpad
+    # outline.
+    # Touchpad = the actual touchpad surface area used for finger-dot
+    # normalized-coord mapping (smaller — just the visible surface
+    # between SHARE and OPTIONS, not including the PNG's outer border).
+    out.append(("", "TouchpadClick", "Button",   492, 148, 482, 289))
+    out.append(("", "Touchpad",      "Touchpad", 496, 230, 471, 200))
+    print(f"  TouchpadClick        (PNG visual)          -> (492, 148) 482x289")
+    print(f"  Touchpad             (finger zone)         -> (496, 230) 471x200")
+    return out
 
 
 def process_dualsense():
@@ -951,20 +1056,19 @@ def process_dualsense():
     results = refine_via_base_template(base_path, results, ov_dir,
         targets={"ButtonBack", "ButtonStart", "ButtonGuide"})
 
-    # Touchpad zones — no SVG label, use rectangle estimates derived from the
-    # DualSense layout (touchpad surface sits between the Create + Option
-    # buttons, with a click strip running along its top edge below the
-    # lightbar). Same shape as DS4Layout. Tweak in-app if alignment drifts.
-    tp_w = round(base_w * 0.34)         # ~0.34 of base width
-    tp_h = round(base_h * 0.27)         # ~0.27 of base height
-    tp_x = round((base_w - tp_w) / 2)   # horizontally centered
-    tp_y = round(base_h * 0.27)         # below the lightbar
-    click_h = round(tp_h * 0.16)
-    click_y = max(0, tp_y - click_h - 4)
-    results.append(("", "TouchpadClick", "Button", tp_x, click_y, tp_w, click_h))
-    results.append(("", "Touchpad", "Touchpad", tp_x, tp_y, tp_w, tp_h))
-    print(f"  {'TouchpadClick':20s} (manual zone)         -> ({tp_x}, {click_y}) {tp_w}x{click_h}")
-    print(f"  {'Touchpad':20s} (manual zone)         -> ({tp_x}, {tp_y}) {tp_w}x{tp_h}")
+    # TouchpadClick = click highlight PNG bounds (621x322 native).
+    # Touchpad = the actual touchpad surface for finger-dot mapping
+    # (smaller area, original v3 layout).
+    click_x = round((base_w - 621) / 2)
+    results.append(("", "TouchpadClick", "Button",   click_x, 160, 621, 322))
+    tp_w_inner = round(base_w * 0.34)
+    tp_h_inner = round(base_h * 0.27)
+    tp_x_inner = round((base_w - tp_w_inner) / 2)
+    tp_y_inner = round(base_h * 0.27)
+    results.append(("", "Touchpad", "Touchpad",
+                    tp_x_inner, tp_y_inner, tp_w_inner, tp_h_inner))
+    print(f"  TouchpadClick        (PNG visual)          -> ({click_x}, 160) 621x322")
+    print(f"  Touchpad             (finger zone)         -> ({tp_x_inner}, {tp_y_inner}) {tp_w_inner}x{tp_h_inner}")
 
     return {"base_width": base_w, "base_height": base_h, "results": results}
 
@@ -1154,7 +1258,27 @@ def process_xbox_one_s():
     # few pixels short of the body edge because the bumper highlight has
     # a soft alpha falloff that biases the match inward.
     data["results"] = _shift_bumpers_outward(data["results"], shift=5)
+    # Stretch the left blue click overlay to match the left thumbstick
+    # height (composite-refine lands the click ~10 px shorter on Xbox
+    # One S; user wants them flush).
+    data["results"] = _match_left_click_to_ring(data["results"])
+    # Trigger positions/sizes from canonical composite template-match.
+    data["results"] = _override_triggers(data["results"], {
+        "LeftTrigger":  (188, 1, 206, 188),
+        "RightTrigger": (1150, 0, 208, 189),
+    })
     return data
+
+
+def _override_triggers(results, overrides):
+    out = []
+    for filename, target, etype, x, y, w, h in results:
+        if target in overrides:
+            nx, ny, nw, nh = overrides[target]
+            out.append((filename, target, etype, nx, ny, nw, nh))
+        else:
+            out.append((filename, target, etype, x, y, w, h))
+    return out
 
 
 def _shift_bumpers_outward(results, shift):
@@ -1166,6 +1290,23 @@ def _shift_bumpers_outward(results, shift):
         elif target == "RightShoulder":
             out.append((filename, target, etype, x + shift, y, w, h))
             print(f"  SHIFT-OUT  {target:20s}: ({x},{y}) -> ({x+shift},{y})")
+        else:
+            out.append((filename, target, etype, x, y, w, h))
+    return out
+
+
+def _match_left_click_to_ring(results):
+    """Match LeftThumbButton (blue click overlay) height/y to LeftThumbRing
+    (the gray thumbstick) so the highlight covers the full thumbstick face."""
+    ring = next((r for r in results if r[1] == "LeftThumbRing"), None)
+    if ring is None:
+        return results
+    _, _, _, _, ring_y, _, ring_h = ring
+    out = []
+    for filename, target, etype, x, y, w, h in results:
+        if target == "LeftThumbButton":
+            print(f"  MATCH-RING {target:20s}: ({x},{y}) {w}x{h} -> ({x},{ring_y}) {w}x{ring_h}")
+            out.append((filename, target, etype, x, ring_y, w, ring_h))
         else:
             out.append((filename, target, etype, x, y, w, h))
     return out
@@ -1217,7 +1358,30 @@ def process_xbox_series():
         pos = fit_overlay_to_bbox(share_bbox, os.path.join(ov_dir, "XBSeries_ShareButton.png"))
         data["results"].append(("XBSeries_ShareButton.png", "ButtonShare", "Button", pos[0], pos[1], pos[2], pos[3]))
         print(f"  {'ButtonShare':20s} ({'Share Button':20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
+    # Match the left blue click overlay to the left thumbstick height.
+    data["results"] = _match_left_click_to_ring(data["results"])
     return data
+
+
+def _add_trigger_base_entries(results):
+    """For each Trigger element, emit a paired TriggerBase entry that
+    points at the rest-state PNG (same filename minus '-Active' or
+    '_Active') and shares position/size. View renders TriggerBase
+    always-visible below Trigger, giving the trigger silhouette a
+    rest-state visual under the active-press fill overlay."""
+    out = []
+    for entry in results:
+        out.append(entry)
+        fn, target, etype, x, y, w, h = entry
+        if etype != "Trigger":
+            continue
+        # Strip Active suffix in either form
+        rest_fn = fn.replace("_Active.png", ".png").replace("-Active.png", ".png")
+        if rest_fn == fn:
+            continue  # no -Active suffix → can't derive rest filename
+        out.append((rest_fn, target + "Base", "TriggerBase", x, y, w, h))
+        print(f"  TRIG-BASE  {target+'Base':20s}: {rest_fn} at ({x},{y}) {w}x{h}")
+    return out
 
 
 def generate_csharp(layouts, output_path):
@@ -1226,7 +1390,7 @@ def generate_csharp(layouts, output_path):
         "// AUTO-GENERATED by tools/overlay_positions.py -- do not edit manually",
         "namespace PadForge.Models2D;",
         "",
-        "public enum OverlayElementType { Button, Trigger, StickRing, StickClick, FaceButtonGroup, Touchpad }",
+        "public enum OverlayElementType { Button, Trigger, TriggerBase, StickRing, StickClick, FaceButtonGroup, Touchpad }",
         "",
         "public record OverlayElement(string ImageFile, string TargetName, OverlayElementType ElementType, double X, double Y, double Width, double Height);",
         "",
@@ -1277,6 +1441,13 @@ def main():
     print("\n=== Xbox Series X Controller ===")
     xbseries_data = process_xbox_series()
     print(f"\n  Total Xbox Series X overlays: {len(xbseries_data['results'])}")
+
+    # Inject TriggerBase entries (rest-state trigger image under each
+    # active-press blue overlay). Done after all profile-specific
+    # processing so the rest-state inherits the final trigger
+    # position/size.
+    for data in [xbox_data, ds4_data, dualsense_data, xbone_data, xbseries_data]:
+        data["results"] = _add_trigger_base_entries(data["results"])
 
     # Sanity checks
     for name, data in [("Xbox 360", xbox_data), ("DS4", ds4_data),

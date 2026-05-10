@@ -51,7 +51,7 @@ namespace PadForge.Views
         private readonly Dictionary<string, Image> _stickHighlights = new();
 
         // Touchpad preview (PlayStation slots only — built once at canvas time, updated each frame)
-        private Rectangle _touchpadClickHighlight; // full-zone blue overlay when click is held
+        private Image _touchpadClickHighlight; // full-zone blue overlay when click is held
         private Ellipse _touchpadFinger0Dot;
         private Ellipse _touchpadFinger1Dot;
         private OverlayElement _touchpadOverlay;   // layout entry for positioning the dots
@@ -179,8 +179,12 @@ namespace PadForge.Views
             ModelCanvas.Width = baseW;
             ModelCanvas.Height = baseH;
 
-            // Base image (Z=0)
+            // Base image (Z=1) — sits ABOVE TriggerBase/Trigger (Z=0,0)
+            // so the controller body silhouette covers the lower
+            // portion of the trigger PNG (matches asset pack canonicals
+            // where the body is rendered in front of the triggers).
             _baseImage = CreateImage(basePath, 0, 0, baseW, baseH);
+            Panel.SetZIndex(_baseImage, 1);
             ModelCanvas.Children.Add(_baseImage);
 
             // Overlay images (Z=1) + hit-test rectangles (Z=10)
@@ -208,18 +212,34 @@ namespace PadForge.Views
                     img.Clip = clip;
                     _triggerClips[ov.TargetName] = clip;
                 }
+                else if (ov.ElementType == OverlayElementType.TriggerBase)
+                {
+                    // Rest-state trigger silhouette under the active-press
+                    // overlay; always visible, no clip, no hit-test (the
+                    // Trigger element above owns the hit area).
+                    img.Visibility = Visibility.Visible;
+                    img.Opacity = 1.0;
+                }
                 else
                 {
                     // Buttons, StickClicks: hidden until pressed
                     img.Visibility = Visibility.Collapsed;
                 }
 
-                Panel.SetZIndex(img, 1);
+                // TriggerBase z-index 0 (under Trigger), all others z-index 1
+                // TriggerBase (rest-state silhouette) renders BEHIND the
+                // base PNG (Z=0 < base Z=1) so the controller body
+                // covers its lower portion. The active blue Trigger
+                // overlay stays in FRONT (Z=2) so the press fill is
+                // fully visible. All other overlays at Z=2.
+                int z = ov.ElementType == OverlayElementType.TriggerBase ? 0 : 2;
+                Panel.SetZIndex(img, z);
                 _overlayImages[ov.TargetName] = img;
                 ModelCanvas.Children.Add(img);
 
-                // StickClick: no hit-test rect — handled by StickRing's center-click detection
-                if (ov.ElementType == OverlayElementType.StickClick)
+                // StickClick + TriggerBase: no hit-test rect
+                if (ov.ElementType == OverlayElementType.StickClick ||
+                    ov.ElementType == OverlayElementType.TriggerBase)
                     continue;
 
                 // Hit-test rectangle (always visible, transparent, catches all clicks)
@@ -254,14 +274,19 @@ namespace PadForge.Views
             _touchpadOverlay = default;
             if (modelName == "DS4" || modelName == "DualSense")
             {
+                OverlayElement touchpad = default, click = default;
                 foreach (var ov in overlays)
                 {
-                    if (ov.ElementType == OverlayElementType.Touchpad)
-                    {
-                        _touchpadOverlay = ov;
-                        BuildTouchpadPreview(ov);
-                        break;
-                    }
+                    if (ov.ElementType == OverlayElementType.Touchpad) touchpad = ov;
+                    if (ov.TargetName == "TouchpadClick") click = ov;
+                }
+                if (touchpad != null)
+                {
+                    _touchpadOverlay = touchpad;
+                    // Click highlight visual uses TouchpadClick bounds (sized to
+                    // the asset pack's click PNG); finger dots use Touchpad
+                    // bounds (the smaller actual touchpad surface).
+                    BuildTouchpadPreview(click ?? touchpad, modelName);
                 }
             }
 
@@ -284,31 +309,18 @@ namespace PadForge.Views
             }
         }
 
-        private void BuildTouchpadPreview(OverlayElement ov)
+        private void BuildTouchpadPreview(OverlayElement ov, string modelName)
         {
-            // Full-zone button-style highlight, hidden by default. Shown when
+            // Full-zone touchpad-click highlight, hidden by default. Shown when
             // the TouchpadClick button is held, on hover (lower opacity), and
-            // during the Map All flash. Style pinned to the colour and stroke
-            // weight extracted from the actual DS4 button PNGs (sampled from
-            // DS4_Face_Button.png at native 99×90: 6 px border in solid
-            // #24D2F6, fill #0F7793 at 50% alpha) so the touchpad reads as
-            // a button of the same family rather than a guess at one.
-            var fill   = new SolidColorBrush(Color.FromArgb(0x80, 0x0F, 0x77, 0x93));
-            var stroke = new SolidColorBrush(Color.FromArgb(0xFF, 0x24, 0xD2, 0xF6));
-            _touchpadClickHighlight = new Rectangle
-            {
-                Width = ov.Width,
-                Height = ov.Height,
-                Fill = fill,
-                Stroke = stroke,
-                StrokeThickness = 6,
-                RadiusX = 8,
-                RadiusY = 8,
-                IsHitTestVisible = false,
-                Visibility = Visibility.Collapsed,
-            };
-            Canvas.SetLeft(_touchpadClickHighlight, ov.X);
-            Canvas.SetTop(_touchpadClickHighlight, ov.Y);
+            // during the Map All flash. Uses the asset pack's touchpad-click
+            // PNG (DS4_Touchpad_Click.png / DualSense_Touchpad_Click.png) at
+            // the layout-defined Touchpad rectangle so it lines up with the
+            // visible touchpad surface on the rendered controller body.
+            string clickPng = $"2DModels/{modelName}/{modelName}_Touchpad_Click.png";
+            _touchpadClickHighlight = CreateImage(clickPng, ov.X, ov.Y, ov.Width, ov.Height);
+            _touchpadClickHighlight.IsHitTestVisible = false;
+            _touchpadClickHighlight.Visibility = Visibility.Collapsed;
             Panel.SetZIndex(_touchpadClickHighlight, 6);
             ModelCanvas.Children.Add(_touchpadClickHighlight);
 

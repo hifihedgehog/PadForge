@@ -1656,6 +1656,19 @@
                                                     </Style>
                                                 </TextBlock.Style>
                                             </TextBlock>
+                                            <!-- Phase 2C — empty-direction hint. Surfaces when a
+                                                 bipolar stick-axis row has only the positive
+                                                 direction mapped (one button-class source, not
+                                                 inverted). Disappears once the user adds an
+                                                 opposite-direction source or a second source. -->
+                                            <TextBlock Text="Map opposite direction?"
+                                                       FontSize="10"
+                                                       FontStyle="Italic"
+                                                       Foreground="{DynamicResource AccentFillColorDefaultBrush}"
+                                                       Margin="4,1,0,0"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       ToolTip="Only the positive (+) direction of this stick axis is mapped. Add a second source — or set Invert — to drive the negative (−) direction."
+                                                       Visibility="{Binding ShouldShowEmptyDirectionHint, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

@@ -1548,8 +1548,39 @@ namespace PadForge.Services
             foreach (var mapping in padVm.Mappings)
             {
                 string target = mapping.TargetSettingName;
-                string value = GetMappingValue(ps, target);
-                mapping.LoadDescriptor(value);
+
+                // Phase 2C — when a per-VC MappingSet row exists for this
+                // target, IT is the source of truth for the row's primary
+                // descriptor, not the per-device PadSetting field. This is
+                // what makes the Mappings tab a unified per-VC view: the
+                // Device dropdown stops driving which descriptor shows.
+                // Per-mapping deadzone stays per-device for now (it's a
+                // device-tuning concern). Per-source DeadZone on the
+                // MappingSet sources will replace it in Phase 1c-3.
+                bool primaryFromMappingSet = false;
+                if (msRowsByTarget.TryGetValue(target, out var msRow)
+                    && msRow.Sources != null && msRow.Sources.Count > 0)
+                {
+                    var primary = msRow.Sources[0];
+                    string encoded = ReencodePrefixForLegacy(
+                        primary.Descriptor, primary.Invert, primary.HalfAxis);
+                    mapping.LoadDescriptor(encoded);
+                    primaryFromMappingSet = true;
+
+                    // Per-source DeadZone wins over per-mapping legacy
+                    // deadzone when MappingSet drives the row.
+                    if (primary.DeadZone > 0) mapping.MappingDeadZone = primary.DeadZone;
+                }
+                else
+                {
+                    // No MappingSet row → fall back to per-device legacy
+                    // path. Triggers on slots that haven't been migrated
+                    // yet (rare today; covers any new VC the user creates
+                    // before a save round-trip).
+                    string value = GetMappingValue(ps, target);
+                    mapping.LoadDescriptor(value);
+                }
+
                 MappingDisplayResolver.ResolveDisplayText(mapping, ud);
 
                 if (mapping.NegSettingName != null)
@@ -1560,27 +1591,52 @@ namespace PadForge.Services
                     MappingDisplayResolver.ResolveNegDisplayText(mapping, ud);
                 }
 
-                // Load per-mapping deadzone.
-                string dzStr = ps.GetMappingDeadZone(target);
-                mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
+                // Per-mapping deadzone (legacy fallback when MappingSet
+                // didn't supply one above).
+                if (!primaryFromMappingSet)
+                {
+                    string dzStr = ps.GetMappingDeadZone(target);
+                    mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
+                }
 
-                // Phase 2C — populate ExtraSources / CombineMode from
-                // the matching MappingSet row (sources beyond the primary).
+                // Phase 2C — ExtraSources / CombineMode from the
+                // matching MappingSet row (sources beyond the primary).
                 mapping.ExtraSources.Clear();
                 mapping.CombineMode = "";
                 mapping.CombineExpression = "";
-                if (msRowsByTarget.TryGetValue(target, out var msRow))
+                if (msRowsByTarget.TryGetValue(target, out var msRow2))
                 {
-                    mapping.CombineMode = msRow.CombineMode ?? "";
-                    mapping.CombineExpression = msRow.CombineExpression ?? "";
-                    if (msRow.Sources != null)
+                    mapping.CombineMode = msRow2.CombineMode ?? "";
+                    mapping.CombineExpression = msRow2.CombineExpression ?? "";
+                    if (msRow2.Sources != null)
                     {
-                        for (int si = 1; si < msRow.Sources.Count; si++)
+                        for (int si = 1; si < msRow2.Sources.Count; si++)
                             mapping.ExtraSources.Add(
-                                ViewModels.MappingSourceItem.FromDomain(msRow.Sources[si]));
+                                ViewModels.MappingSourceItem.FromDomain(msRow2.Sources[si]));
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Re-encodes a clean descriptor + Invert/HalfAxis flags back into
+        /// the legacy "I"/"H"/"IH" prefix form that the existing
+        /// MappingItem.LoadDescriptor / Step 3 parser expect. The new
+        /// schema stores Invert and HalfAxis as separate per-source bool
+        /// flags, but the UI's MappingItem still consumes the prefix-
+        /// encoded form for back-compat.
+        /// </summary>
+        private static string ReencodePrefixForLegacy(string descriptor, bool invert, bool halfAxis)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return "";
+            string prefix = (invert, halfAxis) switch
+            {
+                (true,  true)  => "IH",
+                (true,  false) => "I",
+                (false, true)  => "H",
+                _              => "",
+            };
+            return prefix + descriptor;
         }
 
         private static string GetMappingValue(PadSetting ps, string key)

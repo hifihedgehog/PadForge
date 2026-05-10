@@ -1623,50 +1623,29 @@
                                                              one shot via the InputChoiceToSource attached
                                                              behavior. -->
                                                         <StackPanel Orientation="Vertical" Margin="0,0,4,0">
-                                                            <Grid>
-                                                                <ComboBox x:Name="ExtraSourceCombo"
-                                                                          ItemsSource="{Binding DataContext.AvailableInputsView,
-                                                                            RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
-                                                                          SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                          DisplayMemberPath="DisplayName"
-                                                                          MinWidth="240" Padding="4,2"
-                                                                          ToolTip="Pick the source from any device assigned to this slot.">
-                                                                    <ComboBox.GroupStyle>
-                                                                        <GroupStyle>
-                                                                            <GroupStyle.HeaderTemplate>
-                                                                                <DataTemplate>
-                                                                                    <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
-                                                                                            Padding="6,3,6,3">
-                                                                                        <TextBlock Text="{Binding Name}"
-                                                                                                   FontSize="11"
-                                                                                                   FontWeight="SemiBold"
-                                                                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                                                                   TextTrimming="CharacterEllipsis"/>
-                                                                                    </Border>
-                                                                                </DataTemplate>
-                                                                            </GroupStyle.HeaderTemplate>
-                                                                        </GroupStyle>
-                                                                    </ComboBox.GroupStyle>
-                                                                </ComboBox>
-                                                                <TextBlock Text="Unassigned"
-                                                                           IsHitTestVisible="False"
-                                                                           Margin="8,0,28,0"
-                                                                           VerticalAlignment="Center"
-                                                                           HorizontalAlignment="Left"
-                                                                           FontStyle="Italic"
-                                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}">
-                                                                    <TextBlock.Style>
-                                                                        <Style TargetType="TextBlock">
-                                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                                            <Style.Triggers>
-                                                                                <DataTrigger Binding="{Binding SelectedItem, ElementName=ExtraSourceCombo}" Value="{x:Null}">
-                                                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                                                </DataTrigger>
-                                                                            </Style.Triggers>
-                                                                        </Style>
-                                                                    </TextBlock.Style>
-                                                                </TextBlock>
-                                                            </Grid>
+                                                            <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView,
+                                                                        RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                                      SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                      DisplayMemberPath="DisplayName"
+                                                                      MinWidth="240" Padding="4,2"
+                                                                      ToolTip="Pick the source from any device assigned to this slot.">
+                                                                <ComboBox.GroupStyle>
+                                                                    <GroupStyle>
+                                                                        <GroupStyle.HeaderTemplate>
+                                                                            <DataTemplate>
+                                                                                <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                                                                        Padding="6,3,6,3">
+                                                                                    <TextBlock Text="{Binding Name}"
+                                                                                               FontSize="11"
+                                                                                               FontWeight="SemiBold"
+                                                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                                               TextTrimming="CharacterEllipsis"/>
+                                                                                </Border>
+                                                                            </DataTemplate>
+                                                                        </GroupStyle.HeaderTemplate>
+                                                                    </GroupStyle>
+                                                                </ComboBox.GroupStyle>
+                                                            </ComboBox>
                                                             <!-- Device-origin badge below the picker. Hidden
                                                                  when the row has no descriptor assigned so a
                                                                  just-cleared / freshly-added source doesn't
@@ -1789,52 +1768,28 @@
                                                  which is what makes the unified Mappings tab
                                                  device-correct without the user having to
                                                  fiddle with the Device dropdown to the right. -->
-                                            <Grid>
-                                                <ComboBox x:Name="MainSourceCombo"
-                                                          ItemsSource="{Binding AvailableInputsView}"
-                                                          SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                          DisplayMemberPath="DisplayName"
-                                                          Margin="0" Padding="4,2"
-                                                          HorizontalAlignment="Stretch">
-                                                    <ComboBox.GroupStyle>
-                                                        <GroupStyle>
-                                                            <GroupStyle.HeaderTemplate>
-                                                                <DataTemplate>
-                                                                    <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
-                                                                            Padding="6,3,6,3" Margin="0,0,0,0">
-                                                                        <TextBlock Text="{Binding Name}"
-                                                                                   FontSize="11"
-                                                                                   FontWeight="SemiBold"
-                                                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                                                   TextTrimming="CharacterEllipsis"/>
-                                                                    </Border>
-                                                                </DataTemplate>
-                                                            </GroupStyle.HeaderTemplate>
-                                                        </GroupStyle>
-                                                    </ComboBox.GroupStyle>
-                                                </ComboBox>
-                                                <!-- "Unassigned" placeholder, visible only when
-                                                     the picker has no selection. IsHitTestVisible
-                                                     is false so clicks fall through to the ComboBox. -->
-                                                <TextBlock Text="Unassigned"
-                                                           IsHitTestVisible="False"
-                                                           Margin="8,0,28,0"
-                                                           VerticalAlignment="Center"
-                                                           HorizontalAlignment="Left"
-                                                           FontStyle="Italic"
-                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding SelectedItem, ElementName=MainSourceCombo}" Value="{x:Null}">
-                                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
-                                            </Grid>
+                                            <ComboBox ItemsSource="{Binding AvailableInputsView}"
+                                                      SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      DisplayMemberPath="DisplayName"
+                                                      Margin="0" Padding="4,2"
+                                                      HorizontalAlignment="Stretch">
+                                                <ComboBox.GroupStyle>
+                                                    <GroupStyle>
+                                                        <GroupStyle.HeaderTemplate>
+                                                            <DataTemplate>
+                                                                <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                                                        Padding="6,3,6,3" Margin="0,0,0,0">
+                                                                    <TextBlock Text="{Binding Name}"
+                                                                               FontSize="11"
+                                                                               FontWeight="SemiBold"
+                                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                               TextTrimming="CharacterEllipsis"/>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </GroupStyle.HeaderTemplate>
+                                                    </GroupStyle>
+                                                </ComboBox.GroupStyle>
+                                            </ComboBox>
                                             <!-- Phase 2C — primary source's device origin badge.
                                                  Visible when the row is bound to a per-VC
                                                  MappingSet primary and resolved to a

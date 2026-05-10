@@ -81,7 +81,7 @@ namespace PadForge.Common.Input
                     if (ms != null && ms.Rows != null && ms.Rows.Count > 0)
                     {
                         us.OutputState = MapInputToGamepadFromMappingSet(
-                            ud.InputState, ms, us.InstanceGuid.ToString(), ps, out rawMapped);
+                            ud.InputState, ms, us.InstanceGuid.ToString(), ps, slotIndex, out rawMapped);
                     }
                     else
                     {
@@ -242,13 +242,14 @@ namespace PadForge.Common.Input
             MappingSet mappingSet,
             string thisDeviceGuid,
             PadSetting ps,
+            int slotIndex,
             out Gamepad rawMapped)
         {
             rawMapped = default;
             var gp = new Gamepad();
 
             int gt = TryParseIntStatic(ps?.AxisToButtonThreshold, 50);
-            ApplyMappingSetToGamepad(state, mappingSet, thisDeviceGuid, gt, ref gp);
+            ApplyMappingSetToGamepad(state, mappingSet, thisDeviceGuid, gt, slotIndex, ref gp);
 
             rawMapped = gp;
             ApplyPadSettingTuning(ref gp, ps);

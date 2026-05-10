@@ -8,6 +8,111 @@ namespace PadForge.Common.Input
     public partial class InputManager
     {
         // ─────────────────────────────────────────────
+        //  Per-slot runtime state for stateful source kinds
+        //  (Incremental accumulator; InvertOnHold is stateless).
+        //  Cleared on profile switch and on engine stop.
+        // ─────────────────────────────────────────────
+        private static readonly SourceKindRuntime[] _slotSourceKindRuntime = InitRuntime();
+        private static SourceKindRuntime[] InitRuntime()
+        {
+            var arr = new SourceKindRuntime[MaxPads];
+            for (int i = 0; i < MaxPads; i++) arr[i] = new SourceKindRuntime();
+            return arr;
+        }
+
+        /// <summary>Drops Incremental accumulator state on every slot.
+        /// Called by InputService on profile switch and engine stop so
+        /// cruise-control / ramp throttle always starts neutral.</summary>
+        public static void ClearSourceKindRuntime()
+        {
+            for (int i = 0; i < _slotSourceKindRuntime.Length; i++)
+                _slotSourceKindRuntime[i]?.Clear();
+        }
+
+        // Frame delta tracked per slot. Set by ApplyMappingSetToGamepad
+        // each frame from the engine's polling-loop timestamp.
+        private static readonly double[] _lastEvalTime = new double[MaxPads];
+
+        private static double ComputeAndAdvanceDelta(int slot)
+        {
+            double now = (double)System.Diagnostics.Stopwatch.GetTimestamp() / System.Diagnostics.Stopwatch.Frequency;
+            double last = _lastEvalTime[slot];
+            _lastEvalTime[slot] = now;
+            if (last <= 0) return 0; // first frame on this slot
+            double dt = now - last;
+            // Cap pathologically large deltas (e.g. resume from sleep) so a
+            // sticky Incremental accumulator doesn't fly to a clamp.
+            if (dt > 0.25) dt = 0.25;
+            return dt;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Shift layer activator state
+        //
+        //  Per-slot Toggle engagement + previous-frame button-down latch
+        //  for edge detection. State does not persist across app restart
+        //  or profile switch (cleared with the source-kind runtime).
+        // ─────────────────────────────────────────────
+        private static readonly bool[] _shiftToggleEngaged = new bool[MaxPads];
+        private static readonly bool[] _shiftButtonWasDown = new bool[MaxPads];
+
+        /// <summary>Resolves the active shift layer mask for a slot based
+        /// on its <see cref="MappingSet.ShiftButton"/> activator (Hold or
+        /// Toggle). Returns <c>"Base"</c> when no activator is configured
+        /// or its button isn't held / toggled on.</summary>
+        private static string ResolveActiveLayerMask(
+            int slotIndex,
+            MappingSet mappingSet,
+            CustomInputState thisDeviceState,
+            string thisDeviceGuid)
+        {
+            var act = mappingSet?.ShiftButton;
+            if (act == null) return "Base";
+
+            // Only the device that owns the shift button reads it; other
+            // devices return Base on this pass and the activator's owning
+            // device handles the engagement transition. This keeps cross-
+            // device shift cleanly scoped: the user binds the activator
+            // to one physical device, and that device drives the layer
+            // transition for the slot.
+            if (!string.IsNullOrEmpty(act.DeviceGuid) &&
+                !string.Equals(act.DeviceGuid, thisDeviceGuid, System.StringComparison.OrdinalIgnoreCase))
+                return "Base";
+
+            bool buttonDown = SourceKindRuntimeReadButtonLikeBool(thisDeviceState, act.Descriptor);
+
+            string mode = act.Mode ?? "Hold";
+            switch (mode)
+            {
+                case "Toggle":
+                {
+                    // Rising-edge detection: engagement flips on press.
+                    if (slotIndex >= 0 && slotIndex < _shiftToggleEngaged.Length)
+                    {
+                        bool prev = _shiftButtonWasDown[slotIndex];
+                        if (buttonDown && !prev)
+                            _shiftToggleEngaged[slotIndex] = !_shiftToggleEngaged[slotIndex];
+                        _shiftButtonWasDown[slotIndex] = buttonDown;
+                        return _shiftToggleEngaged[slotIndex] ? "Shift" : "Base";
+                    }
+                    return "Base";
+                }
+                case "Hold":
+                default:
+                    return buttonDown ? "Shift" : "Base";
+            }
+        }
+
+        // Reuses the Engine's button-like reader without going through the
+        // managed-cast SourceCoercion wrapper (we already know the activator
+        // is button-class).
+        private static bool SourceKindRuntimeReadButtonLikeBool(CustomInputState state, string descriptor)
+            => SourceEvaluator.EvaluateForButtonTarget(
+                state,
+                new MappingSource { Kind = "Direct", Descriptor = descriptor ?? "" },
+                50, 0, "", 0, null, 0);
+
+        // ─────────────────────────────────────────────
         //  Issue #61 multi-source / shift Phase 1c-2
         //  MappingSet-based descriptor reader
         //
@@ -43,22 +148,68 @@ namespace PadForge.Common.Input
             MappingSet mappingSet,
             string thisDeviceGuid,
             int globalAxisToButtonThreshold,
+            int slotIndex,
             ref Gamepad gp)
         {
             if (state == null || mappingSet == null) return;
             if (mappingSet.Rows == null || mappingSet.Rows.Count == 0) return;
+
+            var runtime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
+                ? _slotSourceKindRuntime[slotIndex]
+                : null;
+            double dt = (slotIndex >= 0 && slotIndex < _lastEvalTime.Length)
+                ? ComputeAndAdvanceDelta(slotIndex)
+                : 0;
 
             // Reusable per-row buffers. Step 3 runs in a single thread
             // (the polling thread), so static reuse is safe and zero-alloc.
             var axisContribs = _msAxisBuf ??= new List<float>(8);
             var boolContribs = _msBoolBuf ??= new List<bool>(8);
 
+            // Phase 5 — resolve the shift activator's current state for
+            // this slot/device. Overlay-with-fallthrough: rows with the
+            // active layer mask override matching Targets; targets without
+            // an active-mask row fall through to the Base row.
+            string activeMask = ResolveActiveLayerMask(slotIndex, mappingSet, state, thisDeviceGuid);
+            HashSet<string> shiftCoveredTargets = activeMask != "Base" ? new HashSet<string>() : null;
+            if (shiftCoveredTargets != null)
+            {
+                foreach (var r in mappingSet.Rows)
+                {
+                    if (r == null) continue;
+                    if (string.Equals(r.LayerMask, activeMask, System.StringComparison.Ordinal))
+                        shiftCoveredTargets.Add(r.Target ?? "");
+                }
+            }
+
             foreach (var row in mappingSet.Rows)
             {
                 if (row == null) continue;
-                if (!string.Equals(row.LayerMask, "Base", System.StringComparison.Ordinal))
-                    continue; // Shift-layer evaluation lands in the Shift recipe.
                 if (string.IsNullOrEmpty(row.Target)) continue;
+
+                // Layer-row picking with overlay-with-fallthrough.
+                string rowLayer = row.LayerMask ?? "Base";
+                if (activeMask == "Base")
+                {
+                    // Base layer active: only Base rows fire.
+                    if (rowLayer != "Base") continue;
+                }
+                else
+                {
+                    // Non-Base active: matching-mask rows fire; Base rows
+                    // fall through only when no matching-mask row exists
+                    // for this Target.
+                    if (rowLayer == "Base")
+                    {
+                        if (shiftCoveredTargets.Contains(row.Target)) continue;
+                    }
+                    else if (rowLayer != activeMask)
+                    {
+                        // Some other shift layer (Shift1 vs Shift2 in the
+                        // forward-compatible schema). Skip on this pass.
+                        continue;
+                    }
+                }
 
                 var kind = TargetKindResolver.Resolve(row.Target);
 
@@ -76,11 +227,13 @@ namespace PadForge.Common.Input
 
                 if (kind == TargetKind.Button || kind == TargetKind.PovDirection)
                 {
-                    foreach (var src in row.Sources)
+                    for (int i = 0; i < row.Sources.Count; i++)
                     {
+                        var src = row.Sources[i];
                         if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
-                        boolContribs.Add(SourceCoercion.EvaluateForButtonTarget(
-                            state, src, globalAxisToButtonThreshold));
+                        boolContribs.Add(SourceEvaluator.EvaluateForButtonTarget(
+                            state, src, globalAxisToButtonThreshold,
+                            slotIndex, row.Target, i, runtime, dt));
                     }
                     if (boolContribs.Count == 0) continue;
 
@@ -92,10 +245,12 @@ namespace PadForge.Common.Input
                 }
                 else if (kind == TargetKind.BipolarAxis)
                 {
-                    foreach (var src in row.Sources)
+                    for (int i = 0; i < row.Sources.Count; i++)
                     {
+                        var src = row.Sources[i];
                         if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
-                        axisContribs.Add(SourceCoercion.EvaluateForBipolarAxisTarget(state, src));
+                        axisContribs.Add(SourceEvaluator.EvaluateForBipolarAxisTarget(
+                            state, src, slotIndex, row.Target, i, runtime, dt));
                     }
                     if (axisContribs.Count == 0) continue;
 
@@ -107,10 +262,12 @@ namespace PadForge.Common.Input
                 }
                 else if (kind == TargetKind.Trigger)
                 {
-                    foreach (var src in row.Sources)
+                    for (int i = 0; i < row.Sources.Count; i++)
                     {
+                        var src = row.Sources[i];
                         if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
-                        axisContribs.Add(SourceCoercion.EvaluateForTriggerTarget(state, src));
+                        axisContribs.Add(SourceEvaluator.EvaluateForTriggerTarget(
+                            state, src, slotIndex, row.Target, i, runtime, dt));
                     }
                     if (axisContribs.Count == 0) continue;
 

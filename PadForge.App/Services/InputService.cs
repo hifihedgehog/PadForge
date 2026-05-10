@@ -1873,6 +1873,11 @@ namespace PadForge.Services
 
         private static string GetMappingValue(PadSetting ps, string key)
         {
+            // Tolerate ps = null — RefreshMappingsCore can be invoked
+            // from the device-assignment path with no selected device,
+            // in which case the legacy fallback walks slot devices and
+            // any "outer ps" calls here must safely return empty.
+            if (ps == null) return string.Empty;
             if (key.StartsWith("Extended", StringComparison.Ordinal))
                 return ps.GetExtendedMapping(key);
             if (key.StartsWith("Midi", StringComparison.Ordinal))

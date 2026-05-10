@@ -562,6 +562,12 @@ namespace PadForge.Services
         /// matching (DeviceGuid, Descriptor) entry. Sources whose
         /// owning device left the slot get dropped.
         /// </summary>
+        /// <summary>Public hook so callers outside the save pipeline
+        /// (e.g. device-assignment changes) can trigger the merge so
+        /// newly-assigned devices' auto-mapped sources appear in the
+        /// per-VC view without waiting for the next save / reload.</summary>
+        public static void RefreshMappingSetsFromLegacy() => MergeMappingSetsFromLegacy();
+
         private static void MergeMappingSetsFromLegacy()
         {
             var sets = SettingsManager.SlotMappingSets;

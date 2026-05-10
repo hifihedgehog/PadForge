@@ -1431,7 +1431,6 @@
                 <Grid Margin="8">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
@@ -1458,45 +1457,9 @@
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     </StackPanel>
 
-                    <!-- Issue #61 Phase 6: Shift activator picker -->
-                    <Border Grid.Row="1"
-                            Background="{DynamicResource ControlFillColorSecondaryBrush}"
-                            CornerRadius="4" Padding="8" Margin="0,0,0,8">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Shift Button:" FontWeight="SemiBold"
-                                       VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <TextBlock Text="Device" FontSize="11" VerticalAlignment="Center"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                       Margin="0,0,4,0"/>
-                            <TextBox Text="{Binding ShiftDeviceGuid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     MinWidth="200" Padding="4,2" VerticalAlignment="Center"
-                                     ToolTip="Device GUID (leave empty for first available device on this slot)"
-                                     Margin="0,0,8,0"/>
-                            <TextBlock Text="Input" FontSize="11" VerticalAlignment="Center"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                       Margin="0,0,4,0"/>
-                            <TextBox Text="{Binding ShiftDescriptor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     MinWidth="120" Padding="4,2" VerticalAlignment="Center"
-                                     ToolTip="Descriptor (e.g. 'Button 7'). Empty disables the shift layer."
-                                     Margin="0,0,8,0"/>
-                            <TextBlock Text="Mode:" FontSize="11" VerticalAlignment="Center"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                       Margin="0,0,4,0"/>
-                            <ComboBox SelectedItem="{Binding ShiftMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      MinWidth="80" Padding="4,2" VerticalAlignment="Center"
-                                      Margin="0,0,8,0">
-                                <ComboBoxItem Content="Hold"/>
-                                <ComboBoxItem Content="Toggle"/>
-                            </ComboBox>
-                            <Button Content="Clear" Padding="6,2" VerticalAlignment="Center"
-                                    Command="{Binding ClearShiftActivatorCommand}"
-                                    IsEnabled="{Binding HasShiftActivator}"
-                                    ToolTip="Remove the shift button assignment for this slot"/>
-                        </StackPanel>
-                    </Border>
 
                     <!-- Mapping DataGrid -->
-                    <DataGrid Grid.Row="2"
+                    <DataGrid Grid.Row="1"
                               ItemsSource="{Binding Mappings}"
                               AutoGenerateColumns="False"
                               CanUserAddRows="False"
@@ -1626,14 +1589,36 @@
                                                 Binding="{Binding TargetLabel}"
                                                 Width="195"/>
                             <DataGridTemplateColumn Header="{Binding Pad_HeaderSource, Source={x:Static strings:Strings.Instance}}"
-                                                Width="215">
+                                                Width="260">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <ComboBox ItemsSource="{Binding AvailableInputs}"
-                                                  SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                  DisplayMemberPath="DisplayName"
-                                                  Margin="0" Padding="4,2"
-                                                  HorizontalAlignment="Stretch"/>
+                                        <StackPanel Orientation="Vertical">
+                                            <ComboBox ItemsSource="{Binding AvailableInputs}"
+                                                      SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      DisplayMemberPath="DisplayName"
+                                                      Margin="0" Padding="4,2"
+                                                      HorizontalAlignment="Stretch"/>
+                                            <!-- Phase 2C — primary source's device origin badge.
+                                                 Visible when the row is bound to a per-VC
+                                                 MappingSet primary and resolved to a
+                                                 user-friendly device name. -->
+                                            <TextBlock Text="{Binding PrimarySourceDeviceLabel}"
+                                                       FontSize="10"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       Margin="4,1,0,0"
+                                                       TextTrimming="CharacterEllipsis">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding PrimarySourceDeviceLabel}" Value="">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

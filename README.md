@@ -65,7 +65,7 @@ Fork of [x360ce](https://github.com/x360ce/x360ce), rewritten on SDL3, [HIDMaest
 - PlayStation 3D and 2D views render a live touchpad surface with finger contact spheres. The touchpad surface itself is a click target for recording the TouchpadClick mapping.
 - Dynamic Extended schematic that auto-sizes to any HIDMaestro profile's sticks, triggers, POVs, and buttons.
 - Keyboard and mouse preview for the KBM output type, showing every mapped key and button.
-- Built-in WebSocket server turns any touchscreen into a wireless controller. Xbox and DS4 layouts, dual analog sticks, 8-way D-pad, triggers, rumble feedback.
+- Built-in WebSocket server turns any touchscreen into a wireless controller. Xbox 360 and DualShock 4 layouts share the same 2D artwork as the desktop view, with the trigger silhouette pushed behind the controller body and the press-fill drawn in front so analog pull renders the same way it does in the app. Dual analog sticks, 8-way D-pad, rumble feedback.
 
 ### Macros
 

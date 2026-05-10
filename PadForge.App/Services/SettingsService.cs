@@ -298,6 +298,7 @@ namespace PadForge.Services
                 bool xmlHasContent = fromXml != null && fromXml.Rows != null && fromXml.Rows.Count > 0;
                 if (xmlHasContent)
                 {
+                    SanitizeMappingSet(fromXml, slot);
                     sets[slot] = fromXml;
                     continue;
                 }
@@ -305,6 +306,66 @@ namespace PadForge.Services
                 // Initial migration from legacy fields.
                 sets[slot] = BuildOneSlotFromLegacy(slot);
             }
+        }
+
+        /// <summary>
+        /// In-place cleanup of a loaded MappingSet:
+        /// 1. Deduplicates row Sources by (DeviceGuid, Descriptor) — heals
+        ///    the per-save accumulation bug from earlier multi-source builds.
+        /// 2. Drops sources whose owning device is not gamepad-class for
+        ///    gamepad-class targets — heals the "joystick stuck left"
+        ///    symptom caused by stale auto-mapped gamepad descriptors on
+        ///    keyboard/mouse/touchpad PadSettings polluting the row.
+        /// </summary>
+        private static void SanitizeMappingSet(MappingSet ms, int slot)
+        {
+            if (ms?.Rows == null) return;
+
+            UserDevice[] devSnapshot;
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                devSnapshot = SettingsManager.UserDevices.Items.ToArray();
+            }
+            bool IsGamepadDevice(string deviceGuid)
+            {
+                if (string.IsNullOrEmpty(deviceGuid)) return true; // "any device"
+                if (!Guid.TryParse(deviceGuid, out Guid g)) return true;
+                foreach (var ud in devSnapshot)
+                {
+                    if (ud != null && ud.InstanceGuid == g)
+                        return ud.CapType == InputDeviceType.Gamepad;
+                }
+                return false; // unknown device — assume non-gamepad
+            }
+
+            foreach (var row in ms.Rows)
+            {
+                if (row?.Sources == null) continue;
+                bool isGamepadTarget = IsGamepadOnlyTarget(row.Target);
+                var seen = new HashSet<(string, string)>();
+                int writeIdx = 0;
+                for (int i = 0; i < row.Sources.Count; i++)
+                {
+                    var s = row.Sources[i];
+                    if (s == null) continue;
+                    if (isGamepadTarget && !IsGamepadDevice(s.DeviceGuid)) continue;
+                    var key = ((s.DeviceGuid ?? "").ToLowerInvariant(), s.Descriptor ?? "");
+                    if (!seen.Add(key)) continue;
+                    row.Sources[writeIdx++] = s;
+                }
+                if (writeIdx < row.Sources.Count)
+                    row.Sources.RemoveRange(writeIdx, row.Sources.Count - writeIdx);
+            }
+        }
+
+        private static bool IsGamepadOnlyTarget(string target)
+        {
+            if (string.IsNullOrEmpty(target)) return false;
+            if (target.StartsWith("Kbm", StringComparison.Ordinal)) return false;
+            if (target.StartsWith("Midi", StringComparison.Ordinal)) return false;
+            if (target.StartsWith("Extended", StringComparison.Ordinal)) return false;
+            if (target.StartsWith("Touchpad", StringComparison.Ordinal)) return false;
+            return true; // ButtonA/B/X/Y, LeftShoulder, ..., LeftThumbAxisX, LeftTrigger, DPad*, etc.
         }
 
         private static MappingSet BuildOneSlotFromLegacy(int slot)
@@ -315,13 +376,42 @@ namespace PadForge.Services
                 snapshot = SettingsManager.UserSettings.Items.ToArray();
             }
 
-            var devicesForSlot = new List<(string DeviceGuid, PadSetting PadSetting)>();
+            // Look up each device's CapType so the migrator can skip
+            // emitting gamepad-target sources for non-gamepad devices
+            // (keyboards, mice, touchpads). Stops keyboards with stale
+            // auto-mapped gamepad descriptors from polluting the per-VC
+            // MappingSet — without this, an axis source pointing at
+            // state.Axis[0] reads uninitialized 0 → bipolar -1 →
+            // joystick stuck pointing left during evaluation.
+            UserDevice[] devSnapshot;
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                devSnapshot = SettingsManager.UserDevices.Items.ToArray();
+            }
+
+            bool IsGamepad(Guid g)
+            {
+                foreach (var ud in devSnapshot)
+                {
+                    if (ud != null && ud.InstanceGuid == g)
+                        return ud.CapType == InputDeviceType.Gamepad;
+                }
+                // Unknown device — be conservative and assume non-gamepad
+                // so we don't pollute. The user can always re-record on
+                // an actual gamepad.
+                return false;
+            }
+
+            var devicesForSlot = new List<(string DeviceGuid, PadSetting PadSetting, bool IsGamepadEligible)>();
             foreach (var us in snapshot)
             {
                 if (us == null || us.MapTo != slot) continue;
                 var ps = us.GetPadSetting();
                 if (ps == null) continue;
-                devicesForSlot.Add((us.InstanceGuid.ToString(), ps));
+                devicesForSlot.Add((
+                    us.InstanceGuid.ToString(),
+                    ps,
+                    IsGamepad(us.InstanceGuid)));
             }
 
             return MappingSetMigrator.BuildFromLegacy(slot, devicesForSlot);
@@ -407,11 +497,15 @@ namespace PadForge.Services
                 var rebuilt = BuildOneSlotFromLegacy(slot);
                 var current = sets[slot];
 
-                // Always take Sources[0] from the rebuilt row (it reflects
-                // the latest PadSetting after UI single-source edits) and
-                // append Sources[1..N] from the existing row (user-authored
-                // ExtraSources from Phase 2C UI). Per-row CombineMode +
-                // CombineExpression carry over from existing too.
+                // Take rebuilt's Sources from PadSetting (one per device
+                // with a non-empty mapping field) and append from existing
+                // ONLY sources that don't duplicate by (DeviceGuid,
+                // Descriptor) — preserving genuinely user-authored extras
+                // (e.g. a second source from the same device, or a source
+                // from a device that legacy PadSetting couldn't represent)
+                // while preventing the per-save accumulation bug where
+                // existing[1..N] would re-append PadSetting-derived sources
+                // every round-trip and grow the row indefinitely.
                 if (current?.Rows != null)
                 {
                     foreach (var rrow in rebuilt.Rows)
@@ -431,10 +525,26 @@ namespace PadForge.Services
 
                         rrow.CombineMode = existingMatch.CombineMode ?? "";
                         rrow.CombineExpression = existingMatch.CombineExpression ?? "";
+
                         if (existingMatch.Sources != null)
                         {
+                            // Dedupe key: (DeviceGuid lowercased, Descriptor).
+                            // A source that already exists in rebuilt (which
+                            // came from PadSetting) doesn't get re-added.
+                            var seen = new HashSet<(string, string)>();
+                            foreach (var s in rrow.Sources)
+                            {
+                                if (s == null) continue;
+                                seen.Add(((s.DeviceGuid ?? "").ToLowerInvariant(), s.Descriptor ?? ""));
+                            }
                             for (int i = 1; i < existingMatch.Sources.Count; i++)
-                                rrow.Sources.Add(existingMatch.Sources[i]);
+                            {
+                                var s = existingMatch.Sources[i];
+                                if (s == null) continue;
+                                var key = ((s.DeviceGuid ?? "").ToLowerInvariant(), s.Descriptor ?? "");
+                                if (seen.Add(key))
+                                    rrow.Sources.Add(s);
+                            }
                         }
                     }
 

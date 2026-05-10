@@ -1550,7 +1550,13 @@
                                                      FontFamily="Consolas"/>
                                         </StackPanel>
 
-                                        <!-- ExtraSources list -->
+                                        <!-- ExtraSources list. Descriptor ComboBox is bound
+                                             to the parent MappingItem's AvailableInputs (the
+                                             slot's primary device's input choices) so users
+                                             pick from a list instead of typing raw descriptors.
+                                             The cascading Device/Input picker (sources from a
+                                             different device than the slot's primary) is the
+                                             next polish step. -->
                                         <ItemsControl ItemsSource="{Binding ExtraSources}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
@@ -1558,13 +1564,20 @@
                                                         <TextBlock Text="↳" FontSize="14"
                                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                                    Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                                        <TextBox Text="{Binding Descriptor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                 MinWidth="180" Padding="4,2" Margin="0,0,4,0"
-                                                                 ToolTip="Source descriptor (e.g. 'Button 5', 'Axis 2')"/>
+                                                        <ComboBox ItemsSource="{Binding DataContext.AvailableInputs,
+                                                                    RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                                  SelectedValuePath="Descriptor"
+                                                                  SelectedValue="{Binding Descriptor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                  DisplayMemberPath="DisplayName"
+                                                                  IsEditable="True"
+                                                                  MinWidth="180" Padding="4,2" Margin="0,0,4,0"
+                                                                  ToolTip="Pick from the slot's available inputs, or type a descriptor (e.g. 'Button 5', 'Axis 2')"/>
                                                         <CheckBox Content="Inv" IsChecked="{Binding Invert, Mode=TwoWay}"
-                                                                  VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                                  VerticalAlignment="Center" Margin="0,0,4,0"
+                                                                  ToolTip="Invert: button pressed → -1 / axis sign flipped"/>
                                                         <CheckBox Content="Half" IsChecked="{Binding HalfAxis, Mode=TwoWay}"
-                                                                  VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                                  VerticalAlignment="Center" Margin="0,0,4,0"
+                                                                  ToolTip="Half-axis: only the active half of a bipolar axis contributes"/>
                                                         <Button Content="✕" Padding="6,2"
                                                                 Command="{Binding DataContext.RemoveExtraSourceCommand,
                                                                           RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"

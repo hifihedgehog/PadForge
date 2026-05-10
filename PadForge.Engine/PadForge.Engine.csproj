@@ -8,6 +8,14 @@
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+    <!--
+      CA1416: this assembly is Windows-only by design (SDL3, Raw Input, HID,
+      registry-driven device enumeration). The TargetFramework already pins
+      net10.0-windows; the platform-compatibility warnings on RegistryKey
+      etc. don't add information.
+    -->
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
     <Product>PadForge</Product>
     <Company>PadForge</Company>
     <Copyright>Copyright © PadForge Contributors</Copyright>

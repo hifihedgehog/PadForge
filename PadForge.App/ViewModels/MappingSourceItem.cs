@@ -64,6 +64,7 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(IsButtonClassDescriptor));
                     OnPropertyChanged(nameof(DirectionBadge));
+                    OnPropertyChanged(nameof(IsDeadZoneApplicable));
                 }
             }
         }
@@ -109,7 +110,48 @@ namespace PadForge.ViewModels
             }
         }
         public bool HalfAxis { get => _halfAxis; set => SetProperty(ref _halfAxis, value); }
-        public int DeadZone { get => _deadZone; set => SetProperty(ref _deadZone, value); }
+        public int DeadZone
+        {
+            get => _deadZone;
+            set => SetProperty(ref _deadZone, System.Math.Clamp(value, 0, 100));
+        }
+
+        /// <summary>True when the per-source deadzone column is
+        /// applicable for this source: the descriptor is an axis or
+        /// slider AND the parent target is a discrete (button-type)
+        /// output. The parent <see cref="MappingItem"/> is the only
+        /// place that knows the target type, so the parent passes it
+        /// down via <see cref="ParentTargetIsDiscrete"/>.</summary>
+        public bool IsDeadZoneApplicable
+        {
+            get
+            {
+                var desc = _descriptor ?? "";
+                if (string.IsNullOrEmpty(desc)) return false;
+                int start = 0;
+                if (start < desc.Length && (desc[start] == 'I' || desc[start] == 'i')) start++;
+                if (start < desc.Length && (desc[start] == 'H' || desc[start] == 'h')) start++;
+                var body = desc.AsSpan(start);
+                if (!body.StartsWith("Axis") && !body.StartsWith("Slider")) return false;
+                return _parentTargetIsDiscrete;
+            }
+        }
+
+        private bool _parentTargetIsDiscrete;
+        /// <summary>Set by the parent <see cref="MappingItem"/> at
+        /// hydration time so <see cref="IsDeadZoneApplicable"/> can
+        /// know whether the row's target is a button-class output.
+        /// Stored on the source rather than walked up the tree so the
+        /// XAML can bind directly without a RelativeSource hop.</summary>
+        public bool ParentTargetIsDiscrete
+        {
+            get => _parentTargetIsDiscrete;
+            set
+            {
+                if (SetProperty(ref _parentTargetIsDiscrete, value))
+                    OnPropertyChanged(nameof(IsDeadZoneApplicable));
+            }
+        }
 
         public string ParamUp { get => _paramUp; set => SetProperty(ref _paramUp, value ?? ""); }
         public string ParamDown { get => _paramDown; set => SetProperty(ref _paramDown, value ?? ""); }
@@ -230,6 +272,27 @@ namespace PadForge.ViewModels
 
         public event EventHandler StartRecordingRequested;
         public event EventHandler StopRecordingRequested;
+
+        private RelayCommand _clearCommand;
+        /// <summary>Mirrors <see cref="MappingItem.ClearCommand"/>:
+        /// resets descriptor + flags + deadzone to defaults but keeps
+        /// the row in <c>ExtraSources</c>. Use the parent's
+        /// RemoveExtraSourceCommand when the row should disappear
+        /// entirely.</summary>
+        public RelayCommand ClearCommand =>
+            _clearCommand ??= new RelayCommand(() =>
+            {
+                Descriptor = "";
+                Invert = false;
+                HalfAxis = false;
+                DeadZone = 50;
+                _selectedInput = null;
+                OnPropertyChanged(nameof(SelectedInput));
+            });
+
+        private RelayCommand _resetDeadZoneCommand;
+        public RelayCommand ResetDeadZoneCommand =>
+            _resetDeadZoneCommand ??= new RelayCommand(() => DeadZone = 50);
 
         /// <summary>Builds a domain <see cref="Engine.Data.MappingSource"/>
         /// from this VM's current values. Used by the Save pipeline.</summary>

@@ -3090,6 +3090,16 @@ namespace PadForge.Services
         [XmlArrayItem("PadSetting")]
         public PadSetting[] PadSettings { get; set; }
 
+        /// <summary>
+        /// Per-VC mapping tables captured with this profile (Issue #61).
+        /// One <see cref="MappingSet"/> per slot. Null on profiles
+        /// captured before multi-source landed — ApplyProfile falls back
+        /// to per-device PadSetting in that case via the legacy migrator.
+        /// </summary>
+        [XmlArray("ProfileSlotMappingSets")]
+        [XmlArrayItem("MappingSet")]
+        public MappingSet[] SlotMappingSets { get; set; }
+
         [XmlArray("ProfileMacros")]
         [XmlArrayItem("Macro")]
         public MacroData[] Macros { get; set; }

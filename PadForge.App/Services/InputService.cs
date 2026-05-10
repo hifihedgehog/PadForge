@@ -4140,10 +4140,18 @@ namespace PadForge.Services
                 }
             }
 
+            // Snapshot the per-VC MappingSet array (Issue #61). Profiles
+            // round-trip multi-source rows + per-row CombineMode and
+            // ShiftActivator alongside the legacy PadSettings.
+            var msSnapshot = new Engine.Data.MappingSet[InputManager.MaxPads];
+            for (int s = 0; s < msSnapshot.Length && s < SettingsManager.SlotMappingSets.Length; s++)
+                msSnapshot[s] = SettingsManager.SlotMappingSets[s];
+
             return new ProfileData
             {
                 Entries = entries.ToArray(),
                 PadSettings = padSettings.ToArray(),
+                SlotMappingSets = msSnapshot,
                 SlotCreated = (bool[])SettingsManager.SlotCreated.Clone(),
                 SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone(),
                 SlotControllerTypes = Enumerable.Range(0, _mainVm.Pads.Count)
@@ -4228,6 +4236,20 @@ namespace PadForge.Services
         {
             if (profile == null)
                 return;
+
+            // Restore per-VC MappingSet from the profile snapshot
+            // (Issue #61). Multi-source rows + per-row CombineMode +
+            // ShiftActivator round-trip with the profile. Profiles
+            // captured before multi-source landed have null
+            // SlotMappingSets — leave the live array untouched in that
+            // case so it falls back to whatever the loader (legacy
+            // migration or persisted-XML state) set up.
+            if (profile.SlotMappingSets != null)
+            {
+                var live = SettingsManager.SlotMappingSets;
+                for (int s = 0; s < live.Length && s < profile.SlotMappingSets.Length; s++)
+                    live[s] = profile.SlotMappingSets[s];
+            }
 
             // ── Apply topology (if present in profile) ──
             if (profile.SlotCreated != null)
@@ -4518,6 +4540,7 @@ namespace PadForge.Services
                 {
                     profile.Entries = snapshot.Entries;
                     profile.PadSettings = snapshot.PadSettings;
+                    profile.SlotMappingSets = snapshot.SlotMappingSets;
                     profile.SlotCreated = snapshot.SlotCreated;
                     profile.SlotEnabled = snapshot.SlotEnabled;
                     profile.SlotControllerTypes = snapshot.SlotControllerTypes;

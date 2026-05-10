@@ -495,6 +495,17 @@ namespace PadForge
                 _inputService.RefreshDeviceList();
                 _viewModel.Devices.RefreshSlotButtons();
 
+                // Issue #61 fix — bring the per-VC MappingSets up to
+                // date with every assigned device's PadSetting BEFORE
+                // re-syncing the PadViewModels. Adding a new device
+                // populates its PadSetting with auto-mapped descriptors;
+                // running the additive merge here makes those sources
+                // visible in the Mappings tab immediately, instead of
+                // only after the user toggles the Device dropdown
+                // (which used to be the only thing that re-pulled
+                // descriptors from the new device's PadSetting).
+                SettingsService.RefreshMappingSetsFromLegacy();
+
                 // Sync PadSetting → PadViewModel for all active slots so that
                 // auto-mapped values are visible in the UI and survive the next
                 // save cycle (UpdatePadSettingsFromViewModels writes ViewModel

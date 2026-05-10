@@ -660,11 +660,54 @@ namespace PadForge.ViewModels
         public string CombineExpression
         {
             get => _combineExpression;
-            set => SetProperty(ref _combineExpression, value ?? "");
+            set
+            {
+                if (SetProperty(ref _combineExpression, value ?? ""))
+                {
+                    OnPropertyChanged(nameof(CombineExpressionStatus));
+                    OnPropertyChanged(nameof(IsCombineExpressionValid));
+                    OnPropertyChanged(nameof(IsCombineExpressionInvalid));
+                }
+            }
         }
 
         public bool IsMultiSource => ExtraSources.Count > 0;
         public bool IsCustomCombine => string.Equals(_combineMode, "Custom", StringComparison.Ordinal);
+
+        /// <summary>Live parse status of <see cref="CombineExpression"/>.
+        /// "✓ valid" or a parse-error message; surfaced inline below
+        /// the Custom expression TextBox so users get immediate
+        /// feedback. Empty/whitespace expression compiles as 0 (always
+        /// valid).</summary>
+        public string CombineExpressionStatus
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_combineExpression))
+                    return "✓ empty (evaluates to 0)";
+                var c = Engine.Common.Mapping.MappingExpression.Compile(_combineExpression);
+                if (c.IsValid)
+                {
+                    var refs = c.ReferencedSingleLetterVars ?? "";
+                    var refsBit = string.IsNullOrEmpty(refs) ? "" : " · refs: " + string.Join(",", refs.ToCharArray());
+                    if (c.MaxIndexedRef >= 0)
+                        refsBit += (refsBit.Length == 0 ? " · refs: " : ", ") + "s[" + c.MaxIndexedRef + "]";
+                    return "✓ valid" + refsBit;
+                }
+                return "✗ " + (c.Error ?? "parse error");
+            }
+        }
+
+        public bool IsCombineExpressionValid
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_combineExpression)) return true;
+                return Engine.Common.Mapping.MappingExpression.Compile(_combineExpression).IsValid;
+            }
+        }
+
+        public bool IsCombineExpressionInvalid => !IsCombineExpressionValid;
 
         private RelayCommand _addExtraSourceCommand;
         /// <summary>Appends a blank <see cref="MappingSourceItem"/> to

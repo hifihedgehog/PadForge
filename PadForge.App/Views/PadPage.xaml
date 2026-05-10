@@ -1538,16 +1538,38 @@
                                             </ComboBox>
                                         </StackPanel>
 
-                                        <!-- Custom expression box -->
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                        <!-- Custom expression box. Live parse status is
+                                             surfaced inline below the textbox so users get
+                                             immediate feedback while typing. Green tick on
+                                             valid expressions (with optional ref summary),
+                                             red message with column number on parse errors. -->
+                                        <StackPanel Orientation="Vertical" Margin="0,0,0,4"
                                                     Visibility="{Binding IsCustomCombine, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <TextBlock Text="f(x):" FontSize="11" VerticalAlignment="Center"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                       Margin="0,0,6,0"/>
-                                            <TextBox Text="{Binding CombineExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     MinWidth="320" Padding="4,2"
-                                                     VerticalAlignment="Center"
-                                                     FontFamily="Consolas"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="f(x):" FontSize="11" VerticalAlignment="Center"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                           Margin="0,0,6,0"/>
+                                                <TextBox Text="{Binding CombineExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         MinWidth="320" Padding="4,2"
+                                                         VerticalAlignment="Center"
+                                                         FontFamily="Consolas"
+                                                         ToolTip="Variables a..z bind to row sources (a=primary, b=first extra, …). s[i] indexes by position. Functions: abs, min, max, clamp, sign, sqrt, sin, cos, tan, atan2, lerp."/>
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding CombineExpressionStatus}"
+                                                       FontSize="10" FontFamily="Consolas"
+                                                       Margin="32,2,0,0"
+                                                       TextWrapping="Wrap">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Foreground" Value="#16C60C"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsCombineExpressionInvalid}" Value="True">
+                                                                <Setter Property="Foreground" Value="#C42B1C"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
                                         </StackPanel>
 
                                         <!-- ExtraSources list. Descriptor ComboBox is bound

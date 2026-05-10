@@ -1517,10 +1517,13 @@
                                         BorderBrush="{DynamicResource ControlElevationBorderBrush}"
                                         BorderThickness="0,1,0,0">
                                     <StackPanel Orientation="Vertical">
-                                        <!-- Combine pill row -->
+                                        <!-- Combine row — visible only on multi-source rows.
+                                             Blank entry was removed: every multi-source row
+                                             needs an explicit combine mode and EnsureCombineModeDefault
+                                             auto-picks MaxAbs/OR per target class. -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                                     Visibility="{Binding IsMultiSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <TextBlock Text="Combine:" FontSize="11"
+                                            <TextBlock Text="Combine" FontSize="11"
                                                        VerticalAlignment="Center"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        Margin="0,0,6,0"/>
@@ -1528,7 +1531,6 @@
                                                       SelectedValuePath="Content"
                                                       MinWidth="100" Margin="0" Padding="4,2"
                                                       VerticalAlignment="Center">
-                                                <ComboBoxItem Content=""/>
                                                 <ComboBoxItem Content="MaxAbs"/>
                                                 <ComboBoxItem Content="Sum"/>
                                                 <ComboBoxItem Content="Average"/>
@@ -1539,26 +1541,46 @@
                                             </ComboBox>
                                         </StackPanel>
 
-                                        <!-- Custom expression box. Live parse status is
-                                             surfaced inline below the textbox so users get
-                                             immediate feedback while typing. Green tick on
-                                             valid expressions (with optional ref summary),
-                                             red message with column number on parse errors. -->
+                                        <!-- Custom formula editor — only visible when the row
+                                             is multi-source AND Custom is the picked combine.
+                                             Gating on ShouldShowCustomExpression instead of
+                                             just IsCustomCombine means removing the last
+                                             extra source also collapses the formula box,
+                                             instead of leaving stale text on a single-source
+                                             row. The italic placeholder shows an example
+                                             until the user types something. -->
                                         <StackPanel Orientation="Vertical" Margin="0,0,0,4"
-                                                    Visibility="{Binding IsCustomCombine, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="f(x):" FontSize="11" VerticalAlignment="Center"
-                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                           Margin="0,0,6,0"/>
-                                                <TextBox Text="{Binding CombineExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                         MinWidth="320" Padding="4,2"
+                                                    Visibility="{Binding ShouldShowCustomExpression, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <Grid>
+                                                <TextBox x:Name="CustomFormulaBox"
+                                                         Text="{Binding CombineExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         MinWidth="380" Padding="6,4"
                                                          VerticalAlignment="Center"
                                                          FontFamily="Consolas"
-                                                         ToolTip="Variables a..z bind to row sources (a=primary, b=first extra, …). s[i] indexes by position. Functions: abs, min, max, clamp, sign, sqrt, sin, cos, tan, atan2, lerp."/>
-                                            </StackPanel>
+                                                         ToolTip="Mix the row's sources with a math formula. Variables a..z bind to row sources in order (a=first, b=second…). Functions: abs, min, max, clamp, sign, sqrt, sin, cos, tan, atan2, lerp."/>
+                                                <TextBlock IsHitTestVisible="False"
+                                                           Margin="10,0,12,0"
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Left"
+                                                           FontStyle="Italic"
+                                                           FontFamily="Consolas"
+                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                           Text="example: a + b * 0.5">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Text, ElementName=CustomFormulaBox}" Value="">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Grid>
                                             <TextBlock Text="{Binding CombineExpressionStatus}"
                                                        FontSize="10" FontFamily="Consolas"
-                                                       Margin="32,2,0,0"
+                                                       Margin="2,2,0,0"
                                                        TextWrapping="Wrap">
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">

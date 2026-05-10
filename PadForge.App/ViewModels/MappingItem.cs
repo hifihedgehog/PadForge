@@ -86,9 +86,17 @@ namespace PadForge.ViewModels
         {
             OnPropertyChanged(nameof(IsMultiSource));
             OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
+            OnPropertyChanged(nameof(ShouldShowCustomExpression));
 
             if (e.NewItems != null)
             {
+                // First add transitions the row from single→multi-source
+                // — auto-pick a sensible combine mode if the user (or
+                // legacy XML) hasn't set one yet, so the dropdown
+                // never shows blank for a multi-source row.
+                if (ExtraSources.Count > 0)
+                    EnsureCombineModeDefault();
+
                 foreach (var added in e.NewItems)
                 {
                     if (added is MappingSourceItem msi)
@@ -818,6 +826,7 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _combineMode, value ?? ""))
                 {
                     OnPropertyChanged(nameof(IsCustomCombine));
+                    OnPropertyChanged(nameof(ShouldShowCustomExpression));
                 }
             }
         }
@@ -841,6 +850,12 @@ namespace PadForge.ViewModels
 
         public bool IsMultiSource => ExtraSources.Count > 0;
         public bool IsCustomCombine => string.Equals(_combineMode, "Custom", StringComparison.Ordinal);
+
+        /// <summary>True only when a row has multiple sources AND the
+        /// user picked Custom for the combine mode. Gates the formula
+        /// editor so it disappears when the row falls back to single-
+        /// source (e.g. the user removed the last extra source).</summary>
+        public bool ShouldShowCustomExpression => IsMultiSource && IsCustomCombine;
 
         /// <summary>Live parse status of <see cref="CombineExpression"/>.
         /// "✓ valid" or a parse-error message; surfaced inline below

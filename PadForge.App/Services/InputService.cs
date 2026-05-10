@@ -1518,20 +1518,10 @@ namespace PadForge.Services
                 ? SettingsManager.SlotMappingSets[padVm.PadIndex]
                 : null;
 
-            // Phase 6 — pull the Shift activator config into PadViewModel
-            // so the activator picker UI binds against it.
-            if (slotMs?.ShiftButton != null)
-            {
-                padVm.ShiftDeviceGuid = slotMs.ShiftButton.DeviceGuid ?? "";
-                padVm.ShiftDescriptor = slotMs.ShiftButton.Descriptor ?? "";
-                padVm.ShiftMode = string.IsNullOrEmpty(slotMs.ShiftButton.Mode) ? "Hold" : slotMs.ShiftButton.Mode;
-            }
-            else
-            {
-                padVm.ShiftDeviceGuid = "";
-                padVm.ShiftDescriptor = "";
-                padVm.ShiftMode = "Hold";
-            }
+            // Issue #61 Shift activator pull was reverted with the rest
+            // of the premature Shift UI; engine-side ResolveActiveLayerMask
+            // sees null ShiftButton and returns "Base" until Phase 6
+            // properly lands after multi-source UI completes.
             var msRowsByTarget = new System.Collections.Generic.Dictionary<string, Engine.Data.MappingRow>(
                 StringComparer.Ordinal);
             if (slotMs?.Rows != null)
@@ -1570,6 +1560,12 @@ namespace PadForge.Services
                     // Per-source DeadZone wins over per-mapping legacy
                     // deadzone when MappingSet drives the row.
                     if (primary.DeadZone > 0) mapping.MappingDeadZone = primary.DeadZone;
+
+                    // Surface the primary source's device origin so the
+                    // user sees the unified per-VC view's binding without
+                    // needing to look at the Device dropdown.
+                    mapping.PrimarySourceDeviceGuid = primary.DeviceGuid ?? "";
+                    mapping.PrimarySourceDeviceLabel = ResolveDeviceLabel(primary.DeviceGuid);
                 }
                 else
                 {
@@ -1637,6 +1633,30 @@ namespace PadForge.Services
                 _              => "",
             };
             return prefix + descriptor;
+        }
+
+        /// <summary>
+        /// Looks up the user-friendly device label for a DeviceGuid by
+        /// scanning UserDevices. Returns "(Any device)" for empty GUID
+        /// (the "first available device on this VC" sentinel) and the
+        /// raw GUID truncated to 8 chars when the device is unknown.
+        /// </summary>
+        private static string ResolveDeviceLabel(string deviceGuid)
+        {
+            if (string.IsNullOrEmpty(deviceGuid)) return "(Any device)";
+            if (!Guid.TryParse(deviceGuid, out Guid g)) return deviceGuid;
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                foreach (var ud in SettingsManager.UserDevices.Items)
+                {
+                    if (ud != null && ud.InstanceGuid == g)
+                        return ud.ResolvedName ?? ud.ProductName ?? ud.InstanceName ?? deviceGuid;
+                }
+            }
+            // Unknown device — show truncated GUID so the row is still
+            // legible.
+            string s = deviceGuid;
+            return s.Length > 8 ? s.Substring(0, 8) + "…" : s;
         }
 
         private static string GetMappingValue(PadSetting ps, string key)

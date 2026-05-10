@@ -58,56 +58,13 @@ namespace PadForge.ViewModels
         /// <summary>Zero-based pad slot index (0–15).</summary>
         public int PadIndex { get; }
 
-        // ─────────────────────────────────────────────
-        //  Issue #61 Phase 6 — Shift activator
-        //
-        //  Bound to SettingsManager.SlotMappingSets[PadIndex].ShiftButton.
-        //  Edits flow into MappingSet via SettingsService on save; engine
-        //  picks up changes within one polling cycle via Phase 5's
-        //  ResolveActiveLayerMask.
-        // ─────────────────────────────────────────────
-
-        private string _shiftDeviceGuid = "";
-        public string ShiftDeviceGuid
-        {
-            get => _shiftDeviceGuid;
-            set
-            {
-                if (SetProperty(ref _shiftDeviceGuid, value ?? ""))
-                    OnPropertyChanged(nameof(HasShiftActivator));
-            }
-        }
-
-        private string _shiftDescriptor = "";
-        public string ShiftDescriptor
-        {
-            get => _shiftDescriptor;
-            set
-            {
-                if (SetProperty(ref _shiftDescriptor, value ?? ""))
-                    OnPropertyChanged(nameof(HasShiftActivator));
-            }
-        }
-
-        private string _shiftMode = "Hold";
-        /// <summary>"Hold" or "Toggle".</summary>
-        public string ShiftMode
-        {
-            get => _shiftMode;
-            set => SetProperty(ref _shiftMode, value ?? "Hold");
-        }
-
-        public bool HasShiftActivator =>
-            !string.IsNullOrWhiteSpace(_shiftDescriptor);
-
-        private CommunityToolkit.Mvvm.Input.RelayCommand _clearShiftActivatorCommand;
-        public CommunityToolkit.Mvvm.Input.RelayCommand ClearShiftActivatorCommand =>
-            _clearShiftActivatorCommand ??= new CommunityToolkit.Mvvm.Input.RelayCommand(() =>
-            {
-                ShiftDeviceGuid = "";
-                ShiftDescriptor = "";
-                ShiftMode = "Hold";
-            });
+        // Issue #61 Shift activator (Phase 6) was added prematurely in
+        // commit eed79b1 and reverted to respect recipe order: multi-
+        // source must be complete before Shift UI lands. Engine-side
+        // evaluation in InputManager.Step3.MappingSetEval stays dormant
+        // (ShiftButton is null in MappingSet without a writer; the
+        // evaluator returns "Base" in that case and behaves as the
+        // single-layer pipeline).
 
         /// <summary>
         /// Callback invoked when a config item property changes that needs to be persisted.

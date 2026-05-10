@@ -227,14 +227,12 @@ namespace PadForge.Services
                     SettingsManager.UserSettings.Items.RemoveAll(us => us.MapTo < 0);
                 }
 
-                // Phase 1b — populate SlotMappingSets from the legacy
-                // per-device PadSetting mapping fields. Migration runs every
-                // load (one-way translation) so PadSetting stays the single
-                // source of truth until Phase 1c. Two devices on the same
-                // slot collapse into one row per Target with multi-source
-                // entries, matching today's implicit Step 4 cross-device
-                // OR-combine.
-                BuildSlotMappingSetsFromLegacy();
+                // Phase 2A — load persisted SlotMappingSets when present;
+                // fall back to one-time legacy migration only for slots
+                // where the XML had no MappingSet (or an empty one). Once
+                // a slot's MappingSet is authoritative, UI multi-source
+                // edits survive the save round-trip.
+                LoadOrMigrateSlotMappingSets(data.SlotMappingSets);
 
                 // Load app settings into ViewModel.
                 if (data.AppSettings != null)
@@ -279,13 +277,130 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Phase 1b: walks <see cref="SettingsManager.UserSettings"/> and
-        /// builds one <see cref="MappingSet"/> per VC slot from the legacy
-        /// per-(VC × Device) <see cref="PadSetting"/> mapping fields. The
-        /// resulting array lives in <see cref="SettingsManager.SlotMappingSets"/>
-        /// and is consumed by Phase 1c's Step 3 cutover; until then it's a
-        /// derived view that PadSetting-edits invalidate (next reload
-        /// rebuilds it).
+        /// Phase 2A: load <see cref="MappingSet"/>s persisted in the XML
+        /// when present; one-time-migrate from legacy <see cref="PadSetting"/>
+        /// fields for slots whose XML had no MappingSet (or an empty one).
+        /// Once a slot's MappingSet has been authored / loaded, it's the
+        /// authoritative source for descriptors and the legacy fields stop
+        /// being consulted on subsequent loads.
+        /// </summary>
+        private static void LoadOrMigrateSlotMappingSets(MappingSet[] persisted)
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null || sets.Length == 0) return;
+
+            for (int slot = 0; slot < sets.Length; slot++)
+            {
+                MappingSet fromXml = (persisted != null && slot < persisted.Length)
+                    ? persisted[slot]
+                    : null;
+
+                bool xmlHasContent = fromXml != null && fromXml.Rows != null && fromXml.Rows.Count > 0;
+                if (xmlHasContent)
+                {
+                    sets[slot] = fromXml;
+                    continue;
+                }
+
+                // Initial migration from legacy fields.
+                sets[slot] = BuildOneSlotFromLegacy(slot);
+            }
+        }
+
+        private static MappingSet BuildOneSlotFromLegacy(int slot)
+        {
+            UserSetting[] snapshot;
+            lock (SettingsManager.UserSettings.SyncRoot)
+            {
+                snapshot = SettingsManager.UserSettings.Items.ToArray();
+            }
+
+            var devicesForSlot = new List<(string DeviceGuid, PadSetting PadSetting)>();
+            foreach (var us in snapshot)
+            {
+                if (us == null || us.MapTo != slot) continue;
+                var ps = us.GetPadSetting();
+                if (ps == null) continue;
+                devicesForSlot.Add((us.InstanceGuid.ToString(), ps));
+            }
+
+            return MappingSetMigrator.BuildFromLegacy(slot, devicesForSlot);
+        }
+
+        /// <summary>
+        /// Phase 2A merge: for each slot, rebuild MappingSet rows from
+        /// legacy PadSetting fields but preserve any rows the in-memory
+        /// MappingSet has with more than one source (user-authored
+        /// multi-source rows from the Phase 2C UI). Single-source rows
+        /// are replaced wholesale so UI edits to the existing single-
+        /// source dropdown propagate.
+        /// </summary>
+        private static void MergeMappingSetsFromLegacy()
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null || sets.Length == 0) return;
+
+            for (int slot = 0; slot < sets.Length; slot++)
+            {
+                var rebuilt = BuildOneSlotFromLegacy(slot);
+                var current = sets[slot];
+
+                // Keep current if there are no multi-source rows worth
+                // preserving — fast path for the common single-source case.
+                bool hasMulti = false;
+                if (current?.Rows != null)
+                {
+                    foreach (var r in current.Rows)
+                    {
+                        if (r != null && r.Sources != null && r.Sources.Count > 1)
+                        { hasMulti = true; break; }
+                    }
+                }
+
+                if (!hasMulti)
+                {
+                    // Preserve the activator block when reverting; the
+                    // legacy migrator doesn't emit one.
+                    if (current?.ShiftButton != null)
+                        rebuilt.ShiftButton = current.ShiftButton;
+                    sets[slot] = rebuilt;
+                    continue;
+                }
+
+                // Smart merge: take the rebuilt row when current's row
+                // for that target is single-source; keep current's row
+                // when it's multi-source (user-authored).
+                var merged = new Engine.Data.MappingSet { ShiftButton = current.ShiftButton };
+                var multiRowsByTargetLayer = new Dictionary<(string Target, string Layer), Engine.Data.MappingRow>();
+                foreach (var r in current.Rows)
+                {
+                    if (r == null || r.Sources == null || r.Sources.Count <= 1) continue;
+                    multiRowsByTargetLayer[(r.Target ?? "", r.LayerMask ?? "Base")] = r;
+                }
+
+                // Merge in rebuilt rows except where a multi-source row
+                // already covers the target+layer.
+                foreach (var r in rebuilt.Rows)
+                {
+                    if (r == null) continue;
+                    var key = (r.Target ?? "", r.LayerMask ?? "Base");
+                    if (multiRowsByTargetLayer.ContainsKey(key)) continue;
+                    merged.Rows.Add(r);
+                }
+
+                // Append the preserved multi-source rows.
+                foreach (var r in multiRowsByTargetLayer.Values)
+                    merged.Rows.Add(r);
+
+                sets[slot] = merged;
+            }
+        }
+
+        /// <summary>
+        /// Phase 1b legacy entry point: rebuilds every slot's MappingSet
+        /// from the per-(VC × Device) PadSetting mapping fields. Now used
+        /// only as a "reset to legacy" path; ordinary loads route through
+        /// <see cref="LoadOrMigrateSlotMappingSets"/>.
         /// </summary>
         private static void BuildSlotMappingSetsFromLegacy()
         {
@@ -1319,11 +1434,14 @@ namespace PadForge.Services
                     data.PadSettings = uniquePadSettings.ToArray();
                 }
 
-                // Phase 1b: regenerate per-VC MappingSets so the Step 3
-                // V2 path picks up the user's edits within one polling
-                // cycle. PadSetting fields stay authoritative for tuning;
-                // MappingSet is the descriptor source of truth in 1c+.
-                BuildSlotMappingSetsFromLegacy();
+                // Phase 2A: rebuild MappingSet from the just-updated
+                // PadSetting fields BEFORE serializing — but only replace
+                // rows that don't have user-added multi-source extras.
+                // Multi-source rows authored via the Phase 2C UI are
+                // preserved across save round-trips; single-source rows
+                // pick up the latest PadSetting edits.
+                MergeMappingSetsFromLegacy();
+                data.SlotMappingSets = SettingsManager.SlotMappingSets;
 
                 // Collect app settings from ViewModel.
                 data.AppSettings = BuildAppSettings();

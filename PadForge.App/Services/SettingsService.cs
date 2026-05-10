@@ -321,34 +321,22 @@ namespace PadForge.Services
         {
             if (ms?.Rows == null) return;
 
-            UserDevice[] devSnapshot;
-            lock (SettingsManager.UserDevices.SyncRoot)
-            {
-                devSnapshot = SettingsManager.UserDevices.Items.ToArray();
-            }
-            bool IsGamepadDevice(string deviceGuid)
-            {
-                if (string.IsNullOrEmpty(deviceGuid)) return true; // "any device"
-                if (!Guid.TryParse(deviceGuid, out Guid g)) return true;
-                foreach (var ud in devSnapshot)
-                {
-                    if (ud != null && ud.InstanceGuid == g)
-                        return ud.CapType == InputDeviceType.Gamepad;
-                }
-                return false; // unknown device — assume non-gamepad
-            }
-
+            // Cross-device mappings are intentional: a keyboard key
+            // mapped to ButtonA legitimately stores as
+            // {DeviceGuid=keyboard, Descriptor="Button N"}. The
+            // earlier non-gamepad-on-gamepad-target filter dropped
+            // those legitimate rows and clobbered the user's mappings.
+            // Sanitize now only dedups by (DeviceGuid, Descriptor) and
+            // strips empty rows.
             foreach (var row in ms.Rows)
             {
                 if (row?.Sources == null) continue;
-                bool isGamepadTarget = IsGamepadOnlyTarget(row.Target);
                 var seen = new HashSet<(string, string)>();
                 int writeIdx = 0;
                 for (int i = 0; i < row.Sources.Count; i++)
                 {
                     var s = row.Sources[i];
                     if (s == null) continue;
-                    if (isGamepadTarget && !IsGamepadDevice(s.DeviceGuid)) continue;
                     var key = ((s.DeviceGuid ?? "").ToLowerInvariant(), s.Descriptor ?? "");
                     if (!seen.Add(key)) continue;
                     row.Sources[writeIdx++] = s;
@@ -357,9 +345,6 @@ namespace PadForge.Services
                     row.Sources.RemoveRange(writeIdx, row.Sources.Count - writeIdx);
             }
 
-            // Drop rows whose sources were all filtered out — leaves the
-            // engine and UI to fall back to legacy PadSetting fields for
-            // those targets instead of seeing an empty MappingSet row.
             ms.Rows.RemoveAll(r => r?.Sources == null || r.Sources.Count == 0);
         }
 
@@ -479,31 +464,19 @@ namespace PadForge.Services
                     // the primary descriptor.
                     row.Sources.Clear();
 
-                    // Defensive filter: never write a non-gamepad
-                    // device's source into a gamepad-class target row.
-                    // Catches earlier-bled rows where a keyboard's
-                    // GUID got attached to "Axis 0" / "Button N", which
-                    // would otherwise stick the joystick at -1 every
-                    // poll because the keyboard has no axes.
-                    bool gamepadOnly = IsGamepadOnlyTarget(mapping.TargetSettingName);
-                    bool primaryDeviceIsGamepadEligible = true;
-                    if (gamepadOnly && !string.IsNullOrEmpty(mapping.PrimarySourceDeviceGuid)
-                        && Guid.TryParse(mapping.PrimarySourceDeviceGuid, out var pg))
-                    {
-                        UserDevice ud;
-                        lock (SettingsManager.UserDevices.SyncRoot)
-                        {
-                            ud = SettingsManager.UserDevices.Items.FirstOrDefault(
-                                d => d.InstanceGuid == pg);
-                        }
-                        primaryDeviceIsGamepadEligible = (ud != null
-                            && ud.CapType == InputDeviceType.Gamepad);
-                    }
-
-                    // Push the primary as Sources[0] when present and
-                    // device-eligible.
+                    // Push the primary as Sources[0] when present.
+                    // Cross-device mappings are intentional — a keyboard
+                    // key mapped to ButtonA legitimately lives here as
+                    // {DeviceGuid=keyboard, Descriptor="Button 5"}, and
+                    // an earlier defensive filter that rejected non-
+                    // gamepad device sources on gamepad targets was
+                    // dropping those legit rows. The SaveViewModelToPadSetting
+                    // owning-device routing now prevents bleed at the
+                    // source (the only legitimate path that writes a
+                    // descriptor into a device's PadSetting), so the
+                    // filter here is no longer needed.
                     string primaryDesc = mapping.SourceDescriptor ?? "";
-                    if (!string.IsNullOrEmpty(primaryDesc) && primaryDeviceIsGamepadEligible)
+                    if (!string.IsNullOrEmpty(primaryDesc))
                     {
                         // Strip any I/H prefix off the descriptor so
                         // the new schema's per-source bool flags are

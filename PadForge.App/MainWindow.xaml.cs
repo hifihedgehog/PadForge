@@ -506,17 +506,26 @@ namespace PadForge
                 // descriptors from the new device's PadSetting).
                 SettingsService.RefreshMappingSetsFromLegacy();
 
-                // Sync PadSetting → PadViewModel for all active slots so that
-                // auto-mapped values are visible in the UI and survive the next
-                // save cycle (UpdatePadSettingsFromViewModels writes ViewModel
-                // values back to PadSetting — empty ViewModel rows would wipe
-                // correctly auto-mapped PadSetting values).
+                // Sync mapping rows + dropdown choices for EVERY pad,
+                // regardless of whether SelectedMappedDevice is set or
+                // valid. The previous version only ran when the slot
+                // had a selected device, so unassigning the only
+                // device on a slot left the Mappings tab pointing at
+                // the dropped device's stale InputChoice + descriptor.
+                // RefreshMappingsToViewModel handles per-VC mappings
+                // (no per-device tuning), and RefreshAvailableInputsForSlot
+                // rebuilds the picker's flat cross-device list so the
+                // dropped device's InputChoice no longer matches and
+                // SyncSelectedInputFromDescriptor clears stale picks.
                 for (int i = 0; i < _viewModel.Pads.Count; i++)
                 {
                     var padVm = _viewModel.Pads[i];
                     var selected = padVm.SelectedMappedDevice;
                     if (selected != null && selected.InstanceGuid != Guid.Empty)
                         InputService.LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
+                    else
+                        InputService.RefreshMappingsToViewModel(padVm);
+                    _inputService.RefreshAvailableInputsForSlot(padVm);
                 }
             };
 

@@ -154,6 +154,8 @@
 
             if (ov.type === "trigger") {
                 img.className = "overlay trigger";
+            } else if (ov.type === "triggerBase") {
+                img.className = "overlay trigger-base";
             } else if (ov.type === "stickRing") {
                 img.className = "overlay stick-ring";
             } else {

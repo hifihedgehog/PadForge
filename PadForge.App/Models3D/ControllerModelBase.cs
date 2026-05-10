@@ -74,6 +74,16 @@ namespace PadForge.Models3D
         /// true, and floats finger spheres just above its surface.</summary>
         public Model3DGroup Touchpad;
 
+        /// <summary>Per-model fractional insets that crop the Touchpad mesh
+        /// bounds down to the actual touch-sensitive surface for finger-sphere
+        /// positioning. Defaults match the DS4 Screen.obj. Subclasses override
+        /// when their Touchpad mesh extends beyond the real touchable area
+        /// (e.g. DualSense's Touchpad mesh includes the surrounding front-face
+        /// surface and is wider + taller than the real touchpad).</summary>
+        public virtual double TouchpadXInsetFrac => 0.03;
+        public virtual double TouchpadZTopInsetFrac => 0.12;
+        public virtual double TouchpadZBottomInsetFrac => 0.12;
+
         // ─────────────────────────────────────────────
         //  Rotation parameters
         // ─────────────────────────────────────────────

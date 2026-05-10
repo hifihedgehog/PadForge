@@ -338,13 +338,14 @@ namespace PadForge.Views
             if (bounds.IsEmpty) return;
 
             PositionFingerSphere(_touchpadFinger0Transform,
-                _vm.TouchpadFinger0Down, _vm.TouchpadFinger0X, _vm.TouchpadFinger0Y, bounds);
+                _vm.TouchpadFinger0Down, _vm.TouchpadFinger0X, _vm.TouchpadFinger0Y, bounds, _currentModel);
             PositionFingerSphere(_touchpadFinger1Transform,
-                _vm.TouchpadFinger1Down, _vm.TouchpadFinger1X, _vm.TouchpadFinger1Y, bounds);
+                _vm.TouchpadFinger1Down, _vm.TouchpadFinger1X, _vm.TouchpadFinger1Y, bounds, _currentModel);
         }
 
         private static void PositionFingerSphere(
-            TranslateTransform3D t, bool down, float normX, float normY, Rect3D bounds)
+            TranslateTransform3D t, bool down, float normX, float normY, Rect3D bounds,
+            PadForge.Models3D.ControllerModelBase model)
         {
             if (t == null) return;
             if (!down)
@@ -354,23 +355,20 @@ namespace PadForge.Views
                 return;
             }
 
-            // DS4 model coords: X = left/right (matches normX 0..1 left→right),
+            // Model coords: X = left/right (matches normX 0..1 left→right),
             // Z = top/bottom of body (touch normY 0=top → high Z, 1=bottom →
             // low Z), Y is the surface depth — float the sphere just in
             // front of the touchpad face (Y at bounds.Min.Y + small offset
-            // toward the camera, which is -Y in HC's DS4 model).
+            // toward the camera, which is -Y in HC's body model).
             //
-            // The Screen.obj mesh is larger than the actual touchable surface:
-            // ~3 mm wider on X (small bevel), ~9 mm taller on Z (lightbar at
-            // top, narrow bezel at bottom). Insets below crop the bounding
-            // box down to the touch-sensitive region so finger position maps
-            // visually to where a real DS4 finger would land. Pinned to the
-            // measured Screen.obj bounds (X 55 mm / Z 32.65 mm vs the real
-            // DS4 v2 touch surface ~52 × 23 mm); revisit if the mesh ever
-            // changes.
-            const double xInsetFrac      = 0.03; // ~1.6 mm bezel each X side
-            const double zTopInsetFrac   = 0.12; // ~4 mm — pad surface extends up to where the lightbar curve begins
-            const double zBottomInsetFrac = 0.12; // ~3.9 mm — bottom bezel runs longer than visual mesh suggests; raises the lower edge of the finger map so touches at normY=1 sit above the bottom curve, matching where a real DS4 v2 finger would land
+            // Each model's Touchpad mesh extends past the actual touch surface
+            // by a different amount (DS4 Screen.obj has a small bezel; the
+            // DualSense Touchpad mesh is the entire central front-face area
+            // and is much larger than the real touchpad). The model owns the
+            // inset fractions so this code stays controller-agnostic.
+            double xInsetFrac      = model?.TouchpadXInsetFrac      ?? 0.03;
+            double zTopInsetFrac   = model?.TouchpadZTopInsetFrac   ?? 0.12;
+            double zBottomInsetFrac = model?.TouchpadZBottomInsetFrac ?? 0.12;
 
             double touchX0 = bounds.X + bounds.SizeX * xInsetFrac;
             double touchXSize = bounds.SizeX * (1.0 - 2 * xInsetFrac);

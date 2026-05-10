@@ -686,6 +686,38 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(IsMultiSource));
             });
 
+        private RelayCommand _addOppositeDirectionCommand;
+        /// <summary>Companion to the empty-direction hint. Adds an
+        /// extra source that mirrors the primary descriptor / device
+        /// but with Invert=true so a single button-mapped bipolar axis
+        /// row gets its negative direction with one click. Only
+        /// meaningful when <see cref="ShouldShowEmptyDirectionHint"/>
+        /// is true.</summary>
+        public RelayCommand AddOppositeDirectionCommand =>
+            _addOppositeDirectionCommand ??= new RelayCommand(() =>
+            {
+                // Strip any I/H prefix from the primary so the mirror
+                // source descriptor matches the un-prefixed form the
+                // ExtraSources picker expects.
+                string clean = _sourceDescriptor ?? "";
+                if (clean.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
+                    clean = clean.Substring(2);
+                else if (clean.StartsWith("I", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
+                    clean = clean.Substring(1);
+                else if (clean.StartsWith("H", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
+                    clean = clean.Substring(1);
+
+                ExtraSources.Add(new MappingSourceItem
+                {
+                    Kind = "Direct",
+                    DeviceGuid = _primarySourceDeviceGuid ?? "",
+                    Descriptor = clean,
+                    Invert = true,
+                });
+                OnPropertyChanged(nameof(IsMultiSource));
+                OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
+            });
+
         // ─────────────────────────────────────────────
         //  Display
         // ─────────────────────────────────────────────

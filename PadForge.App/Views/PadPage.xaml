@@ -1656,19 +1656,26 @@
                                                     </Style>
                                                 </TextBlock.Style>
                                             </TextBlock>
-                                            <!-- Phase 2C — empty-direction hint. Surfaces when a
-                                                 bipolar stick-axis row has only the positive
-                                                 direction mapped (one button-class source, not
-                                                 inverted). Disappears once the user adds an
-                                                 opposite-direction source or a second source. -->
-                                            <TextBlock Text="Map opposite direction?"
-                                                       FontSize="10"
-                                                       FontStyle="Italic"
-                                                       Foreground="{DynamicResource AccentFillColorDefaultBrush}"
-                                                       Margin="4,1,0,0"
-                                                       TextTrimming="CharacterEllipsis"
-                                                       ToolTip="Only the positive (+) direction of this stick axis is mapped. Add a second source — or set Invert — to drive the negative (−) direction."
-                                                       Visibility="{Binding ShouldShowEmptyDirectionHint, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            <!-- Phase 2C — empty-direction hint + one-click
+                                                 affordance. Surfaces when a bipolar stick-axis
+                                                 row has only the positive direction mapped
+                                                 (one button-class source, not inverted).
+                                                 Clicking adds a second source mirroring the
+                                                 primary with Invert=true. Disappears once a
+                                                 second source exists. -->
+                                            <Button Content="+ opposite direction"
+                                                    Command="{Binding AddOppositeDirectionCommand}"
+                                                    HorizontalAlignment="Left"
+                                                    Padding="4,0"
+                                                    Margin="4,1,0,0"
+                                                    Background="Transparent"
+                                                    BorderThickness="0"
+                                                    FontSize="10"
+                                                    FontStyle="Italic"
+                                                    Foreground="{DynamicResource AccentFillColorDefaultBrush}"
+                                                    Cursor="Hand"
+                                                    ToolTip="Only the positive (+) direction of this stick axis is mapped. Click to add an inverted second source for the negative (−) direction."
+                                                    Visibility="{Binding ShouldShowEmptyDirectionHint, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

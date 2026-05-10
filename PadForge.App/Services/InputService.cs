@@ -1729,6 +1729,32 @@ namespace PadForge.Services
             if (padVm == null) return;
 
             var choices = MappingDisplayResolver.BuildInputChoices(ud);
+
+            // Phase 2C — cascading device/input picker support.
+            // Build a per-device InputChoice cache keyed by lowercase
+            // GUID for the slot's currently mapped devices, plus this
+            // primary device. Each row's GetInputChoicesForDevice
+            // delegate looks up by the source's stored DeviceGuid.
+            var byDevice = new System.Collections.Generic.Dictionary<string,
+                System.Collections.Generic.IReadOnlyList<PadForge.ViewModels.InputChoice>>(
+                    System.StringComparer.OrdinalIgnoreCase);
+            if (ud != null && ud.InstanceGuid != System.Guid.Empty)
+                byDevice[ud.InstanceGuid.ToString().ToLowerInvariant()] = choices;
+            foreach (var md in padVm.MappedDevices)
+            {
+                if (md == null || md.InstanceGuid == System.Guid.Empty) continue;
+                var key = md.InstanceGuid.ToString().ToLowerInvariant();
+                if (byDevice.ContainsKey(key)) continue;
+                var udi = FindUserDevice(md.InstanceGuid);
+                byDevice[key] = MappingDisplayResolver.BuildInputChoices(udi);
+            }
+            System.Func<string, System.Collections.Generic.IReadOnlyList<PadForge.ViewModels.InputChoice>>
+                resolveByGuid = guid =>
+            {
+                if (string.IsNullOrEmpty(guid)) return null;
+                return byDevice.TryGetValue(guid.ToLowerInvariant(), out var l) ? l : null;
+            };
+
             foreach (var mapping in padVm.Mappings)
             {
                 mapping.InputSelectedFromDropdown -= OnInputSelectedFromDropdown;
@@ -1738,6 +1764,14 @@ namespace PadForge.Services
                 foreach (var c in choices)
                     mapping.AvailableInputs.Add(c);
                 mapping.SyncSelectedInputFromDescriptor();
+
+                // Wire cascading-picker state. SlotMappedDevices is
+                // the same reference each time the row is repopulated;
+                // re-assigning is harmless. Per-source Available­Inputs
+                // are rebuilt from the new lookup.
+                mapping.SlotMappedDevices = padVm.MappedDevices;
+                mapping.GetInputChoicesForDevice = resolveByGuid;
+                mapping.RefreshAllExtraSourceInputs();
             }
         }
 

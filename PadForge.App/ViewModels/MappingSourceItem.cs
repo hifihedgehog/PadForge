@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace PadForge.ViewModels
@@ -10,6 +11,13 @@ namespace PadForge.ViewModels
     /// </summary>
     public class MappingSourceItem : ObservableObject
     {
+        /// <summary>Per-source input picker choices. Populated by the
+        /// parent <see cref="MappingItem"/> whenever
+        /// <see cref="DeviceGuid"/> changes — the parent calls back into
+        /// the InputService's per-device InputChoice lookup. Empty
+        /// DeviceGuid means "use the slot's primary device" and the
+        /// parent populates this with that device's inputs.</summary>
+        public ObservableCollection<InputChoice> AvailableInputs { get; } = new();
         private string _kind = "Direct";
         private string _deviceGuid = "";
         private string _descriptor = "";
@@ -25,7 +33,11 @@ namespace PadForge.ViewModels
         private string _paramModifier = "";
 
         public string Kind { get => _kind; set => SetProperty(ref _kind, value ?? "Direct"); }
-        public string DeviceGuid { get => _deviceGuid; set => SetProperty(ref _deviceGuid, value ?? ""); }
+        public string DeviceGuid
+        {
+            get => _deviceGuid;
+            set => SetProperty(ref _deviceGuid, value ?? "");
+        }
         public string Descriptor
         {
             get => _descriptor;

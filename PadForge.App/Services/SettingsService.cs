@@ -2235,6 +2235,22 @@ namespace PadForge.Services
         [XmlArrayItem("PadSetting")]
         public PadSetting[] PadSettings { get; set; }
 
+        /// <summary>Per-slot mapping tables (Issue #61 multi-source / shift
+        /// layer). One entry per VC slot. Phase 1a (this commit) only
+        /// round-trips the data; the legacy <see cref="PadSetting"/>
+        /// per-field mapping descriptors stay authoritative until Commit
+        /// 1c flips Step 3 over to read from here.</summary>
+        [XmlArray("SlotMappingSets")]
+        [XmlArrayItem("MappingSet")]
+        public MappingSet[] SlotMappingSets { get; set; }
+
+        /// <summary>Per-device tuning data (deadzones, sensitivity curves,
+        /// FFB gains, audio rumble). Phase 1a placeholder; Commit 1b
+        /// migrates the relevant fields off <see cref="PadSetting"/>.</summary>
+        [XmlArray("DeviceTunings")]
+        [XmlArrayItem("DeviceTuning")]
+        public DeviceTuning[] DeviceTunings { get; set; }
+
         [XmlElement("AppSettings")]
         public AppSettingsData AppSettings { get; set; }
 

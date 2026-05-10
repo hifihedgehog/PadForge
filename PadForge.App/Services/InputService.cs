@@ -4346,6 +4346,10 @@ namespace PadForge.Services
                     SettingsManager.ActiveProfileId = profileId;
                     _mainVm.Settings.ActiveProfileInfo = target.Name;
                     ApplyProfile(target);
+                    // Drop stateful source-kind accumulators (Incremental
+                    // cruise/ramp throttle) and shift-toggle latches so
+                    // the new profile starts neutral.
+                    Common.Input.InputManager.ClearSourceKindRuntime();
                     _mainVm.StatusText = string.Format(Strings.Instance.Status_ProfileSwitched_Format, target.Name);
                 }
             }
@@ -4356,6 +4360,7 @@ namespace PadForge.Services
                 _mainVm.Settings.ActiveProfileInfo = Strings.Instance.Profile_Default;
                 if (_defaultProfileSnapshot != null)
                     ApplyProfile(_defaultProfileSnapshot);
+                Common.Input.InputManager.ClearSourceKindRuntime();
                 _mainVm.StatusText = Strings.Instance.Status_ProfileSwitchedDefault;
             }
         }

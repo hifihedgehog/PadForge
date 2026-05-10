@@ -558,6 +558,33 @@ namespace PadForge.ViewModels
         public ObservableCollection<MappingSourceItem> ExtraSources { get; }
             = new ObservableCollection<MappingSourceItem>();
 
+        private string _primarySourceDeviceGuid = "";
+        /// <summary>Phase 2C — DeviceGuid of the primary source
+        /// (Sources[0]) on the per-VC MappingSet row. Surfaces in the
+        /// Source column so users can tell which physical device the
+        /// primary source is bound to without checking the Device
+        /// dropdown. Empty string means "first available device on this
+        /// VC."</summary>
+        public string PrimarySourceDeviceGuid
+        {
+            get => _primarySourceDeviceGuid;
+            set
+            {
+                if (SetProperty(ref _primarySourceDeviceGuid, value ?? ""))
+                    OnPropertyChanged(nameof(PrimarySourceDeviceLabel));
+            }
+        }
+
+        private string _primarySourceDeviceLabel = "";
+        /// <summary>Human-friendly device name for the primary source.
+        /// Resolved by the InputService load path against the user's
+        /// known UserDevices.</summary>
+        public string PrimarySourceDeviceLabel
+        {
+            get => _primarySourceDeviceLabel;
+            set => SetProperty(ref _primarySourceDeviceLabel, value ?? "");
+        }
+
         private string _combineMode = "";
         /// <summary>Per-row combine mode. Empty = the per-target-type
         /// default (MaxAbs for axes, OR for buttons). Other named modes:

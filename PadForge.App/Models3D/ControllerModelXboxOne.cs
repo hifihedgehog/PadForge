@@ -37,7 +37,14 @@ namespace PadForge.Models3D
         private readonly Model3DGroup B3Button, B3Interior, B3Interior2;
         private readonly Model3DGroup B4Button, B4Interior, B4Interior2;
 
-        public ControllerModelXboxOne() : base("XBOXONE")
+        public ControllerModelXboxOne() : this(enableShare: false) { }
+
+        /// <param name="enableShare">Wire the Share mesh into the
+        /// click-to-record + highlight maps. True only for Xbox Series
+        /// profiles — Xbox One / 360 profiles don't expose Share so the
+        /// mesh stays inert (visible body geometry but no hover / click /
+        /// accent-highlight behavior).</param>
+        public ControllerModelXboxOne(bool enableShare) : base("XBOXONE")
         {
             // ── Colors (HC palette) ─────────────────────
             var ColorPlasticBlack  = (Color)ColorConverter.ConvertFromString("#26272C");
@@ -82,6 +89,18 @@ namespace PadForge.Models3D
             MainBodySide      = LoadModel("MainBodySide.obj");
             ShareButton       = LoadModel("ShareButton.obj");
             ShareButtonSymbol = LoadModel("ShareButtonSymbol.obj");
+            // Wire the Share mesh into click-to-record + accent-highlight
+            // ONLY for Xbox Series profiles (enableShare=true). On Xbox
+            // One / 360 profiles HM silently drops the Share bit and the
+            // mapping UI doesn't surface it — leaving the mesh inert
+            // (visible body geometry, no hover / click / highlight)
+            // matches user expectation that the button does nothing on
+            // those profiles.
+            if (enableShare)
+            {
+                RegisterButton("ButtonShare", ShareButton);
+                RegisterButton("ButtonShare", ShareButtonSymbol);
+            }
             StartSymbol       = LoadModel("StartSymbol.obj");
             USBPortInner      = LoadModel("USBPortInner.obj");
             USBPortOuter      = LoadModel("USBPortOuter.obj");

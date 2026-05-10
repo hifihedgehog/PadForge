@@ -468,6 +468,7 @@ namespace PadForge.Views
             SetOverlayVisible("ButtonBack", _vm.ButtonBack);
             SetOverlayVisible("ButtonStart", _vm.ButtonStart);
             SetOverlayVisible("ButtonGuide", _vm.ButtonGuide);
+            SetOverlayVisible("ButtonShare", _vm.ButtonShare);
             SetOverlayVisible("LeftThumbButton", _vm.LeftThumbButton);
             SetOverlayVisible("RightThumbButton", _vm.RightThumbButton);
         }

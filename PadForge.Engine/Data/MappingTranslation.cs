@@ -65,6 +65,7 @@ namespace PadForge.Engine.Data
             ["LeftThumbButton"]   = new(ControlCategory.Button, 8),
             ["RightThumbButton"]  = new(ControlCategory.Button, 9),
             ["ButtonGuide"]       = new(ControlCategory.Button, 10),
+            ["ButtonShare"]       = new(ControlCategory.Button, 11),
             // Axes
             ["LeftThumbAxisX"]    = new(ControlCategory.Axis, 0),
             ["LeftThumbAxisY"]    = new(ControlCategory.Axis, 1),

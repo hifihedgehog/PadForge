@@ -17,6 +17,11 @@ namespace PadForge.Engine
         public short ThumbRX;
         public short ThumbRY;
 
+        /// <summary>Xbox Series Share button. Outside the 16-bit Buttons
+        /// mask because all 16 XInput-equivalent bits are taken; HM exposes
+        /// it as <c>HMButton.Share</c> (bit 12) on Xbox Series profiles.</summary>
+        public bool Share;
+
         // Button flag constants
         public const ushort DPAD_UP = 0x0001;
         public const ushort DPAD_DOWN = 0x0002;
@@ -57,6 +62,7 @@ namespace PadForge.Engine
             ThumbLY = 0;
             ThumbRX = 0;
             ThumbRY = 0;
+            Share = false;
         }
     }
 

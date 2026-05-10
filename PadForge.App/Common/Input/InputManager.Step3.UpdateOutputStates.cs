@@ -160,6 +160,13 @@ namespace PadForge.Common.Input
             if (MapToButtonPressed(state, ps.ButtonGuide, TryParseIntStatic(ps.GetMappingDeadZone("ButtonGuide"), 0), gt))
                 gp.SetButton(Gamepad.GUIDE, true);
 
+            // Xbox Series Share button — sits outside the 16-bit Buttons
+            // mask. HM drops the bit on profiles whose descriptor doesn't
+            // declare button 13, so always-mapping is safe even if the
+            // active profile isn't Xbox Series.
+            if (MapToButtonPressed(state, ps.ButtonShare, TryParseIntStatic(ps.GetMappingDeadZone("ButtonShare"), 0), gt))
+                gp.Share = true;
+
             // ── D-Pad ──
             // Individual direction mappings take priority. Only fall back to
             // the combined DPad descriptor if no individual directions are set.

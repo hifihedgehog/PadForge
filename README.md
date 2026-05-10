@@ -59,6 +59,7 @@ Fork of [x360ce](https://github.com/x360ce/x360ce), rewritten on SDL3, [HIDMaest
 
 ### Visualization
 
+- Per-profile 3D and 2D renders. Xbox 360, Xbox One / Elite / Adaptive, Xbox Series, DualShock 4, and DualSense each have their own native artwork — assigning a profile swaps the model and overlays to match. Xbox Series profiles add a clickable Share button on the 3D mesh; non-Series Xbox profiles leave the same mesh inert so it stays visually accurate without firing on press.
 - 3D HelixToolkit controller model. Rotate, zoom, pan. Buttons, sticks, and triggers highlight in real time.
 - 2D schematic showing the same live state in a compact layout.
 - PlayStation 3D and 2D views render a live touchpad surface with finger contact spheres. The touchpad surface itself is a click target for recording the TouchpadClick mapping.

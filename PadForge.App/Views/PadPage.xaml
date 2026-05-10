@@ -246,6 +246,17 @@
                     <TextBlock Text="{Binding Pad_Macros, Source={x:Static strings:Strings.Instance}}" FontSize="15"/>
                 </RadioButton>
 
+                <!-- [Mappings] — per-VC scope (Issue #61 multi-source).
+                     Sits before the Device dropdown because the mapping
+                     table sources from any device assigned to this VC,
+                     not just the selected one. Sticks/Triggers/FFB stay
+                     after the dropdown — they shape physical-input
+                     characteristics, so they remain device-scoped. -->
+                <RadioButton Tag="2" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             AutomationProperties.AutomationId="MappingsTab">
+                    <TextBlock Text="{Binding Pad_Mappings, Source={x:Static strings:Strings.Instance}}" FontSize="15"/>
+                </RadioButton>
+
                 <!-- | separator -->
                 <TextBlock Style="{StaticResource TabStripSeparator}"/>
 
@@ -278,11 +289,12 @@
                 <!-- | separator -->
                 <TextBlock Style="{StaticResource TabStripSeparator}"/>
 
-                <!-- Config tabs -->
-                <RadioButton Tag="2" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
-                             AutomationProperties.AutomationId="MappingsTab">
-                    <TextBlock Text="{Binding Pad_Mappings, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
-                </RadioButton>
+                <!-- Config tabs (device-scoped — Sticks / Triggers /
+                     Force Feedback shape physical-input characteristics
+                     for the selected device, so they sit AFTER the
+                     Device dropdown). The Mappings tab was here in v3.1.x
+                     and earlier; Issue #61 moves it left of the dropdown
+                     because the mapping table is now per-VC, not per-device. -->
                 <RadioButton x:Name="TabSticks" Tag="3" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
                     <TextBlock Text="{Binding Pad_Sticks, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>

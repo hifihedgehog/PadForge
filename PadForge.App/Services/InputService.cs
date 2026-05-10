@@ -1548,6 +1548,14 @@ namespace PadForge.Services
                 // device-tuning concern). Per-source DeadZone on the
                 // MappingSet sources will replace it in Phase 1c-3.
                 bool primaryFromMappingSet = false;
+                // Device whose DeviceObjects metadata is used to render
+                // human-friendly text for the descriptor. Defaults to
+                // the slot's selected device but is overridden to the
+                // primary source's device when MappingSet drives the
+                // row, so e.g. a DualSense's "Button 0" never gets
+                // mis-rendered as a keyboard's "Key 0x00" just because
+                // the keyboard happens to be the selected device.
+                UserDevice primaryUd = ud;
                 if (msRowsByTarget.TryGetValue(target, out var msRow)
                     && msRow.Sources != null && msRow.Sources.Count > 0)
                 {
@@ -1566,6 +1574,13 @@ namespace PadForge.Services
                     // needing to look at the Device dropdown.
                     mapping.PrimarySourceDeviceGuid = primary.DeviceGuid ?? "";
                     mapping.PrimarySourceDeviceLabel = ResolveDeviceLabel(primary.DeviceGuid);
+
+                    if (!string.IsNullOrEmpty(primary.DeviceGuid)
+                        && Guid.TryParse(primary.DeviceGuid, out var primaryGuid))
+                    {
+                        var resolved = FindUserDevice(primaryGuid);
+                        if (resolved != null) primaryUd = resolved;
+                    }
                 }
                 else
                 {
@@ -1577,14 +1592,56 @@ namespace PadForge.Services
                     mapping.LoadDescriptor(value);
                 }
 
-                MappingDisplayResolver.ResolveDisplayText(mapping, ud);
+                MappingDisplayResolver.ResolveDisplayText(mapping, primaryUd);
 
+                int negPairIndex = -1;
                 if (mapping.NegSettingName != null)
                 {
                     string negTarget = mapping.NegSettingName;
-                    string negValue = GetMappingValue(ps, negTarget);
+                    // Phase 2C — pull the Neg descriptor from the
+                    // MappingSet too when the row is MappingSet-driven.
+                    // The migrator emits the negative direction as a
+                    // second source on the same row with Invert flipped;
+                    // detect and reproject it back into the legacy
+                    // SourceDescriptor / NegSourceDescriptor pair the
+                    // current UI binds to. Falls back to the per-device
+                    // PadSetting field when no MappingSet row exists.
+                    string negValue = "";
+                    UserDevice negUd = ud;
+                    if (primaryFromMappingSet && msRow.Sources.Count > 1)
+                    {
+                        var primarySrc = msRow.Sources[0];
+                        for (int i = 1; i < msRow.Sources.Count; i++)
+                        {
+                            var s = msRow.Sources[i];
+                            if (s == null) continue;
+                            // Heuristic: paired-axis Neg sources share
+                            // DeviceGuid with the primary and have
+                            // Invert flipped relative to the primary's
+                            // descriptor encoding. Use the first
+                            // matching source — multi-source rows
+                            // beyond a paired-axis pair belong to the
+                            // ExtraSources collection and are populated
+                            // separately below.
+                            if (string.Equals(s.DeviceGuid, primarySrc.DeviceGuid, StringComparison.OrdinalIgnoreCase)
+                                && s.Invert != primarySrc.Invert)
+                            {
+                                negValue = ReencodePrefixForLegacy(s.Descriptor, false, s.HalfAxis);
+                                negPairIndex = i;
+                                if (!string.IsNullOrEmpty(s.DeviceGuid)
+                                    && Guid.TryParse(s.DeviceGuid, out var negGuid))
+                                {
+                                    var resolved = FindUserDevice(negGuid);
+                                    if (resolved != null) negUd = resolved;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    if (string.IsNullOrEmpty(negValue))
+                        negValue = GetMappingValue(ps, negTarget);
                     mapping.LoadNegDescriptor(negValue);
-                    MappingDisplayResolver.ResolveNegDisplayText(mapping, ud);
+                    MappingDisplayResolver.ResolveNegDisplayText(mapping, negUd);
                 }
 
                 // Per-mapping deadzone (legacy fallback when MappingSet
@@ -1596,7 +1653,9 @@ namespace PadForge.Services
                 }
 
                 // Phase 2C — ExtraSources / CombineMode from the
-                // matching MappingSet row (sources beyond the primary).
+                // matching MappingSet row (sources beyond the primary,
+                // skipping the paired-axis Neg source we just consumed
+                // above so it doesn't appear twice in the UI).
                 mapping.ExtraSources.Clear();
                 mapping.CombineMode = "";
                 mapping.CombineExpression = "";
@@ -1607,8 +1666,11 @@ namespace PadForge.Services
                     if (msRow2.Sources != null)
                     {
                         for (int si = 1; si < msRow2.Sources.Count; si++)
+                        {
+                            if (si == negPairIndex) continue;
                             mapping.ExtraSources.Add(
                                 ViewModels.MappingSourceItem.FromDomain(msRow2.Sources[si]));
+                        }
                     }
                 }
             }

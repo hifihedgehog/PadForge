@@ -328,6 +328,68 @@ namespace PadForge.Services
         }
 
         /// <summary>
+        /// Phase 2C — push the per-VC PadViewModel's MappingItem
+        /// <c>ExtraSources</c> + <c>CombineMode</c> + <c>CombineExpression</c>
+        /// into the in-memory <see cref="SettingsManager.SlotMappingSets"/>
+        /// so they survive the legacy-merge step and the XML round-trip.
+        /// Runs in <see cref="SaveToFile"/> right after the UI → PadSetting
+        /// push.
+        /// </summary>
+        private void PushUiExtraSourcesIntoSlotMappingSets()
+        {
+            var pads = _mainVm?.Pads;
+            if (pads == null) return;
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null) return;
+
+            for (int slot = 0; slot < pads.Count && slot < sets.Length; slot++)
+            {
+                var padVm = pads[slot];
+                if (padVm == null) continue;
+
+                // Ensure the slot has a MappingSet to mutate.
+                var ms = sets[slot] ?? (sets[slot] = new MappingSet());
+
+                foreach (var mapping in padVm.Mappings)
+                {
+                    if (mapping == null || string.IsNullOrEmpty(mapping.TargetSettingName)) continue;
+
+                    // Find or create the row for this Target on the Base layer.
+                    MappingRow row = null;
+                    foreach (var r in ms.Rows)
+                    {
+                        if (r != null
+                            && string.Equals(r.LayerMask ?? "Base", "Base", StringComparison.Ordinal)
+                            && string.Equals(r.Target, mapping.TargetSettingName, StringComparison.Ordinal))
+                        {
+                            row = r;
+                            break;
+                        }
+                    }
+                    if (row == null)
+                    {
+                        row = new MappingRow { Target = mapping.TargetSettingName, LayerMask = "Base" };
+                        ms.Rows.Add(row);
+                    }
+
+                    row.CombineMode = mapping.CombineMode ?? "";
+                    row.CombineExpression = mapping.CombineExpression ?? "";
+
+                    // Trim Sources to the primary (which Phase 2A's
+                    // MergeMappingSetsFromLegacy will fill from PadSetting)
+                    // plus the user's ExtraSources. We keep one slot for
+                    // the primary at index 0; if it's missing the merge
+                    // will repopulate it from PadSetting.
+                    while (row.Sources.Count > 1) row.Sources.RemoveAt(1);
+                    foreach (var extra in mapping.ExtraSources)
+                    {
+                        if (extra != null) row.Sources.Add(extra.ToDomain());
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Phase 2A merge: for each slot, rebuild MappingSet rows from
         /// legacy PadSetting fields but preserve any rows the in-memory
         /// MappingSet has with more than one source (user-authored
@@ -345,54 +407,55 @@ namespace PadForge.Services
                 var rebuilt = BuildOneSlotFromLegacy(slot);
                 var current = sets[slot];
 
-                // Keep current if there are no multi-source rows worth
-                // preserving — fast path for the common single-source case.
-                bool hasMulti = false;
+                // Always take Sources[0] from the rebuilt row (it reflects
+                // the latest PadSetting after UI single-source edits) and
+                // append Sources[1..N] from the existing row (user-authored
+                // ExtraSources from Phase 2C UI). Per-row CombineMode +
+                // CombineExpression carry over from existing too.
                 if (current?.Rows != null)
                 {
-                    foreach (var r in current.Rows)
+                    foreach (var rrow in rebuilt.Rows)
                     {
-                        if (r != null && r.Sources != null && r.Sources.Count > 1)
-                        { hasMulti = true; break; }
+                        if (rrow == null) continue;
+                        var rkey = (rrow.Target ?? "", rrow.LayerMask ?? "Base");
+
+                        Engine.Data.MappingRow existingMatch = null;
+                        foreach (var er in current.Rows)
+                        {
+                            if (er == null) continue;
+                            if (string.Equals(er.Target ?? "", rkey.Item1, StringComparison.Ordinal)
+                                && string.Equals(er.LayerMask ?? "Base", rkey.Item2, StringComparison.Ordinal))
+                            { existingMatch = er; break; }
+                        }
+                        if (existingMatch == null) continue;
+
+                        rrow.CombineMode = existingMatch.CombineMode ?? "";
+                        rrow.CombineExpression = existingMatch.CombineExpression ?? "";
+                        if (existingMatch.Sources != null)
+                        {
+                            for (int i = 1; i < existingMatch.Sources.Count; i++)
+                                rrow.Sources.Add(existingMatch.Sources[i]);
+                        }
+                    }
+
+                    // Carry forward any non-Base rows from current (Shift
+                    // layer rows authored via the Phase 6 UI). Those
+                    // aren't in rebuilt — the legacy migrator only emits
+                    // Base-layer rows.
+                    foreach (var er in current.Rows)
+                    {
+                        if (er == null) continue;
+                        if (string.Equals(er.LayerMask ?? "Base", "Base", StringComparison.Ordinal)) continue;
+                        rebuilt.Rows.Add(er);
                     }
                 }
 
-                if (!hasMulti)
-                {
-                    // Preserve the activator block when reverting; the
-                    // legacy migrator doesn't emit one.
-                    if (current?.ShiftButton != null)
-                        rebuilt.ShiftButton = current.ShiftButton;
-                    sets[slot] = rebuilt;
-                    continue;
-                }
+                // Preserve the activator block; the legacy migrator
+                // doesn't emit one.
+                if (current?.ShiftButton != null)
+                    rebuilt.ShiftButton = current.ShiftButton;
 
-                // Smart merge: take the rebuilt row when current's row
-                // for that target is single-source; keep current's row
-                // when it's multi-source (user-authored).
-                var merged = new Engine.Data.MappingSet { ShiftButton = current.ShiftButton };
-                var multiRowsByTargetLayer = new Dictionary<(string Target, string Layer), Engine.Data.MappingRow>();
-                foreach (var r in current.Rows)
-                {
-                    if (r == null || r.Sources == null || r.Sources.Count <= 1) continue;
-                    multiRowsByTargetLayer[(r.Target ?? "", r.LayerMask ?? "Base")] = r;
-                }
-
-                // Merge in rebuilt rows except where a multi-source row
-                // already covers the target+layer.
-                foreach (var r in rebuilt.Rows)
-                {
-                    if (r == null) continue;
-                    var key = (r.Target ?? "", r.LayerMask ?? "Base");
-                    if (multiRowsByTargetLayer.ContainsKey(key)) continue;
-                    merged.Rows.Add(r);
-                }
-
-                // Append the preserved multi-source rows.
-                foreach (var r in multiRowsByTargetLayer.Values)
-                    merged.Rows.Add(r);
-
-                sets[slot] = merged;
+                sets[slot] = rebuilt;
             }
         }
 
@@ -1433,6 +1496,12 @@ namespace PadForge.Services
                     }
                     data.PadSettings = uniquePadSettings.ToArray();
                 }
+
+                // Phase 2C — push per-row ExtraSources / CombineMode /
+                // CombineExpression from the live PadViewModels into the
+                // in-memory SlotMappingSets so the merge below has the
+                // user's multi-source edits to preserve.
+                PushUiExtraSourcesIntoSlotMappingSets();
 
                 // Phase 2A: rebuild MappingSet from the just-updated
                 // PadSetting fields BEFORE serializing — but only replace

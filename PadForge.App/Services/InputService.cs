@@ -1509,6 +1509,27 @@ namespace PadForge.Services
 
             // Mapping descriptors.
             var ud = FindUserDevice(instanceGuid);
+
+            // Phase 2C — index this slot's MappingSet rows by Target so
+            // we can populate MappingItem.ExtraSources alongside the
+            // legacy single-source SourceDescriptor binding.
+            Engine.Data.MappingSet slotMs = (padVm.PadIndex >= 0
+                && padVm.PadIndex < SettingsManager.SlotMappingSets.Length)
+                ? SettingsManager.SlotMappingSets[padVm.PadIndex]
+                : null;
+            var msRowsByTarget = new System.Collections.Generic.Dictionary<string, Engine.Data.MappingRow>(
+                StringComparer.Ordinal);
+            if (slotMs?.Rows != null)
+            {
+                foreach (var r in slotMs.Rows)
+                {
+                    if (r == null) continue;
+                    if (!string.Equals(r.LayerMask, "Base", StringComparison.Ordinal)) continue;
+                    if (string.IsNullOrEmpty(r.Target)) continue;
+                    msRowsByTarget[r.Target] = r;
+                }
+            }
+
             foreach (var mapping in padVm.Mappings)
             {
                 string target = mapping.TargetSettingName;
@@ -1527,6 +1548,23 @@ namespace PadForge.Services
                 // Load per-mapping deadzone.
                 string dzStr = ps.GetMappingDeadZone(target);
                 mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
+
+                // Phase 2C — populate ExtraSources / CombineMode from
+                // the matching MappingSet row (sources beyond the primary).
+                mapping.ExtraSources.Clear();
+                mapping.CombineMode = "";
+                mapping.CombineExpression = "";
+                if (msRowsByTarget.TryGetValue(target, out var msRow))
+                {
+                    mapping.CombineMode = msRow.CombineMode ?? "";
+                    mapping.CombineExpression = msRow.CombineExpression ?? "";
+                    if (msRow.Sources != null)
+                    {
+                        for (int si = 1; si < msRow.Sources.Count; si++)
+                            mapping.ExtraSources.Add(
+                                ViewModels.MappingSourceItem.FromDomain(msRow.Sources[si]));
+                    }
+                }
             }
         }
 

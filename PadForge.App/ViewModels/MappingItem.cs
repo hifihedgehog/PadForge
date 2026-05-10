@@ -32,6 +32,14 @@ namespace PadForge.ViewModels
             Strings.CultureChanged += OnCultureChanged;
             NegSettingName = negSettingName;
             IncludeInMapAll = includeInMapAll;
+
+            // Re-fire computed-property notifications when ExtraSources
+            // mutates so the +Add / Remove buttons + hints stay in sync.
+            ExtraSources.CollectionChanged += (_, __) =>
+            {
+                OnPropertyChanged(nameof(IsMultiSource));
+                OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
+            };
         }
 
         /// <summary>
@@ -95,6 +103,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SourceDisplayText));
                     OnPropertyChanged(nameof(IsMapped));
                     OnPropertyChanged(nameof(IsDeadZoneApplicable));
+                    OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
                 }
             }
         }
@@ -127,6 +136,7 @@ namespace PadForge.ViewModels
                     _resolvedNegText = null;
                     OnPropertyChanged(nameof(SourceDisplayText));
                     OnPropertyChanged(nameof(IsMapped));
+                    OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
                 }
             }
         }
@@ -392,7 +402,10 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _isInverted, value))
+                {
                     RebuildDescriptor();
+                    OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
+                }
             }
         }
 
@@ -558,6 +571,10 @@ namespace PadForge.ViewModels
         public ObservableCollection<MappingSourceItem> ExtraSources { get; }
             = new ObservableCollection<MappingSourceItem>();
 
+        // ExtraSources collection-changed wiring is set up in the
+        // constructor below so IsMultiSource and ShouldShowEmptyDirectionHint
+        // re-fire when the list mutates.
+
         /// <summary>True when this row's Target is a bipolar stick axis
         /// (LeftThumbAxisX/Y, RightThumbAxisX/Y). Drives the per-source
         /// direction-badge visibility — badges only make sense for the
@@ -567,6 +584,32 @@ namespace PadForge.ViewModels
          || string.Equals(TargetSettingName, "LeftThumbAxisY", StringComparison.Ordinal)
          || string.Equals(TargetSettingName, "RightThumbAxisX", StringComparison.Ordinal)
          || string.Equals(TargetSettingName, "RightThumbAxisY", StringComparison.Ordinal);
+
+        /// <summary>True when this is a bipolar axis row with exactly one
+        /// button-class primary source set to Invert=false (i.e. only
+        /// the positive direction is mapped). Surfaces a small inline
+        /// hint nudging the user to map the opposite direction. Once
+        /// they add a second source — or change Invert — the hint
+        /// disappears.</summary>
+        public bool ShouldShowEmptyDirectionHint
+        {
+            get
+            {
+                if (!IsBipolarAxisTarget) return false;
+                if (ExtraSources != null && ExtraSources.Count > 0) return false;
+                if (string.IsNullOrEmpty(_sourceDescriptor)) return false;
+                if (!string.IsNullOrEmpty(_negSourceDescriptor)) return false;
+                if (_isInverted) return false; // user explicitly inverted; assume intentional
+
+                // Primary descriptor must be button-class (button / POV /
+                // touchpad). An axis source is bidirectional on its own.
+                var d = _sourceDescriptor.Trim();
+                if (d.StartsWith("Button ", StringComparison.Ordinal)) return true;
+                if (d.StartsWith("POV ", StringComparison.Ordinal)) return true;
+                if (d.StartsWith("Touchpad ", StringComparison.Ordinal)) return true;
+                return false;
+            }
+        }
 
         private string _primarySourceDeviceGuid = "";
         /// <summary>Phase 2C — DeviceGuid of the primary source

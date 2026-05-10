@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Resources.Strings;
@@ -35,11 +38,109 @@ namespace PadForge.ViewModels
 
             // Re-fire computed-property notifications when ExtraSources
             // mutates so the +Add / Remove buttons + hints stay in sync.
-            ExtraSources.CollectionChanged += (_, __) =>
+            // Also keep per-source AvailableInputs lists in sync as
+            // sources are added / removed and as their DeviceGuid
+            // changes — this is what enables the cascading
+            // device/input picker.
+            ExtraSources.CollectionChanged += OnExtraSourcesCollectionChanged;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Phase 2C — cascading device/input picker
+        //
+        //  Slot-level state pushed in by InputService when the row is
+        //  populated:
+        //    - SlotMappedDevices: list of all devices assigned to the
+        //      slot, used by the per-source Device ComboBox.
+        //    - GetInputChoicesForDevice: lookup that returns the
+        //      InputChoice list for a given device GUID.
+        //
+        //  When a source's DeviceGuid changes, we refresh that source's
+        //  per-source AvailableInputs from the lookup. Empty GUID =
+        //  "use the slot's primary device" and falls back to the
+        //  parent MappingItem's AvailableInputs list.
+        // ─────────────────────────────────────────────
+
+        private object _slotMappedDevices;
+        /// <summary>Reference (not owned) to the parent
+        /// PadViewModel.MappedDevices collection. Bound by the per-source
+        /// Device ComboBox via a RelativeSource walk to the DataGridRow's
+        /// DataContext (this MappingItem). Typed as object so we don't
+        /// take a hard dependency on PadViewModel.MappedDeviceInfo from
+        /// MappingItem; the XAML only needs <c>Name</c> and
+        /// <c>InstanceGuid</c> via reflection-style binding.</summary>
+        public object SlotMappedDevices
+        {
+            get => _slotMappedDevices;
+            set => SetProperty(ref _slotMappedDevices, value);
+        }
+
+        /// <summary>Set by InputService at row-population time. Returns
+        /// the list of <see cref="InputChoice"/> for a given device
+        /// GUID. Null means "fall back to the slot's primary device's
+        /// inputs" (this row's <see cref="AvailableInputs"/>).</summary>
+        public Func<string, IReadOnlyList<InputChoice>> GetInputChoicesForDevice { get; set; }
+
+        private void OnExtraSourcesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(IsMultiSource));
+            OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
+
+            if (e.NewItems != null)
             {
-                OnPropertyChanged(nameof(IsMultiSource));
-                OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
-            };
+                foreach (var added in e.NewItems)
+                {
+                    if (added is MappingSourceItem msi)
+                    {
+                        msi.PropertyChanged += OnExtraSourcePropertyChanged;
+                        RefreshExtraSourceInputs(msi);
+                    }
+                }
+            }
+            if (e.OldItems != null)
+            {
+                foreach (var removed in e.OldItems)
+                {
+                    if (removed is MappingSourceItem msi)
+                        msi.PropertyChanged -= OnExtraSourcePropertyChanged;
+                }
+            }
+        }
+
+        private void OnExtraSourcePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (string.Equals(e.PropertyName, nameof(MappingSourceItem.DeviceGuid), StringComparison.Ordinal)
+                && sender is MappingSourceItem msi)
+            {
+                RefreshExtraSourceInputs(msi);
+            }
+        }
+
+        /// <summary>Refreshes a single extra source's
+        /// <see cref="MappingSourceItem.AvailableInputs"/> from the
+        /// current <see cref="GetInputChoicesForDevice"/> lookup. Falls
+        /// back to this row's <see cref="AvailableInputs"/> when the
+        /// source's DeviceGuid is empty or the lookup yields no
+        /// result.</summary>
+        public void RefreshExtraSourceInputs(MappingSourceItem msi)
+        {
+            if (msi == null) return;
+            IReadOnlyList<InputChoice> list = null;
+            if (GetInputChoicesForDevice != null && !string.IsNullOrEmpty(msi.DeviceGuid))
+                list = GetInputChoicesForDevice(msi.DeviceGuid);
+            list ??= AvailableInputs;
+            msi.AvailableInputs.Clear();
+            foreach (var c in list)
+                msi.AvailableInputs.Add(c);
+        }
+
+        /// <summary>Bulk-refresh every extra source's input choices.
+        /// Called by InputService after the slot's mapped-device list
+        /// or per-device InputChoice cache changes.</summary>
+        public void RefreshAllExtraSourceInputs()
+        {
+            foreach (var msi in ExtraSources)
+                RefreshExtraSourceInputs(msi);
         }
 
         /// <summary>

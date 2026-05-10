@@ -1584,12 +1584,43 @@ namespace PadForge.Services
                 }
                 else
                 {
-                    // No MappingSet row → fall back to per-device legacy
-                    // path. Triggers on slots that haven't been migrated
-                    // yet (rare today; covers any new VC the user creates
-                    // before a save round-trip).
-                    string value = GetMappingValue(ps, target);
+                    // No MappingSet row → fall back to legacy per-device
+                    // PadSetting fields. Walk EVERY device assigned to
+                    // the slot (not just the selected one) so the
+                    // Mappings tab stays per-VC: pick the first device
+                    // whose PadSetting has a non-empty descriptor for
+                    // this target, and resolve the display text against
+                    // that device. This stops the Device dropdown from
+                    // being able to flip the displayed mapping when no
+                    // MappingSet row exists yet.
+                    string value = "";
+                    Guid winningGuid = Guid.Empty;
+                    UserDevice winningUd = null;
+                    foreach (var md in padVm.MappedDevices)
+                    {
+                        if (md == null || md.InstanceGuid == Guid.Empty) continue;
+                        var devUs = SettingsManager.FindSettingByInstanceGuidAndSlot(md.InstanceGuid, padVm.PadIndex);
+                        var devPs = devUs?.GetPadSetting();
+                        if (devPs == null) continue;
+                        var v = GetMappingValue(devPs, target);
+                        if (string.IsNullOrEmpty(v)) continue;
+                        value = v;
+                        winningGuid = md.InstanceGuid;
+                        winningUd = FindUserDevice(md.InstanceGuid);
+                        break;
+                    }
                     mapping.LoadDescriptor(value);
+                    if (winningGuid != Guid.Empty)
+                    {
+                        mapping.PrimarySourceDeviceGuid = winningGuid.ToString().ToLowerInvariant();
+                        mapping.PrimarySourceDeviceLabel = ResolveDeviceLabel(mapping.PrimarySourceDeviceGuid);
+                        if (winningUd != null) primaryUd = winningUd;
+                    }
+                    else
+                    {
+                        mapping.PrimarySourceDeviceGuid = "";
+                        mapping.PrimarySourceDeviceLabel = "";
+                    }
                 }
 
                 MappingDisplayResolver.ResolveDisplayText(mapping, primaryUd);

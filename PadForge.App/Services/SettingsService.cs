@@ -328,6 +328,41 @@ namespace PadForge.Services
         }
 
         /// <summary>
+        /// Phase 6 — push the Shift activator config from each
+        /// <see cref="ViewModels.PadViewModel"/> into the matching
+        /// <see cref="MappingSet.ShiftButton"/>. Empty Descriptor clears
+        /// the activator (no shift configured for that slot).
+        /// </summary>
+        private void PushShiftActivatorIntoSlotMappingSets()
+        {
+            var pads = _mainVm?.Pads;
+            if (pads == null) return;
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null) return;
+
+            for (int slot = 0; slot < pads.Count && slot < sets.Length; slot++)
+            {
+                var padVm = pads[slot];
+                if (padVm == null) continue;
+                var ms = sets[slot] ?? (sets[slot] = new MappingSet());
+
+                if (string.IsNullOrWhiteSpace(padVm.ShiftDescriptor))
+                {
+                    ms.ShiftButton = null;
+                }
+                else
+                {
+                    ms.ShiftButton = new ShiftActivator
+                    {
+                        DeviceGuid = padVm.ShiftDeviceGuid ?? "",
+                        Descriptor = padVm.ShiftDescriptor ?? "",
+                        Mode = string.IsNullOrEmpty(padVm.ShiftMode) ? "Hold" : padVm.ShiftMode,
+                    };
+                }
+            }
+        }
+
+        /// <summary>
         /// Phase 2C — push the per-VC PadViewModel's MappingItem
         /// <c>ExtraSources</c> + <c>CombineMode</c> + <c>CombineExpression</c>
         /// into the in-memory <see cref="SettingsManager.SlotMappingSets"/>
@@ -1502,6 +1537,12 @@ namespace PadForge.Services
                 // in-memory SlotMappingSets so the merge below has the
                 // user's multi-source edits to preserve.
                 PushUiExtraSourcesIntoSlotMappingSets();
+
+                // Phase 6 — push the Shift activator config (Device /
+                // Descriptor / Mode) from each PadViewModel into the
+                // matching MappingSet so the engine sees the latest
+                // activator binding within one polling cycle.
+                PushShiftActivatorIntoSlotMappingSets();
 
                 // Phase 2A: rebuild MappingSet from the just-updated
                 // PadSetting fields BEFORE serializing — but only replace

@@ -1551,33 +1551,42 @@
                                              until the user types something. -->
                                         <StackPanel Orientation="Vertical" Margin="0,0,0,4"
                                                     Visibility="{Binding ShouldShowCustomExpression, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <Grid>
-                                                <TextBox x:Name="CustomFormulaBox"
-                                                         Text="{Binding CombineExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                         MinWidth="380" Padding="6,4"
-                                                         VerticalAlignment="Center"
-                                                         FontFamily="Consolas"
-                                                         ToolTip="Mix the row's sources with a math formula. Variables a..z bind to row sources in order (a=first, b=second…). Functions: abs, min, max, clamp, sign, sqrt, sin, cos, tan, atan2, lerp."/>
-                                                <TextBlock IsHitTestVisible="False"
-                                                           Margin="10,0,12,0"
+                                            <!-- Quick fill: named templates that drop a
+                                                 working formula into the box below so users
+                                                 don't have to know the syntax. The setter on
+                                                 SelectedExpressionTemplate writes the
+                                                 formula and resets the selection so the same
+                                                 template can be picked again later. -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                <TextBlock Text="Quick fill" FontSize="11"
                                                            VerticalAlignment="Center"
-                                                           HorizontalAlignment="Left"
-                                                           FontStyle="Italic"
-                                                           FontFamily="Consolas"
-                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                           Text="example: a + b * 0.5">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding Text, ElementName=CustomFormulaBox}" Value="">
-                                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
-                                            </Grid>
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                           Margin="0,0,6,0"/>
+                                                <ComboBox ItemsSource="{Binding AvailableExpressionTemplates}"
+                                                          SelectedItem="{Binding SelectedExpressionTemplate, Mode=TwoWay}"
+                                                          MinWidth="260" Padding="4,2"
+                                                          VerticalAlignment="Center"
+                                                          ToolTip="Pick a starter formula. You can edit the result.">
+                                                    <ComboBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Orientation="Vertical" Margin="0,2,0,2">
+                                                                <TextBlock Text="{Binding Name}"
+                                                                           FontWeight="SemiBold"
+                                                                           FontSize="12"/>
+                                                                <TextBlock Text="{Binding Description}"
+                                                                           FontSize="10"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           TextWrapping="Wrap"/>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ComboBox.ItemTemplate>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <TextBox Text="{Binding CombineExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     MinWidth="380" Padding="6,4"
+                                                     VerticalAlignment="Center"
+                                                     FontFamily="Consolas"
+                                                     ToolTip="Mix the row's sources with a math formula. Variables a..z bind to row sources in order (a=first, b=second…). Pick a Quick fill template above for a head start."/>
                                             <TextBlock Text="{Binding CombineExpressionStatus}"
                                                        FontSize="10" FontFamily="Consolas"
                                                        Margin="2,2,0,0"

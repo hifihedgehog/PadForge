@@ -857,6 +857,54 @@ namespace PadForge.ViewModels
         /// source (e.g. the user removed the last extra source).</summary>
         public bool ShouldShowCustomExpression => IsMultiSource && IsCustomCombine;
 
+        /// <summary>Pre-built formulas users can pick from a Quick fill
+        /// dropdown so they don't have to know the expression syntax
+        /// to build common combines. Picking one fills
+        /// <see cref="CombineExpression"/> and the user can still edit
+        /// the result. Variables: a = first source, b = second, c =
+        /// third, etc.</summary>
+        public sealed class ExpressionTemplate
+        {
+            public string Name { get; set; } = "";
+            public string Description { get; set; } = "";
+            public string Formula { get; set; } = "";
+        }
+
+        private static readonly ExpressionTemplate[] _expressionTemplates = new[]
+        {
+            new ExpressionTemplate { Name = "First source",  Description = "Use only source A — ignore the rest", Formula = "a" },
+            new ExpressionTemplate { Name = "Sum",           Description = "Add A + B together",                  Formula = "a + b" },
+            new ExpressionTemplate { Name = "Average",       Description = "Halfway between A and B",             Formula = "(a + b) / 2" },
+            new ExpressionTemplate { Name = "Stronger wins", Description = "Whichever of A or B is pushed harder", Formula = "max(abs(a), abs(b)) * sign(a + b)" },
+            new ExpressionTemplate { Name = "Half scale",    Description = "A at half strength",                  Formula = "a * 0.5" },
+            new ExpressionTemplate { Name = "Either",        Description = "Whichever of A or B is highest (good for buttons)", Formula = "max(a, b)" },
+            new ExpressionTemplate { Name = "Both",          Description = "Only fire when both A and B are pressed",            Formula = "min(a, b)" },
+            new ExpressionTemplate { Name = "Reverse A",     Description = "Flip A's sign",                        Formula = "-a" },
+            new ExpressionTemplate { Name = "Cap to ±1",     Description = "Sum A + B but never exceed ±1",        Formula = "clamp(a + b, -1, 1)" },
+        };
+
+        /// <summary>Named formula presets exposed to the Quick fill
+        /// picker. Static — same set across every row.</summary>
+        public System.Collections.Generic.IReadOnlyList<ExpressionTemplate> AvailableExpressionTemplates
+            => _expressionTemplates;
+
+        private ExpressionTemplate _selectedExpressionTemplate;
+        /// <summary>Bound to the Quick fill dropdown's SelectedItem.
+        /// Setting a non-null template fills <see cref="CombineExpression"/>
+        /// and immediately resets the selection so the same template
+        /// can be picked again later.</summary>
+        public ExpressionTemplate SelectedExpressionTemplate
+        {
+            get => _selectedExpressionTemplate;
+            set
+            {
+                if (value == null) return;
+                CombineExpression = value.Formula ?? "";
+                _selectedExpressionTemplate = null;
+                OnPropertyChanged(nameof(SelectedExpressionTemplate));
+            }
+        }
+
         /// <summary>Live parse status of <see cref="CombineExpression"/>.
         /// "✓ valid" or a parse-error message; surfaced inline below
         /// the Custom expression TextBox so users get immediate

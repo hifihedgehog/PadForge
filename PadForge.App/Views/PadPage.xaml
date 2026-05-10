@@ -1559,47 +1559,29 @@
                                              instead of leaving stale text on a single-source
                                              row. The italic placeholder shows an example
                                              until the user types something. -->
-                                        <StackPanel Orientation="Vertical" Margin="0,0,0,4"
+                                        <!-- Custom formula visual editor — chip palette
+                                             below a free-text formula box. Users who don't
+                                             want to type can build a formula by clicking
+                                             chips (each chip's Tag is inserted at the
+                                             caret) or load a complete preset by clicking
+                                             one of the named buttons. The Click handlers
+                                             live in PadPage.xaml.cs and use VisualTreeHelper
+                                             to find the named TextBox inside the same
+                                             FormulaEditor StackPanel — that avoids the
+                                             ComboBox-SelectedItem write-back hell that
+                                             made the previous Quick fill dropdown unable
+                                             to populate the formula on selection. -->
+                                        <StackPanel x:Name="FormulaEditor" Orientation="Vertical" Margin="0,0,0,4"
                                                     Visibility="{Binding ShouldShowCustomExpression, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <!-- Quick fill: named templates that drop a
-                                                 working formula into the box below so users
-                                                 don't have to know the syntax. The setter on
-                                                 SelectedExpressionTemplate writes the
-                                                 formula and resets the selection so the same
-                                                 template can be picked again later. -->
-                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                <TextBlock Text="Quick fill" FontSize="11"
-                                                           VerticalAlignment="Center"
-                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                           Margin="0,0,6,0"/>
-                                                <ComboBox ItemsSource="{Binding AvailableExpressionTemplates}"
-                                                          SelectedItem="{Binding SelectedExpressionTemplate, Mode=TwoWay}"
-                                                          MinWidth="260" Padding="4,2"
-                                                          VerticalAlignment="Center"
-                                                          ToolTip="Pick a starter formula. You can edit the result.">
-                                                    <ComboBox.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <StackPanel Orientation="Vertical" Margin="0,2,0,2">
-                                                                <TextBlock Text="{Binding Name}"
-                                                                           FontWeight="SemiBold"
-                                                                           FontSize="12"/>
-                                                                <TextBlock Text="{Binding Description}"
-                                                                           FontSize="10"
-                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                                           TextWrapping="Wrap"/>
-                                                            </StackPanel>
-                                                        </DataTemplate>
-                                                    </ComboBox.ItemTemplate>
-                                                </ComboBox>
-                                            </StackPanel>
-                                            <TextBox Text="{Binding CombineExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            <TextBox x:Name="CustomFormulaBox"
+                                                     Text="{Binding CombineExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                      MinWidth="380" Padding="6,4"
                                                      VerticalAlignment="Center"
                                                      FontFamily="Consolas"
-                                                     ToolTip="Mix the row's sources with a math formula. Variables a..z bind to row sources in order (a=first, b=second…). Pick a Quick fill template above for a head start."/>
+                                                     ToolTip="Click chips below to build a formula, or pick a starter preset. a, b, c… stand for this row's sources in order."/>
                                             <TextBlock Text="{Binding CombineExpressionStatus}"
                                                        FontSize="10" FontFamily="Consolas"
-                                                       Margin="2,2,0,0"
+                                                       Margin="2,2,0,4"
                                                        TextWrapping="Wrap">
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">
@@ -1612,6 +1594,121 @@
                                                     </Style>
                                                 </TextBlock.Style>
                                             </TextBlock>
+
+                                            <!-- Chip palette: variables, operators, numbers,
+                                                 functions. Tag carries the literal text to
+                                                 insert at the formula's caret. -->
+                                            <TextBlock Text="Insert" FontSize="10"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       Margin="2,4,0,2"/>
+                                            <WrapPanel Margin="0,0,0,4">
+                                                <WrapPanel.Resources>
+                                                    <Style x:Key="FormulaChipStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                                        <Setter Property="Padding" Value="6,2"/>
+                                                        <Setter Property="Margin" Value="0,0,3,3"/>
+                                                        <Setter Property="MinWidth" Value="28"/>
+                                                        <Setter Property="FontFamily" Value="Consolas"/>
+                                                        <Setter Property="FontSize" Value="11"/>
+                                                    </Style>
+                                                </WrapPanel.Resources>
+                                                <!-- Source variables (a-d cover most rows; users with more sources can type the rest) -->
+                                                <Button Content="a" Tag="a" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="First source"/>
+                                                <Button Content="b" Tag="b" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Second source"/>
+                                                <Button Content="c" Tag="c" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Third source"/>
+                                                <Button Content="d" Tag="d" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Fourth source"/>
+                                                <!-- Operators -->
+                                                <Border Width="6"/>
+                                                <Button Content="+" Tag=" + " Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Add"/>
+                                                <Button Content="−" Tag=" - " Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Subtract"/>
+                                                <Button Content="×" Tag=" * " Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Multiply"/>
+                                                <Button Content="÷" Tag=" / " Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Divide"/>
+                                                <Button Content="−A" Tag="-a" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Negate the first source"/>
+                                                <Button Content="(" Tag="(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Open group"/>
+                                                <Button Content=")" Tag=")" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Close group"/>
+                                                <!-- Numbers -->
+                                                <Border Width="6"/>
+                                                <Button Content="0" Tag="0" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click"/>
+                                                <Button Content="½" Tag="0.5" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="0.5 — half"/>
+                                                <Button Content="1" Tag="1" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click"/>
+                                                <Button Content="2" Tag="2" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click"/>
+                                                <!-- Functions -->
+                                                <Border Width="6"/>
+                                                <Button Content="abs" Tag="abs(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Magnitude (drops the sign)"/>
+                                                <Button Content="min" Tag="min(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Smaller of two values"/>
+                                                <Button Content="max" Tag="max(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Larger of two values"/>
+                                                <Button Content="clamp" Tag="clamp(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Keep within a range"/>
+                                                <Button Content="sign" Tag="sign(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="-1, 0, or +1 from input's sign"/>
+                                                <Button Content="," Tag=", " Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click"/>
+                                            </WrapPanel>
+
+                                            <!-- Preset buttons: load a complete formula
+                                                 (replaces what's in the box). Each button's
+                                                 Tag is the formula text. -->
+                                            <TextBlock Text="Starter recipes" FontSize="10"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       Margin="2,2,0,2"/>
+                                            <WrapPanel>
+                                                <WrapPanel.Resources>
+                                                    <Style x:Key="FormulaPresetStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                                        <Setter Property="Padding" Value="8,3"/>
+                                                        <Setter Property="Margin" Value="0,0,4,3"/>
+                                                        <Setter Property="FontSize" Value="11"/>
+                                                    </Style>
+                                                </WrapPanel.Resources>
+                                                <Button Content="Half scale" Tag="a * 0.5"
+                                                        Style="{StaticResource FormulaPresetStyle}"
+                                                        Click="FormulaPreset_Click"
+                                                        ToolTip="A at half strength"/>
+                                                <Button Content="Quarter scale" Tag="a * 0.25"
+                                                        Style="{StaticResource FormulaPresetStyle}"
+                                                        Click="FormulaPreset_Click"
+                                                        ToolTip="A at quarter strength"/>
+                                                <Button Content="Reverse A" Tag="-a"
+                                                        Style="{StaticResource FormulaPresetStyle}"
+                                                        Click="FormulaPreset_Click"
+                                                        ToolTip="Flip A's sign"/>
+                                                <Button Content="Cap to ±1" Tag="clamp(a + b, -1, 1)"
+                                                        Style="{StaticResource FormulaPresetStyle}"
+                                                        Click="FormulaPreset_Click"
+                                                        ToolTip="Sum A + B but never exceed ±1"/>
+                                                <Button Content="Weighted blend" Tag="a * 0.7 + b * 0.3"
+                                                        Style="{StaticResource FormulaPresetStyle}"
+                                                        Click="FormulaPreset_Click"
+                                                        ToolTip="70% of A + 30% of B"/>
+                                                <Button Content="Difference" Tag="a - b"
+                                                        Style="{StaticResource FormulaPresetStyle}"
+                                                        Click="FormulaPreset_Click"
+                                                        ToolTip="A minus B"/>
+                                                <Button Content="A unless idle" Tag="a != 0 ? a : b"
+                                                        Style="{StaticResource FormulaPresetStyle}"
+                                                        Click="FormulaPreset_Click"
+                                                        ToolTip="Use A — but if A is at rest, fall back to B"/>
+                                                <Button Content="Stronger wins" Tag="max(abs(a), abs(b)) * sign(a + b)"
+                                                        Style="{StaticResource FormulaPresetStyle}"
+                                                        Click="FormulaPreset_Click"
+                                                        ToolTip="Whichever of A or B is pushed harder, with sign"/>
+                                            </WrapPanel>
                                         </StackPanel>
 
                                         <!-- ExtraSources list. Each row has its own

@@ -1666,24 +1666,67 @@
                                                                 </TextBlock.Style>
                                                             </TextBlock>
                                                         </StackPanel>
-                                                        <CheckBox Content="Inv" IsChecked="{Binding Invert, Mode=TwoWay}"
-                                                                  VerticalAlignment="Center" Margin="0,0,4,0"
-                                                                  ToolTip="Invert: button pressed → -1 / axis sign flipped"/>
-                                                        <CheckBox Content="Half" IsChecked="{Binding HalfAxis, Mode=TwoWay}"
-                                                                  VerticalAlignment="Center" Margin="0,0,4,0"
-                                                                  ToolTip="Half-axis: only the active half of a bipolar axis contributes"/>
-                                                        <!-- Record button: listens across every device assigned
-                                                             to the slot and writes the first input that fires
-                                                             into this source's DeviceGuid + Descriptor. -->
+                                                        <!-- Record button — same icon, width and design
+                                                             as the main row's Record button. Listens across
+                                                             every device assigned to the slot. -->
                                                         <Button Command="{Binding ToggleRecordCommand}"
-                                                                Width="32" Padding="4,2" Margin="0,0,4,0"
+                                                                Width="40" HorizontalAlignment="Center" Margin="2"
                                                                 VerticalAlignment="Center">
                                                             <TextBlock Text="{Binding RecordButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
                                                             <Button.ToolTip>
                                                                 <TextBlock Text="{Binding RecordButtonText}"/>
                                                             </Button.ToolTip>
                                                         </Button>
-                                                        <Button Content="" Padding="6,2"
+                                                        <!-- Clear button — same icon and design as the
+                                                             main row's Clear button. Resets descriptor /
+                                                             flags / deadzone but keeps the source row. -->
+                                                        <Button Command="{Binding ClearCommand}"
+                                                                Width="40" HorizontalAlignment="Center" Margin="2"
+                                                                VerticalAlignment="Center">
+                                                            <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
+                                                            <Button.ToolTip>
+                                                                <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
+                                                            </Button.ToolTip>
+                                                        </Button>
+                                                        <!-- Options column — same Pad_Invert / Pad_Half
+                                                             localized labels and layout as the main row. -->
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Width="220">
+                                                            <CheckBox Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"
+                                                                      IsChecked="{Binding Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                      Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                            <CheckBox Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"
+                                                                      IsChecked="{Binding HalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                      VerticalAlignment="Center"/>
+                                                        </StackPanel>
+                                                        <!-- Per-source axis-to-button deadzone — same
+                                                             slider / textbox / % / reset combo and styles
+                                                             as the main row, gated on
+                                                             IsDeadZoneApplicable (axis source AND
+                                                             button-class target). -->
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0" Width="230">
+                                                            <StackPanel.Style>
+                                                                <Style TargetType="StackPanel">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsDeadZoneApplicable}" Value="False">
+                                                                            <Setter Property="IsEnabled" Value="False"/>
+                                                                            <Setter Property="Opacity" Value="0.35"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </StackPanel.Style>
+                                                            <Slider Style="{StaticResource DzSlider}" Width="120"
+                                                                    Value="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                    TickFrequency="1"/>
+                                                            <TextBox Text="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                                     Style="{StaticResource DzValueEdit}"/>
+                                                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                            <Button Command="{Binding ResetDeadZoneCommand}" Style="{StaticResource ResetButton}"/>
+                                                        </StackPanel>
+                                                        <!-- Remove this source from the row entirely.
+                                                             Distinct from Clear (which keeps the row) — uses
+                                                             a less-prominent ✕ glyph so it's clearly the
+                                                             "delete row" action. -->
+                                                        <Button Content="✕" Padding="6,2" Margin="2"
                                                                 VerticalAlignment="Center"
                                                                 Command="{Binding DataContext.RemoveExtraSourceCommand,
                                                                           RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"

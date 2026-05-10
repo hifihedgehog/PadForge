@@ -69,12 +69,28 @@ namespace PadForge.Common.Input
                     if (ps == null)
                         continue;
 
-                    // Map the input state to a gamepad.
-                    us.OutputState = MapInputToGamepad(ud.InputState, ps, out var rawMapped);
+                    // Map the input state to a gamepad. Phase 1c-2 routes
+                    // descriptor reading through MappingSet when one is
+                    // available for this slot; tuning still comes from
+                    // PadSetting until Phase 1c-3.
+                    int slotIndex = us.MapTo;
+                    MappingSet ms = (slotIndex >= 0 && slotIndex < SettingsManager.SlotMappingSets.Length)
+                        ? SettingsManager.SlotMappingSets[slotIndex]
+                        : null;
+                    Gamepad rawMapped;
+                    if (ms != null && ms.Rows != null && ms.Rows.Count > 0)
+                    {
+                        us.OutputState = MapInputToGamepadFromMappingSet(
+                            ud.InputState, ms, us.InstanceGuid.ToString(), ps, out rawMapped);
+                    }
+                    else
+                    {
+                        us.OutputState = MapInputToGamepad(ud.InputState, ps, out rawMapped);
+                    }
                     us.RawMappedState = rawMapped;
 
                     // For custom Extended slots, also produce the raw Extended output state.
-                    int slot = us.MapTo;
+                    int slot = slotIndex;
                     if (slot >= 0 && slot < MaxPads &&
                         SlotControllerTypes[slot] == VirtualControllerType.Extended &&
                         SlotExtendedIsCustom[slot])
@@ -206,6 +222,50 @@ namespace PadForge.Common.Input
             // for the UI preview so it can apply its own pipeline without double-processing.
             rawMapped = gp;
 
+            ApplyPadSettingTuning(ref gp, ps);
+            return gp;
+        }
+
+        /// <summary>
+        /// Issue #61 multi-source/shift Phase 1c-2 entry point. Reads
+        /// descriptors from a per-VC <see cref="MappingSet"/> instead of
+        /// the legacy per-(VC × Device) <see cref="PadSetting"/> mapping
+        /// fields. Per-source <c>DeviceGuid</c> filters which row sources
+        /// contribute on this pass; sources for other devices are ignored
+        /// here and contribute via Step 4's cross-device combine. Tuning
+        /// (deadzones, curves, center offsets) still comes from
+        /// <paramref name="ps"/> until Phase 1c-3 moves them to
+        /// <see cref="DeviceTuning"/>.
+        /// </summary>
+        private static Gamepad MapInputToGamepadFromMappingSet(
+            CustomInputState state,
+            MappingSet mappingSet,
+            string thisDeviceGuid,
+            PadSetting ps,
+            out Gamepad rawMapped)
+        {
+            rawMapped = default;
+            var gp = new Gamepad();
+
+            int gt = TryParseIntStatic(ps?.AxisToButtonThreshold, 50);
+            ApplyMappingSetToGamepad(state, mappingSet, thisDeviceGuid, gt, ref gp);
+
+            rawMapped = gp;
+            ApplyPadSettingTuning(ref gp, ps);
+            return gp;
+        }
+
+        /// <summary>
+        /// Applies the per-(VC × Device) tuning shared by both Step 3
+        /// paths: trigger deadzones / curves, stick center offsets,
+        /// stick deadzones / curves / shape. Today these read from
+        /// <see cref="PadSetting"/>; Phase 1c-3 will move them to
+        /// <see cref="DeviceTuning"/> while keeping this signature.
+        /// </summary>
+        private static void ApplyPadSettingTuning(ref Gamepad gp, PadSetting ps)
+        {
+            if (ps == null) return;
+
             // ── Trigger deadzones ──
             gp.LeftTrigger = ApplyTriggerDeadZone(gp.LeftTrigger,
                 TryParseDoubleStatic(ps.LeftTriggerDeadZone, 0),
@@ -252,8 +312,6 @@ namespace PadForge.Common.Input
                 Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveX),
                 Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveY),
                 ParseDeadZoneShape(ps.RightThumbDeadZoneShape));
-
-            return gp;
         }
 
         /// <summary>

@@ -1319,6 +1319,12 @@ namespace PadForge.Services
                     data.PadSettings = uniquePadSettings.ToArray();
                 }
 
+                // Phase 1b: regenerate per-VC MappingSets so the Step 3
+                // V2 path picks up the user's edits within one polling
+                // cycle. PadSetting fields stay authoritative for tuning;
+                // MappingSet is the descriptor source of truth in 1c+.
+                BuildSlotMappingSetsFromLegacy();
+
                 // Collect app settings from ViewModel.
                 data.AppSettings = BuildAppSettings();
 

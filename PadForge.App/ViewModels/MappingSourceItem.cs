@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -101,6 +102,81 @@ namespace PadForge.ViewModels
         public double ParamMin { get => _paramMin; set => SetProperty(ref _paramMin, value); }
         public double ParamMax { get => _paramMax; set => SetProperty(ref _paramMax, value); }
         public string ParamModifier { get => _paramModifier; set => SetProperty(ref _paramModifier, value ?? ""); }
+
+        // ─────────────────────────────────────────────
+        //  Cross-device picker bridge
+        // ─────────────────────────────────────────────
+
+        private InputChoice _selectedInput;
+        private bool _suppressSelectionSync;
+
+        /// <summary>The currently picked <see cref="InputChoice"/> from
+        /// the parent MappingItem's grouped cross-device picker. Setting
+        /// this writes both <see cref="DeviceGuid"/> and
+        /// <see cref="Descriptor"/> in one shot — mirrors
+        /// <see cref="MappingItem.SelectedInput"/>'s behavior so a single
+        /// dropdown selection lands two fields.</summary>
+        public InputChoice SelectedInput
+        {
+            get => _selectedInput;
+            set
+            {
+                if (_suppressSelectionSync) return;
+                if (SetProperty(ref _selectedInput, value) && value != null)
+                {
+                    DeviceGuid = value.DeviceGuid ?? "";
+                    Descriptor = value.Descriptor ?? "";
+                }
+            }
+        }
+
+        /// <summary>Sync the dropdown selection from the current
+        /// <see cref="DeviceGuid"/>+<see cref="Descriptor"/> pair against
+        /// a flat cross-device choice list. Match is on
+        /// (DeviceGuid, Descriptor) with a descriptor-only fallback.
+        /// Called by the parent MappingItem after the row's load /
+        /// AvailableInputs refresh, with the parent's cross-device
+        /// picker list as the search space.</summary>
+        public void SyncSelectedInputFromState(System.Collections.Generic.IEnumerable<InputChoice> choices)
+        {
+            _suppressSelectionSync = true;
+            try
+            {
+                if (string.IsNullOrEmpty(_descriptor) && string.IsNullOrEmpty(_deviceGuid))
+                {
+                    _selectedInput = null;
+                    OnPropertyChanged(nameof(SelectedInput));
+                    return;
+                }
+                if (choices == null)
+                {
+                    _selectedInput = null;
+                    OnPropertyChanged(nameof(SelectedInput));
+                    return;
+                }
+                string wantGuid = (_deviceGuid ?? "").ToLowerInvariant();
+                InputChoice match = null;
+                InputChoice descriptorOnlyMatch = null;
+                foreach (var choice in choices)
+                {
+                    if (!string.Equals(choice.Descriptor, _descriptor, StringComparison.OrdinalIgnoreCase))
+                        continue;
+                    if (descriptorOnlyMatch == null) descriptorOnlyMatch = choice;
+                    if (!string.IsNullOrEmpty(wantGuid)
+                        && string.Equals(choice.DeviceGuid ?? "", wantGuid, StringComparison.OrdinalIgnoreCase))
+                    {
+                        match = choice;
+                        break;
+                    }
+                }
+                _selectedInput = match ?? descriptorOnlyMatch;
+                OnPropertyChanged(nameof(SelectedInput));
+            }
+            finally
+            {
+                _suppressSelectionSync = false;
+            }
+        }
 
         /// <summary>Builds a domain <see cref="Engine.Data.MappingSource"/>
         /// from this VM's current values. Used by the Save pipeline.</summary>

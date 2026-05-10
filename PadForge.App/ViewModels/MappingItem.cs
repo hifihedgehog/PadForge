@@ -856,9 +856,33 @@ namespace PadForge.ViewModels
         public RelayCommand AddExtraSourceCommand =>
             _addExtraSourceCommand ??= new RelayCommand(() =>
             {
+                EnsureCombineModeDefault();
                 ExtraSources.Add(new MappingSourceItem());
                 OnPropertyChanged(nameof(IsMultiSource));
             });
+
+        /// <summary>If <see cref="CombineMode"/> is still the empty
+        /// "implicit-default" sentinel when the user is transitioning a
+        /// row to multi-source, auto-select the per-target-class
+        /// default — MaxAbs for axes / triggers / sliders, OR for
+        /// buttons and POV — so the combine pill never reads as blank
+        /// for a multi-source row. The user can override afterwards.
+        /// No-op when CombineMode is already set explicitly.</summary>
+        private void EnsureCombineModeDefault()
+        {
+            if (!string.IsNullOrEmpty(_combineMode)) return;
+
+            string t = TargetSettingName ?? "";
+            bool isAxis =
+                   t.Contains("ThumbAxis", StringComparison.Ordinal)
+                || t == "LeftTrigger" || t == "RightTrigger"
+                || t.StartsWith("ExtendedAxis", StringComparison.Ordinal)
+                || t.StartsWith("KbmMouse", StringComparison.Ordinal)
+                || t.StartsWith("KbmScroll", StringComparison.Ordinal)
+                || t.StartsWith("MidiCC", StringComparison.Ordinal)
+                || t.StartsWith("Touchpad", StringComparison.Ordinal);
+            CombineMode = isAxis ? "MaxAbs" : "OR";
+        }
 
         private RelayCommand<MappingSourceItem> _removeExtraSourceCommand;
         public RelayCommand<MappingSourceItem> RemoveExtraSourceCommand =>

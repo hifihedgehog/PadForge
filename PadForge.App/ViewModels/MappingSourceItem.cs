@@ -1,6 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
@@ -38,6 +40,20 @@ namespace PadForge.ViewModels
         {
             get => _deviceGuid;
             set => SetProperty(ref _deviceGuid, value ?? "");
+        }
+
+        private string _deviceLabel = "";
+        /// <summary>Friendly name of the device this source reads from
+        /// (e.g. "DualSense Edge"). Surfaced inline below the per-source
+        /// picker so users can tell at a glance which device each
+        /// ExtraSource is bound to. Set by the parent MappingItem when
+        /// the source is hydrated / synced; setting directly via the
+        /// SelectedInput picker also updates it via the InputChoice's
+        /// DeviceLabel field.</summary>
+        public string DeviceLabel
+        {
+            get => _deviceLabel;
+            set => SetProperty(ref _deviceLabel, value ?? "");
         }
         public string Descriptor
         {
@@ -125,6 +141,7 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _selectedInput, value) && value != null)
                 {
                     DeviceGuid = value.DeviceGuid ?? "";
+                    DeviceLabel = value.DeviceLabel ?? "";
                     Descriptor = value.Descriptor ?? "";
                 }
             }
@@ -169,7 +186,10 @@ namespace PadForge.ViewModels
                         break;
                     }
                 }
-                _selectedInput = match ?? descriptorOnlyMatch;
+                var picked = match ?? descriptorOnlyMatch;
+                _selectedInput = picked;
+                if (picked != null && !string.IsNullOrEmpty(picked.DeviceLabel))
+                    DeviceLabel = picked.DeviceLabel;
                 OnPropertyChanged(nameof(SelectedInput));
             }
             finally
@@ -177,6 +197,39 @@ namespace PadForge.ViewModels
                 _suppressSelectionSync = false;
             }
         }
+
+        // ─────────────────────────────────────────────
+        //  Recording (per-source)
+        // ─────────────────────────────────────────────
+
+        private bool _isRecording;
+        public bool IsRecording
+        {
+            get => _isRecording;
+            set
+            {
+                if (SetProperty(ref _isRecording, value))
+                {
+                    OnPropertyChanged(nameof(RecordButtonText));
+                    OnPropertyChanged(nameof(RecordButtonIcon));
+                }
+            }
+        }
+        public string RecordButtonText => IsRecording ? Strings.Instance.Common_Recording : Strings.Instance.Common_Record;
+        public string RecordButtonIcon => IsRecording ? "" : ""; // Stop : Record
+
+        private RelayCommand _toggleRecordCommand;
+        public RelayCommand ToggleRecordCommand =>
+            _toggleRecordCommand ??= new RelayCommand(() =>
+            {
+                if (IsRecording)
+                    StopRecordingRequested?.Invoke(this, EventArgs.Empty);
+                else
+                    StartRecordingRequested?.Invoke(this, EventArgs.Empty);
+            });
+
+        public event EventHandler StartRecordingRequested;
+        public event EventHandler StopRecordingRequested;
 
         /// <summary>Builds a domain <see cref="Engine.Data.MappingSource"/>
         /// from this VM's current values. Used by the Save pipeline.</summary>

@@ -74,14 +74,14 @@ namespace PadForge
             // extended search path.
             try
             {
-                string? extractionDir = null;
+                string extractionDir = null;
                 try
                 {
                     foreach (System.Diagnostics.ProcessModule mod in System.Diagnostics.Process.GetCurrentProcess().Modules)
                     {
-                        string? p = null;
+                        string p = null;
                         try { p = mod?.FileName; } catch { continue; }
-                        if (!string.IsNullOrEmpty(p) && p!.IndexOf(@"\.net\", StringComparison.OrdinalIgnoreCase) >= 0)
+                        if (!string.IsNullOrEmpty(p) && p.IndexOf(@"\.net\", StringComparison.OrdinalIgnoreCase) >= 0)
                         {
                             extractionDir = Path.GetDirectoryName(p);
                             if (!string.IsNullOrEmpty(extractionDir)) break;

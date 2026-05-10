@@ -1630,9 +1630,9 @@ namespace PadForge.ViewModels
                 return _lightbarPaletteCache;
             }
         }
-        private System.Collections.ObjectModel.ObservableCollection<LightbarPaletteEntry>? _lightbarPaletteCache;
+        private System.Collections.ObjectModel.ObservableCollection<LightbarPaletteEntry> _lightbarPaletteCache;
 
-        private void OnPaletteEntryPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void OnPaletteEntryPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             // Re-emit only on R/G/B; ignore other ObservableObject churn.
             if (e.PropertyName is nameof(LightbarPaletteEntry.R)
@@ -1693,7 +1693,7 @@ namespace PadForge.ViewModels
             {
                 LightbarPalette.Add(new LightbarPaletteEntry { R = 0xFF, G = 0xFF, B = 0xFF });
             });
-        private RelayCommand? _addLightbarPaletteColorCommand;
+        private RelayCommand _addLightbarPaletteColorCommand;
 
         public RelayCommand<LightbarPaletteEntry> RemoveLightbarPaletteColorCommand
             => _removeLightbarPaletteColorCommand ??= new RelayCommand<LightbarPaletteEntry>(entry =>
@@ -1701,7 +1701,7 @@ namespace PadForge.ViewModels
                 if (entry == null) return;
                 LightbarPalette.Remove(entry);
             });
-        private RelayCommand<LightbarPaletteEntry>? _removeLightbarPaletteColorCommand;
+        private RelayCommand<LightbarPaletteEntry> _removeLightbarPaletteColorCommand;
 
         private LightbarMode _lightbarTargetMode = LightbarMode.Static;
         /// <summary>Target <c>LightbarMode</c> for

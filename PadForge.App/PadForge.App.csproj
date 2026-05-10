@@ -14,6 +14,19 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 
+    <!--
+      CA1416: emitted by the auto-generated WPF temp project (*_wpftmp.csproj)
+      because that intermediate doesn't inherit TargetPlatformVersion from
+      this csproj. The main project already targets net10.0-windows10.0.26100.0
+      which satisfies the API platform requirements.
+
+      WFO0003: WinForms migration recommendation to move HighDPI from the
+      manifest to <ApplicationHighDpiMode> / Application.SetHighDpiMode. This
+      app is WPF-primary with WinForms enabled only for NotifyIcon; WPF reads
+      DPI awareness from the manifest, so the manifest is the right place.
+    -->
+    <NoWarn>$(NoWarn);CA1416;WFO0003</NoWarn>
+
     <Product>PadForge</Product>
     <Company>PadForge</Company>
     <Copyright>Copyright © PadForge Contributors</Copyright>

@@ -861,7 +861,7 @@ namespace PadForge.Common.Input
         /// Mirrors <c>MacroAction.ParsePaletteCsv</c>; kept here so the
         /// Step 4b dispatch path doesn't reach into MacroAction's private
         /// parser.</summary>
-        private static LightbarPaletteEntry[] ParseMacroPaletteCsv(string? csv)
+        private static LightbarPaletteEntry[] ParseMacroPaletteCsv(string csv)
         {
             if (string.IsNullOrWhiteSpace(csv)) return Array.Empty<LightbarPaletteEntry>();
             var list = new System.Collections.Generic.List<LightbarPaletteEntry>();

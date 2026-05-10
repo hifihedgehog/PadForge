@@ -470,12 +470,71 @@ namespace PadForge.Services
                     row.CombineMode = mapping.CombineMode ?? "";
                     row.CombineExpression = mapping.CombineExpression ?? "";
 
-                    // Trim Sources to the primary (which Phase 2A's
-                    // MergeMappingSetsFromLegacy will fill from PadSetting)
-                    // plus the user's ExtraSources. We keep one slot for
-                    // the primary at index 0; if it's missing the merge
-                    // will repopulate it from PadSetting.
-                    while (row.Sources.Count > 1) row.Sources.RemoveAt(1);
+                    // Phase 2C — clear and rebuild Sources from the UI
+                    // state so MappingSet is fully authoritative for
+                    // this row. This stops keyboard primaries (which
+                    // the legacy gamepad-only migrator filters out of
+                    // rebuilt rows) from disappearing across save
+                    // round-trips when a non-gamepad device authored
+                    // the primary descriptor.
+                    row.Sources.Clear();
+
+                    // Push the primary as Sources[0] when present.
+                    string primaryDesc = mapping.SourceDescriptor ?? "";
+                    if (!string.IsNullOrEmpty(primaryDesc))
+                    {
+                        // Strip any I/H prefix off the descriptor so
+                        // the new schema's per-source bool flags are
+                        // the source of truth, matching how the
+                        // migrator emits sources.
+                        bool inv = false, half = false;
+                        string clean = primaryDesc;
+                        if (clean.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
+                        { inv = true; half = true; clean = clean.Substring(2); }
+                        else if (clean.StartsWith("I", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
+                        { inv = true; clean = clean.Substring(1); }
+                        else if (clean.StartsWith("H", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
+                        { half = true; clean = clean.Substring(1); }
+
+                        row.Sources.Add(new MappingSource
+                        {
+                            Kind = "Direct",
+                            DeviceGuid = mapping.PrimarySourceDeviceGuid ?? "",
+                            Descriptor = clean,
+                            Invert = inv,
+                            HalfAxis = half,
+                            DeadZone = mapping.MappingDeadZone,
+                        });
+
+                        // For bipolar axis rows, also encode the Neg
+                        // descriptor as a paired source with Invert
+                        // flipped (the load path detects this pair).
+                        if (!string.IsNullOrEmpty(mapping.NegSettingName)
+                            && !string.IsNullOrEmpty(mapping.NegSourceDescriptor))
+                        {
+                            string negRaw = mapping.NegSourceDescriptor;
+                            bool ninv = false, nhalf = false;
+                            string ncl = negRaw;
+                            if (ncl.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
+                            { ninv = true; nhalf = true; ncl = ncl.Substring(2); }
+                            else if (ncl.StartsWith("I", StringComparison.OrdinalIgnoreCase) && ncl.Length > 1 && !char.IsDigit(ncl[1]))
+                            { ninv = true; ncl = ncl.Substring(1); }
+                            else if (ncl.StartsWith("H", StringComparison.OrdinalIgnoreCase) && ncl.Length > 1 && !char.IsDigit(ncl[1]))
+                            { nhalf = true; ncl = ncl.Substring(1); }
+                            // Negative source: flip Invert relative to
+                            // primary's encoded inversion.
+                            row.Sources.Add(new MappingSource
+                            {
+                                Kind = "Direct",
+                                DeviceGuid = mapping.PrimarySourceDeviceGuid ?? "",
+                                Descriptor = ncl,
+                                Invert = !ninv,
+                                HalfAxis = nhalf,
+                                DeadZone = mapping.MappingDeadZone,
+                            });
+                        }
+                    }
+
                     foreach (var extra in mapping.ExtraSources)
                     {
                         if (extra != null) row.Sources.Add(extra.ToDomain());
@@ -485,92 +544,129 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Phase 2A merge: for each slot, rebuild MappingSet rows from
-        /// legacy PadSetting fields but preserve any rows the in-memory
-        /// MappingSet has with more than one source (user-authored
-        /// multi-source rows from the Phase 2C UI). Single-source rows
-        /// are replaced wholesale so UI edits to the existing single-
-        /// source dropdown propagate.
+        /// Phase 2A merge: additively reconcile each slot's MappingSet
+        /// with the per-device PadSetting fields. Adding a new device
+        /// to a slot that already has authored mappings (e.g. keyboard
+        /// custom mappings, then the user assigns a DualSense whose
+        /// auto-mapper populates ButtonA="Button 0" / etc) used to
+        /// CLOBBER the existing rows — the rebuilt rows came from
+        /// PadSetting and the existing rows' primary sources got
+        /// dropped because the gamepad-only migrator filter skipped
+        /// non-gamepad devices.
+        ///
+        /// New behavior: existing rows are preserved as the source of
+        /// truth (they already include the user's primary + extras
+        /// after <see cref="PushUiExtraSourcesIntoSlotMappingSets"/>);
+        /// rebuilt rows only contribute auto-mapped sources for
+        /// newly-added devices that aren't already represented by a
+        /// matching (DeviceGuid, Descriptor) entry. Sources whose
+        /// owning device left the slot get dropped.
         /// </summary>
         private static void MergeMappingSetsFromLegacy()
         {
             var sets = SettingsManager.SlotMappingSets;
             if (sets == null || sets.Length == 0) return;
 
+            UserSetting[] usSnapshot;
+            lock (SettingsManager.UserSettings.SyncRoot)
+                usSnapshot = SettingsManager.UserSettings.Items.ToArray();
+
             for (int slot = 0; slot < sets.Length; slot++)
             {
                 var rebuilt = BuildOneSlotFromLegacy(slot);
                 var current = sets[slot];
 
-                // Take rebuilt's Sources from PadSetting (one per device
-                // with a non-empty mapping field) and append from existing
-                // ONLY sources that don't duplicate by (DeviceGuid,
-                // Descriptor) — preserving genuinely user-authored extras
-                // (e.g. a second source from the same device, or a source
-                // from a device that legacy PadSetting couldn't represent)
-                // while preventing the per-save accumulation bug where
-                // existing[1..N] would re-append PadSetting-derived sources
-                // every round-trip and grow the row indefinitely.
-                if (current?.Rows != null)
+                // Devices currently assigned to this slot (lowercase
+                // GUID strings) — used to drop sources for devices
+                // that are no longer mapped here.
+                var devGuidsInSlot = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var us in usSnapshot)
                 {
-                    foreach (var rrow in rebuilt.Rows)
+                    if (us != null && us.MapTo == slot)
+                        devGuidsInSlot.Add(us.InstanceGuid.ToString().ToLowerInvariant());
+                }
+
+                if (current?.Rows == null)
+                {
+                    sets[slot] = rebuilt;
+                    continue;
+                }
+
+                // Index rebuilt rows by (Target, LayerMask) so we can
+                // quickly look up auto-mapped sources to add to each
+                // existing row.
+                var rebuiltByKey = new Dictionary<(string, string), Engine.Data.MappingRow>();
+                foreach (var rr in rebuilt.Rows)
+                {
+                    if (rr == null) continue;
+                    rebuiltByKey[(rr.Target ?? "", rr.LayerMask ?? "Base")] = rr;
+                }
+
+                var merged = new Engine.Data.MappingSet();
+                var consumedRebuilt = new HashSet<(string, string)>();
+
+                foreach (var er in current.Rows)
+                {
+                    if (er == null) continue;
+
+                    // Drop sources for devices that left the slot.
+                    if (er.Sources != null)
                     {
-                        if (rrow == null) continue;
-                        var rkey = (rrow.Target ?? "", rrow.LayerMask ?? "Base");
+                        er.Sources.RemoveAll(s =>
+                            !string.IsNullOrEmpty(s?.DeviceGuid)
+                            && !devGuidsInSlot.Contains(s.DeviceGuid.ToLowerInvariant()));
+                    }
 
-                        Engine.Data.MappingRow existingMatch = null;
-                        foreach (var er in current.Rows)
+                    var key = (er.Target ?? "", er.LayerMask ?? "Base");
+
+                    // Only Base-layer rows merge with rebuilt; non-Base
+                    // (Shift) rows carry forward intact.
+                    if (string.Equals(er.LayerMask ?? "Base", "Base", StringComparison.Ordinal)
+                        && rebuiltByKey.TryGetValue(key, out var rrow))
+                    {
+                        // Append any rebuilt sources not already
+                        // present (dedup by DeviceGuid + Descriptor).
+                        var seen = new HashSet<(string, string)>();
+                        foreach (var s in er.Sources)
                         {
-                            if (er == null) continue;
-                            if (string.Equals(er.Target ?? "", rkey.Item1, StringComparison.Ordinal)
-                                && string.Equals(er.LayerMask ?? "Base", rkey.Item2, StringComparison.Ordinal))
-                            { existingMatch = er; break; }
+                            if (s == null) continue;
+                            seen.Add(((s.DeviceGuid ?? "").ToLowerInvariant(), s.Descriptor ?? ""));
                         }
-                        if (existingMatch == null) continue;
-
-                        rrow.CombineMode = existingMatch.CombineMode ?? "";
-                        rrow.CombineExpression = existingMatch.CombineExpression ?? "";
-
-                        if (existingMatch.Sources != null)
+                        if (rrow.Sources != null)
                         {
-                            // Dedupe key: (DeviceGuid lowercased, Descriptor).
-                            // A source that already exists in rebuilt (which
-                            // came from PadSetting) doesn't get re-added.
-                            var seen = new HashSet<(string, string)>();
                             foreach (var s in rrow.Sources)
                             {
                                 if (s == null) continue;
-                                seen.Add(((s.DeviceGuid ?? "").ToLowerInvariant(), s.Descriptor ?? ""));
-                            }
-                            for (int i = 1; i < existingMatch.Sources.Count; i++)
-                            {
-                                var s = existingMatch.Sources[i];
-                                if (s == null) continue;
-                                var key = ((s.DeviceGuid ?? "").ToLowerInvariant(), s.Descriptor ?? "");
-                                if (seen.Add(key))
-                                    rrow.Sources.Add(s);
+                                var k = ((s.DeviceGuid ?? "").ToLowerInvariant(), s.Descriptor ?? "");
+                                if (seen.Add(k)) er.Sources.Add(s);
                             }
                         }
+                        consumedRebuilt.Add(key);
                     }
 
-                    // Carry forward any non-Base rows from current (Shift
-                    // layer rows authored via the Phase 6 UI). Those
-                    // aren't in rebuilt — the legacy migrator only emits
-                    // Base-layer rows.
-                    foreach (var er in current.Rows)
-                    {
-                        if (er == null) continue;
-                        if (string.Equals(er.LayerMask ?? "Base", "Base", StringComparison.Ordinal)) continue;
-                        rebuilt.Rows.Add(er);
-                    }
+                    // Drop empty rows so the engine and UI fall back to
+                    // the legacy PadSetting fields cleanly.
+                    if (er.Sources == null || er.Sources.Count == 0) continue;
+
+                    merged.Rows.Add(er);
                 }
 
-                // Preserve the activator block; the legacy migrator
-                // doesn't emit one.
-                if (current?.ShiftButton != null)
-                    rebuilt.ShiftButton = current.ShiftButton;
+                // Add rebuilt rows that didn't match any existing row
+                // (newly-added device whose auto-mapping introduces a
+                // target the user hasn't authored yet).
+                foreach (var rr in rebuilt.Rows)
+                {
+                    if (rr == null) continue;
+                    var key = (rr.Target ?? "", rr.LayerMask ?? "Base");
+                    if (consumedRebuilt.Contains(key)) continue;
+                    if (rr.Sources == null || rr.Sources.Count == 0) continue;
+                    merged.Rows.Add(rr);
+                }
 
-                sets[slot] = rebuilt;
+                if (current.ShiftButton != null)
+                    merged.ShiftButton = current.ShiftButton;
+
+                sets[slot] = merged;
             }
         }
 

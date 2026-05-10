@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Threading;
 using PadForge.Common.Input;
@@ -56,30 +57,44 @@ namespace PadForge.Services
         /// <summary>The mapping item currently being recorded.</summary>
         private MappingItem _activeMapping;
 
+        /// <summary>When non-null, recording is targeting an ExtraSource
+        /// row inside <see cref="_activeMapping"/>'s ExtraSources list
+        /// instead of the row's primary descriptor.</summary>
+        private MappingSourceItem _activeExtraSource;
+
         /// <summary>The pad index (0–15) of the active recording.</summary>
         private int _activePadIndex = -1;
-
-        /// <summary>The device GUID to record from (the selected device).</summary>
-        private Guid _activeDeviceGuid;
 
         /// <summary>True when recording for the negative direction of an axis.</summary>
         private bool _negRecording;
 
-        /// <summary>True when the active device is a mouse (skip axis hold confirmation).</summary>
-        private bool _activeDeviceIsMouse;
+        /// <summary>Devices the recorder is listening to in the current
+        /// session, keyed by InstanceGuid. Filled at StartRecording-time
+        /// from the slot's MappedDevices so any input on any assigned
+        /// device claims the row.</summary>
+        private readonly Dictionary<Guid, UserDevice> _activeDevices = new();
 
-        /// <summary>The baseline input state captured at the start of recording.</summary>
-        private CustomInputState _baseline;
+        /// <summary>Per-device baseline state captured at the start of
+        /// recording. Each tick clones the device's current state and
+        /// diffs against the entry here.</summary>
+        private readonly Dictionary<Guid, CustomInputState> _baselines = new();
 
-        /// <summary>Counter for how many cycles an axis candidate has been held.</summary>
-        private int _axisHoldCounter;
+        /// <summary>Per-device "is this a mouse-class device" flag —
+        /// mouse axes are instantaneous deltas and skip the axis-hold
+        /// confirmation cycles.</summary>
+        private readonly Dictionary<Guid, bool> _isMouseByDevice = new();
 
-        /// <summary>The axis candidate being tracked (type + index).</summary>
-        private MapType _axisCandidateType;
-        private int _axisCandidateIndex;
-
-        /// <summary>Whether the axis candidate moved in the positive direction (value increased).</summary>
-        private bool _axisCandidatePositive;
+        /// <summary>Per-device axis candidate hold tracker. The same
+        /// device must clear the threshold for AxisHoldCycles in a row
+        /// to avoid false positives from noise.</summary>
+        private sealed class AxisCandidate
+        {
+            public MapType Type = MapType.None;
+            public int Index = -1;
+            public bool Positive;
+            public int HoldCounter;
+        }
+        private readonly Dictionary<Guid, AxisCandidate> _axisCandidates = new();
 
         /// <summary>When recording started (for timeout).</summary>
         private DateTime _recordingStartTime;
@@ -131,6 +146,27 @@ namespace PadForge.Services
         public void StartRecording(MappingItem mapping, int padIndex, Guid deviceGuid,
             bool neutralizeBaseline = false, bool negRecording = false)
         {
+            StartRecordingInternal(mapping, extraSource: null, padIndex,
+                neutralizeBaseline, negRecording);
+        }
+
+        /// <summary>Starts cross-device recording for an ExtraSource row.
+        /// The recorder listens to every device assigned to the slot and
+        /// the first device to fire a button / POV / axis change wins,
+        /// writing both <see cref="MappingSourceItem.DeviceGuid"/> and
+        /// <see cref="MappingSourceItem.Descriptor"/> to the source.</summary>
+        public void StartRecordingExtraSource(MappingItem parent,
+            MappingSourceItem extraSource, int padIndex,
+            bool neutralizeBaseline = false)
+        {
+            StartRecordingInternal(parent, extraSource, padIndex,
+                neutralizeBaseline, negRecording: false);
+        }
+
+        private void StartRecordingInternal(MappingItem mapping,
+            MappingSourceItem extraSource, int padIndex,
+            bool neutralizeBaseline, bool negRecording)
+        {
             if (mapping == null)
                 return;
 
@@ -139,46 +175,65 @@ namespace PadForge.Services
                 CancelRecording();
 
             _activeMapping = mapping;
+            _activeExtraSource = extraSource;
             _activePadIndex = padIndex;
-            _activeDeviceGuid = deviceGuid;
             _negRecording = negRecording;
 
-            // Check if the device is a mouse (skip axis hold confirmation).
-            _activeDeviceIsMouse = false;
-            var devices = SettingsManager.UserDevices?.Items;
-            if (devices != null)
+            // Collect every device assigned to the slot. The first one
+            // to fire wins; this is what makes the Mappings tab a
+            // genuinely per-VC view (the Device dropdown to the right
+            // doesn't gate which device the user can record from).
+            _activeDevices.Clear();
+            _baselines.Clear();
+            _isMouseByDevice.Clear();
+            _axisCandidates.Clear();
+
+            if (padIndex >= 0 && padIndex < _mainVm.Pads.Count)
             {
-                lock (SettingsManager.UserDevices.SyncRoot)
+                var padVm = _mainVm.Pads[padIndex];
+                var seen = new HashSet<Guid>();
+                foreach (var md in padVm.MappedDevices)
                 {
-                    var ud = devices.FirstOrDefault(d => d.InstanceGuid == deviceGuid);
-                    _activeDeviceIsMouse = ud?.IsMouse == true;
+                    if (md == null || md.InstanceGuid == Guid.Empty) continue;
+                    if (!seen.Add(md.InstanceGuid)) continue;
+                    var udLookup = SettingsManager.UserDevices?.Items;
+                    if (udLookup == null) continue;
+                    UserDevice ud;
+                    lock (SettingsManager.UserDevices.SyncRoot)
+                    {
+                        ud = udLookup.FirstOrDefault(d =>
+                            d.InstanceGuid == md.InstanceGuid && d.IsOnline);
+                    }
+                    if (ud == null || ud.InputState == null) continue;
+                    _activeDevices[md.InstanceGuid] = ud;
+                    _baselines[md.InstanceGuid] = ud.InputState.Clone();
+                    _isMouseByDevice[md.InstanceGuid] = ud.IsMouse;
+                    _axisCandidates[md.InstanceGuid] = new AxisCandidate();
                 }
             }
-            _axisHoldCounter = 0;
-            _axisCandidateType = MapType.None;
-            _axisCandidateIndex = -1;
-            _recordingStartTime = DateTime.UtcNow;
 
-            // Capture baseline state.
-            _baseline = CaptureCurrentState();
-            if (_baseline == null)
+            if (_baselines.Count == 0)
             {
-                // No device available — can't record.
                 _activeMapping = null;
+                _activeExtraSource = null;
                 _mainVm.StatusText = Strings.Instance.Status_NoDeviceToRecord;
                 RecordingTimedOut?.Invoke(this, EventArgs.Empty);
                 return;
             }
+
+            _recordingStartTime = DateTime.UtcNow;
 
             // For follow-up recordings, wait for the previous input to be released
             // before detecting new presses. This prevents the same POV/button from
             // being immediately re-detected when it's still physically held.
             _waitForRelease = neutralizeBaseline;
 
-            // Mark the mapping as recording.
-            mapping.IsRecording = true;
+            // Mark the recording target.
+            if (extraSource != null)
+                extraSource.IsRecording = true;
+            else
+                mapping.IsRecording = true;
 
-            // Start polling timer.
             _timer = new DispatcherTimer(DispatcherPriority.Input)
             {
                 Interval = TimeSpan.FromMilliseconds(PollIntervalMs)
@@ -197,13 +252,17 @@ namespace PadForge.Services
             if (_activeMapping == null)
                 return;
 
-            _activeMapping.IsRecording = false;
+            if (_activeExtraSource != null) _activeExtraSource.IsRecording = false;
+            else _activeMapping.IsRecording = false;
             CleanupTimer();
 
             _activeMapping = null;
+            _activeExtraSource = null;
             _activePadIndex = -1;
-            _activeDeviceGuid = Guid.Empty;
-            _baseline = null;
+            _activeDevices.Clear();
+            _baselines.Clear();
+            _isMouseByDevice.Clear();
+            _axisCandidates.Clear();
 
             _mainVm.StatusText = Strings.Instance.Status_RecordingCancelled;
         }
@@ -218,7 +277,7 @@ namespace PadForge.Services
         /// </summary>
         private void PollTick(object sender, EventArgs e)
         {
-            if (_activeMapping == null || _baseline == null)
+            if (_activeMapping == null || _baselines.Count == 0)
             {
                 CancelRecording();
                 return;
@@ -234,135 +293,145 @@ namespace PadForge.Services
                 return;
             }
 
-            // Read current state.
-            CustomInputState current = CaptureCurrentState();
-            if (current == null)
+            // Iterate every active device. The first to fire a button /
+            // POV / axis change wins. Snapshot keys to avoid mutation
+            // during enumeration when CancelRecording is called from
+            // CompleteRecording.
+            var deviceGuids = new List<Guid>(_baselines.Keys);
+            foreach (var dg in deviceGuids)
             {
-                CancelRecording();
-                return;
-            }
+                if (!_activeDevices.TryGetValue(dg, out var ud)) continue;
+                if (ud?.InputState == null) continue;
+                if (!_baselines.TryGetValue(dg, out var baseline)) continue;
+                var current = ud.InputState.Clone();
+                if (current == null) continue;
 
-            // ── Wait-for-release phase: skip detection until all buttons/POVs are neutral ──
-            if (_waitForRelease)
-            {
-                bool anyHeld = current.TouchpadClick;
-                for (int i = 0; i < CustomInputState.MaxButtons && !anyHeld; i++)
-                    anyHeld = current.Buttons[i];
-                for (int i = 0; i < CustomInputState.MaxPovs && !anyHeld; i++)
-                    anyHeld = current.Povs[i] >= 0;
-
-                if (anyHeld)
-                    return; // Still held — wait for release
-
-                // Everything released — capture fresh baseline and reset axis tracking.
-                _waitForRelease = false;
-                _baseline = current;
-                _axisHoldCounter = 0;
-                _axisCandidateIndex = -1;
-                return;
-            }
-
-            // ── Touchpad click (dedicated bool — not in Buttons[]) ──
-            // Captured edge-triggered like a button, but emits the canonical
-            // "Touchpad 0 Click" descriptor that Step 3's MapToButtonPressedSingle
-            // routes via state.TouchpadClick. Engine consumers only see a
-            // Button-shaped result for neg-recording branching purposes.
-            if (current.TouchpadClick && !_baseline.TouchpadClick)
-            {
-                CompleteRecordingWithDescriptor("Touchpad 0 Click");
-                return;
-            }
-
-            // ── Check buttons first (instant detection) ──
-            for (int i = 0; i < CustomInputState.MaxButtons; i++)
-            {
-                if (current.Buttons[i] && !_baseline.Buttons[i])
+                // ── Wait-for-release phase: skip detection until all buttons/POVs are neutral ──
+                if (_waitForRelease)
                 {
-                    CompleteRecording(MapType.Button, i, null);
-                    return;
-                }
-            }
+                    bool anyHeld = current.TouchpadClick;
+                    for (int i = 0; i < CustomInputState.MaxButtons && !anyHeld; i++)
+                        anyHeld = current.Buttons[i];
+                    for (int i = 0; i < CustomInputState.MaxPovs && !anyHeld; i++)
+                        anyHeld = current.Povs[i] >= 0;
 
-            // ── Check POV hats ──
-            for (int i = 0; i < CustomInputState.MaxPovs; i++)
-            {
-                if (_baseline.Povs[i] < 0 && current.Povs[i] >= 0)
-                {
-                    // POV went from centered to a direction.
-                    string direction = CentidegreesToDirection(current.Povs[i]);
-                    CompleteRecording(MapType.POV, i, direction);
-                    return;
-                }
-            }
+                    if (anyHeld) continue;
 
-            // ── Check axes (requires hold confirmation) ──
-            int bestAxisIndex = -1;
-            MapType bestAxisType = MapType.None;
-            int bestAxisDelta = 0;
-            int bestAxisSignedDelta = 0;
-
-            for (int i = 0; i < CustomInputState.MaxAxis; i++)
-            {
-                int signedDelta = current.Axis[i] - _baseline.Axis[i];
-                int delta = Math.Abs(signedDelta);
-                if (delta > AxisThreshold && delta > bestAxisDelta)
-                {
-                    bestAxisDelta = delta;
-                    bestAxisIndex = i;
-                    bestAxisType = MapType.Axis;
-                    bestAxisSignedDelta = signedDelta;
-                }
-            }
-
-            for (int i = 0; i < CustomInputState.MaxSliders; i++)
-            {
-                int signedDelta = current.Sliders[i] - _baseline.Sliders[i];
-                int delta = Math.Abs(signedDelta);
-                if (delta > AxisThreshold && delta > bestAxisDelta)
-                {
-                    bestAxisDelta = delta;
-                    bestAxisIndex = i;
-                    bestAxisType = MapType.Slider;
-                    bestAxisSignedDelta = signedDelta;
-                }
-            }
-
-            if (bestAxisIndex >= 0)
-            {
-                // Mouse axes are instantaneous deltas that return to center each frame,
-                // so they can never sustain a hold. Accept immediately.
-                if (_activeDeviceIsMouse)
-                {
-                    CompleteRecording(bestAxisType, bestAxisIndex, null, bestAxisSignedDelta > 0);
-                    return;
-                }
-
-                // Is this the same candidate as last cycle?
-                if (bestAxisType == _axisCandidateType && bestAxisIndex == _axisCandidateIndex)
-                {
-                    _axisHoldCounter++;
-                    if (_axisHoldCounter >= AxisHoldCycles)
+                    // Everything released — capture fresh baseline and reset axis tracking.
+                    _baselines[dg] = current;
+                    if (_axisCandidates.TryGetValue(dg, out var ac0))
                     {
-                        CompleteRecording(bestAxisType, bestAxisIndex, null, _axisCandidatePositive);
+                        ac0.Type = MapType.None;
+                        ac0.Index = -1;
+                        ac0.HoldCounter = 0;
+                    }
+                    continue;
+                }
+
+                // ── Touchpad click (dedicated bool — not in Buttons[]) ──
+                if (current.TouchpadClick && !baseline.TouchpadClick)
+                {
+                    CompleteRecordingWithDescriptor("Touchpad 0 Click", dg);
+                    return;
+                }
+
+                // ── Check buttons first (instant detection) ──
+                for (int i = 0; i < CustomInputState.MaxButtons; i++)
+                {
+                    if (current.Buttons[i] && !baseline.Buttons[i])
+                    {
+                        CompleteRecording(MapType.Button, i, null, axisPositive: false, winningDevice: dg);
                         return;
+                    }
+                }
+
+                // ── Check POV hats ──
+                for (int i = 0; i < CustomInputState.MaxPovs; i++)
+                {
+                    if (baseline.Povs[i] < 0 && current.Povs[i] >= 0)
+                    {
+                        string direction = CentidegreesToDirection(current.Povs[i]);
+                        CompleteRecording(MapType.POV, i, direction, axisPositive: false, winningDevice: dg);
+                        return;
+                    }
+                }
+
+                // ── Check axes (requires hold confirmation) ──
+                int bestAxisIndex = -1;
+                MapType bestAxisType = MapType.None;
+                int bestAxisDelta = 0;
+                int bestAxisSignedDelta = 0;
+
+                for (int i = 0; i < CustomInputState.MaxAxis; i++)
+                {
+                    int signedDelta = current.Axis[i] - baseline.Axis[i];
+                    int delta = Math.Abs(signedDelta);
+                    if (delta > AxisThreshold && delta > bestAxisDelta)
+                    {
+                        bestAxisDelta = delta;
+                        bestAxisIndex = i;
+                        bestAxisType = MapType.Axis;
+                        bestAxisSignedDelta = signedDelta;
+                    }
+                }
+
+                for (int i = 0; i < CustomInputState.MaxSliders; i++)
+                {
+                    int signedDelta = current.Sliders[i] - baseline.Sliders[i];
+                    int delta = Math.Abs(signedDelta);
+                    if (delta > AxisThreshold && delta > bestAxisDelta)
+                    {
+                        bestAxisDelta = delta;
+                        bestAxisIndex = i;
+                        bestAxisType = MapType.Slider;
+                        bestAxisSignedDelta = signedDelta;
+                    }
+                }
+
+                if (!_axisCandidates.TryGetValue(dg, out var ac))
+                {
+                    ac = new AxisCandidate();
+                    _axisCandidates[dg] = ac;
+                }
+
+                if (bestAxisIndex >= 0)
+                {
+                    bool isMouse = _isMouseByDevice.TryGetValue(dg, out var m) && m;
+                    if (isMouse)
+                    {
+                        CompleteRecording(bestAxisType, bestAxisIndex, null,
+                            bestAxisSignedDelta > 0, winningDevice: dg);
+                        return;
+                    }
+                    if (bestAxisType == ac.Type && bestAxisIndex == ac.Index)
+                    {
+                        ac.HoldCounter++;
+                        if (ac.HoldCounter >= AxisHoldCycles)
+                        {
+                            CompleteRecording(bestAxisType, bestAxisIndex, null, ac.Positive, winningDevice: dg);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        ac.Type = bestAxisType;
+                        ac.Index = bestAxisIndex;
+                        ac.Positive = bestAxisSignedDelta > 0;
+                        ac.HoldCounter = 1;
                     }
                 }
                 else
                 {
-                    // New candidate — reset counter.
-                    _axisCandidateType = bestAxisType;
-                    _axisCandidateIndex = bestAxisIndex;
-                    _axisCandidatePositive = bestAxisSignedDelta > 0;
-                    _axisHoldCounter = 1;
+                    ac.Type = MapType.None;
+                    ac.Index = -1;
+                    ac.HoldCounter = 0;
                 }
             }
-            else
-            {
-                // No axis past threshold — reset tracking.
-                _axisHoldCounter = 0;
-                _axisCandidateType = MapType.None;
-                _axisCandidateIndex = -1;
-            }
+
+            // After processing all devices, exit wait-for-release mode
+            // once every device has cleared.
+            if (_waitForRelease)
+                _waitForRelease = false;
         }
 
         // ─────────────────────────────────────────────
@@ -377,7 +446,8 @@ namespace PadForge.Services
         /// <param name="index">The zero-based index within the type.</param>
         /// <param name="povDirection">For POV: the direction string ("Up", "Down", etc.).</param>
         /// <param name="axisPositive">For axes: true if the raw value increased (positive delta).</param>
-        private void CompleteRecording(MapType type, int index, string povDirection, bool axisPositive = false)
+        private void CompleteRecording(MapType type, int index, string povDirection,
+            bool axisPositive = false, Guid winningDevice = default)
         {
             if (_activeMapping == null)
                 return;
@@ -385,38 +455,93 @@ namespace PadForge.Services
             // Build the descriptor string.
             string descriptor = BuildDescriptor(type, index, povDirection);
 
-            // Store the mapping item before cleanup.
+            // Snapshot recording target before cleanup.
             var mapping = _activeMapping;
+            var extraSource = _activeExtraSource;
             int padIndex = _activePadIndex;
 
             // Stop recording.
-            mapping.IsRecording = false;
+            if (extraSource != null) extraSource.IsRecording = false;
+            else mapping.IsRecording = false;
             CleanupTimer();
             _activeMapping = null;
+            _activeExtraSource = null;
             _activePadIndex = -1;
-            _baseline = null;
+            _activeDevices.Clear();
+            _baselines.Clear();
+            _isMouseByDevice.Clear();
+            _axisCandidates.Clear();
 
-            // Auto-detect inversion for axis/slider recordings based on movement direction.
-            // Build the final descriptor with prefix, then use LoadDescriptor to atomically
-            // set both the descriptor string and the IsInverted flag.
+            // Auto-detect inversion for axis/slider recordings.
+            bool shouldInvert = false;
             if (type == MapType.Axis || type == MapType.Slider)
-            {
-                bool shouldInvert = ShouldAutoInvert(mapping, axisPositive, _negRecording);
-                descriptor = (shouldInvert ? "I" : "") + descriptor;
-            }
-            mapping.LoadDescriptor(descriptor);
+                shouldInvert = ShouldAutoInvert(mapping, axisPositive, _negRecording);
 
-            string finalDescriptor = mapping.SourceDescriptor;
+            string finalDescriptor;
+            string winningGuidStr = winningDevice == Guid.Empty
+                ? "" : winningDevice.ToString().ToLowerInvariant();
+
+            if (extraSource != null)
+            {
+                // ExtraSource target: write Descriptor (un-prefixed) +
+                // Invert/HalfAxis as separate fields, plus DeviceGuid.
+                extraSource.DeviceGuid = winningGuidStr;
+                if (!string.IsNullOrEmpty(winningGuidStr))
+                    extraSource.DeviceLabel = ResolveDeviceLabel(winningDevice);
+                extraSource.Descriptor = descriptor;
+                if (type == MapType.Axis || type == MapType.Slider)
+                {
+                    extraSource.Invert = shouldInvert;
+                    extraSource.HalfAxis = false;
+                }
+                else
+                {
+                    extraSource.Invert = false;
+                    extraSource.HalfAxis = false;
+                }
+                // Sync the picker selection to the new state.
+                extraSource.SyncSelectedInputFromState(mapping.AvailableInputs);
+                finalDescriptor = (shouldInvert ? "I" : "") + descriptor;
+            }
+            else
+            {
+                // Primary target: prefix-encode the descriptor and tag
+                // the row with the winning device GUID.
+                if (type == MapType.Axis || type == MapType.Slider)
+                    descriptor = (shouldInvert ? "I" : "") + descriptor;
+                if (!string.IsNullOrEmpty(winningGuidStr))
+                {
+                    mapping.PrimarySourceDeviceGuid = winningGuidStr;
+                    mapping.PrimarySourceDeviceLabel = ResolveDeviceLabel(winningDevice);
+                }
+                mapping.LoadDescriptor(descriptor);
+                finalDescriptor = mapping.SourceDescriptor;
+            }
 
             _mainVm.StatusText = string.Format(Strings.Instance.Status_Recorded_Format, mapping.TargetLabel, finalDescriptor);
 
-            // Raise event.
             RecordingCompleted?.Invoke(this, new RecordingResult
             {
                 Mapping = mapping,
                 Descriptor = finalDescriptor,
                 Type = type,
             });
+        }
+
+        private static string ResolveDeviceLabel(Guid g)
+        {
+            if (g == Guid.Empty) return "";
+            var devs = SettingsManager.UserDevices?.Items;
+            if (devs == null) return "";
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                foreach (var ud in devs)
+                {
+                    if (ud != null && ud.InstanceGuid == g)
+                        return ud.ResolvedName ?? ud.ProductName ?? ud.InstanceName ?? "";
+                }
+            }
+            return "";
         }
 
         /// <summary>
@@ -426,22 +551,50 @@ namespace PadForge.Services
         /// CustomInputState.TouchpadClick rather than the Buttons[] array and
         /// emits the engine-recognized "Touchpad 0 Click" form directly.
         /// </summary>
-        private void CompleteRecordingWithDescriptor(string descriptor)
+        private void CompleteRecordingWithDescriptor(string descriptor, Guid winningDevice = default)
         {
             if (_activeMapping == null)
                 return;
 
             var mapping = _activeMapping;
+            var extraSource = _activeExtraSource;
             int padIndex = _activePadIndex;
 
-            mapping.IsRecording = false;
+            if (extraSource != null) extraSource.IsRecording = false;
+            else mapping.IsRecording = false;
             CleanupTimer();
             _activeMapping = null;
+            _activeExtraSource = null;
             _activePadIndex = -1;
-            _baseline = null;
+            _activeDevices.Clear();
+            _baselines.Clear();
+            _isMouseByDevice.Clear();
+            _axisCandidates.Clear();
 
-            mapping.LoadDescriptor(descriptor);
-            string finalDescriptor = mapping.SourceDescriptor;
+            string finalDescriptor;
+            string winningGuidStr = winningDevice == Guid.Empty
+                ? "" : winningDevice.ToString().ToLowerInvariant();
+            if (extraSource != null)
+            {
+                extraSource.DeviceGuid = winningGuidStr;
+                if (!string.IsNullOrEmpty(winningGuidStr))
+                    extraSource.DeviceLabel = ResolveDeviceLabel(winningDevice);
+                extraSource.Descriptor = descriptor;
+                extraSource.Invert = false;
+                extraSource.HalfAxis = false;
+                extraSource.SyncSelectedInputFromState(mapping.AvailableInputs);
+                finalDescriptor = descriptor;
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(winningGuidStr))
+                {
+                    mapping.PrimarySourceDeviceGuid = winningGuidStr;
+                    mapping.PrimarySourceDeviceLabel = ResolveDeviceLabel(winningDevice);
+                }
+                mapping.LoadDescriptor(descriptor);
+                finalDescriptor = mapping.SourceDescriptor;
+            }
 
             _mainVm.StatusText = string.Format(
                 Strings.Instance.Status_Recorded_Format, mapping.TargetLabel, finalDescriptor);
@@ -537,38 +690,6 @@ namespace PadForge.Services
             if (centidegrees >= 29250 && centidegrees < 33750) return "UpLeft";
 
             return "Up"; // Fallback
-        }
-
-        // ─────────────────────────────────────────────
-        //  State capture
-        // ─────────────────────────────────────────────
-
-        /// <summary>
-        /// Captures the current input state for the active device being recorded.
-        /// Uses <see cref="_activeDeviceGuid"/> to find the specific device.
-        /// Returns a clone to prevent mutation.
-        /// </summary>
-        private CustomInputState CaptureCurrentState()
-        {
-            if (_activeDeviceGuid == Guid.Empty)
-                return null;
-
-            var devices = SettingsManager.UserDevices?.Items;
-            if (devices == null) return null;
-
-            UserDevice ud;
-
-            lock (SettingsManager.UserDevices.SyncRoot)
-            {
-                ud = devices.FirstOrDefault(d =>
-                    d.InstanceGuid == _activeDeviceGuid && d.IsOnline);
-            }
-
-            if (ud == null || ud.InputState == null)
-                return null;
-
-            // Clone to prevent race conditions.
-            return ud.InputState.Clone();
         }
 
         // ─────────────────────────────────────────────

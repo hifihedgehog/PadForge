@@ -3618,8 +3618,40 @@ namespace PadForge
                     or nameof(MappingItem.NegSourceDescriptor)
                     or nameof(MappingItem.IsInverted)
                     or nameof(MappingItem.IsHalfAxis)
-                    or nameof(MappingItem.MappingDeadZone))
+                    or nameof(MappingItem.MappingDeadZone)
+                    or nameof(MappingItem.PrimarySourceDeviceGuid)
+                    or nameof(MappingItem.CombineMode)
+                    or nameof(MappingItem.CombineExpression))
                     _settingsService.MarkDirty();
+            };
+
+            // Phase 2C — wire record events for ExtraSources rows. New
+            // sources added to the collection get the same wiring so
+            // their per-row record buttons trigger cross-device recording
+            // through the parent MappingItem.
+            void WireExtraSource(MappingSourceItem msi)
+            {
+                msi.StartRecordingRequested += (s, e) =>
+                    _recorderService.StartRecordingExtraSource(mapping, msi, capturedPad.PadIndex);
+                msi.StopRecordingRequested += (s, e) =>
+                    _recorderService.CancelRecording();
+                msi.PropertyChanged += (s, e) =>
+                {
+                    if (e.PropertyName is nameof(MappingSourceItem.DeviceGuid)
+                        or nameof(MappingSourceItem.Descriptor)
+                        or nameof(MappingSourceItem.Invert)
+                        or nameof(MappingSourceItem.HalfAxis)
+                        or nameof(MappingSourceItem.DeadZone))
+                        _settingsService.MarkDirty();
+                };
+            }
+            foreach (var msi in mapping.ExtraSources) WireExtraSource(msi);
+            mapping.ExtraSources.CollectionChanged += (s, e) =>
+            {
+                if (e.NewItems != null)
+                    foreach (MappingSourceItem msi in e.NewItems)
+                        WireExtraSource(msi);
+                _settingsService.MarkDirty();
             };
         }
 

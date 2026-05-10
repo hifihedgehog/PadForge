@@ -1524,7 +1524,8 @@
                                                        VerticalAlignment="Center"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        Margin="0,0,6,0"/>
-                                            <ComboBox SelectedItem="{Binding CombineMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            <ComboBox SelectedValue="{Binding CombineMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      SelectedValuePath="Content"
                                                       MinWidth="100" Margin="0" Padding="4,2"
                                                       VerticalAlignment="Center">
                                                 <ComboBoxItem Content=""/>
@@ -1621,36 +1622,69 @@
                                                              both the source's Descriptor and DeviceGuid in
                                                              one shot via the InputChoiceToSource attached
                                                              behavior. -->
-                                                        <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView,
-                                                                    RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
-                                                                  SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                  DisplayMemberPath="DisplayName"
-                                                                  MinWidth="240" Padding="4,2" Margin="0,0,4,0"
-                                                                  ToolTip="Pick the source from any device assigned to this slot.">
-                                                            <ComboBox.GroupStyle>
-                                                                <GroupStyle>
-                                                                    <GroupStyle.HeaderTemplate>
-                                                                        <DataTemplate>
-                                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
-                                                                                    Padding="6,3,6,3">
-                                                                                <TextBlock Text="{Binding Name}"
-                                                                                           FontSize="11"
-                                                                                           FontWeight="SemiBold"
-                                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                                                           TextTrimming="CharacterEllipsis"/>
-                                                                            </Border>
-                                                                        </DataTemplate>
-                                                                    </GroupStyle.HeaderTemplate>
-                                                                </GroupStyle>
-                                                            </ComboBox.GroupStyle>
-                                                        </ComboBox>
+                                                        <StackPanel Orientation="Vertical" Margin="0,0,4,0">
+                                                            <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView,
+                                                                        RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                                      SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                      DisplayMemberPath="DisplayName"
+                                                                      MinWidth="240" Padding="4,2"
+                                                                      ToolTip="Pick the source from any device assigned to this slot.">
+                                                                <ComboBox.GroupStyle>
+                                                                    <GroupStyle>
+                                                                        <GroupStyle.HeaderTemplate>
+                                                                            <DataTemplate>
+                                                                                <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                                                                        Padding="6,3,6,3">
+                                                                                    <TextBlock Text="{Binding Name}"
+                                                                                               FontSize="11"
+                                                                                               FontWeight="SemiBold"
+                                                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                                               TextTrimming="CharacterEllipsis"/>
+                                                                                </Border>
+                                                                            </DataTemplate>
+                                                                        </GroupStyle.HeaderTemplate>
+                                                                    </GroupStyle>
+                                                                </ComboBox.GroupStyle>
+                                                            </ComboBox>
+                                                            <!-- Device-origin badge below the picker so users
+                                                                 can see at a glance which device this extra
+                                                                 source reads from. -->
+                                                            <TextBlock Text="{Binding DeviceLabel}"
+                                                                       FontSize="10"
+                                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                       Margin="4,1,0,0"
+                                                                       TextTrimming="CharacterEllipsis">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock">
+                                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding DeviceLabel}" Value="">
+                                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
+                                                        </StackPanel>
                                                         <CheckBox Content="Inv" IsChecked="{Binding Invert, Mode=TwoWay}"
                                                                   VerticalAlignment="Center" Margin="0,0,4,0"
                                                                   ToolTip="Invert: button pressed → -1 / axis sign flipped"/>
                                                         <CheckBox Content="Half" IsChecked="{Binding HalfAxis, Mode=TwoWay}"
                                                                   VerticalAlignment="Center" Margin="0,0,4,0"
                                                                   ToolTip="Half-axis: only the active half of a bipolar axis contributes"/>
-                                                        <Button Content="✕" Padding="6,2"
+                                                        <!-- Record button: listens across every device assigned
+                                                             to the slot and writes the first input that fires
+                                                             into this source's DeviceGuid + Descriptor. -->
+                                                        <Button Command="{Binding ToggleRecordCommand}"
+                                                                Width="32" Padding="4,2" Margin="0,0,4,0"
+                                                                VerticalAlignment="Center">
+                                                            <TextBlock Text="{Binding RecordButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
+                                                            <Button.ToolTip>
+                                                                <TextBlock Text="{Binding RecordButtonText}"/>
+                                                            </Button.ToolTip>
+                                                        </Button>
+                                                        <Button Content="" Padding="6,2"
+                                                                VerticalAlignment="Center"
                                                                 Command="{Binding DataContext.RemoveExtraSourceCommand,
                                                                           RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                 CommandParameter="{Binding}"

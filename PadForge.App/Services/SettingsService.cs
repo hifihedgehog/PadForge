@@ -479,9 +479,31 @@ namespace PadForge.Services
                     // the primary descriptor.
                     row.Sources.Clear();
 
-                    // Push the primary as Sources[0] when present.
+                    // Defensive filter: never write a non-gamepad
+                    // device's source into a gamepad-class target row.
+                    // Catches earlier-bled rows where a keyboard's
+                    // GUID got attached to "Axis 0" / "Button N", which
+                    // would otherwise stick the joystick at -1 every
+                    // poll because the keyboard has no axes.
+                    bool gamepadOnly = IsGamepadOnlyTarget(mapping.TargetSettingName);
+                    bool primaryDeviceIsGamepadEligible = true;
+                    if (gamepadOnly && !string.IsNullOrEmpty(mapping.PrimarySourceDeviceGuid)
+                        && Guid.TryParse(mapping.PrimarySourceDeviceGuid, out var pg))
+                    {
+                        UserDevice ud;
+                        lock (SettingsManager.UserDevices.SyncRoot)
+                        {
+                            ud = SettingsManager.UserDevices.Items.FirstOrDefault(
+                                d => d.InstanceGuid == pg);
+                        }
+                        primaryDeviceIsGamepadEligible = (ud != null
+                            && ud.CapType == InputDeviceType.Gamepad);
+                    }
+
+                    // Push the primary as Sources[0] when present and
+                    // device-eligible.
                     string primaryDesc = mapping.SourceDescriptor ?? "";
-                    if (!string.IsNullOrEmpty(primaryDesc))
+                    if (!string.IsNullOrEmpty(primaryDesc) && primaryDeviceIsGamepadEligible)
                     {
                         // Strip any I/H prefix off the descriptor so
                         // the new schema's per-source bool flags are

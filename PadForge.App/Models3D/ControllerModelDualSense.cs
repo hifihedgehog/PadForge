@@ -244,6 +244,16 @@ namespace PadForge.Models3D
         /// surface.</summary>
         public override double ModelScale => 165.7 / 199.9;
 
+        // The DualSense Touchpad mesh (Comp02 from MainBody) extends well
+        // beyond the actual touch-sensitive surface: bounds are roughly
+        // X∈[-42, 38] (80 mm) and Z∈[19, 63] (44 mm), versus the real touch
+        // area of ~52 × 32 mm. Crop the finger-positioning region down so the
+        // sphere maps to where a real DualSense finger lands instead of
+        // sliding past the touchpad's visual edges.
+        public override double TouchpadXInsetFrac => 0.175;       // (80 − 52) / 2 / 80
+        public override double TouchpadZTopInsetFrac => 0.10;     // small bezel above active area
+        public override double TouchpadZBottomInsetFrac => 0.02;  // let finger reach close to mesh bottom; previous 0.12 stopped well above the visual edge
+
         private static void SetMaterial(Model3DGroup group, Material material)
         {
             if (group.Children.Count > 0 && group.Children[0] is GeometryModel3D geo)

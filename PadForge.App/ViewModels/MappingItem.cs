@@ -120,11 +120,37 @@ namespace PadForge.ViewModels
         /// <summary>Re-syncs a single extra source's
         /// <see cref="MappingSourceItem.SelectedInput"/> to match its
         /// stored DeviceGuid+Descriptor pair against this row's
-        /// cross-device <see cref="AvailableInputs"/> list.</summary>
+        /// cross-device <see cref="AvailableInputs"/> list. Also pushes
+        /// the parent's discrete-target flag down to the source so the
+        /// per-source deadzone visibility tracks the row's target.</summary>
         public void RefreshExtraSourceInputs(MappingSourceItem msi)
         {
             if (msi == null) return;
+            msi.ParentTargetIsDiscrete = IsTargetDiscrete;
             msi.SyncSelectedInputFromState(AvailableInputs);
+        }
+
+        /// <summary>True when the row's target is a discrete
+        /// (button-class) output. Mirrors the second half of
+        /// <see cref="IsDeadZoneApplicable"/>: an axis-source row
+        /// targeting a button gets a per-mapping deadzone slider; an
+        /// axis-source row targeting a stick axis does not. Pushed to
+        /// each ExtraSource so the per-source deadzone visibility on
+        /// extras matches.</summary>
+        public bool IsTargetDiscrete
+        {
+            get
+            {
+                var t = TargetSettingName ?? "";
+                if (t.Contains("ThumbAxis", StringComparison.Ordinal)
+                    || t.StartsWith("ExtendedAxis", StringComparison.Ordinal)
+                    || t.StartsWith("KbmMouse", StringComparison.Ordinal)
+                    || t.StartsWith("KbmScroll", StringComparison.Ordinal)
+                    || t.StartsWith("MidiCC", StringComparison.Ordinal))
+                    return false;
+                if (t == "LeftTrigger" || t == "RightTrigger") return false;
+                return true;
+            }
         }
 
         /// <summary>Bulk-refresh every extra source's selected-input

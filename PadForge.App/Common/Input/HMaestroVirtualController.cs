@@ -263,7 +263,7 @@ namespace PadForge.Common.Input
             var state = new HMGamepadState
             {
                 Axes = _axesScratch,
-                Buttons = MapButtons(gp.Buttons),
+                Buttons = MapButtons(gp),
                 Hat = MapHat(gp.Buttons),
             };
 
@@ -340,7 +340,7 @@ namespace PadForge.Common.Input
             var state = new HMGamepadState
             {
                 Axes = _axesScratch,
-                Buttons = MapButtons(gp.Buttons),
+                Buttons = MapButtons(gp),
                 Hat = MapHat(gp.Buttons),
 
                 TouchpadFinger0Active = tp.Down0,
@@ -653,8 +653,9 @@ namespace PadForge.Common.Input
             };
         }
 
-        private static HMButton MapButtons(ushort xinputButtons)
+        private static HMButton MapButtons(in Gamepad gp)
         {
+            ushort xinputButtons = gp.Buttons;
             HMButton b = HMButton.None;
             if ((xinputButtons & Gamepad.A) != 0) b |= HMButton.A;
             if ((xinputButtons & Gamepad.B) != 0) b |= HMButton.B;
@@ -668,6 +669,11 @@ namespace PadForge.Common.Input
             if ((xinputButtons & Gamepad.RIGHT_THUMB) != 0) b |= HMButton.RightStick;
             if ((xinputButtons & Gamepad.GUIDE) != 0) b |= HMButton.Guide;
             if ((xinputButtons & Gamepad.TOUCHPAD) != 0) b |= HMButton.Touchpad;
+            // HMButton.Share — Xbox Series Share button. HM silently drops
+            // the bit on profiles whose descriptor doesn't declare button
+            // 13 (Xbox 360 / Xbox One / DualShock 4 / DualSense / etc.),
+            // so this set is safe to do unconditionally.
+            if (gp.Share) b |= HMButton.Share;
             return b;
         }
 

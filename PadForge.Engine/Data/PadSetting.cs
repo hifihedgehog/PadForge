@@ -49,6 +49,11 @@ namespace PadForge.Engine.Data
         [XmlElement] public string ButtonStart { get; set; } = "";
         [XmlElement] public string ButtonGuide { get; set; } = "";
 
+        /// <summary>Xbox Series Share button. Only surfaced on Xbox Series
+        /// virtual-controller profiles; HM drops the bit on profiles whose
+        /// descriptor doesn't declare button 13.</summary>
+        [XmlElement] public string ButtonShare { get; set; } = "";
+
         [XmlElement] public string LeftThumbButton { get; set; } = "";
         [XmlElement] public string RightThumbButton { get; set; } = "";
 
@@ -987,6 +992,7 @@ namespace PadForge.Engine.Data
             nameof(ButtonA), nameof(ButtonB), nameof(ButtonX), nameof(ButtonY),
             nameof(LeftShoulder), nameof(RightShoulder),
             nameof(ButtonBack), nameof(ButtonStart), nameof(ButtonGuide),
+            nameof(ButtonShare),
             nameof(LeftThumbButton), nameof(RightThumbButton),
             // D-Pad
             nameof(DPad), nameof(DPadUp), nameof(DPadDown), nameof(DPadLeft), nameof(DPadRight),
@@ -1189,6 +1195,7 @@ namespace PadForge.Engine.Data
             nameof(ButtonA), nameof(ButtonB), nameof(ButtonX), nameof(ButtonY),
             nameof(LeftShoulder), nameof(RightShoulder),
             nameof(ButtonBack), nameof(ButtonStart), nameof(ButtonGuide),
+            nameof(ButtonShare),
             nameof(LeftThumbButton), nameof(RightThumbButton),
             nameof(DPad), nameof(DPadUp), nameof(DPadDown), nameof(DPadLeft), nameof(DPadRight),
             nameof(LeftTrigger), nameof(RightTrigger),

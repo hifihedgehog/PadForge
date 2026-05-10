@@ -38,6 +38,11 @@ namespace PadForge.Views
 
         private PadViewModel _vm;
         private ControllerModelBase _currentModel;
+        // Tracks whether the current Xbox One mesh has Share wired in.
+        // Profile switches within the same asset folder (Xbox One ↔
+        // Xbox Series) need to force a rebuild when this flag would
+        // change so the Share mesh transitions between inert and live.
+        private bool _currentModelShareEnabled;
         private bool _dirty;
 
         // Trigger animation state (from HC OverlayModel)
@@ -193,7 +198,12 @@ namespace PadForge.Views
             var (_, needed) = PadForge.Common.Input.HMaestroProfileCatalog.ResolveAssetFolders(
                 _vm.ProfileId, _vm.OutputType);
 
-            if (_currentModel?.ModelName == needed)
+            bool wantShare =
+                needed == "XBOXONE" &&
+                _vm.ProfileId != null &&
+                _vm.ProfileId.StartsWith("xbox-series-", System.StringComparison.OrdinalIgnoreCase);
+
+            if (_currentModel?.ModelName == needed && _currentModelShareEnabled == wantShare)
                 return;
 
             // Clear arrow from old model before switching
@@ -204,13 +214,19 @@ namespace PadForge.Views
 
             try
             {
+                // Xbox One mesh is shared with Xbox Series profiles, but
+                // only Series profiles actually expose Share. Pass the
+                // flag so non-Series profiles get an inert Share mesh
+                // (no hover / click / highlight) while Series profiles
+                // wire it into the click-to-record + highlight maps.
                 _currentModel = needed switch
                 {
                     "DS4" => new ControllerModelDS4(),
                     "DualSense" => new ControllerModelDualSense(),
-                    "XBOXONE" => new ControllerModelXboxOne(),
+                    "XBOXONE" => new ControllerModelXboxOne(enableShare: wantShare),
                     _ => new ControllerModelXbox360()
                 };
+                _currentModelShareEnabled = wantShare;
 
                 ModelVisual3D.Content = _currentModel.model3DGroup;
                 // Update the per-model uniform scale on the existing
@@ -412,6 +428,7 @@ namespace PadForge.Views
             "ButtonA", "ButtonB", "ButtonX", "ButtonY",
             "LeftShoulder", "RightShoulder",
             "ButtonBack", "ButtonStart", "ButtonGuide",
+            "ButtonShare",
             "DPadUp", "DPadDown", "DPadLeft", "DPadRight",
             "LeftThumbButton", "RightThumbButton"
         };
@@ -460,6 +477,7 @@ namespace PadForge.Views
                 "ButtonBack" => _vm.ButtonBack,
                 "ButtonStart" => _vm.ButtonStart,
                 "ButtonGuide" => _vm.ButtonGuide,
+                "ButtonShare" => _vm.ButtonShare,
                 "DPadUp" => _vm.DPadUp,
                 "DPadDown" => _vm.DPadDown,
                 "DPadLeft" => _vm.DPadLeft,

@@ -196,6 +196,9 @@ namespace PadForge.Common.Input
         {
             // Buttons: OR combination — any device can activate any button.
             dest.Buttons |= src.Buttons;
+            // Share lives outside the 16-bit Buttons mask but combines
+            // with the same OR semantics.
+            dest.Share |= src.Share;
 
             // Triggers: take the higher value.
             if (src.LeftTrigger > dest.LeftTrigger)

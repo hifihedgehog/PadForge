@@ -24,14 +24,22 @@ namespace PadForge.ViewModels
         /// <param name="category">Category for grouping in tabs.</param>
         /// <param name="negSettingName">PadSetting property for negative direction (null for non-axis targets).</param>
         public MappingItem(string targetLabel, string targetSettingName, MappingCategory category,
-            string negSettingName = null)
+            string negSettingName = null, bool includeInMapAll = true)
         {
             TargetLabel = targetLabel ?? string.Empty;
             TargetSettingName = targetSettingName ?? string.Empty;
             Category = category;
             Strings.CultureChanged += OnCultureChanged;
             NegSettingName = negSettingName;
+            IncludeInMapAll = includeInMapAll;
         }
+
+        /// <summary>
+        /// Whether this row participates in the "Map All" walk-through.
+        /// Optional rows (Xbox Series Share, etc.) are visible and
+        /// individually mappable but skipped during the bulk sequence.
+        /// </summary>
+        public bool IncludeInMapAll { get; }
 
         // ─────────────────────────────────────────────
         //  Target (XInput output)

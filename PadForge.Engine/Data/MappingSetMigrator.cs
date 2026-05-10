@@ -97,18 +97,40 @@ namespace PadForge.Engine.Data
             int slot,
             IReadOnlyList<(string DeviceGuid, PadSetting PadSetting)> devicesAndPadSettings)
         {
+            // Wrap into the richer signature without requiring callers to
+            // change yet; gamepad-vs-not filtering happens later when the
+            // caller passes through CapType.
+            var withCap = new List<(string, PadSetting, bool)>(devicesAndPadSettings.Count);
+            foreach (var t in devicesAndPadSettings)
+                withCap.Add((t.DeviceGuid, t.PadSetting, true)); // assume gamepad-eligible
+            return BuildFromLegacy(slot, withCap);
+        }
+
+        /// <summary>
+        /// Richer overload: per-device tuple includes <paramref name="isGamepadEligible"/>
+        /// which the gamepad-target emitters consult so a non-gamepad
+        /// device (keyboard, mouse, touchpad) never contributes a Source
+        /// to gamepad-class rows even if its PadSetting field happens to
+        /// hold a stale gamepad descriptor (e.g. from a prior misconfig
+        /// or a copy/paste mishap).
+        /// </summary>
+        public static MappingSet BuildFromLegacy(
+            int slot,
+            IReadOnlyList<(string DeviceGuid, PadSetting PadSetting, bool IsGamepadEligible)> devicesAndPadSettings)
+        {
             var ms = new MappingSet();
             if (devicesAndPadSettings == null || devicesAndPadSettings.Count == 0)
                 return ms;
 
-            // Button-class targets (single-source per device).
+            // Button-class targets (single-source per device, gamepad
+            // devices only — keyboards/mice/touchpads with stray gamepad
+            // descriptors don't contribute).
             foreach (var target in ButtonTargets)
-                AppendSimpleRow(ms, target, devicesAndPadSettings);
+                AppendSimpleRow(ms, target, devicesAndPadSettings, gamepadOnly: true);
 
-            // Trigger targets (single-source per device, like buttons here —
-            // bipolar pair is axis-only).
-            AppendSimpleRow(ms, TriggerLeft,  devicesAndPadSettings);
-            AppendSimpleRow(ms, TriggerRight, devicesAndPadSettings);
+            // Trigger targets (gamepad-only, axis-class).
+            AppendSimpleRow(ms, TriggerLeft,  devicesAndPadSettings, gamepadOnly: true);
+            AppendSimpleRow(ms, TriggerRight, devicesAndPadSettings, gamepadOnly: true);
 
             // Bipolar axis targets: collapse primary + Neg fields into one
             // row with up-to-2 sources per device (negative source has
@@ -118,9 +140,6 @@ namespace PadForge.Engine.Data
 
             // Combined DPad: emit only for devices whose individual DPad
             // direction fields are all empty AND DPad descriptor is non-empty.
-            // Step 3's hasIndividualDPad check picks individuals first, so
-            // any device with even one DPadUp/Down/Left/Right set will not
-            // contribute its DPad descriptor here either.
             AppendCombinedDPadRow(ms, devicesAndPadSettings);
 
             return ms;
@@ -129,11 +148,13 @@ namespace PadForge.Engine.Data
         private static void AppendSimpleRow(
             MappingSet ms,
             string target,
-            IReadOnlyList<(string DeviceGuid, PadSetting PadSetting)> devices)
+            IReadOnlyList<(string DeviceGuid, PadSetting PadSetting, bool IsGamepadEligible)> devices,
+            bool gamepadOnly)
         {
             var sources = new List<MappingSource>();
-            foreach (var (guid, ps) in devices)
+            foreach (var (guid, ps, isGamepad) in devices)
             {
+                if (gamepadOnly && !isGamepad) continue;
                 var raw = GetField(ps, target);
                 if (string.IsNullOrEmpty(raw)) continue;
 
@@ -154,13 +175,14 @@ namespace PadForge.Engine.Data
         private static void AppendBipolarRow(
             MappingSet ms,
             string target,
-            IReadOnlyList<(string DeviceGuid, PadSetting PadSetting)> devices)
+            IReadOnlyList<(string DeviceGuid, PadSetting PadSetting, bool IsGamepadEligible)> devices)
         {
             var (primary, neg) = GetPairedFieldNames(target);
             var sources = new List<MappingSource>();
 
-            foreach (var (guid, ps) in devices)
+            foreach (var (guid, ps, isGamepad) in devices)
             {
+                if (!isGamepad) continue; // bipolar axes are gamepad-only
                 var rawPrimary = GetField(ps, primary);
                 if (!string.IsNullOrEmpty(rawPrimary))
                 {
@@ -199,11 +221,12 @@ namespace PadForge.Engine.Data
 
         private static void AppendCombinedDPadRow(
             MappingSet ms,
-            IReadOnlyList<(string DeviceGuid, PadSetting PadSetting)> devices)
+            IReadOnlyList<(string DeviceGuid, PadSetting PadSetting, bool IsGamepadEligible)> devices)
         {
             var sources = new List<MappingSource>();
-            foreach (var (guid, ps) in devices)
+            foreach (var (guid, ps, isGamepad) in devices)
             {
+                if (!isGamepad) continue;
                 if (ps == null) continue;
                 var combined = ps.DPad ?? "";
                 if (string.IsNullOrEmpty(combined)) continue;

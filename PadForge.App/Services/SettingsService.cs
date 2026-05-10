@@ -227,6 +227,15 @@ namespace PadForge.Services
                     SettingsManager.UserSettings.Items.RemoveAll(us => us.MapTo < 0);
                 }
 
+                // Phase 1b — populate SlotMappingSets from the legacy
+                // per-device PadSetting mapping fields. Migration runs every
+                // load (one-way translation) so PadSetting stays the single
+                // source of truth until Phase 1c. Two devices on the same
+                // slot collapse into one row per Target with multi-source
+                // entries, matching today's implicit Step 4 cross-device
+                // OR-combine.
+                BuildSlotMappingSetsFromLegacy();
+
                 // Load app settings into ViewModel.
                 if (data.AppSettings != null)
                     LoadAppSettings(data.AppSettings);
@@ -266,6 +275,45 @@ namespace PadForge.Services
             catch (Exception ex)
             {
                 _mainVm.StatusText = string.Format(Strings.Instance.Status_ErrorLoadingSettings_Format, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Phase 1b: walks <see cref="SettingsManager.UserSettings"/> and
+        /// builds one <see cref="MappingSet"/> per VC slot from the legacy
+        /// per-(VC × Device) <see cref="PadSetting"/> mapping fields. The
+        /// resulting array lives in <see cref="SettingsManager.SlotMappingSets"/>
+        /// and is consumed by Phase 1c's Step 3 cutover; until then it's a
+        /// derived view that PadSetting-edits invalidate (next reload
+        /// rebuilds it).
+        /// </summary>
+        private static void BuildSlotMappingSetsFromLegacy()
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null || sets.Length == 0) return;
+
+            // Snapshot the user-settings list under the lock so we can iterate
+            // safely while the engine polls.
+            UserSetting[] snapshot;
+            lock (SettingsManager.UserSettings.SyncRoot)
+            {
+                snapshot = SettingsManager.UserSettings.Items.ToArray();
+            }
+
+            for (int slot = 0; slot < sets.Length; slot++)
+            {
+                var devicesForSlot = new List<(string DeviceGuid, PadSetting PadSetting)>();
+                foreach (var us in snapshot)
+                {
+                    if (us == null || us.MapTo != slot) continue;
+                    var ps = us.GetPadSetting();
+                    if (ps == null) continue;
+                    devicesForSlot.Add((
+                        us.InstanceGuid.ToString(),
+                        ps));
+                }
+
+                sets[slot] = MappingSetMigrator.BuildFromLegacy(slot, devicesForSlot);
             }
         }
 

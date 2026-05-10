@@ -1646,24 +1646,19 @@
                                                                     </GroupStyle>
                                                                 </ComboBox.GroupStyle>
                                                             </ComboBox>
-                                                            <!-- Device-origin badge below the picker. Hidden
-                                                                 when the row has no descriptor assigned so a
-                                                                 just-cleared / freshly-added source doesn't
-                                                                 show a stale device tag. -->
-                                                            <TextBlock Text="{Binding DeviceLabel}"
-                                                                       FontSize="10"
+                                                            <!-- Subtitle: assigned-device name when set,
+                                                                 italic "Unassigned" when no descriptor. -->
+                                                            <TextBlock FontSize="10"
                                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                                        Margin="4,1,0,0"
                                                                        TextTrimming="CharacterEllipsis">
                                                                 <TextBlock.Style>
                                                                     <Style TargetType="TextBlock">
-                                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                                        <Setter Property="Text" Value="{Binding DeviceLabel}"/>
                                                                         <Style.Triggers>
                                                                             <DataTrigger Binding="{Binding Descriptor}" Value="">
-                                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                                            </DataTrigger>
-                                                                            <DataTrigger Binding="{Binding DeviceLabel}" Value="">
-                                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                <Setter Property="Text" Value="Unassigned"/>
+                                                                                <Setter Property="FontStyle" Value="Italic"/>
                                                                             </DataTrigger>
                                                                         </Style.Triggers>
                                                                     </Style>
@@ -1794,20 +1789,22 @@
                                                  Visible when the row is bound to a per-VC
                                                  MappingSet primary and resolved to a
                                                  user-friendly device name. -->
-                                            <TextBlock Text="{Binding PrimarySourceDeviceLabel}"
-                                                       FontSize="10"
+                                            <!-- Source subtitle below the picker. Shows the device
+                                                 the assigned input comes from when set; falls back
+                                                 to italic "Unassigned" when nothing is mapped. The
+                                                 Style sets Text via a Setter rather than a local
+                                                 value so the DataTrigger's override actually wins. -->
+                                            <TextBlock FontSize="10"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        Margin="4,1,0,0"
                                                        TextTrimming="CharacterEllipsis">
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">
-                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Setter Property="Text" Value="{Binding PrimarySourceDeviceLabel}"/>
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding SourceDescriptor}" Value="">
-                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding PrimarySourceDeviceLabel}" Value="">
-                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                <Setter Property="Text" Value="Unassigned"/>
+                                                                <Setter Property="FontStyle" Value="Italic"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>

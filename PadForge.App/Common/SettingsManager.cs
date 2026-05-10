@@ -78,6 +78,14 @@ namespace PadForge.Common.Input
         /// <summary>Whether each slot has been explicitly created. Persisted to settings.</summary>
         public static bool[] SlotCreated { get; set; } = new bool[InputManager.MaxPads];
 
+        /// <summary>Per-VC mapping table (Issue #61 multi-source / shift layer).
+        /// One <see cref="Engine.Data.MappingSet"/> per slot. Phase 1b populates
+        /// these from the legacy per-(VC × Device) <see cref="Engine.Data.PadSetting"/>
+        /// fields on every load; Phase 1c flips Step 3 over to read from here
+        /// and PadSetting's mapping fields stop being authoritative.</summary>
+        public static Engine.Data.MappingSet[] SlotMappingSets { get; set; }
+            = new Engine.Data.MappingSet[InputManager.MaxPads];
+
         /// <summary>Whether each slot is enabled for virtual-controller output. Persisted to settings.</summary>
         public static bool[] SlotEnabled { get; set; } = new bool[InputManager.MaxPads]
             { true, true, true, true, true, true, true, true,

@@ -1646,6 +1646,32 @@
                                                         Click="FormulaChip_Click"/>
                                                 <Button Content="2" Tag="2" Style="{StaticResource FormulaChipStyle}"
                                                         Click="FormulaChip_Click"/>
+                                                <!-- Comparisons (yield 0 / 1 for use in if-then-else or scaled by *) -->
+                                                <Border Width="6"/>
+                                                <Button Content="&lt;" Tag=" &lt; " Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Less than"/>
+                                                <Button Content="&gt;" Tag=" &gt; " Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Greater than"/>
+                                                <Button Content="≤" Tag=" &lt;= " Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Less than or equal"/>
+                                                <Button Content="≥" Tag=" &gt;= " Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Greater than or equal"/>
+                                                <Button Content="=" Tag=" == " Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Equal to"/>
+                                                <Button Content="≠" Tag=" != " Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Not equal to"/>
+                                                <!-- Logic + if-then-else -->
+                                                <Border Width="6"/>
+                                                <Button Content="and" Tag=" &amp;&amp; " Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Both conditions true"/>
+                                                <Button Content="or" Tag=" || " Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Either condition true"/>
+                                                <Button Content="not" Tag="!" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Flip true/false"/>
+                                                <Button Content="if?" Tag=" ? " Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="If — pattern: (condition) ? then : else"/>
+                                                <Button Content="else:" Tag=" : " Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Else half of an if-then-else"/>
                                                 <!-- Functions -->
                                                 <Border Width="6"/>
                                                 <Button Content="abs" Tag="abs(" Style="{StaticResource FormulaChipStyle}"
@@ -1655,9 +1681,15 @@
                                                 <Button Content="max" Tag="max(" Style="{StaticResource FormulaChipStyle}"
                                                         Click="FormulaChip_Click" ToolTip="Larger of two values"/>
                                                 <Button Content="clamp" Tag="clamp(" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Keep within a range"/>
+                                                        Click="FormulaChip_Click" ToolTip="Keep within a range — clamp(value, low, high)"/>
                                                 <Button Content="sign" Tag="sign(" Style="{StaticResource FormulaChipStyle}"
                                                         Click="FormulaChip_Click" ToolTip="-1, 0, or +1 from input's sign"/>
+                                                <Button Content="lerp" Tag="lerp(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Blend two values — lerp(a, b, mix0to1)"/>
+                                                <Button Content="round" Tag="round(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Round to nearest whole number"/>
+                                                <Button Content="sqrt" Tag="sqrt(" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click" ToolTip="Square root"/>
                                                 <Button Content="," Tag=", " Style="{StaticResource FormulaChipStyle}"
                                                         Click="FormulaChip_Click"/>
                                             </WrapPanel>
@@ -1704,6 +1736,14 @@
                                                         Style="{StaticResource FormulaPresetStyle}"
                                                         Click="FormulaPreset_Click"
                                                         ToolTip="Use A — but if A is at rest, fall back to B"/>
+                                                <Button Content="Threshold gate" Tag="(a &gt; 0.5) ? 1 : 0"
+                                                        Style="{StaticResource FormulaPresetStyle}"
+                                                        Click="FormulaPreset_Click"
+                                                        ToolTip="Fire fully if A is past halfway, otherwise zero — turns an axis into a button"/>
+                                                <Button Content="Both pressed" Tag="(a &gt; 0) &amp;&amp; (b &gt; 0) ? 1 : 0"
+                                                        Style="{StaticResource FormulaPresetStyle}"
+                                                        Click="FormulaPreset_Click"
+                                                        ToolTip="Fire only when A and B are both pushed"/>
                                                 <Button Content="Stronger wins" Tag="max(abs(a), abs(b)) * sign(a + b)"
                                                         Style="{StaticResource FormulaPresetStyle}"
                                                         Click="FormulaPreset_Click"

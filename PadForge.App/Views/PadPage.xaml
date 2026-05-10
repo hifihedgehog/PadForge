@@ -1614,24 +1614,36 @@
                                                                        FontWeight="SemiBold"
                                                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                                                         </Border>
-                                                        <!-- Per-source Device picker. Items are the slot's
-                                                             MappedDevices; the SelectedValue is the device's
-                                                             InstanceGuid as lowercase string. Empty value =
-                                                             primary device. -->
-                                                        <ComboBox ItemsSource="{Binding DataContext.SlotMappedDevices,
+                                                        <!-- Cross-device grouped picker. ItemsSource is the
+                                                             parent MappingItem's full cross-device flat list;
+                                                             GroupStyle headers identify which device each
+                                                             input belongs to. Selecting an InputChoice writes
+                                                             both the source's Descriptor and DeviceGuid in
+                                                             one shot via the InputChoiceToSource attached
+                                                             behavior. -->
+                                                        <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView,
                                                                     RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
-                                                                  SelectedValuePath="InstanceGuid"
-                                                                  SelectedValue="{Binding DeviceGuid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource GuidStringConverter}}"
-                                                                  DisplayMemberPath="Name"
-                                                                  MinWidth="120" Padding="4,2" Margin="0,0,4,0"
-                                                                  ToolTip="Device this source reads from. Defaults to the slot's primary device."/>
-                                                        <ComboBox ItemsSource="{Binding AvailableInputs}"
-                                                                  SelectedValuePath="Descriptor"
-                                                                  SelectedValue="{Binding Descriptor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                  SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                   DisplayMemberPath="DisplayName"
-                                                                  IsEditable="True"
-                                                                  MinWidth="180" Padding="4,2" Margin="0,0,4,0"
-                                                                  ToolTip="Pick from the picked device's inputs, or type a descriptor (e.g. 'Button 5', 'Axis 2')"/>
+                                                                  MinWidth="240" Padding="4,2" Margin="0,0,4,0"
+                                                                  ToolTip="Pick the source from any device assigned to this slot.">
+                                                            <ComboBox.GroupStyle>
+                                                                <GroupStyle>
+                                                                    <GroupStyle.HeaderTemplate>
+                                                                        <DataTemplate>
+                                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                                                                    Padding="6,3,6,3">
+                                                                                <TextBlock Text="{Binding Name}"
+                                                                                           FontSize="11"
+                                                                                           FontWeight="SemiBold"
+                                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                                           TextTrimming="CharacterEllipsis"/>
+                                                                            </Border>
+                                                                        </DataTemplate>
+                                                                    </GroupStyle.HeaderTemplate>
+                                                                </GroupStyle>
+                                                            </ComboBox.GroupStyle>
+                                                        </ComboBox>
                                                         <CheckBox Content="Inv" IsChecked="{Binding Invert, Mode=TwoWay}"
                                                                   VerticalAlignment="Center" Margin="0,0,4,0"
                                                                   ToolTip="Invert: button pressed → -1 / axis sign flipped"/>
@@ -1666,11 +1678,37 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Vertical">
-                                            <ComboBox ItemsSource="{Binding AvailableInputs}"
+                                            <!-- Cross-device source picker. ItemsSource is the
+                                                 grouped CollectionView (GroupDescription on
+                                                 InputChoice.DeviceLabel) so the dropdown shows
+                                                 each device's inputs under a device-name header.
+                                                 SelectedItem write-back tags the row with the
+                                                 picked InputChoice's DeviceGuid + DeviceLabel,
+                                                 which is what makes the unified Mappings tab
+                                                 device-correct without the user having to
+                                                 fiddle with the Device dropdown to the right. -->
+                                            <ComboBox ItemsSource="{Binding AvailableInputsView}"
                                                       SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       DisplayMemberPath="DisplayName"
                                                       Margin="0" Padding="4,2"
-                                                      HorizontalAlignment="Stretch"/>
+                                                      HorizontalAlignment="Stretch">
+                                                <ComboBox.GroupStyle>
+                                                    <GroupStyle>
+                                                        <GroupStyle.HeaderTemplate>
+                                                            <DataTemplate>
+                                                                <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                                                        Padding="6,3,6,3" Margin="0,0,0,0">
+                                                                    <TextBlock Text="{Binding Name}"
+                                                                               FontSize="11"
+                                                                               FontWeight="SemiBold"
+                                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                               TextTrimming="CharacterEllipsis"/>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </GroupStyle.HeaderTemplate>
+                                                    </GroupStyle>
+                                                </ComboBox.GroupStyle>
+                                            </ComboBox>
                                             <!-- Phase 2C — primary source's device origin badge.
                                                  Visible when the row is bound to a per-VC
                                                  MappingSet primary and resolved to a

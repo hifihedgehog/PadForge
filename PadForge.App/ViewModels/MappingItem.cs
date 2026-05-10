@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Windows.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Resources.Strings;
@@ -116,27 +117,19 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>Refreshes a single extra source's
-        /// <see cref="MappingSourceItem.AvailableInputs"/> from the
-        /// current <see cref="GetInputChoicesForDevice"/> lookup. Falls
-        /// back to this row's <see cref="AvailableInputs"/> when the
-        /// source's DeviceGuid is empty or the lookup yields no
-        /// result.</summary>
+        /// <summary>Re-syncs a single extra source's
+        /// <see cref="MappingSourceItem.SelectedInput"/> to match its
+        /// stored DeviceGuid+Descriptor pair against this row's
+        /// cross-device <see cref="AvailableInputs"/> list.</summary>
         public void RefreshExtraSourceInputs(MappingSourceItem msi)
         {
             if (msi == null) return;
-            IReadOnlyList<InputChoice> list = null;
-            if (GetInputChoicesForDevice != null && !string.IsNullOrEmpty(msi.DeviceGuid))
-                list = GetInputChoicesForDevice(msi.DeviceGuid);
-            list ??= AvailableInputs;
-            msi.AvailableInputs.Clear();
-            foreach (var c in list)
-                msi.AvailableInputs.Add(c);
+            msi.SyncSelectedInputFromState(AvailableInputs);
         }
 
-        /// <summary>Bulk-refresh every extra source's input choices.
-        /// Called by InputService after the slot's mapped-device list
-        /// or per-device InputChoice cache changes.</summary>
+        /// <summary>Bulk-refresh every extra source's selected-input
+        /// state. Called by InputService after the slot's
+        /// AvailableInputs list is rebuilt.</summary>
         public void RefreshAllExtraSourceInputs()
         {
             foreach (var msi in ExtraSources)
@@ -322,17 +315,47 @@ namespace PadForge.ViewModels
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Available input choices for the source dropdown.
-        /// Populated by InputService when the selected device changes.
+        /// Flat cross-device input choices for the source dropdown.
+        /// Populated by InputService once per VC slot (not per Device
+        /// dropdown change), spanning every device assigned to the slot.
+        /// Each entry carries its own <see cref="InputChoice.DeviceGuid"/>
+        /// + <see cref="InputChoice.DeviceLabel"/> so the picker can
+        /// group by device via WPF's <c>GroupStyle</c>.
         /// </summary>
         public ObservableCollection<InputChoice> AvailableInputs { get; } = new();
+
+        private ICollectionView _availableInputsView;
+        /// <summary>The grouped view of <see cref="AvailableInputs"/> the
+        /// XAML ComboBox binds to. <c>GroupDescription</c> lives on
+        /// <see cref="InputChoice.DeviceLabel"/> so the picker renders a
+        /// single dropdown with device-name headers between each device's
+        /// inputs.</summary>
+        public ICollectionView AvailableInputsView
+        {
+            get
+            {
+                if (_availableInputsView == null)
+                {
+                    _availableInputsView = CollectionViewSource.GetDefaultView(AvailableInputs);
+                    if (_availableInputsView != null
+                        && _availableInputsView.GroupDescriptions != null)
+                    {
+                        _availableInputsView.GroupDescriptions.Clear();
+                        _availableInputsView.GroupDescriptions.Add(
+                            new PropertyGroupDescription(nameof(InputChoice.DeviceLabel)));
+                    }
+                }
+                return _availableInputsView;
+            }
+        }
 
         private InputChoice _selectedInput;
         private bool _suppressSelectionSync;
 
         /// <summary>
         /// The currently selected input from the dropdown.
-        /// Setting this updates the SourceDescriptor accordingly.
+        /// Setting this updates the SourceDescriptor — and the row's
+        /// <see cref="PrimarySourceDeviceGuid"/> — accordingly.
         /// </summary>
         public InputChoice SelectedInput
         {
@@ -348,6 +371,13 @@ namespace PadForge.ViewModels
                     }
                     else
                     {
+                        // Tag the row's primary source with the picked
+                        // device BEFORE LoadDescriptor so any downstream
+                        // notify-listeners see the new device + descriptor
+                        // together.
+                        PrimarySourceDeviceGuid = value.DeviceGuid ?? "";
+                        if (!string.IsNullOrEmpty(value.DeviceLabel))
+                            PrimarySourceDeviceLabel = value.DeviceLabel;
                         LoadDescriptor(value.Descriptor);
                         InputSelectedFromDropdown?.Invoke(this, EventArgs.Empty);
                     }
@@ -357,7 +387,10 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Synchronizes SelectedInput to match the current SourceDescriptor
-        /// without triggering a descriptor update.
+        /// + <see cref="PrimarySourceDeviceGuid"/> without triggering a
+        /// descriptor update. Match is on (DeviceGuid, Descriptor) so a
+        /// "Button 0" on the DualSense and a "Button 0" on a keyboard
+        /// (which auto-mapping might have stamped) don't get confused.
         /// </summary>
         public void SyncSelectedInputFromDescriptor()
         {
@@ -380,16 +413,22 @@ namespace PadForge.ViewModels
                 else if (clean.StartsWith("H", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
                     clean = clean.Substring(1);
 
+                string wantGuid = (_primarySourceDeviceGuid ?? "").ToLowerInvariant();
                 InputChoice match = null;
+                InputChoice descriptorOnlyMatch = null;
                 foreach (var choice in AvailableInputs)
                 {
-                    if (string.Equals(choice.Descriptor, clean, StringComparison.OrdinalIgnoreCase))
+                    if (!string.Equals(choice.Descriptor, clean, StringComparison.OrdinalIgnoreCase))
+                        continue;
+                    if (descriptorOnlyMatch == null) descriptorOnlyMatch = choice;
+                    if (!string.IsNullOrEmpty(wantGuid)
+                        && string.Equals(choice.DeviceGuid ?? "", wantGuid, StringComparison.OrdinalIgnoreCase))
                     {
                         match = choice;
                         break;
                     }
                 }
-                _selectedInput = match;
+                _selectedInput = match ?? descriptorOnlyMatch;
                 OnPropertyChanged(nameof(SelectedInput));
             }
             finally
@@ -887,6 +926,12 @@ namespace PadForge.ViewModels
 
     /// <summary>
     /// Represents an available input choice in the source dropdown.
+    /// Each choice is tagged with the device it belongs to so a single
+    /// flat-with-grouping list can span every device assigned to a slot
+    /// — the picker uses WPF's <c>GroupStyle</c> + a
+    /// <c>CollectionViewSource</c> grouping descriptor on
+    /// <see cref="DeviceLabel"/> to render device-name headers between
+    /// each device's input rows.
     /// </summary>
     public class InputChoice
     {
@@ -895,6 +940,14 @@ namespace PadForge.ViewModels
 
         /// <summary>Human-readable display name (e.g., "A", "Left Stick X", "Button 0").</summary>
         public string DisplayName { get; set; }
+
+        /// <summary>Lowercase GUID of the device this choice belongs to.
+        /// Empty string means "(any device)" / unbound.</summary>
+        public string DeviceGuid { get; set; } = "";
+
+        /// <summary>Friendly name of the device this choice belongs to.
+        /// Used as the GroupStyle header in the picker.</summary>
+        public string DeviceLabel { get; set; } = "";
 
         public override string ToString() => DisplayName;
     }

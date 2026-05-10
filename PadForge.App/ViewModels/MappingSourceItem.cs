@@ -283,6 +283,8 @@ namespace PadForge.ViewModels
             _clearCommand ??= new RelayCommand(() =>
             {
                 Descriptor = "";
+                DeviceGuid = "";
+                DeviceLabel = "";
                 Invert = false;
                 HalfAxis = false;
                 DeadZone = 50;

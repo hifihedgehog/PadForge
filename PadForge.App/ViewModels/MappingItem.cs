@@ -709,6 +709,8 @@ namespace PadForge.ViewModels
                 IsInverted = false;
                 IsHalfAxis = false;
                 MappingDeadZone = 50;
+                PrimarySourceDeviceGuid = "";
+                PrimarySourceDeviceLabel = "";
                 SyncSelectedInputFromDescriptor();
             });
 

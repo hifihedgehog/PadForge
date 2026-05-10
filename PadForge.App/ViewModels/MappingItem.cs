@@ -870,13 +870,13 @@ namespace PadForge.ViewModels
 
         private static readonly CombineModeOption[] _combineModes = new[]
         {
-            new CombineModeOption { Value = "MaxAbs",  Name = "Strongest (MaxAbs)",     Description = "Use whichever source has the strongest push" },
-            new CombineModeOption { Value = "Sum",     Name = "Combined (Sum)",         Description = "Add the sources together" },
-            new CombineModeOption { Value = "Average", Name = "Average",                Description = "Halfway between the sources" },
-            new CombineModeOption { Value = "OR",      Name = "Either (OR)",            Description = "Fire when any source is active — good for buttons" },
-            new CombineModeOption { Value = "AND",     Name = "Both (AND)",             Description = "Fire only when all sources are active" },
-            new CombineModeOption { Value = "XOR",     Name = "Only one (XOR)",         Description = "Fire only when exactly one source is active" },
-            new CombineModeOption { Value = "Custom",  Name = "Custom formula",         Description = "Build your own with the formula editor below" },
+            new CombineModeOption { Value = "MaxAbs",  Name = "Strongest", Description = "Use whichever source has the strongest push" },
+            new CombineModeOption { Value = "Sum",     Name = "Combined",  Description = "Add the sources together" },
+            new CombineModeOption { Value = "Average", Name = "Average",   Description = "Halfway between the sources" },
+            new CombineModeOption { Value = "OR",      Name = "Either",    Description = "Fire when any source is active — good for buttons" },
+            new CombineModeOption { Value = "AND",     Name = "Both",      Description = "Fire only when all sources are active" },
+            new CombineModeOption { Value = "XOR",     Name = "Only one",  Description = "Fire only when exactly one source is active" },
+            new CombineModeOption { Value = "Custom",  Name = "Custom",    Description = "Build your own with the formula editor below" },
         };
         public System.Collections.Generic.IReadOnlyList<CombineModeOption> AvailableCombineModes
             => _combineModes;

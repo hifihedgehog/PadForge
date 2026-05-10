@@ -1215,6 +1215,72 @@ namespace PadForge.Views
             }
             cb.ItemsSource = axes;
         }
+
+        // ─────────────────────────────────────────────
+        //  Custom formula visual editor (Issue #61)
+        //
+        //  Each chip Button in the formula editor's WrapPanel carries
+        //  its insert text in Tag. The shared Click handler walks up
+        //  to the StackPanel that holds the formula TextBox (named
+        //  "CustomFormulaBox") and inserts the chip's text at the
+        //  current caret. Preset buttons use a separate handler that
+        //  replaces the entire formula (so users can start fresh).
+        //  Working with TextBox.Text directly + the bound MappingItem's
+        //  CombineExpression keeps the data-binding path clean — no
+        //  ComboBox-SelectedItem write-back semantics to fight with.
+        // ─────────────────────────────────────────────
+
+        private void FormulaChip_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Button btn || btn.Tag is not string token) return;
+            var box = FindFormulaTextBox(btn);
+            if (box == null) return;
+            int caret = box.CaretIndex;
+            string current = box.Text ?? "";
+            box.Text = current.Insert(Math.Min(caret, current.Length), token);
+            box.CaretIndex = Math.Min(caret + token.Length, box.Text.Length);
+            box.Focus();
+        }
+
+        private void FormulaPreset_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Button btn || btn.Tag is not string formula) return;
+            var box = FindFormulaTextBox(btn);
+            if (box == null) return;
+            box.Text = formula;
+            box.CaretIndex = formula.Length;
+            box.Focus();
+        }
+
+        private static TextBox FindFormulaTextBox(DependencyObject start)
+        {
+            // Walk up the visual tree until we find the FormulaEditor
+            // StackPanel that hosts the named TextBox + chip palette.
+            // Templated namescopes mean FindName from the Button's
+            // own scope might not see siblings reliably — searching
+            // the parent's descendants is robust.
+            var node = VisualTreeHelper.GetParent(start);
+            while (node != null)
+            {
+                if (node is FrameworkElement fe && fe.Name == "FormulaEditor")
+                    return FindDescendantByName<TextBox>(fe, "CustomFormulaBox");
+                node = VisualTreeHelper.GetParent(node);
+            }
+            return null;
+        }
+
+        private static T FindDescendantByName<T>(DependencyObject parent, string name) where T : FrameworkElement
+        {
+            int n = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < n; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T t && t.Name == name) return t;
+                var deeper = FindDescendantByName<T>(child, name);
+                if (deeper != null) return deeper;
+            }
+            return null;
+        }
     }
 
     /// <summary>Lightweight wrapper for device axis combo items with localized display name.</summary>

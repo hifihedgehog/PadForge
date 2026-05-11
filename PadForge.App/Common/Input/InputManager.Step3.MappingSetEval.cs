@@ -738,6 +738,131 @@ namespace PadForge.Common.Input
             return true;
         }
 
+        /// <summary>Evaluates a touchpad-passthrough X/Y target with
+        /// per-source gating: a touchpad-class source (descriptor starts
+        /// with "Touchpad ") contributes ONLY while its paired
+        /// TouchpadDown is true on its device's state. An idle touchpad's
+        /// stale finger position can't pollute the combine — Average,
+        /// MaxAbs, Sum, etc. all see active sources only. Non-touchpad
+        /// sources (sticks / buttons / POVs mapped to a touchpad target)
+        /// are always considered active (sticks at rest read 0 and don't
+        /// "win" the combine the way a stale touchpad position would).
+        ///
+        /// <para>Custom mode receives every source plus a parallel
+        /// active-flag channel (<c>aD..zD</c> in the formula language)
+        /// so the formula can implement its own gating
+        /// (e.g. <c>aD ? a : (bD ? b : 0.5)</c>).</para>
+        ///
+        /// <para>Returns <c>false</c> when zero sources are active, so
+        /// the touchpad output path can hold the last position — matches
+        /// the natural sticky behavior of a single physical touchpad.</para>
+        ///
+        /// <para><paramref name="defaultFingerIdx"/> is the finger slot
+        /// the OUTPUT target represents (0 for X1/Y1, 1 for X2/Y2). It's
+        /// used as the fallback finger index when a source's descriptor
+        /// is the bare "Touchpad" prefix form without an explicit Finger
+        /// number — current callers always pass parseable descriptors,
+        /// so this is purely defensive.</para></summary>
+        public static bool TryEvaluateMappingSetTouchpadAxis(
+            CustomInputState state, MappingSet mappingSet, string thisDeviceGuid,
+            int slotIndex, string targetName, int defaultFingerIdx,
+            out short value)
+        {
+            value = 0;
+            var row = FindBaseRowForTarget(mappingSet, targetName);
+            if (row == null || row.Sources == null || row.Sources.Count == 0) return false;
+
+            var slotRuntime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
+                ? _slotSourceKindRuntime[slotIndex] : null;
+            double dt = (slotIndex >= 0 && slotIndex < _lastEvalTime.Length)
+                ? ComputeAndAdvanceDelta(slotIndex) : 0;
+
+            var sources = SnapshotSources(row);
+            var values = new List<float>(sources.Length);
+            var flags = new List<float>(sources.Length);
+            int activeCount = 0;
+
+            for (int i = 0; i < sources.Length; i++)
+            {
+                var src = sources[i];
+                if (src == null) { values.Add(0f); flags.Add(0f); continue; }
+
+                var devState = string.IsNullOrEmpty(src.DeviceGuid)
+                    ? state
+                    : (LookupDeviceState(src.DeviceGuid) ?? state);
+
+                // "Active" = currently contributing useful data.
+                bool isActive;
+                bool isTouchpadSrc = !string.IsNullOrEmpty(src.Descriptor)
+                    && src.Descriptor.StartsWith("Touchpad ", System.StringComparison.Ordinal);
+                if (isTouchpadSrc)
+                {
+                    // Parse finger index from "Touchpad N Finger M X|Y".
+                    int fingerIdx = defaultFingerIdx;
+                    var parts = src.Descriptor.Split(new[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+                    if (parts.Length == 5
+                        && string.Equals(parts[2], "Finger", System.StringComparison.Ordinal)
+                        && int.TryParse(parts[3], out int parsedFinger))
+                    {
+                        fingerIdx = parsedFinger;
+                    }
+                    isActive = devState?.TouchpadDown != null
+                        && fingerIdx >= 0
+                        && fingerIdx < devState.TouchpadDown.Length
+                        && devState.TouchpadDown[fingerIdx];
+                }
+                else
+                {
+                    // Non-touchpad sources (sticks, buttons, POVs) are
+                    // always live — their natural rest value is 0 so they
+                    // can't "win" a combine by being stale.
+                    isActive = true;
+                }
+
+                float v = SourceEvaluator.EvaluateForBipolarAxisTarget(
+                    devState ?? state, src, slotIndex, targetName, i, slotRuntime, dt);
+
+                values.Add(v);
+                flags.Add(isActive ? 1f : 0f);
+                if (isActive) activeCount++;
+            }
+
+            // No active source → caller holds the previous position.
+            // Sticky-touchpad semantic, regardless of combine mode.
+            if (activeCount == 0) return false;
+
+            bool isCustom = row.CombineMode == "Custom";
+            float combined;
+
+            if (isCustom)
+            {
+                // Custom gets ALL sources + the aD..zD active-flag channel.
+                // The formula author handles gating explicitly so positional
+                // indices stay stable across frames (gating-by-skip would
+                // shift a/b/c as fingers come and go, which is unusable).
+                var compiled = GetOrCompileExpression(row);
+                combined = ClampBipolar(compiled.Evaluate(values, flags));
+            }
+            else if (sources.Length > 1)
+            {
+                // Built-in modes: filter to active sources only, then combine.
+                var activeValues = new List<float>(activeCount);
+                for (int i = 0; i < values.Count; i++)
+                    if (flags[i] > 0.5f) activeValues.Add(values[i]);
+                combined = ClampBipolar(CombineHelper.CombineAxis(row.CombineMode, activeValues));
+            }
+            else
+            {
+                // Single active source (guaranteed by activeCount>0 + Count==1).
+                combined = ClampBipolar(values[0]);
+            }
+
+            if (combined <= -1f) value = short.MinValue;
+            else if (combined >= 1f) value = short.MaxValue;
+            else value = (short)(combined * 32767f);
+            return true;
+        }
+
         /// <summary>Evaluates a unipolar trigger-class target (Extended
         /// trigger slot) through the per-VC MappingSet. Returned value is
         /// in the same signed-short representation the Extended raw path

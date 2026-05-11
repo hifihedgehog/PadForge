@@ -17,6 +17,20 @@ namespace PadForge.Engine.Common.Mapping
     /// </para>
     ///
     /// <para>
+    /// Per-source "active" flags: <c>aD..zD</c> bind to the parallel
+    /// <c>activeFlags</c> list when the caller supplies one (currently only
+    /// the touchpad-passthrough evaluator does). Each <c>aD</c>-style ref
+    /// reads <c>1.0</c> when the source is currently "live" (a touchpad
+    /// source whose paired <c>TouchpadDown</c> is true, or a non-touchpad
+    /// source which is always live by definition) and <c>0.0</c> when
+    /// idle. The built-in combine modes already filter idle sources out
+    /// before combining; Custom formulas get ALL sources + the flag
+    /// channel so the user can write their own gating
+    /// (e.g. <c>aD ? a : (bD ? b : 0.5)</c>). Out-of-range or
+    /// caller-didn't-supply-flags references resolve to <c>0.0</c>.
+    /// </para>
+    ///
+    /// <para>
     /// Literals: numbers (decimal), <c>true</c>/<c>false</c>, <c>pi</c>,
     /// <c>e</c>.
     /// </para>
@@ -67,12 +81,19 @@ namespace PadForge.Engine.Common.Mapping
             /// <summary>Evaluates the compiled expression against a list of
             /// per-source float values (the row's already-coerced source
             /// contributions). Returns 0 on any runtime error.</summary>
-            public float Evaluate(IList<float> sources)
+            public float Evaluate(IList<float> sources) => Evaluate(sources, null);
+
+            /// <summary>Evaluates with a parallel "active flag" channel so
+            /// <c>aD..zD</c> references resolve to <c>1.0</c> / <c>0.0</c>.
+            /// Callers that don't supply flags (the gamepad / extended /
+            /// MIDI / KBM combine paths) pass <c>null</c>; <c>aD</c>-style
+            /// refs in their formulas resolve to <c>0.0</c>.</summary>
+            public float Evaluate(IList<float> sources, IList<float> activeFlags)
             {
                 if (!IsValid || Root == null) return 0f;
                 try
                 {
-                    double r = Root.Eval(sources);
+                    double r = Root.Eval(sources, activeFlags);
                     if (double.IsNaN(r) || double.IsInfinity(r)) return 0f;
                     return (float)r;
                 }
@@ -361,6 +382,12 @@ namespace PadForge.Engine.Common.Mapping
                         if (t.Text.Equals("e", StringComparison.Ordinal)) return new NumberNode(Math.E);
                         if (t.Text.Length == 1 && t.Text[0] >= 'a' && t.Text[0] <= 'z')
                             return new SingleLetterSourceNode { Letter = t.Text[0] };
+                        // Per-source "active" flag — aD, bD, cD, … zD.
+                        // Touchpad-passthrough rows supply a parallel
+                        // activeFlags list; everywhere else they're null
+                        // and aD-style refs resolve to 0.
+                        if (t.Text.Length == 2 && t.Text[0] >= 'a' && t.Text[0] <= 'z' && t.Text[1] == 'D')
+                            return new SingleLetterActiveFlagNode { Letter = t.Text[0] };
                         throw new ParseException($"Unknown identifier '{t.Text}' at {t.Position}");
                     }
                     default:
@@ -373,7 +400,7 @@ namespace PadForge.Engine.Common.Mapping
 
         internal abstract class Node
         {
-            public abstract double Eval(IList<float> sources);
+            public abstract double Eval(IList<float> sources, IList<float> activeFlags);
             public virtual void Walk(ref Compiled c) { }
         }
 
@@ -381,13 +408,13 @@ namespace PadForge.Engine.Common.Mapping
         {
             private readonly double _v;
             public NumberNode(double v) { _v = v; }
-            public override double Eval(IList<float> _) => _v;
+            public override double Eval(IList<float> _, IList<float> __) => _v;
         }
 
         internal sealed class SingleLetterSourceNode : Node
         {
             public char Letter;
-            public override double Eval(IList<float> sources)
+            public override double Eval(IList<float> sources, IList<float> activeFlags)
             {
                 int idx = Letter - 'a';
                 if (idx < 0 || sources == null || idx >= sources.Count) return 0;
@@ -400,12 +427,33 @@ namespace PadForge.Engine.Common.Mapping
             }
         }
 
+        internal sealed class SingleLetterActiveFlagNode : Node
+        {
+            public char Letter;
+            public override double Eval(IList<float> sources, IList<float> activeFlags)
+            {
+                int idx = Letter - 'a';
+                if (idx < 0 || activeFlags == null || idx >= activeFlags.Count) return 0;
+                return activeFlags[idx];
+            }
+            public override void Walk(ref Compiled c)
+            {
+                // The .D flags share the same positional-source space as
+                // plain a/b/c, so aD references should count toward the
+                // "missing source" warning the same way a does — a formula
+                // referencing aD on a row with zero sources is just as
+                // broken as one referencing a.
+                if (!c.ReferencedSingleLetterVars.Contains(Letter))
+                    c.ReferencedSingleLetterVars += Letter;
+            }
+        }
+
         internal sealed class IndexedSourceNode : Node
         {
             public Node IndexNode;
-            public override double Eval(IList<float> sources)
+            public override double Eval(IList<float> sources, IList<float> activeFlags)
             {
-                int idx = (int)IndexNode.Eval(sources);
+                int idx = (int)IndexNode.Eval(sources, activeFlags);
                 if (idx < 0 || sources == null || idx >= sources.Count) return 0;
                 return sources[idx];
             }
@@ -414,7 +462,7 @@ namespace PadForge.Engine.Common.Mapping
                 IndexNode?.Walk(ref c);
                 if (IndexNode is NumberNode n)
                 {
-                    int idx = (int)n.Eval(null);
+                    int idx = (int)n.Eval(null, null);
                     if (idx > c.MaxIndexedRef) c.MaxIndexedRef = idx;
                 }
             }
@@ -424,9 +472,9 @@ namespace PadForge.Engine.Common.Mapping
         {
             public string Op;
             public Node Operand;
-            public override double Eval(IList<float> sources)
+            public override double Eval(IList<float> sources, IList<float> activeFlags)
             {
-                double v = Operand.Eval(sources);
+                double v = Operand.Eval(sources, activeFlags);
                 return Op switch
                 {
                     "-" => -v,
@@ -441,10 +489,10 @@ namespace PadForge.Engine.Common.Mapping
         {
             public string Op;
             public Node L, R;
-            public override double Eval(IList<float> sources)
+            public override double Eval(IList<float> sources, IList<float> activeFlags)
             {
-                double l = L.Eval(sources);
-                double r = R.Eval(sources);
+                double l = L.Eval(sources, activeFlags);
+                double r = R.Eval(sources, activeFlags);
                 switch (Op)
                 {
                     case "+": return l + r;
@@ -469,8 +517,8 @@ namespace PadForge.Engine.Common.Mapping
         internal sealed class TernaryNode : Node
         {
             public Node Cond, Then, Else;
-            public override double Eval(IList<float> sources)
-                => Cond.Eval(sources) != 0 ? Then.Eval(sources) : Else.Eval(sources);
+            public override double Eval(IList<float> sources, IList<float> activeFlags)
+                => Cond.Eval(sources, activeFlags) != 0 ? Then.Eval(sources, activeFlags) : Else.Eval(sources, activeFlags);
             public override void Walk(ref Compiled c) { Cond?.Walk(ref c); Then?.Walk(ref c); Else?.Walk(ref c); }
         }
 
@@ -478,36 +526,36 @@ namespace PadForge.Engine.Common.Mapping
         {
             public string Name;
             public List<Node> Args;
-            public override double Eval(IList<float> sources)
+            public override double Eval(IList<float> sources, IList<float> activeFlags)
             {
                 int n = Args.Count;
                 switch (Name)
                 {
-                    case "abs":   return Need(n, 1) ? Math.Abs(Args[0].Eval(sources)) : 0;
+                    case "abs":   return Need(n, 1) ? Math.Abs(Args[0].Eval(sources, activeFlags)) : 0;
                     case "min":
                         if (n == 0) return 0;
-                        { double m = Args[0].Eval(sources); for (int i = 1; i < n; i++) m = Math.Min(m, Args[i].Eval(sources)); return m; }
+                        { double m = Args[0].Eval(sources, activeFlags); for (int i = 1; i < n; i++) m = Math.Min(m, Args[i].Eval(sources, activeFlags)); return m; }
                     case "max":
                         if (n == 0) return 0;
-                        { double m = Args[0].Eval(sources); for (int i = 1; i < n; i++) m = Math.Max(m, Args[i].Eval(sources)); return m; }
+                        { double m = Args[0].Eval(sources, activeFlags); for (int i = 1; i < n; i++) m = Math.Max(m, Args[i].Eval(sources, activeFlags)); return m; }
                     case "clamp":
                         return Need(n, 3)
-                            ? Math.Max(Args[1].Eval(sources), Math.Min(Args[2].Eval(sources), Args[0].Eval(sources)))
+                            ? Math.Max(Args[1].Eval(sources, activeFlags), Math.Min(Args[2].Eval(sources, activeFlags), Args[0].Eval(sources, activeFlags)))
                             : 0;
                     case "sign":
                         if (!Need(n, 1)) return 0;
-                        { double v = Args[0].Eval(sources); return v > 0 ? 1 : v < 0 ? -1 : 0; }
-                    case "floor": return Need(n, 1) ? Math.Floor(Args[0].Eval(sources)) : 0;
-                    case "ceil":  return Need(n, 1) ? Math.Ceiling(Args[0].Eval(sources)) : 0;
-                    case "round": return Need(n, 1) ? Math.Round(Args[0].Eval(sources)) : 0;
-                    case "sqrt":  return Need(n, 1) ? Math.Sqrt(Args[0].Eval(sources)) : 0;
-                    case "sin":   return Need(n, 1) ? Math.Sin(Args[0].Eval(sources)) : 0;
-                    case "cos":   return Need(n, 1) ? Math.Cos(Args[0].Eval(sources)) : 0;
-                    case "tan":   return Need(n, 1) ? Math.Tan(Args[0].Eval(sources)) : 0;
-                    case "atan2": return Need(n, 2) ? Math.Atan2(Args[0].Eval(sources), Args[1].Eval(sources)) : 0;
+                        { double v = Args[0].Eval(sources, activeFlags); return v > 0 ? 1 : v < 0 ? -1 : 0; }
+                    case "floor": return Need(n, 1) ? Math.Floor(Args[0].Eval(sources, activeFlags)) : 0;
+                    case "ceil":  return Need(n, 1) ? Math.Ceiling(Args[0].Eval(sources, activeFlags)) : 0;
+                    case "round": return Need(n, 1) ? Math.Round(Args[0].Eval(sources, activeFlags)) : 0;
+                    case "sqrt":  return Need(n, 1) ? Math.Sqrt(Args[0].Eval(sources, activeFlags)) : 0;
+                    case "sin":   return Need(n, 1) ? Math.Sin(Args[0].Eval(sources, activeFlags)) : 0;
+                    case "cos":   return Need(n, 1) ? Math.Cos(Args[0].Eval(sources, activeFlags)) : 0;
+                    case "tan":   return Need(n, 1) ? Math.Tan(Args[0].Eval(sources, activeFlags)) : 0;
+                    case "atan2": return Need(n, 2) ? Math.Atan2(Args[0].Eval(sources, activeFlags), Args[1].Eval(sources, activeFlags)) : 0;
                     case "lerp":
                         if (!Need(n, 3)) return 0;
-                        { double a = Args[0].Eval(sources), b = Args[1].Eval(sources), t = Args[2].Eval(sources); return a + (b - a) * t; }
+                        { double a = Args[0].Eval(sources, activeFlags), b = Args[1].Eval(sources, activeFlags), t = Args[2].Eval(sources, activeFlags); return a + (b - a) * t; }
                     default:
                         return 0;
                 }

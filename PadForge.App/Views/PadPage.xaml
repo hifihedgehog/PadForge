@@ -1561,6 +1561,7 @@
                                             </ComboBox>
                                         </StackPanel>
 
+
                                         <!-- Custom formula editor — only visible when the row
                                              is multi-source AND Custom is the picked combine.
                                              Gating on ShouldShowCustomExpression instead of
@@ -1911,31 +1912,31 @@
                                                                 </TextBlock.Style>
                                                             </TextBlock>
                                                         </StackPanel>
-                                                        <!-- Record button — same icon, width and design
-                                                             as the main row's Record button. Listens across
-                                                             every device assigned to the slot. -->
+                                                        <!-- Record / Clear / Options / DeadZone — for Direct sources only.
+                                                             Incremental sources author their inputs through the dedicated
+                                                             Up / Down pickers + Record buttons on the row below; the main
+                                                             Descriptor / Invert / HalfAxis / DeadZone fields are unused for
+                                                             that kind, so these controls would just be misleading noise. -->
                                                         <Button Command="{Binding ToggleRecordCommand}"
                                                                 Width="40" HorizontalAlignment="Center" Margin="2"
-                                                                VerticalAlignment="Center">
+                                                                VerticalAlignment="Center"
+                                                                Visibility="{Binding IsIncrementalKind, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
                                                             <TextBlock Text="{Binding RecordButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
                                                             <Button.ToolTip>
                                                                 <TextBlock Text="{Binding RecordButtonText}"/>
                                                             </Button.ToolTip>
                                                         </Button>
-                                                        <!-- Clear button — same icon and design as the
-                                                             main row's Clear button. Resets descriptor /
-                                                             flags / deadzone but keeps the source row. -->
                                                         <Button Command="{Binding ClearCommand}"
                                                                 Width="40" HorizontalAlignment="Center" Margin="2"
-                                                                VerticalAlignment="Center">
+                                                                VerticalAlignment="Center"
+                                                                Visibility="{Binding IsIncrementalKind, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
                                                             <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
                                                             <Button.ToolTip>
                                                                 <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
                                                             </Button.ToolTip>
                                                         </Button>
-                                                        <!-- Options column — same Pad_Invert / Pad_Half
-                                                             localized labels and layout as the main row. -->
-                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Width="220">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Width="220"
+                                                                    Visibility="{Binding IsIncrementalKind, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
                                                             <CheckBox Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"
                                                                       IsChecked="{Binding Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
@@ -1943,12 +1944,8 @@
                                                                       IsChecked="{Binding HalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                       VerticalAlignment="Center"/>
                                                         </StackPanel>
-                                                        <!-- Per-source axis-to-button deadzone — same
-                                                             slider / textbox / % / reset combo and styles
-                                                             as the main row, gated on
-                                                             IsDeadZoneApplicable (axis source AND
-                                                             button-class target). -->
-                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0" Width="230">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0" Width="230"
+                                                                    Visibility="{Binding IsIncrementalKind, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
                                                             <StackPanel.Style>
                                                                 <Style TargetType="StackPanel">
                                                                     <Style.Triggers>
@@ -2110,11 +2107,57 @@
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
 
-                                        <!-- + Add source -->
-                                        <Button Content="+ Add source" Padding="6,2"
-                                                HorizontalAlignment="Left" Margin="0,4,0,0"
-                                                Command="{Binding AddExtraSourceCommand}"
-                                                ToolTip="Add another physical input to this row"/>
+                                        <!-- Row footer: + Add source button on the left,
+                                             optional Invert-while-held modifier inline on the right.
+                                             The modifier shows as a compact chip-style picker only
+                                             for axis / trigger targets, so it sits next to the +Add
+                                             button without taking a whole panel of its own. -->
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                            <Button Content="+ Add source" Padding="6,2"
+                                                    Command="{Binding AddExtraSourceCommand}"
+                                                    ToolTip="Add another physical input to this row"/>
+                                            <StackPanel Orientation="Horizontal" Margin="16,0,0,0"
+                                                        Visibility="{Binding IsInvertOnHoldApplicable, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Text="↔ Invert while held" FontSize="11"
+                                                           VerticalAlignment="Center"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                           Margin="0,0,6,0"
+                                                           ToolTip="Pick a button — while it's held, this row's output flips sign (B.3 reversible throttle)."/>
+                                                <ComboBox ItemsSource="{Binding AvailableInputsView}"
+                                                          SelectedItem="{Binding InvertOnHoldInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          DisplayMemberPath="DisplayName"
+                                                          MinWidth="200" Margin="0,0,2,0" Padding="4,2"
+                                                          VerticalAlignment="Center"
+                                                          PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                    <ComboBox.GroupStyle>
+                                                        <GroupStyle>
+                                                            <GroupStyle.HeaderTemplate>
+                                                                <DataTemplate>
+                                                                    <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                        <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                                   TextTrimming="CharacterEllipsis"/>
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </GroupStyle.HeaderTemplate>
+                                                        </GroupStyle>
+                                                    </ComboBox.GroupStyle>
+                                                </ComboBox>
+                                                <Button Command="{Binding RecordInvertOnHoldCommand}"
+                                                        Width="32" Padding="2"
+                                                        VerticalAlignment="Center"
+                                                        ToolTip="Record the modifier by pressing the button">
+                                                    <TextBlock Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                                                </Button>
+                                                <Button Command="{Binding ClearInvertOnHoldCommand}"
+                                                        Width="32" Padding="2" Margin="2,0,0,0"
+                                                        VerticalAlignment="Center"
+                                                        ToolTip="Clear the modifier"
+                                                        Visibility="{Binding HasInvertOnHoldButton, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                                                </Button>
+                                            </StackPanel>
+                                        </StackPanel>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>

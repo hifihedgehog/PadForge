@@ -360,6 +360,7 @@ namespace PadForge.Common.Input
                         float combined = isCustom
                             ? ClampBipolar(EvaluateCustomFloat(row, positional))
                             : ClampBipolar(CombineHelper.CombineAxis(row.CombineMode, positional));
+                        if (IsInvertOnHoldActive(row, state, thisDeviceGuid)) combined = -combined;
                         WriteBipolarAxisTarget(row.Target, combined, ref gp);
                         multiDone?.Add(row.Target);
                         continue;
@@ -372,9 +373,9 @@ namespace PadForge.Common.Input
                             state, src, slotIndex, row.Target, i, runtime, dt));
                     }
                     if (axisContribs.Count == 0) continue;
-                    WriteBipolarAxisTarget(row.Target,
-                        ClampBipolar(CombineHelper.CombineAxis(row.CombineMode, axisContribs)),
-                        ref gp);
+                    float combinedSingle = ClampBipolar(CombineHelper.CombineAxis(row.CombineMode, axisContribs));
+                    if (IsInvertOnHoldActive(row, state, thisDeviceGuid)) combinedSingle = -combinedSingle;
+                    WriteBipolarAxisTarget(row.Target, combinedSingle, ref gp);
                 }
                 else if (kind == TargetKind.Trigger)
                 {
@@ -385,6 +386,7 @@ namespace PadForge.Common.Input
                         float combined = isCustom
                             ? ClampUnipolar(EvaluateCustomFloat(row, positional))
                             : ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, positional));
+                        if (IsInvertOnHoldActive(row, state, thisDeviceGuid)) combined = 1f - combined;
                         WriteTriggerTarget(row.Target, combined, ref gp);
                         multiDone?.Add(row.Target);
                         continue;
@@ -397,11 +399,33 @@ namespace PadForge.Common.Input
                             state, src, slotIndex, row.Target, i, runtime, dt));
                     }
                     if (axisContribs.Count == 0) continue;
-                    WriteTriggerTarget(row.Target,
-                        ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, axisContribs)),
-                        ref gp);
+                    float combinedTrig = ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, axisContribs));
+                    if (IsInvertOnHoldActive(row, state, thisDeviceGuid)) combinedTrig = 1f - combinedTrig;
+                    WriteTriggerTarget(row.Target, combinedTrig, ref gp);
                 }
             }
+        }
+
+        /// <summary>True when the row's row-level InvertOnHold modifier is
+        /// currently pressed. Used to sign-flip a bipolar axis or 1−x a
+        /// unipolar trigger AFTER the combine. Reads the modifier button
+        /// against the row's declared device GUID (cross-device modifier)
+        /// or, when that's empty, against the device currently processing
+        /// the row (per-device modifier).</summary>
+        private static bool IsInvertOnHoldActive(MappingRow row, CustomInputState fallbackState, string fallbackDeviceGuid)
+        {
+            if (row == null || string.IsNullOrEmpty(row.InvertOnHoldButton)) return false;
+            CustomInputState s;
+            if (!string.IsNullOrEmpty(row.InvertOnHoldDeviceGuid)
+                && !string.Equals(row.InvertOnHoldDeviceGuid, fallbackDeviceGuid, System.StringComparison.OrdinalIgnoreCase))
+            {
+                s = LookupDeviceState(row.InvertOnHoldDeviceGuid);
+            }
+            else
+            {
+                s = fallbackState;
+            }
+            return SourceKindRuntimeReadButtonLikeBool(s, row.InvertOnHoldButton);
         }
 
         // ─── Per-row buffer reuse (single polling thread; static is safe) ──
@@ -756,6 +780,8 @@ namespace PadForge.Common.Input
                     devState, src, slotIndex, targetName, 0, slotRuntime, dt));
             }
 
+            if (IsInvertOnHoldActive(row, state, thisDeviceGuid)) combined = -combined;
+
             // Map [-1..+1] → signed short with the same convention legacy
             // MapToThumbAxisWithNeg uses: -1 → short.MinValue, +1 → short.MaxValue.
             if (combined <= -1f) value = short.MinValue;
@@ -883,6 +909,8 @@ namespace PadForge.Common.Input
                 combined = ClampBipolar(values[0]);
             }
 
+            if (IsInvertOnHoldActive(row, state, thisDeviceGuid)) combined = -combined;
+
             if (combined <= -1f) value = short.MinValue;
             else if (combined >= 1f) value = short.MaxValue;
             else value = (short)(combined * 32767f);
@@ -931,6 +959,8 @@ namespace PadForge.Common.Input
                 combined = ClampUnipolar(SourceEvaluator.EvaluateForTriggerTarget(
                     devState, src, slotIndex, targetName, 0, slotRuntime, dt));
             }
+
+            if (IsInvertOnHoldActive(row, state, thisDeviceGuid)) combined = 1f - combined;
 
             // [0..+1] → signed short with short.MinValue = 0% (matches the
             // legacy MapToExtendedTriggerAxis convention).

@@ -21,6 +21,11 @@ namespace PadForge.Views
             public PadSetting PadSetting { get; set; }
             public VirtualControllerType OutputType { get; set; }
             public bool IsExtended { get; set; }
+            /// <summary>Source slot index. Caller fills this so the
+            /// Copy From apply path can pull this device's slice of
+            /// the source slot's MappingSet (multi-source ExtraSources
+            /// + CombineMode + Custom formula) — Issue #61.</summary>
+            public int SourceSlot { get; set; } = -1;
         }
 
         /// <summary>

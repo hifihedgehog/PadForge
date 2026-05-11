@@ -1830,7 +1830,7 @@
                                                                   DisplayMemberPath="Name"
                                                                   Width="150" Padding="4,2" Margin="0,0,6,0"
                                                                   VerticalAlignment="Center"
-                                                                  ToolTip="Direct = read the source descriptor; Incremental = ramp an accumulator via Up/Down buttons; Invert On Hold = flip the row's output while a modifier button is held."
+                                                                  ToolTip="{Binding Pad_Mapping_Kind_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                                   PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
                                                         <!-- Direction badge: visible only when the parent target is
                                                              a bipolar stick axis AND this source is button-class.
@@ -1923,14 +1923,14 @@
                                                                     VerticalAlignment="Center"
                                                                     Visibility="{Binding IsInvertOnHoldKind, Converter={StaticResource BoolToVisibilityConverter}}">
                                                             <TextBlock Text="⇋" FontSize="14" VerticalAlignment="Center" Margin="0,0,4,0"
-                                                                       ToolTip="Button that inverts the row's output while held"/>
+                                                                       ToolTip="{Binding Pad_Mapping_Modifier_IconTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                             <StackPanel Orientation="Vertical" Margin="0,0,4,0">
                                                                 <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView,
                                                                             RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                           SelectedItem="{Binding ParamModifierInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                           DisplayMemberPath="DisplayName"
                                                                           MinWidth="240" Padding="4,2"
-                                                                          ToolTip="Modifier — while held, the row's output flips sign."
+                                                                          ToolTip="{Binding Pad_Mapping_Modifier_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                           PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                                     <ComboBox.GroupStyle>
                                                                         <GroupStyle>
@@ -2035,14 +2035,14 @@
                                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
                                                                     Visibility="{Binding IsIncrementalKind, Converter={StaticResource BoolToVisibilityConverter}}">
                                                             <TextBlock Text="↥" FontSize="14" VerticalAlignment="Center" Margin="0,0,2,0"
-                                                                       ToolTip="Button that ramps the accumulator upward while held"/>
+                                                                       ToolTip="{Binding Pad_Mapping_Up_IconTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                             <StackPanel Orientation="Vertical" Margin="0,0,2,0">
                                                                 <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView,
                                                                             RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                           SelectedItem="{Binding ParamUpInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                           DisplayMemberPath="DisplayName"
                                                                           MinWidth="180" Padding="4,2"
-                                                                          ToolTip="Up — button that ramps the accumulator upward while held."
+                                                                          ToolTip="{Binding Pad_Mapping_Up_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                           PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                                     <ComboBox.GroupStyle>
                                                                         <GroupStyle>
@@ -2084,14 +2084,14 @@
                                                                 </Button.ToolTip>
                                                             </Button>
                                                             <TextBlock Text="↧" FontSize="14" VerticalAlignment="Center" Margin="0,0,2,0"
-                                                                       ToolTip="Button that ramps the accumulator downward while held"/>
+                                                                       ToolTip="{Binding Pad_Mapping_Down_IconTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                             <StackPanel Orientation="Vertical" Margin="0,0,2,0">
                                                                 <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView,
                                                                             RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                           SelectedItem="{Binding ParamDownInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                           DisplayMemberPath="DisplayName"
                                                                           MinWidth="180" Padding="4,2"
-                                                                          ToolTip="Down — button that ramps the accumulator downward while held."
+                                                                          ToolTip="{Binding Pad_Mapping_Down_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                           PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                                     <ComboBox.GroupStyle>
                                                                         <GroupStyle>
@@ -2132,44 +2132,49 @@
                                                                     <TextBlock Text="{Binding RecordTextParamDown}"/>
                                                                 </Button.ToolTip>
                                                             </Button>
-                                                            <TextBlock Text="Rate" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                            <TextBlock Text="{Binding Pad_Mapping_Rate, Source={x:Static strings:Strings.Instance}}"
+                                                                       VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                             <Slider Value="{Binding ParamRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     Minimum="0.05" Maximum="5" SmallChange="0.05" LargeChange="0.5"
                                                                     Width="80" VerticalAlignment="Center"
-                                                                    ToolTip="Sweep speed in units per second. 0.5 = full range in 2 s; 2 = full range in 0.5 s."/>
+                                                                    ToolTip="{Binding Pad_Mapping_Rate_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                             <TextBox Text="{Binding ParamRate, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                                      Width="44" Margin="4,0,8,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
-                                                            <CheckBox Content="Sticky" IsChecked="{Binding ParamSticky, Mode=TwoWay}"
+                                                            <CheckBox Content="{Binding Pad_Mapping_Sticky, Source={x:Static strings:Strings.Instance}}"
+                                                                      IsChecked="{Binding ParamSticky, Mode=TwoWay}"
                                                                       VerticalAlignment="Center" Margin="0,0,8,0"
-                                                                      ToolTip="When checked, the accumulator holds its value after release (cruise control). When unchecked, it snaps back to Min on release."/>
-                                                            <TextBlock Text="Min" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                                      ToolTip="{Binding Pad_Mapping_Sticky_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <TextBlock Text="{Binding Pad_Mapping_Min, Source={x:Static strings:Strings.Instance}}"
+                                                                       VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <TextBox Text="{Binding ParamMin, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                                      Width="44" Margin="0,0,6,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"
-                                                                     ToolTip="Lower bound of the accumulator. -1 = full negative for bipolar axis targets; 0 = unipolar."/>
-                                                            <TextBlock Text="Max" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                                     ToolTip="{Binding Pad_Mapping_Min_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <TextBlock Text="{Binding Pad_Mapping_Max, Source={x:Static strings:Strings.Instance}}"
+                                                                       VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <TextBox Text="{Binding ParamMax, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                                      Width="44" Margin="0,0,4,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"
-                                                                     ToolTip="Upper bound of the accumulator. 1 = full positive."/>
+                                                                     ToolTip="{Binding Pad_Mapping_Max_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                         </StackPanel>
                                                         <Button Content="✕" Padding="6,2" Margin="2"
                                                                 VerticalAlignment="Center"
                                                                 Command="{Binding DataContext.RemoveExtraSourceCommand,
                                                                           RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                 CommandParameter="{Binding}"
-                                                                ToolTip="Remove this source"/>
+                                                                ToolTip="{Binding Pad_Mapping_RemoveSource_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
 
                                         <!-- + Add source -->
-                                        <Button Content="+ Add source" Padding="6,2"
+                                        <Button Content="{Binding Pad_Mapping_AddSource, Source={x:Static strings:Strings.Instance}}"
+                                                Padding="6,2"
                                                 HorizontalAlignment="Left" Margin="0,4,0,0"
                                                 Command="{Binding AddExtraSourceCommand}"
-                                                ToolTip="Add another physical input to this row"/>
+                                                ToolTip="{Binding Pad_Mapping_AddSource_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>

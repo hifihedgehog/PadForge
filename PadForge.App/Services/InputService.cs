@@ -2020,13 +2020,32 @@ namespace PadForge.Services
                 foreach (var ud in SettingsManager.UserDevices.Items)
                 {
                     if (ud != null && ud.InstanceGuid == g)
-                        return ud.ResolvedName ?? ud.ProductName ?? ud.InstanceName ?? deviceGuid;
+                        return LocalizedDeviceName(ud) ?? deviceGuid;
                 }
             }
             // Unknown device — show truncated GUID so the row is still
             // legible.
             string s = deviceGuid;
             return s.Length > 8 ? s.Substring(0, 8) + "…" : s;
+        }
+
+        /// <summary>Returns the user-facing device name with localized
+        /// strings substituted for aggregate/overlay devices (so the
+        /// Mappings tab and recording status text match what the Devices
+        /// page shows for "All Keyboards (Merged)" / "All Mice (Merged)" /
+        /// "All Touchpads (Merged)" / the touchpad overlay). Falls back
+        /// to ResolvedName → ProductName → InstanceName.</summary>
+        public static string LocalizedDeviceName(UserDevice ud)
+        {
+            if (ud == null) return null;
+            switch (ud.DevicePath)
+            {
+                case "aggregate://keyboards": return Strings.Instance.Devices_AllKeyboardsMerged;
+                case "aggregate://mice":      return Strings.Instance.Devices_AllMiceMerged;
+                case "aggregate://touchpads": return Strings.Instance.Devices_AllTouchpadsMerged;
+                case "overlay://touchpad":    return Strings.Instance.Dashboard_TouchpadOverlay;
+                default: return ud.ResolvedName ?? ud.ProductName ?? ud.InstanceName;
+            }
         }
 
         /// <summary>True when the mapping target is a gamepad-class

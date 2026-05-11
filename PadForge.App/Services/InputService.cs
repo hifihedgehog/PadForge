@@ -1080,31 +1080,36 @@ namespace PadForge.Services
             if (padVm == null) return;
 
             int padIndex = padVm.PadIndex;
-            bool haveCombinedOutput = padIndex >= 0
-                && padIndex < InputManager.MaxPads
-                && _inputManager != null;
+            bool haveEngine = _inputManager != null
+                && padIndex >= 0
+                && padIndex < InputManager.MaxPads;
 
-            // For standard gamepad-class targets, read the engine's
-            // per-slot CombinedOutputStates so the Value column shows
-            // the post-combine, post-coerce output (multi-source rows
-            // reflect every Source's contribution, not just the primary).
-            // For non-gamepad targets (Extended / KbM / MIDI), or when
-            // a row has no descriptor at all, fall back to the legacy
-            // single-device read from the slot's selected device.
-            Gamepad gp = haveCombinedOutput ? _inputManager.CombinedOutputStates[padIndex] : default;
+            // The Value column should show each row's post-combine
+            // output (multi-source contributions merged via the row's
+            // CombineMode), not just the primary source's raw value.
+            // For every VC type we pull from the engine's combined
+            // output for that type:
+            //   Xbox / PlayStation → CombinedOutputStates  (Gamepad)
+            //   Extended           → CombinedExtendedRawStates
+            //   KbM                → CombinedKbmRawStates
+            //   MIDI               → CombinedMidiRawStates
+            // The legacy per-device read on the slot's selected device
+            // is the final fallback for rows whose target name the
+            // combined readers don't recognize.
             UserDevice ud = FindSelectedDeviceForSlot(padVm);
             var fallbackState = ud?.InputState;
+            var outputType = padVm.OutputType;
 
             foreach (var mapping in padVm.Mappings)
             {
-                if (haveCombinedOutput)
+                int? combined = null;
+                if (haveEngine)
+                    combined = ReadCombinedOutputValue(padVm, padIndex, outputType, mapping.TargetSettingName);
+
+                if (combined.HasValue)
                 {
-                    int? combined = ReadCombinedOutputValue(in gp, mapping.TargetSettingName);
-                    if (combined.HasValue)
-                    {
-                        mapping.CurrentValueText = combined.Value.ToString();
-                        continue;
-                    }
+                    mapping.CurrentValueText = combined.Value.ToString();
+                    continue;
                 }
 
                 if (string.IsNullOrEmpty(mapping.SourceDescriptor) || fallbackState == null)
@@ -1116,37 +1121,152 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>Reads a gamepad-class target's current post-combine
-        /// value from a <see cref="Gamepad"/> output state. Returns null
-        /// for non-gamepad targets (Extended / KbM / MIDI) so callers
-        /// can fall through to their legacy per-device read path.</summary>
-        private static int? ReadCombinedOutputValue(in Gamepad gp, string target)
+        /// <summary>Reads a target's current post-combine output value
+        /// from the engine's per-VC-type CombinedXxxRawStates. Returns
+        /// null when the target name doesn't match any known shape for
+        /// the slot's OutputType — callers then fall back to the legacy
+        /// per-device read path.</summary>
+        private int? ReadCombinedOutputValue(PadViewModel padVm, int padIndex,
+            VirtualControllerType outputType, string target)
         {
-            return target switch
+            if (string.IsNullOrEmpty(target)) return null;
+
+            // Standard gamepad output (Xbox / PlayStation slots).
+            if (outputType == VirtualControllerType.Xbox
+                || outputType == VirtualControllerType.PlayStation)
             {
-                "ButtonA"          => (gp.Buttons & Gamepad.A) != 0 ? 1 : 0,
-                "ButtonB"          => (gp.Buttons & Gamepad.B) != 0 ? 1 : 0,
-                "ButtonX"          => (gp.Buttons & Gamepad.X) != 0 ? 1 : 0,
-                "ButtonY"          => (gp.Buttons & Gamepad.Y) != 0 ? 1 : 0,
-                "LeftShoulder"     => (gp.Buttons & Gamepad.LEFT_SHOULDER) != 0 ? 1 : 0,
-                "RightShoulder"    => (gp.Buttons & Gamepad.RIGHT_SHOULDER) != 0 ? 1 : 0,
-                "ButtonBack"       => (gp.Buttons & Gamepad.BACK) != 0 ? 1 : 0,
-                "ButtonStart"      => (gp.Buttons & Gamepad.START) != 0 ? 1 : 0,
-                "ButtonGuide"      => (gp.Buttons & Gamepad.GUIDE) != 0 ? 1 : 0,
-                "ButtonShare"      => gp.Share ? 1 : 0,
-                "LeftThumbButton"  => (gp.Buttons & Gamepad.LEFT_THUMB) != 0 ? 1 : 0,
-                "RightThumbButton" => (gp.Buttons & Gamepad.RIGHT_THUMB) != 0 ? 1 : 0,
-                "DPadUp"           => (gp.Buttons & Gamepad.DPAD_UP) != 0 ? 1 : 0,
-                "DPadDown"         => (gp.Buttons & Gamepad.DPAD_DOWN) != 0 ? 1 : 0,
-                "DPadLeft"         => (gp.Buttons & Gamepad.DPAD_LEFT) != 0 ? 1 : 0,
-                "DPadRight"        => (gp.Buttons & Gamepad.DPAD_RIGHT) != 0 ? 1 : 0,
-                "LeftTrigger"      => gp.LeftTrigger,
-                "RightTrigger"     => gp.RightTrigger,
-                "LeftThumbAxisX"   => gp.ThumbLX,
-                "LeftThumbAxisY"   => gp.ThumbLY,
-                "RightThumbAxisX"  => gp.ThumbRX,
-                "RightThumbAxisY"  => gp.ThumbRY,
-                _ => null,
+                var gp = _inputManager.CombinedOutputStates[padIndex];
+                return target switch
+                {
+                    "ButtonA"          => (gp.Buttons & Gamepad.A) != 0 ? 1 : 0,
+                    "ButtonB"          => (gp.Buttons & Gamepad.B) != 0 ? 1 : 0,
+                    "ButtonX"          => (gp.Buttons & Gamepad.X) != 0 ? 1 : 0,
+                    "ButtonY"          => (gp.Buttons & Gamepad.Y) != 0 ? 1 : 0,
+                    "LeftShoulder"     => (gp.Buttons & Gamepad.LEFT_SHOULDER) != 0 ? 1 : 0,
+                    "RightShoulder"    => (gp.Buttons & Gamepad.RIGHT_SHOULDER) != 0 ? 1 : 0,
+                    "ButtonBack"       => (gp.Buttons & Gamepad.BACK) != 0 ? 1 : 0,
+                    "ButtonStart"      => (gp.Buttons & Gamepad.START) != 0 ? 1 : 0,
+                    "ButtonGuide"      => (gp.Buttons & Gamepad.GUIDE) != 0 ? 1 : 0,
+                    "ButtonShare"      => gp.Share ? 1 : 0,
+                    "LeftThumbButton"  => (gp.Buttons & Gamepad.LEFT_THUMB) != 0 ? 1 : 0,
+                    "RightThumbButton" => (gp.Buttons & Gamepad.RIGHT_THUMB) != 0 ? 1 : 0,
+                    "DPadUp"           => (gp.Buttons & Gamepad.DPAD_UP) != 0 ? 1 : 0,
+                    "DPadDown"         => (gp.Buttons & Gamepad.DPAD_DOWN) != 0 ? 1 : 0,
+                    "DPadLeft"         => (gp.Buttons & Gamepad.DPAD_LEFT) != 0 ? 1 : 0,
+                    "DPadRight"        => (gp.Buttons & Gamepad.DPAD_RIGHT) != 0 ? 1 : 0,
+                    "LeftTrigger"      => gp.LeftTrigger,
+                    "RightTrigger"     => gp.RightTrigger,
+                    "LeftThumbAxisX"   => gp.ThumbLX,
+                    "LeftThumbAxisY"   => gp.ThumbLY,
+                    "RightThumbAxisX"  => gp.ThumbRX,
+                    "RightThumbAxisY"  => gp.ThumbRY,
+                    _ => null,
+                };
+            }
+
+            // Extended (game controller of arbitrary shape) — Axes /
+            // Buttons / POVs of customizable count.
+            if (outputType == VirtualControllerType.Extended)
+            {
+                var ext = _inputManager.CombinedExtendedRawStates[padIndex];
+                // ExtendedAxis{N} / ExtendedAxis{N}Neg
+                if (target.StartsWith("ExtendedAxis", StringComparison.Ordinal))
+                {
+                    string rest = target.Substring("ExtendedAxis".Length);
+                    if (rest.EndsWith("Neg", StringComparison.Ordinal))
+                        rest = rest.Substring(0, rest.Length - 3);
+                    if (int.TryParse(rest, out int axisIdx) && ext.Axes != null
+                        && axisIdx >= 0 && axisIdx < ext.Axes.Length)
+                        return ext.Axes[axisIdx];
+                    return null;
+                }
+                // ExtendedBtn{N}
+                if (target.StartsWith("ExtendedBtn", StringComparison.Ordinal)
+                    && int.TryParse(target.Substring("ExtendedBtn".Length), out int btn))
+                    return ext.IsButtonPressed(btn) ? 1 : 0;
+                // ExtendedPov{N}Up/Down/Left/Right
+                if (target.StartsWith("ExtendedPov", StringComparison.Ordinal))
+                {
+                    string rest = target.Substring("ExtendedPov".Length);
+                    int dirIdx = -1;
+                    string dir = "";
+                    foreach (var d in new[] { "Up", "Down", "Left", "Right" })
+                    {
+                        if (rest.EndsWith(d, StringComparison.Ordinal))
+                        { dir = d; dirIdx = rest.Length - d.Length; break; }
+                    }
+                    if (dirIdx > 0 && int.TryParse(rest.Substring(0, dirIdx), out int povIdx)
+                        && ext.Povs != null && povIdx >= 0 && povIdx < ext.Povs.Length)
+                    {
+                        return PovInDirection(ext.Povs[povIdx], dir) ? 1 : 0;
+                    }
+                    return null;
+                }
+                return null;
+            }
+
+            // KbM — keys, mouse buttons, mouse axes, scroll.
+            if (outputType == VirtualControllerType.KeyboardMouse)
+            {
+                var kbm = _inputManager.CombinedKbmRawStates[padIndex];
+                if (target.StartsWith("KbmKey", StringComparison.Ordinal)
+                    && byte.TryParse(target.Substring("KbmKey".Length),
+                        System.Globalization.NumberStyles.HexNumber,
+                        System.Globalization.CultureInfo.InvariantCulture, out byte vk))
+                    return kbm.GetKey(vk) ? 1 : 0;
+                if (target.StartsWith("KbmMBtn", StringComparison.Ordinal)
+                    && int.TryParse(target.Substring("KbmMBtn".Length), out int mb))
+                    return kbm.GetMouseButton(mb) ? 1 : 0;
+                return target switch
+                {
+                    "KbmMouseX"  => kbm.MouseDeltaX,
+                    "KbmMouseY"  => kbm.MouseDeltaY,
+                    "KbmScroll"  => kbm.ScrollDelta,
+                    _ => null,
+                };
+            }
+
+            // MIDI — CC values (0..127, center 64) + notes (on/off).
+            if (outputType == VirtualControllerType.Midi)
+            {
+                var midi = _inputManager.CombinedMidiRawStates[padIndex];
+                if (target.StartsWith("MidiCC", StringComparison.Ordinal))
+                {
+                    string rest = target.Substring("MidiCC".Length);
+                    if (rest.EndsWith("Neg", StringComparison.Ordinal))
+                        rest = rest.Substring(0, rest.Length - 3);
+                    if (int.TryParse(rest, out int cc) && midi.CcValues != null
+                        && cc >= 0 && cc < midi.CcValues.Length)
+                        return midi.CcValues[cc];
+                    return null;
+                }
+                if (target.StartsWith("MidiNote", StringComparison.Ordinal)
+                    && int.TryParse(target.Substring("MidiNote".Length), out int note)
+                    && midi.Notes != null && note >= 0 && note < midi.Notes.Length)
+                    return midi.Notes[note] ? 1 : 0;
+                return null;
+            }
+
+            return null;
+        }
+
+        /// <summary>True when an Extended POV's centidegree value is in
+        /// the sector matching the named cardinal direction. Matches
+        /// the engine's 4-way sector partition used in Step 3/4.</summary>
+        private static bool PovInDirection(int centidegrees, string dir)
+        {
+            if (centidegrees < 0) return false;
+            // Normalize to [0, 36000).
+            int cd = centidegrees % 36000;
+            // Same 90°-sector mapping the engine uses: any angle within
+            // 45° of the cardinal counts. Up = [-45°, +45°] mod 360.
+            return dir switch
+            {
+                "Up"    => cd >= 31500 || cd <  4500,
+                "Right" => cd >=  4500 && cd < 13500,
+                "Down"  => cd >= 13500 && cd < 22500,
+                "Left"  => cd >= 22500 && cd < 31500,
+                _ => false,
             };
         }
 

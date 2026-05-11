@@ -131,6 +131,7 @@
             <conv:BoolToTriggerShapeKindConverter x:Key="BoolToTriggerShapeKindConverter" />
             <conv:RgbToBrushConverter x:Key="RgbToBrushConverter" />
             <conv:IndexToLetterConverter x:Key="IndexToLetterConverter" />
+            <conv:IndexLessThanVisibilityConverter x:Key="IndexLessThanVisibilityConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

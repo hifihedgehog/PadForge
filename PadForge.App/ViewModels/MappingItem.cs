@@ -60,6 +60,7 @@ namespace PadForge.ViewModels
         private void OnExtraSourcesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged(nameof(IsMultiSource));
+            OnPropertyChanged(nameof(VariableCount));
             OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
             OnPropertyChanged(nameof(ShouldShowCustomExpression));
             // Source count changed → custom-expression warning state
@@ -931,6 +932,12 @@ namespace PadForge.ViewModels
         }
 
         public bool IsMultiSource => ExtraSources.Count > 0;
+
+        /// <summary>Number of source variables the row's combine formula can
+        /// reference. Primary slot (<c>a</c>) is always present, plus one
+        /// per ExtraSource. Drives the chip-palette visibility so users
+        /// only see letters that map to a real source.</summary>
+        public int VariableCount => 1 + (ExtraSources?.Count ?? 0);
         public bool IsCustomCombine => string.Equals(_combineMode, "Custom", StringComparison.Ordinal);
 
         /// <summary>True only when a row has multiple sources AND the

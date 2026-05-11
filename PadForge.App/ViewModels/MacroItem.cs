@@ -585,7 +585,7 @@ namespace PadForge.ViewModels
             }
         }
 
-        private ObservableCollection<MacroExpressionVariable> _triggerExpressionVariables = new();
+        private ObservableCollection<MacroExpressionVariable> _triggerExpressionVariables;
 
         /// <summary>Ordered list of variables for the custom-expression trigger.
         /// Variable at index 0 binds to <c>a</c>, index 1 to <c>b</c>, etc.
@@ -593,16 +593,41 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public ObservableCollection<MacroExpressionVariable> TriggerExpressionVariables
         {
-            get => _triggerExpressionVariables;
+            get
+            {
+                if (_triggerExpressionVariables == null)
+                {
+                    _triggerExpressionVariables = new ObservableCollection<MacroExpressionVariable>();
+                    _triggerExpressionVariables.CollectionChanged += OnTriggerExpressionVariablesChanged;
+                }
+                return _triggerExpressionVariables;
+            }
             set
             {
+                if (_triggerExpressionVariables != null)
+                    _triggerExpressionVariables.CollectionChanged -= OnTriggerExpressionVariablesChanged;
                 _triggerExpressionVariables = value ?? new ObservableCollection<MacroExpressionVariable>();
+                _triggerExpressionVariables.CollectionChanged += OnTriggerExpressionVariablesChanged;
                 OnPropertyChanged(nameof(TriggerExpressionVariables));
                 OnPropertyChanged(nameof(TriggerExpressionVariableSpecs));
                 OnPropertyChanged(nameof(CustomExpressionStatus));
                 OnPropertyChanged(nameof(IsCustomExpressionWarning));
+                OnPropertyChanged(nameof(VariableCount));
             }
         }
+
+        private void OnTriggerExpressionVariablesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(VariableCount));
+            OnPropertyChanged(nameof(CustomExpressionStatus));
+            OnPropertyChanged(nameof(IsCustomExpressionWarning));
+        }
+
+        /// <summary>Number of variables defined for the custom-expression
+        /// trigger. Drives the chip-palette visibility so users only see
+        /// letters that map to a real variable.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public int VariableCount => _triggerExpressionVariables?.Count ?? 0;
 
         /// <summary>Serializable comma-separated list of the variables' Spec
         /// strings. Empty entries are preserved so a/b/c/... indexing is

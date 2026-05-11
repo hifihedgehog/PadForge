@@ -628,21 +628,31 @@ namespace PadForge.Services
                     if (string.Equals(er.LayerMask ?? "Base", "Base", StringComparison.Ordinal)
                         && rebuiltByKey.TryGetValue(key, out var rrow))
                     {
-                        // Append any rebuilt sources not already
-                        // present (dedup by DeviceGuid + Descriptor).
-                        var seen = new HashSet<(string, string)>();
+                        // Only inject rebuilt sources for devices that
+                        // aren't already represented on this row. If the
+                        // row already has any source from a given device,
+                        // the user's authoring is authoritative for that
+                        // device — don't double-add the same device's
+                        // auto-mapped legacy descriptor as an extra
+                        // source (that was the "deleted extra keeps
+                        // coming back" alias bug). Device-by-device gate
+                        // is stricter than the previous (DeviceGuid,
+                        // Descriptor) dedup which couldn't distinguish a
+                        // user-deleted duplicate from a never-seen one.
+                        var devicesPresent = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                         foreach (var s in er.Sources)
                         {
                             if (s == null) continue;
-                            seen.Add(((s.DeviceGuid ?? "").ToLowerInvariant(), s.Descriptor ?? ""));
+                            devicesPresent.Add((s.DeviceGuid ?? "").ToLowerInvariant());
                         }
                         if (rrow.Sources != null)
                         {
                             foreach (var s in rrow.Sources)
                             {
                                 if (s == null) continue;
-                                var k = ((s.DeviceGuid ?? "").ToLowerInvariant(), s.Descriptor ?? "");
-                                if (seen.Add(k)) er.Sources.Add(s);
+                                if (devicesPresent.Contains((s.DeviceGuid ?? "").ToLowerInvariant()))
+                                    continue;
+                                er.Sources.Add(s);
                             }
                         }
                         consumedRebuilt.Add(key);
@@ -1721,13 +1731,19 @@ namespace PadForge.Services
                 // Issue #61 Phase 6 ShiftActivator UI push reverted —
                 // multi-source UI must complete first per recipe order.
 
-                // Phase 2A: rebuild MappingSet from the just-updated
-                // PadSetting fields BEFORE serializing — but only replace
-                // rows that don't have user-added multi-source extras.
-                // Multi-source rows authored via the Phase 2C UI are
-                // preserved across save round-trips; single-source rows
-                // pick up the latest PadSetting edits.
-                MergeMappingSetsFromLegacy();
+                // Issue #61: do NOT run MergeMappingSetsFromLegacy in
+                // SaveToFile. The merge appends rebuilt sources from each
+                // device's PadSetting fields to existing rows — useful
+                // when a NEW device gets assigned to a slot (auto-map
+                // surfacing), but at save-time it re-injects auto-mapped
+                // descriptors that the user has explicitly DELETED from
+                // ExtraSources. Symptom: user removes a duplicate-looking
+                // extra source on a multi-device slot, save fires, merge
+                // re-adds the same (DeviceGuid, Descriptor) pair as an
+                // extra. The PushUi step above is now authoritative for
+                // save-time MappingSet state; the merge stays wired to
+                // the device-assign paths (DeviceService.RefreshMappingSetsFromLegacy)
+                // where its job actually is.
                 data.SlotMappingSets = SettingsManager.SlotMappingSets;
 
                 // Collect app settings from ViewModel.

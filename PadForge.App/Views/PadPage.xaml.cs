@@ -1217,6 +1217,65 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
+        //  Mappings DataGrid: keep row-details expanded for
+        //  multi-source rows even when not selected.
+        //
+        //  WPF's RowDetailsVisibilityMode sets DataGridRow.DetailsVisibility
+        //  as a LOCAL value on each row when selection changes, and style
+        //  triggers can't override local-value dependency-property writes.
+        //  So we manage DetailsVisibility from code-behind instead: hook
+        //  LoadingRow to apply on first display, listen to each MappingItem's
+        //  IsMultiSource for live transitions, and SelectionChanged to
+        //  re-assert when WPF's internal selection logic kicks back in.
+        // ─────────────────────────────────────────────
+
+        private void MappingDataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            UpdateRowDetailsVisibility(e.Row);
+            if (e.Row.DataContext is MappingItem mi)
+            {
+                mi.PropertyChanged -= OnMappingItem_RowDetailsPropertyChanged;
+                mi.PropertyChanged += OnMappingItem_RowDetailsPropertyChanged;
+            }
+        }
+
+        private void MappingDataGrid_UnloadingRow(object sender, DataGridRowEventArgs e)
+        {
+            if (e.Row.DataContext is MappingItem mi)
+                mi.PropertyChanged -= OnMappingItem_RowDetailsPropertyChanged;
+        }
+
+        private void MappingDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is not DataGrid grid) return;
+            // Re-assert visibility on every row whose selection state changed
+            // and on every multi-source row. WPF will have just set the
+            // selected row to Visible and the deselected row to Collapsed
+            // via its VisibleWhenSelected logic; we override the Collapsed
+            // back to Visible for multi-source rows.
+            foreach (var item in grid.Items)
+            {
+                if (grid.ItemContainerGenerator.ContainerFromItem(item) is DataGridRow row)
+                    UpdateRowDetailsVisibility(row);
+            }
+        }
+
+        private void OnMappingItem_RowDetailsPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(MappingItem.IsMultiSource)) return;
+            if (sender is not MappingItem mi) return;
+            if (MappingDataGrid?.ItemContainerGenerator?.ContainerFromItem(mi) is DataGridRow row)
+                UpdateRowDetailsVisibility(row);
+        }
+
+        private static void UpdateRowDetailsVisibility(DataGridRow row)
+        {
+            if (row == null) return;
+            bool keepOpen = (row.DataContext is MappingItem mi && mi.IsMultiSource) || row.IsSelected;
+            row.DetailsVisibility = keepOpen ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        // ─────────────────────────────────────────────
         //  Custom formula visual editor (Issue #61)
         //
         //  Each chip Button in the formula editor's WrapPanel carries

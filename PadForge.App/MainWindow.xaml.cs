@@ -667,23 +667,20 @@ namespace PadForge
                 var activePad = _viewModel.SelectedPad;
                 if (activePad == null) return;
 
+                // The dropdown's selected device has NO bearing on the per-VC
+                // Mappings tab — the recorder listens to every device on the
+                // slot and CompleteRecording stamps PrimarySourceDeviceGuid
+                // with whichever one physically fired. deviceGuid below is
+                // used only for fallback display-text resolution.
                 Guid deviceGuid = activePad.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
 
-                // Issue #61 — recording bypasses the Source-column ComboBox,
-                // so the SelectedInput setter that normally stamps
-                // PrimarySourceDeviceGuid never runs. Stamp it from the
-                // recording device here (before SyncSelectedInputFromDescriptor,
-                // which needs it to disambiguate same-descriptor inputs across
-                // devices) so the Mappings tab's per-VC view is device-correct
-                // immediately — instead of only after the user toggles the
-                // Device dropdown, which used to be the only thing that
-                // re-pulled the primary's device origin.
-                void StampRecordedDevice(MappingItem m)
-                {
-                    if (m == null || deviceGuid == Guid.Empty) return;
-                    m.PrimarySourceDeviceGuid = deviceGuid.ToString().ToLowerInvariant();
-                    m.PrimarySourceDeviceLabel = activePad.SelectedMappedDevice?.Name ?? string.Empty;
-                }
+                // Resolve display text against the device that actually
+                // fired the recording (CompleteRecording set its GUID on
+                // the row), falling back to the dropdown device only when
+                // the row has no recorded device origin yet.
+                Guid ResolveGuidFor(MappingItem m)
+                    => (m != null && Guid.TryParse(m.PrimarySourceDeviceGuid, out var g) && g != Guid.Empty)
+                        ? g : deviceGuid;
 
                 // Push the just-recorded UI state into the in-memory per-VC
                 // MappingSet now (rather than waiting for the debounced save)
@@ -691,6 +688,25 @@ namespace PadForge
                 // consistent the moment the user switches to it, with no
                 // Device-dropdown toggle needed.
                 void CommitRecordedMappingSet() => _settingsService.PushUiExtraSourcesIntoSlotMappingSets();
+
+                // ── Extra-source recording: the result targeted an added
+                // source, not the row's primary. Commit it (appending the
+                // freshly-recorded source to the row if it isn't already
+                // there) and stop — do NOT touch the primary descriptor or
+                // run the bipolar auto-prompt, which would clobber whatever
+                // the row already had mapped. ──
+                if (result.ExtraSource != null)
+                {
+                    var parent = result.Mapping;
+                    if (parent != null && !parent.ExtraSources.Contains(result.ExtraSource))
+                        parent.ExtraSources.Add(result.ExtraSource);
+                    CommitRecordedMappingSet();
+                    if (activePad.IsMapAllActive)
+                        activePad.OnMapAllItemCompleted();
+                    else
+                        activePad.CurrentRecordingTarget = null;
+                    return;
+                }
 
                 // ── Neg-recording mode: redirect result to NegSourceDescriptor ──
                 if (_pendingNegMapping != null)
@@ -705,9 +721,9 @@ namespace PadForge
                         negMapping.LoadDescriptor(result.Descriptor);
                         negMapping.NegSourceDescriptor = string.Empty;
                         _savedPosDescriptor = null;
-                        StampRecordedDevice(negMapping);
-                        if (deviceGuid != Guid.Empty)
-                            InputService.ResolveDisplayText(negMapping, deviceGuid);
+                        var rgAxis = ResolveGuidFor(negMapping);
+                        if (rgAxis != Guid.Empty)
+                            InputService.ResolveDisplayText(negMapping, rgAxis);
                         negMapping.SyncSelectedInputFromDescriptor();
                         CommitRecordedMappingSet();
 
@@ -739,11 +755,11 @@ namespace PadForge
                         negMapping.SourceDescriptor = string.Empty;
                     }
 
-                    StampRecordedDevice(negMapping);
-                    if (deviceGuid != Guid.Empty)
+                    var rgNeg = ResolveGuidFor(negMapping);
+                    if (rgNeg != Guid.Empty)
                     {
-                        InputService.ResolveDisplayText(negMapping, deviceGuid);
-                        InputService.ResolveNegDisplayText(negMapping, deviceGuid);
+                        InputService.ResolveDisplayText(negMapping, rgNeg);
+                        InputService.ResolveNegDisplayText(negMapping, rgNeg);
                     }
                     negMapping.SyncSelectedInputFromDescriptor();
 
@@ -751,16 +767,10 @@ namespace PadForge
                     // visible ExtraSource on the row so the table reflects
                     // the bipolar pair immediately, without the user having
                     // to toggle the Device dropdown to trigger a load-time
-                    // migration. Fallback device = the recording device,
-                    // used when the primary slot is still empty (neg-first
-                    // / Map All Y first-phase cases).
-                    {
-                        string fallbackGuid = deviceGuid != Guid.Empty
-                            ? deviceGuid.ToString().ToLowerInvariant()
-                            : null;
-                        string fallbackLabel = activePad.SelectedMappedDevice?.Name;
-                        negMapping.PromoteNegDescriptorToExtraSource(fallbackGuid, fallbackLabel);
-                    }
+                    // migration. CompleteRecording already stamped the row's
+                    // device origin from the device that fired, so the
+                    // promoted source inherits the correct DeviceGuid.
+                    negMapping.PromoteNegDescriptorToExtraSource();
 
                     if (!hadSavedPos && negMapping.HasNegDirection && !activePad.IsMapAllActive)
                     {
@@ -810,9 +820,9 @@ namespace PadForge
                 }
 
                 // ── Normal recording ──
-                StampRecordedDevice(result.Mapping);
-                if (deviceGuid != Guid.Empty)
-                    InputService.ResolveDisplayText(result.Mapping, deviceGuid);
+                var rgNormal = ResolveGuidFor(result.Mapping);
+                if (rgNormal != Guid.Empty)
+                    InputService.ResolveDisplayText(result.Mapping, rgNormal);
                 result.Mapping.SyncSelectedInputFromDescriptor();
 
                 // If a directional input (button, POV, slider) was recorded for a bidirectional axis,
@@ -911,6 +921,29 @@ namespace PadForge
                 if (mapping == null) return;
 
                 Guid deviceGuid = padVm.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+
+                // If a bipolar stick-axis row already has an analog axis /
+                // slider as its primary, recording a button for one of the
+                // directional quadrants should ADD it alongside as an extra
+                // source — not overwrite the axis (which is what the primary-
+                // recording path does). The extra is recorded with Invert
+                // matching the quadrant so the engine reads a press as the
+                // negative direction. Empty / button-class primaries keep the
+                // classic "first mapping fills primary, neg quadrant fills
+                // NegSourceDescriptor" flow untouched.
+                if (mapping.HasNegDirection && DescriptorIsAnalogAxis(mapping.SourceDescriptor))
+                {
+                    var extra = new MappingSourceItem
+                    {
+                        Kind = "Direct",
+                        DeadZone = mapping.MappingDeadZone,
+                    };
+                    _recorderService.StartRecordingExtraSource(mapping, extra, padVm.PadIndex,
+                        negRecording: isNegTarget);
+                    if (_recorderService.IsRecording)
+                        padVm.CurrentRecordingTarget = targetName;
+                    return;
+                }
 
                 if (isNegTarget)
                     _pendingNegMapping = mapping;
@@ -3717,6 +3750,25 @@ namespace PadForge
                         WireExtraSource(msi);
                 _settingsService.MarkDirty();
             };
+        }
+
+        /// <summary>True when a mapping descriptor names an analog axis or
+        /// slider (with or without an I/H prefix) — a continuous input, not
+        /// a button / POV / touchpad. Used to decide whether a stick-quadrant
+        /// recording should be added alongside the primary as an extra source
+        /// instead of overwriting it.</summary>
+        private static bool DescriptorIsAnalogAxis(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string d = descriptor;
+            if (d.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
+                d = d.Substring(2);
+            else if (d.StartsWith("I", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1]))
+                d = d.Substring(1);
+            else if (d.StartsWith("H", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1]))
+                d = d.Substring(1);
+            return d.StartsWith("Axis ", StringComparison.Ordinal)
+                || d.StartsWith("Slider ", StringComparison.Ordinal);
         }
 
         private void WireMacroRecording(MacroItem macro, int padIndex)

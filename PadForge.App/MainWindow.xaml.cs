@@ -669,6 +669,29 @@ namespace PadForge
 
                 Guid deviceGuid = activePad.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
 
+                // Issue #61 — recording bypasses the Source-column ComboBox,
+                // so the SelectedInput setter that normally stamps
+                // PrimarySourceDeviceGuid never runs. Stamp it from the
+                // recording device here (before SyncSelectedInputFromDescriptor,
+                // which needs it to disambiguate same-descriptor inputs across
+                // devices) so the Mappings tab's per-VC view is device-correct
+                // immediately — instead of only after the user toggles the
+                // Device dropdown, which used to be the only thing that
+                // re-pulled the primary's device origin.
+                void StampRecordedDevice(MappingItem m)
+                {
+                    if (m == null || deviceGuid == Guid.Empty) return;
+                    m.PrimarySourceDeviceGuid = deviceGuid.ToString().ToLowerInvariant();
+                    m.PrimarySourceDeviceLabel = activePad.SelectedMappedDevice?.Name ?? string.Empty;
+                }
+
+                // Push the just-recorded UI state into the in-memory per-VC
+                // MappingSet now (rather than waiting for the debounced save)
+                // so the Mappings tab — which reads from the MappingSet — is
+                // consistent the moment the user switches to it, with no
+                // Device-dropdown toggle needed.
+                void CommitRecordedMappingSet() => _settingsService.PushUiExtraSourcesIntoSlotMappingSets();
+
                 // ── Neg-recording mode: redirect result to NegSourceDescriptor ──
                 if (_pendingNegMapping != null)
                 {
@@ -682,9 +705,11 @@ namespace PadForge
                         negMapping.LoadDescriptor(result.Descriptor);
                         negMapping.NegSourceDescriptor = string.Empty;
                         _savedPosDescriptor = null;
+                        StampRecordedDevice(negMapping);
                         if (deviceGuid != Guid.Empty)
                             InputService.ResolveDisplayText(negMapping, deviceGuid);
                         negMapping.SyncSelectedInputFromDescriptor();
+                        CommitRecordedMappingSet();
 
                         _viewModel.StatusText = string.Format(Strings.Instance.Status_Recorded_Format, negMapping.TargetLabel, negMapping.SourceDisplayText);
 
@@ -714,6 +739,7 @@ namespace PadForge
                         negMapping.SourceDescriptor = string.Empty;
                     }
 
+                    StampRecordedDevice(negMapping);
                     if (deviceGuid != Guid.Empty)
                     {
                         InputService.ResolveDisplayText(negMapping, deviceGuid);
@@ -758,6 +784,7 @@ namespace PadForge
                         return;
                     }
 
+                    CommitRecordedMappingSet();
                     _viewModel.StatusText = string.Format(Strings.Instance.Status_Recorded_Format, negMapping.TargetLabel, negMapping.SourceDisplayText);
 
                     if (activePad.IsMapAllActive)
@@ -783,6 +810,7 @@ namespace PadForge
                 }
 
                 // ── Normal recording ──
+                StampRecordedDevice(result.Mapping);
                 if (deviceGuid != Guid.Empty)
                     InputService.ResolveDisplayText(result.Mapping, deviceGuid);
                 result.Mapping.SyncSelectedInputFromDescriptor();
@@ -830,6 +858,7 @@ namespace PadForge
                     result.Mapping.NegSourceDescriptor = string.Empty;
                 }
 
+                CommitRecordedMappingSet();
                 _viewModel.StatusText = string.Format(Strings.Instance.Status_Recorded_Format, result.Mapping.TargetLabel, result.Mapping.SourceDisplayText);
 
                 if (activePad.IsMapAllActive)

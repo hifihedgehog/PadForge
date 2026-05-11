@@ -4192,10 +4192,36 @@ namespace PadForge
                         InputService.ExtractDeviceScopedRowsForSlot(srcEntry.SourceSlot, srcEntry.InstanceGuid);
                 }
 
+                // Pick the device on THIS slot that receives the copy. If the
+                // source device is also mapped to this slot, copy onto that
+                // same device — so "Copy From [a gamepad on another slot]"
+                // lands on the matching gamepad here instead of being
+                // re-tagged onto whatever's selected (e.g. the slot's
+                // keyboard, which has no analog axes — that re-tag produced
+                // phantom "keyboard Axis 0" sources, doubled every row, and
+                // overwrote hand-crafted multi-source rows). Falls back to the
+                // selected device when the source device isn't on this slot.
+                Guid? targetDeviceOverride = null;
+                bool sourceDeviceOnThisSlot = false;
+                if (SettingsManager.UserSettings?.Items != null)
+                {
+                    lock (SettingsManager.UserSettings.SyncRoot)
+                    {
+                        foreach (var u in SettingsManager.UserSettings.Items)
+                        {
+                            if (u != null && u.InstanceGuid == srcEntry.InstanceGuid && u.MapTo == padVm.PadIndex)
+                            { sourceDeviceOnThisSlot = true; break; }
+                        }
+                    }
+                }
+                if (sourceDeviceOnThisSlot)
+                    targetDeviceOverride = srcEntry.InstanceGuid;
+
                 _inputService.ApplyPadSettingToCurrentDeviceTranslated(
                     padVm.PadIndex, srcEntry.PadSetting,
                     srcEntry.OutputType, srcEntry.IsExtended,
-                    targetOutputType, targetIsExtended);
+                    targetOutputType, targetIsExtended,
+                    targetDeviceOverride);
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopiedFromDevice;
             }

@@ -564,6 +564,197 @@ namespace PadForge.Common.Input
             return list;
         }
 
+        // ─────────────────────────────────────────────
+        //  Per-target MappingSet evaluators for non-gamepad VC outputs
+        //  (MIDI / KBM / Extended / Touchpad). Each looks up the Base-layer
+        //  row by target name, evaluates the row's sources (cross-device,
+        //  multi-source, combine-mode, Custom-formula aware), and returns
+        //  the final value. Returns false when no row exists for the
+        //  target so the caller can fall back to legacy single-source
+        //  reading (covers configs that haven't been resaved since the
+        //  multi-source UI shipped).
+        //
+        //  These mirror the per-target dispatch inside ApplyMappingSetToGamepad
+        //  but are exposed as small, return-by-value helpers because the
+        //  non-gamepad output structs (MidiRawState, KbmRawState, etc.)
+        //  don't fit the row-iteration-with-WriteXTarget pattern: each
+        //  legacy method has its own per-VC-type indexing and post-
+        //  processing (deadzones, scrolling, contact bools, ...) we'd
+        //  have to duplicate verbatim.
+        // ─────────────────────────────────────────────
+
+        /// <summary>Looks up the Base-layer <see cref="MappingRow"/> for a
+        /// target by name. Mirrors the row filter used by
+        /// <see cref="ApplyMappingSetToGamepad"/>.</summary>
+        private static MappingRow FindBaseRowForTarget(MappingSet mappingSet, string targetName)
+        {
+            if (mappingSet?.Rows == null) return null;
+            for (int i = 0; i < mappingSet.Rows.Count; i++)
+            {
+                var r = mappingSet.Rows[i];
+                if (r == null) continue;
+                if (!string.Equals(r.LayerMask ?? "Base", "Base", System.StringComparison.Ordinal))
+                    continue;
+                if (string.Equals(r.Target, targetName, System.StringComparison.Ordinal))
+                    return r;
+            }
+            return null;
+        }
+
+        /// <summary>Evaluates a button-class target through the per-VC
+        /// MappingSet. <paramref name="value"/> = final combined bool;
+        /// returns <c>false</c> when no row exists for the target (caller
+        /// should fall back to legacy per-device descriptor lookup).</summary>
+        public static bool TryEvaluateMappingSetButton(
+            CustomInputState state, MappingSet mappingSet, string thisDeviceGuid,
+            int slotIndex, string targetName, int globalAxisToButtonThreshold,
+            out bool value)
+        {
+            value = false;
+            var row = FindBaseRowForTarget(mappingSet, targetName);
+            if (row == null || row.Sources == null || row.Sources.Count == 0)
+                return false;
+
+            var slotRuntime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
+                ? _slotSourceKindRuntime[slotIndex] : null;
+            double dt = (slotIndex >= 0 && slotIndex < _lastEvalTime.Length)
+                ? ComputeAndAdvanceDelta(slotIndex) : 0;
+
+            bool isMultiSource = row.Sources.Count > 1;
+            bool isCustom = row.CombineMode == "Custom";
+
+            if (isMultiSource)
+            {
+                var positional = BuildCustomContribsForButton(row, slotIndex, globalAxisToButtonThreshold, dt);
+                if (positional.Count == 0) return false;
+                if (isCustom)
+                {
+                    value = EvaluateCustomBoolean(row, positional);
+                }
+                else
+                {
+                    var bools = new List<bool>(positional.Count);
+                    foreach (var v in positional) bools.Add(v > 0.5f);
+                    value = CombineHelper.CombineButton(row.CombineMode, bools);
+                }
+                return true;
+            }
+
+            // Single source — evaluate cross-device (the source's own DeviceGuid
+            // wins, not necessarily the device we're currently processing).
+            var src = row.Sources[0];
+            if (src == null) return false;
+            var devState = string.IsNullOrEmpty(src.DeviceGuid)
+                ? state
+                : (LookupDeviceState(src.DeviceGuid) ?? state);
+            value = SourceEvaluator.EvaluateForButtonTarget(
+                devState, src, globalAxisToButtonThreshold,
+                slotIndex, targetName, 0, slotRuntime, dt);
+            return true;
+        }
+
+        /// <summary>Evaluates a bipolar-axis target through the per-VC
+        /// MappingSet. <paramref name="value"/> = combined float clamped to
+        /// [-1, +1] converted to signed short (-32768..32767); returns
+        /// <c>false</c> when no row exists.</summary>
+        public static bool TryEvaluateMappingSetBipolarAxis(
+            CustomInputState state, MappingSet mappingSet, string thisDeviceGuid,
+            int slotIndex, string targetName,
+            out short value)
+        {
+            value = 0;
+            var row = FindBaseRowForTarget(mappingSet, targetName);
+            if (row == null || row.Sources == null || row.Sources.Count == 0)
+                return false;
+
+            var slotRuntime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
+                ? _slotSourceKindRuntime[slotIndex] : null;
+            double dt = (slotIndex >= 0 && slotIndex < _lastEvalTime.Length)
+                ? ComputeAndAdvanceDelta(slotIndex) : 0;
+
+            bool isMultiSource = row.Sources.Count > 1;
+            bool isCustom = row.CombineMode == "Custom";
+            float combined;
+
+            if (isMultiSource)
+            {
+                var positional = BuildCustomContribsForBipolarAxis(row, slotIndex, dt);
+                if (positional.Count == 0) return false;
+                combined = isCustom
+                    ? ClampBipolar(EvaluateCustomFloat(row, positional))
+                    : ClampBipolar(CombineHelper.CombineAxis(row.CombineMode, positional));
+            }
+            else
+            {
+                var src = row.Sources[0];
+                if (src == null) return false;
+                var devState = string.IsNullOrEmpty(src.DeviceGuid)
+                    ? state
+                    : (LookupDeviceState(src.DeviceGuid) ?? state);
+                combined = ClampBipolar(SourceEvaluator.EvaluateForBipolarAxisTarget(
+                    devState, src, slotIndex, targetName, 0, slotRuntime, dt));
+            }
+
+            // Map [-1..+1] → signed short with the same convention legacy
+            // MapToThumbAxisWithNeg uses: -1 → short.MinValue, +1 → short.MaxValue.
+            if (combined <= -1f) value = short.MinValue;
+            else if (combined >= 1f) value = short.MaxValue;
+            else value = (short)(combined * 32767f);
+            return true;
+        }
+
+        /// <summary>Evaluates a unipolar trigger-class target (Extended
+        /// trigger slot) through the per-VC MappingSet. Returned value is
+        /// in the same signed-short representation the Extended raw path
+        /// uses: short.MinValue = released (0%), short.MaxValue = fully
+        /// pressed (100%). Returns <c>false</c> when no row exists.</summary>
+        public static bool TryEvaluateMappingSetExtendedTrigger(
+            CustomInputState state, MappingSet mappingSet, string thisDeviceGuid,
+            int slotIndex, string targetName,
+            out short value)
+        {
+            value = short.MinValue;
+            var row = FindBaseRowForTarget(mappingSet, targetName);
+            if (row == null || row.Sources == null || row.Sources.Count == 0)
+                return false;
+
+            var slotRuntime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
+                ? _slotSourceKindRuntime[slotIndex] : null;
+            double dt = (slotIndex >= 0 && slotIndex < _lastEvalTime.Length)
+                ? ComputeAndAdvanceDelta(slotIndex) : 0;
+
+            bool isMultiSource = row.Sources.Count > 1;
+            bool isCustom = row.CombineMode == "Custom";
+            float combined;
+
+            if (isMultiSource)
+            {
+                var positional = BuildCustomContribsForTrigger(row, slotIndex, dt);
+                if (positional.Count == 0) return false;
+                combined = isCustom
+                    ? ClampUnipolar(EvaluateCustomFloat(row, positional))
+                    : ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, positional));
+            }
+            else
+            {
+                var src = row.Sources[0];
+                if (src == null) return false;
+                var devState = string.IsNullOrEmpty(src.DeviceGuid)
+                    ? state
+                    : (LookupDeviceState(src.DeviceGuid) ?? state);
+                combined = ClampUnipolar(SourceEvaluator.EvaluateForTriggerTarget(
+                    devState, src, slotIndex, targetName, 0, slotRuntime, dt));
+            }
+
+            // [0..+1] → signed short with short.MinValue = 0% (matches the
+            // legacy MapToExtendedTriggerAxis convention).
+            int ushortVal = (int)(combined * 65535f);
+            if (ushortVal < 0) ushortVal = 0;
+            if (ushortVal > 65535) ushortVal = 65535;
+            value = (short)(ushortVal + short.MinValue);
+            return true;
+        }
+
         private static MappingExpression.Compiled GetOrCompileExpression(MappingRow row)
         {
             // The compiled AST is cached in a side dictionary keyed by

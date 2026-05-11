@@ -450,114 +450,114 @@
   <data name="Pad_Invert" xml:space="preserve"><value>反转</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>半程</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. English placeholders pending translation. -->
-  <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>Direct</value></data>
-  <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>Incremental</value></data>
-  <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Invert On Hold</value></data>
-  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direct = read the source descriptor; Incremental = ramp an accumulator via Up/Down buttons; Invert On Hold = flip the row's output while a modifier button is held.</value></data>
-  <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>Button that ramps the accumulator upward while held</value></data>
-  <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Up — button that ramps the accumulator upward while held.</value></data>
-  <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Button that ramps the accumulator downward while held</value></data>
-  <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Down — button that ramps the accumulator downward while held.</value></data>
-  <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Rate</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Sweep speed in units per second. 0.5 = full range in 2 s; 2 = full range in 0.5 s.</value></data>
-  <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Sticky</value></data>
-  <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>When checked, the accumulator holds its value after release (cruise control). When unchecked, it snaps back to Min on release.</value></data>
-  <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Lower bound of the accumulator. -1 = full negative for bipolar axis targets; 0 = unipolar.</value></data>
-  <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
-  <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Upper bound of the accumulator. 1 = full positive.</value></data>
-  <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Button that inverts the row's output while held</value></data>
-  <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modifier — while held, the row's output flips sign.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Add source</value></data>
-  <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Add another physical input to this row</value></data>
-  <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Remove this source</value></data>
+  <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>直接</value></data>
+  <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>渐增</value></data>
+  <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>按住反转</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>直接 = 读取来源描述符；渐增 = 通过上/下按钮累加；按住反转 = 按住修改键时翻转该行输出。</value></data>
+  <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>按住时向上累加的按钮</value></data>
+  <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>向上 — 按住时向上累加的按钮。</value></data>
+  <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>按住时向下累加的按钮</value></data>
+  <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>向下 — 按住时向下累加的按钮。</value></data>
+  <data name="Pad_Mapping_Rate" xml:space="preserve"><value>速率</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>每秒变化量。0.5 = 2 秒内走完全程；2 = 0.5 秒内走完全程。</value></data>
+  <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>粘滞</value></data>
+  <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>勾选时，松开后累加值保持不变（类似巡航控制）；取消勾选时，松开后归位至最小值。</value></data>
+  <data name="Pad_Mapping_Min" xml:space="preserve"><value>最小</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>累加器下限。-1 = 双极轴目标的完全负值；0 = 单极。</value></data>
+  <data name="Pad_Mapping_Max" xml:space="preserve"><value>最大</value></data>
+  <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>累加器上限。1 = 完全正值。</value></data>
+  <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>按住时反转该行输出的按钮</value></data>
+  <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>修改键 — 按住时，该行输出的符号翻转。</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ 添加来源</value></data>
+  <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>向该行添加另一个物理输入</value></data>
+  <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>移除此来源</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
-  <data name="Pad_Combine_Label" xml:space="preserve"><value>Combine</value></data>
-  <data name="Pad_Combine_Tooltip" xml:space="preserve"><value>How to merge sources on this row.</value></data>
-  <data name="Pad_Combine_MaxAbs_Name" xml:space="preserve"><value>Strongest</value></data>
-  <data name="Pad_Combine_MaxAbs_Description" xml:space="preserve"><value>Use whichever source has the strongest push</value></data>
-  <data name="Pad_Combine_Sum_Name" xml:space="preserve"><value>Combined</value></data>
-  <data name="Pad_Combine_Sum_Description" xml:space="preserve"><value>Add the sources together</value></data>
-  <data name="Pad_Combine_Average_Name" xml:space="preserve"><value>Average</value></data>
-  <data name="Pad_Combine_Average_Description" xml:space="preserve"><value>Halfway between the sources</value></data>
-  <data name="Pad_Combine_OR_Name" xml:space="preserve"><value>Either</value></data>
-  <data name="Pad_Combine_OR_Description" xml:space="preserve"><value>Fire when any source is active — good for buttons</value></data>
-  <data name="Pad_Combine_AND_Name" xml:space="preserve"><value>Both</value></data>
-  <data name="Pad_Combine_AND_Description" xml:space="preserve"><value>Fire only when all sources are active</value></data>
-  <data name="Pad_Combine_XOR_Name" xml:space="preserve"><value>Only one</value></data>
-  <data name="Pad_Combine_XOR_Description" xml:space="preserve"><value>Fire only when exactly one source is active</value></data>
-  <data name="Pad_Combine_Custom_Name" xml:space="preserve"><value>Custom</value></data>
-  <data name="Pad_Combine_Custom_Description" xml:space="preserve"><value>Build your own with the formula editor below</value></data>
-  <data name="Pad_Formula_TextBox_Tooltip" xml:space="preserve"><value>Click chips below to build a formula, or drag chips into the box. a, b, c… stand for this row's sources in order.</value></data>
-  <data name="Pad_Formula_Insert" xml:space="preserve"><value>Insert</value></data>
-  <data name="Pad_Formula_StarterRecipes" xml:space="preserve"><value>Starter recipes</value></data>
-  <data name="Pad_Formula_Status_Empty" xml:space="preserve"><value>✓ empty (evaluates to 0)</value></data>
-  <data name="Pad_Formula_Status_ParseError" xml:space="preserve"><value>parse error</value></data>
-  <data name="Pad_Formula_Status_Valid" xml:space="preserve"><value>✓ valid</value></data>
-  <data name="Pad_Formula_Status_RefsLabel" xml:space="preserve"><value>refs</value></data>
-  <data name="Pad_Formula_Status_NoSourceSingular" xml:space="preserve"><value>has no source</value></data>
-  <data name="Pad_Formula_Status_NoSourcePlural" xml:space="preserve"><value>have no source</value></data>
-  <data name="Pad_Formula_Status_TreatedAsZero" xml:space="preserve"><value>treated as 0</value></data>
-  <data name="Pad_Formula_Status_And" xml:space="preserve"><value>and</value></data>
-  <data name="Pad_Formula_Chip_TouchpadFlag_A" xml:space="preserve"><value>1 while source A is touching (touchpad passthrough rows only)</value></data>
-  <data name="Pad_Formula_Chip_TouchpadFlag_B" xml:space="preserve"><value>1 while source B is touching</value></data>
-  <data name="Pad_Formula_Chip_TouchpadFlag_C" xml:space="preserve"><value>1 while source C is touching</value></data>
-  <data name="Pad_Formula_Chip_TouchpadFlag_D" xml:space="preserve"><value>1 while source D is touching</value></data>
-  <data name="Pad_Formula_Chip_Add" xml:space="preserve"><value>Add</value></data>
-  <data name="Pad_Formula_Chip_Subtract" xml:space="preserve"><value>Subtract</value></data>
-  <data name="Pad_Formula_Chip_Multiply" xml:space="preserve"><value>Multiply</value></data>
-  <data name="Pad_Formula_Chip_Divide" xml:space="preserve"><value>Divide</value></data>
-  <data name="Pad_Formula_Chip_NegateA" xml:space="preserve"><value>Negate the first source</value></data>
-  <data name="Pad_Formula_Chip_OpenGroup" xml:space="preserve"><value>Open group</value></data>
-  <data name="Pad_Formula_Chip_CloseGroup" xml:space="preserve"><value>Close group</value></data>
-  <data name="Pad_Formula_Chip_Half" xml:space="preserve"><value>0.5 — half</value></data>
-  <data name="Pad_Formula_Chip_LessThan" xml:space="preserve"><value>Less than</value></data>
-  <data name="Pad_Formula_Chip_GreaterThan" xml:space="preserve"><value>Greater than</value></data>
-  <data name="Pad_Formula_Chip_LessOrEqual" xml:space="preserve"><value>Less than or equal</value></data>
-  <data name="Pad_Formula_Chip_GreaterOrEqual" xml:space="preserve"><value>Greater than or equal</value></data>
-  <data name="Pad_Formula_Chip_Equal" xml:space="preserve"><value>Equal to</value></data>
-  <data name="Pad_Formula_Chip_NotEqual" xml:space="preserve"><value>Not equal to</value></data>
-  <data name="Pad_Formula_Chip_BothConditions" xml:space="preserve"><value>Both conditions true</value></data>
-  <data name="Pad_Formula_Chip_EitherCondition" xml:space="preserve"><value>Either condition true</value></data>
-  <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Flip true/false</value></data>
-  <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>If — pattern: (condition) ? then : else</value></data>
-  <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Else half of an if-then-else</value></data>
-  <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Magnitude (drops the sign)</value></data>
-  <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Smaller of two values</value></data>
-  <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Larger of two values</value></data>
-  <data name="Pad_Formula_Chip_Clamp" xml:space="preserve"><value>Keep within a range — clamp(value, low, high)</value></data>
-  <data name="Pad_Formula_Chip_Sign" xml:space="preserve"><value>-1, 0, or +1 from input's sign</value></data>
-  <data name="Pad_Formula_Chip_Lerp" xml:space="preserve"><value>Blend two values — lerp(a, b, mix0to1)</value></data>
-  <data name="Pad_Formula_Chip_Round" xml:space="preserve"><value>Round to nearest whole number</value></data>
-  <data name="Pad_Formula_Chip_Sqrt" xml:space="preserve"><value>Square root</value></data>
-  <data name="Pad_Formula_Preset_HalfScale_Name" xml:space="preserve"><value>Half scale</value></data>
-  <data name="Pad_Formula_Preset_HalfScale_Tooltip" xml:space="preserve"><value>A at half strength</value></data>
-  <data name="Pad_Formula_Preset_QuarterScale_Name" xml:space="preserve"><value>Quarter scale</value></data>
-  <data name="Pad_Formula_Preset_QuarterScale_Tooltip" xml:space="preserve"><value>A at quarter strength</value></data>
-  <data name="Pad_Formula_Preset_ReverseA_Name" xml:space="preserve"><value>Reverse A</value></data>
-  <data name="Pad_Formula_Preset_ReverseA_Tooltip" xml:space="preserve"><value>Flip A's sign</value></data>
-  <data name="Pad_Formula_Preset_CapTo1_Name" xml:space="preserve"><value>Cap to ±1</value></data>
-  <data name="Pad_Formula_Preset_CapTo1_Tooltip" xml:space="preserve"><value>Sum A + B but never exceed ±1</value></data>
-  <data name="Pad_Formula_Preset_WeightedBlend_Name" xml:space="preserve"><value>Weighted blend</value></data>
-  <data name="Pad_Formula_Preset_WeightedBlend_Tooltip" xml:space="preserve"><value>70% of A + 30% of B</value></data>
-  <data name="Pad_Formula_Preset_Difference_Name" xml:space="preserve"><value>Difference</value></data>
-  <data name="Pad_Formula_Preset_Difference_Tooltip" xml:space="preserve"><value>A minus B</value></data>
-  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>A unless idle</value></data>
-  <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>Use A — but if A is at rest, fall back to B</value></data>
-  <data name="Pad_Formula_Preset_ThresholdGate_Name" xml:space="preserve"><value>Threshold gate</value></data>
-  <data name="Pad_Formula_Preset_ThresholdGate_Tooltip" xml:space="preserve"><value>Fire fully if A is past halfway, otherwise zero — turns an axis into a button</value></data>
-  <data name="Pad_Formula_Preset_BothPressed_Name" xml:space="preserve"><value>Both pressed</value></data>
-  <data name="Pad_Formula_Preset_BothPressed_Tooltip" xml:space="preserve"><value>Fire only when A and B are both pushed</value></data>
-  <data name="Pad_Formula_Preset_StrongerWins_Name" xml:space="preserve"><value>Stronger wins</value></data>
-  <data name="Pad_Formula_Preset_StrongerWins_Tooltip" xml:space="preserve"><value>Whichever of A or B is pushed harder, with sign</value></data>
-  <data name="Pad_Mapping_ExtraSourcePickerTooltip" xml:space="preserve"><value>Pick the source from any device assigned to this slot.</value></data>
-  <data name="Pad_Mapping_AddOppositeDir" xml:space="preserve"><value>+ opposite direction</value></data>
-  <data name="Pad_Mapping_AddOppositeDir_Tooltip" xml:space="preserve"><value>Only the positive (+) direction of this stick axis is mapped. Click to add an inverted second source for the negative (−) direction.</value></data>
-  <data name="Pad_Formula_Var_PositionA" xml:space="preserve"><value>First source</value></data>
-  <data name="Pad_Formula_Var_PositionB" xml:space="preserve"><value>Second source</value></data>
-  <data name="Pad_Formula_Var_PositionC" xml:space="preserve"><value>Third source</value></data>
-  <data name="Pad_Formula_Var_PositionD" xml:space="preserve"><value>Fourth source</value></data>
-  <data name="Pad_Formula_Var_NotYetMapped" xml:space="preserve"><value>not yet mapped</value></data>
+  <data name="Pad_Combine_Label" xml:space="preserve"><value>合并</value></data>
+  <data name="Pad_Combine_Tooltip" xml:space="preserve"><value>此行来源的合并方式。</value></data>
+  <data name="Pad_Combine_MaxAbs_Name" xml:space="preserve"><value>最强</value></data>
+  <data name="Pad_Combine_MaxAbs_Description" xml:space="preserve"><value>使用推力最强的来源</value></data>
+  <data name="Pad_Combine_Sum_Name" xml:space="preserve"><value>叠加</value></data>
+  <data name="Pad_Combine_Sum_Description" xml:space="preserve"><value>将所有来源叠加</value></data>
+  <data name="Pad_Combine_Average_Name" xml:space="preserve"><value>平均</value></data>
+  <data name="Pad_Combine_Average_Description" xml:space="preserve"><value>各来源的中间值</value></data>
+  <data name="Pad_Combine_OR_Name" xml:space="preserve"><value>任一</value></data>
+  <data name="Pad_Combine_OR_Description" xml:space="preserve"><value>任意来源激活即触发 — 适合按钮</value></data>
+  <data name="Pad_Combine_AND_Name" xml:space="preserve"><value>全部</value></data>
+  <data name="Pad_Combine_AND_Description" xml:space="preserve"><value>仅当所有来源均激活时触发</value></data>
+  <data name="Pad_Combine_XOR_Name" xml:space="preserve"><value>唯一</value></data>
+  <data name="Pad_Combine_XOR_Description" xml:space="preserve"><value>仅当恰好有一个来源激活时触发</value></data>
+  <data name="Pad_Combine_Custom_Name" xml:space="preserve"><value>自定义</value></data>
+  <data name="Pad_Combine_Custom_Description" xml:space="preserve"><value>使用下方公式编辑器自行构建</value></data>
+  <data name="Pad_Formula_TextBox_Tooltip" xml:space="preserve"><value>单击下方功能块构建公式，或将功能块拖入输入框。a、b、c… 按顺序代表该行的各个来源。</value></data>
+  <data name="Pad_Formula_Insert" xml:space="preserve"><value>插入</value></data>
+  <data name="Pad_Formula_StarterRecipes" xml:space="preserve"><value>入门预设</value></data>
+  <data name="Pad_Formula_Status_Empty" xml:space="preserve"><value>✓ 空（计算结果为 0）</value></data>
+  <data name="Pad_Formula_Status_ParseError" xml:space="preserve"><value>解析错误</value></data>
+  <data name="Pad_Formula_Status_Valid" xml:space="preserve"><value>✓ 有效</value></data>
+  <data name="Pad_Formula_Status_RefsLabel" xml:space="preserve"><value>引用</value></data>
+  <data name="Pad_Formula_Status_NoSourceSingular" xml:space="preserve"><value>没有来源</value></data>
+  <data name="Pad_Formula_Status_NoSourcePlural" xml:space="preserve"><value>没有来源</value></data>
+  <data name="Pad_Formula_Status_TreatedAsZero" xml:space="preserve"><value>视为 0</value></data>
+  <data name="Pad_Formula_Status_And" xml:space="preserve"><value>和</value></data>
+  <data name="Pad_Formula_Chip_TouchpadFlag_A" xml:space="preserve"><value>来源 A 触摸时为 1（仅限触控板直通行）</value></data>
+  <data name="Pad_Formula_Chip_TouchpadFlag_B" xml:space="preserve"><value>来源 B 触摸时为 1</value></data>
+  <data name="Pad_Formula_Chip_TouchpadFlag_C" xml:space="preserve"><value>来源 C 触摸时为 1</value></data>
+  <data name="Pad_Formula_Chip_TouchpadFlag_D" xml:space="preserve"><value>来源 D 触摸时为 1</value></data>
+  <data name="Pad_Formula_Chip_Add" xml:space="preserve"><value>加</value></data>
+  <data name="Pad_Formula_Chip_Subtract" xml:space="preserve"><value>减</value></data>
+  <data name="Pad_Formula_Chip_Multiply" xml:space="preserve"><value>乘</value></data>
+  <data name="Pad_Formula_Chip_Divide" xml:space="preserve"><value>除</value></data>
+  <data name="Pad_Formula_Chip_NegateA" xml:space="preserve"><value>对第一来源取反</value></data>
+  <data name="Pad_Formula_Chip_OpenGroup" xml:space="preserve"><value>开括号</value></data>
+  <data name="Pad_Formula_Chip_CloseGroup" xml:space="preserve"><value>闭括号</value></data>
+  <data name="Pad_Formula_Chip_Half" xml:space="preserve"><value>0.5 — 半</value></data>
+  <data name="Pad_Formula_Chip_LessThan" xml:space="preserve"><value>小于</value></data>
+  <data name="Pad_Formula_Chip_GreaterThan" xml:space="preserve"><value>大于</value></data>
+  <data name="Pad_Formula_Chip_LessOrEqual" xml:space="preserve"><value>小于或等于</value></data>
+  <data name="Pad_Formula_Chip_GreaterOrEqual" xml:space="preserve"><value>大于或等于</value></data>
+  <data name="Pad_Formula_Chip_Equal" xml:space="preserve"><value>等于</value></data>
+  <data name="Pad_Formula_Chip_NotEqual" xml:space="preserve"><value>不等于</value></data>
+  <data name="Pad_Formula_Chip_BothConditions" xml:space="preserve"><value>两个条件均成立</value></data>
+  <data name="Pad_Formula_Chip_EitherCondition" xml:space="preserve"><value>任一条件成立</value></data>
+  <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>翻转真/假</value></data>
+  <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>If — 模式：(condition) ? then : else</value></data>
+  <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>if-then-else 的 else 部分</value></data>
+  <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>绝对值（去除符号）</value></data>
+  <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>两值中较小的</value></data>
+  <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>两值中较大的</value></data>
+  <data name="Pad_Formula_Chip_Clamp" xml:space="preserve"><value>限制在范围内 — clamp(value, low, high)</value></data>
+  <data name="Pad_Formula_Chip_Sign" xml:space="preserve"><value>根据输入符号返回 -1、0 或 +1</value></data>
+  <data name="Pad_Formula_Chip_Lerp" xml:space="preserve"><value>混合两值 — lerp(a, b, mix0to1)</value></data>
+  <data name="Pad_Formula_Chip_Round" xml:space="preserve"><value>四舍五入取整</value></data>
+  <data name="Pad_Formula_Chip_Sqrt" xml:space="preserve"><value>平方根</value></data>
+  <data name="Pad_Formula_Preset_HalfScale_Name" xml:space="preserve"><value>半强度</value></data>
+  <data name="Pad_Formula_Preset_HalfScale_Tooltip" xml:space="preserve"><value>A 以半强度输出</value></data>
+  <data name="Pad_Formula_Preset_QuarterScale_Name" xml:space="preserve"><value>四分之一强度</value></data>
+  <data name="Pad_Formula_Preset_QuarterScale_Tooltip" xml:space="preserve"><value>A 以四分之一强度输出</value></data>
+  <data name="Pad_Formula_Preset_ReverseA_Name" xml:space="preserve"><value>反转 A</value></data>
+  <data name="Pad_Formula_Preset_ReverseA_Tooltip" xml:space="preserve"><value>翻转 A 的符号</value></data>
+  <data name="Pad_Formula_Preset_CapTo1_Name" xml:space="preserve"><value>限幅至 ±1</value></data>
+  <data name="Pad_Formula_Preset_CapTo1_Tooltip" xml:space="preserve"><value>A + B 之和，但不超过 ±1</value></data>
+  <data name="Pad_Formula_Preset_WeightedBlend_Name" xml:space="preserve"><value>加权混合</value></data>
+  <data name="Pad_Formula_Preset_WeightedBlend_Tooltip" xml:space="preserve"><value>70% 的 A + 30% 的 B</value></data>
+  <data name="Pad_Formula_Preset_Difference_Name" xml:space="preserve"><value>差值</value></data>
+  <data name="Pad_Formula_Preset_Difference_Tooltip" xml:space="preserve"><value>A 减 B</value></data>
+  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>A 优先</value></data>
+  <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>使用 A — 若 A 静止则回退到 B</value></data>
+  <data name="Pad_Formula_Preset_ThresholdGate_Name" xml:space="preserve"><value>阈值门控</value></data>
+  <data name="Pad_Formula_Preset_ThresholdGate_Tooltip" xml:space="preserve"><value>若 A 超过中点则完全触发，否则为零 — 将轴转换为按钮</value></data>
+  <data name="Pad_Formula_Preset_BothPressed_Name" xml:space="preserve"><value>同时按下</value></data>
+  <data name="Pad_Formula_Preset_BothPressed_Tooltip" xml:space="preserve"><value>仅当 A 和 B 均按下时触发</value></data>
+  <data name="Pad_Formula_Preset_StrongerWins_Name" xml:space="preserve"><value>强者优先</value></data>
+  <data name="Pad_Formula_Preset_StrongerWins_Tooltip" xml:space="preserve"><value>A 和 B 中推力更强者，保留符号</value></data>
+  <data name="Pad_Mapping_ExtraSourcePickerTooltip" xml:space="preserve"><value>从分配至此插槽的任意设备中选取来源。</value></data>
+  <data name="Pad_Mapping_AddOppositeDir" xml:space="preserve"><value>+ 反向</value></data>
+  <data name="Pad_Mapping_AddOppositeDir_Tooltip" xml:space="preserve"><value>此摇杆轴当前仅映射正 (+) 方向。单击可为负 (-) 方向添加反转的第二来源。</value></data>
+  <data name="Pad_Formula_Var_PositionA" xml:space="preserve"><value>第一来源</value></data>
+  <data name="Pad_Formula_Var_PositionB" xml:space="preserve"><value>第二来源</value></data>
+  <data name="Pad_Formula_Var_PositionC" xml:space="preserve"><value>第三来源</value></data>
+  <data name="Pad_Formula_Var_PositionD" xml:space="preserve"><value>第四来源</value></data>
+  <data name="Pad_Formula_Var_NotYetMapped" xml:space="preserve"><value>尚未映射</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>线性</value></data>
   <data name="Curve_Smooth" xml:space="preserve"><value>平滑</value></data>
   <data name="Curve_Aggressive" xml:space="preserve"><value>激进</value></data>

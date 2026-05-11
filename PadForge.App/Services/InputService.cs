@@ -2391,6 +2391,70 @@ namespace PadForge.Services
             return result;
         }
 
+        /// <summary>Issue #61 — "Copy From" is a SLOT-level copy: it replaces
+        /// <paramref name="targetSlot"/>'s per-VC MappingSet with a deep copy
+        /// of <paramref name="sourceSlot"/>'s, keeping every source's
+        /// DeviceGuid as-is. That carries ALL of the source slot's mappings —
+        /// every device's contribution, every extra source, combine modes and
+        /// Custom formulas — not just one device's slice (which is why the
+        /// keyboard-buttons-to-stick rows on the source weren't coming over
+        /// when the user picked the gamepad entry). Sources that reference a
+        /// device not mapped to the target slot stay in the table but are
+        /// inert until that device is added — they're not garbled.</summary>
+        public static void ReplaceSlotMappingSet(int targetSlot, int sourceSlot)
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null) return;
+            if (targetSlot < 0 || targetSlot >= sets.Length) return;
+            if (sourceSlot < 0 || sourceSlot >= sets.Length) return;
+            if (targetSlot == sourceSlot) return;
+
+            var src = sets[sourceSlot];
+            if (src == null) { sets[targetSlot] = new Engine.Data.MappingSet(); return; }
+
+            var copy = new Engine.Data.MappingSet { ShiftButton = src.ShiftButton };
+            if (src.Rows != null)
+            {
+                foreach (var r in src.Rows)
+                {
+                    if (r == null) continue;
+                    var rc = new Engine.Data.MappingRow
+                    {
+                        Target = r.Target,
+                        LayerMask = r.LayerMask ?? "Base",
+                        CombineMode = r.CombineMode ?? "",
+                        CombineExpression = r.CombineExpression ?? "",
+                        Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
+                    };
+                    if (r.Sources != null)
+                    {
+                        foreach (var s in r.Sources)
+                        {
+                            if (s == null) continue;
+                            rc.Sources.Add(new Engine.Data.MappingSource
+                            {
+                                Kind = s.Kind ?? "Direct",
+                                DeviceGuid = s.DeviceGuid ?? "",
+                                Descriptor = s.Descriptor ?? "",
+                                Invert = s.Invert,
+                                HalfAxis = s.HalfAxis,
+                                DeadZone = s.DeadZone,
+                                ParamUp = s.ParamUp ?? "",
+                                ParamDown = s.ParamDown ?? "",
+                                ParamRate = s.ParamRate,
+                                ParamSticky = s.ParamSticky,
+                                ParamMin = s.ParamMin,
+                                ParamMax = s.ParamMax,
+                                ParamModifier = s.ParamModifier ?? "",
+                            });
+                        }
+                    }
+                    copy.Rows.Add(rc);
+                }
+            }
+            sets[targetSlot] = copy;
+        }
+
         /// <summary>
         /// Flushes all active pad ViewModels back to their PadSettings so that
         /// stored PadSettings reflect the latest UI state. Call before reading

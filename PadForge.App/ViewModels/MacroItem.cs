@@ -1,4 +1,4 @@
-﻿﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -24,9 +24,9 @@ namespace PadForge.ViewModels
     /// </summary>
     public class MacroItem : ObservableObject
     {
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
         //  Identity
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
 
         public MacroItem()
         {
@@ -67,11 +67,11 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isEnabled, value);
         }
 
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
         //  Trigger condition
         //  A combination of buttons that must ALL be pressed
         //  simultaneously to fire the macro.
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
 
         /// <summary>
         /// Trigger buttons — all must be pressed simultaneously.
@@ -247,11 +247,11 @@ namespace PadForge.ViewModels
             return Strings.Instance.POV_Up;
         }
 
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
         //  Raw device button trigger (alternative path)
         //  When set, the macro fires based on raw device-specific buttons
         //  rather than the Xbox-mapped bitmask above.
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
 
         private Guid _triggerDeviceGuid;
 
@@ -377,9 +377,9 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _customButtonCount, Math.Max(1, value));
         }
 
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
         //  Trigger options
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
 
         private MacroTriggerMode _triggerMode = MacroTriggerMode.OnPress;
 
@@ -424,9 +424,9 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _consumeTriggerButtons, value);
         }
 
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
         //  Axis trigger (fire when an axis exceeds a threshold)
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
 
         private MacroAxisTarget[] _triggerAxisTargets = Array.Empty<MacroAxisTarget>();
 
@@ -483,7 +483,7 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool UsesAxisTrigger => _triggerAxisTargets.Length > 0;
 
-        // â”€â”€ Axis direction filter (per-axis, parallel to TriggerAxisTargets) â”€â”€
+        // ── Axis direction filter (per-axis, parallel to TriggerAxisTargets) ──
 
         private MacroAxisDirection[] _triggerAxisDirections = Array.Empty<MacroAxisDirection>();
 
@@ -542,15 +542,15 @@ namespace PadForge.ViewModels
             }
         }
 
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
         //  Custom-expression trigger (TriggerMode = CustomExpression)
         //  A formula over a/b/c/... variables, each bound to either an
         //  input-device input or an Xbox-output channel. Compiled lazily
         //  via PadForge.Engine.Common.Mapping.MappingExpression. The
         //  trigger is "active" on a given frame when the evaluated result
         //  is >= 0.5; OnPress-equivalent rising-edge semantics fire the
-        //  macro on the 0 â†’ 1 transition.
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        //  macro on the 0 → 1 transition.
+        // ─────────────────────────────────────────────
 
         private string _triggerExpression = "";
         private PadForge.Engine.Common.Mapping.MappingExpression.Compiled _triggerExpressionCompiled;
@@ -650,7 +650,7 @@ namespace PadForge.ViewModels
                     return s.Pad_Formula_Status_Empty;
                 var c = TriggerExpressionCompiled;
                 if (!c.IsValid)
-                    return "âœ— " + (c.Error ?? s.Pad_Formula_Status_ParseError);
+                    return "✗ " + (c.Error ?? s.Pad_Formula_Status_ParseError);
 
                 int defined = _triggerExpressionVariables?.Count ?? 0;
                 var refs = c.ReferencedSingleLetterVars ?? "";
@@ -717,10 +717,10 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(IsCustomExpressionWarning));
             });
 
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
         //  Actions
         //  Sequence of outputs produced when the trigger fires.
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
 
         /// <summary>Ordered sequence of actions to execute.</summary>
         public ObservableCollection<MacroAction> Actions { get; } = new();
@@ -737,9 +737,9 @@ namespace PadForge.ViewModels
             }
         }
 
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
         //  Repeat settings
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
 
         private MacroRepeatMode _repeatMode = MacroRepeatMode.Once;
 
@@ -768,9 +768,9 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _repeatDelayMs, Math.Max(0, value));
         }
 
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
         //  Runtime state (not serialized)
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
 
         /// <summary>Whether the macro is currently executing its action sequence.</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -792,9 +792,9 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool WasTriggerActive { get; set; }
 
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
         //  Commands
-        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ─────────────────────────────────────────────
 
         private RelayCommand _recordTriggerCommand;
         public RelayCommand RecordTriggerCommand =>
@@ -1090,12 +1090,12 @@ namespace PadForge.ViewModels
             }
         }
 
-        // â”€â”€ Custom Extended button storage (128 buttons max) â”€â”€
+        // ── Custom Extended button storage (128 buttons max) ──
 
         private uint[] _customButtonWords = new uint[4];
 
         /// <summary>
-        /// For ButtonPress/ButtonRelease with custom Extended: wide button bitmask (4 Ã— 32-bit = 128 buttons).
+        /// For ButtonPress/ButtonRelease with custom Extended: wide button bitmask (4 × 32-bit = 128 buttons).
         /// </summary>
         [System.Xml.Serialization.XmlIgnore]
         public uint[] CustomButtonWords
@@ -1154,7 +1154,7 @@ namespace PadForge.ViewModels
                 opt.Refresh();
         }
 
-        // â”€â”€ LightbarMode cycle checkbox options â”€â”€
+        // ── LightbarMode cycle checkbox options ──
 
         private IReadOnlyList<LightbarModeCycleOption> _cycleModeOptions;
 
@@ -1197,7 +1197,7 @@ namespace PadForge.ViewModels
             LightbarCycleModesCsv = string.Join(",", ordered);
         }
 
-        // â”€â”€ Button checkbox options â”€â”€
+        // ── Button checkbox options ──
 
         private IReadOnlyList<GamepadButtonOption> _buttonOptions;
 
@@ -1386,7 +1386,7 @@ namespace PadForge.ViewModels
             _ => vk.ToString()
         };
 
-        // â”€â”€ Multi-key string support â”€â”€
+        // ── Multi-key string support ──
 
         private string _keyString = "";
 
@@ -1525,7 +1525,7 @@ namespace PadForge.ViewModels
 
         private bool _invertAxis;
 
-        /// <summary>When true, invert the axis value (0â†’1 becomes 1â†’0, or negate for mouse delta).</summary>
+        /// <summary>When true, invert the axis value (0→1 becomes 1→0, or negate for mouse delta).</summary>
         public bool InvertAxis
         {
             get => _invertAxis;
@@ -1580,7 +1580,7 @@ namespace PadForge.ViewModels
                     AudioProcessNames.Add(name);
             });
 
-        // â”€â”€ Lightbar (for MacroActionType.LightbarColor / Clear / ModeSet / ModeCycle) â”€â”€
+        // ── Lightbar (for MacroActionType.LightbarColor / Clear / ModeSet / ModeCycle) ──
         // RGB used by LightbarColor when ColorSource = Fixed. Default to
         // white so a freshly-added Color action produces a visible flash
         // on first test fire.
@@ -1687,7 +1687,7 @@ namespace PadForge.ViewModels
             }
         }
 
-        // â”€â”€ Rumble action fields â”€â”€
+        // ── Rumble action fields ──
         // Mirrors the LightbarColor block above. Reactive holds run at
         // full strength for RumbleHoldMs then linearly fade to 0 across
         // RumbleFadeMs; Sticky holds at full strength until a RumbleStop
@@ -1935,7 +1935,7 @@ namespace PadForge.ViewModels
             set => _lightbarCycleIndex = value;
         }
 
-        // â”€â”€ Volume limit â”€â”€
+        // ── Volume limit ──
 
         private int _volumeLimit = 100;
 
@@ -1950,7 +1950,7 @@ namespace PadForge.ViewModels
             }
         }
 
-        // â”€â”€ Mouse properties â”€â”€
+        // ── Mouse properties ──
 
         private float _mouseSensitivity = 10f;
 
@@ -1982,7 +1982,7 @@ namespace PadForge.ViewModels
             }
         }
 
-        // â”€â”€ Input device axis source â”€â”€
+        // ── Input device axis source ──
 
         private MacroAxisSource _axisSource = MacroAxisSource.OutputController;
 
@@ -2065,7 +2065,7 @@ namespace PadForge.ViewModels
             }
         }
 
-        // â”€â”€ Lightbar action display helpers â”€â”€
+        // ── Lightbar action display helpers ──
 
         private string FormatLightbarColorSummary()
         {
@@ -2083,7 +2083,7 @@ namespace PadForge.ViewModels
                 : string.Format(Strings.Instance.MacroAction_LightbarColor_Reactive_Format, colorPart, _lightbarHoldMs + _lightbarFadeMs);
         }
 
-        // â”€â”€ Rumble action display helper â”€â”€
+        // ── Rumble action display helper ──
 
         private string FormatRumbleSummary()
         {
@@ -2168,9 +2168,9 @@ namespace PadForge.ViewModels
         };
     }
 
-    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ─────────────────────────────────────────────
     //  Enums
-    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ─────────────────────────────────────────────
 
     public enum MacroTriggerMode
     {
@@ -2559,7 +2559,7 @@ namespace PadForge.ViewModels
                     return _outputChannel.ToString();
 
                 string devName = ResolveDeviceName();
-                string prefix = string.IsNullOrEmpty(devName) ? "" : devName + " Â· ";
+                string prefix = string.IsNullOrEmpty(devName) ? "" : devName + " · ";
 
                 if (_rawButton >= 0)
                 {
@@ -2590,7 +2590,7 @@ namespace PadForge.ViewModels
             return ud?.DeviceObjects;
         }
 
-        // â”€â”€ Recording state for the per-row Record button â”€â”€
+        // ── Recording state for the per-row Record button ──
 
         private bool _isRecording;
         [System.Xml.Serialization.XmlIgnore]
@@ -2610,7 +2610,7 @@ namespace PadForge.ViewModels
 
         private string _liveText = "";
         /// <summary>Live in-progress feedback shown while a record session is
-        /// running for this variable (e.g. "Press any inputâ€¦").</summary>
+        /// running for this variable (e.g. "Press any input…").</summary>
         [System.Xml.Serialization.XmlIgnore]
         public string LiveText
         {
@@ -2810,7 +2810,7 @@ namespace PadForge.ViewModels
             (Strings.Instance.Btn_Left, 0x0004), (Strings.Instance.Btn_Right, 0x0008),
         };
 
-        // Extended Custom: Xbox bitmask bits â†’ Extended button numbers (see SubmitGamepadState mapping).
+        // Extended Custom: Xbox bitmask bits → Extended button numbers (see SubmitGamepadState mapping).
         // D-pad still shows direction names (they map to POV, not buttons).
         private static (string Label, ushort Flag)[] BuildNumberedDefs()
         {

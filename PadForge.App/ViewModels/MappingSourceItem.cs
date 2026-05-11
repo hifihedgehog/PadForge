@@ -37,6 +37,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsDirectKind));
                     OnPropertyChanged(nameof(IsIncrementalKind));
                     OnPropertyChanged(nameof(IsInvertOnHoldKind));
+                    OnPropertyChanged(nameof(IsKindDescriptorless));
                     OnPropertyChanged(nameof(ParamUpInputChoice));
                     OnPropertyChanged(nameof(ParamDownInputChoice));
                     OnPropertyChanged(nameof(ParamModifierInputChoice));
@@ -47,6 +48,14 @@ namespace PadForge.ViewModels
         public bool IsDirectKind => string.Equals(_kind, "Direct", StringComparison.Ordinal);
         public bool IsIncrementalKind => string.Equals(_kind, "Incremental", StringComparison.Ordinal);
         public bool IsInvertOnHoldKind => string.Equals(_kind, "InvertOnHold", StringComparison.Ordinal);
+
+        /// <summary>True for kinds where the source's main Descriptor +
+        /// Invert / HalfAxis / DeadZone fields are unused (Incremental
+        /// authors via Up/Down + Param*; InvertOnHold acts as a row-level
+        /// modifier that only uses ParamModifier). Used by the XAML to
+        /// collapse the redundant primary controls so the user only sees
+        /// the kind-specific row below.</summary>
+        public bool IsKindDescriptorless => IsIncrementalKind || IsInvertOnHoldKind;
 
         /// <summary>User-facing source kinds in the Mappings UI. Per-source
         /// InvertOnHold flips only this source's contribution (useful when

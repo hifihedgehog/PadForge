@@ -309,7 +309,17 @@ namespace PadForge.Common.Input
                 // are fine on the per-device-pass path because Step
                 // 4's re-merge is a no-op for a value that only one
                 // pass produced.
-                bool isMultiSource = row.Sources != null && row.Sources.Count > 1;
+                // Count of contributing (non-row-modifier) sources. Row
+                // modifiers (InvertOnHold) don't enter the combine and
+                // don't count toward "multi-source" since they're
+                // transparent to the user's chosen combine mode.
+                int contribCount = 0;
+                if (row.Sources != null)
+                {
+                    for (int si = 0; si < row.Sources.Count; si++)
+                        if (!IsRowModifierSource(row.Sources[si])) contribCount++;
+                }
+                bool isMultiSource = contribCount > 1;
                 HashSet<string> multiDone = (isMultiSource && slotIndex >= 0
                     && slotIndex < _multiSourceEvaluatedTargetsBySlot.Length)
                     ? _multiSourceEvaluatedTargetsBySlot[slotIndex] : null;
@@ -342,6 +352,7 @@ namespace PadForge.Common.Input
                     for (int i = 0; i < row.Sources.Count; i++)
                     {
                         var src = row.Sources[i];
+                        if (IsRowModifierSource(src)) continue;
                         if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
                         boolContribs.Add(SourceEvaluator.EvaluateForButtonTarget(
                             state, src, globalAxisToButtonThreshold,
@@ -368,6 +379,7 @@ namespace PadForge.Common.Input
                     for (int i = 0; i < row.Sources.Count; i++)
                     {
                         var src = row.Sources[i];
+                        if (IsRowModifierSource(src)) continue;
                         if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
                         axisContribs.Add(SourceEvaluator.EvaluateForBipolarAxisTarget(
                             state, src, slotIndex, row.Target, i, runtime, dt));
@@ -394,6 +406,7 @@ namespace PadForge.Common.Input
                     for (int i = 0; i < row.Sources.Count; i++)
                     {
                         var src = row.Sources[i];
+                        if (IsRowModifierSource(src)) continue;
                         if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
                         axisContribs.Add(SourceEvaluator.EvaluateForTriggerTarget(
                             state, src, slotIndex, row.Target, i, runtime, dt));
@@ -406,26 +419,65 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>True when the row's row-level InvertOnHold modifier is
-        /// currently pressed. Used to sign-flip a bipolar axis or 1−x a
-        /// unipolar trigger AFTER the combine. Reads the modifier button
-        /// against the row's declared device GUID (cross-device modifier)
-        /// or, when that's empty, against the device currently processing
-        /// the row (per-device modifier).</summary>
+        /// <summary>True when any source on this row has Kind=InvertOnHold
+        /// and its ParamModifier button is currently pressed. The
+        /// InvertOnHold source kind acts as a row-level modifier — the
+        /// source itself contributes nothing to the combine (see
+        /// <see cref="IsRowModifierSource"/>); only its ParamModifier
+        /// affects the row by sign-flipping the post-combine output.
+        ///
+        /// <para>The modifier is read against each source's own DeviceGuid
+        /// when set; otherwise against the device currently processing
+        /// the row. Multiple InvertOnHold sources on one row OR together:
+        /// any held modifier triggers the flip.</para></summary>
         private static bool IsInvertOnHoldActive(MappingRow row, CustomInputState fallbackState, string fallbackDeviceGuid)
         {
-            if (row == null || string.IsNullOrEmpty(row.InvertOnHoldButton)) return false;
-            CustomInputState s;
-            if (!string.IsNullOrEmpty(row.InvertOnHoldDeviceGuid)
-                && !string.Equals(row.InvertOnHoldDeviceGuid, fallbackDeviceGuid, System.StringComparison.OrdinalIgnoreCase))
+            if (row == null || row.Sources == null) return false;
+            for (int i = 0; i < row.Sources.Count; i++)
             {
-                s = LookupDeviceState(row.InvertOnHoldDeviceGuid);
+                var src = row.Sources[i];
+                if (src == null) continue;
+                if (!string.Equals(src.Kind ?? "Direct", "InvertOnHold", System.StringComparison.Ordinal))
+                    continue;
+                if (string.IsNullOrEmpty(src.ParamModifier)) continue;
+                CustomInputState s = string.IsNullOrEmpty(src.DeviceGuid)
+                    ? fallbackState
+                    : (LookupDeviceState(src.DeviceGuid) ?? fallbackState);
+                if (SourceKindRuntimeReadButtonLikeBool(s, src.ParamModifier))
+                    return true;
             }
-            else
-            {
-                s = fallbackState;
-            }
-            return SourceKindRuntimeReadButtonLikeBool(s, row.InvertOnHoldButton);
+            return false;
+        }
+
+        /// <summary>True for sources that act as row-level modifiers
+        /// (currently only Kind=InvertOnHold). Skipped by the per-row
+        /// contribution-building loops so they don't enter the combine,
+        /// and they don't count toward the "is multi-source" check.</summary>
+        private static bool IsRowModifierSource(MappingSource src)
+            => src != null
+            && string.Equals(src.Kind ?? "Direct", "InvertOnHold", System.StringComparison.Ordinal);
+
+        /// <summary>Number of non-modifier (combine-contributing) sources
+        /// on a row. Used by the per-target evaluators to drive the
+        /// single-vs-multi-source dispatch.</summary>
+        private static int CountContributingSources(MappingRow row)
+        {
+            if (row?.Sources == null) return 0;
+            int n = 0;
+            for (int i = 0; i < row.Sources.Count; i++)
+                if (!IsRowModifierSource(row.Sources[i])) n++;
+            return n;
+        }
+
+        /// <summary>First non-modifier source on a row, or <c>null</c>
+        /// when every source is a row modifier (which makes the row
+        /// effectively unmapped — the modifier has nothing to flip).</summary>
+        private static MappingSource FirstContributingSource(MappingRow row)
+        {
+            if (row?.Sources == null) return null;
+            for (int i = 0; i < row.Sources.Count; i++)
+                if (!IsRowModifierSource(row.Sources[i])) return row.Sources[i];
+            return null;
         }
 
         // ─── Per-row buffer reuse (single polling thread; static is safe) ──
@@ -588,6 +640,7 @@ namespace PadForge.Common.Input
             {
                 if (i == negPairIndex) continue;
                 var src = srcs[i];
+                if (IsRowModifierSource(src)) continue;
                 if (src == null) { list.Add(0f); continue; }
                 var devState = LookupDeviceState(src.DeviceGuid);
                 if (devState == null) { list.Add(0f); continue; }
@@ -618,6 +671,7 @@ namespace PadForge.Common.Input
             for (int i = 0; i < srcs.Length; i++)
             {
                 var src = srcs[i];
+                if (IsRowModifierSource(src)) continue;
                 if (src == null) { list.Add(0f); continue; }
                 var devState = LookupDeviceState(src.DeviceGuid);
                 if (devState == null) { list.Add(0f); continue; }
@@ -637,6 +691,7 @@ namespace PadForge.Common.Input
             for (int i = 0; i < srcs.Length; i++)
             {
                 var src = srcs[i];
+                if (IsRowModifierSource(src)) continue;
                 if (src == null) { list.Add(0f); continue; }
                 var devState = LookupDeviceState(src.DeviceGuid);
                 if (devState == null) { list.Add(0f); continue; }
@@ -705,7 +760,9 @@ namespace PadForge.Common.Input
             double dt = (slotIndex >= 0 && slotIndex < _lastEvalTime.Length)
                 ? ComputeAndAdvanceDelta(slotIndex) : 0;
 
-            bool isMultiSource = row.Sources.Count > 1;
+            int contribCount = CountContributingSources(row);
+            if (contribCount == 0) return false;
+            bool isMultiSource = contribCount > 1;
             bool isCustom = row.CombineMode == "Custom";
 
             if (isMultiSource)
@@ -727,7 +784,7 @@ namespace PadForge.Common.Input
 
             // Single source — evaluate cross-device (the source's own DeviceGuid
             // wins, not necessarily the device we're currently processing).
-            var src = row.Sources[0];
+            var src = FirstContributingSource(row);
             if (src == null) return false;
             var devState = string.IsNullOrEmpty(src.DeviceGuid)
                 ? state
@@ -757,7 +814,9 @@ namespace PadForge.Common.Input
             double dt = (slotIndex >= 0 && slotIndex < _lastEvalTime.Length)
                 ? ComputeAndAdvanceDelta(slotIndex) : 0;
 
-            bool isMultiSource = row.Sources.Count > 1;
+            int contribCount = CountContributingSources(row);
+            if (contribCount == 0) return false;
+            bool isMultiSource = contribCount > 1;
             bool isCustom = row.CombineMode == "Custom";
             float combined;
 
@@ -771,7 +830,7 @@ namespace PadForge.Common.Input
             }
             else
             {
-                var src = row.Sources[0];
+                var src = FirstContributingSource(row);
                 if (src == null) return false;
                 var devState = string.IsNullOrEmpty(src.DeviceGuid)
                     ? state
@@ -837,6 +896,7 @@ namespace PadForge.Common.Input
             for (int i = 0; i < sources.Length; i++)
             {
                 var src = sources[i];
+                if (IsRowModifierSource(src)) continue;
                 if (src == null) { values.Add(0f); flags.Add(0f); continue; }
 
                 var devState = string.IsNullOrEmpty(src.DeviceGuid)
@@ -937,7 +997,9 @@ namespace PadForge.Common.Input
             double dt = (slotIndex >= 0 && slotIndex < _lastEvalTime.Length)
                 ? ComputeAndAdvanceDelta(slotIndex) : 0;
 
-            bool isMultiSource = row.Sources.Count > 1;
+            int contribCount = CountContributingSources(row);
+            if (contribCount == 0) return false;
+            bool isMultiSource = contribCount > 1;
             bool isCustom = row.CombineMode == "Custom";
             float combined;
 
@@ -951,7 +1013,7 @@ namespace PadForge.Common.Input
             }
             else
             {
-                var src = row.Sources[0];
+                var src = FirstContributingSource(row);
                 if (src == null) return false;
                 var devState = string.IsNullOrEmpty(src.DeviceGuid)
                     ? state

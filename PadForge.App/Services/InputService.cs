@@ -1701,7 +1701,7 @@ namespace PadForge.Services
             var ps = us?.GetPadSetting();
             if (ps == null)
             {
-                RefreshMappingsCore(padVm, ud: null, ps: null);
+                RefreshMappingsCore(padVm);
                 return;
             }
 
@@ -1777,36 +1777,34 @@ namespace PadForge.Services
             // Sync dynamic stick/trigger config items.
             padVm.SyncAllConfigItemsFromVm();
 
-            // Mapping descriptors are per-VC, factored out so callers
-            // can refresh them independently of the per-device tuning
-            // pass above.
-            RefreshMappingsCore(padVm, FindUserDevice(instanceGuid), ps);
+            // Per-device tuning load is done; mapping descriptors are
+            // per-VC and intentionally NOT refreshed here. The Mappings
+            // tab is decoupled from the assigned-device dropdown: the
+            // user toggling which device is "selected" for tuning must
+            // never alter what mappings appear. Callers that legitimately
+            // need a mapping refresh (slot init, MappingsRebuilt event,
+            // device added/removed) call RefreshMappingsCore directly.
         }
 
         /// <summary>Per-VC mapping refresh. Reads the slot's MappingSet
-        /// and per-device PadSetting fallback to populate every
-        /// MappingItem in <paramref name="padVm"/>. Tolerates
-        /// <paramref name="ud"/> = null (no device selected) and
-        /// <paramref name="ps"/> = null (no PadSetting available) —
-        /// in those cases the legacy fallback walks the slot's
-        /// MappedDevices instead, and per-mapping deadzones default to
-        /// 50.</summary>
-        private static void RefreshMappingsCore(PadViewModel padVm, UserDevice ud, PadSetting ps)
+        /// — the SOLE source of truth — and populates every MappingItem
+        /// in <paramref name="padVm"/>. The Mappings tab is intentionally
+        /// device-agnostic: changing the assigned-device dropdown does
+        /// NOT affect what's shown here. Legacy per-device descriptors
+        /// are converted into the MappingSet at settings load time
+        /// (<see cref="SettingsService.LoadFromFile"/> →
+        /// <c>BuildOneSlotFromLegacy</c>) and on device assignment
+        /// (<see cref="SettingsService.RefreshMappingSetsFromLegacy"/>);
+        /// from that point on the MappingSet is authoritative.</summary>
+        private static void RefreshMappingsCore(PadViewModel padVm)
         {
             if (padVm == null) return;
 
-            // Phase 2C — index this slot's MappingSet rows by Target so
-            // we can populate MappingItem.ExtraSources alongside the
-            // legacy single-source SourceDescriptor binding.
             Engine.Data.MappingSet slotMs = (padVm.PadIndex >= 0
                 && padVm.PadIndex < SettingsManager.SlotMappingSets.Length)
                 ? SettingsManager.SlotMappingSets[padVm.PadIndex]
                 : null;
 
-            // Issue #61 Shift activator pull was reverted with the rest
-            // of the premature Shift UI; engine-side ResolveActiveLayerMask
-            // sees null ShiftButton and returns "Base" until Phase 6
-            // properly lands after multi-source UI completes.
             var msRowsByTarget = new System.Collections.Generic.Dictionary<string, Engine.Data.MappingRow>(
                 StringComparer.Ordinal);
             if (slotMs?.Rows != null)
@@ -1823,24 +1821,8 @@ namespace PadForge.Services
             foreach (var mapping in padVm.Mappings)
             {
                 string target = mapping.TargetSettingName;
+                UserDevice primaryUd = null;
 
-                // Phase 2C — when a per-VC MappingSet row exists for this
-                // target, IT is the source of truth for the row's primary
-                // descriptor, not the per-device PadSetting field. This is
-                // what makes the Mappings tab a unified per-VC view: the
-                // Device dropdown stops driving which descriptor shows.
-                // Per-mapping deadzone stays per-device for now (it's a
-                // device-tuning concern). Per-source DeadZone on the
-                // MappingSet sources will replace it in Phase 1c-3.
-                bool primaryFromMappingSet = false;
-                // Device whose DeviceObjects metadata is used to render
-                // human-friendly text for the descriptor. Defaults to
-                // the slot's selected device but is overridden to the
-                // primary source's device when MappingSet drives the
-                // row, so e.g. a DualSense's "Button 0" never gets
-                // mis-rendered as a keyboard's "Key 0x00" just because
-                // the keyboard happens to be the selected device.
-                UserDevice primaryUd = ud;
                 if (msRowsByTarget.TryGetValue(target, out var msRow)
                     && msRow.Sources != null && msRow.Sources.Count > 0)
                 {
@@ -1848,123 +1830,41 @@ namespace PadForge.Services
                     string encoded = ReencodePrefixForLegacy(
                         primary.Descriptor, primary.Invert, primary.HalfAxis);
                     mapping.LoadDescriptor(encoded);
-                    primaryFromMappingSet = true;
-
-                    // Per-source DeadZone wins over per-mapping legacy
-                    // deadzone when MappingSet drives the row.
                     if (primary.DeadZone > 0) mapping.MappingDeadZone = primary.DeadZone;
-
-                    // Surface the primary source's device origin so the
-                    // user sees the unified per-VC view's binding without
-                    // needing to look at the Device dropdown.
                     mapping.PrimarySourceDeviceGuid = primary.DeviceGuid ?? "";
                     mapping.PrimarySourceDeviceLabel = ResolveDeviceLabel(primary.DeviceGuid);
 
                     if (!string.IsNullOrEmpty(primary.DeviceGuid)
                         && Guid.TryParse(primary.DeviceGuid, out var primaryGuid))
                     {
-                        var resolved = FindUserDevice(primaryGuid);
-                        if (resolved != null) primaryUd = resolved;
+                        primaryUd = FindUserDevice(primaryGuid);
                     }
                 }
                 else
                 {
-                    // No MappingSet row → fall back to legacy per-device
-                    // PadSetting fields. Walk EVERY device assigned to
-                    // the slot (not just the selected one) so the
-                    // Mappings tab stays per-VC: pick the first device
-                    // whose PadSetting has a non-empty descriptor for
-                    // this target, and resolve the display text against
-                    // that device.
-                    //
-                    // Skip non-gamepad devices for gamepad-class
-                    // targets — keyboards / mice / touchpads with
-                    // stale gamepad descriptors (left over from earlier
-                    // bleed bugs in v3-dev) would otherwise become the
-                    // row's primary, sticking joystick targets at the
-                    // device's default Axis[0] = 0 (bipolar -1) every
-                    // poll.
-                    bool gamepadOnly = IsGamepadClassTarget(target);
-                    string value = "";
-                    Guid winningGuid = Guid.Empty;
-                    UserDevice winningUd = null;
-                    foreach (var md in padVm.MappedDevices)
-                    {
-                        if (md == null || md.InstanceGuid == Guid.Empty) continue;
-                        var udLookup = FindUserDevice(md.InstanceGuid);
-                        if (gamepadOnly && (udLookup == null
-                            || udLookup.CapType != InputDeviceType.Gamepad))
-                            continue;
-                        var devUs = SettingsManager.FindSettingByInstanceGuidAndSlot(md.InstanceGuid, padVm.PadIndex);
-                        var devPs = devUs?.GetPadSetting();
-                        if (devPs == null) continue;
-                        var v = GetMappingValue(devPs, target);
-                        if (string.IsNullOrEmpty(v)) continue;
-                        value = v;
-                        winningGuid = md.InstanceGuid;
-                        winningUd = udLookup;
-                        break;
-                    }
-                    mapping.LoadDescriptor(value);
-                    if (winningGuid != Guid.Empty)
-                    {
-                        mapping.PrimarySourceDeviceGuid = winningGuid.ToString().ToLowerInvariant();
-                        mapping.PrimarySourceDeviceLabel = ResolveDeviceLabel(mapping.PrimarySourceDeviceGuid);
-                        if (winningUd != null) primaryUd = winningUd;
-                    }
-                    else
-                    {
-                        mapping.PrimarySourceDeviceGuid = "";
-                        mapping.PrimarySourceDeviceLabel = "";
-                    }
+                    // No MappingSet row for this target → row is unmapped.
+                    // No legacy fallback to per-device PadSetting fields;
+                    // legacy XML is converted to MappingSet on load, so
+                    // a missing row really means the user hasn't mapped
+                    // this output yet.
+                    mapping.LoadDescriptor("");
+                    mapping.PrimarySourceDeviceGuid = "";
+                    mapping.PrimarySourceDeviceLabel = "";
+                    mapping.MappingDeadZone = 50;
                 }
 
                 MappingDisplayResolver.ResolveDisplayText(mapping, primaryUd);
 
-                // Bipolar Neg descriptor.
-                //
-                // Old behavior re-projected the MappingSet's Neg-pair
-                // back into the legacy NegSourceDescriptor field, which
-                // had no UI binding — so the user only ever saw the
-                // primary direction in the picker even though both
-                // directions were stored. Now: when the row is
-                // MappingSet-driven we leave NegSourceDescriptor empty
-                // and let the Neg pair land in ExtraSources below
-                // (rendered as a visible source row in the expanded
-                // details, with Invert=true to flip its direction).
-                // The legacy fallback (no MappingSet row) keeps reading
-                // NegSourceDescriptor from the per-device PadSetting
-                // field so un-migrated slots still light up.
+                // Bipolar Neg-pair lives inside the MappingSet's
+                // Sources[1] now (with Invert flipped relative to the
+                // primary). The legacy NegSourceDescriptor field is no
+                // longer read — leaving it empty signals the UI to
+                // render the Neg source as a visible ExtraSources row.
                 if (mapping.NegSettingName != null)
-                {
-                    if (primaryFromMappingSet)
-                    {
-                        mapping.LoadNegDescriptor(string.Empty);
-                    }
-                    else
-                    {
-                        string negTarget = mapping.NegSettingName;
-                        string negValue = GetMappingValue(ps, negTarget);
-                        mapping.LoadNegDescriptor(negValue);
-                        MappingDisplayResolver.ResolveNegDisplayText(mapping, ud);
-                    }
-                }
+                    mapping.LoadNegDescriptor(string.Empty);
 
-                // Per-mapping deadzone (legacy fallback when MappingSet
-                // didn't supply one above). ps is null when the slot
-                // has no selected device — fall back to the default.
-                if (!primaryFromMappingSet)
-                {
-                    string dzStr = ps != null ? ps.GetMappingDeadZone(target) : null;
-                    mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
-                }
-
-                // ExtraSources / CombineMode from the matching
-                // MappingSet row (every source beyond the primary).
-                // For bipolar axis rows the Neg pair lives here too —
-                // it's the Source[i] with Invert flipped relative to
-                // the primary — so the user sees both directions as
-                // visible source rows in the expanded details.
+                // ExtraSources / CombineMode / CombineExpression from
+                // the matching MappingSet row.
                 mapping.ExtraSources.Clear();
                 mapping.CombineMode = "";
                 mapping.CombineExpression = "";
@@ -2607,13 +2507,10 @@ namespace PadForge.Services
             // row to its legacy single-source view and the secondary mappings
             // disappeared — that was the "changing languages breaks the
             // mapping interface" report.
+            RefreshMappingsCore(padVm);
             var ud = padVm.SelectedMappedDevice != null
                 && padVm.SelectedMappedDevice.InstanceGuid != Guid.Empty
                 ? FindUserDevice(padVm.SelectedMappedDevice.InstanceGuid) : null;
-            var ps = ud != null
-                ? SettingsManager.FindSettingByInstanceGuidAndSlot(ud.InstanceGuid, padVm.PadIndex)?.GetPadSetting()
-                : null;
-            RefreshMappingsCore(padVm, ud, ps);
             PopulateAvailableInputs(padVm, ud);
         }
 

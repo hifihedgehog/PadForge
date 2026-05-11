@@ -54,23 +54,6 @@ namespace PadForge.Engine.Data
         /// load and cached on the row at runtime.</summary>
         [XmlAttribute] public string CombineExpression { get; set; } = "";
 
-        /// <summary>Row-level "invert while held" modifier (Issue #61 B.3).
-        /// When set and the named button is currently pressed, the row's
-        /// final combined value is sign-flipped post-combine. Empty = no
-        /// modifier. <see cref="InvertOnHoldDeviceGuid"/> selects which
-        /// device's state the button is read against; empty = the device
-        /// currently being processed in Step 3.
-        ///
-        /// <para>Applies only to bipolar-axis and unipolar-trigger targets;
-        /// button / POV / boolean targets ignore it (sign flip is undefined
-        /// for bool outputs).</para></summary>
-        [XmlAttribute] public string InvertOnHoldButton { get; set; } = "";
-
-        /// <summary>Device GUID whose state <see cref="InvertOnHoldButton"/>
-        /// is read against. Empty string falls back to the current row-
-        /// evaluation device.</summary>
-        [XmlAttribute] public string InvertOnHoldDeviceGuid { get; set; } = "";
-
         /// <summary>Sources combined to produce this row's output.</summary>
         [XmlElement("Source")]
         public List<MappingSource> Sources { get; set; } = new();

@@ -457,8 +457,6 @@ namespace PadForge.Services
 
                     row.CombineMode = mapping.CombineMode ?? "";
                     row.CombineExpression = mapping.CombineExpression ?? "";
-                    row.InvertOnHoldButton = mapping.InvertOnHoldButton ?? "";
-                    row.InvertOnHoldDeviceGuid = mapping.InvertOnHoldDeviceGuid ?? "";
 
                     // Phase 2C — clear and rebuild Sources from the UI
                     // state so MappingSet is fully authoritative for

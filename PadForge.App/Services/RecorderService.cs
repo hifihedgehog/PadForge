@@ -107,11 +107,6 @@ namespace PadForge.Services
         public enum ParamTarget { None, Up, Down, Modifier }
         private ParamTarget _paramTarget = ParamTarget.None;
 
-        /// <summary>True when recording for the row-level InvertOnHold
-        /// modifier (Issue #61 B.3). Captured descriptor goes to
-        /// <see cref="MappingItem.InvertOnHoldButton"/> + DeviceGuid.</summary>
-        private bool _recordingInvertOnHold;
-
         /// <summary>
         /// When true, the recorder waits for all buttons and POVs to return to neutral
         /// before detecting new inputs. Used for follow-up recordings where the previous
@@ -160,22 +155,8 @@ namespace PadForge.Services
             bool neutralizeBaseline = false, bool negRecording = false)
         {
             _paramTarget = ParamTarget.None;
-            _recordingInvertOnHold = false;
             StartRecordingInternal(mapping, extraSource: null, padIndex,
                 neutralizeBaseline, negRecording);
-        }
-
-        /// <summary>Starts cross-device recording for the row-level
-        /// InvertOnHold modifier. First button press across any device
-        /// assigned to the slot writes both
-        /// <see cref="MappingItem.InvertOnHoldButton"/> and
-        /// <see cref="MappingItem.InvertOnHoldDeviceGuid"/>.</summary>
-        public void StartRecordingInvertOnHold(MappingItem mapping, int padIndex)
-        {
-            _paramTarget = ParamTarget.None;
-            _recordingInvertOnHold = true;
-            StartRecordingInternal(mapping, extraSource: null, padIndex,
-                neutralizeBaseline: false, negRecording: false);
         }
 
         /// <summary>Starts cross-device recording for an ExtraSource row.
@@ -196,7 +177,6 @@ namespace PadForge.Services
             bool neutralizeBaseline = false, bool negRecording = false)
         {
             _paramTarget = ParamTarget.None;
-            _recordingInvertOnHold = false;
             StartRecordingInternal(parent, extraSource, padIndex,
                 neutralizeBaseline, negRecording);
         }
@@ -212,7 +192,6 @@ namespace PadForge.Services
             MappingSourceItem extraSource, int padIndex, ParamTarget target)
         {
             _paramTarget = target;
-            _recordingInvertOnHold = false;
             StartRecordingInternal(parent, extraSource, padIndex,
                 neutralizeBaseline: false, negRecording: false);
         }
@@ -314,7 +293,6 @@ namespace PadForge.Services
             _activeExtraSource = null;
             _activePadIndex = -1;
             _paramTarget = ParamTarget.None;
-            _recordingInvertOnHold = false;
             _activeDevices.Clear();
             _baselines.Clear();
             _isMouseByDevice.Clear();
@@ -522,7 +500,6 @@ namespace PadForge.Services
             // into shouldInvert.)
             bool negRec = _negRecording;
             var paramTarget = _paramTarget;
-            bool recordingInvertOnHold = _recordingInvertOnHold;
 
             // Stop recording.
             if (extraSource != null) extraSource.IsRecording = false;
@@ -532,7 +509,6 @@ namespace PadForge.Services
             _activeExtraSource = null;
             _activePadIndex = -1;
             _paramTarget = ParamTarget.None;
-            _recordingInvertOnHold = false;
             _activeDevices.Clear();
             _baselines.Clear();
             _isMouseByDevice.Clear();
@@ -553,26 +529,6 @@ namespace PadForge.Services
             // MainWindow.RecordingCompleted).
             string winningGuidStr = winningDevice == Guid.Empty
                 ? "" : winningDevice.ToString().ToLowerInvariant();
-
-            if (recordingInvertOnHold)
-            {
-                // Row-level InvertOnHold (B.3 reversible throttle). Writes
-                // the captured (device, descriptor) pair onto the row;
-                // doesn't touch any source.
-                mapping.InvertOnHoldButton = descriptor;
-                mapping.InvertOnHoldDeviceGuid = winningGuidStr;
-                finalDescriptor = descriptor;
-                _mainVm.StatusText = string.Format(
-                    Strings.Instance.Status_Recorded_Format, mapping.TargetLabel, finalDescriptor);
-                RecordingCompleted?.Invoke(this, new RecordingResult
-                {
-                    Mapping = mapping,
-                    ExtraSource = null,
-                    Descriptor = finalDescriptor,
-                    Type = type,
-                });
-                return;
-            }
 
             if (extraSource != null && paramTarget != ParamTarget.None)
             {
@@ -702,7 +658,6 @@ namespace PadForge.Services
             // stored Invert=true so the press drives the axis to -1.
             bool negRec = _negRecording;
             var paramTarget = _paramTarget;
-            bool recordingInvertOnHold = _recordingInvertOnHold;
 
             if (extraSource != null) extraSource.IsRecording = false;
             else mapping.IsRecording = false;
@@ -711,7 +666,6 @@ namespace PadForge.Services
             _activeExtraSource = null;
             _activePadIndex = -1;
             _paramTarget = ParamTarget.None;
-            _recordingInvertOnHold = false;
             _activeDevices.Clear();
             _baselines.Clear();
             _isMouseByDevice.Clear();
@@ -722,27 +676,6 @@ namespace PadForge.Services
             // attaches to, regardless of the Mappings-tab dropdown selection.
             string winningGuidStr = winningDevice == Guid.Empty
                 ? "" : winningDevice.ToString().ToLowerInvariant();
-
-            if (recordingInvertOnHold)
-            {
-                // Touchpad click captured for the row-level InvertOnHold modifier.
-                // The engine's ReadButtonLikeBool doesn't recognize touchpad-click
-                // forms — write the descriptor anyway and let the engine ignore
-                // unknown forms.
-                mapping.InvertOnHoldButton = descriptor;
-                mapping.InvertOnHoldDeviceGuid = winningGuidStr;
-                finalDescriptor = descriptor;
-                _mainVm.StatusText = string.Format(
-                    Strings.Instance.Status_Recorded_Format, mapping.TargetLabel, finalDescriptor);
-                RecordingCompleted?.Invoke(this, new RecordingResult
-                {
-                    Mapping = mapping,
-                    ExtraSource = null,
-                    Descriptor = finalDescriptor,
-                    Type = MapType.Button,
-                });
-                return;
-            }
 
             if (extraSource != null && paramTarget != ParamTarget.None)
             {

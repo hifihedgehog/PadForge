@@ -390,6 +390,16 @@ namespace PadForge.Services
                     }
                 }
 
+                // Param recording (Incremental Up/Down, InvertOnHold Modifier)
+                // captures button-class inputs only — the engine's ReadButtonLikeBool
+                // recognizes Button / POV descriptors, nothing else. An axis
+                // capture would land in ParamUp / ParamDown / ParamModifier as
+                // "Axis N" and silently do nothing, which is the "I have to
+                // record 3-4 times before it works" symptom (early tries get
+                // captured by stick drift on whichever axis crosses the
+                // detection threshold first; later tries hit the real button).
+                if (_paramTarget != ParamTarget.None) continue;
+
                 // ── Check axes (requires hold confirmation) ──
                 int bestAxisIndex = -1;
                 MapType bestAxisType = MapType.None;
@@ -543,6 +553,17 @@ namespace PadForge.Services
                     case ParamTarget.Up:       extraSource.ParamUp       = descriptor; break;
                     case ParamTarget.Down:     extraSource.ParamDown     = descriptor; break;
                     case ParamTarget.Modifier: extraSource.ParamModifier = descriptor; break;
+                }
+                // Stamp the winning device on the source so the engine knows
+                // which device's state to read the Param button from. Without
+                // this, an InvertOnHold modifier recorded on a SECONDARY
+                // device (e.g. Button 65 on a web/touchpad device) would be
+                // looked up against the row's primary device, which has no
+                // such index, and IsInvertOnHoldActive silently returns false.
+                if (!string.IsNullOrEmpty(winningGuidStr))
+                {
+                    extraSource.DeviceGuid = winningGuidStr;
+                    extraSource.DeviceLabel = ResolveDeviceLabel(winningDevice);
                 }
                 finalDescriptor = descriptor;
                 _mainVm.StatusText = string.Format(

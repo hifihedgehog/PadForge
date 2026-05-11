@@ -413,9 +413,12 @@ namespace PadForge.Services
         /// into the in-memory <see cref="SettingsManager.SlotMappingSets"/>
         /// so they survive the legacy-merge step and the XML round-trip.
         /// Runs in <see cref="SaveToFile"/> right after the UI → PadSetting
-        /// push.
+        /// push. Also exposed to the recording pipeline so a freshly-recorded
+        /// mapping lands in the in-memory MappingSet immediately, keeping the
+        /// per-VC Mappings tab consistent without waiting for the next
+        /// debounced save / device-dropdown toggle.
         /// </summary>
-        private void PushUiExtraSourcesIntoSlotMappingSets()
+        internal void PushUiExtraSourcesIntoSlotMappingSets()
         {
             var pads = _mainVm?.Pads;
             if (pads == null) return;

@@ -834,6 +834,16 @@ public class Strings : INotifyPropertyChanged
     public string Macro_Expression_Variables => Get("Macro_Expression_Variables");
     public string Macro_Expression_AddVariable => Get("Macro_Expression_AddVariable");
     public string Macro_Expression_Hint => Get("Macro_Expression_Hint");
+    public string Macro_Expression_Recipe_Single => Get("Macro_Expression_Recipe_Single");
+    public string Macro_Expression_Recipe_Single_Tooltip => Get("Macro_Expression_Recipe_Single_Tooltip");
+    public string Macro_Expression_Recipe_Both => Get("Macro_Expression_Recipe_Both");
+    public string Macro_Expression_Recipe_Both_Tooltip => Get("Macro_Expression_Recipe_Both_Tooltip");
+    public string Macro_Expression_Recipe_Either => Get("Macro_Expression_Recipe_Either");
+    public string Macro_Expression_Recipe_Either_Tooltip => Get("Macro_Expression_Recipe_Either_Tooltip");
+    public string Macro_Expression_Recipe_AButNotB => Get("Macro_Expression_Recipe_AButNotB");
+    public string Macro_Expression_Recipe_AButNotB_Tooltip => Get("Macro_Expression_Recipe_AButNotB_Tooltip");
+    public string Macro_Expression_Recipe_AxisOverHalf => Get("Macro_Expression_Recipe_AxisOverHalf");
+    public string Macro_Expression_Recipe_AxisOverHalf_Tooltip => Get("Macro_Expression_Recipe_AxisOverHalf_Tooltip");
     public string Macro_Source => Get("Macro_Source");
     public string Macro_InputDevice => Get("Macro_InputDevice");
     public string Macro_OutputController => Get("Macro_OutputController");

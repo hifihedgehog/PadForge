@@ -606,6 +606,16 @@
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>Variabili</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ Aggiungi variabile</value></data>
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>Ogni riga definisce una lettera variabile (a, b, c, …). Scegli Dispositivo di input per associare un pulsante, POV o asse su un dispositivo fisico, oppure Controller di output per leggere un canale dall'output Xbox combinato dello slot.</value></data>
+  <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>solo a</value></data>
+  <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>Si attiva quando la variabile a passa da 0 a 1.</value></data>
+  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a e b</value></data>
+  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Si attiva solo quando sia a AND b sono attivi. Accordo classico.</value></data>
+  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a o b</value></data>
+  <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>Si attiva quando a OR b è attivo.</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a ma non b</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Si attiva quando a è attivo e b NOT è attivo.</value></data>
+  <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>asse oltre il 50%</value></data>
+  <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Si attiva quando l&apos;asse analogico a è deflesso di oltre il 50% dalla posizione di riposo.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Sorgente</value></data>
   <data name="Macro_InputDevice" xml:space="preserve"><value>Dispositivo di input</value></data>
   <data name="Macro_OutputController" xml:space="preserve"><value>Controller di output</value></data>

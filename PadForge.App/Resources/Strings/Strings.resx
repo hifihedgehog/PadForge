@@ -752,6 +752,16 @@
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>Variables</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ Add Variable</value></data>
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>Each row defines one variable letter (a, b, c, …). Choose Input Device to bind a button, POV, or axis on a physical device, or Output Controller to read a channel on the slot's combined Xbox output.</value></data>
+  <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>a alone</value></data>
+  <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>Fire when variable a goes from 0 to 1.</value></data>
+  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a and b</value></data>
+  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Fire only when both a AND b are active. Classic chord.</value></data>
+  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a or b</value></data>
+  <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>Fire when either a OR b is active.</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a but not b</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Fire when a is active and b is NOT active.</value></data>
+  <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>axis past 50%</value></data>
+  <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Fire when stick axis a is deflected more than 50% from rest.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Source</value></data>
   <data name="Macro_InputDevice" xml:space="preserve"><value>Input Device</value></data>
   <data name="Macro_OutputController" xml:space="preserve"><value>Output Controller</value></data>

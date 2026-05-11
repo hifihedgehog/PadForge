@@ -47,40 +47,15 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
-        //  Phase 2C — cascading device/input picker
+        //  ExtraSources wiring
         //
-        //  Slot-level state pushed in by InputService when the row is
-        //  populated:
-        //    - SlotMappedDevices: list of all devices assigned to the
-        //      slot, used by the per-source Device ComboBox.
-        //    - GetInputChoicesForDevice: lookup that returns the
-        //      InputChoice list for a given device GUID.
-        //
-        //  When a source's DeviceGuid changes, we refresh that source's
-        //  per-source AvailableInputs from the lookup. Empty GUID =
-        //  "use the slot's primary device" and falls back to the
-        //  parent MappingItem's AvailableInputs list.
+        //  Each ExtraSource (MappingSourceItem) gets:
+        //    - ParentTargetIsDiscrete pushed from this row so the
+        //      per-source deadzone visibility tracks the target type.
+        //    - SelectedInput synced against the row's cross-device
+        //      AvailableInputs list whenever the user adds a source
+        //      or this row's AvailableInputs gets rebuilt.
         // ─────────────────────────────────────────────
-
-        private object _slotMappedDevices;
-        /// <summary>Reference (not owned) to the parent
-        /// PadViewModel.MappedDevices collection. Bound by the per-source
-        /// Device ComboBox via a RelativeSource walk to the DataGridRow's
-        /// DataContext (this MappingItem). Typed as object so we don't
-        /// take a hard dependency on PadViewModel.MappedDeviceInfo from
-        /// MappingItem; the XAML only needs <c>Name</c> and
-        /// <c>InstanceGuid</c> via reflection-style binding.</summary>
-        public object SlotMappedDevices
-        {
-            get => _slotMappedDevices;
-            set => SetProperty(ref _slotMappedDevices, value);
-        }
-
-        /// <summary>Set by InputService at row-population time. Returns
-        /// the list of <see cref="InputChoice"/> for a given device
-        /// GUID. Null means "fall back to the slot's primary device's
-        /// inputs" (this row's <see cref="AvailableInputs"/>).</summary>
-        public Func<string, IReadOnlyList<InputChoice>> GetInputChoicesForDevice { get; set; }
 
         private void OnExtraSourcesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -880,53 +855,6 @@ namespace PadForge.ViewModels
         };
         public System.Collections.Generic.IReadOnlyList<CombineModeOption> AvailableCombineModes
             => _combineModes;
-
-        /// <summary>Custom-only formulas the regular Combine dropdown
-        /// can't express. Quick fill skips Sum / Average / Strongest /
-        /// Either / Both / Only-one because those are first-class
-        /// Combine modes already.</summary>
-        public sealed class ExpressionTemplate
-        {
-            public string Name { get; set; } = "";
-            public string Description { get; set; } = "";
-            public string Formula { get; set; } = "";
-        }
-
-        private static readonly ExpressionTemplate[] _expressionTemplates = new[]
-        {
-            new ExpressionTemplate { Name = "Half scale",         Description = "A at half strength",                                Formula = "a * 0.5" },
-            new ExpressionTemplate { Name = "Quarter scale",      Description = "A at quarter strength",                             Formula = "a * 0.25" },
-            new ExpressionTemplate { Name = "Reverse A",          Description = "Flip A's sign",                                     Formula = "-a" },
-            new ExpressionTemplate { Name = "Cap to ±1",          Description = "Sum A + B but never exceed ±1",                     Formula = "clamp(a + b, -1, 1)" },
-            new ExpressionTemplate { Name = "Weighted blend",     Description = "70% of A + 30% of B",                               Formula = "a * 0.7 + b * 0.3" },
-            new ExpressionTemplate { Name = "Difference",         Description = "A minus B",                                         Formula = "a - b" },
-            new ExpressionTemplate { Name = "A unless idle",      Description = "Use A — but if A is at rest, fall back to B",       Formula = "a != 0 ? a : b" },
-            new ExpressionTemplate { Name = "Stronger wins",      Description = "Whichever of A or B is pushed harder, with sign",   Formula = "max(abs(a), abs(b)) * sign(a + b)" },
-        };
-
-        /// <summary>Named formula presets exposed to the Quick fill
-        /// picker. Static — same set across every row.</summary>
-        public System.Collections.Generic.IReadOnlyList<ExpressionTemplate> AvailableExpressionTemplates
-            => _expressionTemplates;
-
-        private ExpressionTemplate _selectedExpressionTemplate;
-        /// <summary>Bound TwoWay to the Quick fill ComboBox's
-        /// SelectedItem. Picking a template stores it (so the
-        /// dropdown shows the chosen name afterwards) and pushes the
-        /// formula into <see cref="CombineExpression"/>. The user
-        /// can still edit the formula afterwards; the dropdown just
-        /// reflects the last starting point.</summary>
-        public ExpressionTemplate SelectedExpressionTemplate
-        {
-            get => _selectedExpressionTemplate;
-            set
-            {
-                if (SetProperty(ref _selectedExpressionTemplate, value) && value != null)
-                {
-                    CombineExpression = value.Formula ?? "";
-                }
-            }
-        }
 
         /// <summary>Live parse status of <see cref="CombineExpression"/>.
         /// "✓ valid" or a parse-error message; surfaced inline below

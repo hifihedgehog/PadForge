@@ -1,5 +1,4 @@
 using System;
-using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Resources.Strings;
@@ -14,13 +13,6 @@ namespace PadForge.ViewModels
     /// </summary>
     public class MappingSourceItem : ObservableObject
     {
-        /// <summary>Per-source input picker choices. Populated by the
-        /// parent <see cref="MappingItem"/> whenever
-        /// <see cref="DeviceGuid"/> changes — the parent calls back into
-        /// the InputService's per-device InputChoice lookup. Empty
-        /// DeviceGuid means "use the slot's primary device" and the
-        /// parent populates this with that device's inputs.</summary>
-        public ObservableCollection<InputChoice> AvailableInputs { get; } = new();
         private string _kind = "Direct";
         private string _deviceGuid = "";
         private string _descriptor = "";
@@ -190,12 +182,11 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Sync the dropdown selection from the current
-        /// <see cref="DeviceGuid"/>+<see cref="Descriptor"/> pair against
-        /// a flat cross-device choice list. Match is on
-        /// (DeviceGuid, Descriptor) with a descriptor-only fallback.
-        /// Called by the parent MappingItem after the row's load /
-        /// AvailableInputs refresh, with the parent's cross-device
-        /// picker list as the search space.</summary>
+        /// <see cref="DeviceGuid"/>+<see cref="Descriptor"/> pair
+        /// against the parent row's cross-device choice list. Match
+        /// is on (DeviceGuid, Descriptor) with a descriptor-only
+        /// fallback. Called by the parent MappingItem after the row's
+        /// load or after its AvailableInputs list is rebuilt.</summary>
         public void SyncSelectedInputFromState(System.Collections.Generic.IEnumerable<InputChoice> choices)
         {
             _suppressSelectionSync = true;

@@ -3812,13 +3812,32 @@ namespace PadForge
                     _recorderService.StartRecordingExtraSource(mapping, msi, capturedPad.PadIndex);
                 msi.StopRecordingRequested += (s, e) =>
                     _recorderService.CancelRecording();
+                msi.StartParamRecordingRequested += (s, e) =>
+                {
+                    var t = e.Target switch
+                    {
+                        MappingSourceItem.ParamRecordTarget.Up       => RecorderService.ParamTarget.Up,
+                        MappingSourceItem.ParamRecordTarget.Down     => RecorderService.ParamTarget.Down,
+                        MappingSourceItem.ParamRecordTarget.Modifier => RecorderService.ParamTarget.Modifier,
+                        _ => RecorderService.ParamTarget.None,
+                    };
+                    _recorderService.StartRecordingExtraSourceParam(mapping, msi, capturedPad.PadIndex, t);
+                };
                 msi.PropertyChanged += (s, e) =>
                 {
                     if (e.PropertyName is nameof(MappingSourceItem.DeviceGuid)
                         or nameof(MappingSourceItem.Descriptor)
                         or nameof(MappingSourceItem.Invert)
                         or nameof(MappingSourceItem.HalfAxis)
-                        or nameof(MappingSourceItem.DeadZone))
+                        or nameof(MappingSourceItem.DeadZone)
+                        or nameof(MappingSourceItem.Kind)
+                        or nameof(MappingSourceItem.ParamUp)
+                        or nameof(MappingSourceItem.ParamDown)
+                        or nameof(MappingSourceItem.ParamRate)
+                        or nameof(MappingSourceItem.ParamSticky)
+                        or nameof(MappingSourceItem.ParamMin)
+                        or nameof(MappingSourceItem.ParamMax)
+                        or nameof(MappingSourceItem.ParamModifier))
                         _settingsService.MarkDirty();
                 };
             }

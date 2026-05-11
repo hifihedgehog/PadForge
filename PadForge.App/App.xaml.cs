@@ -48,6 +48,32 @@ namespace PadForge
         /// </summary>
         public static System.Threading.Tasks.Task OrphanSweepTask { get; private set; }
 
+        /// <summary>Translator for <see cref="Engine.Common.Mapping.MappingExpression.ErrorFormatter"/>.
+        /// Maps each ParseError enum value to its Pad_Formula_Error_* resource
+        /// string with the supplied positional args. Wired in <see cref="OnStartup"/>.</summary>
+        private static string LocalizeMappingExpressionError(Engine.Common.Mapping.MappingExpression.ParseError code, object[] args)
+        {
+            args ??= System.Array.Empty<object>();
+            var s = Strings.Instance;
+            string tmpl = code switch
+            {
+                Engine.Common.Mapping.MappingExpression.ParseError.UnexpectedTokenAtEnd       => s.Pad_Formula_Error_UnexpectedTokenAtEnd,
+                Engine.Common.Mapping.MappingExpression.ParseError.InvalidNumber              => s.Pad_Formula_Error_InvalidNumber,
+                Engine.Common.Mapping.MappingExpression.ParseError.SingleEqualsNotSupported   => s.Pad_Formula_Error_SingleEqualsNotSupported,
+                Engine.Common.Mapping.MappingExpression.ParseError.UnexpectedCharacter        => s.Pad_Formula_Error_UnexpectedCharacter,
+                Engine.Common.Mapping.MappingExpression.ParseError.ExpectedColonInTernary     => s.Pad_Formula_Error_ExpectedColonInTernary,
+                Engine.Common.Mapping.MappingExpression.ParseError.ExpectedRParen             => s.Pad_Formula_Error_ExpectedRParen,
+                Engine.Common.Mapping.MappingExpression.ParseError.ExpectedRParenAfterArgs    => s.Pad_Formula_Error_ExpectedRParenAfterArgs,
+                Engine.Common.Mapping.MappingExpression.ParseError.ExpectedRBracketAfterIndex => s.Pad_Formula_Error_ExpectedRBracketAfterIndex,
+                Engine.Common.Mapping.MappingExpression.ParseError.ExpectedTokenSuffix        => s.Pad_Formula_Error_ExpectedTokenSuffix,
+                Engine.Common.Mapping.MappingExpression.ParseError.UnknownIdentifier          => s.Pad_Formula_Error_UnknownIdentifier,
+                Engine.Common.Mapping.MappingExpression.ParseError.UnexpectedToken            => s.Pad_Formula_Error_UnexpectedToken,
+                Engine.Common.Mapping.MappingExpression.ParseError.UnexpectedParseError       => s.Pad_Formula_Error_UnexpectedParseError,
+                _ => code.ToString(),
+            };
+            try { return string.Format(tmpl, args); }
+            catch { return tmpl; }
+        }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -61,6 +87,13 @@ namespace PadForge
             }
 
             base.OnStartup(e);
+
+            // Wire the MappingExpression parse-error translator (Issue
+            // #61). The Engine project can't reference Strings.Instance
+            // (App-only), so the parser holds a delegate it calls per
+            // error site; we resolve to the active culture's resource
+            // string here at startup.
+            Engine.Common.Mapping.MappingExpression.ErrorFormatter = LocalizeMappingExpressionError;
 
             // Put the single-file extraction directory on Win32's DLL
             // search path so SDL3's native LoadLibrary("xinput1_4.dll")

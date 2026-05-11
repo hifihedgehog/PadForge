@@ -558,6 +558,18 @@
   <data name="Pad_Formula_Var_PositionC" xml:space="preserve"><value>第三来源</value></data>
   <data name="Pad_Formula_Var_PositionD" xml:space="preserve"><value>第四来源</value></data>
   <data name="Pad_Formula_Var_NotYetMapped" xml:space="preserve"><value>尚未映射</value></data>
+  <data name="Pad_Formula_Error_UnexpectedTokenAtEnd" xml:space="preserve"><value>位置 {0} 处出现意外标记: '{1}'</value></data>
+  <data name="Pad_Formula_Error_InvalidNumber" xml:space="preserve"><value>位置 {1} 处的数字 '{0}' 无效</value></data>
+  <data name="Pad_Formula_Error_SingleEqualsNotSupported" xml:space="preserve"><value>位置 {0} 处不支持单个 '='; 等值比较请使用 '=='</value></data>
+  <data name="Pad_Formula_Error_UnexpectedCharacter" xml:space="preserve"><value>位置 {1} 处出现意外字符 '{0}'</value></data>
+  <data name="Pad_Formula_Error_ExpectedColonInTernary" xml:space="preserve"><value>三元表达式中缺少 ':'</value></data>
+  <data name="Pad_Formula_Error_ExpectedRParen" xml:space="preserve"><value>缺少 ')'</value></data>
+  <data name="Pad_Formula_Error_ExpectedRParenAfterArgs" xml:space="preserve"><value>函数参数后缺少 ')'</value></data>
+  <data name="Pad_Formula_Error_ExpectedRBracketAfterIndex" xml:space="preserve"><value>来源索引后缺少 ']'</value></data>
+  <data name="Pad_Formula_Error_ExpectedTokenSuffix" xml:space="preserve"><value> (在位置 {1} 处得到 '{0}')</value></data>
+  <data name="Pad_Formula_Error_UnknownIdentifier" xml:space="preserve"><value>位置 {1} 处的标识符 '{0}' 未知</value></data>
+  <data name="Pad_Formula_Error_UnexpectedToken" xml:space="preserve"><value>位置 {1} 处出现意外标记 '{0}'</value></data>
+  <data name="Pad_Formula_Error_UnexpectedParseError" xml:space="preserve"><value>意外的解析错误: {0}</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>线性</value></data>
   <data name="Curve_Smooth" xml:space="preserve"><value>平滑</value></data>
   <data name="Curve_Aggressive" xml:space="preserve"><value>激进</value></data>

@@ -558,6 +558,18 @@
   <data name="Pad_Formula_Var_PositionC" xml:space="preserve"><value>Troisième source</value></data>
   <data name="Pad_Formula_Var_PositionD" xml:space="preserve"><value>Quatrième source</value></data>
   <data name="Pad_Formula_Var_NotYetMapped" xml:space="preserve"><value>pas encore mappé</value></data>
+  <data name="Pad_Formula_Error_UnexpectedTokenAtEnd" xml:space="preserve"><value>Jeton inattendu à la position {0} : '{1}'</value></data>
+  <data name="Pad_Formula_Error_InvalidNumber" xml:space="preserve"><value>Nombre invalide '{0}' en {1}</value></data>
+  <data name="Pad_Formula_Error_SingleEqualsNotSupported" xml:space="preserve"><value>'=' seul non pris en charge en {0} ; utilisez '==' pour l'égalité</value></data>
+  <data name="Pad_Formula_Error_UnexpectedCharacter" xml:space="preserve"><value>Caractère inattendu '{0}' en {1}</value></data>
+  <data name="Pad_Formula_Error_ExpectedColonInTernary" xml:space="preserve"><value>':' attendu dans l'expression ternaire</value></data>
+  <data name="Pad_Formula_Error_ExpectedRParen" xml:space="preserve"><value>')' attendu</value></data>
+  <data name="Pad_Formula_Error_ExpectedRParenAfterArgs" xml:space="preserve"><value>')' attendu après les arguments de fonction</value></data>
+  <data name="Pad_Formula_Error_ExpectedRBracketAfterIndex" xml:space="preserve"><value>']' attendu après l'indice de source</value></data>
+  <data name="Pad_Formula_Error_ExpectedTokenSuffix" xml:space="preserve"><value> (trouvé '{0}' en {1})</value></data>
+  <data name="Pad_Formula_Error_UnknownIdentifier" xml:space="preserve"><value>Identifiant inconnu '{0}' en {1}</value></data>
+  <data name="Pad_Formula_Error_UnexpectedToken" xml:space="preserve"><value>Jeton inattendu '{0}' en {1}</value></data>
+  <data name="Pad_Formula_Error_UnexpectedParseError" xml:space="preserve"><value>Erreur d'analyse inattendue : {0}</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Linéaire</value></data>
   <data name="Curve_Smooth" xml:space="preserve"><value>Doux</value></data>
   <data name="Curve_Aggressive" xml:space="preserve"><value>Agressif</value></data>

@@ -58,6 +58,59 @@ namespace PadForge.Engine.Common.Mapping
     /// </summary>
     public static class MappingExpression
     {
+        /// <summary>Stable identifier for each parse-error template the
+        /// parser can emit. The App side registers a localized formatter
+        /// via <see cref="ErrorFormatter"/> so error messages surface in
+        /// the active culture; without a registered formatter the parser
+        /// falls back to <see cref="DefaultEnglishFormatter"/>.</summary>
+        public enum ParseError
+        {
+            UnexpectedTokenAtEnd,        // args: position, text
+            InvalidNumber,               // args: text, position
+            SingleEqualsNotSupported,    // args: position
+            UnexpectedCharacter,         // args: char, position
+            ExpectedColonInTernary,      // no args
+            ExpectedRParen,              // no args
+            ExpectedRParenAfterArgs,     // no args
+            ExpectedRBracketAfterIndex,  // no args
+            ExpectedTokenSuffix,         // args: gotText, position — appended after the per-site "Expected …" base
+            UnknownIdentifier,           // args: text, position
+            UnexpectedToken,             // args: text, position
+            UnexpectedParseError,        // args: message
+        }
+
+        /// <summary>App-registered translator. Defaults to English. Set
+        /// at App startup with a switch over <see cref="ParseError"/>
+        /// that pulls from the localized Pad_Formula_Error_* resources.</summary>
+        public static System.Func<ParseError, object[], string> ErrorFormatter { get; set; }
+            = DefaultEnglishFormatter;
+
+        internal static string FormatError(ParseError code, params object[] args)
+            => (ErrorFormatter ?? DefaultEnglishFormatter)(code, args);
+
+        private static string DefaultEnglishFormatter(ParseError code, object[] args)
+        {
+            args ??= System.Array.Empty<object>();
+            return code switch
+            {
+                ParseError.UnexpectedTokenAtEnd       => $"Unexpected token at position {Arg(args,0)}: '{Arg(args,1)}'",
+                ParseError.InvalidNumber              => $"Invalid number '{Arg(args,0)}' at {Arg(args,1)}",
+                ParseError.SingleEqualsNotSupported   => $"Single '=' not supported at {Arg(args,0)}; use '==' for equality",
+                ParseError.UnexpectedCharacter        => $"Unexpected character '{Arg(args,0)}' at {Arg(args,1)}",
+                ParseError.ExpectedColonInTernary     => "Expected ':' in ternary",
+                ParseError.ExpectedRParen             => "Expected ')'",
+                ParseError.ExpectedRParenAfterArgs    => "Expected ')' after function arguments",
+                ParseError.ExpectedRBracketAfterIndex => "Expected ']' after source index",
+                ParseError.ExpectedTokenSuffix        => $" (got '{Arg(args,0)}' at {Arg(args,1)})",
+                ParseError.UnknownIdentifier          => $"Unknown identifier '{Arg(args,0)}' at {Arg(args,1)}",
+                ParseError.UnexpectedToken            => $"Unexpected token '{Arg(args,0)}' at {Arg(args,1)}",
+                ParseError.UnexpectedParseError       => $"Unexpected parse error: {Arg(args,0)}",
+                _ => code.ToString(),
+            };
+        }
+        private static object Arg(object[] a, int i) => (a != null && i < a.Length) ? a[i] : "";
+
+
         /// <summary>Result of compiling an expression. <c>IsValid</c>
         /// false carries <see cref="Error"/> with the parse failure
         /// message for the UI to surface.</summary>
@@ -125,7 +178,7 @@ namespace PadForge.Engine.Common.Mapping
                 var root = parser.ParseExpression();
                 if (parser.HasMore)
                 {
-                    result.Error = $"Unexpected token at position {parser.Peek().Position}: '{parser.Peek().Text}'";
+                    result.Error = FormatError(ParseError.UnexpectedTokenAtEnd, parser.Peek().Position, parser.Peek().Text);
                     return result;
                 }
                 result.Root = root;
@@ -140,7 +193,7 @@ namespace PadForge.Engine.Common.Mapping
             }
             catch (Exception ex)
             {
-                result.Error = "Unexpected parse error: " + ex.Message;
+                result.Error = FormatError(ParseError.UnexpectedParseError, ex.Message);
                 return result;
             }
         }
@@ -182,7 +235,7 @@ namespace PadForge.Engine.Common.Mapping
                     while (j < s.Length && (char.IsDigit(s[j]) || s[j] == '.')) j++;
                     string num = s.Substring(i, j - i);
                     if (!double.TryParse(num, NumberStyles.Float, CultureInfo.InvariantCulture, out double v))
-                        throw new ParseException($"Invalid number '{num}' at {start}");
+                        throw new ParseException(FormatError(ParseError.InvalidNumber, num, start));
                     tokens.Add(new Token { Kind = TokenKind.Number, Number = v, Text = num, Position = start });
                     i = j;
                     continue;
@@ -226,7 +279,7 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     if (i + 1 < s.Length && s[i + 1] == '=')
                     { tokens.Add(new Token { Kind = TokenKind.Eq, Text = "==", Position = start }); i += 2; continue; }
-                    throw new ParseException($"Single '=' not supported at {start}; use '==' for equality");
+                    throw new ParseException(FormatError(ParseError.SingleEqualsNotSupported, start));
                 }
                 if (c == '!')
                 {
@@ -239,7 +292,7 @@ namespace PadForge.Engine.Common.Mapping
                 if (c == '|' && i + 1 < s.Length && s[i + 1] == '|')
                 { tokens.Add(new Token { Kind = TokenKind.OrOr, Text = "||", Position = start }); i += 2; continue; }
 
-                throw new ParseException($"Unexpected character '{c}' at {start}");
+                throw new ParseException(FormatError(ParseError.UnexpectedCharacter, c, start));
             }
             tokens.Add(new Token { Kind = TokenKind.End, Text = "", Position = s.Length });
             return tokens;
@@ -265,7 +318,7 @@ namespace PadForge.Engine.Common.Mapping
             private Token Expect(TokenKind k, string msg)
             {
                 if (_tokens[_pos].Kind != k)
-                    throw new ParseException(msg + $" (got '{_tokens[_pos].Text}' at {_tokens[_pos].Position})");
+                    throw new ParseException(msg + FormatError(ParseError.ExpectedTokenSuffix, _tokens[_pos].Text, _tokens[_pos].Position));
                 return Advance();
             }
 
@@ -278,7 +331,7 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     Advance();
                     var then = ParseTernary();
-                    Expect(TokenKind.Colon, "Expected ':' in ternary");
+                    Expect(TokenKind.Colon, FormatError(ParseError.ExpectedColonInTernary));
                     var els = ParseTernary();
                     return new TernaryNode { Cond = cond, Then = then, Else = els };
                 }
@@ -347,7 +400,7 @@ namespace PadForge.Engine.Common.Mapping
                     {
                         Advance();
                         var inner = ParseExpression();
-                        Expect(TokenKind.RParen, "Expected ')'");
+                        Expect(TokenKind.RParen, FormatError(ParseError.ExpectedRParen));
                         return inner;
                     }
                     case TokenKind.Identifier:
@@ -364,7 +417,7 @@ namespace PadForge.Engine.Common.Mapping
                                 while (Peek().Kind == TokenKind.Comma)
                                 { Advance(); args.Add(ParseExpression()); }
                             }
-                            Expect(TokenKind.RParen, "Expected ')' after function arguments");
+                            Expect(TokenKind.RParen, FormatError(ParseError.ExpectedRParenAfterArgs));
                             return new CallNode { Name = t.Text, Args = args };
                         }
                         // Indexed source `s[i]`
@@ -372,7 +425,7 @@ namespace PadForge.Engine.Common.Mapping
                         {
                             Advance();
                             var idxNode = ParseExpression();
-                            Expect(TokenKind.RBracket, "Expected ']' after source index");
+                            Expect(TokenKind.RBracket, FormatError(ParseError.ExpectedRBracketAfterIndex));
                             return new IndexedSourceNode { IndexNode = idxNode };
                         }
                         // Constants / single-letter variables / true/false
@@ -388,10 +441,10 @@ namespace PadForge.Engine.Common.Mapping
                         // and aD-style refs resolve to 0.
                         if (t.Text.Length == 2 && t.Text[0] >= 'a' && t.Text[0] <= 'z' && t.Text[1] == 'D')
                             return new SingleLetterActiveFlagNode { Letter = t.Text[0] };
-                        throw new ParseException($"Unknown identifier '{t.Text}' at {t.Position}");
+                        throw new ParseException(FormatError(ParseError.UnknownIdentifier, t.Text, t.Position));
                     }
                     default:
-                        throw new ParseException($"Unexpected token '{t.Text}' at {t.Position}");
+                        throw new ParseException(FormatError(ParseError.UnexpectedToken, t.Text, t.Position));
                 }
             }
         }

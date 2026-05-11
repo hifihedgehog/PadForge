@@ -1131,6 +1131,31 @@ namespace PadForge.Services
         {
             if (string.IsNullOrEmpty(target)) return null;
 
+            // Touchpad targets live on PlayStation slots but aren't part
+            // of the Gamepad struct, so they need to be checked before
+            // the OutputType switch. Step 4 merges every assigned
+            // device's touchpad contribution into CombinedTouchpadStates
+            // through the gated multi-source evaluator — reading from
+            // there makes the Mappings preview reflect the post-combine
+            // output instead of just the primary source's last raw
+            // value (which is what the fallback per-device read returns
+            // and is the bug the user reported).
+            if (target.StartsWith("Touchpad", StringComparison.Ordinal))
+            {
+                var tp = _inputManager.CombinedTouchpadStates[padIndex];
+                return target switch
+                {
+                    "TouchpadX1"       => (int)(tp.X0 * 1000),
+                    "TouchpadY1"       => (int)(tp.Y0 * 1000),
+                    "TouchpadX2"       => (int)(tp.X1 * 1000),
+                    "TouchpadY2"       => (int)(tp.Y1 * 1000),
+                    "TouchpadContact1" => tp.Down0 ? 1 : 0,
+                    "TouchpadContact2" => tp.Down1 ? 1 : 0,
+                    "TouchpadClick"    => tp.Click ? 1 : 0,
+                    _ => null,
+                };
+            }
+
             // Standard gamepad output (Xbox / PlayStation slots).
             if (outputType == VirtualControllerType.Xbox
                 || outputType == VirtualControllerType.PlayStation)

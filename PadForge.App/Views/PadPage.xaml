@@ -1948,9 +1948,9 @@
                                                             </ComboBox>
                                                             <Button Command="{Binding RecordParamModifierCommand}"
                                                                     Width="40" VerticalAlignment="Center">
-                                                                <TextBlock Text="{Binding RecordButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
+                                                                <TextBlock Text="{Binding RecordIconParamModifier}" FontFamily="Segoe MDL2 Assets"/>
                                                                 <Button.ToolTip>
-                                                                    <TextBlock Text="{Binding RecordButtonText}"/>
+                                                                    <TextBlock Text="{Binding RecordTextParamModifier}"/>
                                                                 </Button.ToolTip>
                                                             </Button>
                                                         </StackPanel>
@@ -2048,16 +2048,16 @@
                                                                 </GroupStyle>
                                                             </ComboBox.GroupStyle>
                                                         </ComboBox>
-                                                        <!-- Record button for the Up descriptor. Toggles on
-                                                             second click; icon swaps to the stop glyph while
-                                                             recording so the user has visual feedback the
-                                                             listen is armed. -->
+                                                        <!-- Record button for the Up descriptor. Per-Param icon
+                                                             binding so only THIS button swaps to the stop glyph
+                                                             while the Up recording is armed — its sibling Down
+                                                             button stays on the record glyph. -->
                                                         <Button Command="{Binding RecordParamUpCommand}"
                                                                 Width="40" Margin="0,0,8,0"
                                                                 VerticalAlignment="Center">
-                                                            <TextBlock Text="{Binding RecordButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
+                                                            <TextBlock Text="{Binding RecordIconParamUp}" FontFamily="Segoe MDL2 Assets"/>
                                                             <Button.ToolTip>
-                                                                <TextBlock Text="{Binding RecordButtonText}"/>
+                                                                <TextBlock Text="{Binding RecordTextParamUp}"/>
                                                             </Button.ToolTip>
                                                         </Button>
                                                         <TextBlock Text="↧" FontSize="14" VerticalAlignment="Center" Margin="0,0,2,0"
@@ -2086,9 +2086,9 @@
                                                         <Button Command="{Binding RecordParamDownCommand}"
                                                                 Width="40" Margin="0,0,8,0"
                                                                 VerticalAlignment="Center">
-                                                            <TextBlock Text="{Binding RecordButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
+                                                            <TextBlock Text="{Binding RecordIconParamDown}" FontFamily="Segoe MDL2 Assets"/>
                                                             <Button.ToolTip>
-                                                                <TextBlock Text="{Binding RecordButtonText}"/>
+                                                                <TextBlock Text="{Binding RecordTextParamDown}"/>
                                                             </Button.ToolTip>
                                                         </Button>
                                                         <TextBlock Text="Rate" VerticalAlignment="Center" Margin="0,0,4,0"/>

@@ -634,10 +634,10 @@ namespace PadForge.Services
                         // the user's authoring is authoritative for that
                         // device — don't double-add the same device's
                         // auto-mapped legacy descriptor as an extra
-                        // source (that was the "deleted extra keeps
-                        // coming back" alias bug). Device-by-device gate
-                        // is stricter than the previous (DeviceGuid,
-                        // Descriptor) dedup which couldn't distinguish a
+                        // source (the "deleted extra keeps coming back"
+                        // alias bug). Device-by-device gate is stricter
+                        // than the previous (DeviceGuid, Descriptor)
+                        // dedup which couldn't distinguish a
                         // user-deleted duplicate from a never-seen one.
                         var devicesPresent = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                         foreach (var s in er.Sources)
@@ -655,11 +655,22 @@ namespace PadForge.Services
                                 er.Sources.Add(s);
                             }
                         }
-                        consumedRebuilt.Add(key);
+                        // Only mark the rebuilt row consumed when the
+                        // existing row actually has surviving sources.
+                        // If every source dropped (e.g. the device that
+                        // owned them left the slot), the existing row
+                        // gets discarded below and we WANT the rebuilt
+                        // row to land via the unconsumed-rebuilt pass
+                        // — otherwise auto-mappings for a freshly-
+                        // assigned replacement device vanish.
+                        if (er.Sources != null && er.Sources.Count > 0)
+                            consumedRebuilt.Add(key);
                     }
 
-                    // Drop empty rows so the engine and UI fall back to
-                    // the legacy PadSetting fields cleanly.
+                    // Drop empty rows. They'll come back through the
+                    // unconsumed-rebuilt pass below if the slot's
+                    // current devices contribute anything for this
+                    // target.
                     if (er.Sources == null || er.Sources.Count == 0) continue;
 
                     merged.Rows.Add(er);

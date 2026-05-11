@@ -63,24 +63,50 @@ namespace PadForge.Common.Input
         /// <summary>Called once per polling frame at the top of
         /// <see cref="UpdateOutputStates"/>. Resets the per-slot
         /// multi-source tracking so the new frame's first device pass
-        /// triggers fresh cross-device evaluation.</summary>
+        /// triggers fresh cross-device evaluation, and stamps the
+        /// per-slot frame dt so every per-target evaluator the cycle
+        /// runs (ApplyMappingSetToGamepad, TryEvaluateMappingSet* for
+        /// Extended/MIDI/KBM/Touchpad targets) reads the SAME dt.
+        /// Without this, the second caller in a cycle was seeing a
+        /// near-zero microsecond dt and the Incremental accumulator
+        /// crawled at ~1000x slower than configured rate.</summary>
         private static void BeginFrameMultiSourceTracking()
         {
             for (int i = 0; i < _multiSourceEvaluatedTargetsBySlot.Length; i++)
                 _multiSourceEvaluatedTargetsBySlot[i].Clear();
+            StampFrameDelta();
         }
 
-        private static double ComputeAndAdvanceDelta(int slot)
+        // One frame dt captured at frame start, valid for every evaluator
+        // call in the same UpdateOutputStates pass. Per-slot to preserve
+        // the "first frame on this slot returns 0" guard.
+        private static readonly double[] _currentFrameDelta = new double[MaxPads];
+
+        private static void StampFrameDelta()
         {
             double now = (double)System.Diagnostics.Stopwatch.GetTimestamp() / System.Diagnostics.Stopwatch.Frequency;
-            double last = _lastEvalTime[slot];
-            _lastEvalTime[slot] = now;
-            if (last <= 0) return 0; // first frame on this slot
-            double dt = now - last;
-            // Cap pathologically large deltas (e.g. resume from sleep) so a
-            // sticky Incremental accumulator doesn't fly to a clamp.
-            if (dt > 0.25) dt = 0.25;
-            return dt;
+            for (int slot = 0; slot < _lastEvalTime.Length; slot++)
+            {
+                double last = _lastEvalTime[slot];
+                _lastEvalTime[slot] = now;
+                if (last <= 0)
+                {
+                    _currentFrameDelta[slot] = 0; // first frame on this slot
+                    continue;
+                }
+                double dt = now - last;
+                if (dt > 0.25) dt = 0.25; // resume-from-sleep guard
+                _currentFrameDelta[slot] = dt;
+            }
+        }
+
+        // Reads the frame dt captured by BeginFrameMultiSourceTracking.
+        // Idempotent — does NOT advance _lastEvalTime, so every evaluator
+        // in the same cycle reads the same value regardless of call order.
+        private static double ComputeAndAdvanceDelta(int slot)
+        {
+            if (slot < 0 || slot >= _currentFrameDelta.Length) return 0;
+            return _currentFrameDelta[slot];
         }
 
         // ─────────────────────────────────────────────

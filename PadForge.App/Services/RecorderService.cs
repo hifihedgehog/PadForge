@@ -99,6 +99,14 @@ namespace PadForge.Services
         /// <summary>When recording started (for timeout).</summary>
         private DateTime _recordingStartTime;
 
+        /// <summary>When recording an Incremental or InvertOnHold source's
+        /// Param button (ParamUp / ParamDown / ParamModifier), names the
+        /// destination field so the recorder writes the captured descriptor
+        /// there instead of overwriting the source's main
+        /// <see cref="MappingSourceItem.Descriptor"/>.</summary>
+        public enum ParamTarget { None, Up, Down, Modifier }
+        private ParamTarget _paramTarget = ParamTarget.None;
+
         /// <summary>
         /// When true, the recorder waits for all buttons and POVs to return to neutral
         /// before detecting new inputs. Used for follow-up recordings where the previous
@@ -146,6 +154,7 @@ namespace PadForge.Services
         public void StartRecording(MappingItem mapping, int padIndex, Guid deviceGuid,
             bool neutralizeBaseline = false, bool negRecording = false)
         {
+            _paramTarget = ParamTarget.None;
             StartRecordingInternal(mapping, extraSource: null, padIndex,
                 neutralizeBaseline, negRecording);
         }
@@ -167,8 +176,24 @@ namespace PadForge.Services
             MappingSourceItem extraSource, int padIndex,
             bool neutralizeBaseline = false, bool negRecording = false)
         {
+            _paramTarget = ParamTarget.None;
             StartRecordingInternal(parent, extraSource, padIndex,
                 neutralizeBaseline, negRecording);
+        }
+
+        /// <summary>Starts cross-device recording that captures a button
+        /// descriptor for one of an ExtraSource row's Param fields
+        /// (ParamUp / ParamDown / ParamModifier). Used by the Record
+        /// buttons next to the Incremental / InvertOnHold pickers.
+        /// Routes through the same poll loop as
+        /// <see cref="StartRecordingExtraSource"/>; the only difference
+        /// is the write target in <see cref="CompleteRecording"/>.</summary>
+        public void StartRecordingExtraSourceParam(MappingItem parent,
+            MappingSourceItem extraSource, int padIndex, ParamTarget target)
+        {
+            _paramTarget = target;
+            StartRecordingInternal(parent, extraSource, padIndex,
+                neutralizeBaseline: false, negRecording: false);
         }
 
         private void StartRecordingInternal(MappingItem mapping,
@@ -267,6 +292,7 @@ namespace PadForge.Services
             _activeMapping = null;
             _activeExtraSource = null;
             _activePadIndex = -1;
+            _paramTarget = ParamTarget.None;
             _activeDevices.Clear();
             _baselines.Clear();
             _isMouseByDevice.Clear();
@@ -473,6 +499,7 @@ namespace PadForge.Services
             // (For axis sources, ShouldAutoInvert already folds _negRecording
             // into shouldInvert.)
             bool negRec = _negRecording;
+            var paramTarget = _paramTarget;
 
             // Stop recording.
             if (extraSource != null) extraSource.IsRecording = false;
@@ -481,6 +508,7 @@ namespace PadForge.Services
             _activeMapping = null;
             _activeExtraSource = null;
             _activePadIndex = -1;
+            _paramTarget = ParamTarget.None;
             _activeDevices.Clear();
             _baselines.Clear();
             _isMouseByDevice.Clear();
@@ -501,6 +529,33 @@ namespace PadForge.Services
             // MainWindow.RecordingCompleted).
             string winningGuidStr = winningDevice == Guid.Empty
                 ? "" : winningDevice.ToString().ToLowerInvariant();
+
+            if (extraSource != null && paramTarget != ParamTarget.None)
+            {
+                // ── Recording targeted a Param button on an ExtraSource ──
+                // Write the captured descriptor into the kind-specific
+                // field (ParamUp / ParamDown / ParamModifier). Don't touch
+                // the source's main DeviceGuid / Descriptor / Invert — the
+                // Param field is the only thing this record button is
+                // supposed to change.
+                switch (paramTarget)
+                {
+                    case ParamTarget.Up:       extraSource.ParamUp       = descriptor; break;
+                    case ParamTarget.Down:     extraSource.ParamDown     = descriptor; break;
+                    case ParamTarget.Modifier: extraSource.ParamModifier = descriptor; break;
+                }
+                finalDescriptor = descriptor;
+                _mainVm.StatusText = string.Format(
+                    Strings.Instance.Status_Recorded_Format, mapping.TargetLabel, finalDescriptor);
+                RecordingCompleted?.Invoke(this, new RecordingResult
+                {
+                    Mapping = mapping,
+                    ExtraSource = extraSource,
+                    Descriptor = finalDescriptor,
+                    Type = type,
+                });
+                return;
+            }
 
             if (extraSource != null)
             {
@@ -602,6 +657,7 @@ namespace PadForge.Services
             // click) recorded for a bipolar axis's negative quadrant is
             // stored Invert=true so the press drives the axis to -1.
             bool negRec = _negRecording;
+            var paramTarget = _paramTarget;
 
             if (extraSource != null) extraSource.IsRecording = false;
             else mapping.IsRecording = false;
@@ -609,6 +665,7 @@ namespace PadForge.Services
             _activeMapping = null;
             _activeExtraSource = null;
             _activePadIndex = -1;
+            _paramTarget = ParamTarget.None;
             _activeDevices.Clear();
             _baselines.Clear();
             _isMouseByDevice.Clear();
@@ -619,6 +676,33 @@ namespace PadForge.Services
             // attaches to, regardless of the Mappings-tab dropdown selection.
             string winningGuidStr = winningDevice == Guid.Empty
                 ? "" : winningDevice.ToString().ToLowerInvariant();
+
+            if (extraSource != null && paramTarget != ParamTarget.None)
+            {
+                // Param recording (Incremental Up/Down or InvertOnHold Modifier).
+                // Touchpad-click is technically not button-class for the
+                // engine's ReadButtonLikeBool, but the source-of-truth field
+                // is still the Param* descriptor — write it and let the
+                // engine ignore unknown forms.
+                switch (paramTarget)
+                {
+                    case ParamTarget.Up:       extraSource.ParamUp       = descriptor; break;
+                    case ParamTarget.Down:     extraSource.ParamDown     = descriptor; break;
+                    case ParamTarget.Modifier: extraSource.ParamModifier = descriptor; break;
+                }
+                finalDescriptor = descriptor;
+                _mainVm.StatusText = string.Format(
+                    Strings.Instance.Status_Recorded_Format, mapping.TargetLabel, finalDescriptor);
+                RecordingCompleted?.Invoke(this, new RecordingResult
+                {
+                    Mapping = mapping,
+                    ExtraSource = extraSource,
+                    Descriptor = finalDescriptor,
+                    Type = MapType.Button,
+                });
+                return;
+            }
+
             if (extraSource != null)
             {
                 // Extra-source target on a multi-source row (e.g. a touchpad

@@ -1905,7 +1905,7 @@
                                                                         <Setter Property="Text" Value="{Binding DeviceLabel}"/>
                                                                         <Style.Triggers>
                                                                             <DataTrigger Binding="{Binding Descriptor}" Value="">
-                                                                                <Setter Property="Text" Value="Unassigned"/>
+                                                                                <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
                                                                                 <Setter Property="FontStyle" Value="Italic"/>
                                                                             </DataTrigger>
                                                                         </Style.Triggers>
@@ -1957,7 +1957,7 @@
                                                                             <Setter Property="Text" Value="{Binding ParamModifierDeviceLabel}"/>
                                                                             <Style.Triggers>
                                                                                 <DataTrigger Binding="{Binding ParamModifier}" Value="">
-                                                                                    <Setter Property="Text" Value="Unassigned"/>
+                                                                                    <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
                                                                                     <Setter Property="FontStyle" Value="Italic"/>
                                                                                 </DataTrigger>
                                                                             </Style.Triggers>
@@ -2069,7 +2069,7 @@
                                                                             <Setter Property="Text" Value="{Binding ParamUpDeviceLabel}"/>
                                                                             <Style.Triggers>
                                                                                 <DataTrigger Binding="{Binding ParamUp}" Value="">
-                                                                                    <Setter Property="Text" Value="Unassigned"/>
+                                                                                    <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
                                                                                     <Setter Property="FontStyle" Value="Italic"/>
                                                                                 </DataTrigger>
                                                                             </Style.Triggers>
@@ -2118,7 +2118,7 @@
                                                                             <Setter Property="Text" Value="{Binding ParamDownDeviceLabel}"/>
                                                                             <Style.Triggers>
                                                                                 <DataTrigger Binding="{Binding ParamDown}" Value="">
-                                                                                    <Setter Property="Text" Value="Unassigned"/>
+                                                                                    <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
                                                                                     <Setter Property="FontStyle" Value="Italic"/>
                                                                                 </DataTrigger>
                                                                             </Style.Triggers>
@@ -2240,7 +2240,7 @@
                                                         <Setter Property="Text" Value="{Binding PrimarySourceDeviceLabel}"/>
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding SourceDescriptor}" Value="">
-                                                                <Setter Property="Text" Value="Unassigned"/>
+                                                                <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
                                                                 <Setter Property="FontStyle" Value="Italic"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>

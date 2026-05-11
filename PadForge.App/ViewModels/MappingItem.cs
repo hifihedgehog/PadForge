@@ -950,18 +950,28 @@ namespace PadForge.ViewModels
             public string Description { get; set; } = "";
         }
 
-        private static readonly CombineModeOption[] _combineModes = new[]
-        {
-            new CombineModeOption { Value = "MaxAbs",  Name = "Strongest", Description = "Use whichever source has the strongest push" },
-            new CombineModeOption { Value = "Sum",     Name = "Combined",  Description = "Add the sources together" },
-            new CombineModeOption { Value = "Average", Name = "Average",   Description = "Halfway between the sources" },
-            new CombineModeOption { Value = "OR",      Name = "Either",    Description = "Fire when any source is active — good for buttons" },
-            new CombineModeOption { Value = "AND",     Name = "Both",      Description = "Fire only when all sources are active" },
-            new CombineModeOption { Value = "XOR",     Name = "Only one",  Description = "Fire only when exactly one source is active" },
-            new CombineModeOption { Value = "Custom",  Name = "Custom",    Description = "Build your own with the formula editor below" },
-        };
+        /// <summary>Built lazily from Strings.Instance so the labels pick
+        /// up the active culture's resource string. The XAML ItemsSource
+        /// reads this once per row, which means changing language requires
+        /// a UI re-bind — acceptable for v1 (culture changes already need
+        /// a restart for some surfaces).</summary>
         public System.Collections.Generic.IReadOnlyList<CombineModeOption> AvailableCombineModes
-            => _combineModes;
+        {
+            get
+            {
+                var s = PadForge.Resources.Strings.Strings.Instance;
+                return new[]
+                {
+                    new CombineModeOption { Value = "MaxAbs",  Name = s.Pad_Combine_MaxAbs_Name,  Description = s.Pad_Combine_MaxAbs_Description },
+                    new CombineModeOption { Value = "Sum",     Name = s.Pad_Combine_Sum_Name,     Description = s.Pad_Combine_Sum_Description },
+                    new CombineModeOption { Value = "Average", Name = s.Pad_Combine_Average_Name, Description = s.Pad_Combine_Average_Description },
+                    new CombineModeOption { Value = "OR",      Name = s.Pad_Combine_OR_Name,      Description = s.Pad_Combine_OR_Description },
+                    new CombineModeOption { Value = "AND",     Name = s.Pad_Combine_AND_Name,     Description = s.Pad_Combine_AND_Description },
+                    new CombineModeOption { Value = "XOR",     Name = s.Pad_Combine_XOR_Name,     Description = s.Pad_Combine_XOR_Description },
+                    new CombineModeOption { Value = "Custom",  Name = s.Pad_Combine_Custom_Name,  Description = s.Pad_Combine_Custom_Description },
+                };
+            }
+        }
 
         /// <summary>Live parse status of <see cref="CombineExpression"/>.
         /// "✓ valid" or a parse-error message; surfaced inline below
@@ -972,11 +982,12 @@ namespace PadForge.ViewModels
         {
             get
             {
+                var s = PadForge.Resources.Strings.Strings.Instance;
                 if (string.IsNullOrWhiteSpace(_combineExpression))
-                    return "✓ empty (evaluates to 0)";
+                    return s.Pad_Formula_Status_Empty;
                 var c = Engine.Common.Mapping.MappingExpression.Compile(_combineExpression);
                 if (!c.IsValid)
-                    return "✗ " + (c.Error ?? "parse error");
+                    return "✗ " + (c.Error ?? s.Pad_Formula_Status_ParseError);
 
                 var refs = c.ReferencedSingleLetterVars ?? "";
                 // Inline the friendly alias for each referenced letter
@@ -991,10 +1002,10 @@ namespace PadForge.ViewModels
                         string alias = GetVariableAlias(letter - 'a');
                         parts.Add(string.IsNullOrEmpty(alias) ? letter.ToString() : letter + " (" + alias + ")");
                     }
-                    refsBit = " · refs: " + string.Join(", ", parts);
+                    refsBit = " · " + s.Pad_Formula_Status_RefsLabel + ": " + string.Join(", ", parts);
                 }
                 if (c.MaxIndexedRef >= 0)
-                    refsBit += (refsBit.Length == 0 ? " · refs: " : ", ") + "s[" + c.MaxIndexedRef + "]";
+                    refsBit += (refsBit.Length == 0 ? " · " + s.Pad_Formula_Status_RefsLabel + ": " : ", ") + "s[" + c.MaxIndexedRef + "]";
 
                 // Effective source count = primary (a) + ExtraSources.
                 // Bipolar Neg-pair is merged into a, so it doesn't add
@@ -1011,7 +1022,7 @@ namespace PadForge.ViewModels
                 bool indexedOutOfRange = c.MaxIndexedRef >= sourceCount;
 
                 if (outOfRange.Count == 0 && !indexedOutOfRange)
-                    return "✓ valid" + refsBit;
+                    return s.Pad_Formula_Status_Valid + refsBit;
 
                 // Warn when the formula reaches past the row's actual
                 // sources. The engine returns 0 for missing variables
@@ -1020,13 +1031,14 @@ namespace PadForge.ViewModels
                 // be a constant 0.
                 string warn;
                 if (outOfRange.Count > 0 && indexedOutOfRange)
-                    warn = string.Join(",", outOfRange) + " and s[" + c.MaxIndexedRef + "] have no source";
+                    warn = string.Join(",", outOfRange) + " " + s.Pad_Formula_Status_And + " s[" + c.MaxIndexedRef + "] " + s.Pad_Formula_Status_NoSourcePlural;
                 else if (outOfRange.Count > 0)
-                    warn = (outOfRange.Count == 1 ? outOfRange[0] + " has" : string.Join(",", outOfRange) + " have")
-                           + " no source";
+                    warn = (outOfRange.Count == 1
+                            ? outOfRange[0] + " " + s.Pad_Formula_Status_NoSourceSingular
+                            : string.Join(",", outOfRange) + " " + s.Pad_Formula_Status_NoSourcePlural);
                 else
-                    warn = "s[" + c.MaxIndexedRef + "] has no source";
-                return "⚠ valid" + refsBit + " — " + warn + " (treated as 0)";
+                    warn = "s[" + c.MaxIndexedRef + "] " + s.Pad_Formula_Status_NoSourceSingular;
+                return "⚠ " + s.Pad_Formula_Status_Valid.TrimStart('✓', ' ') + refsBit + " — " + warn + " (" + s.Pad_Formula_Status_TreatedAsZero + ")";
             }
         }
 
@@ -1060,14 +1072,14 @@ namespace PadForge.ViewModels
         /// <summary>Composite tooltip strings for the formula chips.
         /// Show the chip's positional meaning plus the friendly alias
         /// for the row's current source at that position.</summary>
-        public string VariableATooltip => BuildVariableTooltip("First source",  VariableALabel);
-        public string VariableBTooltip => BuildVariableTooltip("Second source", VariableBLabel);
-        public string VariableCTooltip => BuildVariableTooltip("Third source",  VariableCLabel);
-        public string VariableDTooltip => BuildVariableTooltip("Fourth source", VariableDLabel);
+        public string VariableATooltip => BuildVariableTooltip(PadForge.Resources.Strings.Strings.Instance.Pad_Formula_Var_PositionA, VariableALabel);
+        public string VariableBTooltip => BuildVariableTooltip(PadForge.Resources.Strings.Strings.Instance.Pad_Formula_Var_PositionB, VariableBLabel);
+        public string VariableCTooltip => BuildVariableTooltip(PadForge.Resources.Strings.Strings.Instance.Pad_Formula_Var_PositionC, VariableCLabel);
+        public string VariableDTooltip => BuildVariableTooltip(PadForge.Resources.Strings.Strings.Instance.Pad_Formula_Var_PositionD, VariableDLabel);
 
         private static string BuildVariableTooltip(string positionLabel, string alias)
             => string.IsNullOrEmpty(alias)
-                ? positionLabel + " — not yet mapped"
+                ? positionLabel + " — " + PadForge.Resources.Strings.Strings.Instance.Pad_Formula_Var_NotYetMapped
                 : positionLabel + " · " + alias;
 
         /// <summary>Returns "DeviceLabel · InputName" for the source

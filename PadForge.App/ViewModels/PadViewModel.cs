@@ -1748,6 +1748,19 @@ namespace PadForge.ViewModels
                 m.IsInverted = false;
                 m.IsHalfAxis = false;
                 m.MappingDeadZone = 50;
+                // Drop the device-origin tag too — leaving the GUID
+                // behind would surface a stale subtitle and make the
+                // next picker selection inherit the wrong device.
+                m.PrimarySourceDeviceGuid = string.Empty;
+                m.PrimarySourceDeviceLabel = string.Empty;
+                // Multi-source rows: clear extra sources AND the
+                // combine + custom-formula state so the cleared row
+                // truly looks brand-new (was leaving extras + the
+                // user's formula behind, which then re-promoted via
+                // the merge as soon as the user added a primary).
+                m.ExtraSources.Clear();
+                m.CombineMode = string.Empty;
+                m.CombineExpression = string.Empty;
                 m.SyncSelectedInputFromDescriptor();
             }
         }

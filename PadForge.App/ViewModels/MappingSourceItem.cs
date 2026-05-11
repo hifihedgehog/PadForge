@@ -136,7 +136,19 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(ParamUpInputChoice));
             OnPropertyChanged(nameof(ParamDownInputChoice));
             OnPropertyChanged(nameof(ParamModifierInputChoice));
+            OnPropertyChanged(nameof(ParamUpDeviceLabel));
+            OnPropertyChanged(nameof(ParamDownDeviceLabel));
+            OnPropertyChanged(nameof(ParamModifierDeviceLabel));
         }
+
+        /// <summary>Device label of the device whose button is currently
+        /// stored in the corresponding Param field. Resolved against the
+        /// parent MappingItem's AvailableInputs via the InputChoice picker
+        /// bridge. Returns empty when no matching InputChoice is found
+        /// (typical for empty Param fields).</summary>
+        public string ParamUpDeviceLabel       => ParamUpInputChoice?.DeviceLabel ?? "";
+        public string ParamDownDeviceLabel     => ParamDownInputChoice?.DeviceLabel ?? "";
+        public string ParamModifierDeviceLabel => ParamModifierInputChoice?.DeviceLabel ?? "";
         public string DeviceGuid
         {
             get => _deviceGuid;
@@ -260,7 +272,10 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _paramUp, value ?? ""))
+                {
                     OnPropertyChanged(nameof(ParamUpInputChoice));
+                    OnPropertyChanged(nameof(ParamUpDeviceLabel));
+                }
             }
         }
         public string ParamDown
@@ -269,7 +284,10 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _paramDown, value ?? ""))
+                {
                     OnPropertyChanged(nameof(ParamDownInputChoice));
+                    OnPropertyChanged(nameof(ParamDownDeviceLabel));
+                }
             }
         }
         public double ParamRate { get => _paramRate; set => SetProperty(ref _paramRate, value); }
@@ -282,7 +300,10 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _paramModifier, value ?? ""))
+                {
                     OnPropertyChanged(nameof(ParamModifierInputChoice));
+                    OnPropertyChanged(nameof(ParamModifierDeviceLabel));
+                }
             }
         }
 

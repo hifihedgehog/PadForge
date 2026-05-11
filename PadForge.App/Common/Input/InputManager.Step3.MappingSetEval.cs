@@ -189,7 +189,15 @@ namespace PadForge.Common.Input
             ref Gamepad gp)
         {
             if (state == null || mappingSet == null) return;
-            if (mappingSet.Rows == null || mappingSet.Rows.Count == 0) return;
+            // Snapshot Rows once — the save path mutates the live list on
+            // the UI thread (Rows.Add + Sources.Clear/Add inside
+            // PushUiExtraSourcesIntoSlotMappingSets), which previously
+            // produced spurious "Error mapping device {guid}" errors when
+            // a save raced the polling-thread iteration here. The snapshot
+            // is an array of MappingRow references, so per-row Sources
+            // still need SnapshotSources to handle the inner-list race.
+            var rowsSnapshot = SnapshotRows(mappingSet);
+            if (rowsSnapshot.Length == 0) return;
 
             var runtime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
                 ? _slotSourceKindRuntime[slotIndex]
@@ -211,16 +219,18 @@ namespace PadForge.Common.Input
             HashSet<string> shiftCoveredTargets = activeMask != "Base" ? new HashSet<string>() : null;
             if (shiftCoveredTargets != null)
             {
-                foreach (var r in mappingSet.Rows)
+                for (int i = 0; i < rowsSnapshot.Length; i++)
                 {
+                    var r = rowsSnapshot[i];
                     if (r == null) continue;
                     if (string.Equals(r.LayerMask, activeMask, System.StringComparison.Ordinal))
                         shiftCoveredTargets.Add(r.Target ?? "");
                 }
             }
 
-            foreach (var row in mappingSet.Rows)
+            for (int rowIdx = 0; rowIdx < rowsSnapshot.Length; rowIdx++)
             {
+                var row = rowsSnapshot[rowIdx];
                 if (row == null) continue;
                 if (string.IsNullOrEmpty(row.Target)) continue;
 
@@ -479,6 +489,29 @@ namespace PadForge.Common.Input
             return arr;
         }
 
+        /// <summary>Race-safe snapshot of <c>mappingSet.Rows</c> for the
+        /// polling-thread eval. The save path
+        /// (<c>PushUiExtraSourcesIntoSlotMappingSets</c>) mutates the same
+        /// list on the UI thread — calling <c>Rows.Add</c> for new targets
+        /// and <c>Sources.Clear/Add</c> on each row. A direct <c>foreach</c>
+        /// over the live list could throw <c>InvalidOperationException</c>
+        /// (collection modified during enumeration) or an indexed access
+        /// could read past <c>Count</c>; the result is the user-visible
+        /// "Error: Error mapping device {guid}" status when the polling
+        /// thread's try/catch around <c>UpdateOutputStates</c> swallows the
+        /// throw. Snapshotting once at the start of evaluation hands the
+        /// polling thread a stable array even mid-save. Sources are
+        /// snapshotted separately by <see cref="SnapshotSources"/>.</summary>
+        internal static MappingRow[] SnapshotRows(MappingSet mappingSet)
+        {
+            var rows = mappingSet?.Rows;
+            if (rows == null) return System.Array.Empty<MappingRow>();
+            int n = rows.Count;
+            var arr = new MappingRow[n];
+            for (int i = 0; i < n && i < rows.Count; i++) arr[i] = rows[i];
+            return arr;
+        }
+
         /// <summary>Builds the row's positional contributions list for
         /// the multi-source cross-device path. Variable order
         /// a..z mirrors the row's UI. Each entry is the source's
@@ -588,10 +621,12 @@ namespace PadForge.Common.Input
         /// <see cref="ApplyMappingSetToGamepad"/>.</summary>
         private static MappingRow FindBaseRowForTarget(MappingSet mappingSet, string targetName)
         {
-            if (mappingSet?.Rows == null) return null;
-            for (int i = 0; i < mappingSet.Rows.Count; i++)
+            // Snapshot to avoid racing the save path's Rows.Add/Sources mutations.
+            // See SnapshotRows for the race details.
+            var rows = SnapshotRows(mappingSet);
+            for (int i = 0; i < rows.Length; i++)
             {
-                var r = mappingSet.Rows[i];
+                var r = rows[i];
                 if (r == null) continue;
                 if (!string.Equals(r.LayerMask ?? "Base", "Base", System.StringComparison.Ordinal))
                     continue;

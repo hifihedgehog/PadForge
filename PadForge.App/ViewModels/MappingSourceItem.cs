@@ -57,15 +57,23 @@ namespace PadForge.ViewModels
         /// the kind-specific row below.</summary>
         public bool IsKindDescriptorless => IsIncrementalKind || IsInvertOnHoldKind;
 
-        /// <summary>User-facing source kinds in the Mappings UI. Per-source
-        /// InvertOnHold flips only this source's contribution (useful when
-        /// the user wants a single contributor in a multi-source row to
-        /// flip independently). The row-level "Invert while held" modifier
-        /// on <see cref="MappingItem"/> is a separate, complementary tool
-        /// for flipping the row's final output — the B.3 reversible-throttle
-        /// shape — and is exposed in the row footer rather than here.</summary>
-        public static System.Collections.Generic.IReadOnlyList<string> KindOptions { get; }
-            = new[] { "Direct", "Incremental", "InvertOnHold" };
+        /// <summary>One entry in the user-facing Kind dropdown. <see cref="Value"/>
+        /// is the schema/engine identifier ("Direct" / "Incremental" / "InvertOnHold")
+        /// that round-trips through XML; <see cref="Name"/> is the space-separated
+        /// label the user actually sees. Keeps backend identifiers out of the UI.</summary>
+        public sealed class KindChoice
+        {
+            public string Value { get; init; }
+            public string Name  { get; init; }
+        }
+
+        public static System.Collections.Generic.IReadOnlyList<KindChoice> KindOptions { get; }
+            = new[]
+            {
+                new KindChoice { Value = "Direct",       Name = "Direct" },
+                new KindChoice { Value = "Incremental",  Name = "Incremental" },
+                new KindChoice { Value = "InvertOnHold", Name = "Invert On Hold" },
+            };
 
         internal MappingItem ParentMappingItem { get; set; }
 

@@ -1821,17 +1821,17 @@
                                                         <TextBlock Text="↳" FontSize="14"
                                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                                    Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                                        <!-- Kind selector: Direct / Incremental / InvertOnHold.
-                                                             Direct is the legacy path (descriptor read straight).
-                                                             Incremental hides the source picker and surfaces
-                                                             Up/Down/Rate/Sticky/Min/Max on the row below.
-                                                             InvertOnHold keeps the source picker (inner source)
-                                                             and adds a Modifier picker on the row below. -->
+                                                        <!-- Kind selector. Schema/engine value ("Direct" / "Incremental" /
+                                                             "InvertOnHold") round-trips via SelectedValue; the dropdown
+                                                             shows the friendly display name from KindChoice.Name so the
+                                                             user reads "Invert On Hold" instead of the camel-case identifier. -->
                                                         <ComboBox ItemsSource="{x:Static vm:MappingSourceItem.KindOptions}"
-                                                                  SelectedItem="{Binding Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                  Width="120" Padding="4,2" Margin="0,0,6,0"
+                                                                  SelectedValue="{Binding Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                  SelectedValuePath="Value"
+                                                                  DisplayMemberPath="Name"
+                                                                  Width="150" Padding="4,2" Margin="0,0,6,0"
                                                                   VerticalAlignment="Center"
-                                                                  ToolTip="Direct = read the source descriptor; Incremental = ramp an accumulator via Up/Down buttons; InvertOnHold = flip the source while a modifier button is held."
+                                                                  ToolTip="Direct = read the source descriptor; Incremental = ramp an accumulator via Up/Down buttons; Invert On Hold = flip the row's output while a modifier button is held."
                                                                   PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
                                                         <!-- Direction badge: visible only when the parent target is
                                                              a bipolar stick axis AND this source is button-class.

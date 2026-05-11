@@ -767,12 +767,14 @@
                                     <Button Content="−" Tag=" - " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Subtract, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content="×" Tag=" * " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Multiply, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content="÷" Tag=" / " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Divide, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="−A" Tag="-a" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_NegateA, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content="(" Tag="(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_OpenGroup, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content=")" Tag=")" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_CloseGroup, Source={x:Static strings:Strings.Instance}}"/>
                                     <Border Width="6"/>
                                     <Button Content="0" Tag="0" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click"/>
                                     <Button Content="½" Tag="0.5" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Half, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content="1" Tag="1" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click"/>
+                                    <Button Content="2" Tag="2" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click"/>
                                     <Border Width="6"/>
                                     <Button Content="&lt;" Tag=" &lt; " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_LessThan, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content="&gt;" Tag=" &gt; " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_GreaterThan, Source={x:Static strings:Strings.Instance}}"/>
@@ -784,11 +786,17 @@
                                     <Button Content="and" Tag=" &amp;&amp; " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_BothConditions, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content="or" Tag=" || " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_EitherCondition, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content="not" Tag="!" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_FlipBool, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="if?" Tag=" ? " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_If, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="else:" Tag=" : " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Else, Source={x:Static strings:Strings.Instance}}"/>
                                     <Border Width="6"/>
                                     <Button Content="abs" Tag="abs(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Abs, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content="min" Tag="min(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Min, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content="max" Tag="max(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Max, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content="clamp" Tag="clamp(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Clamp, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="sign" Tag="sign(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Sign, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="lerp" Tag="lerp(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Lerp, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="round" Tag="round(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Round, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="sqrt" Tag="sqrt(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Sqrt, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content="," Tag=", " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click"/>
                                 </WrapPanel>
 
@@ -821,6 +829,38 @@
                                     <Button Content="{Binding Macro_Expression_Recipe_AxisOverHalf, Source={x:Static strings:Strings.Instance}}" Tag="abs(a - 0.5) &gt; 0.25"
                                             Style="{StaticResource MacroFormulaPresetStyle}" Click="FormulaPreset_Click"
                                             ToolTip="{Binding Macro_Expression_Recipe_AxisOverHalf_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <!-- Shared recipes from the merge-mapping editor. Same Pad_Formula_Preset_*
+                                         keys, already translated across all 10 locales. -->
+                                    <Button Content="{Binding Pad_Formula_Preset_HalfScale_Name, Source={x:Static strings:Strings.Instance}}" Tag="a * 0.5"
+                                            Style="{StaticResource MacroFormulaPresetStyle}" Click="FormulaPreset_Click"
+                                            ToolTip="{Binding Pad_Formula_Preset_HalfScale_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Formula_Preset_QuarterScale_Name, Source={x:Static strings:Strings.Instance}}" Tag="a * 0.25"
+                                            Style="{StaticResource MacroFormulaPresetStyle}" Click="FormulaPreset_Click"
+                                            ToolTip="{Binding Pad_Formula_Preset_QuarterScale_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Formula_Preset_ReverseA_Name, Source={x:Static strings:Strings.Instance}}" Tag="-a"
+                                            Style="{StaticResource MacroFormulaPresetStyle}" Click="FormulaPreset_Click"
+                                            ToolTip="{Binding Pad_Formula_Preset_ReverseA_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Formula_Preset_CapTo1_Name, Source={x:Static strings:Strings.Instance}}" Tag="clamp(a + b, -1, 1)"
+                                            Style="{StaticResource MacroFormulaPresetStyle}" Click="FormulaPreset_Click"
+                                            ToolTip="{Binding Pad_Formula_Preset_CapTo1_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Formula_Preset_WeightedBlend_Name, Source={x:Static strings:Strings.Instance}}" Tag="a * 0.7 + b * 0.3"
+                                            Style="{StaticResource MacroFormulaPresetStyle}" Click="FormulaPreset_Click"
+                                            ToolTip="{Binding Pad_Formula_Preset_WeightedBlend_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Formula_Preset_Difference_Name, Source={x:Static strings:Strings.Instance}}" Tag="a - b"
+                                            Style="{StaticResource MacroFormulaPresetStyle}" Click="FormulaPreset_Click"
+                                            ToolTip="{Binding Pad_Formula_Preset_Difference_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Formula_Preset_AUnlessIdle_Name, Source={x:Static strings:Strings.Instance}}" Tag="a != 0 ? a : b"
+                                            Style="{StaticResource MacroFormulaPresetStyle}" Click="FormulaPreset_Click"
+                                            ToolTip="{Binding Pad_Formula_Preset_AUnlessIdle_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Formula_Preset_ThresholdGate_Name, Source={x:Static strings:Strings.Instance}}" Tag="(a &gt; 0.5) ? 1 : 0"
+                                            Style="{StaticResource MacroFormulaPresetStyle}" Click="FormulaPreset_Click"
+                                            ToolTip="{Binding Pad_Formula_Preset_ThresholdGate_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Formula_Preset_BothPressed_Name, Source={x:Static strings:Strings.Instance}}" Tag="(a &gt; 0) &amp;&amp; (b &gt; 0) ? 1 : 0"
+                                            Style="{StaticResource MacroFormulaPresetStyle}" Click="FormulaPreset_Click"
+                                            ToolTip="{Binding Pad_Formula_Preset_BothPressed_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Formula_Preset_StrongerWins_Name, Source={x:Static strings:Strings.Instance}}" Tag="max(abs(a), abs(b)) * sign(a + b)"
+                                            Style="{StaticResource MacroFormulaPresetStyle}" Click="FormulaPreset_Click"
+                                            ToolTip="{Binding Pad_Formula_Preset_StrongerWins_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                 </WrapPanel>
 
                                 <!-- Variable list. Each row binds one variable to either an
@@ -2023,6 +2063,29 @@
                                                         Style="{StaticResource FormulaPresetStyle}"
                                                         Click="FormulaPreset_Click"
                                                         ToolTip="{Binding Pad_Formula_Preset_StrongerWins_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <!-- Shared recipes from the macro custom-expression editor. Same
+                                                     Macro_Expression_Recipe_* keys, already translated across all
+                                                     10 locales. -->
+                                                <Button Content="{Binding Macro_Expression_Recipe_Single, Source={x:Static strings:Strings.Instance}}" Tag="a"
+                                                        Style="{StaticResource FormulaPresetStyle}"
+                                                        Click="FormulaPreset_Click"
+                                                        ToolTip="{Binding Macro_Expression_Recipe_Single_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="{Binding Macro_Expression_Recipe_Both, Source={x:Static strings:Strings.Instance}}" Tag="a &amp;&amp; b"
+                                                        Style="{StaticResource FormulaPresetStyle}"
+                                                        Click="FormulaPreset_Click"
+                                                        ToolTip="{Binding Macro_Expression_Recipe_Both_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="{Binding Macro_Expression_Recipe_Either, Source={x:Static strings:Strings.Instance}}" Tag="a || b"
+                                                        Style="{StaticResource FormulaPresetStyle}"
+                                                        Click="FormulaPreset_Click"
+                                                        ToolTip="{Binding Macro_Expression_Recipe_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="{Binding Macro_Expression_Recipe_AButNotB, Source={x:Static strings:Strings.Instance}}" Tag="a &amp;&amp; !b"
+                                                        Style="{StaticResource FormulaPresetStyle}"
+                                                        Click="FormulaPreset_Click"
+                                                        ToolTip="{Binding Macro_Expression_Recipe_AButNotB_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="{Binding Macro_Expression_Recipe_AxisOverHalf, Source={x:Static strings:Strings.Instance}}" Tag="abs(a - 0.5) &gt; 0.25"
+                                                        Style="{StaticResource FormulaPresetStyle}"
+                                                        Click="FormulaPreset_Click"
+                                                        ToolTip="{Binding Macro_Expression_Recipe_AxisOverHalf_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             </WrapPanel>
                                         </StackPanel>
 

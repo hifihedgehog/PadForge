@@ -1646,6 +1646,31 @@
                                                         Click="FormulaChip_Click" ToolTip="{Binding VariableCTooltip}"/>
                                                 <Button Content="d" Tag="d" Style="{StaticResource FormulaChipStyle}"
                                                         Click="FormulaChip_Click" ToolTip="{Binding VariableDTooltip}"/>
+                                                <!-- Touchpad-only "is touching" flags. Visible on
+                                                     TouchpadX*/Y* rows; resolve to 1.0 while the
+                                                     paired finger is touching, 0.0 when lifted. Used
+                                                     to write gated formulas like
+                                                     `aD ? a : (bD ? b : 0.5)` so a stale finger
+                                                     position can't pollute the combine. The flag
+                                                     channel is only supplied by the touchpad-
+                                                     passthrough evaluator — referencing aD on a
+                                                     non-touchpad row resolves to 0. -->
+                                                <Button Content="aD" Tag="aD" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click"
+                                                        ToolTip="1 while source A is touching (touchpad passthrough rows only)"
+                                                        Visibility="{Binding IsTouchpadAxisTarget, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                <Button Content="bD" Tag="bD" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click"
+                                                        ToolTip="1 while source B is touching"
+                                                        Visibility="{Binding IsTouchpadAxisTarget, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                <Button Content="cD" Tag="cD" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click"
+                                                        ToolTip="1 while source C is touching"
+                                                        Visibility="{Binding IsTouchpadAxisTarget, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                <Button Content="dD" Tag="dD" Style="{StaticResource FormulaChipStyle}"
+                                                        Click="FormulaChip_Click"
+                                                        ToolTip="1 while source D is touching"
+                                                        Visibility="{Binding IsTouchpadAxisTarget, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                                 <!-- Operators -->
                                                 <Border Width="6"/>
                                                 <Button Content="+" Tag=" + " Style="{StaticResource FormulaChipStyle}"

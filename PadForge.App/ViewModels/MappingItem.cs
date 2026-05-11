@@ -817,6 +817,18 @@ namespace PadForge.ViewModels
          || string.Equals(TargetSettingName, "RightThumbAxisX", StringComparison.Ordinal)
          || string.Equals(TargetSettingName, "RightThumbAxisY", StringComparison.Ordinal);
 
+        /// <summary>True when this row's Target is one of the touchpad
+        /// X/Y position axes (TouchpadX1/Y1/X2/Y2). The Custom formula
+        /// editor surfaces the <c>aD..dD</c> "is source touching" chips
+        /// only on these rows — for every other target the touchpad-
+        /// passthrough gated evaluator never runs and aD-style references
+        /// would always resolve to 0, so the chips would just be confusing.</summary>
+        public bool IsTouchpadAxisTarget =>
+            string.Equals(TargetSettingName, "TouchpadX1", StringComparison.Ordinal)
+         || string.Equals(TargetSettingName, "TouchpadY1", StringComparison.Ordinal)
+         || string.Equals(TargetSettingName, "TouchpadX2", StringComparison.Ordinal)
+         || string.Equals(TargetSettingName, "TouchpadY2", StringComparison.Ordinal);
+
         /// <summary>True when this is a bipolar axis row with exactly one
         /// button-class primary source set to Invert=false (i.e. only
         /// the positive direction is mapped). Surfaces a small inline

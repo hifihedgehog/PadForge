@@ -1851,11 +1851,30 @@ namespace PadForge.Common.Input
 
             // Does the row exist in the MappingSet? Drives whether we use
             // the multi-source/combine evaluator or the legacy single-
-            // descriptor reader.
-            bool xViaMappingSet = TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
-                slotIndex, xKey, out short xCombined);
-            bool yViaMappingSet = TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
-                slotIndex, yKey, out short yCombined);
+            // descriptor reader. In passthrough mode the X/Y eval is
+            // GATED — touchpad-class sources contribute only while their
+            // paired TouchpadDown is true. The gated evaluator returns
+            // false (no active source) so we can hold the previous
+            // position — see TryEvaluateMappingSetTouchpadAxis.
+            bool xViaMappingSet, yViaMappingSet;
+            short xCombined, yCombined;
+            if (isPassthroughMode)
+            {
+                xViaMappingSet = TryEvaluateMappingSetTouchpadAxis(state, mappingSet, thisDeviceGuid,
+                    slotIndex, xKey, physicalFingerIdx, out xCombined);
+                yViaMappingSet = TryEvaluateMappingSetTouchpadAxis(state, mappingSet, thisDeviceGuid,
+                    slotIndex, yKey, physicalFingerIdx, out yCombined);
+            }
+            else
+            {
+                // Velocity / stick-to-cursor: ungated. Sticks at rest
+                // already read 0 so the "stale finger position" pollution
+                // can't happen here.
+                xViaMappingSet = TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
+                    slotIndex, xKey, out xCombined);
+                yViaMappingSet = TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
+                    slotIndex, yKey, out yCombined);
+            }
             bool anyXMapping = xViaMappingSet || !string.IsNullOrEmpty(legacyXDesc);
 
             if (!anyXMapping)
@@ -1863,15 +1882,50 @@ namespace PadForge.Common.Input
 
             if (isPassthroughMode)
             {
-                // Combined bipolar [-1..+1] → absolute position [0..1].
-                float xBipolar = xViaMappingSet
-                    ? xCombined / 32767f
-                    : MapPassthroughLegacyAxisToBipolar(state, legacyXDesc, physicalFingerIdx, isY: false);
-                float yBipolar = yViaMappingSet
-                    ? yCombined / 32767f
-                    : MapPassthroughLegacyAxisToBipolar(state, legacyYDesc, physicalFingerIdx, isY: true);
-                outX = Math.Clamp((xBipolar + 1f) * 0.5f, 0f, 1f);
-                outY = Math.Clamp((yBipolar + 1f) * 0.5f, 0f, 1f);
+                if (xViaMappingSet)
+                {
+                    // Combined bipolar [-1..+1] → absolute position [0..1].
+                    float xBipolar = xCombined / 32767f;
+                    outX = Math.Clamp((xBipolar + 1f) * 0.5f, 0f, 1f);
+                }
+                else
+                {
+                    // Gated evaluator returned false (no active source) AND
+                    // legacy fallback path didn't yield a Touchpad descriptor
+                    // either — hold the previous position. This is the
+                    // sticky-touchpad semantic: when no finger is touching,
+                    // the cursor stays where the last finger left it.
+                    outX = prevX;
+                }
+
+                if (yViaMappingSet)
+                {
+                    float yBipolar = yCombined / 32767f;
+                    outY = Math.Clamp((yBipolar + 1f) * 0.5f, 0f, 1f);
+                }
+                else
+                {
+                    outY = prevY;
+                }
+
+                // If the MappingSet had no row at all for X (xViaMappingSet
+                // was false AND no row found), but a legacy descriptor was
+                // present, fall through to the legacy passthrough reader.
+                // The gated evaluator never returns false for "row exists
+                // with active sources" so this branch is for legacy
+                // pre-MappingSet configs only.
+                if (!xViaMappingSet && !string.IsNullOrEmpty(legacyXDesc)
+                    && IsTouchpadDescriptor(legacyXDesc))
+                {
+                    float xBipolar = MapPassthroughLegacyAxisToBipolar(state, legacyXDesc, physicalFingerIdx, isY: false);
+                    outX = Math.Clamp((xBipolar + 1f) * 0.5f, 0f, 1f);
+                }
+                if (!yViaMappingSet && !string.IsNullOrEmpty(legacyYDesc)
+                    && IsTouchpadDescriptor(legacyYDesc))
+                {
+                    float yBipolar = MapPassthroughLegacyAxisToBipolar(state, legacyYDesc, physicalFingerIdx, isY: true);
+                    outY = Math.Clamp((yBipolar + 1f) * 0.5f, 0f, 1f);
+                }
 
                 // Contact: MappingSet-first; falls back to legacy descriptor;
                 // falls back to the physical finger's Down bit so the

@@ -721,6 +721,21 @@ namespace PadForge
                     }
                     negMapping.SyncSelectedInputFromDescriptor();
 
+                    // Issue #61 — promote the freshly-recorded Neg into a
+                    // visible ExtraSource on the row so the table reflects
+                    // the bipolar pair immediately, without the user having
+                    // to toggle the Device dropdown to trigger a load-time
+                    // migration. Fallback device = the recording device,
+                    // used when the primary slot is still empty (neg-first
+                    // / Map All Y first-phase cases).
+                    {
+                        string fallbackGuid = deviceGuid != Guid.Empty
+                            ? deviceGuid.ToString().ToLowerInvariant()
+                            : null;
+                        string fallbackLabel = activePad.SelectedMappedDevice?.Name;
+                        negMapping.PromoteNegDescriptorToExtraSource(fallbackGuid, fallbackLabel);
+                    }
+
                     if (!hadSavedPos && negMapping.HasNegDirection && !activePad.IsMapAllActive)
                     {
                         // Came from a neg-quadrant click — now auto-prompt for the positive direction.

@@ -566,6 +566,34 @@ namespace PadForge.Services
         /// per-VC view without waiting for the next save / reload.</summary>
         public static void RefreshMappingSetsFromLegacy() => MergeMappingSetsFromLegacy();
 
+        /// <summary>Removes every source bound to the given device from
+        /// every slot's MappingSet, drops any row that ends up empty as
+        /// a result, and clears the device's cached PadSetting. Called
+        /// on unassign so that an immediate reassign gets a clean auto-
+        /// map slate — the prior mappings (auto-mapped or user-edited)
+        /// must not persist across the unassign / reassign round-trip.</summary>
+        public static void StripDeviceFromAllSlots(Guid instanceGuid)
+        {
+            string guidStr = instanceGuid.ToString().ToLowerInvariant();
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets != null)
+            {
+                for (int slot = 0; slot < sets.Length; slot++)
+                {
+                    var ms = sets[slot];
+                    if (ms?.Rows == null) continue;
+                    foreach (var row in ms.Rows)
+                    {
+                        if (row?.Sources == null) continue;
+                        row.Sources.RemoveAll(s =>
+                            !string.IsNullOrEmpty(s?.DeviceGuid)
+                            && string.Equals(s.DeviceGuid.ToLowerInvariant(), guidStr, StringComparison.Ordinal));
+                    }
+                    ms.Rows.RemoveAll(r => r?.Sources == null || r.Sources.Count == 0);
+                }
+            }
+        }
+
         private static void MergeMappingSetsFromLegacy()
         {
             var sets = SettingsManager.SlotMappingSets;

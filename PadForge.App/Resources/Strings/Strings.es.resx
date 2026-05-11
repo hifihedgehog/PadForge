@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -449,6 +449,28 @@
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zona muerta de eje a botón</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Invertir</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Mitad</value></data>
+  <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. English placeholders pending translation. -->
+  <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>Direct</value></data>
+  <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>Incremental</value></data>
+  <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Invert On Hold</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direct = read the source descriptor; Incremental = ramp an accumulator via Up/Down buttons; Invert On Hold = flip the row's output while a modifier button is held.</value></data>
+  <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>Button that ramps the accumulator upward while held</value></data>
+  <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Up — button that ramps the accumulator upward while held.</value></data>
+  <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Button that ramps the accumulator downward while held</value></data>
+  <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Down — button that ramps the accumulator downward while held.</value></data>
+  <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Rate</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Sweep speed in units per second. 0.5 = full range in 2 s; 2 = full range in 0.5 s.</value></data>
+  <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Sticky</value></data>
+  <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>When checked, the accumulator holds its value after release (cruise control). When unchecked, it snaps back to Min on release.</value></data>
+  <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Lower bound of the accumulator. -1 = full negative for bipolar axis targets; 0 = unipolar.</value></data>
+  <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
+  <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Upper bound of the accumulator. 1 = full positive.</value></data>
+  <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Button that inverts the row's output while held</value></data>
+  <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modifier — while held, the row's output flips sign.</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Add source</value></data>
+  <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Add another physical input to this row</value></data>
+  <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Remove this source</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Lineal</value></data>
   <data name="Curve_Smooth" xml:space="preserve"><value>Suave</value></data>
   <data name="Curve_Aggressive" xml:space="preserve"><value>Agresivo</value></data>

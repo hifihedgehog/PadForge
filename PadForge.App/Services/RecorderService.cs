@@ -157,10 +157,10 @@ namespace PadForge.Services
         /// <see cref="MappingSourceItem.Descriptor"/> to the source.</summary>
         public void StartRecordingExtraSource(MappingItem parent,
             MappingSourceItem extraSource, int padIndex,
-            bool neutralizeBaseline = false)
+            bool neutralizeBaseline = false, bool negRecording = false)
         {
             StartRecordingInternal(parent, extraSource, padIndex,
-                neutralizeBaseline, negRecording: false);
+                neutralizeBaseline, negRecording);
         }
 
         private void StartRecordingInternal(MappingItem mapping,
@@ -458,6 +458,7 @@ namespace PadForge.Services
             // Snapshot recording target before cleanup.
             var mapping = _activeMapping;
             var extraSource = _activeExtraSource;
+            bool negRec = _negRecording;
             int padIndex = _activePadIndex;
 
             // Stop recording.
@@ -496,12 +497,16 @@ namespace PadForge.Services
                 }
                 else
                 {
-                    extraSource.Invert = false;
+                    // A discrete button recorded for the negative quadrant
+                    // of a bipolar axis contributes -1 — encode that as an
+                    // inverted source so the engine reads it as the neg
+                    // direction.
+                    extraSource.Invert = negRec;
                     extraSource.HalfAxis = false;
                 }
                 // Sync the picker selection to the new state.
                 extraSource.SyncSelectedInputFromState(mapping.AvailableInputs);
-                finalDescriptor = (shouldInvert ? "I" : "") + descriptor;
+                finalDescriptor = ((shouldInvert || (type != MapType.Axis && type != MapType.Slider && negRec)) ? "I" : "") + descriptor;
             }
             else
             {
@@ -523,6 +528,7 @@ namespace PadForge.Services
             RecordingCompleted?.Invoke(this, new RecordingResult
             {
                 Mapping = mapping,
+                ExtraSource = extraSource,
                 Descriptor = finalDescriptor,
                 Type = type,
             });
@@ -558,6 +564,7 @@ namespace PadForge.Services
 
             var mapping = _activeMapping;
             var extraSource = _activeExtraSource;
+            bool negRec = _negRecording;
             int padIndex = _activePadIndex;
 
             if (extraSource != null) extraSource.IsRecording = false;
@@ -580,10 +587,10 @@ namespace PadForge.Services
                 if (!string.IsNullOrEmpty(winningGuidStr))
                     extraSource.DeviceLabel = ResolveDeviceLabel(winningDevice);
                 extraSource.Descriptor = descriptor;
-                extraSource.Invert = false;
+                extraSource.Invert = negRec;
                 extraSource.HalfAxis = false;
                 extraSource.SyncSelectedInputFromState(mapping.AvailableInputs);
-                finalDescriptor = descriptor;
+                finalDescriptor = (negRec ? "I" : "") + descriptor;
             }
             else
             {
@@ -602,6 +609,7 @@ namespace PadForge.Services
             RecordingCompleted?.Invoke(this, new RecordingResult
             {
                 Mapping = mapping,
+                ExtraSource = extraSource,
                 Descriptor = finalDescriptor,
                 Type = MapType.Button,
             });
@@ -723,6 +731,12 @@ namespace PadForge.Services
     {
         /// <summary>The mapping item that was recorded.</summary>
         public MappingItem Mapping { get; set; }
+
+        /// <summary>When non-null, the recording targeted this extra source
+        /// on <see cref="Mapping"/> rather than the row's primary — the
+        /// completion handler should commit it without touching the primary
+        /// or running the bipolar auto-prompt.</summary>
+        public MappingSourceItem ExtraSource { get; set; }
 
         /// <summary>The descriptor string assigned (e.g., "Button 0", "Axis 1").</summary>
         public string Descriptor { get; set; }

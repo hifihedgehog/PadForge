@@ -277,6 +277,11 @@ namespace PadForge.Services
             else
             {
                 // Device was unassigned from this slot.
+                // Strip its MappingSet sources synchronously — see
+                // UnassignDevice for the rationale (atomic unassign,
+                // no autosave race).
+                SettingsService.StripDeviceFromAllSlots(instanceGuid);
+
                 // If device has no more slot assignments, auto-disable hiding.
                 var remainingSlots = SettingsManager.GetAssignedSlots(instanceGuid);
                 if (remainingSlots == null || remainingSlots.Count == 0)
@@ -391,6 +396,18 @@ namespace PadForge.Services
         public void UnassignDevice(Guid instanceGuid)
         {
             SettingsManager.UnassignDevice(instanceGuid);
+
+            // Strip every per-VC MappingSet source bound to this device.
+            // Without this, an immediate reassign would still see the
+            // device's prior auto-mapped / user-edited sources sitting
+            // in the slot's MappingSet — they got carved out by the
+            // legacy merge's "departed device" pass, but only once the
+            // event-handler chain ran. Doing it synchronously here makes
+            // unassign atomic: the device's mappings are GONE the moment
+            // the call returns, and the autosave's PushUi pass can't
+            // race in to write VM state back to the MappingSet before
+            // the strip happens.
+            SettingsService.StripDeviceFromAllSlots(instanceGuid);
 
             var row = _mainVm.Devices.FindByGuid(instanceGuid);
             if (row != null)

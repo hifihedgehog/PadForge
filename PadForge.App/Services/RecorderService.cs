@@ -473,7 +473,6 @@ namespace PadForge.Services
             // (For axis sources, ShouldAutoInvert already folds _negRecording
             // into shouldInvert.)
             bool negRec = _negRecording;
-            int padIndex = _activePadIndex;
 
             // Stop recording.
             if (extraSource != null) extraSource.IsRecording = false;
@@ -603,7 +602,6 @@ namespace PadForge.Services
             // click) recorded for a bipolar axis's negative quadrant is
             // stored Invert=true so the press drives the axis to -1.
             bool negRec = _negRecording;
-            int padIndex = _activePadIndex;
 
             if (extraSource != null) extraSource.IsRecording = false;
             else mapping.IsRecording = false;

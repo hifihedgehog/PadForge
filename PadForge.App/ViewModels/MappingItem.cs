@@ -565,14 +565,15 @@ namespace PadForge.ViewModels
         /// <see cref="NegSourceDescriptor"/> into a visible
         /// <see cref="ExtraSources"/> entry with Invert flipped.
         /// Called by the recording pipeline so the user sees both
-        /// directions immediately after a two-phase recording,
-        /// instead of having to toggle the Device dropdown to trigger
-        /// a load-time migration. Does nothing when the Neg is empty
-        /// or when an equivalent extra already exists on the row.
-        /// Fallback device info is used when the primary slot's
-        /// DeviceGuid/Label aren't populated yet (e.g. the user
-        /// recorded neg first and the pos slot is still empty).</summary>
-        public void PromoteNegDescriptorToExtraSource(string fallbackDeviceGuid = null, string fallbackDeviceLabel = null)
+        /// directions immediately after a two-phase recording, instead
+        /// of having to toggle the Device dropdown to trigger a load-
+        /// time migration. The new ExtraSource inherits its device
+        /// origin from <see cref="PrimarySourceDeviceGuid"/>, which
+        /// <c>RecorderService.CompleteRecording</c> reliably stamps
+        /// with the device that physically fired. Does nothing when
+        /// the Neg is empty or when an equivalent extra already exists
+        /// on the row.</summary>
+        public void PromoteNegDescriptorToExtraSource()
         {
             string neg = NegSourceDescriptor;
             if (string.IsNullOrEmpty(neg)) return;
@@ -592,12 +593,8 @@ namespace PadForge.ViewModels
             // the primary's invert encoding — same convention as the
             // save path's bipolar-pair emission.
             bool effectiveInvert = !inv;
-            string deviceGuid = !string.IsNullOrEmpty(PrimarySourceDeviceGuid)
-                ? PrimarySourceDeviceGuid
-                : (fallbackDeviceGuid ?? "");
-            string deviceLabel = !string.IsNullOrEmpty(PrimarySourceDeviceLabel)
-                ? PrimarySourceDeviceLabel
-                : (fallbackDeviceLabel ?? "");
+            string deviceGuid = PrimarySourceDeviceGuid ?? "";
+            string deviceLabel = PrimarySourceDeviceLabel ?? "";
 
             // Skip if an equivalent extra is already present
             // (idempotent for repeat calls).

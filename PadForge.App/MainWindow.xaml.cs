@@ -3885,6 +3885,31 @@ namespace PadForge
                         _inputService.StopMacroTriggerRecording();
                 }
             };
+
+            // Wire per-variable RecordRequested for the custom-expression
+            // editor — both for variables present at load time and for any
+            // added later via the "+ Add Variable" button.
+            foreach (var v in macro.TriggerExpressionVariables)
+                WireExpressionVariableRecording(v, padIndex);
+            macro.TriggerExpressionVariables.CollectionChanged += (s, e) =>
+            {
+                if (e.NewItems != null)
+                    foreach (MacroExpressionVariable v in e.NewItems)
+                        WireExpressionVariableRecording(v, padIndex);
+            };
+        }
+
+        private void WireExpressionVariableRecording(MacroExpressionVariable variable, int padIndex)
+        {
+            if (variable == null) return;
+            variable.RecordRequested += (s, e) =>
+            {
+                if (s is not MacroExpressionVariable v) return;
+                if (v.IsRecording)
+                    _inputService.StartExpressionVariableRecording(v, padIndex);
+                else
+                    _inputService.StopExpressionVariableRecording();
+            };
         }
 
         /// <summary>
@@ -3900,6 +3925,18 @@ namespace PadForge
                 if (e.NewItems != null)
                     foreach (MacroAction action in e.NewItems)
                         action.PropertyChanged += (s2, e2) => _settingsService.MarkDirty();
+                _settingsService.MarkDirty();
+            };
+            // Custom-expression variables: any rebind should mark the
+            // settings file dirty so the new binding round-trips through
+            // SaveToFile.
+            foreach (var v in macro.TriggerExpressionVariables)
+                v.PropertyChanged += (s, e) => _settingsService.MarkDirty();
+            macro.TriggerExpressionVariables.CollectionChanged += (s, e) =>
+            {
+                if (e.NewItems != null)
+                    foreach (MacroExpressionVariable v in e.NewItems)
+                        v.PropertyChanged += (s2, e2) => _settingsService.MarkDirty();
                 _settingsService.MarkDirty();
             };
         }

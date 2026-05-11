@@ -1374,7 +1374,7 @@ namespace PadForge
                 if (hasExtended) found.Add("vJoy");
 
                 // Ensure window is visible so the dialog isn't hidden behind tray mode.
-                if (!IsVisible) { try { Show(); } catch { } }
+                if (!IsVisible) { try { Show(); } catch (InvalidOperationException) { } }
                 if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
                 Activate();
 

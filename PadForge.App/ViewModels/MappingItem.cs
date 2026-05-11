@@ -950,27 +950,39 @@ namespace PadForge.ViewModels
             public string Description { get; set; } = "";
         }
 
-        /// <summary>Built lazily from Strings.Instance so the labels pick
-        /// up the active culture's resource string. The XAML ItemsSource
-        /// reads this once per row, which means changing language requires
-        /// a UI re-bind — acceptable for v1 (culture changes already need
-        /// a restart for some surfaces).</summary>
+        // Cached once per culture so the WPF ComboBox binding doesn't
+        // reallocate seven CombineModeOption objects + run fourteen
+        // ResourceManager lookups every time it re-reads the property.
+        // Without the cache, hovering / clicking inside the Mappings tab
+        // burned visible CPU because virtualization + per-row binding
+        // re-evaluation kept refetching this list.
+        private static CombineModeOption[] _availableCombineModesCache;
+        private static int _availableCombineModesCacheCulture;
+
         public System.Collections.Generic.IReadOnlyList<CombineModeOption> AvailableCombineModes
+            => GetAvailableCombineModes();
+
+        private static CombineModeOption[] GetAvailableCombineModes()
         {
-            get
+            int currentCulture = System.Globalization.CultureInfo.CurrentUICulture.LCID;
+            var cached = _availableCombineModesCache;
+            if (cached != null && _availableCombineModesCacheCulture == currentCulture)
+                return cached;
+
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            var arr = new[]
             {
-                var s = PadForge.Resources.Strings.Strings.Instance;
-                return new[]
-                {
-                    new CombineModeOption { Value = "MaxAbs",  Name = s.Pad_Combine_MaxAbs_Name,  Description = s.Pad_Combine_MaxAbs_Description },
-                    new CombineModeOption { Value = "Sum",     Name = s.Pad_Combine_Sum_Name,     Description = s.Pad_Combine_Sum_Description },
-                    new CombineModeOption { Value = "Average", Name = s.Pad_Combine_Average_Name, Description = s.Pad_Combine_Average_Description },
-                    new CombineModeOption { Value = "OR",      Name = s.Pad_Combine_OR_Name,      Description = s.Pad_Combine_OR_Description },
-                    new CombineModeOption { Value = "AND",     Name = s.Pad_Combine_AND_Name,     Description = s.Pad_Combine_AND_Description },
-                    new CombineModeOption { Value = "XOR",     Name = s.Pad_Combine_XOR_Name,     Description = s.Pad_Combine_XOR_Description },
-                    new CombineModeOption { Value = "Custom",  Name = s.Pad_Combine_Custom_Name,  Description = s.Pad_Combine_Custom_Description },
-                };
-            }
+                new CombineModeOption { Value = "MaxAbs",  Name = s.Pad_Combine_MaxAbs_Name,  Description = s.Pad_Combine_MaxAbs_Description },
+                new CombineModeOption { Value = "Sum",     Name = s.Pad_Combine_Sum_Name,     Description = s.Pad_Combine_Sum_Description },
+                new CombineModeOption { Value = "Average", Name = s.Pad_Combine_Average_Name, Description = s.Pad_Combine_Average_Description },
+                new CombineModeOption { Value = "OR",      Name = s.Pad_Combine_OR_Name,      Description = s.Pad_Combine_OR_Description },
+                new CombineModeOption { Value = "AND",     Name = s.Pad_Combine_AND_Name,     Description = s.Pad_Combine_AND_Description },
+                new CombineModeOption { Value = "XOR",     Name = s.Pad_Combine_XOR_Name,     Description = s.Pad_Combine_XOR_Description },
+                new CombineModeOption { Value = "Custom",  Name = s.Pad_Combine_Custom_Name,  Description = s.Pad_Combine_Custom_Description },
+            };
+            _availableCombineModesCache = arr;
+            _availableCombineModesCacheCulture = currentCulture;
+            return arr;
         }
 
         /// <summary>Live parse status of <see cref="CombineExpression"/>.

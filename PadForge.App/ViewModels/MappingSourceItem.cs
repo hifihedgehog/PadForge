@@ -376,11 +376,39 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _isRecording, value))
                 {
+                    if (!value) _activeParamTarget = null; // recording stopped → no param is active
                     OnPropertyChanged(nameof(RecordButtonText));
                     OnPropertyChanged(nameof(RecordButtonIcon));
+                    OnPropertyChanged(nameof(IsRecordingParamUp));
+                    OnPropertyChanged(nameof(IsRecordingParamDown));
+                    OnPropertyChanged(nameof(IsRecordingParamModifier));
+                    OnPropertyChanged(nameof(RecordIconParamUp));
+                    OnPropertyChanged(nameof(RecordIconParamDown));
+                    OnPropertyChanged(nameof(RecordIconParamModifier));
+                    OnPropertyChanged(nameof(RecordTextParamUp));
+                    OnPropertyChanged(nameof(RecordTextParamDown));
+                    OnPropertyChanged(nameof(RecordTextParamModifier));
                 }
             }
         }
+
+        // Per-Param recording state. Set by the Param Record commands so each
+        // button only swaps to its "stop" icon while ITS recording is armed —
+        // not when a sibling button (e.g. Up vs Down on an Incremental row) is
+        // the one listening. Cleared automatically when IsRecording goes false.
+        private ParamRecordTarget? _activeParamTarget;
+        public bool IsRecordingParamUp       => IsRecording && _activeParamTarget == ParamRecordTarget.Up;
+        public bool IsRecordingParamDown     => IsRecording && _activeParamTarget == ParamRecordTarget.Down;
+        public bool IsRecordingParamModifier => IsRecording && _activeParamTarget == ParamRecordTarget.Modifier;
+        // Segoe MDL2 glyphs — match the literal codepoints the existing
+        // RecordButtonIcon already uses: U+E71A = Stop, U+E7C8 = Record.
+        public string RecordIconParamUp       => IsRecordingParamUp       ? "" : "";
+        public string RecordIconParamDown     => IsRecordingParamDown     ? "" : "";
+        public string RecordIconParamModifier => IsRecordingParamModifier ? "" : "";
+        public string RecordTextParamUp       => IsRecordingParamUp       ? Strings.Instance.Common_Recording : Strings.Instance.Common_Record;
+        public string RecordTextParamDown     => IsRecordingParamDown     ? Strings.Instance.Common_Recording : Strings.Instance.Common_Record;
+        public string RecordTextParamModifier => IsRecordingParamModifier ? Strings.Instance.Common_Recording : Strings.Instance.Common_Record;
+
         public string RecordButtonText => IsRecording ? Strings.Instance.Common_Recording : Strings.Instance.Common_Record;
         public string RecordButtonIcon => IsRecording ? "" : ""; // Stop : Record
 
@@ -410,34 +438,42 @@ namespace PadForge.ViewModels
         public event EventHandler<ParamRecordEventArgs> StartParamRecordingRequested;
 
         /// <summary>Param record commands toggle on a second click — matches
-        /// the main ToggleRecordCommand pattern. Without this, a user
-        /// clicking the Record button twice (because the icon doesn't give
-        /// instant feedback) silently cancels + restarts the recording, and
-        /// the first physical button press is missed by the cancelled
-        /// session. Now: click 1 starts, click 2 cancels.</summary>
+        /// the main ToggleRecordCommand pattern. Each command also stamps
+        /// <see cref="_activeParamTarget"/> so the icon swap only happens
+        /// on the button that's actually listening (Up vs Down record
+        /// buttons no longer both light up when only one is armed).</summary>
         private RelayCommand _recordParamUpCommand;
         public RelayCommand RecordParamUpCommand =>
-            _recordParamUpCommand ??= new RelayCommand(() =>
-            {
-                if (IsRecording) StopRecordingRequested?.Invoke(this, EventArgs.Empty);
-                else StartParamRecordingRequested?.Invoke(this, new ParamRecordEventArgs(ParamRecordTarget.Up));
-            });
+            _recordParamUpCommand ??= new RelayCommand(() => StartParamRecord(ParamRecordTarget.Up));
 
         private RelayCommand _recordParamDownCommand;
         public RelayCommand RecordParamDownCommand =>
-            _recordParamDownCommand ??= new RelayCommand(() =>
-            {
-                if (IsRecording) StopRecordingRequested?.Invoke(this, EventArgs.Empty);
-                else StartParamRecordingRequested?.Invoke(this, new ParamRecordEventArgs(ParamRecordTarget.Down));
-            });
+            _recordParamDownCommand ??= new RelayCommand(() => StartParamRecord(ParamRecordTarget.Down));
 
         private RelayCommand _recordParamModifierCommand;
         public RelayCommand RecordParamModifierCommand =>
-            _recordParamModifierCommand ??= new RelayCommand(() =>
-            {
-                if (IsRecording) StopRecordingRequested?.Invoke(this, EventArgs.Empty);
-                else StartParamRecordingRequested?.Invoke(this, new ParamRecordEventArgs(ParamRecordTarget.Modifier));
-            });
+            _recordParamModifierCommand ??= new RelayCommand(() => StartParamRecord(ParamRecordTarget.Modifier));
+
+        private void StartParamRecord(ParamRecordTarget target)
+        {
+            if (IsRecording) { StopRecordingRequested?.Invoke(this, EventArgs.Empty); return; }
+            _activeParamTarget = target;
+            // No SetProperty here — IsRecording isn't true yet; the handler
+            // will set it. Fire OnPropertyChanged for the per-Param props
+            // anyway so the icon updates synchronously with the click for
+            // immediate feedback (handlers route through the recorder which
+            // sets IsRecording=true a moment later).
+            OnPropertyChanged(nameof(IsRecordingParamUp));
+            OnPropertyChanged(nameof(IsRecordingParamDown));
+            OnPropertyChanged(nameof(IsRecordingParamModifier));
+            OnPropertyChanged(nameof(RecordIconParamUp));
+            OnPropertyChanged(nameof(RecordIconParamDown));
+            OnPropertyChanged(nameof(RecordIconParamModifier));
+            OnPropertyChanged(nameof(RecordTextParamUp));
+            OnPropertyChanged(nameof(RecordTextParamDown));
+            OnPropertyChanged(nameof(RecordTextParamModifier));
+            StartParamRecordingRequested?.Invoke(this, new ParamRecordEventArgs(target));
+        }
 
         private RelayCommand _clearCommand;
         /// <summary>Mirrors <see cref="MappingItem.ClearCommand"/>:

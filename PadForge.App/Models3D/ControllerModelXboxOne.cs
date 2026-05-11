@@ -98,8 +98,13 @@ namespace PadForge.Models3D
             // those profiles.
             if (enableShare)
             {
+                // Register only the button BODY for click + highlight.
+                // The symbol mesh stays black (assigned via the
+                // MaterialPlasticBlack pass below) so the lettering
+                // is still readable when the face turns accent-blue
+                // on press — matching how Start / Back symbols
+                // remain visible against their highlighted faces.
                 RegisterButton("ButtonShare", ShareButton);
-                RegisterButton("ButtonShare", ShareButtonSymbol);
             }
             StartSymbol       = LoadModel("StartSymbol.obj");
             USBPortInner      = LoadModel("USBPortInner.obj");

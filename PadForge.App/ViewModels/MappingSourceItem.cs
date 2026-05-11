@@ -27,7 +27,92 @@ namespace PadForge.ViewModels
         private double _paramMax = 1;
         private string _paramModifier = "";
 
-        public string Kind { get => _kind; set => SetProperty(ref _kind, value ?? "Direct"); }
+        public string Kind
+        {
+            get => _kind;
+            set
+            {
+                if (SetProperty(ref _kind, value ?? "Direct"))
+                {
+                    OnPropertyChanged(nameof(IsDirectKind));
+                    OnPropertyChanged(nameof(IsIncrementalKind));
+                    OnPropertyChanged(nameof(IsInvertOnHoldKind));
+                    OnPropertyChanged(nameof(ParamUpInputChoice));
+                    OnPropertyChanged(nameof(ParamDownInputChoice));
+                    OnPropertyChanged(nameof(ParamModifierInputChoice));
+                }
+            }
+        }
+
+        public bool IsDirectKind => string.Equals(_kind, "Direct", StringComparison.Ordinal);
+        public bool IsIncrementalKind => string.Equals(_kind, "Incremental", StringComparison.Ordinal);
+        public bool IsInvertOnHoldKind => string.Equals(_kind, "InvertOnHold", StringComparison.Ordinal);
+
+        public static System.Collections.Generic.IReadOnlyList<string> KindOptions { get; }
+            = new[] { "Direct", "Incremental", "InvertOnHold" };
+
+        internal MappingItem ParentMappingItem { get; set; }
+
+        private InputChoice ResolveParamChoice(string descriptor)
+        {
+            if (ParentMappingItem == null || string.IsNullOrEmpty(descriptor)) return null;
+            foreach (var c in ParentMappingItem.AvailableInputs)
+                if (c != null && string.Equals(c.Descriptor, descriptor, StringComparison.Ordinal))
+                    return c;
+            return null;
+        }
+
+        public InputChoice ParamUpInputChoice
+        {
+            get => ResolveParamChoice(_paramUp);
+            set
+            {
+                var d = value?.Descriptor ?? "";
+                if (!string.Equals(_paramUp, d, StringComparison.Ordinal))
+                {
+                    _paramUp = d;
+                    OnPropertyChanged(nameof(ParamUp));
+                    OnPropertyChanged(nameof(ParamUpInputChoice));
+                }
+            }
+        }
+
+        public InputChoice ParamDownInputChoice
+        {
+            get => ResolveParamChoice(_paramDown);
+            set
+            {
+                var d = value?.Descriptor ?? "";
+                if (!string.Equals(_paramDown, d, StringComparison.Ordinal))
+                {
+                    _paramDown = d;
+                    OnPropertyChanged(nameof(ParamDown));
+                    OnPropertyChanged(nameof(ParamDownInputChoice));
+                }
+            }
+        }
+
+        public InputChoice ParamModifierInputChoice
+        {
+            get => ResolveParamChoice(_paramModifier);
+            set
+            {
+                var d = value?.Descriptor ?? "";
+                if (!string.Equals(_paramModifier, d, StringComparison.Ordinal))
+                {
+                    _paramModifier = d;
+                    OnPropertyChanged(nameof(ParamModifier));
+                    OnPropertyChanged(nameof(ParamModifierInputChoice));
+                }
+            }
+        }
+
+        public void RefreshParamPickerChoices()
+        {
+            OnPropertyChanged(nameof(ParamUpInputChoice));
+            OnPropertyChanged(nameof(ParamDownInputChoice));
+            OnPropertyChanged(nameof(ParamModifierInputChoice));
+        }
         public string DeviceGuid
         {
             get => _deviceGuid;

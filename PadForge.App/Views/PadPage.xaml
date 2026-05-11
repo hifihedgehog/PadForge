@@ -1535,7 +1535,8 @@
                                              multi-source transition. -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                                     Visibility="{Binding IsMultiSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <TextBlock Text="Combine" FontSize="11"
+                                            <TextBlock Text="{Binding Pad_Combine_Label, Source={x:Static strings:Strings.Instance}}"
+                                                       FontSize="11"
                                                        VerticalAlignment="Center"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        Margin="0,0,6,0"/>
@@ -1545,7 +1546,7 @@
                                                       DisplayMemberPath="Name"
                                                       MinWidth="200" Margin="0" Padding="4,2"
                                                       VerticalAlignment="Center"
-                                                      ToolTip="How to merge sources on this row."
+                                                      ToolTip="{Binding Pad_Combine_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                       PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                 <ComboBox.ItemTemplate>
                                                     <DataTemplate>
@@ -1590,7 +1591,7 @@
                                                      VerticalAlignment="Center"
                                                      FontFamily="Consolas"
                                                      AllowDrop="True"
-                                                     ToolTip="Click chips below to build a formula, or drag chips into the box. a, b, c… stand for this row's sources in order."/>
+                                                     ToolTip="{Binding Pad_Formula_TextBox_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <TextBlock Text="{Binding CombineExpressionStatus}"
                                                        FontSize="10" FontFamily="Consolas"
                                                        Margin="2,2,0,4"
@@ -1613,7 +1614,8 @@
                                             <!-- Chip palette: variables, operators, numbers,
                                                  functions. Tag carries the literal text to
                                                  insert at the formula's caret. -->
-                                            <TextBlock Text="Insert" FontSize="10"
+                                            <TextBlock Text="{Binding Pad_Formula_Insert, Source={x:Static strings:Strings.Instance}}"
+                                                       FontSize="10"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        Margin="2,4,0,2"/>
                                             <WrapPanel Margin="0,0,0,4">
@@ -1658,42 +1660,42 @@
                                                      non-touchpad row resolves to 0. -->
                                                 <Button Content="aD" Tag="aD" Style="{StaticResource FormulaChipStyle}"
                                                         Click="FormulaChip_Click"
-                                                        ToolTip="1 while source A is touching (touchpad passthrough rows only)"
+                                                        ToolTip="{Binding Pad_Formula_Chip_TouchpadFlag_A, Source={x:Static strings:Strings.Instance}}"
                                                         Visibility="{Binding IsTouchpadAxisTarget, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                                 <Button Content="bD" Tag="bD" Style="{StaticResource FormulaChipStyle}"
                                                         Click="FormulaChip_Click"
-                                                        ToolTip="1 while source B is touching"
+                                                        ToolTip="{Binding Pad_Formula_Chip_TouchpadFlag_B, Source={x:Static strings:Strings.Instance}}"
                                                         Visibility="{Binding IsTouchpadAxisTarget, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                                 <Button Content="cD" Tag="cD" Style="{StaticResource FormulaChipStyle}"
                                                         Click="FormulaChip_Click"
-                                                        ToolTip="1 while source C is touching"
+                                                        ToolTip="{Binding Pad_Formula_Chip_TouchpadFlag_C, Source={x:Static strings:Strings.Instance}}"
                                                         Visibility="{Binding IsTouchpadAxisTarget, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                                 <Button Content="dD" Tag="dD" Style="{StaticResource FormulaChipStyle}"
                                                         Click="FormulaChip_Click"
-                                                        ToolTip="1 while source D is touching"
+                                                        ToolTip="{Binding Pad_Formula_Chip_TouchpadFlag_D, Source={x:Static strings:Strings.Instance}}"
                                                         Visibility="{Binding IsTouchpadAxisTarget, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                                 <!-- Operators -->
                                                 <Border Width="6"/>
                                                 <Button Content="+" Tag=" + " Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Add"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Add, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="−" Tag=" - " Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Subtract"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Subtract, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="×" Tag=" * " Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Multiply"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Multiply, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="÷" Tag=" / " Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Divide"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Divide, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="−A" Tag="-a" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Negate the first source"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_NegateA, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="(" Tag="(" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Open group"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_OpenGroup, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content=")" Tag=")" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Close group"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_CloseGroup, Source={x:Static strings:Strings.Instance}}"/>
                                                 <!-- Numbers -->
                                                 <Border Width="6"/>
                                                 <Button Content="0" Tag="0" Style="{StaticResource FormulaChipStyle}"
                                                         Click="FormulaChip_Click"/>
                                                 <Button Content="½" Tag="0.5" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="0.5 — half"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Half, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="1" Tag="1" Style="{StaticResource FormulaChipStyle}"
                                                         Click="FormulaChip_Click"/>
                                                 <Button Content="2" Tag="2" Style="{StaticResource FormulaChipStyle}"
@@ -1701,47 +1703,47 @@
                                                 <!-- Comparisons (yield 0 / 1 for use in if-then-else or scaled by *) -->
                                                 <Border Width="6"/>
                                                 <Button Content="&lt;" Tag=" &lt; " Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Less than"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_LessThan, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="&gt;" Tag=" &gt; " Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Greater than"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_GreaterThan, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="≤" Tag=" &lt;= " Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Less than or equal"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_LessOrEqual, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="≥" Tag=" &gt;= " Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Greater than or equal"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_GreaterOrEqual, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="=" Tag=" == " Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Equal to"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Equal, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="≠" Tag=" != " Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Not equal to"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_NotEqual, Source={x:Static strings:Strings.Instance}}"/>
                                                 <!-- Logic + if-then-else -->
                                                 <Border Width="6"/>
                                                 <Button Content="and" Tag=" &amp;&amp; " Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Both conditions true"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_BothConditions, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="or" Tag=" || " Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Either condition true"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_EitherCondition, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="not" Tag="!" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Flip true/false"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_FlipBool, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="if?" Tag=" ? " Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="If — pattern: (condition) ? then : else"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_If, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="else:" Tag=" : " Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Else half of an if-then-else"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Else, Source={x:Static strings:Strings.Instance}}"/>
                                                 <!-- Functions -->
                                                 <Border Width="6"/>
                                                 <Button Content="abs" Tag="abs(" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Magnitude (drops the sign)"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Abs, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="min" Tag="min(" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Smaller of two values"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Min, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="max" Tag="max(" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Larger of two values"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Max, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="clamp" Tag="clamp(" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Keep within a range — clamp(value, low, high)"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Clamp, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="sign" Tag="sign(" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="-1, 0, or +1 from input's sign"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Sign, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="lerp" Tag="lerp(" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Blend two values — lerp(a, b, mix0to1)"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Lerp, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="round" Tag="round(" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Round to nearest whole number"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Round, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="sqrt" Tag="sqrt(" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Square root"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Sqrt, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="," Tag=", " Style="{StaticResource FormulaChipStyle}"
                                                         Click="FormulaChip_Click"/>
                                             </WrapPanel>
@@ -1749,7 +1751,7 @@
                                             <!-- Preset buttons: load a complete formula
                                                  (replaces what's in the box). Each button's
                                                  Tag is the formula text. -->
-                                            <TextBlock Text="Starter recipes" FontSize="10"
+                                            <TextBlock Text="{Binding Pad_Formula_StarterRecipes, Source={x:Static strings:Strings.Instance}}" FontSize="10"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        Margin="2,2,0,2"/>
                                             <WrapPanel>
@@ -1760,46 +1762,46 @@
                                                         <Setter Property="FontSize" Value="11"/>
                                                     </Style>
                                                 </WrapPanel.Resources>
-                                                <Button Content="Half scale" Tag="a * 0.5"
+                                                <Button Content="{Binding Pad_Formula_Preset_HalfScale_Name, Source={x:Static strings:Strings.Instance}}" Tag="a * 0.5"
                                                         Style="{StaticResource FormulaPresetStyle}"
                                                         Click="FormulaPreset_Click"
-                                                        ToolTip="A at half strength"/>
-                                                <Button Content="Quarter scale" Tag="a * 0.25"
+                                                        ToolTip="{Binding Pad_Formula_Preset_HalfScale_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="{Binding Pad_Formula_Preset_QuarterScale_Name, Source={x:Static strings:Strings.Instance}}" Tag="a * 0.25"
                                                         Style="{StaticResource FormulaPresetStyle}"
                                                         Click="FormulaPreset_Click"
-                                                        ToolTip="A at quarter strength"/>
-                                                <Button Content="Reverse A" Tag="-a"
+                                                        ToolTip="{Binding Pad_Formula_Preset_QuarterScale_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="{Binding Pad_Formula_Preset_ReverseA_Name, Source={x:Static strings:Strings.Instance}}" Tag="-a"
                                                         Style="{StaticResource FormulaPresetStyle}"
                                                         Click="FormulaPreset_Click"
-                                                        ToolTip="Flip A's sign"/>
-                                                <Button Content="Cap to ±1" Tag="clamp(a + b, -1, 1)"
+                                                        ToolTip="{Binding Pad_Formula_Preset_ReverseA_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="{Binding Pad_Formula_Preset_CapTo1_Name, Source={x:Static strings:Strings.Instance}}" Tag="clamp(a + b, -1, 1)"
                                                         Style="{StaticResource FormulaPresetStyle}"
                                                         Click="FormulaPreset_Click"
-                                                        ToolTip="Sum A + B but never exceed ±1"/>
-                                                <Button Content="Weighted blend" Tag="a * 0.7 + b * 0.3"
+                                                        ToolTip="{Binding Pad_Formula_Preset_CapTo1_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="{Binding Pad_Formula_Preset_WeightedBlend_Name, Source={x:Static strings:Strings.Instance}}" Tag="a * 0.7 + b * 0.3"
                                                         Style="{StaticResource FormulaPresetStyle}"
                                                         Click="FormulaPreset_Click"
-                                                        ToolTip="70% of A + 30% of B"/>
-                                                <Button Content="Difference" Tag="a - b"
+                                                        ToolTip="{Binding Pad_Formula_Preset_WeightedBlend_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="{Binding Pad_Formula_Preset_Difference_Name, Source={x:Static strings:Strings.Instance}}" Tag="a - b"
                                                         Style="{StaticResource FormulaPresetStyle}"
                                                         Click="FormulaPreset_Click"
-                                                        ToolTip="A minus B"/>
-                                                <Button Content="A unless idle" Tag="a != 0 ? a : b"
+                                                        ToolTip="{Binding Pad_Formula_Preset_Difference_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="{Binding Pad_Formula_Preset_AUnlessIdle_Name, Source={x:Static strings:Strings.Instance}}" Tag="a != 0 ? a : b"
                                                         Style="{StaticResource FormulaPresetStyle}"
                                                         Click="FormulaPreset_Click"
-                                                        ToolTip="Use A — but if A is at rest, fall back to B"/>
-                                                <Button Content="Threshold gate" Tag="(a &gt; 0.5) ? 1 : 0"
+                                                        ToolTip="{Binding Pad_Formula_Preset_AUnlessIdle_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="{Binding Pad_Formula_Preset_ThresholdGate_Name, Source={x:Static strings:Strings.Instance}}" Tag="(a &gt; 0.5) ? 1 : 0"
                                                         Style="{StaticResource FormulaPresetStyle}"
                                                         Click="FormulaPreset_Click"
-                                                        ToolTip="Fire fully if A is past halfway, otherwise zero — turns an axis into a button"/>
-                                                <Button Content="Both pressed" Tag="(a &gt; 0) &amp;&amp; (b &gt; 0) ? 1 : 0"
+                                                        ToolTip="{Binding Pad_Formula_Preset_ThresholdGate_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="{Binding Pad_Formula_Preset_BothPressed_Name, Source={x:Static strings:Strings.Instance}}" Tag="(a &gt; 0) &amp;&amp; (b &gt; 0) ? 1 : 0"
                                                         Style="{StaticResource FormulaPresetStyle}"
                                                         Click="FormulaPreset_Click"
-                                                        ToolTip="Fire only when A and B are both pushed"/>
-                                                <Button Content="Stronger wins" Tag="max(abs(a), abs(b)) * sign(a + b)"
+                                                        ToolTip="{Binding Pad_Formula_Preset_BothPressed_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Content="{Binding Pad_Formula_Preset_StrongerWins_Name, Source={x:Static strings:Strings.Instance}}" Tag="max(abs(a), abs(b)) * sign(a + b)"
                                                         Style="{StaticResource FormulaPresetStyle}"
                                                         Click="FormulaPreset_Click"
-                                                        ToolTip="Whichever of A or B is pushed harder, with sign"/>
+                                                        ToolTip="{Binding Pad_Formula_Preset_StrongerWins_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             </WrapPanel>
                                         </StackPanel>
 
@@ -1873,7 +1875,7 @@
                                                                       SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                       DisplayMemberPath="DisplayName"
                                                                       MinWidth="240" Padding="4,2"
-                                                                      ToolTip="Pick the source from any device assigned to this slot."
+                                                                      ToolTip="{Binding Pad_Mapping_ExtraSourcePickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                       PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                                 <ComboBox.GroupStyle>
                                                                     <GroupStyle>
@@ -2252,7 +2254,7 @@
                                                  Clicking adds a second source mirroring the
                                                  primary with Invert=true. Disappears once a
                                                  second source exists. -->
-                                            <Button Content="+ opposite direction"
+                                            <Button Content="{Binding Pad_Mapping_AddOppositeDir, Source={x:Static strings:Strings.Instance}}"
                                                     Command="{Binding AddOppositeDirectionCommand}"
                                                     HorizontalAlignment="Left"
                                                     Padding="4,0"
@@ -2263,7 +2265,7 @@
                                                     FontStyle="Italic"
                                                     Foreground="{DynamicResource AccentFillColorDefaultBrush}"
                                                     Cursor="Hand"
-                                                    ToolTip="Only the positive (+) direction of this stick axis is mapped. Click to add an inverted second source for the negative (−) direction."
+                                                    ToolTip="{Binding Pad_Mapping_AddOppositeDir_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                     Visibility="{Binding ShouldShowEmptyDirectionHint, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                         </StackPanel>
                                     </DataTemplate>

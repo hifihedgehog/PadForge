@@ -4101,7 +4101,7 @@ namespace PadForge.Services
                     foreach (var us in slotSettings)
                     {
                         var ud = FindUserDevice(us.InstanceGuid);
-                        string name = ud?.ResolvedName ?? "Unknown device";
+                        string name = LocalizedDeviceName(ud) ?? "Unknown device";
                         bool online = ud?.IsOnline ?? false;
                         if (online) anyOnline = true;
 
@@ -4779,11 +4779,12 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>Resolves a device GUID to a human-readable name.</summary>
+        /// <summary>Resolves a device GUID to a human-readable name,
+        /// substituting localized strings for aggregate/overlay devices.</summary>
         private static string ResolveDeviceName(Guid deviceGuid)
         {
             if (deviceGuid == Guid.Empty) return null;
-            return SettingsManager.FindDeviceByInstanceGuid(deviceGuid)?.ResolvedName;
+            return LocalizedDeviceName(SettingsManager.FindDeviceByInstanceGuid(deviceGuid));
         }
 
         private static DeviceObjectItem[] ResolveDeviceObjects(Guid deviceGuid)

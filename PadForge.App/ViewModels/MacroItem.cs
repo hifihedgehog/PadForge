@@ -383,20 +383,34 @@ namespace PadForge.ViewModels
 
         private MacroTriggerMode _triggerMode = MacroTriggerMode.OnPress;
 
-        /// <summary>When to fire: on press, on release, while held, or always.</summary>
+        /// <summary>When to fire: on press, on release, while held, always, or custom expression.</summary>
         public MacroTriggerMode TriggerMode
         {
             get => _triggerMode;
             set
             {
                 if (SetProperty(ref _triggerMode, value))
+                {
                     OnPropertyChanged(nameof(IsNotAlwaysMode));
+                    OnPropertyChanged(nameof(IsCustomExpressionMode));
+                    OnPropertyChanged(nameof(ShowsTriggerComboEditor));
+                }
             }
         }
 
-        /// <summary>True when TriggerMode is not Always (used to show/hide trigger recording UI).</summary>
+        /// <summary>True when TriggerMode is not Always (legacy callers: used to
+        /// gate UI that should hide in Always mode).</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsNotAlwaysMode => _triggerMode != MacroTriggerMode.Always;
+
+        /// <summary>True when the standard trigger-combo recording UI should show
+        /// (i.e. one of OnPress / OnRelease / WhileHeld). Always mode has no
+        /// trigger; CustomExpression mode uses the formula editor instead.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool ShowsTriggerComboEditor =>
+            _triggerMode == MacroTriggerMode.OnPress ||
+            _triggerMode == MacroTriggerMode.OnRelease ||
+            _triggerMode == MacroTriggerMode.WhileHeld;
 
         private bool _consumeTriggerButtons = true;
 
@@ -527,6 +541,181 @@ namespace PadForge.ViewModels
                 TriggerAxisDirections = dirs;
             }
         }
+
+        // ─────────────────────────────────────────────
+        //  Custom-expression trigger (TriggerMode = CustomExpression)
+        //  A formula over a/b/c/... variables, each bound to either an
+        //  input-device input or an Xbox-output channel. Compiled lazily
+        //  via PadForge.Engine.Common.Mapping.MappingExpression. The
+        //  trigger is "active" on a given frame when the evaluated result
+        //  is >= 0.5; OnPress-equivalent rising-edge semantics fire the
+        //  macro on the 0 → 1 transition.
+        // ─────────────────────────────────────────────
+
+        private string _triggerExpression = "";
+        private PadForge.Engine.Common.Mapping.MappingExpression.Compiled _triggerExpressionCompiled;
+
+        /// <summary>User-typed formula. Empty / whitespace compiles to literal 0
+        /// (trigger never active). Changes invalidate the cached compile.</summary>
+        public string TriggerExpression
+        {
+            get => _triggerExpression;
+            set
+            {
+                if (SetProperty(ref _triggerExpression, value ?? ""))
+                {
+                    _triggerExpressionCompiled = null;
+                    OnPropertyChanged(nameof(CustomExpressionStatus));
+                    OnPropertyChanged(nameof(IsCustomExpressionInvalid));
+                    OnPropertyChanged(nameof(IsCustomExpressionWarning));
+                }
+            }
+        }
+
+        /// <summary>Returns the cached compile, recomputing if dirty.
+        /// Hot path: called every macro evaluation frame in CustomExpression mode.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public PadForge.Engine.Common.Mapping.MappingExpression.Compiled TriggerExpressionCompiled
+        {
+            get
+            {
+                if (_triggerExpressionCompiled == null)
+                    _triggerExpressionCompiled = PadForge.Engine.Common.Mapping.MappingExpression.Compile(_triggerExpression ?? "");
+                return _triggerExpressionCompiled;
+            }
+        }
+
+        private ObservableCollection<MacroExpressionVariable> _triggerExpressionVariables = new();
+
+        /// <summary>Ordered list of variables for the custom-expression trigger.
+        /// Variable at index 0 binds to <c>a</c>, index 1 to <c>b</c>, etc.
+        /// Also addressable as <c>s[0]</c>, <c>s[1]</c>, ... in the formula.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public ObservableCollection<MacroExpressionVariable> TriggerExpressionVariables
+        {
+            get => _triggerExpressionVariables;
+            set
+            {
+                _triggerExpressionVariables = value ?? new ObservableCollection<MacroExpressionVariable>();
+                OnPropertyChanged(nameof(TriggerExpressionVariables));
+                OnPropertyChanged(nameof(TriggerExpressionVariableSpecs));
+                OnPropertyChanged(nameof(CustomExpressionStatus));
+                OnPropertyChanged(nameof(IsCustomExpressionWarning));
+            }
+        }
+
+        /// <summary>Serializable comma-separated list of the variables' Spec
+        /// strings. Empty entries are preserved so a/b/c/... indexing is
+        /// stable across a load even if some variables are still unbound.</summary>
+        public string TriggerExpressionVariableSpecs
+        {
+            get
+            {
+                if (_triggerExpressionVariables == null || _triggerExpressionVariables.Count == 0) return null;
+                return string.Join("|", _triggerExpressionVariables.Select(v => v?.Spec ?? ""));
+            }
+            set
+            {
+                _triggerExpressionVariables.Clear();
+                if (string.IsNullOrEmpty(value))
+                {
+                    OnPropertyChanged(nameof(TriggerExpressionVariables));
+                    return;
+                }
+                foreach (var spec in value.Split('|'))
+                {
+                    var v = new MacroExpressionVariable();
+                    if (!string.IsNullOrEmpty(spec)) v.Spec = spec;
+                    _triggerExpressionVariables.Add(v);
+                }
+                OnPropertyChanged(nameof(TriggerExpressionVariables));
+                OnPropertyChanged(nameof(CustomExpressionStatus));
+                OnPropertyChanged(nameof(IsCustomExpressionWarning));
+            }
+        }
+
+        /// <summary>True when this macro's trigger uses the custom-expression path.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsCustomExpressionMode => _triggerMode == MacroTriggerMode.CustomExpression;
+
+        /// <summary>Localized "valid" / parse-error string for the editor footer.
+        /// Mirrors the merge-mapping <c>CombineExpressionStatus</c> shape.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string CustomExpressionStatus
+        {
+            get
+            {
+                var s = Strings.Instance;
+                if (string.IsNullOrWhiteSpace(_triggerExpression))
+                    return s.Pad_Formula_Status_Empty;
+                var c = TriggerExpressionCompiled;
+                if (!c.IsValid)
+                    return "✗ " + (c.Error ?? s.Pad_Formula_Status_ParseError);
+
+                int defined = _triggerExpressionVariables?.Count ?? 0;
+                var refs = c.ReferencedSingleLetterVars ?? "";
+                var outOfRange = new List<string>();
+                foreach (char letter in refs)
+                {
+                    int idx = letter - 'a';
+                    if (idx >= defined) outOfRange.Add(letter.ToString());
+                }
+                bool indexedOutOfRange = c.MaxIndexedRef >= defined;
+                if (outOfRange.Count == 0 && !indexedOutOfRange)
+                    return s.Pad_Formula_Status_Valid;
+
+                string warn;
+                if (outOfRange.Count > 0 && indexedOutOfRange)
+                    warn = string.Join(",", outOfRange) + " " + s.Pad_Formula_Status_And + " s[" + c.MaxIndexedRef + "] " + s.Pad_Formula_Status_NoSourcePlural;
+                else if (outOfRange.Count > 0)
+                    warn = outOfRange.Count == 1
+                        ? outOfRange[0] + " " + s.Pad_Formula_Status_NoSourceSingular
+                        : string.Join(",", outOfRange) + " " + s.Pad_Formula_Status_NoSourcePlural;
+                else
+                    warn = "s[" + c.MaxIndexedRef + "] " + s.Pad_Formula_Status_NoSourceSingular;
+                return "⚠ " + s.Pad_Formula_Status_Valid.TrimStart('✓', ' ') + " — " + warn + " (" + s.Pad_Formula_Status_TreatedAsZero + ")";
+            }
+        }
+
+        /// <summary>True when the expression failed to parse.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsCustomExpressionInvalid => !TriggerExpressionCompiled.IsValid;
+
+        /// <summary>True when the expression parses but references more variables
+        /// than the macro has defined.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsCustomExpressionWarning
+        {
+            get
+            {
+                var c = TriggerExpressionCompiled;
+                if (!c.IsValid) return false;
+                int refCount = c.ReferencedSingleLetterVars?.Length ?? 0;
+                int maxIdx = c.MaxIndexedRef;
+                int defined = _triggerExpressionVariables?.Count ?? 0;
+                return Math.Max(refCount, maxIdx + 1) > defined;
+            }
+        }
+
+        /// <summary>Whether a recording session is in progress for the
+        /// most recently added custom-expression variable. Used by the
+        /// editor's recording-button glyph + live-feedback text.</summary>
+        private bool _isRecordingExpressionVariable;
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsRecordingExpressionVariable
+        {
+            get => _isRecordingExpressionVariable;
+            set => SetProperty(ref _isRecordingExpressionVariable, value);
+        }
+
+        private RelayCommand _addExpressionVariableCommand;
+        public RelayCommand AddExpressionVariableCommand =>
+            _addExpressionVariableCommand ??= new RelayCommand(() =>
+            {
+                _triggerExpressionVariables.Add(new MacroExpressionVariable());
+                OnPropertyChanged(nameof(CustomExpressionStatus));
+                OnPropertyChanged(nameof(IsCustomExpressionWarning));
+            });
 
         // ─────────────────────────────────────────────
         //  Actions
@@ -1995,7 +2184,13 @@ namespace PadForge.ViewModels
         WhileHeld,
 
         /// <summary>Runs continuously without any trigger button requirement.</summary>
-        Always
+        Always,
+
+        /// <summary>Fire on rising edge of a user-defined formula over a/b/c/...
+        /// variables. Each variable binds to an input-device input or an
+        /// Xbox-output-channel value; the compiled formula evaluates to a
+        /// float per frame and "trigger active" is <c>result &gt;= 0.5</c>.</summary>
+        CustomExpression
     }
 
     public enum MacroTriggerSource
@@ -2195,6 +2390,165 @@ namespace PadForge.ViewModels
 
         /// <summary>Fire only when the axis value is negative (e.g., stick left).</summary>
         Negative
+    }
+
+    /// <summary>Output channels on the combined Xbox-mapped <c>Gamepad</c>
+    /// that a <see cref="MacroExpressionVariable"/> can sample when its
+    /// <c>Source</c> is <see cref="MacroTriggerSource.OutputController"/>.
+    /// Buttons read 0.0/1.0, triggers read 0..1, sticks read 0..1 with
+    /// 0.5 as the rest position (so the expression sees a uniform 0..1
+    /// domain like the merge-mapping evaluator does).</summary>
+    public enum MacroOutputChannel
+    {
+        None,
+        A, B, X, Y,
+        LB, RB,
+        LS, RS,
+        Back, Start, Guide,
+        DpadUp, DpadDown, DpadLeft, DpadRight,
+        LT, RT,
+        LX, LY, RX, RY
+    }
+
+    /// <summary>One a/b/c/... variable that a macro's custom-expression
+    /// trigger can reference. Binds either to an input-device input
+    /// (raw button / POV / axis) or to a channel on the slot's combined
+    /// Xbox output. Serialized as a compact tagged string so the XML
+    /// stays one element per variable rather than a nested block.</summary>
+    public sealed class MacroExpressionVariable : ObservableObject
+    {
+        private MacroTriggerSource _source = MacroTriggerSource.InputDevice;
+        public MacroTriggerSource Source
+        {
+            get => _source;
+            set { if (SetProperty(ref _source, value)) OnPropertyChanged(nameof(DisplaySummary)); }
+        }
+
+        private Guid _deviceGuid;
+        public Guid DeviceGuid
+        {
+            get => _deviceGuid;
+            set { if (SetProperty(ref _deviceGuid, value)) OnPropertyChanged(nameof(DisplaySummary)); }
+        }
+
+        private int _rawButton = -1;
+        /// <summary>Raw device button index (0-based) when Source=InputDevice;
+        /// -1 when not used.</summary>
+        public int RawButton
+        {
+            get => _rawButton;
+            set { if (SetProperty(ref _rawButton, value)) OnPropertyChanged(nameof(DisplaySummary)); }
+        }
+
+        private string _pov;
+        /// <summary>"povIndex:centidegrees" form when Source=InputDevice and
+        /// the variable samples a POV direction; null when not used.</summary>
+        public string Pov
+        {
+            get => _pov;
+            set { if (SetProperty(ref _pov, string.IsNullOrEmpty(value) ? null : value)) OnPropertyChanged(nameof(DisplaySummary)); }
+        }
+
+        private MacroAxisTarget _axisTarget = MacroAxisTarget.None;
+        public MacroAxisTarget AxisTarget
+        {
+            get => _axisTarget;
+            set { if (SetProperty(ref _axisTarget, value)) OnPropertyChanged(nameof(DisplaySummary)); }
+        }
+
+        private MacroOutputChannel _outputChannel = MacroOutputChannel.None;
+        public MacroOutputChannel OutputChannel
+        {
+            get => _outputChannel;
+            set { if (SetProperty(ref _outputChannel, value)) OnPropertyChanged(nameof(DisplaySummary)); }
+        }
+
+        /// <summary>True if this variable has a usable binding (one of
+        /// raw-button / POV / axis / output-channel populated). An unbound
+        /// variable evaluates to 0.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsBound
+        {
+            get
+            {
+                if (_source == MacroTriggerSource.OutputController) return _outputChannel != MacroOutputChannel.None;
+                return _rawButton >= 0 || !string.IsNullOrEmpty(_pov) || _axisTarget != MacroAxisTarget.None;
+            }
+        }
+
+        /// <summary>Compact tagged form used for XML round-tripping.
+        /// "in:GUID:btn:N", "in:GUID:pov:idx:cd", "in:GUID:ax:Target",
+        /// "out:Channel". Empty for unbound.</summary>
+        public string Spec
+        {
+            get
+            {
+                if (_source == MacroTriggerSource.OutputController)
+                    return _outputChannel == MacroOutputChannel.None ? "" : $"out:{_outputChannel}";
+                if (_deviceGuid == Guid.Empty) return "";
+                if (_rawButton >= 0) return $"in:{_deviceGuid}:btn:{_rawButton}";
+                if (!string.IsNullOrEmpty(_pov)) return $"in:{_deviceGuid}:pov:{_pov}";
+                if (_axisTarget != MacroAxisTarget.None) return $"in:{_deviceGuid}:ax:{_axisTarget}";
+                return "";
+            }
+            set
+            {
+                _source = MacroTriggerSource.InputDevice;
+                _deviceGuid = Guid.Empty;
+                _rawButton = -1;
+                _pov = null;
+                _axisTarget = MacroAxisTarget.None;
+                _outputChannel = MacroOutputChannel.None;
+                if (!string.IsNullOrEmpty(value))
+                {
+                    var parts = value.Split(':');
+                    if (parts.Length >= 2 && parts[0] == "out")
+                    {
+                        _source = MacroTriggerSource.OutputController;
+                        if (Enum.TryParse<MacroOutputChannel>(parts[1], out var ch)) _outputChannel = ch;
+                    }
+                    else if (parts.Length >= 4 && parts[0] == "in" && Guid.TryParse(parts[1], out var g))
+                    {
+                        _deviceGuid = g;
+                        switch (parts[2])
+                        {
+                            case "btn":
+                                if (int.TryParse(parts[3], out var bi)) _rawButton = bi;
+                                break;
+                            case "pov":
+                                if (parts.Length >= 5) _pov = $"{parts[3]}:{parts[4]}";
+                                break;
+                            case "ax":
+                                if (Enum.TryParse<MacroAxisTarget>(parts[3], out var at)) _axisTarget = at;
+                                break;
+                        }
+                    }
+                }
+                OnPropertyChanged(nameof(Source));
+                OnPropertyChanged(nameof(DeviceGuid));
+                OnPropertyChanged(nameof(RawButton));
+                OnPropertyChanged(nameof(Pov));
+                OnPropertyChanged(nameof(AxisTarget));
+                OnPropertyChanged(nameof(OutputChannel));
+                OnPropertyChanged(nameof(DisplaySummary));
+            }
+        }
+
+        /// <summary>Short human-readable summary for the variable row UI.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string DisplaySummary
+        {
+            get
+            {
+                if (!IsBound) return Strings.Instance.Macro_NotSet;
+                if (_source == MacroTriggerSource.OutputController)
+                    return _outputChannel.ToString();
+                if (_rawButton >= 0) return string.Format(Strings.Instance.Macro_Button_Format, _rawButton);
+                if (!string.IsNullOrEmpty(_pov)) return MacroItem.FormatPovTrigger(_pov);
+                if (_axisTarget != MacroAxisTarget.None) return _axisTarget.DisplayName();
+                return "";
+            }
+        }
     }
 
     /// <summary>Where to read axis values from for continuous actions.</summary>

@@ -1376,7 +1376,9 @@ namespace PadForge.Services
                     RepeatDelayMs = md.RepeatDelayMs,
                     TriggerAxisTargetList = md.TriggerAxisTargets,
                     TriggerAxisThreshold = md.TriggerAxisThreshold > 0 ? md.TriggerAxisThreshold : 50,
-                    TriggerPovs = md.TriggerPovs ?? Array.Empty<string>()
+                    TriggerPovs = md.TriggerPovs ?? Array.Empty<string>(),
+                    TriggerExpression = md.TriggerExpression ?? "",
+                    TriggerExpressionVariableSpecs = md.TriggerExpressionVariables
                 };
 
                 if (md.Actions != null)
@@ -2169,6 +2171,8 @@ namespace PadForge.Services
                         TriggerAxisTargets = macro.TriggerAxisTargetList,
                         TriggerAxisThreshold = macro.TriggerAxisThreshold,
                         TriggerPovs = macro.TriggerPovs?.Length > 0 ? macro.TriggerPovs : null,
+                        TriggerExpression = string.IsNullOrEmpty(macro.TriggerExpression) ? null : macro.TriggerExpression,
+                        TriggerExpressionVariables = macro.TriggerExpressionVariableSpecs,
                         Actions = macro.Actions.Select(a => new ActionData
                         {
                             Type = a.Type,
@@ -3102,6 +3106,18 @@ namespace PadForge.Services
         [XmlArray("TriggerPovs")]
         [XmlArrayItem("Pov")]
         public string[] TriggerPovs { get; set; }
+
+        /// <summary>Custom-expression formula (used when
+        /// <see cref="TriggerMode"/> is <c>CustomExpression</c>). Empty / null
+        /// when the macro uses one of the legacy trigger modes.</summary>
+        [XmlElement]
+        public string TriggerExpression { get; set; }
+
+        /// <summary>Pipe-separated <see cref="MacroExpressionVariable.Spec"/> entries
+        /// in a/b/c/... order. Empty entries are preserved so indexing remains
+        /// stable across a load even if some variables are still unbound.</summary>
+        [XmlElement]
+        public string TriggerExpressionVariables { get; set; }
 
         [XmlArray("Actions")]
         [XmlArrayItem("Action")]

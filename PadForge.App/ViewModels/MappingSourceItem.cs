@@ -401,20 +401,35 @@ namespace PadForge.ViewModels
         }
         public event EventHandler<ParamRecordEventArgs> StartParamRecordingRequested;
 
+        /// <summary>Param record commands toggle on a second click — matches
+        /// the main ToggleRecordCommand pattern. Without this, a user
+        /// clicking the Record button twice (because the icon doesn't give
+        /// instant feedback) silently cancels + restarts the recording, and
+        /// the first physical button press is missed by the cancelled
+        /// session. Now: click 1 starts, click 2 cancels.</summary>
         private RelayCommand _recordParamUpCommand;
         public RelayCommand RecordParamUpCommand =>
             _recordParamUpCommand ??= new RelayCommand(() =>
-                StartParamRecordingRequested?.Invoke(this, new ParamRecordEventArgs(ParamRecordTarget.Up)));
+            {
+                if (IsRecording) StopRecordingRequested?.Invoke(this, EventArgs.Empty);
+                else StartParamRecordingRequested?.Invoke(this, new ParamRecordEventArgs(ParamRecordTarget.Up));
+            });
 
         private RelayCommand _recordParamDownCommand;
         public RelayCommand RecordParamDownCommand =>
             _recordParamDownCommand ??= new RelayCommand(() =>
-                StartParamRecordingRequested?.Invoke(this, new ParamRecordEventArgs(ParamRecordTarget.Down)));
+            {
+                if (IsRecording) StopRecordingRequested?.Invoke(this, EventArgs.Empty);
+                else StartParamRecordingRequested?.Invoke(this, new ParamRecordEventArgs(ParamRecordTarget.Down));
+            });
 
         private RelayCommand _recordParamModifierCommand;
         public RelayCommand RecordParamModifierCommand =>
             _recordParamModifierCommand ??= new RelayCommand(() =>
-                StartParamRecordingRequested?.Invoke(this, new ParamRecordEventArgs(ParamRecordTarget.Modifier)));
+            {
+                if (IsRecording) StopRecordingRequested?.Invoke(this, EventArgs.Empty);
+                else StartParamRecordingRequested?.Invoke(this, new ParamRecordEventArgs(ParamRecordTarget.Modifier));
+            });
 
         private RelayCommand _clearCommand;
         /// <summary>Mirrors <see cref="MappingItem.ClearCommand"/>:

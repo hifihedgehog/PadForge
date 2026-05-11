@@ -219,7 +219,17 @@ namespace PadForge.Engine
 
         public DeviceObjectItem[] GetDeviceObjects()
         {
-            // Gamepad-shaped surface only (6 axes + 11 buttons + 1 POV).
+            // Touchpad-only web layout has no axes / buttons / POVs —
+            // returning the gamepad shape here would surface 6 phantom
+            // axes + 11 phantom buttons + 1 phantom D-Pad in the source
+            // picker alongside the touchpad sources (since
+            // MappingDisplayResolver.BuildInputChoices walks DeviceObjects
+            // unconditionally). The touchpad-specific sources come from
+            // BuildInputChoices's HasTouchpad block on their own.
+            if (_isTouchpadDevice)
+                return Array.Empty<DeviceObjectItem>();
+
+            // Gamepad-shaped surface (6 axes + 11 buttons + 1 POV).
             // Touchpad finger axes and the touchpad click button do NOT
             // belong here — the live touchpad data flows through
             // UpdateTouchpadFinger / UpdateTouchpadClick into the

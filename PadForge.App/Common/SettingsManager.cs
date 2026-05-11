@@ -569,6 +569,9 @@ namespace PadForge.Common.Input
             }
 
             // Touchpad-type devices (web touchpad, PTP) auto-map touchpad data to PlayStation.
+            // Matches the gamepad+PlayStation branch above (line ~555); the
+            // earlier asymmetry left web touchpad clients without an auto-
+            // mapped TouchpadClick.
             if (ud.CapType == InputDeviceType.Touchpad && ud.HasTouchpad &&
                 outputType == Engine.VirtualControllerType.PlayStation)
             {
@@ -578,6 +581,7 @@ namespace PadForge.Common.Input
                 ps.TouchpadX2 = "Touchpad 0 Finger 1 X";
                 ps.TouchpadY2 = "Touchpad 0 Finger 1 Y";
                 ps.TouchpadContact2 = "Touchpad 0 Finger 1 Down";
+                ps.TouchpadClick = "Touchpad 0 Click";
 
                 ps.UpdateChecksum();
                 return ps;

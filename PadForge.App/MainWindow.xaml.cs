@@ -3877,6 +3877,18 @@ namespace PadForge
                 var copyOutputType = padVm.OutputType;
                 bool copyIsExtended = copyOutputType == VirtualControllerType.Extended
                     /* Extended always uses dynamic layout */;
+
+                // Issue #61 — also snapshot the slot's multi-source
+                // rows for the source device so ExtraSources +
+                // CombineMode + Custom formula round-trip through
+                // Copy → Paste.
+                var selected = padVm.SelectedMappedDevice;
+                if (selected != null && selected.InstanceGuid != Guid.Empty)
+                {
+                    ps.DeviceScopedMultiSourceRows =
+                        InputService.ExtractDeviceScopedRowsForSlot(padVm.PadIndex, selected.InstanceGuid);
+                }
+
                 Clipboard.SetText(ps.ToJson(copyOutputType, copyIsExtended));
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopied;
             }
@@ -3974,7 +3986,8 @@ namespace PadForge
                             InstanceGuid = us.InstanceGuid,
                             PadSetting = ps,
                             OutputType = outputType,
-                            IsExtended = isExtended
+                            IsExtended = isExtended,
+                            SourceSlot = us.MapTo,
                         });
                     }
                 }
@@ -3993,6 +4006,15 @@ namespace PadForge
                 var targetOutputType = padVm.OutputType;
                 bool targetIsExtended = targetOutputType == VirtualControllerType.Extended
                     /* Extended always uses dynamic layout */;
+
+                // Issue #61 — populate the source device's slice of
+                // the source slot's MappingSet so multi-source rows
+                // round-trip through the apply path.
+                if (srcEntry.SourceSlot >= 0)
+                {
+                    srcEntry.PadSetting.DeviceScopedMultiSourceRows =
+                        InputService.ExtractDeviceScopedRowsForSlot(srcEntry.SourceSlot, srcEntry.InstanceGuid);
+                }
 
                 _inputService.ApplyPadSettingToCurrentDeviceTranslated(
                     padVm.PadIndex, srcEntry.PadSetting,

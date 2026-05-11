@@ -34,6 +34,14 @@ namespace PadForge.Common.Input
             var settings = SettingsManager.UserSettings?.Items;
             if (settings == null) return;
 
+            // Reset per-slot Custom-row evaluation tracking so the new
+            // frame's first device pass triggers fresh cross-device
+            // evaluation. (Custom mode evaluates the full row.Sources
+            // list once across all devices; subsequent device passes
+            // in the same frame skip Custom rows that have already
+            // written their result.)
+            BeginFrameCustomTracking();
+
             // Snapshot settings into pre-allocated buffer (no LINQ allocation).
             int snapshotCount;
             lock (SettingsManager.UserSettings.SyncRoot)

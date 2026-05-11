@@ -33,6 +33,43 @@ namespace PadForge.Common.Input
         // each frame from the engine's polling-loop timestamp.
         private static readonly double[] _lastEvalTime = new double[MaxPads];
 
+        // ─────────────────────────────────────────────
+        //  Custom-mode cross-device evaluation tracking
+        //
+        //  Custom-formula rows must evaluate the WHOLE row.Sources list
+        //  once per frame, looking up each source's own device state,
+        //  so the user's variables (a, b, c…) map positionally to the
+        //  row's primary + ExtraSources regardless of which device pass
+        //  is running. The per-device-pass model used by the other
+        //  combine modes filters by current device, which makes
+        //  `min(a, b)` style formulas semantically wrong across two
+        //  devices.
+        //
+        //  _customEvaluatedTargetsBySlot tracks which Custom-mode row
+        //  targets have already been evaluated this frame for each
+        //  slot, so the SECOND, THIRD … device pass for the slot skips
+        //  the row entirely instead of zero-overwriting it.
+        //  BeginFrameCustomTracking() at the top of UpdateOutputStates
+        //  clears every slot's set.
+        // ─────────────────────────────────────────────
+        private static readonly HashSet<string>[] _customEvaluatedTargetsBySlot = InitCustomTracking();
+        private static HashSet<string>[] InitCustomTracking()
+        {
+            var arr = new HashSet<string>[MaxPads];
+            for (int i = 0; i < MaxPads; i++) arr[i] = new HashSet<string>(System.StringComparer.Ordinal);
+            return arr;
+        }
+
+        /// <summary>Called once per polling frame at the top of
+        /// <see cref="UpdateOutputStates"/>. Resets the per-slot Custom-
+        /// row tracking so the new frame's first device pass triggers
+        /// fresh cross-device evaluation.</summary>
+        private static void BeginFrameCustomTracking()
+        {
+            for (int i = 0; i < _customEvaluatedTargetsBySlot.Length; i++)
+                _customEvaluatedTargetsBySlot[i].Clear();
+        }
+
         private static double ComputeAndAdvanceDelta(int slot)
         {
             double now = (double)System.Diagnostics.Stopwatch.GetTimestamp() / System.Diagnostics.Stopwatch.Frequency;
@@ -225,8 +262,29 @@ namespace PadForge.Common.Input
                 axisContribs.Clear();
                 boolContribs.Clear();
 
+                // Custom-mode rows are cross-device single-evaluation:
+                // build positional contribs from every source's own
+                // device state, evaluate once, mark target as done so
+                // subsequent device passes for this slot skip the row.
+                bool isCustom = row.CombineMode == "Custom";
+                HashSet<string> customDone = (isCustom && slotIndex >= 0
+                    && slotIndex < _customEvaluatedTargetsBySlot.Length)
+                    ? _customEvaluatedTargetsBySlot[slotIndex] : null;
+                if (isCustom && customDone != null && customDone.Contains(row.Target))
+                    continue;
+
                 if (kind == TargetKind.Button || kind == TargetKind.PovDirection)
                 {
+                    if (isCustom)
+                    {
+                        var positional = BuildCustomContribsForButton(
+                            row, slotIndex, globalAxisToButtonThreshold, dt);
+                        if (positional.Count == 0) continue;
+                        bool combined = EvaluateCustomBoolean(row, positional);
+                        WriteBoolTarget(row.Target, combined, ref gp);
+                        customDone?.Add(row.Target);
+                        continue;
+                    }
                     for (int i = 0; i < row.Sources.Count; i++)
                     {
                         var src = row.Sources[i];
@@ -236,15 +294,20 @@ namespace PadForge.Common.Input
                             slotIndex, row.Target, i, runtime, dt));
                     }
                     if (boolContribs.Count == 0) continue;
-
-                    bool combined = row.CombineMode == "Custom"
-                        ? EvaluateCustomBoolean(row, BoolListToFloats(boolContribs))
-                        : CombineHelper.CombineButton(row.CombineMode, boolContribs);
-
-                    WriteBoolTarget(row.Target, combined, ref gp);
+                    WriteBoolTarget(row.Target,
+                        CombineHelper.CombineButton(row.CombineMode, boolContribs), ref gp);
                 }
                 else if (kind == TargetKind.BipolarAxis)
                 {
+                    if (isCustom)
+                    {
+                        var positional = BuildCustomContribsForBipolarAxis(row, slotIndex, dt);
+                        if (positional.Count == 0) continue;
+                        float combined = ClampBipolar(EvaluateCustomFloat(row, positional));
+                        WriteBipolarAxisTarget(row.Target, combined, ref gp);
+                        customDone?.Add(row.Target);
+                        continue;
+                    }
                     for (int i = 0; i < row.Sources.Count; i++)
                     {
                         var src = row.Sources[i];
@@ -253,15 +316,21 @@ namespace PadForge.Common.Input
                             state, src, slotIndex, row.Target, i, runtime, dt));
                     }
                     if (axisContribs.Count == 0) continue;
-
-                    float combined = row.CombineMode == "Custom"
-                        ? ClampBipolar(EvaluateCustomFloat(row, axisContribs))
-                        : ClampBipolar(CombineHelper.CombineAxis(row.CombineMode, axisContribs));
-
-                    WriteBipolarAxisTarget(row.Target, combined, ref gp);
+                    WriteBipolarAxisTarget(row.Target,
+                        ClampBipolar(CombineHelper.CombineAxis(row.CombineMode, axisContribs)),
+                        ref gp);
                 }
                 else if (kind == TargetKind.Trigger)
                 {
+                    if (isCustom)
+                    {
+                        var positional = BuildCustomContribsForTrigger(row, slotIndex, dt);
+                        if (positional.Count == 0) continue;
+                        float combined = ClampUnipolar(EvaluateCustomFloat(row, positional));
+                        WriteTriggerTarget(row.Target, combined, ref gp);
+                        customDone?.Add(row.Target);
+                        continue;
+                    }
                     for (int i = 0; i < row.Sources.Count; i++)
                     {
                         var src = row.Sources[i];
@@ -270,12 +339,9 @@ namespace PadForge.Common.Input
                             state, src, slotIndex, row.Target, i, runtime, dt));
                     }
                     if (axisContribs.Count == 0) continue;
-
-                    float combined = row.CombineMode == "Custom"
-                        ? ClampUnipolar(EvaluateCustomFloat(row, axisContribs))
-                        : ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, axisContribs));
-
-                    WriteTriggerTarget(row.Target, combined, ref gp);
+                    WriteTriggerTarget(row.Target,
+                        ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, axisContribs)),
+                        ref gp);
                 }
             }
         }
@@ -318,6 +384,145 @@ namespace PadForge.Common.Input
         {
             var compiled = GetOrCompileExpression(row);
             return compiled.Evaluate(contribs) > 0.5f;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Cross-device Custom-row evaluation
+        //
+        //  Builds the row's contributions in positional order:
+        //    a = primary (Sources[0])  — with the bipolar Neg-pair
+        //        merged in via sum if present (Neg pair = same
+        //        DeviceGuid as primary AND Invert flipped)
+        //    b = first ExtraSource (Sources[1] or [2] depending on
+        //        whether Neg pair is at index 1)
+        //    c = second ExtraSource
+        //    …
+        //  Each source is evaluated against ITS OWN device's live
+        //  InputState (looked up via UserDevices), not the current
+        //  pass's state. Missing-device sources contribute 0.
+        // ─────────────────────────────────────────────
+
+        private static CustomInputState LookupDeviceState(string deviceGuid)
+        {
+            if (string.IsNullOrEmpty(deviceGuid)) return null;
+            if (!System.Guid.TryParse(deviceGuid, out var g)) return null;
+            var devs = SettingsManager.UserDevices?.Items;
+            if (devs == null) return null;
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                for (int i = 0; i < devs.Count; i++)
+                {
+                    var d = devs[i];
+                    if (d == null) continue;
+                    if (d.InstanceGuid == g && d.IsOnline)
+                        return d.InputState;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>True when sources[i] looks like the bipolar Neg
+        /// pair of sources[0] — same device, descriptor matches the
+        /// pair encoding (post-prefix-stripped), Invert flipped. Used
+        /// only for bipolar axis targets where the migrator and the
+        /// save path emit the Neg as Sources[1].</summary>
+        private static bool IsBipolarNegPair(MappingSource primary, MappingSource candidate)
+        {
+            if (primary == null || candidate == null) return false;
+            if (!string.Equals(primary.DeviceGuid ?? "", candidate.DeviceGuid ?? "",
+                System.StringComparison.OrdinalIgnoreCase)) return false;
+            return primary.Invert != candidate.Invert;
+        }
+
+        /// <summary>True when the row's target is a bipolar-axis kind
+        /// where a Neg-pair encoding is meaningful.</summary>
+        private static bool TargetIsBipolarAxis(string target)
+            => target == "LeftThumbAxisX" || target == "LeftThumbAxisY"
+            || target == "RightThumbAxisX" || target == "RightThumbAxisY"
+            || (target != null && target.StartsWith("ExtendedAxis", System.StringComparison.Ordinal));
+
+        /// <summary>Builds the row's positional contributions list for
+        /// Custom mode (variable order a..z mirrors the row's UI).
+        /// Each entry is the source's coerced value against ITS OWN
+        /// device's state. Returns an empty list if no source could be
+        /// evaluated against any online device.</summary>
+        private static List<float> BuildCustomContribsForBipolarAxis(
+            MappingRow row, int slotIndex, double dt)
+        {
+            var slotRuntime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
+                ? _slotSourceKindRuntime[slotIndex] : null;
+            var list = new List<float>();
+            if (row.Sources == null || row.Sources.Count == 0) return list;
+
+            int negPairIndex = -1;
+            // Detect Neg pair at index 1 for bipolar axis rows.
+            if (TargetIsBipolarAxis(row.Target) && row.Sources.Count >= 2
+                && IsBipolarNegPair(row.Sources[0], row.Sources[1]))
+            {
+                negPairIndex = 1;
+            }
+
+            for (int i = 0; i < row.Sources.Count; i++)
+            {
+                if (i == negPairIndex) continue; // merged into a below
+                var src = row.Sources[i];
+                if (src == null) { list.Add(0f); continue; }
+                var devState = LookupDeviceState(src.DeviceGuid);
+                if (devState == null) { list.Add(0f); continue; }
+                float v = SourceEvaluator.EvaluateForBipolarAxisTarget(
+                    devState, src, slotIndex, row.Target, i, slotRuntime, dt);
+                if (i == 0 && negPairIndex == 1)
+                {
+                    var negSrc = row.Sources[1];
+                    var negState = LookupDeviceState(negSrc.DeviceGuid);
+                    if (negState != null)
+                    {
+                        v += SourceEvaluator.EvaluateForBipolarAxisTarget(
+                            negState, negSrc, slotIndex, row.Target, 1, slotRuntime, dt);
+                    }
+                }
+                list.Add(v);
+            }
+            return list;
+        }
+
+        private static List<float> BuildCustomContribsForTrigger(
+            MappingRow row, int slotIndex, double dt)
+        {
+            var slotRuntime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
+                ? _slotSourceKindRuntime[slotIndex] : null;
+            var list = new List<float>();
+            if (row.Sources == null) return list;
+            for (int i = 0; i < row.Sources.Count; i++)
+            {
+                var src = row.Sources[i];
+                if (src == null) { list.Add(0f); continue; }
+                var devState = LookupDeviceState(src.DeviceGuid);
+                if (devState == null) { list.Add(0f); continue; }
+                list.Add(SourceEvaluator.EvaluateForTriggerTarget(
+                    devState, src, slotIndex, row.Target, i, slotRuntime, dt));
+            }
+            return list;
+        }
+
+        private static List<float> BuildCustomContribsForButton(
+            MappingRow row, int slotIndex, int globalAxisToButtonThreshold, double dt)
+        {
+            var slotRuntime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
+                ? _slotSourceKindRuntime[slotIndex] : null;
+            var list = new List<float>();
+            if (row.Sources == null) return list;
+            for (int i = 0; i < row.Sources.Count; i++)
+            {
+                var src = row.Sources[i];
+                if (src == null) { list.Add(0f); continue; }
+                var devState = LookupDeviceState(src.DeviceGuid);
+                if (devState == null) { list.Add(0f); continue; }
+                list.Add(SourceEvaluator.EvaluateForButtonTarget(
+                    devState, src, globalAxisToButtonThreshold,
+                    slotIndex, row.Target, i, slotRuntime, dt) ? 1f : 0f);
+            }
+            return list;
         }
 
         private static MappingExpression.Compiled GetOrCompileExpression(MappingRow row)

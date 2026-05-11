@@ -1651,10 +1651,16 @@ namespace PadForge.Common.Input
             var tp = new TouchpadState { PacketCounter = prev.PacketCounter };
 
             // ── Finger 0 ──
+            // Empty descriptor = no touchpad output for this finger.
+            // The "DualSense → PlayStation slot exposes its touchpad
+            // out of the box" default-experience is handled by
+            // CreateDefaultPadSetting populating these descriptors
+            // explicitly — no engine-side empty-string passthrough is
+            // needed, and removing it lets Clear All / per-row unmap
+            // actually mean "no output."
             bool isTouchpadSource0 = IsTouchpadDescriptor(ps.TouchpadX1);
             if (isTouchpadSource0)
             {
-                // Direct passthrough from SDL touchpad data
                 tp.X0 = state.TouchpadFingers[0];
                 tp.Y0 = state.TouchpadFingers[1];
                 tp.Down0 = state.TouchpadDown[0];
@@ -1667,21 +1673,11 @@ namespace PadForge.Common.Input
                 const float sensitivity = 0.015f;
                 tp.X0 = Math.Clamp(prev.X0 + stickX * sensitivity, 0f, 1f);
                 tp.Y0 = Math.Clamp(prev.Y0 + stickY * sensitivity, 0f, 1f);
-                // Contact driven by mapping descriptor or auto-true when stick is deflected
                 tp.Down0 = !string.IsNullOrEmpty(ps.TouchpadContact1)
                     ? MapToButtonPressed(state, ps.TouchpadContact1)
                     : (Math.Abs(stickX) > 0.1f || Math.Abs(stickY) > 0.1f);
             }
-            else
-            {
-                // Default passthrough: a physical touchpad-capable device with
-                // no explicit touchpad mapping forwards finger 0 directly. This
-                // is what makes a DS4 / DualSense routed to a PlayStation slot
-                // expose its touchpad to games out of the box.
-                tp.X0 = state.TouchpadFingers[0];
-                tp.Y0 = state.TouchpadFingers[1];
-                tp.Down0 = state.TouchpadDown[0];
-            }
+            // else: descriptor explicitly empty → no output for finger 0.
 
             // ── Finger 1 ──
             bool isTouchpadSource1 = IsTouchpadDescriptor(ps.TouchpadX2);
@@ -1702,21 +1698,15 @@ namespace PadForge.Common.Input
                     ? MapToButtonPressed(state, ps.TouchpadContact2)
                     : (Math.Abs(stickX) > 0.1f || Math.Abs(stickY) > 0.1f);
             }
-            else
-            {
-                // Default passthrough — see finger 0.
-                tp.X1 = state.TouchpadFingers[3];
-                tp.Y1 = state.TouchpadFingers[4];
-                tp.Down1 = state.TouchpadDown[1];
-            }
+            // else: descriptor explicitly empty → no output for finger 1.
 
             // ── Touchpad click ──
-            // Explicit mapping wins; otherwise fall back to the physical
-            // touchpad button so a Sony source → PlayStation slot exposes
-            // touchpad clicks out of the box.
+            // Empty descriptor = no click output (matches finger
+            // semantics above). CreateDefaultPadSetting fills this in
+            // for Sony source devices so the default DualSense →
+            // PlayStation flow still surfaces the physical click.
             tp.Click = !string.IsNullOrEmpty(ps.TouchpadClick)
-                ? MapToButtonPressed(state, ps.TouchpadClick)
-                : state.TouchpadClick;
+                    && MapToButtonPressed(state, ps.TouchpadClick);
 
             // Increment packet counter on finger state transitions.
             if (tp.Down0 != prev.Down0 || tp.Down1 != prev.Down1)

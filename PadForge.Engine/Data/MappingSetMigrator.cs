@@ -55,6 +55,26 @@ namespace PadForge.Engine.Data
         private const string TriggerLeft = "LeftTrigger";
         private const string TriggerRight = "RightTrigger";
 
+        // Touchpad output targets. Stored as plain string properties on
+        // PadSetting (TouchpadX1, TouchpadY1, …, TouchpadClick), reached via
+        // the same reflection path as ButtonTargets / AxisTargets. Emitted
+        // for ANY assigned device whose PadSetting has the field set —
+        // gamepad-only filter is OFF because both gamepad devices that
+        // expose a touchpad surface (DualSense / DS4 / Steam Deck) AND
+        // pure touchpad devices (web touchpad client, precision touchpad)
+        // legitimately contribute here. Without this, a second device
+        // assigned to a PlayStation slot wouldn't add a TouchpadX1 row to
+        // the per-VC MappingSet for the merge to pick up, and its touchpad
+        // mapping would never appear alongside the existing device's as a
+        // second source on the same row.
+        private static readonly string[] TouchpadTargets =
+        {
+            "TouchpadX1", "TouchpadY1",
+            "TouchpadX2", "TouchpadY2",
+            "TouchpadContact1", "TouchpadContact2",
+            "TouchpadClick",
+        };
+
         /// <summary>
         /// Resolves the property-name pair for a paired axis target.
         /// Returns <c>(primaryFieldName, negFieldName)</c> for axis targets,
@@ -141,6 +161,15 @@ namespace PadForge.Engine.Data
             // Combined DPad: emit only for devices whose individual DPad
             // direction fields are all empty AND DPad descriptor is non-empty.
             AppendCombinedDPadRow(ms, devicesAndPadSettings);
+
+            // Touchpad targets — any device with a non-empty field
+            // contributes (web touchpad, PTP, DS4, DualSense, …). Multiple
+            // devices on the same slot land as multiple Sources on one row,
+            // which is what makes the user-visible Mappings tab show every
+            // device's touchpad contribution side-by-side instead of only
+            // the first-assigned device's.
+            foreach (var target in TouchpadTargets)
+                AppendSimpleRow(ms, target, devicesAndPadSettings, gamepadOnly: false);
 
             return ms;
         }

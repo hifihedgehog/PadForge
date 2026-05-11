@@ -154,7 +154,15 @@ namespace PadForge.Services
         /// The recorder listens to every device assigned to the slot and
         /// the first device to fire a button / POV / axis change wins,
         /// writing both <see cref="MappingSourceItem.DeviceGuid"/> and
-        /// <see cref="MappingSourceItem.Descriptor"/> to the source.</summary>
+        /// <see cref="MappingSourceItem.Descriptor"/> to the source.
+        /// <para><paramref name="extraSource"/> may be a DETACHED
+        /// <see cref="MappingSourceItem"/> not yet in
+        /// <see cref="MappingItem.ExtraSources"/> — the
+        /// <see cref="RecordingCompleted"/> handler appends it once the
+        /// descriptor is in. Pass <paramref name="negRecording"/>=true when
+        /// the source is being recorded for the negative quadrant of a
+        /// bipolar axis: a button recorded that way is stored with
+        /// Invert=true so a press drives the axis to -1.</para></summary>
         public void StartRecordingExtraSource(MappingItem parent,
             MappingSourceItem extraSource, int padIndex,
             bool neutralizeBaseline = false, bool negRecording = false)
@@ -458,6 +466,12 @@ namespace PadForge.Services
             // Snapshot recording target before cleanup.
             var mapping = _activeMapping;
             var extraSource = _activeExtraSource;
+            // Capture _negRecording before cleanup. It tells us the recording
+            // was started for a NEGATIVE-direction quadrant of a bipolar axis
+            // (left / up). For a button source that means "this press should
+            // drive the axis to -1", which we encode as Invert=true below.
+            // (For axis sources, ShouldAutoInvert already folds _negRecording
+            // into shouldInvert.)
             bool negRec = _negRecording;
             int padIndex = _activePadIndex;
 
@@ -476,16 +490,27 @@ namespace PadForge.Services
             // Auto-detect inversion for axis/slider recordings.
             bool shouldInvert = false;
             if (type == MapType.Axis || type == MapType.Slider)
-                shouldInvert = ShouldAutoInvert(mapping, axisPositive, _negRecording);
+                shouldInvert = ShouldAutoInvert(mapping, axisPositive, negRec);
 
             string finalDescriptor;
+            // Device the input fired on. Empty only if no device was ever
+            // collected (handled earlier — recording would have aborted), so
+            // in practice this is always a real GUID. THIS — not whatever the
+            // Mappings-tab device dropdown shows — is the device the mapping
+            // gets attached to. Do not let any caller override it with the
+            // dropdown selection (that was a regression; see the comment in
+            // MainWindow.RecordingCompleted).
             string winningGuidStr = winningDevice == Guid.Empty
                 ? "" : winningDevice.ToString().ToLowerInvariant();
 
             if (extraSource != null)
             {
-                // ExtraSource target: write Descriptor (un-prefixed) +
-                // Invert/HalfAxis as separate fields, plus DeviceGuid.
+                // ── Recording targeted an EXTRA source (multi-source row) ──
+                // Write Descriptor (un-prefixed) + Invert/HalfAxis as the
+                // schema's separate per-source fields, plus the winning
+                // DeviceGuid (cross-device extras are first-class — a keyboard
+                // key extra-source on a stick axis legitimately stores the
+                // keyboard's GUID here).
                 extraSource.DeviceGuid = winningGuidStr;
                 if (!string.IsNullOrEmpty(winningGuidStr))
                     extraSource.DeviceLabel = ResolveDeviceLabel(winningDevice);
@@ -497,21 +522,31 @@ namespace PadForge.Services
                 }
                 else
                 {
-                    // A discrete button recorded for the negative quadrant
-                    // of a bipolar axis contributes -1 — encode that as an
-                    // inverted source so the engine reads it as the neg
-                    // direction.
+                    // A discrete button (or POV / touchpad) recorded for the
+                    // negative quadrant of a bipolar axis should contribute -1
+                    // when pressed — encode that as Invert=true so the engine
+                    // reads it as the negative direction. Positive quadrant →
+                    // Invert=false (contributes +1).
                     extraSource.Invert = negRec;
                     extraSource.HalfAxis = false;
                 }
-                // Sync the picker selection to the new state.
+                // Sync the per-source picker selection to the new state.
                 extraSource.SyncSelectedInputFromState(mapping.AvailableInputs);
-                finalDescriptor = ((shouldInvert || (type != MapType.Axis && type != MapType.Slider && negRec)) ? "I" : "") + descriptor;
+                // finalDescriptor is only used for the status string + the
+                // RecordingResult payload (the handler short-circuits for
+                // extra sources and reads extraSource directly). Mirror the
+                // legacy "I" prefix form so the status reads e.g. "IButton 7"
+                // for an inverted neg button.
+                bool extraInverted = (type == MapType.Axis || type == MapType.Slider) ? shouldInvert : negRec;
+                finalDescriptor = (extraInverted ? "I" : "") + descriptor;
             }
             else
             {
-                // Primary target: prefix-encode the descriptor and tag
-                // the row with the winning device GUID.
+                // ── Recording targeted the row's PRIMARY source ──
+                // Prefix-encode the descriptor (legacy I/H form the
+                // MappingItem + Step 3 parser still consume) and tag the row
+                // with the winning device GUID — this is the authoritative
+                // device assignment for the row (NOT the dropdown selection).
                 if (type == MapType.Axis || type == MapType.Slider)
                     descriptor = (shouldInvert ? "I" : "") + descriptor;
                 if (!string.IsNullOrEmpty(winningGuidStr))
@@ -564,6 +599,9 @@ namespace PadForge.Services
 
             var mapping = _activeMapping;
             var extraSource = _activeExtraSource;
+            // See CompleteRecording: a literal-descriptor input (touchpad
+            // click) recorded for a bipolar axis's negative quadrant is
+            // stored Invert=true so the press drives the axis to -1.
             bool negRec = _negRecording;
             int padIndex = _activePadIndex;
 
@@ -579,21 +617,26 @@ namespace PadForge.Services
             _axisCandidates.Clear();
 
             string finalDescriptor;
+            // Winning (firing) device — the authoritative device the mapping
+            // attaches to, regardless of the Mappings-tab dropdown selection.
             string winningGuidStr = winningDevice == Guid.Empty
                 ? "" : winningDevice.ToString().ToLowerInvariant();
             if (extraSource != null)
             {
+                // Extra-source target on a multi-source row (e.g. a touchpad
+                // click added alongside an analog stick axis).
                 extraSource.DeviceGuid = winningGuidStr;
                 if (!string.IsNullOrEmpty(winningGuidStr))
                     extraSource.DeviceLabel = ResolveDeviceLabel(winningDevice);
                 extraSource.Descriptor = descriptor;
-                extraSource.Invert = negRec;
+                extraSource.Invert = negRec;   // neg quadrant → contributes -1
                 extraSource.HalfAxis = false;
                 extraSource.SyncSelectedInputFromState(mapping.AvailableInputs);
                 finalDescriptor = (negRec ? "I" : "") + descriptor;
             }
             else
             {
+                // Primary target — tag the row with the winning device.
                 if (!string.IsNullOrEmpty(winningGuidStr))
                 {
                     mapping.PrimarySourceDeviceGuid = winningGuidStr;

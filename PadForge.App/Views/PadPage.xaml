@@ -1501,6 +1501,14 @@
                                             <StopStoryboard BeginStoryboardName="RecordFlash"/>
                                         </DataTrigger.ExitActions>
                                     </DataTrigger>
+                                    <!-- Multi-source rows keep their details
+                                         panel expanded even when not selected
+                                         so users can see every source on the
+                                         row at a glance. Single-source rows
+                                         still follow VisibleWhenSelected. -->
+                                    <DataTrigger Binding="{Binding IsMultiSource}" Value="True">
+                                        <Setter Property="DetailsVisibility" Value="Visible"/>
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </DataGrid.RowStyle>

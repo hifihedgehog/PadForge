@@ -1948,41 +1948,6 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>True when the mapping target is a gamepad-class
-        /// output (button, d-pad, stick axis, trigger). Mirrors the
-        /// migrator's filter — non-gamepad devices (keyboard / mouse /
-        /// touchpad) must never contribute a Source for these targets,
-        /// because their PadSetting may carry stale auto-mapped
-        /// gamepad descriptors that have no real backing input.</summary>
-        private static bool IsGamepadClassTarget(string target)
-        {
-            if (string.IsNullOrEmpty(target)) return false;
-            if (target.StartsWith("Kbm", StringComparison.Ordinal)) return false;
-            if (target.StartsWith("Midi", StringComparison.Ordinal)) return false;
-            if (target.StartsWith("Extended", StringComparison.Ordinal)) return false;
-            if (target.StartsWith("Touchpad", StringComparison.Ordinal)) return false;
-            return true;
-        }
-
-        private static string GetMappingValue(PadSetting ps, string key)
-        {
-            // Tolerate ps = null — RefreshMappingsCore can be invoked
-            // from the device-assignment path with no selected device,
-            // in which case the legacy fallback walks slot devices and
-            // any "outer ps" calls here must safely return empty.
-            if (ps == null) return string.Empty;
-            if (key.StartsWith("Extended", StringComparison.Ordinal))
-                return ps.GetExtendedMapping(key);
-            if (key.StartsWith("Midi", StringComparison.Ordinal))
-                return ps.GetMidiMapping(key);
-            if (key.StartsWith("Kbm", StringComparison.Ordinal))
-                return ps.GetKbmMapping(key);
-            var prop = typeof(PadSetting).GetProperty(key);
-            return (prop != null && prop.PropertyType == typeof(string))
-                ? prop.GetValue(ps) as string ?? string.Empty
-                : string.Empty;
-        }
-
         private static int TryParseInt(string value, int defaultValue)
         {
             if (string.IsNullOrEmpty(value)) return defaultValue;
@@ -2500,53 +2465,14 @@ namespace PadForge.Services
 
             // Issue #61: must go through RefreshMappingsCore (the per-VC
             // MappingSet path) so ExtraSources / CombineMode / CombineExpression
-            // re-hydrate alongside the primary descriptor. The old
-            // LoadMappingDescriptorsOnly only read the SELECTED device's
-            // PadSetting fields, so changing language (which fires
-            // RebuildMappings via PadViewModel.OnCultureChanged) reset every
-            // row to its legacy single-source view and the secondary mappings
-            // disappeared — that was the "changing languages breaks the
-            // mapping interface" report.
+            // re-hydrate alongside the primary descriptor. A descriptor-only
+            // reload would read just the SELECTED device's PadSetting fields
+            // and drop secondary mappings on language change.
             RefreshMappingsCore(padVm);
             var ud = padVm.SelectedMappedDevice != null
                 && padVm.SelectedMappedDevice.InstanceGuid != Guid.Empty
                 ? FindUserDevice(padVm.SelectedMappedDevice.InstanceGuid) : null;
             PopulateAvailableInputs(padVm, ud);
-        }
-
-        /// <summary>
-        /// Loads only mapping descriptors from a device's PadSetting into the ViewModel.
-        /// Unlike <see cref="LoadPadSettingToViewModel"/>, this does NOT touch deadzone,
-        /// force feedback, or other tuning properties — only mapping source descriptors.
-        /// </summary>
-        private static void LoadMappingDescriptorsOnly(PadViewModel padVm, Guid instanceGuid)
-        {
-            var us = SettingsManager.FindSettingByInstanceGuidAndSlot(instanceGuid, padVm.PadIndex);
-            if (us == null) return;
-
-            var ps = us.GetPadSetting();
-            if (ps == null) return;
-
-            var ud = FindUserDevice(instanceGuid);
-            foreach (var mapping in padVm.Mappings)
-            {
-                string target = mapping.TargetSettingName;
-                string value = GetMappingValue(ps, target);
-                mapping.LoadDescriptor(value);
-                MappingDisplayResolver.ResolveDisplayText(mapping, ud);
-
-                if (mapping.NegSettingName != null)
-                {
-                    string negTarget = mapping.NegSettingName;
-                    string negValue = GetMappingValue(ps, negTarget);
-                    mapping.LoadNegDescriptor(negValue);
-                    MappingDisplayResolver.ResolveNegDisplayText(mapping, ud);
-                }
-
-                // Load per-mapping deadzone.
-                string dzStr = ps.GetMappingDeadZone(target);
-                mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
-            }
         }
 
         // ─────────────────────────────────────────────

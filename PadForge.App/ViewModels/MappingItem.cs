@@ -62,6 +62,10 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(IsMultiSource));
             OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
             OnPropertyChanged(nameof(ShouldShowCustomExpression));
+            // Source count changed → custom-expression warning state
+            // may have flipped.
+            OnPropertyChanged(nameof(CombineExpressionStatus));
+            OnPropertyChanged(nameof(IsCombineExpressionWarning));
 
             if (e.NewItems != null)
             {
@@ -207,6 +211,11 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsMapped));
                     OnPropertyChanged(nameof(IsDeadZoneApplicable));
                     OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
+                    // Toggling the primary source flips the row's
+                    // effective source count, which can change whether
+                    // a custom formula's `a` reference is in range.
+                    OnPropertyChanged(nameof(CombineExpressionStatus));
+                    OnPropertyChanged(nameof(IsCombineExpressionWarning));
                 }
             }
         }
@@ -868,15 +877,47 @@ namespace PadForge.ViewModels
                 if (string.IsNullOrWhiteSpace(_combineExpression))
                     return "✓ empty (evaluates to 0)";
                 var c = Engine.Common.Mapping.MappingExpression.Compile(_combineExpression);
-                if (c.IsValid)
+                if (!c.IsValid)
+                    return "✗ " + (c.Error ?? "parse error");
+
+                var refs = c.ReferencedSingleLetterVars ?? "";
+                var refsBit = string.IsNullOrEmpty(refs)
+                    ? ""
+                    : " · refs: " + string.Join(",", refs.ToCharArray());
+                if (c.MaxIndexedRef >= 0)
+                    refsBit += (refsBit.Length == 0 ? " · refs: " : ", ") + "s[" + c.MaxIndexedRef + "]";
+
+                // Effective source count = primary (a) + ExtraSources.
+                // Bipolar Neg-pair is merged into a, so it doesn't add
+                // a slot. ExtraSources.Count covers b..z directly.
+                int sourceCount = (string.IsNullOrEmpty(_sourceDescriptor) ? 0 : 1)
+                                + (ExtraSources?.Count ?? 0);
+
+                var outOfRange = new System.Collections.Generic.List<char>();
+                foreach (char letter in refs)
                 {
-                    var refs = c.ReferencedSingleLetterVars ?? "";
-                    var refsBit = string.IsNullOrEmpty(refs) ? "" : " · refs: " + string.Join(",", refs.ToCharArray());
-                    if (c.MaxIndexedRef >= 0)
-                        refsBit += (refsBit.Length == 0 ? " · refs: " : ", ") + "s[" + c.MaxIndexedRef + "]";
-                    return "✓ valid" + refsBit;
+                    int idx = letter - 'a';
+                    if (idx >= sourceCount) outOfRange.Add(letter);
                 }
-                return "✗ " + (c.Error ?? "parse error");
+                bool indexedOutOfRange = c.MaxIndexedRef >= sourceCount;
+
+                if (outOfRange.Count == 0 && !indexedOutOfRange)
+                    return "✓ valid" + refsBit;
+
+                // Warn when the formula reaches past the row's actual
+                // sources. The engine returns 0 for missing variables
+                // so the formula doesn't crash, but the user almost
+                // certainly didn't mean for that source to silently
+                // be a constant 0.
+                string warn;
+                if (outOfRange.Count > 0 && indexedOutOfRange)
+                    warn = string.Join(",", outOfRange) + " and s[" + c.MaxIndexedRef + "] have no source";
+                else if (outOfRange.Count > 0)
+                    warn = (outOfRange.Count == 1 ? outOfRange[0] + " has" : string.Join(",", outOfRange) + " have")
+                           + " no source";
+                else
+                    warn = "s[" + c.MaxIndexedRef + "] has no source";
+                return "⚠ valid" + refsBit + " — " + warn + " (treated as 0)";
             }
         }
 
@@ -890,6 +931,28 @@ namespace PadForge.ViewModels
         }
 
         public bool IsCombineExpressionInvalid => !IsCombineExpressionValid;
+
+        /// <summary>True when the expression is valid but references
+        /// variables beyond the row's actual source count — those
+        /// silently evaluate to 0 in the engine, which is rarely what
+        /// the user intended.</summary>
+        public bool IsCombineExpressionWarning
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_combineExpression)) return false;
+                var c = Engine.Common.Mapping.MappingExpression.Compile(_combineExpression);
+                if (!c.IsValid) return false;
+                int sourceCount = (string.IsNullOrEmpty(_sourceDescriptor) ? 0 : 1)
+                                + (ExtraSources?.Count ?? 0);
+                foreach (char letter in c.ReferencedSingleLetterVars ?? "")
+                {
+                    int idx = letter - 'a';
+                    if (idx >= sourceCount) return true;
+                }
+                return c.MaxIndexedRef >= sourceCount;
+            }
+        }
 
         private RelayCommand _addExtraSourceCommand;
         /// <summary>Appends a blank <see cref="MappingSourceItem"/> to

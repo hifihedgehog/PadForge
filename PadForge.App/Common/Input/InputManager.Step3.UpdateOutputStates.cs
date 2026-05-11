@@ -97,6 +97,14 @@ namespace PadForge.Common.Input
                     }
                     us.RawMappedState = rawMapped;
 
+                    // All non-gamepad output paths route per-target descriptor
+                    // reads through the per-VC MappingSet when a Base-layer row
+                    // exists (multi-source, combine-mode, Custom-formula aware).
+                    // ps + the legacy single-source PadSetting fields stay live
+                    // as the fallback for configs that haven't been resaved
+                    // since the multi-source UI shipped.
+                    string deviceGuidStr = us.InstanceGuid.ToString();
+
                     // For custom Extended slots, also produce the raw Extended output state.
                     int slot = slotIndex;
                     if (slot >= 0 && slot < MaxPads &&
@@ -104,7 +112,8 @@ namespace PadForge.Common.Input
                         SlotExtendedIsCustom[slot])
                     {
                         var cfg = SlotCustomLayouts[slot];
-                        us.ExtendedRawOutputState = MapInputToExtendedRaw(ud.InputState, ps, cfg);
+                        us.ExtendedRawOutputState = MapInputToExtendedRaw(
+                            ud.InputState, ps, cfg, ms, deviceGuidStr, slot);
                     }
 
                     // For MIDI slots, produce the raw MIDI output state.
@@ -113,21 +122,26 @@ namespace PadForge.Common.Input
                     {
                         var mc = _midiConfigs[slot];
                         if (mc != null)
-                            us.MidiRawOutputState = MapInputToMidiRaw(ud.InputState, ps, mc.CcCount, mc.NoteCount);
+                            us.MidiRawOutputState = MapInputToMidiRaw(
+                                ud.InputState, ps, mc.CcCount, mc.NoteCount,
+                                ms, deviceGuidStr, slot);
                     }
 
                     // For KeyboardMouse slots, produce the raw KBM output state.
                     if (slot >= 0 && slot < MaxPads &&
                         SlotControllerTypes[slot] == VirtualControllerType.KeyboardMouse)
                     {
-                        us.KbmRawOutputState = MapInputToKbmRaw(ud.InputState, ps);
+                        us.KbmRawOutputState = MapInputToKbmRaw(
+                            ud.InputState, ps, ms, deviceGuidStr, slot);
                     }
 
                     // For PlayStation slots, produce touchpad state from input device.
                     if (slot >= 0 && slot < MaxPads &&
                         SlotControllerTypes[slot] == VirtualControllerType.PlayStation)
                     {
-                        us.TouchpadOutputState = MapInputToTouchpad(ud.InputState, ps, us.TouchpadOutputState);
+                        us.TouchpadOutputState = MapInputToTouchpad(
+                            ud.InputState, ps, us.TouchpadOutputState,
+                            ms, deviceGuidStr, slot);
                     }
                 }
                 catch (Exception ex)
@@ -1255,47 +1269,58 @@ namespace PadForge.Common.Input
         /// arbitrary numbers of axes, buttons, and POVs.
         /// </summary>
         private static ExtendedRawState MapInputToExtendedRaw(CustomInputState state, PadSetting ps,
-            CustomControllerLayout cfg)
+            CustomControllerLayout cfg,
+            MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
         {
             var raw = ExtendedRawState.Create(cfg.Axes, cfg.Buttons, cfg.Povs);
             raw.Clear(); // POVs need to start centered
+            int vgt = TryParseIntStatic(ps.AxisToButtonThreshold, 50);
 
-            // ── Axes ──
+            // ── Axes ── (MappingSet-first; fall back to legacy single-source)
             // Raw Extended axes use signed short internally. SubmitRawState converts to unsigned
             // HID range via (signed + 32768) / 2, preserving the natural direction:
             //   signed negative → HID low (0 = up/left)
             //   signed positive → HID high (32767 = down/right)
-            // No NegateAxis needed here — unlike the gamepad path (which applies NegateAxis
-            // + HID Y inversion in SubmitGamepadState), the raw path has no second inversion.
-            // The display layer (UpdateFromExtendedRawState) applies its own 1.0-Y for LiveY.
-            // Stick slots and trigger slots need different "rest" values.
-            // Sticks are centered at signed 0 (= ushort 32768 = wire 50%);
-            // triggers are released at signed short.MinValue (= ushort 0 =
-            // wire 0%). MapToThumbAxisWithNeg returns 0 for any descriptor
-            // that doesn't yield a measurable value (empty / invalid /
-            // both-pos-and-neg-buttons-released), which is correct for
-            // sticks but wrong for triggers — an unmapped Custom Extended
-            // trigger would otherwise sit at 50% on the wire instead of
-            // released. Dispatch per slot type so each gets the correct
-            // rest and so a stick mapping pipe-tee'd through the trigger
-            // path doesn't accidentally lift the trigger floor.
+            // Stick slots rest at signed 0 (= wire 50%); trigger slots rest at
+            // short.MinValue (= wire 0%). Different MappingSet evaluator per slot
+            // type so an unmapped trigger doesn't sit at 50% on the wire.
             for (int i = 0; i < cfg.Axes && i < raw.Axes.Length; i++)
             {
-                string posDesc = ps.GetExtendedMapping($"ExtendedAxis{i}");
-                string negDesc = ps.GetExtendedMapping($"ExtendedAxis{i}Neg");
-                raw.Axes[i] = cfg.IsTriggerSlot(i)
-                    ? MapToExtendedTriggerAxis(state, posDesc, negDesc)
-                    : MapToThumbAxisWithNeg(state, posDesc, negDesc);
+                string axisKey = $"ExtendedAxis{i}";
+                bool isTrigger = cfg.IsTriggerSlot(i);
+                short axisValue;
+                if (isTrigger
+                    ? TryEvaluateMappingSetExtendedTrigger(state, mappingSet, thisDeviceGuid, slotIndex, axisKey, out axisValue)
+                    : TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid, slotIndex, axisKey, out axisValue))
+                {
+                    raw.Axes[i] = axisValue;
+                }
+                else
+                {
+                    string posDesc = ps.GetExtendedMapping(axisKey);
+                    string negDesc = ps.GetExtendedMapping($"ExtendedAxis{i}Neg");
+                    raw.Axes[i] = isTrigger
+                        ? MapToExtendedTriggerAxis(state, posDesc, negDesc)
+                        : MapToThumbAxisWithNeg(state, posDesc, negDesc);
+                }
             }
 
             // ── Buttons ──
-            int vgt = TryParseIntStatic(ps.AxisToButtonThreshold, 50);
             for (int i = 0; i < cfg.Buttons; i++)
             {
                 string key = $"ExtendedBtn{i}";
-                string desc = ps.GetExtendedMapping(key);
-                if (MapToButtonPressed(state, desc, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), vgt))
-                    raw.SetButton(i, true);
+                bool pressed;
+                if (TryEvaluateMappingSetButton(state, mappingSet, thisDeviceGuid,
+                        slotIndex, key, vgt, out pressed))
+                {
+                    if (pressed) raw.SetButton(i, true);
+                }
+                else
+                {
+                    string desc = ps.GetExtendedMapping(key);
+                    if (MapToButtonPressed(state, desc, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), vgt))
+                        raw.SetButton(i, true);
+                }
             }
 
             // ── POVs ──
@@ -1303,10 +1328,10 @@ namespace PadForge.Common.Input
             {
                 string upKey = $"ExtendedPov{p}Up", downKey = $"ExtendedPov{p}Down";
                 string leftKey = $"ExtendedPov{p}Left", rightKey = $"ExtendedPov{p}Right";
-                bool up = MapToButtonPressed(state, ps.GetExtendedMapping(upKey), TryParseIntStatic(ps.GetMappingDeadZone(upKey), 0), vgt);
-                bool down = MapToButtonPressed(state, ps.GetExtendedMapping(downKey), TryParseIntStatic(ps.GetMappingDeadZone(downKey), 0), vgt);
-                bool left = MapToButtonPressed(state, ps.GetExtendedMapping(leftKey), TryParseIntStatic(ps.GetMappingDeadZone(leftKey), 0), vgt);
-                bool right = MapToButtonPressed(state, ps.GetExtendedMapping(rightKey), TryParseIntStatic(ps.GetMappingDeadZone(rightKey), 0), vgt);
+                bool up = EvalExtendedDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, upKey, vgt);
+                bool down = EvalExtendedDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, downKey, vgt);
+                bool left = EvalExtendedDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, leftKey, vgt);
+                bool right = EvalExtendedDirection(state, ps, mappingSet, thisDeviceGuid, slotIndex, rightKey, vgt);
 
                 raw.Povs[p] = DirectionToContinuousPov(up, down, left, right);
             }
@@ -1423,6 +1448,19 @@ namespace PadForge.Common.Input
             return raw;
         }
 
+        /// <summary>Evaluates one Extended POV-direction button, preferring
+        /// the per-VC MappingSet row when present.</summary>
+        private static bool EvalExtendedDirection(CustomInputState state, PadSetting ps,
+            MappingSet mappingSet, string thisDeviceGuid, int slotIndex,
+            string key, int globalThreshold)
+        {
+            if (TryEvaluateMappingSetButton(state, mappingSet, thisDeviceGuid,
+                    slotIndex, key, globalThreshold, out bool pressed))
+                return pressed;
+            return MapToButtonPressed(state, ps.GetExtendedMapping(key),
+                TryParseIntStatic(ps.GetMappingDeadZone(key), 0), globalThreshold);
+        }
+
         /// <summary>
         /// Converts 4 direction booleans to a continuous POV value (0-35900, -1=centered).
         /// </summary>
@@ -1449,28 +1487,44 @@ namespace PadForge.Common.Input
         /// Notes are mapped as boolean on/off.
         /// </summary>
         private static MidiRawState MapInputToMidiRaw(CustomInputState state, PadSetting ps,
-            int ccCount, int noteCount)
+            int ccCount, int noteCount,
+            MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
         {
             var raw = MidiRawState.Create(ccCount, noteCount);
             raw.Clear();
+            int mgt = TryParseIntStatic(ps.AxisToButtonThreshold, 50);
 
-            // CCs — map each from input axis to 0-127
+            // CCs — map each from input axis to 0-127. Prefer the per-VC
+            // MappingSet (multi-source, combine-mode, Custom-formula aware)
+            // when a row exists for the target; fall back to legacy
+            // single-source PadSetting fields for un-resaved configs.
             for (int i = 0; i < ccCount; i++)
             {
-                string posDesc = ps.GetMidiMapping($"MidiCC{i}");
-                string negDesc = ps.GetMidiMapping($"MidiCC{i}Neg");
-                short axisValue = MapToThumbAxisWithNeg(state, posDesc, negDesc);
+                string ccKey = $"MidiCC{i}";
+                short axisValue;
+                if (!TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
+                        slotIndex, ccKey, out axisValue))
+                {
+                    string posDesc = ps.GetMidiMapping(ccKey);
+                    string negDesc = ps.GetMidiMapping($"MidiCC{i}Neg");
+                    axisValue = MapToThumbAxisWithNeg(state, posDesc, negDesc);
+                }
                 // Convert signed short (-32768..32767) to MIDI range (0..127)
                 raw.CcValues[i] = (byte)((axisValue + 32768) * 127 / 65535);
             }
 
-            // Notes — map each as boolean
-            int mgt = TryParseIntStatic(ps.AxisToButtonThreshold, 50);
+            // Notes — map each as boolean. Same MappingSet-first dispatch.
             for (int i = 0; i < noteCount; i++)
             {
                 string key = $"MidiNote{i}";
-                string desc = ps.GetMidiMapping(key);
-                raw.Notes[i] = MapToButtonPressed(state, desc, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), mgt);
+                bool pressed;
+                if (!TryEvaluateMappingSetButton(state, mappingSet, thisDeviceGuid,
+                        slotIndex, key, mgt, out pressed))
+                {
+                    string desc = ps.GetMidiMapping(key);
+                    pressed = MapToButtonPressed(state, desc, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), mgt);
+                }
+                raw.Notes[i] = pressed;
             }
 
             return raw;
@@ -1525,35 +1579,60 @@ namespace PadForge.Common.Input
         /// Maps a CustomInputState to a KbmRawState using KBM dictionary-based mappings.
         /// Keys are mapped as button presses, mouse axes as signed deltas.
         /// </summary>
-        private static KbmRawState MapInputToKbmRaw(CustomInputState state, PadSetting ps)
+        private static KbmRawState MapInputToKbmRaw(CustomInputState state, PadSetting ps,
+            MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
         {
             var raw = new KbmRawState();
             int kgt = TryParseIntStatic(ps.AxisToButtonThreshold, 50);
 
-            // Map keyboard keys
+            // Map keyboard keys — MappingSet-first, fall back to legacy
+            // single-source for un-resaved configs.
             for (int i = 0; i < KbmKeyCount; i++)
             {
                 byte vk = KbmKeyVkCodes[i];
                 string key = $"KbmKey{vk:X2}";
-                string desc = ps.GetKbmMapping(key);
-                if (!string.IsNullOrEmpty(desc) && MapToButtonPressed(state, desc, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), kgt))
-                    raw.SetKey(vk, true);
+                bool pressed;
+                if (TryEvaluateMappingSetButton(state, mappingSet, thisDeviceGuid,
+                        slotIndex, key, kgt, out pressed))
+                {
+                    if (pressed) raw.SetKey(vk, true);
+                }
+                else
+                {
+                    string desc = ps.GetKbmMapping(key);
+                    if (!string.IsNullOrEmpty(desc) && MapToButtonPressed(state, desc, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), kgt))
+                        raw.SetKey(vk, true);
+                }
             }
 
             // Map mouse buttons (0=LMB, 1=RMB, 2=MMB, 3=X1, 4=X2)
             for (int i = 0; i < 5; i++)
             {
                 string key = $"KbmMBtn{i}";
-                string desc = ps.GetKbmMapping(key);
-                if (!string.IsNullOrEmpty(desc) && MapToButtonPressed(state, desc, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), kgt))
-                    raw.SetMouseButton(i, true);
+                bool pressed;
+                if (TryEvaluateMappingSetButton(state, mappingSet, thisDeviceGuid,
+                        slotIndex, key, kgt, out pressed))
+                {
+                    if (pressed) raw.SetMouseButton(i, true);
+                }
+                else
+                {
+                    string desc = ps.GetKbmMapping(key);
+                    if (!string.IsNullOrEmpty(desc) && MapToButtonPressed(state, desc, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), kgt))
+                        raw.SetMouseButton(i, true);
+                }
             }
 
             // Map mouse X axis (bidirectional)
             {
                 string posDesc = ps.GetKbmMapping("KbmMouseX");
                 string negDesc = ps.GetKbmMapping("KbmMouseXNeg");
-                if (!string.IsNullOrEmpty(posDesc) || !string.IsNullOrEmpty(negDesc))
+                if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
+                        slotIndex, "KbmMouseX", out short msxValue))
+                {
+                    raw.MouseDeltaX = msxValue;
+                }
+                else if (!string.IsNullOrEmpty(posDesc) || !string.IsNullOrEmpty(negDesc))
                     raw.MouseDeltaX = MapToThumbAxisWithNeg(state, posDesc, negDesc);
             }
 
@@ -1561,7 +1640,17 @@ namespace PadForge.Common.Input
             {
                 string posDesc = ps.GetKbmMapping("KbmMouseY");
                 string negDesc = ps.GetKbmMapping("KbmMouseYNeg");
-                if (!string.IsNullOrEmpty(posDesc) || !string.IsNullOrEmpty(negDesc))
+                if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
+                        slotIndex, "KbmMouseY", out short msyValue))
+                {
+                    raw.MouseDeltaY = msyValue;
+                    // MappingSet path: the user encodes direction explicitly via
+                    // per-source Invert. The Y-axis convention auto-negation
+                    // below (legacy single-analog-axis case) does NOT apply —
+                    // users who want SDL-Y-down → KBM-Y-up should set Invert on
+                    // their analog source.
+                }
+                else if (!string.IsNullOrEmpty(posDesc) || !string.IsNullOrEmpty(negDesc))
                 {
                     raw.MouseDeltaY = MapToThumbAxisWithNeg(state, posDesc, negDesc);
                     // For a full analog axis (no neg descriptor), SDL Y convention has
@@ -1600,7 +1689,13 @@ namespace PadForge.Common.Input
             {
                 string posDesc = ps.GetKbmMapping("KbmScroll");
                 string negDesc = ps.GetKbmMapping("KbmScrollNeg");
-                if (!string.IsNullOrEmpty(posDesc) || !string.IsNullOrEmpty(negDesc))
+                if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
+                        slotIndex, "KbmScroll", out short scrollValue))
+                {
+                    // MappingSet path: user sets Invert per-source explicitly.
+                    raw.ScrollDelta = scrollValue;
+                }
+                else if (!string.IsNullOrEmpty(posDesc) || !string.IsNullOrEmpty(negDesc))
                 {
                     raw.ScrollDelta = MapToThumbAxisWithNeg(state, posDesc, negDesc);
                     // Full analog axis: SDL Y positive=down, but KbmScroll positive=UP.
@@ -1646,9 +1741,16 @@ namespace PadForge.Common.Input
         ///
         /// TouchpadClick and TouchpadContact always use the standard button pipeline.
         /// </summary>
-        private static TouchpadState MapInputToTouchpad(CustomInputState state, PadSetting ps, TouchpadState prev)
+        private static TouchpadState MapInputToTouchpad(CustomInputState state, PadSetting ps, TouchpadState prev,
+            MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
         {
             var tp = new TouchpadState { PacketCounter = prev.PacketCounter };
+            // Touchpad X/Y stay on the legacy path: passthrough mode reads
+            // state.TouchpadFingers directly, and stick-to-cursor velocity
+            // integrates per frame — neither composes sensibly under combine
+            // modes. Contact and click are bool-class targets that route
+            // through the MappingSet like every other VC type.
+            int gt = TryParseIntStatic(ps.AxisToButtonThreshold, 50);
 
             // ── Finger 0 ──
             // Empty descriptor = no touchpad output for this finger.
@@ -1673,9 +1775,10 @@ namespace PadForge.Common.Input
                 const float sensitivity = 0.015f;
                 tp.X0 = Math.Clamp(prev.X0 + stickX * sensitivity, 0f, 1f);
                 tp.Y0 = Math.Clamp(prev.Y0 + stickY * sensitivity, 0f, 1f);
-                tp.Down0 = !string.IsNullOrEmpty(ps.TouchpadContact1)
-                    ? MapToButtonPressed(state, ps.TouchpadContact1)
-                    : (Math.Abs(stickX) > 0.1f || Math.Abs(stickY) > 0.1f);
+                tp.Down0 = EvalTouchpadButton(state, ps, mappingSet, thisDeviceGuid, slotIndex,
+                    "TouchpadContact1", ps.TouchpadContact1, gt,
+                    out bool contact0Found)
+                    || (!contact0Found && (Math.Abs(stickX) > 0.1f || Math.Abs(stickY) > 0.1f));
             }
             // else: descriptor explicitly empty → no output for finger 0.
 
@@ -1694,9 +1797,10 @@ namespace PadForge.Common.Input
                 const float sensitivity = 0.015f;
                 tp.X1 = Math.Clamp(prev.X1 + stickX * sensitivity, 0f, 1f);
                 tp.Y1 = Math.Clamp(prev.Y1 + stickY * sensitivity, 0f, 1f);
-                tp.Down1 = !string.IsNullOrEmpty(ps.TouchpadContact2)
-                    ? MapToButtonPressed(state, ps.TouchpadContact2)
-                    : (Math.Abs(stickX) > 0.1f || Math.Abs(stickY) > 0.1f);
+                tp.Down1 = EvalTouchpadButton(state, ps, mappingSet, thisDeviceGuid, slotIndex,
+                    "TouchpadContact2", ps.TouchpadContact2, gt,
+                    out bool contact1Found)
+                    || (!contact1Found && (Math.Abs(stickX) > 0.1f || Math.Abs(stickY) > 0.1f));
             }
             // else: descriptor explicitly empty → no output for finger 1.
 
@@ -1705,14 +1809,40 @@ namespace PadForge.Common.Input
             // semantics above). CreateDefaultPadSetting fills this in
             // for Sony source devices so the default DualSense →
             // PlayStation flow still surfaces the physical click.
-            tp.Click = !string.IsNullOrEmpty(ps.TouchpadClick)
-                    && MapToButtonPressed(state, ps.TouchpadClick);
+            tp.Click = EvalTouchpadButton(state, ps, mappingSet, thisDeviceGuid, slotIndex,
+                "TouchpadClick", ps.TouchpadClick, gt, out _);
 
             // Increment packet counter on finger state transitions.
             if (tp.Down0 != prev.Down0 || tp.Down1 != prev.Down1)
                 tp.PacketCounter++;
 
             return tp;
+        }
+
+        /// <summary>Evaluates a touchpad button-class target (Click /
+        /// ContactN). MappingSet-first; falls back to the legacy
+        /// per-device descriptor on PadSetting when no row is present.
+        /// <paramref name="found"/> tells the caller whether ANY mapping
+        /// exists (so the velocity-implicit-contact fallback in the
+        /// stick-to-touchpad path knows whether to kick in).</summary>
+        private static bool EvalTouchpadButton(CustomInputState state, PadSetting ps,
+            MappingSet mappingSet, string thisDeviceGuid, int slotIndex,
+            string targetName, string legacyDescriptor, int globalThreshold,
+            out bool found)
+        {
+            if (TryEvaluateMappingSetButton(state, mappingSet, thisDeviceGuid,
+                    slotIndex, targetName, globalThreshold, out bool pressed))
+            {
+                found = true;
+                return pressed;
+            }
+            if (!string.IsNullOrEmpty(legacyDescriptor))
+            {
+                found = true;
+                return MapToButtonPressed(state, legacyDescriptor);
+            }
+            found = false;
+            return false;
         }
 
         /// <summary>Returns true if the descriptor is a touchpad-specific source (not a generic axis).</summary>

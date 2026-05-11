@@ -1896,54 +1896,33 @@ namespace PadForge.Services
 
                 MappingDisplayResolver.ResolveDisplayText(mapping, primaryUd);
 
-                int negPairIndex = -1;
+                // Bipolar Neg descriptor.
+                //
+                // Old behavior re-projected the MappingSet's Neg-pair
+                // back into the legacy NegSourceDescriptor field, which
+                // had no UI binding — so the user only ever saw the
+                // primary direction in the picker even though both
+                // directions were stored. Now: when the row is
+                // MappingSet-driven we leave NegSourceDescriptor empty
+                // and let the Neg pair land in ExtraSources below
+                // (rendered as a visible source row in the expanded
+                // details, with Invert=true to flip its direction).
+                // The legacy fallback (no MappingSet row) keeps reading
+                // NegSourceDescriptor from the per-device PadSetting
+                // field so un-migrated slots still light up.
                 if (mapping.NegSettingName != null)
                 {
-                    string negTarget = mapping.NegSettingName;
-                    // Phase 2C — pull the Neg descriptor from the
-                    // MappingSet too when the row is MappingSet-driven.
-                    // The migrator emits the negative direction as a
-                    // second source on the same row with Invert flipped;
-                    // detect and reproject it back into the legacy
-                    // SourceDescriptor / NegSourceDescriptor pair the
-                    // current UI binds to. Falls back to the per-device
-                    // PadSetting field when no MappingSet row exists.
-                    string negValue = "";
-                    UserDevice negUd = ud;
-                    if (primaryFromMappingSet && msRow.Sources.Count > 1)
+                    if (primaryFromMappingSet)
                     {
-                        var primarySrc = msRow.Sources[0];
-                        for (int i = 1; i < msRow.Sources.Count; i++)
-                        {
-                            var s = msRow.Sources[i];
-                            if (s == null) continue;
-                            // Heuristic: paired-axis Neg sources share
-                            // DeviceGuid with the primary and have
-                            // Invert flipped relative to the primary's
-                            // descriptor encoding. Use the first
-                            // matching source — multi-source rows
-                            // beyond a paired-axis pair belong to the
-                            // ExtraSources collection and are populated
-                            // separately below.
-                            if (string.Equals(s.DeviceGuid, primarySrc.DeviceGuid, StringComparison.OrdinalIgnoreCase)
-                                && s.Invert != primarySrc.Invert)
-                            {
-                                negValue = ReencodePrefixForLegacy(s.Descriptor, false, s.HalfAxis);
-                                negPairIndex = i;
-                                if (!string.IsNullOrEmpty(s.DeviceGuid)
-                                    && Guid.TryParse(s.DeviceGuid, out var negGuid))
-                                {
-                                    var resolved = FindUserDevice(negGuid);
-                                    if (resolved != null) negUd = resolved;
-                                }
-                                break;
-                            }
-                        }
+                        mapping.LoadNegDescriptor(string.Empty);
                     }
-                    if (string.IsNullOrEmpty(negValue))
-                        negValue = GetMappingValue(ps, negTarget);
-                    mapping.LoadNegDescriptor(negValue);
-                    MappingDisplayResolver.ResolveNegDisplayText(mapping, negUd);
+                    else
+                    {
+                        string negTarget = mapping.NegSettingName;
+                        string negValue = GetMappingValue(ps, negTarget);
+                        mapping.LoadNegDescriptor(negValue);
+                        MappingDisplayResolver.ResolveNegDisplayText(mapping, ud);
+                    }
                 }
 
                 // Per-mapping deadzone (legacy fallback when MappingSet
@@ -1955,10 +1934,12 @@ namespace PadForge.Services
                     mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
                 }
 
-                // Phase 2C — ExtraSources / CombineMode from the
-                // matching MappingSet row (sources beyond the primary,
-                // skipping the paired-axis Neg source we just consumed
-                // above so it doesn't appear twice in the UI).
+                // ExtraSources / CombineMode from the matching
+                // MappingSet row (every source beyond the primary).
+                // For bipolar axis rows the Neg pair lives here too —
+                // it's the Source[i] with Invert flipped relative to
+                // the primary — so the user sees both directions as
+                // visible source rows in the expanded details.
                 mapping.ExtraSources.Clear();
                 mapping.CombineMode = "";
                 mapping.CombineExpression = "";
@@ -1970,7 +1951,6 @@ namespace PadForge.Services
                     {
                         for (int si = 1; si < msRow2.Sources.Count; si++)
                         {
-                            if (si == negPairIndex) continue;
                             mapping.ExtraSources.Add(
                                 ViewModels.MappingSourceItem.FromDomain(msRow2.Sources[si]));
                         }

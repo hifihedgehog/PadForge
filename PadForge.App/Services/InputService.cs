@@ -1077,28 +1077,77 @@ namespace PadForge.Services
         private void UpdateMappingLiveValues()
         {
             var padVm = _mainVm.SelectedPad;
-            if (padVm == null)
-                return;
+            if (padVm == null) return;
 
-            // Find the selected device for this pad slot.
+            int padIndex = padVm.PadIndex;
+            bool haveCombinedOutput = padIndex >= 0
+                && padIndex < InputManager.MaxPads
+                && _inputManager != null;
+
+            // For standard gamepad-class targets, read the engine's
+            // per-slot CombinedOutputStates so the Value column shows
+            // the post-combine, post-coerce output (multi-source rows
+            // reflect every Source's contribution, not just the primary).
+            // For non-gamepad targets (Extended / KbM / MIDI), or when
+            // a row has no descriptor at all, fall back to the legacy
+            // single-device read from the slot's selected device.
+            Gamepad gp = haveCombinedOutput ? _inputManager.CombinedOutputStates[padIndex] : default;
             UserDevice ud = FindSelectedDeviceForSlot(padVm);
-            if (ud == null || ud.InputState == null)
-                return;
-
-            var state = ud.InputState;
+            var fallbackState = ud?.InputState;
 
             foreach (var mapping in padVm.Mappings)
             {
-                if (string.IsNullOrEmpty(mapping.SourceDescriptor))
+                if (haveCombinedOutput)
+                {
+                    int? combined = ReadCombinedOutputValue(in gp, mapping.TargetSettingName);
+                    if (combined.HasValue)
+                    {
+                        mapping.CurrentValueText = combined.Value.ToString();
+                        continue;
+                    }
+                }
+
+                if (string.IsNullOrEmpty(mapping.SourceDescriptor) || fallbackState == null)
                 {
                     mapping.CurrentValueText = string.Empty;
                     continue;
                 }
-
-                // Parse the descriptor and read the current value.
-                int value = ReadMappedValue(state, mapping.SourceDescriptor);
-                mapping.CurrentValueText = value.ToString();
+                mapping.CurrentValueText = ReadMappedValue(fallbackState, mapping.SourceDescriptor).ToString();
             }
+        }
+
+        /// <summary>Reads a gamepad-class target's current post-combine
+        /// value from a <see cref="Gamepad"/> output state. Returns null
+        /// for non-gamepad targets (Extended / KbM / MIDI) so callers
+        /// can fall through to their legacy per-device read path.</summary>
+        private static int? ReadCombinedOutputValue(in Gamepad gp, string target)
+        {
+            return target switch
+            {
+                "ButtonA"          => (gp.Buttons & Gamepad.A) != 0 ? 1 : 0,
+                "ButtonB"          => (gp.Buttons & Gamepad.B) != 0 ? 1 : 0,
+                "ButtonX"          => (gp.Buttons & Gamepad.X) != 0 ? 1 : 0,
+                "ButtonY"          => (gp.Buttons & Gamepad.Y) != 0 ? 1 : 0,
+                "LeftShoulder"     => (gp.Buttons & Gamepad.LEFT_SHOULDER) != 0 ? 1 : 0,
+                "RightShoulder"    => (gp.Buttons & Gamepad.RIGHT_SHOULDER) != 0 ? 1 : 0,
+                "ButtonBack"       => (gp.Buttons & Gamepad.BACK) != 0 ? 1 : 0,
+                "ButtonStart"      => (gp.Buttons & Gamepad.START) != 0 ? 1 : 0,
+                "ButtonGuide"      => (gp.Buttons & Gamepad.GUIDE) != 0 ? 1 : 0,
+                "ButtonShare"      => gp.Share ? 1 : 0,
+                "LeftThumbButton"  => (gp.Buttons & Gamepad.LEFT_THUMB) != 0 ? 1 : 0,
+                "RightThumbButton" => (gp.Buttons & Gamepad.RIGHT_THUMB) != 0 ? 1 : 0,
+                "DPadUp"           => (gp.Buttons & Gamepad.DPAD_UP) != 0 ? 1 : 0,
+                "DPadDown"         => (gp.Buttons & Gamepad.DPAD_DOWN) != 0 ? 1 : 0,
+                "DPadLeft"         => (gp.Buttons & Gamepad.DPAD_LEFT) != 0 ? 1 : 0,
+                "DPadRight"        => (gp.Buttons & Gamepad.DPAD_RIGHT) != 0 ? 1 : 0,
+                "LeftTrigger"      => gp.LeftTrigger,
+                "RightTrigger"     => gp.RightTrigger,
+                "LeftThumbAxisX"   => gp.ThumbLX,
+                "LeftThumbAxisY"   => gp.ThumbLY,
+                "RightThumbAxisX"  => gp.ThumbRX,
+                "RightThumbAxisY"  => gp.ThumbRY,
+                _ => null,
+            };
         }
 
         /// <summary>

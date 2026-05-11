@@ -1460,6 +1460,7 @@
 
                     <!-- Mapping DataGrid -->
                     <DataGrid Grid.Row="1"
+                              x:Name="MappingDataGrid"
                               ItemsSource="{Binding Mappings}"
                               AutoGenerateColumns="False"
                               CanUserAddRows="False"
@@ -1469,7 +1470,10 @@
                               HeadersVisibility="Column"
                               GridLinesVisibility="Horizontal"
                               IsReadOnly="True"
-                              VerticalScrollBarVisibility="Auto">
+                              VerticalScrollBarVisibility="Auto"
+                              LoadingRow="MappingDataGrid_LoadingRow"
+                              UnloadingRow="MappingDataGrid_UnloadingRow"
+                              SelectionChanged="MappingDataGrid_SelectionChanged">
                         <DataGrid.CellStyle>
                             <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -1500,14 +1504,6 @@
                                         <DataTrigger.ExitActions>
                                             <StopStoryboard BeginStoryboardName="RecordFlash"/>
                                         </DataTrigger.ExitActions>
-                                    </DataTrigger>
-                                    <!-- Multi-source rows keep their details
-                                         panel expanded even when not selected
-                                         so users can see every source on the
-                                         row at a glance. Single-source rows
-                                         still follow VisibleWhenSelected. -->
-                                    <DataTrigger Binding="{Binding IsMultiSource}" Value="True">
-                                        <Setter Property="DetailsVisibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

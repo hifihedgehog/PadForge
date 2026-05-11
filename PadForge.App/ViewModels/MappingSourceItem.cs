@@ -34,7 +34,6 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _kind, value ?? "Direct"))
                 {
-                    OnPropertyChanged(nameof(IsDirectKind));
                     OnPropertyChanged(nameof(IsIncrementalKind));
                     OnPropertyChanged(nameof(IsInvertOnHoldKind));
                     OnPropertyChanged(nameof(IsKindDescriptorless));
@@ -45,7 +44,6 @@ namespace PadForge.ViewModels
             }
         }
 
-        public bool IsDirectKind => string.Equals(_kind, "Direct", StringComparison.Ordinal);
         public bool IsIncrementalKind => string.Equals(_kind, "Incremental", StringComparison.Ordinal);
         public bool IsInvertOnHoldKind => string.Equals(_kind, "InvertOnHold", StringComparison.Ordinal);
 

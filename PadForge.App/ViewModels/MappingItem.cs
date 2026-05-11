@@ -561,6 +561,73 @@ namespace PadForge.ViewModels
             NegSourceDescriptor = descriptor ?? string.Empty;
         }
 
+        /// <summary>Issue #61 — promotes the legacy
+        /// <see cref="NegSourceDescriptor"/> into a visible
+        /// <see cref="ExtraSources"/> entry with Invert flipped.
+        /// Called by the recording pipeline so the user sees both
+        /// directions immediately after a two-phase recording,
+        /// instead of having to toggle the Device dropdown to trigger
+        /// a load-time migration. Does nothing when the Neg is empty
+        /// or when an equivalent extra already exists on the row.
+        /// Fallback device info is used when the primary slot's
+        /// DeviceGuid/Label aren't populated yet (e.g. the user
+        /// recorded neg first and the pos slot is still empty).</summary>
+        public void PromoteNegDescriptorToExtraSource(string fallbackDeviceGuid = null, string fallbackDeviceLabel = null)
+        {
+            string neg = NegSourceDescriptor;
+            if (string.IsNullOrEmpty(neg)) return;
+
+            // Strip the legacy I/H prefix off the descriptor — the
+            // new schema stores Invert/HalfAxis as separate flags.
+            bool inv = false, half = false;
+            string clean = neg;
+            if (clean.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
+            { inv = true; half = true; clean = clean.Substring(2); }
+            else if (clean.StartsWith("I", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
+            { inv = true; clean = clean.Substring(1); }
+            else if (clean.StartsWith("H", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
+            { half = true; clean = clean.Substring(1); }
+
+            // The Neg pair's effective Invert is FLIPPED relative to
+            // the primary's invert encoding — same convention as the
+            // save path's bipolar-pair emission.
+            bool effectiveInvert = !inv;
+            string deviceGuid = !string.IsNullOrEmpty(PrimarySourceDeviceGuid)
+                ? PrimarySourceDeviceGuid
+                : (fallbackDeviceGuid ?? "");
+            string deviceLabel = !string.IsNullOrEmpty(PrimarySourceDeviceLabel)
+                ? PrimarySourceDeviceLabel
+                : (fallbackDeviceLabel ?? "");
+
+            // Skip if an equivalent extra is already present
+            // (idempotent for repeat calls).
+            foreach (var existing in ExtraSources)
+            {
+                if (existing == null) continue;
+                if (string.Equals(existing.Descriptor ?? "", clean, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(existing.DeviceGuid ?? "", deviceGuid, StringComparison.OrdinalIgnoreCase)
+                    && existing.Invert == effectiveInvert)
+                    return;
+            }
+
+            ExtraSources.Insert(0, new MappingSourceItem
+            {
+                Kind = "Direct",
+                DeviceGuid = deviceGuid,
+                DeviceLabel = deviceLabel,
+                Descriptor = clean,
+                Invert = effectiveInvert,
+                HalfAxis = half,
+                DeadZone = MappingDeadZone,
+            });
+
+            // Clear the legacy field so the save path doesn't double-
+            // emit the Neg (once from NegSourceDescriptor, once from
+            // ExtraSources). The freshly-inserted ExtraSource is the
+            // sole carrier going forward.
+            NegSourceDescriptor = string.Empty;
+        }
+
         /// <summary>Whether the axis value should be inverted.</summary>
         public bool IsInverted
         {

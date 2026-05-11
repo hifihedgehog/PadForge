@@ -130,7 +130,6 @@
             <conv:EnumEqualityVisibilityConverter x:Key="EnumEqualityVisibilityConverter" />
             <conv:BoolToTriggerShapeKindConverter x:Key="BoolToTriggerShapeKindConverter" />
             <conv:RgbToBrushConverter x:Key="RgbToBrushConverter" />
-            <conv:GuidStringConverter x:Key="GuidStringConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

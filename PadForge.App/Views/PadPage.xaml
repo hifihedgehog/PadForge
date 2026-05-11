@@ -1540,7 +1540,8 @@
                                                       DisplayMemberPath="Name"
                                                       MinWidth="200" Margin="0" Padding="4,2"
                                                       VerticalAlignment="Center"
-                                                      ToolTip="How to merge sources on this row.">
+                                                      ToolTip="How to merge sources on this row."
+                                                      PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                 <ComboBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <StackPanel Orientation="Vertical" Margin="0,2,0,2">
@@ -1826,7 +1827,8 @@
                                                                       SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                       DisplayMemberPath="DisplayName"
                                                                       MinWidth="240" Padding="4,2"
-                                                                      ToolTip="Pick the source from any device assigned to this slot.">
+                                                                      ToolTip="Pick the source from any device assigned to this slot."
+                                                                      PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                                 <ComboBox.GroupStyle>
                                                                     <GroupStyle>
                                                                         <GroupStyle.HeaderTemplate>
@@ -1965,7 +1967,8 @@
                                                       SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       DisplayMemberPath="DisplayName"
                                                       Margin="0" Padding="4,2"
-                                                      HorizontalAlignment="Stretch">
+                                                      HorizontalAlignment="Stretch"
+                                                      PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                 <ComboBox.GroupStyle>
                                                     <GroupStyle>
                                                         <GroupStyle.HeaderTemplate>

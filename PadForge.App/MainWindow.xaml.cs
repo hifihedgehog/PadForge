@@ -3787,6 +3787,10 @@ namespace PadForge
                 _recorderService.CancelRecording();
                 capturedPad.CurrentRecordingTarget = null;
             };
+            mapping.StartInvertOnHoldRecordingRequested += (s, e) =>
+            {
+                _recorderService.StartRecordingInvertOnHold(mapping, capturedPad.PadIndex);
+            };
 
             // Mapping descriptor changes (inversion, half-axis, source) trigger autosave.
             mapping.PropertyChanged += (s, e) =>
@@ -3798,7 +3802,9 @@ namespace PadForge
                     or nameof(MappingItem.MappingDeadZone)
                     or nameof(MappingItem.PrimarySourceDeviceGuid)
                     or nameof(MappingItem.CombineMode)
-                    or nameof(MappingItem.CombineExpression))
+                    or nameof(MappingItem.CombineExpression)
+                    or nameof(MappingItem.InvertOnHoldButton)
+                    or nameof(MappingItem.InvertOnHoldDeviceGuid))
                     _settingsService.MarkDirty();
             };
 

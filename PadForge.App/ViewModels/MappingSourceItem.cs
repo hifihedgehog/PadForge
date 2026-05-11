@@ -48,8 +48,15 @@ namespace PadForge.ViewModels
         public bool IsIncrementalKind => string.Equals(_kind, "Incremental", StringComparison.Ordinal);
         public bool IsInvertOnHoldKind => string.Equals(_kind, "InvertOnHold", StringComparison.Ordinal);
 
+        /// <summary>User-facing source kinds in the Mappings UI. InvertOnHold
+        /// was moved off the per-source dropdown in favor of a row-level
+        /// "Invert while held" modifier (see <c>MappingItem.InvertOnHoldButton</c>) —
+        /// that shape matches the B.3 use case (modifier flips the row's
+        /// output, not just one source's contribution). The enum still
+        /// accepts <c>"InvertOnHold"</c> for XML / legacy compat; it just
+        /// isn't picker-visible.</summary>
         public static System.Collections.Generic.IReadOnlyList<string> KindOptions { get; }
-            = new[] { "Direct", "Incremental", "InvertOnHold" };
+            = new[] { "Direct", "Incremental" };
 
         internal MappingItem ParentMappingItem { get; set; }
 

@@ -768,17 +768,8 @@
                                                         <ComboBoxItem Content="{Binding Macro_OutputController, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerSource.OutputController}"/>
                                                     </ComboBox>
                                                     <ComboBox SelectedValue="{Binding OutputChannel, Mode=TwoWay}"
-                                                              SelectedValuePath="Tag" MinWidth="100" Margin="0,0,8,0">
-                                                        <ComboBox.Style>
-                                                            <Style TargetType="ComboBox">
-                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding Source}" Value="{x:Static vm:MacroTriggerSource.OutputController}">
-                                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </ComboBox.Style>
+                                                              SelectedValuePath="Tag" MinWidth="100" Margin="0,0,8,0"
+                                                              Visibility="{Binding Source, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=OutputController}">
                                                         <ComboBoxItem Content="A"  Tag="{x:Static vm:MacroOutputChannel.A}"/>
                                                         <ComboBoxItem Content="B"  Tag="{x:Static vm:MacroOutputChannel.B}"/>
                                                         <ComboBoxItem Content="X"  Tag="{x:Static vm:MacroOutputChannel.X}"/>
@@ -806,30 +797,11 @@
                                                                FontStyle="Italic"
                                                                TextTrimming="CharacterEllipsis"
                                                                MinWidth="120"
-                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                                                        <TextBlock.Style>
-                                                            <Style TargetType="TextBlock">
-                                                                <Setter Property="Visibility" Value="Visible"/>
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding Source}" Value="{x:Static vm:MacroTriggerSource.OutputController}">
-                                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </TextBlock.Style>
-                                                    </TextBlock>
+                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                               Visibility="{Binding Source, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=InputDevice}"/>
                                                     <!-- Record / Stop button, Input-only -->
-                                                    <Button Command="{Binding RecordCommand}" Width="36" Margin="6,0,2,0">
-                                                        <Button.Style>
-                                                            <Style TargetType="Button">
-                                                                <Setter Property="Visibility" Value="Visible"/>
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding Source}" Value="{x:Static vm:MacroTriggerSource.OutputController}">
-                                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </Button.Style>
+                                                    <Button Command="{Binding RecordCommand}" Width="36" Margin="6,0,2,0"
+                                                            Visibility="{Binding Source, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=InputDevice}">
                                                         <TextBlock Text="{Binding RecordIcon}" FontFamily="Segoe MDL2 Assets"/>
                                                         <Button.ToolTip>
                                                             <TextBlock Text="{Binding RecordTooltip}"/>

@@ -2596,13 +2596,25 @@ namespace PadForge.Services
         /// </summary>
         private void OnMappingsRebuilt(object sender, EventArgs e)
         {
-            if (sender is PadViewModel padVm && padVm.SelectedMappedDevice != null
-                && padVm.SelectedMappedDevice.InstanceGuid != Guid.Empty)
-            {
-                var guid = padVm.SelectedMappedDevice.InstanceGuid;
-                LoadMappingDescriptorsOnly(padVm, guid);
-                PopulateAvailableInputs(padVm, FindUserDevice(guid));
-            }
+            if (sender is not PadViewModel padVm) return;
+
+            // Issue #61: must go through RefreshMappingsCore (the per-VC
+            // MappingSet path) so ExtraSources / CombineMode / CombineExpression
+            // re-hydrate alongside the primary descriptor. The old
+            // LoadMappingDescriptorsOnly only read the SELECTED device's
+            // PadSetting fields, so changing language (which fires
+            // RebuildMappings via PadViewModel.OnCultureChanged) reset every
+            // row to its legacy single-source view and the secondary mappings
+            // disappeared — that was the "changing languages breaks the
+            // mapping interface" report.
+            var ud = padVm.SelectedMappedDevice != null
+                && padVm.SelectedMappedDevice.InstanceGuid != Guid.Empty
+                ? FindUserDevice(padVm.SelectedMappedDevice.InstanceGuid) : null;
+            var ps = ud != null
+                ? SettingsManager.FindSettingByInstanceGuidAndSlot(ud.InstanceGuid, padVm.PadIndex)?.GetPadSetting()
+                : null;
+            RefreshMappingsCore(padVm, ud, ps);
+            PopulateAvailableInputs(padVm, ud);
         }
 
         /// <summary>

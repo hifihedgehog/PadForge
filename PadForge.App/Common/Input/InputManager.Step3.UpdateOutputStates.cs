@@ -1915,17 +1915,20 @@ namespace PadForge.Common.Input
         /// PadSetting-stored descriptor.</summary>
         private static string ResolvePrimaryDescriptor(MappingSet mappingSet, string targetName, string legacyDescriptor)
         {
-            if (mappingSet?.Rows != null)
+            // Race-safe snapshot. The save path mutates Rows on the UI
+            // thread; a raw indexed iteration here on the polling thread
+            // could read past Count and surface as the "Error mapping
+            // device" error in Step 3's outer try/catch.
+            var rows = SnapshotRows(mappingSet);
+            for (int i = 0; i < rows.Length; i++)
             {
-                for (int i = 0; i < mappingSet.Rows.Count; i++)
-                {
-                    var r = mappingSet.Rows[i];
-                    if (r == null) continue;
-                    if (!string.Equals(r.LayerMask ?? "Base", "Base", StringComparison.Ordinal)) continue;
-                    if (!string.Equals(r.Target, targetName, StringComparison.Ordinal)) continue;
-                    if (r.Sources == null || r.Sources.Count == 0) break;
-                    return r.Sources[0]?.Descriptor ?? legacyDescriptor;
-                }
+                var r = rows[i];
+                if (r == null) continue;
+                if (!string.Equals(r.LayerMask ?? "Base", "Base", StringComparison.Ordinal)) continue;
+                if (!string.Equals(r.Target, targetName, StringComparison.Ordinal)) continue;
+                var srcs = SnapshotSources(r);
+                if (srcs.Length == 0) break;
+                return srcs[0]?.Descriptor ?? legacyDescriptor;
             }
             return legacyDescriptor;
         }

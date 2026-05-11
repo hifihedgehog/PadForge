@@ -114,6 +114,32 @@ namespace PadForge.Common.Input
         /// </summary>
         public static class SlotOrders
         {
+            /// <summary>Returns the 1-based global slot number for
+            /// <paramref name="padIndex"/>, walking type-group order
+            /// (Xbox → PlayStation → Extended → KbM → MIDI) so it matches
+            /// the dashboard cards, sidebar, Pad page header, and the
+            /// Devices-page assignment badges. Returns 0 when the slot
+            /// isn't created or isn't in any group's order list (caller
+            /// should treat 0 as "not assigned to a visible global
+            /// position" and fall back to padIndex + 1).</summary>
+            public static int GetGlobalSlotNumber(int padIndex)
+            {
+                if (padIndex < 0 || padIndex >= SlotCreated.Length) return 0;
+                if (!SlotCreated[padIndex]) return 0;
+                int globalCount = 0;
+                foreach (var groupType in Engine.VirtualControllerGroups.InOrder)
+                {
+                    foreach (int idx in GetOrderFor(groupType))
+                    {
+                        if (idx < 0 || idx >= SlotCreated.Length) continue;
+                        if (!SlotCreated[idx]) continue;
+                        globalCount++;
+                        if (idx == padIndex) return globalCount;
+                    }
+                }
+                return 0;
+            }
+
             /// <summary>Return the order list for the given VC type group.</summary>
             public static List<int> GetOrderFor(Engine.VirtualControllerType type) => type switch
             {

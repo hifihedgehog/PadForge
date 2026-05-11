@@ -130,7 +130,7 @@ namespace PadForge.Services
                 // Fill empty touchpad mappings when assigning a Touchpad-type
                 // device to a PlayStation slot so the user gets the
                 // auto-map they expect on first assign.
-                FillEmptyTouchpadMappingsIfApplicable(existingPs, udForGuid,
+                FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid,
                     _mainVm.Pads[slotIndex].OutputType);
             }
 
@@ -142,6 +142,13 @@ namespace PadForge.Services
 
             // Mark settings as dirty.
             _settingsService.MarkDirty();
+
+            // Rebuild the per-VC MappingSet from every assigned device's
+            // PadSetting on this slot so the Mappings tab + engine see
+            // the just-auto-mapped sources without waiting for a save +
+            // reload cycle. The merge is additive — existing rows / user
+            // edits on the per-VC MappingSet are preserved.
+            SettingsService.RefreshMappingSetsFromLegacy();
 
             _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceAssigned_Format, selectedRow.DeviceName, ResolveDisplaySlotNumber(slotIndex));
 
@@ -194,7 +201,7 @@ namespace PadForge.Services
             }
             else
             {
-                FillEmptyTouchpadMappingsIfApplicable(existingPs, udForGuid,
+                FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid,
                     _mainVm.Pads[slotIndex].OutputType);
             }
 
@@ -204,6 +211,7 @@ namespace PadForge.Services
             AutoEnableHidingDefaults(udForGuid, row);
 
             _settingsService.MarkDirty();
+            SettingsService.RefreshMappingSetsFromLegacy();
             _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceAssigned_Format, row.DeviceName, ResolveDisplaySlotNumber(slotIndex));
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
             DeviceHidingStateChanged?.Invoke(this, EventArgs.Empty);
@@ -253,12 +261,16 @@ namespace PadForge.Services
                 }
                 else
                 {
-                    FillEmptyTouchpadMappingsIfApplicable(existingPs, udForGuid,
+                    FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid,
                         _mainVm.Pads[slotIndex].OutputType);
                 }
 
                 // Auto-enable input hiding defaults for newly assigned devices.
                 AutoEnableHidingDefaults(udForGuid, selectedRow);
+
+                // Rebuild the per-VC MappingSet so the Mappings tab + engine
+                // pick up the just-auto-mapped sources immediately.
+                SettingsService.RefreshMappingSetsFromLegacy();
 
                 _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceAssignedSlot_Format, selectedRow.DeviceName, ResolveDisplaySlotNumber(slotIndex));
             }
@@ -517,30 +529,53 @@ namespace PadForge.Services
             return global > 0 ? global : slotIndex + 1;
         }
 
-        /// <summary>Defensive auto-map: when assigning a touchpad-type
-        /// device to a PlayStation slot, fill any EMPTY touchpad mapping
-        /// slots on the existing PadSetting with the canonical
-        /// "Touchpad 0 Finger M X|Y|Down" / "Touchpad 0 Click" descriptors.
-        /// Does NOT touch fields the user has already authored — only
-        /// populates blank ones. Covers cases where the PadSetting was
-        /// authored before the touchpad auto-map shipped, or carried over
-        /// from a non-PlayStation slot type, so first-assign produces the
-        /// expected default touchpad mapping every time.</summary>
-        private static void FillEmptyTouchpadMappingsIfApplicable(PadSetting ps,
+        /// <summary>Defensive auto-map for an existing PadSetting on assign.
+        /// Generates a fresh auto-map from <see cref="SettingsManager.CreateDefaultPadSetting"/>
+        /// and copies any populated field over to <paramref name="existingPs"/>
+        /// only when the corresponding field on <paramref name="existingPs"/>
+        /// is empty. Preserves every user-authored value while guaranteeing
+        /// that a Gamepad-CapType device gets its standard auto-map (ButtonA
+        /// → Button 0, LeftThumbAxisX → Axis 0, etc.) AND its touchpad mapping
+        /// when the slot is PlayStation, and a Touchpad-CapType device gets
+        /// the touchpad mapping on PlayStation.
+        ///
+        /// <para>Why this exists as a separate "fill empties" path rather
+        /// than relying on "if (existingPs == null) create defaults" alone:
+        /// the engine writes per-VC <see cref="MappingSet"/> rows on save
+        /// from each ViewModel's current state, then on next load each
+        /// device's PadSetting is hydrated from a Sources slice the
+        /// MappingSet drives. A device that landed on a slot whose
+        /// MappingSet only had OTHER devices' rows (e.g. a touchpad
+        /// previously assigned that left only touchpad rows in the per-VC
+        /// MappingSet for slot 2) loads with an existing-but-empty
+        /// PadSetting — the if/else would then SKIP the auto-map for the
+        /// new device. The XML bug "DualSense assigned after Web Touchpad
+        /// inherited the touchpad-only PadSetting" came from exactly this
+        /// path.</para></summary>
+        private static void FillEmptyAutoMappingsIfApplicable(PadSetting existingPs,
             UserDevice ud, Engine.VirtualControllerType outputType)
         {
-            if (ps == null || ud == null) return;
-            if (outputType != Engine.VirtualControllerType.PlayStation) return;
-            if (!ud.HasTouchpad) return;
+            if (existingPs == null || ud == null) return;
 
-            if (string.IsNullOrEmpty(ps.TouchpadX1))      ps.TouchpadX1      = "Touchpad 0 Finger 0 X";
-            if (string.IsNullOrEmpty(ps.TouchpadY1))      ps.TouchpadY1      = "Touchpad 0 Finger 0 Y";
-            if (string.IsNullOrEmpty(ps.TouchpadContact1)) ps.TouchpadContact1 = "Touchpad 0 Finger 0 Down";
-            if (string.IsNullOrEmpty(ps.TouchpadX2))      ps.TouchpadX2      = "Touchpad 0 Finger 1 X";
-            if (string.IsNullOrEmpty(ps.TouchpadY2))      ps.TouchpadY2      = "Touchpad 0 Finger 1 Y";
-            if (string.IsNullOrEmpty(ps.TouchpadContact2)) ps.TouchpadContact2 = "Touchpad 0 Finger 1 Down";
-            if (string.IsNullOrEmpty(ps.TouchpadClick))   ps.TouchpadClick   = "Touchpad 0 Click";
-            ps.UpdateChecksum();
+            var freshPs = SettingsManager.CreateDefaultPadSetting(ud, outputType);
+            if (freshPs == null) return;
+
+            // Walk every copyable string mapping property and fill empty
+            // ones on existingPs from freshPs. Reflection here mirrors the
+            // pattern PadSetting.CopyFrom uses internally.
+            var type = typeof(PadSetting);
+            foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+            {
+                if (prop.PropertyType != typeof(string)) continue;
+                if (!prop.CanRead || !prop.CanWrite) continue;
+                if (prop.Name == nameof(PadSetting.PadSettingChecksum)) continue;
+                string current = prop.GetValue(existingPs) as string;
+                if (!string.IsNullOrEmpty(current)) continue;        // user-authored or already set
+                string fresh = prop.GetValue(freshPs) as string;
+                if (string.IsNullOrEmpty(fresh)) continue;           // auto-map didn't set this field
+                prop.SetValue(existingPs, fresh);
+            }
+            existingPs.UpdateChecksum();
         }
 
         // ─────────────────────────────────────────────

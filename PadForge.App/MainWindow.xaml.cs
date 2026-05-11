@@ -667,39 +667,88 @@ namespace PadForge
                 var activePad = _viewModel.SelectedPad;
                 if (activePad == null) return;
 
-                // The dropdown's selected device has NO bearing on the per-VC
-                // Mappings tab — the recorder listens to every device on the
-                // slot and CompleteRecording stamps PrimarySourceDeviceGuid
-                // with whichever one physically fired. deviceGuid below is
-                // used only for fallback display-text resolution.
+                // ─────────────────────────────────────────────────────────
+                //  REGRESSION GUARD — the Device dropdown must NOT influence
+                //  which physical device a recorded mapping is attached to.
+                //
+                //  The Mappings tab + the controller preview are PER-VC, not
+                //  per-device. When the user records (preview quadrant click,
+                //  per-row Record button, Map All), RecorderService listens to
+                //  EVERY device assigned to the slot and the first one to fire
+                //  wins — `RecorderService.CompleteRecording` then stamps the
+                //  row (or extra source) with that winning device's GUID via
+                //  `PrimarySourceDeviceGuid` / `MappingSourceItem.DeviceGuid`.
+                //  That is the authoritative device assignment.
+                //
+                //  Therefore: do NOT re-stamp `PrimarySourceDeviceGuid` here
+                //  from `activePad.SelectedMappedDevice`. A previous change did
+                //  exactly that ("stamp from the dropdown so the row is
+                //  device-correct immediately") and it OVERWROTE the correct
+                //  winning-device GUID with whatever happened to be selected in
+                //  the dropdown — so a button physically pressed on device A
+                //  would get filed under device B. The row is already
+                //  device-correct the moment CompleteRecording returns; the
+                //  only thing that genuinely needed fixing was the per-VC
+                //  MappingSet being stale until the next debounced save (see
+                //  CommitRecordedMappingSet below).
+                //
+                //  `deviceGuid` here is ONLY a fallback for display-text
+                //  resolution when a row somehow has no recorded device origin
+                //  yet — it is never written back onto the mapping.
+                // ─────────────────────────────────────────────────────────
                 Guid deviceGuid = activePad.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
 
-                // Resolve display text against the device that actually
-                // fired the recording (CompleteRecording set its GUID on
-                // the row), falling back to the dropdown device only when
-                // the row has no recorded device origin yet.
+                // Pick the device whose DeviceObjects metadata is used to turn
+                // a raw descriptor ("Button 5") into a friendly label ("A"):
+                // the device that actually fired the recording (CompleteRecording
+                // stamped its GUID on the row), NOT the dropdown selection.
+                // Falls back to the dropdown device only when the row has no
+                // recorded device origin — e.g. a Map All Y first-phase row
+                // whose primary slot is still empty.
                 Guid ResolveGuidFor(MappingItem m)
                     => (m != null && Guid.TryParse(m.PrimarySourceDeviceGuid, out var g) && g != Guid.Empty)
                         ? g : deviceGuid;
 
                 // Push the just-recorded UI state into the in-memory per-VC
-                // MappingSet now (rather than waiting for the debounced save)
-                // so the Mappings tab — which reads from the MappingSet — is
-                // consistent the moment the user switches to it, with no
-                // Device-dropdown toggle needed.
+                // MappingSet right now, rather than waiting for the debounced
+                // SaveToFile to call PushUiExtraSourcesIntoSlotMappingSets.
+                // The Mappings DataGrid binds to the per-VC MappingItems (which
+                // are already current after recording), but RefreshMappingsCore
+                // re-hydrates those items FROM the MappingSet — so until the
+                // MappingSet catches up, a tab switch / device-dropdown toggle /
+                // device-assignment change would re-read stale rows. Committing
+                // here keeps the MappingSet authoritative immediately, which is
+                // the actual fix for "the Mappings table doesn't reflect what I
+                // just recorded until I toggle the device dropdown".
                 void CommitRecordedMappingSet() => _settingsService.PushUiExtraSourcesIntoSlotMappingSets();
 
-                // ── Extra-source recording: the result targeted an added
-                // source, not the row's primary. Commit it (appending the
-                // freshly-recorded source to the row if it isn't already
-                // there) and stop — do NOT touch the primary descriptor or
-                // run the bipolar auto-prompt, which would clobber whatever
-                // the row already had mapped. ──
+                // ─────────────────────────────────────────────────────────
+                //  Extra-source recording: the result targeted a source that
+                //  was ADDED to the row, not the row's primary. This happens
+                //  when:
+                //    • the user clicked a stick quadrant on a row whose
+                //      primary is already an analog axis (see the
+                //      ControllerElementRecordRequested handler — recording
+                //      another input there must NOT clobber the axis), or
+                //    • the user used the per-row "+ Add source → Record"
+                //      affordance on a multi-source row.
+                //
+                //  In both cases the correct behavior is: append the recorded
+                //  source to the row (if it isn't already there — the per-row
+                //  affordance adds it before recording, the quadrant path
+                //  passes a detached MappingSourceItem so it lands here),
+                //  commit, and STOP. We must NOT fall through to the primary-
+                //  recording / bipolar-auto-prompt logic below: that would
+                //  re-sync the PRIMARY's SelectedInput against this extra
+                //  source's descriptor and could re-prompt for the negative
+                //  direction — i.e. it would clobber the existing primary,
+                //  which is exactly the bug this branch exists to prevent.
+                // ─────────────────────────────────────────────────────────
                 if (result.ExtraSource != null)
                 {
                     var parent = result.Mapping;
                     if (parent != null && !parent.ExtraSources.Contains(result.ExtraSource))
-                        parent.ExtraSources.Add(result.ExtraSource);
+                        parent.ExtraSources.Add(result.ExtraSource);  // fires EnsureCombineModeDefault + WireExtraSource via CollectionChanged
                     CommitRecordedMappingSet();
                     if (activePad.IsMapAllActive)
                         activePad.OnMapAllItemCompleted();
@@ -920,23 +969,54 @@ namespace PadForge
                     string.Equals(m.TargetSettingName, posTargetName, StringComparison.OrdinalIgnoreCase));
                 if (mapping == null) return;
 
+                // NOTE: this `deviceGuid` is passed to StartRecording purely
+                // for API shape — RecorderService ignores it and listens to
+                // EVERY device on the slot (the first to fire wins). The
+                // dropdown selection has no bearing on what gets recorded; see
+                // the big REGRESSION GUARD comment in the RecordingCompleted
+                // handler above.
                 Guid deviceGuid = padVm.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
 
-                // If a bipolar stick-axis row already has an analog axis /
-                // slider as its primary, recording a button for one of the
-                // directional quadrants should ADD it alongside as an extra
-                // source — not overwrite the axis (which is what the primary-
-                // recording path does). The extra is recorded with Invert
-                // matching the quadrant so the engine reads a press as the
-                // negative direction. Empty / button-class primaries keep the
-                // classic "first mapping fills primary, neg quadrant fills
-                // NegSourceDescriptor" flow untouched.
+                // ─────────────────────────────────────────────────────────
+                //  Don't let a quadrant click clobber an already-mapped axis.
+                //
+                //  If a bipolar stick-axis row (HasNegDirection) already has a
+                //  full analog axis / slider as its primary, the user clicking
+                //  one of the directional quadrants and recording a button is
+                //  asking to ADD a button-direction ON TOP of the axis — not
+                //  to replace the axis. The default primary-recording path
+                //  would overwrite SourceDescriptor with the button (and, for
+                //  the neg quadrant, also clear the primary), destroying the
+                //  axis mapping. Instead, route the recording into a NEW extra
+                //  source:
+                //    • Pass a DETACHED MappingSourceItem (not yet in
+                //      mapping.ExtraSources). RecorderService.CompleteRecording
+                //      writes the descriptor/device/Invert onto it, then the
+                //      RecordingCompleted handler appends it to the row (which
+                //      is also what triggers EnsureCombineModeDefault so the
+                //      row picks MaxAbs and the axis + button coexist). If the
+                //      user cancels / times out, the detached item is simply
+                //      discarded — nothing to clean up.
+                //    • negRecording: isNegTarget so a button recorded for the
+                //      negative quadrant is stored with Invert=true → the
+                //      engine reads a press as the −1 (negative) direction.
+                //
+                //  Empty primaries, or button-class primaries, keep the classic
+                //  "first mapping fills the primary; neg quadrant fills
+                //  NegSourceDescriptor (then auto-prompts for the positive)"
+                //  flow untouched — see the neg-recording branch in
+                //  RecordingCompleted. We deliberately scope this to ANALOG
+                //  primaries only: that is the precise case where the old
+                //  behavior silently destroyed an existing mapping.
+                // ─────────────────────────────────────────────────────────
                 if (mapping.HasNegDirection && DescriptorIsAnalogAxis(mapping.SourceDescriptor))
                 {
                     var extra = new MappingSourceItem
                     {
                         Kind = "Direct",
                         DeadZone = mapping.MappingDeadZone,
+                        // Descriptor / DeviceGuid / Invert are filled in by
+                        // RecorderService.CompleteRecording once an input fires.
                     };
                     _recorderService.StartRecordingExtraSource(mapping, extra, padVm.PadIndex,
                         negRecording: isNegTarget);

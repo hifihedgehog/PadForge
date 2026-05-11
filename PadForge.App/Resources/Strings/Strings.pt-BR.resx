@@ -450,114 +450,114 @@
   <data name="Pad_Invert" xml:space="preserve"><value>Inverter</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Metade</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. English placeholders pending translation. -->
-  <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>Direct</value></data>
+  <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>Direto</value></data>
   <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>Incremental</value></data>
-  <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Invert On Hold</value></data>
-  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direct = read the source descriptor; Incremental = ramp an accumulator via Up/Down buttons; Invert On Hold = flip the row's output while a modifier button is held.</value></data>
-  <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>Button that ramps the accumulator upward while held</value></data>
-  <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Up — button that ramps the accumulator upward while held.</value></data>
-  <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Button that ramps the accumulator downward while held</value></data>
-  <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Down — button that ramps the accumulator downward while held.</value></data>
-  <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Rate</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Sweep speed in units per second. 0.5 = full range in 2 s; 2 = full range in 0.5 s.</value></data>
-  <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Sticky</value></data>
-  <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>When checked, the accumulator holds its value after release (cruise control). When unchecked, it snaps back to Min on release.</value></data>
-  <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Lower bound of the accumulator. -1 = full negative for bipolar axis targets; 0 = unipolar.</value></data>
-  <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
-  <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Upper bound of the accumulator. 1 = full positive.</value></data>
-  <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Button that inverts the row's output while held</value></data>
-  <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modifier — while held, the row's output flips sign.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Add source</value></data>
-  <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Add another physical input to this row</value></data>
-  <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Remove this source</value></data>
+  <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Inverter ao Segurar</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direto = ler o descritor da fonte; Incremental = rampar um acumulador via botões Cima/Baixo; Inverter ao Segurar = inverter a saída da linha enquanto um botão modificador estiver pressionado.</value></data>
+  <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>Botão que rampa o acumulador para cima enquanto pressionado</value></data>
+  <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Cima — botão que rampa o acumulador para cima enquanto pressionado.</value></data>
+  <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Botão que rampa o acumulador para baixo enquanto pressionado</value></data>
+  <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Baixo — botão que rampa o acumulador para baixo enquanto pressionado.</value></data>
+  <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Taxa</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Velocidade de varredura em unidades por segundo. 0,5 = faixa completa em 2 s; 2 = faixa completa em 0,5 s.</value></data>
+  <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Fixo</value></data>
+  <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Quando marcado, o acumulador mantém seu valor após soltar (controle de cruzeiro). Quando desmarcado, volta ao Mín ao soltar.</value></data>
+  <data name="Pad_Mapping_Min" xml:space="preserve"><value>Mín</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Limite inferior do acumulador. -1 = totalmente negativo para alvos de eixo bipolar; 0 = unipolar.</value></data>
+  <data name="Pad_Mapping_Max" xml:space="preserve"><value>Máx</value></data>
+  <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Limite superior do acumulador. 1 = totalmente positivo.</value></data>
+  <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Botão que inverte a saída da linha enquanto pressionado</value></data>
+  <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modificador — enquanto pressionado, a saída da linha inverte o sinal.</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Adicionar fonte</value></data>
+  <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Adicionar outra entrada física a esta linha</value></data>
+  <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Remover esta fonte</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
-  <data name="Pad_Combine_Label" xml:space="preserve"><value>Combine</value></data>
-  <data name="Pad_Combine_Tooltip" xml:space="preserve"><value>How to merge sources on this row.</value></data>
-  <data name="Pad_Combine_MaxAbs_Name" xml:space="preserve"><value>Strongest</value></data>
-  <data name="Pad_Combine_MaxAbs_Description" xml:space="preserve"><value>Use whichever source has the strongest push</value></data>
-  <data name="Pad_Combine_Sum_Name" xml:space="preserve"><value>Combined</value></data>
-  <data name="Pad_Combine_Sum_Description" xml:space="preserve"><value>Add the sources together</value></data>
-  <data name="Pad_Combine_Average_Name" xml:space="preserve"><value>Average</value></data>
-  <data name="Pad_Combine_Average_Description" xml:space="preserve"><value>Halfway between the sources</value></data>
-  <data name="Pad_Combine_OR_Name" xml:space="preserve"><value>Either</value></data>
-  <data name="Pad_Combine_OR_Description" xml:space="preserve"><value>Fire when any source is active — good for buttons</value></data>
-  <data name="Pad_Combine_AND_Name" xml:space="preserve"><value>Both</value></data>
-  <data name="Pad_Combine_AND_Description" xml:space="preserve"><value>Fire only when all sources are active</value></data>
-  <data name="Pad_Combine_XOR_Name" xml:space="preserve"><value>Only one</value></data>
-  <data name="Pad_Combine_XOR_Description" xml:space="preserve"><value>Fire only when exactly one source is active</value></data>
-  <data name="Pad_Combine_Custom_Name" xml:space="preserve"><value>Custom</value></data>
-  <data name="Pad_Combine_Custom_Description" xml:space="preserve"><value>Build your own with the formula editor below</value></data>
-  <data name="Pad_Formula_TextBox_Tooltip" xml:space="preserve"><value>Click chips below to build a formula, or drag chips into the box. a, b, c… stand for this row's sources in order.</value></data>
-  <data name="Pad_Formula_Insert" xml:space="preserve"><value>Insert</value></data>
-  <data name="Pad_Formula_StarterRecipes" xml:space="preserve"><value>Starter recipes</value></data>
-  <data name="Pad_Formula_Status_Empty" xml:space="preserve"><value>✓ empty (evaluates to 0)</value></data>
-  <data name="Pad_Formula_Status_ParseError" xml:space="preserve"><value>parse error</value></data>
-  <data name="Pad_Formula_Status_Valid" xml:space="preserve"><value>✓ valid</value></data>
+  <data name="Pad_Combine_Label" xml:space="preserve"><value>Combinar</value></data>
+  <data name="Pad_Combine_Tooltip" xml:space="preserve"><value>Como mesclar as fontes nesta linha.</value></data>
+  <data name="Pad_Combine_MaxAbs_Name" xml:space="preserve"><value>Mais forte</value></data>
+  <data name="Pad_Combine_MaxAbs_Description" xml:space="preserve"><value>Usar a fonte com o impulso mais forte</value></data>
+  <data name="Pad_Combine_Sum_Name" xml:space="preserve"><value>Combinada</value></data>
+  <data name="Pad_Combine_Sum_Description" xml:space="preserve"><value>Somar as fontes</value></data>
+  <data name="Pad_Combine_Average_Name" xml:space="preserve"><value>Média</value></data>
+  <data name="Pad_Combine_Average_Description" xml:space="preserve"><value>Meio do caminho entre as fontes</value></data>
+  <data name="Pad_Combine_OR_Name" xml:space="preserve"><value>Qualquer</value></data>
+  <data name="Pad_Combine_OR_Description" xml:space="preserve"><value>Acionar quando qualquer fonte estiver ativa — bom para botões</value></data>
+  <data name="Pad_Combine_AND_Name" xml:space="preserve"><value>Ambas</value></data>
+  <data name="Pad_Combine_AND_Description" xml:space="preserve"><value>Acionar apenas quando todas as fontes estiverem ativas</value></data>
+  <data name="Pad_Combine_XOR_Name" xml:space="preserve"><value>Apenas uma</value></data>
+  <data name="Pad_Combine_XOR_Description" xml:space="preserve"><value>Acionar apenas quando exatamente uma fonte estiver ativa</value></data>
+  <data name="Pad_Combine_Custom_Name" xml:space="preserve"><value>Personalizado</value></data>
+  <data name="Pad_Combine_Custom_Description" xml:space="preserve"><value>Crie o seu com o editor de fórmulas abaixo</value></data>
+  <data name="Pad_Formula_TextBox_Tooltip" xml:space="preserve"><value>Clique nos chips abaixo para construir uma fórmula, ou arraste-os para a caixa. a, b, c… representam as fontes desta linha em ordem.</value></data>
+  <data name="Pad_Formula_Insert" xml:space="preserve"><value>Inserir</value></data>
+  <data name="Pad_Formula_StarterRecipes" xml:space="preserve"><value>Receitas iniciais</value></data>
+  <data name="Pad_Formula_Status_Empty" xml:space="preserve"><value>✓ vazio (avalia para 0)</value></data>
+  <data name="Pad_Formula_Status_ParseError" xml:space="preserve"><value>erro de sintaxe</value></data>
+  <data name="Pad_Formula_Status_Valid" xml:space="preserve"><value>✓ válido</value></data>
   <data name="Pad_Formula_Status_RefsLabel" xml:space="preserve"><value>refs</value></data>
-  <data name="Pad_Formula_Status_NoSourceSingular" xml:space="preserve"><value>has no source</value></data>
-  <data name="Pad_Formula_Status_NoSourcePlural" xml:space="preserve"><value>have no source</value></data>
-  <data name="Pad_Formula_Status_TreatedAsZero" xml:space="preserve"><value>treated as 0</value></data>
-  <data name="Pad_Formula_Status_And" xml:space="preserve"><value>and</value></data>
-  <data name="Pad_Formula_Chip_TouchpadFlag_A" xml:space="preserve"><value>1 while source A is touching (touchpad passthrough rows only)</value></data>
-  <data name="Pad_Formula_Chip_TouchpadFlag_B" xml:space="preserve"><value>1 while source B is touching</value></data>
-  <data name="Pad_Formula_Chip_TouchpadFlag_C" xml:space="preserve"><value>1 while source C is touching</value></data>
-  <data name="Pad_Formula_Chip_TouchpadFlag_D" xml:space="preserve"><value>1 while source D is touching</value></data>
-  <data name="Pad_Formula_Chip_Add" xml:space="preserve"><value>Add</value></data>
-  <data name="Pad_Formula_Chip_Subtract" xml:space="preserve"><value>Subtract</value></data>
-  <data name="Pad_Formula_Chip_Multiply" xml:space="preserve"><value>Multiply</value></data>
-  <data name="Pad_Formula_Chip_Divide" xml:space="preserve"><value>Divide</value></data>
-  <data name="Pad_Formula_Chip_NegateA" xml:space="preserve"><value>Negate the first source</value></data>
-  <data name="Pad_Formula_Chip_OpenGroup" xml:space="preserve"><value>Open group</value></data>
-  <data name="Pad_Formula_Chip_CloseGroup" xml:space="preserve"><value>Close group</value></data>
-  <data name="Pad_Formula_Chip_Half" xml:space="preserve"><value>0.5 — half</value></data>
-  <data name="Pad_Formula_Chip_LessThan" xml:space="preserve"><value>Less than</value></data>
-  <data name="Pad_Formula_Chip_GreaterThan" xml:space="preserve"><value>Greater than</value></data>
-  <data name="Pad_Formula_Chip_LessOrEqual" xml:space="preserve"><value>Less than or equal</value></data>
-  <data name="Pad_Formula_Chip_GreaterOrEqual" xml:space="preserve"><value>Greater than or equal</value></data>
-  <data name="Pad_Formula_Chip_Equal" xml:space="preserve"><value>Equal to</value></data>
-  <data name="Pad_Formula_Chip_NotEqual" xml:space="preserve"><value>Not equal to</value></data>
-  <data name="Pad_Formula_Chip_BothConditions" xml:space="preserve"><value>Both conditions true</value></data>
-  <data name="Pad_Formula_Chip_EitherCondition" xml:space="preserve"><value>Either condition true</value></data>
-  <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Flip true/false</value></data>
-  <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>If — pattern: (condition) ? then : else</value></data>
-  <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Else half of an if-then-else</value></data>
-  <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Magnitude (drops the sign)</value></data>
-  <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Smaller of two values</value></data>
-  <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Larger of two values</value></data>
-  <data name="Pad_Formula_Chip_Clamp" xml:space="preserve"><value>Keep within a range — clamp(value, low, high)</value></data>
-  <data name="Pad_Formula_Chip_Sign" xml:space="preserve"><value>-1, 0, or +1 from input's sign</value></data>
-  <data name="Pad_Formula_Chip_Lerp" xml:space="preserve"><value>Blend two values — lerp(a, b, mix0to1)</value></data>
-  <data name="Pad_Formula_Chip_Round" xml:space="preserve"><value>Round to nearest whole number</value></data>
-  <data name="Pad_Formula_Chip_Sqrt" xml:space="preserve"><value>Square root</value></data>
-  <data name="Pad_Formula_Preset_HalfScale_Name" xml:space="preserve"><value>Half scale</value></data>
-  <data name="Pad_Formula_Preset_HalfScale_Tooltip" xml:space="preserve"><value>A at half strength</value></data>
-  <data name="Pad_Formula_Preset_QuarterScale_Name" xml:space="preserve"><value>Quarter scale</value></data>
-  <data name="Pad_Formula_Preset_QuarterScale_Tooltip" xml:space="preserve"><value>A at quarter strength</value></data>
-  <data name="Pad_Formula_Preset_ReverseA_Name" xml:space="preserve"><value>Reverse A</value></data>
-  <data name="Pad_Formula_Preset_ReverseA_Tooltip" xml:space="preserve"><value>Flip A's sign</value></data>
-  <data name="Pad_Formula_Preset_CapTo1_Name" xml:space="preserve"><value>Cap to ±1</value></data>
-  <data name="Pad_Formula_Preset_CapTo1_Tooltip" xml:space="preserve"><value>Sum A + B but never exceed ±1</value></data>
-  <data name="Pad_Formula_Preset_WeightedBlend_Name" xml:space="preserve"><value>Weighted blend</value></data>
-  <data name="Pad_Formula_Preset_WeightedBlend_Tooltip" xml:space="preserve"><value>70% of A + 30% of B</value></data>
-  <data name="Pad_Formula_Preset_Difference_Name" xml:space="preserve"><value>Difference</value></data>
-  <data name="Pad_Formula_Preset_Difference_Tooltip" xml:space="preserve"><value>A minus B</value></data>
-  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>A unless idle</value></data>
-  <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>Use A — but if A is at rest, fall back to B</value></data>
-  <data name="Pad_Formula_Preset_ThresholdGate_Name" xml:space="preserve"><value>Threshold gate</value></data>
-  <data name="Pad_Formula_Preset_ThresholdGate_Tooltip" xml:space="preserve"><value>Fire fully if A is past halfway, otherwise zero — turns an axis into a button</value></data>
-  <data name="Pad_Formula_Preset_BothPressed_Name" xml:space="preserve"><value>Both pressed</value></data>
-  <data name="Pad_Formula_Preset_BothPressed_Tooltip" xml:space="preserve"><value>Fire only when A and B are both pushed</value></data>
-  <data name="Pad_Formula_Preset_StrongerWins_Name" xml:space="preserve"><value>Stronger wins</value></data>
-  <data name="Pad_Formula_Preset_StrongerWins_Tooltip" xml:space="preserve"><value>Whichever of A or B is pushed harder, with sign</value></data>
-  <data name="Pad_Mapping_ExtraSourcePickerTooltip" xml:space="preserve"><value>Pick the source from any device assigned to this slot.</value></data>
-  <data name="Pad_Mapping_AddOppositeDir" xml:space="preserve"><value>+ opposite direction</value></data>
-  <data name="Pad_Mapping_AddOppositeDir_Tooltip" xml:space="preserve"><value>Only the positive (+) direction of this stick axis is mapped. Click to add an inverted second source for the negative (−) direction.</value></data>
-  <data name="Pad_Formula_Var_PositionA" xml:space="preserve"><value>First source</value></data>
-  <data name="Pad_Formula_Var_PositionB" xml:space="preserve"><value>Second source</value></data>
-  <data name="Pad_Formula_Var_PositionC" xml:space="preserve"><value>Third source</value></data>
-  <data name="Pad_Formula_Var_PositionD" xml:space="preserve"><value>Fourth source</value></data>
-  <data name="Pad_Formula_Var_NotYetMapped" xml:space="preserve"><value>not yet mapped</value></data>
+  <data name="Pad_Formula_Status_NoSourceSingular" xml:space="preserve"><value>não tem fonte</value></data>
+  <data name="Pad_Formula_Status_NoSourcePlural" xml:space="preserve"><value>não têm fonte</value></data>
+  <data name="Pad_Formula_Status_TreatedAsZero" xml:space="preserve"><value>tratado como 0</value></data>
+  <data name="Pad_Formula_Status_And" xml:space="preserve"><value>e</value></data>
+  <data name="Pad_Formula_Chip_TouchpadFlag_A" xml:space="preserve"><value>1 enquanto a fonte A estiver tocando (apenas linhas de passthrough de touchpad)</value></data>
+  <data name="Pad_Formula_Chip_TouchpadFlag_B" xml:space="preserve"><value>1 enquanto a fonte B estiver tocando</value></data>
+  <data name="Pad_Formula_Chip_TouchpadFlag_C" xml:space="preserve"><value>1 enquanto a fonte C estiver tocando</value></data>
+  <data name="Pad_Formula_Chip_TouchpadFlag_D" xml:space="preserve"><value>1 enquanto a fonte D estiver tocando</value></data>
+  <data name="Pad_Formula_Chip_Add" xml:space="preserve"><value>Adicionar</value></data>
+  <data name="Pad_Formula_Chip_Subtract" xml:space="preserve"><value>Subtrair</value></data>
+  <data name="Pad_Formula_Chip_Multiply" xml:space="preserve"><value>Multiplicar</value></data>
+  <data name="Pad_Formula_Chip_Divide" xml:space="preserve"><value>Dividir</value></data>
+  <data name="Pad_Formula_Chip_NegateA" xml:space="preserve"><value>Negar a primeira fonte</value></data>
+  <data name="Pad_Formula_Chip_OpenGroup" xml:space="preserve"><value>Abrir grupo</value></data>
+  <data name="Pad_Formula_Chip_CloseGroup" xml:space="preserve"><value>Fechar grupo</value></data>
+  <data name="Pad_Formula_Chip_Half" xml:space="preserve"><value>0,5 — metade</value></data>
+  <data name="Pad_Formula_Chip_LessThan" xml:space="preserve"><value>Menor que</value></data>
+  <data name="Pad_Formula_Chip_GreaterThan" xml:space="preserve"><value>Maior que</value></data>
+  <data name="Pad_Formula_Chip_LessOrEqual" xml:space="preserve"><value>Menor ou igual</value></data>
+  <data name="Pad_Formula_Chip_GreaterOrEqual" xml:space="preserve"><value>Maior ou igual</value></data>
+  <data name="Pad_Formula_Chip_Equal" xml:space="preserve"><value>Igual a</value></data>
+  <data name="Pad_Formula_Chip_NotEqual" xml:space="preserve"><value>Diferente de</value></data>
+  <data name="Pad_Formula_Chip_BothConditions" xml:space="preserve"><value>Ambas as condições verdadeiras</value></data>
+  <data name="Pad_Formula_Chip_EitherCondition" xml:space="preserve"><value>Qualquer condição verdadeira</value></data>
+  <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Inverter verdadeiro/falso</value></data>
+  <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Se — padrão: (condição) ? então : senão</value></data>
+  <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Parte do senão de um se-então-senão</value></data>
+  <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Magnitude (descarta o sinal)</value></data>
+  <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Menor entre dois valores</value></data>
+  <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Maior entre dois valores</value></data>
+  <data name="Pad_Formula_Chip_Clamp" xml:space="preserve"><value>Manter dentro de um intervalo — clamp(valor, mín, máx)</value></data>
+  <data name="Pad_Formula_Chip_Sign" xml:space="preserve"><value>-1, 0 ou +1 a partir do sinal da entrada</value></data>
+  <data name="Pad_Formula_Chip_Lerp" xml:space="preserve"><value>Misturar dois valores — lerp(a, b, mix0a1)</value></data>
+  <data name="Pad_Formula_Chip_Round" xml:space="preserve"><value>Arredondar para o número inteiro mais próximo</value></data>
+  <data name="Pad_Formula_Chip_Sqrt" xml:space="preserve"><value>Raiz quadrada</value></data>
+  <data name="Pad_Formula_Preset_HalfScale_Name" xml:space="preserve"><value>Escala metade</value></data>
+  <data name="Pad_Formula_Preset_HalfScale_Tooltip" xml:space="preserve"><value>A com metade da força</value></data>
+  <data name="Pad_Formula_Preset_QuarterScale_Name" xml:space="preserve"><value>Escala um quarto</value></data>
+  <data name="Pad_Formula_Preset_QuarterScale_Tooltip" xml:space="preserve"><value>A com um quarto da força</value></data>
+  <data name="Pad_Formula_Preset_ReverseA_Name" xml:space="preserve"><value>Inverter A</value></data>
+  <data name="Pad_Formula_Preset_ReverseA_Tooltip" xml:space="preserve"><value>Inverter o sinal de A</value></data>
+  <data name="Pad_Formula_Preset_CapTo1_Name" xml:space="preserve"><value>Limitar a ±1</value></data>
+  <data name="Pad_Formula_Preset_CapTo1_Tooltip" xml:space="preserve"><value>Somar A + B mas nunca exceder ±1</value></data>
+  <data name="Pad_Formula_Preset_WeightedBlend_Name" xml:space="preserve"><value>Mistura ponderada</value></data>
+  <data name="Pad_Formula_Preset_WeightedBlend_Tooltip" xml:space="preserve"><value>70% de A + 30% de B</value></data>
+  <data name="Pad_Formula_Preset_Difference_Name" xml:space="preserve"><value>Diferença</value></data>
+  <data name="Pad_Formula_Preset_Difference_Tooltip" xml:space="preserve"><value>A menos B</value></data>
+  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>A a menos que ocioso</value></data>
+  <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>Usar A — mas se A estiver em repouso, recuar para B</value></data>
+  <data name="Pad_Formula_Preset_ThresholdGate_Name" xml:space="preserve"><value>Porta de limiar</value></data>
+  <data name="Pad_Formula_Preset_ThresholdGate_Tooltip" xml:space="preserve"><value>Acionar totalmente se A passar da metade, caso contrário zero — transforma um eixo em um botão</value></data>
+  <data name="Pad_Formula_Preset_BothPressed_Name" xml:space="preserve"><value>Ambos pressionados</value></data>
+  <data name="Pad_Formula_Preset_BothPressed_Tooltip" xml:space="preserve"><value>Acionar apenas quando A e B estiverem ambos pressionados</value></data>
+  <data name="Pad_Formula_Preset_StrongerWins_Name" xml:space="preserve"><value>O mais forte vence</value></data>
+  <data name="Pad_Formula_Preset_StrongerWins_Tooltip" xml:space="preserve"><value>Qualquer um dos A ou B que for pressionado com mais força, com sinal</value></data>
+  <data name="Pad_Mapping_ExtraSourcePickerTooltip" xml:space="preserve"><value>Escolha a fonte de qualquer dispositivo atribuído a este slot.</value></data>
+  <data name="Pad_Mapping_AddOppositeDir" xml:space="preserve"><value>+ direção oposta</value></data>
+  <data name="Pad_Mapping_AddOppositeDir_Tooltip" xml:space="preserve"><value>Apenas a direção positiva (+) deste eixo de analógico está mapeada. Clique para adicionar uma segunda fonte invertida para a direção negativa (−).</value></data>
+  <data name="Pad_Formula_Var_PositionA" xml:space="preserve"><value>Primeira fonte</value></data>
+  <data name="Pad_Formula_Var_PositionB" xml:space="preserve"><value>Segunda fonte</value></data>
+  <data name="Pad_Formula_Var_PositionC" xml:space="preserve"><value>Terceira fonte</value></data>
+  <data name="Pad_Formula_Var_PositionD" xml:space="preserve"><value>Quarta fonte</value></data>
+  <data name="Pad_Formula_Var_NotYetMapped" xml:space="preserve"><value>ainda não mapeado</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Linear</value></data>
   <data name="Curve_Smooth" xml:space="preserve"><value>Suave</value></data>
   <data name="Curve_Aggressive" xml:space="preserve"><value>Agressivo</value></data>

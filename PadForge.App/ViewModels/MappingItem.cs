@@ -912,6 +912,118 @@ namespace PadForge.ViewModels
             }
         }
 
+        private string _invertOnHoldButton = "";
+        /// <summary>Row-level "Invert while held" modifier descriptor
+        /// (Issue #61 B.3). When non-empty and the named button is
+        /// pressed, the row's final combined value is sign-flipped
+        /// (bipolar axis) or 1−x'd (unipolar trigger) at output time.
+        /// Bool / POV targets ignore this. Cross-device modifiers are
+        /// supported via <see cref="InvertOnHoldDeviceGuid"/>.</summary>
+        public string InvertOnHoldButton
+        {
+            get => _invertOnHoldButton;
+            set
+            {
+                if (SetProperty(ref _invertOnHoldButton, value ?? ""))
+                {
+                    OnPropertyChanged(nameof(InvertOnHoldInputChoice));
+                    OnPropertyChanged(nameof(HasInvertOnHoldButton));
+                }
+            }
+        }
+
+        private string _invertOnHoldDeviceGuid = "";
+        public string InvertOnHoldDeviceGuid
+        {
+            get => _invertOnHoldDeviceGuid;
+            set
+            {
+                if (SetProperty(ref _invertOnHoldDeviceGuid, value ?? ""))
+                    OnPropertyChanged(nameof(InvertOnHoldInputChoice));
+            }
+        }
+
+        public bool HasInvertOnHoldButton => !string.IsNullOrEmpty(_invertOnHoldButton);
+
+        /// <summary>Picker bridge for the row-level InvertOnHold modifier.
+        /// Reads/writes both DeviceGuid and Descriptor in one shot, same
+        /// pattern as <see cref="SelectedInput"/>.</summary>
+        public InputChoice InvertOnHoldInputChoice
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_invertOnHoldButton)) return null;
+                string wantGuid = (_invertOnHoldDeviceGuid ?? "").ToLowerInvariant();
+                InputChoice descMatch = null;
+                foreach (var c in AvailableInputs)
+                {
+                    if (c == null) continue;
+                    if (!string.Equals(c.Descriptor, _invertOnHoldButton, StringComparison.Ordinal)) continue;
+                    if (descMatch == null) descMatch = c;
+                    if (!string.IsNullOrEmpty(wantGuid)
+                        && string.Equals(c.DeviceGuid ?? "", wantGuid, StringComparison.OrdinalIgnoreCase))
+                        return c;
+                }
+                return descMatch;
+            }
+            set
+            {
+                var d = value?.Descriptor ?? "";
+                var g = value?.DeviceGuid ?? "";
+                bool changed = false;
+                if (!string.Equals(_invertOnHoldButton, d, StringComparison.Ordinal))
+                {
+                    _invertOnHoldButton = d;
+                    changed = true;
+                }
+                if (!string.Equals(_invertOnHoldDeviceGuid, g, StringComparison.Ordinal))
+                {
+                    _invertOnHoldDeviceGuid = g;
+                    changed = true;
+                }
+                if (changed)
+                {
+                    OnPropertyChanged(nameof(InvertOnHoldButton));
+                    OnPropertyChanged(nameof(InvertOnHoldDeviceGuid));
+                    OnPropertyChanged(nameof(InvertOnHoldInputChoice));
+                    OnPropertyChanged(nameof(HasInvertOnHoldButton));
+                }
+            }
+        }
+
+        /// <summary>True for output targets where post-combine sign-flip
+        /// is meaningful: bipolar axes and unipolar triggers. Used by the
+        /// XAML to gate the row-level Invert-while-held picker
+        /// visibility — bool / POV targets don't get the option.</summary>
+        public bool IsInvertOnHoldApplicable
+        {
+            get
+            {
+                var t = TargetSettingName ?? "";
+                if (t.Contains("ThumbAxis", StringComparison.Ordinal)) return true;
+                if (t == "LeftTrigger" || t == "RightTrigger") return true;
+                if (t.StartsWith("ExtendedAxis", StringComparison.Ordinal)) return true;
+                if (t.StartsWith("KbmMouse", StringComparison.Ordinal)) return true;
+                if (t.StartsWith("KbmScroll", StringComparison.Ordinal)) return true;
+                if (t.StartsWith("MidiCC", StringComparison.Ordinal)) return true;
+                return false;
+            }
+        }
+
+        public event EventHandler StartInvertOnHoldRecordingRequested;
+        private RelayCommand _recordInvertOnHoldCommand;
+        public RelayCommand RecordInvertOnHoldCommand =>
+            _recordInvertOnHoldCommand ??= new RelayCommand(() =>
+                StartInvertOnHoldRecordingRequested?.Invoke(this, EventArgs.Empty));
+
+        private RelayCommand _clearInvertOnHoldCommand;
+        public RelayCommand ClearInvertOnHoldCommand =>
+            _clearInvertOnHoldCommand ??= new RelayCommand(() =>
+            {
+                InvertOnHoldButton = "";
+                InvertOnHoldDeviceGuid = "";
+            });
+
         private string _combineExpression = "";
         /// <summary>Custom combine expression, only meaningful when
         /// <see cref="CombineMode"/> == "Custom".</summary>

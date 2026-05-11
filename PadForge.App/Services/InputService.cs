@@ -1968,10 +1968,14 @@ namespace PadForge.Services
                 mapping.ExtraSources.Clear();
                 mapping.CombineMode = "";
                 mapping.CombineExpression = "";
+                mapping.InvertOnHoldButton = "";
+                mapping.InvertOnHoldDeviceGuid = "";
                 if (msRowsByTarget.TryGetValue(target, out var msRow2))
                 {
                     mapping.CombineMode = msRow2.CombineMode ?? "";
                     mapping.CombineExpression = msRow2.CombineExpression ?? "";
+                    mapping.InvertOnHoldButton = msRow2.InvertOnHoldButton ?? "";
+                    mapping.InvertOnHoldDeviceGuid = msRow2.InvertOnHoldDeviceGuid ?? "";
                     if (msRow2.Sources != null)
                     {
                         for (int si = 1; si < msRow2.Sources.Count; si++)

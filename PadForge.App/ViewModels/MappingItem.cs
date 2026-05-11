@@ -80,6 +80,7 @@ namespace PadForge.ViewModels
                 {
                     if (added is MappingSourceItem msi)
                     {
+                        msi.ParentMappingItem = this;
                         msi.PropertyChanged += OnExtraSourcePropertyChanged;
                         RefreshExtraSourceInputs(msi);
                     }
@@ -90,7 +91,10 @@ namespace PadForge.ViewModels
                 foreach (var removed in e.OldItems)
                 {
                     if (removed is MappingSourceItem msi)
+                    {
                         msi.PropertyChanged -= OnExtraSourcePropertyChanged;
+                        msi.ParentMappingItem = null;
+                    }
                 }
             }
         }
@@ -121,8 +125,13 @@ namespace PadForge.ViewModels
         public void RefreshExtraSourceInputs(MappingSourceItem msi)
         {
             if (msi == null) return;
+            msi.ParentMappingItem = this;
             msi.ParentTargetIsDiscrete = IsTargetDiscrete;
             msi.SyncSelectedInputFromState(AvailableInputs);
+            // ParamUp/Down/Modifier picker bridges resolve their
+            // InputChoice against this row's AvailableInputs — re-fire
+            // the picker getters whenever the input list is rebuilt.
+            msi.RefreshParamPickerChoices();
         }
 
         /// <summary>True when the row's target is a discrete

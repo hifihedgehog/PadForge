@@ -143,7 +143,7 @@ namespace PadForge.Services
             // Mark settings as dirty.
             _settingsService.MarkDirty();
 
-            _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceAssigned_Format, selectedRow.DeviceName, slotIndex + 1);
+            _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceAssigned_Format, selectedRow.DeviceName, ResolveDisplaySlotNumber(slotIndex));
 
             // Notify listeners so PadPage dropdowns refresh immediately.
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
@@ -204,7 +204,7 @@ namespace PadForge.Services
             AutoEnableHidingDefaults(udForGuid, row);
 
             _settingsService.MarkDirty();
-            _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceAssigned_Format, row.DeviceName, slotIndex + 1);
+            _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceAssigned_Format, row.DeviceName, ResolveDisplaySlotNumber(slotIndex));
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
             DeviceHidingStateChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -251,11 +251,16 @@ namespace PadForge.Services
                     us.SetPadSetting(ps);
                     us.PadSettingChecksum = ps.PadSettingChecksum;
                 }
+                else
+                {
+                    FillEmptyTouchpadMappingsIfApplicable(existingPs, udForGuid,
+                        _mainVm.Pads[slotIndex].OutputType);
+                }
 
                 // Auto-enable input hiding defaults for newly assigned devices.
                 AutoEnableHidingDefaults(udForGuid, selectedRow);
 
-                _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceAssignedSlot_Format, selectedRow.DeviceName, slotIndex + 1);
+                _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceAssignedSlot_Format, selectedRow.DeviceName, ResolveDisplaySlotNumber(slotIndex));
             }
             else
             {
@@ -493,6 +498,23 @@ namespace PadForge.Services
 
             SettingsManager.SlotEnabled[slotIndex] = enabled;
             _settingsService.MarkDirty();
+        }
+
+        /// <summary>Maps a raw 0-based <paramref name="slotIndex"/> to the
+        /// 1-based global slot number the user sees in the UI (badges,
+        /// dashboard, sidebar, Pad page header). That ordering walks the
+        /// VC type groups (Xbox → PlayStation → Extended → KbM → MIDI),
+        /// so a PlayStation slot at padIndex=2 might be VC #1 in the UI
+        /// — the prior <c>slotIndex + 1</c> form silently disagreed with
+        /// every other display, producing the "Assigned to Virtual
+        /// Controller 3" status while the user clicked badge #2. Falls
+        /// back to <c>slotIndex + 1</c> when the slot isn't in any
+        /// group's order list yet (auto-created during this same call).
+        /// </summary>
+        private static int ResolveDisplaySlotNumber(int slotIndex)
+        {
+            int global = SettingsManager.SlotOrders.GetGlobalSlotNumber(slotIndex);
+            return global > 0 ? global : slotIndex + 1;
         }
 
         /// <summary>Defensive auto-map: when assigning a touchpad-type

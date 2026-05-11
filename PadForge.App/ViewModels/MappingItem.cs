@@ -64,8 +64,8 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(ShouldShowCustomExpression));
             // Source count changed → custom-expression warning state
             // may have flipped.
-            OnPropertyChanged(nameof(CombineExpressionStatus));
             OnPropertyChanged(nameof(IsCombineExpressionWarning));
+            RefreshVariableAliases();
 
             if (e.NewItems != null)
             {
@@ -101,6 +101,14 @@ namespace PadForge.ViewModels
                 && sender is MappingSourceItem msi)
             {
                 RefreshExtraSourceInputs(msi);
+            }
+            // Any change that affects the source's friendly label
+            // ripples to the variable-alias display for that position.
+            if (e.PropertyName == nameof(MappingSourceItem.Descriptor)
+                || e.PropertyName == nameof(MappingSourceItem.DeviceLabel)
+                || e.PropertyName == nameof(MappingSourceItem.SelectedInput))
+            {
+                RefreshVariableAliases();
             }
         }
 
@@ -214,8 +222,8 @@ namespace PadForge.ViewModels
                     // Toggling the primary source flips the row's
                     // effective source count, which can change whether
                     // a custom formula's `a` reference is in range.
-                    OnPropertyChanged(nameof(CombineExpressionStatus));
                     OnPropertyChanged(nameof(IsCombineExpressionWarning));
+                    RefreshVariableAliases();
                 }
             }
         }
@@ -795,7 +803,11 @@ namespace PadForge.ViewModels
         public string PrimarySourceDeviceLabel
         {
             get => _primarySourceDeviceLabel;
-            set => SetProperty(ref _primarySourceDeviceLabel, value ?? "");
+            set
+            {
+                if (SetProperty(ref _primarySourceDeviceLabel, value ?? ""))
+                    RefreshVariableAliases();
+            }
         }
 
         private string _combineMode = "";
@@ -881,9 +893,20 @@ namespace PadForge.ViewModels
                     return "✗ " + (c.Error ?? "parse error");
 
                 var refs = c.ReferencedSingleLetterVars ?? "";
-                var refsBit = string.IsNullOrEmpty(refs)
-                    ? ""
-                    : " · refs: " + string.Join(",", refs.ToCharArray());
+                // Inline the friendly alias for each referenced letter
+                // so users see what the variable means here, e.g.
+                // "refs: a (DualSense · A), b (Keyboard · W)".
+                string refsBit = "";
+                if (!string.IsNullOrEmpty(refs))
+                {
+                    var parts = new System.Collections.Generic.List<string>(refs.Length);
+                    foreach (char letter in refs)
+                    {
+                        string alias = GetVariableAlias(letter - 'a');
+                        parts.Add(string.IsNullOrEmpty(alias) ? letter.ToString() : letter + " (" + alias + ")");
+                    }
+                    refsBit = " · refs: " + string.Join(", ", parts);
+                }
                 if (c.MaxIndexedRef >= 0)
                     refsBit += (refsBit.Length == 0 ? " · refs: " : ", ") + "s[" + c.MaxIndexedRef + "]";
 
@@ -931,6 +954,69 @@ namespace PadForge.ViewModels
         }
 
         public bool IsCombineExpressionInvalid => !IsCombineExpressionValid;
+
+        // ─────────────────────────────────────────────
+        //  Variable alias labels (option A from the design note)
+        //
+        //  The formula text stays positional (a, b, c…). For display
+        //  only, we surface friendly labels for each variable so chip
+        //  tooltips and the status line tell the user what `a / b / c`
+        //  currently mean on THIS row. Engine semantics unchanged —
+        //  no parser changes, no storage changes, no rename
+        //  brittleness.
+        // ─────────────────────────────────────────────
+
+        public string VariableALabel => GetVariableAlias(0);
+        public string VariableBLabel => GetVariableAlias(1);
+        public string VariableCLabel => GetVariableAlias(2);
+        public string VariableDLabel => GetVariableAlias(3);
+
+        /// <summary>Composite tooltip strings for the formula chips.
+        /// Show the chip's positional meaning plus the friendly alias
+        /// for the row's current source at that position.</summary>
+        public string VariableATooltip => BuildVariableTooltip("First source",  VariableALabel);
+        public string VariableBTooltip => BuildVariableTooltip("Second source", VariableBLabel);
+        public string VariableCTooltip => BuildVariableTooltip("Third source",  VariableCLabel);
+        public string VariableDTooltip => BuildVariableTooltip("Fourth source", VariableDLabel);
+
+        private static string BuildVariableTooltip(string positionLabel, string alias)
+            => string.IsNullOrEmpty(alias)
+                ? positionLabel + " — not yet mapped"
+                : positionLabel + " · " + alias;
+
+        /// <summary>Returns "DeviceLabel · InputName" for the source
+        /// at the given position (0 = primary, 1+ = ExtraSources in
+        /// UI order). Empty if no source occupies that slot.</summary>
+        private string GetVariableAlias(int index)
+        {
+            if (index == 0)
+            {
+                if (string.IsNullOrEmpty(_sourceDescriptor)) return "";
+                string name = _selectedInput?.DisplayName ?? _resolvedSourceText ?? _sourceDescriptor;
+                return string.IsNullOrEmpty(_primarySourceDeviceLabel)
+                    ? name : _primarySourceDeviceLabel + " · " + name;
+            }
+            int extraIdx = index - 1;
+            if (ExtraSources == null || extraIdx < 0 || extraIdx >= ExtraSources.Count) return "";
+            var extra = ExtraSources[extraIdx];
+            if (extra == null || string.IsNullOrEmpty(extra.Descriptor)) return "";
+            string ename = extra.SelectedInput?.DisplayName ?? extra.Descriptor;
+            return string.IsNullOrEmpty(extra.DeviceLabel)
+                ? ename : extra.DeviceLabel + " · " + ename;
+        }
+
+        private void RefreshVariableAliases()
+        {
+            OnPropertyChanged(nameof(VariableALabel));
+            OnPropertyChanged(nameof(VariableBLabel));
+            OnPropertyChanged(nameof(VariableCLabel));
+            OnPropertyChanged(nameof(VariableDLabel));
+            OnPropertyChanged(nameof(VariableATooltip));
+            OnPropertyChanged(nameof(VariableBTooltip));
+            OnPropertyChanged(nameof(VariableCTooltip));
+            OnPropertyChanged(nameof(VariableDTooltip));
+            OnPropertyChanged(nameof(CombineExpressionStatus));
+        }
 
         /// <summary>True when the expression is valid but references
         /// variables beyond the row's actual source count — those

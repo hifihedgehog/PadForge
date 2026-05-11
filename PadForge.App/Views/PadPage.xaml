@@ -1582,7 +1582,8 @@
                                                      MinWidth="380" Padding="6,4"
                                                      VerticalAlignment="Center"
                                                      FontFamily="Consolas"
-                                                     ToolTip="Click chips below to build a formula, or pick a starter preset. a, b, c… stand for this row's sources in order."/>
+                                                     AllowDrop="True"
+                                                     ToolTip="Click chips below to build a formula, or drag chips into the box. a, b, c… stand for this row's sources in order."/>
                                             <TextBlock Text="{Binding CombineExpressionStatus}"
                                                        FontSize="10" FontFamily="Consolas"
                                                        Margin="2,2,0,4"
@@ -1616,17 +1617,29 @@
                                                         <Setter Property="MinWidth" Value="28"/>
                                                         <Setter Property="FontFamily" Value="Consolas"/>
                                                         <Setter Property="FontSize" Value="11"/>
+                                                        <!-- Drag-out support: PreviewMouseLeftButtonDown
+                                                             records the start point, MouseMove past the
+                                                             drag threshold starts the DragDrop with the
+                                                             chip's Tag (the literal text to insert)
+                                                             as the data payload. The formula TextBox
+                                                             has AllowDrop=True; WPF's built-in text
+                                                             drop behavior inserts at the drop point. -->
+                                                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="FormulaChip_PreviewMouseLeftButtonDown"/>
+                                                        <EventSetter Event="PreviewMouseMove" Handler="FormulaChip_PreviewMouseMove"/>
                                                     </Style>
                                                 </WrapPanel.Resources>
-                                                <!-- Source variables (a-d cover most rows; users with more sources can type the rest) -->
+                                                <!-- Source variables (a-d cover most rows; users with
+                                                     more sources can type the rest). Tooltips bind to
+                                                     the row's per-position friendly alias so users
+                                                     see what `a/b/c/d` mean for THIS row. -->
                                                 <Button Content="a" Tag="a" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="First source"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding VariableATooltip}"/>
                                                 <Button Content="b" Tag="b" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Second source"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding VariableBTooltip}"/>
                                                 <Button Content="c" Tag="c" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Third source"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding VariableCTooltip}"/>
                                                 <Button Content="d" Tag="d" Style="{StaticResource FormulaChipStyle}"
-                                                        Click="FormulaChip_Click" ToolTip="Fourth source"/>
+                                                        Click="FormulaChip_Click" ToolTip="{Binding VariableDTooltip}"/>
                                                 <!-- Operators -->
                                                 <Border Width="6"/>
                                                 <Button Content="+" Tag=" + " Style="{StaticResource FormulaChipStyle}"

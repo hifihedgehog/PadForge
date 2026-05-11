@@ -1301,6 +1301,37 @@ namespace PadForge.Views
             box.Focus();
         }
 
+        // Drag state shared across the chip palette. Single-mouse so
+        // a single point + token is enough — no per-button tracking.
+        private Point _chipDragStart;
+        private bool _chipDragArmed;
+
+        private void FormulaChip_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is string)
+            {
+                _chipDragStart = e.GetPosition(null);
+                _chipDragArmed = true;
+            }
+        }
+
+        private void FormulaChip_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (!_chipDragArmed || e.LeftButton != MouseButtonState.Pressed) return;
+            var p = e.GetPosition(null);
+            if (Math.Abs(p.X - _chipDragStart.X) > SystemParameters.MinimumHorizontalDragDistance
+                || Math.Abs(p.Y - _chipDragStart.Y) > SystemParameters.MinimumVerticalDragDistance)
+            {
+                if (sender is Button btn && btn.Tag is string token)
+                {
+                    // Reset BEFORE DoDragDrop so a quick re-click after
+                    // the drag finishes doesn't carry stale state.
+                    _chipDragArmed = false;
+                    DragDrop.DoDragDrop(btn, token, DragDropEffects.Copy);
+                }
+            }
+        }
+
         private void FormulaPreset_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not Button btn || btn.Tag is not string formula) return;

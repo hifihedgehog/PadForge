@@ -606,6 +606,16 @@
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>변수</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ 변수 추가</value></data>
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>각 행은 변수 문자(a, b, c, …) 하나를 정의합니다. 물리적 장치의 버튼, POV 또는 축을 바인딩하려면 입력 장치를 선택하고, 슬롯의 결합된 Xbox 출력 채널을 읽으려면 출력 컨트롤러를 선택합니다.</value></data>
+  <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>a 단독</value></data>
+  <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>변수 a가 0에서 1로 바뀔 때 실행합니다.</value></data>
+  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a 그리고 b</value></data>
+  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>a AND b가 모두 활성 상태일 때만 실행합니다. 코드 조합의 기본 형태입니다.</value></data>
+  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a 또는 b</value></data>
+  <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>a OR b 중 하나라도 활성 상태일 때 실행합니다.</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a이지만 b는 아님</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>a가 활성 상태이고 b가 NOT 활성 상태일 때 실행합니다.</value></data>
+  <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>축 50% 초과</value></data>
+  <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>스틱 축 a가 중립 위치에서 50% 이상 움직였을 때 실행합니다.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>소스</value></data>
   <data name="Macro_InputDevice" xml:space="preserve"><value>입력 장치</value></data>
   <data name="Macro_OutputController" xml:space="preserve"><value>출력 컨트롤러</value></data>

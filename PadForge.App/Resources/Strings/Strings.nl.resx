@@ -606,6 +606,16 @@
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>Variabelen</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ Variabele toevoegen</value></data>
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>Elke rij definieert één variabeleletter (a, b, c, …). Kies Invoerapparaat om een knop, POV of as op een fysiek apparaat te koppelen, of Uitvoercontroller om een kanaal te lezen van de gecombineerde Xbox-uitvoer van het slot.</value></data>
+  <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>alleen a</value></data>
+  <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>Activeer wanneer variabele a van 0 naar 1 gaat.</value></data>
+  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a en b</value></data>
+  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Activeer alleen wanneer zowel a AND b actief zijn. Klassiek akkoord.</value></data>
+  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a of b</value></data>
+  <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>Activeer wanneer a OR b actief is.</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a maar niet b</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Activeer wanneer a actief is en b NOT actief is.</value></data>
+  <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>as voorbij 50%</value></data>
+  <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Activeer wanneer stickas a meer dan 50% van de ruststand is uitgeslagen.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Bron</value></data>
   <data name="Macro_InputDevice" xml:space="preserve"><value>Invoerapparaat</value></data>
   <data name="Macro_OutputController" xml:space="preserve"><value>Uitvoercontroller</value></data>

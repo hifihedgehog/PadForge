@@ -4234,6 +4234,11 @@ namespace PadForge.Services
         private Dictionary<Guid, int[]> _recordingVariableAxisBaseline;
         /// <summary>Snapshot of POV values at recording start (for the same reason).</summary>
         private Dictionary<Guid, int[]> _recordingVariablePovBaseline;
+        /// <summary>Snapshot of the slot's combined Xbox-output state at the
+        /// start of an OutputController-source recording — baseline for
+        /// detecting "what changed".</summary>
+        private Gamepad _recordingVariableOutputBaseline;
+        private bool _recordingVariableOutputBaselineSet;
         private const float ExpressionVariableAxisDeflectionThreshold = 0.30f;
         private const double ExpressionVariableRecordTimeoutSeconds = 5;
 
@@ -4252,6 +4257,7 @@ namespace PadForge.Services
             _recordingVariableStartTime = DateTime.UtcNow;
             _recordingVariableAxisBaseline = new Dictionary<Guid, int[]>();
             _recordingVariablePovBaseline = new Dictionary<Guid, int[]>();
+            _recordingVariableOutputBaselineSet = false;
             variable.LiveText = Strings.Instance.Macro_RecordHint;
             variable.IsRecording = true;
             CaptureExpressionVariableBaseline();
@@ -4275,14 +4281,25 @@ namespace PadForge.Services
             int padIndex = _recordingVariablePadIndex;
             if (padIndex < 0 || padIndex >= InputManager.MaxPads) return;
             var slotSettings = SettingsManager.GetSettingsForSlot(padIndex);
-            if (slotSettings == null) return;
-            for (int i = 0; i < slotSettings.Count; i++)
+            if (slotSettings != null)
             {
-                var ud = FindUserDevice(slotSettings[i].InstanceGuid);
-                if (ud?.InputState?.Axis != null)
-                    _recordingVariableAxisBaseline[ud.InstanceGuid] = (int[])ud.InputState.Axis.Clone();
-                if (ud?.InputState?.Povs != null)
-                    _recordingVariablePovBaseline[ud.InstanceGuid] = (int[])ud.InputState.Povs.Clone();
+                for (int i = 0; i < slotSettings.Count; i++)
+                {
+                    var ud = FindUserDevice(slotSettings[i].InstanceGuid);
+                    if (ud?.InputState?.Axis != null)
+                        _recordingVariableAxisBaseline[ud.InstanceGuid] = (int[])ud.InputState.Axis.Clone();
+                    if (ud?.InputState?.Povs != null)
+                        _recordingVariablePovBaseline[ud.InstanceGuid] = (int[])ud.InputState.Povs.Clone();
+                }
+            }
+            // Output-controller baseline — used when the variable's Source
+            // is OutputController so we can detect "first changed button /
+            // first axis deflected past threshold" against the slot's
+            // current combined Gamepad state.
+            if (_inputManager != null)
+            {
+                _recordingVariableOutputBaseline = _inputManager.CombinedOutputStates[padIndex];
+                _recordingVariableOutputBaselineSet = true;
             }
         }
 
@@ -4299,6 +4316,15 @@ namespace PadForge.Services
             }
             int padIndex = _recordingVariablePadIndex;
             if (padIndex < 0 || padIndex >= InputManager.MaxPads) return;
+
+            // Route based on the variable's Source choice. OutputController
+            // samples the slot's combined Xbox output; InputDevice walks the
+            // per-device raw HID state on every device mapped to this slot.
+            if (_recordingVariable.Source == MacroTriggerSource.OutputController)
+            {
+                if (ScanOutputControllerForFirstChange(padIndex)) return;
+                return;
+            }
 
             var slotSettings = SettingsManager.GetSettingsForSlot(padIndex);
             if (slotSettings == null) return;
@@ -4382,6 +4408,83 @@ namespace PadForge.Services
             _recordingVariable.Pov = pov;
             _recordingVariable.AxisTarget = axis;
             _recordingVariable.OutputChannel = MacroOutputChannel.None;
+            StopExpressionVariableRecording();
+        }
+
+        /// <summary>Scans the slot's current combined Xbox output for a first
+        /// detectable change since the recording-start baseline. Returns true
+        /// if a binding was captured (and the session has been stopped) so
+        /// the caller can exit immediately.</summary>
+        private bool ScanOutputControllerForFirstChange(int padIndex)
+        {
+            if (_inputManager == null || !_recordingVariableOutputBaselineSet) return false;
+            var cur = _inputManager.CombinedOutputStates[padIndex];
+            var bs = _recordingVariableOutputBaseline;
+
+            // 1. Button bit that wasn't set in baseline.
+            (ushort flag, MacroOutputChannel ch)[] buttonMap = new (ushort, MacroOutputChannel)[]
+            {
+                (Gamepad.A,             MacroOutputChannel.A),
+                (Gamepad.B,             MacroOutputChannel.B),
+                (Gamepad.X,             MacroOutputChannel.X),
+                (Gamepad.Y,             MacroOutputChannel.Y),
+                (Gamepad.LEFT_SHOULDER, MacroOutputChannel.LB),
+                (Gamepad.RIGHT_SHOULDER,MacroOutputChannel.RB),
+                (Gamepad.LEFT_THUMB,    MacroOutputChannel.LS),
+                (Gamepad.RIGHT_THUMB,   MacroOutputChannel.RS),
+                (Gamepad.BACK,          MacroOutputChannel.Back),
+                (Gamepad.START,         MacroOutputChannel.Start),
+                (Gamepad.GUIDE,         MacroOutputChannel.Guide),
+                (Gamepad.DPAD_UP,       MacroOutputChannel.DpadUp),
+                (Gamepad.DPAD_DOWN,     MacroOutputChannel.DpadDown),
+                (Gamepad.DPAD_LEFT,     MacroOutputChannel.DpadLeft),
+                (Gamepad.DPAD_RIGHT,    MacroOutputChannel.DpadRight),
+            };
+            for (int i = 0; i < buttonMap.Length; i++)
+            {
+                bool was = (bs.Buttons & buttonMap[i].flag) != 0;
+                bool now = (cur.Buttons & buttonMap[i].flag) != 0;
+                if (!was && now)
+                {
+                    FinalizeExpressionVariableOutputChannel(buttonMap[i].ch);
+                    return true;
+                }
+            }
+
+            // 2. Trigger or stick axis past 30% deflection from baseline.
+            float deflectLT = Math.Abs(cur.LeftTrigger - bs.LeftTrigger) / 65535f;
+            float deflectRT = Math.Abs(cur.RightTrigger - bs.RightTrigger) / 65535f;
+            float deflectLX = Math.Abs(cur.ThumbLX - bs.ThumbLX) / 65535f;
+            float deflectLY = Math.Abs(cur.ThumbLY - bs.ThumbLY) / 65535f;
+            float deflectRX = Math.Abs(cur.ThumbRX - bs.ThumbRX) / 65535f;
+            float deflectRY = Math.Abs(cur.ThumbRY - bs.ThumbRY) / 65535f;
+
+            float best = 0f;
+            MacroOutputChannel bestCh = MacroOutputChannel.None;
+            if (deflectLT > best) { best = deflectLT; bestCh = MacroOutputChannel.LT; }
+            if (deflectRT > best) { best = deflectRT; bestCh = MacroOutputChannel.RT; }
+            if (deflectLX > best) { best = deflectLX; bestCh = MacroOutputChannel.LX; }
+            if (deflectLY > best) { best = deflectLY; bestCh = MacroOutputChannel.LY; }
+            if (deflectRX > best) { best = deflectRX; bestCh = MacroOutputChannel.RX; }
+            if (deflectRY > best) { best = deflectRY; bestCh = MacroOutputChannel.RY; }
+
+            if (best >= ExpressionVariableAxisDeflectionThreshold && bestCh != MacroOutputChannel.None)
+            {
+                FinalizeExpressionVariableOutputChannel(bestCh);
+                return true;
+            }
+            return false;
+        }
+
+        private void FinalizeExpressionVariableOutputChannel(MacroOutputChannel channel)
+        {
+            if (_recordingVariable == null) return;
+            _recordingVariable.Source = MacroTriggerSource.OutputController;
+            _recordingVariable.OutputChannel = channel;
+            _recordingVariable.DeviceGuid = Guid.Empty;
+            _recordingVariable.RawButton = -1;
+            _recordingVariable.Pov = null;
+            _recordingVariable.AxisTarget = MacroAxisTarget.None;
             StopExpressionVariableRecording();
         }
 

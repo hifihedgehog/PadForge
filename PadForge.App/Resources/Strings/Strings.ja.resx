@@ -606,6 +606,16 @@
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>変数</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ 変数を追加</value></data>
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>各行が変数文字 (a, b, c, …) を一つ定義します。物理デバイスのボタン・POV・軸をバインドするには「入力デバイス」を、スロットの結合 Xbox 出力のチャンネルを読み取るには「出力コントローラー」を選択してください。</value></data>
+  <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>a のみ</value></data>
+  <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>変数 a が 0 から 1 に変わったときに発火します。</value></data>
+  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a と b</value></data>
+  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>a AND b が両方アクティブなときのみ発火します。コードの基本形です。</value></data>
+  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a または b</value></data>
+  <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>a OR b のいずれかがアクティブなときに発火します。</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a のみ (b を除く)</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>a がアクティブかつ b が NOT アクティブなときに発火します。</value></data>
+  <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>軸が 50% を超えた</value></data>
+  <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>スティック軸 a のデフレクションが中立位置から 50% を超えたときに発火します。</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>ソース</value></data>
   <data name="Macro_InputDevice" xml:space="preserve"><value>入力デバイス</value></data>
   <data name="Macro_OutputController" xml:space="preserve"><value>出力コントローラー</value></data>

@@ -700,16 +700,22 @@
 
                             <!-- Custom-expression editor (visible only when TriggerMode = CustomExpression).
                                  Sits ABOVE the legacy trigger-combo block so it shares the same
-                                 spot in the layout. -->
-                            <StackPanel Visibility="{Binding IsCustomExpressionMode, Converter={StaticResource BoolToVisibilityConverter}}"
+                                 spot in the layout. Named `FormulaEditor` so the shared
+                                 FormulaChip_Click / FormulaPreset_Click handlers in
+                                 PadPage.xaml.cs find the right textbox (they walk up the visual
+                                 tree looking for an ancestor named "FormulaEditor"). -->
+                            <StackPanel x:Name="FormulaEditor"
+                                        Visibility="{Binding IsCustomExpressionMode, Converter={StaticResource BoolToVisibilityConverter}}"
                                         Margin="0,0,0,8">
                                 <TextBlock Text="{Binding Macro_Expression_Header, Source={x:Static strings:Strings.Instance}}"
                                            FontWeight="SemiBold"
                                            Margin="0,0,0,4"
                                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-                                <TextBox Text="{Binding TriggerExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                <TextBox x:Name="CustomFormulaBox"
+                                         Text="{Binding TriggerExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          FontFamily="Consolas"
                                          AcceptsReturn="False"
+                                         AllowDrop="True"
                                          Padding="6,4"
                                          Margin="0,0,0,4">
                                     <TextBox.ToolTip>
@@ -732,6 +738,90 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
+
+                                <!-- Chip palette: click to insert at caret, or drag onto the
+                                     formula box. Reuses FormulaChip_Click + the drag-out
+                                     handlers from the merge-mapping editor verbatim. -->
+                                <TextBlock Text="{Binding Pad_Formula_Insert, Source={x:Static strings:Strings.Instance}}"
+                                           FontSize="10"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Margin="2,4,0,2"/>
+                                <WrapPanel Margin="0,0,0,4">
+                                    <WrapPanel.Resources>
+                                        <Style x:Key="MacroFormulaChipStyle" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                                            <Setter Property="Padding" Value="6,2"/>
+                                            <Setter Property="Margin" Value="0,0,3,3"/>
+                                            <Setter Property="MinWidth" Value="28"/>
+                                            <Setter Property="FontFamily" Value="Consolas"/>
+                                            <Setter Property="FontSize" Value="11"/>
+                                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="FormulaChip_PreviewMouseLeftButtonDown"/>
+                                            <EventSetter Event="PreviewMouseMove" Handler="FormulaChip_PreviewMouseMove"/>
+                                        </Style>
+                                    </WrapPanel.Resources>
+                                    <Button Content="a" Tag="a" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click"/>
+                                    <Button Content="b" Tag="b" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click"/>
+                                    <Button Content="c" Tag="c" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click"/>
+                                    <Button Content="d" Tag="d" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click"/>
+                                    <Border Width="6"/>
+                                    <Button Content="+" Tag=" + " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Add, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="−" Tag=" - " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Subtract, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="×" Tag=" * " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Multiply, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="÷" Tag=" / " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Divide, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="(" Tag="(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_OpenGroup, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content=")" Tag=")" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_CloseGroup, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Border Width="6"/>
+                                    <Button Content="0" Tag="0" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click"/>
+                                    <Button Content="½" Tag="0.5" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Half, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="1" Tag="1" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click"/>
+                                    <Border Width="6"/>
+                                    <Button Content="&lt;" Tag=" &lt; " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_LessThan, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="&gt;" Tag=" &gt; " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_GreaterThan, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="≤" Tag=" &lt;= " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_LessOrEqual, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="≥" Tag=" &gt;= " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_GreaterOrEqual, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="=" Tag=" == " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Equal, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="≠" Tag=" != " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_NotEqual, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Border Width="6"/>
+                                    <Button Content="and" Tag=" &amp;&amp; " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_BothConditions, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="or" Tag=" || " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_EitherCondition, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="not" Tag="!" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_FlipBool, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Border Width="6"/>
+                                    <Button Content="abs" Tag="abs(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Abs, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="min" Tag="min(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Min, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="max" Tag="max(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Max, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="clamp" Tag="clamp(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" ToolTip="{Binding Pad_Formula_Chip_Clamp, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="," Tag=", " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click"/>
+                                </WrapPanel>
+
+                                <!-- Starter recipes — common trigger patterns. Each button's
+                                     Tag is the full formula; clicking replaces the box text. -->
+                                <TextBlock Text="{Binding Pad_Formula_StarterRecipes, Source={x:Static strings:Strings.Instance}}"
+                                           FontSize="10"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Margin="2,2,0,2"/>
+                                <WrapPanel Margin="0,0,0,6">
+                                    <WrapPanel.Resources>
+                                        <Style x:Key="MacroFormulaPresetStyle" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                                            <Setter Property="Padding" Value="8,3"/>
+                                            <Setter Property="Margin" Value="0,0,4,3"/>
+                                            <Setter Property="FontSize" Value="11"/>
+                                        </Style>
+                                    </WrapPanel.Resources>
+                                    <Button Content="{Binding Macro_Expression_Recipe_Single, Source={x:Static strings:Strings.Instance}}" Tag="a"
+                                            Style="{StaticResource MacroFormulaPresetStyle}" Click="FormulaPreset_Click"
+                                            ToolTip="{Binding Macro_Expression_Recipe_Single_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Macro_Expression_Recipe_Both, Source={x:Static strings:Strings.Instance}}" Tag="a &amp;&amp; b"
+                                            Style="{StaticResource MacroFormulaPresetStyle}" Click="FormulaPreset_Click"
+                                            ToolTip="{Binding Macro_Expression_Recipe_Both_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Macro_Expression_Recipe_Either, Source={x:Static strings:Strings.Instance}}" Tag="a || b"
+                                            Style="{StaticResource MacroFormulaPresetStyle}" Click="FormulaPreset_Click"
+                                            ToolTip="{Binding Macro_Expression_Recipe_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Macro_Expression_Recipe_AButNotB, Source={x:Static strings:Strings.Instance}}" Tag="a &amp;&amp; !b"
+                                            Style="{StaticResource MacroFormulaPresetStyle}" Click="FormulaPreset_Click"
+                                            ToolTip="{Binding Macro_Expression_Recipe_AButNotB_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Macro_Expression_Recipe_AxisOverHalf, Source={x:Static strings:Strings.Instance}}" Tag="abs(a - 0.5) &gt; 0.25"
+                                            Style="{StaticResource MacroFormulaPresetStyle}" Click="FormulaPreset_Click"
+                                            ToolTip="{Binding Macro_Expression_Recipe_AxisOverHalf_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </WrapPanel>
 
                                 <!-- Variable list. Each row binds one variable to either an
                                      input-device input or an output-controller channel. -->
@@ -799,9 +889,11 @@
                                                                MinWidth="120"
                                                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                                Visibility="{Binding Source, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=InputDevice}"/>
-                                                    <!-- Record / Stop button, Input-only -->
-                                                    <Button Command="{Binding RecordCommand}" Width="36" Margin="6,0,2,0"
-                                                            Visibility="{Binding Source, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=InputDevice}">
+                                                    <!-- Record / Stop button. Works for both Input Device
+                                                         (captures the next press / axis on a physical device)
+                                                         and Output Controller (captures the next change on the
+                                                         slot's combined Gamepad output). -->
+                                                    <Button Command="{Binding RecordCommand}" Width="36" Margin="6,0,2,0">
                                                         <TextBlock Text="{Binding RecordIcon}" FontFamily="Segoe MDL2 Assets"/>
                                                         <Button.ToolTip>
                                                             <TextBlock Text="{Binding RecordTooltip}"/>

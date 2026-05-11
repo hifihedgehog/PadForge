@@ -704,6 +704,18 @@
   <data name="Pad_Formula_Var_PositionC" xml:space="preserve"><value>Third source</value></data>
   <data name="Pad_Formula_Var_PositionD" xml:space="preserve"><value>Fourth source</value></data>
   <data name="Pad_Formula_Var_NotYetMapped" xml:space="preserve"><value>not yet mapped</value></data>
+  <data name="Pad_Formula_Error_UnexpectedTokenAtEnd" xml:space="preserve"><value>Unexpected token at position {0}: '{1}'</value></data>
+  <data name="Pad_Formula_Error_InvalidNumber" xml:space="preserve"><value>Invalid number '{0}' at {1}</value></data>
+  <data name="Pad_Formula_Error_SingleEqualsNotSupported" xml:space="preserve"><value>Single '=' not supported at {0}; use '==' for equality</value></data>
+  <data name="Pad_Formula_Error_UnexpectedCharacter" xml:space="preserve"><value>Unexpected character '{0}' at {1}</value></data>
+  <data name="Pad_Formula_Error_ExpectedColonInTernary" xml:space="preserve"><value>Expected ':' in ternary</value></data>
+  <data name="Pad_Formula_Error_ExpectedRParen" xml:space="preserve"><value>Expected ')'</value></data>
+  <data name="Pad_Formula_Error_ExpectedRParenAfterArgs" xml:space="preserve"><value>Expected ')' after function arguments</value></data>
+  <data name="Pad_Formula_Error_ExpectedRBracketAfterIndex" xml:space="preserve"><value>Expected ']' after source index</value></data>
+  <data name="Pad_Formula_Error_ExpectedTokenSuffix" xml:space="preserve"><value> (got '{0}' at {1})</value></data>
+  <data name="Pad_Formula_Error_UnknownIdentifier" xml:space="preserve"><value>Unknown identifier '{0}' at {1}</value></data>
+  <data name="Pad_Formula_Error_UnexpectedToken" xml:space="preserve"><value>Unexpected token '{0}' at {1}</value></data>
+  <data name="Pad_Formula_Error_UnexpectedParseError" xml:space="preserve"><value>Unexpected parse error: {0}</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Linear</value></data>
   <data name="Curve_Smooth" xml:space="preserve"><value>Smooth</value></data>
   <data name="Curve_Aggressive" xml:space="preserve"><value>Aggressive</value></data>

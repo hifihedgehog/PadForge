@@ -558,6 +558,18 @@
   <data name="Pad_Formula_Var_PositionC" xml:space="preserve"><value>3番目のソース</value></data>
   <data name="Pad_Formula_Var_PositionD" xml:space="preserve"><value>4番目のソース</value></data>
   <data name="Pad_Formula_Var_NotYetMapped" xml:space="preserve"><value>未割り当て</value></data>
+  <data name="Pad_Formula_Error_UnexpectedTokenAtEnd" xml:space="preserve"><value>位置 {0} に予期しないトークン: '{1}'</value></data>
+  <data name="Pad_Formula_Error_InvalidNumber" xml:space="preserve"><value>位置 {1} に無効な数値 '{0}'</value></data>
+  <data name="Pad_Formula_Error_SingleEqualsNotSupported" xml:space="preserve"><value>位置 {0} での単一の '=' はサポートされていません。等値比較には '==' を使用してください</value></data>
+  <data name="Pad_Formula_Error_UnexpectedCharacter" xml:space="preserve"><value>位置 {1} に予期しない文字 '{0}'</value></data>
+  <data name="Pad_Formula_Error_ExpectedColonInTernary" xml:space="preserve"><value>三項演算子に ':' が必要です</value></data>
+  <data name="Pad_Formula_Error_ExpectedRParen" xml:space="preserve"><value>')' が必要です</value></data>
+  <data name="Pad_Formula_Error_ExpectedRParenAfterArgs" xml:space="preserve"><value>関数の引数の後に ')' が必要です</value></data>
+  <data name="Pad_Formula_Error_ExpectedRBracketAfterIndex" xml:space="preserve"><value>ソースインデックスの後に ']' が必要です</value></data>
+  <data name="Pad_Formula_Error_ExpectedTokenSuffix" xml:space="preserve"><value> (位置 {1} で '{0}' を検出)</value></data>
+  <data name="Pad_Formula_Error_UnknownIdentifier" xml:space="preserve"><value>位置 {1} に不明な識別子 '{0}'</value></data>
+  <data name="Pad_Formula_Error_UnexpectedToken" xml:space="preserve"><value>位置 {1} に予期しないトークン '{0}'</value></data>
+  <data name="Pad_Formula_Error_UnexpectedParseError" xml:space="preserve"><value>予期しない解析エラー: {0}</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>リニア</value></data>
   <data name="Curve_Smooth" xml:space="preserve"><value>スムーズ</value></data>
   <data name="Curve_Aggressive" xml:space="preserve"><value>アグレッシブ</value></data>

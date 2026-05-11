@@ -66,6 +66,17 @@ namespace PadForge.Engine.Common.Mapping
             if (state == null || src == null) return false;
 
             bool raw = ReadAsBool(state, src, globalThresholdPercent);
+
+            // Axis sources internalize Invert inside ReadAsBool — for
+            // half-axis it picks which half to test, for full-axis it
+            // flips the comparison. Applying Invert again here would
+            // double-cancel, which is what broke the standard "two
+            // opposing buttons on a centered axis" pattern (Left half
+            // never fired because the inner branch returned true and
+            // this outer flip turned it back to false).
+            string desc = src.Descriptor ?? "";
+            if (desc.StartsWith("Axis", System.StringComparison.Ordinal)) return raw;
+
             return src.Invert ? !raw : raw;
         }
 

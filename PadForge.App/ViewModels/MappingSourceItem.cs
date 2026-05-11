@@ -65,12 +65,18 @@ namespace PadForge.ViewModels
             public string Name  { get; init; }
         }
 
-        public static System.Collections.Generic.IReadOnlyList<KindChoice> KindOptions { get; }
-            = new[]
+        /// <summary>Built lazily so the friendly Name picks up the
+        /// active culture's resource string. Strings.CultureChanged fires
+        /// when the user switches language, but the existing XAML binds
+        /// the dropdown once at item-template instantiation — so each
+        /// ItemsSource read recomputes the labels from Strings.Instance.
+        /// (KindOptions is read on every dropdown open.)</summary>
+        public static System.Collections.Generic.IReadOnlyList<KindChoice> KindOptions =>
+            new[]
             {
-                new KindChoice { Value = "Direct",       Name = "Direct" },
-                new KindChoice { Value = "Incremental",  Name = "Incremental" },
-                new KindChoice { Value = "InvertOnHold", Name = "Invert On Hold" },
+                new KindChoice { Value = "Direct",       Name = Strings.Instance.Pad_Mapping_Kind_Direct },
+                new KindChoice { Value = "Incremental",  Name = Strings.Instance.Pad_Mapping_Kind_Incremental },
+                new KindChoice { Value = "InvertOnHold", Name = Strings.Instance.Pad_Mapping_Kind_InvertOnHold },
             };
 
         internal MappingItem ParentMappingItem { get; set; }

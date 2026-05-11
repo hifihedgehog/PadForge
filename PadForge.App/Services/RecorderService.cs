@@ -654,7 +654,7 @@ namespace PadForge.Services
                 foreach (var ud in devs)
                 {
                     if (ud != null && ud.InstanceGuid == g)
-                        return ud.ResolvedName ?? ud.ProductName ?? ud.InstanceName ?? "";
+                        return InputService.LocalizedDeviceName(ud) ?? "";
                 }
             }
             return "";

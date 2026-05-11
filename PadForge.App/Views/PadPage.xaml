@@ -1591,6 +1591,9 @@
                                                     <Style TargetType="TextBlock">
                                                         <Setter Property="Foreground" Value="#16C60C"/>
                                                         <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsCombineExpressionWarning}" Value="True">
+                                                                <Setter Property="Foreground" Value="#F2A33C"/>
+                                                            </DataTrigger>
                                                             <DataTrigger Binding="{Binding IsCombineExpressionInvalid}" Value="True">
                                                                 <Setter Property="Foreground" Value="#C42B1C"/>
                                                             </DataTrigger>

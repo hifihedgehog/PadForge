@@ -230,13 +230,37 @@ namespace PadForge.ViewModels
             }
         }
 
-        public string ParamUp { get => _paramUp; set => SetProperty(ref _paramUp, value ?? ""); }
-        public string ParamDown { get => _paramDown; set => SetProperty(ref _paramDown, value ?? ""); }
+        public string ParamUp
+        {
+            get => _paramUp;
+            set
+            {
+                if (SetProperty(ref _paramUp, value ?? ""))
+                    OnPropertyChanged(nameof(ParamUpInputChoice));
+            }
+        }
+        public string ParamDown
+        {
+            get => _paramDown;
+            set
+            {
+                if (SetProperty(ref _paramDown, value ?? ""))
+                    OnPropertyChanged(nameof(ParamDownInputChoice));
+            }
+        }
         public double ParamRate { get => _paramRate; set => SetProperty(ref _paramRate, value); }
         public bool ParamSticky { get => _paramSticky; set => SetProperty(ref _paramSticky, value); }
         public double ParamMin { get => _paramMin; set => SetProperty(ref _paramMin, value); }
         public double ParamMax { get => _paramMax; set => SetProperty(ref _paramMax, value); }
-        public string ParamModifier { get => _paramModifier; set => SetProperty(ref _paramModifier, value ?? ""); }
+        public string ParamModifier
+        {
+            get => _paramModifier;
+            set
+            {
+                if (SetProperty(ref _paramModifier, value ?? ""))
+                    OnPropertyChanged(nameof(ParamModifierInputChoice));
+            }
+        }
 
         // ─────────────────────────────────────────────
         //  Cross-device picker bridge
@@ -348,6 +372,33 @@ namespace PadForge.ViewModels
 
         public event EventHandler StartRecordingRequested;
         public event EventHandler StopRecordingRequested;
+
+        /// <summary>Identifies which Param field a record request is for
+        /// (ParamUp / ParamDown / ParamModifier). The Mappings page's
+        /// handler reads this on the event payload and routes to
+        /// <c>RecorderService.StartRecordingExtraSourceParam</c>.</summary>
+        public enum ParamRecordTarget { Up, Down, Modifier }
+        public sealed class ParamRecordEventArgs : EventArgs
+        {
+            public ParamRecordTarget Target { get; }
+            public ParamRecordEventArgs(ParamRecordTarget t) { Target = t; }
+        }
+        public event EventHandler<ParamRecordEventArgs> StartParamRecordingRequested;
+
+        private RelayCommand _recordParamUpCommand;
+        public RelayCommand RecordParamUpCommand =>
+            _recordParamUpCommand ??= new RelayCommand(() =>
+                StartParamRecordingRequested?.Invoke(this, new ParamRecordEventArgs(ParamRecordTarget.Up)));
+
+        private RelayCommand _recordParamDownCommand;
+        public RelayCommand RecordParamDownCommand =>
+            _recordParamDownCommand ??= new RelayCommand(() =>
+                StartParamRecordingRequested?.Invoke(this, new ParamRecordEventArgs(ParamRecordTarget.Down)));
+
+        private RelayCommand _recordParamModifierCommand;
+        public RelayCommand RecordParamModifierCommand =>
+            _recordParamModifierCommand ??= new RelayCommand(() =>
+                StartParamRecordingRequested?.Invoke(this, new ParamRecordEventArgs(ParamRecordTarget.Modifier)));
 
         private RelayCommand _clearCommand;
         /// <summary>Mirrors <see cref="MappingItem.ClearCommand"/>:

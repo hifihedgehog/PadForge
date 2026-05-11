@@ -1992,7 +1992,7 @@
                                                                     RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                   SelectedItem="{Binding ParamUpInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                   DisplayMemberPath="DisplayName"
-                                                                  MinWidth="200" Padding="4,2" Margin="0,0,8,0"
+                                                                  MinWidth="200" Padding="4,2" Margin="0,0,4,0"
                                                                   ToolTip="Up — button that ramps the accumulator upward while held."
                                                                   PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                             <ComboBox.GroupStyle>
@@ -2009,13 +2009,22 @@
                                                                 </GroupStyle>
                                                             </ComboBox.GroupStyle>
                                                         </ComboBox>
+                                                        <!-- Record button for the Up descriptor — listens
+                                                             across every device assigned to the slot and
+                                                             writes the first button press to ParamUp. -->
+                                                        <Button Command="{Binding RecordParamUpCommand}"
+                                                                Width="40" Margin="0,0,8,0"
+                                                                VerticalAlignment="Center"
+                                                                ToolTip="Record the Up button by pressing it">
+                                                            <TextBlock Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"/>
+                                                        </Button>
                                                         <TextBlock Text="↧" FontSize="14" VerticalAlignment="Center" Margin="0,0,2,0"
                                                                    ToolTip="Button that ramps the accumulator downward while held"/>
                                                         <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView,
                                                                     RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                   SelectedItem="{Binding ParamDownInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                   DisplayMemberPath="DisplayName"
-                                                                  MinWidth="200" Padding="4,2" Margin="0,0,8,0"
+                                                                  MinWidth="200" Padding="4,2" Margin="0,0,4,0"
                                                                   ToolTip="Down — button that ramps the accumulator downward while held."
                                                                   PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                             <ComboBox.GroupStyle>
@@ -2032,6 +2041,12 @@
                                                                 </GroupStyle>
                                                             </ComboBox.GroupStyle>
                                                         </ComboBox>
+                                                        <Button Command="{Binding RecordParamDownCommand}"
+                                                                Width="40" Margin="0,0,8,0"
+                                                                VerticalAlignment="Center"
+                                                                ToolTip="Record the Down button by pressing it">
+                                                            <TextBlock Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"/>
+                                                        </Button>
                                                         <TextBlock Text="Rate" VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                         <Slider Value="{Binding ParamRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 Minimum="0.05" Maximum="5" SmallChange="0.05" LargeChange="0.5"
@@ -2066,7 +2081,7 @@
                                                                     RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                   SelectedItem="{Binding ParamModifierInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                   DisplayMemberPath="DisplayName"
-                                                                  MinWidth="240" Padding="4,2"
+                                                                  MinWidth="240" Padding="4,2" Margin="0,0,4,0"
                                                                   ToolTip="Modifier — button that inverts this source while held. Pick a button on this source's own device."
                                                                   PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                             <ComboBox.GroupStyle>
@@ -2083,6 +2098,12 @@
                                                                 </GroupStyle>
                                                             </ComboBox.GroupStyle>
                                                         </ComboBox>
+                                                        <Button Command="{Binding RecordParamModifierCommand}"
+                                                                Width="40"
+                                                                VerticalAlignment="Center"
+                                                                ToolTip="Record the Modifier button by pressing it">
+                                                            <TextBlock Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"/>
+                                                        </Button>
                                                     </StackPanel>
                                                     </StackPanel>
                                                 </DataTemplate>

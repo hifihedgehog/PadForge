@@ -65,19 +65,32 @@ namespace PadForge.ViewModels
             public string Name  { get; init; }
         }
 
-        /// <summary>Built lazily so the friendly Name picks up the
-        /// active culture's resource string. Strings.CultureChanged fires
-        /// when the user switches language, but the existing XAML binds
-        /// the dropdown once at item-template instantiation — so each
-        /// ItemsSource read recomputes the labels from Strings.Instance.
-        /// (KindOptions is read on every dropdown open.)</summary>
-        public static System.Collections.Generic.IReadOnlyList<KindChoice> KindOptions =>
-            new[]
+        // Cached once per culture so the WPF Kind ComboBox bindings
+        // don't reallocate three KindChoice objects + run three
+        // ResourceManager lookups every time the list is re-read by
+        // per-row binding refresh / virtualization. Invalidates on
+        // culture change so language switches still take effect.
+        private static KindChoice[] _kindOptionsCache;
+        private static int _kindOptionsCacheCulture;
+        public static System.Collections.Generic.IReadOnlyList<KindChoice> KindOptions
+        {
+            get
             {
-                new KindChoice { Value = "Direct",       Name = Strings.Instance.Pad_Mapping_Kind_Direct },
-                new KindChoice { Value = "Incremental",  Name = Strings.Instance.Pad_Mapping_Kind_Incremental },
-                new KindChoice { Value = "InvertOnHold", Name = Strings.Instance.Pad_Mapping_Kind_InvertOnHold },
-            };
+                int currentCulture = System.Globalization.CultureInfo.CurrentUICulture.LCID;
+                var cached = _kindOptionsCache;
+                if (cached != null && _kindOptionsCacheCulture == currentCulture)
+                    return cached;
+                var arr = new[]
+                {
+                    new KindChoice { Value = "Direct",       Name = Strings.Instance.Pad_Mapping_Kind_Direct },
+                    new KindChoice { Value = "Incremental",  Name = Strings.Instance.Pad_Mapping_Kind_Incremental },
+                    new KindChoice { Value = "InvertOnHold", Name = Strings.Instance.Pad_Mapping_Kind_InvertOnHold },
+                };
+                _kindOptionsCache = arr;
+                _kindOptionsCacheCulture = currentCulture;
+                return arr;
+            }
+        }
 
         internal MappingItem ParentMappingItem { get; set; }
 

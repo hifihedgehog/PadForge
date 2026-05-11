@@ -276,9 +276,12 @@ namespace PadForge.Common.Input
                 if (macro == null || !macro.IsEnabled)
                     continue;
 
-                // Skip macros with no trigger configured (unless Always mode).
+                // Skip macros with no trigger configured (unless Always /
+                // CustomExpression mode — Custom always has a formula that
+                // evaluates, even if the formula references no variables).
                 bool hasButtons = macro.UsesRawTrigger || macro.TriggerButtons != 0;
                 if (macro.TriggerMode != MacroTriggerMode.Always &&
+                    macro.TriggerMode != MacroTriggerMode.CustomExpression &&
                     !macro.UsesAxisTrigger && !macro.UsesPovTrigger && !hasButtons)
                     continue;
 
@@ -286,6 +289,8 @@ namespace PadForge.Common.Input
                 bool triggerActive;
                 if (macro.TriggerMode == MacroTriggerMode.Always)
                     triggerActive = true;
+                else if (macro.TriggerMode == MacroTriggerMode.CustomExpression)
+                    triggerActive = EvaluateCustomExpressionTrigger(macro, in gp);
                 else
                 {
                     bool buttonOk = true;
@@ -353,6 +358,11 @@ namespace PadForge.Common.Input
                     case MacroTriggerMode.Always:
                         shouldStart = !macro.IsExecuting;
                         break;
+                    case MacroTriggerMode.CustomExpression:
+                        // Rising edge of the formula result crossing 0.5,
+                        // matching OnPress semantics for a synthetic boolean.
+                        shouldStart = triggerActive && !wasTriggerActive;
+                        break;
                 }
 
                 // Start new execution if triggered and not already executing.
@@ -392,6 +402,159 @@ namespace PadForge.Common.Input
                 }
             }
         }
+
+        /// <summary>Evaluates a macro's <see cref="MacroTriggerMode.CustomExpression"/>
+        /// trigger against the slot's combined Xbox <see cref="Gamepad"/>. Builds
+        /// the variable values, runs the cached compiled formula, and reports
+        /// "trigger active" as result ≥ 0.5. Returns false on any malformed input
+        /// so the macro stays dormant rather than misfiring.</summary>
+        private bool EvaluateCustomExpressionTrigger(MacroItem macro, in Gamepad gp)
+        {
+            var compiled = macro.TriggerExpressionCompiled;
+            if (compiled == null || !compiled.IsValid) return false;
+            var vars = macro.TriggerExpressionVariables;
+            int n = vars?.Count ?? 0;
+            var sources = new float[n];
+            for (int i = 0; i < n; i++)
+                sources[i] = ReadExpressionVariable(vars[i], in gp);
+            float result = compiled.Evaluate(sources);
+            return result >= 0.5f;
+        }
+
+        /// <summary>Same as <see cref="EvaluateCustomExpressionTrigger"/> but for
+        /// the Extended (custom controller) path. OutputController-bound variables
+        /// resolve to 0 because there is no Xbox-shape gamepad on this code path.</summary>
+        private bool EvaluateCustomExpressionTriggerExtended(MacroItem macro, in ExtendedRawState raw)
+        {
+            var compiled = macro.TriggerExpressionCompiled;
+            if (compiled == null || !compiled.IsValid) return false;
+            var vars = macro.TriggerExpressionVariables;
+            int n = vars?.Count ?? 0;
+            var sources = new float[n];
+            for (int i = 0; i < n; i++)
+                sources[i] = ReadExpressionVariableRaw(vars[i], in raw);
+            float result = compiled.Evaluate(sources);
+            return result >= 0.5f;
+        }
+
+        /// <summary>Reads one <see cref="MacroExpressionVariable"/>'s current value
+        /// against the slot's combined <see cref="Gamepad"/>. Buttons → 0/1,
+        /// triggers → 0..1, sticks → 0..1 (0.5 = rest), POVs → 1 when the live POV
+        /// is in the same 45° sector as the stored direction.</summary>
+        private float ReadExpressionVariable(MacroExpressionVariable v, in Gamepad gp)
+        {
+            if (v == null || !v.IsBound) return 0f;
+
+            if (v.Source == MacroTriggerSource.OutputController)
+                return ReadOutputChannel(v.OutputChannel, in gp);
+
+            var ud = FindOnlineDeviceByInstanceGuid(v.DeviceGuid);
+            if (ud == null || !ud.IsOnline || ud.InputState == null) return 0f;
+
+            if (v.RawButton >= 0)
+            {
+                var btns = ud.InputState.Buttons;
+                return (btns != null && v.RawButton < btns.Length && btns[v.RawButton]) ? 1f : 0f;
+            }
+            if (!string.IsNullOrEmpty(v.Pov))
+            {
+                if (!MacroItem.ParsePovTrigger(v.Pov, out int idx, out int targetCd)) return 0f;
+                var povs = ud.InputState.Povs;
+                if (povs == null || idx < 0 || idx >= povs.Length || povs[idx] < 0) return 0f;
+                int diff = Math.Abs(povs[idx] - targetCd);
+                if (diff > 18000) diff = 36000 - diff;
+                return diff <= 2250 ? 1f : 0f;
+            }
+            if (v.AxisTarget != MacroAxisTarget.None)
+            {
+                int axisIndex = AxisTargetToDeviceIndex(v.AxisTarget);
+                var axes = ud.InputState.Axis;
+                if (axes == null || axisIndex < 0 || axisIndex >= axes.Length) return 0f;
+                return (axes[axisIndex] + 32768f) / 65535f;
+            }
+            return 0f;
+        }
+
+        /// <summary>Same as <see cref="ReadExpressionVariable"/> but the
+        /// OutputController arm reads 0 because Extended slots have no Xbox-shape
+        /// combined state.</summary>
+        private float ReadExpressionVariableRaw(MacroExpressionVariable v, in ExtendedRawState raw)
+        {
+            if (v == null || !v.IsBound) return 0f;
+            if (v.Source == MacroTriggerSource.OutputController) return 0f;
+
+            var ud = FindOnlineDeviceByInstanceGuid(v.DeviceGuid);
+            if (ud == null || !ud.IsOnline || ud.InputState == null) return 0f;
+
+            if (v.RawButton >= 0)
+            {
+                var btns = ud.InputState.Buttons;
+                return (btns != null && v.RawButton < btns.Length && btns[v.RawButton]) ? 1f : 0f;
+            }
+            if (!string.IsNullOrEmpty(v.Pov))
+            {
+                if (!MacroItem.ParsePovTrigger(v.Pov, out int idx, out int targetCd)) return 0f;
+                var povs = ud.InputState.Povs;
+                if (povs == null || idx < 0 || idx >= povs.Length || povs[idx] < 0) return 0f;
+                int diff = Math.Abs(povs[idx] - targetCd);
+                if (diff > 18000) diff = 36000 - diff;
+                return diff <= 2250 ? 1f : 0f;
+            }
+            if (v.AxisTarget != MacroAxisTarget.None)
+            {
+                int axisIndex = AxisTargetToDeviceIndex(v.AxisTarget);
+                var axes = ud.InputState.Axis;
+                if (axes == null || axisIndex < 0 || axisIndex >= axes.Length) return 0f;
+                return (axes[axisIndex] + 32768f) / 65535f;
+            }
+            return 0f;
+        }
+
+        /// <summary>Reads one Xbox output channel as a normalized 0..1 float.
+        /// Buttons → 0 or 1, triggers → 0..1, sticks → 0..1 with 0.5 = rest
+        /// (sign preserved by the off-center reading).</summary>
+        private static float ReadOutputChannel(MacroOutputChannel ch, in Gamepad gp)
+        {
+            switch (ch)
+            {
+                case MacroOutputChannel.A:         return (gp.Buttons & Gamepad.A) != 0 ? 1f : 0f;
+                case MacroOutputChannel.B:         return (gp.Buttons & Gamepad.B) != 0 ? 1f : 0f;
+                case MacroOutputChannel.X:         return (gp.Buttons & Gamepad.X) != 0 ? 1f : 0f;
+                case MacroOutputChannel.Y:         return (gp.Buttons & Gamepad.Y) != 0 ? 1f : 0f;
+                case MacroOutputChannel.LB:        return (gp.Buttons & Gamepad.LEFT_SHOULDER) != 0 ? 1f : 0f;
+                case MacroOutputChannel.RB:        return (gp.Buttons & Gamepad.RIGHT_SHOULDER) != 0 ? 1f : 0f;
+                case MacroOutputChannel.LS:        return (gp.Buttons & Gamepad.LEFT_THUMB) != 0 ? 1f : 0f;
+                case MacroOutputChannel.RS:        return (gp.Buttons & Gamepad.RIGHT_THUMB) != 0 ? 1f : 0f;
+                case MacroOutputChannel.Back:      return (gp.Buttons & Gamepad.BACK) != 0 ? 1f : 0f;
+                case MacroOutputChannel.Start:     return (gp.Buttons & Gamepad.START) != 0 ? 1f : 0f;
+                case MacroOutputChannel.Guide:     return (gp.Buttons & Gamepad.GUIDE) != 0 ? 1f : 0f;
+                case MacroOutputChannel.DpadUp:    return (gp.Buttons & Gamepad.DPAD_UP) != 0 ? 1f : 0f;
+                case MacroOutputChannel.DpadDown:  return (gp.Buttons & Gamepad.DPAD_DOWN) != 0 ? 1f : 0f;
+                case MacroOutputChannel.DpadLeft:  return (gp.Buttons & Gamepad.DPAD_LEFT) != 0 ? 1f : 0f;
+                case MacroOutputChannel.DpadRight: return (gp.Buttons & Gamepad.DPAD_RIGHT) != 0 ? 1f : 0f;
+                case MacroOutputChannel.LT:        return gp.LeftTrigger / 65535f;
+                case MacroOutputChannel.RT:        return gp.RightTrigger / 65535f;
+                case MacroOutputChannel.LX:        return (gp.ThumbLX + 32768f) / 65535f;
+                case MacroOutputChannel.LY:        return (gp.ThumbLY + 32768f) / 65535f;
+                case MacroOutputChannel.RX:        return (gp.ThumbRX + 32768f) / 65535f;
+                case MacroOutputChannel.RY:        return (gp.ThumbRY + 32768f) / 65535f;
+                default: return 0f;
+            }
+        }
+
+        /// <summary>Maps a <see cref="MacroAxisTarget"/> to a raw-device axis
+        /// index using the standard SDL gamepad layout (X/Y/Z = LX/LY/LT,
+        /// rotZ/rotZ' approximated by rotX/rotY for RX/RY/RT).</summary>
+        private static int AxisTargetToDeviceIndex(MacroAxisTarget t) => t switch
+        {
+            MacroAxisTarget.LeftStickX  => 0,
+            MacroAxisTarget.LeftStickY  => 1,
+            MacroAxisTarget.LeftTrigger => 2,
+            MacroAxisTarget.RightStickX => 3,
+            MacroAxisTarget.RightStickY => 4,
+            MacroAxisTarget.RightTrigger=> 5,
+            _ => -1
+        };
 
         /// <summary>
         /// Checks whether all raw button indices specified by the macro's trigger
@@ -983,9 +1146,11 @@ namespace PadForge.Common.Input
                 if (macro == null || !macro.IsEnabled)
                     continue;
 
-                // Skip macros with no trigger configured (unless Always mode).
+                // Skip macros with no trigger configured (unless Always /
+                // CustomExpression mode).
                 bool hasButtons = macro.UsesRawTrigger || macro.UsesCustomTrigger || macro.TriggerButtons != 0;
                 if (macro.TriggerMode != MacroTriggerMode.Always &&
+                    macro.TriggerMode != MacroTriggerMode.CustomExpression &&
                     !macro.UsesAxisTrigger && !macro.UsesPovTrigger && !hasButtons)
                     continue;
 
@@ -993,6 +1158,8 @@ namespace PadForge.Common.Input
                 bool triggerActive;
                 if (macro.TriggerMode == MacroTriggerMode.Always)
                     triggerActive = true;
+                else if (macro.TriggerMode == MacroTriggerMode.CustomExpression)
+                    triggerActive = EvaluateCustomExpressionTriggerExtended(macro, in raw);
                 else
                 {
                     bool buttonOk = true;
@@ -1040,6 +1207,9 @@ namespace PadForge.Common.Input
                         break;
                     case MacroTriggerMode.Always:
                         shouldStart = !macro.IsExecuting;
+                        break;
+                    case MacroTriggerMode.CustomExpression:
+                        shouldStart = triggerActive && !wasTriggerActive;
                         break;
                 }
 

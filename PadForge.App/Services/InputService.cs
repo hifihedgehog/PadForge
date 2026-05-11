@@ -2201,21 +2201,38 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Applies a PadSetting from a source layout to the current device with cross-layout translation.
+        /// Applies a PadSetting from a source layout to a device on the given
+        /// slot, with cross-layout translation.
+        ///
+        /// <para><paramref name="targetDeviceGuidOverride"/>: which physical
+        /// device on <paramref name="padIndex"/> receives the copy. Default
+        /// (null) = the slot's currently-selected device. <b>Copy From</b>
+        /// passes the SOURCE device's GUID here when that device is also
+        /// mapped to the target slot — so "Copy From [DualSense on slot 0]"
+        /// lands on the DualSense on this slot rather than being re-tagged
+        /// onto whatever happens to be selected (e.g. the slot's keyboard,
+        /// which has no analog axes — that produced phantom "keyboard Axis 0"
+        /// sources and doubled every row, see the Copy From corruption
+        /// report). The descriptors a recording produces are device-specific;
+        /// re-tagging them onto a different KIND of device yields garbage, so
+        /// we prefer the same-device target whenever one exists.</para>
         /// </summary>
         public void ApplyPadSettingToCurrentDeviceTranslated(int padIndex, PadSetting source,
             VirtualControllerType sourceType, bool sourceIsExtended,
-            VirtualControllerType targetType, bool targetIsExtended)
+            VirtualControllerType targetType, bool targetIsExtended,
+            Guid? targetDeviceGuidOverride = null)
         {
             if (source == null || padIndex < 0 || padIndex >= _mainVm.Pads.Count)
                 return;
 
             var padVm = _mainVm.Pads[padIndex];
-            var selected = padVm.SelectedMappedDevice;
-            if (selected == null || selected.InstanceGuid == Guid.Empty)
+            Guid targetGuid = targetDeviceGuidOverride
+                ?? padVm.SelectedMappedDevice?.InstanceGuid
+                ?? Guid.Empty;
+            if (targetGuid == Guid.Empty)
                 return;
 
-            var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, padIndex);
+            var us = SettingsManager.FindSettingByInstanceGuidAndSlot(targetGuid, padIndex);
             if (us == null) return;
 
             var ps = us.GetPadSetting();
@@ -2228,13 +2245,18 @@ namespace PadForge.Services
             // share a layout — cross-layout target names don't line up.
             if (MappingTranslation.IsSameLayout(sourceType, sourceIsExtended, targetType, targetIsExtended))
             {
-                ApplyMultiSourceRowsToCurrentDevice(padIndex, selected.InstanceGuid,
+                ApplyMultiSourceRowsToCurrentDevice(padIndex, targetGuid,
                     source.DeviceScopedMultiSourceRows);
             }
 
-            // Reload the ViewModel to reflect the new values.
-            LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
-            PopulateAvailableInputs(padVm, FindUserDevice(selected.InstanceGuid));
+            // Reload the ViewModel to reflect the new values. The mapping
+            // pass reads the slot's MappingSet (device-agnostic), so it
+            // doesn't matter which device GUID we pass for that; pass the
+            // currently-selected device so its per-device tuning fields
+            // (deadzones / sensitivity / FFB) stay on screen.
+            Guid viewDevice = padVm.SelectedMappedDevice?.InstanceGuid ?? targetGuid;
+            LoadPadSettingToViewModel(padVm, viewDevice);
+            PopulateAvailableInputs(padVm, FindUserDevice(viewDevice));
         }
 
         /// <summary>Issue #61 paste helper. For each row in

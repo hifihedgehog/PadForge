@@ -4183,24 +4183,45 @@ namespace PadForge
                 bool targetIsExtended = targetOutputType == VirtualControllerType.Extended
                     /* Extended always uses dynamic layout */;
 
-                // Issue #61 — populate the source device's slice of
-                // the source slot's MappingSet so multi-source rows
-                // round-trip through the apply path.
-                if (srcEntry.SourceSlot >= 0)
+                // Issue #61 — "Copy From" is a SLOT-level copy. Replace this
+                // slot's per-VC MappingSet with the SOURCE slot's wholesale
+                // (every device's sources, all extra sources, combine modes,
+                // Custom formulas) — the device the user picked in the dialog
+                // only identifies which slot to copy from. The old behavior
+                // copied just the picked device's slice, so a slot whose
+                // source rows mixed devices (e.g. a gamepad axis + keyboard
+                // buttons on the same stick row) lost the keyboard half.
+                if (srcEntry.SourceSlot >= 0 && srcEntry.SourceSlot != padVm.PadIndex)
                 {
+                    InputService.ReplaceSlotMappingSet(padVm.PadIndex, srcEntry.SourceSlot);
+                    // Don't also run the per-device multi-source merge below —
+                    // ReplaceSlotMappingSet already set the whole table, and
+                    // merging the picked device's slice on top would just
+                    // reorder its sources.
+                    srcEntry.PadSetting.DeviceScopedMultiSourceRows = null;
+                }
+                else if (srcEntry.SourceSlot >= 0)
+                {
+                    // Niche: copying from a different device on THIS SAME slot.
+                    // Can't wholesale-replace (source == target slot), so fall
+                    // back to merging the picked device's slice onto whichever
+                    // device receives the copy.
                     srcEntry.PadSetting.DeviceScopedMultiSourceRows =
                         InputService.ExtractDeviceScopedRowsForSlot(srcEntry.SourceSlot, srcEntry.InstanceGuid);
                 }
 
-                // Pick the device on THIS slot that receives the copy. If the
-                // source device is also mapped to this slot, copy onto that
-                // same device — so "Copy From [a gamepad on another slot]"
-                // lands on the matching gamepad here instead of being
-                // re-tagged onto whatever's selected (e.g. the slot's
-                // keyboard, which has no analog axes — that re-tag produced
-                // phantom "keyboard Axis 0" sources, doubled every row, and
-                // overwrote hand-crafted multi-source rows). Falls back to the
-                // selected device when the source device isn't on this slot.
+                // Pick the device on THIS slot that receives the per-device
+                // tuning copy (deadzones / sensitivity / FFB, plus the legacy
+                // single-source descriptors which RefreshMappingsCore now
+                // ignores in favor of the MappingSet). If the source device
+                // is also mapped to this slot, copy onto that same device —
+                // so "Copy From [a gamepad on another slot]" lands on the
+                // matching gamepad here instead of being re-tagged onto
+                // whatever's selected (e.g. the slot's keyboard, which has no
+                // analog axes — that re-tag produced phantom "keyboard Axis 0"
+                // sources, doubled every row, and overwrote hand-crafted
+                // multi-source rows). Falls back to the selected device when
+                // the source device isn't on this slot.
                 Guid? targetDeviceOverride = null;
                 bool sourceDeviceOnThisSlot = false;
                 if (SettingsManager.UserSettings?.Items != null)

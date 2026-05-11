@@ -933,14 +933,6 @@ namespace PadForge.Common.Input
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, MappingExpression.Compiled>
             _compiledExpressions = new();
 
-        private static IList<float> BoolListToFloats(List<bool> bools)
-        {
-            // Tiny temporary list (button rows rarely exceed 4 sources).
-            var floats = new float[bools.Count];
-            for (int i = 0; i < bools.Count; i++) floats[i] = bools[i] ? 1f : 0f;
-            return floats;
-        }
-
         // ─── Combined-DPad target ─────────────────────────────────────────
 
         private static void EvaluateCombinedDpad(

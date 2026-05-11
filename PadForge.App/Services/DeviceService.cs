@@ -122,6 +122,17 @@ namespace PadForge.Services
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
             }
+            else
+            {
+                // Defensive: an existing PadSetting may have been authored
+                // before the touchpad auto-map shipped, or carried over from
+                // an Xbox/Extended slot via XML load + slot-type change.
+                // Fill empty touchpad mappings when assigning a Touchpad-type
+                // device to a PlayStation slot so the user gets the
+                // auto-map they expect on first assign.
+                FillEmptyTouchpadMappingsIfApplicable(existingPs, udForGuid,
+                    _mainVm.Pads[slotIndex].OutputType);
+            }
 
             // Update the row display.
             selectedRow.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
@@ -180,6 +191,11 @@ namespace PadForge.Services
                 var ps = SettingsManager.CreateDefaultPadSetting(udForGuid, outputType);
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
+            }
+            else
+            {
+                FillEmptyTouchpadMappingsIfApplicable(existingPs, udForGuid,
+                    _mainVm.Pads[slotIndex].OutputType);
             }
 
             row.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
@@ -477,6 +493,32 @@ namespace PadForge.Services
 
             SettingsManager.SlotEnabled[slotIndex] = enabled;
             _settingsService.MarkDirty();
+        }
+
+        /// <summary>Defensive auto-map: when assigning a touchpad-type
+        /// device to a PlayStation slot, fill any EMPTY touchpad mapping
+        /// slots on the existing PadSetting with the canonical
+        /// "Touchpad 0 Finger M X|Y|Down" / "Touchpad 0 Click" descriptors.
+        /// Does NOT touch fields the user has already authored — only
+        /// populates blank ones. Covers cases where the PadSetting was
+        /// authored before the touchpad auto-map shipped, or carried over
+        /// from a non-PlayStation slot type, so first-assign produces the
+        /// expected default touchpad mapping every time.</summary>
+        private static void FillEmptyTouchpadMappingsIfApplicable(PadSetting ps,
+            UserDevice ud, Engine.VirtualControllerType outputType)
+        {
+            if (ps == null || ud == null) return;
+            if (outputType != Engine.VirtualControllerType.PlayStation) return;
+            if (!ud.HasTouchpad) return;
+
+            if (string.IsNullOrEmpty(ps.TouchpadX1))      ps.TouchpadX1      = "Touchpad 0 Finger 0 X";
+            if (string.IsNullOrEmpty(ps.TouchpadY1))      ps.TouchpadY1      = "Touchpad 0 Finger 0 Y";
+            if (string.IsNullOrEmpty(ps.TouchpadContact1)) ps.TouchpadContact1 = "Touchpad 0 Finger 0 Down";
+            if (string.IsNullOrEmpty(ps.TouchpadX2))      ps.TouchpadX2      = "Touchpad 0 Finger 1 X";
+            if (string.IsNullOrEmpty(ps.TouchpadY2))      ps.TouchpadY2      = "Touchpad 0 Finger 1 Y";
+            if (string.IsNullOrEmpty(ps.TouchpadContact2)) ps.TouchpadContact2 = "Touchpad 0 Finger 1 Down";
+            if (string.IsNullOrEmpty(ps.TouchpadClick))   ps.TouchpadClick   = "Touchpad 0 Click";
+            ps.UpdateChecksum();
         }
 
         // ─────────────────────────────────────────────

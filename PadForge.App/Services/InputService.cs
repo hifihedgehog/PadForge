@@ -665,6 +665,9 @@ namespace PadForge.Services
             // ── Macro trigger recording (accumulate buttons) ──
             UpdateMacroTriggerRecording();
 
+            // ── Macro custom-expression per-variable recording (single input) ──
+            UpdateExpressionVariableRecording();
+
             // ── Push ViewModel settings to PadSetting objects (runtime sync) ──
             SyncViewModelToPadSettings();
 
@@ -4221,6 +4224,166 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
         //  Macro trigger recording
         // ─────────────────────────────────────────────
+
+        // ── Per-variable recording state for the macro custom-expression editor ──
+        private MacroExpressionVariable _recordingVariable;
+        private int _recordingVariablePadIndex;
+        private DateTime _recordingVariableStartTime;
+        /// <summary>Snapshot of axis values at the start of variable recording.
+        /// Used to detect deflection rather than absolute axis position.</summary>
+        private Dictionary<Guid, int[]> _recordingVariableAxisBaseline;
+        /// <summary>Snapshot of POV values at recording start (for the same reason).</summary>
+        private Dictionary<Guid, int[]> _recordingVariablePovBaseline;
+        private const float ExpressionVariableAxisDeflectionThreshold = 0.30f;
+        private const double ExpressionVariableRecordTimeoutSeconds = 5;
+
+        /// <summary>Starts recording a single input binding for one variable in
+        /// a macro's custom-expression trigger. The first detected button press,
+        /// POV deflection, or axis deflection on any device assigned to the slot
+        /// is captured and written into the variable.</summary>
+        public void StartExpressionVariableRecording(MacroExpressionVariable variable, int padIndex)
+        {
+            if (variable == null) return;
+            if (_recordingVariable != null && _recordingVariable != variable)
+                StopExpressionVariableRecording();
+
+            _recordingVariable = variable;
+            _recordingVariablePadIndex = padIndex;
+            _recordingVariableStartTime = DateTime.UtcNow;
+            _recordingVariableAxisBaseline = new Dictionary<Guid, int[]>();
+            _recordingVariablePovBaseline = new Dictionary<Guid, int[]>();
+            variable.LiveText = Strings.Instance.Macro_RecordHint;
+            variable.IsRecording = true;
+            CaptureExpressionVariableBaseline();
+        }
+
+        /// <summary>Stops a per-variable recording session without writing a
+        /// new binding. Called when the user clicks the same button again or
+        /// when the recording times out.</summary>
+        public void StopExpressionVariableRecording()
+        {
+            if (_recordingVariable == null) return;
+            _recordingVariable.LiveText = "";
+            _recordingVariable.IsRecording = false;
+            _recordingVariable = null;
+            _recordingVariableAxisBaseline = null;
+            _recordingVariablePovBaseline = null;
+        }
+
+        private void CaptureExpressionVariableBaseline()
+        {
+            int padIndex = _recordingVariablePadIndex;
+            if (padIndex < 0 || padIndex >= InputManager.MaxPads) return;
+            var slotSettings = SettingsManager.GetSettingsForSlot(padIndex);
+            if (slotSettings == null) return;
+            for (int i = 0; i < slotSettings.Count; i++)
+            {
+                var ud = FindUserDevice(slotSettings[i].InstanceGuid);
+                if (ud?.InputState?.Axis != null)
+                    _recordingVariableAxisBaseline[ud.InstanceGuid] = (int[])ud.InputState.Axis.Clone();
+                if (ud?.InputState?.Povs != null)
+                    _recordingVariablePovBaseline[ud.InstanceGuid] = (int[])ud.InputState.Povs.Clone();
+            }
+        }
+
+        /// <summary>Polls live device state once per UI tick during a variable
+        /// recording session. Captures the first detectable input and writes it
+        /// to the variable, then stops.</summary>
+        private void UpdateExpressionVariableRecording()
+        {
+            if (_recordingVariable == null) return;
+            if ((DateTime.UtcNow - _recordingVariableStartTime).TotalSeconds >= ExpressionVariableRecordTimeoutSeconds)
+            {
+                StopExpressionVariableRecording();
+                return;
+            }
+            int padIndex = _recordingVariablePadIndex;
+            if (padIndex < 0 || padIndex >= InputManager.MaxPads) return;
+
+            var slotSettings = SettingsManager.GetSettingsForSlot(padIndex);
+            if (slotSettings == null) return;
+
+            for (int sIdx = 0; sIdx < slotSettings.Count; sIdx++)
+            {
+                var ud = FindUserDevice(slotSettings[sIdx].InstanceGuid);
+                if (ud?.InputState == null) continue;
+
+                // 1. First-button-pressed wins.
+                var buttons = ud.InputState.Buttons;
+                if (buttons != null)
+                {
+                    for (int b = 0; b < buttons.Length; b++)
+                    {
+                        if (buttons[b])
+                        {
+                            FinalizeExpressionVariableInputDevice(ud.InstanceGuid, rawButton: b, pov: null, axis: MacroAxisTarget.None);
+                            return;
+                        }
+                    }
+                }
+
+                // 2. POV deflection from centered baseline.
+                var povs = ud.InputState.Povs;
+                if (povs != null)
+                {
+                    _recordingVariablePovBaseline.TryGetValue(ud.InstanceGuid, out var basePovs);
+                    for (int p = 0; p < povs.Length; p++)
+                    {
+                        int now = povs[p];
+                        int wasCentered = basePovs == null || p >= basePovs.Length || basePovs[p] < 0 ? 1 : 0;
+                        if (now >= 0 && wasCentered == 1)
+                        {
+                            FinalizeExpressionVariableInputDevice(ud.InstanceGuid, rawButton: -1, pov: $"{p}:{now}", axis: MacroAxisTarget.None);
+                            return;
+                        }
+                    }
+                }
+
+                // 3. Axis deflection past threshold from baseline.
+                var axes = ud.InputState.Axis;
+                if (axes != null && _recordingVariableAxisBaseline.TryGetValue(ud.InstanceGuid, out var baseAxes))
+                {
+                    int detected = -1;
+                    float bestDelta = 0f;
+                    int limit = Math.Min(axes.Length, baseAxes.Length);
+                    for (int a = 0; a < limit; a++)
+                    {
+                        float deltaNorm = Math.Abs(axes[a] - baseAxes[a]) / 65535f;
+                        if (deltaNorm > bestDelta) { bestDelta = deltaNorm; detected = a; }
+                    }
+                    if (detected >= 0 && bestDelta >= ExpressionVariableAxisDeflectionThreshold)
+                    {
+                        MacroAxisTarget axTarget = detected switch
+                        {
+                            0 => MacroAxisTarget.LeftStickX,
+                            1 => MacroAxisTarget.LeftStickY,
+                            2 => MacroAxisTarget.LeftTrigger,
+                            3 => MacroAxisTarget.RightStickX,
+                            4 => MacroAxisTarget.RightStickY,
+                            5 => MacroAxisTarget.RightTrigger,
+                            _ => MacroAxisTarget.None
+                        };
+                        if (axTarget != MacroAxisTarget.None)
+                        {
+                            FinalizeExpressionVariableInputDevice(ud.InstanceGuid, rawButton: -1, pov: null, axis: axTarget);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void FinalizeExpressionVariableInputDevice(Guid deviceGuid, int rawButton, string pov, MacroAxisTarget axis)
+        {
+            if (_recordingVariable == null) return;
+            _recordingVariable.Source = MacroTriggerSource.InputDevice;
+            _recordingVariable.DeviceGuid = deviceGuid;
+            _recordingVariable.RawButton = rawButton;
+            _recordingVariable.Pov = pov;
+            _recordingVariable.AxisTarget = axis;
+            _recordingVariable.OutputChannel = MacroOutputChannel.None;
+            StopExpressionVariableRecording();
+        }
 
         /// <summary>
         /// Starts recording button presses for a macro trigger combo.

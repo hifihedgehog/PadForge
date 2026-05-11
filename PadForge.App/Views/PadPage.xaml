@@ -804,6 +804,8 @@
                                                     <TextBlock Text="{Binding DisplaySummary}"
                                                                VerticalAlignment="Center"
                                                                FontStyle="Italic"
+                                                               TextTrimming="CharacterEllipsis"
+                                                               MinWidth="120"
                                                                Foreground="{DynamicResource TextFillColorSecondaryBrush}">
                                                         <TextBlock.Style>
                                                             <Style TargetType="TextBlock">
@@ -816,6 +818,30 @@
                                                             </Style>
                                                         </TextBlock.Style>
                                                     </TextBlock>
+                                                    <!-- Record / Stop button, Input-only -->
+                                                    <Button Command="{Binding RecordCommand}" Width="36" Margin="6,0,2,0">
+                                                        <Button.Style>
+                                                            <Style TargetType="Button">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Source}" Value="{x:Static vm:MacroTriggerSource.OutputController}">
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Button.Style>
+                                                        <TextBlock Text="{Binding RecordIcon}" FontFamily="Segoe MDL2 Assets"/>
+                                                        <Button.ToolTip>
+                                                            <TextBlock Text="{Binding RecordTooltip}"/>
+                                                        </Button.ToolTip>
+                                                    </Button>
+                                                    <!-- Clear binding button (always visible) -->
+                                                    <Button Command="{Binding ClearBindingCommand}" Width="36" Margin="0,0,2,0">
+                                                        <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
+                                                        <Button.ToolTip>
+                                                            <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
+                                                        </Button.ToolTip>
+                                                    </Button>
                                                 </StackPanel>
                                             </Border>
                                         </DataTemplate>

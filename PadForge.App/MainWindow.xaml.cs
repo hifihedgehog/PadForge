@@ -506,25 +506,28 @@ namespace PadForge
                 // descriptors from the new device's PadSetting).
                 SettingsService.RefreshMappingSetsFromLegacy();
 
-                // Sync mapping rows + dropdown choices for EVERY pad,
-                // regardless of whether SelectedMappedDevice is set or
-                // valid. The previous version only ran when the slot
-                // had a selected device, so unassigning the only
-                // device on a slot left the Mappings tab pointing at
-                // the dropped device's stale InputChoice + descriptor.
-                // RefreshMappingsToViewModel handles per-VC mappings
-                // (no per-device tuning), and RefreshAvailableInputsForSlot
-                // rebuilds the picker's flat cross-device list so the
-                // dropped device's InputChoice no longer matches and
-                // SyncSelectedInputFromDescriptor clears stale picks.
+                // Two distinct refreshes per pad. They're independent
+                // now that the Mappings tab is fully decoupled from the
+                // assigned-device dropdown:
+                //   • RefreshMappingsToViewModel — per-VC mapping pass,
+                //     reads the slot's MappingSet (just updated by
+                //     RefreshMappingSetsFromLegacy above with the new
+                //     device's auto-mapped sources). Always runs.
+                //   • LoadPadSettingToViewModel — per-device TUNING load
+                //     (deadzones, FFB, lighting, etc.). Runs only when
+                //     a device is selected, since tuning needs a device.
+                // Previously these were collapsed into a single call,
+                // which meant the mapping refresh was gated on having a
+                // selected device — that broke auto-mapping visibility
+                // after first assignment when the dropdown was still
+                // pointing at Empty.
                 for (int i = 0; i < _viewModel.Pads.Count; i++)
                 {
                     var padVm = _viewModel.Pads[i];
+                    InputService.RefreshMappingsToViewModel(padVm);
                     var selected = padVm.SelectedMappedDevice;
                     if (selected != null && selected.InstanceGuid != Guid.Empty)
                         InputService.LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
-                    else
-                        InputService.RefreshMappingsToViewModel(padVm);
                     _inputService.RefreshAvailableInputsForSlot(padVm);
                 }
             };

@@ -558,6 +558,18 @@
   <data name="Pad_Formula_Var_PositionC" xml:space="preserve"><value>Derde bron</value></data>
   <data name="Pad_Formula_Var_PositionD" xml:space="preserve"><value>Vierde bron</value></data>
   <data name="Pad_Formula_Var_NotYetMapped" xml:space="preserve"><value>nog niet toegewezen</value></data>
+  <data name="Pad_Formula_Error_UnexpectedTokenAtEnd" xml:space="preserve"><value>Onverwacht token op positie {0}: '{1}'</value></data>
+  <data name="Pad_Formula_Error_InvalidNumber" xml:space="preserve"><value>Ongeldig getal '{0}' op positie {1}</value></data>
+  <data name="Pad_Formula_Error_SingleEqualsNotSupported" xml:space="preserve"><value>Enkel '=' niet ondersteund op positie {0}; gebruik '==' voor gelijkheid</value></data>
+  <data name="Pad_Formula_Error_UnexpectedCharacter" xml:space="preserve"><value>Onverwacht teken '{0}' op positie {1}</value></data>
+  <data name="Pad_Formula_Error_ExpectedColonInTernary" xml:space="preserve"><value>':' verwacht in ternaire expressie</value></data>
+  <data name="Pad_Formula_Error_ExpectedRParen" xml:space="preserve"><value>')' verwacht</value></data>
+  <data name="Pad_Formula_Error_ExpectedRParenAfterArgs" xml:space="preserve"><value>')' verwacht na functieargumenten</value></data>
+  <data name="Pad_Formula_Error_ExpectedRBracketAfterIndex" xml:space="preserve"><value>']' verwacht na bronindex</value></data>
+  <data name="Pad_Formula_Error_ExpectedTokenSuffix" xml:space="preserve"><value> ('{0}' gevonden op positie {1})</value></data>
+  <data name="Pad_Formula_Error_UnknownIdentifier" xml:space="preserve"><value>Onbekende identifier '{0}' op positie {1}</value></data>
+  <data name="Pad_Formula_Error_UnexpectedToken" xml:space="preserve"><value>Onverwacht token '{0}' op positie {1}</value></data>
+  <data name="Pad_Formula_Error_UnexpectedParseError" xml:space="preserve"><value>Onverwachte parserfout: {0}</value></data>
   <data name="Curve_Linear" xml:space="preserve"><value>Lineair</value></data>
   <data name="Curve_Smooth" xml:space="preserve"><value>Zacht</value></data>
   <data name="Curve_Aggressive" xml:space="preserve"><value>Agressief</value></data>

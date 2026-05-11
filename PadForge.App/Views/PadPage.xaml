@@ -241,20 +241,25 @@
                     </StackPanel>
                 </RadioButton>
 
-                <!-- [Macros] -->
-                <RadioButton Tag="1" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
-                    <TextBlock Text="{Binding Pad_Macros, Source={x:Static strings:Strings.Instance}}" FontSize="15"/>
-                </RadioButton>
-
-                <!-- [Mappings] — per-VC scope (Issue #61 multi-source).
-                     Sits before the Device dropdown because the mapping
-                     table sources from any device assigned to this VC,
-                     not just the selected one. Sticks/Triggers/FFB stay
-                     after the dropdown — they shape physical-input
-                     characteristics, so they remain device-scoped. -->
+<!-- [Mappings] — per-VC scope (Issue #61 multi-source).
+                     Sits before the Device dropdown (the table sources
+                     from any device assigned to this VC, not just the
+                     selected one) AND before Macros (it's the primary
+                     config tab — Macros is the layered-effect surface
+                     that sits on top of a configured mapping table).
+                     Sticks/Triggers/FFB stay after the dropdown — they
+                     shape physical-input characteristics, so they remain
+                     device-scoped. Tag stays 2 to keep SelectedConfigTab
+                     numbering stable (TabControl content + the visibility-
+                     kick logic in PadPage.xaml.cs key off these ints). -->
                 <RadioButton Tag="2" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
                              AutomationProperties.AutomationId="MappingsTab">
                     <TextBlock Text="{Binding Pad_Mappings, Source={x:Static strings:Strings.Instance}}" FontSize="15"/>
+                </RadioButton>
+
+                <!-- [Macros] -->
+                <RadioButton Tag="1" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
+                    <TextBlock Text="{Binding Pad_Macros, Source={x:Static strings:Strings.Instance}}" FontSize="15"/>
                 </RadioButton>
 
                 <!-- | separator -->

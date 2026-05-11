@@ -828,6 +828,12 @@ public class Strings : INotifyPropertyChanged
     public string Macro_OnRelease => Get("Macro_OnRelease");
     public string Macro_WhileHeld => Get("Macro_WhileHeld");
     public string Macro_Always => Get("Macro_Always");
+    public string Macro_CustomExpression => Get("Macro_CustomExpression");
+    public string Macro_Expression_Header => Get("Macro_Expression_Header");
+    public string Macro_Expression_Tooltip => Get("Macro_Expression_Tooltip");
+    public string Macro_Expression_Variables => Get("Macro_Expression_Variables");
+    public string Macro_Expression_AddVariable => Get("Macro_Expression_AddVariable");
+    public string Macro_Expression_Hint => Get("Macro_Expression_Hint");
     public string Macro_Source => Get("Macro_Source");
     public string Macro_InputDevice => Get("Macro_InputDevice");
     public string Macro_OutputController => Get("Macro_OutputController");

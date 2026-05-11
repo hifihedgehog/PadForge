@@ -694,11 +694,142 @@
                                     <ComboBoxItem Content="{Binding Macro_OnRelease, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.OnRelease}"/>
                                     <ComboBoxItem Content="{Binding Macro_WhileHeld, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.WhileHeld}"/>
                                     <ComboBoxItem Content="{Binding Macro_Always, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.Always}"/>
+                                    <ComboBoxItem Content="{Binding Macro_CustomExpression, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.CustomExpression}"/>
                                 </ComboBox>
                             </StackPanel>
 
-                            <!-- Trigger combination (hidden when Always mode) -->
-                            <StackPanel Visibility="{Binding IsNotAlwaysMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <!-- Custom-expression editor (visible only when TriggerMode = CustomExpression).
+                                 Sits ABOVE the legacy trigger-combo block so it shares the same
+                                 spot in the layout. -->
+                            <StackPanel Visibility="{Binding IsCustomExpressionMode, Converter={StaticResource BoolToVisibilityConverter}}"
+                                        Margin="0,0,0,8">
+                                <TextBlock Text="{Binding Macro_Expression_Header, Source={x:Static strings:Strings.Instance}}"
+                                           FontWeight="SemiBold"
+                                           Margin="0,0,0,4"
+                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                <TextBox Text="{Binding TriggerExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         FontFamily="Consolas"
+                                         AcceptsReturn="False"
+                                         Padding="6,4"
+                                         Margin="0,0,0,4">
+                                    <TextBox.ToolTip>
+                                        <TextBlock Text="{Binding Macro_Expression_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    </TextBox.ToolTip>
+                                </TextBox>
+                                <TextBlock Text="{Binding CustomExpressionStatus}"
+                                           FontSize="11" Margin="0,0,0,6"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsCustomExpressionInvalid}" Value="True">
+                                                    <Setter Property="Foreground" Value="#E81123"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsCustomExpressionWarning}" Value="True">
+                                                    <Setter Property="Foreground" Value="#CA5010"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+
+                                <!-- Variable list. Each row binds one variable to either an
+                                     input-device input or an output-controller channel. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="{Binding Macro_Expression_Variables, Source={x:Static strings:Strings.Instance}}"
+                                               FontWeight="SemiBold"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,8,0"/>
+                                    <Button Content="{Binding Macro_Expression_AddVariable, Source={x:Static strings:Strings.Instance}}"
+                                            Command="{Binding AddExpressionVariableCommand}"
+                                            Padding="8,2"/>
+                                </StackPanel>
+                                <ItemsControl ItemsSource="{Binding TriggerExpressionVariables}"
+                                              AlternationCount="32">
+                                    <ItemsControl.ItemContainerStyle>
+                                        <Style TargetType="ContentPresenter">
+                                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                        </Style>
+                                    </ItemsControl.ItemContainerStyle>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="{DynamicResource TextFillColorTertiaryBrush}"
+                                                    BorderThickness="1" CornerRadius="3"
+                                                    Padding="6,4" Margin="0,0,0,4">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource IndexToLetterConverter}}"
+                                                               VerticalAlignment="Center"
+                                                               Margin="0,0,8,0"
+                                                               FontFamily="Consolas"
+                                                               FontWeight="SemiBold"/>
+                                                    <ComboBox SelectedValue="{Binding Source, Mode=TwoWay}"
+                                                              SelectedValuePath="Tag" MinWidth="140" Margin="0,0,8,0">
+                                                        <ComboBoxItem Content="{Binding Macro_InputDevice, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerSource.InputDevice}"/>
+                                                        <ComboBoxItem Content="{Binding Macro_OutputController, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerSource.OutputController}"/>
+                                                    </ComboBox>
+                                                    <ComboBox SelectedValue="{Binding OutputChannel, Mode=TwoWay}"
+                                                              SelectedValuePath="Tag" MinWidth="100" Margin="0,0,8,0">
+                                                        <ComboBox.Style>
+                                                            <Style TargetType="ComboBox">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Source}" Value="{x:Static vm:MacroTriggerSource.OutputController}">
+                                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </ComboBox.Style>
+                                                        <ComboBoxItem Content="A"  Tag="{x:Static vm:MacroOutputChannel.A}"/>
+                                                        <ComboBoxItem Content="B"  Tag="{x:Static vm:MacroOutputChannel.B}"/>
+                                                        <ComboBoxItem Content="X"  Tag="{x:Static vm:MacroOutputChannel.X}"/>
+                                                        <ComboBoxItem Content="Y"  Tag="{x:Static vm:MacroOutputChannel.Y}"/>
+                                                        <ComboBoxItem Content="LB" Tag="{x:Static vm:MacroOutputChannel.LB}"/>
+                                                        <ComboBoxItem Content="RB" Tag="{x:Static vm:MacroOutputChannel.RB}"/>
+                                                        <ComboBoxItem Content="LS" Tag="{x:Static vm:MacroOutputChannel.LS}"/>
+                                                        <ComboBoxItem Content="RS" Tag="{x:Static vm:MacroOutputChannel.RS}"/>
+                                                        <ComboBoxItem Content="Back"  Tag="{x:Static vm:MacroOutputChannel.Back}"/>
+                                                        <ComboBoxItem Content="Start" Tag="{x:Static vm:MacroOutputChannel.Start}"/>
+                                                        <ComboBoxItem Content="Guide" Tag="{x:Static vm:MacroOutputChannel.Guide}"/>
+                                                        <ComboBoxItem Content="DpadUp"    Tag="{x:Static vm:MacroOutputChannel.DpadUp}"/>
+                                                        <ComboBoxItem Content="DpadDown"  Tag="{x:Static vm:MacroOutputChannel.DpadDown}"/>
+                                                        <ComboBoxItem Content="DpadLeft"  Tag="{x:Static vm:MacroOutputChannel.DpadLeft}"/>
+                                                        <ComboBoxItem Content="DpadRight" Tag="{x:Static vm:MacroOutputChannel.DpadRight}"/>
+                                                        <ComboBoxItem Content="LT" Tag="{x:Static vm:MacroOutputChannel.LT}"/>
+                                                        <ComboBoxItem Content="RT" Tag="{x:Static vm:MacroOutputChannel.RT}"/>
+                                                        <ComboBoxItem Content="LX" Tag="{x:Static vm:MacroOutputChannel.LX}"/>
+                                                        <ComboBoxItem Content="LY" Tag="{x:Static vm:MacroOutputChannel.LY}"/>
+                                                        <ComboBoxItem Content="RX" Tag="{x:Static vm:MacroOutputChannel.RX}"/>
+                                                        <ComboBoxItem Content="RY" Tag="{x:Static vm:MacroOutputChannel.RY}"/>
+                                                    </ComboBox>
+                                                    <TextBlock Text="{Binding DisplaySummary}"
+                                                               VerticalAlignment="Center"
+                                                               FontStyle="Italic"
+                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Source}" Value="{x:Static vm:MacroTriggerSource.OutputController}">
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <TextBlock Text="{Binding Macro_Expression_Hint, Source={x:Static strings:Strings.Instance}}"
+                                           FontSize="11" TextWrapping="Wrap"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Margin="0,4,0,0"/>
+                            </StackPanel>
+
+                            <!-- Trigger combination (visible only when one of OnPress / OnRelease / WhileHeld) -->
+                            <StackPanel Visibility="{Binding ShowsTriggerComboEditor, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <TextBlock Text="{Binding Macro_Trigger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
                                            Margin="0,0,0,4"
                                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>

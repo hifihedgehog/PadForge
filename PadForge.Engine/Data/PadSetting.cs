@@ -1043,6 +1043,17 @@ namespace PadForge.Engine.Data
             nameof(TouchpadClick),
         };
 
+        /// <summary>Optional payload populated by the clipboard copy
+        /// path with this device's slice of the slot's MappingSet
+        /// rows — i.e. every Base/Shift row where this device's
+        /// GUID appears in Sources, with only those device-owned
+        /// Sources retained. Round-trips multi-source ExtraSources,
+        /// CombineMode and CombineExpression across Copy / Paste /
+        /// Copy From. Not serialised by the on-disk XML path.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public System.Collections.Generic.List<MappingRow> DeviceScopedMultiSourceRows { get; set; }
+
         /// <summary>
         /// Serializes all copyable mapping/deadzone/FF properties to a JSON string.
         /// Used for clipboard copy/paste of controller settings.
@@ -1099,6 +1110,17 @@ namespace PadForge.Engine.Data
                 dict["__MappingDeadZones"] = JsonSerializer.Serialize(mdzList);
             }
 
+            // Issue #61 — round-trip the slot's multi-source row data
+            // for this device. Each row snapshot carries Target,
+            // LayerMask, CombineMode, CombineExpression, and only
+            // the Sources owned by this device. On paste, the apply
+            // path substitutes the target device's GUID into those
+            // Sources before merging into the target slot's MappingSet.
+            if (DeviceScopedMultiSourceRows != null && DeviceScopedMultiSourceRows.Count > 0)
+            {
+                dict["__MultiSourceRows"] = JsonSerializer.Serialize(DeviceScopedMultiSourceRows);
+            }
+
             return JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true });
         }
 
@@ -1151,6 +1173,16 @@ namespace PadForge.Engine.Data
                             ps.KbmMappingEntries = DeserializeMappingArray(kvp.Value);
                         else if (kvp.Key == "__MappingDeadZones")
                             ps.MappingDeadZoneEntries = DeserializeMappingArray(kvp.Value);
+                        else if (kvp.Key == "__MultiSourceRows")
+                        {
+                            try
+                            {
+                                ps.DeviceScopedMultiSourceRows =
+                                    JsonSerializer.Deserialize<System.Collections.Generic.List<MappingRow>>(kvp.Value)
+                                    ?? new System.Collections.Generic.List<MappingRow>();
+                            }
+                            catch { /* malformed payload — paste degrades to single-source */ }
+                        }
                         continue;
                     }
                     var prop = type.GetProperty(kvp.Key);

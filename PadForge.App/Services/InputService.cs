@@ -2208,6 +2208,13 @@ namespace PadForge.Services
             // Copy all settings from the source.
             ps.CopyFrom(source);
 
+            // Issue #61 — also paste the multi-source ExtraSources +
+            // CombineMode + Custom formula payload onto the target
+            // slot's MappingSet, with the target device's GUID
+            // substituted into each Source.
+            ApplyMultiSourceRowsToCurrentDevice(padIndex, selected.InstanceGuid,
+                source.DeviceScopedMultiSourceRows);
+
             // Reload the ViewModel to reflect the new values.
             LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
             PopulateAvailableInputs(padVm, FindUserDevice(selected.InstanceGuid));
@@ -2237,9 +2244,149 @@ namespace PadForge.Services
             // Copy with cross-layout translation.
             ps.CopyFromTranslated(source, sourceType, sourceIsExtended, targetType, targetIsExtended);
 
+            // Multi-source rows only round-trip when source and target
+            // share a layout — cross-layout target names don't line up.
+            if (MappingTranslation.IsSameLayout(sourceType, sourceIsExtended, targetType, targetIsExtended))
+            {
+                ApplyMultiSourceRowsToCurrentDevice(padIndex, selected.InstanceGuid,
+                    source.DeviceScopedMultiSourceRows);
+            }
+
             // Reload the ViewModel to reflect the new values.
             LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
             PopulateAvailableInputs(padVm, FindUserDevice(selected.InstanceGuid));
+        }
+
+        /// <summary>Issue #61 paste helper. For each row in
+        /// <paramref name="deviceRows"/> (a snapshot of the source
+        /// slot's multi-source rows where the source device
+        /// participated), find or create the matching row in the
+        /// target slot's MappingSet, remove the target device's
+        /// existing Sources contribution, then add the snapshot's
+        /// Sources with their DeviceGuid substituted for the target
+        /// device's GUID. Other devices' contributions on the same
+        /// row are preserved.</summary>
+        private static void ApplyMultiSourceRowsToCurrentDevice(int padIndex,
+            Guid targetDeviceGuid,
+            System.Collections.Generic.IList<Engine.Data.MappingRow> deviceRows)
+        {
+            if (deviceRows == null || deviceRows.Count == 0) return;
+            if (padIndex < 0 || padIndex >= SettingsManager.SlotMappingSets.Length) return;
+
+            var ms = SettingsManager.SlotMappingSets[padIndex]
+                  ?? (SettingsManager.SlotMappingSets[padIndex] = new Engine.Data.MappingSet());
+            string targetGuid = targetDeviceGuid.ToString().ToLowerInvariant();
+
+            foreach (var srcRow in deviceRows)
+            {
+                if (srcRow == null || string.IsNullOrEmpty(srcRow.Target)) continue;
+                string layer = string.IsNullOrEmpty(srcRow.LayerMask) ? "Base" : srcRow.LayerMask;
+
+                Engine.Data.MappingRow targetRow = null;
+                foreach (var r in ms.Rows)
+                {
+                    if (r == null) continue;
+                    if (string.Equals(r.Target, srcRow.Target, StringComparison.Ordinal)
+                        && string.Equals(r.LayerMask ?? "Base", layer, StringComparison.Ordinal))
+                    { targetRow = r; break; }
+                }
+                if (targetRow == null)
+                {
+                    targetRow = new Engine.Data.MappingRow
+                    {
+                        Target = srcRow.Target,
+                        LayerMask = layer,
+                        CombineMode = srcRow.CombineMode ?? "",
+                        CombineExpression = srcRow.CombineExpression ?? "",
+                        Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
+                    };
+                    ms.Rows.Add(targetRow);
+                }
+                else
+                {
+                    // Carry over the source row's combine choice so a
+                    // user-authored Sum / Average / Custom comes along.
+                    targetRow.CombineMode = srcRow.CombineMode ?? "";
+                    targetRow.CombineExpression = srcRow.CombineExpression ?? "";
+                }
+
+                // Strip the target device's existing Sources — we're
+                // replacing this device's contribution wholesale.
+                if (targetRow.Sources != null)
+                {
+                    targetRow.Sources.RemoveAll(s =>
+                        s != null
+                        && string.Equals(s.DeviceGuid ?? "", targetGuid, StringComparison.OrdinalIgnoreCase));
+                }
+                else
+                {
+                    targetRow.Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>();
+                }
+
+                // Inject the snapshot's Sources with target device GUID.
+                if (srcRow.Sources != null)
+                {
+                    foreach (var s in srcRow.Sources)
+                    {
+                        if (s == null) continue;
+                        targetRow.Sources.Add(new Engine.Data.MappingSource
+                        {
+                            Kind = s.Kind ?? "Direct",
+                            DeviceGuid = targetGuid,
+                            Descriptor = s.Descriptor ?? "",
+                            Invert = s.Invert,
+                            HalfAxis = s.HalfAxis,
+                            DeadZone = s.DeadZone,
+                            ParamUp = s.ParamUp ?? "",
+                            ParamDown = s.ParamDown ?? "",
+                            ParamRate = s.ParamRate,
+                            ParamSticky = s.ParamSticky,
+                            ParamMin = s.ParamMin,
+                            ParamMax = s.ParamMax,
+                            ParamModifier = s.ParamModifier ?? "",
+                        });
+                    }
+                }
+            }
+        }
+
+        /// <summary>Issue #61 copy helper. Builds the per-device slice
+        /// of a slot's MappingSet rows: every row where the source
+        /// device's GUID appears in Sources, with only those device-
+        /// owned Sources retained. Other devices' contributions are
+        /// stripped so a "copy from device A" snapshot describes
+        /// only A's authored mappings.</summary>
+        public static System.Collections.Generic.List<Engine.Data.MappingRow>
+            ExtractDeviceScopedRowsForSlot(int padIndex, Guid sourceDeviceGuid)
+        {
+            var result = new System.Collections.Generic.List<Engine.Data.MappingRow>();
+            if (padIndex < 0 || padIndex >= SettingsManager.SlotMappingSets.Length) return result;
+            var ms = SettingsManager.SlotMappingSets[padIndex];
+            if (ms?.Rows == null) return result;
+
+            string srcGuid = sourceDeviceGuid.ToString().ToLowerInvariant();
+            foreach (var row in ms.Rows)
+            {
+                if (row?.Sources == null || row.Sources.Count == 0) continue;
+                var deviceSources = new System.Collections.Generic.List<Engine.Data.MappingSource>();
+                foreach (var s in row.Sources)
+                {
+                    if (s == null) continue;
+                    if (string.Equals(s.DeviceGuid ?? "", srcGuid, StringComparison.OrdinalIgnoreCase))
+                        deviceSources.Add(s);
+                }
+                if (deviceSources.Count == 0) continue;
+
+                result.Add(new Engine.Data.MappingRow
+                {
+                    Target = row.Target,
+                    LayerMask = row.LayerMask ?? "Base",
+                    CombineMode = row.CombineMode ?? "",
+                    CombineExpression = row.CombineExpression ?? "",
+                    Sources = deviceSources,
+                });
+            }
+            return result;
         }
 
         /// <summary>

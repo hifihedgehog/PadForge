@@ -1732,77 +1732,52 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Maps touchpad input from CustomInputState to a TouchpadState.
+        /// Multi-source / combine modes / Custom formulas apply to every
+        /// touchpad target (X/Y, contact, click) — same as every other VC
+        /// type. The primary source's descriptor pattern picks the OUTPUT
+        /// mode for the X/Y position:
         ///
-        /// Two modes per finger:
-        /// 1. SDL touchpad passthrough — descriptor starts with "Touchpad" → direct from
-        ///    CustomInputState.TouchpadFingers[]/TouchpadDown[] (DS4/DualSense/Steam Deck)
-        /// 2. Stick-to-touchpad — descriptor is a standard axis (e.g. "Axis 0") → stick
-        ///    deflection drives a virtual cursor via velocity accumulation
+        ///   PASSTHROUGH — Sources[0] starts with "Touchpad" (a finger-X
+        ///     or finger-Y descriptor). The combined per-frame value is
+        ///     written as ABSOLUTE position; extra sources contribute via
+        ///     the row's combine mode (e.g. Average two physical
+        ///     touchpads, MaxAbs whichever finger is furthest from
+        ///     center). Passthrough sources are routed through
+        ///     SourceCoercion's touchpad-axis reader (added with this
+        ///     pass) so they coexist with stick / button sources in the
+        ///     same row.
         ///
-        /// TouchpadClick and TouchpadContact always use the standard button pipeline.
+        ///   STICK-TO-CURSOR — Sources[0] is anything else (axis, button,
+        ///     POV). The combined value is integrated per frame as
+        ///     cursor velocity, exactly like the legacy single-source
+        ///     stick-to-cursor path.
+        ///
+        /// Mode detection looks at the FIRST source's descriptor (or the
+        /// legacy ps.TouchpadX1/X2 string when no MappingSet row exists)
+        /// so a user's choice of "physical touchpad" vs "stick-to-cursor"
+        /// stays expressed in the source they pick first.
         /// </summary>
         private static TouchpadState MapInputToTouchpad(CustomInputState state, PadSetting ps, TouchpadState prev,
             MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
         {
             var tp = new TouchpadState { PacketCounter = prev.PacketCounter };
-            // Touchpad X/Y stay on the legacy path: passthrough mode reads
-            // state.TouchpadFingers directly, and stick-to-cursor velocity
-            // integrates per frame — neither composes sensibly under combine
-            // modes. Contact and click are bool-class targets that route
-            // through the MappingSet like every other VC type.
             int gt = TryParseIntStatic(ps.AxisToButtonThreshold, 50);
 
-            // ── Finger 0 ──
-            // Empty descriptor = no touchpad output for this finger.
-            // The "DualSense → PlayStation slot exposes its touchpad
-            // out of the box" default-experience is handled by
-            // CreateDefaultPadSetting populating these descriptors
-            // explicitly — no engine-side empty-string passthrough is
-            // needed, and removing it lets Clear All / per-row unmap
-            // actually mean "no output."
-            bool isTouchpadSource0 = IsTouchpadDescriptor(ps.TouchpadX1);
-            if (isTouchpadSource0)
-            {
-                tp.X0 = state.TouchpadFingers[0];
-                tp.Y0 = state.TouchpadFingers[1];
-                tp.Down0 = state.TouchpadDown[0];
-            }
-            else if (!string.IsNullOrEmpty(ps.TouchpadX1))
-            {
-                // Stick-to-touchpad: read axis value and accumulate as cursor velocity
-                float stickX = MapToThumbAxisWithNeg(state, ps.TouchpadX1, null) / 32768f;
-                float stickY = MapToThumbAxisWithNeg(state, ps.TouchpadY1, null) / 32768f;
-                const float sensitivity = 0.015f;
-                tp.X0 = Math.Clamp(prev.X0 + stickX * sensitivity, 0f, 1f);
-                tp.Y0 = Math.Clamp(prev.Y0 + stickY * sensitivity, 0f, 1f);
-                tp.Down0 = EvalTouchpadButton(state, ps, mappingSet, thisDeviceGuid, slotIndex,
-                    "TouchpadContact1", ps.TouchpadContact1, gt,
-                    out bool contact0Found)
-                    || (!contact0Found && (Math.Abs(stickX) > 0.1f || Math.Abs(stickY) > 0.1f));
-            }
-            // else: descriptor explicitly empty → no output for finger 0.
+            EvalTouchpadFinger(state, ps, mappingSet, thisDeviceGuid, slotIndex, gt,
+                xKey: "TouchpadX1", yKey: "TouchpadY1", contactKey: "TouchpadContact1",
+                legacyXDesc: ps.TouchpadX1, legacyYDesc: ps.TouchpadY1,
+                legacyContactDesc: ps.TouchpadContact1,
+                prevX: prev.X0, prevY: prev.Y0,
+                physicalFingerIdx: 0,
+                out tp.X0, out tp.Y0, out tp.Down0);
 
-            // ── Finger 1 ──
-            bool isTouchpadSource1 = IsTouchpadDescriptor(ps.TouchpadX2);
-            if (isTouchpadSource1)
-            {
-                tp.X1 = state.TouchpadFingers[3];
-                tp.Y1 = state.TouchpadFingers[4];
-                tp.Down1 = state.TouchpadDown[1];
-            }
-            else if (!string.IsNullOrEmpty(ps.TouchpadX2))
-            {
-                float stickX = MapToThumbAxisWithNeg(state, ps.TouchpadX2, null) / 32768f;
-                float stickY = MapToThumbAxisWithNeg(state, ps.TouchpadY2, null) / 32768f;
-                const float sensitivity = 0.015f;
-                tp.X1 = Math.Clamp(prev.X1 + stickX * sensitivity, 0f, 1f);
-                tp.Y1 = Math.Clamp(prev.Y1 + stickY * sensitivity, 0f, 1f);
-                tp.Down1 = EvalTouchpadButton(state, ps, mappingSet, thisDeviceGuid, slotIndex,
-                    "TouchpadContact2", ps.TouchpadContact2, gt,
-                    out bool contact1Found)
-                    || (!contact1Found && (Math.Abs(stickX) > 0.1f || Math.Abs(stickY) > 0.1f));
-            }
-            // else: descriptor explicitly empty → no output for finger 1.
+            EvalTouchpadFinger(state, ps, mappingSet, thisDeviceGuid, slotIndex, gt,
+                xKey: "TouchpadX2", yKey: "TouchpadY2", contactKey: "TouchpadContact2",
+                legacyXDesc: ps.TouchpadX2, legacyYDesc: ps.TouchpadY2,
+                legacyContactDesc: ps.TouchpadContact2,
+                prevX: prev.X1, prevY: prev.Y1,
+                physicalFingerIdx: 1,
+                out tp.X1, out tp.Y1, out tp.Down1);
 
             // ── Touchpad click ──
             // Empty descriptor = no click output (matches finger
@@ -1843,6 +1818,154 @@ namespace PadForge.Common.Input
             }
             found = false;
             return false;
+        }
+
+        /// <summary>Evaluates one virtual touchpad finger (X/Y/contact).
+        /// Mode is determined by the primary source's descriptor pattern —
+        /// a touchpad-passthrough descriptor produces absolute position,
+        /// anything else produces stick-to-cursor velocity. Both modes are
+        /// fully multi-source-capable through the MappingSet path; the
+        /// legacy per-device PadSetting descriptors are kept as a fallback
+        /// for configs that haven't been resaved since the per-VC
+        /// MappingSet shipped.</summary>
+        private static void EvalTouchpadFinger(CustomInputState state, PadSetting ps,
+            MappingSet mappingSet, string thisDeviceGuid, int slotIndex, int globalThreshold,
+            string xKey, string yKey, string contactKey,
+            string legacyXDesc, string legacyYDesc, string legacyContactDesc,
+            float prevX, float prevY,
+            int physicalFingerIdx,
+            out float outX, out float outY, out bool outDown)
+        {
+            outX = prevX;
+            outY = prevY;
+            outDown = false;
+
+            // Resolve the primary source's descriptor — MappingSet first
+            // (Sources[0]) for the X target, legacy ps.TouchpadX? as the
+            // fallback. The mode (passthrough vs velocity) keys off this
+            // ONE descriptor: extra sources on the row contribute via the
+            // row's combine mode, but they don't switch the output mode
+            // out from under the primary.
+            string primaryXDesc = ResolvePrimaryDescriptor(mappingSet, xKey, legacyXDesc);
+            bool isPassthroughMode = IsTouchpadDescriptor(primaryXDesc);
+
+            // Does the row exist in the MappingSet? Drives whether we use
+            // the multi-source/combine evaluator or the legacy single-
+            // descriptor reader.
+            bool xViaMappingSet = TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
+                slotIndex, xKey, out short xCombined);
+            bool yViaMappingSet = TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
+                slotIndex, yKey, out short yCombined);
+            bool anyXMapping = xViaMappingSet || !string.IsNullOrEmpty(legacyXDesc);
+
+            if (!anyXMapping)
+                return;  // No mapping at all → no output for this finger.
+
+            if (isPassthroughMode)
+            {
+                // Combined bipolar [-1..+1] → absolute position [0..1].
+                float xBipolar = xViaMappingSet
+                    ? xCombined / 32767f
+                    : MapPassthroughLegacyAxisToBipolar(state, legacyXDesc, physicalFingerIdx, isY: false);
+                float yBipolar = yViaMappingSet
+                    ? yCombined / 32767f
+                    : MapPassthroughLegacyAxisToBipolar(state, legacyYDesc, physicalFingerIdx, isY: true);
+                outX = Math.Clamp((xBipolar + 1f) * 0.5f, 0f, 1f);
+                outY = Math.Clamp((yBipolar + 1f) * 0.5f, 0f, 1f);
+
+                // Contact: MappingSet-first; falls back to legacy descriptor;
+                // falls back to the physical finger's Down bit so the
+                // out-of-the-box DualSense→PlayStation passthrough lights up
+                // without the user authoring a contact mapping explicitly.
+                bool contactPressed = EvalTouchpadButton(state, ps, mappingSet, thisDeviceGuid, slotIndex,
+                    contactKey, legacyContactDesc, globalThreshold, out bool contactFound);
+                outDown = contactFound
+                    ? contactPressed
+                    : (state.TouchpadDown != null && physicalFingerIdx < state.TouchpadDown.Length
+                       && state.TouchpadDown[physicalFingerIdx]);
+            }
+            else
+            {
+                // Stick-to-cursor: combined bipolar value is integrated as
+                // per-frame cursor velocity. Same sensitivity as the legacy
+                // path so existing configs feel identical after the upgrade.
+                float stickX = xViaMappingSet
+                    ? xCombined / 32768f
+                    : MapToThumbAxisWithNeg(state, legacyXDesc, null) / 32768f;
+                float stickY = yViaMappingSet
+                    ? yCombined / 32768f
+                    : MapToThumbAxisWithNeg(state, legacyYDesc, null) / 32768f;
+                const float sensitivity = 0.015f;
+                outX = Math.Clamp(prevX + stickX * sensitivity, 0f, 1f);
+                outY = Math.Clamp(prevY + stickY * sensitivity, 0f, 1f);
+
+                // Contact: explicit mapping wins; else implicit-on-deflection
+                // (matches legacy stick-to-cursor behavior).
+                bool contactPressed = EvalTouchpadButton(state, ps, mappingSet, thisDeviceGuid, slotIndex,
+                    contactKey, legacyContactDesc, globalThreshold, out bool contactFound);
+                outDown = contactFound
+                    ? contactPressed
+                    : (Math.Abs(stickX) > 0.1f || Math.Abs(stickY) > 0.1f);
+            }
+        }
+
+        /// <summary>Returns the primary source's descriptor for a target.
+        /// Reads the Base-layer MappingSet row's <c>Sources[0].Descriptor</c>
+        /// when present; otherwise returns the legacy
+        /// PadSetting-stored descriptor.</summary>
+        private static string ResolvePrimaryDescriptor(MappingSet mappingSet, string targetName, string legacyDescriptor)
+        {
+            if (mappingSet?.Rows != null)
+            {
+                for (int i = 0; i < mappingSet.Rows.Count; i++)
+                {
+                    var r = mappingSet.Rows[i];
+                    if (r == null) continue;
+                    if (!string.Equals(r.LayerMask ?? "Base", "Base", StringComparison.Ordinal)) continue;
+                    if (!string.Equals(r.Target, targetName, StringComparison.Ordinal)) continue;
+                    if (r.Sources == null || r.Sources.Count == 0) break;
+                    return r.Sources[0]?.Descriptor ?? legacyDescriptor;
+                }
+            }
+            return legacyDescriptor;
+        }
+
+        /// <summary>Legacy-fallback reader for passthrough mode when no
+        /// MappingSet row exists yet. Reads state.TouchpadFingers for a
+        /// "Touchpad N Finger M X|Y" descriptor and returns it as bipolar
+        /// [-1..+1]; non-touchpad descriptors fall back to
+        /// <see cref="MapToThumbAxisWithNeg"/>-style stick reading scaled
+        /// to [-1..+1]. <paramref name="physicalFingerIdx"/> is the index
+        /// used when the descriptor's finger / axis aren't explicit (e.g.
+        /// a bare "Touchpad" prefix from older configs).</summary>
+        private static float MapPassthroughLegacyAxisToBipolar(CustomInputState state,
+            string descriptor, int physicalFingerIdx, bool isY)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return 0f;
+            if (descriptor.StartsWith("Touchpad ", StringComparison.Ordinal))
+            {
+                // Try a "Touchpad N Finger M X|Y" parse; default to the
+                // expected slot (physicalFingerIdx, X or Y).
+                var parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                int fingerIdx = physicalFingerIdx;
+                int axisOffset = isY ? 1 : 0;
+                if (parts.Length == 5
+                    && parts[2].Equals("Finger", StringComparison.Ordinal)
+                    && int.TryParse(parts[3], out int parsedFinger))
+                {
+                    fingerIdx = parsedFinger;
+                    axisOffset = parts[4] switch { "X" => 0, "Y" => 1, "Pressure" => 2, _ => axisOffset };
+                }
+                if (state.TouchpadFingers == null) return 0f;
+                int idx = fingerIdx * 3 + axisOffset;
+                if (idx < 0 || idx >= state.TouchpadFingers.Length) return 0f;
+                float raw = state.TouchpadFingers[idx];   // [0..1]
+                return Math.Clamp((raw - 0.5f) * 2f, -1f, 1f);
+            }
+            // Non-touchpad descriptor in passthrough mode (shouldn't happen
+            // — IsTouchpadDescriptor gates this branch — but fall through
+            // safely just in case).
+            return MapToThumbAxisWithNeg(state, descriptor, null) / 32768f;
         }
 
         /// <summary>Returns true if the descriptor is a touchpad-specific source (not a generic axis).</summary>

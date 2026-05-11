@@ -173,7 +173,14 @@ namespace PadForge.Engine.Common.Mapping
             if (string.IsNullOrEmpty(s)) return 0f;
 
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
+            {
+                // "Touchpad N Finger M X" / "...Y" — physical finger position
+                // as a bipolar axis: [0..1] mapped to [-1..+1] (left/top = -1,
+                // center = 0, right/bottom = +1). Lets passthrough sources
+                // participate in multi-source rows the same way stick axes do.
+                if (TryReadTouchpadAxis(state, s, out float bipolar)) return bipolar;
                 return ReadTouchpadBool(state, s) ? 1f : 0f;
+            }
 
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;
@@ -214,7 +221,12 @@ namespace PadForge.Engine.Common.Mapping
             if (string.IsNullOrEmpty(s)) return 0f;
 
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
+            {
+                // Touchpad axis → unipolar: return [0..1] directly (raw finger
+                // position; no bipolar centering).
+                if (TryReadTouchpadAxisRaw(state, s, out float unipolar)) return unipolar;
                 return ReadTouchpadBool(state, s) ? 1f : 0f;
+            }
 
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;
@@ -331,6 +343,79 @@ namespace PadForge.Engine.Common.Mapping
             }
 
             return false;
+        }
+
+        // ─── Touchpad axis descriptors ──────────────────────────────────
+        //
+        // "Touchpad N Finger M X" / "Touchpad N Finger M Y" — physical finger
+        // X/Y as an axis source. Pressure variants ("Pressure") return the
+        // pressure scalar where supported. Lets the touchpad output path
+        // (and any future user mapping of finger position to other targets)
+        // participate in multi-source rows the same way stick axes do.
+        //
+        // CustomInputState.TouchpadFingers layout matches the legacy passthrough
+        // reader in InputManager: [F0.X, F0.Y, F0.Pressure, F1.X, F1.Y,
+        // F1.Pressure]. So finger M's X index is M*3, Y index is M*3+1.
+
+        /// <summary>Returns finger position as bipolar [-1..+1] (center = 0).
+        /// Used by ReadAsBipolar so touchpad-passthrough sources combine with
+        /// stick / button sources in the same multi-source row.</summary>
+        private static bool TryReadTouchpadAxis(CustomInputState state, string descriptor, out float bipolar)
+        {
+            bipolar = 0f;
+            if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset))
+                return false;
+            if (padIdx != 0) return false; // single touchpad supported today
+            if (state.TouchpadFingers == null) return false;
+            int idx = fingerIdx * 3 + axisOffset;
+            if (idx < 0 || idx >= state.TouchpadFingers.Length) return false;
+            float raw = state.TouchpadFingers[idx]; // [0..1]
+            bipolar = (raw - 0.5f) * 2f;            // → [-1..+1]
+            if (bipolar < -1f) bipolar = -1f;
+            else if (bipolar > 1f) bipolar = 1f;
+            return true;
+        }
+
+        /// <summary>Returns finger position as unipolar [0..1]. Used by
+        /// ReadAsUnipolar so a touchpad axis feeding a trigger target reads
+        /// the raw position.</summary>
+        private static bool TryReadTouchpadAxisRaw(CustomInputState state, string descriptor, out float unipolar)
+        {
+            unipolar = 0f;
+            if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset))
+                return false;
+            if (padIdx != 0) return false;
+            if (state.TouchpadFingers == null) return false;
+            int idx = fingerIdx * 3 + axisOffset;
+            if (idx < 0 || idx >= state.TouchpadFingers.Length) return false;
+            float raw = state.TouchpadFingers[idx];
+            if (raw < 0f) raw = 0f; else if (raw > 1f) raw = 1f;
+            unipolar = raw;
+            return true;
+        }
+
+        /// <summary>Parses "Touchpad N Finger M X" / "...Y" / "...Pressure".
+        /// <paramref name="axisOffset"/> = 0 for X, 1 for Y, 2 for Pressure.
+        /// Returns false for "Click" / "Down" / unrecognized formats.</summary>
+        private static bool TryParseTouchpadAxis(string descriptor,
+            out int padIdx, out int fingerIdx, out int axisOffset)
+        {
+            padIdx = 0; fingerIdx = 0; axisOffset = -1;
+            string[] parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            // Expected: "Touchpad N Finger M X|Y|Pressure" — 5 parts.
+            if (parts.Length != 5) return false;
+            if (!parts[0].Equals("Touchpad", StringComparison.Ordinal)) return false;
+            if (!int.TryParse(parts[1], out padIdx)) return false;
+            if (!parts[2].Equals("Finger", StringComparison.Ordinal)) return false;
+            if (!int.TryParse(parts[3], out fingerIdx)) return false;
+            axisOffset = parts[4] switch
+            {
+                "X"        => 0,
+                "Y"        => 1,
+                "Pressure" => 2,
+                _          => -1,
+            };
+            return axisOffset >= 0;
         }
     }
 }

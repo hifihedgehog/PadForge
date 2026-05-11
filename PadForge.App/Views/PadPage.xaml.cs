@@ -978,6 +978,57 @@ namespace PadForge.Views
             }
         }
 
+        /// <summary>
+        /// Same defensive measure as <see cref="ProfileCombo_PreviewKeyDown"/>,
+        /// but for the Mappings-tab pickers (the Combine-mode dropdown and the
+        /// cross-device source dropdowns) — and it also swallows TYPE-AHEAD
+        /// keys, not just arrow / page keys.
+        ///
+        /// <para>Why: those dropdowns sit on rows the user is actively
+        /// configuring, often with a keyboard mapped to the same slot. A
+        /// closed WPF ComboBox that holds (implicit) keyboard focus still
+        /// reacts to keystrokes — arrows cycle the current item, and a letter
+        /// / digit selects the first item whose label starts with it
+        /// (type-ahead). So pressing the keys the user mapped — Up/Down to
+        /// move a stick, "A"/"B"/etc. mapped to face buttons — would silently
+        /// flip the Combine mode (e.g. "Average" → "Average... wait,
+        /// 'Strongest'") or change a source pick out from under them. We
+        /// suppress all of that while the dropdown is CLOSED; when it's open,
+        /// every key passes through so explicit navigation / type-ahead in the
+        /// list still works.</para>
+        ///
+        /// <para>Keys deliberately let through even when closed: Enter / Space /
+        /// F4 (open the dropdown) and Tab / Escape (focus). Everything that
+        /// would mutate the selection — Up, Down, Left, Right, PageUp,
+        /// PageDown, Home, End, and any character-producing key (A–Z, the
+        /// number-row digits, and the numpad digits) — is handled here so it
+        /// never reaches the ComboBox.</para>
+        /// </summary>
+        private void MappingComboBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (sender is not ComboBox cb || cb.IsDropDownOpen) return;
+
+            // Alt+Down arrives as Key.System with the real key in SystemKey;
+            // resolve it so an Alt-modified arrow is still seen as an arrow.
+            Key k = e.Key == Key.System ? e.SystemKey : e.Key;
+
+            bool isNav =
+                k is Key.Up or Key.Down or Key.Left or Key.Right
+                  or Key.PageUp or Key.PageDown or Key.Home or Key.End;
+
+            // Type-ahead: WPF ComboBox jumps to the first item whose text
+            // starts with the typed character. Letters and digits cover every
+            // Combine-mode label ("Strongest", "Average", …) and input label
+            // ("A", "Button 0", "Left Stick X", …), which is all a user maps.
+            bool isTypeAhead =
+                (k >= Key.A && k <= Key.Z)
+                || (k >= Key.D0 && k <= Key.D9)
+                || (k >= Key.NumPad0 && k <= Key.NumPad9);
+
+            if (isNav || isTypeAhead)
+                e.Handled = true;
+        }
+
         private void ExtendedCustomValue_Changed(object sender, RoutedEventArgs e)
         {
             ApplyExtendedCustomValues();

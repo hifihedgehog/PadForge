@@ -90,6 +90,15 @@ namespace PadForge.Services
         private HashSet<MacroAxisTarget> _recordedAxisTargets;
         private Dictionary<MacroAxisTarget, MacroAxisDirection> _recordedAxisDirections;
         private HashSet<string> _recordedPovs; // stored as "povIndex:centidegrees"
+        /// <summary>Multi-device accumulator for the legacy macro trigger
+        /// recorder. Holds the current frame's set of held buttons and
+        /// active POVs across EVERY assigned device on the slot — no
+        /// device-lock semantics — so users can record cross-device combos
+        /// (controller + keyboard + mouse) as one trigger. Mirrored into
+        /// <see cref="_recordedRawButtons"/> + <see cref="_recordingDeviceGuid"/>
+        /// for the first device only, for back-compat with the single-device
+        /// finalize path.</summary>
+        private List<MacroItem.TriggerInputEntry> _recordedInputEntries;
         private const float AxisRecordThreshold = 0.25f; // 25% of full range (delta from baseline)
         private const double MacroRecordTimeoutSeconds = 5;
         private DateTime _macroRecordStartTime;
@@ -4515,6 +4524,7 @@ namespace PadForge.Services
             _recordedAxisTargets = new HashSet<MacroAxisTarget>();
             _recordedAxisDirections = new Dictionary<MacroAxisTarget, MacroAxisDirection>();
             _recordedPovs = new HashSet<string>();
+            _recordedInputEntries = new List<MacroItem.TriggerInputEntry>();
             _macroAxisCandidate = MacroAxisTarget.None;
             _macroAxisCandidateDelta = 0f;
             _macroAxisHoldCounter = 0;
@@ -4554,21 +4564,48 @@ namespace PadForge.Services
                 _recordingMacro.TriggerAxisDirections = Array.Empty<MacroAxisDirection>();
             }
 
-            // Save recorded POV triggers.
+            // Save recorded POV triggers (legacy single-device path).
             _recordingMacro.TriggerPovs = _recordedPovs?.Count > 0
                 ? _recordedPovs.ToArray()
                 : Array.Empty<string>();
 
             // Save recorded buttons (independent of axis).
-            if (_recordingMacro.TriggerSource == MacroTriggerSource.InputDevice
-                && _recordingDeviceGuid != Guid.Empty
-                && _recordedRawButtons != null && _recordedRawButtons.Count > 0)
+            bool multiDevice = _recordingMacro.TriggerSource == MacroTriggerSource.InputDevice
+                && _recordedInputEntries != null && _recordedInputEntries.Count > 0
+                && _recordedInputEntries.Select(e => e.DeviceGuid).Distinct().Count() > 1;
+
+            if (multiDevice)
             {
-                // Raw device button path.
+                // Multi-device combo path. Authoritative storage is the
+                // TriggerInputEntries list. Clear the single-device legacy
+                // fields since they can't represent the full combo.
+                _recordingMacro.SetTriggerInputEntries(new List<MacroItem.TriggerInputEntry>(_recordedInputEntries));
+                _recordingMacro.TriggerDeviceGuid = Guid.Empty;
+                _recordingMacro.TriggerRawButtons = Array.Empty<int>();
+                _recordingMacro.TriggerPovs = Array.Empty<string>();
+                _recordingMacro.TriggerButtons = 0;
+                _recordingMacro.TriggerCustomButtonWords = new uint[4];
+            }
+            else if (_recordingMacro.TriggerSource == MacroTriggerSource.InputDevice
+                && _recordingDeviceGuid != Guid.Empty
+                && ((_recordedRawButtons != null && _recordedRawButtons.Count > 0)
+                    || (_recordedPovs != null && _recordedPovs.Count > 0)))
+            {
+                // Single-device path. ALSO populate the multi-device list so
+                // the runtime evaluator can use one code path for both, but
+                // the legacy fields remain authoritative for cross-version
+                // back-compat.
                 _recordingMacro.TriggerDeviceGuid = _recordingDeviceGuid;
                 _recordingMacro.TriggerRawButtons = _recordedRawButtons.OrderBy(x => x).ToArray();
                 _recordingMacro.TriggerButtons = 0;
                 _recordingMacro.TriggerCustomButtonWords = new uint[4];
+                // Mirror into TriggerInputEntries (one device's buttons + povs).
+                var entries = new List<MacroItem.TriggerInputEntry>();
+                foreach (int b in _recordingMacro.TriggerRawButtons)
+                    entries.Add(new MacroItem.TriggerInputEntry { DeviceGuid = _recordingDeviceGuid, RawButton = b });
+                foreach (string pov in _recordingMacro.TriggerPovs ?? Array.Empty<string>())
+                    entries.Add(new MacroItem.TriggerInputEntry { DeviceGuid = _recordingDeviceGuid, Pov = pov });
+                _recordingMacro.SetTriggerInputEntries(entries);
             }
             else if (_recordingMacro.ButtonStyle == MacroButtonStyle.Numbered
                      && _recordedCustomButtons != null && _recordedCustomButtons.Any(w => w != 0))
@@ -4578,6 +4615,7 @@ namespace PadForge.Services
                 _recordingMacro.TriggerButtons = 0;
                 _recordingMacro.TriggerDeviceGuid = Guid.Empty;
                 _recordingMacro.TriggerRawButtons = Array.Empty<int>();
+                _recordingMacro.SetTriggerInputEntries(new List<MacroItem.TriggerInputEntry>());
             }
             else
             {
@@ -4586,6 +4624,7 @@ namespace PadForge.Services
                 _recordingMacro.TriggerDeviceGuid = Guid.Empty;
                 _recordingMacro.TriggerRawButtons = Array.Empty<int>();
                 _recordingMacro.TriggerCustomButtonWords = new uint[4];
+                _recordingMacro.SetTriggerInputEntries(new List<MacroItem.TriggerInputEntry>());
             }
 
             _recordingMacro.RecordingLiveText = "";
@@ -4598,6 +4637,7 @@ namespace PadForge.Services
             _recordedAxisTargets = null;
             _recordedAxisDirections = null;
             _recordedPovs = null;
+            _recordedInputEntries = null;
             _macroAxisBaseline = null;
             _macroAxisCandidate = MacroAxisTarget.None;
             _macroAxisCandidateDelta = 0f;
@@ -4692,11 +4732,12 @@ namespace PadForge.Services
 
             if (_recordingMacro.TriggerSource == MacroTriggerSource.InputDevice)
             {
-                // Scan raw buttons from devices mapped to this pad slot.
-                // Capture only the CURRENT simultaneously-held set (not accumulated).
-                var currentRawButtons = new HashSet<int>();
-                var currentPovs = new HashSet<string>();
-                Guid currentDeviceGuid = Guid.Empty;
+                // Scan raw buttons + POVs from EVERY device assigned to this
+                // pad slot. The recorder no longer locks to the first device
+                // that fires — instead it accumulates per-device entries so
+                // the user can combo a controller button + keyboard key +
+                // mouse button into one trigger.
+                var currentEntries = new List<MacroItem.TriggerInputEntry>();
 
                 var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(_recordingPadIndex);
                 if (slotSettings != null)
@@ -4707,27 +4748,24 @@ namespace PadForge.Services
                         if (ud == null || !ud.IsOnline || ud.InputState == null)
                             continue;
 
-                        // If already locked to a different device, skip.
-                        if (_recordingDeviceGuid != Guid.Empty && _recordingDeviceGuid != ud.InstanceGuid)
-                            continue;
-
                         var buttons = ud.InputState.Buttons;
-                        // Cap by UserDevice.RawButtonCount (which combines the
-                        // wrapper's RawButtonCount with NumButtons via Max — so
-                        // keyboards report ~256 = full VK range, mice report
-                        // their button count, controllers report their physical
-                        // button count). The wrapper's RawButtonCount alone is 0
-                        // for keyboards / mice and was silently dropping them
-                        // from recording.
-                        int wrapperCount = ud.RawButtonCount > 0 ? ud.RawButtonCount : buttons.Length;
-                        int count = Math.Min(buttons.Length, wrapperCount);
-                        for (int i = 0; i < count; i++)
+                        if (buttons != null)
                         {
-                            if (buttons[i])
+                            // Cap by UserDevice.RawButtonCount which combines the
+                            // wrapper's RawButtonCount with NumButtons via Max
+                            // (keyboards report ~256 = full VK range, mice report
+                            // their button count, controllers report their physical
+                            // button count).
+                            int wrapperCount = ud.RawButtonCount > 0 ? ud.RawButtonCount : buttons.Length;
+                            int count = Math.Min(buttons.Length, wrapperCount);
+                            for (int i = 0; i < count; i++)
                             {
-                                if (currentDeviceGuid == Guid.Empty)
-                                    currentDeviceGuid = ud.InstanceGuid;
-                                currentRawButtons.Add(i);
+                                if (buttons[i])
+                                    currentEntries.Add(new MacroItem.TriggerInputEntry
+                                    {
+                                        DeviceGuid = ud.InstanceGuid,
+                                        RawButton = i
+                                    });
                             }
                         }
 
@@ -4737,51 +4775,73 @@ namespace PadForge.Services
                             for (int p = 0; p < povs.Length; p++)
                             {
                                 if (povs[p] >= 0)
-                                {
-                                    if (currentDeviceGuid == Guid.Empty)
-                                        currentDeviceGuid = ud.InstanceGuid;
-                                    currentPovs.Add($"{p}:{povs[p]}");
-                                }
+                                    currentEntries.Add(new MacroItem.TriggerInputEntry
+                                    {
+                                        DeviceGuid = ud.InstanceGuid,
+                                        Pov = $"{p}:{povs[p]}"
+                                    });
                             }
                         }
                     }
                 }
 
                 // Replace the recorded set with the current frame's state.
-                // Only update if something is pressed (keep last combo when released).
-                if (currentRawButtons.Count > 0 || currentPovs.Count > 0)
+                // Only update if SOMETHING is pressed (keeps the last combo
+                // visible after the user releases all keys).
+                if (currentEntries.Count > 0)
                 {
-                    _recordedRawButtons = currentRawButtons;
-                    _recordedPovs = currentPovs;
-                    _recordingDeviceGuid = currentDeviceGuid;
+                    _recordedInputEntries = currentEntries;
+                    // Mirror into the legacy per-device fields for the first
+                    // device only — keeps the StopMacroTriggerRecording's
+                    // single-device finalize path happy for back-compat. The
+                    // multi-device list is the authoritative result.
+                    var first = currentEntries[0];
+                    _recordingDeviceGuid = first.DeviceGuid;
+                    _recordedRawButtons = new HashSet<int>(
+                        currentEntries
+                            .Where(e => e.DeviceGuid == first.DeviceGuid && e.RawButton >= 0)
+                            .Select(e => e.RawButton));
+                    _recordedPovs = new HashSet<string>(
+                        currentEntries
+                            .Where(e => e.DeviceGuid == first.DeviceGuid && !string.IsNullOrEmpty(e.Pov))
+                            .Select(e => e.Pov));
                 }
 
-                // Update live display text (buttons + POVs + axes combined, device name at end).
+                // Live display text — render multi-device combo grouped by
+                // device, axes appended at the end (axes still come from the
+                // combined Xbox output, not per-device).
                 var parts = new List<string>();
-                if (_recordedRawButtons.Count > 0)
+                if (_recordedInputEntries != null && _recordedInputEntries.Count > 0)
                 {
-                    var objects = ResolveDeviceObjects(_recordingDeviceGuid);
-                    foreach (int b in _recordedRawButtons.OrderBy(x => x))
+                    var byDevice = _recordedInputEntries.GroupBy(e => e.DeviceGuid);
+                    foreach (var grp in byDevice)
                     {
-                        var obj = objects?.FirstOrDefault(o => o.IsButton && o.InputIndex == b);
-                        parts.Add(obj != null && !string.IsNullOrEmpty(obj.Name) ? obj.Name : $"Button {b}");
+                        var objects = ResolveDeviceObjects(grp.Key);
+                        var inputs = new List<string>();
+                        foreach (var entry in grp)
+                        {
+                            if (entry.RawButton >= 0)
+                            {
+                                var obj = objects?.FirstOrDefault(o => o.IsButton && o.InputIndex == entry.RawButton);
+                                inputs.Add(obj != null && !string.IsNullOrEmpty(obj.Name) ? obj.Name : $"Button {entry.RawButton}");
+                            }
+                            else if (!string.IsNullOrEmpty(entry.Pov))
+                            {
+                                inputs.Add(MacroItem.FormatPovTrigger(entry.Pov));
+                            }
+                        }
+                        string deviceName = ResolveDeviceName(grp.Key);
+                        parts.Add(!string.IsNullOrEmpty(deviceName)
+                            ? deviceName + " [" + string.Join(" + ", inputs) + "]"
+                            : string.Join(" + ", inputs));
                     }
                 }
-                foreach (var pov in _recordedPovs)
-                    parts.Add(MacroItem.FormatPovTrigger(pov));
                 foreach (var ax in _recordedAxisTargets)
                     parts.Add($"{ax.DisplayName()} > {_recordingMacro.TriggerAxisThreshold}%");
 
-                if (parts.Count > 0)
-                {
-                    string result = string.Join(" + ", parts);
-                    string deviceName = ResolveDeviceName(_recordingDeviceGuid);
-                    if (!string.IsNullOrEmpty(deviceName))
-                        result = $"{result} ({deviceName})";
-                    _recordingMacro.RecordingLiveText = result;
-                }
-                else
-                    _recordingMacro.RecordingLiveText = "Press buttons or move axis...";
+                _recordingMacro.RecordingLiveText = parts.Count > 0
+                    ? string.Join(" + ", parts)
+                    : "Press buttons or move axis...";
             }
             else if (_recordingMacro.ButtonStyle == MacroButtonStyle.Numbered)
             {

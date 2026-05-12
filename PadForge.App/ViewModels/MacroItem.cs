@@ -157,37 +157,100 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _triggerSource, value);
         }
 
-        /// <summary>Human-readable display of the trigger combo.</summary>
+        /// <summary>Human-readable display of the trigger combo. For
+        /// multi-device combos (multi-device <see cref="TriggerInputs"/>
+        /// list) inputs are grouped by device and rendered as
+        /// "Device A [Btn X + Btn Y] + Device B [Key A]". For legacy
+        /// single-device triggers the format is the historical one
+        /// "Btn X + Btn Y (DeviceName)".</summary>
         public string TriggerDisplayText
         {
             get
             {
+                var entries = GetTriggerInputEntries();
+                bool multiDevice = entries.Count > 0
+                    && entries.Select(e => e.DeviceGuid).Distinct().Count() > 1;
+
                 var parts = new List<string>();
 
-                // Button part.
-                if (UsesRawTrigger)
+                if (multiDevice)
                 {
-                    var objects = ResolveDeviceObjects(_triggerDeviceGuid);
-                    foreach (int b in _triggerRawButtons)
+                    // Group entries by device, render each group with the
+                    // device name as a prefix so the user can see at a
+                    // glance which input came from where.
+                    var byDevice = entries.GroupBy(e => e.DeviceGuid);
+                    foreach (var grp in byDevice)
                     {
-                        var obj = objects?.FirstOrDefault(o => o.IsButton && o.InputIndex == b);
-                        parts.Add(obj != null && !string.IsNullOrEmpty(obj.Name) ? obj.Name : string.Format(Strings.Instance.Macro_Button_Format, b));
+                        var objects = ResolveDeviceObjects(grp.Key);
+                        var inputs = new List<string>();
+                        foreach (var entry in grp)
+                        {
+                            if (entry.RawButton >= 0)
+                            {
+                                var obj = objects?.FirstOrDefault(o => o.IsButton && o.InputIndex == entry.RawButton);
+                                inputs.Add(obj != null && !string.IsNullOrEmpty(obj.Name)
+                                    ? obj.Name
+                                    : string.Format(Strings.Instance.Macro_Button_Format, entry.RawButton));
+                            }
+                            else if (!string.IsNullOrEmpty(entry.Pov))
+                            {
+                                inputs.Add(FormatPovTrigger(entry.Pov));
+                            }
+                        }
+                        string deviceName = ResolveDeviceName(grp.Key);
+                        if (!string.IsNullOrEmpty(deviceName))
+                            parts.Add(deviceName + " [" + string.Join(" + ", inputs) + "]");
+                        else
+                            parts.Add(string.Join(" + ", inputs));
                     }
                 }
-                else if (_buttonStyle == MacroButtonStyle.Numbered && UsesCustomTrigger)
+                else if (entries.Count > 0)
                 {
-                    parts.Add(MacroButtonNames.FormatCustomButtons(_triggerCustomButtonWords));
+                    // Single-device multi-input case via the new list.
+                    var grp = entries.GroupBy(e => e.DeviceGuid).First();
+                    var objects = ResolveDeviceObjects(grp.Key);
+                    foreach (var entry in grp)
+                    {
+                        if (entry.RawButton >= 0)
+                        {
+                            var obj = objects?.FirstOrDefault(o => o.IsButton && o.InputIndex == entry.RawButton);
+                            parts.Add(obj != null && !string.IsNullOrEmpty(obj.Name)
+                                ? obj.Name
+                                : string.Format(Strings.Instance.Macro_Button_Format, entry.RawButton));
+                        }
+                        else if (!string.IsNullOrEmpty(entry.Pov))
+                        {
+                            parts.Add(FormatPovTrigger(entry.Pov));
+                        }
+                    }
                 }
-                else if (_triggerButtons != 0)
+                else
                 {
-                    parts.Add(MacroButtonNames.FormatButtons(_triggerButtons, _buttonStyle));
+                    // Legacy single-device path (no multi-device entries).
+                    if (UsesRawTrigger)
+                    {
+                        var objects = ResolveDeviceObjects(_triggerDeviceGuid);
+                        foreach (int b in _triggerRawButtons)
+                        {
+                            var obj = objects?.FirstOrDefault(o => o.IsButton && o.InputIndex == b);
+                            parts.Add(obj != null && !string.IsNullOrEmpty(obj.Name) ? obj.Name : string.Format(Strings.Instance.Macro_Button_Format, b));
+                        }
+                    }
+                    else if (_buttonStyle == MacroButtonStyle.Numbered && UsesCustomTrigger)
+                    {
+                        parts.Add(MacroButtonNames.FormatCustomButtons(_triggerCustomButtonWords));
+                    }
+                    else if (_triggerButtons != 0)
+                    {
+                        parts.Add(MacroButtonNames.FormatButtons(_triggerButtons, _buttonStyle));
+                    }
+
+                    // POV part(s).
+                    foreach (var pov in _triggerPovs)
+                        parts.Add(FormatPovTrigger(pov));
                 }
 
-                // POV part(s).
-                foreach (var pov in _triggerPovs)
-                    parts.Add(FormatPovTrigger(pov));
-
-                // Axis part(s).
+                // Axis part(s) — always Xbox-output, no per-device split.
                 foreach (var axis in _triggerAxisTargets)
                     parts.Add($"{axis.DisplayName()} > {_triggerAxisThreshold}%");
 
@@ -195,10 +258,13 @@ namespace PadForge.ViewModels
 
                 string result = string.Join(" + ", parts);
 
-                // Append source device name at end.
-                if (UsesRawTrigger || UsesPovTrigger || UsesAxisTrigger)
+                // Append source device name at end ONLY for single-device legacy /
+                // single-device new-list cases. Multi-device already shows names
+                // inline.
+                if (!multiDevice && (UsesRawTrigger || UsesPovTrigger || UsesAxisTrigger))
                 {
-                    string deviceName = ResolveDeviceName(_triggerDeviceGuid);
+                    Guid deviceGuid = entries.Count > 0 ? entries[0].DeviceGuid : _triggerDeviceGuid;
+                    string deviceName = ResolveDeviceName(deviceGuid);
                     if (!string.IsNullOrEmpty(deviceName))
                         result = $"{result} ({deviceName})";
                 }
@@ -303,9 +369,21 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>True if this macro uses the raw device button trigger path.</summary>
+        /// <summary>True if this macro uses the raw device button trigger path —
+        /// either via the multi-device <see cref="TriggerInputs"/> spec or the
+        /// legacy single-device <see cref="TriggerDeviceGuid"/> /
+        /// <see cref="TriggerRawButtons"/> pair.</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool UsesRawTrigger => _triggerDeviceGuid != Guid.Empty && _triggerRawButtons.Length > 0;
+        public bool UsesRawTrigger
+        {
+            get
+            {
+                var entries = GetTriggerInputEntries();
+                for (int i = 0; i < entries.Count; i++)
+                    if (entries[i].RawButton >= 0) return true;
+                return _triggerDeviceGuid != Guid.Empty && _triggerRawButtons.Length > 0;
+            }
+        }
 
         private string[] _triggerPovs = Array.Empty<string>();
 
@@ -325,9 +403,148 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>True if this macro uses POV hat triggers.</summary>
+        /// <summary>True if this macro uses POV hat triggers — either via the
+        /// multi-device <see cref="TriggerInputs"/> spec or the legacy
+        /// <see cref="TriggerPovs"/> array.</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool UsesPovTrigger => _triggerPovs.Length > 0;
+        public bool UsesPovTrigger
+        {
+            get
+            {
+                var entries = GetTriggerInputEntries();
+                for (int i = 0; i < entries.Count; i++)
+                    if (!string.IsNullOrEmpty(entries[i].Pov)) return true;
+                return _triggerPovs.Length > 0;
+            }
+        }
+
+        // ───────────────────────────────────────────────
+        //  Multi-device trigger inputs
+        //  Authoritative storage for cross-device button + POV combos
+        //  (e.g. "hold controller X + keyboard A + mouse Left").
+        //  Legacy single-device fields (TriggerDeviceGuid /
+        //  TriggerRawButtons / TriggerPovs) remain valid for
+        //  back-compat — when both are populated, the multi-device
+        //  list wins.
+        // ───────────────────────────────────────────────
+
+        /// <summary>One entry in the multi-device trigger combo. Either
+        /// <see cref="RawButton"/> >= 0 OR <see cref="Pov"/> is non-null —
+        /// never both on the same entry.</summary>
+        public sealed class TriggerInputEntry
+        {
+            public Guid DeviceGuid;
+            /// <summary>Raw button index, or -1 if this entry is a POV.</summary>
+            public int RawButton = -1;
+            /// <summary>"povIndex:centidegrees" form, or null if this entry is a button.</summary>
+            public string Pov;
+
+            /// <summary>Compact tagged form for XML round-trip.</summary>
+            public string Spec
+            {
+                get
+                {
+                    if (DeviceGuid == Guid.Empty) return "";
+                    if (!string.IsNullOrEmpty(Pov)) return $"in:{DeviceGuid}:pov:{Pov}";
+                    if (RawButton >= 0) return $"in:{DeviceGuid}:btn:{RawButton}";
+                    return "";
+                }
+            }
+
+            public static TriggerInputEntry Parse(string spec)
+            {
+                if (string.IsNullOrEmpty(spec)) return null;
+                var parts = spec.Split(':');
+                if (parts.Length < 4 || parts[0] != "in" || !Guid.TryParse(parts[1], out var g))
+                    return null;
+                var entry = new TriggerInputEntry { DeviceGuid = g };
+                switch (parts[2])
+                {
+                    case "btn":
+                        if (!int.TryParse(parts[3], out int b)) return null;
+                        entry.RawButton = b;
+                        return entry;
+                    case "pov":
+                        if (parts.Length < 5) return null;
+                        entry.Pov = $"{parts[3]}:{parts[4]}";
+                        return entry;
+                    default: return null;
+                }
+            }
+        }
+
+        private List<TriggerInputEntry> _triggerInputEntries;
+
+        /// <summary>Pipe-separated <see cref="TriggerInputEntry.Spec"/> entries
+        /// for the multi-device combo. Empty/null means "use legacy
+        /// single-device fields" if those are populated. Persisted to XML
+        /// as a single element so the format stays compact and append-only.</summary>
+        public string TriggerInputs
+        {
+            get
+            {
+                EnsureTriggerInputEntries();
+                if (_triggerInputEntries == null || _triggerInputEntries.Count == 0) return null;
+                return string.Join("|", _triggerInputEntries.Select(e => e.Spec).Where(s => s.Length > 0));
+            }
+            set
+            {
+                _triggerInputEntries = new List<TriggerInputEntry>();
+                if (!string.IsNullOrEmpty(value))
+                {
+                    foreach (var s in value.Split('|'))
+                    {
+                        var entry = TriggerInputEntry.Parse(s);
+                        if (entry != null) _triggerInputEntries.Add(entry);
+                    }
+                }
+                OnPropertyChanged(nameof(TriggerInputs));
+                OnPropertyChanged(nameof(UsesRawTrigger));
+                OnPropertyChanged(nameof(UsesPovTrigger));
+                OnPropertyChanged(nameof(TriggerDisplayText));
+            }
+        }
+
+        /// <summary>Returns the current parsed entries. Migrates from legacy
+        /// single-device fields on first access. Hot path: called every macro
+        /// evaluation frame via <c>UsesRawTrigger</c> /
+        /// <c>CheckRawButtonTrigger</c>; the migrated cache is reused.</summary>
+        public IReadOnlyList<TriggerInputEntry> GetTriggerInputEntries()
+        {
+            EnsureTriggerInputEntries();
+            return _triggerInputEntries ?? (IReadOnlyList<TriggerInputEntry>)Array.Empty<TriggerInputEntry>();
+        }
+
+        /// <summary>Replaces the entry list. Used by the recorder when
+        /// finalizing a multi-device combo.</summary>
+        public void SetTriggerInputEntries(List<TriggerInputEntry> entries)
+        {
+            _triggerInputEntries = entries ?? new List<TriggerInputEntry>();
+            OnPropertyChanged(nameof(TriggerInputs));
+            OnPropertyChanged(nameof(UsesRawTrigger));
+            OnPropertyChanged(nameof(UsesPovTrigger));
+            OnPropertyChanged(nameof(TriggerDisplayText));
+        }
+
+        private void EnsureTriggerInputEntries()
+        {
+            if (_triggerInputEntries != null) return;
+            _triggerInputEntries = new List<TriggerInputEntry>();
+            // Migrate from legacy single-device fields on first access.
+            if (_triggerDeviceGuid != Guid.Empty)
+            {
+                if (_triggerRawButtons != null)
+                {
+                    foreach (var btn in _triggerRawButtons)
+                        _triggerInputEntries.Add(new TriggerInputEntry { DeviceGuid = _triggerDeviceGuid, RawButton = btn });
+                }
+                if (_triggerPovs != null)
+                {
+                    foreach (var pov in _triggerPovs)
+                        _triggerInputEntries.Add(new TriggerInputEntry { DeviceGuid = _triggerDeviceGuid, Pov = pov });
+                }
+            }
+        }
 
         private bool _isRecordingTrigger;
 
@@ -882,6 +1099,7 @@ namespace PadForge.ViewModels
                 TriggerAxisTargets = Array.Empty<MacroAxisTarget>();
                 TriggerAxisDirections = Array.Empty<MacroAxisDirection>();
                 TriggerPovs = Array.Empty<string>();
+                SetTriggerInputEntries(new List<TriggerInputEntry>());
                 OnPropertyChanged(nameof(TriggerDisplayText));
             });
 

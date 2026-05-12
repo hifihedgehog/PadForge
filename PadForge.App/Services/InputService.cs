@@ -191,6 +191,19 @@ namespace PadForge.Services
             // default snapshot also reflects the compacted layout.
             CompactSlotsForGaps();
 
+            // Sync each PadViewModel's shift-layer tab strip from the
+            // loaded MappingSet. PadViewModel constructors run before
+            // SettingsService loads PadForge.xml, so a slot that has saved
+            // ShiftActivators in the file shows up with just the Base tab
+            // until something triggers a rebuild (a profile apply, an
+            // activator add). Rebuild here so pre-existing layers show up
+            // on first display of the Mappings tab.
+            for (int i = 0; i < _mainVm.Pads.Count && i < SettingsManager.SlotMappingSets.Length; i++)
+            {
+                var slotMs = SettingsManager.SlotMappingSets[i];
+                _mainVm.Pads[i].RebuildLayerTabs(slotMs?.ShiftActivators);
+            }
+
             // Create engine with the configured polling interval.
             _inputManager = new InputManager();
             _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
@@ -2422,6 +2435,7 @@ namespace PadForge.Services
                     Mode = a.Mode ?? "Hold",
                     LayerMask = a.LayerMask ?? "Shift",
                     LayerName = a.LayerName ?? "",
+                    InheritUnmapped = a.InheritUnmapped,
                     JumpToLayer = a.JumpToLayer ?? "",
                     DelayMs = a.DelayMs,
                     PostponeMapping = a.PostponeMapping,

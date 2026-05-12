@@ -404,7 +404,8 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Evaluates a macro's <see cref="MacroTriggerMode.CustomExpression"/>
-        /// trigger against the slot's combined Xbox <see cref="Gamepad"/>. Builds
+        /// trigger against the slot's combined virtual controller output
+        /// (XInput-shaped <see cref="Gamepad"/>). Builds
         /// the variable values, runs the cached compiled formula, and reports
         /// "trigger active" as result ≥ 0.5. Returns false on any malformed input
         /// so the macro stays dormant rather than misfiring.</summary>
@@ -510,7 +511,7 @@ namespace PadForge.Common.Input
             return 0f;
         }
 
-        /// <summary>Reads one Xbox output channel as a normalized 0..1 float.
+        /// <summary>Reads one virtual controller output channel as a normalized 0..1 float.
         /// Buttons → 0 or 1, triggers → 0..1, sticks → 0..1 with 0.5 = rest
         /// (sign preserved by the off-center reading).</summary>
         private static float ReadOutputChannel(MacroOutputChannel ch, in Gamepad gp)

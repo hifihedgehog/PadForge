@@ -131,7 +131,7 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Whether the trigger records from the physical input device (raw buttons)
-        /// or from the combined Xbox-mapped virtual controller output.
+        /// or from the slot's combined virtual controller output.
         /// </summary>
         public MacroTriggerSource TriggerSource
         {
@@ -545,7 +545,7 @@ namespace PadForge.ViewModels
         // ─────────────────────────────────────────────
         //  Custom-expression trigger (TriggerMode = CustomExpression)
         //  A formula over a/b/c/... variables, each bound to either an
-        //  input-device input or an Xbox-output channel. Compiled lazily
+        //  input-device input or a virtual controller channel. Compiled lazily
         //  via PadForge.Engine.Common.Mapping.MappingExpression. The
         //  trigger is "active" on a given frame when the evaluated result
         //  is >= 0.5; OnPress-equivalent rising-edge semantics fire the
@@ -2227,7 +2227,7 @@ namespace PadForge.ViewModels
 
         /// <summary>Fire on rising edge of a user-defined formula over a/b/c/...
         /// variables. Each variable binds to an input-device input or an
-        /// Xbox-output-channel value; the compiled formula evaluates to a
+        /// virtual-controller-channel value; the compiled formula evaluates to a
         /// float per frame and "trigger active" is <c>result &gt;= 0.5</c>.</summary>
         CustomExpression
     }
@@ -2237,7 +2237,7 @@ namespace PadForge.ViewModels
         /// <summary>Record from the physical input device's raw/native buttons.</summary>
         InputDevice,
 
-        /// <summary>Record from the combined Xbox-mapped virtual controller output.</summary>
+        /// <summary>Record from the slot's combined virtual controller output.</summary>
         OutputController
     }
 
@@ -2431,12 +2431,15 @@ namespace PadForge.ViewModels
         Negative
     }
 
-    /// <summary>Output channels on the combined Xbox-mapped <c>Gamepad</c>
+    /// <summary>Channels on the slot's combined virtual controller output
     /// that a <see cref="MacroExpressionVariable"/> can sample when its
     /// <c>Source</c> is <see cref="MacroTriggerSource.OutputController"/>.
-    /// Buttons read 0.0/1.0, triggers read 0..1, sticks read 0..1 with
-    /// 0.5 as the rest position (so the expression sees a uniform 0..1
-    /// domain like the merge-mapping evaluator does).</summary>
+    /// The engine normalizes every slot to an XInput-shaped <c>Gamepad</c>
+    /// struct regardless of the slot's configured VC family (Xbox /
+    /// PlayStation / Switch / Extended), so the channel set below is the
+    /// stable union. Buttons read 0.0/1.0, triggers read 0..1, sticks read
+    /// 0..1 with 0.5 as the rest position (so the expression sees a uniform
+    /// 0..1 domain like the merge-mapping evaluator does).</summary>
     public enum MacroOutputChannel
     {
         None,
@@ -2452,8 +2455,8 @@ namespace PadForge.ViewModels
     /// <summary>One a/b/c/... variable that a macro's custom-expression
     /// trigger can reference. Binds either to an input-device input
     /// (raw button / POV / axis) or to a channel on the slot's combined
-    /// Xbox output. Serialized as a compact tagged string so the XML
-    /// stays one element per variable rather than a nested block.</summary>
+    /// virtual controller output. Serialized as a compact tagged string so
+    /// the XML stays one element per variable rather than a nested block.</summary>
     public sealed class MacroExpressionVariable : ObservableObject
     {
         private MacroTriggerSource _source = MacroTriggerSource.InputDevice;

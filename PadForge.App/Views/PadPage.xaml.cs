@@ -565,6 +565,7 @@ namespace PadForge.Views
             existing.CycleLayers = dlg.Result.CycleLayers;
             existing.DelayMs = dlg.Result.DelayMs;
             existing.Color = dlg.Result.Color;
+            existing.Icon = dlg.Result.Icon;
 
             if (!string.Equals(oldMask, existing.LayerMask, StringComparison.Ordinal)
                 && slotMs.Rows != null)
@@ -581,13 +582,145 @@ namespace PadForge.Views
             _currentPadVm.ConfigItemDirtyCallback?.Invoke();
         }
 
+        // ─────────────────────────────────────────────
+        //  Inline rename popup
+        //
+        //  Rename is a name-only change — pop a tiny anchored input next to
+        //  the clicked tab rather than reopening the full Configure dialog.
+        //  Save commits LayerName (and retags rows when the derived
+        //  LayerMask shifts); Cancel restores nothing.
+        // ─────────────────────────────────────────────
+
+        private string _renameTargetMask;
+
         private void ShiftLayer_Rename_Click(object sender, RoutedEventArgs e)
         {
-            // For v1 the Rename action routes through the same Configure
-            // dialog with the existing activator pre-filled. The user
-            // edits the name field and saves; the rename path in
-            // ShiftLayer_Configure_Click handles the LayerMask retag.
-            ShiftLayer_Configure_Click(sender, e);
+            if (_currentPadVm == null) return;
+            string mask = TagToLayerMask(sender);
+            if (string.IsNullOrEmpty(mask)) return;
+
+            var slotMs = GetSlotMappingSet(_currentPadVm.PadIndex);
+            if (slotMs?.ShiftActivators == null) return;
+            var existing = slotMs.ShiftActivators.Find(
+                a => a != null && string.Equals(a.LayerMask, mask, StringComparison.Ordinal));
+            if (existing == null) return;
+
+            _renameTargetMask = mask;
+            RenameLayerBox.Text = string.IsNullOrEmpty(existing.LayerName)
+                ? (existing.LayerMask ?? "")
+                : existing.LayerName;
+            RenameLayerHint.Visibility = Visibility.Collapsed;
+
+            // Anchor the popup to the clicked tab's RadioButton if we can
+            // find it; falls back to the strip itself so the popup is never
+            // detached from the page.
+            var anchor = FindTabRadioButton(mask) ?? (FrameworkElement)ShiftLayerTabStrip;
+            RenameLayerPopup.PlacementTarget = anchor;
+            RenameLayerPopup.IsOpen = true;
+
+            // Defer focus + select-all to after the popup's been laid out.
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded, () =>
+            {
+                RenameLayerBox.Focus();
+                RenameLayerBox.SelectAll();
+            });
+        }
+
+        private void RenameLayerBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                RenameLayerSave_Click(sender, new RoutedEventArgs());
+                e.Handled = true;
+            }
+            else if (e.Key == System.Windows.Input.Key.Escape)
+            {
+                RenameLayerCancel_Click(sender, new RoutedEventArgs());
+                e.Handled = true;
+            }
+        }
+
+        private void RenameLayerSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPadVm == null || string.IsNullOrEmpty(_renameTargetMask)) return;
+            string newName = (RenameLayerBox.Text ?? "").Trim();
+            if (string.IsNullOrEmpty(newName))
+            {
+                RenameLayerHint.Text = PadForge.Resources.Strings.Strings.Instance.Pad_Shift_HintNameRequired;
+                RenameLayerHint.Visibility = Visibility.Visible;
+                RenameLayerBox.Focus();
+                return;
+            }
+
+            var slotMs = GetSlotMappingSet(_currentPadVm.PadIndex);
+            if (slotMs?.ShiftActivators == null) { RenameLayerPopup.IsOpen = false; return; }
+
+            var existing = slotMs.ShiftActivators.Find(
+                a => a != null && string.Equals(a.LayerMask, _renameTargetMask, StringComparison.Ordinal));
+            if (existing == null) { RenameLayerPopup.IsOpen = false; return; }
+
+            // Reject a name already used by another activator on this slot.
+            foreach (var a in slotMs.ShiftActivators)
+            {
+                if (a == null || ReferenceEquals(a, existing)) continue;
+                if (string.Equals(a.LayerName, newName, StringComparison.OrdinalIgnoreCase))
+                {
+                    RenameLayerHint.Text = PadForge.Resources.Strings.Strings.Instance.Pad_Shift_HintNameDuplicate;
+                    RenameLayerHint.Visibility = Visibility.Visible;
+                    RenameLayerBox.Focus();
+                    RenameLayerBox.SelectAll();
+                    return;
+                }
+            }
+
+            existing.LayerName = newName;
+            // The LayerMask is the persisted identity; leave it alone so
+            // Base/Rows stay attached. (Configure dialog rebuilds the mask
+            // from name; Rename keeps mask stable to avoid retag work.)
+
+            _currentPadVm.RebuildLayerTabs(slotMs.ShiftActivators);
+            _currentPadVm.ActiveLayerMask = existing.LayerMask;
+            _currentPadVm.ConfigItemDirtyCallback?.Invoke();
+
+            _renameTargetMask = null;
+            RenameLayerPopup.IsOpen = false;
+        }
+
+        private void RenameLayerCancel_Click(object sender, RoutedEventArgs e)
+        {
+            _renameTargetMask = null;
+            RenameLayerPopup.IsOpen = false;
+        }
+
+        private System.Windows.Controls.Primitives.ButtonBase FindTabRadioButton(string mask)
+        {
+            // Walk the visual tree of the ItemsControl looking for the
+            // RadioButton whose Tag equals the target mask. The
+            // ItemContainerGenerator returns ContentPresenters; the actual
+            // RadioButton lives inside the DataTemplate.
+            for (int i = 0; i < ShiftLayerTabStrip.Items.Count; i++)
+            {
+                var container = ShiftLayerTabStrip.ItemContainerGenerator.ContainerFromIndex(i);
+                if (container == null) continue;
+                var rb = FindDescendant<System.Windows.Controls.RadioButton>(container);
+                if (rb != null && string.Equals(rb.Tag as string, mask, StringComparison.Ordinal))
+                    return rb;
+            }
+            return null;
+        }
+
+        private static T FindDescendant<T>(DependencyObject root) where T : DependencyObject
+        {
+            if (root == null) return null;
+            int count = System.Windows.Media.VisualTreeHelper.GetChildrenCount(root);
+            for (int i = 0; i < count; i++)
+            {
+                var c = System.Windows.Media.VisualTreeHelper.GetChild(root, i);
+                if (c is T t) return t;
+                var d = FindDescendant<T>(c);
+                if (d != null) return d;
+            }
+            return null;
         }
 
         private void ShiftLayer_Copy_Click(object sender, RoutedEventArgs e)

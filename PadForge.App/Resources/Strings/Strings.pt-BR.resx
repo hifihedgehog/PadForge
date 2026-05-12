@@ -155,7 +155,7 @@
   <data name="Status_SettingsPasted" xml:space="preserve"><value>Configurações coladas da área de transferência.</value></data>
   <data name="Status_PasteFailed_Format" xml:space="preserve"><value>Falha ao colar: {0}</value></data>
   <data name="Status_NoDeviceToCopyFrom" xml:space="preserve"><value>Nenhum dispositivo selecionado para copiar.</value></data>
-  <data name="Status_NoOtherDevices" xml:space="preserve"><value>Nenhum outro dispositivo configurado encontrado para copiar.</value></data>
+  <data name="Status_NoOtherDevices" xml:space="preserve"><value>Nenhum outro controlador virtual configurado encontrado para copiar.</value></data>
   <data name="Status_SettingsCopiedFromDevice" xml:space="preserve"><value>Configurações copiadas do dispositivo selecionado.</value></data>
   <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>Perfil "{0}" criado (vazio).</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Perfil "{0}" criado.</value></data>

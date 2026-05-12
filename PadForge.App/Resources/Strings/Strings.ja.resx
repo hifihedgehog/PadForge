@@ -155,7 +155,7 @@
   <data name="Status_SettingsPasted" xml:space="preserve"><value>クリップボードから設定を貼り付けました。</value></data>
   <data name="Status_PasteFailed_Format" xml:space="preserve"><value>貼り付けに失敗しました: {0}</value></data>
   <data name="Status_NoDeviceToCopyFrom" xml:space="preserve"><value>コピー元のデバイスが選択されていません。</value></data>
-  <data name="Status_NoOtherDevices" xml:space="preserve"><value>コピー元として使用できる他の設定済みデバイスが見つかりません。</value></data>
+  <data name="Status_NoOtherDevices" xml:space="preserve"><value>コピー元として使用できる他の設定済み仮想コントローラーが見つかりません。</value></data>
   <data name="Status_SettingsCopiedFromDevice" xml:space="preserve"><value>選択したデバイスから設定をコピーしました。</value></data>
   <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>プロファイル「{0}」を作成しました (空)。</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>プロファイル「{0}」を作成しました。</value></data>

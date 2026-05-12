@@ -155,7 +155,7 @@
   <data name="Status_SettingsPasted" xml:space="preserve"><value>Impostazioni incollate dagli appunti.</value></data>
   <data name="Status_PasteFailed_Format" xml:space="preserve"><value>Incolla non riuscito: {0}</value></data>
   <data name="Status_NoDeviceToCopyFrom" xml:space="preserve"><value>Nessun dispositivo selezionato da cui copiare.</value></data>
-  <data name="Status_NoOtherDevices" xml:space="preserve"><value>Nessun altro dispositivo configurato trovato da cui copiare.</value></data>
+  <data name="Status_NoOtherDevices" xml:space="preserve"><value>Nessun altro controller virtuale configurato trovato da cui copiare.</value></data>
   <data name="Status_SettingsCopiedFromDevice" xml:space="preserve"><value>Impostazioni copiate dal dispositivo selezionato.</value></data>
   <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>Profilo "{0}" creato (vuoto).</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Profilo "{0}" creato.</value></data>

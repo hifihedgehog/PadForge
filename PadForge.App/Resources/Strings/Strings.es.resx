@@ -155,7 +155,7 @@
   <data name="Status_SettingsPasted" xml:space="preserve"><value>Configuración pegada desde el portapapeles.</value></data>
   <data name="Status_PasteFailed_Format" xml:space="preserve"><value>Error al pegar: {0}</value></data>
   <data name="Status_NoDeviceToCopyFrom" xml:space="preserve"><value>No hay dispositivo seleccionado del cual copiar.</value></data>
-  <data name="Status_NoOtherDevices" xml:space="preserve"><value>No se encontraron otros dispositivos configurados de los cuales copiar.</value></data>
+  <data name="Status_NoOtherDevices" xml:space="preserve"><value>No se encontraron otros controladores virtuales configurados de los cuales copiar.</value></data>
   <data name="Status_SettingsCopiedFromDevice" xml:space="preserve"><value>Configuración copiada del dispositivo seleccionado.</value></data>
   <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>Perfil "{0}" creado (vacío).</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Perfil "{0}" creado.</value></data>

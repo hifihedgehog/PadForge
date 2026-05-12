@@ -558,16 +558,39 @@ namespace PadForge.Common.Input
         };
 
         /// <summary>
-        /// Checks whether all raw button indices specified by the macro's trigger
-        /// are currently pressed on the target device.
+        /// Checks whether every raw-button entry on the macro's trigger is
+        /// currently pressed on its respective assigned device. Walks the
+        /// multi-device <see cref="MacroItem.GetTriggerInputEntries"/> list
+        /// first; falls back to the legacy single-device
+        /// <see cref="MacroItem.TriggerDeviceGuid"/> + <c>TriggerRawButtons</c>
+        /// path if the entry list is empty (e.g. macros saved by an older
+        /// PadForge version that pre-dated multi-device support).
         /// </summary>
         private bool CheckRawButtonTrigger(MacroItem macro)
         {
-            var ud = FindOnlineDeviceByInstanceGuid(macro.TriggerDeviceGuid);
-            if (ud == null || !ud.IsOnline || ud.InputState == null)
+            var entries = macro.GetTriggerInputEntries();
+            if (entries.Count > 0)
+            {
+                // Multi-device path. EVERY button entry must be active on
+                // its own device for the trigger to fire.
+                for (int i = 0; i < entries.Count; i++)
+                {
+                    var e = entries[i];
+                    if (e.RawButton < 0) continue; // POV entries handled by CheckRawPovTrigger
+                    var ud = FindOnlineDeviceByInstanceGuid(e.DeviceGuid);
+                    if (ud == null || !ud.IsOnline || ud.InputState?.Buttons == null) return false;
+                    var btns = ud.InputState.Buttons;
+                    if (e.RawButton >= btns.Length || !btns[e.RawButton]) return false;
+                }
+                return true;
+            }
+
+            // Legacy single-device fallback.
+            var udLegacy = FindOnlineDeviceByInstanceGuid(macro.TriggerDeviceGuid);
+            if (udLegacy == null || !udLegacy.IsOnline || udLegacy.InputState == null)
                 return false;
 
-            var buttons = ud.InputState.Buttons;
+            var buttons = udLegacy.InputState.Buttons;
             var rawIndices = macro.TriggerRawButtons;
             for (int i = 0; i < rawIndices.Length; i++)
             {
@@ -579,27 +602,47 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Checks whether all POV triggers are active on the target device.
-        /// Each entry is "povIndex:centidegrees". The POV must be in the same
-        /// 45-degree sector as the stored direction.
+        /// Checks whether every POV-entry on the macro's trigger is currently
+        /// active on its respective assigned device. Same multi-device-first
+        /// fallback shape as <see cref="CheckRawButtonTrigger"/>. Each entry
+        /// must match within ±45° of its stored centidegrees.
         /// </summary>
         private bool CheckRawPovTrigger(MacroItem macro)
         {
-            var ud = FindOnlineDeviceByInstanceGuid(macro.TriggerDeviceGuid);
-            if (ud == null || !ud.IsOnline || ud.InputState == null)
+            var entries = macro.GetTriggerInputEntries();
+            if (entries.Count > 0)
+            {
+                for (int i = 0; i < entries.Count; i++)
+                {
+                    var e = entries[i];
+                    if (string.IsNullOrEmpty(e.Pov)) continue; // button entries handled separately
+                    if (!MacroItem.ParsePovTrigger(e.Pov, out int idx, out int targetCd)) return false;
+                    var ud = FindOnlineDeviceByInstanceGuid(e.DeviceGuid);
+                    if (ud == null || !ud.IsOnline || ud.InputState?.Povs == null) return false;
+                    var povs = ud.InputState.Povs;
+                    if (idx < 0 || idx >= povs.Length || povs[idx] < 0) return false;
+                    int diff = Math.Abs(povs[idx] - targetCd);
+                    if (diff > 18000) diff = 36000 - diff;
+                    if (diff > 2250) return false;
+                }
+                return true;
+            }
+
+            // Legacy single-device fallback.
+            var udLegacy = FindOnlineDeviceByInstanceGuid(macro.TriggerDeviceGuid);
+            if (udLegacy == null || !udLegacy.IsOnline || udLegacy.InputState == null)
                 return false;
 
-            var povs = ud.InputState.Povs;
-            if (povs == null) return false;
+            var legacyPovs = udLegacy.InputState.Povs;
+            if (legacyPovs == null) return false;
 
             foreach (var entry in macro.TriggerPovs)
             {
                 if (!MacroItem.ParsePovTrigger(entry, out int idx, out int targetCd))
                     return false;
-                if (idx < 0 || idx >= povs.Length || povs[idx] < 0)
+                if (idx < 0 || idx >= legacyPovs.Length || legacyPovs[idx] < 0)
                     return false;
-                // Check same 45-degree sector (±2250 centidegrees).
-                int diff = Math.Abs(povs[idx] - targetCd);
+                int diff = Math.Abs(legacyPovs[idx] - targetCd);
                 if (diff > 18000) diff = 36000 - diff;
                 if (diff > 2250) return false;
             }

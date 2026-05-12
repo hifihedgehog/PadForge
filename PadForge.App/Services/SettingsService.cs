@@ -1377,6 +1377,7 @@ namespace PadForge.Services
                     TriggerAxisTargetList = md.TriggerAxisTargets,
                     TriggerAxisThreshold = md.TriggerAxisThreshold > 0 ? md.TriggerAxisThreshold : 50,
                     TriggerPovs = md.TriggerPovs ?? Array.Empty<string>(),
+                    TriggerInputs = md.TriggerInputs,
                     TriggerExpression = md.TriggerExpression ?? "",
                     TriggerExpressionVariableSpecs = md.TriggerExpressionVariables
                 };
@@ -2171,6 +2172,7 @@ namespace PadForge.Services
                         TriggerAxisTargets = macro.TriggerAxisTargetList,
                         TriggerAxisThreshold = macro.TriggerAxisThreshold,
                         TriggerPovs = macro.TriggerPovs?.Length > 0 ? macro.TriggerPovs : null,
+                        TriggerInputs = string.IsNullOrEmpty(macro.TriggerInputs) ? null : macro.TriggerInputs,
                         TriggerExpression = string.IsNullOrEmpty(macro.TriggerExpression) ? null : macro.TriggerExpression,
                         TriggerExpressionVariables = macro.TriggerExpressionVariableSpecs,
                         Actions = macro.Actions.Select(a => new ActionData
@@ -3106,6 +3108,16 @@ namespace PadForge.Services
         [XmlArray("TriggerPovs")]
         [XmlArrayItem("Pov")]
         public string[] TriggerPovs { get; set; }
+
+        /// <summary>Pipe-separated <see cref="MacroItem.TriggerInputEntry.Spec"/>
+        /// entries for the multi-device trigger combo (cross-device button +
+        /// POV combos, e.g. controller-X + keyboard-A + mouse-Left). When
+        /// non-empty, this is authoritative over the single-device legacy
+        /// fields above. Null / empty on macros saved by older PadForge
+        /// versions that pre-dated multi-device support — the runtime
+        /// migrates from the legacy fields on first access.</summary>
+        [XmlElement]
+        public string TriggerInputs { get; set; }
 
         /// <summary>Custom-expression formula (used when
         /// <see cref="TriggerMode"/> is <c>CustomExpression</c>). Empty / null

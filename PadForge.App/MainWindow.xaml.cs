@@ -290,6 +290,9 @@ namespace PadForge
             _settingsService = new SettingsService(_viewModel);
             _inputService = new InputService(_viewModel) { SettingsService = _settingsService };
             _recorderService = new RecorderService(_viewModel);
+            // Expose the recorder to PadPage so the shift activator dialog
+            // can use freeform recording for its Record buttons.
+            Views.PadPage.Recorder = _recorderService;
             _deviceService = new DeviceService(_viewModel, _settingsService);
             ProfilesPageView.InputService = _inputService;
             ProfilesPageView.OnShortcutsChanged = SaveProfileShortcuts;

@@ -24,6 +24,13 @@ namespace PadForge.Views
 
         private PadViewModel _currentPadVm;
 
+        /// <summary>RecorderService reference set by MainWindow at startup
+        /// so the shift activator dialog's Record buttons can drive a
+        /// freeform recording session through the existing infrastructure.
+        /// Static so the dialog handlers can read it without threading a
+        /// service reference through every code path.</summary>
+        public static PadForge.Services.RecorderService Recorder { get; set; }
+
         /// <summary>
         /// Currently-subscribed <see cref="ExtendedSlotConfig"/> for the active
         /// PadViewModel. Tracked separately from <see cref="_currentPadVm"/>
@@ -454,7 +461,8 @@ namespace PadForge.Views
             var existing = slotMs?.ShiftActivators
                 ?? new System.Collections.Generic.List<Engine.Data.ShiftActivator>();
 
-            var dlg = new ShiftActivatorDialog(available, existing: null, otherActivators: existing)
+            var dlg = new ShiftActivatorDialog(available, existing: null, otherActivators: existing,
+                recorder: Recorder, padIndex: _currentPadVm.PadIndex)
             {
                 Owner = Window.GetWindow(this),
             };
@@ -532,7 +540,8 @@ namespace PadForge.Views
             foreach (var a in slotMs.ShiftActivators)
                 if (a != null && !ReferenceEquals(a, existing)) others.Add(a);
 
-            var dlg = new ShiftActivatorDialog(available, existing, others)
+            var dlg = new ShiftActivatorDialog(available, existing, others,
+                recorder: Recorder, padIndex: _currentPadVm.PadIndex)
             {
                 Owner = Window.GetWindow(this),
             };

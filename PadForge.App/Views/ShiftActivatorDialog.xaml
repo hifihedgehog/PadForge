@@ -67,45 +67,91 @@
             <TextBlock Grid.Row="4"
                        Text="{Binding Pad_Shift_ActivatorInput, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
-            <ComboBox Grid.Row="5" x:Name="InputCombo" Margin="0,0,0,12"
-                      DisplayMemberPath="DisplayName">
-                <ComboBox.GroupStyle>
-                    <GroupStyle>
-                        <GroupStyle.HeaderTemplate>
-                            <DataTemplate>
-                                <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
-                                        Padding="6,3,6,3">
-                                    <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                               TextTrimming="CharacterEllipsis"/>
-                                </Border>
-                            </DataTemplate>
-                        </GroupStyle.HeaderTemplate>
-                    </GroupStyle>
-                </ComboBox.GroupStyle>
-            </ComboBox>
+            <Grid Grid.Row="5" Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox Grid.Column="0" x:Name="InputCombo"
+                          DisplayMemberPath="DisplayName">
+                    <ComboBox.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                            Padding="6,3,6,3">
+                                        <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                    </Border>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ComboBox.GroupStyle>
+                </ComboBox>
+                <Button Grid.Column="1" x:Name="InputRecordButton"
+                        Margin="6,0,0,0" Width="40"
+                        Click="InputRecord_Click">
+                    <TextBlock x:Name="InputRecordIcon" Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"/>
+                    <Button.ToolTip>
+                        <TextBlock Text="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}"/>
+                    </Button.ToolTip>
+                </Button>
+                <Button Grid.Column="2" x:Name="InputClearButton"
+                        Margin="6,0,0,0" Width="40"
+                        Click="InputClear_Click">
+                    <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
+                    <Button.ToolTip>
+                        <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
+                    </Button.ToolTip>
+                </Button>
+            </Grid>
 
             <!-- Second chord input (Kind=Chord) -->
             <TextBlock Grid.Row="6" x:Name="ChordLabel"
                        Text="{Binding Pad_Shift_ChordSecondInput, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
-            <ComboBox Grid.Row="7" x:Name="ChordSecondCombo" Margin="0,0,0,12"
-                      DisplayMemberPath="DisplayName">
-                <ComboBox.GroupStyle>
-                    <GroupStyle>
-                        <GroupStyle.HeaderTemplate>
-                            <DataTemplate>
-                                <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
-                                        Padding="6,3,6,3">
-                                    <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                               TextTrimming="CharacterEllipsis"/>
-                                </Border>
-                            </DataTemplate>
-                        </GroupStyle.HeaderTemplate>
-                    </GroupStyle>
-                </ComboBox.GroupStyle>
-            </ComboBox>
+            <Grid Grid.Row="7" x:Name="ChordSecondRow" Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox Grid.Column="0" x:Name="ChordSecondCombo"
+                          DisplayMemberPath="DisplayName">
+                    <ComboBox.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                            Padding="6,3,6,3">
+                                        <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                    </Border>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ComboBox.GroupStyle>
+                </ComboBox>
+                <Button Grid.Column="1" x:Name="ChordSecondRecordButton"
+                        Margin="6,0,0,0" Width="40"
+                        Click="ChordSecondRecord_Click">
+                    <TextBlock x:Name="ChordSecondRecordIcon" Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"/>
+                    <Button.ToolTip>
+                        <TextBlock Text="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}"/>
+                    </Button.ToolTip>
+                </Button>
+                <Button Grid.Column="2" x:Name="ChordSecondClearButton"
+                        Margin="6,0,0,0" Width="40"
+                        Click="ChordSecondClear_Click">
+                    <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
+                    <Button.ToolTip>
+                        <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
+                    </Button.ToolTip>
+                </Button>
+            </Grid>
 
             <!-- Axis threshold (Kind=Axis) -->
             <TextBlock Grid.Row="8" x:Name="AxisThresholdLabel"

@@ -1864,6 +1864,7 @@ namespace PadForge.Services
                         primary.Descriptor, primary.Invert, primary.HalfAxis);
                     mapping.LoadDescriptor(encoded);
                     if (primary.DeadZone > 0) mapping.MappingDeadZone = primary.DeadZone;
+                    mapping.IsBidirectional = primary.Bidirectional;
                     mapping.PrimarySourceDeviceGuid = primary.DeviceGuid ?? "";
                     mapping.PrimarySourceDeviceLabel = ResolveDeviceLabel(primary.DeviceGuid);
 
@@ -1884,6 +1885,7 @@ namespace PadForge.Services
                     mapping.PrimarySourceDeviceGuid = "";
                     mapping.PrimarySourceDeviceLabel = "";
                     mapping.MappingDeadZone = 50;
+                    mapping.IsBidirectional = false;
                 }
 
                 MappingDisplayResolver.ResolveDisplayText(mapping, primaryUd);
@@ -2198,6 +2200,13 @@ namespace PadForge.Services
             // (deadzones / sensitivity / FFB) stay on screen.
             Guid viewDevice = padVm.SelectedMappedDevice?.InstanceGuid ?? targetGuid;
             LoadPadSettingToViewModel(padVm, viewDevice);
+            // LoadPadSettingToViewModel only loads per-device TUNING; mapping
+            // rows stay stale unless we explicitly refresh them from the
+            // freshly-written MappingSet. Without this, the autosave 250 ms
+            // later runs PushUiExtraSourcesIntoSlotMappingSets against the
+            // pre-paste MappingItems and clobbers the just-copied rows —
+            // i.e. Copy / Paste / Copy From appear to do nothing.
+            RefreshMappingsCore(padVm);
             PopulateAvailableInputs(padVm, FindUserDevice(viewDevice));
         }
 
@@ -2280,6 +2289,7 @@ namespace PadForge.Services
                             Descriptor = s.Descriptor ?? "",
                             Invert = s.Invert,
                             HalfAxis = s.HalfAxis,
+                            Bidirectional = s.Bidirectional,
                             DeadZone = s.DeadZone,
                             ParamUp = s.ParamUp ?? "",
                             ParamDown = s.ParamDown ?? "",
@@ -2380,6 +2390,7 @@ namespace PadForge.Services
                                 Descriptor = s.Descriptor ?? "",
                                 Invert = s.Invert,
                                 HalfAxis = s.HalfAxis,
+                                Bidirectional = s.Bidirectional,
                                 DeadZone = s.DeadZone,
                                 ParamUp = s.ParamUp ?? "",
                                 ParamDown = s.ParamDown ?? "",

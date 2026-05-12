@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        xmlns:views="clr-namespace:PadForge.Views"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         Title="{Binding Pad_Shift_DialogTitle, Source={x:Static strings:Strings.Instance}}"
-        Height="660" Width="560"
+        Height="700" Width="600"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
 
@@ -111,17 +112,15 @@
             <StackPanel Grid.Row="9" x:Name="AxisThresholdRow" Orientation="Horizontal" Margin="0,0,0,12">
                 <Slider x:Name="AxisThresholdSlider" Width="320" Minimum="0.05" Maximum="1.0" Value="0.5"
                         TickFrequency="0.05" IsSnapToTickEnabled="True"/>
-                <TextBlock Text="{Binding ElementName=AxisThresholdSlider, Path=Value, StringFormat={}{0:F2}}"
-                           Margin="8,0,0,0" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding ElementName=AxisThresholdSlider, Path=Value, StringFormat={}{0:F2}, UpdateSourceTrigger=LostFocus}"
+                         Width="56" Margin="8,0,0,0" VerticalAlignment="Center"
+                         HorizontalContentAlignment="Right"/>
             </StackPanel>
 
             <!-- Mode -->
             <TextBlock Grid.Row="10"
                        Text="{Binding Pad_Shift_Mode, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
-            <!-- Sticky is intentionally hidden until proper "auto-release
-                 after the next input" semantics land in the engine; its
-                 schema slot is preserved so saved configs still load. -->
             <ComboBox Grid.Row="11" x:Name="ModeCombo" Margin="0,0,0,12"
                       SelectionChanged="ModeCombo_SelectionChanged">
                 <ComboBoxItem Tag="Hold"   Content="{Binding Pad_Shift_ModeHold, Source={x:Static strings:Strings.Instance}}"/>
@@ -130,53 +129,84 @@
                 <ComboBoxItem Tag="Cycle"  Content="{Binding Pad_Shift_ModeCycle, Source={x:Static strings:Strings.Instance}}"/>
             </ComboBox>
 
-            <!-- Jump-to-layer (Mode=Custom) -->
+            <!-- Jump-to-layer (Mode=Custom). Dropdown of existing layers
+                 plus a "(Base)" entry that maps to empty string. -->
             <TextBlock Grid.Row="12" x:Name="JumpLabel"
                        Text="{Binding Pad_Shift_JumpToLayer, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
-            <TextBox Grid.Row="13" x:Name="JumpToLayerBox" Margin="0,0,0,12"
-                     ToolTip="Layer mask to switch to when this activator fires. Empty = back to Base."/>
+            <ComboBox Grid.Row="13" x:Name="JumpToLayerCombo" Margin="0,0,0,12"
+                      DisplayMemberPath="DisplayName"/>
 
-            <!-- Cycle layers (Mode=Cycle) -->
+            <!-- Cycle layers (Mode=Cycle). Checkbox list of existing
+                 layers; check the ones to include in the rotation. Order
+                 follows the source list. -->
             <TextBlock Grid.Row="14" x:Name="CycleLabel"
                        Text="{Binding Pad_Shift_CycleLayers, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
-            <TextBox Grid.Row="15" x:Name="CycleLayersBox" Margin="0,0,0,12"
-                     ToolTip="Pipe-separated layer masks to cycle through, e.g. Shift1|Shift2|Shift3"/>
+            <ListBox Grid.Row="15" x:Name="CycleLayersList" Margin="0,0,0,12"
+                     MinHeight="80" MaxHeight="160"
+                     SelectionMode="Multiple">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox Content="{Binding LayerName}"
+                                  IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Mode=TwoWay}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
-            <!-- Delay / Postpone / Color -->
-            <StackPanel Grid.Row="16" Margin="0,0,0,12">
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                    <TextBlock Text="{Binding Pad_Shift_Delay, Source={x:Static strings:Strings.Instance}}"
-                               VerticalAlignment="Center" Width="140"/>
-                    <Slider x:Name="DelaySlider" Width="220" Minimum="0" Maximum="2000" Value="0"
+            <!-- Delay slider + numeric -->
+            <Grid Grid.Row="16" Margin="0,0,0,12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"
+                           Text="{Binding Pad_Shift_Delay, Source={x:Static strings:Strings.Instance}}"
+                           ToolTip="{Binding Pad_Shift_Delay_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                           Margin="0,0,0,4"/>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <Slider x:Name="DelaySlider" Width="320" Minimum="0" Maximum="2000" Value="0"
                             TickFrequency="50" IsSnapToTickEnabled="True"/>
-                    <TextBlock Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat={}{0:F0} ms}"
-                               Margin="8,0,0,0" VerticalAlignment="Center"/>
+                    <TextBox Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat={}{0:F0}, UpdateSourceTrigger=LostFocus}"
+                             Width="56" Margin="8,0,0,0" VerticalAlignment="Center"
+                             HorizontalContentAlignment="Right"/>
+                    <TextBlock Text="ms" Margin="4,0,0,0" VerticalAlignment="Center"/>
                 </StackPanel>
-                <!-- PostponeMapping is hidden until the engine actually
-                     consumes the activator's input (source-suppression in
-                     Step 3 against engaged activators with
-                     PostponeMapping=false). The schema slot is preserved
-                     so saved configs round-trip. Reinstate this CheckBox
-                     when source suppression lands. -->
-                <CheckBox x:Name="PostponeMappingBox"
-                          Content="{Binding Pad_Shift_PostponeMapping, Source={x:Static strings:Strings.Instance}}"
-                          ToolTip="{Binding Pad_Shift_PostponeMapping_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                          Visibility="Collapsed"
-                          Margin="0,0,0,6"/>
-                <StackPanel Orientation="Horizontal">
+            </Grid>
+
+            <!-- Layer color: real HSV picker + clear button + preview swatch.
+                 Empty Color on the activator is rendered as muted gray on
+                 the tab strip and the overlay; Clear resets to empty. -->
+            <Grid Grid.Row="17" Margin="0,0,0,12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,6">
                     <TextBlock Text="{Binding Pad_Shift_Color, Source={x:Static strings:Strings.Instance}}"
-                               VerticalAlignment="Center" Width="140"/>
-                    <TextBox x:Name="ColorBox" Width="120"
-                             ToolTip="ARGB hex, e.g. #FF8E44AD. Leave empty for no color."/>
+                               VerticalAlignment="Center"/>
+                    <Border x:Name="ColorPreviewSwatch"
+                            Width="22" Height="22"
+                            Margin="12,0,0,0"
+                            CornerRadius="11"
+                            BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
+                            BorderThickness="1"
+                            Background="#555"/>
+                    <Button x:Name="ClearColorButton"
+                            Content="Clear"
+                            Padding="8,2"
+                            Margin="12,0,0,0"
+                            Click="ClearColor_Click"/>
                 </StackPanel>
-            </StackPanel>
+                <views:ColorPickerControl Grid.Row="1" x:Name="ColorPicker"
+                                          HorizontalAlignment="Left"/>
+            </Grid>
 
             <!-- Hint -->
-            <TextBlock Grid.Row="17" x:Name="HintText"
+            <TextBlock x:Name="HintText"
                        Foreground="{DynamicResource SystemFillColorCautionBrush}"
-                       TextWrapping="Wrap" Margin="0,0,0,8"/>
+                       TextWrapping="Wrap" Margin="0,0,0,8"
+                       Visibility="Collapsed"/>
 
             <!-- Buttons -->
             <StackPanel Grid.Row="18" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">

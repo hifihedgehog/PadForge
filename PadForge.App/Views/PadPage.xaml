@@ -1822,12 +1822,31 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <RadioButton GroupName="ShiftLayerTabs"
-                                             Content="{Binding LayerName}"
                                              IsChecked="{Binding IsActive, Mode=TwoWay}"
                                              Margin="0,0,4,0"
                                              Padding="10,4"
                                              Click="ShiftLayerTab_Click"
                                              Tag="{Binding LayerMask}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <!-- Per-layer color dot. Hidden on the Base
+                                             tab; visible (gray default or authored
+                                             color) for every shift layer. -->
+                                        <Ellipse Width="8" Height="8"
+                                                 Margin="0,0,6,0"
+                                                 VerticalAlignment="Center"
+                                                 Fill="{Binding Color, Converter={StaticResource HexToBrushConverter}}">
+                                            <Ellipse.Style>
+                                                <Style TargetType="Ellipse">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsBase}" Value="True">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Ellipse.Style>
+                                        </Ellipse>
+                                        <TextBlock Text="{Binding LayerName}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                     <!-- Per-tab context menu. Configure /
                                          Rename / Delete are disabled for
                                          the Base tab (no activator to act

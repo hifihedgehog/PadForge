@@ -118,5 +118,10 @@ namespace PadForge.Engine.Data
         /// Each press advances to the next; press past last wraps to Base.
         /// Used only when <see cref="Mode"/> == <c>"Cycle"</c>.</summary>
         [XmlAttribute] public string CycleLayers { get; set; } = "";
+
+        /// <summary>v3 personalization: emoji or single-grapheme string
+        /// shown on the engaged-layer flyout. Empty falls back to the
+        /// universal Shift glyph <c>⇧</c>.</summary>
+        [XmlAttribute] public string Icon { get; set; } = "";
     }
 }

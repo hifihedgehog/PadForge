@@ -1276,6 +1276,8 @@
   <data name="Pad_Shift_Configure" xml:space="preserve"><value>Configurar activador…</value></data>
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>Cambiar nombre de la capa…</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>Color de la capa</value></data>
+  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Elige un emoji que aparecerá en el flyout cuando esta capa esté activa.</value></data>
+  <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>Restablecer (⇧)</value></data>
   <data name="Pad_Shift_Copy" xml:space="preserve"><value>Copiar filas de la capa</value></data>
   <data name="Pad_Shift_Paste" xml:space="preserve"><value>Pegar filas en la capa</value></data>
   <data name="Pad_Shift_Clear" xml:space="preserve"><value>Borrar filas de la capa</value></data>

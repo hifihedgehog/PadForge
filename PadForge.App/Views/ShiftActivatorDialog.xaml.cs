@@ -33,6 +33,7 @@ namespace PadForge.Views
         private bool _suppressColorPickerWriteback;
         private bool _recordingPrimary;
         private bool _recordingChord;
+        private string _selectedIcon = "";
 
         private static readonly SolidColorBrush UnsetColorBrush =
             new SolidColorBrush(Color.FromRgb(0x55, 0x55, 0x55));
@@ -156,6 +157,7 @@ namespace PadForge.Views
             ApplyKindVisibility();
             ApplyModeVisibility();
             RefreshInputComboSources();
+            InitEmojiPicker(existing?.Icon ?? "");
 
             Loaded += (_, __) =>
             {
@@ -519,6 +521,7 @@ namespace PadForge.Views
                 DelayMs = (int)Math.Round(DelaySlider.Value),
                 PostponeMapping = false,
                 Color = colorHex,
+                Icon = _selectedIcon ?? "",
             };
 
             DialogResult = true;
@@ -546,5 +549,176 @@ namespace PadForge.Views
             public string LayerMask { get; set; } = "";
             public string DisplayName { get; set; } = "";
         }
+
+        // ─────────────────────────────────────────────
+        //  Emoji icon picker
+        // ─────────────────────────────────────────────
+
+        private class EmojiCategory
+        {
+            public string Name { get; set; } = "";
+            public string Glyph { get; set; } = "";
+            public string[] Emojis { get; set; } = Array.Empty<string>();
+        }
+
+        private void InitEmojiPicker(string preset)
+        {
+            EmojiCategoryBar.ItemsSource = EmojiCatalog;
+            EmojiGrid.ItemsSource = EmojiCatalog[0].Emojis;
+
+            if (!string.IsNullOrEmpty(preset))
+            {
+                _selectedIcon = preset;
+                IconPickerGlyph.Text = preset;
+            }
+            else
+            {
+                _selectedIcon = "";
+                IconPickerGlyph.Text = "⇧";
+            }
+        }
+
+        private void IconPickerButton_Click(object sender, RoutedEventArgs e)
+        {
+            IconPickerPopup.IsOpen = !IconPickerPopup.IsOpen;
+        }
+
+        private void EmojiCategory_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.Button b && b.Tag is EmojiCategory cat)
+                EmojiGrid.ItemsSource = cat.Emojis;
+        }
+
+        private void Emoji_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.Button b && b.Tag is string s && !string.IsNullOrEmpty(s))
+            {
+                _selectedIcon = s;
+                IconPickerGlyph.Text = s;
+            }
+            IconPickerPopup.IsOpen = false;
+        }
+
+        private void EmojiReset_Click(object sender, RoutedEventArgs e)
+        {
+            _selectedIcon = "";
+            IconPickerGlyph.Text = "⇧";
+            IconPickerPopup.IsOpen = false;
+        }
+
+        private static readonly EmojiCategory[] EmojiCatalog = new[]
+        {
+            new EmojiCategory
+            {
+                Name = "Smileys",
+                Glyph = "😀",
+                Emojis = new[]
+                {
+                    "😀","😄","😆","😅","🤣","😂","🙂","🙃","😉","😊",
+                    "😇","🥰","😍","🤩","😘","😋","😛","😜","🤪","😝",
+                    "🤗","🤭","🤫","🤔","🤐","😐","😑","😶","😏","😒",
+                    "🙄","😬","🤥","😌","😔","😴","😷","🤒","🤕","🤢",
+                    "🤮","🤧","🥵","🥶","🥴","😵","🤯","🤠","🥳","🥸",
+                    "😎","🤓","🧐","🥺","😢","😭","😱","😖","😞","😓",
+                    "😩","😫","🥱","😡","😠","🤬","😈","👿","💀","☠️",
+                    "👻","👽","🤖","💩","🎃","😸","😺","😻","😼","😽",
+                }
+            },
+            new EmojiCategory
+            {
+                Name = "Hands",
+                Glyph = "👍",
+                Emojis = new[]
+                {
+                    "👋","🤚","✋","🖖","👌","🤏","✌️","🤞","🤟","🤘",
+                    "🤙","👈","👉","👆","👇","☝️","👍","👎","✊","👊",
+                    "🤛","🤜","👏","🙌","👐","🤲","🤝","🙏","💪","✍️",
+                    "🦾","🦿","🦵","🦶","👀","👁️","👅","👄","👂","👃",
+                }
+            },
+            new EmojiCategory
+            {
+                Name = "Animals",
+                Glyph = "🐾",
+                Emojis = new[]
+                {
+                    "🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼","🐨","🐯",
+                    "🦁","🐮","🐷","🐸","🐵","🐔","🐧","🐦","🦆","🦅",
+                    "🦉","🦄","🐝","🦋","🐢","🦎","🐍","🐙","🦑","🦐",
+                    "🦀","🐠","🐬","🐳","🦈","🐎","🐖","🐏","🐐","🦌",
+                    "🦃","🦒","🦓","🦔","🦇","🐺","🐗","🐴","🐂","🐃",
+                    "🦘","🦙","🦛","🦏","🦬","🦣","🐊","🦥","🦦","🦨",
+                }
+            },
+            new EmojiCategory
+            {
+                Name = "Food",
+                Glyph = "🍔",
+                Emojis = new[]
+                {
+                    "🍎","🍐","🍊","🍋","🍌","🍉","🍇","🍓","🍒","🍑",
+                    "🥭","🍍","🥥","🥝","🍅","🥑","🥦","🥬","🥒","🌶️",
+                    "🌽","🥕","🥔","🍞","🥐","🧀","🍳","🥞","🥓","🥩",
+                    "🍗","🍖","🌭","🍔","🍟","🍕","🌮","🌯","🥗","🍝",
+                    "🍣","🍰","🍦","🍩","🍪","🍫","🍿","🍺","🍷","🍸",
+                    "🧋","☕","🍵","🥛","🧃","🥤",
+                }
+            },
+            new EmojiCategory
+            {
+                Name = "Activities",
+                Glyph = "🎮",
+                Emojis = new[]
+                {
+                    "⚽","🏀","🏈","⚾","🎾","🏐","🏉","🥏","🎱","🏓",
+                    "🏸","🏒","🏑","🥍","🏏","⛳","🪁","🏹","🎣","🥊",
+                    "🎯","🎮","🕹️","🎲","🧩","♟️","🎭","🎨","🎬","🎤",
+                    "🎧","🎼","🎹","🥁","🎷","🎺","🎸","🎻","🎰","🎳",
+                    "🏆","🏅","🥇","🥈","🥉","🎖️","🏁","🚩",
+                }
+            },
+            new EmojiCategory
+            {
+                Name = "Travel",
+                Glyph = "🚗",
+                Emojis = new[]
+                {
+                    "🚗","🚕","🚙","🚌","🚎","🏎️","🚓","🚑","🚒","🚐",
+                    "🚚","🚛","🚜","🛴","🚲","🛵","🏍️","🛺","✈️","🛩️",
+                    "💺","🚀","🛸","🚁","🛶","⛵","🚤","⛴️","🚢","🚂",
+                    "🚆","🚇","🚊","⛺","🏠","🏢","🏥","🏫","🏪","🌆",
+                    "🌃","🌅","🌄","🗻","🗽","🗼","🏝️","🏞️","🏜️","🏟️",
+                }
+            },
+            new EmojiCategory
+            {
+                Name = "Objects",
+                Glyph = "💡",
+                Emojis = new[]
+                {
+                    "⌚","📱","💻","⌨️","🖥️","🖨️","🖱️","💾","💿","📀",
+                    "📼","📷","📹","🎥","📞","📺","📻","🔋","🔌","💡",
+                    "🔦","🕯️","🧯","💰","💳","💎","⚖️","🔧","🔨","⚒️",
+                    "🛠️","⛏️","🔩","⚙️","🔫","💣","⚔️","🗡️","🛡️","🔐",
+                    "🔑","🗝️","🚪","🛏️","🛋️","🚽","🚿","🛁","📚","📖",
+                    "📝","✏️","🖊️","🖌️","🎁","🎈","🎉","🧸","🪄","🔮",
+                }
+            },
+            new EmojiCategory
+            {
+                Name = "Symbols",
+                Glyph = "❤️",
+                Emojis = new[]
+                {
+                    "❤️","🧡","💛","💚","💙","💜","🖤","🤍","🤎","💔",
+                    "❣️","💕","💞","💓","💗","💖","💘","⭐","🌟","✨",
+                    "⚡","☄️","💥","🔥","🌈","☀️","🌤️","⛅","☁️","⛈️",
+                    "❄️","☃️","⛄","💧","💦","☂️","⌛","⏰","🌍","🌎",
+                    "🌏","🌑","🌒","🌓","🌔","🌕","🌖","🌗","🌘","🌙",
+                    "☘️","🍀","🌹","🌷","🌻","🌸","🌼","💐","🌺","🌵",
+                    "🌴","🌳","⇧","⇩","⇦","⇨","✅","❌","❓","❗",
+                }
+            },
+        };
     }
 }

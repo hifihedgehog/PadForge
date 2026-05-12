@@ -1276,6 +1276,8 @@
   <data name="Pad_Shift_Configure" xml:space="preserve"><value>활성화 구성…</value></data>
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>레이어 이름 바꾸기…</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>레이어 색상</value></data>
+  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>이 레이어가 활성화될 때 플라이아웃에 표시할 이모지를 선택하세요.</value></data>
+  <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>기본값으로 재설정 (⇧)</value></data>
   <data name="Pad_Shift_Copy" xml:space="preserve"><value>레이어 행 복사</value></data>
   <data name="Pad_Shift_Paste" xml:space="preserve"><value>레이어에 행 붙여넣기</value></data>
   <data name="Pad_Shift_Clear" xml:space="preserve"><value>레이어 행 지우기</value></data>

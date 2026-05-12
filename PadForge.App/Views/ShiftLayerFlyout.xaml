@@ -42,9 +42,8 @@
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock x:Name="StatusIcon"
                                    Text="&#x21E7;"
-                                   FontFamily="Segoe UI Symbol, Segoe UI"
-                                   FontSize="16"
-                                   FontWeight="SemiBold"
+                                   FontFamily="Segoe UI Emoji, Segoe UI Symbol, Segoe UI"
+                                   FontSize="18"
                                    VerticalAlignment="Center"
                                    Margin="0,0,10,0"
                                    Foreground="White"/>

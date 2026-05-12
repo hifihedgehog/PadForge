@@ -99,6 +99,24 @@ namespace PadForge.Services
         /// for the first device only, for back-compat with the single-device
         /// finalize path.</summary>
         private List<MacroItem.TriggerInputEntry> _recordedInputEntries;
+
+        // ── Per-device axis-deflection tracking for multi-device combos ──
+        // Buttons + POVs are rebuilt each frame from current state; axes
+        // need accumulator-style hold-confirmation (3 cycles past threshold)
+        // before they're committed. These dictionaries hold the per-device
+        // baseline + candidate state. Confirmed axes are stored in
+        // _recordedPerDeviceAxisEntries and merged into _recordedInputEntries
+        // each frame.
+        private Dictionary<Guid, int[]> _perDeviceAxisBaseline;
+        private Dictionary<Guid, AxisCandidate> _perDeviceAxisCandidates;
+        private List<MacroItem.TriggerInputEntry> _recordedPerDeviceAxisEntries;
+
+        private sealed class AxisCandidate
+        {
+            public MacroAxisTarget Target = MacroAxisTarget.None;
+            public float RawDelta = 0f;
+            public int HoldCounter = 0;
+        }
         private const float AxisRecordThreshold = 0.25f; // 25% of full range (delta from baseline)
         private const double MacroRecordTimeoutSeconds = 5;
         private DateTime _macroRecordStartTime;
@@ -4525,6 +4543,27 @@ namespace PadForge.Services
             _recordedAxisDirections = new Dictionary<MacroAxisTarget, MacroAxisDirection>();
             _recordedPovs = new HashSet<string>();
             _recordedInputEntries = new List<MacroItem.TriggerInputEntry>();
+            _perDeviceAxisBaseline = new Dictionary<Guid, int[]>();
+            _perDeviceAxisCandidates = new Dictionary<Guid, AxisCandidate>();
+            _recordedPerDeviceAxisEntries = new List<MacroItem.TriggerInputEntry>();
+            // For InputDevice source, snapshot every assigned device's axis
+            // baseline so the per-tick scan can detect deflection from rest.
+            // Skip keyboards (no axes) and mice (delta-not-positional axes).
+            if (macro.TriggerSource == MacroTriggerSource.InputDevice)
+            {
+                var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(padIndex);
+                if (slotSettings != null)
+                {
+                    foreach (var setting in slotSettings)
+                    {
+                        var ud = FindUserDevice(setting.InstanceGuid);
+                        if (ud == null || !ud.IsOnline || ud.InputState?.Axis == null) continue;
+                        if (ud.IsKeyboard || ud.IsMouse) continue;
+                        _perDeviceAxisBaseline[ud.InstanceGuid] = (int[])ud.InputState.Axis.Clone();
+                        _perDeviceAxisCandidates[ud.InstanceGuid] = new AxisCandidate();
+                    }
+                }
+            }
             _macroAxisCandidate = MacroAxisTarget.None;
             _macroAxisCandidateDelta = 0f;
             _macroAxisHoldCounter = 0;
@@ -4569,48 +4608,57 @@ namespace PadForge.Services
                 ? _recordedPovs.ToArray()
                 : Array.Empty<string>();
 
-            // Save recorded buttons (independent of axis).
-            bool multiDevice = _recordingMacro.TriggerSource == MacroTriggerSource.InputDevice
-                && _recordedInputEntries != null && _recordedInputEntries.Count > 0
-                && _recordedInputEntries.Select(e => e.DeviceGuid).Distinct().Count() > 1;
+            // InputDevice triggers always serialize through the multi-device
+            // TriggerInputEntries list. This unifies the single-device and
+            // multi-device cases into one code path and handles per-device
+            // axis entries which legacy fields can't express.
+            if (_recordingMacro.TriggerSource == MacroTriggerSource.InputDevice
+                && _recordedInputEntries != null && _recordedInputEntries.Count > 0)
+            {
+                _recordingMacro.SetTriggerInputEntries(
+                    new List<MacroItem.TriggerInputEntry>(_recordedInputEntries));
 
-            if (multiDevice)
-            {
-                // Multi-device combo path. Authoritative storage is the
-                // TriggerInputEntries list. Clear the single-device legacy
-                // fields since they can't represent the full combo.
-                _recordingMacro.SetTriggerInputEntries(new List<MacroItem.TriggerInputEntry>(_recordedInputEntries));
-                _recordingMacro.TriggerDeviceGuid = Guid.Empty;
-                _recordingMacro.TriggerRawButtons = Array.Empty<int>();
-                _recordingMacro.TriggerPovs = Array.Empty<string>();
+                // Back-compat: when the combo is a single device with only
+                // buttons + POVs (no per-device axes), mirror into the
+                // legacy fields so older PadForge builds still see the
+                // trigger. Multi-device combos and axis-bearing combos
+                // can't be expressed in the legacy format — clear the
+                // legacy fields in those cases.
+                bool singleDevice = _recordedInputEntries
+                    .Select(e => e.DeviceGuid).Distinct().Count() == 1;
+                bool hasPerDeviceAxes = _recordedInputEntries
+                    .Any(e => e.AxisTarget != MacroAxisTarget.None);
+
+                if (singleDevice && !hasPerDeviceAxes)
+                {
+                    var firstGuid = _recordedInputEntries[0].DeviceGuid;
+                    _recordingMacro.TriggerDeviceGuid = firstGuid;
+                    _recordingMacro.TriggerRawButtons = _recordedInputEntries
+                        .Where(e => e.RawButton >= 0)
+                        .Select(e => e.RawButton).OrderBy(x => x).ToArray();
+                    _recordingMacro.TriggerPovs = _recordedInputEntries
+                        .Where(e => !string.IsNullOrEmpty(e.Pov))
+                        .Select(e => e.Pov).ToArray();
+                }
+                else
+                {
+                    _recordingMacro.TriggerDeviceGuid = Guid.Empty;
+                    _recordingMacro.TriggerRawButtons = Array.Empty<int>();
+                    _recordingMacro.TriggerPovs = Array.Empty<string>();
+                }
                 _recordingMacro.TriggerButtons = 0;
                 _recordingMacro.TriggerCustomButtonWords = new uint[4];
-            }
-            else if (_recordingMacro.TriggerSource == MacroTriggerSource.InputDevice
-                && _recordingDeviceGuid != Guid.Empty
-                && ((_recordedRawButtons != null && _recordedRawButtons.Count > 0)
-                    || (_recordedPovs != null && _recordedPovs.Count > 0)))
-            {
-                // Single-device path. ALSO populate the multi-device list so
-                // the runtime evaluator can use one code path for both, but
-                // the legacy fields remain authoritative for cross-version
-                // back-compat.
-                _recordingMacro.TriggerDeviceGuid = _recordingDeviceGuid;
-                _recordingMacro.TriggerRawButtons = _recordedRawButtons.OrderBy(x => x).ToArray();
-                _recordingMacro.TriggerButtons = 0;
-                _recordingMacro.TriggerCustomButtonWords = new uint[4];
-                // Mirror into TriggerInputEntries (one device's buttons + povs).
-                var entries = new List<MacroItem.TriggerInputEntry>();
-                foreach (int b in _recordingMacro.TriggerRawButtons)
-                    entries.Add(new MacroItem.TriggerInputEntry { DeviceGuid = _recordingDeviceGuid, RawButton = b });
-                foreach (string pov in _recordingMacro.TriggerPovs ?? Array.Empty<string>())
-                    entries.Add(new MacroItem.TriggerInputEntry { DeviceGuid = _recordingDeviceGuid, Pov = pov });
-                _recordingMacro.SetTriggerInputEntries(entries);
+                // Per-device axes live in entries; clear the slot-combined
+                // legacy axis fields so the evaluator's legacy axis check
+                // doesn't double-fire.
+                _recordingMacro.TriggerAxisTargets = Array.Empty<MacroAxisTarget>();
+                _recordingMacro.TriggerAxisDirections = Array.Empty<MacroAxisDirection>();
             }
             else if (_recordingMacro.ButtonStyle == MacroButtonStyle.Numbered
                      && _recordedCustomButtons != null && _recordedCustomButtons.Any(w => w != 0))
             {
-                // Custom Extended button path.
+                // Custom Extended button path (OutputController source on
+                // an Extended slot — Xbox bitmask + custom button words).
                 _recordingMacro.TriggerCustomButtonWords = (uint[])_recordedCustomButtons.Clone();
                 _recordingMacro.TriggerButtons = 0;
                 _recordingMacro.TriggerDeviceGuid = Guid.Empty;
@@ -4619,7 +4667,8 @@ namespace PadForge.Services
             }
             else
             {
-                // Xbox bitmask path (OutputController or fallback).
+                // Xbox bitmask path (OutputController source). Slot-combined
+                // axes are in TriggerAxisTargets via the legacy path above.
                 _recordingMacro.TriggerButtons = _recordedButtons;
                 _recordingMacro.TriggerDeviceGuid = Guid.Empty;
                 _recordingMacro.TriggerRawButtons = Array.Empty<int>();
@@ -4638,10 +4687,100 @@ namespace PadForge.Services
             _recordedAxisDirections = null;
             _recordedPovs = null;
             _recordedInputEntries = null;
+            _perDeviceAxisBaseline = null;
+            _perDeviceAxisCandidates = null;
+            _recordedPerDeviceAxisEntries = null;
             _macroAxisBaseline = null;
             _macroAxisCandidate = MacroAxisTarget.None;
             _macroAxisCandidateDelta = 0f;
             _macroAxisHoldCounter = 0;
+        }
+
+        /// <summary>Per-device axis detection for multi-device combos. Iterates
+        /// every assigned device's standard SDL gamepad axes (LX/LY/LT/RX/RY/RT,
+        /// indices 0-5) against the per-device baseline captured at recording
+        /// start. An axis must hold past <see cref="AxisRecordThreshold"/> for
+        /// <see cref="MacroAxisHoldCycles"/> consecutive frames before it's
+        /// added to <see cref="_recordedPerDeviceAxisEntries"/>; that prevents
+        /// stick-noise false positives. Keyboards / mice are skipped at
+        /// baseline-capture time (no held-position axes).</summary>
+        private void DetectPerDeviceAxisDeflections()
+        {
+            if (_perDeviceAxisBaseline == null || _perDeviceAxisCandidates == null) return;
+
+            MacroAxisTarget[] axisMap = {
+                MacroAxisTarget.LeftStickX, MacroAxisTarget.LeftStickY,
+                MacroAxisTarget.LeftTrigger,
+                MacroAxisTarget.RightStickX, MacroAxisTarget.RightStickY,
+                MacroAxisTarget.RightTrigger
+            };
+
+            foreach (var kv in _perDeviceAxisBaseline)
+            {
+                var deviceGuid = kv.Key;
+                var baseline = kv.Value;
+                var ud = FindUserDevice(deviceGuid);
+                if (ud == null || !ud.IsOnline || ud.InputState?.Axis == null) continue;
+                var axes = ud.InputState.Axis;
+                if (!_perDeviceAxisCandidates.TryGetValue(deviceGuid, out var candidate))
+                {
+                    candidate = new AxisCandidate();
+                    _perDeviceAxisCandidates[deviceGuid] = candidate;
+                }
+
+                MacroAxisTarget bestTarget = MacroAxisTarget.None;
+                float bestDelta = 0f;
+                float bestRawDelta = 0f;
+                int limit = Math.Min(axisMap.Length, Math.Min(axes.Length, baseline.Length));
+                for (int i = 0; i < limit; i++)
+                {
+                    // Skip axis already recorded on THIS device.
+                    if (_recordedPerDeviceAxisEntries.Any(e => e.DeviceGuid == deviceGuid && e.AxisTarget == axisMap[i]))
+                        continue;
+                    float rawDelta = (axes[i] - baseline[i]) / 65535f;
+                    float delta = Math.Abs(rawDelta);
+                    if (delta > AxisRecordThreshold && delta > bestDelta)
+                    {
+                        bestDelta = delta;
+                        bestRawDelta = rawDelta;
+                        bestTarget = axisMap[i];
+                    }
+                }
+
+                if (bestTarget != MacroAxisTarget.None)
+                {
+                    if (bestTarget == candidate.Target)
+                    {
+                        candidate.HoldCounter++;
+                        if (candidate.HoldCounter >= MacroAxisHoldCycles)
+                        {
+                            _recordedPerDeviceAxisEntries.Add(new MacroItem.TriggerInputEntry
+                            {
+                                DeviceGuid = deviceGuid,
+                                AxisTarget = bestTarget,
+                                AxisDirection = candidate.RawDelta > 0 ? MacroAxisDirection.Positive
+                                              : candidate.RawDelta < 0 ? MacroAxisDirection.Negative
+                                              : MacroAxisDirection.Any
+                            });
+                            candidate.Target = MacroAxisTarget.None;
+                            candidate.RawDelta = 0f;
+                            candidate.HoldCounter = 0;
+                        }
+                    }
+                    else
+                    {
+                        candidate.Target = bestTarget;
+                        candidate.RawDelta = bestRawDelta;
+                        candidate.HoldCounter = 1;
+                    }
+                }
+                else
+                {
+                    candidate.Target = MacroAxisTarget.None;
+                    candidate.RawDelta = 0f;
+                    candidate.HoldCounter = 0;
+                }
+            }
         }
 
         /// <summary>
@@ -4665,68 +4804,79 @@ namespace PadForge.Services
                 return;
             }
 
-            // Read current axis values for delta detection.
-            float[] currentAxes = ReadCurrentAxes(
-                _recordingPadIndex, _recordingMacro.TriggerSource, _recordingMacro.ButtonStyle);
-
-            // Detect axes via baseline+delta+hold (shared across all paths).
-            // Accumulates into _recordedAxisTargets — multiple axes can be recorded.
-            if (_macroAxisBaseline != null && currentAxes != null)
+            // Axis detection — two paths based on source. OutputController keeps
+            // the legacy slot-combined gamepad scan (writes to _recordedAxisTargets).
+            // InputDevice scans EACH assigned device's own axis baseline +
+            // direction independently, so a multi-device combo can mix a
+            // controller stick + a keyboard key + a mouse button. Confirmed
+            // per-device axes land in _recordedPerDeviceAxisEntries and get
+            // merged into the multi-device entry list below.
+            if (_recordingMacro.TriggerSource == MacroTriggerSource.InputDevice)
             {
-                MacroAxisTarget bestCandidate = MacroAxisTarget.None;
-                float bestDelta = 0f;
-                float bestRawDelta = 0f; // signed delta for direction detection
+                DetectPerDeviceAxisDeflections();
+            }
+            else
+            {
+                // Read current axis values for delta detection (legacy slot-combined).
+                float[] currentAxes = ReadCurrentAxes(
+                    _recordingPadIndex, _recordingMacro.TriggerSource, _recordingMacro.ButtonStyle);
 
-                MacroAxisTarget[] axes = {
-                    MacroAxisTarget.LeftStickX, MacroAxisTarget.LeftStickY,
-                    MacroAxisTarget.RightStickX, MacroAxisTarget.RightStickY,
-                    MacroAxisTarget.LeftTrigger, MacroAxisTarget.RightTrigger
-                };
-                for (int i = 0; i < axes.Length && i < currentAxes.Length && i < _macroAxisBaseline.Length; i++)
+                if (_macroAxisBaseline != null && currentAxes != null)
                 {
-                    // Skip axes already recorded.
-                    if (_recordedAxisTargets.Contains(axes[i])) continue;
+                    MacroAxisTarget bestCandidate = MacroAxisTarget.None;
+                    float bestDelta = 0f;
+                    float bestRawDelta = 0f; // signed delta for direction detection
 
-                    float rawDelta = currentAxes[i] - _macroAxisBaseline[i];
-                    float delta = Math.Abs(rawDelta);
-                    if (delta > AxisRecordThreshold && delta > bestDelta)
+                    MacroAxisTarget[] axes = {
+                        MacroAxisTarget.LeftStickX, MacroAxisTarget.LeftStickY,
+                        MacroAxisTarget.RightStickX, MacroAxisTarget.RightStickY,
+                        MacroAxisTarget.LeftTrigger, MacroAxisTarget.RightTrigger
+                    };
+                    for (int i = 0; i < axes.Length && i < currentAxes.Length && i < _macroAxisBaseline.Length; i++)
                     {
-                        bestDelta = delta;
-                        bestRawDelta = rawDelta;
-                        bestCandidate = axes[i];
-                    }
-                }
+                        // Skip axes already recorded.
+                        if (_recordedAxisTargets.Contains(axes[i])) continue;
 
-                if (bestCandidate != MacroAxisTarget.None)
-                {
-                    if (bestCandidate == _macroAxisCandidate)
-                    {
-                        _macroAxisHoldCounter++;
-                        if (_macroAxisHoldCounter >= MacroAxisHoldCycles)
+                        float rawDelta = currentAxes[i] - _macroAxisBaseline[i];
+                        float delta = Math.Abs(rawDelta);
+                        if (delta > AxisRecordThreshold && delta > bestDelta)
                         {
-                            _recordedAxisTargets.Add(bestCandidate);
-                            // Record the direction the axis was deflected.
-                            _recordedAxisDirections[bestCandidate] =
-                                _macroAxisCandidateDelta > 0 ? MacroAxisDirection.Positive
-                                : _macroAxisCandidateDelta < 0 ? MacroAxisDirection.Negative
-                                : MacroAxisDirection.Any;
-                            _macroAxisCandidate = MacroAxisTarget.None;
-                            _macroAxisCandidateDelta = 0f;
-                            _macroAxisHoldCounter = 0;
+                            bestDelta = delta;
+                            bestRawDelta = rawDelta;
+                            bestCandidate = axes[i];
+                        }
+                    }
+
+                    if (bestCandidate != MacroAxisTarget.None)
+                    {
+                        if (bestCandidate == _macroAxisCandidate)
+                        {
+                            _macroAxisHoldCounter++;
+                            if (_macroAxisHoldCounter >= MacroAxisHoldCycles)
+                            {
+                                _recordedAxisTargets.Add(bestCandidate);
+                                _recordedAxisDirections[bestCandidate] =
+                                    _macroAxisCandidateDelta > 0 ? MacroAxisDirection.Positive
+                                    : _macroAxisCandidateDelta < 0 ? MacroAxisDirection.Negative
+                                    : MacroAxisDirection.Any;
+                                _macroAxisCandidate = MacroAxisTarget.None;
+                                _macroAxisCandidateDelta = 0f;
+                                _macroAxisHoldCounter = 0;
+                            }
+                        }
+                        else
+                        {
+                            _macroAxisCandidate = bestCandidate;
+                            _macroAxisCandidateDelta = bestRawDelta;
+                            _macroAxisHoldCounter = 1;
                         }
                     }
                     else
                     {
-                        _macroAxisCandidate = bestCandidate;
-                        _macroAxisCandidateDelta = bestRawDelta;
-                        _macroAxisHoldCounter = 1;
+                        _macroAxisCandidate = MacroAxisTarget.None;
+                        _macroAxisCandidateDelta = 0f;
+                        _macroAxisHoldCounter = 0;
                     }
-                }
-                else
-                {
-                    _macroAxisCandidate = MacroAxisTarget.None;
-                    _macroAxisCandidateDelta = 0f;
-                    _macroAxisHoldCounter = 0;
                 }
             }
 
@@ -4785,6 +4935,12 @@ namespace PadForge.Services
                     }
                 }
 
+                // Merge confirmed per-device axis entries — these accumulate
+                // across frames (held for 3 cycles before being confirmed),
+                // unlike buttons/POVs which are rebuilt each frame.
+                if (_recordedPerDeviceAxisEntries != null)
+                    currentEntries.AddRange(_recordedPerDeviceAxisEntries);
+
                 // Replace the recorded set with the current frame's state.
                 // Only update if SOMETHING is pressed (keeps the last combo
                 // visible after the user releases all keys).
@@ -4829,6 +4985,16 @@ namespace PadForge.Services
                             {
                                 inputs.Add(MacroItem.FormatPovTrigger(entry.Pov));
                             }
+                            else if (entry.AxisTarget != MacroAxisTarget.None)
+                            {
+                                string dirArrow = entry.AxisDirection switch
+                                {
+                                    MacroAxisDirection.Positive => " +",
+                                    MacroAxisDirection.Negative => " −",
+                                    _ => ""
+                                };
+                                inputs.Add($"{entry.AxisTarget.DisplayName()}{dirArrow} > {_recordingMacro.TriggerAxisThreshold}%");
+                            }
                         }
                         string deviceName = ResolveDeviceName(grp.Key);
                         parts.Add(!string.IsNullOrEmpty(deviceName)
@@ -4836,6 +5002,9 @@ namespace PadForge.Services
                             : string.Join(" + ", inputs));
                     }
                 }
+                // Legacy slot-combined axes appended at the end — only
+                // populated when source=OutputController (per-device axis
+                // path is used for InputDevice).
                 foreach (var ax in _recordedAxisTargets)
                     parts.Add($"{ax.DisplayName()} > {_recordingMacro.TriggerAxisThreshold}%");
 

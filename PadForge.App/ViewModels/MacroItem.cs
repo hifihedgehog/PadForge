@@ -196,6 +196,16 @@ namespace PadForge.ViewModels
                             {
                                 inputs.Add(FormatPovTrigger(entry.Pov));
                             }
+                            else if (entry.AxisTarget != MacroAxisTarget.None)
+                            {
+                                string dirSign = entry.AxisDirection switch
+                                {
+                                    MacroAxisDirection.Positive => " +",
+                                    MacroAxisDirection.Negative => " −",
+                                    _ => ""
+                                };
+                                inputs.Add($"{entry.AxisTarget.DisplayName()}{dirSign} > {_triggerAxisThreshold}%");
+                            }
                         }
                         string deviceName = ResolveDeviceName(grp.Key);
                         if (!string.IsNullOrEmpty(deviceName))
@@ -221,6 +231,16 @@ namespace PadForge.ViewModels
                         else if (!string.IsNullOrEmpty(entry.Pov))
                         {
                             parts.Add(FormatPovTrigger(entry.Pov));
+                        }
+                        else if (entry.AxisTarget != MacroAxisTarget.None)
+                        {
+                            string dirSign = entry.AxisDirection switch
+                            {
+                                MacroAxisDirection.Positive => " +",
+                                MacroAxisDirection.Negative => " −",
+                                _ => ""
+                            };
+                            parts.Add($"{entry.AxisTarget.DisplayName()}{dirSign} > {_triggerAxisThreshold}%");
                         }
                     }
                 }
@@ -428,16 +448,26 @@ namespace PadForge.ViewModels
         //  list wins.
         // ───────────────────────────────────────────────
 
-        /// <summary>One entry in the multi-device trigger combo. Either
-        /// <see cref="RawButton"/> >= 0 OR <see cref="Pov"/> is non-null —
-        /// never both on the same entry.</summary>
+        /// <summary>One entry in the multi-device trigger combo. Exactly one
+        /// of <see cref="RawButton"/>, <see cref="Pov"/>, or
+        /// <see cref="AxisTarget"/> is populated per entry. Axis entries
+        /// also carry <see cref="AxisDirection"/> (Any / Positive / Negative)
+        /// to express e.g. "left stick X deflected to the right past
+        /// threshold." The per-macro <c>TriggerAxisThreshold</c> applies
+        /// to all axis entries.</summary>
         public sealed class TriggerInputEntry
         {
             public Guid DeviceGuid;
-            /// <summary>Raw button index, or -1 if this entry is a POV.</summary>
+            /// <summary>Raw button index, or -1 if this entry isn't a button.</summary>
             public int RawButton = -1;
-            /// <summary>"povIndex:centidegrees" form, or null if this entry is a button.</summary>
+            /// <summary>"povIndex:centidegrees" form, or null if this entry isn't a POV.</summary>
             public string Pov;
+            /// <summary>Axis target on the device's standard SDL gamepad layout
+            /// (0=LX, 1=LY, 2=LT, 3=RX, 4=RY, 5=RT). <c>None</c> if not an axis entry.</summary>
+            public MacroAxisTarget AxisTarget = MacroAxisTarget.None;
+            /// <summary>Direction filter for axis entries (Any / Positive /
+            /// Negative). Ignored when <c>AxisTarget == None</c>.</summary>
+            public MacroAxisDirection AxisDirection = MacroAxisDirection.Any;
 
             /// <summary>Compact tagged form for XML round-trip.</summary>
             public string Spec
@@ -445,6 +475,7 @@ namespace PadForge.ViewModels
                 get
                 {
                     if (DeviceGuid == Guid.Empty) return "";
+                    if (AxisTarget != MacroAxisTarget.None) return $"in:{DeviceGuid}:ax:{AxisTarget}:{AxisDirection}";
                     if (!string.IsNullOrEmpty(Pov)) return $"in:{DeviceGuid}:pov:{Pov}";
                     if (RawButton >= 0) return $"in:{DeviceGuid}:btn:{RawButton}";
                     return "";
@@ -467,6 +498,12 @@ namespace PadForge.ViewModels
                     case "pov":
                         if (parts.Length < 5) return null;
                         entry.Pov = $"{parts[3]}:{parts[4]}";
+                        return entry;
+                    case "ax":
+                        if (!Enum.TryParse<MacroAxisTarget>(parts[3], out var at) || at == MacroAxisTarget.None) return null;
+                        entry.AxisTarget = at;
+                        if (parts.Length >= 5 && Enum.TryParse<MacroAxisDirection>(parts[4], out var dir))
+                            entry.AxisDirection = dir;
                         return entry;
                     default: return null;
                 }
@@ -718,7 +755,17 @@ namespace PadForge.ViewModels
 
         /// <summary>True if this macro uses one or more axes as part of its trigger.</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool UsesAxisTrigger => _triggerAxisTargets.Length > 0;
+        public bool UsesAxisTrigger
+        {
+            get
+            {
+                if (_triggerAxisTargets.Length > 0) return true;
+                var entries = GetTriggerInputEntries();
+                for (int i = 0; i < entries.Count; i++)
+                    if (entries[i].AxisTarget != MacroAxisTarget.None) return true;
+                return false;
+            }
+        }
 
         // ── Axis direction filter (per-axis, parallel to TriggerAxisTargets) ──
 

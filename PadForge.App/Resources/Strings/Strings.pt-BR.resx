@@ -213,7 +213,7 @@
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Servidor DSU/CemuHook Motion Provider protocol para dados de giroscópio e acelerômetro.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Habilitar servidor de movimento DSU (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Porta</value></data>
-  <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Fornece dados de giroscópio/acelerômetro para Cemu, Dolphin, Yuzu, etc.</value></data>
+  <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Fornece dados de giroscópio e acelerômetro para Cemu, Dolphin, Yuzu, etc.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Controle Web</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Sirva uma interface de gamepad para navegadores na sua rede local.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Ativar servidor de controle web</value></data>

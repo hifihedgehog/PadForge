@@ -667,6 +667,14 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>True when the macro has legacy slot-combined axis targets
+        /// (the OutputController-source path) — drives the visibility of the
+        /// legacy single Threshold + Direction sliders. Mutually exclusive in
+        /// practice with <see cref="HasTriggerAxisEntries"/> since the
+        /// recorder writes to one path or the other based on TriggerSource.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool HasLegacyAxisTrigger => _triggerAxisTargets != null && _triggerAxisTargets.Length > 0;
+
         /// <summary>True when the macro has at least one per-device axis
         /// entry. Drives the visibility of the per-entry axis editor panel.</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -846,6 +854,7 @@ namespace PadForge.ViewModels
                 _triggerAxisTargets = value ?? Array.Empty<MacroAxisTarget>();
                 OnPropertyChanged(nameof(TriggerAxisTargets));
                 OnPropertyChanged(nameof(UsesAxisTrigger));
+                OnPropertyChanged(nameof(HasLegacyAxisTrigger));
                 OnPropertyChanged(nameof(TriggerDisplayText));
             }
         }
@@ -1293,6 +1302,7 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(TriggerDisplayText));
                 OnPropertyChanged(nameof(TriggerAxisEntries));
                 OnPropertyChanged(nameof(HasTriggerAxisEntries));
+                OnPropertyChanged(nameof(HasLegacyAxisTrigger));
             });
 
         private RelayCommand _addActionCommand;

@@ -1018,6 +1018,201 @@ namespace PadForge.Services
             }
         }
 
+        // ─────────────────────────────────────────────
+        //  Copy / Paste clipboard helpers (per-slot)
+        //
+        //  Clipboard Copy/Paste needs to round-trip the per-slot config
+        //  tabs (Lighting / Adaptive Triggers / Mic LED / Player LED /
+        //  Extended custom layout / MIDI CC + note layout) across the
+        //  serialization boundary. The existing Build* / Apply* methods
+        //  above iterate every slot for profile storage; these per-slot
+        //  variants snapshot or apply one slot at a time, mirroring the
+        //  in-process CopySlotConfigsAcrossSlots semantics but via DTOs
+        //  the caller can JSON-serialise.
+        // ─────────────────────────────────────────────
+
+        /// <summary>Snapshots every PlayStation config on a single slot
+        /// (anchor + per-device entries). Returns an empty array when
+        /// the slot has nothing configured. Caller is responsible for
+        /// JSON-serialising the result into the clipboard payload.</summary>
+        public ViewModels.PlayStationSlotConfigData[] BuildPlayStationConfigSnapshotForSlot(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count)
+                return Array.Empty<ViewModels.PlayStationSlotConfigData>();
+            var padVm = _mainVm.Pads[slotIndex];
+            if (padVm == null) return Array.Empty<ViewModels.PlayStationSlotConfigData>();
+
+            var list = new System.Collections.Generic.List<ViewModels.PlayStationSlotConfigData>();
+            if (padVm.PlayStationConfig != null)
+                list.Add(BuildPlayStationConfigData(padVm.PlayStationConfig, slotIndex, Guid.Empty));
+            if (padVm.PerDevicePlayStationConfigs != null)
+            {
+                foreach (var kvp in padVm.PerDevicePlayStationConfigs)
+                {
+                    if (kvp.Key == Guid.Empty || kvp.Value == null) continue;
+                    list.Add(BuildPlayStationConfigData(kvp.Value, slotIndex, kvp.Key));
+                }
+            }
+            return list.ToArray();
+        }
+
+        /// <summary>Paste companion. Applies a clipboard's PlayStation
+        /// config snapshot to the destination slot: the anchor entry
+        /// (DeviceGuid = Empty) writes to <c>padVm.PlayStationConfig</c>;
+        /// per-device entries fan out across every entry already in the
+        /// destination's <c>PerDevicePlayStationConfigs</c> dict so
+        /// device-switching on the destination doesn't bring back the
+        /// old lightbar. Like the in-process Copy From, this runs
+        /// unconditionally regardless of slot output type — PlayStation
+        /// device features are physical-device passthrough.</summary>
+        public void ApplyPlayStationConfigsToSlot(int slotIndex,
+            ViewModels.PlayStationSlotConfigData[] configs)
+        {
+            if (configs == null || configs.Length == 0) return;
+            if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count) return;
+            var padVm = _mainVm.Pads[slotIndex];
+            if (padVm == null) return;
+
+            // Find the anchor entry from the snapshot, then fall back to
+            // any per-device entry with non-default values if the anchor
+            // looks empty (mirrors CopySlotConfigsAcrossSlots's source-
+            // picker logic so a slot whose anchor was the empty sentinel
+            // at copy time still pastes useful settings).
+            ViewModels.PlayStationSlotConfigData chosen = null;
+            foreach (var c in configs)
+            {
+                if (c == null) continue;
+                if (c.DeviceGuid == Guid.Empty) { chosen = c; break; }
+            }
+            bool anchorIsDefault =
+                chosen == null
+                || (chosen.LightbarMode == ViewModels.LightbarMode.Off
+                    && chosen.LeftTriggerMode == ViewModels.AdaptiveTriggerMode.Off
+                    && chosen.RightTriggerMode == ViewModels.AdaptiveTriggerMode.Off
+                    && chosen.MicLedMode == ViewModels.MicLedMode.Off
+                    && chosen.PlayerLedMode == ViewModels.PlayerLedMode.Off);
+            if (anchorIsDefault)
+            {
+                foreach (var c in configs)
+                {
+                    if (c == null || c.DeviceGuid == Guid.Empty) continue;
+                    if (c.LightbarMode != ViewModels.LightbarMode.Off
+                        || c.LeftTriggerMode != ViewModels.AdaptiveTriggerMode.Off
+                        || c.RightTriggerMode != ViewModels.AdaptiveTriggerMode.Off
+                        || c.MicLedMode != ViewModels.MicLedMode.Off
+                        || c.PlayerLedMode != ViewModels.PlayerLedMode.Off)
+                    {
+                        chosen = c;
+                        break;
+                    }
+                }
+            }
+            if (chosen == null) return;
+
+            padVm.EnsurePlayStationConfigsForMappedDevices();
+            if (padVm.PerDevicePlayStationConfigs != null)
+            {
+                foreach (var kvp in padVm.PerDevicePlayStationConfigs)
+                {
+                    if (kvp.Value == null) continue;
+                    ApplyPlayStationConfigData(kvp.Value, chosen);
+                }
+            }
+            if (padVm.SelectedMappedDevice != null
+                && padVm.SelectedMappedDevice.InstanceGuid != Guid.Empty)
+            {
+                ApplyPlayStationConfigData(padVm.PlayStationConfig, chosen);
+            }
+        }
+
+        /// <summary>Snapshots the Extended custom layout on a single
+        /// slot. Returns null when the slot isn't Extended or has no
+        /// config. Caller JSON-serialises the result.</summary>
+        public ViewModels.ExtendedSlotConfigData BuildExtendedConfigSnapshotForSlot(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count) return null;
+            var padVm = _mainVm.Pads[slotIndex];
+            if (padVm == null) return null;
+            var cfg = padVm.ExtendedConfig;
+            if (cfg == null) return null;
+            return new ViewModels.ExtendedSlotConfigData
+            {
+                SlotIndex = slotIndex,
+                ThumbstickCount = cfg.ThumbstickCount,
+                TriggerCount = cfg.TriggerCount,
+                PovCount = cfg.PovCount,
+                ButtonCount = cfg.ButtonCount,
+                OemNameOverride = cfg.OemNameOverride,
+                ProductString = cfg.ProductString,
+                Customize = cfg.Customize,
+                ForceFeedbackEnabled = cfg.ForceFeedbackEnabled,
+            };
+        }
+
+        /// <summary>Paste companion. Only applies when both source and
+        /// destination are Extended slots — the custom layout is the
+        /// virtual controller's shape and doesn't translate to other
+        /// output types.</summary>
+        public void ApplyExtendedConfigToSlot(int slotIndex, ViewModels.ExtendedSlotConfigData cfg)
+        {
+            if (cfg == null) return;
+            if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count) return;
+            var padVm = _mainVm.Pads[slotIndex];
+            if (padVm == null) return;
+            if (padVm.OutputType != Engine.VirtualControllerType.Extended) return;
+            var d = padVm.ExtendedConfig;
+            if (d == null) return;
+            d.ThumbstickCount = cfg.ThumbstickCount;
+            d.TriggerCount = cfg.TriggerCount;
+            d.PovCount = cfg.PovCount;
+            d.ButtonCount = cfg.ButtonCount;
+            d.OemNameOverride = cfg.OemNameOverride;
+            d.ProductString = cfg.ProductString ?? string.Empty;
+            d.Customize = cfg.Customize;
+            d.ForceFeedbackEnabled = cfg.ForceFeedbackEnabled;
+        }
+
+        /// <summary>Snapshots the MIDI port layout for a single slot.
+        /// Returns null when the slot isn't MIDI.</summary>
+        public ViewModels.MidiSlotConfigData BuildMidiConfigSnapshotForSlot(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count) return null;
+            var padVm = _mainVm.Pads[slotIndex];
+            if (padVm == null) return null;
+            var cfg = padVm.MidiConfig;
+            if (cfg == null) return null;
+            return new ViewModels.MidiSlotConfigData
+            {
+                SlotIndex = slotIndex,
+                Channel = cfg.Channel,
+                Velocity = cfg.Velocity,
+                StartCc = cfg.StartCc,
+                CcCount = cfg.CcCount,
+                StartNote = cfg.StartNote,
+                NoteCount = cfg.NoteCount,
+            };
+        }
+
+        /// <summary>Paste companion. Only applies when both source and
+        /// destination are MIDI slots.</summary>
+        public void ApplyMidiConfigToSlot(int slotIndex, ViewModels.MidiSlotConfigData cfg)
+        {
+            if (cfg == null) return;
+            if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count) return;
+            var padVm = _mainVm.Pads[slotIndex];
+            if (padVm == null) return;
+            if (padVm.OutputType != Engine.VirtualControllerType.Midi) return;
+            var d = padVm.MidiConfig;
+            if (d == null) return;
+            d.Channel = cfg.Channel;
+            d.Velocity = cfg.Velocity;
+            d.StartCc = cfg.StartCc;
+            d.CcCount = cfg.CcCount;
+            d.StartNote = cfg.StartNote;
+            d.NoteCount = cfg.NoteCount;
+            padVm.RebuildMappings();
+        }
+
         /// <summary>
         /// Applies per-slot Extended configurations.
         /// Only restores configs for slots that are currently created as Extended.

@@ -4280,16 +4280,25 @@ namespace PadForge.Services
         {
             int padIndex = _recordingVariablePadIndex;
             if (padIndex < 0 || padIndex >= InputManager.MaxPads) return;
-            var slotSettings = SettingsManager.GetSettingsForSlot(padIndex);
-            if (slotSettings != null)
+            // Snapshot baseline against ALL online devices, not just slot-
+            // assigned ones — the variable picker should be able to bind to
+            // any input the user can press (keyboard, mouse, aggregate
+            // keyboard / mice / touchpad) regardless of whether the device
+            // has been explicitly assigned to this slot.
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices != null)
             {
-                for (int i = 0; i < slotSettings.Count; i++)
+                lock (SettingsManager.UserDevices.SyncRoot)
                 {
-                    var ud = FindUserDevice(slotSettings[i].InstanceGuid);
-                    if (ud?.InputState?.Axis != null)
-                        _recordingVariableAxisBaseline[ud.InstanceGuid] = (int[])ud.InputState.Axis.Clone();
-                    if (ud?.InputState?.Povs != null)
-                        _recordingVariablePovBaseline[ud.InstanceGuid] = (int[])ud.InputState.Povs.Clone();
+                    for (int i = 0; i < devices.Count; i++)
+                    {
+                        var ud = devices[i];
+                        if (ud == null || !ud.IsOnline || ud.InputState == null) continue;
+                        if (ud.InputState.Axis != null)
+                            _recordingVariableAxisBaseline[ud.InstanceGuid] = (int[])ud.InputState.Axis.Clone();
+                        if (ud.InputState.Povs != null)
+                            _recordingVariablePovBaseline[ud.InstanceGuid] = (int[])ud.InputState.Povs.Clone();
+                    }
                 }
             }
             // Output-controller baseline — used when the variable's Source
@@ -4318,21 +4327,24 @@ namespace PadForge.Services
             if (padIndex < 0 || padIndex >= InputManager.MaxPads) return;
 
             // Route based on the variable's Source choice. OutputController
-            // samples the slot's combined virtual controller output; InputDevice walks the
-            // per-device raw HID state on every device mapped to this slot.
+            // samples the slot's combined virtual controller output; InputDevice
+            // walks every online device — including keyboards, mice, the
+            // aggregate keyboard / mice / touchpad, and gamepads — so the
+            // user can bind a variable to any input regardless of slot
+            // assignment.
             if (_recordingVariable.Source == MacroTriggerSource.OutputController)
             {
                 if (ScanOutputControllerForFirstChange(padIndex)) return;
                 return;
             }
 
-            var slotSettings = SettingsManager.GetSettingsForSlot(padIndex);
-            if (slotSettings == null) return;
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices == null) return;
 
-            for (int sIdx = 0; sIdx < slotSettings.Count; sIdx++)
+            for (int sIdx = 0; sIdx < devices.Count; sIdx++)
             {
-                var ud = FindUserDevice(slotSettings[sIdx].InstanceGuid);
-                if (ud?.InputState == null) continue;
+                var ud = devices[sIdx];
+                if (ud == null || !ud.IsOnline || ud.InputState == null) continue;
 
                 // 1. First-button-pressed wins.
                 var buttons = ud.InputState.Buttons;

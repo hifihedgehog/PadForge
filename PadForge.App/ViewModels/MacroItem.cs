@@ -661,21 +661,29 @@ namespace PadForge.ViewModels
             }
             set
             {
-                _triggerExpressionVariables.Clear();
+                // Use the property to lazy-init the collection — direct field
+                // access here throws NRE when the setter runs during MacroItem
+                // construction in SettingsService.LoadMacros (object-initializer
+                // path), which silently dropped any macro with a CustomExpression
+                // trigger from the load.
+                var coll = TriggerExpressionVariables;
+                coll.Clear();
                 if (string.IsNullOrEmpty(value))
                 {
                     OnPropertyChanged(nameof(TriggerExpressionVariables));
+                    OnPropertyChanged(nameof(VariableCount));
                     return;
                 }
                 foreach (var spec in value.Split('|'))
                 {
                     var v = new MacroExpressionVariable();
                     if (!string.IsNullOrEmpty(spec)) v.Spec = spec;
-                    _triggerExpressionVariables.Add(v);
+                    coll.Add(v);
                 }
                 OnPropertyChanged(nameof(TriggerExpressionVariables));
                 OnPropertyChanged(nameof(CustomExpressionStatus));
                 OnPropertyChanged(nameof(IsCustomExpressionWarning));
+                OnPropertyChanged(nameof(VariableCount));
             }
         }
 

@@ -1119,6 +1119,8 @@
 
   <!-- ═══ Pad — Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Press buttons or move an axis/trigger to record. Axes are detected when deflected past 50%.</value></data>
+  <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Press any input…</value></data>
+  <data name="Macro_Axis_Inverted" xml:space="preserve"><value>inverted</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Continuously maps the selected axis (0–100%) to the Windows system volume, scaled to the volume limit. Use with "Always" trigger, or a button/axis trigger with "While Held" + "Until Release".</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controls the volume of a specific application in the Windows volume mixer, scaled to the volume limit. Enter the process name (visible in Task Manager). Use with "Always" trigger, or a button/axis trigger with "While Held" + "Until Release".</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Continuously maps the selected axis to mouse movement (or scroll). Use with "Always" trigger, or a button/axis trigger with "While Held" + "Until Release". For stick-to-mouse, create two actions: one for X axis, one for Y axis.</value></data>

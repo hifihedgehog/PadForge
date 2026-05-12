@@ -4572,7 +4572,7 @@ namespace PadForge.Services
             _macroAxisBaseline = CaptureAxisBaseline(padIndex, macro.TriggerSource, macro.ButtonStyle);
 
             _macroRecordStartTime = DateTime.UtcNow;
-            macro.RecordingLiveText = "Press buttons or move axis...";
+            macro.RecordingLiveText = Strings.Instance.Macro_LiveRecord_Placeholder;
             macro.IsRecordingTrigger = true;
         }
 
@@ -4979,7 +4979,9 @@ namespace PadForge.Services
                             if (entry.RawButton >= 0)
                             {
                                 var obj = objects?.FirstOrDefault(o => o.IsButton && o.InputIndex == entry.RawButton);
-                                inputs.Add(obj != null && !string.IsNullOrEmpty(obj.Name) ? obj.Name : $"Button {entry.RawButton}");
+                                inputs.Add(obj != null && !string.IsNullOrEmpty(obj.Name)
+                                    ? obj.Name
+                                    : string.Format(Strings.Instance.Macro_Button_Format, entry.RawButton));
                             }
                             else if (!string.IsNullOrEmpty(entry.Pov))
                             {
@@ -4987,13 +4989,16 @@ namespace PadForge.Services
                             }
                             else if (entry.AxisTarget != MacroAxisTarget.None)
                             {
-                                string dirArrow = entry.AxisDirection switch
+                                // Direction symbol — triggers (LT/RT) are unipolar so the
+                                // direction label is suppressed (their evaluator ignores it).
+                                string dirArrow = entry.IsTriggerStyleAxis ? "" : entry.AxisDirection switch
                                 {
                                     MacroAxisDirection.Positive => " +",
                                     MacroAxisDirection.Negative => " −",
                                     _ => ""
                                 };
-                                inputs.Add($"{entry.AxisTarget.DisplayName()}{dirArrow} > {_recordingMacro.TriggerAxisThreshold}%");
+                                string invTag = entry.AxisInvert ? $" ({Strings.Instance.Macro_Axis_Inverted})" : "";
+                                inputs.Add($"{entry.AxisTarget.DisplayName()}{dirArrow} > {entry.AxisDeadzone}%{invTag}");
                             }
                         }
                         string deviceName = ResolveDeviceName(grp.Key);
@@ -5010,7 +5015,7 @@ namespace PadForge.Services
 
                 _recordingMacro.RecordingLiveText = parts.Count > 0
                     ? string.Join(" + ", parts)
-                    : "Press buttons or move axis...";
+                    : Strings.Instance.Macro_LiveRecord_Placeholder;
             }
             else if (_recordingMacro.ButtonStyle == MacroButtonStyle.Numbered)
             {
@@ -5034,7 +5039,7 @@ namespace PadForge.Services
                     foreach (var ax in _recordedAxisTargets)
                         parts.Add($"{ax.DisplayName()} > {_recordingMacro.TriggerAxisThreshold}%");
                     _recordingMacro.RecordingLiveText = parts.Count > 0
-                        ? string.Join(" + ", parts) : "Press buttons or move axis...";
+                        ? string.Join(" + ", parts) : Strings.Instance.Macro_LiveRecord_Placeholder;
                 }
             }
             else
@@ -5053,7 +5058,7 @@ namespace PadForge.Services
                     foreach (var ax in _recordedAxisTargets)
                         parts.Add($"{ax.DisplayName()} > {_recordingMacro.TriggerAxisThreshold}%");
                     _recordingMacro.RecordingLiveText = parts.Count > 0
-                        ? string.Join(" + ", parts) : "Press buttons or move axis...";
+                        ? string.Join(" + ", parts) : Strings.Instance.Macro_LiveRecord_Placeholder;
                 }
             }
         }

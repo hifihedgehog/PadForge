@@ -737,7 +737,21 @@ namespace PadForge.ViewModels
         public RelayCommand AddExpressionVariableCommand =>
             _addExpressionVariableCommand ??= new RelayCommand(() =>
             {
-                _triggerExpressionVariables.Add(new MacroExpressionVariable());
+                TriggerExpressionVariables.Add(new MacroExpressionVariable());
+                OnPropertyChanged(nameof(CustomExpressionStatus));
+                OnPropertyChanged(nameof(IsCustomExpressionWarning));
+            });
+
+        private RelayCommand<MacroExpressionVariable> _removeExpressionVariableCommand;
+        /// <summary>Removes one variable from the list. Subsequent variables
+        /// shift letters (b becomes a, etc.) — that matches how the merge-
+        /// mapping editor handles ExtraSources deletion, so the formula's
+        /// references stay positionally meaningful.</summary>
+        public RelayCommand<MacroExpressionVariable> RemoveExpressionVariableCommand =>
+            _removeExpressionVariableCommand ??= new RelayCommand<MacroExpressionVariable>(v =>
+            {
+                if (v == null) return;
+                TriggerExpressionVariables.Remove(v);
                 OnPropertyChanged(nameof(CustomExpressionStatus));
                 OnPropertyChanged(nameof(IsCustomExpressionWarning));
             });

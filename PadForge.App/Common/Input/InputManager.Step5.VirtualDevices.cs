@@ -1681,6 +1681,15 @@ namespace PadForge.Common.Input
                     continue;
                 }
 
+                // If newPad has no current VC and isn't going to be activated
+                // by this reorder (no online device assigned), this visual
+                // position is effectively a placeholder. Skip — don't destroy
+                // oldPad's VC just because the profile slug on an inactive
+                // neighbor differs. The visual order changes, but the kernel
+                // VC stays at oldPad's pad index.
+                if (_virtualControllers[newPad] == null && !IsSlotActive(newPad))
+                    continue;
+
                 string oldProfile = (oldVC is HMaestroVirtualController hmOld) ? hmOld.ProfileId : null;
                 string newProfile = SlotProfileIds[newPad];
 

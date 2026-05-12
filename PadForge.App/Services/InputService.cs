@@ -2860,10 +2860,12 @@ namespace PadForge.Services
         /// <summary>
         /// Raised on the UI thread after the engine reported an HM virtual
         /// controller's inactivity timeout fired. MainWindow listens and
-        /// runs DeviceService.DeleteSlot + InputService.OnSlotDeleted with
-        /// rebuildHmVcs:true so any surviving Xbox HM VCs at higher
-        /// pad indices in the Xbox group bubble down to the lowest
-        /// available kernel slot. Argument is the pad index that timed out.
+        /// calls <see cref="OnSlotInactivityTimedOut"/>, which destroys the
+        /// VC and runs the bubble-down cascade so any surviving HM VCs at
+        /// higher pad indices in the same group fall to the lowest
+        /// available kernel slot. The slot configuration stays intact —
+        /// only the live VC is torn down. Argument is the pad index that
+        /// timed out.
         /// </summary>
         public event EventHandler<int> SlotInactivityTimedOut;
 
@@ -5921,15 +5923,7 @@ namespace PadForge.Services
             // ApplyProfile with a shifted snapshot.
             if (!_compactingSlots)
                 CompactSlotsForGaps();
-
-            ProfileApplied?.Invoke(this, EventArgs.Empty);
         }
-
-        /// <summary>Raised after every successful <see cref="ApplyProfile"/>
-        /// call. The UI layer re-fires navigation on this so PadPageView
-        /// re-resolves its DataContext + mapping refresh against the new
-        /// profile's state.</summary>
-        public event EventHandler ProfileApplied;
 
         /// <summary>
         /// Called by <see cref="ForegroundMonitorService"/> when the foreground
@@ -6317,9 +6311,9 @@ namespace PadForge.Services
         /// Extended — so the cascade applies uniformly. MIDI and
         /// KeyboardMouse are no-ops here.
         /// </summary>
-        public void OnSlotDeleted(int padIndex, VirtualControllerType deletedType, int oldGroupPosition, bool rebuildHmVcs = true, bool deletedSlotHadActiveVc = true)
+        public void OnSlotDeleted(int padIndex, VirtualControllerType deletedType, int oldGroupPosition, bool deletedSlotHadActiveVc = true)
         {
-            if (rebuildHmVcs && _inputManager != null && deletedSlotHadActiveVc)
+            if (_inputManager != null && deletedSlotHadActiveVc)
             {
                 RunBubbleDownCascadeAfterDelete(deletedType, oldGroupPosition);
             }

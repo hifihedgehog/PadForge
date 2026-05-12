@@ -49,6 +49,15 @@ namespace PadForge.Engine.Data
         /// 0..+1 output range, depending on <see cref="Invert"/>).</summary>
         [XmlAttribute] public bool HalfAxis { get; set; }
 
+        /// <summary>When <c>true</c> AND <see cref="HalfAxis"/> is also
+        /// <c>true</c>, the axis-to-button check fires on absolute
+        /// deflection past the deadzone — i.e. either side of center
+        /// counts. <see cref="Invert"/> has no effect in this mode since
+        /// mirroring around center already covers both directions.
+        /// Ignored when HalfAxis is off (a full-range read has no center
+        /// to mirror across).</summary>
+        [XmlAttribute] public bool Bidirectional { get; set; }
+
         /// <summary>Per-source axis-to-button activation deadzone (0–100%).
         /// Used when a non-button source feeds a button or POV-direction
         /// target.</summary>

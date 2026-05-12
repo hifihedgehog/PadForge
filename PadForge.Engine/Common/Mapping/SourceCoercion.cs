@@ -143,6 +143,16 @@ namespace PadForge.Engine.Common.Mapping
                     int av = state.Axis[idx];
                     if (src.HalfAxis)
                     {
+                        if (src.Bidirectional)
+                        {
+                            // Either side of center past deadzone counts —
+                            // |av − 32768| > 32767 * thresh. Invert is
+                            // irrelevant here since mirroring around center
+                            // already covers both directions.
+                            int delta = av - 32768;
+                            if (delta < 0) delta = -delta;
+                            return delta > (int)(32767 * thresh);
+                        }
                         if (src.Invert)
                             return av < (int)(32767 * (1.0 - thresh));
                         return av > (int)(32768 + 32767 * thresh);

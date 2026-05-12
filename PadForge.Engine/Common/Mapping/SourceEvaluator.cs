@@ -118,6 +118,7 @@ namespace PadForge.Engine.Common.Mapping
                 Descriptor = src.Descriptor,
                 Invert = invertOverride,
                 HalfAxis = src.HalfAxis,
+                Bidirectional = src.Bidirectional,
                 DeadZone = src.DeadZone,
             };
 

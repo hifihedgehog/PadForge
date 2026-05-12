@@ -873,6 +873,8 @@
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>입력을 누르세요…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>반전됨</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>절반 축</value></data>
+  <data name="Macro_Axis_Either" xml:space="preserve"><value>양방향</value></data>
+  <data name="Macro_Axis_Either_Tooltip" xml:space="preserve"><value>절반 축이 켜져 있을 때, 중립에서 어느 방향으로든 데드존을 초과하면 실행됩니다(반전은 적용되지 않음).</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>선택한 축(0–100%)을 Windows 시스템 볼륨에 지속적으로 매핑하며 볼륨 한도에 맞게 조정됩니다. "항상" 트리거, 또는 "누르는 동안" + "놓을 때까지"와 함께 버튼/축 트리거를 사용하세요.</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Windows 볼륨 믹서에서 특정 앱의 볼륨을 한도에 맞게 조정합니다. 프로세스 이름을 입력하세요 (작업 관리자에서 확인). "항상" 트리거, 또는 "누르는 동안" + "놓을 때까지"와 함께 버튼/축 트리거를 사용하세요.</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>선택한 축을 마우스 이동(또는 스크롤)에 지속적으로 매핑합니다. "항상" 트리거, 또는 "누르는 동안" + "놓을 때까지"와 함께 버튼/축 트리거를 사용하세요. 스틱→마우스의 경우 X축과 Y축에 각각 하나씩 두 개의 액션을 만드세요.</value></data>

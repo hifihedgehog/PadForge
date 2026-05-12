@@ -534,7 +534,7 @@
   <data name="Pad_Formula_Preset_HalfScale_Tooltip" xml:space="preserve"><value>A a la mitad de fuerza</value></data>
   <data name="Pad_Formula_Preset_QuarterScale_Name" xml:space="preserve"><value>Escala a un cuarto</value></data>
   <data name="Pad_Formula_Preset_QuarterScale_Tooltip" xml:space="preserve"><value>A a un cuarto de fuerza</value></data>
-  <data name="Pad_Formula_Preset_ReverseA_Name" xml:space="preserve"><value>Invertir A</value></data>
+  <data name="Pad_Formula_Preset_ReverseA_Name" xml:space="preserve"><value>Invertir a</value></data>
   <data name="Pad_Formula_Preset_ReverseA_Tooltip" xml:space="preserve"><value>Invertir el signo de A</value></data>
   <data name="Pad_Formula_Preset_CapTo1_Name" xml:space="preserve"><value>Limitar a ±1</value></data>
   <data name="Pad_Formula_Preset_CapTo1_Tooltip" xml:space="preserve"><value>Suma A + B pero nunca superar ±1</value></data>
@@ -542,7 +542,7 @@
   <data name="Pad_Formula_Preset_WeightedBlend_Tooltip" xml:space="preserve"><value>70% de A + 30% de B</value></data>
   <data name="Pad_Formula_Preset_Difference_Name" xml:space="preserve"><value>Diferencia</value></data>
   <data name="Pad_Formula_Preset_Difference_Tooltip" xml:space="preserve"><value>A menos B</value></data>
-  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>A salvo reposo</value></data>
+  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>a salvo reposo</value></data>
   <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>Usa A — pero si A está en reposo, recurre a B</value></data>
   <data name="Pad_Formula_Preset_ThresholdGate_Name" xml:space="preserve"><value>Umbral de activación</value></data>
   <data name="Pad_Formula_Preset_ThresholdGate_Tooltip" xml:space="preserve"><value>Se activa completamente si A supera la mitad, si no cero — convierte un eje en botón</value></data>
@@ -606,13 +606,13 @@
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>Variables</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ Añadir variable</value></data>
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>Cada fila define una letra de variable (a, b, c, …). Elige Dispositivo de entrada para vincular un botón, POV o eje de un dispositivo físico, o Mando virtual para leer un canal de la salida combinada del mando virtual del slot.</value></data>
-  <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>A sola</value></data>
+  <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>a sola</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>Se activa cuando la variable a pasa de 0 a 1.</value></data>
-  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>A y b</value></data>
+  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a y b</value></data>
   <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Se activa solo cuando a AND b están activas. Acorde clásico.</value></data>
-  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>A o b</value></data>
+  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a o b</value></data>
   <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>Se activa cuando a OR b está activa.</value></data>
-  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>A pero no b</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a pero no b</value></data>
   <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Se activa cuando a está activa y b NOT está activa.</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>Eje por encima del 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Se activa cuando el eje del joystick a supera el 50% de desplazamiento desde el reposo.</value></data>

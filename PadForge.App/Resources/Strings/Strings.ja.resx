@@ -534,7 +534,7 @@
   <data name="Pad_Formula_Preset_HalfScale_Tooltip" xml:space="preserve"><value>Aを半分の強度で</value></data>
   <data name="Pad_Formula_Preset_QuarterScale_Name" xml:space="preserve"><value>4分の1のスケール</value></data>
   <data name="Pad_Formula_Preset_QuarterScale_Tooltip" xml:space="preserve"><value>Aを4分の1の強度で</value></data>
-  <data name="Pad_Formula_Preset_ReverseA_Name" xml:space="preserve"><value>Aを逆にする</value></data>
+  <data name="Pad_Formula_Preset_ReverseA_Name" xml:space="preserve"><value>aを逆にする</value></data>
   <data name="Pad_Formula_Preset_ReverseA_Tooltip" xml:space="preserve"><value>Aの符号を反転</value></data>
   <data name="Pad_Formula_Preset_CapTo1_Name" xml:space="preserve"><value>±1に制限</value></data>
   <data name="Pad_Formula_Preset_CapTo1_Tooltip" xml:space="preserve"><value>A + Bの合計が±1を超えないようにする</value></data>
@@ -542,7 +542,7 @@
   <data name="Pad_Formula_Preset_WeightedBlend_Tooltip" xml:space="preserve"><value>Aの70% + Bの30%</value></data>
   <data name="Pad_Formula_Preset_Difference_Name" xml:space="preserve"><value>差分</value></data>
   <data name="Pad_Formula_Preset_Difference_Tooltip" xml:space="preserve"><value>A - B</value></data>
-  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>静止時以外はA</value></data>
+  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>静止時以外はa</value></data>
   <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>Aを使用 — ただしAが静止している場合はBにフォールバック</value></data>
   <data name="Pad_Formula_Preset_ThresholdGate_Name" xml:space="preserve"><value>しきい値ゲート</value></data>
   <data name="Pad_Formula_Preset_ThresholdGate_Tooltip" xml:space="preserve"><value>Aが中間を超えていれば最大出力、そうでなければ0 — 軸をボタンに変換</value></data>
@@ -606,13 +606,13 @@
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>変数</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ 変数を追加</value></data>
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>各行が変数文字 (a, b, c, …) を一つ定義します。物理デバイスのボタン・POV・軸をバインドするには「入力デバイス」を、スロットの結合された仮想コントローラー出力のチャンネルを読み取るには「出力コントローラー」を選択してください。</value></data>
-  <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>A のみ</value></data>
+  <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>a のみ</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>変数 a が 0 から 1 に変わったときに発火します。</value></data>
-  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>A と b</value></data>
+  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a と b</value></data>
   <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>a AND b が両方アクティブなときのみ発火します。コードの基本形です。</value></data>
-  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>A または b</value></data>
+  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a または b</value></data>
   <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>a OR b のいずれかがアクティブなときに発火します。</value></data>
-  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>A のみ (b を除く)</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a のみ (b を除く)</value></data>
   <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>a がアクティブかつ b が NOT アクティブなときに発火します。</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>軸が 50% を超えた</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>スティック軸 a のデフレクションが中立位置から 50% を超えたときに発火します。</value></data>

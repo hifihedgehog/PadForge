@@ -534,7 +534,7 @@
   <data name="Pad_Formula_Preset_HalfScale_Tooltip" xml:space="preserve"><value>A op halve sterkte</value></data>
   <data name="Pad_Formula_Preset_QuarterScale_Name" xml:space="preserve"><value>Kwartschaal</value></data>
   <data name="Pad_Formula_Preset_QuarterScale_Tooltip" xml:space="preserve"><value>A op kwart sterkte</value></data>
-  <data name="Pad_Formula_Preset_ReverseA_Name" xml:space="preserve"><value>A omdraaien</value></data>
+  <data name="Pad_Formula_Preset_ReverseA_Name" xml:space="preserve"><value>a omdraaien</value></data>
   <data name="Pad_Formula_Preset_ReverseA_Tooltip" xml:space="preserve"><value>Teken van A omdraaien</value></data>
   <data name="Pad_Formula_Preset_CapTo1_Name" xml:space="preserve"><value>Begrenzen tot ±1</value></data>
   <data name="Pad_Formula_Preset_CapTo1_Tooltip" xml:space="preserve"><value>Som A + B maar nooit meer dan ±1</value></data>
@@ -542,7 +542,7 @@
   <data name="Pad_Formula_Preset_WeightedBlend_Tooltip" xml:space="preserve"><value>70% van A + 30% van B</value></data>
   <data name="Pad_Formula_Preset_Difference_Name" xml:space="preserve"><value>Verschil</value></data>
   <data name="Pad_Formula_Preset_Difference_Tooltip" xml:space="preserve"><value>A min B</value></data>
-  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>A tenzij inactief</value></data>
+  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>a tenzij inactief</value></data>
   <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>Gebruik A — maar als A in rust is, val terug op B</value></data>
   <data name="Pad_Formula_Preset_ThresholdGate_Name" xml:space="preserve"><value>Drempelpoort</value></data>
   <data name="Pad_Formula_Preset_ThresholdGate_Tooltip" xml:space="preserve"><value>Volledig activeren als A verder dan halverwege is, anders nul — zet een as om in een knop</value></data>
@@ -608,11 +608,11 @@
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>Elke rij definieert één variabeleletter (a, b, c, …). Kies Invoerapparaat om een knop, POV of as op een fysiek apparaat te koppelen, of Uitvoercontroller om een kanaal te lezen van de gecombineerde virtuele controller-uitvoer van het slot.</value></data>
   <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>Alleen a</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>Activeer wanneer variabele a van 0 naar 1 gaat.</value></data>
-  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>A en b</value></data>
+  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a en b</value></data>
   <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Activeer alleen wanneer zowel a AND b actief zijn. Klassiek akkoord.</value></data>
-  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>A of b</value></data>
+  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a of b</value></data>
   <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>Activeer wanneer a OR b actief is.</value></data>
-  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>A maar niet b</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a maar niet b</value></data>
   <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Activeer wanneer a actief is en b NOT actief is.</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>As voorbij 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Activeer wanneer stickas a meer dan 50% van de ruststand is uitgeslagen.</value></data>

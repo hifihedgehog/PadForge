@@ -534,7 +534,7 @@
   <data name="Pad_Formula_Preset_HalfScale_Tooltip" xml:space="preserve"><value>A com metade da força</value></data>
   <data name="Pad_Formula_Preset_QuarterScale_Name" xml:space="preserve"><value>Escala um quarto</value></data>
   <data name="Pad_Formula_Preset_QuarterScale_Tooltip" xml:space="preserve"><value>A com um quarto da força</value></data>
-  <data name="Pad_Formula_Preset_ReverseA_Name" xml:space="preserve"><value>Inverter A</value></data>
+  <data name="Pad_Formula_Preset_ReverseA_Name" xml:space="preserve"><value>Inverter a</value></data>
   <data name="Pad_Formula_Preset_ReverseA_Tooltip" xml:space="preserve"><value>Inverter o sinal de A</value></data>
   <data name="Pad_Formula_Preset_CapTo1_Name" xml:space="preserve"><value>Limitar a ±1</value></data>
   <data name="Pad_Formula_Preset_CapTo1_Tooltip" xml:space="preserve"><value>Somar A + B mas nunca exceder ±1</value></data>
@@ -542,7 +542,7 @@
   <data name="Pad_Formula_Preset_WeightedBlend_Tooltip" xml:space="preserve"><value>70% de A + 30% de B</value></data>
   <data name="Pad_Formula_Preset_Difference_Name" xml:space="preserve"><value>Diferença</value></data>
   <data name="Pad_Formula_Preset_Difference_Tooltip" xml:space="preserve"><value>A menos B</value></data>
-  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>A a menos que ocioso</value></data>
+  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>a a menos que ocioso</value></data>
   <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>Usar A — mas se A estiver em repouso, recuar para B</value></data>
   <data name="Pad_Formula_Preset_ThresholdGate_Name" xml:space="preserve"><value>Porta de limiar</value></data>
   <data name="Pad_Formula_Preset_ThresholdGate_Tooltip" xml:space="preserve"><value>Acionar totalmente se A passar da metade, caso contrário zero — transforma um eixo em um botão</value></data>
@@ -608,11 +608,11 @@
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>Cada linha define uma letra de variável (a, b, c, …). Escolha Dispositivo de Entrada para vincular um botão, POV ou eixo em um dispositivo físico, ou Controle de Saída para ler um canal na saída combinada do controle virtual do slot.</value></data>
   <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>Somente a</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>Dispara quando a variável a passa de 0 para 1.</value></data>
-  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>A e b</value></data>
+  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a e b</value></data>
   <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Dispara somente quando a AND b estiverem ativos. Acorde clássico.</value></data>
-  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>A ou b</value></data>
+  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a ou b</value></data>
   <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>Dispara quando a OR b estiver ativo.</value></data>
-  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>A mas não b</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a mas não b</value></data>
   <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Dispara quando a estiver ativo e b NOT estiver ativo.</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>Eixo além de 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Dispara quando o eixo de analógico a estiver deslocado mais de 50% da posição de repouso.</value></data>

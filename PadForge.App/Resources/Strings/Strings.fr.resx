@@ -155,7 +155,7 @@
   <data name="Status_SettingsPasted" xml:space="preserve"><value>Paramètres collés depuis le presse-papiers.</value></data>
   <data name="Status_PasteFailed_Format" xml:space="preserve"><value>Échec du collage : {0}</value></data>
   <data name="Status_NoDeviceToCopyFrom" xml:space="preserve"><value>Aucun appareil sélectionné comme source de copie.</value></data>
-  <data name="Status_NoOtherDevices" xml:space="preserve"><value>Aucun autre appareil configuré trouvé comme source de copie.</value></data>
+  <data name="Status_NoOtherDevices" xml:space="preserve"><value>Aucun autre contrôleur virtuel configuré trouvé comme source de copie.</value></data>
   <data name="Status_SettingsCopiedFromDevice" xml:space="preserve"><value>Paramètres copiés depuis l'appareil sélectionné.</value></data>
   <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>Profil « {0} » créé (vide).</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Profil « {0} » créé.</value></data>

@@ -2446,6 +2446,7 @@ namespace PadForge.Services
                     ChordSecondDescriptor = a.ChordSecondDescriptor ?? "",
                     AxisThreshold = a.AxisThreshold,
                     CycleLayers = a.CycleLayers ?? "",
+                    Icon = a.Icon ?? "",
                 });
             }
         }
@@ -2661,6 +2662,33 @@ namespace PadForge.Services
                 }
             }
             sets[targetSlot] = copy;
+        }
+
+        /// <summary>Returns true if the given slot's MappingSet carries any
+        /// row or shift activator. Use this instead of
+        /// <see cref="PadSetting.HasAnyMapping"/> when deciding whether a
+        /// slot is "configured" — the v3 source of truth is the per-slot
+        /// MappingSet, not the legacy PadSetting descriptor fields, which
+        /// reflect whichever layer the user last had visible in the UI.
+        /// A slot whose user is currently viewing an empty shift layer will
+        /// have empty PadSetting descriptors but still have a fully populated
+        /// MappingSet on the Base layer.</summary>
+        public static bool SlotHasAnyMapping(int slot)
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null || slot < 0 || slot >= sets.Length) return false;
+            var ms = sets[slot];
+            if (ms == null) return false;
+            if (ms.Rows != null)
+            {
+                foreach (var r in ms.Rows)
+                {
+                    if (r == null) continue;
+                    if (r.Sources != null && r.Sources.Count > 0) return true;
+                }
+            }
+            if (ms.ShiftActivators != null && ms.ShiftActivators.Count > 0) return true;
+            return false;
         }
 
         /// <summary>

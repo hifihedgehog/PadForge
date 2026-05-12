@@ -511,10 +511,10 @@ namespace PadForge.Services
                     _switchOverlay.Close();
                     _switchOverlay = null;
                 }
-                if (_shiftLayerOverlay != null)
+                if (_shiftLayerFlyout != null)
                 {
-                    _shiftLayerOverlay.Close();
-                    _shiftLayerOverlay = null;
+                    _shiftLayerFlyout.Close();
+                    _shiftLayerFlyout = null;
                 }
             });
 
@@ -713,11 +713,12 @@ namespace PadForge.Services
             // ── Update Dashboard ──
             UpdateDashboard();
 
-            // ── Drive the v3 shift-layer overlay. Polls the engine's
+            // ── Drive the v3 shift-layer flyout. Polls the engine's
             //    engagement state for the currently-selected pad and
-            //    surfaces a tiny pill window with the layer name +
-            //    color whenever the slot is on a non-Base layer.
-            UpdateShiftLayerOverlay();
+            //    surfaces a Win11-style bottom-center flyout with the
+            //    layer name + color whenever the slot is on a non-Base
+            //    layer.
+            UpdateShiftLayerFlyout();
 
             // ── Update Devices page (only if visible) ──
             if (IsDevicesPageVisible)
@@ -3408,34 +3409,34 @@ namespace PadForge.Services
         private Views.TouchpadOverlay _touchpadOverlay;
         private TouchpadOverlayDevice _touchpadOverlayDevice;
 
-        // v3.2 shift-layer overlay. Created lazily on first non-Base
+        // v3.2 shift-layer flyout. Created lazily on first non-Base
         // engagement and reused thereafter. State is read by polling
         // InputManager.GetEngagedLayerMask in UiTimer_Tick.
-        private Views.ShiftLayerOverlay _shiftLayerOverlay;
-        private string _shiftLayerOverlayLastShown = "Base";
+        private Views.ShiftLayerFlyout _shiftLayerFlyout;
+        private string _shiftLayerFlyoutLastShown = "Base";
 
         /// <summary>Polls the engaged layer on the currently-viewed slot
-        /// and updates the visual overlay window accordingly. Cheap when
+        /// and updates the visual flyout window accordingly. Cheap when
         /// the slot is on Base (early-out before construction). Allocates
-        /// the overlay window on demand the first time a layer engages.</summary>
-        private void UpdateShiftLayerOverlay()
+        /// the flyout window on demand the first time a layer engages.</summary>
+        private void UpdateShiftLayerFlyout()
         {
             int slot = _mainVm.SelectedPadIndex;
             if (slot < 0 || slot >= SettingsManager.SlotMappingSets.Length)
             {
-                if (_shiftLayerOverlay?.IsVisible == true) _shiftLayerOverlay.HideOverlay();
-                _shiftLayerOverlayLastShown = "Base";
+                if (_shiftLayerFlyout?.IsVisible == true) _shiftLayerFlyout.HideFlyout();
+                _shiftLayerFlyoutLastShown = "Base";
                 return;
             }
             var ms = SettingsManager.SlotMappingSets[slot];
             string mask = Common.Input.InputManager.GetEngagedLayerMask(slot, ms);
-            if (string.Equals(mask, _shiftLayerOverlayLastShown, System.StringComparison.Ordinal))
+            if (string.Equals(mask, _shiftLayerFlyoutLastShown, System.StringComparison.Ordinal))
                 return;
-            _shiftLayerOverlayLastShown = mask;
+            _shiftLayerFlyoutLastShown = mask;
 
             if (string.IsNullOrEmpty(mask) || string.Equals(mask, "Base", System.StringComparison.Ordinal))
             {
-                _shiftLayerOverlay?.HideOverlay();
+                _shiftLayerFlyout?.HideFlyout();
                 return;
             }
 
@@ -3454,9 +3455,9 @@ namespace PadForge.Services
                 }
             }
 
-            if (_shiftLayerOverlay == null)
-                _shiftLayerOverlay = new Views.ShiftLayerOverlay();
-            _shiftLayerOverlay.ShowLayer(layerName, color);
+            if (_shiftLayerFlyout == null)
+                _shiftLayerFlyout = new Views.ShiftLayerFlyout();
+            _shiftLayerFlyout.ShowLayer(layerName, color);
         }
 
         private void ShowTouchpadOverlay()

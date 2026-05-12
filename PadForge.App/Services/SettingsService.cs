@@ -718,8 +718,14 @@ namespace PadForge.Services
                     merged.Rows.Add(rr);
                 }
 
-                if (current.ShiftButton != null)
-                    merged.ShiftButton = current.ShiftButton;
+                // Preserve any authored shift activators across the legacy
+                // merge. The merge rebuilds Base rows from per-device
+                // PadSetting fields, so shift state — which never lived in
+                // the legacy fields — must be carried forward by reference
+                // (the merged MappingSet is a fresh container that legacy
+                // data alone wouldn't populate).
+                if (current.ShiftActivators != null && current.ShiftActivators.Count > 0)
+                    merged.ShiftActivators = current.ShiftActivators;
 
                 sets[slot] = merged;
             }

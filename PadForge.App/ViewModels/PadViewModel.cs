@@ -58,13 +58,13 @@ namespace PadForge.ViewModels
         /// <summary>Zero-based pad slot index (0–15).</summary>
         public int PadIndex { get; }
 
-        // Issue #61 Shift activator (Phase 6) was added prematurely in
-        // commit eed79b1 and reverted to respect recipe order: multi-
-        // source must be complete before Shift UI lands. Engine-side
-        // evaluation in InputManager.Step3.MappingSetEval stays dormant
-        // (ShiftButton is null in MappingSet without a writer; the
-        // evaluator returns "Base" in that case and behaves as the
-        // single-layer pipeline).
+        // Shift activator UI lands in the Phase 6 commit chain (v1+).
+        // ShiftActivators authored in PadPage.Mappings drive
+        // MappingSet.ShiftActivators; the engine's
+        // InputManager.Step3.MappingSetEval.ResolveActiveLayerMask reads
+        // that list and resolves the active layer mask via last-engaged-
+        // wins. Empty ShiftActivators list = no shift layers; the engine
+        // returns "Base" and the pipeline behaves as single-layer.
 
         /// <summary>
         /// Callback invoked when a config item property changes that needs to be persisted.

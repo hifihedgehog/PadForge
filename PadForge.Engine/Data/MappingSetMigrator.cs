@@ -28,6 +28,7 @@ namespace PadForge.Engine.Data
     /// </summary>
     public static class MappingSetMigrator
     {
+
         // Output target names. Order matters for migration determinism (rows
         // appear in this order in the resulting MappingSet for a tidy XML).
         private static readonly string[] ButtonTargets =

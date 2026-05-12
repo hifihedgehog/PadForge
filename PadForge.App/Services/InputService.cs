@@ -1882,6 +1882,11 @@ namespace PadForge.Services
                 string target = mapping.TargetSettingName;
                 UserDevice primaryUd = null;
 
+                // Load NoInherit from the matching layer row when present
+                // (false otherwise — Base rows never carry this flag).
+                mapping.NoInherit = msRowsByTarget.TryGetValue(target, out var preCheck)
+                                    && preCheck != null && preCheck.NoInherit;
+
                 if (msRowsByTarget.TryGetValue(target, out var msRow)
                     && msRow.Sources != null && msRow.Sources.Count > 0)
                 {

@@ -1827,8 +1827,37 @@
                                              Margin="0,0,4,0"
                                              Padding="10,4"
                                              Click="ShiftLayerTab_Click"
-                                             MouseRightButtonUp="ShiftLayerTab_RightClick"
-                                             Tag="{Binding LayerMask}"/>
+                                             Tag="{Binding LayerMask}">
+                                    <!-- Per-tab context menu. Configure /
+                                         Rename / Delete are disabled for
+                                         the Base tab (no activator to act
+                                         on); Copy / Paste / Clear still
+                                         work against Base rows. -->
+                                    <RadioButton.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="{Binding Pad_Shift_Configure, Source={x:Static strings:Strings.Instance}}"
+                                                      Click="ShiftLayer_Configure_Click"
+                                                      Tag="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                            <MenuItem Header="{Binding Pad_Shift_Rename, Source={x:Static strings:Strings.Instance}}"
+                                                      Click="ShiftLayer_Rename_Click"
+                                                      Tag="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                            <Separator/>
+                                            <MenuItem Header="{Binding Pad_Shift_Copy, Source={x:Static strings:Strings.Instance}}"
+                                                      Click="ShiftLayer_Copy_Click"
+                                                      Tag="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                            <MenuItem Header="{Binding Pad_Shift_Paste, Source={x:Static strings:Strings.Instance}}"
+                                                      Click="ShiftLayer_Paste_Click"
+                                                      Tag="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                            <MenuItem Header="{Binding Pad_Shift_Clear, Source={x:Static strings:Strings.Instance}}"
+                                                      Click="ShiftLayer_Clear_Click"
+                                                      Tag="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                            <Separator/>
+                                            <MenuItem Header="{Binding Pad_Shift_Delete, Source={x:Static strings:Strings.Instance}}"
+                                                      Click="ShiftLayer_Delete_Click"
+                                                      Tag="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                        </ContextMenu>
+                                    </RadioButton.ContextMenu>
+                                </RadioButton>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -2722,7 +2751,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <!-- Invert / Half-axis / Bidirectional options -->
+                            <!-- Invert / Half-axis / Bidirectional / Do-not-inherit options -->
                             <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="460">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -2735,7 +2764,17 @@
                                                       ToolTip="{Binding Pad_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding IsBidirectional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       IsEnabled="{Binding IsHalfAxis}"
+                                                      Margin="0,0,6,0"
                                                       VerticalAlignment="Center"/>
+                                            <!-- NoInherit toggle. Visible only when authoring a
+                                                 non-Base shift layer; checking it stops the
+                                                 engine from falling through to the Base row
+                                                 for this target on this layer. -->
+                                            <CheckBox Content="{Binding Pad_Shift_NoInherit, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Pad_Shift_NoInherit_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                      IsChecked="{Binding NoInherit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      VerticalAlignment="Center"
+                                                      Visibility="{Binding DataContext.ActiveLayerMask, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource ShiftLayerVisibilityConverter}}"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

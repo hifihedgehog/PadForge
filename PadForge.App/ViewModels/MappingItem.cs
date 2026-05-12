@@ -913,6 +913,19 @@ namespace PadForge.ViewModels
             }
         }
 
+        private bool _noInherit;
+        /// <summary>Shift-layer "do not inherit from Base" flag. Round-trips
+        /// to <see cref="PadForge.Engine.Data.MappingRow.NoInherit"/> on the
+        /// active layer's row. Visible only when the user is authoring a
+        /// non-Base layer (the Mappings DataGrid's NoInherit cell is
+        /// collapsed when <see cref="PadViewModel.ActiveLayerMask"/> ==
+        /// <c>"Base"</c>).</summary>
+        public bool NoInherit
+        {
+            get => _noInherit;
+            set => SetProperty(ref _noInherit, value);
+        }
+
         private string _combineMode = "";
         /// <summary>Per-row combine mode. Empty = the per-target-type
         /// default (MaxAbs for axes, OR for buttons). Other named modes:

@@ -481,10 +481,250 @@ namespace PadForge.Views
             _currentPadVm.ActiveLayerMask = mask;
         }
 
-        private void ShiftLayerTab_RightClick(object sender, MouseButtonEventArgs e)
+        // ─────────────────────────────────────────────
+        //  Shift-layer context-menu handlers (v1.7)
+        //
+        //  Each handler reads the target layer's LayerMask from the
+        //  MenuItem.Tag, then operates against the live MappingSet for
+        //  the current slot. Mutations call padVm.ConfigItemDirtyCallback
+        //  so the settings file persists the change on the next autosave.
+        // ─────────────────────────────────────────────
+
+        /// <summary>Static cross-layer clipboard for Copy / Paste of layer
+        /// rows. Static so a user can copy from one slot's layer and paste
+        /// into another. Cleared on app exit; not persisted to disk.</summary>
+        private static System.Collections.Generic.List<Engine.Data.MappingRow> _shiftLayerClipboard;
+
+        private static string TagToLayerMask(object sender)
         {
-            // v1.7: context menu (Configure / Rename / Color / Copy /
-            // Paste / Clear / Delete). Wired in the next commit.
+            if (sender is FrameworkElement fe && fe.Tag is string s) return s;
+            return null;
+        }
+
+        private void ShiftLayer_Configure_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPadVm == null) return;
+            string mask = TagToLayerMask(sender);
+            if (string.IsNullOrEmpty(mask)) return;
+
+            var slotMs = GetSlotMappingSet(_currentPadVm.PadIndex);
+            if (slotMs?.ShiftActivators == null) return;
+            var existing = slotMs.ShiftActivators.Find(
+                a => a != null && string.Equals(a.LayerMask, mask, StringComparison.Ordinal));
+            if (existing == null) return;
+
+            var available = new System.Collections.Generic.List<PadForge.ViewModels.InputChoice>();
+            var first = _currentPadVm.Mappings.FirstOrDefault();
+            if (first?.AvailableInputs != null)
+            {
+                foreach (var c in first.AvailableInputs)
+                {
+                    if (c == null) continue;
+                    var d = c.Descriptor ?? "";
+                    if (d.StartsWith("Button ", StringComparison.OrdinalIgnoreCase)
+                        || d.StartsWith("POV ", StringComparison.OrdinalIgnoreCase))
+                        available.Add(c);
+                }
+            }
+
+            // For Configure, pass the OTHER activators (all except the one
+            // being edited) so the duplicate-name validation doesn't reject
+            // the activator's own current name.
+            var others = new System.Collections.Generic.List<Engine.Data.ShiftActivator>();
+            foreach (var a in slotMs.ShiftActivators)
+                if (a != null && !ReferenceEquals(a, existing)) others.Add(a);
+
+            var dlg = new ShiftActivatorDialog(available, existing, others)
+            {
+                Owner = Window.GetWindow(this),
+            };
+            if (dlg.ShowDialog() != true || dlg.Result == null) return;
+
+            // Apply edits in-place. LayerMask may change when the user
+            // renames; if so, retag every MappingRow on the old mask to
+            // the new mask so the existing authoring stays attached.
+            string oldMask = existing.LayerMask;
+            existing.LayerName = dlg.Result.LayerName;
+            existing.LayerMask = dlg.Result.LayerMask;
+            existing.DeviceGuid = dlg.Result.DeviceGuid;
+            existing.Descriptor = dlg.Result.Descriptor;
+            existing.Mode = dlg.Result.Mode;
+            existing.Kind = dlg.Result.Kind;
+
+            if (!string.Equals(oldMask, existing.LayerMask, StringComparison.Ordinal)
+                && slotMs.Rows != null)
+            {
+                foreach (var r in slotMs.Rows)
+                {
+                    if (r != null && string.Equals(r.LayerMask, oldMask, StringComparison.Ordinal))
+                        r.LayerMask = existing.LayerMask;
+                }
+            }
+
+            _currentPadVm.RebuildLayerTabs(slotMs.ShiftActivators);
+            _currentPadVm.ActiveLayerMask = existing.LayerMask;
+            _currentPadVm.ConfigItemDirtyCallback?.Invoke();
+        }
+
+        private void ShiftLayer_Rename_Click(object sender, RoutedEventArgs e)
+        {
+            // For v1 the Rename action routes through the same Configure
+            // dialog with the existing activator pre-filled. The user
+            // edits the name field and saves; the rename path in
+            // ShiftLayer_Configure_Click handles the LayerMask retag.
+            ShiftLayer_Configure_Click(sender, e);
+        }
+
+        private void ShiftLayer_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPadVm == null) return;
+            string mask = TagToLayerMask(sender);
+            if (string.IsNullOrEmpty(mask)) return;
+
+            var slotMs = GetSlotMappingSet(_currentPadVm.PadIndex);
+            if (slotMs?.Rows == null) return;
+
+            _shiftLayerClipboard = new System.Collections.Generic.List<Engine.Data.MappingRow>();
+            foreach (var r in slotMs.Rows)
+            {
+                if (r == null) continue;
+                if (!string.Equals(r.LayerMask, mask, StringComparison.Ordinal)) continue;
+                // Deep-clone so a later Paste isn't a reference share.
+                var rc = new Engine.Data.MappingRow
+                {
+                    Target = r.Target,
+                    LayerMask = r.LayerMask,
+                    CombineMode = r.CombineMode,
+                    CombineExpression = r.CombineExpression,
+                    NoInherit = r.NoInherit,
+                    Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
+                };
+                if (r.Sources != null)
+                    foreach (var s in r.Sources)
+                        if (s != null) rc.Sources.Add(CloneSource(s));
+                _shiftLayerClipboard.Add(rc);
+            }
+        }
+
+        private void ShiftLayer_Paste_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPadVm == null) return;
+            string mask = TagToLayerMask(sender);
+            if (string.IsNullOrEmpty(mask)) return;
+            if (_shiftLayerClipboard == null || _shiftLayerClipboard.Count == 0) return;
+
+            var slotMs = GetOrCreateSlotMappingSet(_currentPadVm.PadIndex);
+            if (slotMs.Rows == null)
+                slotMs.Rows = new System.Collections.Generic.List<Engine.Data.MappingRow>();
+
+            // Drop existing rows on this layer first so paste is a
+            // replace rather than a merge — matches user expectation of
+            // "paste rows into layer" overwriting the destination.
+            slotMs.Rows.RemoveAll(
+                r => r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal));
+
+            foreach (var r in _shiftLayerClipboard)
+            {
+                if (r == null) continue;
+                var rc = new Engine.Data.MappingRow
+                {
+                    Target = r.Target,
+                    LayerMask = mask,
+                    CombineMode = r.CombineMode,
+                    CombineExpression = r.CombineExpression,
+                    NoInherit = r.NoInherit,
+                    Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
+                };
+                if (r.Sources != null)
+                    foreach (var s in r.Sources)
+                        if (s != null) rc.Sources.Add(CloneSource(s));
+                slotMs.Rows.Add(rc);
+            }
+
+            // Force the DataGrid to reflect the pasted rows by triggering
+            // a refresh on the active layer.
+            if (string.Equals(_currentPadVm.ActiveLayerMask, mask, StringComparison.Ordinal))
+            {
+                // Re-fire LayerActivated to drive the reload.
+                _currentPadVm.ActiveLayerMask = "Base";
+                _currentPadVm.ActiveLayerMask = mask;
+            }
+            _currentPadVm.ConfigItemDirtyCallback?.Invoke();
+        }
+
+        private void ShiftLayer_Clear_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPadVm == null) return;
+            string mask = TagToLayerMask(sender);
+            if (string.IsNullOrEmpty(mask)) return;
+
+            var slotMs = GetSlotMappingSet(_currentPadVm.PadIndex);
+            if (slotMs?.Rows == null) return;
+
+            slotMs.Rows.RemoveAll(
+                r => r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal));
+
+            if (string.Equals(_currentPadVm.ActiveLayerMask, mask, StringComparison.Ordinal))
+            {
+                _currentPadVm.ActiveLayerMask = "Base";
+                _currentPadVm.ActiveLayerMask = mask;
+            }
+            _currentPadVm.ConfigItemDirtyCallback?.Invoke();
+        }
+
+        private void ShiftLayer_Delete_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPadVm == null) return;
+            string mask = TagToLayerMask(sender);
+            if (string.IsNullOrEmpty(mask)) return;
+
+            var slotMs = GetSlotMappingSet(_currentPadVm.PadIndex);
+            if (slotMs?.ShiftActivators == null) return;
+            var activator = slotMs.ShiftActivators.Find(
+                a => a != null && string.Equals(a.LayerMask, mask, StringComparison.Ordinal));
+            if (activator == null) return;
+
+            string layerName = string.IsNullOrEmpty(activator.LayerName) ? activator.LayerMask : activator.LayerName;
+            var confirm = MessageBox.Show(
+                string.Format(Strings.Instance.Pad_Shift_DeleteConfirm_Format, layerName),
+                Strings.Instance.Pad_Shift_DeleteConfirmTitle,
+                MessageBoxButton.OKCancel,
+                MessageBoxImage.Warning);
+            if (confirm != MessageBoxResult.OK) return;
+
+            slotMs.ShiftActivators.Remove(activator);
+            if (slotMs.Rows != null)
+            {
+                slotMs.Rows.RemoveAll(
+                    r => r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal));
+            }
+
+            // Snap the active tab back to Base; RebuildLayerTabs will
+            // also recover if the active mask no longer matches a tab.
+            _currentPadVm.ActiveLayerMask = "Base";
+            _currentPadVm.RebuildLayerTabs(slotMs.ShiftActivators);
+            _currentPadVm.ConfigItemDirtyCallback?.Invoke();
+        }
+
+        private static Engine.Data.MappingSource CloneSource(Engine.Data.MappingSource s)
+        {
+            return new Engine.Data.MappingSource
+            {
+                Kind = s.Kind,
+                DeviceGuid = s.DeviceGuid,
+                Descriptor = s.Descriptor,
+                Invert = s.Invert,
+                HalfAxis = s.HalfAxis,
+                Bidirectional = s.Bidirectional,
+                DeadZone = s.DeadZone,
+                ParamUp = s.ParamUp,
+                ParamDown = s.ParamDown,
+                ParamRate = s.ParamRate,
+                ParamSticky = s.ParamSticky,
+                ParamMin = s.ParamMin,
+                ParamMax = s.ParamMax,
+                ParamModifier = s.ParamModifier,
+            };
         }
 
         /// <summary>Reads the slot's MappingSet from

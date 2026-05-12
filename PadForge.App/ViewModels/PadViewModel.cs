@@ -36,6 +36,11 @@ namespace PadForge.ViewModels
             RebuildMappings();
             RebuildStickConfigs();
             RebuildTriggerConfigs();
+            // Seed the layer tab strip with just Base so the binding has
+            // a non-null collection from construction time. InputService
+            // calls RebuildLayerTabs with the slot's actual activators
+            // during ApplyProfile and after any add / edit / delete.
+            RebuildLayerTabs(null);
         }
 
         private void OnCatalogReloaded(object sender, EventArgs e)
@@ -732,6 +737,96 @@ namespace PadForge.ViewModels
         /// reload mapping descriptors from the active PadSetting into the new MappingItems.
         /// </summary>
         public event EventHandler MappingsRebuilt;
+
+        // ── Shift mode (Issue #61 Phase 6) ──
+
+        /// <summary>Layer mask currently being authored on the Mappings tab.
+        /// Defaults to <c>"Base"</c> (no shift layer selected). Setting this
+        /// fires <see cref="LayerActivated"/> so InputService reloads each
+        /// MappingItem from the matching layer's MappingRows.</summary>
+        private string _activeLayerMask = "Base";
+        public string ActiveLayerMask
+        {
+            get => _activeLayerMask;
+            set
+            {
+                var v = value ?? "Base";
+                if (SetProperty(ref _activeLayerMask, v))
+                {
+                    foreach (var t in LayerTabs)
+                        t.IsActive = string.Equals(t.LayerMask, v, StringComparison.Ordinal);
+                    LayerActivated?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        /// <summary>Raised when <see cref="ActiveLayerMask"/> changes. Subscribers
+        /// reload per-row source data so the DataGrid reflects the picked
+        /// layer's rows instead of the previous layer's.</summary>
+        public event EventHandler LayerActivated;
+
+        /// <summary>Tab strip backing collection. Always starts with the Base
+        /// tab; each shift layer authored on this slot adds an entry.
+        /// Populated by <see cref="RebuildLayerTabs"/> from
+        /// <c>SettingsManager.SlotMappingSets[PadIndex].ShiftActivators</c>.</summary>
+        public ObservableCollection<ShiftLayerInfo> LayerTabs { get; } = new();
+
+        /// <summary>True when the slot has at least one shift activator
+        /// authored, i.e. at least one tab beyond Base. Drives the nested
+        /// tab strip's visibility (basic users without any shift layers see
+        /// the Mappings tab exactly as before).</summary>
+        public bool HasShiftLayers => LayerTabs.Count > 1;
+
+        /// <summary>Raised by <see cref="RebuildLayerTabs"/> after the tab
+        /// strip is repopulated. The UI uses it to update tab-strip
+        /// visibility and ensure the active selection lands on a valid
+        /// tab.</summary>
+        public event EventHandler LayerTabsRebuilt;
+
+        /// <summary>Rebuilds <see cref="LayerTabs"/> from the supplied
+        /// activator list (which the caller pulls from
+        /// <c>SettingsManager.SlotMappingSets[PadIndex].ShiftActivators</c>).
+        /// Called whenever the slot's activator list changes — add, edit,
+        /// delete, paste-layer. Preserves <see cref="ActiveLayerMask"/>
+        /// when the active mask still exists in the new tab set, otherwise
+        /// falls back to Base.</summary>
+        public void RebuildLayerTabs(
+            System.Collections.Generic.IReadOnlyList<PadForge.Engine.Data.ShiftActivator> activators)
+        {
+            LayerTabs.Clear();
+            LayerTabs.Add(new ShiftLayerInfo
+            {
+                LayerMask = "Base",
+                LayerName = PadForge.Resources.Strings.Strings.Instance.Pad_Shift_BaseTabLabel,
+                IsActive = string.Equals(_activeLayerMask, "Base", StringComparison.Ordinal),
+            });
+            bool activeFound = LayerTabs[0].IsActive;
+            if (activators != null)
+            {
+                foreach (var a in activators)
+                {
+                    if (a == null || string.IsNullOrEmpty(a.LayerMask)) continue;
+                    var info = new ShiftLayerInfo
+                    {
+                        LayerMask = a.LayerMask,
+                        LayerName = string.IsNullOrEmpty(a.LayerName) ? a.LayerMask : a.LayerName,
+                        Color = a.Color ?? "",
+                        IsActive = string.Equals(_activeLayerMask, a.LayerMask, StringComparison.Ordinal),
+                    };
+                    if (info.IsActive) activeFound = true;
+                    LayerTabs.Add(info);
+                }
+            }
+            if (!activeFound)
+            {
+                // Active layer no longer exists; snap back to Base.
+                _activeLayerMask = "Base";
+                LayerTabs[0].IsActive = true;
+                OnPropertyChanged(nameof(ActiveLayerMask));
+            }
+            OnPropertyChanged(nameof(HasShiftLayers));
+            LayerTabsRebuilt?.Invoke(this, EventArgs.Empty);
+        }
 
         /// <summary>
         /// Rebuilds the Mappings collection based on the current OutputType and Extended config.

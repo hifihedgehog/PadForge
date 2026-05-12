@@ -4124,6 +4124,23 @@ namespace PadForge
                 ps.SlotMultiSourceRows = InputService.ExtractAllRowsForSlot(padVm.PadIndex);
                 ps.DeviceScopedMultiSourceRows = null;
 
+                // Bundle the per-slot config tabs (Lighting / Adaptive Triggers /
+                // Mic LED / Player LED / audio-reactive / palette for PlayStation,
+                // custom layout for Extended, CC + note layout for MIDI). These
+                // live on PadViewModel, not PadSetting, so the clipboard JSON
+                // carries them as opaque DTO-serialised strings on PadSetting and
+                // OnPasteSettings unpacks + applies via SettingsService.
+                var jsonOpts = new System.Text.Json.JsonSerializerOptions { WriteIndented = false };
+                var psConfigs = _settingsService.BuildPlayStationConfigSnapshotForSlot(padVm.PadIndex);
+                if (psConfigs != null && psConfigs.Length > 0)
+                    ps.SlotPlayStationConfigsJson = System.Text.Json.JsonSerializer.Serialize(psConfigs, jsonOpts);
+                var extCfg = _settingsService.BuildExtendedConfigSnapshotForSlot(padVm.PadIndex);
+                if (extCfg != null)
+                    ps.SlotExtendedConfigJson = System.Text.Json.JsonSerializer.Serialize(extCfg, jsonOpts);
+                var midiCfg = _settingsService.BuildMidiConfigSnapshotForSlot(padVm.PadIndex);
+                if (midiCfg != null)
+                    ps.SlotMidiConfigJson = System.Text.Json.JsonSerializer.Serialize(midiCfg, jsonOpts);
+
                 Clipboard.SetText(ps.ToJson(copyOutputType, copyIsExtended));
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopied;
             }
@@ -4169,6 +4186,40 @@ namespace PadForge
                     padVm.PadIndex, ps,
                     srcType, srcIsExtended,
                     targetType, targetIsExtended);
+
+                // Unpack the per-slot config tabs that travelled through the
+                // clipboard JSON as opaque strings on PadSetting. Same semantics
+                // as the in-process Copy From: PlayStation features copy
+                // unconditionally (physical-device passthrough), Extended /
+                // MIDI gated on matching slot type by their Apply methods.
+                if (!string.IsNullOrEmpty(ps.SlotPlayStationConfigsJson))
+                {
+                    try
+                    {
+                        var psConfigs = System.Text.Json.JsonSerializer.Deserialize<ViewModels.PlayStationSlotConfigData[]>(ps.SlotPlayStationConfigsJson);
+                        _settingsService.ApplyPlayStationConfigsToSlot(padVm.PadIndex, psConfigs);
+                    }
+                    catch { /* malformed payload — Lighting tab paste skipped */ }
+                }
+                if (!string.IsNullOrEmpty(ps.SlotExtendedConfigJson))
+                {
+                    try
+                    {
+                        var extCfg = System.Text.Json.JsonSerializer.Deserialize<ViewModels.ExtendedSlotConfigData>(ps.SlotExtendedConfigJson);
+                        _settingsService.ApplyExtendedConfigToSlot(padVm.PadIndex, extCfg);
+                    }
+                    catch { /* malformed payload — Extended layout paste skipped */ }
+                }
+                if (!string.IsNullOrEmpty(ps.SlotMidiConfigJson))
+                {
+                    try
+                    {
+                        var midiCfg = System.Text.Json.JsonSerializer.Deserialize<ViewModels.MidiSlotConfigData>(ps.SlotMidiConfigJson);
+                        _settingsService.ApplyMidiConfigToSlot(padVm.PadIndex, midiCfg);
+                    }
+                    catch { /* malformed payload — MIDI layout paste skipped */ }
+                }
+
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsPasted;
             }

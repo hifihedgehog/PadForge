@@ -198,13 +198,14 @@ namespace PadForge.ViewModels
                             }
                             else if (entry.AxisTarget != MacroAxisTarget.None)
                             {
-                                string dirSign = entry.AxisDirection switch
+                                string dirSign = entry.IsTriggerStyleAxis ? "" : entry.AxisDirection switch
                                 {
                                     MacroAxisDirection.Positive => " +",
                                     MacroAxisDirection.Negative => " −",
                                     _ => ""
                                 };
-                                inputs.Add($"{entry.AxisTarget.DisplayName()}{dirSign} > {_triggerAxisThreshold}%");
+                                string invTag = entry.AxisInvert ? $" ({Strings.Instance.Macro_Axis_Inverted})" : "";
+                                inputs.Add($"{entry.AxisTarget.DisplayName()}{dirSign} > {entry.AxisDeadzone}%{invTag}");
                             }
                         }
                         string deviceName = ResolveDeviceName(grp.Key);
@@ -451,23 +452,89 @@ namespace PadForge.ViewModels
         /// <summary>One entry in the multi-device trigger combo. Exactly one
         /// of <see cref="RawButton"/>, <see cref="Pov"/>, or
         /// <see cref="AxisTarget"/> is populated per entry. Axis entries
-        /// also carry <see cref="AxisDirection"/> (Any / Positive / Negative)
-        /// to express e.g. "left stick X deflected to the right past
-        /// threshold." The per-macro <c>TriggerAxisThreshold</c> applies
-        /// to all axis entries.</summary>
-        public sealed class TriggerInputEntry
+        /// carry per-entry <see cref="AxisDirection"/> (Any / Positive /
+        /// Negative — same as a half-axis selector since "Positive" means
+        /// "only fires when this axis is past deadzone in the + direction"),
+        /// per-entry <see cref="AxisDeadzone"/> (1–99 % from rest position
+        /// — center for sticks, zero for triggers), and per-entry
+        /// <see cref="AxisInvert"/> (flips the axis reading so triggers
+        /// can fire on release and sticks can reverse left↔right).</summary>
+        public sealed class TriggerInputEntry : ObservableObject
         {
-            public Guid DeviceGuid;
+            private Guid _deviceGuid;
+            public Guid DeviceGuid
+            {
+                get => _deviceGuid;
+                set => SetProperty(ref _deviceGuid, value);
+            }
+
             /// <summary>Raw button index, or -1 if this entry isn't a button.</summary>
-            public int RawButton = -1;
+            private int _rawButton = -1;
+            public int RawButton
+            {
+                get => _rawButton;
+                set => SetProperty(ref _rawButton, value);
+            }
+
             /// <summary>"povIndex:centidegrees" form, or null if this entry isn't a POV.</summary>
-            public string Pov;
+            private string _pov;
+            public string Pov
+            {
+                get => _pov;
+                set => SetProperty(ref _pov, value);
+            }
+
             /// <summary>Axis target on the device's standard SDL gamepad layout
             /// (0=LX, 1=LY, 2=LT, 3=RX, 4=RY, 5=RT). <c>None</c> if not an axis entry.</summary>
-            public MacroAxisTarget AxisTarget = MacroAxisTarget.None;
-            /// <summary>Direction filter for axis entries (Any / Positive /
-            /// Negative). Ignored when <c>AxisTarget == None</c>.</summary>
-            public MacroAxisDirection AxisDirection = MacroAxisDirection.Any;
+            private MacroAxisTarget _axisTarget = MacroAxisTarget.None;
+            public MacroAxisTarget AxisTarget
+            {
+                get => _axisTarget;
+                set { if (SetProperty(ref _axisTarget, value)) OnPropertyChanged(nameof(IsTriggerStyleAxis)); }
+            }
+
+            /// <summary>Direction filter for axis entries (Any / Positive / Negative).
+            /// Doubles as the half-axis selector for stick axes — "Positive" fires only
+            /// when the stick deflects past +deadzone, "Negative" only past −deadzone.
+            /// Ignored for trigger axes (LT / RT) which are inherently unidirectional.</summary>
+            private MacroAxisDirection _axisDirection = MacroAxisDirection.Any;
+            public MacroAxisDirection AxisDirection
+            {
+                get => _axisDirection;
+                set => SetProperty(ref _axisDirection, value);
+            }
+
+            /// <summary>Per-entry deadzone in percent (1..99) from rest position.
+            /// For sticks (LX/LY/RX/RY) rest is the centered value; the entry fires
+            /// when the stick deflects more than (deadzone/2) of the half-range past
+            /// center. For triggers (LT/RT) rest is the released position; the entry
+            /// fires when the trigger is pressed past deadzone of the full range.
+            /// Defaults to 30 % when an axis entry is first recorded — well past
+            /// stick-rest noise but loose enough to be reached with light press.</summary>
+            private int _axisDeadzone = 30;
+            public int AxisDeadzone
+            {
+                get => _axisDeadzone;
+                set => SetProperty(ref _axisDeadzone, Math.Clamp(value, 1, 99));
+            }
+
+            /// <summary>When true the axis reading is flipped (val → 1−val) before
+            /// the deadzone / direction check. On triggers this turns "press to
+            /// fire" into "release to fire"; on sticks it swaps which deflection
+            /// counts as Positive vs Negative.</summary>
+            private bool _axisInvert;
+            public bool AxisInvert
+            {
+                get => _axisInvert;
+                set => SetProperty(ref _axisInvert, value);
+            }
+
+            /// <summary>True when the axis target is a trigger (LT / RT) — these rest
+            /// at one end of the range instead of the center, so the deadzone +
+            /// direction rules differ from stick axes.</summary>
+            [System.Xml.Serialization.XmlIgnore]
+            public bool IsTriggerStyleAxis =>
+                _axisTarget == MacroAxisTarget.LeftTrigger || _axisTarget == MacroAxisTarget.RightTrigger;
 
             /// <summary>Compact tagged form for XML round-trip.</summary>
             public string Spec
@@ -475,7 +542,8 @@ namespace PadForge.ViewModels
                 get
                 {
                     if (DeviceGuid == Guid.Empty) return "";
-                    if (AxisTarget != MacroAxisTarget.None) return $"in:{DeviceGuid}:ax:{AxisTarget}:{AxisDirection}";
+                    if (AxisTarget != MacroAxisTarget.None)
+                        return $"in:{DeviceGuid}:ax:{AxisTarget}:{AxisDirection}:{AxisDeadzone}:{(AxisInvert ? 1 : 0)}";
                     if (!string.IsNullOrEmpty(Pov)) return $"in:{DeviceGuid}:pov:{Pov}";
                     if (RawButton >= 0) return $"in:{DeviceGuid}:btn:{RawButton}";
                     return "";
@@ -504,6 +572,10 @@ namespace PadForge.ViewModels
                         entry.AxisTarget = at;
                         if (parts.Length >= 5 && Enum.TryParse<MacroAxisDirection>(parts[4], out var dir))
                             entry.AxisDirection = dir;
+                        if (parts.Length >= 6 && int.TryParse(parts[5], out int dz))
+                            entry.AxisDeadzone = dz;
+                        if (parts.Length >= 7 && int.TryParse(parts[6], out int inv))
+                            entry.AxisInvert = inv != 0;
                         return entry;
                     default: return null;
                 }

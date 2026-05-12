@@ -213,7 +213,7 @@
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>用于陀螺仪和加速度计数据的 DSU / CemuHook Motion Provider 协议服务器。</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>启用 DSU 体感服务器（CemuHook Motion Provider 协议）</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>端口</value></data>
-  <data name="Dashboard_DsuFooter" xml:space="preserve"><value>为 Cemu、Dolphin、Yuzu 等提供陀螺仪/加速度计数据。</value></data>
+  <data name="Dashboard_DsuFooter" xml:space="preserve"><value>为 Cemu、Dolphin、Yuzu 等提供陀螺仪和加速度计数据。</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>网页控制器</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>在局域网中为浏览器提供手柄界面。</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>启用网页控制器服务器</value></data>

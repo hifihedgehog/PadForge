@@ -213,7 +213,7 @@
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ジャイロおよび加速度センサーデータ用の DSU/CemuHook Motion Provider protocol サーバーです。</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU モーションサーバーを有効化 (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>ポート</value></data>
-  <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu、Dolphin、Yuzu などにジャイロ/加速度データを提供します。</value></data>
+  <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu、Dolphin、Yuzu などにジャイロおよび加速度センサーのデータを提供します。</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Web コントローラー</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>ローカルネットワーク上のブラウザにゲームパッド UI を提供します。</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Web コントローラーサーバーを有効にする</value></data>

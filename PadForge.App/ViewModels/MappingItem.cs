@@ -662,6 +662,22 @@ namespace PadForge.ViewModels
             }
         }
 
+        private bool _isBidirectional;
+
+        /// <summary>When <c>true</c> AND <see cref="IsHalfAxis"/> is also on,
+        /// the axis-to-button check fires on absolute deflection past the
+        /// deadzone — either side of center counts. <see cref="IsInverted"/>
+        /// has no effect in this mode (mirroring around center already
+        /// covers both directions). Persisted via the per-row
+        /// <c>PadSetting.MappingBidirectional</c> dictionary rather than a
+        /// descriptor prefix, since I/H prefixes are already consumed and a
+        /// third boolean would need a clean storage slot.</summary>
+        public bool IsBidirectional
+        {
+            get => _isBidirectional;
+            set => SetProperty(ref _isBidirectional, value);
+        }
+
         private int _mappingDeadZone = 50;
 
         /// <summary>
@@ -782,6 +798,7 @@ namespace PadForge.ViewModels
                 NegSourceDescriptor = string.Empty;
                 IsInverted = false;
                 IsHalfAxis = false;
+                IsBidirectional = false;
                 MappingDeadZone = 50;
                 PrimarySourceDeviceGuid = "";
                 PrimarySourceDeviceLabel = "";

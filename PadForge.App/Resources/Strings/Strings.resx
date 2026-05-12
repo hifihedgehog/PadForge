@@ -1122,7 +1122,7 @@
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Press any input…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>inverted</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>half axis</value></data>
-  <data name="Pad_Either" xml:space="preserve"><value>Either</value></data>
+  <data name="Pad_Either" xml:space="preserve"><value>Bidirectional</value></data>
   <data name="Pad_Either_Tooltip" xml:space="preserve"><value>When Half is on, fire on deflection past the deadzone in either direction from center (Invert has no effect).</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Continuously maps the selected axis (0–100%) to the Windows system volume, scaled to the volume limit. Use with "Always" trigger, or a button/axis trigger with "While Held" + "Until Release".</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controls the volume of a specific application in the Windows volume mixer, scaled to the volume limit. Enter the process name (visible in Task Manager). Use with "Always" trigger, or a button/axis trigger with "While Held" + "Until Release".</value></data>

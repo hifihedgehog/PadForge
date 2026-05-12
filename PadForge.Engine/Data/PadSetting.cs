@@ -596,6 +596,72 @@ namespace PadForge.Engine.Data
         }
 
         // ─────────────────────────────────────────────
+        //  Per-mapping Bidirectional flag
+        //  Parallel storage to MappingDeadZone — the legacy single-source
+        //  descriptor format encodes Invert / HalfAxis as I / H prefixes;
+        //  Bidirectional is the third independent axis-to-button flag and
+        //  lives in its own dictionary so the descriptor string stays
+        //  unchanged. Stored as "1" / "0" / "" (missing = false default).
+        // ─────────────────────────────────────────────
+
+        [XmlArray("MappingBidirectional")]
+        [XmlArrayItem("Map")]
+        public ExtendedMappingEntry[] MappingBidirectionalEntries { get; set; }
+
+        [XmlIgnore]
+        private Dictionary<string, string> _mappingBidirectionalDict;
+        private readonly object _mappingBidirectionalDictLock = new();
+
+        public string GetMappingBidirectional(string key)
+        {
+            EnsureMappingBidirectionalDict();
+            return _mappingBidirectionalDict.TryGetValue(key, out var val) ? val : "";
+        }
+
+        public void SetMappingBidirectional(string key, string value)
+        {
+            EnsureMappingBidirectionalDict();
+            if (string.IsNullOrEmpty(value) || value == "0")
+                _mappingBidirectionalDict.Remove(key);
+            else
+                _mappingBidirectionalDict[key] = value;
+        }
+
+        public void FlushMappingBidirectional()
+        {
+            if (_mappingBidirectionalDict == null) return;
+            if (_mappingBidirectionalDict.Count == 0)
+            {
+                MappingBidirectionalEntries = null;
+                return;
+            }
+            var entries = new ExtendedMappingEntry[_mappingBidirectionalDict.Count];
+            int i = 0;
+            foreach (var kvp in _mappingBidirectionalDict)
+                entries[i++] = new ExtendedMappingEntry { Key = kvp.Key, Value = kvp.Value };
+            MappingBidirectionalEntries = entries;
+        }
+
+        private void EnsureMappingBidirectionalDict()
+        {
+            if (_mappingBidirectionalDict != null) return;
+            lock (_mappingBidirectionalDictLock)
+            {
+                if (_mappingBidirectionalDict != null) return;
+                var dict = new Dictionary<string, string>(StringComparer.Ordinal);
+                if (MappingBidirectionalEntries != null)
+                {
+                    foreach (var e in MappingBidirectionalEntries)
+                    {
+                        if (!string.IsNullOrEmpty(e.Key) && !string.IsNullOrEmpty(e.Value))
+                            dict[e.Key] = e.Value;
+                    }
+                }
+                _mappingBidirectionalDict = dict;
+            }
+        }
+
+        // ─────────────────────────────────────────────
         //  Migration
         // ─────────────────────────────────────────────
 
@@ -1065,6 +1131,7 @@ namespace PadForge.Engine.Data
             FlushMidiMappings();
             FlushKbmMappings();
             FlushMappingDeadZones();
+            FlushMappingBidirectional();
 
             var dict = new Dictionary<string, string>();
             var type = GetType();
@@ -1385,6 +1452,7 @@ namespace PadForge.Engine.Data
             FlushMidiMappings();
             FlushKbmMappings();
             FlushMappingDeadZones();
+            FlushMappingBidirectional();
         }
 
         /// <summary>
@@ -1408,6 +1476,7 @@ namespace PadForge.Engine.Data
             source.FlushMidiMappings();
             source.FlushKbmMappings();
             source.FlushMappingDeadZones();
+            source.FlushMappingBidirectional();
 
             // Deep-copy arrays and invalidate our cached dictionaries.
             ExtendedMappingEntries = DeepCopyMappings(source.ExtendedMappingEntries);
@@ -1418,6 +1487,8 @@ namespace PadForge.Engine.Data
             _kbmMappingDict = null;
             MappingDeadZoneEntries = DeepCopyMappings(source.MappingDeadZoneEntries);
             _mappingDeadZoneDict = null;
+            MappingBidirectionalEntries = DeepCopyMappings(source.MappingBidirectionalEntries);
+            _mappingBidirectionalDict = null;
         }
 
         private static ExtendedMappingEntry[] DeepCopyMappings(ExtendedMappingEntry[] src)

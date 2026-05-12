@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 
@@ -171,38 +171,38 @@ namespace PadForge.Common.Input
             int gt = TryParseIntStatic(ps.AxisToButtonThreshold, 50);
 
             // ── Buttons ──
-            if (MapToButtonPressed(state, ps.ButtonA, TryParseIntStatic(ps.GetMappingDeadZone("ButtonA"), 0), gt))
+            if (MapToButtonPressed(state, ps.ButtonA, TryParseIntStatic(ps.GetMappingDeadZone("ButtonA"), 0), gt, ps.GetMappingBidirectional("ButtonA") == "1"))
                 gp.SetButton(Gamepad.A, true);
-            if (MapToButtonPressed(state, ps.ButtonB, TryParseIntStatic(ps.GetMappingDeadZone("ButtonB"), 0), gt))
+            if (MapToButtonPressed(state, ps.ButtonB, TryParseIntStatic(ps.GetMappingDeadZone("ButtonB"), 0), gt, ps.GetMappingBidirectional("ButtonB") == "1"))
                 gp.SetButton(Gamepad.B, true);
-            if (MapToButtonPressed(state, ps.ButtonX, TryParseIntStatic(ps.GetMappingDeadZone("ButtonX"), 0), gt))
+            if (MapToButtonPressed(state, ps.ButtonX, TryParseIntStatic(ps.GetMappingDeadZone("ButtonX"), 0), gt, ps.GetMappingBidirectional("ButtonX") == "1"))
                 gp.SetButton(Gamepad.X, true);
-            if (MapToButtonPressed(state, ps.ButtonY, TryParseIntStatic(ps.GetMappingDeadZone("ButtonY"), 0), gt))
+            if (MapToButtonPressed(state, ps.ButtonY, TryParseIntStatic(ps.GetMappingDeadZone("ButtonY"), 0), gt, ps.GetMappingBidirectional("ButtonY") == "1"))
                 gp.SetButton(Gamepad.Y, true);
 
-            if (MapToButtonPressed(state, ps.LeftShoulder, TryParseIntStatic(ps.GetMappingDeadZone("LeftShoulder"), 0), gt))
+            if (MapToButtonPressed(state, ps.LeftShoulder, TryParseIntStatic(ps.GetMappingDeadZone("LeftShoulder"), 0), gt, ps.GetMappingBidirectional("LeftShoulder") == "1"))
                 gp.SetButton(Gamepad.LEFT_SHOULDER, true);
-            if (MapToButtonPressed(state, ps.RightShoulder, TryParseIntStatic(ps.GetMappingDeadZone("RightShoulder"), 0), gt))
+            if (MapToButtonPressed(state, ps.RightShoulder, TryParseIntStatic(ps.GetMappingDeadZone("RightShoulder"), 0), gt, ps.GetMappingBidirectional("RightShoulder") == "1"))
                 gp.SetButton(Gamepad.RIGHT_SHOULDER, true);
 
-            if (MapToButtonPressed(state, ps.ButtonBack, TryParseIntStatic(ps.GetMappingDeadZone("ButtonBack"), 0), gt))
+            if (MapToButtonPressed(state, ps.ButtonBack, TryParseIntStatic(ps.GetMappingDeadZone("ButtonBack"), 0), gt, ps.GetMappingBidirectional("ButtonBack") == "1"))
                 gp.SetButton(Gamepad.BACK, true);
-            if (MapToButtonPressed(state, ps.ButtonStart, TryParseIntStatic(ps.GetMappingDeadZone("ButtonStart"), 0), gt))
+            if (MapToButtonPressed(state, ps.ButtonStart, TryParseIntStatic(ps.GetMappingDeadZone("ButtonStart"), 0), gt, ps.GetMappingBidirectional("ButtonStart") == "1"))
                 gp.SetButton(Gamepad.START, true);
 
-            if (MapToButtonPressed(state, ps.LeftThumbButton, TryParseIntStatic(ps.GetMappingDeadZone("LeftThumbButton"), 0), gt))
+            if (MapToButtonPressed(state, ps.LeftThumbButton, TryParseIntStatic(ps.GetMappingDeadZone("LeftThumbButton"), 0), gt, ps.GetMappingBidirectional("LeftThumbButton") == "1"))
                 gp.SetButton(Gamepad.LEFT_THUMB, true);
-            if (MapToButtonPressed(state, ps.RightThumbButton, TryParseIntStatic(ps.GetMappingDeadZone("RightThumbButton"), 0), gt))
+            if (MapToButtonPressed(state, ps.RightThumbButton, TryParseIntStatic(ps.GetMappingDeadZone("RightThumbButton"), 0), gt, ps.GetMappingBidirectional("RightThumbButton") == "1"))
                 gp.SetButton(Gamepad.RIGHT_THUMB, true);
 
-            if (MapToButtonPressed(state, ps.ButtonGuide, TryParseIntStatic(ps.GetMappingDeadZone("ButtonGuide"), 0), gt))
+            if (MapToButtonPressed(state, ps.ButtonGuide, TryParseIntStatic(ps.GetMappingDeadZone("ButtonGuide"), 0), gt, ps.GetMappingBidirectional("ButtonGuide") == "1"))
                 gp.SetButton(Gamepad.GUIDE, true);
 
             // Xbox Series Share button — sits outside the 16-bit Buttons
             // mask. HM drops the bit on profiles whose descriptor doesn't
             // declare button 13, so always-mapping is safe even if the
             // active profile isn't Xbox Series.
-            if (MapToButtonPressed(state, ps.ButtonShare, TryParseIntStatic(ps.GetMappingDeadZone("ButtonShare"), 0), gt))
+            if (MapToButtonPressed(state, ps.ButtonShare, TryParseIntStatic(ps.GetMappingDeadZone("ButtonShare"), 0), gt, ps.GetMappingBidirectional("ButtonShare") == "1"))
                 gp.Share = true;
 
             // ── D-Pad ──
@@ -215,13 +215,13 @@ namespace PadForge.Common.Input
 
             if (hasIndividualDPad)
             {
-                if (MapToButtonPressed(state, ps.DPadUp, TryParseIntStatic(ps.GetMappingDeadZone("DPadUp"), 0), gt))
+                if (MapToButtonPressed(state, ps.DPadUp, TryParseIntStatic(ps.GetMappingDeadZone("DPadUp"), 0), gt, ps.GetMappingBidirectional("DPadUp") == "1"))
                     gp.SetButton(Gamepad.DPAD_UP, true);
-                if (MapToButtonPressed(state, ps.DPadDown, TryParseIntStatic(ps.GetMappingDeadZone("DPadDown"), 0), gt))
+                if (MapToButtonPressed(state, ps.DPadDown, TryParseIntStatic(ps.GetMappingDeadZone("DPadDown"), 0), gt, ps.GetMappingBidirectional("DPadDown") == "1"))
                     gp.SetButton(Gamepad.DPAD_DOWN, true);
-                if (MapToButtonPressed(state, ps.DPadLeft, TryParseIntStatic(ps.GetMappingDeadZone("DPadLeft"), 0), gt))
+                if (MapToButtonPressed(state, ps.DPadLeft, TryParseIntStatic(ps.GetMappingDeadZone("DPadLeft"), 0), gt, ps.GetMappingBidirectional("DPadLeft") == "1"))
                     gp.SetButton(Gamepad.DPAD_LEFT, true);
-                if (MapToButtonPressed(state, ps.DPadRight, TryParseIntStatic(ps.GetMappingDeadZone("DPadRight"), 0), gt))
+                if (MapToButtonPressed(state, ps.DPadRight, TryParseIntStatic(ps.GetMappingDeadZone("DPadRight"), 0), gt, ps.GetMappingBidirectional("DPadRight") == "1"))
                     gp.SetButton(Gamepad.DPAD_RIGHT, true);
             }
             else
@@ -453,7 +453,7 @@ namespace PadForge.Common.Input
         ///   "Button 3|Axis 2"      → pressed if Button 3 is pressed OR Axis 2 exceeds threshold
         /// </summary>
         private static bool MapToButtonPressed(CustomInputState state, string descriptor,
-            int deadZonePercent = 0, int globalThresholdPercent = 50)
+            int deadZonePercent = 0, int globalThresholdPercent = 50, bool bidirectional = false)
         {
             if (string.IsNullOrWhiteSpace(descriptor))
                 return false;
@@ -463,20 +463,20 @@ namespace PadForge.Common.Input
             {
                 foreach (string part in descriptor.Split('|'))
                 {
-                    if (MapToButtonPressedSingle(state, part.Trim(), deadZonePercent, globalThresholdPercent))
+                    if (MapToButtonPressedSingle(state, part.Trim(), deadZonePercent, globalThresholdPercent, bidirectional))
                         return true;
                 }
                 return false;
             }
 
-            return MapToButtonPressedSingle(state, descriptor, deadZonePercent, globalThresholdPercent);
+            return MapToButtonPressedSingle(state, descriptor, deadZonePercent, globalThresholdPercent, bidirectional);
         }
 
         /// <summary>
         /// Maps a single descriptor to a boolean button press.
         /// </summary>
         private static bool MapToButtonPressedSingle(CustomInputState state, string descriptor,
-            int deadZonePercent = 0, int globalThresholdPercent = 50)
+            int deadZonePercent = 0, int globalThresholdPercent = 50, bool bidirectional = false)
         {
             // Touchpad-typed descriptors that resolve to a bool. Parallel to the
             // "Touchpad N Finger M X/Y/Down" descriptors consumed by Step 3's
@@ -513,9 +513,13 @@ namespace PadForge.Common.Input
                         double t = Math.Max(deadZonePercent > 0 ? deadZonePercent : globalThresholdPercent, 1) / 100.0;
                         if (desc.HalfAxis)
                         {
-                            // Half-axis: threshold applies within the active half (center-to-edge).
-                            // Non-inverted half: active range 32768–65535, threshold = 32768 + 32767*t
-                            // Inverted half: active range 32767–0, threshold = 32767 - 32767*t
+                            if (bidirectional)
+                            {
+                                // Either side of center past deadzone counts.
+                                int delta = value - 32768;
+                                if (delta < 0) delta = -delta;
+                                return delta > (int)(32767 * t);
+                            }
                             if (desc.Inverted)
                                 return value < (int)(32767 * (1.0 - t));
                             else
@@ -536,6 +540,12 @@ namespace PadForge.Common.Input
                         double t = Math.Max(deadZonePercent > 0 ? deadZonePercent : globalThresholdPercent, 1) / 100.0;
                         if (desc.HalfAxis)
                         {
+                            if (bidirectional)
+                            {
+                                int delta = value - 32768;
+                                if (delta < 0) delta = -delta;
+                                return delta > (int)(32767 * t);
+                            }
                             if (desc.Inverted)
                                 return value < (int)(32767 * (1.0 - t));
                             else
@@ -1318,7 +1328,7 @@ namespace PadForge.Common.Input
                 else
                 {
                     string desc = ps.GetExtendedMapping(key);
-                    if (MapToButtonPressed(state, desc, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), vgt))
+                    if (MapToButtonPressed(state, desc, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), vgt, ps.GetMappingBidirectional(key) == "1"))
                         raw.SetButton(i, true);
                 }
             }
@@ -1458,7 +1468,8 @@ namespace PadForge.Common.Input
                     slotIndex, key, globalThreshold, out bool pressed))
                 return pressed;
             return MapToButtonPressed(state, ps.GetExtendedMapping(key),
-                TryParseIntStatic(ps.GetMappingDeadZone(key), 0), globalThreshold);
+                TryParseIntStatic(ps.GetMappingDeadZone(key), 0), globalThreshold,
+                ps.GetMappingBidirectional(key) == "1");
         }
 
         /// <summary>
@@ -1522,7 +1533,7 @@ namespace PadForge.Common.Input
                         slotIndex, key, mgt, out pressed))
                 {
                     string desc = ps.GetMidiMapping(key);
-                    pressed = MapToButtonPressed(state, desc, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), mgt);
+                    pressed = MapToButtonPressed(state, desc, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), mgt, ps.GetMappingBidirectional(key) == "1");
                 }
                 raw.Notes[i] = pressed;
             }
@@ -1600,7 +1611,7 @@ namespace PadForge.Common.Input
                 else
                 {
                     string desc = ps.GetKbmMapping(key);
-                    if (!string.IsNullOrEmpty(desc) && MapToButtonPressed(state, desc, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), kgt))
+                    if (!string.IsNullOrEmpty(desc) && MapToButtonPressed(state, desc, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), kgt, ps.GetMappingBidirectional(key) == "1"))
                         raw.SetKey(vk, true);
                 }
             }
@@ -1618,7 +1629,7 @@ namespace PadForge.Common.Input
                 else
                 {
                     string desc = ps.GetKbmMapping(key);
-                    if (!string.IsNullOrEmpty(desc) && MapToButtonPressed(state, desc, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), kgt))
+                    if (!string.IsNullOrEmpty(desc) && MapToButtonPressed(state, desc, TryParseIntStatic(ps.GetMappingDeadZone(key), 0), kgt, ps.GetMappingBidirectional(key) == "1"))
                         raw.SetMouseButton(i, true);
                 }
             }

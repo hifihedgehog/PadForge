@@ -1692,6 +1692,9 @@ namespace PadForge.Services
                         owningPs.SetMappingDeadZone(target, mapping.MappingDeadZone.ToString());
                     else
                         owningPs.SetMappingDeadZone(target, "");
+
+                    // Save per-mapping Bidirectional flag.
+                    owningPs.SetMappingBidirectional(target, mapping.IsBidirectional ? "1" : "");
                 }
             }
         }

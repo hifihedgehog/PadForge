@@ -18,6 +18,7 @@ namespace PadForge.ViewModels
         private string _descriptor = "";
         private bool _invert;
         private bool _halfAxis;
+        private bool _bidirectional;
         private int _deadZone = 50;
         private string _paramUp = "";
         private string _paramDown = "";
@@ -240,6 +241,12 @@ namespace PadForge.ViewModels
             }
         }
         public bool HalfAxis { get => _halfAxis; set => SetProperty(ref _halfAxis, value); }
+
+        /// <summary>When <c>true</c> AND <see cref="HalfAxis"/> is also on,
+        /// the axis-to-button check fires on absolute deflection past the
+        /// deadzone — either side of center counts. <see cref="Invert"/>
+        /// has no effect in this mode.</summary>
+        public bool Bidirectional { get => _bidirectional; set => SetProperty(ref _bidirectional, value); }
         public int DeadZone
         {
             get => _deadZone;
@@ -527,6 +534,7 @@ namespace PadForge.ViewModels
                 DeviceLabel = "";
                 Invert = false;
                 HalfAxis = false;
+                Bidirectional = false;
                 DeadZone = 50;
                 _selectedInput = null;
                 OnPropertyChanged(nameof(SelectedInput));
@@ -545,6 +553,7 @@ namespace PadForge.ViewModels
             Descriptor = _descriptor ?? "",
             Invert = _invert,
             HalfAxis = _halfAxis,
+            Bidirectional = _bidirectional,
             DeadZone = _deadZone,
             ParamUp = _paramUp ?? "",
             ParamDown = _paramDown ?? "",
@@ -567,6 +576,7 @@ namespace PadForge.ViewModels
                 Descriptor = src.Descriptor ?? "",
                 Invert = src.Invert,
                 HalfAxis = src.HalfAxis,
+                Bidirectional = src.Bidirectional,
                 DeadZone = src.DeadZone,
                 ParamUp = src.ParamUp ?? "",
                 ParamDown = src.ParamDown ?? "",

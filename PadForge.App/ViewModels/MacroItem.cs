@@ -200,7 +200,7 @@ namespace PadForge.ViewModels
                             {
                                 var tags = new List<string>();
                                 if (entry.HalfAxis) tags.Add(Strings.Instance.Macro_Axis_Half);
-                                if (entry.HalfAxis && entry.Bidirectional) tags.Add(Strings.Instance.Macro_Axis_Either.ToLowerInvariant());
+                                if (entry.HalfAxis && entry.Bidirectional) tags.Add(Strings.Instance.Pad_Either.ToLowerInvariant());
                                 if (entry.Invert && !(entry.HalfAxis && entry.Bidirectional)) tags.Add(Strings.Instance.Macro_Axis_Inverted);
                                 string tagText = tags.Count > 0 ? $" ({string.Join(", ", tags)})" : "";
                                 inputs.Add($"{entry.AxisTarget.DisplayName()} > {entry.DeadZone}%{tagText}");

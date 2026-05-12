@@ -873,8 +873,8 @@
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Eingabe drücken…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>invertiert</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>halbe Achse</value></data>
-  <data name="Macro_Axis_Either" xml:space="preserve"><value>Beide Richtungen</value></data>
-  <data name="Macro_Axis_Either_Tooltip" xml:space="preserve"><value>Wenn „halbe Achse" aktiv ist, wird ausgelöst, sobald die Achse in beliebiger Richtung vom Mittelpunkt die Totzone überschreitet. „Invertiert" hat dann keine Wirkung.</value></data>
+  <data name="Pad_Either" xml:space="preserve"><value>Beide Richtungen</value></data>
+  <data name="Pad_Either_Tooltip" xml:space="preserve"><value>Wenn „halbe Achse" aktiv ist, wird ausgelöst, sobald die Achse in beliebiger Richtung vom Mittelpunkt die Totzone überschreitet. „Invertiert" hat dann keine Wirkung.</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Ordnet die gewählte Achse (0–100 %) kontinuierlich der Windows-Systemlautstärke zu, skaliert auf das Lautstärkelimit. Mit „Immer"-Auslöser oder Tasten-/Achsenauslöser mit „Während gehalten" + „Bis Loslassen" verwenden.</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Steuert die Lautstärke einer bestimmten Anwendung im Windows-Lautstärkemixer, skaliert auf das Lautstärkelimit. Prozessnamen eingeben (sichtbar im Task-Manager). Mit „Immer"-Auslöser oder Tasten-/Achsenauslöser mit „Während gehalten" + „Bis Loslassen" verwenden.</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Ordnet die gewählte Achse kontinuierlich der Mausbewegung (oder dem Scrollen) zu. Mit „Immer"-Auslöser oder Tasten-/Achsenauslöser mit „Während gehalten" + „Bis Loslassen" verwenden. Für Stick-zu-Maus zwei Aktionen erstellen: eine für X-Achse, eine für Y-Achse.</value></data>

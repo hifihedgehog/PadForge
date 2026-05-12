@@ -124,12 +124,15 @@ namespace PadForge.Views
 
         // ── Public API ────────────────────────────────────────
 
-        /// <summary>Updates the displayed layer name + dot color and shows
-        /// the flyout if it isn't already visible.</summary>
-        public void ShowLayer(string layerName, string colorHex)
+        /// <summary>Updates the displayed icon, layer name and dot color
+        /// and shows the flyout if it isn't already visible. An empty
+        /// <paramref name="icon"/> falls back to the universal Shift
+        /// glyph <c>⇧</c>.</summary>
+        public void ShowLayer(string layerName, string colorHex, string icon)
         {
             _isSlidingOut = false;
             ApplyTheme();
+            StatusIcon.Text = string.IsNullOrEmpty(icon) ? "⇧" : icon;
             LayerNameText.Text = string.IsNullOrEmpty(layerName) ? "" : layerName;
             ColorDot.Fill = ParseColor(colorHex) ?? new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0x88));
 

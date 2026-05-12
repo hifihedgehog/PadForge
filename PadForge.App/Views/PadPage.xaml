@@ -1086,6 +1086,11 @@
                                                           VerticalAlignment="Center" Margin="0,0,6,0"/>
                                                 <CheckBox Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"
                                                           IsChecked="{Binding HalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                                <CheckBox Content="{Binding Macro_Axis_Either, Source={x:Static strings:Strings.Instance}}"
+                                                          ToolTip="{Binding Macro_Axis_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                          IsChecked="{Binding Bidirectional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          IsEnabled="{Binding HalfAxis}"
                                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
                                                 <Slider Value="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Minimum="1" Maximum="100" Width="120"

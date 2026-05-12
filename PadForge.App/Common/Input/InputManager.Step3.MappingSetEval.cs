@@ -128,12 +128,23 @@ namespace PadForge.Common.Input
         {
             public bool[] WasDown = System.Array.Empty<bool>();
             public bool[] ToggleOn = System.Array.Empty<bool>();
-            public bool[] CustomEngaged = System.Array.Empty<bool>();   // v2 Custom mode
             public int[]  CycleIndex   = System.Array.Empty<int>();      // v3 Cycle mode position
-            public bool[] StickyArmed  = System.Array.Empty<bool>();     // v3 Sticky mode pending
             public long[] EngageStartTicks = System.Array.Empty<long>(); // v2 Delay debounce
+            // Cycle mode caches the split CycleLayers string per-activator
+            // so the polling-thread tick doesn't reallocate every frame.
+            // Recomputed when the source string changes.
+            public string[][] CycleLayersSplit = System.Array.Empty<string[]>();
+            public string[] CycleLayersSource = System.Array.Empty<string>();
             public readonly List<int> Stack = new();
             public string CustomLayer = "";   // v2 Custom mode current layer (overrides stack when non-empty)
+
+            /// <summary>Sync lock guarding <see cref="Stack"/> and
+            /// <see cref="CustomLayer"/> against cross-thread reads (UI
+            /// thread <see cref="GetEngagedLayerMask"/> + Clear) versus
+            /// polling-thread writes (<see cref="UpdateActivatorState"/>
+            /// → <see cref="UpdateStack"/>). Per-instance so different
+            /// slots don't contend.</summary>
+            public readonly object SyncRoot = new();
 
             public void EnsureSize(int count)
             {
@@ -141,23 +152,31 @@ namespace PadForge.Common.Input
                 int newSize = count;
                 WasDown = ResizeBool(WasDown, newSize);
                 ToggleOn = ResizeBool(ToggleOn, newSize);
-                CustomEngaged = ResizeBool(CustomEngaged, newSize);
                 CycleIndex = ResizeInt(CycleIndex, newSize);
-                StickyArmed = ResizeBool(StickyArmed, newSize);
                 EngageStartTicks = ResizeLong(EngageStartTicks, newSize);
+                CycleLayersSplit = ResizeStringArrays(CycleLayersSplit, newSize);
+                CycleLayersSource = ResizeStringArr(CycleLayersSource, newSize);
             }
 
             public void Clear()
             {
                 System.Array.Clear(WasDown, 0, WasDown.Length);
                 System.Array.Clear(ToggleOn, 0, ToggleOn.Length);
-                System.Array.Clear(CustomEngaged, 0, CustomEngaged.Length);
                 System.Array.Clear(CycleIndex, 0, CycleIndex.Length);
-                System.Array.Clear(StickyArmed, 0, StickyArmed.Length);
                 System.Array.Clear(EngageStartTicks, 0, EngageStartTicks.Length);
-                Stack.Clear();
-                CustomLayer = "";
+                System.Array.Clear(CycleLayersSplit, 0, CycleLayersSplit.Length);
+                System.Array.Clear(CycleLayersSource, 0, CycleLayersSource.Length);
+                lock (SyncRoot)
+                {
+                    Stack.Clear();
+                    CustomLayer = "";
+                }
             }
+
+            private static string[][] ResizeStringArrays(string[][] arr, int n)
+            { var r = new string[n][]; System.Array.Copy(arr, r, System.Math.Min(arr.Length, n)); return r; }
+            private static string[] ResizeStringArr(string[] arr, int n)
+            { var r = new string[n]; System.Array.Copy(arr, r, System.Math.Min(arr.Length, n)); return r; }
 
             private static bool[] ResizeBool(bool[] arr, int n)
             { var r = new bool[n]; System.Array.Copy(arr, r, System.Math.Min(arr.Length, n)); return r; }
@@ -198,11 +217,21 @@ namespace PadForge.Common.Input
             if (slotIndex < 0 || slotIndex >= _shiftRuntime.Length) return "Base";
             var rt = _shiftRuntime[slotIndex];
             if (rt == null) return "Base";
-            if (!string.IsNullOrEmpty(rt.CustomLayer)) return rt.CustomLayer;
-            if (rt.Stack.Count == 0) return "Base";
+
+            // Snapshot under the runtime's lock so the polling thread's
+            // concurrent Stack / CustomLayer mutations can't trip the
+            // indexer with a stale Count.
+            string customLayer;
+            int idx;
+            lock (rt.SyncRoot)
+            {
+                customLayer = rt.CustomLayer;
+                idx = rt.Stack.Count > 0 ? rt.Stack[rt.Stack.Count - 1] : -1;
+            }
+
+            if (!string.IsNullOrEmpty(customLayer)) return customLayer;
             var activators = mappingSet?.ShiftActivators;
             if (activators == null) return "Base";
-            int idx = rt.Stack[rt.Stack.Count - 1];
             if (idx < 0 || idx >= activators.Count) return "Base";
             return activators[idx]?.LayerMask ?? "Base";
         }
@@ -242,13 +271,21 @@ namespace PadForge.Common.Input
                 UpdateActivatorState(rt, i, act, thisDeviceState, slotIndex);
             }
 
+            // Snapshot the cross-thread fields under the runtime's lock,
+            // then resolve outside the lock to keep contention short.
+            string customLayer;
+            int winnerIdx;
+            lock (rt.SyncRoot)
+            {
+                customLayer = rt.CustomLayer;
+                winnerIdx = rt.Stack.Count > 0 ? rt.Stack[rt.Stack.Count - 1] : -1;
+            }
+
             // v2 Custom mode: explicit jump-to-layer overrides the stack.
-            if (!string.IsNullOrEmpty(rt.CustomLayer))
-                return rt.CustomLayer;
+            if (!string.IsNullOrEmpty(customLayer))
+                return customLayer;
 
             // Last-engaged-wins: tail of stack.
-            if (rt.Stack.Count == 0) return "Base";
-            int winnerIdx = rt.Stack[rt.Stack.Count - 1];
             if (winnerIdx < 0 || winnerIdx >= activators.Count) return "Base";
             var winner = activators[winnerIdx];
             return string.IsNullOrEmpty(winner?.LayerMask) ? "Base" : winner.LayerMask;
@@ -297,38 +334,49 @@ namespace PadForge.Common.Input
                     // engagement). Empty JumpToLayer means "back to Base."
                     bool risingEdge = inputDown && !rt.WasDown[actIdx] && delayMet;
                     if (risingEdge)
-                        rt.CustomLayer = act.JumpToLayer ?? "";
+                    {
+                        string newLayer = act.JumpToLayer ?? "";
+                        lock (rt.SyncRoot) rt.CustomLayer = newLayer;
+                    }
                     break;
                 }
                 case "Cycle":
                 {
                     // v3: each press advances through CycleLayers. Wraps
                     // past the last entry back to Base (empty string).
+                    // Split result is cached per-activator so the polling
+                    // thread doesn't allocate every frame; recomputed when
+                    // the activator's CycleLayers string changes.
                     bool risingEdge = inputDown && !rt.WasDown[actIdx] && delayMet;
                     if (risingEdge)
                     {
-                        var layers = (act.CycleLayers ?? "").Split('|', System.StringSplitOptions.RemoveEmptyEntries);
-                        if (layers.Length > 0)
+                        string src = act.CycleLayers ?? "";
+                        if (!string.Equals(rt.CycleLayersSource[actIdx], src, System.StringComparison.Ordinal))
+                        {
+                            rt.CycleLayersSplit[actIdx] = src.Split('|', System.StringSplitOptions.RemoveEmptyEntries);
+                            rt.CycleLayersSource[actIdx] = src;
+                        }
+                        var layers = rt.CycleLayersSplit[actIdx];
+                        if (layers != null && layers.Length > 0)
                         {
                             rt.CycleIndex[actIdx] = (rt.CycleIndex[actIdx] + 1) % (layers.Length + 1);
-                            rt.CustomLayer = rt.CycleIndex[actIdx] == 0
-                                ? ""
-                                : layers[rt.CycleIndex[actIdx] - 1];
+                            string newLayer = rt.CycleIndex[actIdx] == 0 ? "" : layers[rt.CycleIndex[actIdx] - 1];
+                            lock (rt.SyncRoot) rt.CustomLayer = newLayer;
                         }
                     }
                     break;
                 }
                 case "Sticky":
                 {
-                    // v3: press engages; layer stays until the next input
-                    // fires on the engaged layer (caller arms via
-                    // NotifyStickyConsumed; here we just maintain engagement
-                    // while StickyArmed is true).
-                    bool risingEdge = inputDown && !rt.WasDown[actIdx] && delayMet;
-                    if (risingEdge)
-                        rt.StickyArmed[actIdx] = true;
-                    UpdateStack(rt, actIdx, rt.StickyArmed[actIdx]);
-                    break;
+                    // Sticky proper ("press once, layer auto-releases when
+                    // the next input fires on the engaged layer") requires a
+                    // consumer-input detection channel back from Step 3 into
+                    // the runtime — not yet implemented. For now, Sticky
+                    // falls through to Toggle so saved configs that picked
+                    // this mode have working press-on / press-off behavior
+                    // instead of the previous engages-forever bug. The UI
+                    // dropdown also hides Sticky until proper semantics land.
+                    goto case "Toggle";
                 }
                 case "Hold":
                 default:
@@ -375,21 +423,26 @@ namespace PadForge.Common.Input
 
         /// <summary>Maintains <see cref="ShiftRuntime.Stack"/> so the tail is
         /// always the most recently engaged activator. Adds on rising edge
-        /// (engaged transition from absent), removes when engagement clears.</summary>
+        /// (engaged transition from absent), removes when engagement clears.
+        /// Locked against the UI thread's <see cref="GetEngagedLayerMask"/>
+        /// reads and <see cref="ClearAllShiftRuntime"/> writes.</summary>
         private static void UpdateStack(ShiftRuntime rt, int actIdx, bool engaged)
         {
-            int existing = rt.Stack.IndexOf(actIdx);
-            if (engaged)
+            lock (rt.SyncRoot)
             {
-                // Move-to-tail semantics: re-engaging a held activator
-                // doesn't churn the stack, but a release+re-press moves it
-                // to the top so the most-recently-engaged wins.
-                if (existing < 0)
-                    rt.Stack.Add(actIdx);
-            }
-            else if (existing >= 0)
-            {
-                rt.Stack.RemoveAt(existing);
+                int existing = rt.Stack.IndexOf(actIdx);
+                if (engaged)
+                {
+                    // Move-to-tail semantics: re-engaging a held activator
+                    // doesn't churn the stack, but a release+re-press moves
+                    // it to the top so the most-recently-engaged wins.
+                    if (existing < 0)
+                        rt.Stack.Add(actIdx);
+                }
+                else if (existing >= 0)
+                {
+                    rt.Stack.RemoveAt(existing);
+                }
             }
         }
 

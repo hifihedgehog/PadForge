@@ -763,8 +763,8 @@
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>Axis past 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Fire when stick axis a is deflected more than 50% from rest.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Source</value></data>
-  <data name="Macro_InputDevice" xml:space="preserve"><value>Input Device</value></data>
-  <data name="Macro_OutputController" xml:space="preserve"><value>Output Controller</value></data>
+  <data name="Macro_InputDevice" xml:space="preserve"><value>Assigned Devices</value></data>
+  <data name="Macro_OutputController" xml:space="preserve"><value>Virtual Controller</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>Threshold</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consume trigger buttons (hide from game)</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Runs continuously while this virtual controller is active. No trigger button required.</value></data>

@@ -617,8 +617,8 @@
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>Achse über 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Auslösen, wenn Stick-Achse a mehr als 50% von der Ruheposition ausgelenkt ist.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Quelle</value></data>
-  <data name="Macro_InputDevice" xml:space="preserve"><value>Eingabegerät</value></data>
-  <data name="Macro_OutputController" xml:space="preserve"><value>Ausgabe-Controller</value></data>
+  <data name="Macro_InputDevice" xml:space="preserve"><value>Zugewiesene Geräte</value></data>
+  <data name="Macro_OutputController" xml:space="preserve"><value>Virtueller Controller</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>Schwellenwert</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Auslöser-Tasten verbrauchen (vor Spiel verbergen)</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Läuft kontinuierlich, solange dieser virtuelle Controller aktiv ist. Keine Auslöser-Taste erforderlich.</value></data>

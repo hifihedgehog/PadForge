@@ -1296,6 +1296,7 @@
   <data name="Pad_Shift_Configure" xml:space="preserve"><value>Activator configureren…</value></data>
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>Laag hernoemen…</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>Laagkleur</value></data>
+  <data name="Pad_Shift_Color_Reset_Tooltip" xml:space="preserve"><value>Laagkleur wissen (geen tabkleur, standaard flyout-stip).</value></data>
   <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Kies een emoji die in de flyout verschijnt wanneer deze laag actief is.</value></data>
   <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>Standaard herstellen (⇧)</value></data>
   <data name="Pad_Shift_Copy" xml:space="preserve"><value>Laagregels kopiëren</value></data>

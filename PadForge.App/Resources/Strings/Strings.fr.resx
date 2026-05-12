@@ -1276,6 +1276,7 @@
   <data name="Pad_Shift_Configure" xml:space="preserve"><value>Configurer l'activateur…</value></data>
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>Renommer la couche…</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>Couleur de la couche</value></data>
+  <data name="Pad_Shift_Color_Reset_Tooltip" xml:space="preserve"><value>Effacer la couleur de la couche (aucune teinte d'onglet, point par défaut sur le flyout).</value></data>
   <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Choisis un emoji à afficher sur le flyout lorsque cette couche est active.</value></data>
   <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>Réinitialiser (⇧)</value></data>
   <data name="Pad_Shift_Copy" xml:space="preserve"><value>Copier les lignes de la couche</value></data>

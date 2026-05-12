@@ -17,6 +17,44 @@
                 <ui:ThemesDictionary Theme="Dark" />
                 <ui:ControlsDictionary />
             </ResourceDictionary.MergedDictionaries>
+            <!-- Picker styles cloned from PadPage so this dialog's color
+                 section matches the Lighting tab's RGB row chrome. -->
+            <Style x:Key="DzLabelTight" TargetType="TextBlock">
+                <Setter Property="Width" Value="14"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+            </Style>
+            <Style x:Key="DzRgbSlider" TargetType="Slider">
+                <Setter Property="Minimum" Value="0"/>
+                <Setter Property="Maximum" Value="255"/>
+                <Setter Property="Width" Value="148"/>
+                <Setter Property="Margin" Value="6,0,0,0"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="IsSnapToTickEnabled" Value="True"/>
+                <Setter Property="TickFrequency" Value="1"/>
+            </Style>
+            <Style x:Key="DzValueEditTight" TargetType="TextBox">
+                <Setter Property="Width" Value="36"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="TextAlignment" Value="Right"/>
+                <Setter Property="Margin" Value="4,0,0,0"/>
+                <Setter Property="Padding" Value="2,1"/>
+            </Style>
+            <Style x:Key="ResetButtonTight" TargetType="Button">
+                <Setter Property="Content" Value="&#xE72C;"/>
+                <Setter Property="Padding" Value="2,1"/>
+                <Setter Property="MinWidth" Value="20"/>
+                <Setter Property="Margin" Value="3,0,0,0"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="ToolTip" Value="Reset"/>
+                <Setter Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </ui:FluentWindow.Resources>
 
@@ -328,32 +366,81 @@
                 </StackPanel>
             </Grid>
 
-            <!-- Layer color: real HSV picker + clear button + preview swatch.
-                 Empty Color on the activator is rendered as muted gray on
-                 the tab strip and the overlay; Clear resets to empty. -->
+            <!-- Layer color: matches the Lighting tab picker — 200×200
+                 HSV plate, swatch + hex entry, RGB sliders with per-channel
+                 reset icons, plus a section-level reset that clears the
+                 color entirely (no tab tint, default flyout dot). -->
             <Grid Grid.Row="18" Margin="0,0,0,12">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,6">
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
                     <TextBlock Text="{Binding Pad_Shift_Color, Source={x:Static strings:Strings.Instance}}"
                                VerticalAlignment="Center"/>
-                    <Border x:Name="ColorPreviewSwatch"
-                            Width="22" Height="22"
-                            Margin="12,0,0,0"
-                            CornerRadius="11"
-                            BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
-                            BorderThickness="1"
-                            Background="#555"/>
                     <Button x:Name="ClearColorButton"
-                            Content="Clear"
-                            Padding="8,2"
-                            Margin="12,0,0,0"
-                            Click="ClearColor_Click"/>
+                            Style="{StaticResource ResetButtonTight}"
+                            Click="ClearColor_Click"
+                            Margin="8,0,0,0"
+                            ToolTip="{Binding Pad_Shift_Color_Reset_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                 </StackPanel>
                 <views:ColorPickerControl Grid.Row="1" x:Name="ColorPicker"
-                                          HorizontalAlignment="Left"/>
+                                          HorizontalAlignment="Left"
+                                          Margin="0,0,0,8"/>
+                <Grid Grid.Row="2" Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="64"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" x:Name="ColorPreviewSwatch"
+                            Width="48" Height="36" CornerRadius="4"
+                            HorizontalAlignment="Left"
+                            BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
+                            BorderThickness="1">
+                        <Border.Background>
+                            <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                <Binding ElementName="ColorPicker" Path="Red"/>
+                                <Binding ElementName="ColorPicker" Path="Green"/>
+                                <Binding ElementName="ColorPicker" Path="Blue"/>
+                            </MultiBinding>
+                        </Border.Background>
+                    </Border>
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
+                               VerticalAlignment="Center" Margin="8,0,0,0"/>
+                    <TextBox x:Name="ColorHexBox" Grid.Column="2" Width="100"
+                             HorizontalAlignment="Left" VerticalAlignment="Center"
+                             FontFamily="Consolas" Padding="6,4"
+                             KeyDown="ColorHexBox_KeyDown"
+                             LostFocus="ColorHexBox_LostFocus"
+                             ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                </Grid>
+                <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,4">
+                    <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                    <Slider Value="{Binding ElementName=ColorPicker, Path=Red, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                    <TextBox Text="{Binding ElementName=ColorPicker, Path=Red, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                    <Button Click="ResetRed_Click" Style="{StaticResource ResetButtonTight}"
+                            ToolTip="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,0,4">
+                    <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                    <Slider Value="{Binding ElementName=ColorPicker, Path=Green, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                    <TextBox Text="{Binding ElementName=ColorPicker, Path=Green, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                    <Button Click="ResetGreen_Click" Style="{StaticResource ResetButtonTight}"
+                            ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="5" Orientation="Horizontal">
+                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                    <Slider Value="{Binding ElementName=ColorPicker, Path=Blue, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                    <TextBox Text="{Binding ElementName=ColorPicker, Path=Blue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                    <Button Click="ResetBlue_Click" Style="{StaticResource ResetButtonTight}"
+                            ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}"/>
+                </StackPanel>
             </Grid>
 
             <!-- Validation hint, surfaced on Save with a missing / duplicate

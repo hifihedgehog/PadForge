@@ -24,42 +24,6 @@ namespace PadForge.Views
 
         private PadViewModel _currentPadVm;
 
-        /// <summary>Forces the Mappings tab to rebuild its DataGrid row
-        /// visuals by literally replicating the user's known-working
-        /// workaround: collapse the DataGrid (unloads its visual tree
-        /// + virtualising panel children), then dispatch a re-show on a
-        /// later layout pass. Every other WPF-canonical approach failed
-        /// here in observation — Items.Refresh(), ItemsSource null-toggle,
-        /// DataContext null-toggle on the UserControl, swapping
-        /// SourceDeviceSubtitle to a single-binding property. The only
-        /// thing that works is what the user does manually: take the
-        /// DataGrid's children out of the visual tree entirely and
-        /// re-instantiate them. ContextIdle priority gives WPF a chance
-        /// to fully process the Collapsed unload before the re-show
-        /// runs; on most machines this is below the human flicker
-        /// threshold.</summary>
-        public void ForceMappingsDataGridRebuild()
-        {
-            if (MappingDataGrid == null) return;
-            // Log to file so we can confirm this is firing at the right
-            // moment. The user reported persistent symptoms after every
-            // prior attempted fix, and the only reliable signal of
-            // whether a fix even ran is direct file evidence.
-            try
-            {
-                System.IO.File.AppendAllText(
-                    System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-refresh.log"),
-                    $"[{DateTime.Now:HH:mm:ss.fff}] ForceMappingsDataGridRebuild slot={(_currentPadVm?.PadIndex ?? -1)} rows={MappingDataGrid.Items?.Count ?? -1}{Environment.NewLine}");
-            }
-            catch { }
-
-            MappingDataGrid.Visibility = Visibility.Collapsed;
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                MappingDataGrid.Visibility = Visibility.Visible;
-            }), System.Windows.Threading.DispatcherPriority.ContextIdle);
-        }
-
         /// <summary>
         /// Currently-subscribed <see cref="ExtendedSlotConfig"/> for the active
         /// PadViewModel. Tracked separately from <see cref="_currentPadVm"/>

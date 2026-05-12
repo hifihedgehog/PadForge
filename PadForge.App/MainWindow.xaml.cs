@@ -560,6 +560,22 @@ namespace PadForge
                 }));
             };
 
+            // Force a PadPage DataContext rebind after every profile apply
+            // (including the default-profile fallback) so the DataGrid's
+            // cached row visuals re-resolve against the new profile's
+            // MappingItems. PropertyChanged on individual fields wasn't
+            // enough to dislodge cached ComboBox SelectedItem references
+            // and per-row Source subtitle bindings — only a DataContext
+            // toggle through null reliably refreshes them.
+            _inputService.ProfileApplied += (s, e) =>
+            {
+                if (PadPageView.Visibility != Visibility.Visible) return;
+                var padVm = _viewModel.SelectedPad;
+                if (padVm == null) return;
+                PadPageView.DataContext = null;
+                PadPageView.DataContext = padVm;
+            };
+
             // Wire devices page refresh.
             _viewModel.Devices.RefreshRequested += (s, e) =>
             {
@@ -3600,20 +3616,24 @@ namespace PadForge
                 var padVm = _viewModel.SelectedPad;
                 if (padVm != null)
                 {
-                    // Re-resolve the per-row ComboBox SelectedInput against
-                    // current MappingItem.SourceDescriptor + DeviceGuid pairs
-                    // BEFORE the DataContext swap, so the picker cells aren't
-                    // blank on first render. RefreshMappingsToViewModel reads
-                    // from SlotMappingSets (the authoritative source) into
-                    // MappingItem.SourceDescriptor; PopulateAvailableInputs
-                    // then re-syncs SelectedInput. Without this pair, the
-                    // mapping rows render with stale or null SelectedInput
-                    // until something else (the assigned-device dropdown
-                    // toggle) re-fires PopulateAvailableInputs.
+                    // Re-resolve mapping rows + per-row ComboBox SelectedInput
+                    // against the slot's MappingSet BEFORE re-binding. The
+                    // navigate-away-and-back workaround the user found works
+                    // because hiding/showing the PadPage forces WPF to
+                    // rebuild the DataGrid's row visuals from scratch.
+                    // Replicate that here with a null DataContext toggle so
+                    // every per-row binding re-resolves against the freshly-
+                    // refreshed MappingItems. Without the toggle, WPF holds
+                    // onto cached row visuals whose ComboBox SelectedItem
+                    // was bound to the previous slot/profile's InputChoice
+                    // instance and the per-row Source subtitle's
+                    // PrimarySourceDeviceLabel binding stayed stale.
                     InputService.RefreshMappingsToViewModel(padVm);
                     var selected = padVm.SelectedMappedDevice;
                     if (selected != null && selected.InstanceGuid != Guid.Empty)
                         _inputService.RefreshAvailableInputsForSlot(padVm);
+                    if (PadPageView.DataContext == padVm)
+                        PadPageView.DataContext = null;
                     PadPageView.DataContext = padVm;
                 }
             }

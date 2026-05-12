@@ -5326,23 +5326,13 @@ namespace PadForge.Services
         /// </summary>
         public ProfileData SnapshotCurrentProfile()
         {
-            // Ensure ViewModel values are pushed to PadSettings first —
-            // but TUNING ONLY (syncMappings: false). Default syncMappings=true
-            // runs ClearMappingDescriptors() + rewrites the per-device
-            // PadSetting mapping fields from MappingItems. When MappingItems
-            // are stale or empty (e.g. they were just loaded from a
-            // corrupted SlotMappingSets), that clear-rewrite WIPES the
-            // healthy legacy mapping fields — which the heal-from-legacy
-            // path on profile apply relies on to rebuild a corrupted
-            // SlotMappingSets. Without the syncMappings:false here, every
-            // profile cycle propagated the corruption further, alternating
-            // between half-broken and fully-empty Mappings tab states.
+            // Ensure ViewModel values are pushed to PadSettings first.
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 var padVm = _mainVm.Pads[i];
                 var selected = padVm.SelectedMappedDevice;
                 if (selected != null && selected.InstanceGuid != Guid.Empty)
-                    SaveViewModelToPadSetting(padVm, selected.InstanceGuid, syncMappings: false);
+                    SaveViewModelToPadSetting(padVm, selected.InstanceGuid);
             }
 
             // Flush MappingItem state into SettingsManager.SlotMappingSets
@@ -5708,19 +5698,6 @@ namespace PadForge.Services
             // Rebuild pad device lists based on new MapTo values.
             UpdatePadDeviceInfo();
 
-            // Heal profiles whose stored SlotMappingSets were corrupted by
-            // the cross-profile-bleed bug (multi-profile reference-sharing
-            // followed by PushUiExtraSourcesIntoSlotMappingSets rebuilding
-            // from a temporarily-empty MappingItems state). Those profiles
-            // serialised with empty per-row Sources but the per-device
-            // ProfilePadSettings still carry the legacy descriptor fields
-            // (ButtonA, LeftThumbAxisX, etc.). MergeMappingSetsFromLegacy
-            // ADDITIVELY rebuilds SlotMappingSets[s] from each assigned
-            // device's per-device PadSetting fields without clobbering
-            // user-authored multi-source rows — so a clean profile is a
-            // no-op, but a corrupted one regenerates its rows.
-            SettingsService.RefreshMappingSetsFromLegacy();
-
             // Reload ViewModels with new PadSettings (after device lists are rebuilt).
             // LoadPadSettingToViewModel loads per-device TUNING only; mapping
             // rows MUST also be refreshed from the just-swapped SlotMappingSets
@@ -5751,26 +5728,7 @@ namespace PadForge.Services
 
             // Refresh Devices page slot labels.
             SyncDevicesList();
-
-            // Notify the UI layer that a profile apply just finished. The
-            // PadPage subscribes so it can force a DataContext rebind on
-            // the visible page — without this nudge, WPF holds onto
-            // cached DataGrid row visuals whose per-row ComboBox
-            // SelectedItem + per-row Source subtitle bindings stayed
-            // pinned to the outgoing profile's state. The
-            // navigate-away-and-back workaround the user found is
-            // equivalent to what subscribers will do here.
-            ProfileApplied?.Invoke(this, EventArgs.Empty);
         }
-
-        /// <summary>Raised after every successful <see cref="ApplyProfile"/>
-        /// call (including the default-profile fallback). UI listeners use
-        /// this to force a DataContext rebind on the visible PadPage so
-        /// the DataGrid's cached row visuals re-resolve against the new
-        /// profile's data — PropertyChanged on individual MappingItem
-        /// fields alone wasn't enough to dislodge cached ComboBox
-        /// SelectedItem references and per-row Source subtitle bindings.</summary>
-        public event EventHandler ProfileApplied;
 
         /// <summary>
         /// Called by <see cref="ForegroundMonitorService"/> when the foreground

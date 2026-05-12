@@ -4115,16 +4115,14 @@ namespace PadForge
                 bool copyIsExtended = copyOutputType == VirtualControllerType.Extended
                     /* Extended always uses dynamic layout */;
 
-                // Issue #61 — also snapshot the slot's multi-source
-                // rows for the source device so ExtraSources +
-                // CombineMode + Custom formula round-trip through
-                // Copy → Paste.
-                var selected = padVm.SelectedMappedDevice;
-                if (selected != null && selected.InstanceGuid != Guid.Empty)
-                {
-                    ps.DeviceScopedMultiSourceRows =
-                        InputService.ExtractDeviceScopedRowsForSlot(padVm.PadIndex, selected.InstanceGuid);
-                }
+                // Snapshot the slot's full MappingSet so Copy → Paste carries
+                // every device's contribution — not just the slot's currently-
+                // selected device's slice. Preserves source DeviceGuids so a
+                // multi-device slot round-trips intact. The device-scoped slice
+                // is dropped to keep the paste path unambiguous; the whole-slot
+                // snapshot supersedes it.
+                ps.SlotMultiSourceRows = InputService.ExtractAllRowsForSlot(padVm.PadIndex);
+                ps.DeviceScopedMultiSourceRows = null;
 
                 Clipboard.SetText(ps.ToJson(copyOutputType, copyIsExtended));
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopied;
@@ -4151,6 +4149,21 @@ namespace PadForge
                 var targetType = padVm.OutputType;
                 bool targetIsExtended = targetType == VirtualControllerType.Extended
                     /* Extended always uses dynamic layout */;
+
+                // Whole-slot snapshot → replace the target's MappingSet
+                // wholesale BEFORE the PadSetting tuning copy. Preserves
+                // source DeviceGuids so a paste onto a slot with the same
+                // devices restores both devices' contributions. The
+                // ApplyPadSettingToCurrentDeviceTranslated call below would
+                // otherwise route only the device-scoped slice through
+                // ApplyMultiSourceRowsToCurrentDevice, retargeting all
+                // sources onto the currently-selected device.
+                if (ps.SlotMultiSourceRows != null && ps.SlotMultiSourceRows.Count > 0
+                    && MappingTranslation.IsSameLayout(srcType, srcIsExtended, targetType, targetIsExtended))
+                {
+                    InputService.ApplySlotMappingSetFromRows(padVm.PadIndex, ps.SlotMultiSourceRows);
+                    ps.DeviceScopedMultiSourceRows = null;
+                }
 
                 _inputService.ApplyPadSettingToCurrentDeviceTranslated(
                     padVm.PadIndex, ps,

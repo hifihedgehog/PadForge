@@ -1120,6 +1120,19 @@ namespace PadForge.Engine.Data
         [System.Text.Json.Serialization.JsonIgnore]
         public System.Collections.Generic.List<MappingRow> DeviceScopedMultiSourceRows { get; set; }
 
+        /// <summary>Whole-slot snapshot of every row in the source
+        /// slot's MappingSet, with source DeviceGuids preserved as-is.
+        /// Used by Copy / Paste so a multi-device slot round-trips ALL
+        /// devices' contributions instead of just the source slot's
+        /// currently-selected device. Paste replaces the target slot's
+        /// MappingSet wholesale from this list; sources whose device
+        /// isn't on the target slot stay in the table but are inert
+        /// until that device is assigned. Not serialised to the on-disk
+        /// XML — this only travels through clipboard JSON.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public System.Collections.Generic.List<MappingRow> SlotMultiSourceRows { get; set; }
+
         /// <summary>
         /// Serializes all copyable mapping/deadzone/FF properties to a JSON string.
         /// Used for clipboard copy/paste of controller settings.
@@ -1188,6 +1201,13 @@ namespace PadForge.Engine.Data
                 dict["__MultiSourceRows"] = JsonSerializer.Serialize(DeviceScopedMultiSourceRows);
             }
 
+            // Whole-slot snapshot — preserves source DeviceGuids so multi-
+            // device slots survive Copy / Paste.
+            if (SlotMultiSourceRows != null && SlotMultiSourceRows.Count > 0)
+            {
+                dict["__SlotRows"] = JsonSerializer.Serialize(SlotMultiSourceRows);
+            }
+
             return JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true });
         }
 
@@ -1249,6 +1269,16 @@ namespace PadForge.Engine.Data
                                     ?? new System.Collections.Generic.List<MappingRow>();
                             }
                             catch { /* malformed payload — paste degrades to single-source */ }
+                        }
+                        else if (kvp.Key == "__SlotRows")
+                        {
+                            try
+                            {
+                                ps.SlotMultiSourceRows =
+                                    JsonSerializer.Deserialize<System.Collections.Generic.List<MappingRow>>(kvp.Value)
+                                    ?? new System.Collections.Generic.List<MappingRow>();
+                            }
+                            catch { /* malformed — paste falls back to device-scoped or single-source */ }
                         }
                         continue;
                     }

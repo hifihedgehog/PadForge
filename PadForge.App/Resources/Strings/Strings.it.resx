@@ -872,6 +872,7 @@
   <data name="Macro_RecordHint" xml:space="preserve"><value>Premi pulsanti o muovi un asse/grilletto per registrare. Gli assi vengono rilevati quando deflessi oltre il 50%.</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Premi un tasto qualsiasi…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>invertito</value></data>
+  <data name="Macro_Axis_Half" xml:space="preserve"><value>mezzo asse</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mappa continuamente l'asse selezionato (0–100%) al volume di sistema di Windows, scalato al limite di volume. Usa con attivatore "Sempre", oppure con un attivatore pulsante/asse con "Mentre tenuto" + "Fino al rilascio".</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controlla il volume di un'applicazione specifica nel mixer del volume di Windows, scalato al limite di volume. Inserisci il nome del processo (visibile nel Task Manager). Usa con attivatore "Sempre", oppure con un attivatore pulsante/asse con "Mentre tenuto" + "Fino al rilascio".</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Mappa continuamente l'asse selezionato al movimento del mouse (o scorrimento). Usa con attivatore "Sempre", oppure con un attivatore pulsante/asse con "Mentre tenuto" + "Fino al rilascio". Per levetta-a-mouse, crea due azioni: una per l'asse X, una per l'asse Y.</value></data>

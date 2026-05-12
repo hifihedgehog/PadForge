@@ -617,8 +617,8 @@
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>Axe dépassant 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Se déclenche quand l'axe de stick a est dévié de plus de 50% par rapport au repos.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Source </value></data>
-  <data name="Macro_InputDevice" xml:space="preserve"><value>Appareil d'entrée</value></data>
-  <data name="Macro_OutputController" xml:space="preserve"><value>Contrôleur de sortie</value></data>
+  <data name="Macro_InputDevice" xml:space="preserve"><value>Appareils assignés</value></data>
+  <data name="Macro_OutputController" xml:space="preserve"><value>Contrôleur virtuel</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>Seuil </value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consommer les boutons déclencheurs (masquer du jeu)</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>S'exécute en continu tant que ce contrôleur virtuel est actif. Aucun bouton déclencheur requis.</value></data>

@@ -617,8 +617,8 @@
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>축 50% 초과</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>스틱 축 a가 중립 위치에서 50% 이상 움직였을 때 실행합니다.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>소스</value></data>
-  <data name="Macro_InputDevice" xml:space="preserve"><value>입력 장치</value></data>
-  <data name="Macro_OutputController" xml:space="preserve"><value>출력 컨트롤러</value></data>
+  <data name="Macro_InputDevice" xml:space="preserve"><value>할당된 장치</value></data>
+  <data name="Macro_OutputController" xml:space="preserve"><value>가상 컨트롤러</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>임계값</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>트리거 버튼 소비 (게임에서 숨기기)</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>이 가상 컨트롤러가 활성 상태인 동안 계속 실행됩니다. 트리거 버튼이 필요하지 않습니다.</value></data>

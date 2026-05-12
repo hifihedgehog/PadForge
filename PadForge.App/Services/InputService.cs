@@ -4280,25 +4280,21 @@ namespace PadForge.Services
         {
             int padIndex = _recordingVariablePadIndex;
             if (padIndex < 0 || padIndex >= InputManager.MaxPads) return;
-            // Snapshot baseline against ALL online devices, not just slot-
-            // assigned ones — the variable picker should be able to bind to
-            // any input the user can press (keyboard, mouse, aggregate
-            // keyboard / mice / touchpad) regardless of whether the device
-            // has been explicitly assigned to this slot.
-            var devices = SettingsManager.UserDevices?.Items;
-            if (devices != null)
+            // Baseline scope = devices assigned to this slot's virtual
+            // controller. Users who want a keyboard, mouse, or aggregate
+            // device to be recordable must assign it to the slot first —
+            // that's the contract the "Assigned Devices" source label
+            // represents.
+            var slotSettings = SettingsManager.GetSettingsForSlot(padIndex);
+            if (slotSettings != null)
             {
-                lock (SettingsManager.UserDevices.SyncRoot)
+                for (int i = 0; i < slotSettings.Count; i++)
                 {
-                    for (int i = 0; i < devices.Count; i++)
-                    {
-                        var ud = devices[i];
-                        if (ud == null || !ud.IsOnline || ud.InputState == null) continue;
-                        if (ud.InputState.Axis != null)
-                            _recordingVariableAxisBaseline[ud.InstanceGuid] = (int[])ud.InputState.Axis.Clone();
-                        if (ud.InputState.Povs != null)
-                            _recordingVariablePovBaseline[ud.InstanceGuid] = (int[])ud.InputState.Povs.Clone();
-                    }
+                    var ud = FindUserDevice(slotSettings[i].InstanceGuid);
+                    if (ud?.InputState?.Axis != null)
+                        _recordingVariableAxisBaseline[ud.InstanceGuid] = (int[])ud.InputState.Axis.Clone();
+                    if (ud?.InputState?.Povs != null)
+                        _recordingVariablePovBaseline[ud.InstanceGuid] = (int[])ud.InputState.Povs.Clone();
                 }
             }
             // Output-controller baseline — used when the variable's Source
@@ -4326,25 +4322,23 @@ namespace PadForge.Services
             int padIndex = _recordingVariablePadIndex;
             if (padIndex < 0 || padIndex >= InputManager.MaxPads) return;
 
-            // Route based on the variable's Source choice. OutputController
-            // samples the slot's combined virtual controller output; InputDevice
-            // walks every online device — including keyboards, mice, the
-            // aggregate keyboard / mice / touchpad, and gamepads — so the
-            // user can bind a variable to any input regardless of slot
-            // assignment.
+            // Route based on the variable's Source choice. Virtual Controller
+            // samples the slot's combined output; Assigned Devices walks only
+            // the devices the user has assigned to this slot's virtual
+            // controller (matching the "Assigned Devices" source label).
             if (_recordingVariable.Source == MacroTriggerSource.OutputController)
             {
                 if (ScanOutputControllerForFirstChange(padIndex)) return;
                 return;
             }
 
-            var devices = SettingsManager.UserDevices?.Items;
-            if (devices == null) return;
+            var slotSettings = SettingsManager.GetSettingsForSlot(padIndex);
+            if (slotSettings == null) return;
 
-            for (int sIdx = 0; sIdx < devices.Count; sIdx++)
+            for (int sIdx = 0; sIdx < slotSettings.Count; sIdx++)
             {
-                var ud = devices[sIdx];
-                if (ud == null || !ud.IsOnline || ud.InputState == null) continue;
+                var ud = FindUserDevice(slotSettings[sIdx].InstanceGuid);
+                if (ud?.InputState == null) continue;
 
                 // 1. First-button-pressed wins.
                 var buttons = ud.InputState.Buttons;

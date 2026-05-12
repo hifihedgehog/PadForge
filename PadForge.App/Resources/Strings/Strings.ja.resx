@@ -617,8 +617,8 @@
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>軸が 50% を超えた</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>スティック軸 a のデフレクションが中立位置から 50% を超えたときに発火します。</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>ソース</value></data>
-  <data name="Macro_InputDevice" xml:space="preserve"><value>入力デバイス</value></data>
-  <data name="Macro_OutputController" xml:space="preserve"><value>出力コントローラー</value></data>
+  <data name="Macro_InputDevice" xml:space="preserve"><value>割り当てられたデバイス</value></data>
+  <data name="Macro_OutputController" xml:space="preserve"><value>仮想コントローラー</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>しきい値</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>トリガーボタンを消費する (ゲームから隠す)</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>この仮想コントローラーがアクティブな間、継続的に実行されます。トリガーボタンは不要です。</value></data>

@@ -5728,7 +5728,26 @@ namespace PadForge.Services
 
             // Refresh Devices page slot labels.
             SyncDevicesList();
+
+            // Notify the UI layer that a profile apply just finished. The
+            // PadPage subscribes so it can force a DataContext rebind on
+            // the visible page — without this nudge, WPF holds onto
+            // cached DataGrid row visuals whose per-row ComboBox
+            // SelectedItem + per-row Source subtitle bindings stayed
+            // pinned to the outgoing profile's state. The
+            // navigate-away-and-back workaround the user found is
+            // equivalent to what subscribers will do here.
+            ProfileApplied?.Invoke(this, EventArgs.Empty);
         }
+
+        /// <summary>Raised after every successful <see cref="ApplyProfile"/>
+        /// call (including the default-profile fallback). UI listeners use
+        /// this to force a DataContext rebind on the visible PadPage so
+        /// the DataGrid's cached row visuals re-resolve against the new
+        /// profile's data — PropertyChanged on individual MappingItem
+        /// fields alone wasn't enough to dislodge cached ComboBox
+        /// SelectedItem references and per-row Source subtitle bindings.</summary>
+        public event EventHandler ProfileApplied;
 
         /// <summary>
         /// Called by <see cref="ForegroundMonitorService"/> when the foreground

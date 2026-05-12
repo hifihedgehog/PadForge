@@ -2785,15 +2785,17 @@
                                                       IsEnabled="{Binding IsHalfAxis}"
                                                       Margin="0,0,6,0"
                                                       VerticalAlignment="Center"/>
-                                            <!-- NoInherit toggle. Visible only when authoring a
-                                                 non-Base shift layer; checking it stops the
-                                                 engine from falling through to the Base row
-                                                 for this target on this layer. -->
+                                            <!-- NoInherit toggle. Only meaningful when authoring
+                                                 a shift layer whose activator has InheritUnmapped
+                                                 enabled — replace-mode layers (the default) block
+                                                 Base wholesale, making NoInherit a no-op. The
+                                                 CheckBox is hidden outside that narrow case so
+                                                 users don't see a useless tickbox. -->
                                             <CheckBox Content="{Binding Pad_Shift_NoInherit, Source={x:Static strings:Strings.Instance}}"
                                                       ToolTip="{Binding Pad_Shift_NoInherit_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding NoInherit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       VerticalAlignment="Center"
-                                                      Visibility="{Binding DataContext.ActiveLayerMask, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource ShiftLayerVisibilityConverter}}"/>
+                                                      Visibility="{Binding DataContext.IsActiveLayerInheriting, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

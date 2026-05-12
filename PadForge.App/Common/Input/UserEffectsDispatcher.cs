@@ -536,6 +536,7 @@ namespace PadForge.Common.Input
 
         private static bool IsAnimated(LightbarMode mode) =>
             mode is LightbarMode.Breathing
+                  or LightbarMode.Strobe
                   or LightbarMode.Rainbow
                   or LightbarMode.ColorCycle
                   or LightbarMode.AudioPulse

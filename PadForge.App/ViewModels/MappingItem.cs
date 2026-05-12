@@ -913,6 +913,32 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>Force-fires PropertyChanged for every display-relevant
+        /// field, bypassing SetProperty's value-equality short-circuit.
+        /// Called from RefreshMappingsCore at the end of each row's
+        /// in-place mutation so the DataGrid's row visuals re-evaluate
+        /// their bindings even when a subsequent refresh writes the
+        /// same value (which would otherwise be silently dropped by
+        /// the equality check and leave virtualised cell templates
+        /// pinned to a stale render).</summary>
+        public void NotifyBindingRefresh()
+        {
+            OnPropertyChanged(nameof(SourceDescriptor));
+            OnPropertyChanged(nameof(NegSourceDescriptor));
+            OnPropertyChanged(nameof(SourceDisplayText));
+            OnPropertyChanged(nameof(IsMapped));
+            OnPropertyChanged(nameof(IsDeadZoneApplicable));
+            OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
+            OnPropertyChanged(nameof(PrimarySourceDeviceGuid));
+            OnPropertyChanged(nameof(PrimarySourceDeviceLabel));
+            OnPropertyChanged(nameof(MappingDeadZone));
+            OnPropertyChanged(nameof(IsBidirectional));
+            OnPropertyChanged(nameof(SelectedInput));
+            OnPropertyChanged(nameof(IsMultiSource));
+            OnPropertyChanged(nameof(CombineMode));
+            OnPropertyChanged(nameof(CombineExpression));
+        }
+
         private string _combineMode = "";
         /// <summary>Per-row combine mode. Empty = the per-target-type
         /// default (MaxAbs for axes, OR for buttons). Other named modes:

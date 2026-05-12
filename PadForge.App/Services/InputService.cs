@@ -162,6 +162,7 @@ namespace PadForge.Services
             {
                 padVm.SelectedDeviceChanged += OnSelectedDeviceChanged;
                 padVm.MappingsRebuilt += OnMappingsRebuilt;
+                padVm.LayerActivated += OnLayerActivated;
             }
 
             // Subscribe to Devices page selection changes for offline detail display.
@@ -481,6 +482,7 @@ namespace PadForge.Services
                 {
                     padVm.SelectedDeviceChanged -= OnSelectedDeviceChanged;
                     padVm.MappingsRebuilt -= OnMappingsRebuilt;
+                    padVm.LayerActivated -= OnLayerActivated;
                 }
 
                 // Close overlay windows (not just hide — prevents shutdown hang).
@@ -1854,6 +1856,14 @@ namespace PadForge.Services
                 ? SettingsManager.SlotMappingSets[padVm.PadIndex]
                 : null;
 
+            // Read padVm.ActiveLayerMask so the Mappings tab reflects
+            // whichever shift layer the user is authoring (defaults to
+            // "Base"). A row matching this mask wins; if no row exists for
+            // a target on this layer, the MappingItem renders empty so
+            // the user can author it in place (the engine still falls
+            // through to Base at runtime if NoInherit isn't set).
+            string activeMask = string.IsNullOrEmpty(padVm.ActiveLayerMask) ? "Base" : padVm.ActiveLayerMask;
+
             var msRowsByTarget = new System.Collections.Generic.Dictionary<string, Engine.Data.MappingRow>(
                 StringComparer.Ordinal);
             if (slotMs?.Rows != null)
@@ -1861,7 +1871,7 @@ namespace PadForge.Services
                 foreach (var r in slotMs.Rows)
                 {
                     if (r == null) continue;
-                    if (!string.Equals(r.LayerMask, "Base", StringComparison.Ordinal)) continue;
+                    if (!string.Equals(r.LayerMask, activeMask, StringComparison.Ordinal)) continue;
                     if (string.IsNullOrEmpty(r.Target)) continue;
                     msRowsByTarget[r.Target] = r;
                 }
@@ -2726,6 +2736,20 @@ namespace PadForge.Services
             // re-hydrate alongside the primary descriptor. A descriptor-only
             // reload would read just the SELECTED device's PadSetting fields
             // and drop secondary mappings on language change.
+            RefreshMappingsCore(padVm);
+            var ud = padVm.SelectedMappedDevice != null
+                && padVm.SelectedMappedDevice.InstanceGuid != Guid.Empty
+                ? FindUserDevice(padVm.SelectedMappedDevice.InstanceGuid) : null;
+            PopulateAvailableInputs(padVm, ud);
+        }
+
+        /// <summary>Reloads every MappingItem on the slot when the user
+        /// switches the nested Mappings tab to a different shift layer.
+        /// RefreshMappingsCore reads <see cref="PadViewModel.ActiveLayerMask"/>
+        /// to pick which rows the MappingItems mirror.</summary>
+        private void OnLayerActivated(object sender, EventArgs e)
+        {
+            if (sender is not PadViewModel padVm) return;
             RefreshMappingsCore(padVm);
             var ud = padVm.SelectedMappedDevice != null
                 && padVm.SelectedMappedDevice.InstanceGuid != Guid.Empty
@@ -5949,6 +5973,18 @@ namespace PadForge.Services
                 var selected = padVm.SelectedMappedDevice;
                 if (selected != null && selected.InstanceGuid != Guid.Empty)
                     LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
+
+                // Rebuild the shift-layer tab strip from the slot's
+                // ShiftActivators list so the nested Mappings tabs reflect
+                // the profile's authored layers. Reset active layer back
+                // to Base for cleanliness — held-button continuity across
+                // profile swap is intentionally not preserved.
+                padVm.ActiveLayerMask = "Base";
+                var slotMs = (i >= 0 && i < SettingsManager.SlotMappingSets.Length)
+                    ? SettingsManager.SlotMappingSets[i]
+                    : null;
+                padVm.RebuildLayerTabs(slotMs?.ShiftActivators);
+
                 RefreshMappingsToViewModel(padVm);
                 if (selected != null && selected.InstanceGuid != Guid.Empty)
                     PopulateAvailableInputs(padVm, FindUserDevice(selected.InstanceGuid));

@@ -433,16 +433,23 @@ namespace PadForge.Services
                 // Ensure the slot has a MappingSet to mutate.
                 var ms = sets[slot] ?? (sets[slot] = new MappingSet());
 
+                // Save into whichever layer the user is currently authoring.
+                // Defaults to "Base"; switching the nested Mappings tab to a
+                // shift layer routes edits into that layer's rows instead.
+                // Rows for OTHER layers stay untouched — this slot can
+                // accumulate multi-layer authoring without bleed.
+                string activeMask = string.IsNullOrEmpty(padVm.ActiveLayerMask) ? "Base" : padVm.ActiveLayerMask;
+
                 foreach (var mapping in padVm.Mappings)
                 {
                     if (mapping == null || string.IsNullOrEmpty(mapping.TargetSettingName)) continue;
 
-                    // Find or create the row for this Target on the Base layer.
+                    // Find or create the row for this Target on the active layer.
                     MappingRow row = null;
                     foreach (var r in ms.Rows)
                     {
                         if (r != null
-                            && string.Equals(r.LayerMask ?? "Base", "Base", StringComparison.Ordinal)
+                            && string.Equals(r.LayerMask ?? "Base", activeMask, StringComparison.Ordinal)
                             && string.Equals(r.Target, mapping.TargetSettingName, StringComparison.Ordinal))
                         {
                             row = r;
@@ -451,7 +458,7 @@ namespace PadForge.Services
                     }
                     if (row == null)
                     {
-                        row = new MappingRow { Target = mapping.TargetSettingName, LayerMask = "Base" };
+                        row = new MappingRow { Target = mapping.TargetSettingName, LayerMask = activeMask };
                         ms.Rows.Add(row);
                     }
 

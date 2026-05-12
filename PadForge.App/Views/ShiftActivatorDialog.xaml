@@ -1,0 +1,95 @@
+<ui:FluentWindow x:Class="PadForge.Views.ShiftActivatorDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica"
+        Title="{Binding Pad_Shift_DialogTitle, Source={x:Static strings:Strings.Instance}}"
+        Height="380" Width="520"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+
+    <ui:FluentWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ui:ThemesDictionary Theme="Dark" />
+                <ui:ControlsDictionary />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ui:FluentWindow.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Layer name -->
+        <TextBlock Grid.Row="0"
+                   Text="{Binding Pad_Shift_LayerName, Source={x:Static strings:Strings.Instance}}"
+                   Margin="0,0,0,4"/>
+        <TextBox Grid.Row="1" x:Name="LayerNameBox" Margin="0,0,0,12"/>
+
+        <!-- Activator input (grouped by device) -->
+        <TextBlock Grid.Row="2"
+                   Text="{Binding Pad_Shift_ActivatorInput, Source={x:Static strings:Strings.Instance}}"
+                   Margin="0,0,0,4"/>
+        <ComboBox Grid.Row="3" x:Name="InputCombo" Margin="0,0,0,12"
+                  DisplayMemberPath="DisplayName">
+            <ComboBox.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                    Padding="6,3,6,3">
+                                <TextBlock Text="{Binding Name}"
+                                           FontSize="11"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           TextTrimming="CharacterEllipsis"/>
+                            </Border>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ComboBox.GroupStyle>
+        </ComboBox>
+
+        <!-- Mode -->
+        <TextBlock Grid.Row="4"
+                   Text="{Binding Pad_Shift_Mode, Source={x:Static strings:Strings.Instance}}"
+                   Margin="0,0,0,4"/>
+        <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,0,0,12">
+            <RadioButton x:Name="ModeHold" GroupName="ShiftMode" IsChecked="True"
+                         Content="{Binding Pad_Shift_ModeHold, Source={x:Static strings:Strings.Instance}}"
+                         Margin="0,0,16,0"/>
+            <RadioButton x:Name="ModeToggle" GroupName="ShiftMode"
+                         Content="{Binding Pad_Shift_ModeToggle, Source={x:Static strings:Strings.Instance}}"/>
+        </StackPanel>
+
+        <!-- Validation hint -->
+        <TextBlock Grid.Row="6" x:Name="HintText"
+                   Foreground="{DynamicResource SystemFillColorCautionBrush}"
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,8"/>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="7" Orientation="Horizontal"
+                    HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
+                    MinWidth="80" Margin="0,0,8,0"
+                    IsDefault="True" Click="SaveButton_Click"
+                    Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                    Background="{DynamicResource AccentFillColorDefaultBrush}"/>
+            <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
+                    MinWidth="80"
+                    IsCancel="True" Click="CancelButton_Click"/>
+        </StackPanel>
+    </Grid>
+</ui:FluentWindow>

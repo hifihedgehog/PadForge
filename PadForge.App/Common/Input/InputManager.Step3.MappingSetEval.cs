@@ -527,13 +527,30 @@ namespace PadForge.Common.Input
             var boolContribs = _msBoolBuf ??= new List<bool>(8);
 
             // Resolve the active shift layer for this slot/device.
-            // Overlay-with-fallthrough: rows on the active layer override
-            // matching Targets; targets without an active-layer row fall
-            // through to the Base row UNLESS the active-layer row is an
-            // explicit "do not inherit" declaration (NoInherit=true), in
-            // which case Base is suppressed for that target.
+            //
+            // Default semantics: REPLACE. When a non-Base layer is active,
+            // ONLY rows on that layer fire — Base rows are entirely
+            // suppressed. Targets the layer doesn't map output zero/false.
+            //
+            // Opt-in fallthrough: the engaged activator's
+            // <see cref="ShiftActivator.InheritUnmapped"/> = true switches
+            // to overlay-with-fallthrough — Base rows fall through for any
+            // target the active layer doesn't cover. The per-row
+            // NoInherit flag then selectively blocks fallthrough for
+            // individual targets on inheritance-enabled layers.
             string activeMask = ResolveActiveLayerMask(slotIndex, mappingSet, state, thisDeviceGuid);
-            HashSet<string> shiftCoveredTargets = activeMask != "Base" ? new HashSet<string>() : null;
+            bool inheritUnmapped = false;
+            if (activeMask != "Base" && mappingSet?.ShiftActivators != null)
+            {
+                foreach (var a in mappingSet.ShiftActivators)
+                {
+                    if (a == null) continue;
+                    if (!string.Equals(a.LayerMask, activeMask, System.StringComparison.Ordinal)) continue;
+                    inheritUnmapped = a.InheritUnmapped;
+                    break;
+                }
+            }
+            HashSet<string> shiftCoveredTargets = (activeMask != "Base" && inheritUnmapped) ? new HashSet<string>() : null;
             if (shiftCoveredTargets != null)
             {
                 for (int i = 0; i < rowsSnapshot.Length; i++)
@@ -560,7 +577,10 @@ namespace PadForge.Common.Input
                 if (row == null) continue;
                 if (string.IsNullOrEmpty(row.Target)) continue;
 
-                // Layer-row picking with overlay-with-fallthrough.
+                // Layer-row picking. Default = replace: when active mask is
+                // non-Base, only that layer's rows fire (Base entirely
+                // suppressed). Opt-in = inheritUnmapped: Base rows fall
+                // through for targets the active layer doesn't cover.
                 string rowLayer = row.LayerMask ?? "Base";
                 if (activeMask == "Base")
                 {
@@ -569,11 +589,14 @@ namespace PadForge.Common.Input
                 }
                 else
                 {
-                    // Non-Base active: matching-mask rows fire; Base rows
-                    // fall through only when no matching-mask row exists
-                    // for this Target.
                     if (rowLayer == "Base")
                     {
+                        // Non-Base active.  Default = replace, so Base is
+                        // dropped entirely. With inheritUnmapped, Base falls
+                        // through for any target the active layer doesn't
+                        // cover (cover = matching-mask row with sources or
+                        // explicit NoInherit).
+                        if (!inheritUnmapped) continue;
                         if (shiftCoveredTargets.Contains(row.Target)) continue;
                     }
                     else if (rowLayer != activeMask)
@@ -584,12 +607,11 @@ namespace PadForge.Common.Input
                     }
                     else
                     {
-                        // Matching-mask row with zero sources and
-                        // NoInherit=false is transparent — skip evaluation
-                        // and let Base fall through (handled by the
-                        // shiftCoveredTargets logic above).
+                        // Matching-mask row with zero sources is transparent
+                        // — when inheritance is on, Base falls through;
+                        // when off (replace), the target stays zero/false.
                         bool hasSources = row.Sources != null && row.Sources.Count > 0;
-                        if (!hasSources && !row.NoInherit) continue;
+                        if (!hasSources) continue;
                     }
                 }
 

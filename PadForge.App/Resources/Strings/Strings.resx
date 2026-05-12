@@ -1338,5 +1338,7 @@
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Button</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Chord (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Axis past threshold</value></data>
+  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Inherit unmapped targets from Base</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>When checked, targets this layer doesn't explicitly map fall through to the Base layer. When unchecked (default), the layer replaces Base entirely and unmapped targets stay off.</value></data>
 
 </root>

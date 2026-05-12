@@ -548,6 +548,14 @@ namespace PadForge.Views
             existing.Descriptor = dlg.Result.Descriptor;
             existing.Mode = dlg.Result.Mode;
             existing.Kind = dlg.Result.Kind;
+            existing.InheritUnmapped = dlg.Result.InheritUnmapped;
+            existing.ChordSecondDeviceGuid = dlg.Result.ChordSecondDeviceGuid;
+            existing.ChordSecondDescriptor = dlg.Result.ChordSecondDescriptor;
+            existing.AxisThreshold = dlg.Result.AxisThreshold;
+            existing.JumpToLayer = dlg.Result.JumpToLayer;
+            existing.CycleLayers = dlg.Result.CycleLayers;
+            existing.DelayMs = dlg.Result.DelayMs;
+            existing.Color = dlg.Result.Color;
 
             if (!string.Equals(oldMask, existing.LayerMask, StringComparison.Ordinal)
                 && slotMs.Rows != null)
@@ -670,7 +678,7 @@ namespace PadForge.Views
             _currentPadVm.ConfigItemDirtyCallback?.Invoke();
         }
 
-        private void ShiftLayer_Delete_Click(object sender, RoutedEventArgs e)
+        private async void ShiftLayer_Delete_Click(object sender, RoutedEventArgs e)
         {
             if (_currentPadVm == null) return;
             string mask = TagToLayerMask(sender);
@@ -683,12 +691,19 @@ namespace PadForge.Views
             if (activator == null) return;
 
             string layerName = string.IsNullOrEmpty(activator.LayerName) ? activator.LayerMask : activator.LayerName;
-            var confirm = MessageBox.Show(
-                string.Format(Strings.Instance.Pad_Shift_DeleteConfirm_Format, layerName),
-                Strings.Instance.Pad_Shift_DeleteConfirmTitle,
-                MessageBoxButton.OKCancel,
-                MessageBoxImage.Warning);
-            if (confirm != MessageBoxResult.OK) return;
+            // Use Wpf.Ui's themed MessageBox instead of the classic Win32
+            // MessageBox.Show — the Mica-styled host clashes with the
+            // legacy gray system dialog and breaks the visual continuity
+            // the rest of PadForge keeps.
+            var dialog = new Wpf.Ui.Controls.MessageBox
+            {
+                Title = Strings.Instance.Pad_Shift_DeleteConfirmTitle,
+                Content = string.Format(Strings.Instance.Pad_Shift_DeleteConfirm_Format, layerName),
+                PrimaryButtonText = Strings.Instance.Pad_Shift_Delete,
+                CloseButtonText = Strings.Instance.Common_Cancel,
+            };
+            var result = await dialog.ShowDialogAsync();
+            if (result != Wpf.Ui.Controls.MessageBoxResult.Primary) return;
 
             slotMs.ShiftActivators.Remove(activator);
             if (slotMs.Rows != null)

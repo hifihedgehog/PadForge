@@ -95,6 +95,7 @@ namespace PadForge.Views
                 SelectComboItemByTag(ModeCombo, existing.Mode ?? "Hold");
                 AxisThresholdSlider.Value = existing.AxisThreshold;
                 DelaySlider.Value = existing.DelayMs;
+                InheritUnmappedBox.IsChecked = existing.InheritUnmapped;
 
                 // Color: parse hex into picker RGB; set _colorSet flag.
                 if (!string.IsNullOrEmpty(existing.Color))
@@ -397,6 +398,7 @@ namespace PadForge.Views
                 Descriptor = input.Descriptor ?? "",
                 Mode = ReadComboTag(ModeCombo),
                 Kind = kind,
+                InheritUnmapped = InheritUnmappedBox.IsChecked == true,
                 ChordSecondDeviceGuid = chordSecond?.DeviceGuid ?? "",
                 ChordSecondDescriptor = chordSecond?.Descriptor ?? "",
                 AxisThreshold = AxisThresholdSlider.Value,

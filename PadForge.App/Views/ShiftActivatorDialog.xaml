@@ -23,25 +23,27 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <Grid Margin="16">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>  <!-- 0  layer-name label -->
+                <RowDefinition Height="Auto"/>  <!-- 1  layer-name box -->
+                <RowDefinition Height="Auto"/>  <!-- 2  kind label -->
+                <RowDefinition Height="Auto"/>  <!-- 3  kind combo -->
+                <RowDefinition Height="Auto"/>  <!-- 4  input label -->
+                <RowDefinition Height="Auto"/>  <!-- 5  input combo -->
+                <RowDefinition Height="Auto"/>  <!-- 6  chord label -->
+                <RowDefinition Height="Auto"/>  <!-- 7  chord combo -->
+                <RowDefinition Height="Auto"/>  <!-- 8  axis threshold label -->
+                <RowDefinition Height="Auto"/>  <!-- 9  axis threshold row -->
+                <RowDefinition Height="Auto"/>  <!-- 10 mode label -->
+                <RowDefinition Height="Auto"/>  <!-- 11 mode combo -->
+                <RowDefinition Height="Auto"/>  <!-- 12 inherit-unmapped checkbox -->
+                <RowDefinition Height="Auto"/>  <!-- 13 jump label -->
+                <RowDefinition Height="Auto"/>  <!-- 14 jump combo -->
+                <RowDefinition Height="Auto"/>  <!-- 15 cycle label -->
+                <RowDefinition Height="Auto"/>  <!-- 16 cycle list -->
+                <RowDefinition Height="Auto"/>  <!-- 17 delay grid -->
+                <RowDefinition Height="Auto"/>  <!-- 18 color grid -->
+                <RowDefinition Height="Auto"/>  <!-- 19 validation hint -->
+                <RowDefinition Height="Auto"/>  <!-- 20 buttons -->
             </Grid.RowDefinitions>
 
             <!-- Layer name -->
@@ -129,21 +131,29 @@
                 <ComboBoxItem Tag="Cycle"  Content="{Binding Pad_Shift_ModeCycle, Source={x:Static strings:Strings.Instance}}"/>
             </ComboBox>
 
+            <!-- Inherit unmapped targets from Base. Off by default —
+                 shift layer REPLACES Base entirely; targets the layer
+                 doesn't map output zero. Check to fall through to Base. -->
+            <CheckBox Grid.Row="12" x:Name="InheritUnmappedBox"
+                      Content="{Binding Pad_Shift_InheritUnmapped, Source={x:Static strings:Strings.Instance}}"
+                      ToolTip="{Binding Pad_Shift_InheritUnmapped_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                      Margin="0,0,0,12"/>
+
             <!-- Jump-to-layer (Mode=Custom). Dropdown of existing layers
                  plus a "(Base)" entry that maps to empty string. -->
-            <TextBlock Grid.Row="12" x:Name="JumpLabel"
+            <TextBlock Grid.Row="13" x:Name="JumpLabel"
                        Text="{Binding Pad_Shift_JumpToLayer, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
-            <ComboBox Grid.Row="13" x:Name="JumpToLayerCombo" Margin="0,0,0,12"
+            <ComboBox Grid.Row="14" x:Name="JumpToLayerCombo" Margin="0,0,0,12"
                       DisplayMemberPath="DisplayName"/>
 
             <!-- Cycle layers (Mode=Cycle). Checkbox list of existing
                  layers; check the ones to include in the rotation. Order
                  follows the source list. -->
-            <TextBlock Grid.Row="14" x:Name="CycleLabel"
+            <TextBlock Grid.Row="15" x:Name="CycleLabel"
                        Text="{Binding Pad_Shift_CycleLayers, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
-            <ListBox Grid.Row="15" x:Name="CycleLayersList" Margin="0,0,0,12"
+            <ListBox Grid.Row="16" x:Name="CycleLayersList" Margin="0,0,0,12"
                      MinHeight="80" MaxHeight="160"
                      SelectionMode="Multiple">
                 <ListBox.ItemTemplate>
@@ -155,7 +165,7 @@
             </ListBox>
 
             <!-- Delay slider + numeric -->
-            <Grid Grid.Row="16" Margin="0,0,0,12">
+            <Grid Grid.Row="17" Margin="0,0,0,12">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -177,7 +187,7 @@
             <!-- Layer color: real HSV picker + clear button + preview swatch.
                  Empty Color on the activator is rendered as muted gray on
                  the tab strip and the overlay; Clear resets to empty. -->
-            <Grid Grid.Row="17" Margin="0,0,0,12">
+            <Grid Grid.Row="18" Margin="0,0,0,12">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -202,14 +212,15 @@
                                           HorizontalAlignment="Left"/>
             </Grid>
 
-            <!-- Hint -->
-            <TextBlock x:Name="HintText"
+            <!-- Validation hint, surfaced on Save with a missing / duplicate
+                 layer name or unselected input. Hidden by default. -->
+            <TextBlock Grid.Row="19" x:Name="HintText"
                        Foreground="{DynamicResource SystemFillColorCautionBrush}"
                        TextWrapping="Wrap" Margin="0,0,0,8"
                        Visibility="Collapsed"/>
 
             <!-- Buttons -->
-            <StackPanel Grid.Row="18" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <StackPanel Grid.Row="20" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
                 <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
                         MinWidth="80" Margin="0,0,8,0"
                         IsDefault="True" Click="SaveButton_Click"

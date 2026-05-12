@@ -60,6 +60,16 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlAttribute] public string LayerName { get; set; } = "";
 
+        /// <summary>
+        /// When <c>true</c>, targets the layer doesn't explicitly map fall
+        /// through to the Base row (overlay-with-fallthrough). When
+        /// <c>false</c> (default), the layer REPLACES Base entirely — every
+        /// target without a row on this layer outputs zero/false. The
+        /// per-row <see cref="MappingRow.NoInherit"/> flag selectively
+        /// blocks individual fallthrough targets while this is true.
+        /// </summary>
+        [XmlAttribute] public bool InheritUnmapped { get; set; } = false;
+
         // ── v2 fields (declared in v1 schema for forward-compat) ──
 
         /// <summary>v2 Custom mode: layer to jump to on press. Empty

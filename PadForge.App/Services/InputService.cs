@@ -2304,6 +2304,113 @@ namespace PadForge.Services
             }
         }
 
+        /// <summary>Whole-slot snapshot of every row in the given slot's
+        /// MappingSet, with source DeviceGuids preserved as-is. Used by
+        /// Copy so the clipboard round-trip carries every device's
+        /// contribution, not just the slot's currently-selected device's
+        /// slice. Each MappingSource is cloned so the snapshot is safe to
+        /// mutate without touching the live MappingSet.</summary>
+        public static System.Collections.Generic.List<Engine.Data.MappingRow>
+            ExtractAllRowsForSlot(int padIndex)
+        {
+            var result = new System.Collections.Generic.List<Engine.Data.MappingRow>();
+            if (padIndex < 0 || padIndex >= SettingsManager.SlotMappingSets.Length) return result;
+            var ms = SettingsManager.SlotMappingSets[padIndex];
+            if (ms?.Rows == null) return result;
+
+            foreach (var row in ms.Rows)
+            {
+                if (row == null) continue;
+                var clonedSources = new System.Collections.Generic.List<Engine.Data.MappingSource>();
+                if (row.Sources != null)
+                {
+                    foreach (var s in row.Sources)
+                    {
+                        if (s == null) continue;
+                        clonedSources.Add(new Engine.Data.MappingSource
+                        {
+                            Kind = s.Kind ?? "Direct",
+                            DeviceGuid = s.DeviceGuid ?? "",
+                            Descriptor = s.Descriptor ?? "",
+                            Invert = s.Invert,
+                            HalfAxis = s.HalfAxis,
+                            Bidirectional = s.Bidirectional,
+                            DeadZone = s.DeadZone,
+                            ParamUp = s.ParamUp ?? "",
+                            ParamDown = s.ParamDown ?? "",
+                            ParamRate = s.ParamRate,
+                            ParamSticky = s.ParamSticky,
+                            ParamMin = s.ParamMin,
+                            ParamMax = s.ParamMax,
+                            ParamModifier = s.ParamModifier ?? "",
+                        });
+                    }
+                }
+                result.Add(new Engine.Data.MappingRow
+                {
+                    Target = row.Target,
+                    LayerMask = row.LayerMask ?? "Base",
+                    CombineMode = row.CombineMode ?? "",
+                    CombineExpression = row.CombineExpression ?? "",
+                    Sources = clonedSources,
+                });
+            }
+            return result;
+        }
+
+        /// <summary>Paste companion: replaces a target slot's MappingSet
+        /// wholesale from a snapshot built by <see cref="ExtractAllRowsForSlot"/>.
+        /// Source DeviceGuids are preserved exactly so multi-device slots
+        /// keep every device's contribution. Sources whose device isn't
+        /// on the target slot stay in the table but are inert until that
+        /// device is assigned — same semantics as <see cref="ReplaceSlotMappingSet"/>.</summary>
+        public static void ApplySlotMappingSetFromRows(int padIndex,
+            System.Collections.Generic.IList<Engine.Data.MappingRow> rows)
+        {
+            if (padIndex < 0 || padIndex >= SettingsManager.SlotMappingSets.Length) return;
+            if (rows == null) return;
+
+            var copy = new Engine.Data.MappingSet();
+            foreach (var r in rows)
+            {
+                if (r == null) continue;
+                var rc = new Engine.Data.MappingRow
+                {
+                    Target = r.Target,
+                    LayerMask = r.LayerMask ?? "Base",
+                    CombineMode = r.CombineMode ?? "",
+                    CombineExpression = r.CombineExpression ?? "",
+                    Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
+                };
+                if (r.Sources != null)
+                {
+                    foreach (var s in r.Sources)
+                    {
+                        if (s == null) continue;
+                        rc.Sources.Add(new Engine.Data.MappingSource
+                        {
+                            Kind = s.Kind ?? "Direct",
+                            DeviceGuid = s.DeviceGuid ?? "",
+                            Descriptor = s.Descriptor ?? "",
+                            Invert = s.Invert,
+                            HalfAxis = s.HalfAxis,
+                            Bidirectional = s.Bidirectional,
+                            DeadZone = s.DeadZone,
+                            ParamUp = s.ParamUp ?? "",
+                            ParamDown = s.ParamDown ?? "",
+                            ParamRate = s.ParamRate,
+                            ParamSticky = s.ParamSticky,
+                            ParamMin = s.ParamMin,
+                            ParamMax = s.ParamMax,
+                            ParamModifier = s.ParamModifier ?? "",
+                        });
+                    }
+                }
+                copy.Rows.Add(rc);
+            }
+            SettingsManager.SlotMappingSets[padIndex] = copy;
+        }
+
         /// <summary>Issue #61 copy helper. Builds the per-device slice
         /// of a slot's MappingSet rows: every row where the source
         /// device's GUID appears in Sources, with only those device-

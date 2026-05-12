@@ -5728,7 +5728,15 @@ namespace PadForge.Services
 
             // Refresh Devices page slot labels.
             SyncDevicesList();
+
+            ProfileApplied?.Invoke(this, EventArgs.Empty);
         }
+
+        /// <summary>Raised after every successful <see cref="ApplyProfile"/>
+        /// call. The UI layer re-fires navigation on this so PadPageView
+        /// re-resolves its DataContext + mapping refresh against the new
+        /// profile's state.</summary>
+        public event EventHandler ProfileApplied;
 
         /// <summary>
         /// Called by <see cref="ForegroundMonitorService"/> when the foreground

@@ -1131,8 +1131,16 @@ namespace PadForge
                     if (_viewModel.SelectedPadIndex == slotIndex)
                         SelectNavItemByTag("Dashboard");
 
+                    // Capture VC-active state BEFORE the delete so the
+                    // bubble-down cascade in OnSlotDeleted knows whether
+                    // the removed slot was holding a kernel slot. If it
+                    // wasn't, the active VCs at higher positions don't
+                    // need to bubble down — their kernel slots weren't
+                    // displaced by an inactive neighbor's removal.
+                    bool hadActiveVc = _inputService.IsHmVcAt(slotIndex);
                     var info = _deviceService.DeleteSlot(slotIndex);
-                    _inputService.OnSlotDeleted(slotIndex, info.Type, info.OldGroupPosition);
+                    _inputService.OnSlotDeleted(slotIndex, info.Type, info.OldGroupPosition,
+                        deletedSlotHadActiveVc: hadActiveVc);
                     _viewModel.Devices.RefreshSlotButtons();
                     _inputService.RefreshDeviceList();
                 }));
@@ -2313,8 +2321,10 @@ namespace PadForge
                     if (_viewModel.SelectedPadIndex == slotIndex)
                         SelectNavItemByTag("Dashboard");
 
+                    bool hadActiveVc = _inputService.IsHmVcAt(slotIndex);
                     var info = _deviceService.DeleteSlot(slotIndex);
-                    _inputService.OnSlotDeleted(slotIndex, info.Type, info.OldGroupPosition);
+                    _inputService.OnSlotDeleted(slotIndex, info.Type, info.OldGroupPosition,
+                        deletedSlotHadActiveVc: hadActiveVc);
                 }));
             }
         }

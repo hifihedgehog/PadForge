@@ -2331,7 +2331,8 @@ namespace PadForge.Services
         public static Engine.Data.MappingSet CloneMappingSetDeep(Engine.Data.MappingSet src)
         {
             if (src == null) return null;
-            var copy = new Engine.Data.MappingSet { ShiftButton = src.ShiftButton };
+            var copy = new Engine.Data.MappingSet();
+            CopyShiftActivators(src, copy);
             if (src.Rows != null)
             {
                 foreach (var r in src.Rows)
@@ -2343,6 +2344,7 @@ namespace PadForge.Services
                         LayerMask = r.LayerMask ?? "Base",
                         CombineMode = r.CombineMode ?? "",
                         CombineExpression = r.CombineExpression ?? "",
+                        NoInherit = r.NoInherit,
                         Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
                     };
                     if (r.Sources != null)
@@ -2373,6 +2375,38 @@ namespace PadForge.Services
                 }
             }
             return copy;
+        }
+
+        /// <summary>Deep-copies every <see cref="Engine.Data.ShiftActivator"/>
+        /// from <paramref name="src"/> into <paramref name="dst"/>'s
+        /// <see cref="Engine.Data.MappingSet.ShiftActivators"/> list. Used by
+        /// both <see cref="CloneMappingSetDeep"/> and the Copy-From-Slot path
+        /// so shift authoring round-trips alongside row data.</summary>
+        private static void CopyShiftActivators(Engine.Data.MappingSet src, Engine.Data.MappingSet dst)
+        {
+            if (src?.ShiftActivators == null) return;
+            dst.ShiftActivators ??= new System.Collections.Generic.List<Engine.Data.ShiftActivator>();
+            foreach (var a in src.ShiftActivators)
+            {
+                if (a == null) continue;
+                dst.ShiftActivators.Add(new Engine.Data.ShiftActivator
+                {
+                    DeviceGuid = a.DeviceGuid ?? "",
+                    Descriptor = a.Descriptor ?? "",
+                    Mode = a.Mode ?? "Hold",
+                    LayerMask = a.LayerMask ?? "Shift",
+                    LayerName = a.LayerName ?? "",
+                    JumpToLayer = a.JumpToLayer ?? "",
+                    DelayMs = a.DelayMs,
+                    PostponeMapping = a.PostponeMapping,
+                    Color = a.Color ?? "",
+                    Kind = a.Kind ?? "Button",
+                    ChordSecondDeviceGuid = a.ChordSecondDeviceGuid ?? "",
+                    ChordSecondDescriptor = a.ChordSecondDescriptor ?? "",
+                    AxisThreshold = a.AxisThreshold,
+                    CycleLayers = a.CycleLayers ?? "",
+                });
+            }
         }
 
         /// <summary>Whole-slot snapshot of every row in the given slot's
@@ -2542,7 +2576,8 @@ namespace PadForge.Services
             var src = sets[sourceSlot];
             if (src == null) { sets[targetSlot] = new Engine.Data.MappingSet(); return; }
 
-            var copy = new Engine.Data.MappingSet { ShiftButton = src.ShiftButton };
+            var copy = new Engine.Data.MappingSet();
+            CopyShiftActivators(src, copy);
             if (src.Rows != null)
             {
                 foreach (var r in src.Rows)
@@ -2554,6 +2589,7 @@ namespace PadForge.Services
                         LayerMask = r.LayerMask ?? "Base",
                         CombineMode = r.CombineMode ?? "",
                         CombineExpression = r.CombineExpression ?? "",
+                        NoInherit = r.NoInherit,
                         Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
                     };
                     if (r.Sources != null)
@@ -5660,6 +5696,13 @@ namespace PadForge.Services
             if (profile == null)
                 return;
 
+            // Clear shift-activator runtime state (toggle latches, was-down
+            // markers, engagement stack, custom-layer state) so the new
+            // profile starts every activator un-engaged. Without this a
+            // held activator at swap time can leave the new profile mid-
+            // engagement and the wrong layer effective from frame zero.
+            Common.Input.InputManager.ClearAllShiftRuntime();
+
             // Restore per-VC MappingSet from the profile snapshot
             // (Issue #61). Multi-source rows + per-row CombineMode +
             // ShiftActivator round-trip with the profile. Profiles
@@ -5953,6 +5996,7 @@ namespace PadForge.Services
                     // cruise/ramp throttle) and shift-toggle latches so
                     // the new profile starts neutral.
                     Common.Input.InputManager.ClearSourceKindRuntime();
+                    Common.Input.InputManager.ClearAllShiftRuntime();
                     _mainVm.StatusText = string.Format(Strings.Instance.Status_ProfileSwitched_Format, target.Name);
                 }
             }
@@ -5964,6 +6008,7 @@ namespace PadForge.Services
                 if (_defaultProfileSnapshot != null)
                     ApplyProfile(_defaultProfileSnapshot);
                 Common.Input.InputManager.ClearSourceKindRuntime();
+                Common.Input.InputManager.ClearAllShiftRuntime();
                 _mainVm.StatusText = Strings.Instance.Status_ProfileSwitchedDefault;
             }
         }

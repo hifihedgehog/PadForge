@@ -54,6 +54,18 @@ namespace PadForge.Engine.Data
         /// load and cached on the row at runtime.</summary>
         [XmlAttribute] public string CombineExpression { get; set; } = "";
 
+        /// <summary>
+        /// Shift-layer "do not inherit" flag. When true on a non-Base row,
+        /// the row suppresses Base fallthrough for this target on this
+        /// layer even when the row has zero sources (an explicit "this
+        /// target is OFF on this layer"). False (default) preserves the
+        /// engine's overlay-with-fallthrough behavior — if the layer has
+        /// no row for the target, the Base row fires.
+        /// Engine: <c>ApplyMappingSetToGamepad</c> consults this when
+        /// building the active-layer shift-covered targets set.
+        /// </summary>
+        [XmlAttribute] public bool NoInherit { get; set; } = false;
+
         /// <summary>Sources combined to produce this row's output.</summary>
         [XmlElement("Source")]
         public List<MappingSource> Sources { get; set; } = new();

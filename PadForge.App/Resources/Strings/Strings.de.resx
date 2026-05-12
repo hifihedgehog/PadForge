@@ -870,6 +870,8 @@
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Rechten Motor zurücksetzen</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>Ansicht zurücksetzen</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>Tasten drücken oder Achse/Trigger bewegen zum Aufnehmen. Achsen werden erkannt, wenn sie über 50 % ausgelenkt sind.</value></data>
+  <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Eingabe drücken…</value></data>
+  <data name="Macro_Axis_Inverted" xml:space="preserve"><value>invertiert</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Ordnet die gewählte Achse (0–100 %) kontinuierlich der Windows-Systemlautstärke zu, skaliert auf das Lautstärkelimit. Mit „Immer"-Auslöser oder Tasten-/Achsenauslöser mit „Während gehalten" + „Bis Loslassen" verwenden.</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Steuert die Lautstärke einer bestimmten Anwendung im Windows-Lautstärkemixer, skaliert auf das Lautstärkelimit. Prozessnamen eingeben (sichtbar im Task-Manager). Mit „Immer"-Auslöser oder Tasten-/Achsenauslöser mit „Während gehalten" + „Bis Loslassen" verwenden.</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Ordnet die gewählte Achse kontinuierlich der Mausbewegung (oder dem Scrollen) zu. Mit „Immer"-Auslöser oder Tasten-/Achsenauslöser mit „Während gehalten" + „Bis Loslassen" verwenden. Für Stick-zu-Maus zwei Aktionen erstellen: eine für X-Achse, eine für Y-Achse.</value></data>

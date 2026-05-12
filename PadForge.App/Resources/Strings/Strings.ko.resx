@@ -870,6 +870,8 @@
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>오른쪽 모터 초기화</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>뷰 초기화</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>버튼을 누르거나 축/트리거를 움직여 기록하십시오. 축은 50% 이상 기울어졌을 때 감지됩니다.</value></data>
+  <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>입력을 누르세요…</value></data>
+  <data name="Macro_Axis_Inverted" xml:space="preserve"><value>반전됨</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>선택한 축(0–100%)을 Windows 시스템 볼륨에 지속적으로 매핑하며 볼륨 한도에 맞게 조정됩니다. "항상" 트리거, 또는 "누르는 동안" + "놓을 때까지"와 함께 버튼/축 트리거를 사용하세요.</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Windows 볼륨 믹서에서 특정 앱의 볼륨을 한도에 맞게 조정합니다. 프로세스 이름을 입력하세요 (작업 관리자에서 확인). "항상" 트리거, 또는 "누르는 동안" + "놓을 때까지"와 함께 버튼/축 트리거를 사용하세요.</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>선택한 축을 마우스 이동(또는 스크롤)에 지속적으로 매핑합니다. "항상" 트리거, 또는 "누르는 동안" + "놓을 때까지"와 함께 버튼/축 트리거를 사용하세요. 스틱→마우스의 경우 X축과 Y축에 각각 하나씩 두 개의 액션을 만드세요.</value></data>

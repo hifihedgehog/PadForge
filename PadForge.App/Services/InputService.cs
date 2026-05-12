@@ -5694,16 +5694,26 @@ namespace PadForge.Services
             // or the next autosave's PushUiExtraSourcesIntoSlotMappingSets will
             // rebuild the live MappingSet from the OUTGOING profile's stale
             // MappingItems and silently clobber the incoming profile.
+            //
+            // ORDER MATTERS: RefreshMappingsToViewModel sets the new
+            // MappingItem.SourceDescriptor values. PopulateAvailableInputs
+            // then calls SyncSelectedInputFromDescriptor on each MappingItem
+            // so the per-row ComboBox SelectedInput resolves against the
+            // FRESH descriptors. Doing them in the reverse order leaves
+            // SelectedInput stale (synced against the previous profile's
+            // descriptors), so even though the underlying data is correct,
+            // the picker cells render blank until something else triggers
+            // a re-sync (toggling the assigned-device dropdown was the
+            // symptom — that path runs PopulateAvailableInputs again).
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 var padVm = _mainVm.Pads[i];
                 var selected = padVm.SelectedMappedDevice;
                 if (selected != null && selected.InstanceGuid != Guid.Empty)
-                {
                     LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
-                    PopulateAvailableInputs(padVm, FindUserDevice(selected.InstanceGuid));
-                }
                 RefreshMappingsToViewModel(padVm);
+                if (selected != null && selected.InstanceGuid != Guid.Empty)
+                    PopulateAvailableInputs(padVm, FindUserDevice(selected.InstanceGuid));
             }
 
             // Refresh Devices page slot labels.

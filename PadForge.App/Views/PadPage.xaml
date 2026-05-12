@@ -1810,6 +1810,51 @@
                          Mappings tab exactly as before). One RadioButton per
                          entry in PadViewModel.LayerTabs; right-click opens
                          the per-tab context menu. -->
+                    <!-- Inline rename popup, anchored at runtime to the
+                         clicked shift-layer tab. Single-field input + Save
+                         + Cancel — much lighter than reopening the full
+                         Configure dialog when the user just wants to fix
+                         the name. -->
+                    <Popup x:Name="RenameLayerPopup"
+                           Placement="Bottom"
+                           AllowsTransparency="True"
+                           PopupAnimation="Fade"
+                           StaysOpen="False">
+                        <Border Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+                                BorderBrush="{DynamicResource ControlElevationBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="10">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="12" ShadowDepth="2"
+                                                  Direction="270" Opacity="0.30" Color="Black"/>
+                            </Border.Effect>
+                            <StackPanel Orientation="Vertical" MinWidth="240">
+                                <TextBlock Text="{Binding Pad_Shift_LayerName, Source={x:Static strings:Strings.Instance}}"
+                                           Margin="0,0,0,4"/>
+                                <TextBox x:Name="RenameLayerBox"
+                                         Margin="0,0,0,8"
+                                         KeyDown="RenameLayerBox_KeyDown"/>
+                                <TextBlock x:Name="RenameLayerHint"
+                                           Foreground="{DynamicResource SystemFillColorCautionBrush}"
+                                           TextWrapping="Wrap" Margin="0,0,0,6"
+                                           Visibility="Collapsed"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
+                                            MinWidth="72" Margin="0,0,6,0"
+                                            IsDefault="True"
+                                            Click="RenameLayerSave_Click"
+                                            Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                                            Background="{DynamicResource AccentFillColorDefaultBrush}"/>
+                                    <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
+                                            MinWidth="72"
+                                            IsCancel="True"
+                                            Click="RenameLayerCancel_Click"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Popup>
+
                     <ItemsControl Grid.Row="1" x:Name="ShiftLayerTabStrip"
                                   ItemsSource="{Binding LayerTabs}"
                                   Margin="0,0,0,8"

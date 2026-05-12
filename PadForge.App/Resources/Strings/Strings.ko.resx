@@ -155,7 +155,7 @@
   <data name="Status_SettingsPasted" xml:space="preserve"><value>클립보드에서 설정을 붙여넣었습니다.</value></data>
   <data name="Status_PasteFailed_Format" xml:space="preserve"><value>붙여넣기 실패: {0}</value></data>
   <data name="Status_NoDeviceToCopyFrom" xml:space="preserve"><value>복사할 장치가 선택되지 않았습니다.</value></data>
-  <data name="Status_NoOtherDevices" xml:space="preserve"><value>복사할 다른 설정된 장치를 찾을 수 없습니다.</value></data>
+  <data name="Status_NoOtherDevices" xml:space="preserve"><value>복사할 다른 구성된 가상 컨트롤러를 찾을 수 없습니다.</value></data>
   <data name="Status_SettingsCopiedFromDevice" xml:space="preserve"><value>선택한 장치에서 설정을 복사했습니다.</value></data>
   <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>프로필 "{0}"이(가) 생성되었습니다 (비어 있음).</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>프로필 "{0}"이(가) 생성되었습니다.</value></data>

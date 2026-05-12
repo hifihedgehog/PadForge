@@ -155,7 +155,7 @@
   <data name="Status_SettingsPasted" xml:space="preserve"><value>Instellingen vanuit klembord geplakt.</value></data>
   <data name="Status_PasteFailed_Format" xml:space="preserve"><value>Plakken mislukt: {0}</value></data>
   <data name="Status_NoDeviceToCopyFrom" xml:space="preserve"><value>Geen apparaat geselecteerd om van te kopiëren.</value></data>
-  <data name="Status_NoOtherDevices" xml:space="preserve"><value>Geen andere geconfigureerde apparaten gevonden om van te kopiëren.</value></data>
+  <data name="Status_NoOtherDevices" xml:space="preserve"><value>Geen andere geconfigureerde virtuele controllers gevonden om van te kopiëren.</value></data>
   <data name="Status_SettingsCopiedFromDevice" xml:space="preserve"><value>Instellingen gekopieerd van geselecteerd apparaat.</value></data>
   <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>Profiel "{0}" aangemaakt (leeg).</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Profiel "{0}" aangemaakt.</value></data>

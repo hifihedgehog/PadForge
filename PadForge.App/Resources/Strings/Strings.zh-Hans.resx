@@ -155,7 +155,7 @@
   <data name="Status_SettingsPasted" xml:space="preserve"><value>已从剪贴板粘贴设置。</value></data>
   <data name="Status_PasteFailed_Format" xml:space="preserve"><value>粘贴失败：{0}</value></data>
   <data name="Status_NoDeviceToCopyFrom" xml:space="preserve"><value>未选择要从中复制的源设备。</value></data>
-  <data name="Status_NoOtherDevices" xml:space="preserve"><value>未找到其他已配置的设备可供复制。</value></data>
+  <data name="Status_NoOtherDevices" xml:space="preserve"><value>未找到其他已配置的虚拟控制器可供复制。</value></data>
   <data name="Status_SettingsCopiedFromDevice" xml:space="preserve"><value>已从所选设备复制设置。</value></data>
   <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>配置文件 "{0}" 已创建（空白）。</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>配置文件 "{0}" 已创建。</value></data>

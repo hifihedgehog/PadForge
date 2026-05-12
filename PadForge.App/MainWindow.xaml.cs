@@ -4283,7 +4283,14 @@ namespace PadForge
                         if (us.MapTo == padVm.PadIndex) continue;
 
                         var ps = us.GetPadSetting();
-                        if (ps == null || !ps.HasAnyMapping) continue;
+                        // Eligibility: the slot's per-VC MappingSet is the v3
+                        // source of truth (PadSetting descriptors mirror only
+                        // the currently-visible layer, so a slot whose UI is
+                        // sitting on an empty shift layer would falsely test
+                        // as "not configured" via PadSetting.HasAnyMapping).
+                        bool slotHasRows = us.MapTo >= 0 && InputService.SlotHasAnyMapping(us.MapTo);
+                        if (ps == null) continue;
+                        if (!slotHasRows && !ps.HasAnyMapping) continue;
 
                         // For mapped slots, dedupe: only one entry per source
                         // slot, donor = the slot's currently-selected device,
@@ -4307,7 +4314,7 @@ namespace PadForge
                                 if (donorUs != null)
                                 {
                                     var donorPs = donorUs.GetPadSetting();
-                                    if (donorPs != null && donorPs.HasAnyMapping)
+                                    if (donorPs != null && (slotHasRows || donorPs.HasAnyMapping))
                                     {
                                         AddEntry(entries, donorUs, donorPs);
                                         slotChosenDevice[us.MapTo] = donor;
@@ -4469,6 +4476,15 @@ namespace PadForge
                 // actually copies the whole slot, not just half.
                 if (srcEntry.SourceSlot >= 0)
                     _settingsService.CopySlotConfigsAcrossSlots(srcEntry.SourceSlot, padVm.PadIndex);
+
+                // Rebuild the target slot's shift-layer tab strip from the
+                // freshly-copied activators so layers authored on the source
+                // slot show up here instead of being invisible until the next
+                // app launch.
+                var targetMs = SettingsManager.SlotMappingSets != null
+                    && padVm.PadIndex >= 0 && padVm.PadIndex < SettingsManager.SlotMappingSets.Length
+                    ? SettingsManager.SlotMappingSets[padVm.PadIndex] : null;
+                padVm.RebuildLayerTabs(targetMs?.ShiftActivators);
 
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopiedFromDevice;

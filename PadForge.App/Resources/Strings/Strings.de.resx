@@ -155,7 +155,7 @@
   <data name="Status_SettingsPasted" xml:space="preserve"><value>Einstellungen aus der Zwischenablage eingefügt.</value></data>
   <data name="Status_PasteFailed_Format" xml:space="preserve"><value>Einfügen fehlgeschlagen: {0}</value></data>
   <data name="Status_NoDeviceToCopyFrom" xml:space="preserve"><value>Kein Gerät zum Kopieren ausgewählt.</value></data>
-  <data name="Status_NoOtherDevices" xml:space="preserve"><value>Keine weiteren konfigurierten Geräte zum Kopieren gefunden.</value></data>
+  <data name="Status_NoOtherDevices" xml:space="preserve"><value>Keine weiteren konfigurierten virtuellen Controller zum Kopieren gefunden.</value></data>
   <data name="Status_SettingsCopiedFromDevice" xml:space="preserve"><value>Einstellungen vom ausgewählten Gerät kopiert.</value></data>
   <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>Profil „{0}" erstellt (leer).</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Profil „{0}" erstellt.</value></data>

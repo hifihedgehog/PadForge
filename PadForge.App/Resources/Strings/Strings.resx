@@ -157,7 +157,7 @@
   <data name="Status_SettingsPasted" xml:space="preserve"><value>Settings pasted from clipboard.</value></data>
   <data name="Status_PasteFailed_Format" xml:space="preserve"><value>Failed to paste: {0}</value></data>
   <data name="Status_NoDeviceToCopyFrom" xml:space="preserve"><value>No device selected to copy from.</value></data>
-  <data name="Status_NoOtherDevices" xml:space="preserve"><value>No other configured devices found to copy from.</value></data>
+  <data name="Status_NoOtherDevices" xml:space="preserve"><value>No other configured virtual controllers found to copy from.</value></data>
   <data name="Status_SettingsCopiedFromDevice" xml:space="preserve"><value>Settings copied from selected device.</value></data>
   <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>Profile "{0}" created (empty).</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Profile "{0}" created.</value></data>

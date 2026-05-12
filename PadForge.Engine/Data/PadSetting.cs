@@ -1133,6 +1133,30 @@ namespace PadForge.Engine.Data
         [System.Text.Json.Serialization.JsonIgnore]
         public System.Collections.Generic.List<MappingRow> SlotMultiSourceRows { get; set; }
 
+        /// <summary>Opaque JSON payload carrying the PlayStation slot
+        /// configs (Lighting / Adaptive Triggers / Mic LED / Player LED
+        /// / audio-reactive / palette) — one entry per (slot, device)
+        /// plus the slot anchor. Set by the App-side Copy path; consumed
+        /// by the App-side Paste path. PadSetting just round-trips the
+        /// string verbatim so the Engine stays free of App-ViewModel
+        /// references.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string SlotPlayStationConfigsJson { get; set; }
+
+        /// <summary>Opaque JSON payload for the Extended custom layout
+        /// snapshot (thumbstick / trigger / POV / button counts, OEM /
+        /// Product strings, FFB toggle).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string SlotExtendedConfigJson { get; set; }
+
+        /// <summary>Opaque JSON payload for the MIDI slot layout
+        /// snapshot (channel, velocity, CC + note ranges).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string SlotMidiConfigJson { get; set; }
+
         /// <summary>
         /// Serializes all copyable mapping/deadzone/FF properties to a JSON string.
         /// Used for clipboard copy/paste of controller settings.
@@ -1189,6 +1213,26 @@ namespace PadForge.Engine.Data
                     mdzList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
                 dict["__MappingDeadZones"] = JsonSerializer.Serialize(mdzList);
             }
+            if (MappingBidirectionalEntries != null && MappingBidirectionalEntries.Length > 0)
+            {
+                var bidirList = new List<Dictionary<string, string>>();
+                foreach (var e in MappingBidirectionalEntries)
+                    bidirList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
+                dict["__MappingBidirectional"] = JsonSerializer.Serialize(bidirList);
+            }
+
+            // Opaque per-slot config snapshots (Lighting / Adaptive Triggers
+            // / Mic LED / Player LED / audio-reactive / palette for
+            // PlayStation, custom layout for Extended, CC + note layout
+            // for MIDI). The caller serialises the App-side DTOs into
+            // these strings; PadSetting just round-trips them. Keeps the
+            // Engine assembly free of dependencies on App ViewModels.
+            if (!string.IsNullOrEmpty(SlotPlayStationConfigsJson))
+                dict["__SlotPlayStationConfigs"] = SlotPlayStationConfigsJson;
+            if (!string.IsNullOrEmpty(SlotExtendedConfigJson))
+                dict["__SlotExtendedConfig"] = SlotExtendedConfigJson;
+            if (!string.IsNullOrEmpty(SlotMidiConfigJson))
+                dict["__SlotMidiConfig"] = SlotMidiConfigJson;
 
             // Issue #61 — round-trip the slot's multi-source row data
             // for this device. Each row snapshot carries Target,
@@ -1280,6 +1324,14 @@ namespace PadForge.Engine.Data
                             }
                             catch { /* malformed — paste falls back to device-scoped or single-source */ }
                         }
+                        else if (kvp.Key == "__MappingBidirectional")
+                            ps.MappingBidirectionalEntries = DeserializeMappingArray(kvp.Value);
+                        else if (kvp.Key == "__SlotPlayStationConfigs")
+                            ps.SlotPlayStationConfigsJson = kvp.Value;
+                        else if (kvp.Key == "__SlotExtendedConfig")
+                            ps.SlotExtendedConfigJson = kvp.Value;
+                        else if (kvp.Key == "__SlotMidiConfig")
+                            ps.SlotMidiConfigJson = kvp.Value;
                         continue;
                     }
                     var prop = type.GetProperty(kvp.Key);

@@ -3825,7 +3825,8 @@ namespace PadForge
                     or nameof(MappingItem.MappingDeadZone)
                     or nameof(MappingItem.PrimarySourceDeviceGuid)
                     or nameof(MappingItem.CombineMode)
-                    or nameof(MappingItem.CombineExpression))
+                    or nameof(MappingItem.CombineExpression)
+                    or nameof(MappingItem.NoInherit))
                     _settingsService.MarkDirty();
             };
 

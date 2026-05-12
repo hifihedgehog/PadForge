@@ -921,31 +921,17 @@
                                                         <ComboBoxItem Content="{Binding Macro_InputDevice, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerSource.InputDevice}"/>
                                                         <ComboBoxItem Content="{Binding Macro_OutputController, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerSource.OutputController}"/>
                                                     </ComboBox>
-                                                    <ComboBox SelectedValue="{Binding OutputChannel, Mode=TwoWay}"
-                                                              SelectedValuePath="Tag" MinWidth="100" Margin="0,0,8,0"
-                                                              Visibility="{Binding Source, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=OutputController}">
-                                                        <ComboBoxItem Content="A"  Tag="{x:Static vm:MacroOutputChannel.A}"/>
-                                                        <ComboBoxItem Content="B"  Tag="{x:Static vm:MacroOutputChannel.B}"/>
-                                                        <ComboBoxItem Content="X"  Tag="{x:Static vm:MacroOutputChannel.X}"/>
-                                                        <ComboBoxItem Content="Y"  Tag="{x:Static vm:MacroOutputChannel.Y}"/>
-                                                        <ComboBoxItem Content="LB" Tag="{x:Static vm:MacroOutputChannel.LB}"/>
-                                                        <ComboBoxItem Content="RB" Tag="{x:Static vm:MacroOutputChannel.RB}"/>
-                                                        <ComboBoxItem Content="LS" Tag="{x:Static vm:MacroOutputChannel.LS}"/>
-                                                        <ComboBoxItem Content="RS" Tag="{x:Static vm:MacroOutputChannel.RS}"/>
-                                                        <ComboBoxItem Content="Back"  Tag="{x:Static vm:MacroOutputChannel.Back}"/>
-                                                        <ComboBoxItem Content="Start" Tag="{x:Static vm:MacroOutputChannel.Start}"/>
-                                                        <ComboBoxItem Content="Guide" Tag="{x:Static vm:MacroOutputChannel.Guide}"/>
-                                                        <ComboBoxItem Content="DpadUp"    Tag="{x:Static vm:MacroOutputChannel.DpadUp}"/>
-                                                        <ComboBoxItem Content="DpadDown"  Tag="{x:Static vm:MacroOutputChannel.DpadDown}"/>
-                                                        <ComboBoxItem Content="DpadLeft"  Tag="{x:Static vm:MacroOutputChannel.DpadLeft}"/>
-                                                        <ComboBoxItem Content="DpadRight" Tag="{x:Static vm:MacroOutputChannel.DpadRight}"/>
-                                                        <ComboBoxItem Content="LT" Tag="{x:Static vm:MacroOutputChannel.LT}"/>
-                                                        <ComboBoxItem Content="RT" Tag="{x:Static vm:MacroOutputChannel.RT}"/>
-                                                        <ComboBoxItem Content="LX" Tag="{x:Static vm:MacroOutputChannel.LX}"/>
-                                                        <ComboBoxItem Content="LY" Tag="{x:Static vm:MacroOutputChannel.LY}"/>
-                                                        <ComboBoxItem Content="RX" Tag="{x:Static vm:MacroOutputChannel.RX}"/>
-                                                        <ComboBoxItem Content="RY" Tag="{x:Static vm:MacroOutputChannel.RY}"/>
-                                                    </ComboBox>
+                                                    <!-- OutputChannel dropdown — items are sourced from the
+                                                         parent macro's OutputChannelOptions list, which renders
+                                                         labels per the slot's VC family (matches the mapping
+                                                         table: PlayStation ✕/○/◻/△ + L1/R1, Extended
+                                                         Button N, Xbox A/B/X/Y + Left Shoulder, etc.). -->
+                                                    <ComboBox ItemsSource="{Binding DataContext.OutputChannelOptions, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                              SelectedValue="{Binding OutputChannel, Mode=TwoWay}"
+                                                              SelectedValuePath="Value"
+                                                              DisplayMemberPath="Name"
+                                                              MinWidth="160" Margin="0,0,8,0"
+                                                              Visibility="{Binding Source, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=OutputController}"/>
                                                     <TextBlock Text="{Binding DisplaySummary}"
                                                                VerticalAlignment="Center"
                                                                FontStyle="Italic"

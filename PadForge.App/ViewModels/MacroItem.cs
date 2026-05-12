@@ -38,6 +38,24 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(RecordTriggerButtonText));
             OnPropertyChanged(nameof(RecordTriggerIcon));
             OnPropertyChanged(nameof(TriggerDisplayText));
+            _outputChannelOptions = null;
+            OnPropertyChanged(nameof(OutputChannelOptions));
+        }
+
+        // Cached OutputController-dropdown items for the variable rows.
+        // Invalidated when ButtonStyle changes or the active culture flips.
+        private List<MacroOutputChannelOption> _outputChannelOptions;
+
+        /// <summary>Style- and culture-aware list of channels for the
+        /// per-variable OutputController dropdown. Labels mirror the
+        /// mapping table for the same VC family (e.g. PlayStation slot
+        /// → ✕/○/◻/△ + L1/R1/L2/R2/Share/Options/PS; Extended slot →
+        /// Button 1 / Button 2 / …; Xbox slot → A/B/X/Y + Left Shoulder
+        /// / Right Shoulder / etc.).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public IList<MacroOutputChannelOption> OutputChannelOptions
+        {
+            get => _outputChannelOptions ??= MacroOutputChannelNames.GetOptions(_buttonStyle);
         }
 
         private string _name = Strings.Instance.Macro_NewMacro;
@@ -358,6 +376,8 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _buttonStyle, value))
                 {
                     OnPropertyChanged(nameof(TriggerDisplayText));
+                    _outputChannelOptions = null;
+                    OnPropertyChanged(nameof(OutputChannelOptions));
                     foreach (var action in Actions)
                         action.ButtonStyle = value;
                 }
@@ -2778,6 +2798,122 @@ namespace PadForge.ViewModels
         Xbox360,
         DualShock4,
         Numbered  // Extended Custom: "Btn 1", "Btn 2", etc.
+    }
+
+    /// <summary>One <see cref="MacroOutputChannel"/> + its localized display
+    /// label, sized for the macro's current <see cref="MacroButtonStyle"/>.
+    /// Used as ItemsSource for the variable-row OutputChannel dropdown so
+    /// the labels match the mapping table for the same VC family
+    /// (e.g. PlayStation slot shows ✕/○/□/△ and L1/R1, Extended shows
+    /// Button 1 / Button 2 / ..., Xbox shows A/B/X/Y and Left Shoulder).</summary>
+    public sealed class MacroOutputChannelOption
+    {
+        public MacroOutputChannel Value { get; set; }
+        public string Name { get; set; } = "";
+    }
+
+    /// <summary>Display-name resolver for <see cref="MacroOutputChannel"/> values.
+    /// Mirrors the mapping table's labels in
+    /// <c>PadViewModel.InitializeGamepadMappings</c> so the macro's OutputController
+    /// dropdown reads the same way as the row labels users already know.</summary>
+    public static class MacroOutputChannelNames
+    {
+        public static string DisplayName(MacroOutputChannel channel, MacroButtonStyle style)
+        {
+            var s = Strings.Instance;
+            // Stick axes + D-Pad: same label across all styles (matches the
+            // mapping table — D-Pad rows always use Btn_DPadUp etc.).
+            switch (channel)
+            {
+                case MacroOutputChannel.LX: return s.Btn_LeftStickX;
+                case MacroOutputChannel.LY: return s.Btn_LeftStickY;
+                case MacroOutputChannel.RX: return s.Btn_RightStickX;
+                case MacroOutputChannel.RY: return s.Btn_RightStickY;
+                case MacroOutputChannel.DpadUp:    return s.Btn_DPadUp;
+                case MacroOutputChannel.DpadDown:  return s.Btn_DPadDown;
+                case MacroOutputChannel.DpadLeft:  return s.Btn_DPadLeft;
+                case MacroOutputChannel.DpadRight: return s.Btn_DPadRight;
+            }
+            switch (style)
+            {
+                case MacroButtonStyle.DualShock4:
+                    return channel switch
+                    {
+                        MacroOutputChannel.A => "✕",  // ✕ (matches PS mapping row)
+                        MacroOutputChannel.B => "○",  // ○ (matches PS mapping row)
+                        MacroOutputChannel.X => "◻",  // ◻ (matches PS mapping row)
+                        MacroOutputChannel.Y => "△",  // △ (matches PS mapping row)
+                        MacroOutputChannel.LB => "L1",
+                        MacroOutputChannel.RB => "R1",
+                        MacroOutputChannel.LS => "L3",
+                        MacroOutputChannel.RS => "R3",
+                        MacroOutputChannel.Back => s.Btn_Share,
+                        MacroOutputChannel.Start => s.Btn_Options,
+                        MacroOutputChannel.Guide => s.Btn_PS,
+                        MacroOutputChannel.LT => "L2",
+                        MacroOutputChannel.RT => "R2",
+                        _ => channel.ToString()
+                    };
+                case MacroButtonStyle.Numbered:
+                    return channel switch
+                    {
+                        MacroOutputChannel.A     => string.Format(s.Extended_Button_Format, 1),
+                        MacroOutputChannel.B     => string.Format(s.Extended_Button_Format, 2),
+                        MacroOutputChannel.X     => string.Format(s.Extended_Button_Format, 3),
+                        MacroOutputChannel.Y     => string.Format(s.Extended_Button_Format, 4),
+                        MacroOutputChannel.LB    => string.Format(s.Extended_Button_Format, 5),
+                        MacroOutputChannel.RB    => string.Format(s.Extended_Button_Format, 6),
+                        MacroOutputChannel.Back  => string.Format(s.Extended_Button_Format, 7),
+                        MacroOutputChannel.Start => string.Format(s.Extended_Button_Format, 8),
+                        MacroOutputChannel.LS    => string.Format(s.Extended_Button_Format, 9),
+                        MacroOutputChannel.RS    => string.Format(s.Extended_Button_Format, 10),
+                        MacroOutputChannel.Guide => string.Format(s.Extended_Button_Format, 11),
+                        MacroOutputChannel.LT    => s.Btn_LeftTrigger,
+                        MacroOutputChannel.RT    => s.Btn_RightTrigger,
+                        _ => channel.ToString()
+                    };
+                default: // Xbox360
+                    return channel switch
+                    {
+                        MacroOutputChannel.A     => "A",
+                        MacroOutputChannel.B     => "B",
+                        MacroOutputChannel.X     => "X",
+                        MacroOutputChannel.Y     => "Y",
+                        MacroOutputChannel.LB    => s.Btn_LeftShoulder,
+                        MacroOutputChannel.RB    => s.Btn_RightShoulder,
+                        MacroOutputChannel.LS    => s.Btn_LeftStickButton,
+                        MacroOutputChannel.RS    => s.Btn_RightStickButton,
+                        MacroOutputChannel.Back  => s.Btn_Back,
+                        MacroOutputChannel.Start => s.Btn_Start,
+                        MacroOutputChannel.Guide => s.Btn_Guide,
+                        MacroOutputChannel.LT    => s.Btn_LeftTrigger,
+                        MacroOutputChannel.RT    => s.Btn_RightTrigger,
+                        _ => channel.ToString()
+                    };
+            }
+        }
+
+        /// <summary>Builds the full option list for the given style in stable
+        /// presentation order (face → shoulders → start/back/guide → sticks →
+        /// d-pad → triggers → axes). The order mirrors the mapping table so
+        /// users find what they're looking for in roughly the same place.</summary>
+        public static List<MacroOutputChannelOption> GetOptions(MacroButtonStyle style)
+        {
+            var order = new[]
+            {
+                MacroOutputChannel.A, MacroOutputChannel.B, MacroOutputChannel.X, MacroOutputChannel.Y,
+                MacroOutputChannel.LB, MacroOutputChannel.RB,
+                MacroOutputChannel.Back, MacroOutputChannel.Start, MacroOutputChannel.Guide,
+                MacroOutputChannel.LS, MacroOutputChannel.RS,
+                MacroOutputChannel.DpadUp, MacroOutputChannel.DpadDown, MacroOutputChannel.DpadLeft, MacroOutputChannel.DpadRight,
+                MacroOutputChannel.LT, MacroOutputChannel.RT,
+                MacroOutputChannel.LX, MacroOutputChannel.LY, MacroOutputChannel.RX, MacroOutputChannel.RY,
+            };
+            var list = new List<MacroOutputChannelOption>(order.Length);
+            foreach (var ch in order)
+                list.Add(new MacroOutputChannelOption { Value = ch, Name = DisplayName(ch, style) });
+            return list;
+        }
     }
 
     public static class MacroButtonNames

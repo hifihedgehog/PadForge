@@ -1257,8 +1257,46 @@
 
 
 
-
-
-
-
+  <!-- Shift モード (Issue #61 Phase 6 v1+) -->
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Shift レイヤー</value></data>
+  <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Shift レイヤーを追加します。ボタンを押している間または切り替えている間にアクティブになる第2のマッピング テーブルです。</value></data>
+  <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>ベース</value></data>
+  <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift レイヤー</value></data>
+  <data name="Pad_Shift_LayerName" xml:space="preserve"><value>レイヤー名</value></data>
+  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>アクティベーター入力</value></data>
+  <data name="Pad_Shift_Mode" xml:space="preserve"><value>モード</value></data>
+  <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>ホールド</value></data>
+  <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>トグル</value></data>
+  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>カスタム(レイヤーへジャンプ)</value></data>
+  <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>サイクル</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>スティッキー(ワンショット)</value></data>
+  <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>レイヤー名は必須です。</value></data>
+  <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>このスロットには同じ名前のレイヤーが既に存在します。</value></data>
+  <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>アクティベーター入力を選択してください。</value></data>
+  <data name="Pad_Shift_Configure" xml:space="preserve"><value>アクティベーターを構成…</value></data>
+  <data name="Pad_Shift_Rename" xml:space="preserve"><value>レイヤー名を変更…</value></data>
+  <data name="Pad_Shift_Color" xml:space="preserve"><value>レイヤーの色</value></data>
+  <data name="Pad_Shift_Copy" xml:space="preserve"><value>レイヤー行をコピー</value></data>
+  <data name="Pad_Shift_Paste" xml:space="preserve"><value>レイヤーに行を貼り付け</value></data>
+  <data name="Pad_Shift_Clear" xml:space="preserve"><value>レイヤー行をクリア</value></data>
+  <data name="Pad_Shift_Delete" xml:space="preserve"><value>レイヤーを削除</value></data>
+  <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Shift レイヤーの削除</value></data>
+  <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>レイヤー「{0}」とそのマッピング行をすべて削除しますか?この操作は元に戻せません。</value></data>
+  <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>レイヤー名の変更</value></data>
+  <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>継承しない</value></data>
+  <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>オンにすると、このレイヤーのターゲットはベース行にフォールスルーせず、オフのままになります。</value></data>
+  <data name="Pad_Shift_Delay" xml:space="preserve"><value>遅延(ms)</value></data>
+  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>レイヤーの変更が発火する前に、アクティベーターがアクティブな状態を維持する必要があるミリ秒。</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>アクティベーター マッピングを延期</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>オンにすると、レイヤーの変更と並行してアクティベーター入力自身のマッピングも発火します。</value></data>
+  <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>レイヤーへジャンプ</value></data>
+  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>コードの2番目の入力</value></data>
+  <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>軸のしきい値</value></data>
+  <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>レイヤーをサイクル</value></data>
+  <data name="Pad_Shift_Kind" xml:space="preserve"><value>アクティベーターの種類</value></data>
+  <data name="Pad_Shift_KindButton" xml:space="preserve"><value>ボタン</value></data>
+  <data name="Pad_Shift_KindChord" xml:space="preserve"><value>コード(A + B)</value></data>
+  <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>しきい値を超えた軸</value></data>
+  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>未割り当てターゲットをベースから継承</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>オンにすると、このレイヤーが明示的に割り当てていないターゲットはベース レイヤーにフォールスルーします。オフ(既定)にすると、レイヤーはベースを完全に置き換え、未割り当てターゲットはオフのままになります。</value></data>
 </root>

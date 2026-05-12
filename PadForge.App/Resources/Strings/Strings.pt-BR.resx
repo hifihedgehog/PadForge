@@ -1257,8 +1257,46 @@
 
 
 
-
-
-
-
+  <!-- Modo Shift (Issue #61 Phase 6 v1+) -->
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Camada Shift</value></data>
+  <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Adiciona uma camada Shift — uma segunda tabela de mapeamento que é ativada enquanto um botão é mantido ou alternado.</value></data>
+  <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Base</value></data>
+  <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Camada Shift</value></data>
+  <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nome da camada</value></data>
+  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Entrada ativadora</value></data>
+  <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modo</value></data>
+  <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Manter</value></data>
+  <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alternar</value></data>
+  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Personalizado (saltar para camada)</value></data>
+  <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Ciclo</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Adesivo (uma vez)</value></data>
+  <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>O nome da camada é obrigatório.</value></data>
+  <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>Já existe uma camada com esse nome nesta vaga.</value></data>
+  <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>Escolha uma entrada ativadora.</value></data>
+  <data name="Pad_Shift_Configure" xml:space="preserve"><value>Configurar ativador…</value></data>
+  <data name="Pad_Shift_Rename" xml:space="preserve"><value>Renomear camada…</value></data>
+  <data name="Pad_Shift_Color" xml:space="preserve"><value>Cor da camada</value></data>
+  <data name="Pad_Shift_Copy" xml:space="preserve"><value>Copiar linhas da camada</value></data>
+  <data name="Pad_Shift_Paste" xml:space="preserve"><value>Colar linhas na camada</value></data>
+  <data name="Pad_Shift_Clear" xml:space="preserve"><value>Limpar linhas da camada</value></data>
+  <data name="Pad_Shift_Delete" xml:space="preserve"><value>Excluir camada</value></data>
+  <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Excluir camada Shift</value></data>
+  <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>Excluir a camada "{0}" e todas as suas linhas de mapeamento? Esta ação não pode ser desfeita.</value></data>
+  <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>Renomear camada</value></data>
+  <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Não herdar</value></data>
+  <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Quando marcado, o alvo desta camada permanece DESLIGADO em vez de cair para a linha Base.</value></data>
+  <data name="Pad_Shift_Delay" xml:space="preserve"><value>Atraso (ms)</value></data>
+  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Milissegundos que o ativador deve permanecer engatado antes que a troca de camada seja acionada.</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Adiar mapeamento do ativador</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Quando marcado, o mapeamento próprio da entrada ativadora também é disparado junto com a troca de camada.</value></data>
+  <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Saltar para camada</value></data>
+  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Segunda entrada do acorde</value></data>
+  <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Limite do eixo</value></data>
+  <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Ciclar entre camadas</value></data>
+  <data name="Pad_Shift_Kind" xml:space="preserve"><value>Tipo de ativador</value></data>
+  <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Botão</value></data>
+  <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Acorde (A + B)</value></data>
+  <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Eixo além do limite</value></data>
+  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Herdar alvos não mapeados da Base</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Quando marcado, alvos que esta camada não mapeia explicitamente caem para a camada Base. Quando desmarcado (padrão), a camada substitui Base inteiramente e alvos não mapeados ficam desligados.</value></data>
 </root>

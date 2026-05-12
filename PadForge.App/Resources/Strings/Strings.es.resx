@@ -1257,8 +1257,46 @@
 
 
 
-
-
-
-
+  <!-- Modo Shift (Issue #61 Phase 6 v1+) -->
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Capa Shift</value></data>
+  <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Añade una capa Shift — una segunda tabla de asignaciones que se activa mientras se mantiene o alterna un botón.</value></data>
+  <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Base</value></data>
+  <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Capa Shift</value></data>
+  <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nombre de la capa</value></data>
+  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Entrada activadora</value></data>
+  <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modo</value></data>
+  <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Mantener</value></data>
+  <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alternar</value></data>
+  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Personalizado (saltar a capa)</value></data>
+  <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Ciclo</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Adhesivo (una vez)</value></data>
+  <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Se requiere el nombre de la capa.</value></data>
+  <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>Ya existe una capa con ese nombre en esta ranura.</value></data>
+  <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>Elige una entrada activadora.</value></data>
+  <data name="Pad_Shift_Configure" xml:space="preserve"><value>Configurar activador…</value></data>
+  <data name="Pad_Shift_Rename" xml:space="preserve"><value>Cambiar nombre de la capa…</value></data>
+  <data name="Pad_Shift_Color" xml:space="preserve"><value>Color de la capa</value></data>
+  <data name="Pad_Shift_Copy" xml:space="preserve"><value>Copiar filas de la capa</value></data>
+  <data name="Pad_Shift_Paste" xml:space="preserve"><value>Pegar filas en la capa</value></data>
+  <data name="Pad_Shift_Clear" xml:space="preserve"><value>Borrar filas de la capa</value></data>
+  <data name="Pad_Shift_Delete" xml:space="preserve"><value>Eliminar capa</value></data>
+  <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Eliminar capa Shift</value></data>
+  <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>¿Eliminar la capa "{0}" y todas sus filas de asignación? Esta acción no se puede deshacer.</value></data>
+  <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>Cambiar nombre de la capa</value></data>
+  <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>No heredar</value></data>
+  <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Cuando está marcado, el objetivo de esta capa permanece APAGADO en lugar de retroceder a la fila Base.</value></data>
+  <data name="Pad_Shift_Delay" xml:space="preserve"><value>Retraso (ms)</value></data>
+  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Milisegundos que el activador debe permanecer activo antes de que se dispare el cambio de capa.</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Posponer asignación del activador</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Cuando está marcado, la asignación de la entrada del activador también se dispara junto con el cambio de capa.</value></data>
+  <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Saltar a capa</value></data>
+  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Segunda entrada del acorde</value></data>
+  <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Umbral del eje</value></data>
+  <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Ciclar por las capas</value></data>
+  <data name="Pad_Shift_Kind" xml:space="preserve"><value>Tipo de activador</value></data>
+  <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Botón</value></data>
+  <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Acorde (A + B)</value></data>
+  <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Eje sobre umbral</value></data>
+  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Heredar objetivos sin asignar de Base</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Cuando está marcado, los objetivos que esta capa no asigna explícitamente retroceden a la capa Base. Cuando no está marcado (predeterminado), la capa reemplaza Base completamente y los objetivos sin asignar permanecen apagados.</value></data>
 </root>

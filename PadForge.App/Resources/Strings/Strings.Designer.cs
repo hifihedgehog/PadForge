@@ -1302,4 +1302,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Shift_KindButton => Get("Pad_Shift_KindButton");
     public string Pad_Shift_KindChord => Get("Pad_Shift_KindChord");
     public string Pad_Shift_KindAxis => Get("Pad_Shift_KindAxis");
+    public string Pad_Shift_InheritUnmapped => Get("Pad_Shift_InheritUnmapped");
+    public string Pad_Shift_InheritUnmapped_Tooltip => Get("Pad_Shift_InheritUnmapped_Tooltip");
 }

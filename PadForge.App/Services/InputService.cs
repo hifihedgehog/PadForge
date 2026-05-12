@@ -5698,6 +5698,19 @@ namespace PadForge.Services
             // Rebuild pad device lists based on new MapTo values.
             UpdatePadDeviceInfo();
 
+            // Heal profiles whose stored SlotMappingSets were corrupted by
+            // the cross-profile-bleed bug (multi-profile reference-sharing
+            // followed by PushUiExtraSourcesIntoSlotMappingSets rebuilding
+            // from a temporarily-empty MappingItems state). Those profiles
+            // serialised with empty per-row Sources but the per-device
+            // ProfilePadSettings still carry the legacy descriptor fields
+            // (ButtonA, LeftThumbAxisX, etc.). MergeMappingSetsFromLegacy
+            // ADDITIVELY rebuilds SlotMappingSets[s] from each assigned
+            // device's per-device PadSetting fields without clobbering
+            // user-authored multi-source rows — so a clean profile is a
+            // no-op, but a corrupted one regenerates its rows.
+            SettingsService.RefreshMappingSetsFromLegacy();
+
             // Reload ViewModels with new PadSettings (after device lists are rebuilt).
             // LoadPadSettingToViewModel loads per-device TUNING only; mapping
             // rows MUST also be refreshed from the just-swapped SlotMappingSets

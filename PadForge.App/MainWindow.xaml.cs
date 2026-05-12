@@ -560,20 +560,24 @@ namespace PadForge
                 }));
             };
 
-            // Force a PadPage DataContext rebind after every profile apply
-            // (including the default-profile fallback) so the DataGrid's
-            // cached row visuals re-resolve against the new profile's
-            // MappingItems. PropertyChanged on individual fields wasn't
-            // enough to dislodge cached ComboBox SelectedItem references
-            // and per-row Source subtitle bindings — only a DataContext
-            // toggle through null reliably refreshes them.
+            // Force the DataGrid to destroy + rebuild its row container
+            // pool after every profile apply (and the default-profile
+            // fallback). DataContext null-toggle on the UserControl was
+            // NOT enough — the DataGrid's internal row container pool
+            // persisted across the DataContext swap, so cached row
+            // visuals (ComboBox SelectedItem refs, Style.Setter+DataTrigger
+            // evaluations on the per-row Source subtitle, etc.) didn't
+            // pick up MappingItem PropertyChanged events. The user's
+            // navigate-away-and-back workaround works because hiding the
+            // PadPage via Visibility=Collapsed tears down the DataGrid's
+            // row visuals entirely. ItemsSource null-toggle replicates
+            // that effect without page flicker.
             _inputService.ProfileApplied += (s, e) =>
             {
                 if (PadPageView.Visibility != Visibility.Visible) return;
                 var padVm = _viewModel.SelectedPad;
                 if (padVm == null) return;
-                PadPageView.DataContext = null;
-                PadPageView.DataContext = padVm;
+                PadPageView.ForceMappingsDataGridRebuild();
             };
 
             // Wire devices page refresh.
@@ -3616,25 +3620,23 @@ namespace PadForge
                 var padVm = _viewModel.SelectedPad;
                 if (padVm != null)
                 {
-                    // Re-resolve mapping rows + per-row ComboBox SelectedInput
-                    // against the slot's MappingSet BEFORE re-binding. The
-                    // navigate-away-and-back workaround the user found works
-                    // because hiding/showing the PadPage forces WPF to
-                    // rebuild the DataGrid's row visuals from scratch.
-                    // Replicate that here with a null DataContext toggle so
-                    // every per-row binding re-resolves against the freshly-
-                    // refreshed MappingItems. Without the toggle, WPF holds
-                    // onto cached row visuals whose ComboBox SelectedItem
-                    // was bound to the previous slot/profile's InputChoice
-                    // instance and the per-row Source subtitle's
-                    // PrimarySourceDeviceLabel binding stayed stale.
                     InputService.RefreshMappingsToViewModel(padVm);
                     var selected = padVm.SelectedMappedDevice;
                     if (selected != null && selected.InstanceGuid != Guid.Empty)
                         _inputService.RefreshAvailableInputsForSlot(padVm);
-                    if (PadPageView.DataContext == padVm)
-                        PadPageView.DataContext = null;
+                    bool sameDataContext = ReferenceEquals(PadPageView.DataContext, padVm);
                     PadPageView.DataContext = padVm;
+                    // The DataGrid keeps a row-container pool that persists
+                    // across DataContext swaps when the underlying ObservableCollection
+                    // identity is the same. Cached row visuals show stale
+                    // Source subtitle text and ComboBox SelectedItem refs
+                    // until the pool is destroyed. ForceMappingsDataGridRebuild
+                    // toggles MappingDataGrid.ItemsSource through null to
+                    // drop the pool — same effect as the user's navigate-
+                    // away-and-back workaround (Visibility toggle) but
+                    // without page flicker.
+                    if (sameDataContext)
+                        PadPageView.ForceMappingsDataGridRebuild();
                 }
             }
 

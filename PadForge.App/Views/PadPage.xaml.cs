@@ -24,6 +24,31 @@ namespace PadForge.Views
 
         private PadViewModel _currentPadVm;
 
+        /// <summary>Forces the mapping DataGrid to clear its row
+        /// container pool and re-realise every row from current
+        /// ItemsSource state. Calls <c>Items.Refresh()</c> on the
+        /// underlying CollectionView, which fires a Reset
+        /// CollectionChanged that ItemsControl handles by tearing down
+        /// containers and rebuilding from source.
+        /// <para>
+        /// The DataContext=null toggle on the UserControl was not
+        /// enough — that re-resolves bindings against the same realized
+        /// containers and leaves the container pool intact. Cached
+        /// Style.Setter binding values, stale ComboBox SelectedItem
+        /// refs, and DataTrigger evaluations inside CellTemplates
+        /// persisted across the swap. The user's navigate-away-and-back
+        /// workaround works because Visibility=Collapsed unloads the
+        /// DataGrid's children entirely; on re-show the virtualising
+        /// panel re-realises fresh containers. Items.Refresh() is the
+        /// WPF-canonical equivalent.
+        /// </para></summary>
+        public void ForceMappingsDataGridRebuild()
+        {
+            if (MappingDataGrid?.Items == null) return;
+            try { MappingDataGrid.Items.Refresh(); }
+            catch { /* If a binding chain is mid-update, Refresh can throw — log + ignore. */ }
+        }
+
         /// <summary>
         /// Currently-subscribed <see cref="ExtendedSlotConfig"/> for the active
         /// PadViewModel. Tracked separately from <see cref="_currentPadVm"/>

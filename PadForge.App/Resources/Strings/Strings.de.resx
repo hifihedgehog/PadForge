@@ -1276,6 +1276,7 @@
   <data name="Pad_Shift_Configure" xml:space="preserve"><value>Aktivator konfigurieren…</value></data>
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>Ebene umbenennen…</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>Ebenenfarbe</value></data>
+  <data name="Pad_Shift_Color_Reset_Tooltip" xml:space="preserve"><value>Ebenenfarbe löschen (kein Tab-Tönen, Standard-Flyout-Punkt).</value></data>
   <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Wähle ein Emoji, das im Flyout erscheint, wenn diese Ebene aktiv ist.</value></data>
   <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>Zurücksetzen (⇧)</value></data>
   <data name="Pad_Shift_Copy" xml:space="preserve"><value>Ebenenzeilen kopieren</value></data>

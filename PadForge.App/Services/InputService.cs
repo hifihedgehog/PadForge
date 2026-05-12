@@ -2304,6 +2304,60 @@ namespace PadForge.Services
             }
         }
 
+        /// <summary>Deep-clones a <see cref="Engine.Data.MappingSet"/>
+        /// including every row's Sources list. Profile snapshots and the
+        /// live SlotMappingSets MUST own independent copies — reference
+        /// sharing meant a runtime mutation in one profile bled across
+        /// every other profile snapshot that happened to share the ref
+        /// (e.g. all profiles created from the same starting state in a
+        /// single session, since every snapshot grabbed the live ref).</summary>
+        public static Engine.Data.MappingSet CloneMappingSetDeep(Engine.Data.MappingSet src)
+        {
+            if (src == null) return null;
+            var copy = new Engine.Data.MappingSet { ShiftButton = src.ShiftButton };
+            if (src.Rows != null)
+            {
+                foreach (var r in src.Rows)
+                {
+                    if (r == null) continue;
+                    var rc = new Engine.Data.MappingRow
+                    {
+                        Target = r.Target,
+                        LayerMask = r.LayerMask ?? "Base",
+                        CombineMode = r.CombineMode ?? "",
+                        CombineExpression = r.CombineExpression ?? "",
+                        Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
+                    };
+                    if (r.Sources != null)
+                    {
+                        foreach (var s in r.Sources)
+                        {
+                            if (s == null) continue;
+                            rc.Sources.Add(new Engine.Data.MappingSource
+                            {
+                                Kind = s.Kind ?? "Direct",
+                                DeviceGuid = s.DeviceGuid ?? "",
+                                Descriptor = s.Descriptor ?? "",
+                                Invert = s.Invert,
+                                HalfAxis = s.HalfAxis,
+                                Bidirectional = s.Bidirectional,
+                                DeadZone = s.DeadZone,
+                                ParamUp = s.ParamUp ?? "",
+                                ParamDown = s.ParamDown ?? "",
+                                ParamRate = s.ParamRate,
+                                ParamSticky = s.ParamSticky,
+                                ParamMin = s.ParamMin,
+                                ParamMax = s.ParamMax,
+                                ParamModifier = s.ParamModifier ?? "",
+                            });
+                        }
+                    }
+                    copy.Rows.Add(rc);
+                }
+            }
+            return copy;
+        }
+
         /// <summary>Whole-slot snapshot of every row in the given slot's
         /// MappingSet, with source DeviceGuids preserved as-is. Used by
         /// Copy so the clipboard round-trip carries every device's
@@ -5309,10 +5363,17 @@ namespace PadForge.Services
 
             // Snapshot the per-VC MappingSet array (Issue #61). Profiles
             // round-trip multi-source rows + per-row CombineMode and
-            // ShiftActivator alongside the legacy PadSettings.
+            // ShiftActivator alongside the legacy PadSettings. MUST be a
+            // DEEP CLONE — reference-copy lets the profile snapshot share
+            // MappingSet objects with the live array (and with other
+            // profile snapshots taken around the same time), so a runtime
+            // mutation in any profile bled across every snapshot that
+            // happened to share the ref. Deep cloning isolates each
+            // profile's stored MappingSet from every other profile and
+            // from the live working set.
             var msSnapshot = new Engine.Data.MappingSet[InputManager.MaxPads];
             for (int s = 0; s < msSnapshot.Length && s < SettingsManager.SlotMappingSets.Length; s++)
-                msSnapshot[s] = SettingsManager.SlotMappingSets[s];
+                msSnapshot[s] = CloneMappingSetDeep(SettingsManager.SlotMappingSets[s]);
 
             return new ProfileData
             {
@@ -5411,11 +5472,14 @@ namespace PadForge.Services
             // SlotMappingSets — leave the live array untouched in that
             // case so it falls back to whatever the loader (legacy
             // migration or persisted-XML state) set up.
+            // DEEP CLONE on apply so live mutations (auto-map on device
+            // reassignment, in-tab edits) don't poison the profile's
+            // stored snapshot.
             if (profile.SlotMappingSets != null)
             {
                 var live = SettingsManager.SlotMappingSets;
                 for (int s = 0; s < live.Length && s < profile.SlotMappingSets.Length; s++)
-                    live[s] = profile.SlotMappingSets[s];
+                    live[s] = CloneMappingSetDeep(profile.SlotMappingSets[s]);
             }
 
             // ── Apply topology (if present in profile) ──

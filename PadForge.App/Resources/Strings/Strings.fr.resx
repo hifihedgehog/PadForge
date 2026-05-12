@@ -872,6 +872,7 @@
   <data name="Macro_RecordHint" xml:space="preserve"><value>Appuyez sur des boutons ou bougez un axe/gâchette pour enregistrer. Les axes sont détectés lorsqu'ils dépassent 50 % de déviation.</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Appuyez sur une entrée…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>inversé</value></data>
+  <data name="Macro_Axis_Half" xml:space="preserve"><value>demi-axe</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mappe en continu l'axe sélectionné (0–100 %) au volume système Windows, mis à l'échelle selon la limite de volume. Utilisez avec le déclencheur « Toujours », ou un bouton/axe avec « Tant que maintenu » + « Jusqu'au relâchement ».</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Contrôle le volume d'une application spécifique dans le mixeur Windows, mis à l'échelle selon la limite. Entrez le nom du processus (visible dans le Gestionnaire des tâches). Utilisez avec le déclencheur « Toujours », ou un bouton/axe avec « Tant que maintenu » + « Jusqu'au relâchement ».</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Mappe en continu l'axe sélectionné au mouvement de la souris (ou au défilement). Utilisez avec le déclencheur « Toujours », ou un bouton/axe avec « Tant que maintenu » + « Jusqu'au relâchement ». Pour stick vers souris, créez deux actions : une pour l'axe X, une pour l'axe Y.</value></data>

@@ -198,14 +198,11 @@ namespace PadForge.ViewModels
                             }
                             else if (entry.AxisTarget != MacroAxisTarget.None)
                             {
-                                string dirSign = entry.IsTriggerStyleAxis ? "" : entry.AxisDirection switch
-                                {
-                                    MacroAxisDirection.Positive => " +",
-                                    MacroAxisDirection.Negative => " −",
-                                    _ => ""
-                                };
-                                string invTag = entry.AxisInvert ? $" ({Strings.Instance.Macro_Axis_Inverted})" : "";
-                                inputs.Add($"{entry.AxisTarget.DisplayName()}{dirSign} > {entry.AxisDeadzone}%{invTag}");
+                                var tags = new List<string>();
+                                if (entry.HalfAxis) tags.Add(Strings.Instance.Macro_Axis_Half);
+                                if (entry.Invert)   tags.Add(Strings.Instance.Macro_Axis_Inverted);
+                                string tagText = tags.Count > 0 ? $" ({string.Join(", ", tags)})" : "";
+                                inputs.Add($"{entry.AxisTarget.DisplayName()} > {entry.DeadZone}%{tagText}");
                             }
                         }
                         string deviceName = ResolveDeviceName(grp.Key);
@@ -235,13 +232,11 @@ namespace PadForge.ViewModels
                         }
                         else if (entry.AxisTarget != MacroAxisTarget.None)
                         {
-                            string dirSign = entry.AxisDirection switch
-                            {
-                                MacroAxisDirection.Positive => " +",
-                                MacroAxisDirection.Negative => " −",
-                                _ => ""
-                            };
-                            parts.Add($"{entry.AxisTarget.DisplayName()}{dirSign} > {_triggerAxisThreshold}%");
+                            var tags = new List<string>();
+                            if (entry.HalfAxis) tags.Add(Strings.Instance.Macro_Axis_Half);
+                            if (entry.Invert)   tags.Add(Strings.Instance.Macro_Axis_Inverted);
+                            string tagText = tags.Count > 0 ? $" ({string.Join(", ", tags)})" : "";
+                            parts.Add($"{entry.AxisTarget.DisplayName()} > {entry.DeadZone}%{tagText}");
                         }
                     }
                 }
@@ -452,13 +447,10 @@ namespace PadForge.ViewModels
         /// <summary>One entry in the multi-device trigger combo. Exactly one
         /// of <see cref="RawButton"/>, <see cref="Pov"/>, or
         /// <see cref="AxisTarget"/> is populated per entry. Axis entries
-        /// carry per-entry <see cref="AxisDirection"/> (Any / Positive /
-        /// Negative — same as a half-axis selector since "Positive" means
-        /// "only fires when this axis is past deadzone in the + direction"),
-        /// per-entry <see cref="AxisDeadzone"/> (1–99 % from rest position
-        /// — center for sticks, zero for triggers), and per-entry
-        /// <see cref="AxisInvert"/> (flips the axis reading so triggers
-        /// can fire on release and sticks can reverse left↔right).</summary>
+        /// carry the same Invert / HalfAxis / DeadZone fields the merge-
+        /// mapping system uses on its axis-to-button sources — no per-axis
+        /// classification (the engine treats any axis index uniformly with
+        /// these three knobs).</summary>
         public sealed class TriggerInputEntry : ObservableObject
         {
             private Guid _deviceGuid;
@@ -490,60 +482,54 @@ namespace PadForge.ViewModels
             public MacroAxisTarget AxisTarget
             {
                 get => _axisTarget;
-                set { if (SetProperty(ref _axisTarget, value)) OnPropertyChanged(nameof(IsTriggerStyleAxis)); }
+                set => SetProperty(ref _axisTarget, value);
             }
 
-            /// <summary>Direction filter for axis entries (Any / Positive / Negative).
-            /// Doubles as the half-axis selector for stick axes — "Positive" fires only
-            /// when the stick deflects past +deadzone, "Negative" only past −deadzone.
-            /// Ignored for trigger axes (LT / RT) which are inherently unidirectional.</summary>
-            private MacroAxisDirection _axisDirection = MacroAxisDirection.Any;
-            public MacroAxisDirection AxisDirection
+            /// <summary>When true the axis reads as a half-axis: only the
+            /// half away from the centered rest position contributes. Same
+            /// semantics as <c>MappingSource.HalfAxis</c> — combined with
+            /// <see cref="Invert"/> it picks which half is active (false =
+            /// upper half / positive direction; true = lower half / negative
+            /// direction).</summary>
+            private bool _halfAxis;
+            public bool HalfAxis
             {
-                get => _axisDirection;
-                set => SetProperty(ref _axisDirection, value);
+                get => _halfAxis;
+                set => SetProperty(ref _halfAxis, value);
             }
 
-            /// <summary>Per-entry deadzone in percent (1..99) from rest position.
-            /// For sticks (LX/LY/RX/RY) rest is the centered value; the entry fires
-            /// when the stick deflects more than (deadzone/2) of the half-range past
-            /// center. For triggers (LT/RT) rest is the released position; the entry
-            /// fires when the trigger is pressed past deadzone of the full range.
-            /// Defaults to 30 % when an axis entry is first recorded — well past
-            /// stick-rest noise but loose enough to be reached with light press.</summary>
-            private int _axisDeadzone = 30;
-            public int AxisDeadzone
+            /// <summary>When true the axis reading is flipped (val → 1−val)
+            /// before the deadzone test. Same semantics as
+            /// <c>MappingSource.Invert</c>.</summary>
+            private bool _invert;
+            public bool Invert
             {
-                get => _axisDeadzone;
-                set => SetProperty(ref _axisDeadzone, Math.Clamp(value, 1, 99));
+                get => _invert;
+                set => SetProperty(ref _invert, value);
             }
 
-            /// <summary>When true the axis reading is flipped (val → 1−val) before
-            /// the deadzone / direction check. On triggers this turns "press to
-            /// fire" into "release to fire"; on sticks it swaps which deflection
-            /// counts as Positive vs Negative.</summary>
-            private bool _axisInvert;
-            public bool AxisInvert
+            /// <summary>Axis-to-button deadzone in percent (1..100). Default
+            /// matches the merge-mapping <c>MappingSource.DeadZone</c>
+            /// default. The axis fires past this percentage of the full
+            /// range (HalfAxis off) or past this percentage of the half
+            /// range past center (HalfAxis on).</summary>
+            private int _deadZone = 50;
+            public int DeadZone
             {
-                get => _axisInvert;
-                set => SetProperty(ref _axisInvert, value);
+                get => _deadZone;
+                set => SetProperty(ref _deadZone, Math.Clamp(value, 1, 100));
             }
 
-            /// <summary>True when the axis target is a trigger (LT / RT) — these rest
-            /// at one end of the range instead of the center, so the deadzone +
-            /// direction rules differ from stick axes.</summary>
-            [System.Xml.Serialization.XmlIgnore]
-            public bool IsTriggerStyleAxis =>
-                _axisTarget == MacroAxisTarget.LeftTrigger || _axisTarget == MacroAxisTarget.RightTrigger;
-
-            /// <summary>Compact tagged form for XML round-trip.</summary>
+            /// <summary>Compact tagged form for XML round-trip.
+            /// Format: <c>in:GUID:ax:Target:HalfAxis:Invert:DeadZone</c>
+            /// (e.g. <c>in:GUID:ax:LeftStickX:1:0:50</c>).</summary>
             public string Spec
             {
                 get
                 {
                     if (DeviceGuid == Guid.Empty) return "";
                     if (AxisTarget != MacroAxisTarget.None)
-                        return $"in:{DeviceGuid}:ax:{AxisTarget}:{AxisDirection}:{AxisDeadzone}:{(AxisInvert ? 1 : 0)}";
+                        return $"in:{DeviceGuid}:ax:{AxisTarget}:{(HalfAxis ? 1 : 0)}:{(Invert ? 1 : 0)}:{DeadZone}";
                     if (!string.IsNullOrEmpty(Pov)) return $"in:{DeviceGuid}:pov:{Pov}";
                     if (RawButton >= 0) return $"in:{DeviceGuid}:btn:{RawButton}";
                     return "";
@@ -570,12 +556,34 @@ namespace PadForge.ViewModels
                     case "ax":
                         if (!Enum.TryParse<MacroAxisTarget>(parts[3], out var at) || at == MacroAxisTarget.None) return null;
                         entry.AxisTarget = at;
-                        if (parts.Length >= 5 && Enum.TryParse<MacroAxisDirection>(parts[4], out var dir))
-                            entry.AxisDirection = dir;
-                        if (parts.Length >= 6 && int.TryParse(parts[5], out int dz))
-                            entry.AxisDeadzone = dz;
-                        if (parts.Length >= 7 && int.TryParse(parts[6], out int inv))
-                            entry.AxisInvert = inv != 0;
+                        // New format: parts[4]=HalfAxis(0/1), parts[5]=Invert(0/1), parts[6]=DeadZone(1-100).
+                        // Legacy migration: if parts[4] is "Positive"/"Negative"/"Any" (older direction-based
+                        // spec), map it to HalfAxis + Invert and use parts[5] as deadzone, parts[6] as invert.
+                        if (parts.Length >= 5)
+                        {
+                            if (parts[4] == "0" || parts[4] == "1")
+                            {
+                                entry.HalfAxis = parts[4] == "1";
+                                if (parts.Length >= 6 && (parts[5] == "0" || parts[5] == "1"))
+                                    entry.Invert = parts[5] == "1";
+                                if (parts.Length >= 7 && int.TryParse(parts[6], out int dz))
+                                    entry.DeadZone = dz;
+                            }
+                            else
+                            {
+                                // Legacy "Positive"/"Negative"/"Any" form. Translate:
+                                //   Positive → HalfAxis=true,  Invert=false
+                                //   Negative → HalfAxis=true,  Invert=true
+                                //   Any      → HalfAxis=false, Invert=false
+                                if (parts[4] == "Positive") { entry.HalfAxis = true;  entry.Invert = false; }
+                                else if (parts[4] == "Negative") { entry.HalfAxis = true; entry.Invert = true; }
+                                else { entry.HalfAxis = false; entry.Invert = false; }
+                                if (parts.Length >= 6 && int.TryParse(parts[5], out int legacyDz))
+                                    entry.DeadZone = legacyDz;
+                                // Legacy parts[6] was an invert flag; ignore in favor of the
+                                // direction-derived value above.
+                            }
+                        }
                         return entry;
                     default: return null;
                 }

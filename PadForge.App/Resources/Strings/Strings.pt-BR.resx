@@ -872,6 +872,7 @@
   <data name="Macro_RecordHint" xml:space="preserve"><value>Pressione botões ou mova um eixo/gatilho para gravar. Os eixos são detectados quando movidos além de 50%.</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Pressione qualquer entrada…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>invertido</value></data>
+  <data name="Macro_Axis_Half" xml:space="preserve"><value>meio eixo</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mapeia continuamente o eixo selecionado (0–100%) para o volume do sistema Windows, escalonado ao limite de volume. Use com gatilho "Sempre", ou botão/eixo com "Enquanto Segurar" + "Até Soltar".</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controla o volume de um aplicativo específico no mixer de volume do Windows, escalonado ao limite de volume. Insira o nome do processo (visível no Gerenciador de Tarefas). Use com gatilho "Sempre", ou botão/eixo com "Enquanto Segurar" + "Até Soltar".</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Mapeia continuamente o eixo selecionado para o movimento do mouse (ou rolagem). Use com gatilho "Sempre", ou botão/eixo com "Enquanto Segurar" + "Até Soltar". Para usar analógico como mouse, crie duas ações: uma para o eixo X e outra para o eixo Y.</value></data>

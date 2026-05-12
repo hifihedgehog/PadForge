@@ -872,6 +872,7 @@
   <data name="Macro_RecordHint" xml:space="preserve"><value>Druk op knoppen of beweeg een as/trigger om op te nemen. Assen worden gedetecteerd wanneer ze meer dan 50% worden uitgeslagen.</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Druk op een invoer…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>omgekeerd</value></data>
+  <data name="Macro_Axis_Half" xml:space="preserve"><value>halve as</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Wijst de geselecteerde as (0–100%) continu toe aan het Windows-systeemvolume, geschaald naar de volumelimiet. Gebruik met de "Altijd"-trigger, of een knop-/astrigger met "Tijdens ingedrukt houden" + "Tot loslaten".</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Regelt het volume van een specifieke toepassing in de Windows-volumemixer, geschaald naar de volumelimiet. Voer de procesnaam in (zichtbaar in Taakbeheer). Gebruik met de "Altijd"-trigger, of een knop-/astrigger met "Tijdens ingedrukt houden" + "Tot loslaten".</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Wijst de geselecteerde as continu toe aan muisbeweging (of scrollen). Gebruik met de "Altijd"-trigger, of een knop-/astrigger met "Tijdens ingedrukt houden" + "Tot loslaten". Maak voor stick-naar-muis twee acties aan: een voor de X-as, een voor de Y-as.</value></data>

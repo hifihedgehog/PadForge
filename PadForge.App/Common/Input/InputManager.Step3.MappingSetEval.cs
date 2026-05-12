@@ -110,61 +110,277 @@ namespace PadForge.Common.Input
         }
 
         // ─────────────────────────────────────────────
-        //  Shift layer activator state
+        //  Shift layer activator state (v1 — multi-activator)
         //
-        //  Per-slot Toggle engagement + previous-frame button-down latch
-        //  for edge detection. State does not persist across app restart
-        //  or profile switch (cleared with the source-kind runtime).
+        //  Each slot carries a ShiftRuntime instance that tracks every
+        //  activator's was-down latch and toggle-engaged flag, plus an
+        //  ordered engagement stack for last-engaged-wins resolution.
+        //  Per-slot, per-activator. Cleared on profile switch and on
+        //  slot-index compaction.
         // ─────────────────────────────────────────────
-        private static readonly bool[] _shiftToggleEngaged = new bool[MaxPads];
-        private static readonly bool[] _shiftButtonWasDown = new bool[MaxPads];
 
-        /// <summary>Resolves the active shift layer mask for a slot based
-        /// on its <see cref="MappingSet.ShiftButton"/> activator (Hold or
-        /// Toggle). Returns <c>"Base"</c> when no activator is configured
-        /// or its button isn't held / toggled on.</summary>
+        /// <summary>Per-slot runtime state for shift activators. One instance
+        /// per slot; resized when the slot's <see cref="MappingSet.ShiftActivators"/>
+        /// list grows or shrinks. The <see cref="Stack"/> records the order
+        /// activators engaged in; the most recently engaged sits at the tail
+        /// (last-engaged-wins).</summary>
+        private sealed class ShiftRuntime
+        {
+            public bool[] WasDown = System.Array.Empty<bool>();
+            public bool[] ToggleOn = System.Array.Empty<bool>();
+            public bool[] CustomEngaged = System.Array.Empty<bool>();   // v2 Custom mode
+            public int[]  CycleIndex   = System.Array.Empty<int>();      // v3 Cycle mode position
+            public bool[] StickyArmed  = System.Array.Empty<bool>();     // v3 Sticky mode pending
+            public long[] EngageStartTicks = System.Array.Empty<long>(); // v2 Delay debounce
+            public readonly List<int> Stack = new();
+            public string CustomLayer = "";   // v2 Custom mode current layer (overrides stack when non-empty)
+
+            public void EnsureSize(int count)
+            {
+                if (WasDown.Length >= count) return;
+                int newSize = count;
+                WasDown = ResizeBool(WasDown, newSize);
+                ToggleOn = ResizeBool(ToggleOn, newSize);
+                CustomEngaged = ResizeBool(CustomEngaged, newSize);
+                CycleIndex = ResizeInt(CycleIndex, newSize);
+                StickyArmed = ResizeBool(StickyArmed, newSize);
+                EngageStartTicks = ResizeLong(EngageStartTicks, newSize);
+            }
+
+            public void Clear()
+            {
+                System.Array.Clear(WasDown, 0, WasDown.Length);
+                System.Array.Clear(ToggleOn, 0, ToggleOn.Length);
+                System.Array.Clear(CustomEngaged, 0, CustomEngaged.Length);
+                System.Array.Clear(CycleIndex, 0, CycleIndex.Length);
+                System.Array.Clear(StickyArmed, 0, StickyArmed.Length);
+                System.Array.Clear(EngageStartTicks, 0, EngageStartTicks.Length);
+                Stack.Clear();
+                CustomLayer = "";
+            }
+
+            private static bool[] ResizeBool(bool[] arr, int n)
+            { var r = new bool[n]; System.Array.Copy(arr, r, System.Math.Min(arr.Length, n)); return r; }
+            private static int[]  ResizeInt(int[] arr, int n)
+            { var r = new int[n];  System.Array.Copy(arr, r, System.Math.Min(arr.Length, n)); return r; }
+            private static long[] ResizeLong(long[] arr, int n)
+            { var r = new long[n]; System.Array.Copy(arr, r, System.Math.Min(arr.Length, n)); return r; }
+        }
+
+        private static readonly ShiftRuntime[] _shiftRuntime = new ShiftRuntime[MaxPads];
+
+        /// <summary>Clears every slot's shift runtime state. Called from
+        /// InputService.ApplyProfile and from CompactSlotsForGaps so a
+        /// profile / topology transition starts every activator un-engaged.</summary>
+        public static void ClearAllShiftRuntime()
+        {
+            for (int i = 0; i < _shiftRuntime.Length; i++)
+                _shiftRuntime[i]?.Clear();
+        }
+
+        /// <summary>Clears one slot's shift runtime state. Use when a single
+        /// slot changes shift-activator topology (e.g. activator added/
+        /// removed/edited) and we want the new shape to start clean.</summary>
+        public static void ClearShiftRuntime(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= _shiftRuntime.Length) return;
+            _shiftRuntime[slotIndex]?.Clear();
+        }
+
+        /// <summary>Resolves the active shift-layer mask for a slot.
+        /// Walks <see cref="MappingSet.ShiftActivators"/>, updates engaged
+        /// state for activators owned by <paramref name="thisDeviceGuid"/>,
+        /// and returns the last-engaged layer's <see cref="ShiftActivator.LayerMask"/>.
+        /// Returns <c>"Base"</c> when nothing is engaged.</summary>
         private static string ResolveActiveLayerMask(
             int slotIndex,
             MappingSet mappingSet,
             CustomInputState thisDeviceState,
             string thisDeviceGuid)
         {
-            var act = mappingSet?.ShiftButton;
-            if (act == null) return "Base";
+            if (mappingSet == null) return "Base";
+            var activators = mappingSet.ShiftActivators;
+            if (activators == null || activators.Count == 0) return "Base";
+            if (slotIndex < 0 || slotIndex >= MaxPads) return "Base";
 
-            // Only the device that owns the shift button reads it; other
-            // devices return Base on this pass and the activator's owning
-            // device handles the engagement transition. This keeps cross-
-            // device shift cleanly scoped: the user binds the activator
-            // to one physical device, and that device drives the layer
-            // transition for the slot.
-            if (!string.IsNullOrEmpty(act.DeviceGuid) &&
-                !string.Equals(act.DeviceGuid, thisDeviceGuid, System.StringComparison.OrdinalIgnoreCase))
-                return "Base";
+            var rt = _shiftRuntime[slotIndex] ??= new ShiftRuntime();
+            rt.EnsureSize(activators.Count);
 
-            bool buttonDown = SourceKindRuntimeReadButtonLikeBool(thisDeviceState, act.Descriptor);
+            for (int i = 0; i < activators.Count; i++)
+            {
+                var act = activators[i];
+                if (act == null) continue;
+
+                // State updates ONLY happen on the activator's owning-device
+                // pass. Other devices' passes still read the resolved
+                // active mask below — that's how cross-device activation
+                // gates this slot's sources on every device pass.
+                if (!string.Equals(act.DeviceGuid ?? "", thisDeviceGuid ?? "", System.StringComparison.OrdinalIgnoreCase)
+                    && !string.IsNullOrEmpty(act.DeviceGuid))
+                    continue;
+
+                UpdateActivatorState(rt, i, act, thisDeviceState, slotIndex);
+            }
+
+            // v2 Custom mode: explicit jump-to-layer overrides the stack.
+            if (!string.IsNullOrEmpty(rt.CustomLayer))
+                return rt.CustomLayer;
+
+            // Last-engaged-wins: tail of stack.
+            if (rt.Stack.Count == 0) return "Base";
+            int winnerIdx = rt.Stack[rt.Stack.Count - 1];
+            if (winnerIdx < 0 || winnerIdx >= activators.Count) return "Base";
+            var winner = activators[winnerIdx];
+            return string.IsNullOrEmpty(winner?.LayerMask) ? "Base" : winner.LayerMask;
+        }
+
+        /// <summary>Reads the input for a single activator, updates its
+        /// per-mode latch state on <paramref name="rt"/>, and maintains the
+        /// engagement stack. Supports Hold / Toggle / Custom / Cycle /
+        /// Sticky modes plus the v2 Delay debounce + Chord/Axis kinds.</summary>
+        private static void UpdateActivatorState(
+            ShiftRuntime rt,
+            int actIdx,
+            ShiftActivator act,
+            CustomInputState state,
+            int slotIndex)
+        {
+            // ── Read the activator's current input ──
+            bool inputDown = ReadActivatorInput(act, state);
+
+            // ── v2 Delay before Jump: gate transitions until the input
+            //    has been continuously down for DelayMs ──
+            long nowTicks = System.DateTime.UtcNow.Ticks;
+            if (inputDown && !rt.WasDown[actIdx])
+                rt.EngageStartTicks[actIdx] = nowTicks;
+            long heldMs = inputDown
+                ? (nowTicks - rt.EngageStartTicks[actIdx]) / System.TimeSpan.TicksPerMillisecond
+                : 0;
+            bool delayMet = act.DelayMs <= 0 || !inputDown || heldMs >= act.DelayMs;
 
             string mode = act.Mode ?? "Hold";
             switch (mode)
             {
                 case "Toggle":
                 {
-                    // Rising-edge detection: engagement flips on press.
-                    if (slotIndex >= 0 && slotIndex < _shiftToggleEngaged.Length)
+                    bool risingEdge = inputDown && !rt.WasDown[actIdx] && delayMet;
+                    if (risingEdge)
+                        rt.ToggleOn[actIdx] = !rt.ToggleOn[actIdx];
+                    UpdateStack(rt, actIdx, rt.ToggleOn[actIdx]);
+                    break;
+                }
+                case "Custom":
+                {
+                    // v2: press transitions to JumpToLayer; release does
+                    // nothing (layer persists until another Custom activator
+                    // fires or all Hold/Toggle activators in the stack lose
+                    // engagement). Empty JumpToLayer means "back to Base."
+                    bool risingEdge = inputDown && !rt.WasDown[actIdx] && delayMet;
+                    if (risingEdge)
+                        rt.CustomLayer = act.JumpToLayer ?? "";
+                    break;
+                }
+                case "Cycle":
+                {
+                    // v3: each press advances through CycleLayers. Wraps
+                    // past the last entry back to Base (empty string).
+                    bool risingEdge = inputDown && !rt.WasDown[actIdx] && delayMet;
+                    if (risingEdge)
                     {
-                        bool prev = _shiftButtonWasDown[slotIndex];
-                        if (buttonDown && !prev)
-                            _shiftToggleEngaged[slotIndex] = !_shiftToggleEngaged[slotIndex];
-                        _shiftButtonWasDown[slotIndex] = buttonDown;
-                        return _shiftToggleEngaged[slotIndex] ? "Shift" : "Base";
+                        var layers = (act.CycleLayers ?? "").Split('|', System.StringSplitOptions.RemoveEmptyEntries);
+                        if (layers.Length > 0)
+                        {
+                            rt.CycleIndex[actIdx] = (rt.CycleIndex[actIdx] + 1) % (layers.Length + 1);
+                            rt.CustomLayer = rt.CycleIndex[actIdx] == 0
+                                ? ""
+                                : layers[rt.CycleIndex[actIdx] - 1];
+                        }
                     }
-                    return "Base";
+                    break;
+                }
+                case "Sticky":
+                {
+                    // v3: press engages; layer stays until the next input
+                    // fires on the engaged layer (caller arms via
+                    // NotifyStickyConsumed; here we just maintain engagement
+                    // while StickyArmed is true).
+                    bool risingEdge = inputDown && !rt.WasDown[actIdx] && delayMet;
+                    if (risingEdge)
+                        rt.StickyArmed[actIdx] = true;
+                    UpdateStack(rt, actIdx, rt.StickyArmed[actIdx]);
+                    break;
                 }
                 case "Hold":
                 default:
-                    return buttonDown ? "Shift" : "Base";
+                {
+                    bool engaged = inputDown && delayMet;
+                    UpdateStack(rt, actIdx, engaged);
+                    break;
+                }
+            }
+
+            rt.WasDown[actIdx] = inputDown;
+        }
+
+        /// <summary>Reads the input for an activator according to its
+        /// <see cref="ShiftActivator.Kind"/>. Returns <c>true</c> when the
+        /// activator should be considered "down" for engagement purposes.</summary>
+        private static bool ReadActivatorInput(ShiftActivator act, CustomInputState state)
+        {
+            string kind = act.Kind ?? "Button";
+            switch (kind)
+            {
+                case "Chord":
+                {
+                    // v2: both inputs must be down. Note: ChordSecondDeviceGuid
+                    // is read against the same state because the chord's two
+                    // halves must be on the same activator-owning device pass
+                    // (true cross-device chords would require coordinating
+                    // state across two device passes — out of scope for v1/v2).
+                    bool a = SourceKindRuntimeReadButtonLikeBool(state, act.Descriptor);
+                    bool b = SourceKindRuntimeReadButtonLikeBool(state, act.ChordSecondDescriptor);
+                    return a && b;
+                }
+                case "Axis":
+                {
+                    // v2: axis past threshold. ReadAxisLike returns [-1..+1].
+                    float axisVal = SourceKindRuntimeReadAxisLikeFloat(state, act.Descriptor);
+                    return System.Math.Abs(axisVal) >= act.AxisThreshold;
+                }
+                case "Button":
+                default:
+                    return SourceKindRuntimeReadButtonLikeBool(state, act.Descriptor);
             }
         }
+
+        /// <summary>Maintains <see cref="ShiftRuntime.Stack"/> so the tail is
+        /// always the most recently engaged activator. Adds on rising edge
+        /// (engaged transition from absent), removes when engagement clears.</summary>
+        private static void UpdateStack(ShiftRuntime rt, int actIdx, bool engaged)
+        {
+            int existing = rt.Stack.IndexOf(actIdx);
+            if (engaged)
+            {
+                // Move-to-tail semantics: re-engaging a held activator
+                // doesn't churn the stack, but a release+re-press moves it
+                // to the top so the most-recently-engaged wins.
+                if (existing < 0)
+                    rt.Stack.Add(actIdx);
+            }
+            else if (existing >= 0)
+            {
+                rt.Stack.RemoveAt(existing);
+            }
+        }
+
+        /// <summary>Axis read used by the Axis activator kind. Mirrors
+        /// <see cref="SourceKindRuntimeReadButtonLikeBool"/> but returns the
+        /// signed [-1..+1] bipolar axis value without thresholding.</summary>
+        private static float SourceKindRuntimeReadAxisLikeFloat(CustomInputState state, string descriptor)
+            => SourceEvaluator.EvaluateForBipolarAxisTarget(
+                state,
+                new MappingSource { Kind = "Direct", Descriptor = descriptor ?? "" },
+                0, "", 0, null, 0);
 
         // Reuses the Engine's button-like reader without going through the
         // managed-cast SourceCoercion wrapper (we already know the activator
@@ -237,10 +453,12 @@ namespace PadForge.Common.Input
             var axisContribs = _msAxisBuf ??= new List<float>(8);
             var boolContribs = _msBoolBuf ??= new List<bool>(8);
 
-            // Phase 5 — resolve the shift activator's current state for
-            // this slot/device. Overlay-with-fallthrough: rows with the
-            // active layer mask override matching Targets; targets without
-            // an active-mask row fall through to the Base row.
+            // Resolve the active shift layer for this slot/device.
+            // Overlay-with-fallthrough: rows on the active layer override
+            // matching Targets; targets without an active-layer row fall
+            // through to the Base row UNLESS the active-layer row is an
+            // explicit "do not inherit" declaration (NoInherit=true), in
+            // which case Base is suppressed for that target.
             string activeMask = ResolveActiveLayerMask(slotIndex, mappingSet, state, thisDeviceGuid);
             HashSet<string> shiftCoveredTargets = activeMask != "Base" ? new HashSet<string>() : null;
             if (shiftCoveredTargets != null)
@@ -249,7 +467,16 @@ namespace PadForge.Common.Input
                 {
                     var r = rowsSnapshot[i];
                     if (r == null) continue;
-                    if (string.Equals(r.LayerMask, activeMask, System.StringComparison.Ordinal))
+                    if (!string.Equals(r.LayerMask, activeMask, System.StringComparison.Ordinal))
+                        continue;
+                    // A matching-layer row blocks Base fallthrough when it
+                    // has at least one source (real override) OR when it's
+                    // an explicit NoInherit declaration. Rows with zero
+                    // sources and NoInherit=false are transparent so the
+                    // user can author an "intentionally inherit" row
+                    // without writing source data.
+                    bool hasSources = r.Sources != null && r.Sources.Count > 0;
+                    if (hasSources || r.NoInherit)
                         shiftCoveredTargets.Add(r.Target ?? "");
                 }
             }
@@ -278,9 +505,18 @@ namespace PadForge.Common.Input
                     }
                     else if (rowLayer != activeMask)
                     {
-                        // Some other shift layer (Shift1 vs Shift2 in the
-                        // forward-compatible schema). Skip on this pass.
+                        // Some other shift layer (Shift1 vs Shift2 etc).
+                        // Skip on this pass.
                         continue;
+                    }
+                    else
+                    {
+                        // Matching-mask row with zero sources and
+                        // NoInherit=false is transparent — skip evaluation
+                        // and let Base fall through (handled by the
+                        // shiftCoveredTargets logic above).
+                        bool hasSources = row.Sources != null && row.Sources.Count > 0;
+                        if (!hasSources && !row.NoInherit) continue;
                     }
                 }
 

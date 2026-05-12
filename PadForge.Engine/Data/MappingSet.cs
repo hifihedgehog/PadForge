@@ -9,26 +9,31 @@ namespace PadForge.Engine.Data
     /// live naturally inside a single <see cref="MappingRow"/>.
     ///
     /// <para>
-    /// Phase 1a (this commit): the type exists and round-trips through XML.
-    /// Phase 1b: populated from legacy <see cref="PadSetting"/> on load.
-    /// Phase 1c: read by Step 3 in place of <see cref="PadSetting"/>'s
-    /// per-field mapping descriptors.
+    /// Shift-layer authoring (Issue #61 Phase 6) lives entirely inside
+    /// this object: <see cref="ShiftActivators"/> declares the activator
+    /// configuration for every layer on this slot, and <see cref="Rows"/>
+    /// carries every layer's rows tagged by <see cref="MappingRow.LayerMask"/>.
+    /// This guarantees shift state is per-profile by construction — the
+    /// whole MappingSet is what <see cref="ProfileData.SlotMappingSets"/>
+    /// stores per slot.
     /// </para>
     /// </summary>
     public class MappingSet
     {
         /// <summary>Mapping rows. Each row has a <see cref="MappingRow.Target"/>
         /// and <see cref="MappingRow.LayerMask"/>; a single Target can have
-        /// multiple rows when more than one layer is configured (e.g. Base
-        /// plus Shift).</summary>
+        /// multiple rows when more than one layer is configured.</summary>
         [XmlElement("Row")]
         public List<MappingRow> Rows { get; set; } = new();
 
-        /// <summary>Shift activator configuration, if any. <c>null</c> = no
-        /// shift layer configured. The Shift-layer recipe lands as a
-        /// downstream commit; Phase 1a reserves this slot now so the schema
-        /// is forward-compatible.</summary>
-        [XmlElement(IsNullable = true)]
-        public ShiftActivator ShiftButton { get; set; }
+        /// <summary>
+        /// Shift activators authored for this slot. Each activator names
+        /// the layer it engages via <see cref="ShiftActivator.LayerMask"/>.
+        /// Empty list = no shift layers; only Base rows fire. Multi-activator
+        /// resolution uses last-engaged-wins (the most recently engaged
+        /// activator's layer is active).
+        /// </summary>
+        [XmlElement("ShiftActivator")]
+        public List<ShiftActivator> ShiftActivators { get; set; } = new();
     }
 }

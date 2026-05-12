@@ -1277,8 +1277,46 @@
 
 
 
-
-
-
-
+  <!-- Shift-modus (Issue #61 Phase 6 v1+) -->
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Shift-laag</value></data>
+  <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Voeg een Shift-laag toe — een tweede toewijzingstabel die actief is terwijl een knop wordt ingedrukt of geschakeld.</value></data>
+  <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Basis</value></data>
+  <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift-laag</value></data>
+  <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Laagnaam</value></data>
+  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Activator-invoer</value></data>
+  <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modus</value></data>
+  <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Vasthouden</value></data>
+  <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Schakelen</value></data>
+  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Aangepast (spring naar laag)</value></data>
+  <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Cyclus</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Plakkerig (eenmalig)</value></data>
+  <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Laagnaam is vereist.</value></data>
+  <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>Een laag met die naam bestaat al op deze sleuf.</value></data>
+  <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>Kies een activator-invoer.</value></data>
+  <data name="Pad_Shift_Configure" xml:space="preserve"><value>Activator configureren…</value></data>
+  <data name="Pad_Shift_Rename" xml:space="preserve"><value>Laag hernoemen…</value></data>
+  <data name="Pad_Shift_Color" xml:space="preserve"><value>Laagkleur</value></data>
+  <data name="Pad_Shift_Copy" xml:space="preserve"><value>Laagregels kopiëren</value></data>
+  <data name="Pad_Shift_Paste" xml:space="preserve"><value>Regels in laag plakken</value></data>
+  <data name="Pad_Shift_Clear" xml:space="preserve"><value>Laagregels wissen</value></data>
+  <data name="Pad_Shift_Delete" xml:space="preserve"><value>Laag verwijderen</value></data>
+  <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Shift-laag verwijderen</value></data>
+  <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>De laag "{0}" en al haar toewijzingsregels verwijderen? Dit kan niet ongedaan worden gemaakt.</value></data>
+  <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>Laag hernoemen</value></data>
+  <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Niet overerven</value></data>
+  <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Indien aangevinkt blijft het doel van deze laag UIT in plaats van terug te vallen op de Basisregel.</value></data>
+  <data name="Pad_Shift_Delay" xml:space="preserve"><value>Vertraging (ms)</value></data>
+  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Milliseconden dat de activator actief moet blijven voordat de laagwijziging plaatsvindt.</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Activator-toewijzing uitstellen</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Indien aangevinkt wordt de eigen toewijzing van de activator-invoer ook geactiveerd naast de laagwijziging.</value></data>
+  <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Spring naar laag</value></data>
+  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Tweede akkoord-invoer</value></data>
+  <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>As-drempel</value></data>
+  <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Door lagen cyclen</value></data>
+  <data name="Pad_Shift_Kind" xml:space="preserve"><value>Soort activator</value></data>
+  <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Knop</value></data>
+  <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Akkoord (A + B)</value></data>
+  <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>As boven drempel</value></data>
+  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Niet-toegewezen doelen van Basis overerven</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Indien aangevinkt vallen doelen die deze laag niet expliciet toewijst terug op de Basislaag. Indien niet aangevinkt (standaard) vervangt de laag Basis volledig en blijven niet-toegewezen doelen uit.</value></data>
 </root>

@@ -2770,8 +2770,13 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <!-- Invert / Half-axis / Bidirectional / Do-not-inherit options -->
-                            <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="460">
+                            <!-- Invert / Half-axis / Bidirectional / Do-not-inherit options.
+                                 Width sized for the worst-case localization of the
+                                 conditional "Do not inherit" affordance — German /
+                                 Dutch / Japanese strings run longer than English, so
+                                 keep enough room for all four checkboxes plus
+                                 captions without clipping. -->
+                            <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="640">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">

@@ -1257,8 +1257,46 @@
 
 
 
-
-
-
-
+  <!-- Mode Shift (Issue #61 Phase 6 v1+) -->
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Couche Shift</value></data>
+  <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Ajoute une couche Shift — un second tableau d'affectations actif tant qu'un bouton est maintenu ou basculé.</value></data>
+  <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Base</value></data>
+  <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Couche Shift</value></data>
+  <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nom de la couche</value></data>
+  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Entrée d'activation</value></data>
+  <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Maintenir</value></data>
+  <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Bascule</value></data>
+  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Personnalisé (aller à la couche)</value></data>
+  <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Cycle</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Collant (une fois)</value></data>
+  <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Le nom de la couche est requis.</value></data>
+  <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>Une couche avec ce nom existe déjà sur cet emplacement.</value></data>
+  <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>Choisissez une entrée d'activation.</value></data>
+  <data name="Pad_Shift_Configure" xml:space="preserve"><value>Configurer l'activateur…</value></data>
+  <data name="Pad_Shift_Rename" xml:space="preserve"><value>Renommer la couche…</value></data>
+  <data name="Pad_Shift_Color" xml:space="preserve"><value>Couleur de la couche</value></data>
+  <data name="Pad_Shift_Copy" xml:space="preserve"><value>Copier les lignes de la couche</value></data>
+  <data name="Pad_Shift_Paste" xml:space="preserve"><value>Coller les lignes dans la couche</value></data>
+  <data name="Pad_Shift_Clear" xml:space="preserve"><value>Effacer les lignes de la couche</value></data>
+  <data name="Pad_Shift_Delete" xml:space="preserve"><value>Supprimer la couche</value></data>
+  <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Supprimer la couche Shift</value></data>
+  <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>Supprimer la couche « {0} » et toutes ses lignes d'affectation ? Cette action est irréversible.</value></data>
+  <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>Renommer la couche</value></data>
+  <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Ne pas hériter</value></data>
+  <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Lorsque coché, la cible de cette couche reste DÉSACTIVÉE au lieu de retomber sur la ligne Base.</value></data>
+  <data name="Pad_Shift_Delay" xml:space="preserve"><value>Délai (ms)</value></data>
+  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Millisecondes pendant lesquelles l'activateur doit rester engagé avant que le changement de couche se déclenche.</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Différer l'affectation de l'activateur</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Lorsque coché, l'affectation propre à l'entrée d'activation se déclenche également avec le changement de couche.</value></data>
+  <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Aller à la couche</value></data>
+  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Deuxième entrée de l'accord</value></data>
+  <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Seuil de l'axe</value></data>
+  <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Parcourir les couches</value></data>
+  <data name="Pad_Shift_Kind" xml:space="preserve"><value>Type d'activateur</value></data>
+  <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Bouton</value></data>
+  <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Accord (A + B)</value></data>
+  <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Axe au-delà du seuil</value></data>
+  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Hériter les cibles non affectées de Base</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Lorsque coché, les cibles que cette couche n'affecte pas explicitement retombent sur la couche Base. Lorsque décoché (par défaut), la couche remplace entièrement Base et les cibles non affectées restent désactivées.</value></data>
 </root>

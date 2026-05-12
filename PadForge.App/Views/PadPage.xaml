@@ -1058,6 +1058,43 @@
                                     </ComboBox>
                                 </StackPanel>
 
+                                <!-- Per-device axis entries editor — one row per axis entry, same
+                                     Invert / HalfAxis / DeadZone trio the merge-mapping editor uses
+                                     for its axis-to-button sources. Visible only when the recorded
+                                     combo contains at least one per-device axis entry. -->
+                                <ItemsControl ItemsSource="{Binding TriggerAxisEntries}"
+                                              Margin="0,4,0,4"
+                                              Visibility="{Binding HasTriggerAxisEntries, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,3" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding DeviceLabel}"
+                                                           FontSize="11" Width="120"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                           VerticalAlignment="Center"
+                                                           Margin="0,0,6,0"/>
+                                                <TextBlock Text="{Binding AxisLabel}"
+                                                           FontSize="11" Width="120"
+                                                           VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                                <CheckBox Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"
+                                                          IsChecked="{Binding Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                                <CheckBox Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"
+                                                          IsChecked="{Binding HalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                                <Slider Value="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        Minimum="1" Maximum="100" Width="120"
+                                                        VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                <TextBox Text="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Width="36" VerticalAlignment="Center"
+                                                         Padding="2,1" Margin="0,0,2,0"/>
+                                                <TextBlock Text="%" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
                                 <CheckBox Content="{Binding Macro_ConsumeTrigger, Source={x:Static strings:Strings.Instance}}"
                                           IsChecked="{Binding ConsumeTriggerButtons, Mode=TwoWay}"
                                           Margin="0,0,0,4"/>

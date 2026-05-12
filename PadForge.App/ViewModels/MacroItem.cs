@@ -520,6 +520,24 @@ namespace PadForge.ViewModels
                 set => SetProperty(ref _deadZone, Math.Clamp(value, 1, 100));
             }
 
+            /// <summary>Device name resolved from <see cref="DeviceGuid"/> for the
+            /// per-entry editor UI.</summary>
+            [System.Xml.Serialization.XmlIgnore]
+            public string DeviceLabel
+            {
+                get
+                {
+                    if (_deviceGuid == Guid.Empty) return "";
+                    var ud = SettingsManager.FindDeviceByInstanceGuid(_deviceGuid);
+                    return ud?.ResolvedName ?? "";
+                }
+            }
+
+            /// <summary>Localized axis name (Left Stick X / Left Trigger / …)
+            /// for the per-entry editor UI.</summary>
+            [System.Xml.Serialization.XmlIgnore]
+            public string AxisLabel => _axisTarget == MacroAxisTarget.None ? "" : _axisTarget.DisplayName();
+
             /// <summary>Compact tagged form for XML round-trip.
             /// Format: <c>in:GUID:ax:Target:HalfAxis:Invert:DeadZone</c>
             /// (e.g. <c>in:GUID:ax:LeftStickX:1:0:50</c>).</summary>
@@ -632,6 +650,37 @@ namespace PadForge.ViewModels
             return _triggerInputEntries ?? (IReadOnlyList<TriggerInputEntry>)Array.Empty<TriggerInputEntry>();
         }
 
+        /// <summary>Subset of <see cref="GetTriggerInputEntries"/> containing
+        /// just the axis-bearing entries — used by the per-entry editor in
+        /// the macro trigger panel so the user can toggle Invert / HalfAxis
+        /// and adjust DeadZone the same way the merge-mapping editor exposes
+        /// them on axis-to-button sources.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public IEnumerable<TriggerInputEntry> TriggerAxisEntries
+        {
+            get
+            {
+                var entries = GetTriggerInputEntries();
+                for (int i = 0; i < entries.Count; i++)
+                    if (entries[i].AxisTarget != MacroAxisTarget.None)
+                        yield return entries[i];
+            }
+        }
+
+        /// <summary>True when the macro has at least one per-device axis
+        /// entry. Drives the visibility of the per-entry axis editor panel.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool HasTriggerAxisEntries
+        {
+            get
+            {
+                var entries = GetTriggerInputEntries();
+                for (int i = 0; i < entries.Count; i++)
+                    if (entries[i].AxisTarget != MacroAxisTarget.None) return true;
+                return false;
+            }
+        }
+
         /// <summary>Replaces the entry list. Used by the recorder when
         /// finalizing a multi-device combo.</summary>
         public void SetTriggerInputEntries(List<TriggerInputEntry> entries)
@@ -640,7 +689,10 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(TriggerInputs));
             OnPropertyChanged(nameof(UsesRawTrigger));
             OnPropertyChanged(nameof(UsesPovTrigger));
+            OnPropertyChanged(nameof(UsesAxisTrigger));
             OnPropertyChanged(nameof(TriggerDisplayText));
+            OnPropertyChanged(nameof(TriggerAxisEntries));
+            OnPropertyChanged(nameof(HasTriggerAxisEntries));
         }
 
         private void EnsureTriggerInputEntries()
@@ -1219,6 +1271,17 @@ namespace PadForge.ViewModels
         public RelayCommand ClearTriggerCommand =>
             _clearTriggerCommand ??= new RelayCommand(() =>
             {
+                // If a recording is active, stop it first. Otherwise the
+                // InputService recorder keeps writing _recordedInputEntries
+                // back to the macro every polling tick and the cleared
+                // axis entries reappear on the next frame — that's the
+                // "had to hit Clear twice" bug.
+                if (IsRecordingTrigger)
+                {
+                    IsRecordingTrigger = false;
+                    RecordTriggerRequested?.Invoke(this, EventArgs.Empty);
+                }
+
                 TriggerButtons = 0;
                 TriggerCustomButtonWords = new uint[4];
                 TriggerRawButtons = Array.Empty<int>();
@@ -1228,6 +1291,8 @@ namespace PadForge.ViewModels
                 TriggerPovs = Array.Empty<string>();
                 SetTriggerInputEntries(new List<TriggerInputEntry>());
                 OnPropertyChanged(nameof(TriggerDisplayText));
+                OnPropertyChanged(nameof(TriggerAxisEntries));
+                OnPropertyChanged(nameof(HasTriggerAxisEntries));
             });
 
         private RelayCommand _addActionCommand;

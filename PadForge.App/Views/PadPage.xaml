@@ -956,18 +956,38 @@
                                                     <!-- Record / Stop button. Works for both Input Device
                                                          (captures the next press / axis on a physical device)
                                                          and Output Controller (captures the next change on the
-                                                         slot's combined Gamepad output). -->
-                                                    <Button Command="{Binding RecordCommand}" Width="36" Margin="6,0,2,0">
+                                                         slot's combined Gamepad output). Width/Padding/Vert
+                                                         alignment match the merge-mapping per-source Record
+                                                         buttons for visual parity. -->
+                                                    <Button Command="{Binding RecordCommand}"
+                                                            Width="36" Padding="2" Margin="6,0,2,0"
+                                                            VerticalAlignment="Center">
                                                         <TextBlock Text="{Binding RecordIcon}" FontFamily="Segoe MDL2 Assets"/>
                                                         <Button.ToolTip>
                                                             <TextBlock Text="{Binding RecordTooltip}"/>
                                                         </Button.ToolTip>
                                                     </Button>
-                                                    <!-- Clear binding button (always visible) -->
-                                                    <Button Command="{Binding ClearBindingCommand}" Width="36" Margin="0,0,2,0">
+                                                    <!-- Clear binding button — keeps the variable slot but
+                                                         resets the device/channel binding. -->
+                                                    <Button Command="{Binding ClearBindingCommand}"
+                                                            Width="36" Padding="2" Margin="0,0,2,0"
+                                                            VerticalAlignment="Center">
                                                         <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
                                                         <Button.ToolTip>
                                                             <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
+                                                        </Button.ToolTip>
+                                                    </Button>
+                                                    <!-- Delete variable button — removes the row from the
+                                                         macro's variable list. Subsequent variables shift
+                                                         letters (b becomes a, etc.). Binds back up to the
+                                                         macro via RelativeSource AncestorType=ItemsControl. -->
+                                                    <Button Width="36" Padding="2"
+                                                            VerticalAlignment="Center"
+                                                            Command="{Binding DataContext.RemoveExpressionVariableCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}">
+                                                        <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"/>
+                                                        <Button.ToolTip>
+                                                            <TextBlock Text="{Binding Common_Delete, Source={x:Static strings:Strings.Instance}}"/>
                                                         </Button.ToolTip>
                                                     </Button>
                                                 </StackPanel>

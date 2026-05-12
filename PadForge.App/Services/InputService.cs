@@ -5625,6 +5625,11 @@ namespace PadForge.Services
             UpdatePadDeviceInfo();
 
             // Reload ViewModels with new PadSettings (after device lists are rebuilt).
+            // LoadPadSettingToViewModel loads per-device TUNING only; mapping
+            // rows MUST also be refreshed from the just-swapped SlotMappingSets
+            // or the next autosave's PushUiExtraSourcesIntoSlotMappingSets will
+            // rebuild the live MappingSet from the OUTGOING profile's stale
+            // MappingItems and silently clobber the incoming profile.
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 var padVm = _mainVm.Pads[i];
@@ -5634,6 +5639,7 @@ namespace PadForge.Services
                     LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
                     PopulateAvailableInputs(padVm, FindUserDevice(selected.InstanceGuid));
                 }
+                RefreshMappingsToViewModel(padVm);
             }
 
             // Refresh Devices page slot labels.

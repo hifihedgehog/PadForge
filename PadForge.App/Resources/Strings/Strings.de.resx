@@ -213,7 +213,7 @@
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU-/CemuHook-Motion-Provider-Protokollserver für Gyroskop- und Beschleunigungsdaten.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-Bewegungsserver aktivieren (CemuHook-Motion-Provider-Protokoll)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Port</value></data>
-  <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Stellt Gyro-/Beschleunigungsdaten für Cemu, Dolphin, Yuzu usw. bereit.</value></data>
+  <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Stellt Gyroskop- und Beschleunigungsdaten für Cemu, Dolphin, Yuzu usw. bereit.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Web-Controller</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Stellt eine Gamepad-Oberfläche für Browser in Ihrem lokalen Netzwerk bereit.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Web-Controller-Server aktivieren</value></data>

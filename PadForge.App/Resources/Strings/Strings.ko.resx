@@ -213,7 +213,7 @@
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>자이로 및 가속도계 데이터를 위한 DSU/CemuHook Motion Provider protocol 서버.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU 모션 서버 활성화 (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>포트</value></data>
-  <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu, Dolphin, Yuzu 등에 자이로/가속도 데이터를 제공합니다.</value></data>
+  <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu, Dolphin, Yuzu 등에 자이로 및 가속도계 데이터를 제공합니다.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>웹 컨트롤러</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>로컬 네트워크의 브라우저에 게임패드 UI를 제공합니다.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>웹 컨트롤러 서버 활성화</value></data>

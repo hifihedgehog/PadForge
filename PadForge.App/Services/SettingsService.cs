@@ -1785,8 +1785,21 @@ namespace PadForge.Services
 
             if (profiles != null)
             {
+                int maxPads = Common.Input.InputManager.MaxPads;
+                bool anyProfileCompacted = false;
                 foreach (var p in profiles)
                 {
+                    // Compact gappy profile snapshots in place so the file
+                    // heals itself. Profiles saved before compaction-on-delete
+                    // can have non-contiguous slot indices; rewriting them as
+                    // contiguous fixes the source data, not just the runtime
+                    // view of it.
+                    var (map, needs) = InputService.BuildCompactionMap(p);
+                    if (needs)
+                    {
+                        InputService.CompactProfileDataInPlace(p, map, maxPads);
+                        anyProfileCompacted = true;
+                    }
                     SettingsManager.Profiles.Add(p);
                     var item = new ViewModels.ProfileListItem
                     {
@@ -1797,6 +1810,8 @@ namespace PadForge.Services
                     UpdateTopologyCounts(item, p.SlotCreated, p.SlotControllerTypes);
                     _mainVm.Settings.ProfileItems.Add(item);
                 }
+                if (anyProfileCompacted)
+                    MarkDirty();
             }
 
             // Update active profile display.

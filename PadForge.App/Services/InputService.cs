@@ -174,6 +174,13 @@ namespace PadForge.Services
 
             _stopped = false;
 
+            // Heal any gaps in pad indices left over from saves taken
+            // before compaction-on-delete landed. Done before the engine
+            // starts so the InputManager sees a contiguous topology, and
+            // before _defaultProfileSnapshot is captured below so the
+            // default snapshot also reflects the compacted layout.
+            CompactSlotsForGaps();
+
             // Create engine with the configured polling interval.
             _inputManager = new InputManager();
             _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
@@ -1917,6 +1924,7 @@ namespace PadForge.Services
                     }
                 }
             }
+
         }
 
         /// <summary>
@@ -5465,6 +5473,172 @@ namespace PadForge.Services
             return list.Count > 0 ? list.ToArray() : null;
         }
 
+        /// <summary>Re-entrancy guard for <see cref="CompactSlotsForGaps"/>.
+        /// CompactSlotsForGaps drives the compaction by calling ApplyProfile
+        /// against a shifted snapshot, and ApplyProfile auto-runs
+        /// CompactSlotsForGaps at the end. Without this guard the two would
+        /// recurse forever.</summary>
+        private bool _compactingSlots;
+
+        /// <summary>
+        /// Eliminates gaps in pad indices so the controllers list is
+        /// always contiguous from index 0. Triggered after slot deletion,
+        /// settings load, and profile apply so legacy gappy data heals
+        /// in place. Returns true if compaction ran.
+        /// </summary>
+        /// <remarks>
+        /// Strategy: snapshot the entire current runtime state via
+        /// SnapshotCurrentProfile, rewrite every slot-indexed field in
+        /// the snapshot (Entries.MapTo, ExtendedConfigs.SlotIndex,
+        /// MidiConfigs.SlotIndex, SlotOrder arrays, SlotCreated /
+        /// SlotEnabled / SlotMappingSets / SlotControllerTypes /
+        /// SlotProfileIds) using a single old→new index map, then
+        /// apply that shifted snapshot. ApplyProfile already knows how
+        /// to drive the full PadViewModel rebuild — reusing it keeps
+        /// the per-property copy logic (config classes, mappings, per-
+        /// device tuning) in one place.
+        /// </remarks>
+        internal bool CompactSlotsForGaps()
+        {
+            if (_compactingSlots) return false;
+            int maxPads = Common.Input.InputManager.MaxPads;
+
+            // Build old→new index map from live SettingsManager state.
+            var oldToNew = new Dictionary<int, int>();
+            int writeIdx = 0;
+            bool needsCompaction = false;
+            for (int oldIdx = 0; oldIdx < maxPads; oldIdx++)
+            {
+                if (SettingsManager.SlotCreated[oldIdx])
+                {
+                    oldToNew[oldIdx] = writeIdx;
+                    if (oldIdx != writeIdx) needsCompaction = true;
+                    writeIdx++;
+                }
+            }
+            if (!needsCompaction) return false;
+
+            _compactingSlots = true;
+            try
+            {
+                var snap = SnapshotCurrentProfile();
+                CompactProfileDataInPlace(snap, oldToNew, maxPads);
+
+                // Apply the shifted snapshot. ApplyProfile rebuilds every
+                // PadViewModel from the new layout. The recursion guard
+                // suppresses the ApplyProfile→CompactSlotsForGaps tail call.
+                ApplyProfile(snap);
+
+                // Persist the compacted layout so the file no longer has gaps.
+                _settingsService?.MarkDirty();
+                return true;
+            }
+            finally
+            {
+                _compactingSlots = false;
+            }
+        }
+
+        /// <summary>
+        /// Compact a ProfileData snapshot in place using the supplied
+        /// old→new index map. Rewrites every slot-indexed array and
+        /// every per-element slot-index field. Used both by the live
+        /// compaction path and by settings-load to heal gappy profiles
+        /// stored on disk.
+        /// </summary>
+        internal static void CompactProfileDataInPlace(
+            ProfileData p,
+            Dictionary<int, int> oldToNew,
+            int maxPads)
+        {
+            // Fresh per-slot arrays defaulted to "uncreated", then place each
+            // old slot at its new index.
+            var newCreated = new bool[maxPads];
+            var newEnabled = new bool[maxPads];
+            for (int i = 0; i < maxPads; i++) newEnabled[i] = true;
+            var newMappingSets = new Engine.Data.MappingSet[maxPads];
+
+            int controllerTypeLen = p.SlotControllerTypes?.Length ?? 0;
+            int profileIdLen = p.SlotProfileIds?.Length ?? 0;
+            var newControllerTypes = new int[controllerTypeLen];
+            var newProfileIds = new string[profileIdLen];
+            for (int i = 0; i < newProfileIds.Length; i++) newProfileIds[i] = "";
+
+            foreach (var (oldIdx, newIdx) in oldToNew)
+            {
+                newCreated[newIdx] = true;
+                if (p.SlotEnabled != null && oldIdx < p.SlotEnabled.Length)
+                    newEnabled[newIdx] = p.SlotEnabled[oldIdx];
+                if (p.SlotMappingSets != null && oldIdx < p.SlotMappingSets.Length)
+                    newMappingSets[newIdx] = p.SlotMappingSets[oldIdx];
+                if (oldIdx < controllerTypeLen && newIdx < controllerTypeLen)
+                    newControllerTypes[newIdx] = p.SlotControllerTypes[oldIdx];
+                if (oldIdx < profileIdLen && newIdx < profileIdLen)
+                    newProfileIds[newIdx] = p.SlotProfileIds[oldIdx];
+            }
+
+            p.SlotCreated = newCreated;
+            p.SlotEnabled = newEnabled;
+            p.SlotMappingSets = newMappingSets;
+            if (p.SlotControllerTypes != null) p.SlotControllerTypes = newControllerTypes;
+            if (p.SlotProfileIds != null) p.SlotProfileIds = newProfileIds;
+
+            if (p.Entries != null)
+            {
+                foreach (var entry in p.Entries)
+                    if (oldToNew.TryGetValue(entry.MapTo, out var ni))
+                        entry.MapTo = ni;
+            }
+            if (p.ExtendedConfigs != null)
+            {
+                foreach (var cfg in p.ExtendedConfigs)
+                    if (oldToNew.TryGetValue(cfg.SlotIndex, out var ni))
+                        cfg.SlotIndex = ni;
+            }
+            if (p.MidiConfigs != null)
+            {
+                foreach (var cfg in p.MidiConfigs)
+                    if (oldToNew.TryGetValue(cfg.SlotIndex, out var ni))
+                        cfg.SlotIndex = ni;
+            }
+            RemapSlotOrder(p.XboxSlotOrder, oldToNew);
+            RemapSlotOrder(p.PlayStationSlotOrder, oldToNew);
+            RemapSlotOrder(p.ExtendedSlotOrder, oldToNew);
+            RemapSlotOrder(p.KeyboardMouseSlotOrder, oldToNew);
+            RemapSlotOrder(p.MidiSlotOrder, oldToNew);
+        }
+
+        /// <summary>
+        /// Build the old→new index map for a ProfileData. Returns the map
+        /// and whether any shift is actually needed. Created slots map to
+        /// sequential indices starting at 0; uncreated slots aren't in the map.
+        /// </summary>
+        internal static (Dictionary<int, int> map, bool needsCompaction) BuildCompactionMap(ProfileData p)
+        {
+            var map = new Dictionary<int, int>();
+            if (p.SlotCreated == null) return (map, false);
+            int writeIdx = 0;
+            bool needs = false;
+            for (int oldIdx = 0; oldIdx < p.SlotCreated.Length; oldIdx++)
+            {
+                if (p.SlotCreated[oldIdx])
+                {
+                    map[oldIdx] = writeIdx;
+                    if (oldIdx != writeIdx) needs = true;
+                    writeIdx++;
+                }
+            }
+            return (map, needs);
+        }
+
+        private static void RemapSlotOrder(int[] arr, Dictionary<int, int> oldToNew)
+        {
+            if (arr == null) return;
+            for (int i = 0; i < arr.Length; i++)
+                if (oldToNew.TryGetValue(arr[i], out var ni))
+                    arr[i] = ni;
+        }
+
         /// <summary>
         /// Loads a profile's PadSettings and slot assignments into the runtime state.
         /// For each ProfileEntry, finds the matching UserSetting and swaps its
@@ -5728,6 +5902,16 @@ namespace PadForge.Services
 
             // Refresh Devices page slot labels.
             SyncDevicesList();
+
+            // Compact any gaps the profile carried over from legacy data.
+            // Profile snapshots saved before compaction-on-delete landed may
+            // have slots at non-contiguous indices. Compact now so the live
+            // state never has gaps, then mark the file dirty so the healed
+            // layout persists. Guarded against re-entry because the
+            // CompactSlotsForGaps path drives compaction BY calling
+            // ApplyProfile with a shifted snapshot.
+            if (!_compactingSlots)
+                CompactSlotsForGaps();
 
             ProfileApplied?.Invoke(this, EventArgs.Empty);
         }
@@ -6131,7 +6315,14 @@ namespace PadForge.Services
                 RunBubbleDownCascadeAfterDelete(deletedType, oldGroupPosition);
             }
 
-            RefreshAfterSlotReorder();
+            // Compact slot indices so the controllers list stays
+            // contiguous from index 0. CompactSlotsForGaps drives the
+            // PadViewModel rebuild via ApplyProfile when it actually runs,
+            // so only fall through to RefreshAfterSlotReorder when there
+            // were no gaps to compact (the typical case when deleting the
+            // last-created slot).
+            if (!CompactSlotsForGaps())
+                RefreshAfterSlotReorder();
         }
 
         private void RefreshAfterSlotReorder()

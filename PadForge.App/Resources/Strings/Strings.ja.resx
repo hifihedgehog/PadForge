@@ -1276,7 +1276,7 @@
   <data name="Pad_Shift_Configure" xml:space="preserve"><value>アクティベーターを構成…</value></data>
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>レイヤー名を変更…</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>レイヤーの色</value></data>
-  <data name="Pad_Shift_Color_Reset_Tooltip" xml:space="preserve"><value>レイヤーの色をクリアします (タブの色なし、フライアウトのドットは既定)。</value></data>
+  <data name="Pad_ResetLayerColor" xml:space="preserve"><value>レイヤーの色をリセット</value></data>
   <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>このレイヤーが有効なときにフライアウトに表示する絵文字を選択します。</value></data>
   <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>デフォルトに戻す (⇧)</value></data>
   <data name="Pad_Shift_Copy" xml:space="preserve"><value>レイヤー行をコピー</value></data>

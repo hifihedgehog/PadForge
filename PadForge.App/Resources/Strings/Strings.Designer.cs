@@ -1281,7 +1281,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Shift_Configure => Get("Pad_Shift_Configure");
     public string Pad_Shift_Rename => Get("Pad_Shift_Rename");
     public string Pad_Shift_Color => Get("Pad_Shift_Color");
-    public string Pad_Shift_Color_Reset_Tooltip => Get("Pad_Shift_Color_Reset_Tooltip");
+    public string Pad_ResetLayerColor => Get("Pad_ResetLayerColor");
     public string Pad_Shift_Icon_Tooltip => Get("Pad_Shift_Icon_Tooltip");
     public string Pad_Shift_Icon_Reset => Get("Pad_Shift_Icon_Reset");
     public string Pad_Shift_Copy => Get("Pad_Shift_Copy");

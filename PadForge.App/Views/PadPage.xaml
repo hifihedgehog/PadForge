@@ -3763,7 +3763,7 @@
                                          indicator, then the audio-reactive cluster. -->
                                     <ComboBox SelectedValue="{Binding PlayStationConfig.LightbarMode, Mode=TwoWay}"
                                               SelectedValuePath="Tag"
-                                              Width="320" VerticalAlignment="Center">
+                                              Width="540" VerticalAlignment="Center">
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Off, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Off}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Static, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Static}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Breathing, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Breathing}"/>

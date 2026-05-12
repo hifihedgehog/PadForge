@@ -560,26 +560,6 @@ namespace PadForge
                 }));
             };
 
-            // Force the DataGrid to destroy + rebuild its row container
-            // pool after every profile apply (and the default-profile
-            // fallback). DataContext null-toggle on the UserControl was
-            // NOT enough — the DataGrid's internal row container pool
-            // persisted across the DataContext swap, so cached row
-            // visuals (ComboBox SelectedItem refs, Style.Setter+DataTrigger
-            // evaluations on the per-row Source subtitle, etc.) didn't
-            // pick up MappingItem PropertyChanged events. The user's
-            // navigate-away-and-back workaround works because hiding the
-            // PadPage via Visibility=Collapsed tears down the DataGrid's
-            // row visuals entirely. ItemsSource null-toggle replicates
-            // that effect without page flicker.
-            _inputService.ProfileApplied += (s, e) =>
-            {
-                if (PadPageView.Visibility != Visibility.Visible) return;
-                var padVm = _viewModel.SelectedPad;
-                if (padVm == null) return;
-                PadPageView.ForceMappingsDataGridRebuild();
-            };
-
             // Wire devices page refresh.
             _viewModel.Devices.RefreshRequested += (s, e) =>
             {
@@ -3620,23 +3600,21 @@ namespace PadForge
                 var padVm = _viewModel.SelectedPad;
                 if (padVm != null)
                 {
+                    // Re-resolve the per-row ComboBox SelectedInput against
+                    // current MappingItem.SourceDescriptor + DeviceGuid pairs
+                    // BEFORE the DataContext swap, so the picker cells aren't
+                    // blank on first render. RefreshMappingsToViewModel reads
+                    // from SlotMappingSets (the authoritative source) into
+                    // MappingItem.SourceDescriptor; PopulateAvailableInputs
+                    // then re-syncs SelectedInput. Without this pair, the
+                    // mapping rows render with stale or null SelectedInput
+                    // until something else (the assigned-device dropdown
+                    // toggle) re-fires PopulateAvailableInputs.
                     InputService.RefreshMappingsToViewModel(padVm);
                     var selected = padVm.SelectedMappedDevice;
                     if (selected != null && selected.InstanceGuid != Guid.Empty)
                         _inputService.RefreshAvailableInputsForSlot(padVm);
-                    bool sameDataContext = ReferenceEquals(PadPageView.DataContext, padVm);
                     PadPageView.DataContext = padVm;
-                    // The DataGrid keeps a row-container pool that persists
-                    // across DataContext swaps when the underlying ObservableCollection
-                    // identity is the same. Cached row visuals show stale
-                    // Source subtitle text and ComboBox SelectedItem refs
-                    // until the pool is destroyed. ForceMappingsDataGridRebuild
-                    // toggles MappingDataGrid.ItemsSource through null to
-                    // drop the pool — same effect as the user's navigate-
-                    // away-and-back workaround (Visibility toggle) but
-                    // without page flicker.
-                    if (sameDataContext)
-                        PadPageView.ForceMappingsDataGridRebuild();
                 }
             }
 

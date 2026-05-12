@@ -233,11 +233,6 @@ namespace PadForge.ViewModels
                     // effective source count, which can change whether
                     // a custom formula's `a` reference is in range.
                     OnPropertyChanged(nameof(IsCombineExpressionWarning));
-                    // Subtitle composite + italic flag flip from
-                    // "Unassigned" (italic) to the device label (regular)
-                    // when SourceDescriptor changes between empty and set.
-                    OnPropertyChanged(nameof(SourceDeviceSubtitle));
-                    OnPropertyChanged(nameof(IsSourceUnassigned));
                     RefreshVariableAliases();
                 }
             }
@@ -914,31 +909,9 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _primarySourceDeviceLabel, value ?? ""))
-                {
                     RefreshVariableAliases();
-                    OnPropertyChanged(nameof(SourceDeviceSubtitle));
-                }
             }
         }
-
-        /// <summary>Composite subtitle for the per-row Source column —
-        /// returns the localized "Unassigned" string when SourceDescriptor
-        /// is empty, otherwise the device label. Replaces the previous
-        /// Style.Setter+DataTrigger pattern, which had refresh quirks
-        /// inside virtualised DataGrid rows: a row reused after a profile
-        /// switch would render the cached DataTrigger evaluation and not
-        /// pick up the new SourceDescriptor / PrimarySourceDeviceLabel
-        /// PropertyChanged events. A single computed property bound
-        /// directly to TextBlock.Text avoids that whole class of bug.</summary>
-        public string SourceDeviceSubtitle =>
-            string.IsNullOrEmpty(_sourceDescriptor)
-                ? PadForge.Resources.Strings.Strings.Instance.Common_Unassigned
-                : (_primarySourceDeviceLabel ?? "");
-
-        /// <summary>True when the subtitle is the "Unassigned" placeholder
-        /// — drives the italic styling via a single-binding-source
-        /// converter, replacing the prior DataTrigger FontStyle setter.</summary>
-        public bool IsSourceUnassigned => string.IsNullOrEmpty(_sourceDescriptor);
 
         private string _combineMode = "";
         /// <summary>Per-row combine mode. Empty = the per-target-type

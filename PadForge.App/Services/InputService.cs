@@ -5335,6 +5335,16 @@ namespace PadForge.Services
                     SaveViewModelToPadSetting(padVm, selected.InstanceGuid);
             }
 
+            // Flush MappingItem state into SettingsManager.SlotMappingSets
+            // BEFORE deep-cloning the array below. Without this, in-flight UI
+            // edits that haven't yet been autosaved (the 250 ms debounce
+            // hasn't fired) live only on MappingItem.SourceDescriptor —
+            // SlotMappingSets still holds the pre-edit state. Snapshotting
+            // here without flushing captures the stale state and silently
+            // drops the user's edit when the outgoing profile is saved
+            // during a rapid profile-cycle.
+            _settingsService?.PushUiExtraSourcesIntoSlotMappingSets();
+
             var entries = new List<ProfileEntry>();
             var padSettings = new List<PadSetting>();
             var seen = new HashSet<string>();

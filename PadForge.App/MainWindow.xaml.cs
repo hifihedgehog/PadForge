@@ -3599,7 +3599,23 @@ namespace PadForge
             {
                 var padVm = _viewModel.SelectedPad;
                 if (padVm != null)
+                {
+                    // Re-resolve the per-row ComboBox SelectedInput against
+                    // current MappingItem.SourceDescriptor + DeviceGuid pairs
+                    // BEFORE the DataContext swap, so the picker cells aren't
+                    // blank on first render. RefreshMappingsToViewModel reads
+                    // from SlotMappingSets (the authoritative source) into
+                    // MappingItem.SourceDescriptor; PopulateAvailableInputs
+                    // then re-syncs SelectedInput. Without this pair, the
+                    // mapping rows render with stale or null SelectedInput
+                    // until something else (the assigned-device dropdown
+                    // toggle) re-fires PopulateAvailableInputs.
+                    InputService.RefreshMappingsToViewModel(padVm);
+                    var selected = padVm.SelectedMappedDevice;
+                    if (selected != null && selected.InstanceGuid != Guid.Empty)
+                        _inputService.RefreshAvailableInputsForSlot(padVm);
                     PadPageView.DataContext = padVm;
+                }
             }
 
             // Notify InputService which pages are visible (for optimization).

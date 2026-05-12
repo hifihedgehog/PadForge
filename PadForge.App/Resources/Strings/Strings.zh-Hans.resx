@@ -1257,8 +1257,46 @@
 
 
 
-
-
-
-
+  <!-- Shift 模式 (Issue #61 Phase 6 v1+) -->
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Shift 层</value></data>
+  <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>添加一个 Shift 层 — 在按住或切换按钮时激活的第二个映射表。</value></data>
+  <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>基础</value></data>
+  <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift 层</value></data>
+  <data name="Pad_Shift_LayerName" xml:space="preserve"><value>层名称</value></data>
+  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>激活器输入</value></data>
+  <data name="Pad_Shift_Mode" xml:space="preserve"><value>模式</value></data>
+  <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>按住</value></data>
+  <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>切换</value></data>
+  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>自定义(跳转到层)</value></data>
+  <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>循环</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>粘性(单次)</value></data>
+  <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>需要层名称。</value></data>
+  <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>此插槽已存在同名的层。</value></data>
+  <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>请选择一个激活器输入。</value></data>
+  <data name="Pad_Shift_Configure" xml:space="preserve"><value>配置激活器…</value></data>
+  <data name="Pad_Shift_Rename" xml:space="preserve"><value>重命名层…</value></data>
+  <data name="Pad_Shift_Color" xml:space="preserve"><value>层颜色</value></data>
+  <data name="Pad_Shift_Copy" xml:space="preserve"><value>复制层行</value></data>
+  <data name="Pad_Shift_Paste" xml:space="preserve"><value>粘贴行到层</value></data>
+  <data name="Pad_Shift_Clear" xml:space="preserve"><value>清除层行</value></data>
+  <data name="Pad_Shift_Delete" xml:space="preserve"><value>删除层</value></data>
+  <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>删除 Shift 层</value></data>
+  <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>删除"{0}"层及其所有映射行?此操作无法撤消。</value></data>
+  <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>重命名层</value></data>
+  <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>不继承</value></data>
+  <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>选中时,此层的目标保持关闭,而不是回退到基础行。</value></data>
+  <data name="Pad_Shift_Delay" xml:space="preserve"><value>延迟(毫秒)</value></data>
+  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>触发层切换之前激活器必须保持激活的毫秒数。</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>推迟激活器映射</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>选中时,激活器输入自身的映射会与层切换一起触发。</value></data>
+  <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>跳转到层</value></data>
+  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>和弦的第二个输入</value></data>
+  <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>轴阈值</value></data>
+  <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>循环层</value></data>
+  <data name="Pad_Shift_Kind" xml:space="preserve"><value>激活器类型</value></data>
+  <data name="Pad_Shift_KindButton" xml:space="preserve"><value>按钮</value></data>
+  <data name="Pad_Shift_KindChord" xml:space="preserve"><value>和弦(A + B)</value></data>
+  <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>轴超过阈值</value></data>
+  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>从基础继承未映射的目标</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>选中时,此层未明确映射的目标会回退到基础层。未选中时(默认),层完全替换基础,未映射的目标保持关闭。</value></data>
 </root>

@@ -1257,8 +1257,46 @@
 
 
 
-
-
-
-
+  <!-- Shift 모드 (Issue #61 Phase 6 v1+) -->
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Shift 레이어</value></data>
+  <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Shift 레이어를 추가합니다. 버튼을 누르거나 토글하는 동안 활성화되는 두 번째 매핑 테이블입니다.</value></data>
+  <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>기본</value></data>
+  <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift 레이어</value></data>
+  <data name="Pad_Shift_LayerName" xml:space="preserve"><value>레이어 이름</value></data>
+  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>활성화 입력</value></data>
+  <data name="Pad_Shift_Mode" xml:space="preserve"><value>모드</value></data>
+  <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>홀드</value></data>
+  <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>토글</value></data>
+  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>사용자 지정(레이어로 점프)</value></data>
+  <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>순환</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>스티키(한 번)</value></data>
+  <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>레이어 이름은 필수입니다.</value></data>
+  <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>이 슬롯에는 같은 이름의 레이어가 이미 존재합니다.</value></data>
+  <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>활성화 입력을 선택하세요.</value></data>
+  <data name="Pad_Shift_Configure" xml:space="preserve"><value>활성화 구성…</value></data>
+  <data name="Pad_Shift_Rename" xml:space="preserve"><value>레이어 이름 바꾸기…</value></data>
+  <data name="Pad_Shift_Color" xml:space="preserve"><value>레이어 색상</value></data>
+  <data name="Pad_Shift_Copy" xml:space="preserve"><value>레이어 행 복사</value></data>
+  <data name="Pad_Shift_Paste" xml:space="preserve"><value>레이어에 행 붙여넣기</value></data>
+  <data name="Pad_Shift_Clear" xml:space="preserve"><value>레이어 행 지우기</value></data>
+  <data name="Pad_Shift_Delete" xml:space="preserve"><value>레이어 삭제</value></data>
+  <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Shift 레이어 삭제</value></data>
+  <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>"{0}" 레이어와 모든 매핑 행을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.</value></data>
+  <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>레이어 이름 바꾸기</value></data>
+  <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>상속 안 함</value></data>
+  <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>체크하면 이 레이어의 대상이 기본 행으로 폴스루되지 않고 꺼진 상태로 유지됩니다.</value></data>
+  <data name="Pad_Shift_Delay" xml:space="preserve"><value>지연(ms)</value></data>
+  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>레이어 변경이 발생하기 전에 활성화가 유지되어야 하는 밀리초.</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>활성화 매핑 연기</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>체크하면 활성화 입력 자체의 매핑이 레이어 변경과 함께 발생합니다.</value></data>
+  <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>레이어로 점프</value></data>
+  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>코드의 두 번째 입력</value></data>
+  <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>축 임계값</value></data>
+  <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>레이어 순환</value></data>
+  <data name="Pad_Shift_Kind" xml:space="preserve"><value>활성화 종류</value></data>
+  <data name="Pad_Shift_KindButton" xml:space="preserve"><value>버튼</value></data>
+  <data name="Pad_Shift_KindChord" xml:space="preserve"><value>코드(A + B)</value></data>
+  <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>임계값을 초과한 축</value></data>
+  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>매핑되지 않은 대상을 기본에서 상속</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>체크하면 이 레이어가 명시적으로 매핑하지 않은 대상이 기본 레이어로 폴스루됩니다. 체크 해제 시(기본값) 레이어가 기본을 완전히 대체하고 매핑되지 않은 대상은 꺼진 상태로 유지됩니다.</value></data>
 </root>

@@ -6,7 +6,7 @@
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         Title="{Binding Pad_Shift_DialogTitle, Source={x:Static strings:Strings.Instance}}"
-        Height="380" Width="520"
+        Height="660" Width="560"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
 
@@ -19,77 +19,167 @@
         </ResourceDictionary>
     </ui:FluentWindow.Resources>
 
-    <Grid Margin="16">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- Layer name -->
-        <TextBlock Grid.Row="0"
-                   Text="{Binding Pad_Shift_LayerName, Source={x:Static strings:Strings.Instance}}"
-                   Margin="0,0,0,4"/>
-        <TextBox Grid.Row="1" x:Name="LayerNameBox" Margin="0,0,0,12"/>
+            <!-- Layer name -->
+            <TextBlock Grid.Row="0"
+                       Text="{Binding Pad_Shift_LayerName, Source={x:Static strings:Strings.Instance}}"
+                       Margin="0,0,0,4"/>
+            <TextBox Grid.Row="1" x:Name="LayerNameBox" Margin="0,0,0,12"/>
 
-        <!-- Activator input (grouped by device) -->
-        <TextBlock Grid.Row="2"
-                   Text="{Binding Pad_Shift_ActivatorInput, Source={x:Static strings:Strings.Instance}}"
-                   Margin="0,0,0,4"/>
-        <ComboBox Grid.Row="3" x:Name="InputCombo" Margin="0,0,0,12"
-                  DisplayMemberPath="DisplayName">
-            <ComboBox.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
-                                    Padding="6,3,6,3">
-                                <TextBlock Text="{Binding Name}"
-                                           FontSize="11"
-                                           FontWeight="SemiBold"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           TextTrimming="CharacterEllipsis"/>
-                            </Border>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
-                </GroupStyle>
-            </ComboBox.GroupStyle>
-        </ComboBox>
+            <!-- Activator kind -->
+            <TextBlock Grid.Row="2"
+                       Text="{Binding Pad_Shift_Kind, Source={x:Static strings:Strings.Instance}}"
+                       Margin="0,0,0,4"/>
+            <ComboBox Grid.Row="3" x:Name="KindCombo" Margin="0,0,0,12"
+                      SelectionChanged="KindCombo_SelectionChanged">
+                <ComboBoxItem Tag="Button" Content="{Binding Pad_Shift_KindButton, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBoxItem Tag="Chord"  Content="{Binding Pad_Shift_KindChord, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBoxItem Tag="Axis"   Content="{Binding Pad_Shift_KindAxis, Source={x:Static strings:Strings.Instance}}"/>
+            </ComboBox>
 
-        <!-- Mode -->
-        <TextBlock Grid.Row="4"
-                   Text="{Binding Pad_Shift_Mode, Source={x:Static strings:Strings.Instance}}"
-                   Margin="0,0,0,4"/>
-        <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,0,0,12">
-            <RadioButton x:Name="ModeHold" GroupName="ShiftMode" IsChecked="True"
-                         Content="{Binding Pad_Shift_ModeHold, Source={x:Static strings:Strings.Instance}}"
-                         Margin="0,0,16,0"/>
-            <RadioButton x:Name="ModeToggle" GroupName="ShiftMode"
-                         Content="{Binding Pad_Shift_ModeToggle, Source={x:Static strings:Strings.Instance}}"/>
-        </StackPanel>
+            <!-- Activator input -->
+            <TextBlock Grid.Row="4"
+                       Text="{Binding Pad_Shift_ActivatorInput, Source={x:Static strings:Strings.Instance}}"
+                       Margin="0,0,0,4"/>
+            <ComboBox Grid.Row="5" x:Name="InputCombo" Margin="0,0,0,12"
+                      DisplayMemberPath="DisplayName">
+                <ComboBox.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                        Padding="6,3,6,3">
+                                    <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               TextTrimming="CharacterEllipsis"/>
+                                </Border>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ComboBox.GroupStyle>
+            </ComboBox>
 
-        <!-- Validation hint -->
-        <TextBlock Grid.Row="6" x:Name="HintText"
-                   Foreground="{DynamicResource SystemFillColorCautionBrush}"
-                   TextWrapping="Wrap"
-                   Margin="0,0,0,8"/>
+            <!-- Second chord input (Kind=Chord) -->
+            <TextBlock Grid.Row="6" x:Name="ChordLabel"
+                       Text="{Binding Pad_Shift_ChordSecondInput, Source={x:Static strings:Strings.Instance}}"
+                       Margin="0,0,0,4"/>
+            <ComboBox Grid.Row="7" x:Name="ChordSecondCombo" Margin="0,0,0,12"
+                      DisplayMemberPath="DisplayName">
+                <ComboBox.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                        Padding="6,3,6,3">
+                                    <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               TextTrimming="CharacterEllipsis"/>
+                                </Border>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ComboBox.GroupStyle>
+            </ComboBox>
 
-        <!-- Buttons -->
-        <StackPanel Grid.Row="7" Orientation="Horizontal"
-                    HorizontalAlignment="Right" Margin="0,12,0,0">
-            <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
-                    MinWidth="80" Margin="0,0,8,0"
-                    IsDefault="True" Click="SaveButton_Click"
-                    Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-                    Background="{DynamicResource AccentFillColorDefaultBrush}"/>
-            <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
-                    MinWidth="80"
-                    IsCancel="True" Click="CancelButton_Click"/>
-        </StackPanel>
-    </Grid>
+            <!-- Axis threshold (Kind=Axis) -->
+            <TextBlock Grid.Row="8" x:Name="AxisThresholdLabel"
+                       Text="{Binding Pad_Shift_AxisThreshold, Source={x:Static strings:Strings.Instance}}"
+                       Margin="0,0,0,4"/>
+            <StackPanel Grid.Row="9" x:Name="AxisThresholdRow" Orientation="Horizontal" Margin="0,0,0,12">
+                <Slider x:Name="AxisThresholdSlider" Width="320" Minimum="0.05" Maximum="1.0" Value="0.5"
+                        TickFrequency="0.05" IsSnapToTickEnabled="True"/>
+                <TextBlock Text="{Binding ElementName=AxisThresholdSlider, Path=Value, StringFormat={}{0:F2}}"
+                           Margin="8,0,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Mode -->
+            <TextBlock Grid.Row="10"
+                       Text="{Binding Pad_Shift_Mode, Source={x:Static strings:Strings.Instance}}"
+                       Margin="0,0,0,4"/>
+            <ComboBox Grid.Row="11" x:Name="ModeCombo" Margin="0,0,0,12"
+                      SelectionChanged="ModeCombo_SelectionChanged">
+                <ComboBoxItem Tag="Hold"   Content="{Binding Pad_Shift_ModeHold, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBoxItem Tag="Toggle" Content="{Binding Pad_Shift_ModeToggle, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBoxItem Tag="Custom" Content="{Binding Pad_Shift_ModeCustom, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBoxItem Tag="Cycle"  Content="{Binding Pad_Shift_ModeCycle, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBoxItem Tag="Sticky" Content="{Binding Pad_Shift_ModeSticky, Source={x:Static strings:Strings.Instance}}"/>
+            </ComboBox>
+
+            <!-- Jump-to-layer (Mode=Custom) -->
+            <TextBlock Grid.Row="12" x:Name="JumpLabel"
+                       Text="{Binding Pad_Shift_JumpToLayer, Source={x:Static strings:Strings.Instance}}"
+                       Margin="0,0,0,4"/>
+            <TextBox Grid.Row="13" x:Name="JumpToLayerBox" Margin="0,0,0,12"
+                     ToolTip="Layer mask to switch to when this activator fires. Empty = back to Base."/>
+
+            <!-- Cycle layers (Mode=Cycle) -->
+            <TextBlock Grid.Row="14" x:Name="CycleLabel"
+                       Text="{Binding Pad_Shift_CycleLayers, Source={x:Static strings:Strings.Instance}}"
+                       Margin="0,0,0,4"/>
+            <TextBox Grid.Row="15" x:Name="CycleLayersBox" Margin="0,0,0,12"
+                     ToolTip="Pipe-separated layer masks to cycle through, e.g. Shift1|Shift2|Shift3"/>
+
+            <!-- Delay / Postpone / Color -->
+            <StackPanel Grid.Row="16" Margin="0,0,0,12">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                    <TextBlock Text="{Binding Pad_Shift_Delay, Source={x:Static strings:Strings.Instance}}"
+                               VerticalAlignment="Center" Width="140"/>
+                    <Slider x:Name="DelaySlider" Width="220" Minimum="0" Maximum="2000" Value="0"
+                            TickFrequency="50" IsSnapToTickEnabled="True"/>
+                    <TextBlock Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat={}{0:F0} ms}"
+                               Margin="8,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+                <CheckBox x:Name="PostponeMappingBox"
+                          Content="{Binding Pad_Shift_PostponeMapping, Source={x:Static strings:Strings.Instance}}"
+                          ToolTip="{Binding Pad_Shift_PostponeMapping_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                          Margin="0,0,0,6"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Pad_Shift_Color, Source={x:Static strings:Strings.Instance}}"
+                               VerticalAlignment="Center" Width="140"/>
+                    <TextBox x:Name="ColorBox" Width="120"
+                             ToolTip="ARGB hex, e.g. #FF8E44AD. Leave empty for no color."/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Hint -->
+            <TextBlock Grid.Row="17" x:Name="HintText"
+                       Foreground="{DynamicResource SystemFillColorCautionBrush}"
+                       TextWrapping="Wrap" Margin="0,0,0,8"/>
+
+            <!-- Buttons -->
+            <StackPanel Grid.Row="18" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+                <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
+                        MinWidth="80" Margin="0,0,8,0"
+                        IsDefault="True" Click="SaveButton_Click"
+                        Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                        Background="{DynamicResource AccentFillColorDefaultBrush}"/>
+                <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
+                        MinWidth="80"
+                        IsCancel="True" Click="CancelButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </ui:FluentWindow>

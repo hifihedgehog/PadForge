@@ -12,21 +12,20 @@ namespace PadForge.Views
 {
     /// <summary>
     /// Modal dialog for authoring or editing a single
-    /// <see cref="ShiftActivator"/>. Invoked from the "+ Shift Layer"
-    /// button on the Mappings toolbar, and from the layer-tab right-click
-    /// "Configure activator…" menu item. Returns a populated activator on
-    /// Save; the caller is responsible for splicing it into the slot's
-    /// <see cref="MappingSet.ShiftActivators"/> list and refreshing the UI.
+    /// <see cref="ShiftActivator"/>. Supports the full v1/v2/v3 field set:
+    /// activator kind (Button / Chord / Axis), input picker(s), axis
+    /// threshold, mode (Hold / Toggle / Custom / Cycle / Sticky), jump
+    /// target, cycle layer list, delay debounce, postpone-mapping
+    /// behavior, and per-layer color.
     /// </summary>
     public partial class ShiftActivatorDialog : FluentWindow
     {
-        /// <summary>Result on dialog OK. Null on cancel.</summary>
         public ShiftActivator Result { get; private set; }
 
-        // Validation context: layer names must be unique on this slot
-        // (excluding the activator being edited).
         private readonly HashSet<string> _existingLayerNames;
         private readonly HashSet<string> _existingLayerMasks;
+        private readonly IReadOnlyList<InputChoice> _buttonChoices;
+        private readonly IReadOnlyList<InputChoice> _axisChoices;
 
         public ShiftActivatorDialog(
             IReadOnlyList<InputChoice> availableInputs,
@@ -35,46 +34,26 @@ namespace PadForge.Views
         {
             InitializeComponent();
 
-            // Group inputs by device label for the picker (mirrors the
-            // Mappings tab's source ComboBox grouping).
-            var view = CollectionViewSource.GetDefaultView(availableInputs);
-            if (view != null && view.GroupDescriptions != null)
+            // Split the cross-device input list into button-class (Button,
+            // POV-direction) and axis-class (Axis, Slider). Kind dropdown
+            // determines which list the input picker shows.
+            var buttons = new List<InputChoice>();
+            var axes = new List<InputChoice>();
+            foreach (var c in availableInputs ?? System.Array.Empty<InputChoice>())
             {
-                view.GroupDescriptions.Clear();
-                view.GroupDescriptions.Add(
-                    new PropertyGroupDescription(nameof(InputChoice.DeviceLabel)));
+                if (c == null) continue;
+                var d = c.Descriptor ?? "";
+                if (d.StartsWith("Axis ", StringComparison.OrdinalIgnoreCase)
+                    || d.StartsWith("Slider ", StringComparison.OrdinalIgnoreCase))
+                    axes.Add(c);
+                else
+                    buttons.Add(c);
             }
-            InputCombo.ItemsSource = view;
+            _buttonChoices = buttons;
+            _axisChoices = axes;
 
-            // Pre-populate the dialog with the existing activator's fields
-            // when we're editing rather than creating.
-            if (existing != null)
-            {
-                LayerNameBox.Text = string.IsNullOrEmpty(existing.LayerName)
-                    ? (existing.LayerMask ?? "")
-                    : existing.LayerName;
-                ModeHold.IsChecked = string.Equals(existing.Mode ?? "Hold", "Hold", StringComparison.Ordinal);
-                ModeToggle.IsChecked = string.Equals(existing.Mode, "Toggle", StringComparison.Ordinal);
-
-                // Select the input that matches the existing activator.
-                foreach (var choice in availableInputs)
-                {
-                    if (choice == null) continue;
-                    if (string.Equals(choice.Descriptor ?? "", existing.Descriptor ?? "", StringComparison.OrdinalIgnoreCase)
-                        && string.Equals(choice.DeviceGuid ?? "", existing.DeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
-                    {
-                        InputCombo.SelectedItem = choice;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                LayerNameBox.Text = SuggestNextLayerName(otherActivators);
-            }
-
-            // Reserve names already used by other activators on this slot
-            // so validation can reject duplicates.
+            // Track other activators' names + masks so the dialog can
+            // reject duplicates.
             _existingLayerNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             _existingLayerMasks = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             if (otherActivators != null)
@@ -87,8 +66,37 @@ namespace PadForge.Views
                 }
             }
 
-            // Hold focus on the name field so the user can immediately type
-            // a layer name without a click.
+            // Pre-populate dialog fields when editing.
+            if (existing != null)
+            {
+                LayerNameBox.Text = string.IsNullOrEmpty(existing.LayerName)
+                    ? (existing.LayerMask ?? "")
+                    : existing.LayerName;
+                SelectComboItemByTag(KindCombo, existing.Kind ?? "Button");
+                SelectComboItemByTag(ModeCombo, existing.Mode ?? "Hold");
+                AxisThresholdSlider.Value = existing.AxisThreshold;
+                JumpToLayerBox.Text = existing.JumpToLayer ?? "";
+                CycleLayersBox.Text = existing.CycleLayers ?? "";
+                DelaySlider.Value = existing.DelayMs;
+                PostponeMappingBox.IsChecked = existing.PostponeMapping;
+                ColorBox.Text = existing.Color ?? "";
+                // Inputs populated after kind selection.
+                Loaded += (_, __) => SelectInputs(existing);
+            }
+            else
+            {
+                LayerNameBox.Text = SuggestNextLayerName(otherActivators);
+                SelectComboItemByTag(KindCombo, "Button");
+                SelectComboItemByTag(ModeCombo, "Hold");
+                AxisThresholdSlider.Value = 0.5;
+                DelaySlider.Value = 0;
+            }
+
+            // Apply visibility based on the initial kind + mode.
+            ApplyKindVisibility();
+            ApplyModeVisibility();
+            RefreshInputComboSources();
+
             Loaded += (_, __) =>
             {
                 LayerNameBox.Focus();
@@ -96,19 +104,115 @@ namespace PadForge.Views
             };
         }
 
-        /// <summary>Picks a layer name that doesn't collide with existing
-        /// activators. Starts at "Shift 1" and increments until free.</summary>
+        private static void SelectComboItemByTag(ComboBox combo, string tag)
+        {
+            foreach (var item in combo.Items)
+            {
+                if (item is ComboBoxItem cbi && string.Equals(cbi.Tag as string, tag, StringComparison.OrdinalIgnoreCase))
+                {
+                    combo.SelectedItem = cbi;
+                    return;
+                }
+            }
+            if (combo.Items.Count > 0) combo.SelectedIndex = 0;
+        }
+
+        private static string ReadComboTag(ComboBox combo)
+            => combo.SelectedItem is ComboBoxItem cbi ? (cbi.Tag as string ?? "") : "";
+
+        private void SelectInputs(ShiftActivator existing)
+        {
+            if (InputCombo.ItemsSource is null) return;
+            foreach (var item in InputCombo.Items)
+            {
+                if (item is InputChoice c
+                    && string.Equals(c.Descriptor ?? "", existing.Descriptor ?? "", StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(c.DeviceGuid ?? "", existing.DeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
+                {
+                    InputCombo.SelectedItem = c;
+                    break;
+                }
+            }
+            if (ChordSecondCombo.ItemsSource != null)
+            {
+                foreach (var item in ChordSecondCombo.Items)
+                {
+                    if (item is InputChoice c
+                        && string.Equals(c.Descriptor ?? "", existing.ChordSecondDescriptor ?? "", StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(c.DeviceGuid ?? "", existing.ChordSecondDeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ChordSecondCombo.SelectedItem = c;
+                        break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>Sets InputCombo and ChordSecondCombo's ItemsSource based
+        /// on the selected Kind (Button-class for Button/Chord, Axis-class
+        /// for Axis). Re-runs whenever Kind changes.</summary>
+        private void RefreshInputComboSources()
+        {
+            string kind = ReadComboTag(KindCombo);
+            var primaryList = kind == "Axis" ? _axisChoices : _buttonChoices;
+
+            var view = CollectionViewSource.GetDefaultView(primaryList);
+            if (view?.GroupDescriptions != null)
+            {
+                view.GroupDescriptions.Clear();
+                view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(InputChoice.DeviceLabel)));
+            }
+            InputCombo.ItemsSource = view;
+
+            // Chord second always uses button-class.
+            var chordView = CollectionViewSource.GetDefaultView(_buttonChoices);
+            if (chordView?.GroupDescriptions != null)
+            {
+                chordView.GroupDescriptions.Clear();
+                chordView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(InputChoice.DeviceLabel)));
+            }
+            ChordSecondCombo.ItemsSource = chordView;
+        }
+
+        private void KindCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyKindVisibility();
+            RefreshInputComboSources();
+        }
+
+        private void ModeCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyModeVisibility();
+        }
+
+        private void ApplyKindVisibility()
+        {
+            string kind = ReadComboTag(KindCombo);
+            bool isChord = kind == "Chord";
+            bool isAxis = kind == "Axis";
+            ChordLabel.Visibility = isChord ? Visibility.Visible : Visibility.Collapsed;
+            ChordSecondCombo.Visibility = isChord ? Visibility.Visible : Visibility.Collapsed;
+            AxisThresholdLabel.Visibility = isAxis ? Visibility.Visible : Visibility.Collapsed;
+            AxisThresholdRow.Visibility = isAxis ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void ApplyModeVisibility()
+        {
+            string mode = ReadComboTag(ModeCombo);
+            bool isCustom = mode == "Custom";
+            bool isCycle = mode == "Cycle";
+            JumpLabel.Visibility = isCustom ? Visibility.Visible : Visibility.Collapsed;
+            JumpToLayerBox.Visibility = isCustom ? Visibility.Visible : Visibility.Collapsed;
+            CycleLabel.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
+            CycleLayersBox.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
+        }
+
         private static string SuggestNextLayerName(IEnumerable<ShiftActivator> existing)
         {
             var taken = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             if (existing != null)
-            {
                 foreach (var a in existing)
-                {
-                    if (a == null) continue;
-                    if (!string.IsNullOrEmpty(a.LayerName)) taken.Add(a.LayerName);
-                }
-            }
+                    if (a != null && !string.IsNullOrEmpty(a.LayerName)) taken.Add(a.LayerName);
             for (int i = 1; i < 1000; i++)
             {
                 var candidate = $"Shift {i}";
@@ -141,10 +245,15 @@ namespace PadForge.Views
                 return;
             }
 
-            // LayerMask is the engine-side identifier; LayerName is the
-            // user-visible label. Pick a unique LayerMask deterministically
-            // from the name so saved files are stable. Reuse the name when
-            // it isn't already taken as a mask; otherwise suffix a counter.
+            string kind = ReadComboTag(KindCombo);
+            InputChoice chordSecond = ChordSecondCombo.SelectedItem as InputChoice;
+            if (kind == "Chord" && chordSecond == null)
+            {
+                HintText.Text = Strings.Instance.Pad_Shift_HintInputRequired;
+                ChordSecondCombo.Focus();
+                return;
+            }
+
             string baseMask = string.IsNullOrWhiteSpace(name) ? "Shift" : name;
             string mask = baseMask;
             int suffix = 2;
@@ -157,8 +266,16 @@ namespace PadForge.Views
                 LayerMask = mask,
                 DeviceGuid = input.DeviceGuid ?? "",
                 Descriptor = input.Descriptor ?? "",
-                Mode = ModeToggle.IsChecked == true ? "Toggle" : "Hold",
-                Kind = "Button",
+                Mode = ReadComboTag(ModeCombo),
+                Kind = kind,
+                ChordSecondDeviceGuid = chordSecond?.DeviceGuid ?? "",
+                ChordSecondDescriptor = chordSecond?.Descriptor ?? "",
+                AxisThreshold = AxisThresholdSlider.Value,
+                JumpToLayer = (JumpToLayerBox.Text ?? "").Trim(),
+                CycleLayers = (CycleLayersBox.Text ?? "").Trim(),
+                DelayMs = (int)System.Math.Round(DelaySlider.Value),
+                PostponeMapping = PostponeMappingBox.IsChecked == true,
+                Color = (ColorBox.Text ?? "").Trim(),
             };
 
             DialogResult = true;

@@ -187,6 +187,26 @@ namespace PadForge.Common.Input
             _shiftRuntime[slotIndex]?.Clear();
         }
 
+        /// <summary>Inspect-only snapshot of the active engaged layer for a
+        /// slot. Returns <c>"Base"</c> when nothing is engaged; otherwise
+        /// the LayerMask of the activator at the top of the engagement
+        /// stack (or the Custom-mode layer override when set). Used by
+        /// the v3 visual overlay to display the live layer state without
+        /// having to thread state across the polling-thread boundary.</summary>
+        public static string GetEngagedLayerMask(int slotIndex, MappingSet mappingSet)
+        {
+            if (slotIndex < 0 || slotIndex >= _shiftRuntime.Length) return "Base";
+            var rt = _shiftRuntime[slotIndex];
+            if (rt == null) return "Base";
+            if (!string.IsNullOrEmpty(rt.CustomLayer)) return rt.CustomLayer;
+            if (rt.Stack.Count == 0) return "Base";
+            var activators = mappingSet?.ShiftActivators;
+            if (activators == null) return "Base";
+            int idx = rt.Stack[rt.Stack.Count - 1];
+            if (idx < 0 || idx >= activators.Count) return "Base";
+            return activators[idx]?.LayerMask ?? "Base";
+        }
+
         /// <summary>Resolves the active shift-layer mask for a slot.
         /// Walks <see cref="MappingSet.ShiftActivators"/>, updates engaged
         /// state for activators owned by <paramref name="thisDeviceGuid"/>,

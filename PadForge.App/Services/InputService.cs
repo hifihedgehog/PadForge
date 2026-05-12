@@ -5326,13 +5326,23 @@ namespace PadForge.Services
         /// </summary>
         public ProfileData SnapshotCurrentProfile()
         {
-            // Ensure ViewModel values are pushed to PadSettings first.
+            // Ensure ViewModel values are pushed to PadSettings first —
+            // but TUNING ONLY (syncMappings: false). Default syncMappings=true
+            // runs ClearMappingDescriptors() + rewrites the per-device
+            // PadSetting mapping fields from MappingItems. When MappingItems
+            // are stale or empty (e.g. they were just loaded from a
+            // corrupted SlotMappingSets), that clear-rewrite WIPES the
+            // healthy legacy mapping fields — which the heal-from-legacy
+            // path on profile apply relies on to rebuild a corrupted
+            // SlotMappingSets. Without the syncMappings:false here, every
+            // profile cycle propagated the corruption further, alternating
+            // between half-broken and fully-empty Mappings tab states.
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 var padVm = _mainVm.Pads[i];
                 var selected = padVm.SelectedMappedDevice;
                 if (selected != null && selected.InstanceGuid != Guid.Empty)
-                    SaveViewModelToPadSetting(padVm, selected.InstanceGuid);
+                    SaveViewModelToPadSetting(padVm, selected.InstanceGuid, syncMappings: false);
             }
 
             // Flush MappingItem state into SettingsManager.SlotMappingSets

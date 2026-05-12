@@ -2620,12 +2620,13 @@
                                             <TextBlock FontSize="10"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        Margin="4,1,0,0"
-                                                       TextTrimming="CharacterEllipsis"
-                                                       Text="{Binding SourceDeviceSubtitle}">
+                                                       TextTrimming="CharacterEllipsis">
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">
+                                                        <Setter Property="Text" Value="{Binding PrimarySourceDeviceLabel}"/>
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding IsSourceUnassigned}" Value="True">
+                                                            <DataTrigger Binding="{Binding SourceDescriptor}" Value="">
+                                                                <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
                                                                 <Setter Property="FontStyle" Value="Italic"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>

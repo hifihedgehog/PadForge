@@ -560,24 +560,12 @@ namespace PadForge
                 }));
             };
 
-            // After a profile apply, re-fire NavigateToTag on the
-            // currently-selected tag. Replicates the user's manual fix
-            // (click the controller card on the sidebar / nav away and
-            // back) — NavigateToTag re-resolves PadPageView.DataContext,
-            // RefreshMappingsToViewModel, and RefreshAvailableInputsForSlot.
-            // Deferred to Background priority so RebuildControllerSection
-            // (wired to NavControllerItemsRefreshed on the same priority)
-            // settles first.
-            _inputService.ProfileApplied += (s, e) =>
-            {
-                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
-                    new Action(() =>
-                    {
-                        string tag = _viewModel.SelectedNavTag;
-                        if (!string.IsNullOrEmpty(tag))
-                            NavigateToTag(tag);
-                    }));
-            };
+            // After a profile apply, replicate the user's manual fix
+            // (click the controller card on the sidebar) by running the
+            // same codified gesture they perform: SelectNavItemByTag
+            // flips IsActive on every NavigationViewItem before calling
+            // NavigateToTag. Deferred to Background so the sidebar
+            // rebuild settles first.
 
             // Wire devices page refresh.
             _viewModel.Devices.RefreshRequested += (s, e) =>

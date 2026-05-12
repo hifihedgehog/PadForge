@@ -617,8 +617,8 @@
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>Eixo além de 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Dispara quando o eixo de analógico a estiver deslocado mais de 50% da posição de repouso.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Origem</value></data>
-  <data name="Macro_InputDevice" xml:space="preserve"><value>Dispositivo de Entrada</value></data>
-  <data name="Macro_OutputController" xml:space="preserve"><value>Controle de Saída</value></data>
+  <data name="Macro_InputDevice" xml:space="preserve"><value>Dispositivos Atribuídos</value></data>
+  <data name="Macro_OutputController" xml:space="preserve"><value>Controle Virtual</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>Limiar</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consumir botões de gatilho (ocultar do jogo)</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Executa continuamente enquanto este controle virtual estiver ativo. Nenhum botão de gatilho necessário.</value></data>

@@ -617,8 +617,8 @@
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>Eje por encima del 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Se activa cuando el eje del joystick a supera el 50% de desplazamiento desde el reposo.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Origen</value></data>
-  <data name="Macro_InputDevice" xml:space="preserve"><value>Dispositivo de entrada</value></data>
-  <data name="Macro_OutputController" xml:space="preserve"><value>Control de salida</value></data>
+  <data name="Macro_InputDevice" xml:space="preserve"><value>Dispositivos asignados</value></data>
+  <data name="Macro_OutputController" xml:space="preserve"><value>Mando virtual</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>Umbral</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consumir botones activadores (ocultar del juego)</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Se ejecuta continuamente mientras este control virtual está activo. No requiere botón activador.</value></data>

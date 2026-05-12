@@ -617,8 +617,8 @@
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>As voorbij 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Activeer wanneer stickas a meer dan 50% van de ruststand is uitgeslagen.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Bron</value></data>
-  <data name="Macro_InputDevice" xml:space="preserve"><value>Invoerapparaat</value></data>
-  <data name="Macro_OutputController" xml:space="preserve"><value>Uitvoercontroller</value></data>
+  <data name="Macro_InputDevice" xml:space="preserve"><value>Toegewezen apparaten</value></data>
+  <data name="Macro_OutputController" xml:space="preserve"><value>Virtuele Controller</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>Drempelwaarde</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Triggerknoppen verbruiken (verbergen voor game)</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Draait continu zolang deze virtuele controller actief is. Geen triggerknop vereist.</value></data>

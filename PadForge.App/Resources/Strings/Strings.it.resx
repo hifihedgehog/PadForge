@@ -617,8 +617,8 @@
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>Asse oltre il 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Si attiva quando l&apos;asse analogico a è deflesso di oltre il 50% dalla posizione di riposo.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Sorgente</value></data>
-  <data name="Macro_InputDevice" xml:space="preserve"><value>Dispositivo di input</value></data>
-  <data name="Macro_OutputController" xml:space="preserve"><value>Controller di output</value></data>
+  <data name="Macro_InputDevice" xml:space="preserve"><value>Dispositivi assegnati</value></data>
+  <data name="Macro_OutputController" xml:space="preserve"><value>Controller virtuale</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>Soglia</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consuma pulsanti attivatore (nascondi al gioco)</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Esegue continuamente mentre questo controller virtuale è attivo. Nessun pulsante attivatore richiesto.</value></data>

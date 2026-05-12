@@ -617,8 +617,8 @@
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>轴超过 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>当摇杆轴 a 的偏移量超过静止位置的 50% 时触发。</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>来源</value></data>
-  <data name="Macro_InputDevice" xml:space="preserve"><value>输入设备</value></data>
-  <data name="Macro_OutputController" xml:space="preserve"><value>输出控制器</value></data>
+  <data name="Macro_InputDevice" xml:space="preserve"><value>已分配的设备</value></data>
+  <data name="Macro_OutputController" xml:space="preserve"><value>虚拟控制器</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>阈值</value></data>
   <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>拦截触发按钮（对游戏隐藏）</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>在此虚拟控制器激活时持续运行。无需触发按钮。</value></data>

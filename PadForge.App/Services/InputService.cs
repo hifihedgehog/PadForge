@@ -4234,8 +4234,8 @@ namespace PadForge.Services
         private Dictionary<Guid, int[]> _recordingVariableAxisBaseline;
         /// <summary>Snapshot of POV values at recording start (for the same reason).</summary>
         private Dictionary<Guid, int[]> _recordingVariablePovBaseline;
-        /// <summary>Snapshot of the slot's combined Xbox-output state at the
-        /// start of an OutputController-source recording — baseline for
+        /// <summary>Snapshot of the slot's combined virtual controller output
+        /// at the start of an OutputController-source recording — baseline for
         /// detecting "what changed".</summary>
         private Gamepad _recordingVariableOutputBaseline;
         private bool _recordingVariableOutputBaselineSet;
@@ -4318,7 +4318,7 @@ namespace PadForge.Services
             if (padIndex < 0 || padIndex >= InputManager.MaxPads) return;
 
             // Route based on the variable's Source choice. OutputController
-            // samples the slot's combined Xbox output; InputDevice walks the
+            // samples the slot's combined virtual controller output; InputDevice walks the
             // per-device raw HID state on every device mapped to this slot.
             if (_recordingVariable.Source == MacroTriggerSource.OutputController)
             {
@@ -4411,10 +4411,10 @@ namespace PadForge.Services
             StopExpressionVariableRecording();
         }
 
-        /// <summary>Scans the slot's current combined Xbox output for a first
-        /// detectable change since the recording-start baseline. Returns true
-        /// if a binding was captured (and the session has been stopped) so
-        /// the caller can exit immediately.</summary>
+        /// <summary>Scans the slot's current combined virtual controller output
+        /// for a first detectable change since the recording-start baseline.
+        /// Returns true if a binding was captured (and the session has been
+        /// stopped) so the caller can exit immediately.</summary>
         private bool ScanOutputControllerForFirstChange(int padIndex)
         {
             if (_inputManager == null || !_recordingVariableOutputBaselineSet) return false;

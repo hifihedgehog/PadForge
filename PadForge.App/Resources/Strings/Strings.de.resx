@@ -605,7 +605,7 @@
   <data name="Macro_Expression_Tooltip" xml:space="preserve"><value>Variablen als a, b, c, … (oder s[0], s[1], …) referenzieren. Unterstützt + - * / &amp;&amp; || ?: sowie abs/min/max/clamp/sign/lerp. Das Makro löst bei steigender Flanke aus, sobald der Formelwert 0.5 überschreitet.</value></data>
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>Variablen</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ Variable hinzufügen</value></data>
-  <data name="Macro_Expression_Hint" xml:space="preserve"><value>Jede Zeile definiert einen Variablenbuchstaben (a, b, c, …). Eingabegerät bindet eine Taste, einen POV oder eine Achse am physischen Gerät; Ausgabe-Controller liest einen Kanal des kombinierten Xbox-Ausgangs des Slots.</value></data>
+  <data name="Macro_Expression_Hint" xml:space="preserve"><value>Jede Zeile definiert einen Variablenbuchstaben (a, b, c, …). Eingabegerät bindet eine Taste, einen POV oder eine Achse am physischen Gerät; Ausgabe-Controller liest einen Kanal des kombinierten Ausgangs des virtuellen Controllers des Slots.</value></data>
   <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>A allein</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>Auslösen, wenn Variable a von 0 auf 1 wechselt.</value></data>
   <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>A und b</value></data>

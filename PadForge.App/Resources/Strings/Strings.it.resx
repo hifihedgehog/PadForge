@@ -605,7 +605,7 @@
   <data name="Macro_Expression_Tooltip" xml:space="preserve"><value>Riferisci le variabili come a, b, c, … (o s[0], s[1], …). Supporta + - * / &amp;&amp; || ?: e abs/min/max/clamp/sign/lerp. Il macro scatta sul fronte di salita quando il valore della formula supera 0.5.</value></data>
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>Variabili</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ Aggiungi variabile</value></data>
-  <data name="Macro_Expression_Hint" xml:space="preserve"><value>Ogni riga definisce una lettera variabile (a, b, c, …). Scegli Dispositivo di input per associare un pulsante, POV o asse su un dispositivo fisico, oppure Controller di output per leggere un canale dall'output Xbox combinato dello slot.</value></data>
+  <data name="Macro_Expression_Hint" xml:space="preserve"><value>Ogni riga definisce una lettera variabile (a, b, c, …). Scegli Dispositivo di input per associare un pulsante, POV o asse su un dispositivo fisico, oppure Controller di output per leggere un canale dall'output combinato del controller virtuale dello slot.</value></data>
   <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>Solo a</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>Si attiva quando la variabile a passa da 0 a 1.</value></data>
   <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>A e b</value></data>

@@ -309,6 +309,7 @@ namespace PadForge.Common.Input
                     if (macro.UsesAxisTrigger)
                     {
                         float threshold = macro.TriggerAxisThreshold / 100f;
+                        // Legacy slot-combined axes (OutputController source).
                         for (int ai = 0; ai < macro.TriggerAxisTargets.Length; ai++)
                         {
                             var axTarget = macro.TriggerAxisTargets[ai];
@@ -317,19 +318,62 @@ namespace PadForge.Common.Input
 
                             if (dir == MacroAxisDirection.Positive)
                             {
-                                // Only fire when axis is in positive half (0.5→1 range).
                                 if (val < 0.5f + threshold * 0.5f)
                                 { axisOk = false; break; }
                             }
                             else if (dir == MacroAxisDirection.Negative)
                             {
-                                // Only fire when axis is in negative half (0→0.5 range).
                                 if (val > 0.5f - threshold * 0.5f)
                                 { axisOk = false; break; }
                             }
                             else
                             {
-                                // Any direction — existing behavior.
+                                if (val < threshold)
+                                { axisOk = false; break; }
+                            }
+                        }
+                    }
+
+                    // Per-device axis entries from multi-device combos. Read
+                    // each entry's raw axis directly off the device's own
+                    // InputState.Axis using the standard SDL gamepad layout.
+                    if (axisOk)
+                    {
+                        float threshold = macro.TriggerAxisThreshold / 100f;
+                        var entries = macro.GetTriggerInputEntries();
+                        for (int i = 0; i < entries.Count; i++)
+                        {
+                            var e = entries[i];
+                            if (e.AxisTarget == MacroAxisTarget.None) continue;
+                            var ud = FindOnlineDeviceByInstanceGuid(e.DeviceGuid);
+                            if (ud == null || !ud.IsOnline || ud.InputState?.Axis == null)
+                            { axisOk = false; break; }
+                            int axIdx = e.AxisTarget switch
+                            {
+                                MacroAxisTarget.LeftStickX  => 0,
+                                MacroAxisTarget.LeftStickY  => 1,
+                                MacroAxisTarget.LeftTrigger => 2,
+                                MacroAxisTarget.RightStickX => 3,
+                                MacroAxisTarget.RightStickY => 4,
+                                MacroAxisTarget.RightTrigger=> 5,
+                                _ => -1
+                            };
+                            if (axIdx < 0 || axIdx >= ud.InputState.Axis.Length)
+                            { axisOk = false; break; }
+                            float raw = ud.InputState.Axis[axIdx];      // 0..65535
+                            float val = (raw + 32768f) / 65535f;        // → 0..1 with 0.5 at rest
+                            if (e.AxisDirection == MacroAxisDirection.Positive)
+                            {
+                                if (val < 0.5f + threshold * 0.5f)
+                                { axisOk = false; break; }
+                            }
+                            else if (e.AxisDirection == MacroAxisDirection.Negative)
+                            {
+                                if (val > 0.5f - threshold * 0.5f)
+                                { axisOk = false; break; }
+                            }
+                            else
+                            {
                                 if (val < threshold)
                                 { axisOk = false; break; }
                             }

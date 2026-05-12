@@ -3440,9 +3440,10 @@ namespace PadForge.Services
                 return;
             }
 
-            // Resolve activator (for LayerName + Color) by the engaged mask.
+            // Resolve activator (for LayerName + Color + Icon) by the engaged mask.
             string layerName = mask;
             string color = "";
+            string icon = "";
             if (ms?.ShiftActivators != null)
             {
                 foreach (var a in ms.ShiftActivators)
@@ -3451,13 +3452,14 @@ namespace PadForge.Services
                     if (!string.Equals(a.LayerMask, mask, System.StringComparison.Ordinal)) continue;
                     if (!string.IsNullOrEmpty(a.LayerName)) layerName = a.LayerName;
                     color = a.Color ?? "";
+                    icon = a.Icon ?? "";
                     break;
                 }
             }
 
             if (_shiftLayerFlyout == null)
                 _shiftLayerFlyout = new Views.ShiftLayerFlyout();
-            _shiftLayerFlyout.ShowLayer(layerName, color);
+            _shiftLayerFlyout.ShowLayer(layerName, color, icon);
         }
 
         private void ShowTouchpadOverlay()

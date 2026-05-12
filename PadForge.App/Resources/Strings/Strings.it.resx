@@ -1296,6 +1296,8 @@
   <data name="Pad_Shift_Configure" xml:space="preserve"><value>Configura attivatore…</value></data>
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>Rinomina livello…</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>Colore del livello</value></data>
+  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Scegli un'emoji da mostrare nel flyout quando questo livello è attivo.</value></data>
+  <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>Ripristina (⇧)</value></data>
   <data name="Pad_Shift_Copy" xml:space="preserve"><value>Copia righe del livello</value></data>
   <data name="Pad_Shift_Paste" xml:space="preserve"><value>Incolla righe nel livello</value></data>
   <data name="Pad_Shift_Clear" xml:space="preserve"><value>Cancella righe del livello</value></data>

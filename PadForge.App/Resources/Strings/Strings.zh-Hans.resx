@@ -608,11 +608,11 @@
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>每行定义一个变量字母（a, b, c, …）。选择"输入设备"可绑定物理设备的按钮、POV 或轴；选择"输出控制器"可读取该槽位合并 Xbox 输出中的通道。</value></data>
   <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>仅 a</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>当变量 a 从 0 变为 1 时触发。</value></data>
-  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a 和 b</value></data>
+  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>A 和 b</value></data>
   <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>仅当 a AND b 同时激活时触发。经典组合键。</value></data>
-  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a 或 b</value></data>
+  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>A 或 b</value></data>
   <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>当 a OR b 任一激活时触发。</value></data>
-  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a 但非 b</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>A 但非 b</value></data>
   <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>当 a 激活且 b NOT 激活时触发。</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>轴超过 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>当摇杆轴 a 的偏移量超过静止位置的 50% 时触发。</value></data>

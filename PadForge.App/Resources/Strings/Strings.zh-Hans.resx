@@ -1276,7 +1276,7 @@
   <data name="Pad_Shift_Configure" xml:space="preserve"><value>配置激活器…</value></data>
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>重命名层…</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>层颜色</value></data>
-  <data name="Pad_Shift_Color_Reset_Tooltip" xml:space="preserve"><value>清除层颜色(无标签着色,默认弹出窗口圆点)。</value></data>
+  <data name="Pad_ResetLayerColor" xml:space="preserve"><value>重置层颜色</value></data>
   <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>选择一个表情符号,在此层激活时显示在弹出窗口中。</value></data>
   <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>重置为默认 (⇧)</value></data>
   <data name="Pad_Shift_Copy" xml:space="preserve"><value>复制层行</value></data>

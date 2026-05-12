@@ -1340,6 +1340,9 @@ namespace PadForge.Services
                 // Load per-mapping deadzone.
                 string dzStr = ps.GetMappingDeadZone(mapping.TargetSettingName);
                 mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
+
+                // Load per-mapping Bidirectional flag.
+                mapping.IsBidirectional = ps.GetMappingBidirectional(mapping.TargetSettingName) == "1";
             }
         }
 
@@ -2339,6 +2342,8 @@ namespace PadForge.Services
                             ps.SetMappingDeadZone(mapping.TargetSettingName, mapping.MappingDeadZone.ToString());
                         else
                             ps.SetMappingDeadZone(mapping.TargetSettingName, "");
+
+                        ps.SetMappingBidirectional(mapping.TargetSettingName, mapping.IsBidirectional ? "1" : "");
                     }
                 }
             }

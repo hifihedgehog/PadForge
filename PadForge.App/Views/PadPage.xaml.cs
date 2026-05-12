@@ -443,12 +443,10 @@ namespace PadForge.Views
                 foreach (var c in first.AvailableInputs)
                 {
                     if (c == null) continue;
-                    var d = c.Descriptor ?? "";
-                    // Buttons + POV directions are valid activator inputs;
-                    // axis sources are out of scope until v2.
-                    if (d.StartsWith("Button ", StringComparison.OrdinalIgnoreCase)
-                        || d.StartsWith("POV ", StringComparison.OrdinalIgnoreCase))
-                        available.Add(c);
+                    // Pass every choice — the dialog filters internally per
+                    // Kind selection (buttons + POVs for Button/Chord;
+                    // axes + sliders for Axis).
+                    available.Add(c);
                 }
             }
 

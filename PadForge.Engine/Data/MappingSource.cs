@@ -92,5 +92,16 @@ namespace PadForge.Engine.Data
         /// inverts the inner source while held. Only read when
         /// <c>Kind == "InvertOnHold"</c>.</summary>
         [XmlAttribute] public string ParamModifier { get; set; } = "";
+
+        /// <summary>
+        /// v3.3 per-source Do-not-inherit slot. Reserved in the schema for
+        /// future per-source / per-zone fall-through suppression
+        /// (e.g. "don't inherit the negative half of LeftThumbAxisX from
+        /// Base"). The current evaluator uses
+        /// <see cref="MappingRow.NoInherit"/> at row granularity; this
+        /// field is XML-additive so a future engine pass can light up
+        /// per-source semantics without a schema migration.
+        /// </summary>
+        [XmlAttribute] public bool NoInherit { get; set; } = false;
     }
 }

@@ -48,17 +48,6 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isActive, value);
         }
 
-        private bool _isEngagedNow;
-        /// <summary>True when the engine reports this layer's activator is
-        /// currently engaged on the live device. Surfaces as a runtime
-        /// indicator on the tab (e.g. pulsing border). v3 visual-overlay
-        /// tier; wired to engine state on a low-frequency tick.</summary>
-        public bool IsEngagedNow
-        {
-            get => _isEngagedNow;
-            set => SetProperty(ref _isEngagedNow, value);
-        }
-
         /// <summary>True for the synthetic Base tab; false for shift layers.
         /// Drives whether right-click context menu shows the delete /
         /// configure / rename items (Base never has them).</summary>

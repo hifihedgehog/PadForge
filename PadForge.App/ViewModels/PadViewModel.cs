@@ -777,12 +777,6 @@ namespace PadForge.ViewModels
         /// the Mappings tab exactly as before).</summary>
         public bool HasShiftLayers => LayerTabs.Count > 1;
 
-        /// <summary>Raised by <see cref="RebuildLayerTabs"/> after the tab
-        /// strip is repopulated. The UI uses it to update tab-strip
-        /// visibility and ensure the active selection lands on a valid
-        /// tab.</summary>
-        public event EventHandler LayerTabsRebuilt;
-
         /// <summary>Rebuilds <see cref="LayerTabs"/> from the supplied
         /// activator list (which the caller pulls from
         /// <c>SettingsManager.SlotMappingSets[PadIndex].ShiftActivators</c>).
@@ -825,7 +819,6 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(ActiveLayerMask));
             }
             OnPropertyChanged(nameof(HasShiftLayers));
-            LayerTabsRebuilt?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>

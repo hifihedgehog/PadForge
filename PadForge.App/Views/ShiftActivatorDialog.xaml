@@ -119,13 +119,15 @@
             <TextBlock Grid.Row="10"
                        Text="{Binding Pad_Shift_Mode, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
+            <!-- Sticky is intentionally hidden until proper "auto-release
+                 after the next input" semantics land in the engine; its
+                 schema slot is preserved so saved configs still load. -->
             <ComboBox Grid.Row="11" x:Name="ModeCombo" Margin="0,0,0,12"
                       SelectionChanged="ModeCombo_SelectionChanged">
                 <ComboBoxItem Tag="Hold"   Content="{Binding Pad_Shift_ModeHold, Source={x:Static strings:Strings.Instance}}"/>
                 <ComboBoxItem Tag="Toggle" Content="{Binding Pad_Shift_ModeToggle, Source={x:Static strings:Strings.Instance}}"/>
                 <ComboBoxItem Tag="Custom" Content="{Binding Pad_Shift_ModeCustom, Source={x:Static strings:Strings.Instance}}"/>
                 <ComboBoxItem Tag="Cycle"  Content="{Binding Pad_Shift_ModeCycle, Source={x:Static strings:Strings.Instance}}"/>
-                <ComboBoxItem Tag="Sticky" Content="{Binding Pad_Shift_ModeSticky, Source={x:Static strings:Strings.Instance}}"/>
             </ComboBox>
 
             <!-- Jump-to-layer (Mode=Custom) -->
@@ -152,9 +154,16 @@
                     <TextBlock Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat={}{0:F0} ms}"
                                Margin="8,0,0,0" VerticalAlignment="Center"/>
                 </StackPanel>
+                <!-- PostponeMapping is hidden until the engine actually
+                     consumes the activator's input (source-suppression in
+                     Step 3 against engaged activators with
+                     PostponeMapping=false). The schema slot is preserved
+                     so saved configs round-trip. Reinstate this CheckBox
+                     when source suppression lands. -->
                 <CheckBox x:Name="PostponeMappingBox"
                           Content="{Binding Pad_Shift_PostponeMapping, Source={x:Static strings:Strings.Instance}}"
                           ToolTip="{Binding Pad_Shift_PostponeMapping_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                          Visibility="Collapsed"
                           Margin="0,0,0,6"/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding Pad_Shift_Color, Source={x:Static strings:Strings.Instance}}"

@@ -416,6 +416,99 @@ namespace PadForge.Views
             }
         }
 
+        // ─────────────────────────────────────────────
+        //  Shift mode UI handlers (Issue #61 Phase 6)
+        //
+        //  + Shift Layer button opens the modal dialog, on Save splices
+        //  the new activator into SettingsManager.SlotMappingSets[N].
+        //  ShiftActivators and rebuilds the tab strip. Tab clicks set
+        //  PadViewModel.ActiveLayerMask which raises LayerActivated;
+        //  InputService.OnLayerActivated reloads MappingItems from the
+        //  selected layer's MappingRows.
+        // ─────────────────────────────────────────────
+
+        private void AddShiftLayer_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPadVm == null) return;
+
+            // Pull the cross-device InputChoice list off the first
+            // MappingItem on the slot — InputService.PopulateAvailableInputs
+            // populates them identically across rows. Filter to button-class
+            // inputs only (v1 activator kind is Button; v2 axis kind comes
+            // through a different picker).
+            var available = new List<PadForge.ViewModels.InputChoice>();
+            var first = _currentPadVm.Mappings.FirstOrDefault();
+            if (first?.AvailableInputs != null)
+            {
+                foreach (var c in first.AvailableInputs)
+                {
+                    if (c == null) continue;
+                    var d = c.Descriptor ?? "";
+                    // Buttons + POV directions are valid activator inputs;
+                    // axis sources are out of scope until v2.
+                    if (d.StartsWith("Button ", StringComparison.OrdinalIgnoreCase)
+                        || d.StartsWith("POV ", StringComparison.OrdinalIgnoreCase))
+                        available.Add(c);
+                }
+            }
+
+            var slotMs = GetSlotMappingSet(_currentPadVm.PadIndex);
+            var existing = slotMs?.ShiftActivators
+                ?? new System.Collections.Generic.List<Engine.Data.ShiftActivator>();
+
+            var dlg = new ShiftActivatorDialog(available, existing: null, otherActivators: existing)
+            {
+                Owner = Window.GetWindow(this),
+            };
+            if (dlg.ShowDialog() != true || dlg.Result == null) return;
+
+            // Splice the new activator into the slot's MappingSet, rebuild
+            // the tab strip, switch to the new tab, mark settings dirty.
+            slotMs = GetOrCreateSlotMappingSet(_currentPadVm.PadIndex);
+            slotMs.ShiftActivators ??= new System.Collections.Generic.List<Engine.Data.ShiftActivator>();
+            slotMs.ShiftActivators.Add(dlg.Result);
+            _currentPadVm.RebuildLayerTabs(slotMs.ShiftActivators);
+            _currentPadVm.ActiveLayerMask = dlg.Result.LayerMask;
+            _currentPadVm.ConfigItemDirtyCallback?.Invoke();
+        }
+
+        private void ShiftLayerTab_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPadVm == null) return;
+            if (sender is not RadioButton rb) return;
+            string mask = rb.Tag as string;
+            if (string.IsNullOrEmpty(mask)) return;
+            _currentPadVm.ActiveLayerMask = mask;
+        }
+
+        private void ShiftLayerTab_RightClick(object sender, MouseButtonEventArgs e)
+        {
+            // v1.7: context menu (Configure / Rename / Color / Copy /
+            // Paste / Clear / Delete). Wired in the next commit.
+        }
+
+        /// <summary>Reads the slot's MappingSet from
+        /// <see cref="Common.SettingsManager.SlotMappingSets"/> by pad index.
+        /// Returns null when the slot is unallocated.</summary>
+        private static Engine.Data.MappingSet GetSlotMappingSet(int padIndex)
+        {
+            if (padIndex < 0 || padIndex >= PadForge.Common.Input.SettingsManager.SlotMappingSets.Length)
+                return null;
+            return PadForge.Common.Input.SettingsManager.SlotMappingSets[padIndex];
+        }
+
+        /// <summary>Returns the slot's MappingSet, creating one in place if
+        /// the slot is currently null. Used by the + Shift Layer flow so a
+        /// slot that has never had any mappings authored can still hold the
+        /// first ShiftActivator the user adds.</summary>
+        private static Engine.Data.MappingSet GetOrCreateSlotMappingSet(int padIndex)
+        {
+            if (padIndex < 0 || padIndex >= PadForge.Common.Input.SettingsManager.SlotMappingSets.Length)
+                return null;
+            return PadForge.Common.Input.SettingsManager.SlotMappingSets[padIndex]
+                ??= new Engine.Data.MappingSet();
+        }
+
 
         // ─────────────────────────────────────────────
         //  Motor test (click) + hover highlight

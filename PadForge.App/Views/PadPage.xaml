@@ -1773,6 +1773,7 @@
                 <Grid Margin="8">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
@@ -1794,14 +1795,46 @@
                                 Padding="8,4" Margin="0,0,8,0"
                                 ToolTip="{Binding MapAllButtonTooltip}"
                                 Click="MapAllToggle_Click"/>
+                        <Button x:Name="AddShiftLayerButton"
+                                Content="{Binding Pad_Shift_AddLayer, Source={x:Static strings:Strings.Instance}}"
+                                Padding="8,4" Margin="0,0,8,0"
+                                ToolTip="{Binding Pad_Shift_AddLayer_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                Click="AddShiftLayer_Click"/>
                         <TextBlock Text="{Binding Pad_MappingHint, Source={x:Static strings:Strings.Instance}}"
                                    VerticalAlignment="Center" FontStyle="Italic"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     </StackPanel>
 
+                    <!-- Nested layer-tab strip. Hidden when only Base exists
+                         (basic users without any shift layers see the
+                         Mappings tab exactly as before). One RadioButton per
+                         entry in PadViewModel.LayerTabs; right-click opens
+                         the per-tab context menu. -->
+                    <ItemsControl Grid.Row="1" x:Name="ShiftLayerTabStrip"
+                                  ItemsSource="{Binding LayerTabs}"
+                                  Margin="0,0,0,8"
+                                  Visibility="{Binding HasShiftLayers, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <RadioButton GroupName="ShiftLayerTabs"
+                                             Content="{Binding LayerName}"
+                                             IsChecked="{Binding IsActive, Mode=TwoWay}"
+                                             Margin="0,0,4,0"
+                                             Padding="10,4"
+                                             Click="ShiftLayerTab_Click"
+                                             MouseRightButtonUp="ShiftLayerTab_RightClick"
+                                             Tag="{Binding LayerMask}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
 
                     <!-- Mapping DataGrid -->
-                    <DataGrid Grid.Row="1"
+                    <DataGrid Grid.Row="2"
                               x:Name="MappingDataGrid"
                               ItemsSource="{Binding Mappings}"
                               AutoGenerateColumns="False"

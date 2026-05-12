@@ -1298,5 +1298,45 @@
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Inactivity timeout</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Seconds before a virtual controller is destroyed when all mapped devices are offline. 0 disables. Surviving controllers shift up to fill the gap and re-bind to lower XInput slots.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>seconds (0 = never)</value></data>
+  <!-- Shift mode (Issue #61 Phase 6 v1+) -->
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Shift Layer</value></data>
+  <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Add a shift layer — a second mapping table that activates while a button is held or toggled.</value></data>
+  <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Base</value></data>
+  <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift Layer</value></data>
+  <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Layer name</value></data>
+  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Activator input</value></data>
+  <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Hold</value></data>
+  <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Custom (jump to layer)</value></data>
+  <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Cycle</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Sticky (one-shot)</value></data>
+  <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Layer name is required.</value></data>
+  <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>A layer with that name already exists on this slot.</value></data>
+  <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>Pick an activator input.</value></data>
+  <data name="Pad_Shift_Configure" xml:space="preserve"><value>Configure activator…</value></data>
+  <data name="Pad_Shift_Rename" xml:space="preserve"><value>Rename layer…</value></data>
+  <data name="Pad_Shift_Color" xml:space="preserve"><value>Layer color…</value></data>
+  <data name="Pad_Shift_Copy" xml:space="preserve"><value>Copy layer rows</value></data>
+  <data name="Pad_Shift_Paste" xml:space="preserve"><value>Paste rows into layer</value></data>
+  <data name="Pad_Shift_Clear" xml:space="preserve"><value>Clear layer rows</value></data>
+  <data name="Pad_Shift_Delete" xml:space="preserve"><value>Delete layer</value></data>
+  <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Delete shift layer</value></data>
+  <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>Delete the "{0}" layer and all of its mapping rows? This cannot be undone.</value></data>
+  <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>Rename layer</value></data>
+  <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Do not inherit</value></data>
+  <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>When checked, this layer's target stays OFF instead of falling through to the Base row.</value></data>
+  <data name="Pad_Shift_Delay" xml:space="preserve"><value>Delay (ms)</value></data>
+  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Milliseconds the activator must stay engaged before the layer change fires.</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Postpone activator mapping</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>When checked, the activator input's own mapping still fires alongside the layer change.</value></data>
+  <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Jump to layer</value></data>
+  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Second chord input</value></data>
+  <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Axis threshold</value></data>
+  <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Cycle through layers</value></data>
+  <data name="Pad_Shift_Kind" xml:space="preserve"><value>Activator kind</value></data>
+  <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Button</value></data>
+  <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Chord (A + B)</value></data>
+  <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Axis past threshold</value></data>
 
 </root>

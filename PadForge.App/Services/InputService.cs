@@ -1916,21 +1916,6 @@ namespace PadForge.Services
                         }
                     }
                 }
-
-                // Force-fire PropertyChanged for the display-relevant
-                // fields regardless of value equality. SetProperty's
-                // equality short-circuit silently drops a second-pass
-                // write of the same value — and profile apply ends up
-                // running RefreshMappingsCore twice (once via
-                // OnMappingsRebuilt, once via the outer ApplyProfile
-                // loop). When the first pass's PropertyChanged races
-                // DataGrid row recycling, virtualised cell templates
-                // can latch on a stale render (most visible: subtitle
-                // TextBlock stuck on italic "Unassigned" even though
-                // SourceDescriptor + PrimarySourceDeviceLabel are
-                // correct). The unconditional notify here gives the
-                // row visuals a guaranteed re-evaluation pass.
-                mapping.NotifyBindingRefresh();
             }
         }
 

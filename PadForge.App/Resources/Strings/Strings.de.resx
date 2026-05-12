@@ -606,13 +606,13 @@
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>Variablen</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ Variable hinzufügen</value></data>
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>Jede Zeile definiert einen Variablenbuchstaben (a, b, c, …). Eingabegerät bindet eine Taste, einen POV oder eine Achse am physischen Gerät; Ausgabe-Controller liest einen Kanal des kombinierten Xbox-Ausgangs des Slots.</value></data>
-  <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>a allein</value></data>
+  <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>A allein</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>Auslösen, wenn Variable a von 0 auf 1 wechselt.</value></data>
-  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a und b</value></data>
+  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>A und b</value></data>
   <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Nur auslösen, wenn sowohl a AND b aktiv sind. Klassische Tastenkombination.</value></data>
-  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a oder b</value></data>
+  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>A oder b</value></data>
   <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>Auslösen, wenn entweder a OR b aktiv ist.</value></data>
-  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a aber nicht b</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>A aber nicht b</value></data>
   <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Auslösen, wenn a aktiv und b NOT aktiv ist.</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>Achse über 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Auslösen, wenn Stick-Achse a mehr als 50% von der Ruheposition ausgelenkt ist.</value></data>

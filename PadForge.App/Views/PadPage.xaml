@@ -665,6 +665,7 @@
 
                     <!-- Macro editor (shows when a macro is selected) -->
                     <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Auto"
                                   Padding="8"
                                   DataContext="{Binding SelectedMacro}"
                                   Visibility="{Binding DataContext.HasSelectedMacro,
@@ -1073,13 +1074,12 @@
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,3" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding DeviceLabel}"
-                                                           FontSize="11" Width="120"
-                                                           TextTrimming="CharacterEllipsis"
+                                                           FontSize="11"
                                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                            VerticalAlignment="Center"
                                                            Margin="0,0,6,0"/>
                                                 <TextBlock Text="{Binding AxisLabel}"
-                                                           FontSize="11" Width="120"
+                                                           FontSize="11"
                                                            VerticalAlignment="Center" Margin="0,0,6,0"/>
                                                 <CheckBox Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"
                                                           IsChecked="{Binding Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -1092,13 +1092,13 @@
                                                           IsChecked="{Binding Bidirectional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           IsEnabled="{Binding HalfAxis}"
                                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                                <Slider Value="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                        Minimum="1" Maximum="100" Width="120"
-                                                        VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                <Slider Style="{StaticResource DzSlider}" Width="120"
+                                                        Value="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        TickFrequency="1"/>
                                                 <TextBox Text="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                         Width="36" VerticalAlignment="Center"
-                                                         Padding="2,1" Margin="0,0,2,0"/>
-                                                <TextBlock Text="%" VerticalAlignment="Center"/>
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <Button Command="{Binding ResetDeadZoneCommand}" Style="{StaticResource ResetButton}"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -2690,7 +2690,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <!-- Invert / Half-axis / Bidirectional options -->
-                            <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="320">
+                            <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="460">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">

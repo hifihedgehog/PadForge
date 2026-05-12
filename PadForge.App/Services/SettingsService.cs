@@ -501,6 +501,7 @@ namespace PadForge.Services
                             Descriptor = clean,
                             Invert = inv,
                             HalfAxis = half,
+                            Bidirectional = mapping.IsBidirectional,
                             DeadZone = mapping.MappingDeadZone,
                         });
 
@@ -528,6 +529,7 @@ namespace PadForge.Services
                                 Descriptor = ncl,
                                 Invert = !ninv,
                                 HalfAxis = nhalf,
+                                Bidirectional = mapping.IsBidirectional,
                                 DeadZone = mapping.MappingDeadZone,
                             });
                         }
@@ -888,6 +890,132 @@ namespace PadForge.Services
             vm.MainWindowHeight = appSettings.MainWindowHeight > 0 ? appSettings.MainWindowHeight : 720;
             vm.MainWindowState = appSettings.MainWindowState;
             vm.MainWindowFullScreen = appSettings.MainWindowFullScreen;
+        }
+
+        /// <summary>Copy From companion: clones the per-slot config tabs
+        /// (Lighting, custom Extended layout, MIDI CC/note layout) from
+        /// <paramref name="srcSlot"/> to <paramref name="dstSlot"/>.
+        /// PlayStation device features (lightbar / adaptive triggers /
+        /// mic LED / player LED / audio-reactive) are physical-device
+        /// passthrough and copy unconditionally — a DualSense mapped to
+        /// an Xbox slot still has its lightbar driven by PlayStationConfig.
+        /// Extended custom layouts and MIDI CC/note ranges are slot-shape
+        /// data, so they only copy when both source and destination share
+        /// that output type. Mappings and per-device tuning live on
+        /// PadSetting and are handled separately by the InputService copy
+        /// path; this method fills the gap for tabs that live on
+        /// PadViewModel.</summary>
+        public void CopySlotConfigsAcrossSlots(int srcSlot, int dstSlot)
+        {
+            if (srcSlot < 0 || dstSlot < 0) return;
+            if (srcSlot >= _mainVm.Pads.Count || dstSlot >= _mainVm.Pads.Count) return;
+            if (srcSlot == dstSlot) return;
+
+            var src = _mainVm.Pads[srcSlot];
+            var dst = _mainVm.Pads[dstSlot];
+            if (src == null || dst == null) return;
+
+            // The Lighting tab is per-device, so the user's configured
+            // lightbar lives in one of the source slot's
+            // PerDevicePlayStationConfigs entries — NOT necessarily on
+            // src.PlayStationConfig, which is the anchor for the
+            // SelectedMappedDevice and may be the shared empty sentinel
+            // if the source slot never had a device selected. Pick the
+            // most-configured entry: prefer the anchor if it carries
+            // non-default settings, otherwise scan per-device entries
+            // for the first one with non-default values.
+            var sourceCfg = src.PlayStationConfig;
+            bool anchorIsDefault =
+                sourceCfg == null
+                || (sourceCfg.LightbarMode == ViewModels.LightbarMode.Off
+                    && sourceCfg.LeftTriggerMode == ViewModels.AdaptiveTriggerMode.Off
+                    && sourceCfg.RightTriggerMode == ViewModels.AdaptiveTriggerMode.Off
+                    && sourceCfg.MicLedMode == ViewModels.MicLedMode.Off
+                    && sourceCfg.PlayerLedMode == ViewModels.PlayerLedMode.Off);
+            if (anchorIsDefault && src.PerDevicePlayStationConfigs != null)
+            {
+                foreach (var kvp in src.PerDevicePlayStationConfigs)
+                {
+                    var candidate = kvp.Value;
+                    if (candidate == null) continue;
+                    if (candidate.LightbarMode != ViewModels.LightbarMode.Off
+                        || candidate.LeftTriggerMode != ViewModels.AdaptiveTriggerMode.Off
+                        || candidate.RightTriggerMode != ViewModels.AdaptiveTriggerMode.Off
+                        || candidate.MicLedMode != ViewModels.MicLedMode.Off
+                        || candidate.PlayerLedMode != ViewModels.PlayerLedMode.Off)
+                    {
+                        sourceCfg = candidate;
+                        break;
+                    }
+                }
+            }
+
+            if (sourceCfg != null)
+            {
+                dst.EnsurePlayStationConfigsForMappedDevices();
+                var data = BuildPlayStationConfigData(sourceCfg, dstSlot, Guid.Empty);
+
+                // Write every per-device entry on dst so device-switching
+                // doesn't bring back the old lightbar.
+                if (dst.PerDevicePlayStationConfigs != null)
+                {
+                    foreach (var kvp in dst.PerDevicePlayStationConfigs)
+                    {
+                        var dstCfg = kvp.Value;
+                        if (dstCfg == null) continue;
+                        ApplyPlayStationConfigData(dstCfg, data);
+                    }
+                }
+                // Anchor write — only when a real device is selected on
+                // the destination, otherwise dst.PlayStationConfig is the
+                // shared static sentinel which would leak into every
+                // slot's no-device view.
+                if (dst.SelectedMappedDevice != null
+                    && dst.SelectedMappedDevice.InstanceGuid != Guid.Empty)
+                {
+                    ApplyPlayStationConfigData(dst.PlayStationConfig, data);
+                }
+            }
+
+            // Extended custom layout is virtual-controller-shape data
+            // (thumbstick count / button count / OEM name / FFB), so it
+            // only makes sense when both src and dst are Extended slots.
+            if (src.OutputType == Engine.VirtualControllerType.Extended
+                && dst.OutputType == Engine.VirtualControllerType.Extended)
+            {
+                var s = src.ExtendedConfig;
+                var d = dst.ExtendedConfig;
+                if (s != null && d != null)
+                {
+                    d.ThumbstickCount = s.ThumbstickCount;
+                    d.TriggerCount = s.TriggerCount;
+                    d.PovCount = s.PovCount;
+                    d.ButtonCount = s.ButtonCount;
+                    d.OemNameOverride = s.OemNameOverride;
+                    d.ProductString = s.ProductString ?? string.Empty;
+                    d.Customize = s.Customize;
+                    d.ForceFeedbackEnabled = s.ForceFeedbackEnabled;
+                }
+            }
+
+            // MIDI port layout (channel / velocity / CC + note ranges) is
+            // also slot-output-shape data — only meaningful across MIDI slots.
+            if (src.OutputType == Engine.VirtualControllerType.Midi
+                && dst.OutputType == Engine.VirtualControllerType.Midi)
+            {
+                var s = src.MidiConfig;
+                var d = dst.MidiConfig;
+                if (s != null && d != null)
+                {
+                    d.Channel = s.Channel;
+                    d.Velocity = s.Velocity;
+                    d.StartCc = s.StartCc;
+                    d.CcCount = s.CcCount;
+                    d.StartNote = s.StartNote;
+                    d.NoteCount = s.NoteCount;
+                    dst.RebuildMappings();
+                }
+            }
         }
 
         /// <summary>
@@ -1316,33 +1444,19 @@ namespace PadForge.Services
                     trig.SensitivityCurve = ps.GetExtendedMapping($"ExtendedTrigger{g}Curve") ?? "0,0;1,1";
                 }
 
-                // Load mapping descriptors into mapping rows.
-                LoadMappingDescriptors(padVm, ps);
-            }
-        }
-
-        /// <summary>
-        /// Populates PadViewModel mapping rows from a PadSetting's descriptor strings.
-        /// </summary>
-        private static void LoadMappingDescriptors(PadViewModel padVm, PadSetting ps)
-        {
-            foreach (var mapping in padVm.Mappings)
-            {
-                string value = GetPadSettingProperty(ps, mapping.TargetSettingName);
-                mapping.SourceDescriptor = value ?? string.Empty;
-
-                if (mapping.NegSettingName != null)
-                {
-                    string negValue = GetPadSettingProperty(ps, mapping.NegSettingName);
-                    mapping.NegSourceDescriptor = negValue ?? string.Empty;
-                }
-
-                // Load per-mapping deadzone.
-                string dzStr = ps.GetMappingDeadZone(mapping.TargetSettingName);
-                mapping.MappingDeadZone = int.TryParse(dzStr, out int dz) && dz > 0 ? dz : 50;
-
-                // Load per-mapping Bidirectional flag.
-                mapping.IsBidirectional = ps.GetMappingBidirectional(mapping.TargetSettingName) == "1";
+                // Mappings are per-slot (live in SlotMappingSets), NOT per-device.
+                // Read from the authoritative MappingSet rather than the legacy
+                // per-device PadSetting fields. The legacy fields are stale
+                // whenever the row's primary lives on a device other than the
+                // SELECTED one (e.g. cross-device multi-source rows), and the
+                // save path's UpdatePadSettingsFromViewModels writes the primary
+                // descriptor into the SELECTED device's PadSetting without
+                // checking PrimarySourceDeviceGuid, so legacy fields can hold
+                // descriptors that don't belong to the device they're stored on,
+                // or get blanked out across save / load cycles. Reading
+                // SlotMappingSets here is what every other "refresh the Mappings
+                // tab" path already does — slot init was the missing call site.
+                InputService.RefreshMappingsToViewModel(padVm);
             }
         }
 
@@ -1735,6 +1849,7 @@ namespace PadForge.Services
                             ps.FlushMidiMappings();
                             ps.FlushKbmMappings();
                             ps.FlushMappingDeadZones();
+                            ps.FlushMappingBidirectional();
                             ps.UpdateChecksum();
                             us.PadSettingChecksum = ps.PadSettingChecksum;
                         }

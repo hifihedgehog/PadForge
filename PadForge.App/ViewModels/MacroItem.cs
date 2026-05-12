@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -535,6 +536,15 @@ namespace PadForge.ViewModels
                 set => SetProperty(ref _deadZone, Math.Clamp(value, 1, 100));
             }
 
+            private CommunityToolkit.Mvvm.Input.RelayCommand _resetDeadZoneCommand;
+            /// <summary>Reset the per-entry deadzone to the default 50 %. Pairs
+            /// with the mapping table's <c>ResetDeadZoneCommand</c> so the
+            /// macros editor's axis row carries the same reset glyph as the
+            /// mapping grid.</summary>
+            [System.Xml.Serialization.XmlIgnore]
+            public CommunityToolkit.Mvvm.Input.RelayCommand ResetDeadZoneCommand =>
+                _resetDeadZoneCommand ??= new CommunityToolkit.Mvvm.Input.RelayCommand(() => DeadZone = 50);
+
             /// <summary>Device name resolved from <see cref="DeviceGuid"/> for the
             /// per-entry editor UI.</summary>
             [System.Xml.Serialization.XmlIgnore]
@@ -713,6 +723,7 @@ namespace PadForge.ViewModels
         public void SetTriggerInputEntries(List<TriggerInputEntry> entries)
         {
             _triggerInputEntries = entries ?? new List<TriggerInputEntry>();
+            WireTriggerInputEntries();
             OnPropertyChanged(nameof(TriggerInputs));
             OnPropertyChanged(nameof(UsesRawTrigger));
             OnPropertyChanged(nameof(UsesPovTrigger));
@@ -740,6 +751,35 @@ namespace PadForge.ViewModels
                         _triggerInputEntries.Add(new TriggerInputEntry { DeviceGuid = _triggerDeviceGuid, Pov = pov });
                 }
             }
+            WireTriggerInputEntries();
+        }
+
+        /// <summary>Subscribes each <see cref="TriggerInputEntry"/>'s
+        /// PropertyChanged event so per-entry Invert / HalfAxis / Bidirectional /
+        /// DeadZone edits bubble up through the macro as a
+        /// <see cref="TriggerInputs"/> change. Without this the macro's
+        /// own PropertyChanged never fires for per-entry edits, the
+        /// settings autosave never runs, and the new values are lost on
+        /// the next reload.</summary>
+        private void WireTriggerInputEntries()
+        {
+            if (_triggerInputEntries == null) return;
+            foreach (var entry in _triggerInputEntries)
+            {
+                if (entry == null) continue;
+                entry.PropertyChanged -= OnTriggerInputEntryPropertyChanged;
+                entry.PropertyChanged += OnTriggerInputEntryPropertyChanged;
+            }
+        }
+
+        private void OnTriggerInputEntryPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            // The serialized TriggerInputs spec changes whenever any entry
+            // field changes. Re-fire TriggerInputs so the MainWindow
+            // macro.PropertyChanged → MarkDirty chain catches the edit.
+            OnPropertyChanged(nameof(TriggerInputs));
+            OnPropertyChanged(nameof(TriggerAxisEntries));
+            OnPropertyChanged(nameof(TriggerDisplayText));
         }
 
         private bool _isRecordingTrigger;

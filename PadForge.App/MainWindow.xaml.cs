@@ -3798,6 +3798,7 @@ namespace PadForge
                     or nameof(MappingItem.NegSourceDescriptor)
                     or nameof(MappingItem.IsInverted)
                     or nameof(MappingItem.IsHalfAxis)
+                    or nameof(MappingItem.IsBidirectional)
                     or nameof(MappingItem.MappingDeadZone)
                     or nameof(MappingItem.PrimarySourceDeviceGuid)
                     or nameof(MappingItem.CombineMode)
@@ -3832,6 +3833,7 @@ namespace PadForge
                         or nameof(MappingSourceItem.Descriptor)
                         or nameof(MappingSourceItem.Invert)
                         or nameof(MappingSourceItem.HalfAxis)
+                        or nameof(MappingSourceItem.Bidirectional)
                         or nameof(MappingSourceItem.DeadZone)
                         or nameof(MappingSourceItem.Kind)
                         or nameof(MappingSourceItem.ParamUp)
@@ -4170,6 +4172,15 @@ namespace PadForge
 
             // Build list of all devices that have configured settings.
             var entries = new List<CopyFromDialog.DeviceEntry>();
+            // Mappings are stored per-slot (in the slot's MappingSet) since the
+            // multi-source merge, so Copy From lists one entry per source slot
+            // rather than one per assigned device — a slot with N devices used
+            // to surface N duplicates with the same SlotLabel. Per-device tuning
+            // (deadzones / FFB / sensitivity) still differs; we pick the slot's
+            // currently-selected device as the tuning donor for each entry.
+            // Unmapped devices (MapTo < 0) keep one entry per device since they
+            // have no slot to dedupe under.
+            var slotChosenDevice = new Dictionary<int, Guid>();
             var settings = SettingsManager.UserSettings?.Items;
             if (settings != null)
             {
@@ -4177,56 +4188,113 @@ namespace PadForge
                 {
                     foreach (var us in settings)
                     {
-                        // Skip the same device+slot combination (allow same device on other slots).
-                        if (padVm.SelectedMappedDevice != null &&
-                            us.InstanceGuid == padVm.SelectedMappedDevice.InstanceGuid &&
-                            us.MapTo == padVm.PadIndex)
-                            continue;
+                        // Skip this slot entirely — can't Copy From self.
+                        if (us.MapTo == padVm.PadIndex) continue;
 
                         var ps = us.GetPadSetting();
-                        if (ps == null || !ps.HasAnyMapping)
-                            continue;
+                        if (ps == null || !ps.HasAnyMapping) continue;
 
-                        // Get the real device name from UserDevice (InstanceName on
-                        // UserSetting is often empty).
-                        var ud = SettingsManager.FindDeviceByInstanceGuid(us.InstanceGuid);
-                        string name = ud?.InstanceName;
-                        if (string.IsNullOrEmpty(name))
-                            name = ud?.ProductName;
-                        if (string.IsNullOrEmpty(name))
-                            name = us.InstanceGuid.ToString();
-
-                        string slot = us.MapTo >= 0 && us.MapTo < InputManager.MaxPads
-                            ? string.Format(Strings.Instance.Status_VirtualController_Format, us.MapTo + 1, $"{us.InstanceGuid:D}")
-                            : string.Format(Strings.Instance.Status_Unmapped_Format, $"{us.InstanceGuid:D}");
-
-                        // Determine layout type from the slot's output type.
-                        var outputType = VirtualControllerType.Xbox;
-                        bool isExtended = false;
-                        if (us.MapTo >= 0 && us.MapTo < _viewModel.Pads.Count)
+                        // For mapped slots, dedupe: only one entry per source
+                        // slot, donor = the slot's currently-selected device,
+                        // falling back to the first device we encounter with a
+                        // valid PadSetting.
+                        if (us.MapTo >= 0)
                         {
-                            var srcPad = _viewModel.Pads[us.MapTo];
-                            outputType = srcPad.OutputType;
-                            isExtended = outputType == VirtualControllerType.Extended
-                                /* Extended always uses dynamic layout */;
+                            if (slotChosenDevice.ContainsKey(us.MapTo)) continue;
+
+                            Guid donor = Guid.Empty;
+                            if (us.MapTo < _viewModel.Pads.Count)
+                                donor = _viewModel.Pads[us.MapTo].SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+
+                            // Promote the donor's UserSetting if it's not the
+                            // current iteration's `us` — otherwise this `us` is
+                            // the chosen donor.
+                            if (donor != Guid.Empty && donor != us.InstanceGuid)
+                            {
+                                var donorUs = settings.FirstOrDefault(
+                                    u => u != null && u.MapTo == us.MapTo && u.InstanceGuid == donor);
+                                if (donorUs != null)
+                                {
+                                    var donorPs = donorUs.GetPadSetting();
+                                    if (donorPs != null && donorPs.HasAnyMapping)
+                                    {
+                                        AddEntry(entries, donorUs, donorPs);
+                                        slotChosenDevice[us.MapTo] = donor;
+                                        continue;
+                                    }
+                                }
+                            }
+
+                            AddEntry(entries, us, ps);
+                            slotChosenDevice[us.MapTo] = us.InstanceGuid;
                         }
-
-                        string layoutLabel = $"({MappingTranslation.GetLayoutLabel(outputType, isExtended)})";
-
-                        entries.Add(new CopyFromDialog.DeviceEntry
+                        else
                         {
-                            Name = name,
-                            SlotLabel = slot,
-                            LayoutLabel = layoutLabel,
-                            InstanceGuid = us.InstanceGuid,
-                            PadSetting = ps,
-                            OutputType = outputType,
-                            IsExtended = isExtended,
-                            SourceSlot = us.MapTo,
-                        });
+                            // Unmapped (MapTo < 0) — one entry per device.
+                            AddEntry(entries, us, ps);
+                        }
                     }
                 }
             }
+
+            void AddEntry(List<CopyFromDialog.DeviceEntry> list, UserSetting us, PadSetting ps)
+            {
+                var outputType = VirtualControllerType.Xbox;
+                bool isExtended = false;
+                if (us.MapTo >= 0 && us.MapTo < _viewModel.Pads.Count)
+                {
+                    var srcPad = _viewModel.Pads[us.MapTo];
+                    outputType = srcPad.OutputType;
+                    isExtended = outputType == VirtualControllerType.Extended;
+                }
+
+                // Primary line identifies the SLOT, not the device. The
+                // mappings copy is per-slot since the multi-source merge,
+                // so the dialog reads as: "Virtual Controller {global#} —
+                // {Type} {in-group#}" (e.g. "Virtual Controller 3 — Xbox 2").
+                // Unmapped UserSettings (rare; MapTo < 0) fall back to the
+                // device name since they have no slot identity.
+                string primary;
+                if (us.MapTo >= 0)
+                {
+                    int globalNum = SettingsManager.SlotOrders.GetGlobalSlotNumber(us.MapTo);
+                    int inGroupNum = SettingsManager.SlotOrders.GetOrderFor(outputType).IndexOf(us.MapTo) + 1;
+                    string typeName = ControllerTypeDisplayName(outputType);
+                    string vcWord = Strings.Instance.Main_VirtualController_Format.Replace("{0}", globalNum.ToString());
+                    primary = inGroupNum > 0
+                        ? $"{vcWord} — {typeName} {inGroupNum}"
+                        : $"{vcWord} — {typeName}";
+                }
+                else
+                {
+                    var ud = SettingsManager.FindDeviceByInstanceGuid(us.InstanceGuid);
+                    primary = ud?.InstanceName;
+                    if (string.IsNullOrEmpty(primary)) primary = ud?.ProductName;
+                    if (string.IsNullOrEmpty(primary)) primary = us.InstanceGuid.ToString();
+                }
+
+                list.Add(new CopyFromDialog.DeviceEntry
+                {
+                    Name = primary,
+                    SlotLabel = $"{us.InstanceGuid:D}",
+                    LayoutLabel = string.Empty,
+                    InstanceGuid = us.InstanceGuid,
+                    PadSetting = ps,
+                    OutputType = outputType,
+                    IsExtended = isExtended,
+                    SourceSlot = us.MapTo,
+                });
+            }
+
+            static string ControllerTypeDisplayName(VirtualControllerType t) => t switch
+            {
+                VirtualControllerType.Xbox          => Strings.Instance.ControllerType_Xbox,
+                VirtualControllerType.PlayStation   => Strings.Instance.ControllerType_PlayStation,
+                VirtualControllerType.Extended      => Strings.Instance.ControllerType_Extended,
+                VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
+                VirtualControllerType.Midi          => Strings.Instance.ControllerType_MIDI,
+                _ => t.ToString(),
+            };
 
             if (entries.Count == 0)
             {
@@ -4302,6 +4370,15 @@ namespace PadForge
                     srcEntry.OutputType, srcEntry.IsExtended,
                     targetOutputType, targetIsExtended,
                     targetDeviceOverride);
+
+                // PadSetting carries deadzones, sensitivity, FFB, mapping
+                // descriptors. The per-slot config tabs (Lighting / custom
+                // Extended layout / MIDI CC+note layout) live on PadViewModel,
+                // not PadSetting — clone those explicitly so a "Copy From"
+                // actually copies the whole slot, not just half.
+                if (srcEntry.SourceSlot >= 0)
+                    _settingsService.CopySlotConfigsAcrossSlots(srcEntry.SourceSlot, padVm.PadIndex);
+
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopiedFromDevice;
             }

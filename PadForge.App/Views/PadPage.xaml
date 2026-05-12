@@ -1,4 +1,4 @@
-<UserControl x:Class="PadForge.Views.PadPage"
+﻿<UserControl x:Class="PadForge.Views.PadPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -1087,8 +1087,8 @@
                                                 <CheckBox Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"
                                                           IsChecked="{Binding HalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                                <CheckBox Content="{Binding Macro_Axis_Either, Source={x:Static strings:Strings.Instance}}"
-                                                          ToolTip="{Binding Macro_Axis_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                <CheckBox Content="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}"
+                                                          ToolTip="{Binding Pad_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                           IsChecked="{Binding Bidirectional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           IsEnabled="{Binding HalfAxis}"
                                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
@@ -2377,13 +2377,18 @@
                                                                 <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
                                                             </Button.ToolTip>
                                                         </Button>
-                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Width="220"
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Width="290"
                                                                     Visibility="{Binding IsKindDescriptorless, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
                                                             <CheckBox Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"
                                                                       IsChecked="{Binding Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                             <CheckBox Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"
                                                                       IsChecked="{Binding HalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                      Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                            <CheckBox Content="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}"
+                                                                      ToolTip="{Binding Pad_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                                      IsChecked="{Binding Bidirectional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                      IsEnabled="{Binding HalfAxis}"
                                                                       VerticalAlignment="Center"/>
                                                         </StackPanel>
                                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0" Width="230"

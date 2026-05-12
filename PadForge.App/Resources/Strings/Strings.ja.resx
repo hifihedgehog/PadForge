@@ -873,8 +873,8 @@
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>入力を押してください…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>反転</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>ハーフ軸</value></data>
-  <data name="Macro_Axis_Either" xml:space="preserve"><value>どちら向きでも</value></data>
-  <data name="Macro_Axis_Either_Tooltip" xml:space="preserve"><value>「ハーフ軸」が有効な場合、中央からどちらの方向にデッドゾーンを超えて動かしても発動します（「反転」は無効です）。</value></data>
+  <data name="Pad_Either" xml:space="preserve"><value>どちら向きでも</value></data>
+  <data name="Pad_Either_Tooltip" xml:space="preserve"><value>「ハーフ軸」が有効な場合、中央からどちらの方向にデッドゾーンを超えて動かしても発動します（「反転」は無効です）。</value></data>
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>選択した軸 (0–100%) を Windows のシステム音量に継続的にマップし、音量上限に合わせてスケーリングします。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」を組み合わせて使用してください。</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Windows の音量ミキサーで特定アプリケーションの音量を、音量上限に合わせてスケーリングして制御します。プロセス名を入力してください (タスクマネージャーで確認できます)。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」を組み合わせて使用してください。</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>選択した軸をマウス移動 (またはスクロール) に継続的にマップします。「常時」トリガー、またはボタン/軸トリガーに「押している間」+「離すまで」で使用してください。スティック→マウスの場合、X 軸用と Y 軸用の 2 つのアクションを作成してください。</value></data>

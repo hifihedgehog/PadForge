@@ -560,20 +560,23 @@ namespace PadForge
                 }));
             };
 
-            // Force a PadPage DataContext rebind after every profile apply
-            // (including the default-profile fallback) so the DataGrid's
-            // cached row visuals re-resolve against the new profile's
-            // MappingItems. PropertyChanged on individual fields wasn't
-            // enough to dislodge cached ComboBox SelectedItem references
-            // and per-row Source subtitle bindings — only a DataContext
-            // toggle through null reliably refreshes them.
+            // After a profile apply, re-fire NavigateToTag on the
+            // currently-selected tag. Replicates the user's manual fix
+            // (click the controller card on the sidebar / nav away and
+            // back) — NavigateToTag re-resolves PadPageView.DataContext,
+            // RefreshMappingsToViewModel, and RefreshAvailableInputsForSlot.
+            // Deferred to Background priority so RebuildControllerSection
+            // (wired to NavControllerItemsRefreshed on the same priority)
+            // settles first.
             _inputService.ProfileApplied += (s, e) =>
             {
-                if (PadPageView.Visibility != Visibility.Visible) return;
-                var padVm = _viewModel.SelectedPad;
-                if (padVm == null) return;
-                PadPageView.DataContext = null;
-                PadPageView.DataContext = padVm;
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
+                    new Action(() =>
+                    {
+                        string tag = _viewModel.SelectedNavTag;
+                        if (!string.IsNullOrEmpty(tag))
+                            NavigateToTag(tag);
+                    }));
             };
 
             // Wire devices page refresh.
@@ -3616,24 +3619,10 @@ namespace PadForge
                 var padVm = _viewModel.SelectedPad;
                 if (padVm != null)
                 {
-                    // Re-resolve mapping rows + per-row ComboBox SelectedInput
-                    // against the slot's MappingSet BEFORE re-binding. The
-                    // navigate-away-and-back workaround the user found works
-                    // because hiding/showing the PadPage forces WPF to
-                    // rebuild the DataGrid's row visuals from scratch.
-                    // Replicate that here with a null DataContext toggle so
-                    // every per-row binding re-resolves against the freshly-
-                    // refreshed MappingItems. Without the toggle, WPF holds
-                    // onto cached row visuals whose ComboBox SelectedItem
-                    // was bound to the previous slot/profile's InputChoice
-                    // instance and the per-row Source subtitle's
-                    // PrimarySourceDeviceLabel binding stayed stale.
                     InputService.RefreshMappingsToViewModel(padVm);
                     var selected = padVm.SelectedMappedDevice;
                     if (selected != null && selected.InstanceGuid != Guid.Empty)
                         _inputService.RefreshAvailableInputsForSlot(padVm);
-                    if (PadPageView.DataContext == padVm)
-                        PadPageView.DataContext = null;
                     PadPageView.DataContext = padVm;
                 }
             }

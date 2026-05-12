@@ -35,9 +35,6 @@ namespace PadForge.Views
         private bool _recordingChord;
         private string _selectedIcon = "";
 
-        private static readonly SolidColorBrush UnsetColorBrush =
-            new SolidColorBrush(Color.FromRgb(0x55, 0x55, 0x55));
-
         public ShiftActivatorDialog(
             IReadOnlyList<InputChoice> availableInputs,
             ShiftActivator existing,
@@ -152,7 +149,7 @@ namespace PadForge.Views
             redDpd?.AddValueChanged(ColorPicker, onRgb);
             greenDpd?.AddValueChanged(ColorPicker, onRgb);
             blueDpd?.AddValueChanged(ColorPicker, onRgb);
-            UpdateColorPreview();
+            UpdateHexBoxFromPicker();
 
             ApplyKindVisibility();
             ApplyModeVisibility();
@@ -180,25 +177,67 @@ namespace PadForge.Views
         {
             if (_suppressColorPickerWriteback) return;
             _colorSet = true;
-            UpdateColorPreview();
+            UpdateHexBoxFromPicker();
         }
 
-        private void UpdateColorPreview()
+        private void UpdateHexBoxFromPicker()
         {
-            if (!_colorSet)
+            if (ColorHexBox == null) return;
+            ColorHexBox.Text = $"{ColorPicker.Red:X2}{ColorPicker.Green:X2}{ColorPicker.Blue:X2}";
+        }
+
+        private void ColorHexBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+                ColorHexBox_Apply();
+        }
+
+        private void ColorHexBox_LostFocus(object sender, RoutedEventArgs e)
+            => ColorHexBox_Apply();
+
+        private void ColorHexBox_Apply()
+        {
+            if (ColorHexBox == null) return;
+            string text = (ColorHexBox.Text ?? "").Trim();
+            if (text.StartsWith("#")) text = text.Substring(1);
+
+            if (text.Length == 6
+                && byte.TryParse(text.Substring(0, 2), System.Globalization.NumberStyles.HexNumber,
+                    System.Globalization.CultureInfo.InvariantCulture, out byte r)
+                && byte.TryParse(text.Substring(2, 2), System.Globalization.NumberStyles.HexNumber,
+                    System.Globalization.CultureInfo.InvariantCulture, out byte g)
+                && byte.TryParse(text.Substring(4, 2), System.Globalization.NumberStyles.HexNumber,
+                    System.Globalization.CultureInfo.InvariantCulture, out byte b))
             {
-                ColorPreviewSwatch.Background = UnsetColorBrush;
-                return;
+                ColorPicker.Red = r;
+                ColorPicker.Green = g;
+                ColorPicker.Blue = b;
             }
-            ColorPreviewSwatch.Background = new SolidColorBrush(
-                Color.FromRgb(ColorPicker.Red, ColorPicker.Green, ColorPicker.Blue));
+
+            // Always reformat to canonical RRGGBB (echo back on success,
+            // revert on failure).
+            UpdateHexBoxFromPicker();
         }
 
         private void ClearColor_Click(object sender, RoutedEventArgs e)
         {
             _colorSet = false;
-            UpdateColorPreview();
+            _suppressColorPickerWriteback = true;
+            ColorPicker.Red = 0;
+            ColorPicker.Green = 0;
+            ColorPicker.Blue = 0;
+            _suppressColorPickerWriteback = false;
+            UpdateHexBoxFromPicker();
         }
+
+        private void ResetRed_Click(object sender, RoutedEventArgs e)
+            => ColorPicker.Red = 0;
+
+        private void ResetGreen_Click(object sender, RoutedEventArgs e)
+            => ColorPicker.Green = 0;
+
+        private void ResetBlue_Click(object sender, RoutedEventArgs e)
+            => ColorPicker.Blue = 0;
 
         private static Color? ParseColor(string hex)
         {

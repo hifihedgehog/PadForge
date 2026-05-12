@@ -1303,8 +1303,8 @@
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Add a shift layer — a second mapping table that activates while a button is held or toggled.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Base</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift Layer</value></data>
-  <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Layer name</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Activator input</value></data>
+  <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Layer Name</value></data>
+  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Activator Input</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mode</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Hold</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Toggle</value></data>
@@ -1316,7 +1316,8 @@
   <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>Pick an activator input.</value></data>
   <data name="Pad_Shift_Configure" xml:space="preserve"><value>Configure activator…</value></data>
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>Rename layer…</value></data>
-  <data name="Pad_Shift_Color" xml:space="preserve"><value>Layer color…</value></data>
+  <data name="Pad_Shift_Color" xml:space="preserve"><value>Layer Color</value></data>
+  <data name="Pad_Shift_Color_Reset_Tooltip" xml:space="preserve"><value>Clear the layer color (no tab tint, default flyout dot).</value></data>
   <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Pick an emoji to show on the flyout when this layer is engaged.</value></data>
   <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>Reset to default (⇧)</value></data>
   <data name="Pad_Shift_Copy" xml:space="preserve"><value>Copy layer rows</value></data>
@@ -1332,15 +1333,15 @@
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Milliseconds the activator must stay engaged before the layer change fires.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Postpone activator mapping</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>When checked, the activator input's own mapping still fires alongside the layer change.</value></data>
-  <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Jump to layer</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Second chord input</value></data>
-  <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Axis threshold</value></data>
-  <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Cycle through layers</value></data>
-  <data name="Pad_Shift_Kind" xml:space="preserve"><value>Activator kind</value></data>
+  <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Jump To Layer</value></data>
+  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Second Chord Input</value></data>
+  <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Axis Threshold</value></data>
+  <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Cycle Through Layers</value></data>
+  <data name="Pad_Shift_Kind" xml:space="preserve"><value>Activator Kind</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Button</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Chord (A + B)</value></data>
-  <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Axis past threshold</value></data>
-  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Inherit unmapped targets from Base</value></data>
+  <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Axis Past Threshold</value></data>
+  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Inherit Unmapped Targets From Base</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>When checked, targets this layer doesn't explicitly map fall through to the Base layer. When unchecked (default), the layer replaces Base entirely and unmapped targets stay off.</value></data>
 
 </root>

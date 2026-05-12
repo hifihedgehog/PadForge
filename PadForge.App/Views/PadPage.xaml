@@ -1032,9 +1032,14 @@
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            Margin="0,0,0,4"/>
 
-                                <!-- Axis threshold (visible when an axis trigger was recorded) -->
+                                <!-- Legacy slot-combined axis Threshold + Direction. Visible
+                                     only for OutputController-source triggers that landed in
+                                     the slot-combined TriggerAxisTargets list — InputDevice
+                                     triggers go through the per-device axis entries below and
+                                     carry their own Invert / Half / DeadZone, so these
+                                     duplicate controls would just be redundant + confusing. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
-                                            Visibility="{Binding UsesAxisTrigger, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            Visibility="{Binding HasLegacyAxisTrigger, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Macro_Threshold, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                Margin="0,0,8,0"/>
                                     <Slider Value="{Binding TriggerAxisThreshold, Mode=TwoWay}"
@@ -1046,9 +1051,8 @@
                                     </StackPanel>
                                 </StackPanel>
 
-                                <!-- Axis direction (visible when an axis trigger was recorded) -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
-                                            Visibility="{Binding UsesAxisTrigger, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            Visibility="{Binding HasLegacyAxisTrigger, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Macro_AxisDirection, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                Margin="0,0,8,0"/>
                                     <ComboBox SelectedIndex="{Binding TriggerAxisDirectionIndex, Mode=TwoWay}" MinWidth="120">

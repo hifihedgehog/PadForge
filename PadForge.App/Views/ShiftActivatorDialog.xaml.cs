@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 using PadForge.Engine.Data;
 using PadForge.Resources.Strings;
 using PadForge.ViewModels;
@@ -12,11 +14,9 @@ namespace PadForge.Views
 {
     /// <summary>
     /// Modal dialog for authoring or editing a single
-    /// <see cref="ShiftActivator"/>. Supports the full v1/v2/v3 field set:
-    /// activator kind (Button / Chord / Axis), input picker(s), axis
-    /// threshold, mode (Hold / Toggle / Custom / Cycle / Sticky), jump
-    /// target, cycle layer list, delay debounce, postpone-mapping
-    /// behavior, and per-layer color.
+    /// <see cref="ShiftActivator"/>. Drives the full v1/v2/v3 field set
+    /// with proper controls (HSV color picker, layer-dropdown for Custom
+    /// jump target, checkbox list for Cycle membership).
     /// </summary>
     public partial class ShiftActivatorDialog : FluentWindow
     {
@@ -26,6 +26,12 @@ namespace PadForge.Views
         private readonly HashSet<string> _existingLayerMasks;
         private readonly IReadOnlyList<InputChoice> _buttonChoices;
         private readonly IReadOnlyList<InputChoice> _axisChoices;
+        private readonly IReadOnlyList<ShiftActivator> _otherActivators;
+        private bool _colorSet;
+        private bool _suppressColorPickerWriteback;
+
+        private static readonly SolidColorBrush UnsetColorBrush =
+            new SolidColorBrush(Color.FromRgb(0x55, 0x55, 0x55));
 
         public ShiftActivatorDialog(
             IReadOnlyList<InputChoice> availableInputs,
@@ -35,11 +41,10 @@ namespace PadForge.Views
             InitializeComponent();
 
             // Split the cross-device input list into button-class (Button,
-            // POV-direction) and axis-class (Axis, Slider). Kind dropdown
-            // determines which list the input picker shows.
+            // POV-direction) and axis-class (Axis, Slider).
             var buttons = new List<InputChoice>();
             var axes = new List<InputChoice>();
-            foreach (var c in availableInputs ?? System.Array.Empty<InputChoice>())
+            foreach (var c in availableInputs ?? Array.Empty<InputChoice>())
             {
                 if (c == null) continue;
                 var d = c.Descriptor ?? "";
@@ -51,22 +56,36 @@ namespace PadForge.Views
             }
             _buttonChoices = buttons;
             _axisChoices = axes;
+            _otherActivators = otherActivators?.Where(a => a != null).ToList()
+                ?? new List<ShiftActivator>();
 
-            // Track other activators' names + masks so the dialog can
-            // reject duplicates.
+            // Populate the Custom-jump and Cycle dropdowns with the
+            // OTHER layers on this slot. Each item carries a LayerMask;
+            // an extra "(Base)" entry maps to empty string.
+            var jumpItems = new List<LayerOption>
+            {
+                new LayerOption { LayerMask = "", DisplayName = "(Base)" }
+            };
+            var cycleItems = new List<LayerOption>();
+            foreach (var a in _otherActivators)
+            {
+                var display = string.IsNullOrEmpty(a.LayerName) ? a.LayerMask : a.LayerName;
+                jumpItems.Add(new LayerOption { LayerMask = a.LayerMask ?? "", DisplayName = display });
+                cycleItems.Add(new LayerOption { LayerMask = a.LayerMask ?? "", DisplayName = display });
+            }
+            JumpToLayerCombo.ItemsSource = jumpItems;
+            CycleLayersList.ItemsSource = cycleItems;
+
+            // Validation context.
             _existingLayerNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             _existingLayerMasks = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            if (otherActivators != null)
+            foreach (var a in _otherActivators)
             {
-                foreach (var a in otherActivators)
-                {
-                    if (a == null) continue;
-                    if (!string.IsNullOrEmpty(a.LayerName)) _existingLayerNames.Add(a.LayerName);
-                    if (!string.IsNullOrEmpty(a.LayerMask)) _existingLayerMasks.Add(a.LayerMask);
-                }
+                if (!string.IsNullOrEmpty(a.LayerName)) _existingLayerNames.Add(a.LayerName);
+                if (!string.IsNullOrEmpty(a.LayerMask)) _existingLayerMasks.Add(a.LayerMask);
             }
 
-            // Pre-populate dialog fields when editing.
+            // Pre-populate fields when editing.
             if (existing != null)
             {
                 LayerNameBox.Text = string.IsNullOrEmpty(existing.LayerName)
@@ -75,24 +94,56 @@ namespace PadForge.Views
                 SelectComboItemByTag(KindCombo, existing.Kind ?? "Button");
                 SelectComboItemByTag(ModeCombo, existing.Mode ?? "Hold");
                 AxisThresholdSlider.Value = existing.AxisThreshold;
-                JumpToLayerBox.Text = existing.JumpToLayer ?? "";
-                CycleLayersBox.Text = existing.CycleLayers ?? "";
                 DelaySlider.Value = existing.DelayMs;
-                PostponeMappingBox.IsChecked = existing.PostponeMapping;
-                ColorBox.Text = existing.Color ?? "";
-                // Inputs populated after kind selection.
+
+                // Color: parse hex into picker RGB; set _colorSet flag.
+                if (!string.IsNullOrEmpty(existing.Color))
+                {
+                    var c = ParseColor(existing.Color);
+                    if (c.HasValue)
+                    {
+                        _suppressColorPickerWriteback = true;
+                        ColorPicker.Red = c.Value.R;
+                        ColorPicker.Green = c.Value.G;
+                        ColorPicker.Blue = c.Value.B;
+                        _suppressColorPickerWriteback = false;
+                        _colorSet = true;
+                    }
+                }
+
+                // Select JumpToLayer in the dropdown when in Custom mode.
+                SelectJumpToLayer(existing.JumpToLayer ?? "");
+                // Select Cycle layers from the pipe-separated string.
+                SelectCycleLayers(existing.CycleLayers ?? "");
+
                 Loaded += (_, __) => SelectInputs(existing);
             }
             else
             {
-                LayerNameBox.Text = SuggestNextLayerName(otherActivators);
+                LayerNameBox.Text = SuggestNextLayerName(_otherActivators);
                 SelectComboItemByTag(KindCombo, "Button");
                 SelectComboItemByTag(ModeCombo, "Hold");
                 AxisThresholdSlider.Value = 0.5;
                 DelaySlider.Value = 0;
+                // Default jump target = Base for new Custom activators.
+                if (jumpItems.Count > 0) JumpToLayerCombo.SelectedIndex = 0;
             }
 
-            // Apply visibility based on the initial kind + mode.
+            // Watch the picker's RGB DPs so any user drag flags color-set.
+            // DependencyPropertyDescriptor pumps the change events without
+            // requiring a custom event on ColorPickerControl.
+            var redDpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(
+                ColorPickerControl.RedProperty, typeof(ColorPickerControl));
+            var greenDpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(
+                ColorPickerControl.GreenProperty, typeof(ColorPickerControl));
+            var blueDpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(
+                ColorPickerControl.BlueProperty, typeof(ColorPickerControl));
+            EventHandler onRgb = (_, __) => OnColorPickerChanged();
+            redDpd?.AddValueChanged(ColorPicker, onRgb);
+            greenDpd?.AddValueChanged(ColorPicker, onRgb);
+            blueDpd?.AddValueChanged(ColorPicker, onRgb);
+            UpdateColorPreview();
+
             ApplyKindVisibility();
             ApplyModeVisibility();
             RefreshInputComboSources();
@@ -102,6 +153,70 @@ namespace PadForge.Views
                 LayerNameBox.Focus();
                 LayerNameBox.SelectAll();
             };
+        }
+
+        private void OnColorPickerChanged()
+        {
+            if (_suppressColorPickerWriteback) return;
+            _colorSet = true;
+            UpdateColorPreview();
+        }
+
+        private void UpdateColorPreview()
+        {
+            if (!_colorSet)
+            {
+                ColorPreviewSwatch.Background = UnsetColorBrush;
+                return;
+            }
+            ColorPreviewSwatch.Background = new SolidColorBrush(
+                Color.FromRgb(ColorPicker.Red, ColorPicker.Green, ColorPicker.Blue));
+        }
+
+        private void ClearColor_Click(object sender, RoutedEventArgs e)
+        {
+            _colorSet = false;
+            UpdateColorPreview();
+        }
+
+        private static Color? ParseColor(string hex)
+        {
+            if (string.IsNullOrWhiteSpace(hex)) return null;
+            try
+            {
+                if (ColorConverter.ConvertFromString(hex) is Color c) return c;
+            }
+            catch { }
+            return null;
+        }
+
+        private void SelectJumpToLayer(string layerMask)
+        {
+            foreach (var item in JumpToLayerCombo.Items)
+            {
+                if (item is LayerOption opt
+                    && string.Equals(opt.LayerMask, layerMask ?? "", StringComparison.Ordinal))
+                {
+                    JumpToLayerCombo.SelectedItem = item;
+                    return;
+                }
+            }
+            if (JumpToLayerCombo.Items.Count > 0) JumpToLayerCombo.SelectedIndex = 0;
+        }
+
+        private void SelectCycleLayers(string pipeSeparated)
+        {
+            if (string.IsNullOrEmpty(pipeSeparated)) return;
+            var masks = new HashSet<string>(
+                pipeSeparated.Split('|', StringSplitOptions.RemoveEmptyEntries),
+                StringComparer.Ordinal);
+            foreach (var item in CycleLayersList.Items)
+            {
+                if (item is LayerOption opt && masks.Contains(opt.LayerMask))
+                {
+                    CycleLayersList.SelectedItems.Add(item);
+                }
+            }
         }
 
         private static void SelectComboItemByTag(ComboBox combo, string tag)
@@ -122,15 +237,17 @@ namespace PadForge.Views
 
         private void SelectInputs(ShiftActivator existing)
         {
-            if (InputCombo.ItemsSource is null) return;
-            foreach (var item in InputCombo.Items)
+            if (InputCombo.ItemsSource != null)
             {
-                if (item is InputChoice c
-                    && string.Equals(c.Descriptor ?? "", existing.Descriptor ?? "", StringComparison.OrdinalIgnoreCase)
-                    && string.Equals(c.DeviceGuid ?? "", existing.DeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
+                foreach (var item in InputCombo.Items)
                 {
-                    InputCombo.SelectedItem = c;
-                    break;
+                    if (item is InputChoice c
+                        && string.Equals(c.Descriptor ?? "", existing.Descriptor ?? "", StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(c.DeviceGuid ?? "", existing.DeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
+                    {
+                        InputCombo.SelectedItem = c;
+                        break;
+                    }
                 }
             }
             if (ChordSecondCombo.ItemsSource != null)
@@ -148,9 +265,6 @@ namespace PadForge.Views
             }
         }
 
-        /// <summary>Sets InputCombo and ChordSecondCombo's ItemsSource based
-        /// on the selected Kind (Button-class for Button/Chord, Axis-class
-        /// for Axis). Re-runs whenever Kind changes.</summary>
         private void RefreshInputComboSources()
         {
             string kind = ReadComboTag(KindCombo);
@@ -164,7 +278,6 @@ namespace PadForge.Views
             }
             InputCombo.ItemsSource = view;
 
-            // Chord second always uses button-class.
             var chordView = CollectionViewSource.GetDefaultView(_buttonChoices);
             if (chordView?.GroupDescriptions != null)
             {
@@ -202,9 +315,9 @@ namespace PadForge.Views
             bool isCustom = mode == "Custom";
             bool isCycle = mode == "Cycle";
             JumpLabel.Visibility = isCustom ? Visibility.Visible : Visibility.Collapsed;
-            JumpToLayerBox.Visibility = isCustom ? Visibility.Visible : Visibility.Collapsed;
+            JumpToLayerCombo.Visibility = isCustom ? Visibility.Visible : Visibility.Collapsed;
             CycleLabel.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
-            CycleLayersBox.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
+            CycleLayersList.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private static string SuggestNextLayerName(IEnumerable<ShiftActivator> existing)
@@ -226,30 +339,28 @@ namespace PadForge.Views
             string name = (LayerNameBox.Text ?? "").Trim();
             if (string.IsNullOrEmpty(name))
             {
-                HintText.Text = Strings.Instance.Pad_Shift_HintNameRequired;
+                ShowHint(Strings.Instance.Pad_Shift_HintNameRequired);
                 LayerNameBox.Focus();
                 return;
             }
             if (_existingLayerNames.Contains(name))
             {
-                HintText.Text = Strings.Instance.Pad_Shift_HintNameDuplicate;
+                ShowHint(Strings.Instance.Pad_Shift_HintNameDuplicate);
                 LayerNameBox.Focus();
                 LayerNameBox.SelectAll();
                 return;
             }
-
             if (InputCombo.SelectedItem is not InputChoice input)
             {
-                HintText.Text = Strings.Instance.Pad_Shift_HintInputRequired;
+                ShowHint(Strings.Instance.Pad_Shift_HintInputRequired);
                 InputCombo.Focus();
                 return;
             }
-
             string kind = ReadComboTag(KindCombo);
             InputChoice chordSecond = ChordSecondCombo.SelectedItem as InputChoice;
             if (kind == "Chord" && chordSecond == null)
             {
-                HintText.Text = Strings.Instance.Pad_Shift_HintInputRequired;
+                ShowHint(Strings.Instance.Pad_Shift_HintInputRequired);
                 ChordSecondCombo.Focus();
                 return;
             }
@@ -259,6 +370,24 @@ namespace PadForge.Views
             int suffix = 2;
             while (_existingLayerMasks.Contains(mask))
                 mask = $"{baseMask}_{suffix++}";
+
+            string jumpToLayer = "";
+            if (JumpToLayerCombo.SelectedItem is LayerOption jump)
+                jumpToLayer = jump.LayerMask ?? "";
+
+            string cycleLayers = "";
+            if (CycleLayersList.SelectedItems != null && CycleLayersList.SelectedItems.Count > 0)
+            {
+                var picked = new List<string>();
+                foreach (var item in CycleLayersList.SelectedItems)
+                    if (item is LayerOption opt && !string.IsNullOrEmpty(opt.LayerMask))
+                        picked.Add(opt.LayerMask);
+                cycleLayers = string.Join("|", picked);
+            }
+
+            string colorHex = _colorSet
+                ? $"#{ColorPicker.Red:X2}{ColorPicker.Green:X2}{ColorPicker.Blue:X2}"
+                : "";
 
             Result = new ShiftActivator
             {
@@ -271,21 +400,37 @@ namespace PadForge.Views
                 ChordSecondDeviceGuid = chordSecond?.DeviceGuid ?? "",
                 ChordSecondDescriptor = chordSecond?.Descriptor ?? "",
                 AxisThreshold = AxisThresholdSlider.Value,
-                JumpToLayer = (JumpToLayerBox.Text ?? "").Trim(),
-                CycleLayers = (CycleLayersBox.Text ?? "").Trim(),
-                DelayMs = (int)System.Math.Round(DelaySlider.Value),
-                PostponeMapping = PostponeMappingBox.IsChecked == true,
-                Color = (ColorBox.Text ?? "").Trim(),
+                JumpToLayer = jumpToLayer,
+                CycleLayers = cycleLayers,
+                DelayMs = (int)Math.Round(DelaySlider.Value),
+                PostponeMapping = false,
+                Color = colorHex,
             };
 
             DialogResult = true;
             Close();
         }
 
+        private void ShowHint(string text)
+        {
+            HintText.Text = text;
+            HintText.Visibility = Visibility.Visible;
+        }
+
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
             Close();
+        }
+
+        /// <summary>Adapter so the existing list-population code can bind
+        /// against simple "(LayerMask, DisplayName)" rows. Mirrors how
+        /// InputChoice wraps the (DeviceGuid, Descriptor, DisplayName)
+        /// pair for the input picker.</summary>
+        private class LayerOption
+        {
+            public string LayerMask { get; set; } = "";
+            public string DisplayName { get; set; } = "";
         }
     }
 }

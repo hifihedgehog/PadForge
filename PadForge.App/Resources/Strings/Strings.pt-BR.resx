@@ -606,15 +606,15 @@
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>Variáveis</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ Adicionar Variável</value></data>
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>Cada linha define uma letra de variável (a, b, c, …). Escolha Dispositivo de Entrada para vincular um botão, POV ou eixo em um dispositivo físico, ou Controle de Saída para ler um canal na saída Xbox combinada do slot.</value></data>
-  <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>somente a</value></data>
+  <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>Somente a</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>Dispara quando a variável a passa de 0 para 1.</value></data>
-  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a e b</value></data>
+  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>A e b</value></data>
   <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Dispara somente quando a AND b estiverem ativos. Acorde clássico.</value></data>
-  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a ou b</value></data>
+  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>A ou b</value></data>
   <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>Dispara quando a OR b estiver ativo.</value></data>
-  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a mas não b</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>A mas não b</value></data>
   <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Dispara quando a estiver ativo e b NOT estiver ativo.</value></data>
-  <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>eixo além de 50%</value></data>
+  <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>Eixo além de 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Dispara quando o eixo de analógico a estiver deslocado mais de 50% da posição de repouso.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Origem</value></data>
   <data name="Macro_InputDevice" xml:space="preserve"><value>Dispositivo de Entrada</value></data>

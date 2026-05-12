@@ -606,15 +606,15 @@
   <data name="Macro_Expression_Variables" xml:space="preserve"><value>Variables</value></data>
   <data name="Macro_Expression_AddVariable" xml:space="preserve"><value>+ Ajouter une variable</value></data>
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>Chaque ligne définit une lettre de variable (a, b, c, …). Choisissez Appareil d'entrée pour lier un bouton, un POV ou un axe d'un périphérique physique, ou Contrôleur de sortie pour lire un canal depuis la sortie Xbox combinée du slot.</value></data>
-  <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>a seul</value></data>
+  <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>A seul</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>Se déclenche quand la variable a passe de 0 à 1.</value></data>
-  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a et b</value></data>
+  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>A et b</value></data>
   <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Se déclenche uniquement quand a AND b sont actifs simultanément. Accord classique.</value></data>
-  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a ou b</value></data>
+  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>A ou b</value></data>
   <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>Se déclenche quand a OR b est actif.</value></data>
-  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a mais pas b</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>A mais pas b</value></data>
   <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Se déclenche quand a est actif et que b est NOT actif.</value></data>
-  <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>axe dépassant 50%</value></data>
+  <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>Axe dépassant 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Se déclenche quand l'axe de stick a est dévié de plus de 50% par rapport au repos.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Source </value></data>
   <data name="Macro_InputDevice" xml:space="preserve"><value>Appareil d'entrée</value></data>

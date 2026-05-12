@@ -755,6 +755,7 @@ namespace PadForge.ViewModels
                 {
                     foreach (var t in LayerTabs)
                         t.IsActive = string.Equals(t.LayerMask, v, StringComparison.Ordinal);
+                    OnPropertyChanged(nameof(IsActiveLayerInheriting));
                     LayerActivated?.Invoke(this, EventArgs.Empty);
                 }
             }
@@ -776,6 +777,33 @@ namespace PadForge.ViewModels
         /// tab strip's visibility (basic users without any shift layers see
         /// the Mappings tab exactly as before).</summary>
         public bool HasShiftLayers => LayerTabs.Count > 1;
+
+        /// <summary>True when the currently-active layer is a shift layer
+        /// AND its activator has <c>InheritUnmapped=true</c>. Drives the
+        /// per-row "Do not inherit" CheckBox visibility — that flag only
+        /// has meaning on inheritance-enabled layers (in replace mode the
+        /// Base row is already blocked wholesale). Recomputed by
+        /// <see cref="RebuildLayerTabs"/> and on
+        /// <see cref="ActiveLayerMask"/> change.</summary>
+        public bool IsActiveLayerInheriting
+        {
+            get
+            {
+                if (string.Equals(_activeLayerMask, "Base", StringComparison.Ordinal))
+                    return false;
+                var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+                if (PadIndex < 0 || PadIndex >= sets.Length) return false;
+                var ms = sets[PadIndex];
+                if (ms?.ShiftActivators == null) return false;
+                foreach (var a in ms.ShiftActivators)
+                {
+                    if (a == null) continue;
+                    if (!string.Equals(a.LayerMask, _activeLayerMask, StringComparison.Ordinal)) continue;
+                    return a.InheritUnmapped;
+                }
+                return false;
+            }
+        }
 
         /// <summary>Rebuilds <see cref="LayerTabs"/> from the supplied
         /// activator list (which the caller pulls from
@@ -819,6 +847,7 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(ActiveLayerMask));
             }
             OnPropertyChanged(nameof(HasShiftLayers));
+            OnPropertyChanged(nameof(IsActiveLayerInheriting));
         }
 
         /// <summary>

@@ -4712,7 +4712,15 @@ namespace PadForge.Services
                             continue;
 
                         var buttons = ud.InputState.Buttons;
-                        int count = Math.Min(buttons.Length, ud.Device?.RawButtonCount ?? buttons.Length);
+                        // Cap by UserDevice.RawButtonCount (which combines the
+                        // wrapper's RawButtonCount with NumButtons via Max — so
+                        // keyboards report ~256 = full VK range, mice report
+                        // their button count, controllers report their physical
+                        // button count). The wrapper's RawButtonCount alone is 0
+                        // for keyboards / mice and was silently dropping them
+                        // from recording.
+                        int wrapperCount = ud.RawButtonCount > 0 ? ud.RawButtonCount : buttons.Length;
+                        int count = Math.Min(buttons.Length, wrapperCount);
                         for (int i = 0; i < count; i++)
                         {
                             if (buttons[i])

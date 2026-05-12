@@ -498,6 +498,11 @@ namespace PadForge.Services
                     _switchOverlay.Close();
                     _switchOverlay = null;
                 }
+                if (_shiftLayerOverlay != null)
+                {
+                    _shiftLayerOverlay.Close();
+                    _shiftLayerOverlay = null;
+                }
             });
 
             // Background-safe: foreground monitor, servers, audio detector,
@@ -694,6 +699,12 @@ namespace PadForge.Services
 
             // ── Update Dashboard ──
             UpdateDashboard();
+
+            // ── Drive the v3 shift-layer overlay. Polls the engine's
+            //    engagement state for the currently-selected pad and
+            //    surfaces a tiny pill window with the layer name +
+            //    color whenever the slot is on a non-Base layer.
+            UpdateShiftLayerOverlay();
 
             // ── Update Devices page (only if visible) ──
             if (IsDevicesPageVisible)
@@ -3382,6 +3393,57 @@ namespace PadForge.Services
 
         private Views.TouchpadOverlay _touchpadOverlay;
         private TouchpadOverlayDevice _touchpadOverlayDevice;
+
+        // v3.2 shift-layer overlay. Created lazily on first non-Base
+        // engagement and reused thereafter. State is read by polling
+        // InputManager.GetEngagedLayerMask in UiTimer_Tick.
+        private Views.ShiftLayerOverlay _shiftLayerOverlay;
+        private string _shiftLayerOverlayLastShown = "Base";
+
+        /// <summary>Polls the engaged layer on the currently-viewed slot
+        /// and updates the visual overlay window accordingly. Cheap when
+        /// the slot is on Base (early-out before construction). Allocates
+        /// the overlay window on demand the first time a layer engages.</summary>
+        private void UpdateShiftLayerOverlay()
+        {
+            int slot = _mainVm.SelectedPadIndex;
+            if (slot < 0 || slot >= SettingsManager.SlotMappingSets.Length)
+            {
+                if (_shiftLayerOverlay?.IsVisible == true) _shiftLayerOverlay.HideOverlay();
+                _shiftLayerOverlayLastShown = "Base";
+                return;
+            }
+            var ms = SettingsManager.SlotMappingSets[slot];
+            string mask = Common.Input.InputManager.GetEngagedLayerMask(slot, ms);
+            if (string.Equals(mask, _shiftLayerOverlayLastShown, System.StringComparison.Ordinal))
+                return;
+            _shiftLayerOverlayLastShown = mask;
+
+            if (string.IsNullOrEmpty(mask) || string.Equals(mask, "Base", System.StringComparison.Ordinal))
+            {
+                _shiftLayerOverlay?.HideOverlay();
+                return;
+            }
+
+            // Resolve activator (for LayerName + Color) by the engaged mask.
+            string layerName = mask;
+            string color = "";
+            if (ms?.ShiftActivators != null)
+            {
+                foreach (var a in ms.ShiftActivators)
+                {
+                    if (a == null) continue;
+                    if (!string.Equals(a.LayerMask, mask, System.StringComparison.Ordinal)) continue;
+                    if (!string.IsNullOrEmpty(a.LayerName)) layerName = a.LayerName;
+                    color = a.Color ?? "";
+                    break;
+                }
+            }
+
+            if (_shiftLayerOverlay == null)
+                _shiftLayerOverlay = new Views.ShiftLayerOverlay();
+            _shiftLayerOverlay.ShowLayer(layerName, color);
+        }
 
         private void ShowTouchpadOverlay()
         {

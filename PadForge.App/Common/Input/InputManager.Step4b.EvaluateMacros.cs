@@ -334,12 +334,12 @@ namespace PadForge.Common.Input
                         }
                     }
 
-                    // Per-device axis entries from multi-device combos. Each entry
-                    // carries its own deadzone (1..99 %) and invert flag, and is
-                    // evaluated against the device's own raw axis state using
-                    // stick vs trigger semantics — sticks (LX/LY/RX/RY) rest at
-                    // 32767 (center of 0..65535) and read direction-aware;
-                    // triggers (LT/RT) rest at 0 and read past-deadzone-only.
+                    // Per-device axis entries from multi-device combos. Uses
+                    // the same Invert / HalfAxis / DeadZone semantics the
+                    // merge-mapping engine uses for axis-to-button sources
+                    // (see PadForge.Engine.Common.Mapping.SourceCoercion).
+                    // No per-axis-target classification — every axis index
+                    // is evaluated uniformly with the entry's three flags.
                     if (axisOk)
                     {
                         var entries = macro.GetTriggerInputEntries();
@@ -363,34 +363,23 @@ namespace PadForge.Common.Input
                             if (axIdx < 0 || axIdx >= ud.InputState.Axis.Length)
                             { axisOk = false; break; }
 
-                            float raw = ud.InputState.Axis[axIdx];                  // 0..65535
-                            if (e.AxisInvert) raw = 65535f - raw;
-                            float deadzone01 = e.AxisDeadzone / 100f;               // 0..1
-
+                            int av = ud.InputState.Axis[axIdx];
+                            double thresh = Math.Max(e.DeadZone, 1) / 100.0;
                             bool active;
-                            if (e.IsTriggerStyleAxis)
+                            if (e.HalfAxis)
                             {
-                                // Trigger: rest at 0. Direction doesn't apply
-                                // (triggers are unipolar). Fires when value crosses
-                                // deadzone toward full press.
-                                float val01 = raw / 65535f;
-                                active = val01 > deadzone01;
+                                if (e.Invert)
+                                    active = av < (int)(32767 * (1.0 - thresh));
+                                else
+                                    active = av > (int)(32768 + 32767 * thresh);
                             }
                             else
                             {
-                                // Stick: rest at 32767. Half-axis support via
-                                // AxisDirection — Positive only triggers on +
-                                // deflection past deadzone, Negative on −, Any on
-                                // either.
-                                const float center = 32767f;
-                                float deflect = raw - center;                        // ±32767
-                                float requiredMag = deadzone01 * 32767f;             // % of half-range
-                                if (e.AxisDirection == MacroAxisDirection.Positive)
-                                    active = deflect > requiredMag;
-                                else if (e.AxisDirection == MacroAxisDirection.Negative)
-                                    active = deflect < -requiredMag;
+                                int hi = (int)(thresh * 65535);
+                                if (e.Invert)
+                                    active = av < 65535 - hi;
                                 else
-                                    active = Math.Abs(deflect) > requiredMag;
+                                    active = av > hi;
                             }
 
                             if (!active) { axisOk = false; break; }

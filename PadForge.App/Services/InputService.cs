@@ -4754,13 +4754,16 @@ namespace PadForge.Services
                         candidate.HoldCounter++;
                         if (candidate.HoldCounter >= MacroAxisHoldCycles)
                         {
+                            // Defaults mirror the merge-mapping recorder: HalfAxis
+                            // off, Invert set when the axis deflected in the
+                            // negative direction during recording, DeadZone = 50.
                             _recordedPerDeviceAxisEntries.Add(new MacroItem.TriggerInputEntry
                             {
                                 DeviceGuid = deviceGuid,
                                 AxisTarget = bestTarget,
-                                AxisDirection = candidate.RawDelta > 0 ? MacroAxisDirection.Positive
-                                              : candidate.RawDelta < 0 ? MacroAxisDirection.Negative
-                                              : MacroAxisDirection.Any
+                                HalfAxis = false,
+                                Invert = candidate.RawDelta < 0,
+                                DeadZone = 50
                             });
                             candidate.Target = MacroAxisTarget.None;
                             candidate.RawDelta = 0f;
@@ -4989,16 +4992,11 @@ namespace PadForge.Services
                             }
                             else if (entry.AxisTarget != MacroAxisTarget.None)
                             {
-                                // Direction symbol — triggers (LT/RT) are unipolar so the
-                                // direction label is suppressed (their evaluator ignores it).
-                                string dirArrow = entry.IsTriggerStyleAxis ? "" : entry.AxisDirection switch
-                                {
-                                    MacroAxisDirection.Positive => " +",
-                                    MacroAxisDirection.Negative => " −",
-                                    _ => ""
-                                };
-                                string invTag = entry.AxisInvert ? $" ({Strings.Instance.Macro_Axis_Inverted})" : "";
-                                inputs.Add($"{entry.AxisTarget.DisplayName()}{dirArrow} > {entry.AxisDeadzone}%{invTag}");
+                                var tags = new List<string>();
+                                if (entry.HalfAxis) tags.Add(Strings.Instance.Macro_Axis_Half);
+                                if (entry.Invert)   tags.Add(Strings.Instance.Macro_Axis_Inverted);
+                                string tagText = tags.Count > 0 ? $" ({string.Join(", ", tags)})" : "";
+                                inputs.Add($"{entry.AxisTarget.DisplayName()} > {entry.DeadZone}%{tagText}");
                             }
                         }
                         string deviceName = ResolveDeviceName(grp.Key);

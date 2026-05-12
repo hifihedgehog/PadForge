@@ -200,7 +200,8 @@ namespace PadForge.ViewModels
                             {
                                 var tags = new List<string>();
                                 if (entry.HalfAxis) tags.Add(Strings.Instance.Macro_Axis_Half);
-                                if (entry.Invert)   tags.Add(Strings.Instance.Macro_Axis_Inverted);
+                                if (entry.HalfAxis && entry.Bidirectional) tags.Add(Strings.Instance.Macro_Axis_Either.ToLowerInvariant());
+                                if (entry.Invert && !(entry.HalfAxis && entry.Bidirectional)) tags.Add(Strings.Instance.Macro_Axis_Inverted);
                                 string tagText = tags.Count > 0 ? $" ({string.Join(", ", tags)})" : "";
                                 inputs.Add($"{entry.AxisTarget.DisplayName()} > {entry.DeadZone}%{tagText}");
                             }
@@ -508,6 +509,20 @@ namespace PadForge.ViewModels
                 set => SetProperty(ref _invert, value);
             }
 
+            /// <summary>When true (and <see cref="HalfAxis"/> is also on) the
+            /// entry fires on absolute deflection past the deadzone — i.e.
+            /// either side of center counts. Lets a single half-axis entry
+            /// stand in for "stick deflected anywhere past N %", which the
+            /// merge-mapping system can only express by adding two opposite-
+            /// Invert sources to the same row. Ignored when HalfAxis is off
+            /// since a full-axis read has no center to mirror across.</summary>
+            private bool _bidirectional;
+            public bool Bidirectional
+            {
+                get => _bidirectional;
+                set => SetProperty(ref _bidirectional, value);
+            }
+
             /// <summary>Axis-to-button deadzone in percent (1..100). Default
             /// matches the merge-mapping <c>MappingSource.DeadZone</c>
             /// default. The axis fires past this percentage of the full
@@ -539,15 +554,17 @@ namespace PadForge.ViewModels
             public string AxisLabel => _axisTarget == MacroAxisTarget.None ? "" : _axisTarget.DisplayName();
 
             /// <summary>Compact tagged form for XML round-trip.
-            /// Format: <c>in:GUID:ax:Target:HalfAxis:Invert:DeadZone</c>
-            /// (e.g. <c>in:GUID:ax:LeftStickX:1:0:50</c>).</summary>
+            /// Format: <c>in:GUID:ax:Target:HalfAxis:Invert:DeadZone:Bidirectional</c>
+            /// (e.g. <c>in:GUID:ax:LeftStickX:1:0:50:1</c>). The trailing
+            /// Bidirectional field is optional — parser defaults to 0 when
+            /// reading older XML written before the flag existed.</summary>
             public string Spec
             {
                 get
                 {
                     if (DeviceGuid == Guid.Empty) return "";
                     if (AxisTarget != MacroAxisTarget.None)
-                        return $"in:{DeviceGuid}:ax:{AxisTarget}:{(HalfAxis ? 1 : 0)}:{(Invert ? 1 : 0)}:{DeadZone}";
+                        return $"in:{DeviceGuid}:ax:{AxisTarget}:{(HalfAxis ? 1 : 0)}:{(Invert ? 1 : 0)}:{DeadZone}:{(Bidirectional ? 1 : 0)}";
                     if (!string.IsNullOrEmpty(Pov)) return $"in:{DeviceGuid}:pov:{Pov}";
                     if (RawButton >= 0) return $"in:{DeviceGuid}:btn:{RawButton}";
                     return "";
@@ -586,6 +603,8 @@ namespace PadForge.ViewModels
                                     entry.Invert = parts[5] == "1";
                                 if (parts.Length >= 7 && int.TryParse(parts[6], out int dz))
                                     entry.DeadZone = dz;
+                                if (parts.Length >= 8 && (parts[7] == "0" || parts[7] == "1"))
+                                    entry.Bidirectional = parts[7] == "1";
                             }
                             else
                             {

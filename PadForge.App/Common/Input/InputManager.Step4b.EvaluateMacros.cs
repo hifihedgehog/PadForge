@@ -368,7 +368,17 @@ namespace PadForge.Common.Input
                             bool active;
                             if (e.HalfAxis)
                             {
-                                if (e.Invert)
+                                if (e.Bidirectional)
+                                {
+                                    // Either side of center past deadzone counts —
+                                    // |av − 32768| > 32767 * thresh. Invert is
+                                    // irrelevant here (mirroring around center
+                                    // covers both directions already).
+                                    int delta = av - 32768;
+                                    if (delta < 0) delta = -delta;
+                                    active = delta > (int)(32767 * thresh);
+                                }
+                                else if (e.Invert)
                                     active = av < (int)(32767 * (1.0 - thresh));
                                 else
                                     active = av > (int)(32768 + 32767 * thresh);

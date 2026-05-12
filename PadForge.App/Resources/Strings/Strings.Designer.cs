@@ -820,6 +820,8 @@ public class Strings : INotifyPropertyChanged
     public string Macro_LiveRecord_Placeholder => Get("Macro_LiveRecord_Placeholder");
     public string Macro_Axis_Inverted => Get("Macro_Axis_Inverted");
     public string Macro_Axis_Half => Get("Macro_Axis_Half");
+    public string Macro_Axis_Either => Get("Macro_Axis_Either");
+    public string Macro_Axis_Either_Tooltip => Get("Macro_Axis_Either_Tooltip");
     public string Macro_SysVolumeHint => Get("Macro_SysVolumeHint");
     public string Macro_AppVolumeHint => Get("Macro_AppVolumeHint");
     public string Macro_MouseMoveHint => Get("Macro_MouseMoveHint");

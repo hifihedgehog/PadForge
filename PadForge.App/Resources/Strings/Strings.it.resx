@@ -534,7 +534,7 @@
   <data name="Pad_Formula_Preset_HalfScale_Tooltip" xml:space="preserve"><value>A a metà intensità</value></data>
   <data name="Pad_Formula_Preset_QuarterScale_Name" xml:space="preserve"><value>Scala a un quarto</value></data>
   <data name="Pad_Formula_Preset_QuarterScale_Tooltip" xml:space="preserve"><value>A a un quarto di intensità</value></data>
-  <data name="Pad_Formula_Preset_ReverseA_Name" xml:space="preserve"><value>Inverti A</value></data>
+  <data name="Pad_Formula_Preset_ReverseA_Name" xml:space="preserve"><value>Inverti a</value></data>
   <data name="Pad_Formula_Preset_ReverseA_Tooltip" xml:space="preserve"><value>Invertire il segno di A</value></data>
   <data name="Pad_Formula_Preset_CapTo1_Name" xml:space="preserve"><value>Limita a ±1</value></data>
   <data name="Pad_Formula_Preset_CapTo1_Tooltip" xml:space="preserve"><value>Somma A + B senza mai superare ±1</value></data>
@@ -542,7 +542,7 @@
   <data name="Pad_Formula_Preset_WeightedBlend_Tooltip" xml:space="preserve"><value>70% di A + 30% di B</value></data>
   <data name="Pad_Formula_Preset_Difference_Name" xml:space="preserve"><value>Differenza</value></data>
   <data name="Pad_Formula_Preset_Difference_Tooltip" xml:space="preserve"><value>A meno B</value></data>
-  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>A salvo riposo</value></data>
+  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>a salvo riposo</value></data>
   <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>Usa A — ma se A è a riposo, ricadi su B</value></data>
   <data name="Pad_Formula_Preset_ThresholdGate_Name" xml:space="preserve"><value>Soglia di attivazione</value></data>
   <data name="Pad_Formula_Preset_ThresholdGate_Tooltip" xml:space="preserve"><value>Si attiva completamente se A supera la metà, altrimenti zero — trasforma un asse in un pulsante</value></data>
@@ -608,11 +608,11 @@
   <data name="Macro_Expression_Hint" xml:space="preserve"><value>Ogni riga definisce una lettera variabile (a, b, c, …). Scegli Dispositivo di input per associare un pulsante, POV o asse su un dispositivo fisico, oppure Controller di output per leggere un canale dall'output combinato del controller virtuale dello slot.</value></data>
   <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>Solo a</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>Si attiva quando la variabile a passa da 0 a 1.</value></data>
-  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>A e b</value></data>
+  <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a e b</value></data>
   <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Si attiva solo quando sia a AND b sono attivi. Accordo classico.</value></data>
-  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>A o b</value></data>
+  <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a o b</value></data>
   <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>Si attiva quando a OR b è attivo.</value></data>
-  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>A ma non b</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a ma non b</value></data>
   <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Si attiva quando a è attivo e b NOT è attivo.</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>Asse oltre il 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Si attiva quando l&apos;asse analogico a è deflesso di oltre il 50% dalla posizione di riposo.</value></data>

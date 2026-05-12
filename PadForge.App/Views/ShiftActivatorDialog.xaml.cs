@@ -27,8 +27,12 @@ namespace PadForge.Views
         private readonly IReadOnlyList<InputChoice> _buttonChoices;
         private readonly IReadOnlyList<InputChoice> _axisChoices;
         private readonly IReadOnlyList<ShiftActivator> _otherActivators;
+        private readonly PadForge.Services.RecorderService _recorder;
+        private readonly int _padIndex;
         private bool _colorSet;
         private bool _suppressColorPickerWriteback;
+        private bool _recordingPrimary;
+        private bool _recordingChord;
 
         private static readonly SolidColorBrush UnsetColorBrush =
             new SolidColorBrush(Color.FromRgb(0x55, 0x55, 0x55));
@@ -36,9 +40,13 @@ namespace PadForge.Views
         public ShiftActivatorDialog(
             IReadOnlyList<InputChoice> availableInputs,
             ShiftActivator existing,
-            IEnumerable<ShiftActivator> otherActivators)
+            IEnumerable<ShiftActivator> otherActivators,
+            PadForge.Services.RecorderService recorder = null,
+            int padIndex = -1)
         {
             InitializeComponent();
+            _recorder = recorder;
+            _padIndex = padIndex;
 
             // Split the cross-device input list into button-class (Button,
             // POV-direction) and axis-class (Axis, Slider).
@@ -153,6 +161,16 @@ namespace PadForge.Views
             {
                 LayerNameBox.Focus();
                 LayerNameBox.SelectAll();
+            };
+
+            // Cancel any freeform recording session if the dialog is closed
+            // (Cancel button, Esc, or the X close). Without this the
+            // recorder keeps polling against a closed dialog and the next
+            // input would fire into a vanished callback.
+            Closed += (_, __) =>
+            {
+                if (_recordingPrimary || _recordingChord)
+                    _recorder?.CancelRecording();
             };
         }
 
@@ -305,9 +323,103 @@ namespace PadForge.Views
             bool isChord = kind == "Chord";
             bool isAxis = kind == "Axis";
             ChordLabel.Visibility = isChord ? Visibility.Visible : Visibility.Collapsed;
-            ChordSecondCombo.Visibility = isChord ? Visibility.Visible : Visibility.Collapsed;
+            ChordSecondRow.Visibility = isChord ? Visibility.Visible : Visibility.Collapsed;
             AxisThresholdLabel.Visibility = isAxis ? Visibility.Visible : Visibility.Collapsed;
             AxisThresholdRow.Visibility = isAxis ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Record / Clear handlers for the input pickers
+        //
+        //  Record routes through RecorderService.StartRecordingFreeform —
+        //  the first button / POV / axis on any device assigned to this
+        //  slot wins, and we update the ComboBox SelectedItem to the
+        //  matching InputChoice. Clear empties the selection. Buttons fall
+        //  back to no-op when no recorder was supplied (theoretical guard).
+        // ─────────────────────────────────────────────
+
+        private void InputRecord_Click(object sender, RoutedEventArgs e)
+        {
+            if (_recordingPrimary) { _recorder?.CancelRecording(); SetPrimaryRecording(false); return; }
+            if (_recorder == null || _padIndex < 0) return;
+            SetPrimaryRecording(true);
+            _recorder.StartRecordingFreeform(_padIndex, (guid, descriptor) =>
+            {
+                SetPrimaryRecording(false);
+                AssignToCombo(InputCombo, guid, descriptor);
+            });
+        }
+
+        private void InputClear_Click(object sender, RoutedEventArgs e)
+        {
+            if (_recordingPrimary) _recorder?.CancelRecording();
+            SetPrimaryRecording(false);
+            InputCombo.SelectedItem = null;
+        }
+
+        private void ChordSecondRecord_Click(object sender, RoutedEventArgs e)
+        {
+            if (_recordingChord) { _recorder?.CancelRecording(); SetChordRecording(false); return; }
+            if (_recorder == null || _padIndex < 0) return;
+            SetChordRecording(true);
+            _recorder.StartRecordingFreeform(_padIndex, (guid, descriptor) =>
+            {
+                SetChordRecording(false);
+                AssignToCombo(ChordSecondCombo, guid, descriptor);
+            });
+        }
+
+        private void ChordSecondClear_Click(object sender, RoutedEventArgs e)
+        {
+            if (_recordingChord) _recorder?.CancelRecording();
+            SetChordRecording(false);
+            ChordSecondCombo.SelectedItem = null;
+        }
+
+        private void SetPrimaryRecording(bool on)
+        {
+            _recordingPrimary = on;
+            // Swap the icon: Stop (E71A) while recording, Record (E7C8) idle.
+            InputRecordIcon.Text = on ? "" : "";
+        }
+
+        private void SetChordRecording(bool on)
+        {
+            _recordingChord = on;
+            ChordSecondRecordIcon.Text = on ? "" : "";
+        }
+
+        /// <summary>Resolves the (deviceGuid, descriptor) tuple returned by
+        /// the freeform recorder to the matching <see cref="InputChoice"/>
+        /// in the supplied ComboBox's ItemsSource. Falls back to a
+        /// synthetic InputChoice when no match is found so the user's
+        /// recorded value still saves through, even if the dropdown
+        /// doesn't show a label for it.</summary>
+        private static void AssignToCombo(ComboBox combo, string guid, string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) { combo.SelectedItem = null; return; }
+            if (combo.ItemsSource is not System.Collections.IEnumerable items) return;
+            foreach (var item in items)
+            {
+                if (item is InputChoice c
+                    && string.Equals(c.Descriptor ?? "", descriptor, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(c.DeviceGuid ?? "", guid ?? "", StringComparison.OrdinalIgnoreCase))
+                {
+                    combo.SelectedItem = c;
+                    return;
+                }
+            }
+            // No direct match — pick by descriptor only as a fallback so the
+            // user's input lands somewhere visible.
+            foreach (var item in items)
+            {
+                if (item is InputChoice c
+                    && string.Equals(c.Descriptor ?? "", descriptor, StringComparison.OrdinalIgnoreCase))
+                {
+                    combo.SelectedItem = c;
+                    return;
+                }
+            }
         }
 
         private void ApplyModeVisibility()

@@ -114,8 +114,14 @@ namespace PadForge.Services
         /// </summary>
         private bool _waitForRelease;
 
+        /// <summary>When non-null, recording is targeting a freeform
+        /// consumer (e.g. the Shift activator dialog's input picker)
+        /// instead of a MappingItem. The callback receives
+        /// (deviceGuidLowerInvariant, descriptor) on success.</summary>
+        private Action<string, string> _freeformCallback;
+
         /// <summary>Whether recording is currently active.</summary>
-        public bool IsRecording => _activeMapping != null;
+        public bool IsRecording => _activeMapping != null || _freeformCallback != null;
 
         // ─────────────────────────────────────────────
         //  Events
@@ -194,6 +200,75 @@ namespace PadForge.Services
             _paramTarget = target;
             StartRecordingInternal(parent, extraSource, padIndex,
                 neutralizeBaseline: false, negRecording: false);
+        }
+
+        /// <summary>Starts a freeform recording session that doesn't write
+        /// into a MappingItem. The first button / POV / axis change on
+        /// any device assigned to <paramref name="padIndex"/> wins; the
+        /// captured (deviceGuid, descriptor) is delivered to
+        /// <paramref name="onComplete"/>. Used by the shift activator
+        /// dialog so the user can Record an activator input from the
+        /// same controller they're configuring.</summary>
+        public void StartRecordingFreeform(int padIndex, Action<string, string> onComplete)
+        {
+            if (onComplete == null) return;
+
+            // Cancel any in-flight recording (MappingItem-based or freeform).
+            if (_activeMapping != null) CancelRecording();
+            if (_freeformCallback != null) CancelRecording();
+
+            _freeformCallback = onComplete;
+            _activePadIndex = padIndex;
+            _paramTarget = ParamTarget.None;
+            _negRecording = false;
+
+            _activeDevices.Clear();
+            _baselines.Clear();
+            _isMouseByDevice.Clear();
+            _axisCandidates.Clear();
+
+            if (padIndex >= 0 && padIndex < _mainVm.Pads.Count)
+            {
+                var padVm = _mainVm.Pads[padIndex];
+                var seen = new HashSet<Guid>();
+                foreach (var md in padVm.MappedDevices)
+                {
+                    if (md == null || md.InstanceGuid == Guid.Empty) continue;
+                    if (!seen.Add(md.InstanceGuid)) continue;
+                    var udLookup = SettingsManager.UserDevices?.Items;
+                    if (udLookup == null) continue;
+                    UserDevice ud;
+                    lock (SettingsManager.UserDevices.SyncRoot)
+                    {
+                        ud = udLookup.FirstOrDefault(d =>
+                            d.InstanceGuid == md.InstanceGuid && d.IsOnline);
+                    }
+                    if (ud == null || ud.InputState == null) continue;
+                    _activeDevices[md.InstanceGuid] = ud;
+                    _baselines[md.InstanceGuid] = ud.InputState.Clone();
+                    _isMouseByDevice[md.InstanceGuid] = ud.IsMouse;
+                    _axisCandidates[md.InstanceGuid] = new AxisCandidate();
+                }
+            }
+
+            if (_baselines.Count == 0)
+            {
+                _freeformCallback = null;
+                _activePadIndex = -1;
+                _mainVm.StatusText = Strings.Instance.Status_NoDeviceToRecord;
+                RecordingTimedOut?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
+            _recordingStartTime = DateTime.UtcNow;
+            _waitForRelease = false;
+
+            _timer = new DispatcherTimer(DispatcherPriority.Input)
+            {
+                Interval = TimeSpan.FromMilliseconds(PollIntervalMs)
+            };
+            _timer.Tick += PollTick;
+            _timer.Start();
         }
 
         private void StartRecordingInternal(MappingItem mapping,
@@ -282,15 +357,18 @@ namespace PadForge.Services
         /// </summary>
         public void CancelRecording()
         {
-            if (_activeMapping == null)
+            // Cancel covers both MappingItem-bound and freeform sessions.
+            // Bail when neither is active.
+            if (_activeMapping == null && _freeformCallback == null)
                 return;
 
             if (_activeExtraSource != null) _activeExtraSource.IsRecording = false;
-            else _activeMapping.IsRecording = false;
+            else if (_activeMapping != null) _activeMapping.IsRecording = false;
             CleanupTimer();
 
             _activeMapping = null;
             _activeExtraSource = null;
+            _freeformCallback = null;
             _activePadIndex = -1;
             _paramTarget = ParamTarget.None;
             _activeDevices.Clear();
@@ -311,7 +389,10 @@ namespace PadForge.Services
         /// </summary>
         private void PollTick(object sender, EventArgs e)
         {
-            if (_activeMapping == null || _baselines.Count == 0)
+            // Allow either a MappingItem-bound session or a freeform one.
+            // Bail when neither is active or no device baselines were
+            // captured at start (defensive — the start path bails first).
+            if ((_activeMapping == null && _freeformCallback == null) || _baselines.Count == 0)
             {
                 CancelRecording();
                 return;
@@ -320,10 +401,11 @@ namespace PadForge.Services
             // Check timeout.
             if ((DateTime.UtcNow - _recordingStartTime).TotalSeconds >= TimeoutSeconds)
             {
-                var mapping = _activeMapping;
+                string label = _activeMapping?.TargetLabel ?? "";
                 CancelRecording();
                 RecordingTimedOut?.Invoke(this, EventArgs.Empty);
-                _mainVm.StatusText = string.Format(Strings.Instance.Status_RecordingTimedOut_Format, mapping.TargetLabel);
+                if (!string.IsNullOrEmpty(label))
+                    _mainVm.StatusText = string.Format(Strings.Instance.Status_RecordingTimedOut_Format, label);
                 return;
             }
 
@@ -493,6 +575,25 @@ namespace PadForge.Services
         private void CompleteRecording(MapType type, int index, string povDirection,
             bool axisPositive = false, Guid winningDevice = default)
         {
+            // Freeform shortcut: deliver (deviceGuid, descriptor) to the
+            // callback and tear down. Doesn't touch MappingItem state.
+            if (_freeformCallback != null && _activeMapping == null)
+            {
+                var fb = _freeformCallback;
+                string fbDesc = BuildDescriptor(type, index, povDirection);
+                string fbGuid = winningDevice == Guid.Empty
+                    ? "" : winningDevice.ToString().ToLowerInvariant();
+                CleanupTimer();
+                _freeformCallback = null;
+                _activePadIndex = -1;
+                _activeDevices.Clear();
+                _baselines.Clear();
+                _isMouseByDevice.Clear();
+                _axisCandidates.Clear();
+                fb(fbGuid, fbDesc);
+                return;
+            }
+
             if (_activeMapping == null)
                 return;
 
@@ -669,6 +770,24 @@ namespace PadForge.Services
         /// </summary>
         private void CompleteRecordingWithDescriptor(string descriptor, Guid winningDevice = default)
         {
+            // Freeform shortcut for literal-descriptor inputs (touchpad
+            // click, etc.).
+            if (_freeformCallback != null && _activeMapping == null)
+            {
+                var fb = _freeformCallback;
+                string fbGuid = winningDevice == Guid.Empty
+                    ? "" : winningDevice.ToString().ToLowerInvariant();
+                CleanupTimer();
+                _freeformCallback = null;
+                _activePadIndex = -1;
+                _activeDevices.Clear();
+                _baselines.Clear();
+                _isMouseByDevice.Clear();
+                _axisCandidates.Clear();
+                fb(fbGuid, descriptor ?? "");
+                return;
+            }
+
             if (_activeMapping == null)
                 return;
 

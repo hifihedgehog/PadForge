@@ -77,6 +77,15 @@ namespace PadForge.Services
         /// </summary>
         public SettingsService SettingsService { set => _settingsService = value; }
 
+        /// <summary>Proxy to <see cref="InputManager.IsHmVcAt"/> so callers
+        /// outside InputService (notably MainWindow's pre-delete capture)
+        /// can ask whether a slot currently has an HM virtual controller
+        /// without reaching through GetVirtualControllers.</summary>
+        public bool IsHmVcAt(int padIndex)
+        {
+            return _inputManager != null && _inputManager.IsHmVcAt(padIndex);
+        }
+
         /// <summary>Callback to toggle main window visibility. Set by MainWindow.</summary>
         public Action ToggleMainWindow { get; set; }
 
@@ -6308,9 +6317,9 @@ namespace PadForge.Services
         /// Extended — so the cascade applies uniformly. MIDI and
         /// KeyboardMouse are no-ops here.
         /// </summary>
-        public void OnSlotDeleted(int padIndex, VirtualControllerType deletedType, int oldGroupPosition, bool rebuildHmVcs = true)
+        public void OnSlotDeleted(int padIndex, VirtualControllerType deletedType, int oldGroupPosition, bool rebuildHmVcs = true, bool deletedSlotHadActiveVc = true)
         {
-            if (rebuildHmVcs && _inputManager != null)
+            if (rebuildHmVcs && _inputManager != null && deletedSlotHadActiveVc)
             {
                 RunBubbleDownCascadeAfterDelete(deletedType, oldGroupPosition);
             }

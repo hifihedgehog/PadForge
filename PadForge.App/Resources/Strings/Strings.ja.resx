@@ -1298,6 +1298,14 @@
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>ボタン</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>コード(A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>しきい値を超えた軸</value></data>
+  <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>単一ボタン (または POV 方向) の押下でレイヤーを有効化します。</value></data>
+  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>有効化するには両ボタンを同時に押し続ける必要があります。同一デバイスのコードのみ。</value></data>
+  <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>アナログ軸がしきい値を超えている間、有効化します。</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>アクティベーターを押している間レイヤーは有効のまま。離すと解除されます。</value></data>
+  <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>タップで有効化。再タップで解除。レイヤーは多くの押下を超えて持続します。</value></data>
+  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>押下で特定のレイヤーにジャンプ。別の遷移が発火するまで維持。</value></data>
+  <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>各押下で順序付きレイヤー リストを進めます。ベースに戻ります。</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>1 回タップで有効化。次にマッピング済みボタンを押すとレイヤー上で発火し、自動的に解除されます。</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>未割り当てターゲットをベースから継承</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>アクティベーター自身のマッピングも発火</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>有効にすると、アクティベーターのボタンはそれをソースとして使用するすべての行を引き続き駆動します — 1回押すとレイヤーが変更され、ボタン自身のマッピングも発火します。無効(既定)にすると、押下はレイヤー変更でのみ消費されます。</value></data>

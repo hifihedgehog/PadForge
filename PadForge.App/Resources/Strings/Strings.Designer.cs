@@ -1305,6 +1305,14 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Shift_KindButton => Get("Pad_Shift_KindButton");
     public string Pad_Shift_KindChord => Get("Pad_Shift_KindChord");
     public string Pad_Shift_KindAxis => Get("Pad_Shift_KindAxis");
+    public string Pad_Shift_KindButton_Subtitle => Get("Pad_Shift_KindButton_Subtitle");
+    public string Pad_Shift_KindChord_Subtitle => Get("Pad_Shift_KindChord_Subtitle");
+    public string Pad_Shift_KindAxis_Subtitle => Get("Pad_Shift_KindAxis_Subtitle");
+    public string Pad_Shift_ModeHold_Subtitle => Get("Pad_Shift_ModeHold_Subtitle");
+    public string Pad_Shift_ModeToggle_Subtitle => Get("Pad_Shift_ModeToggle_Subtitle");
+    public string Pad_Shift_ModeCustom_Subtitle => Get("Pad_Shift_ModeCustom_Subtitle");
+    public string Pad_Shift_ModeCycle_Subtitle => Get("Pad_Shift_ModeCycle_Subtitle");
+    public string Pad_Shift_ModeSticky_Subtitle => Get("Pad_Shift_ModeSticky_Subtitle");
     public string Pad_Shift_InheritUnmapped => Get("Pad_Shift_InheritUnmapped");
     public string Pad_Shift_InheritUnmapped_Tooltip => Get("Pad_Shift_InheritUnmapped_Tooltip");
 }

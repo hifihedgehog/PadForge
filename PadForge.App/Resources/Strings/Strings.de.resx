@@ -1298,6 +1298,14 @@
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Taste</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Akkord (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Achse über Schwellwert</value></data>
+  <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Ein einzelner Tasten- (oder POV-Richtungs-) Druck aktiviert die Ebene.</value></data>
+  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Beide Tasten müssen gleichzeitig gehalten werden, um zu aktivieren. Nur Akkord auf demselben Gerät.</value></data>
+  <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Aktiviert, solange eine analoge Achse den Schwellwert überschreitet.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Ebene bleibt aktiv, solange der Auslöser gehalten wird; löst beim Loslassen aus.</value></data>
+  <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Tippen zum Aktivieren. Erneut tippen zum Lösen. Ebene bleibt über viele Drücke bestehen.</value></data>
+  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Druck springt zu einer bestimmten Ebene. Bleibt, bis ein anderer Übergang feuert.</value></data>
+  <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Jeder Druck rückt durch eine geordnete Ebenenliste; springt zurück zu Basis.</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Einmal tippen zum Aktivieren. Der nächste zugewiesene Tastendruck feuert auf der Ebene, dann automatisches Lösen.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Nicht zugewiesene Ziele von Basis erben</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Auch eigenes Mapping des Auslösers feuern</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Wenn aktiviert, treibt die Auslöser-Taste weiterhin jede Zeile an, die sie als Quelle verwendet — ein Druck wechselt die Ebene UND feuert das eigene Mapping der Taste. Wenn deaktiviert (Standard), wird der Druck nur vom Ebenenwechsel verbraucht.</value></data>

@@ -1298,6 +1298,14 @@
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>버튼</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>코드(A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>임계값을 초과한 축</value></data>
+  <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>단일 버튼(또는 POV 방향) 누름으로 레이어를 활성화합니다.</value></data>
+  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>활성화하려면 두 버튼을 동시에 눌러야 합니다. 동일 장치 코드만.</value></data>
+  <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>아날로그 축이 임계값을 초과하는 동안 활성화됩니다.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>활성화 버튼을 누르고 있는 동안 레이어가 활성화되며, 놓으면 해제됩니다.</value></data>
+  <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>탭하여 활성화. 다시 탭하여 해제. 레이어는 여러 번 누르는 동안 지속됩니다.</value></data>
+  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>누르면 특정 레이어로 이동합니다. 다른 전환이 실행될 때까지 유지됩니다.</value></data>
+  <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>각 누름은 정렬된 레이어 목록을 진행합니다. 기본으로 돌아갑니다.</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>한 번 탭하여 활성화. 다음 매핑된 버튼 누름이 레이어에서 실행되고 자동 해제됩니다.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>매핑되지 않은 대상을 기본에서 상속</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>활성화 버튼의 자체 매핑도 실행</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>선택하면 활성화 버튼이 소스로 사용되는 모든 행을 계속 구동합니다 — 한 번 누르면 레이어를 변경하고 버튼의 자체 매핑도 실행합니다. 선택 해제(기본값)하면 누름은 레이어 변경에서만 소비됩니다.</value></data>

@@ -100,14 +100,20 @@ namespace PadForge.Views
                 if (!string.IsNullOrEmpty(a.LayerMask)) _existingLayerMasks.Add(a.LayerMask);
             }
 
+            // Bind the data-shaped option lists for the two two-line
+            // dropdowns. Set ItemsSource BEFORE SelectedValue so the
+            // SelectedValuePath="Value" wiring can resolve the matching item.
+            KindCombo.ItemsSource = BuildKindOptions();
+            ModeCombo.ItemsSource = BuildModeOptions();
+
             // Pre-populate fields when editing.
             if (existing != null)
             {
                 LayerNameBox.Text = string.IsNullOrEmpty(existing.LayerName)
                     ? (existing.LayerMask ?? "")
                     : existing.LayerName;
-                SelectComboItemByTag(KindCombo, existing.Kind ?? "Button");
-                SelectComboItemByTag(ModeCombo, existing.Mode ?? "Hold");
+                KindCombo.SelectedValue = existing.Kind ?? "Button";
+                ModeCombo.SelectedValue = existing.Mode ?? "Hold";
                 AxisThresholdSlider.Value = existing.AxisThreshold;
                 DelaySlider.Value = existing.DelayMs;
                 InheritUnmappedBox.IsChecked = existing.InheritUnmapped;
@@ -138,8 +144,8 @@ namespace PadForge.Views
             else
             {
                 LayerNameBox.Text = SuggestNextLayerName(_otherActivators);
-                SelectComboItemByTag(KindCombo, "Button");
-                SelectComboItemByTag(ModeCombo, "Hold");
+                KindCombo.SelectedValue = "Button";
+                ModeCombo.SelectedValue = "Hold";
                 AxisThresholdSlider.Value = 0.5;
                 DelaySlider.Value = 0;
                 // Default jump target = Base for new Custom activators.
@@ -302,22 +308,6 @@ namespace PadForge.Views
             }
         }
 
-        private static void SelectComboItemByTag(ComboBox combo, string tag)
-        {
-            foreach (var item in combo.Items)
-            {
-                if (item is ComboBoxItem cbi && string.Equals(cbi.Tag as string, tag, StringComparison.OrdinalIgnoreCase))
-                {
-                    combo.SelectedItem = cbi;
-                    return;
-                }
-            }
-            if (combo.Items.Count > 0) combo.SelectedIndex = 0;
-        }
-
-        private static string ReadComboTag(ComboBox combo)
-            => combo.SelectedItem is ComboBoxItem cbi ? (cbi.Tag as string ?? "") : "";
-
         private void SelectInputs(ShiftActivator existing)
         {
             if (InputCombo.ItemsSource != null)
@@ -350,7 +340,7 @@ namespace PadForge.Views
 
         private void RefreshInputComboSources()
         {
-            string kind = ReadComboTag(KindCombo);
+            string kind = KindCombo.SelectedValue as string ?? "Button";
             var primaryList = kind == "Axis" ? _axisChoices : _buttonChoices;
 
             var view = CollectionViewSource.GetDefaultView(primaryList);
@@ -381,9 +371,43 @@ namespace PadForge.Views
             ApplyModeVisibility();
         }
 
+        /// <summary>Two-line dropdown item — bold name + small description.
+        /// Mirrors the Mappings tab combine-mode picker shape so users get a
+        /// one-line explanation of each option without hunting tooltips.</summary>
+        private class ChoiceOption
+        {
+            public string Value { get; set; } = "";
+            public string Name { get; set; } = "";
+            public string Description { get; set; } = "";
+        }
+
+        private static System.Collections.Generic.IReadOnlyList<ChoiceOption> BuildKindOptions()
+        {
+            var s = Strings.Instance;
+            return new[]
+            {
+                new ChoiceOption { Value = "Button", Name = s.Pad_Shift_KindButton, Description = s.Pad_Shift_KindButton_Subtitle },
+                new ChoiceOption { Value = "Chord",  Name = s.Pad_Shift_KindChord,  Description = s.Pad_Shift_KindChord_Subtitle  },
+                new ChoiceOption { Value = "Axis",   Name = s.Pad_Shift_KindAxis,   Description = s.Pad_Shift_KindAxis_Subtitle   },
+            };
+        }
+
+        private static System.Collections.Generic.IReadOnlyList<ChoiceOption> BuildModeOptions()
+        {
+            var s = Strings.Instance;
+            return new[]
+            {
+                new ChoiceOption { Value = "Hold",   Name = s.Pad_Shift_ModeHold,   Description = s.Pad_Shift_ModeHold_Subtitle   },
+                new ChoiceOption { Value = "Toggle", Name = s.Pad_Shift_ModeToggle, Description = s.Pad_Shift_ModeToggle_Subtitle },
+                new ChoiceOption { Value = "Custom", Name = s.Pad_Shift_ModeCustom, Description = s.Pad_Shift_ModeCustom_Subtitle },
+                new ChoiceOption { Value = "Cycle",  Name = s.Pad_Shift_ModeCycle,  Description = s.Pad_Shift_ModeCycle_Subtitle  },
+                new ChoiceOption { Value = "Sticky", Name = s.Pad_Shift_ModeSticky, Description = s.Pad_Shift_ModeSticky_Subtitle },
+            };
+        }
+
         private void ApplyKindVisibility()
         {
-            string kind = ReadComboTag(KindCombo);
+            string kind = KindCombo.SelectedValue as string ?? "Button";
             bool isChord = kind == "Chord";
             bool isAxis = kind == "Axis";
             ChordLabel.Visibility = isChord ? Visibility.Visible : Visibility.Collapsed;
@@ -488,7 +512,7 @@ namespace PadForge.Views
 
         private void ApplyModeVisibility()
         {
-            string mode = ReadComboTag(ModeCombo);
+            string mode = ModeCombo.SelectedValue as string ?? "Hold";
             bool isCustom = mode == "Custom";
             bool isCycle = mode == "Cycle";
             JumpLabel.Visibility = isCustom ? Visibility.Visible : Visibility.Collapsed;
@@ -533,7 +557,7 @@ namespace PadForge.Views
                 InputCombo.Focus();
                 return;
             }
-            string kind = ReadComboTag(KindCombo);
+            string kind = KindCombo.SelectedValue as string ?? "Button";
             InputChoice chordSecond = ChordSecondCombo.SelectedItem as InputChoice;
             if (kind == "Chord" && chordSecond == null)
             {
@@ -572,7 +596,7 @@ namespace PadForge.Views
                 LayerMask = mask,
                 DeviceGuid = input.DeviceGuid ?? "",
                 Descriptor = input.Descriptor ?? "",
-                Mode = ReadComboTag(ModeCombo),
+                Mode = ModeCombo.SelectedValue as string ?? "Hold",
                 Kind = kind,
                 InheritUnmapped = InheritUnmappedBox.IsChecked == true,
                 ChordSecondDeviceGuid = chordSecond?.DeviceGuid ?? "",

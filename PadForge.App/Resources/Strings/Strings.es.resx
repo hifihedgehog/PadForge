@@ -1299,7 +1299,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Acorde (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Eje sobre umbral</value></data>
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Una sola pulsación de botón (o dirección POV) activa la capa.</value></data>
-  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Ambos botones deben mantenerse pulsados simultáneamente para activarse. Solo acorde en el mismo dispositivo.</value></data>
+  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Ambos botones deben mantenerse pulsados simultáneamente para activarse. Acorde entre dispositivos compatible.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Se activa mientras un eje analógico supera el valor umbral.</value></data>
   <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>La capa permanece activa mientras se mantiene el activador; se libera al soltar.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Toca para activar. Toca de nuevo para liberar. La capa persiste a través de muchas pulsaciones.</value></data>

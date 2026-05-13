@@ -1299,7 +1299,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Acorde (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Eixo além do limite</value></data>
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Uma única pressão de botão (ou direção POV) ativa a camada.</value></data>
-  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Ambos os botões devem ser mantidos pressionados simultaneamente para ativar. Apenas acorde no mesmo dispositivo.</value></data>
+  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Ambos os botões devem ser mantidos pressionados simultaneamente para ativar. Acorde entre dispositivos com suporte.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Ativa enquanto um eixo analógico ultrapassa o valor limite.</value></data>
   <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>A camada permanece ativada enquanto o ativador é mantido; libera ao soltar.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Toque para ativar. Toque novamente para liberar. A camada persiste através de muitas pressões.</value></data>

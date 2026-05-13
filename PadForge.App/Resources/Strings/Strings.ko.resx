@@ -1299,7 +1299,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>코드(A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>임계값을 초과한 축</value></data>
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>단일 버튼(또는 POV 방향) 누름으로 레이어를 활성화합니다.</value></data>
-  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>활성화하려면 두 버튼을 동시에 눌러야 합니다. 동일 장치 코드만.</value></data>
+  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>활성화하려면 두 버튼을 동시에 눌러야 합니다. 장치 간 코드 지원.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>아날로그 축이 임계값을 초과하는 동안 활성화됩니다.</value></data>
   <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>활성화 버튼을 누르고 있는 동안 레이어가 활성화되며, 놓으면 해제됩니다.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>탭하여 활성화. 다시 탭하여 해제. 레이어는 여러 번 누르는 동안 지속됩니다.</value></data>

@@ -1299,7 +1299,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>和弦(A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>轴超过阈值</value></data>
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>单个按钮(或 POV 方向)按下即可激活层。</value></data>
-  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>必须同时按住两个按钮才能激活。仅限同一设备的和弦。</value></data>
+  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>必须同时按住两个按钮才能激活。支持跨设备和弦。</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>当模拟轴超过阈值时激活。</value></data>
   <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>按住激活器时层保持激活;松开时释放。</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>点击以激活。再次点击以释放。层在多次按下中持续存在。</value></data>

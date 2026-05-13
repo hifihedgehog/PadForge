@@ -1299,7 +1299,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Accord (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Axe au-delà du seuil</value></data>
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Une seule pression de bouton (ou direction POV) active la couche.</value></data>
-  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Les deux boutons doivent être maintenus simultanément pour activer. Accord sur le même périphérique uniquement.</value></data>
+  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Les deux boutons doivent être maintenus simultanément pour activer. Accord inter-périphériques pris en charge.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>S'active tant qu'un axe analogique dépasse la valeur seuil.</value></data>
   <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>La couche reste activée tant que l'activateur est maintenu; libère au relâchement.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Appui pour activer. Appui à nouveau pour libérer. La couche persiste à travers de nombreuses pressions.</value></data>

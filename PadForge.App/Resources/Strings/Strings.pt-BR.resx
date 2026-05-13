@@ -1298,6 +1298,14 @@
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Botão</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Acorde (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Eixo além do limite</value></data>
+  <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Uma única pressão de botão (ou direção POV) ativa a camada.</value></data>
+  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Ambos os botões devem ser mantidos pressionados simultaneamente para ativar. Apenas acorde no mesmo dispositivo.</value></data>
+  <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Ativa enquanto um eixo analógico ultrapassa o valor limite.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>A camada permanece ativada enquanto o ativador é mantido; libera ao soltar.</value></data>
+  <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Toque para ativar. Toque novamente para liberar. A camada persiste através de muitas pressões.</value></data>
+  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>A pressão pula para uma camada específica. Permanece até que outra transição dispare.</value></data>
+  <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Cada pressão avança através de uma lista ordenada de camadas; volta para Base.</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Toque uma vez para ativar. A próxima pressão de botão mapeado dispara na camada, depois libera automaticamente.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Herdar alvos não mapeados da Base</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Também disparar o mapeamento próprio do ativador</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Quando marcado, o botão ativador continua a impulsionar qualquer linha que o use como fonte — um toque muda a camada E dispara o mapeamento próprio do botão. Quando desmarcado (padrão), o toque é consumido apenas pela mudança de camada.</value></data>

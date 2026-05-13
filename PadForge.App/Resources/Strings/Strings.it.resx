@@ -1318,6 +1318,14 @@
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Pulsante</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Accordo (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Asse oltre la soglia</value></data>
+  <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Una singola pressione di pulsante (o direzione POV) attiva il livello.</value></data>
+  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Entrambi i pulsanti devono essere tenuti premuti contemporaneamente per attivare. Solo accordo sullo stesso dispositivo.</value></data>
+  <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Si attiva mentre un asse analogico supera il valore soglia.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Il livello rimane attivo finché l'attivatore è tenuto; si rilascia quando lasci.</value></data>
+  <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Tocca per attivare. Tocca di nuovo per rilasciare. Il livello persiste tra molte pressioni.</value></data>
+  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>La pressione salta a un livello specifico. Rimane fino a quando un'altra transizione si attiva.</value></data>
+  <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Ogni pressione avanza attraverso un elenco ordinato di livelli; torna a Base.</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tocca una volta per attivare. La prossima pressione di pulsante mappato si attiva sul livello, quindi si rilascia automaticamente.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Eredita obiettivi non assegnati da Base</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Attiva anche la mappatura propria dell'attivatore</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Se selezionato, il pulsante attivatore continua a guidare ogni riga che lo usa come sorgente — una pressione cambia livello E attiva la mappatura propria del pulsante. Se non selezionato (predefinito), la pressione è consumata solo dal cambio di livello.</value></data>

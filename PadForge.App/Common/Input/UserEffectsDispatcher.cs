@@ -547,7 +547,14 @@ namespace PadForge.Common.Input
                   or LightbarMode.AudioCrossFade
                   or LightbarMode.InputReactive
                   or LightbarMode.InputReactiveCycle
-                  or LightbarMode.InputReactiveFixed;
+                  or LightbarMode.InputReactiveFixed
+                  // Battery is a Low↔High lerp driven by a slowly-changing
+                  // input (battery %). Output is "static" frame-to-frame
+                  // but needs periodic re-synthesis so the color tracks
+                  // the percentage as it drains — without this the
+                  // dispatcher fires the synthesizer once at mode entry
+                  // and the lightbar freezes at the initial reading.
+                  or LightbarMode.Battery;
 
         private void UpdateAnimTimer()
         {

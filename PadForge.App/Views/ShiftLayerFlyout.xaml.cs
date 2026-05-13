@@ -35,7 +35,15 @@ namespace PadForge.Views
         // Slide travel distance — enough to fully hide the flyout below the clip boundary.
         private const double SlideTravel = 80;
 
+        // Auto-dismiss delay. Matches the profile flyout's 2-second window so
+        // toggle / custom / cycle modes don't leave the flyout on screen
+        // forever after a transition. Hold mode users keep seeing it for the
+        // duration of their hold because the engine-driven mask-change calls
+        // re-arm the timer on every fresh engage.
+        private static readonly TimeSpan AutoDismissDelay = TimeSpan.FromSeconds(2);
+
         private readonly TranslateTransform _slideTransform;
+        private readonly DispatcherTimer _autoDismissTimer;
         private bool _isSlidingOut;
 
         public ShiftLayerFlyout()
@@ -45,7 +53,16 @@ namespace PadForge.Views
             _slideTransform = new TranslateTransform(0, SlideTravel);
             FlyoutPanel.RenderTransform = _slideTransform;
 
+            _autoDismissTimer = new DispatcherTimer { Interval = AutoDismissDelay };
+            _autoDismissTimer.Tick += OnAutoDismissTick;
+
             Loaded += OnLoaded;
+        }
+
+        private void OnAutoDismissTick(object sender, EventArgs e)
+        {
+            _autoDismissTimer.Stop();
+            HideFlyout();
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -125,27 +142,44 @@ namespace PadForge.Views
         // ── Public API ────────────────────────────────────────
 
         /// <summary>Updates the displayed icon, layer name and dot color
-        /// and shows the flyout if it isn't already visible. An empty
+        /// and shows the flyout, arming a 2-second auto-dismiss timer.
+        /// Re-calling while visible refreshes the content and re-arms the
+        /// timer (so transitioning from one shift layer to another keeps
+        /// the flyout on screen for another 2 seconds). An empty
         /// <paramref name="icon"/> falls back to the universal Shift
         /// glyph <c>⇧</c>.</summary>
         public void ShowLayer(string layerName, string colorHex, string icon)
         {
-            _isSlidingOut = false;
             ApplyTheme();
             StatusIcon.Text = string.IsNullOrEmpty(icon) ? "⇧" : icon;
             LayerNameText.Text = string.IsNullOrEmpty(layerName) ? "" : layerName;
             ColorDot.Fill = ParseColor(colorHex) ?? new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0x88));
 
-            if (Visibility == Visibility.Visible)
-                return;
+            // Mid-slide-out (e.g. user re-engaged a layer right as the
+            // dismiss timer fired) — cancel the outbound animation and
+            // slide back in cleanly instead of leaving the flyout half-
+            // off-screen.
+            if (_isSlidingOut)
+            {
+                _isSlidingOut = false;
+                _slideTransform.BeginAnimation(TranslateTransform.YProperty, null);
+                _slideTransform.Y = 0;
+            }
 
-            ShowFlyout();
+            if (Visibility != Visibility.Visible)
+                ShowFlyout();
+
+            // Always (re-)arm the dismiss timer — even on a content-only
+            // refresh between layer transitions.
+            _autoDismissTimer.Stop();
+            _autoDismissTimer.Start();
         }
 
         /// <summary>Slides the flyout out and hides it. Safe to call when
-        /// already hidden.</summary>
+        /// already hidden. Cancels any pending auto-dismiss.</summary>
         public void HideFlyout()
         {
+            _autoDismissTimer.Stop();
             if (Visibility != Visibility.Visible || _isSlidingOut)
                 return;
             _isSlidingOut = true;

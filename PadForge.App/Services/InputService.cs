@@ -3742,6 +3742,10 @@ namespace PadForge.Services
         {
             RefreshServerStatusStrings();
             SyncDevicesList(); // Re-resolve localized device names (merged keyboards/mice/touchpads).
+            // Per-slot MappedDevices dropdown items snapshot the localized
+            // device name at population time, so they keep showing the old
+            // language until UpdatePadDeviceInfo re-runs.
+            UpdatePadDeviceInfo();
         });
 
         /// <summary>

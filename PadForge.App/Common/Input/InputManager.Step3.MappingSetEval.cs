@@ -143,7 +143,11 @@ namespace PadForge.Common.Input
             // activator, gamepad consumer) won't auto-release because the
             // gamepad's buttons live in a different state buffer.
             public bool[] StickyEngaged = System.Array.Empty<bool>();
-            public bool[] StickyArmedForRelease = System.Array.Empty<bool>();
+            // Tracks whether at least one non-baseline button was DOWN last
+            // frame. Sticky releases on the falling edge — i.e. when this
+            // was true and is now false — so the layer stays engaged for
+            // the full duration the consumer button is held.
+            public bool[] StickyConsumerActive = System.Array.Empty<bool>();
             public bool[][] StickyBaselineBtn = System.Array.Empty<bool[]>();
             public readonly List<int> Stack = new();
             public string CustomLayer = "";   // v2 Custom mode current layer (overrides stack when non-empty)
@@ -167,7 +171,7 @@ namespace PadForge.Common.Input
                 CycleLayersSplit = ResizeStringArrays(CycleLayersSplit, newSize);
                 CycleLayersSource = ResizeStringArr(CycleLayersSource, newSize);
                 StickyEngaged = ResizeBool(StickyEngaged, newSize);
-                StickyArmedForRelease = ResizeBool(StickyArmedForRelease, newSize);
+                StickyConsumerActive = ResizeBool(StickyConsumerActive, newSize);
                 StickyBaselineBtn = ResizeBoolArrays(StickyBaselineBtn, newSize);
             }
 
@@ -180,7 +184,7 @@ namespace PadForge.Common.Input
                 System.Array.Clear(CycleLayersSplit, 0, CycleLayersSplit.Length);
                 System.Array.Clear(CycleLayersSource, 0, CycleLayersSource.Length);
                 System.Array.Clear(StickyEngaged, 0, StickyEngaged.Length);
-                System.Array.Clear(StickyArmedForRelease, 0, StickyArmedForRelease.Length);
+                System.Array.Clear(StickyConsumerActive, 0, StickyConsumerActive.Length);
                 System.Array.Clear(StickyBaselineBtn, 0, StickyBaselineBtn.Length);
                 lock (SyncRoot)
                 {
@@ -442,38 +446,46 @@ namespace PadForge.Common.Input
                 }
                 case "Sticky":
                 {
-                    // v3 Sticky: typewriter-shift behavior. Engage on rising
-                    // edge, stay engaged through the same-frame mapping
-                    // evaluation, arm-for-release the FRAME the user
-                    // presses any non-activator button on the activator's
-                    // device, then actually release on the frame AFTER that
-                    // — so the consumer key fires its shifted mapping AND
-                    // the layer drops back to Base afterward.
+                    // v3 Sticky: typewriter-shift behavior. Press the
+                    // activator (no need to hold) → layer engages. The
+                    // next consumer button press fires its shifted mapping
+                    // on the layer AND stays firing while the consumer is
+                    // held. Releasing the consumer disengages the layer.
+                    //
+                    // Detection: snapshot state.Buttons at engage time.
+                    // Each frame, "consumer active" = any button that is
+                    // currently down but was NOT down at engage time.
+                    // The layer releases on the falling edge of consumer
+                    // active (was true last frame, false now) — that's
+                    // when the user just let go of the consumer.
                     //
                     // Same-device limitation: the baseline snapshot only
                     // covers state.Buttons (the activator's own device).
                     // Cross-device Sticky (keyboard activator, gamepad
                     // consumer) won't auto-release because the gamepad's
                     // button state isn't visible from this activator pass.
-                    if (rt.StickyArmedForRelease[actIdx])
-                    {
-                        UpdateStack(rt, actIdx, false);
-                        rt.StickyEngaged[actIdx] = false;
-                        rt.StickyArmedForRelease[actIdx] = false;
-                        rt.StickyBaselineBtn[actIdx] = null;
-                    }
-                    else if (rt.StickyEngaged[actIdx] && rt.StickyBaselineBtn[actIdx] != null)
+                    if (rt.StickyEngaged[actIdx] && rt.StickyBaselineBtn[actIdx] != null)
                     {
                         var baseline = rt.StickyBaselineBtn[actIdx];
                         var current = state.Buttons;
                         int n = current == null ? 0 : System.Math.Min(baseline.Length, current.Length);
+                        bool consumerHeld = false;
                         for (int k = 0; k < n; k++)
                         {
-                            if (current[k] && !baseline[k])
-                            {
-                                rt.StickyArmedForRelease[actIdx] = true;
-                                break;
-                            }
+                            if (current[k] && !baseline[k]) { consumerHeld = true; break; }
+                        }
+
+                        if (rt.StickyConsumerActive[actIdx] && !consumerHeld)
+                        {
+                            // Falling edge — consumer released. Disengage now.
+                            UpdateStack(rt, actIdx, false);
+                            rt.StickyEngaged[actIdx] = false;
+                            rt.StickyConsumerActive[actIdx] = false;
+                            rt.StickyBaselineBtn[actIdx] = null;
+                        }
+                        else
+                        {
+                            rt.StickyConsumerActive[actIdx] = consumerHeld;
                         }
                     }
                     else
@@ -483,7 +495,7 @@ namespace PadForge.Common.Input
                         {
                             UpdateStack(rt, actIdx, true);
                             rt.StickyEngaged[actIdx] = true;
-                            rt.StickyArmedForRelease[actIdx] = false;
+                            rt.StickyConsumerActive[actIdx] = false;
                             int n = state.Buttons?.Length ?? 0;
                             var snap = new bool[n];
                             if (n > 0) System.Array.Copy(state.Buttons, snap, n);

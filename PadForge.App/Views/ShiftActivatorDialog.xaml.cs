@@ -134,6 +134,11 @@ namespace PadForge.Views
                 DelaySlider.Value = 0;
                 // Default jump target = Base for new Custom activators.
                 if (jumpItems.Count > 0) JumpToLayerCombo.SelectedIndex = 0;
+                // Honor the picker's initial color on first save — without
+                // this the user sees blue in the picker but the tab strip
+                // shows gray because _colorSet stayed false until they
+                // dragged the picker. Reset always takes it back to empty.
+                _colorSet = true;
             }
 
             // Watch the picker's RGB DPs so any user drag flags color-set.

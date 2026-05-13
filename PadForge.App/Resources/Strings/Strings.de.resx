@@ -1290,8 +1290,6 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Wenn aktiviert, bleibt das Ziel dieser Ebene AUS, anstatt auf die Basiszeile zurückzufallen.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Verzögerung (ms)</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Millisekunden, die der Aktivator aktiviert bleiben muss, bevor die Ebenenänderung ausgelöst wird.</value></data>
-  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Aktivator-Mapping aufschieben</value></data>
-  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Wenn aktiviert, wird das Mapping der Aktivator-Eingabe parallel zur Ebenenänderung ausgelöst.</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Zu Ebene springen</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Zweite Akkord-Eingabe</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Achsenschwellwert</value></data>
@@ -1301,5 +1299,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Akkord (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Achse über Schwellwert</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Nicht zugewiesene Ziele von Basis erben</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Auch eigenes Mapping des Auslösers feuern</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Wenn aktiviert, treibt die Auslöser-Taste weiterhin jede Zeile an, die sie als Quelle verwendet — ein Druck wechselt die Ebene UND feuert das eigene Mapping der Taste. Wenn deaktiviert (Standard), wird der Druck nur vom Ebenenwechsel verbraucht.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Wenn aktiviert, fallen Ziele, die diese Ebene nicht explizit zuweist, auf die Basis-Ebene zurück. Wenn deaktiviert (Standard), ersetzt die Ebene Basis vollständig und nicht zugewiesene Ziele bleiben aus.</value></data>
 </root>

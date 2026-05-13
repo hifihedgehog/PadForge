@@ -1290,8 +1290,6 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>체크하면 이 레이어의 대상이 기본 행으로 폴스루되지 않고 꺼진 상태로 유지됩니다.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>지연(ms)</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>레이어 변경이 발생하기 전에 활성화가 유지되어야 하는 밀리초.</value></data>
-  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>활성화 매핑 연기</value></data>
-  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>체크하면 활성화 입력 자체의 매핑이 레이어 변경과 함께 발생합니다.</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>레이어로 점프</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>코드의 두 번째 입력</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>축 임계값</value></data>
@@ -1301,5 +1299,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>코드(A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>임계값을 초과한 축</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>매핑되지 않은 대상을 기본에서 상속</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>활성화 버튼의 자체 매핑도 실행</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>선택하면 활성화 버튼이 소스로 사용되는 모든 행을 계속 구동합니다 — 한 번 누르면 레이어를 변경하고 버튼의 자체 매핑도 실행합니다. 선택 해제(기본값)하면 누름은 레이어 변경에서만 소비됩니다.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>체크하면 이 레이어가 명시적으로 매핑하지 않은 대상이 기본 레이어로 폴스루됩니다. 체크 해제 시(기본값) 레이어가 기본을 완전히 대체하고 매핑되지 않은 대상은 꺼진 상태로 유지됩니다.</value></data>
 </root>

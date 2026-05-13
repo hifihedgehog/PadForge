@@ -62,7 +62,7 @@
         </ResourceDictionary>
     </ui:FluentWindow.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
         <Grid Margin="16">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>  <!-- 0  layer-name label -->
@@ -159,7 +159,7 @@
                             <!-- Emoji grid (scrolls when a category overflows) -->
                             <ScrollViewer Grid.Row="1"
                                           Height="220"
-                                          VerticalScrollBarVisibility="Auto"
+                                          VerticalScrollBarVisibility="Visible"
                                           HorizontalScrollBarVisibility="Disabled">
                                 <ItemsControl x:Name="EmojiGrid">
                                     <ItemsControl.ItemsPanel>
@@ -358,15 +358,28 @@
                 <ComboBoxItem Tag="Toggle" Content="{Binding Pad_Shift_ModeToggle, Source={x:Static strings:Strings.Instance}}"/>
                 <ComboBoxItem Tag="Custom" Content="{Binding Pad_Shift_ModeCustom, Source={x:Static strings:Strings.Instance}}"/>
                 <ComboBoxItem Tag="Cycle"  Content="{Binding Pad_Shift_ModeCycle, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBoxItem Tag="Sticky" Content="{Binding Pad_Shift_ModeSticky, Source={x:Static strings:Strings.Instance}}"/>
             </ComboBox>
 
-            <!-- Inherit unmapped targets from Base. Off by default —
-                 shift layer REPLACES Base entirely; targets the layer
-                 doesn't map output zero. Check to fall through to Base. -->
-            <CheckBox Grid.Row="12" x:Name="InheritUnmappedBox"
-                      Content="{Binding Pad_Shift_InheritUnmapped, Source={x:Static strings:Strings.Instance}}"
-                      ToolTip="{Binding Pad_Shift_InheritUnmapped_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                      Margin="0,0,0,12"/>
+            <!-- Two activator-behavior checkboxes stacked together. Both
+                 are toggles on the activator itself (not on the rows). -->
+            <StackPanel Grid.Row="12" Orientation="Vertical" Margin="0,0,0,12">
+                <!-- Inherit unmapped targets from Base. Off by default —
+                     shift layer REPLACES Base entirely; targets the layer
+                     doesn't map output zero. Check to fall through to Base. -->
+                <CheckBox x:Name="InheritUnmappedBox"
+                          Content="{Binding Pad_Shift_InheritUnmapped, Source={x:Static strings:Strings.Instance}}"
+                          ToolTip="{Binding Pad_Shift_InheritUnmapped_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                          Margin="0,0,0,4"/>
+                <!-- v2 PostponeMapping: when checked, the activator's own
+                     descriptor still drives any row that uses it as a
+                     source — so a single button can both change layer AND
+                     fire its own existing mapping. Off by default (the
+                     activator press is consumed by the layer change only). -->
+                <CheckBox x:Name="PostponeMappingBox"
+                          Content="{Binding Pad_Shift_PostponeMapping, Source={x:Static strings:Strings.Instance}}"
+                          ToolTip="{Binding Pad_Shift_PostponeMapping_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+            </StackPanel>
 
             <!-- Jump-to-layer (Mode=Custom). Dropdown of existing layers
                  plus a "(Base)" entry that maps to empty string. -->

@@ -1290,8 +1290,6 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Cuando está marcado, el objetivo de esta capa permanece APAGADO en lugar de retroceder a la fila Base.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Retraso (ms)</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Milisegundos que el activador debe permanecer activo antes de que se dispare el cambio de capa.</value></data>
-  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Posponer asignación del activador</value></data>
-  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Cuando está marcado, la asignación de la entrada del activador también se dispara junto con el cambio de capa.</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Saltar a capa</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Segunda entrada del acorde</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Umbral del eje</value></data>
@@ -1301,5 +1299,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Acorde (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Eje sobre umbral</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Heredar objetivos sin asignar de Base</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Disparar también el mapeo propio del activador</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Cuando se marca, el botón activador sigue impulsando cualquier fila que lo use como fuente: una pulsación cambia la capa Y dispara el mapeo propio del botón. Cuando no se marca (por defecto), la pulsación es consumida solo por el cambio de capa.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Cuando está marcado, los objetivos que esta capa no asigna explícitamente retroceden a la capa Base. Cuando no está marcado (predeterminado), la capa reemplaza Base completamente y los objetivos sin asignar permanecen apagados.</value></data>
 </root>

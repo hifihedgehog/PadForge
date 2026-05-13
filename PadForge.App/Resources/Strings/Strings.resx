@@ -1331,8 +1331,6 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>When checked, this layer's target stays OFF instead of falling through to the Base row.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Delay (ms)</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Milliseconds the activator must stay engaged before the layer change fires.</value></data>
-  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Postpone activator mapping</value></data>
-  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>When checked, the activator input's own mapping still fires alongside the layer change.</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Jump To Layer</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Second Chord Input</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Axis Threshold</value></data>
@@ -1342,6 +1340,8 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Chord (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Axis Past Threshold</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Inherit Unmapped Targets From Base</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Also Fire Activator's Own Mapping</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>When checked, the activator button still drives any row that uses it as a source — one press both changes layer AND fires the button's own mapping. When unchecked (default), the activator press is consumed by the layer change only.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>When checked, targets this layer doesn't explicitly map fall through to the Base layer. When unchecked (default), the layer replaces Base entirely and unmapped targets stay off.</value></data>
 
 </root>

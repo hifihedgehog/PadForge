@@ -664,7 +664,7 @@
                                   ResizeBehavior="PreviousAndNext"/>
 
                     <!-- Macro editor (shows when a macro is selected) -->
-                    <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto"
+                    <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Visible"
                                   HorizontalScrollBarVisibility="Auto"
                                   Padding="8"
                                   DataContext="{Binding SelectedMacro}"
@@ -1941,7 +1941,7 @@
                               HeadersVisibility="Column"
                               GridLinesVisibility="Horizontal"
                               IsReadOnly="True"
-                              VerticalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Visible"
                               LoadingRow="MappingDataGrid_LoadingRow"
                               UnloadingRow="MappingDataGrid_UnloadingRow"
                               SelectionChanged="MappingDataGrid_SelectionChanged">
@@ -2886,7 +2886,7 @@
 
             <!-- ─── TAB 3: Sticks (dynamic) ─── -->
             <TabItem>
-                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Margin="0,16,0,16">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <viewControls:LabeledShapeIcon Shape="Stick" Width="24" Height="24"
@@ -3270,7 +3270,7 @@
 
             <!-- ─── TAB 4: Triggers (dynamic) ─── -->
             <TabItem>
-                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Margin="0,16,0,16">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <viewControls:LabeledShapeIcon Shape="TriggerLeft" Width="24" Height="24"
@@ -3397,7 +3397,7 @@
 
             <!-- ─── TAB 5: Force Feedback ─── -->
             <TabItem>
-                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Margin="0,16,0,16">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <TextBlock Text="&#xE877;" FontFamily="Segoe MDL2 Assets" FontSize="20"
@@ -3658,7 +3658,7 @@
                  (visible only for DualSense / DualSense Edge slots)
                  ══════════════════════════════════════ -->
             <TabItem>
-                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Margin="0,16,0,16">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <Viewbox Width="24" Height="24" Stretch="Uniform"
@@ -3860,7 +3860,7 @@
                  (visible for DS4 / DualSense / DualSense Edge slots)
                  ══════════════════════════════════════ -->
             <TabItem>
-                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Margin="0,16,0,16">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <TextBlock Text="&#xE781;" FontFamily="Segoe MDL2 Assets" FontSize="20"

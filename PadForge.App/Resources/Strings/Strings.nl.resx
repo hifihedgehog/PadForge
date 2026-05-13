@@ -1310,8 +1310,6 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Indien aangevinkt blijft het doel van deze laag UIT in plaats van terug te vallen op de Basisregel.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Vertraging (ms)</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Milliseconden dat de activator actief moet blijven voordat de laagwijziging plaatsvindt.</value></data>
-  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Activator-toewijzing uitstellen</value></data>
-  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Indien aangevinkt wordt de eigen toewijzing van de activator-invoer ook geactiveerd naast de laagwijziging.</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Spring naar laag</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Tweede akkoord-invoer</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>As-drempel</value></data>
@@ -1321,5 +1319,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Akkoord (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>As boven drempel</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Niet-toegewezen doelen van Basis overerven</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Ook de eigen toewijzing van de activator activeren</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Indien aangevinkt stuurt de activatorknop nog steeds elke rij aan die hem als bron gebruikt — één druk wisselt de laag EN activeert de eigen toewijzing van de knop. Indien niet aangevinkt (standaard) wordt de druk alleen verbruikt door de laagwissel.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Indien aangevinkt vallen doelen die deze laag niet expliciet toewijst terug op de Basislaag. Indien niet aangevinkt (standaard) vervangt de laag Basis volledig en blijven niet-toegewezen doelen uit.</value></data>
 </root>

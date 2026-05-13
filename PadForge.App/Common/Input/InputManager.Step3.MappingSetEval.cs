@@ -154,12 +154,24 @@ namespace PadForge.Common.Input
         /// and snapshots that device's input state into the returned
         /// engagement snapshot. Used at Sticky-engage time so the
         /// subsequent per-frame scan can spot consumer activity on ANY
-        /// of the slot's devices, not just the activator's own.</summary>
+        /// of the slot's devices, not just the activator's own.
+        ///
+        /// <para>Lock ordering: take a snapshot of the slot's device
+        /// GUIDs under <c>UserSettings.SyncRoot</c>, release that lock,
+        /// then call <see cref="LookupDeviceState"/> (which itself
+        /// acquires <c>UserDevices.SyncRoot</c>) for each guid. Never
+        /// hold both locks at once — the rest of the codebase nests
+        /// <c>UserDevices → UserSettings</c> and inverting that order
+        /// here would deadlock against other code paths.</para></summary>
         private static StickyEngagementSnapshot CaptureStickyEngagementSnapshot(int slotIndex)
         {
             var snap = new StickyEngagementSnapshot();
             var settings = SettingsManager.UserSettings;
             if (settings == null) return snap;
+
+            // Step 1: gather slot-assigned device GUIDs under the
+            // UserSettings lock only.
+            var guids = new List<string>();
             lock (settings.SyncRoot)
             {
                 for (int i = 0; i < settings.Items.Count; i++)
@@ -167,11 +179,29 @@ namespace PadForge.Common.Input
                     var us = settings.Items[i];
                     if (us == null || us.MapTo != slotIndex) continue;
                     var guidStr = us.InstanceGuid.ToString();
-                    if (snap.ByDevice.ContainsKey(guidStr)) continue;
-                    var devState = LookupDeviceState(guidStr);
-                    if (devState == null) continue;
-                    snap.ByDevice[guidStr] = CaptureStickyBaseline(devState);
+                    if (!snap.ByDevice.ContainsKey(guidStr))
+                    {
+                        // Reserve the slot now so duplicates are dropped
+                        // without another contains check below.
+                        snap.ByDevice[guidStr] = null;
+                        guids.Add(guidStr);
+                    }
                 }
+            }
+
+            // Step 2: outside the UserSettings lock, look up each device
+            // state (LookupDeviceState takes UserDevices.SyncRoot
+            // internally). Drop entries whose device is offline.
+            for (int i = 0; i < guids.Count; i++)
+            {
+                var guidStr = guids[i];
+                var devState = LookupDeviceState(guidStr);
+                if (devState == null)
+                {
+                    snap.ByDevice.Remove(guidStr);
+                    continue;
+                }
+                snap.ByDevice[guidStr] = CaptureStickyBaseline(devState);
             }
             return snap;
         }

@@ -526,13 +526,22 @@ namespace PadForge.Common.Input
             {
                 case "Chord":
                 {
-                    // v2: both inputs must be down. Note: ChordSecondDeviceGuid
-                    // is read against the same state because the chord's two
-                    // halves must be on the same activator-owning device pass
-                    // (true cross-device chords would require coordinating
-                    // state across two device passes — out of scope for v1/v2).
+                    // Both halves must be down. Cross-device chord supported:
+                    // first half is read against the activator's own device
+                    // state (the pass we're in); second half is looked up
+                    // through LookupDeviceState when ChordSecondDeviceGuid is
+                    // set and points to a different device. Falls back to
+                    // the activator's own state when no second-device GUID is
+                    // recorded (same-device chord — legacy / common case).
                     bool a = SourceKindRuntimeReadButtonLikeBool(state, act.Descriptor);
-                    bool b = SourceKindRuntimeReadButtonLikeBool(state, act.ChordSecondDescriptor);
+                    CustomInputState secondState = state;
+                    if (!string.IsNullOrEmpty(act.ChordSecondDeviceGuid)
+                        && !string.Equals(act.ChordSecondDeviceGuid, act.DeviceGuid,
+                            System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        secondState = LookupDeviceState(act.ChordSecondDeviceGuid) ?? state;
+                    }
+                    bool b = SourceKindRuntimeReadButtonLikeBool(secondState, act.ChordSecondDescriptor);
                     return a && b;
                 }
                 case "Axis":

@@ -917,6 +917,13 @@
   <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>Touchpad 1 Touch</value></data>
   <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>Touchpad 2 Touch</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Touchpad Click</value></data>
+  <data name="Mapping_GyroPitch" xml:space="preserve"><value>Gyro Pitch</value></data>
+  <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Yaw</value></data>
+  <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roll</value></data>
+  <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Calibrate Gyro</value></data>
+  <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Last calibrated: {0:yyyy-MM-dd HH:mm}</value></data>
+  <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Never calibrated</value></data>
+  <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Calibrating… hold still</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
 
   <!-- ═══ Device Object Names (gamepad) ═══ -->

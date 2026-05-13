@@ -142,6 +142,17 @@ namespace PadForge.Common
                 return null;
             }
 
+            // Gyro descriptors → localized display names.
+            if (s.StartsWith("Gyro ", System.StringComparison.Ordinal))
+            {
+                var si = Strings.Instance;
+                string axis = s.Substring(5).Trim();
+                if (axis.Equals("Pitch", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroPitch;
+                if (axis.Equals("Yaw",   System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroYaw;
+                if (axis.Equals("Roll",  System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroRoll;
+                return null;
+            }
+
             string[] parts = s.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2 || !int.TryParse(parts[1], out int index))
                 return null;
@@ -493,6 +504,17 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 Y", DisplayName = si.Mapping_TouchpadY2 });
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 Down", DisplayName = si.Mapping_TouchpadContact2 });
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Click", DisplayName = si.Mapping_TouchpadClick });
+            }
+
+            // Gyro sources (for devices with a gyroscope sensor). SDL3
+            // surfaces gyro uniformly across DS4 / DualSense / Switch Pro /
+            // Switch 2 Pro / Joy-Con / Steam Controller / Steam Deck / any
+            // third-party pad whose driver exposes SDL_SENSOR_GYRO.
+            if (ud.HasGyro)
+            {
+                list.Add(new InputChoice { Descriptor = "Gyro Pitch", DisplayName = si.Mapping_GyroPitch });
+                list.Add(new InputChoice { Descriptor = "Gyro Yaw",   DisplayName = si.Mapping_GyroYaw });
+                list.Add(new InputChoice { Descriptor = "Gyro Roll",  DisplayName = si.Mapping_GyroRoll });
             }
 
             return list.ToArray();

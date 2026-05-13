@@ -3441,35 +3441,76 @@ namespace PadForge.Services
         // engagement and reused thereafter. State is read by polling
         // InputManager.GetEngagedLayerMask in UiTimer_Tick.
         private Views.ShiftLayerFlyout _shiftLayerFlyout;
+        private int _shiftLayerFlyoutLastSlot = -1;
         private string _shiftLayerFlyoutLastShown = "Base";
 
-        /// <summary>Polls the engaged layer on the currently-viewed slot
-        /// and updates the visual flyout window accordingly. Cheap when
-        /// the slot is on Base (early-out before construction). Allocates
-        /// the flyout window on demand the first time a layer engages.</summary>
+        /// <summary>Polls every slot's engaged layer and surfaces the flyout
+        /// for whichever slot has a non-Base layer active. Independent of
+        /// which page/tab the user is viewing — a Shift engagement on Pad 3
+        /// shows the flyout even while the user is on the Dashboard or
+        /// Devices page. When more than one slot has a Shift engaged at the
+        /// same time, the currently-selected pad wins (if any); otherwise
+        /// the lowest-numbered engaged slot wins, for stable display
+        /// without flip-flopping.</summary>
         private void UpdateShiftLayerFlyout()
         {
-            int slot = _mainVm.SelectedPadIndex;
-            if (slot < 0 || slot >= SettingsManager.SlotMappingSets.Length)
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null)
             {
-                if (_shiftLayerFlyout?.IsVisible == true) _shiftLayerFlyout.HideFlyout();
-                _shiftLayerFlyoutLastShown = "Base";
+                if (_shiftLayerFlyoutLastSlot >= 0)
+                {
+                    _shiftLayerFlyout?.HideFlyout();
+                    _shiftLayerFlyoutLastSlot = -1;
+                    _shiftLayerFlyoutLastShown = "Base";
+                }
                 return;
             }
-            var ms = SettingsManager.SlotMappingSets[slot];
-            string mask = Common.Input.InputManager.GetEngagedLayerMask(slot, ms);
-            if (string.Equals(mask, _shiftLayerFlyoutLastShown, System.StringComparison.Ordinal))
-                return;
-            _shiftLayerFlyoutLastShown = mask;
 
-            if (string.IsNullOrEmpty(mask) || string.Equals(mask, "Base", System.StringComparison.Ordinal))
+            // Selection priority: currently-viewed pad first, then any
+            // engaged slot in ascending order.
+            int engagedSlot = -1;
+            string engagedMask = "Base";
+            int viewed = _mainVm.SelectedPadIndex;
+            if (viewed >= 0 && viewed < sets.Length)
+            {
+                string mask = Common.Input.InputManager.GetEngagedLayerMask(viewed, sets[viewed]);
+                if (!string.IsNullOrEmpty(mask) && !string.Equals(mask, "Base", System.StringComparison.Ordinal))
+                {
+                    engagedSlot = viewed;
+                    engagedMask = mask;
+                }
+            }
+            if (engagedSlot < 0)
+            {
+                for (int s = 0; s < sets.Length; s++)
+                {
+                    if (s == viewed) continue; // already checked
+                    string mask = Common.Input.InputManager.GetEngagedLayerMask(s, sets[s]);
+                    if (!string.IsNullOrEmpty(mask) && !string.Equals(mask, "Base", System.StringComparison.Ordinal))
+                    {
+                        engagedSlot = s;
+                        engagedMask = mask;
+                        break;
+                    }
+                }
+            }
+
+            // No-op when (slot, mask) tuple hasn't changed since last tick.
+            if (engagedSlot == _shiftLayerFlyoutLastSlot
+                && string.Equals(engagedMask, _shiftLayerFlyoutLastShown, System.StringComparison.Ordinal))
+                return;
+            _shiftLayerFlyoutLastSlot = engagedSlot;
+            _shiftLayerFlyoutLastShown = engagedMask;
+
+            if (engagedSlot < 0)
             {
                 _shiftLayerFlyout?.HideFlyout();
                 return;
             }
 
             // Resolve activator (for LayerName + Color + Icon) by the engaged mask.
-            string layerName = mask;
+            var ms = sets[engagedSlot];
+            string layerName = engagedMask;
             string color = "";
             string icon = "";
             if (ms?.ShiftActivators != null)
@@ -3477,7 +3518,7 @@ namespace PadForge.Services
                 foreach (var a in ms.ShiftActivators)
                 {
                     if (a == null) continue;
-                    if (!string.Equals(a.LayerMask, mask, System.StringComparison.Ordinal)) continue;
+                    if (!string.Equals(a.LayerMask, engagedMask, System.StringComparison.Ordinal)) continue;
                     if (!string.IsNullOrEmpty(a.LayerName)) layerName = a.LayerName;
                     color = a.Color ?? "";
                     icon = a.Icon ?? "";

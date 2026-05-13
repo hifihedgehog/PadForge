@@ -202,7 +202,6 @@
             <ComboBox Grid.Row="3" x:Name="KindCombo" Margin="0,0,0,12"
                       ScrollViewer.VerticalScrollBarVisibility="Visible"
                       SelectedValuePath="Value"
-                      DisplayMemberPath="Name"
                       SelectionChanged="KindCombo_SelectionChanged">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -367,7 +366,6 @@
             <ComboBox Grid.Row="11" x:Name="ModeCombo" Margin="0,0,0,12"
                       ScrollViewer.VerticalScrollBarVisibility="Visible"
                       SelectedValuePath="Value"
-                      DisplayMemberPath="Name"
                       SelectionChanged="ModeCombo_SelectionChanged">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>

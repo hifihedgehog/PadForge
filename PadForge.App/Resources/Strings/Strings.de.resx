@@ -1069,6 +1069,8 @@
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Gieren</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Rollen</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Gyro kalibrieren</value></data>
+  <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Lege den Controller auf eine ebene Fläche und klicke auf „Gyro kalibrieren", um den Ruhewert ca. 1,5 Sekunden lang abzutasten. Wird von Rohwerten abgezogen, damit Gyro-Mappings die Maus / den Stick nicht driften, wenn der Controller stillsteht.</value></data>
+  <data name="Devices_Sensors" xml:space="preserve"><value>Sensoren</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Zuletzt kalibriert: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Nie kalibriert</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibrierung… ruhig halten</value></data>

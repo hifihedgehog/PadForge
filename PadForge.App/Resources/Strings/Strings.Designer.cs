@@ -1004,6 +1004,8 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_GyroYaw => Get("Mapping_GyroYaw");
     public string Mapping_GyroRoll => Get("Mapping_GyroRoll");
     public string Settings_GyroCalibrate_Button => Get("Settings_GyroCalibrate_Button");
+    public string Settings_GyroCalibrate_Tooltip => Get("Settings_GyroCalibrate_Tooltip");
+    public string Devices_Sensors => Get("Devices_Sensors");
     public string Settings_GyroLastCalibrated_Format => Get("Settings_GyroLastCalibrated_Format");
     public string Settings_GyroNeverCalibrated => Get("Settings_GyroNeverCalibrated");
     public string Settings_GyroCalibrating => Get("Settings_GyroCalibrating");

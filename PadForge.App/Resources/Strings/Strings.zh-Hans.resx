@@ -1069,6 +1069,8 @@
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>陀螺仪 偏航</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>陀螺仪 翻滚</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>校准陀螺仪</value></data>
+  <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>将控制器放在平坦表面上,点击"校准陀螺仪"以采样约 1.5 秒的静止读数。从原始读数中减去,以便陀螺仪映射在控制器静止时不会使鼠标 / 摇杆漂移。</value></data>
+  <data name="Devices_Sensors" xml:space="preserve"><value>传感器</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>上次校准:{0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>从未校准</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>正在校准… 请保持静止</value></data>

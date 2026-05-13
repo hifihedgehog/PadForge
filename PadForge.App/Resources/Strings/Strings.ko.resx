@@ -1069,6 +1069,8 @@
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>자이로 요</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>자이로 롤</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>자이로 보정</value></data>
+  <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>컨트롤러를 평평한 표면에 놓고 자이로 보정을 클릭하여 약 1.5초 동안 정지 상태 값을 샘플링합니다. 원시 값에서 차감되므로 컨트롤러가 정지해 있을 때 자이로 매핑이 마우스 / 스틱을 표류시키지 않습니다.</value></data>
+  <data name="Devices_Sensors" xml:space="preserve"><value>센서</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>마지막 보정: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>보정되지 않음</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>보정 중… 가만히 잡으세요</value></data>

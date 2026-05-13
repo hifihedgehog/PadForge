@@ -1074,6 +1074,8 @@
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>마지막 보정: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>보정되지 않음</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>보정 중… 가만히 잡으세요</value></data>
+  <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>감도</value></data>
+  <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>소스별 자이로 감도 배율. 1.0 = 엔진 기본값 (500°/s → 최대 편향). 1.0보다 크면 더 민감하고, 1.0보다 작으면 덜 민감합니다.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>터치패드 1 Y</value></data>
   <data name="Mapping_TouchpadX2" xml:space="preserve"><value>터치패드 2 X</value></data>
   <data name="Mapping_TouchpadY2" xml:space="preserve"><value>터치패드 2 Y</value></data>

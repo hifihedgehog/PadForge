@@ -1094,6 +1094,8 @@
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Ultima calibrazione: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Mai calibrato</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Calibrazione… tieni fermo</value></data>
+  <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilità</value></data>
+  <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Moltiplicatore di sensibilità del giroscopio per sorgente. 1,0 = predefinito del motore (500°/s → deflessione completa). Valori superiori a 1,0 sono più sensibili; valori inferiori sono meno sensibili.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>
   <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Touchpad 2 X</value></data>
   <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Touchpad 2 Y</value></data>

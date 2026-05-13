@@ -1074,6 +1074,8 @@
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>上次校准:{0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>从未校准</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>正在校准… 请保持静止</value></data>
+  <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>灵敏度</value></data>
+  <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>每个源的陀螺仪灵敏度倍数。1.0 = 引擎默认值（500°/s → 最大偏转）。大于 1.0 更灵敏；小于 1.0 不太灵敏。</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>触控板 1 Y</value></data>
   <data name="Mapping_TouchpadX2" xml:space="preserve"><value>触控板 2 X</value></data>
   <data name="Mapping_TouchpadY2" xml:space="preserve"><value>触控板 2 Y</value></data>

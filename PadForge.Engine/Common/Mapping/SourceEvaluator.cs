@@ -71,11 +71,46 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     bool modifier = ReadButtonLikeBool(state, src.ParamModifier);
                     var inner = CloneAsDirect(src, invertOverride: src.Invert ^ modifier);
+                    if (runtime != null && IsVirtualStickAxisTarget(target)
+                        && SourceCoercion.IsGyroDescriptor(inner.Descriptor))
+                        return EvaluateGyroIntegrated(state, inner, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds);
                     return SourceCoercion.EvaluateForBipolarAxisTarget(state, inner);
                 }
                 default:
+                    // Gyro + virtual stick = integrate rate over time. The
+                    // raw bipolar coercion is rate-direct (correct for mouse
+                    // / scroll velocity), but a virtual stick wants the
+                    // angular displacement, not the instantaneous rate, so
+                    // releasing the controller doesn't snap the stick to
+                    // center. Other source kinds / non-stick targets fall
+                    // through to the stateless coercion.
+                    if (runtime != null && IsVirtualStickAxisTarget(target)
+                        && SourceCoercion.IsGyroDescriptor(src.Descriptor))
+                        return EvaluateGyroIntegrated(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds);
                     return SourceCoercion.EvaluateForBipolarAxisTarget(state, src);
             }
+        }
+
+        // Engine-side mirror of InputManager.Step3.MappingSetEval's
+        // TargetIsBipolarAxis predicate, restricted to *physical-stick*
+        // virtual targets (the four thumb axes + Extended virtual sticks).
+        // Mouse / scroll targets share the bipolar coercion path but want
+        // rate-direct gyro, so they MUST NOT match.
+        private static bool IsVirtualStickAxisTarget(string target)
+            => target == "LeftThumbAxisX" || target == "LeftThumbAxisY"
+            || target == "RightThumbAxisX" || target == "RightThumbAxisY"
+            || (target != null && target.StartsWith("ExtendedAxis", System.StringComparison.Ordinal));
+
+        private static float EvaluateGyroIntegrated(
+            CustomInputState state, MappingSource src,
+            int slotIndex, string target, int sourceIndex,
+            SourceKindRuntime runtime, double frameDeltaSeconds)
+        {
+            float rate = SourceCoercion.GetCalibratedGyroRate(state, src);
+            double sens = src.GyroSensitivity > 0 ? src.GyroSensitivity : 1.0;
+            double v = runtime.TickGyroIntegrated(slotIndex, target, sourceIndex,
+                rate, sens, frameDeltaSeconds);
+            return src.Invert ? -(float)v : (float)v;
         }
 
         public static float EvaluateForTriggerTarget(

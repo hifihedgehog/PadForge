@@ -35,6 +35,15 @@ namespace PadForge.Views
         private bool _recordingChord;
         private string _selectedIcon = "";
 
+        // Tracked so the matching RemoveValueChanged fires on Closed.
+        // DependencyPropertyDescriptor holds a static strong reference to
+        // the value-changed handler; without the explicit removal the
+        // dialog leaks for the lifetime of the process.
+        private System.ComponentModel.DependencyPropertyDescriptor _redDpd;
+        private System.ComponentModel.DependencyPropertyDescriptor _greenDpd;
+        private System.ComponentModel.DependencyPropertyDescriptor _blueDpd;
+        private EventHandler _onRgbHandler;
+
         public ShiftActivatorDialog(
             IReadOnlyList<InputChoice> availableInputs,
             ShiftActivator existing,
@@ -102,6 +111,7 @@ namespace PadForge.Views
                 AxisThresholdSlider.Value = existing.AxisThreshold;
                 DelaySlider.Value = existing.DelayMs;
                 InheritUnmappedBox.IsChecked = existing.InheritUnmapped;
+                PostponeMappingBox.IsChecked = existing.PostponeMapping;
 
                 // Color: parse hex into picker RGB; set _colorSet flag.
                 if (!string.IsNullOrEmpty(existing.Color))
@@ -143,17 +153,18 @@ namespace PadForge.Views
 
             // Watch the picker's RGB DPs so any user drag flags color-set.
             // DependencyPropertyDescriptor pumps the change events without
-            // requiring a custom event on ColorPickerControl.
-            var redDpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(
+            // requiring a custom event on ColorPickerControl. Stash the
+            // DPDs + handler on instance fields so Closed can RemoveValueChanged.
+            _redDpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(
                 ColorPickerControl.RedProperty, typeof(ColorPickerControl));
-            var greenDpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(
+            _greenDpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(
                 ColorPickerControl.GreenProperty, typeof(ColorPickerControl));
-            var blueDpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(
+            _blueDpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(
                 ColorPickerControl.BlueProperty, typeof(ColorPickerControl));
-            EventHandler onRgb = (_, __) => OnColorPickerChanged();
-            redDpd?.AddValueChanged(ColorPicker, onRgb);
-            greenDpd?.AddValueChanged(ColorPicker, onRgb);
-            blueDpd?.AddValueChanged(ColorPicker, onRgb);
+            _onRgbHandler = (_, __) => OnColorPickerChanged();
+            _redDpd?.AddValueChanged(ColorPicker, _onRgbHandler);
+            _greenDpd?.AddValueChanged(ColorPicker, _onRgbHandler);
+            _blueDpd?.AddValueChanged(ColorPicker, _onRgbHandler);
             UpdateHexBoxFromPicker();
 
             ApplyKindVisibility();
@@ -175,6 +186,13 @@ namespace PadForge.Views
             {
                 if (_recordingPrimary || _recordingChord)
                     _recorder?.CancelRecording();
+                if (_onRgbHandler != null)
+                {
+                    _redDpd?.RemoveValueChanged(ColorPicker, _onRgbHandler);
+                    _greenDpd?.RemoveValueChanged(ColorPicker, _onRgbHandler);
+                    _blueDpd?.RemoveValueChanged(ColorPicker, _onRgbHandler);
+                    _onRgbHandler = null;
+                }
             };
         }
 
@@ -563,7 +581,7 @@ namespace PadForge.Views
                 JumpToLayer = jumpToLayer,
                 CycleLayers = cycleLayers,
                 DelayMs = (int)Math.Round(DelaySlider.Value),
-                PostponeMapping = false,
+                PostponeMapping = PostponeMappingBox.IsChecked == true,
                 Color = colorHex,
                 Icon = _selectedIcon ?? "",
             };

@@ -1290,8 +1290,6 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>选中时,此层的目标保持关闭,而不是回退到基础行。</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>延迟(毫秒)</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>触发层切换之前激活器必须保持激活的毫秒数。</value></data>
-  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>推迟激活器映射</value></data>
-  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>选中时,激活器输入自身的映射会与层切换一起触发。</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>跳转到层</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>和弦的第二个输入</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>轴阈值</value></data>
@@ -1301,5 +1299,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>和弦(A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>轴超过阈值</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>从基础继承未映射的目标</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>同时触发激活器自身的映射</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>选中时,激活器按钮继续驱动以它为源的任何行 — 一次按压同时切换层并触发按钮自身的映射。未选中(默认)时,按压仅被层切换消费。</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>选中时,此层未明确映射的目标会回退到基础层。未选中时(默认),层完全替换基础,未映射的目标保持关闭。</value></data>
 </root>

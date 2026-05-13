@@ -135,6 +135,16 @@ namespace PadForge.Common.Input
             // Recomputed when the source string changes.
             public string[][] CycleLayersSplit = System.Array.Empty<string[]>();
             public string[] CycleLayersSource = System.Array.Empty<string>();
+            // v3 Sticky mode: per-activator engaged flag, "arm next frame
+            // for release" latch, and a snapshot of the activator-device's
+            // button state at engage time. Same-device limitation — Sticky
+            // releases on a non-activator button rising edge in the
+            // activator's own state. Cross-device consumer (keyboard
+            // activator, gamepad consumer) won't auto-release because the
+            // gamepad's buttons live in a different state buffer.
+            public bool[] StickyEngaged = System.Array.Empty<bool>();
+            public bool[] StickyArmedForRelease = System.Array.Empty<bool>();
+            public bool[][] StickyBaselineBtn = System.Array.Empty<bool[]>();
             public readonly List<int> Stack = new();
             public string CustomLayer = "";   // v2 Custom mode current layer (overrides stack when non-empty)
 
@@ -156,6 +166,9 @@ namespace PadForge.Common.Input
                 EngageStartTicks = ResizeLong(EngageStartTicks, newSize);
                 CycleLayersSplit = ResizeStringArrays(CycleLayersSplit, newSize);
                 CycleLayersSource = ResizeStringArr(CycleLayersSource, newSize);
+                StickyEngaged = ResizeBool(StickyEngaged, newSize);
+                StickyArmedForRelease = ResizeBool(StickyArmedForRelease, newSize);
+                StickyBaselineBtn = ResizeBoolArrays(StickyBaselineBtn, newSize);
             }
 
             public void Clear()
@@ -166,12 +179,18 @@ namespace PadForge.Common.Input
                 System.Array.Clear(EngageStartTicks, 0, EngageStartTicks.Length);
                 System.Array.Clear(CycleLayersSplit, 0, CycleLayersSplit.Length);
                 System.Array.Clear(CycleLayersSource, 0, CycleLayersSource.Length);
+                System.Array.Clear(StickyEngaged, 0, StickyEngaged.Length);
+                System.Array.Clear(StickyArmedForRelease, 0, StickyArmedForRelease.Length);
+                System.Array.Clear(StickyBaselineBtn, 0, StickyBaselineBtn.Length);
                 lock (SyncRoot)
                 {
                     Stack.Clear();
                     CustomLayer = "";
                 }
             }
+
+            private static bool[][] ResizeBoolArrays(bool[][] arr, int n)
+            { var r = new bool[n][]; System.Array.Copy(arr, r, System.Math.Min(arr.Length, n)); return r; }
 
             private static string[][] ResizeStringArrays(string[][] arr, int n)
             { var r = new string[n][]; System.Array.Copy(arr, r, System.Math.Min(arr.Length, n)); return r; }
@@ -187,6 +206,34 @@ namespace PadForge.Common.Input
         }
 
         private static readonly ShiftRuntime[] _shiftRuntime = new ShiftRuntime[MaxPads];
+
+        // v2 Postpone-the-mapping suppression set. For each slot, a
+        // HashSet of "deviceGuid|descriptor" keys identifying source
+        // bindings that should be treated as zero/false during this
+        // frame's row eval because their owning activator is currently
+        // exerting itself and PostponeMapping=false on that activator.
+        // Recomputed at the bottom of each ResolveActiveLayerMask call.
+        // Read by IsSourceSuppressedPostpone from the row evaluator
+        // loops in Step 3.
+        private static readonly System.Collections.Generic.HashSet<string>[]
+            _suppressedSourcesBySlot = new System.Collections.Generic.HashSet<string>[MaxPads];
+
+        /// <summary>Returns true when the (slot, deviceGuid, descriptor)
+        /// tuple matches a currently-engaging activator that has
+        /// PostponeMapping=false. Row evaluators short-circuit such
+        /// sources so the activator press doesn't ALSO fire that
+        /// source's normal mapping — reWASD parity for the
+        /// "Postpone the mapping" option (here surfaced as
+        /// "Also fire activator's own mapping").</summary>
+        internal static bool IsSourceSuppressedPostpone(int slotIndex, string deviceGuid, string descriptor)
+        {
+            if (slotIndex < 0 || slotIndex >= _suppressedSourcesBySlot.Length) return false;
+            var set = _suppressedSourcesBySlot[slotIndex];
+            if (set == null || set.Count == 0) return false;
+            // Key shape mirrors the population loop below.
+            string key = (deviceGuid ?? "") + "|" + (descriptor ?? "");
+            return set.Contains(key);
+        }
 
         /// <summary>Clears every slot's shift runtime state. Called from
         /// InputService.ApplyProfile and from CompactSlotsForGaps so a
@@ -269,6 +316,33 @@ namespace PadForge.Common.Input
                     continue;
 
                 UpdateActivatorState(rt, i, act, thisDeviceState, slotIndex);
+            }
+
+            // v2 Postpone-the-mapping: rebuild the per-slot suppression
+            // set from the just-updated activator exertion state. An
+            // activator is "exerting" when its input read (after Delay
+            // gating) was true this frame, captured into WasDown[i] at
+            // the tail of UpdateActivatorState. PostponeMapping=true on
+            // an activator opts OUT of suppression — its own source row
+            // fires alongside the layer change.
+            var suppressed = _suppressedSourcesBySlot[slotIndex];
+            if (suppressed == null)
+                _suppressedSourcesBySlot[slotIndex] = suppressed =
+                    new System.Collections.Generic.HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
+            suppressed.Clear();
+            for (int i = 0; i < activators.Count; i++)
+            {
+                var a = activators[i];
+                if (a == null) continue;
+                if (a.PostponeMapping) continue;
+                if (!rt.WasDown[i]) continue;
+                if (!string.IsNullOrEmpty(a.Descriptor))
+                    suppressed.Add((a.DeviceGuid ?? "") + "|" + a.Descriptor);
+                if (string.Equals(a.Kind, "Chord", System.StringComparison.Ordinal)
+                    && !string.IsNullOrEmpty(a.ChordSecondDescriptor))
+                {
+                    suppressed.Add((a.ChordSecondDeviceGuid ?? "") + "|" + a.ChordSecondDescriptor);
+                }
             }
 
             // Snapshot the cross-thread fields under the runtime's lock,
@@ -368,15 +442,55 @@ namespace PadForge.Common.Input
                 }
                 case "Sticky":
                 {
-                    // Sticky proper ("press once, layer auto-releases when
-                    // the next input fires on the engaged layer") requires a
-                    // consumer-input detection channel back from Step 3 into
-                    // the runtime — not yet implemented. For now, Sticky
-                    // falls through to Toggle so saved configs that picked
-                    // this mode have working press-on / press-off behavior
-                    // instead of the previous engages-forever bug. The UI
-                    // dropdown also hides Sticky until proper semantics land.
-                    goto case "Toggle";
+                    // v3 Sticky: typewriter-shift behavior. Engage on rising
+                    // edge, stay engaged through the same-frame mapping
+                    // evaluation, arm-for-release the FRAME the user
+                    // presses any non-activator button on the activator's
+                    // device, then actually release on the frame AFTER that
+                    // — so the consumer key fires its shifted mapping AND
+                    // the layer drops back to Base afterward.
+                    //
+                    // Same-device limitation: the baseline snapshot only
+                    // covers state.Buttons (the activator's own device).
+                    // Cross-device Sticky (keyboard activator, gamepad
+                    // consumer) won't auto-release because the gamepad's
+                    // button state isn't visible from this activator pass.
+                    if (rt.StickyArmedForRelease[actIdx])
+                    {
+                        UpdateStack(rt, actIdx, false);
+                        rt.StickyEngaged[actIdx] = false;
+                        rt.StickyArmedForRelease[actIdx] = false;
+                        rt.StickyBaselineBtn[actIdx] = null;
+                    }
+                    else if (rt.StickyEngaged[actIdx] && rt.StickyBaselineBtn[actIdx] != null)
+                    {
+                        var baseline = rt.StickyBaselineBtn[actIdx];
+                        var current = state.Buttons;
+                        int n = current == null ? 0 : System.Math.Min(baseline.Length, current.Length);
+                        for (int k = 0; k < n; k++)
+                        {
+                            if (current[k] && !baseline[k])
+                            {
+                                rt.StickyArmedForRelease[actIdx] = true;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        bool risingEdge = inputDown && !rt.WasDown[actIdx] && delayMet;
+                        if (risingEdge)
+                        {
+                            UpdateStack(rt, actIdx, true);
+                            rt.StickyEngaged[actIdx] = true;
+                            rt.StickyArmedForRelease[actIdx] = false;
+                            int n = state.Buttons?.Length ?? 0;
+                            var snap = new bool[n];
+                            if (n > 0) System.Array.Copy(state.Buttons, snap, n);
+                            rt.StickyBaselineBtn[actIdx] = snap;
+                        }
+                    }
+                    break;
                 }
                 case "Hold":
                 default:
@@ -685,6 +799,7 @@ namespace PadForge.Common.Input
                         var src = row.Sources[i];
                         if (IsRowModifierSource(src)) continue;
                         if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
+                        if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
                         boolContribs.Add(SourceEvaluator.EvaluateForButtonTarget(
                             state, src, globalAxisToButtonThreshold,
                             slotIndex, row.Target, i, runtime, dt));
@@ -712,6 +827,7 @@ namespace PadForge.Common.Input
                         var src = row.Sources[i];
                         if (IsRowModifierSource(src)) continue;
                         if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
+                        if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
                         axisContribs.Add(SourceEvaluator.EvaluateForBipolarAxisTarget(
                             state, src, slotIndex, row.Target, i, runtime, dt));
                     }
@@ -739,6 +855,7 @@ namespace PadForge.Common.Input
                         var src = row.Sources[i];
                         if (IsRowModifierSource(src)) continue;
                         if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
+                        if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
                         axisContribs.Add(SourceEvaluator.EvaluateForTriggerTarget(
                             state, src, slotIndex, row.Target, i, runtime, dt));
                     }
@@ -973,6 +1090,11 @@ namespace PadForge.Common.Input
                 var src = srcs[i];
                 if (IsRowModifierSource(src)) continue;
                 if (src == null) { list.Add(0f); continue; }
+                // PostponeMapping=false on an activator suppresses its own
+                // descriptor; substitute 0 so Custom-formula positions stay
+                // stable (sN references are positional).
+                if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
+                { list.Add(0f); continue; }
                 var devState = LookupDeviceState(src.DeviceGuid);
                 if (devState == null) { list.Add(0f); continue; }
                 float v = SourceEvaluator.EvaluateForBipolarAxisTarget(
@@ -981,7 +1103,8 @@ namespace PadForge.Common.Input
                 {
                     var negSrc = srcs[1];
                     var negState = negSrc != null ? LookupDeviceState(negSrc.DeviceGuid) : null;
-                    if (negState != null)
+                    if (negState != null
+                        && !IsSourceSuppressedPostpone(slotIndex, negSrc.DeviceGuid, negSrc.Descriptor))
                     {
                         v += SourceEvaluator.EvaluateForBipolarAxisTarget(
                             negState, negSrc, slotIndex, row.Target, 1, slotRuntime, dt);
@@ -1004,6 +1127,8 @@ namespace PadForge.Common.Input
                 var src = srcs[i];
                 if (IsRowModifierSource(src)) continue;
                 if (src == null) { list.Add(0f); continue; }
+                if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
+                { list.Add(0f); continue; }
                 var devState = LookupDeviceState(src.DeviceGuid);
                 if (devState == null) { list.Add(0f); continue; }
                 list.Add(SourceEvaluator.EvaluateForTriggerTarget(
@@ -1024,6 +1149,8 @@ namespace PadForge.Common.Input
                 var src = srcs[i];
                 if (IsRowModifierSource(src)) continue;
                 if (src == null) { list.Add(0f); continue; }
+                if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
+                { list.Add(0f); continue; }
                 var devState = LookupDeviceState(src.DeviceGuid);
                 if (devState == null) { list.Add(0f); continue; }
                 list.Add(SourceEvaluator.EvaluateForButtonTarget(

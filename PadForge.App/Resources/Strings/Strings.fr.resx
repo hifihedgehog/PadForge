@@ -1290,8 +1290,6 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Lorsque coché, la cible de cette couche reste DÉSACTIVÉE au lieu de retomber sur la ligne Base.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Délai (ms)</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Millisecondes pendant lesquelles l'activateur doit rester engagé avant que le changement de couche se déclenche.</value></data>
-  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Différer l'affectation de l'activateur</value></data>
-  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Lorsque coché, l'affectation propre à l'entrée d'activation se déclenche également avec le changement de couche.</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Aller à la couche</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Deuxième entrée de l'accord</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Seuil de l'axe</value></data>
@@ -1301,5 +1299,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Accord (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Axe au-delà du seuil</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Hériter les cibles non affectées de Base</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Déclencher aussi le mapping propre de l'activateur</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Si coché, le bouton activateur continue de piloter toute ligne qui l'utilise comme source — une pression change la couche ET déclenche le mapping propre du bouton. Si non coché (par défaut), la pression est consommée uniquement par le changement de couche.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Lorsque coché, les cibles que cette couche n'affecte pas explicitement retombent sur la couche Base. Lorsque décoché (par défaut), la couche remplace entièrement Base et les cibles non affectées restent désactivées.</value></data>
 </root>

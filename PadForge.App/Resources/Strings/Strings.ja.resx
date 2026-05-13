@@ -1069,6 +1069,8 @@
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>ジャイロ ヨー</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>ジャイロ ロール</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>ジャイロを較正</value></data>
+  <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>コントローラーを平らな面に置いて「ジャイロを較正」をクリックすると、約 1.5 秒間静止時の値をサンプリングします。生の読み取り値から差し引かれるため、コントローラーが静止しているときにジャイロ マッピングがマウス / スティックを漂流させません。</value></data>
+  <data name="Devices_Sensors" xml:space="preserve"><value>センサー</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>最後の較正: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>未較正</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>較正中… 動かさないでください</value></data>

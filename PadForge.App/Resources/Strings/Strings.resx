@@ -348,6 +348,7 @@
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Consume mapped inputs (hooks)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Suppresses only the specific keys/buttons that are mapped, letting unmapped inputs pass through</value></data>
   <data name="Devices_RawInputState" xml:space="preserve"><value>Raw Input State</value></data>
+  <data name="Devices_Sensors" xml:space="preserve"><value>Sensors</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Axes</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Buttons</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>Keyboard</value></data>
@@ -921,6 +922,7 @@
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roll</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Calibrate Gyro</value></data>
+  <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Place the controller on a flat surface and click Calibrate Gyro to sample the at-rest reading for ~1.5 seconds. Subtracted from raw readings so gyro mappings don't drift the mouse / stick when the controller is still.</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Last calibrated: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Never calibrated</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Calibrating… hold still</value></data>

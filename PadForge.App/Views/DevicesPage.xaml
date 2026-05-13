@@ -337,6 +337,24 @@
 
                         <Separator Margin="0,4,0,8"/>
 
+                        <!-- ─── Sensors ─── -->
+                        <StackPanel Visibility="{Binding SelectedDevice.HasGyro, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="{Binding Devices_Sensors, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
+                                       FontSize="13" Margin="0,0,0,6"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <Button Content="{Binding Settings_GyroCalibrate_Button, Source={x:Static strings:Strings.Instance}}"
+                                        Click="CalibrateGyro_Click"
+                                        Padding="10,4"
+                                        VerticalAlignment="Center"
+                                        ToolTip="{Binding Settings_GyroCalibrate_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Text="{Binding GyroCalibrationLabel}"
+                                           FontSize="11" Opacity="0.7"
+                                           Margin="10,0,0,0"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <Separator Margin="0,4,0,8"/>
+                        </StackPanel>
+
                         <!-- ─── Raw Input State (Visual) ─── -->
                         <TextBlock Text="{Binding Devices_RawInputState, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
                                    FontSize="13" Margin="0,0,0,8"/>
@@ -639,19 +657,6 @@
                                 </StackPanel>
                             </Grid>
                         </Border>
-
-                        <!-- Gyro calibration: button + last-calibrated label. -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
-                                    Visibility="{Binding HasGyroData, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <Button Content="{Binding Settings_GyroCalibrate_Button, Source={x:Static strings:Strings.Instance}}"
-                                    Click="CalibrateGyro_Click"
-                                    Padding="10,4"
-                                    VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding GyroCalibrationLabel}"
-                                       FontSize="11" Opacity="0.7"
-                                       Margin="10,0,0,0"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
 
                         <!-- Accelerometer -->
                         <TextBlock Text="{Binding Devices_Accelerometer, Source={x:Static strings:Strings.Instance}}" FontSize="11" Opacity="0.6" Margin="0,0,0,3"

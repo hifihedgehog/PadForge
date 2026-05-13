@@ -1069,6 +1069,8 @@
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Giroscópio Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Giroscópio Roll</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Calibrar giroscópio</value></data>
+  <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Coloque o controle em uma superfície plana e clique em Calibrar giroscópio para amostrar a leitura em repouso por ~1,5 segundo. Subtraído das leituras brutas para que os mapeamentos do giroscópio não desviem o mouse / stick quando o controle estiver parado.</value></data>
+  <data name="Devices_Sensors" xml:space="preserve"><value>Sensores</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Última calibração: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Nunca calibrado</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Calibrando… mantenha parado</value></data>

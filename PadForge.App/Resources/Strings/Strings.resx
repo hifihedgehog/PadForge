@@ -926,6 +926,8 @@
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Last calibrated: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Never calibrated</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Calibrating… hold still</value></data>
+  <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Per-source gyro sensitivity multiplier. 1.0 = the engine's default (500°/s → full deflection). Values above 1.0 are more sensitive; values below 1.0 are less sensitive.</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
 
   <!-- ═══ Device Object Names (gamepad) ═══ -->

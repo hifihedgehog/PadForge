@@ -1074,6 +1074,8 @@
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Dernier étalonnage : {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Jamais étalonné</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Étalonnage… ne bouge pas</value></data>
+  <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilité</value></data>
+  <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicateur de sensibilité du gyroscope par source. 1,0 = valeur par défaut du moteur (500°/s → pleine déviation). Au-dessus de 1,0 = plus sensible ; en dessous = moins sensible.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Pavé tactile 1 Y</value></data>
   <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Pavé tactile 2 X</value></data>
   <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Pavé tactile 2 Y</value></data>

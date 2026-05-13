@@ -93,6 +93,16 @@ namespace PadForge.Engine.Data
         /// <c>Kind == "InvertOnHold"</c>.</summary>
         [XmlAttribute] public string ParamModifier { get; set; } = "";
 
+        /// <summary>v3.2 per-source gyro sensitivity multiplier. Applied
+        /// to the calibrated gyro rate during bipolar / unipolar coercion
+        /// so users tune sensitivity at the row they're authoring instead
+        /// of having to walk over to the Sticks tab's Left Thumb settings.
+        /// Default 1.0 = the engine's GyroScale (500°/s → ±1 deflection).
+        /// Values &gt; 1.0 are more sensitive (smaller rotations produce
+        /// larger output); values &lt; 1.0 are less sensitive. Only
+        /// affects sources whose descriptor starts with "Gyro ".</summary>
+        [XmlAttribute] public double GyroSensitivity { get; set; } = 1.0;
+
         /// <summary>
         /// v3.3 per-source Do-not-inherit slot. Reserved in the schema for
         /// future per-source / per-zone fall-through suppression

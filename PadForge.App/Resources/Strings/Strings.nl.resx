@@ -1094,6 +1094,8 @@
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Laatst gekalibreerd: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Nooit gekalibreerd</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibreren… houd stil</value></data>
+  <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
+  <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheidsvermenigvuldiger van de gyroscoop per bron. 1,0 = standaard van de engine (500°/s → volledige uitslag). Waarden boven 1,0 zijn gevoeliger; daaronder minder.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>
   <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Touchpad 2 X</value></data>
   <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Touchpad 2 Y</value></data>

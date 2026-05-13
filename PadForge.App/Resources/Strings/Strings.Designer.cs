@@ -1009,6 +1009,8 @@ public class Strings : INotifyPropertyChanged
     public string Settings_GyroLastCalibrated_Format => Get("Settings_GyroLastCalibrated_Format");
     public string Settings_GyroNeverCalibrated => Get("Settings_GyroNeverCalibrated");
     public string Settings_GyroCalibrating => Get("Settings_GyroCalibrating");
+    public string Mapping_GyroSensitivity => Get("Mapping_GyroSensitivity");
+    public string Mapping_GyroSensitivity_Tooltip => Get("Mapping_GyroSensitivity_Tooltip");
     public string MappingCategory_Touchpad => Get("MappingCategory_Touchpad");
     public string DevObj_LeftStickX => Get("DevObj_LeftStickX");
     public string DevObj_LeftStickY => Get("DevObj_LeftStickY");

@@ -1069,6 +1069,8 @@
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Giroscopio guiñada</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Giroscopio alabeo</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Calibrar giroscopio</value></data>
+  <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Coloca el mando sobre una superficie plana y haz clic en Calibrar giroscopio para muestrear la lectura en reposo durante ~1,5 segundos. Se resta de las lecturas crudas para que los mapeos del giroscopio no desvíen el ratón / stick cuando el mando está quieto.</value></data>
+  <data name="Devices_Sensors" xml:space="preserve"><value>Sensores</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Última calibración: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Nunca calibrado</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Calibrando… mantén quieto</value></data>

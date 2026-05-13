@@ -1069,6 +1069,8 @@
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Lacet</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roulis</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Calibrer le gyro</value></data>
+  <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Pose la manette sur une surface plane et clique sur Calibrer le gyro pour échantillonner la lecture au repos pendant ~1,5 seconde. Soustrait des lectures brutes afin que les mappings gyro ne fassent pas dériver la souris / le stick quand la manette est immobile.</value></data>
+  <data name="Devices_Sensors" xml:space="preserve"><value>Capteurs</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Dernier étalonnage : {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Jamais étalonné</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Étalonnage… ne bouge pas</value></data>

@@ -1089,6 +1089,8 @@
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Giroscopio imbardata</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Giroscopio rollio</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Calibra giroscopio</value></data>
+  <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Appoggia il controller su una superficie piana e fai clic su Calibra giroscopio per campionare la lettura a riposo per ~1,5 secondi. Sottratto dalle letture grezze affinché i mapping giroscopio non facciano andare alla deriva il mouse / stick quando il controller è fermo.</value></data>
+  <data name="Devices_Sensors" xml:space="preserve"><value>Sensori</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Ultima calibrazione: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Mai calibrato</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Calibrazione… tieni fermo</value></data>

@@ -1089,6 +1089,8 @@
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roll</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Gyro kalibreren</value></data>
+  <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Leg de controller op een vlak oppervlak en klik op Gyro kalibreren om de waarde in rust ongeveer 1,5 seconde te bemonsteren. Wordt afgetrokken van ruwe metingen zodat gyro-toewijzingen de muis / stick niet laten driften wanneer de controller stilstaat.</value></data>
+  <data name="Devices_Sensors" xml:space="preserve"><value>Sensoren</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Laatst gekalibreerd: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Nooit gekalibreerd</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibreren… houd stil</value></data>

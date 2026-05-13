@@ -1310,8 +1310,6 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Quando selezionato, l'obiettivo di questo livello rimane SPENTO anziché ricadere sulla riga Base.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Ritardo (ms)</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Millisecondi per cui l'attivatore deve rimanere attivo prima che venga attivato il cambio di livello.</value></data>
-  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Posticipa assegnazione attivatore</value></data>
-  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Quando selezionato, l'assegnazione propria dell'ingresso attivatore viene attivata insieme al cambio di livello.</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Salta al livello</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Secondo ingresso dell'accordo</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Soglia dell'asse</value></data>
@@ -1321,5 +1319,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Accordo (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Asse oltre la soglia</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Eredita obiettivi non assegnati da Base</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Attiva anche la mappatura propria dell'attivatore</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Se selezionato, il pulsante attivatore continua a guidare ogni riga che lo usa come sorgente — una pressione cambia livello E attiva la mappatura propria del pulsante. Se non selezionato (predefinito), la pressione è consumata solo dal cambio di livello.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Quando selezionato, gli obiettivi che questo livello non assegna esplicitamente ricadono sul livello Base. Quando deselezionato (predefinito), il livello sostituisce completamente Base e gli obiettivi non assegnati rimangono spenti.</value></data>
 </root>

@@ -165,7 +165,7 @@
             <Border Grid.Column="1"
                     Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                     CornerRadius="8" Padding="14,12">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled"
                               Visibility="{Binding HasSelectedDevice, Converter={StaticResource BoolToVisibilityConverter}}">
                     <StackPanel>
 

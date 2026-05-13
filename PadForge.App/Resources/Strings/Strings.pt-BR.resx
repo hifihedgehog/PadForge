@@ -1290,8 +1290,6 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Quando marcado, o alvo desta camada permanece DESLIGADO em vez de cair para a linha Base.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Atraso (ms)</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Milissegundos que o ativador deve permanecer engatado antes que a troca de camada seja acionada.</value></data>
-  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Adiar mapeamento do ativador</value></data>
-  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Quando marcado, o mapeamento próprio da entrada ativadora também é disparado junto com a troca de camada.</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Saltar para camada</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Segunda entrada do acorde</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Limite do eixo</value></data>
@@ -1301,5 +1299,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Acorde (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Eixo além do limite</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Herdar alvos não mapeados da Base</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Também disparar o mapeamento próprio do ativador</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Quando marcado, o botão ativador continua a impulsionar qualquer linha que o use como fonte — um toque muda a camada E dispara o mapeamento próprio do botão. Quando desmarcado (padrão), o toque é consumido apenas pela mudança de camada.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Quando marcado, alvos que esta camada não mapeia explicitamente caem para a camada Base. Quando desmarcado (padrão), a camada substitui Base inteiramente e alvos não mapeados ficam desligados.</value></data>
 </root>

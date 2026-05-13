@@ -1290,8 +1290,6 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>オンにすると、このレイヤーのターゲットはベース行にフォールスルーせず、オフのままになります。</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>遅延(ms)</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>レイヤーの変更が発火する前に、アクティベーターがアクティブな状態を維持する必要があるミリ秒。</value></data>
-  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>アクティベーター マッピングを延期</value></data>
-  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>オンにすると、レイヤーの変更と並行してアクティベーター入力自身のマッピングも発火します。</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>レイヤーへジャンプ</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>コードの2番目の入力</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>軸のしきい値</value></data>
@@ -1301,5 +1299,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>コード(A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>しきい値を超えた軸</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>未割り当てターゲットをベースから継承</value></data>
+  <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>アクティベーター自身のマッピングも発火</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>有効にすると、アクティベーターのボタンはそれをソースとして使用するすべての行を引き続き駆動します — 1回押すとレイヤーが変更され、ボタン自身のマッピングも発火します。無効(既定)にすると、押下はレイヤー変更でのみ消費されます。</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>オンにすると、このレイヤーが明示的に割り当てていないターゲットはベース レイヤーにフォールスルーします。オフ(既定)にすると、レイヤーはベースを完全に置き換え、未割り当てターゲットはオフのままになります。</value></data>
 </root>

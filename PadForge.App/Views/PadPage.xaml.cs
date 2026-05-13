@@ -566,6 +566,7 @@ namespace PadForge.Views
             existing.DelayMs = dlg.Result.DelayMs;
             existing.Color = dlg.Result.Color;
             existing.Icon = dlg.Result.Icon;
+            existing.PostponeMapping = dlg.Result.PostponeMapping;
 
             if (!string.Equals(oldMask, existing.LayerMask, StringComparison.Ordinal)
                 && slotMs.Rows != null)

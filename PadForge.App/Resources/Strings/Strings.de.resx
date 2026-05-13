@@ -1299,7 +1299,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Akkord (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Achse über Schwellwert</value></data>
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Ein einzelner Tasten- (oder POV-Richtungs-) Druck aktiviert die Ebene.</value></data>
-  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Beide Tasten müssen gleichzeitig gehalten werden, um zu aktivieren. Nur Akkord auf demselben Gerät.</value></data>
+  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Beide Tasten müssen gleichzeitig gehalten werden, um zu aktivieren. Geräteübergreifender Akkord unterstützt.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Aktiviert, solange eine analoge Achse den Schwellwert überschreitet.</value></data>
   <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Ebene bleibt aktiv, solange der Auslöser gehalten wird; löst beim Loslassen aus.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Tippen zum Aktivieren. Erneut tippen zum Lösen. Ebene bleibt über viele Drücke bestehen.</value></data>

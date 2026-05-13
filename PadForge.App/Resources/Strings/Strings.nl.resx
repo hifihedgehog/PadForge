@@ -1319,7 +1319,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Akkoord (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>As boven drempel</value></data>
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Eén knop- (of POV-richting-) druk activeert de laag.</value></data>
-  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Beide knoppen moeten tegelijkertijd worden ingedrukt om te activeren. Alleen akkoord op hetzelfde apparaat.</value></data>
+  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Beide knoppen moeten tegelijkertijd worden ingedrukt om te activeren. Akkoord tussen apparaten ondersteund.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Activeert zolang een analoge as de drempelwaarde overschrijdt.</value></data>
   <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Laag blijft geactiveerd zolang de activator wordt ingedrukt; lost los bij loslaten.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Tik om te activeren. Tik opnieuw om los te laten. Laag blijft bestaan over vele drukken.</value></data>

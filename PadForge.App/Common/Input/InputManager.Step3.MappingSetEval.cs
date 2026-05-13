@@ -287,13 +287,12 @@ namespace PadForge.Common.Input
             // Recomputed when the source string changes.
             public string[][] CycleLayersSplit = System.Array.Empty<string[]>();
             public string[] CycleLayersSource = System.Array.Empty<string>();
-            // v3 Sticky mode: per-activator engaged flag, "arm next frame
-            // for release" latch, and a snapshot of the activator-device's
-            // button state at engage time. Same-device limitation — Sticky
-            // releases on a non-activator button rising edge in the
-            // activator's own state. Cross-device consumer (keyboard
-            // activator, gamepad consumer) won't auto-release because the
-            // gamepad's buttons live in a different state buffer.
+            // v3 Sticky mode: per-activator engaged flag, falling-edge
+            // tracking latch, and a per-slot engagement snapshot of every
+            // assigned device's state at engage time. Cross-device aware:
+            // consumer detection walks all snapshotted devices' current
+            // states so a Sticky activator on a keyboard releases when
+            // the user moves a stick on a gamepad on the same slot.
             public bool[] StickyEngaged = System.Array.Empty<bool>();
             // Tracks whether at least one non-baseline consumer input was
             // active last frame. Sticky releases on the falling edge —

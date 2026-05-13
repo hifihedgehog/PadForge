@@ -27,7 +27,34 @@ namespace PadForge.Engine.Common.Mapping
             Slider,
             PovDirection,
             TouchpadButton,  // "Touchpad N Click" / "Touchpad N Finger M Down"
+            Gyro,            // "Gyro Pitch" / "Gyro Yaw" / "Gyro Roll"
         }
+
+        /// <summary>Sensitivity constant for gyro bipolar coercion.
+        /// 500°/s rotation maps to ±1.0 deflection — users tune fine
+        /// sensitivity at the target's existing curve / sensitivity
+        /// knobs (LeftThumb sens for mouse, stick deadzone for stick).
+        /// </summary>
+        private const float GyroScale = 1.0f / (500f * (float)Math.PI / 180f);
+
+        /// <summary>Per-source button threshold for gyro → button
+        /// coercion: rotation magnitude (rad/s) above which the
+        /// activator counts as "pressed." 30°/s ≈ a deliberate
+        /// twist, not idle hand tremor.</summary>
+        private static readonly float GyroButtonThreshold = 30f * (float)Math.PI / 180f;
+
+        /// <summary>Static lookup hook so SourceCoercion can subtract
+        /// per-device at-rest gyro bias without taking a UserDevice
+        /// reference (the Engine library is self-contained). The App
+        /// layer wires this provider at startup from UserDevices.
+        /// Returns the three-axis bias tuple for the given device GUID
+        /// string, or zero for unknown / uncalibrated devices. NOTE:
+        /// the per-source <c>Invert</c> toggle handles user-perception
+        /// direction inversion — do NOT apply any cemuhook-style
+        /// (-gx, gy, -gz) flip here. Those flips live exclusively in
+        /// the DSU / MotionSnapshot aggregation path and would silently
+        /// break user expectations if synced.</summary>
+        public static Func<string, (float pitch, float yaw, float roll)> GyroBiasProvider { get; set; }
 
         /// <summary>Inspects the descriptor of a MappingSource (without
         /// the legacy "I" / "H" / "IH" prefix — the new schema stores
@@ -40,6 +67,8 @@ namespace PadForge.Engine.Common.Mapping
             string s = descriptor.Trim();
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
                 return SourceType.TouchpadButton;
+            if (s.StartsWith("Gyro ", StringComparison.Ordinal))
+                return SourceType.Gyro;
 
             string[] parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2) return SourceType.Unmapped;
@@ -51,6 +80,43 @@ namespace PadForge.Engine.Common.Mapping
                 "slider" => SourceType.Slider,
                 "pov"    => SourceType.PovDirection,
                 _        => SourceType.Unmapped,
+            };
+        }
+
+        /// <summary>Parses a gyro descriptor "Gyro Pitch/Yaw/Roll" into
+        /// the corresponding <see cref="CustomInputState.Gyro"/> index
+        /// (0=pitch, 1=yaw, 2=roll). Returns -1 on unrecognized.</summary>
+        private static int ParseGyroAxisIndex(string descriptor)
+        {
+            string s = (descriptor ?? "").Trim();
+            if (!s.StartsWith("Gyro ", StringComparison.Ordinal)) return -1;
+            string axis = s.Substring(5).Trim();
+            if (axis.Equals("Pitch", StringComparison.OrdinalIgnoreCase)) return 0;
+            if (axis.Equals("Yaw",   StringComparison.OrdinalIgnoreCase)) return 1;
+            if (axis.Equals("Roll",  StringComparison.OrdinalIgnoreCase)) return 2;
+            return -1;
+        }
+
+        /// <summary>Reads <c>state.Gyro[gyroAxis]</c> minus the device's
+        /// at-rest bias (looked up via <see cref="GyroBiasProvider"/>).
+        /// Returns 0 when the device has no calibration entry — caller
+        /// gets the raw reading minus zero, which is the right default
+        /// for "uncalibrated yet, just connected." Defensive against
+        /// null state.Gyro[].</summary>
+        private static float ReadCalibratedGyroRate(CustomInputState state, int gyroAxis, string deviceGuid)
+        {
+            if (state == null || state.Gyro == null) return 0f;
+            if (gyroAxis < 0 || gyroAxis >= state.Gyro.Length) return 0f;
+            float raw = state.Gyro[gyroAxis];
+            var provider = GyroBiasProvider;
+            if (provider == null || string.IsNullOrEmpty(deviceGuid)) return raw;
+            var bias = provider(deviceGuid);
+            return gyroAxis switch
+            {
+                0 => raw - bias.pitch,
+                1 => raw - bias.yaw,
+                2 => raw - bias.roll,
+                _ => raw,
             };
         }
 
@@ -127,6 +193,19 @@ namespace PadForge.Engine.Common.Mapping
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
                 return ReadTouchpadBool(state, s);
 
+            if (s.StartsWith("Gyro ", StringComparison.Ordinal))
+            {
+                int gyroAxis = ParseGyroAxisIndex(s);
+                if (gyroAxis < 0) return false;
+                float rate = ReadCalibratedGyroRate(state, gyroAxis, src.DeviceGuid);
+                // Per-source DeadZone (when set) overrides the default
+                // 30°/s button threshold so users can dial in sensitivity.
+                float gyroThresh = src.DeadZone > 0
+                    ? src.DeadZone / 100f * GyroButtonThreshold * 3f  // DeadZone% × ~90°/s headroom
+                    : GyroButtonThreshold;
+                return Math.Abs(rate) > gyroThresh;
+            }
+
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return false;
 
@@ -192,6 +271,17 @@ namespace PadForge.Engine.Common.Mapping
                 return ReadTouchpadBool(state, s) ? 1f : 0f;
             }
 
+            if (s.StartsWith("Gyro ", StringComparison.Ordinal))
+            {
+                int gyroAxis = ParseGyroAxisIndex(s);
+                if (gyroAxis < 0) return 0f;
+                float rate = ReadCalibratedGyroRate(state, gyroAxis, src.DeviceGuid);
+                float v = rate * GyroScale;
+                if (v < -1f) v = -1f;
+                else if (v > 1f) v = 1f;
+                return v;
+            }
+
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;
 
@@ -236,6 +326,16 @@ namespace PadForge.Engine.Common.Mapping
                 // position; no bipolar centering).
                 if (TryReadTouchpadAxisRaw(state, s, out float unipolar)) return unipolar;
                 return ReadTouchpadBool(state, s) ? 1f : 0f;
+            }
+
+            if (s.StartsWith("Gyro ", StringComparison.Ordinal))
+            {
+                int gyroAxis = ParseGyroAxisIndex(s);
+                if (gyroAxis < 0) return 0f;
+                float rate = ReadCalibratedGyroRate(state, gyroAxis, src.DeviceGuid);
+                float v = Math.Abs(rate) * GyroScale;
+                if (v > 1f) v = 1f;
+                return v;
             }
 
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))

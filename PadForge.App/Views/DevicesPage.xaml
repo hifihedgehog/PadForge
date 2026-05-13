@@ -640,6 +640,19 @@
                             </Grid>
                         </Border>
 
+                        <!-- Gyro calibration: button + last-calibrated label. -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                    Visibility="{Binding HasGyroData, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button Content="{Binding Settings_GyroCalibrate_Button, Source={x:Static strings:Strings.Instance}}"
+                                    Click="CalibrateGyro_Click"
+                                    Padding="10,4"
+                                    VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding GyroCalibrationLabel}"
+                                       FontSize="11" Opacity="0.7"
+                                       Margin="10,0,0,0"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
                         <!-- Accelerometer -->
                         <TextBlock Text="{Binding Devices_Accelerometer, Source={x:Static strings:Strings.Instance}}" FontSize="11" Opacity="0.6" Margin="0,0,0,3"
                                    Visibility="{Binding HasAccelData, Converter={StaticResource BoolToVisibilityConverter}}"/>

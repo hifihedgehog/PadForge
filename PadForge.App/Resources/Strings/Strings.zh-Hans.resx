@@ -1065,6 +1065,13 @@
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>重置左马达</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>重置右马达</value></data>
   <data name="Mapping_TouchpadX1" xml:space="preserve"><value>触控板 1 X</value></data>
+  <data name="Mapping_GyroPitch" xml:space="preserve"><value>陀螺仪 俯仰</value></data>
+  <data name="Mapping_GyroYaw" xml:space="preserve"><value>陀螺仪 偏航</value></data>
+  <data name="Mapping_GyroRoll" xml:space="preserve"><value>陀螺仪 翻滚</value></data>
+  <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>校准陀螺仪</value></data>
+  <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>上次校准:{0:yyyy-MM-dd HH:mm}</value></data>
+  <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>从未校准</value></data>
+  <data name="Settings_GyroCalibrating" xml:space="preserve"><value>正在校准… 请保持静止</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>触控板 1 Y</value></data>
   <data name="Mapping_TouchpadX2" xml:space="preserve"><value>触控板 2 X</value></data>
   <data name="Mapping_TouchpadY2" xml:space="preserve"><value>触控板 2 Y</value></data>

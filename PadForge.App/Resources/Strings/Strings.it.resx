@@ -1085,6 +1085,13 @@
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Ripristina motore sinistro</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Ripristina motore destro</value></data>
   <data name="Mapping_TouchpadX1" xml:space="preserve"><value>Touchpad 1 X</value></data>
+  <data name="Mapping_GyroPitch" xml:space="preserve"><value>Giroscopio beccheggio</value></data>
+  <data name="Mapping_GyroYaw" xml:space="preserve"><value>Giroscopio imbardata</value></data>
+  <data name="Mapping_GyroRoll" xml:space="preserve"><value>Giroscopio rollio</value></data>
+  <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Calibra giroscopio</value></data>
+  <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Ultima calibrazione: {0:yyyy-MM-dd HH:mm}</value></data>
+  <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Mai calibrato</value></data>
+  <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Calibrazione… tieni fermo</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>
   <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Touchpad 2 X</value></data>
   <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Touchpad 2 Y</value></data>

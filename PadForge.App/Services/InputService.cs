@@ -57,6 +57,11 @@ namespace PadForge.Services
         private SettingsService _settingsService;
         private bool _disposed;
         private readonly HashSet<string> _managedWhitelistDosPaths = new(StringComparer.OrdinalIgnoreCase);
+        private GyroCalibratorService _gyroCalibrator;
+        // Track which devices have had auto-calibration kicked off so we
+        // don't double-fire the worker if UpdatePadDeviceInfo sees the
+        // same device pre-completion.
+        private readonly HashSet<Guid> _gyroAutoCalibKicked = new();
 
         /// <summary>
         /// Whether the Devices page is currently visible.
@@ -76,6 +81,12 @@ namespace PadForge.Services
         /// when cached data (e.g. HidHide instance IDs) is updated.
         /// </summary>
         public SettingsService SettingsService { set => _settingsService = value; }
+
+        /// <summary>Lazy accessor for the gyro calibrator. Auto-creates
+        /// the instance with a persist callback that marks settings
+        /// dirty so calibration writes round-trip to PadForge.xml.</summary>
+        public GyroCalibratorService GyroCalibrator
+            => _gyroCalibrator ??= new GyroCalibratorService(() => _settingsService?.MarkDirty());
 
         /// <summary>Proxy to <see cref="InputManager.IsHmVcAt"/> so callers
         /// outside InputService (notably MainWindow's pre-delete capture)
@@ -362,6 +373,30 @@ namespace PadForge.Services
                 return (byte)pct;
             };
 
+            // Per-device gyro at-rest bias for SourceCoercion's gyro
+            // descriptor reader. SourceCoercion lives in the Engine
+            // library and can't reach UserDevices directly — App-side
+            // wires this static delegate at startup so the binding
+            // layer can subtract bias inline. Returns zeros for
+            // unknown / uncalibrated devices (raw - 0 = raw).
+            PadForge.Engine.Common.Mapping.SourceCoercion.GyroBiasProvider = deviceGuid =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid)) return (0f, 0f, 0f);
+                if (!Guid.TryParse(deviceGuid, out var g)) return (0f, 0f, 0f);
+                var devs = SettingsManager.UserDevices?.Items;
+                if (devs == null) return (0f, 0f, 0f);
+                lock (SettingsManager.UserDevices.SyncRoot)
+                {
+                    for (int i = 0; i < devs.Count; i++)
+                    {
+                        var d = devs[i];
+                        if (d != null && d.InstanceGuid == g)
+                            return (d.GyroBiasPitch, d.GyroBiasYaw, d.GyroBiasRoll);
+                    }
+                }
+                return (0f, 0f, 0f);
+            };
+
             // Per-(slot, device) lightbar configs — drives the
             // dispatcher's per-device synthesis loop and per-device
             // pulse rolls. Lighting tab is per-device (parallel to
@@ -560,6 +595,7 @@ namespace PadForge.Services
                 UserEffectsDispatcher.TestRumbleTargetGuidProvider = null;
                 UserEffectsDispatcher.SlotBatteryPercentProvider = null;
                 UserEffectsDispatcher.SlotPerDeviceConfigsProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.GyroBiasProvider = null;
             }
 
             // Final UI-thread VM updates: marshal back to the dispatcher
@@ -1063,6 +1099,14 @@ namespace PadForge.Services
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad2;
             }
+
+            // Refresh the gyro calibration label so it tracks
+            // mid-session recalibrations and the auto-calibrate first
+            // run. Cheap (one string assignment, dedup'd by SetProperty).
+            if (ud.HasGyro)
+                devVm.GyroCalibrationLabel = ud.GyroCalibratedAtUtc == default
+                    ? Strings.Instance.Settings_GyroNeverCalibrated
+                    : string.Format(Strings.Instance.Settings_GyroLastCalibrated_Format, ud.GyroCalibratedAtUtc.ToLocalTime());
 
             devVm.HasRawData = true;
 
@@ -4351,10 +4395,45 @@ namespace PadForge.Services
             }
         }
 
+        /// <summary>For each online gyro-capable UserDevice whose
+        /// GyroCalibratedAtUtc is still default (never been calibrated),
+        /// fire a background recalibration. Idempotent — guarded by
+        /// _gyroAutoCalibKicked to survive concurrent UpdatePadDeviceInfo
+        /// passes while the 1500 ms worker is still running.</summary>
+        private void TryAutoCalibrateGyros()
+        {
+            var devs = SettingsManager.UserDevices?.Items;
+            if (devs == null) return;
+            UserDevice[] candidates;
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                var found = new List<UserDevice>();
+                foreach (var d in devs)
+                {
+                    if (d == null) continue;
+                    if (!d.HasGyro) continue;
+                    if (!d.IsOnline) continue;
+                    if (d.GyroCalibratedAtUtc != default) continue;
+                    if (_gyroAutoCalibKicked.Contains(d.InstanceGuid)) continue;
+                    _gyroAutoCalibKicked.Add(d.InstanceGuid);
+                    found.Add(d);
+                }
+                candidates = found.ToArray();
+            }
+            foreach (var d in candidates)
+                _ = GyroCalibrator.EnsureAutoCalibratedAsync(d);
+        }
+
         public void UpdatePadDeviceInfo()
         {
             var settings = SettingsManager.UserSettings;
             if (settings == null) return;
+
+            // Auto-calibrate any newly-seen gyro-capable device. Worker
+            // task; non-blocking; guarded by _gyroAutoCalibKicked so a
+            // device polling the still-running calibration window
+            // doesn't get double-fired.
+            TryAutoCalibrateGyros();
 
             for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
             {

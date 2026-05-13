@@ -1065,6 +1065,13 @@
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Réinitialiser le moteur gauche</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Réinitialiser le moteur droit</value></data>
   <data name="Mapping_TouchpadX1" xml:space="preserve"><value>Pavé tactile 1 X</value></data>
+  <data name="Mapping_GyroPitch" xml:space="preserve"><value>Gyro Tangage</value></data>
+  <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Lacet</value></data>
+  <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roulis</value></data>
+  <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Calibrer le gyro</value></data>
+  <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Dernier étalonnage : {0:yyyy-MM-dd HH:mm}</value></data>
+  <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Jamais étalonné</value></data>
+  <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Étalonnage… ne bouge pas</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Pavé tactile 1 Y</value></data>
   <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Pavé tactile 2 X</value></data>
   <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Pavé tactile 2 Y</value></data>

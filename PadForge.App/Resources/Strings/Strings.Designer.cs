@@ -1000,6 +1000,13 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_TouchpadContact1 => Get("Mapping_TouchpadContact1");
     public string Mapping_TouchpadContact2 => Get("Mapping_TouchpadContact2");
     public string Mapping_TouchpadClick => Get("Mapping_TouchpadClick");
+    public string Mapping_GyroPitch => Get("Mapping_GyroPitch");
+    public string Mapping_GyroYaw => Get("Mapping_GyroYaw");
+    public string Mapping_GyroRoll => Get("Mapping_GyroRoll");
+    public string Settings_GyroCalibrate_Button => Get("Settings_GyroCalibrate_Button");
+    public string Settings_GyroLastCalibrated_Format => Get("Settings_GyroLastCalibrated_Format");
+    public string Settings_GyroNeverCalibrated => Get("Settings_GyroNeverCalibrated");
+    public string Settings_GyroCalibrating => Get("Settings_GyroCalibrating");
     public string MappingCategory_Touchpad => Get("MappingCategory_Touchpad");
     public string DevObj_LeftStickX => Get("DevObj_LeftStickX");
     public string DevObj_LeftStickY => Get("DevObj_LeftStickY");

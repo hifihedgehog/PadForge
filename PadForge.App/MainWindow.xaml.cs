@@ -294,6 +294,10 @@ namespace PadForge
             // can use freeform recording for its Record buttons.
             Views.PadPage.Recorder = _recorderService;
             _deviceService = new DeviceService(_viewModel, _settingsService);
+            // Per-device calibrate-gyro button on the Devices page goes
+            // through this static reference to reach the shared
+            // GyroCalibratorService.
+            Views.DevicesPage.InputService = _inputService;
             ProfilesPageView.InputService = _inputService;
             ProfilesPageView.OnShortcutsChanged = SaveProfileShortcuts;
             _inputService.ToggleMainWindow = () => Dispatcher.Invoke(() =>

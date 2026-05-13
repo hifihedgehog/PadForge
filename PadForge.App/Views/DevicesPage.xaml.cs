@@ -10,10 +10,30 @@ namespace PadForge.Views
 {
     public partial class DevicesPage : UserControl
     {
+        /// <summary>Static InputService reference wired by MainWindow at
+        /// startup so the per-device calibrate-gyro button can reach the
+        /// shared <see cref="PadForge.Services.GyroCalibratorService"/>
+        /// instance and resolve the selected UserDevice. Same pattern as
+        /// PadPage.Recorder.</summary>
+        public static PadForge.Services.InputService InputService { get; set; }
+
         public DevicesPage()
         {
             InitializeComponent();
             DataContextChanged += OnDataContextChanged;
+        }
+
+        private void CalibrateGyro_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.DevicesViewModel vm) return;
+            var selected = vm.SelectedDevice;
+            if (selected == null) return;
+            var svc = InputService;
+            if (svc == null) return;
+            var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(selected.InstanceGuid);
+            if (ud == null || !ud.HasGyro) return;
+            vm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroCalibrating;
+            _ = svc.GyroCalibrator.RecalibrateAsync(ud);
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

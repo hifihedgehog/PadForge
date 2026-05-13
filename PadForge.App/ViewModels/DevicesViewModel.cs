@@ -187,6 +187,18 @@ namespace PadForge.ViewModels
         public double AccelY { get => _accelY; set => SetProperty(ref _accelY, value); }
         public double AccelZ { get => _accelZ; set => SetProperty(ref _accelZ, value); }
 
+        // Gyro calibration UI state — shown under the live gyro readout
+        // card on the selected device. Label flips between "Calibrating…
+        // hold still" while a worker is running, "Last calibrated:
+        // {timestamp}" when calibrated, and "Never calibrated" when the
+        // device has never had its bias sampled.
+        private string _gyroCalibrationLabel = "";
+        public string GyroCalibrationLabel
+        {
+            get => _gyroCalibrationLabel;
+            set => SetProperty(ref _gyroCalibrationLabel, value);
+        }
+
         /// <summary>Tracks which device's collections are currently populated.</summary>
         internal Guid LastRawStateDeviceGuid { get; set; }
 

@@ -197,101 +197,143 @@
                        Text="{Binding Pad_Shift_Kind, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
             <ComboBox Grid.Row="3" x:Name="KindCombo" Margin="0,0,0,12"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible"
                       SelectionChanged="KindCombo_SelectionChanged">
                 <ComboBoxItem Tag="Button" Content="{Binding Pad_Shift_KindButton, Source={x:Static strings:Strings.Instance}}"/>
                 <ComboBoxItem Tag="Chord"  Content="{Binding Pad_Shift_KindChord, Source={x:Static strings:Strings.Instance}}"/>
                 <ComboBoxItem Tag="Axis"   Content="{Binding Pad_Shift_KindAxis, Source={x:Static strings:Strings.Instance}}"/>
             </ComboBox>
 
-            <!-- Activator input -->
+            <!-- Activator input. Sub-label below the dropdown mirrors the
+                 Mappings tab Source column: shows the picked input's owning
+                 device, italic "Unassigned" when nothing is selected. -->
             <TextBlock Grid.Row="4"
                        Text="{Binding Pad_Shift_ActivatorInput, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
-            <Grid Grid.Row="5" Margin="0,0,0,12">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <ComboBox Grid.Column="0" x:Name="InputCombo"
-                          DisplayMemberPath="DisplayName">
-                    <ComboBox.GroupStyle>
-                        <GroupStyle>
-                            <GroupStyle.HeaderTemplate>
-                                <DataTemplate>
-                                    <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
-                                            Padding="6,3,6,3">
-                                        <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   TextTrimming="CharacterEllipsis"/>
-                                    </Border>
-                                </DataTemplate>
-                            </GroupStyle.HeaderTemplate>
-                        </GroupStyle>
-                    </ComboBox.GroupStyle>
-                </ComboBox>
-                <Button Grid.Column="1" x:Name="InputRecordButton"
-                        Margin="6,0,0,0" Width="40"
-                        Click="InputRecord_Click">
-                    <TextBlock x:Name="InputRecordIcon" Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"/>
-                    <Button.ToolTip>
-                        <TextBlock Text="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}"/>
-                    </Button.ToolTip>
-                </Button>
-                <Button Grid.Column="2" x:Name="InputClearButton"
-                        Margin="6,0,0,0" Width="40"
-                        Click="InputClear_Click">
-                    <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
-                    <Button.ToolTip>
-                        <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
-                    </Button.ToolTip>
-                </Button>
-            </Grid>
+            <StackPanel Grid.Row="5" Margin="0,0,0,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox Grid.Column="0" x:Name="InputCombo"
+                              DisplayMemberPath="DisplayName"
+                              ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        <ComboBox.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                                Padding="6,3,6,3">
+                                            <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ComboBox.GroupStyle>
+                    </ComboBox>
+                    <Button Grid.Column="1" x:Name="InputRecordButton"
+                            Margin="6,0,0,0" Width="40"
+                            Click="InputRecord_Click">
+                        <TextBlock x:Name="InputRecordIcon" Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"/>
+                        <Button.ToolTip>
+                            <TextBlock Text="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button Grid.Column="2" x:Name="InputClearButton"
+                            Margin="6,0,0,0" Width="40"
+                            Click="InputClear_Click">
+                        <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
+                        <Button.ToolTip>
+                            <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
+                        </Button.ToolTip>
+                    </Button>
+                </Grid>
+                <TextBlock FontSize="10"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                           Margin="4,1,0,0"
+                           TextTrimming="CharacterEllipsis">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Text" Value="{Binding ElementName=InputCombo, Path=SelectedItem.DeviceLabel}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=InputCombo, Path=SelectedItem}" Value="{x:Null}">
+                                    <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Setter Property="FontStyle" Value="Italic"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
 
-            <!-- Second chord input (Kind=Chord) -->
+            <!-- Second chord input (Kind=Chord). Same sub-label treatment
+                 as the primary input above. -->
             <TextBlock Grid.Row="6" x:Name="ChordLabel"
                        Text="{Binding Pad_Shift_ChordSecondInput, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
-            <Grid Grid.Row="7" x:Name="ChordSecondRow" Margin="0,0,0,12">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <ComboBox Grid.Column="0" x:Name="ChordSecondCombo"
-                          DisplayMemberPath="DisplayName">
-                    <ComboBox.GroupStyle>
-                        <GroupStyle>
-                            <GroupStyle.HeaderTemplate>
-                                <DataTemplate>
-                                    <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
-                                            Padding="6,3,6,3">
-                                        <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   TextTrimming="CharacterEllipsis"/>
-                                    </Border>
-                                </DataTemplate>
-                            </GroupStyle.HeaderTemplate>
-                        </GroupStyle>
-                    </ComboBox.GroupStyle>
-                </ComboBox>
-                <Button Grid.Column="1" x:Name="ChordSecondRecordButton"
-                        Margin="6,0,0,0" Width="40"
-                        Click="ChordSecondRecord_Click">
-                    <TextBlock x:Name="ChordSecondRecordIcon" Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"/>
-                    <Button.ToolTip>
-                        <TextBlock Text="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}"/>
-                    </Button.ToolTip>
-                </Button>
-                <Button Grid.Column="2" x:Name="ChordSecondClearButton"
-                        Margin="6,0,0,0" Width="40"
-                        Click="ChordSecondClear_Click">
-                    <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
-                    <Button.ToolTip>
-                        <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
-                    </Button.ToolTip>
-                </Button>
-            </Grid>
+            <StackPanel Grid.Row="7" x:Name="ChordSecondRow" Margin="0,0,0,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox Grid.Column="0" x:Name="ChordSecondCombo"
+                              DisplayMemberPath="DisplayName"
+                              ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        <ComboBox.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                                Padding="6,3,6,3">
+                                            <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ComboBox.GroupStyle>
+                    </ComboBox>
+                    <Button Grid.Column="1" x:Name="ChordSecondRecordButton"
+                            Margin="6,0,0,0" Width="40"
+                            Click="ChordSecondRecord_Click">
+                        <TextBlock x:Name="ChordSecondRecordIcon" Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"/>
+                        <Button.ToolTip>
+                            <TextBlock Text="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button Grid.Column="2" x:Name="ChordSecondClearButton"
+                            Margin="6,0,0,0" Width="40"
+                            Click="ChordSecondClear_Click">
+                        <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
+                        <Button.ToolTip>
+                            <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
+                        </Button.ToolTip>
+                    </Button>
+                </Grid>
+                <TextBlock FontSize="10"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                           Margin="4,1,0,0"
+                           TextTrimming="CharacterEllipsis">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Text" Value="{Binding ElementName=ChordSecondCombo, Path=SelectedItem.DeviceLabel}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=ChordSecondCombo, Path=SelectedItem}" Value="{x:Null}">
+                                    <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Setter Property="FontStyle" Value="Italic"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
 
             <!-- Axis threshold (Kind=Axis) -->
             <TextBlock Grid.Row="8" x:Name="AxisThresholdLabel"
@@ -310,6 +352,7 @@
                        Text="{Binding Pad_Shift_Mode, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
             <ComboBox Grid.Row="11" x:Name="ModeCombo" Margin="0,0,0,12"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible"
                       SelectionChanged="ModeCombo_SelectionChanged">
                 <ComboBoxItem Tag="Hold"   Content="{Binding Pad_Shift_ModeHold, Source={x:Static strings:Strings.Instance}}"/>
                 <ComboBoxItem Tag="Toggle" Content="{Binding Pad_Shift_ModeToggle, Source={x:Static strings:Strings.Instance}}"/>
@@ -331,6 +374,7 @@
                        Text="{Binding Pad_Shift_JumpToLayer, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
             <ComboBox Grid.Row="14" x:Name="JumpToLayerCombo" Margin="0,0,0,12"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible"
                       DisplayMemberPath="DisplayName"/>
 
             <!-- Cycle layers (Mode=Cycle). Checkbox list of existing
@@ -341,6 +385,7 @@
                        Margin="0,0,0,4"/>
             <ListBox Grid.Row="16" x:Name="CycleLayersList" Margin="0,0,0,12"
                      MinHeight="80" MaxHeight="160"
+                     ScrollViewer.VerticalScrollBarVisibility="Visible"
                      SelectionMode="Multiple">
                 <ListBox.ItemTemplate>
                     <DataTemplate>

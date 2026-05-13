@@ -97,6 +97,29 @@ namespace PadForge.Engine.Common.Mapping
             return -1;
         }
 
+        /// <summary>True for "Gyro Pitch" / "Gyro Yaw" / "Gyro Roll"
+        /// descriptors. Public so SourceEvaluator can decide between
+        /// rate-direct coercion (mouse / scroll targets) and rate-
+        /// additive integration (virtual stick targets) without
+        /// re-parsing.</summary>
+        public static bool IsGyroDescriptor(string descriptor)
+            => !string.IsNullOrEmpty(descriptor)
+            && descriptor.StartsWith("Gyro ", StringComparison.Ordinal);
+
+        /// <summary>Public form of <see cref="ReadCalibratedGyroRate"/>:
+        /// returns the bias-subtracted gyro rate (rad/s) for the source's
+        /// descriptor on the given state, or 0 for non-gyro descriptors /
+        /// unknown axes / null state.Gyro. Lets the integrator path in
+        /// <c>SourceKindRuntime.TickGyroIntegrated</c> reuse the same
+        /// bias-subtraction logic as the bipolar/unipolar/bool readers.</summary>
+        public static float GetCalibratedGyroRate(CustomInputState state, MappingSource src)
+        {
+            if (src == null) return 0f;
+            int axis = ParseGyroAxisIndex(src.Descriptor);
+            if (axis < 0) return 0f;
+            return ReadCalibratedGyroRate(state, axis, src.DeviceGuid);
+        }
+
         /// <summary>Reads <c>state.Gyro[gyroAxis]</c> minus the device's
         /// at-rest bias (looked up via <see cref="GyroBiasProvider"/>).
         /// Returns 0 when the device has no calibration entry — caller

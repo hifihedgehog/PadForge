@@ -26,9 +26,90 @@ namespace PadForge.Engine.Common.Mapping
         private readonly Dictionary<(int slot, string target, int srcIdx), double> _incrementalAccum
             = new();
 
+        // Per-(slot, target, sourceIndex) gyro-integrated stick accumulator
+        // in normalized stick units [-1..+1]. Separate from
+        // _incrementalAccum because the integration step is gyro-rate × dt ×
+        // sensitivity, not the unit-range/sec ramp Incremental uses, and the
+        // valid range is fixed bipolar instead of user-configurable.
+        private readonly Dictionary<(int slot, string target, int srcIdx), double> _gyroIntegratedAccum
+            = new();
+
         /// <summary>Drops all state. Called on profile switch and engine
-        /// stop. Cruise control snaps to neutral on next read.</summary>
-        public void Clear() => _incrementalAccum.Clear();
+        /// stop. Cruise control snaps to neutral on next read; gyro-stick
+        /// accumulators snap to center.</summary>
+        public void Clear()
+        {
+            _incrementalAccum.Clear();
+            _gyroIntegratedAccum.Clear();
+        }
+
+        /// <summary>Zeroes the gyro-stick accumulator for this row only.
+        /// Wired to a future "Recenter Gyro" macro/key. Slot-scoped: a
+        /// recenter on slot 0 leaves slot 1's accumulator alone.</summary>
+        public void RecenterGyroIntegrated(int slotIndex, string target, int sourceIndex)
+        {
+            var key = (slotIndex, target ?? "", sourceIndex);
+            if (_gyroIntegratedAccum.ContainsKey(key))
+                _gyroIntegratedAccum[key] = 0;
+        }
+
+        /// <summary>Zeroes every gyro-stick accumulator on the given slot.
+        /// Cheaper authoring path for "recenter all sticks" intent without
+        /// having to enumerate target / sourceIndex pairs.</summary>
+        public void RecenterAllGyroIntegrated(int slotIndex)
+        {
+            // Two-pass to avoid mutating the dict while iterating.
+            List<(int, string, int)> keys = null;
+            foreach (var k in _gyroIntegratedAccum.Keys)
+            {
+                if (k.slot != slotIndex) continue;
+                (keys ??= new()).Add(k);
+            }
+            if (keys != null)
+                foreach (var k in keys)
+                    _gyroIntegratedAccum[k] = 0;
+        }
+
+        /// <summary>
+        /// Integrates a gyro source's calibrated angular rate over time
+        /// into a virtual stick deflection, clamped to [-1..+1]. Use only
+        /// for stick targets — mouse/scroll targets want the rate directly,
+        /// not the integral.
+        ///
+        /// <para>Caller passes the already-bias-subtracted rate (rad/s);
+        /// runtime applies <see cref="MappingSource.GyroSensitivity"/> and
+        /// dt here so the integration step is identical regardless of
+        /// where the bias subtraction happened. No decay / auto-recenter
+        /// — physical gyro reports angular velocity, so the accumulator's
+        /// natural rest is "wherever the user last twisted to." The user
+        /// recenters via opposite-direction motion or a (forthcoming)
+        /// Recenter Gyro macro.</para>
+        /// </summary>
+        public double TickGyroIntegrated(
+            int slotIndex,
+            string target,
+            int sourceIndex,
+            double calibratedRateRadPerSec,
+            double sensitivity,
+            double frameDeltaSeconds)
+        {
+            var key = (slotIndex, target ?? "", sourceIndex);
+            _gyroIntegratedAccum.TryGetValue(key, out double v);
+
+            if (sensitivity <= 0) sensitivity = 1.0;
+            if (frameDeltaSeconds < 0) frameDeltaSeconds = 0;
+
+            // GyroScale (~1 / (500°/s in rad)) maps a 500°/s twist to a
+            // full ±1 of "unit deflection per second." Sensitivity scales
+            // around that; dt turns it into a per-frame increment.
+            const double GyroScale = 1.0 / (500.0 * Math.PI / 180.0);
+            v += calibratedRateRadPerSec * GyroScale * sensitivity * frameDeltaSeconds;
+            if (v < -1) v = -1;
+            else if (v > 1) v = 1;
+
+            _gyroIntegratedAccum[key] = v;
+            return v;
+        }
 
         /// <summary>
         /// Updates the Incremental accumulator for this source and returns

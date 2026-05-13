@@ -547,14 +547,23 @@ namespace PadForge.Common.Input
                   or LightbarMode.AudioCrossFade
                   or LightbarMode.InputReactive
                   or LightbarMode.InputReactiveCycle
-                  or LightbarMode.InputReactiveFixed
-                  // Battery is a Low↔High lerp driven by a slowly-changing
-                  // input (battery %). Output is "static" frame-to-frame
-                  // but needs periodic re-synthesis so the color tracks
-                  // the percentage as it drains — without this the
-                  // dispatcher fires the synthesizer once at mode entry
-                  // and the lightbar freezes at the initial reading.
-                  or LightbarMode.Battery;
+                  or LightbarMode.InputReactiveFixed;
+        // Battery mode is push-driven: InputManager fires
+        // <see cref="NotifyBatteryPercentChanged"/> whenever the slot's
+        // BatteryPercents entry transitions, which calls
+        // DispatchSnapshot once. The animation timer stays parked, so
+        // a slot sitting on Battery mode costs zero per-tick CPU.
+
+        /// <summary>One-shot refresh request from InputManager when the
+        /// slot's reported battery percent changes. The dispatcher
+        /// reads the new percent via <see cref="SlotBatteryPercentProvider"/>
+        /// inside DispatchSnapshot, so this method just kicks the
+        /// snapshot. Safe to call from the polling thread.</summary>
+        public static void NotifyBatteryPercentChanged(int padIndex)
+        {
+            if (_instances.TryGetValue(padIndex, out var inst) && inst != null)
+                inst.DispatchSnapshot();
+        }
 
         private void UpdateAnimTimer()
         {

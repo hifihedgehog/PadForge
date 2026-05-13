@@ -2819,12 +2819,11 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <!-- Invert / Half-axis / Bidirectional / Do-not-inherit options.
-                                 Width sized for the worst-case localization of the
-                                 conditional "Do not inherit" affordance — German /
-                                 Dutch / Japanese strings run longer than English, so
-                                 keep enough room for all four checkboxes plus
-                                 captions without clipping. -->
-                            <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="640">
+                                 Width sized for the worst-case localization — Italian
+                                 ("entrambe le direzioni" + "Non ereditare") and Dutch
+                                 ("Beide richtingen" + "Niet overerven") set the floor;
+                                 every other locale fits comfortably. -->
+                            <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="460">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">

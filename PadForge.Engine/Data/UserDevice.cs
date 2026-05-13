@@ -109,6 +109,29 @@ namespace PadForge.Engine.Data
         public bool HasTouchpad { get; set; }
 
         // ─────────────────────────────────────────────────────────────
+        //  Gyro calibration — per-device at-rest bias (rad/s).
+        //  Subtracted from the raw SDL3 gyro reading at the source-
+        //  coercion read point for binding-layer use. Other consumers
+        //  (DSU broadcast, HM virtual motion forwarding, Sony report
+        //  packing) keep reading raw state.Gyro[] with their own
+        //  expectations — do NOT mutate state.Gyro[] from the calibrator.
+        //  Default = 0 / DateTime.MinValue means "uncalibrated; auto-
+        //  calibrate on first connect."
+        // ─────────────────────────────────────────────────────────────
+
+        [XmlElement]
+        public float GyroBiasPitch { get; set; }
+
+        [XmlElement]
+        public float GyroBiasYaw { get; set; }
+
+        [XmlElement]
+        public float GyroBiasRoll { get; set; }
+
+        [XmlElement]
+        public DateTime GyroCalibratedAtUtc { get; set; }
+
+        // ─────────────────────────────────────────────────────────────
         //  Serializable metadata
         // ─────────────────────────────────────────────────────────────
 

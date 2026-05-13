@@ -58,6 +58,13 @@ namespace PadForge.ViewModels
             RebuildMappings();
             RebuildStickConfigs();
             RebuildTriggerConfigs();
+
+            // Map All button text + tooltip are computed-on-demand off
+            // Strings.Instance.* — without an explicit notification the
+            // bindings keep the old language's value until the next
+            // IsMapAllActive flip.
+            OnPropertyChanged(nameof(MapAllButtonText));
+            OnPropertyChanged(nameof(MapAllButtonTooltip));
         }
 
         /// <summary>Zero-based pad slot index (0–15).</summary>

@@ -124,6 +124,158 @@ namespace PadForge.Common.Input
         /// list grows or shrinks. The <see cref="Stack"/> records the order
         /// activators engaged in; the most recently engaged sits at the tail
         /// (last-engaged-wins).</summary>
+        private sealed class StickyBaseline
+        {
+            public bool[] Buttons;
+            public int[]  Axis;
+            public int[]  Sliders;
+            public int[]  Povs;
+            public bool[] TouchpadDown;
+            public bool   TouchpadClick;
+        }
+
+        /// <summary>Per-activator snapshot of every slot-assigned device's
+        /// state at the moment Sticky engaged. Cross-device consumer
+        /// detection walks this dictionary on every poll so a button
+        /// pressed on Device B disengages a Sticky activator anchored to
+        /// Device A.</summary>
+        private sealed class StickyEngagementSnapshot
+        {
+            public readonly Dictionary<string, StickyBaseline> ByDevice =
+                new Dictionary<string, StickyBaseline>(System.StringComparer.OrdinalIgnoreCase);
+        }
+
+        // Threshold for axis/slider deviation from baseline (raw 0..65535
+        // unsigned). 8192 ≈ 12.5% of full range — pulled-trigger
+        // territory or a clearly-deliberate stick push, not idle drift.
+        private const int StickyAxisDeltaThreshold = 8192;
+
+        /// <summary>Walks every UserSetting assigned to the given slot
+        /// and snapshots that device's input state into the returned
+        /// engagement snapshot. Used at Sticky-engage time so the
+        /// subsequent per-frame scan can spot consumer activity on ANY
+        /// of the slot's devices, not just the activator's own.</summary>
+        private static StickyEngagementSnapshot CaptureStickyEngagementSnapshot(int slotIndex)
+        {
+            var snap = new StickyEngagementSnapshot();
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return snap;
+            lock (settings.SyncRoot)
+            {
+                for (int i = 0; i < settings.Items.Count; i++)
+                {
+                    var us = settings.Items[i];
+                    if (us == null || us.MapTo != slotIndex) continue;
+                    var guidStr = us.InstanceGuid.ToString();
+                    if (snap.ByDevice.ContainsKey(guidStr)) continue;
+                    var devState = LookupDeviceState(guidStr);
+                    if (devState == null) continue;
+                    snap.ByDevice[guidStr] = CaptureStickyBaseline(devState);
+                }
+            }
+            return snap;
+        }
+
+        /// <summary>True when any device in the engagement snapshot has
+        /// consumer activity not present in its baseline. Iterates every
+        /// snapshotted device and OR's the per-device check.</summary>
+        private static bool ComputeStickyConsumerHeldAcrossSlot(StickyEngagementSnapshot snap)
+        {
+            if (snap == null) return false;
+            foreach (var kv in snap.ByDevice)
+            {
+                var current = LookupDeviceState(kv.Key);
+                if (current == null) continue;
+                if (ComputeStickyConsumerHeld(kv.Value, current)) return true;
+            }
+            return false;
+        }
+
+        /// <summary>Snapshots every consumer-input channel on the device
+        /// state passed in so a later <see cref="ComputeStickyConsumerHeld"/>
+        /// call can spot any "new" activity. Returns null when state is
+        /// null.</summary>
+        private static StickyBaseline CaptureStickyBaseline(CustomInputState state)
+        {
+            if (state == null) return null;
+            var b = new StickyBaseline();
+            if (state.Buttons != null)
+            {
+                b.Buttons = new bool[state.Buttons.Length];
+                System.Array.Copy(state.Buttons, b.Buttons, state.Buttons.Length);
+            }
+            if (state.Axis != null)
+            {
+                b.Axis = new int[state.Axis.Length];
+                System.Array.Copy(state.Axis, b.Axis, state.Axis.Length);
+            }
+            if (state.Sliders != null)
+            {
+                b.Sliders = new int[state.Sliders.Length];
+                System.Array.Copy(state.Sliders, b.Sliders, state.Sliders.Length);
+            }
+            if (state.Povs != null)
+            {
+                b.Povs = new int[state.Povs.Length];
+                System.Array.Copy(state.Povs, b.Povs, state.Povs.Length);
+            }
+            if (state.TouchpadDown != null)
+            {
+                b.TouchpadDown = new bool[state.TouchpadDown.Length];
+                System.Array.Copy(state.TouchpadDown, b.TouchpadDown, state.TouchpadDown.Length);
+            }
+            b.TouchpadClick = state.TouchpadClick;
+            return b;
+        }
+
+        /// <summary>True when any consumer-input channel has activity not
+        /// present in the baseline: a newly-pressed button, an axis/slider
+        /// that moved past the deviation threshold, a POV direction that
+        /// transitioned away from centered (or to a different direction),
+        /// a touchpad-finger contact rising edge, or a touchpad-click
+        /// rising edge. Gyro/accel are deliberately ignored — idle hand
+        /// movement would constantly release Sticky.</summary>
+        private static bool ComputeStickyConsumerHeld(StickyBaseline baseline, CustomInputState current)
+        {
+            if (baseline == null || current == null) return false;
+
+            if (baseline.Buttons != null && current.Buttons != null)
+            {
+                int n = System.Math.Min(baseline.Buttons.Length, current.Buttons.Length);
+                for (int k = 0; k < n; k++)
+                    if (current.Buttons[k] && !baseline.Buttons[k]) return true;
+            }
+            if (baseline.Axis != null && current.Axis != null)
+            {
+                int n = System.Math.Min(baseline.Axis.Length, current.Axis.Length);
+                for (int k = 0; k < n; k++)
+                    if (System.Math.Abs(current.Axis[k] - baseline.Axis[k]) > StickyAxisDeltaThreshold)
+                        return true;
+            }
+            if (baseline.Sliders != null && current.Sliders != null)
+            {
+                int n = System.Math.Min(baseline.Sliders.Length, current.Sliders.Length);
+                for (int k = 0; k < n; k++)
+                    if (System.Math.Abs(current.Sliders[k] - baseline.Sliders[k]) > StickyAxisDeltaThreshold)
+                        return true;
+            }
+            if (baseline.Povs != null && current.Povs != null)
+            {
+                int n = System.Math.Min(baseline.Povs.Length, current.Povs.Length);
+                for (int k = 0; k < n; k++)
+                    if (current.Povs[k] != -1 && current.Povs[k] != baseline.Povs[k])
+                        return true;
+            }
+            if (baseline.TouchpadDown != null && current.TouchpadDown != null)
+            {
+                int n = System.Math.Min(baseline.TouchpadDown.Length, current.TouchpadDown.Length);
+                for (int k = 0; k < n; k++)
+                    if (current.TouchpadDown[k] && !baseline.TouchpadDown[k]) return true;
+            }
+            if (current.TouchpadClick && !baseline.TouchpadClick) return true;
+            return false;
+        }
+
         private sealed class ShiftRuntime
         {
             public bool[] WasDown = System.Array.Empty<bool>();
@@ -143,12 +295,19 @@ namespace PadForge.Common.Input
             // activator, gamepad consumer) won't auto-release because the
             // gamepad's buttons live in a different state buffer.
             public bool[] StickyEngaged = System.Array.Empty<bool>();
-            // Tracks whether at least one non-baseline button was DOWN last
-            // frame. Sticky releases on the falling edge — i.e. when this
-            // was true and is now false — so the layer stays engaged for
-            // the full duration the consumer button is held.
+            // Tracks whether at least one non-baseline consumer input was
+            // active last frame. Sticky releases on the falling edge —
+            // i.e. when this was true and is now false — so the layer
+            // stays engaged for the full duration the consumer is held.
             public bool[] StickyConsumerActive = System.Array.Empty<bool>();
-            public bool[][] StickyBaselineBtn = System.Array.Empty<bool[]>();
+            // Per-activator engagement snapshot covering EVERY device
+            // assigned to the slot at the moment Sticky engaged. Consumer
+            // detection walks each snapshotted device's current state
+            // against its baseline so a Sticky activator on Device A
+            // still releases when the user presses something on Device B.
+            // Gyro/accel are intentionally excluded (idle hand movement
+            // would constantly release the layer).
+            public StickyEngagementSnapshot[] StickyBaselines = System.Array.Empty<StickyEngagementSnapshot>();
             public readonly List<int> Stack = new();
             public string CustomLayer = "";   // v2 Custom mode current layer (overrides stack when non-empty)
 
@@ -172,7 +331,7 @@ namespace PadForge.Common.Input
                 CycleLayersSource = ResizeStringArr(CycleLayersSource, newSize);
                 StickyEngaged = ResizeBool(StickyEngaged, newSize);
                 StickyConsumerActive = ResizeBool(StickyConsumerActive, newSize);
-                StickyBaselineBtn = ResizeBoolArrays(StickyBaselineBtn, newSize);
+                StickyBaselines = ResizeStickyBaselines(StickyBaselines, newSize);
             }
 
             public void Clear()
@@ -185,7 +344,7 @@ namespace PadForge.Common.Input
                 System.Array.Clear(CycleLayersSource, 0, CycleLayersSource.Length);
                 System.Array.Clear(StickyEngaged, 0, StickyEngaged.Length);
                 System.Array.Clear(StickyConsumerActive, 0, StickyConsumerActive.Length);
-                System.Array.Clear(StickyBaselineBtn, 0, StickyBaselineBtn.Length);
+                System.Array.Clear(StickyBaselines, 0, StickyBaselines.Length);
                 lock (SyncRoot)
                 {
                     Stack.Clear();
@@ -193,8 +352,8 @@ namespace PadForge.Common.Input
                 }
             }
 
-            private static bool[][] ResizeBoolArrays(bool[][] arr, int n)
-            { var r = new bool[n][]; System.Array.Copy(arr, r, System.Math.Min(arr.Length, n)); return r; }
+            private static StickyEngagementSnapshot[] ResizeStickyBaselines(StickyEngagementSnapshot[] arr, int n)
+            { var r = new StickyEngagementSnapshot[n]; System.Array.Copy(arr, r, System.Math.Min(arr.Length, n)); return r; }
 
             private static string[][] ResizeStringArrays(string[][] arr, int n)
             { var r = new string[n][]; System.Array.Copy(arr, r, System.Math.Min(arr.Length, n)); return r; }
@@ -447,33 +606,21 @@ namespace PadForge.Common.Input
                 case "Sticky":
                 {
                     // v3 Sticky: typewriter-shift behavior. Press the
-                    // activator (no need to hold) → layer engages. The
-                    // next consumer button press fires its shifted mapping
-                    // on the layer AND stays firing while the consumer is
-                    // held. Releasing the consumer disengages the layer.
+                    // activator (no need to hold) → layer engages. Any
+                    // consumer input on ANY device assigned to this slot
+                    // — button, stick, trigger, slider, POV direction,
+                    // touchpad contact, touchpad click — fires the
+                    // shifted mapping AND keeps firing while the consumer
+                    // input is held. Releasing the consumer (everything
+                    // back to baseline) disengages the layer.
                     //
-                    // Detection: snapshot state.Buttons at engage time.
-                    // Each frame, "consumer active" = any button that is
-                    // currently down but was NOT down at engage time.
-                    // The layer releases on the falling edge of consumer
-                    // active (was true last frame, false now) — that's
-                    // when the user just let go of the consumer.
-                    //
-                    // Same-device limitation: the baseline snapshot only
-                    // covers state.Buttons (the activator's own device).
-                    // Cross-device Sticky (keyboard activator, gamepad
-                    // consumer) won't auto-release because the gamepad's
-                    // button state isn't visible from this activator pass.
-                    if (rt.StickyEngaged[actIdx] && rt.StickyBaselineBtn[actIdx] != null)
+                    // Cross-device aware: at engage time we snapshot every
+                    // slot-assigned device's state, so a Sticky activator
+                    // on a keyboard releases when the user moves a stick
+                    // on a gamepad assigned to the same slot.
+                    if (rt.StickyEngaged[actIdx] && rt.StickyBaselines[actIdx] != null)
                     {
-                        var baseline = rt.StickyBaselineBtn[actIdx];
-                        var current = state.Buttons;
-                        int n = current == null ? 0 : System.Math.Min(baseline.Length, current.Length);
-                        bool consumerHeld = false;
-                        for (int k = 0; k < n; k++)
-                        {
-                            if (current[k] && !baseline[k]) { consumerHeld = true; break; }
-                        }
+                        bool consumerHeld = ComputeStickyConsumerHeldAcrossSlot(rt.StickyBaselines[actIdx]);
 
                         if (rt.StickyConsumerActive[actIdx] && !consumerHeld)
                         {
@@ -481,7 +628,7 @@ namespace PadForge.Common.Input
                             UpdateStack(rt, actIdx, false);
                             rt.StickyEngaged[actIdx] = false;
                             rt.StickyConsumerActive[actIdx] = false;
-                            rt.StickyBaselineBtn[actIdx] = null;
+                            rt.StickyBaselines[actIdx] = null;
                         }
                         else
                         {
@@ -496,10 +643,7 @@ namespace PadForge.Common.Input
                             UpdateStack(rt, actIdx, true);
                             rt.StickyEngaged[actIdx] = true;
                             rt.StickyConsumerActive[actIdx] = false;
-                            int n = state.Buttons?.Length ?? 0;
-                            var snap = new bool[n];
-                            if (n > 0) System.Array.Copy(state.Buttons, snap, n);
-                            rt.StickyBaselineBtn[actIdx] = snap;
+                            rt.StickyBaselines[actIdx] = CaptureStickyEngagementSnapshot(slotIndex);
                         }
                     }
                     break;
@@ -838,7 +982,7 @@ namespace PadForge.Common.Input
                         float combined = isCustom
                             ? ClampBipolar(EvaluateCustomFloat(row, positional))
                             : ClampBipolar(CombineHelper.CombineAxis(row.CombineMode, positional));
-                        if (IsInvertOnHoldActive(row, state, thisDeviceGuid)) combined = -combined;
+                        if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = -combined;
                         WriteBipolarAxisTarget(row.Target, combined, ref gp);
                         multiDone?.Add(row.Target);
                         continue;
@@ -854,7 +998,7 @@ namespace PadForge.Common.Input
                     }
                     if (axisContribs.Count == 0) continue;
                     float combinedSingle = ClampBipolar(CombineHelper.CombineAxis(row.CombineMode, axisContribs));
-                    if (IsInvertOnHoldActive(row, state, thisDeviceGuid)) combinedSingle = -combinedSingle;
+                    if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combinedSingle = -combinedSingle;
                     WriteBipolarAxisTarget(row.Target, combinedSingle, ref gp);
                 }
                 else if (kind == TargetKind.Trigger)
@@ -866,7 +1010,7 @@ namespace PadForge.Common.Input
                         float combined = isCustom
                             ? ClampUnipolar(EvaluateCustomFloat(row, positional))
                             : ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, positional));
-                        if (IsInvertOnHoldActive(row, state, thisDeviceGuid)) combined = 1f - combined;
+                        if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = 1f - combined;
                         WriteTriggerTarget(row.Target, combined, ref gp);
                         multiDone?.Add(row.Target);
                         continue;
@@ -882,7 +1026,7 @@ namespace PadForge.Common.Input
                     }
                     if (axisContribs.Count == 0) continue;
                     float combinedTrig = ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, axisContribs));
-                    if (IsInvertOnHoldActive(row, state, thisDeviceGuid)) combinedTrig = 1f - combinedTrig;
+                    if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combinedTrig = 1f - combinedTrig;
                     WriteTriggerTarget(row.Target, combinedTrig, ref gp);
                 }
             }
@@ -899,7 +1043,7 @@ namespace PadForge.Common.Input
         /// when set; otherwise against the device currently processing
         /// the row. Multiple InvertOnHold sources on one row OR together:
         /// any held modifier triggers the flip.</para></summary>
-        private static bool IsInvertOnHoldActive(MappingRow row, CustomInputState fallbackState, string fallbackDeviceGuid)
+        private static bool IsInvertOnHoldActive(MappingRow row, CustomInputState fallbackState, string fallbackDeviceGuid, int slotIndex)
         {
             if (row == null || row.Sources == null) return false;
             for (int i = 0; i < row.Sources.Count; i++)
@@ -909,6 +1053,14 @@ namespace PadForge.Common.Input
                 if (!string.Equals(src.Kind ?? "Direct", "InvertOnHold", System.StringComparison.Ordinal))
                     continue;
                 if (string.IsNullOrEmpty(src.ParamModifier)) continue;
+                // PostponeMapping suppression — when an activator with
+                // PostponeMapping=false names this same modifier descriptor,
+                // its press is "consumed" by the layer change and shouldn't
+                // also flip the row sign. Consistent with the source-eval
+                // suppression check in BuildCustomContribsFor*.
+                string modifierDeviceGuid = string.IsNullOrEmpty(src.DeviceGuid) ? fallbackDeviceGuid : src.DeviceGuid;
+                if (IsSourceSuppressedPostpone(slotIndex, modifierDeviceGuid, src.ParamModifier))
+                    continue;
                 CustomInputState s = string.IsNullOrEmpty(src.DeviceGuid)
                     ? fallbackState
                     : (LookupDeviceState(src.DeviceGuid) ?? fallbackState);
@@ -1318,7 +1470,7 @@ namespace PadForge.Common.Input
                     devState, src, slotIndex, targetName, 0, slotRuntime, dt));
             }
 
-            if (IsInvertOnHoldActive(row, state, thisDeviceGuid)) combined = -combined;
+            if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = -combined;
 
             // Map [-1..+1] → signed short with the same convention legacy
             // MapToThumbAxisWithNeg uses: -1 → short.MinValue, +1 → short.MaxValue.
@@ -1448,7 +1600,7 @@ namespace PadForge.Common.Input
                 combined = ClampBipolar(values[0]);
             }
 
-            if (IsInvertOnHoldActive(row, state, thisDeviceGuid)) combined = -combined;
+            if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = -combined;
 
             if (combined <= -1f) value = short.MinValue;
             else if (combined >= 1f) value = short.MaxValue;
@@ -1501,7 +1653,7 @@ namespace PadForge.Common.Input
                     devState, src, slotIndex, targetName, 0, slotRuntime, dt));
             }
 
-            if (IsInvertOnHoldActive(row, state, thisDeviceGuid)) combined = 1f - combined;
+            if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = 1f - combined;
 
             // [0..+1] → signed short with short.MinValue = 0% (matches the
             // legacy MapToExtendedTriggerAxis convention).

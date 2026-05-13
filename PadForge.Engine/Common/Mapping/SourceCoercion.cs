@@ -198,12 +198,13 @@ namespace PadForge.Engine.Common.Mapping
                 int gyroAxis = ParseGyroAxisIndex(s);
                 if (gyroAxis < 0) return false;
                 float rate = ReadCalibratedGyroRate(state, gyroAxis, src.DeviceGuid);
+                float sens = (float)(src.GyroSensitivity > 0 ? src.GyroSensitivity : 1.0);
                 // Per-source DeadZone (when set) overrides the default
                 // 30°/s button threshold so users can dial in sensitivity.
                 float gyroThresh = src.DeadZone > 0
                     ? src.DeadZone / 100f * GyroButtonThreshold * 3f  // DeadZone% × ~90°/s headroom
                     : GyroButtonThreshold;
-                return Math.Abs(rate) > gyroThresh;
+                return Math.Abs(rate * sens) > gyroThresh;
             }
 
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
@@ -276,7 +277,8 @@ namespace PadForge.Engine.Common.Mapping
                 int gyroAxis = ParseGyroAxisIndex(s);
                 if (gyroAxis < 0) return 0f;
                 float rate = ReadCalibratedGyroRate(state, gyroAxis, src.DeviceGuid);
-                float v = rate * GyroScale;
+                float sens = (float)(src.GyroSensitivity > 0 ? src.GyroSensitivity : 1.0);
+                float v = rate * GyroScale * sens;
                 if (v < -1f) v = -1f;
                 else if (v > 1f) v = 1f;
                 return v;
@@ -333,7 +335,8 @@ namespace PadForge.Engine.Common.Mapping
                 int gyroAxis = ParseGyroAxisIndex(s);
                 if (gyroAxis < 0) return 0f;
                 float rate = ReadCalibratedGyroRate(state, gyroAxis, src.DeviceGuid);
-                float v = Math.Abs(rate) * GyroScale;
+                float sens = (float)(src.GyroSensitivity > 0 ? src.GyroSensitivity : 1.0);
+                float v = Math.Abs(rate) * GyroScale * sens;
                 if (v > 1f) v = 1f;
                 return v;
             }

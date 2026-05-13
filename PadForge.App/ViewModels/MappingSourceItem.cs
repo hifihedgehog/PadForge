@@ -27,6 +27,7 @@ namespace PadForge.ViewModels
         private double _paramMin;
         private double _paramMax = 1;
         private string _paramModifier = "";
+        private double _gyroSensitivity = 1.0;
 
         public string Kind
         {
@@ -196,9 +197,17 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsButtonClassDescriptor));
                     OnPropertyChanged(nameof(DirectionBadge));
                     OnPropertyChanged(nameof(IsDeadZoneApplicable));
+                    OnPropertyChanged(nameof(IsGyroSource));
                 }
             }
         }
+
+        /// <summary>True when this source's descriptor names a gyro axis
+        /// ("Gyro Pitch" / "Gyro Yaw" / "Gyro Roll"). Drives the per-row
+        /// gyro-sensitivity slider's visibility so it only renders when
+        /// it's actually meaningful.</summary>
+        public bool IsGyroSource => _descriptor != null
+            && _descriptor.StartsWith("Gyro ", StringComparison.Ordinal);
         public bool Invert
         {
             get => _invert;
@@ -315,6 +324,16 @@ namespace PadForge.ViewModels
             }
         }
         public double ParamRate { get => _paramRate; set => SetProperty(ref _paramRate, value); }
+
+        /// <summary>Per-source gyro sensitivity multiplier. Only applied
+        /// for Gyro descriptors (see <see cref="IsGyroSource"/>). UI shows
+        /// the slider gated on that predicate. Default 1.0 = the engine's
+        /// 500°/s → ±1 deflection scale.</summary>
+        public double GyroSensitivity
+        {
+            get => _gyroSensitivity;
+            set => SetProperty(ref _gyroSensitivity, System.Math.Clamp(value, 0.1, 10.0));
+        }
         public bool ParamSticky { get => _paramSticky; set => SetProperty(ref _paramSticky, value); }
         public double ParamMin { get => _paramMin; set => SetProperty(ref _paramMin, value); }
         public double ParamMax { get => _paramMax; set => SetProperty(ref _paramMax, value); }
@@ -562,6 +581,7 @@ namespace PadForge.ViewModels
             ParamMin = _paramMin,
             ParamMax = _paramMax,
             ParamModifier = _paramModifier ?? "",
+            GyroSensitivity = _gyroSensitivity,
         };
 
         /// <summary>Populates this VM from a domain
@@ -585,6 +605,7 @@ namespace PadForge.ViewModels
                 ParamMin = src.ParamMin,
                 ParamMax = src.ParamMax,
                 ParamModifier = src.ParamModifier ?? "",
+                GyroSensitivity = src.GyroSensitivity > 0 ? src.GyroSensitivity : 1.0,
             };
         }
     }

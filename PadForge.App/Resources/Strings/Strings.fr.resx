@@ -1298,6 +1298,14 @@
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Bouton</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Accord (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Axe au-delà du seuil</value></data>
+  <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Une seule pression de bouton (ou direction POV) active la couche.</value></data>
+  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Les deux boutons doivent être maintenus simultanément pour activer. Accord sur le même périphérique uniquement.</value></data>
+  <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>S'active tant qu'un axe analogique dépasse la valeur seuil.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>La couche reste activée tant que l'activateur est maintenu; libère au relâchement.</value></data>
+  <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Appui pour activer. Appui à nouveau pour libérer. La couche persiste à travers de nombreuses pressions.</value></data>
+  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>La pression saute vers une couche spécifique. Reste jusqu'à ce qu'une autre transition se déclenche.</value></data>
+  <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Chaque pression avance dans une liste ordonnée de couches; revient à Base.</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tapotez une fois pour activer. La prochaine pression de bouton mappé se déclenche sur la couche, puis se libère automatiquement.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Hériter les cibles non affectées de Base</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Déclencher aussi le mapping propre de l'activateur</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Si coché, le bouton activateur continue de piloter toute ligne qui l'utilise comme source — une pression change la couche ET déclenche le mapping propre du bouton. Si non coché (par défaut), la pression est consommée uniquement par le changement de couche.</value></data>

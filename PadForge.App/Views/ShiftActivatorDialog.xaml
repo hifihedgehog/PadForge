@@ -192,16 +192,29 @@
                 </Popup>
             </Grid>
 
-            <!-- Activator kind -->
+            <!-- Activator kind. Items show a bold name + small description
+                 in the dropdown, mirroring the Mapping table's combine-mode
+                 picker so the user gets a one-line explanation of each
+                 option without hunting through tooltips. -->
             <TextBlock Grid.Row="2"
                        Text="{Binding Pad_Shift_Kind, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
             <ComboBox Grid.Row="3" x:Name="KindCombo" Margin="0,0,0,12"
                       ScrollViewer.VerticalScrollBarVisibility="Visible"
+                      SelectedValuePath="Value"
+                      DisplayMemberPath="Name"
                       SelectionChanged="KindCombo_SelectionChanged">
-                <ComboBoxItem Tag="Button" Content="{Binding Pad_Shift_KindButton, Source={x:Static strings:Strings.Instance}}"/>
-                <ComboBoxItem Tag="Chord"  Content="{Binding Pad_Shift_KindChord, Source={x:Static strings:Strings.Instance}}"/>
-                <ComboBoxItem Tag="Axis"   Content="{Binding Pad_Shift_KindAxis, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical" Margin="0,2,0,2">
+                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
+                            <TextBlock Text="{Binding Description}"
+                                       FontSize="10"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
 
             <!-- Activator input. Sub-label below the dropdown mirrors the
@@ -353,12 +366,20 @@
                        Margin="0,0,0,4"/>
             <ComboBox Grid.Row="11" x:Name="ModeCombo" Margin="0,0,0,12"
                       ScrollViewer.VerticalScrollBarVisibility="Visible"
+                      SelectedValuePath="Value"
+                      DisplayMemberPath="Name"
                       SelectionChanged="ModeCombo_SelectionChanged">
-                <ComboBoxItem Tag="Hold"   Content="{Binding Pad_Shift_ModeHold, Source={x:Static strings:Strings.Instance}}"/>
-                <ComboBoxItem Tag="Toggle" Content="{Binding Pad_Shift_ModeToggle, Source={x:Static strings:Strings.Instance}}"/>
-                <ComboBoxItem Tag="Custom" Content="{Binding Pad_Shift_ModeCustom, Source={x:Static strings:Strings.Instance}}"/>
-                <ComboBoxItem Tag="Cycle"  Content="{Binding Pad_Shift_ModeCycle, Source={x:Static strings:Strings.Instance}}"/>
-                <ComboBoxItem Tag="Sticky" Content="{Binding Pad_Shift_ModeSticky, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical" Margin="0,2,0,2">
+                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
+                            <TextBlock Text="{Binding Description}"
+                                       FontSize="10"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
 
             <!-- Two activator-behavior checkboxes stacked together. Both

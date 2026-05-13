@@ -1339,6 +1339,14 @@
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Button</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Chord (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Axis Past Threshold</value></data>
+  <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>A single button (or POV direction) press engages the layer.</value></data>
+  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Both buttons must be held simultaneously to engage. Same-device chord only.</value></data>
+  <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Engages while an analog axis is past the threshold value.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Layer stays engaged while the activator is held; releases when you let go.</value></data>
+  <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Tap to engage. Tap again to release. Layer persists across many presses.</value></data>
+  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Press jumps to a specific layer. Stays until another transition fires.</value></data>
+  <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Each press advances through an ordered layer list; wraps back to Base.</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tap once to engage. The next mapped button press fires on the layer, then auto-releases.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Inherit Unmapped Targets From Base</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Also Fire Activator's Own Mapping</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>When checked, the activator button still drives any row that uses it as a source — one press both changes layer AND fires the button's own mapping. When unchecked (default), the activator press is consumed by the layer change only.</value></data>

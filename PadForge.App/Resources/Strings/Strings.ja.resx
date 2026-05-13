@@ -1299,7 +1299,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>コード(A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>しきい値を超えた軸</value></data>
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>単一ボタン (または POV 方向) の押下でレイヤーを有効化します。</value></data>
-  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>有効化するには両ボタンを同時に押し続ける必要があります。同一デバイスのコードのみ。</value></data>
+  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>有効化するには両ボタンを同時に押し続ける必要があります。デバイス間コードに対応。</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>アナログ軸がしきい値を超えている間、有効化します。</value></data>
   <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>アクティベーターを押している間レイヤーは有効のまま。離すと解除されます。</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>タップで有効化。再タップで解除。レイヤーは多くの押下を超えて持続します。</value></data>

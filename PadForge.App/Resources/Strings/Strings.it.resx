@@ -1319,7 +1319,7 @@
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Accordo (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Asse oltre la soglia</value></data>
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Una singola pressione di pulsante (o direzione POV) attiva il livello.</value></data>
-  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Entrambi i pulsanti devono essere tenuti premuti contemporaneamente per attivare. Solo accordo sullo stesso dispositivo.</value></data>
+  <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Entrambi i pulsanti devono essere tenuti premuti contemporaneamente per attivare. Accordo tra dispositivi supportato.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Si attiva mentre un asse analogico supera il valore soglia.</value></data>
   <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Il livello rimane attivo finché l'attivatore è tenuto; si rilascia quando lasci.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Tocca per attivare. Tocca di nuovo per rilasciare. Il livello persiste tra molte pressioni.</value></data>

@@ -911,8 +911,15 @@ namespace PadForge.Common.Input
                     found = true;
                 }
 
+                // Battery percent transitions push a one-shot dispatcher
+                // refresh so the Lightbar Battery mode lerp tracks the
+                // live percentage without keeping a 33Hz animation timer
+                // alive for what is effectively a once-a-minute change.
+                int prevPct = BatteryPercents[padIndex];
                 BatteryPercents[padIndex] = batteryPercent;
                 BatteryCharging[padIndex] = batteryCharging;
+                if (prevPct != batteryPercent)
+                    UserEffectsDispatcher.NotifyBatteryPercentChanged(padIndex);
 
                 if (!found)
                 {

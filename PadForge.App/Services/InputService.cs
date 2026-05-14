@@ -2108,6 +2108,7 @@ namespace PadForge.Services
                     mapping.LoadDescriptor(encoded);
                     if (primary.DeadZone > 0) mapping.MappingDeadZone = primary.DeadZone;
                     mapping.IsBidirectional = primary.Bidirectional;
+                    mapping.GyroSensitivity = primary.GyroSensitivity > 0 ? primary.GyroSensitivity : 1.0;
                     mapping.PrimarySourceDeviceGuid = primary.DeviceGuid ?? "";
                     mapping.PrimarySourceDeviceLabel = ResolveDeviceLabel(primary.DeviceGuid);
 
@@ -2129,6 +2130,7 @@ namespace PadForge.Services
                     mapping.PrimarySourceDeviceLabel = "";
                     mapping.MappingDeadZone = 50;
                     mapping.IsBidirectional = false;
+                    mapping.GyroSensitivity = 1.0;
                 }
 
                 MappingDisplayResolver.ResolveDisplayText(mapping, primaryUd);

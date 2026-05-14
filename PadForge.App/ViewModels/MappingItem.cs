@@ -228,6 +228,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SourceDisplayText));
                     OnPropertyChanged(nameof(IsMapped));
                     OnPropertyChanged(nameof(IsDeadZoneApplicable));
+                    OnPropertyChanged(nameof(IsGyroSource));
                     OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
                     // Toggling the primary source flips the row's
                     // effective source count, which can change whether
@@ -690,6 +691,26 @@ namespace PadForge.ViewModels
             get => _mappingDeadZone;
             set => SetProperty(ref _mappingDeadZone, Math.Clamp(value, 0, 100));
         }
+
+        private double _gyroSensitivity = 1.0;
+
+        /// <summary>Per-source gyro sensitivity multiplier for the primary
+        /// source. Mirrors <see cref="MappingSourceItem.GyroSensitivity"/>;
+        /// applied only when the primary descriptor is a Gyro axis (see
+        /// <see cref="IsGyroSource"/>). 1.0 = the engine's default
+        /// 500°/s → ±1 deflection scale.</summary>
+        public double GyroSensitivity
+        {
+            get => _gyroSensitivity;
+            set => SetProperty(ref _gyroSensitivity, Math.Clamp(value, 0.1, 10.0));
+        }
+
+        /// <summary>True when the primary source descriptor is a gyro
+        /// axis ("Gyro Pitch" / "Gyro Yaw" / "Gyro Roll" / horizontal blend).
+        /// Mirrors <see cref="MappingSourceItem.IsGyroSource"/> so the
+        /// primary's gyro-sensitivity slider can be gated identically.</summary>
+        public bool IsGyroSource => !string.IsNullOrEmpty(_sourceDescriptor)
+            && _sourceDescriptor.StartsWith("Gyro ", StringComparison.Ordinal);
 
         /// <summary>
         /// True when the deadzone column is applicable for this row:

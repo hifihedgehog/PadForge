@@ -20,7 +20,7 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
         </Style>
-        <Style x:Key="DzSlider" TargetType="Slider">
+        <Style x:Key="DzSlider" TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
             <Setter Property="Minimum" Value="0"/>
             <Setter Property="Maximum" Value="100"/>
             <Setter Property="Width" Value="200"/>
@@ -37,21 +37,22 @@
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
             <Setter Property="Margin" Value="4,0,0,0"/>
         </Style>
-        <Style x:Key="DzValueEdit" TargetType="TextBox">
-            <Setter Property="Width" Value="48"/>
+        <Style x:Key="DzValueEdit" TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
+            <Setter Property="Width" Value="56"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="TextAlignment" Value="Right"/>
-            <Setter Property="Margin" Value="4,0,0,0"/>
+            <Setter Property="Margin" Value="6,0,0,0"/>
             <Setter Property="Padding" Value="2,1"/>
         </Style>
-        <Style x:Key="DzDigitEdit" TargetType="TextBox">
-            <Setter Property="Width" Value="52"/>
+        <Style x:Key="DzDigitEdit" TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
+            <Setter Property="Width" Value="56"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="TextAlignment" Value="Right"/>
             <Setter Property="Margin" Value="6,0,0,0"/>
             <Setter Property="Padding" Value="2,1"/>
             <Setter Property="ToolTip" Value="Raw axis value"/>
-            <Setter Property="Foreground" Value="Black"/>
         </Style>
         <Style x:Key="DzPercent" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -95,7 +96,7 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
-        <Style x:Key="DzRgbSlider" TargetType="Slider">
+        <Style x:Key="DzRgbSlider" TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
             <Setter Property="Minimum" Value="0"/>
             <Setter Property="Maximum" Value="255"/>
             <Setter Property="Width" Value="148"/>
@@ -104,11 +105,12 @@
             <Setter Property="IsSnapToTickEnabled" Value="True"/>
             <Setter Property="TickFrequency" Value="1"/>
         </Style>
-        <Style x:Key="DzValueEditTight" TargetType="TextBox">
-            <Setter Property="Width" Value="36"/>
+        <Style x:Key="DzValueEditTight" TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
+            <Setter Property="Width" Value="48"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="TextAlignment" Value="Right"/>
-            <Setter Property="Margin" Value="4,0,0,0"/>
+            <Setter Property="Margin" Value="6,0,0,0"/>
             <Setter Property="Padding" Value="2,1"/>
         </Style>
         <Style x:Key="ResetButtonTight" TargetType="Button" BasedOn="{StaticResource ResetButton}">
@@ -2514,7 +2516,7 @@
                                                                 <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
                                                             </Button.ToolTip>
                                                         </Button>
-                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Width="290"
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
                                                                     Visibility="{Binding IsKindDescriptorless, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
                                                             <CheckBox Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"
                                                                       IsChecked="{Binding Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -2526,7 +2528,7 @@
                                                                       ToolTip="{Binding Pad_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                                       IsChecked="{Binding Bidirectional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                       IsEnabled="{Binding HalfAxis}"
-                                                                      VerticalAlignment="Center"/>
+                                                                      Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                         </StackPanel>
                                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0" Width="230"
                                                                     Visibility="{Binding IsKindDescriptorless, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
@@ -2847,7 +2849,7 @@
                                  ("entrambe le direzioni" + "Non ereditare") and Dutch
                                  ("Beide richtingen" + "Niet overerven") set the floor;
                                  every other locale fits comfortably. -->
-                            <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="460">
+                            <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="Auto" MinWidth="460">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -2872,6 +2874,23 @@
                                                       IsChecked="{Binding NoInherit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       VerticalAlignment="Center"
                                                       Visibility="{Binding DataContext.IsActiveLayerInheriting, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            <!-- Per-source gyro sensitivity for the primary source.
+                                                 Mirrors the ExtraSource gyro-sensitivity row; only
+                                                 renders for gyro descriptors so non-gyro primaries
+                                                 don't see a knob that does nothing. -->
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0"
+                                                        Visibility="{Binding IsGyroSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Text="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                <Slider Value="{Binding GyroSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        Minimum="0.1" Maximum="10" SmallChange="0.1" LargeChange="1"
+                                                        Width="120" VerticalAlignment="Center"
+                                                        ToolTip="{Binding Mapping_GyroSensitivity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBox Text="{Binding GyroSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                                         Width="50" Margin="4,0,4,0" Padding="2,1"
+                                                         VerticalContentAlignment="Center"/>
+                                                <TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                            </StackPanel>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

@@ -2,55 +2,90 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:PadForge.Controls">
 
-    <SolidColorBrush x:Key="RangeSliderThumbBorder" Color="#ACACAC"/>
-    <SolidColorBrush x:Key="RangeSliderTrackFill" Color="#E7EAEA"/>
-    <SolidColorBrush x:Key="RangeSliderTrackBorder" Color="#D6D6D6"/>
+    <!-- WPF-UI-styled RangeSlider. Track + thumb visuals mirror WPF-UI's
+         single-Slider style; the only intrinsic delta is the active-range
+         fill between the two thumbs, which uses the same accent the
+         single-Slider gives the thumb. Theme brushes come from WPF-UI's
+         resource dictionary, so Light/Dark/HC switches work automatically. -->
+
+    <Style x:Key="RangeSliderThumbStyle" TargetType="{x:Type Thumb}">
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Width" Value="20" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Cursor" Value="SizeWE" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ControlElevationBorderBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource SliderThumbBackground}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="{DynamicResource SliderOuterThumbBackground}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="16">
+                        <Ellipse x:Name="Ellipse"
+                                 Width="12" Height="12"
+                                 Fill="{TemplateBinding Foreground}"
+                                 Stroke="Transparent"
+                                 StrokeThickness="0" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource SliderThumbBackgroundPointerOver}" />
+                        </Trigger>
+                        <Trigger Property="IsDragging" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource SliderThumbBackgroundPointerOver}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style TargetType="{x:Type controls:RangeSlider}">
-        <Setter Property="Height" Value="18"/>
+        <Setter Property="Height" Value="22"/>
+        <Setter Property="MinWidth" Value="104"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:RangeSlider}">
                     <Grid x:Name="PART_Track">
-                        <!-- Track background bar with border -->
-                        <Border Height="4" VerticalAlignment="Center"
-                                Margin="5,0"
-                                BorderBrush="{StaticResource RangeSliderTrackBorder}"
-                                BorderThickness="1"
-                                Background="{StaticResource RangeSliderTrackFill}"/>
+                        <!-- 4px track background -->
+                        <Border x:Name="TrackBackground"
+                                Height="4" VerticalAlignment="Center"
+                                Margin="10,0"
+                                Background="{DynamicResource SliderTrackFill}"
+                                BorderThickness="0"
+                                CornerRadius="2"/>
 
                         <Canvas ClipToBounds="False">
-                            <!-- Active range highlight -->
-                            <Border x:Name="PART_RangeHighlight" Height="4"
-                                    Canvas.Top="7"
-                                    Background="{DynamicResource SystemAccentColorSecondaryBrush}"/>
+                            <!-- Active fill between the two thumbs -->
+                            <Border x:Name="PART_RangeHighlight"
+                                    Height="4"
+                                    Canvas.Top="9"
+                                    Background="{DynamicResource SliderThumbBackground}"
+                                    CornerRadius="2"/>
 
                             <!-- Lower thumb -->
-                            <Thumb x:Name="PART_LowerThumb" Width="11" Height="18"
-                                   Canvas.Top="0" Cursor="SizeWE">
-                                <Thumb.Template>
-                                    <ControlTemplate TargetType="Thumb">
-                                        <Border Background="{DynamicResource RangeSliderThumbFill}"
-                                                BorderBrush="{StaticResource RangeSliderThumbBorder}"
-                                                BorderThickness="1"/>
-                                    </ControlTemplate>
-                                </Thumb.Template>
-                            </Thumb>
+                            <Thumb x:Name="PART_LowerThumb"
+                                   Canvas.Top="1"
+                                   Style="{StaticResource RangeSliderThumbStyle}"/>
 
                             <!-- Upper thumb -->
-                            <Thumb x:Name="PART_UpperThumb" Width="11" Height="18"
-                                   Canvas.Top="0" Cursor="SizeWE">
-                                <Thumb.Template>
-                                    <ControlTemplate TargetType="Thumb">
-                                        <Border Background="{DynamicResource RangeSliderThumbFill}"
-                                                BorderBrush="{StaticResource RangeSliderThumbBorder}"
-                                                BorderThickness="1"/>
-                                    </ControlTemplate>
-                                </Thumb.Template>
-                            </Thumb>
+                            <Thumb x:Name="PART_UpperThumb"
+                                   Canvas.Top="1"
+                                   Style="{StaticResource RangeSliderThumbStyle}"/>
                         </Canvas>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="TrackBackground" Property="Background"
+                                    Value="{DynamicResource SliderTrackFillPointerOver}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

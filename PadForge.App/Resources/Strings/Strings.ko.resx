@@ -1131,6 +1131,10 @@
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>배율</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>화면 1회전당 각도</value></data>
   <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>다음에 누르는 물리 입력을 활성화 버튼으로 녹화</value></data>
+  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>바이어스 보정을 0으로 되돌리고 이 슬롯의 자동 보정을 재활성화</value></data>
+  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>좌표계, 감도, 반전, 실세계 보정을 기본값으로 복원</value></data>
+  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>데드존, 스무딩 임계값, 윈도우, 가속, 출력 커브를 기본값으로 복원</value></data>
+  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>오른쪽 스틱 임계값과 활성화 버튼을 비움</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>튜닝을 기본값으로 재설정</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>H/V 감도, 데드존, 스무딩, 가속, 출력 커브, 단위, Easy Aim 임계값을 공장 기본값으로 되돌립니다. 보정 바이어스에는 영향을 주지 않습니다.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>감도</value></data>

@@ -1131,6 +1131,10 @@
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>倍率</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>画面 1 回転あたりの角度</value></data>
   <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>次に押された物理入力をアクティベートボタンとして記録</value></data>
+  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>バイアス校正をゼロに戻し、このスロットの自動校正を再武装</value></data>
+  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>座標系、感度、反転、実世界キャリブレーションを既定値に戻す</value></data>
+  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>デッドゾーン、スムージングしきい値、窓、加速、出力カーブを既定値に戻す</value></data>
+  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>右スティックしきい値とアクティベートボタンをクリア</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>調整を初期値にリセット</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>H/V 感度、デッドゾーン、スムージング、加速、出力カーブ、単位、Easy Aim しきい値を工場出荷時の既定値に戻します。校正バイアスには影響しません。</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>感度</value></data>

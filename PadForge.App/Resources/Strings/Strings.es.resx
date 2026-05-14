@@ -1131,6 +1131,10 @@
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplicador</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Grados por giro de pantalla</value></data>
   <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>Grabar la próxima entrada física como botón de activación</value></data>
+  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Restablecer la calibración del sesgo a cero y rearmar la calibración automática para este slot</value></data>
+  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Restablecer espacio, sensibilidad, inversión y calibración real a los valores predeterminados</value></data>
+  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Restablecer zona muerta, umbrales de suavizado, ventana, aceleración y curva de salida a los valores predeterminados</value></data>
+  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Borrar el umbral del stick derecho y el botón de activación</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Restablecer ajustes a predeterminados</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Restaura sensibilidad H/V, zona muerta, suavizado, aceleración, curva de salida, unidades y umbral de Easy Aim a sus valores de fábrica. No afecta a la calibración del sesgo.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>

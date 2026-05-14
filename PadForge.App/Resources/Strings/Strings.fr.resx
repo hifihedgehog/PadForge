@@ -1131,6 +1131,10 @@
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplicateur</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Degrés par tour d'écran</value></data>
   <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>Enregistrer la prochaine entrée physique comme bouton d'activation</value></data>
+  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Remettre l'étalonnage du biais à zéro et réarmer l'étalonnage automatique pour ce slot</value></data>
+  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Réinitialiser espace, sensibilité, inversion et étalonnage réel aux valeurs par défaut</value></data>
+  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Réinitialiser zone morte, seuils de lissage, fenêtre, accélération et courbe de sortie aux valeurs par défaut</value></data>
+  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Effacer le seuil du stick droit et le bouton d'activation</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Réinitialiser le réglage</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Rétablit la sensibilité H/V, la zone morte, le lissage, l'accélération, la courbe de sortie, les unités et le seuil Easy Aim aux valeurs d'usine. N'affecte pas l'étalonnage du biais.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilité</value></data>

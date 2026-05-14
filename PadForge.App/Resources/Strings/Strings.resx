@@ -951,7 +951,7 @@
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Tune how this pad's motion sensor drives mouse and stick output. Calibrate on a flat surface to zero at-rest drift, then dial in sensitivity, smoothing, and engage rules to taste.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
-  <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Response shaping</value></data>
+  <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Response Shaping</value></data>
   <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
   <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>Engage gyro only while the right stick is deflected. 0% disables (gyro always-on).</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Space</value></data>

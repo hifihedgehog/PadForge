@@ -1099,7 +1099,7 @@
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Ajuste como o sensor de movimento deste controle conduz a saída do mouse ou do analógico. Primeiro calibre em uma superfície plana para zerar a deriva em repouso e depois afine sensibilidade, suavização e regras de ativação ao seu gosto.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibração</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilidade</value></data>
-  <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Forma da resposta</value></data>
+  <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Forma da Resposta</value></data>
   <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
   <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>Ativa o giroscópio apenas enquanto o analógico direito está deflexionado. 0% desativa (giroscópio sempre ativo).</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Espaço</value></data>

@@ -77,29 +77,29 @@ namespace PadForge.Engine.Common.Mapping
             public float SensH;
             public float SensV;
             public float DeadZoneRadPerSec;
-            public float SmoothingAlpha;             // v3.3 legacy EMA (unused when v3.4 thresholds > 0)
+            public float SmoothingAlpha;             // legacy EMA (unused when the dual-threshold pair is active)
             public float Acceleration;
             public string OutputCurve;
             public float EasyAimStickThreshold01;
 
-            // v3.4 Player / World space
+            // Player / World space
             public string Space;                     // "Local" / "Player" / "World"
             public float PlayerYawRelax;
             public float WorldSideReduction;
 
-            // v3.4 dual-threshold smoothing
+            // dual-threshold smoothing
             public float TighteningRadPerSec;
             public float SmoothingThresholdRadPerSec;
             public float SmoothingWindowSeconds;
 
-            // v3.4 real-world calibration (0 = disabled)
+            // real-world calibration (0 = disabled)
             public float RealWorldCalibration;
 
-            // v3.4 aim-engage button
+            // aim-engage button
             public string AimEngageDevice;
             public string AimEngageDescriptor;
 
-            // v3.4 per-axis invert toggles
+            // per-axis invert toggles
             public bool InvertPitch;
             public bool InvertYaw;
         }
@@ -118,7 +118,7 @@ namespace PadForge.Engine.Common.Mapping
         /// Returns 0 when slot is empty / state unavailable.</summary>
         public static Func<int, float> SlotRightStickDeflectionProvider { get; set; }
 
-        /// <summary>v3.4 — per-(device, slot) gravity vector estimator.
+        /// <summary>— per-(device, slot) gravity vector estimator.
         /// The app layer low-pass-filters <c>state.Accel[]</c> per
         /// device and exposes the smoothed result here. Returns the
         /// gravity-aligned vector in the controller's local frame.
@@ -127,13 +127,13 @@ namespace PadForge.Engine.Common.Mapping
         /// devices.</summary>
         public static Func<string, int, (float gx, float gy, float gz)> GravityProvider { get; set; }
 
-        /// <summary>v3.4 — reads whether the given (deviceGuid,
+        /// <summary>— reads whether the given (deviceGuid,
         /// descriptor) is currently pressed on the named slot. Used
         /// by the gyro "Aim Engage button" gate. App wires this
         /// against the per-device InputState bool reader.</summary>
         public static Func<string, string, int, bool> ButtonHeldProvider { get; set; }
 
-        /// <summary>v3.4 — current polling frequency (Hz). Used by the
+        /// <summary>— current polling frequency (Hz). Used by the
         /// dual-threshold smoothing buffer to convert
         /// <c>GyroSmoothingWindowMs</c> into a sample count. App
         /// returns <c>1000 / Settings.PollingIntervalMs</c>; returns
@@ -154,7 +154,7 @@ namespace PadForge.Engine.Common.Mapping
             return provider(deviceGuid, slotIndex);
         }
 
-        // v3.4 dual-threshold gyro smoothing buffer. Keyed by
+        // dual-threshold gyro smoothing buffer. Keyed by
         // (deviceGuid, slotIndex). Single-threaded (polling thread only).
         private static readonly Dictionary<(string, int), (float x, float y)[]> _gyroSampleBuffers = new();
         private static readonly Dictionary<(string, int), int> _gyroSampleHeads = new();
@@ -192,7 +192,7 @@ namespace PadForge.Engine.Common.Mapping
             return (xSum / N + yaw * immediate, ySum / N + pitch * immediate);
         }
 
-        /// <summary>v3.4 Player Space projection. Yaw projected onto
+        /// <summary>Player Space projection. Yaw projected onto
         /// the controller's gravity-vertical axis; pitch stays local.
         /// Mirrors GamepadMotion.hpp:CalculatePlayerSpaceGyro. The
         /// gravX argument is unused (the player-space formula only
@@ -210,7 +210,7 @@ namespace PadForge.Engine.Common.Mapping
             return (yawOut, gPitch);
         }
 
-        /// <summary>v3.4 World Space projection. Both yaw and pitch
+        /// <summary>World Space projection. Both yaw and pitch
         /// projected onto world axes. Mirrors
         /// GamepadMotion.hpp:CalculateWorldSpaceGyro.</summary>
         private static (float yaw, float pitch) WorldSpaceProject(

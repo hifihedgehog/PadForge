@@ -634,6 +634,21 @@ namespace PadForge
                     _inputService.ClearGyroAutoCalibLatch(ud.InstanceGuid, pvm.PadIndex);
                     pvm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroNeverCalibrated;
                 };
+
+                // Record button on the Aim Engage picker. Reuses the
+                // existing freeform recorder path — listens to every
+                // device assigned to the slot; first input wins; result
+                // lands directly in GyroAimEngageButton + DeviceGuid.
+                pad.GyroAimEngageRecordRequested += (s, e) =>
+                {
+                    if (s is not PadViewModel pvm) return;
+                    _recorderService.StartRecordingFreeform(pvm.PadIndex, (descriptor, deviceGuid) =>
+                    {
+                        pvm.GyroAimEngageButton = descriptor ?? "";
+                        pvm.GyroAimEngageDeviceGuid = deviceGuid ?? "";
+                        _settingsService.MarkDirty();
+                    });
+                };
             }
 
             // Wire recorder for each pad's mapping rows.

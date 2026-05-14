@@ -4840,13 +4840,14 @@
                                     <TextBlock Text="{Binding Settings_GyroSensitivityUnits, Source={x:Static strings:Strings.Instance}}"
                                                FontSize="11" Opacity="0.6" Margin="14,0,4,0" VerticalAlignment="Center"/>
                                     <ComboBox ItemsSource="{Binding GyroSensitivityUnitsOptions}"
-                                              SelectedItem="{Binding GyroSensitivityUnits, Mode=TwoWay}"
-                                              Width="160" VerticalAlignment="Center"
+                                              SelectedValue="{Binding GyroSensitivityUnits, Mode=TwoWay}"
+                                              SelectedValuePath="Value" DisplayMemberPath="Display"
+                                              Width="200" VerticalAlignment="Center"
                                               ToolTip="{Binding Settings_GyroSensitivityUnits_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Command="{Binding ResetGyroSensitivityUnitsCommand}" Style="{StaticResource ResetButton}"/>
                                 </StackPanel>
 
-                                <!-- v3.4 Player/World Space — Jibb's recommended default
+                                <!-- Player/World Space — Jibb's recommended default
                                      is Player Space; we keep Local as the conservative default
                                      so existing configs feel identical. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
@@ -4854,7 +4855,8 @@
                                                Width="140" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroSpace_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBox ItemsSource="{Binding GyroSpaceOptions}"
-                                              SelectedItem="{Binding GyroSpace, Mode=TwoWay}"
+                                              SelectedValue="{Binding GyroSpace, Mode=TwoWay}"
+                                              SelectedValuePath="Value" DisplayMemberPath="Display"
                                               Width="200" VerticalAlignment="Center"
                                               ToolTip="{Binding Settings_GyroSpace_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Command="{Binding ResetGyroSpaceCommand}" Style="{StaticResource ResetButton}"/>
@@ -4892,7 +4894,7 @@
                                                VerticalAlignment="Center" Margin="14,0,0,0" Opacity="0.55" FontSize="11"/>
                                 </StackPanel>
 
-                                <!-- v3.4 Per-axis invert toggles. Independent from per-source
+                                <!-- Per-axis invert toggles. Independent from per-source
                                      Invert flags on the mapping table — Steam-style top-level
                                      convenience. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
@@ -4908,7 +4910,7 @@
                                     <Button Command="{Binding ResetGyroInvertYawCommand}" Style="{StaticResource ResetButton}"/>
                                 </StackPanel>
 
-                                <!-- v3.4 Real-world calibration. 0 = disabled. -->
+                                <!-- Real-world calibration. 0 = disabled. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                                     <TextBlock Text="{Binding Settings_GyroRealWorldCalibration, Source={x:Static strings:Strings.Instance}}"
                                                Width="140" VerticalAlignment="Center"
@@ -4945,7 +4947,7 @@
                                     <Button Command="{Binding ResetGyroDeadZoneCommand}" Style="{StaticResource ResetButton}"/>
                                 </StackPanel>
 
-                                <!-- v3.4 dual-threshold smoothing (JSM-style).
+                                <!-- dual-threshold smoothing (JSM-style).
                                      Tightening = full smoothing below this rate (drop hand tremor).
                                      Smoothing threshold = pass-through above this rate (fast turns).
                                      Between thresholds = linear ramp. -->
@@ -5009,7 +5011,8 @@
                                                Width="140" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroOutputCurve_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBox ItemsSource="{Binding GyroOutputCurveOptions}"
-                                              SelectedItem="{Binding GyroOutputCurve, Mode=TwoWay}"
+                                              SelectedValue="{Binding GyroOutputCurve, Mode=TwoWay}"
+                                              SelectedValuePath="Value" DisplayMemberPath="Display"
                                               Width="200" VerticalAlignment="Center"
                                               ToolTip="{Binding Settings_GyroOutputCurve_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Command="{Binding ResetGyroOutputCurveCommand}" Style="{StaticResource ResetButton}"/>
@@ -5017,7 +5020,7 @@
                             </StackPanel>
                         </Border>
 
-                        <!-- ─── Engage card (v3.4: was Easy Aim) ─── -->
+                        <!-- ─── Engage card ─── -->
                         <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
                             <StackPanel>
                                 <TextBlock Text="{Binding Pad_Gyro_Engage_Header, Source={x:Static strings:Strings.Instance}}"
@@ -5039,7 +5042,7 @@
                                     <Button Command="{Binding ResetGyroEasyAimStickThresholdCommand}" Style="{StaticResource ResetButton}"/>
                                 </StackPanel>
 
-                                <!-- v3.4 Aim Engage button — cross-device picker that writes
+                                <!-- Aim Engage button — cross-device picker that writes
                                      both the descriptor and owning device GUID atomically.
                                      ItemsSource is the slot's combined cross-device InputChoice
                                      list, populated by InputService.PopulateAvailableInputs. -->
@@ -5066,6 +5069,13 @@
                                             </GroupStyle>
                                         </ComboBox.GroupStyle>
                                     </ComboBox>
+                                    <Button Command="{Binding GyroAimEngageRecordCommand}"
+                                            Width="40" VerticalAlignment="Center" Margin="6,0,0,0">
+                                        <TextBlock Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"/>
+                                        <Button.ToolTip>
+                                            <TextBlock Text="{Binding Pad_Gyro_AimEngage_Record, Source={x:Static strings:Strings.Instance}}"/>
+                                        </Button.ToolTip>
+                                    </Button>
                                     <Button Command="{Binding ResetGyroAimEngageButtonCommand}" Style="{StaticResource ResetButton}"/>
                                 </StackPanel>
                             </StackPanel>

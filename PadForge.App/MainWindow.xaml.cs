@@ -650,7 +650,9 @@ namespace PadForge
                         return;
                     }
                     pvm.GyroAimEngageRecording = true;
-                    _recorderService.StartRecordingFreeform(pvm.PadIndex, (descriptor, deviceGuid) =>
+                    // Callback param order matches RecorderService.CompleteRecording's
+                    // fb(fbGuid, fbDesc) call site — deviceGuid first, descriptor second.
+                    _recorderService.StartRecordingFreeform(pvm.PadIndex, (deviceGuid, descriptor) =>
                     {
                         pvm.GyroAimEngageButton = descriptor ?? "";
                         pvm.GyroAimEngageDeviceGuid = deviceGuid ?? "";

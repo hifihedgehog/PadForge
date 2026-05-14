@@ -1151,10 +1151,27 @@ namespace PadForge.ViewModels
         public ICommand ResetRightMotorCommand => _resetRightMotorCommand ??= new RelayCommand(() => RightMotorStrength = 100);
 
         private double _leftMotorDisplay;
+        /// <summary>Slot-wide motor activity (max across every device
+        /// mapped to the slot, each scaled by its own PadSetting). Drives
+        /// the Controller-preview-tab motor bar — that meter is
+        /// device-filter-independent so a force coming through any device
+        /// shows up regardless of the FFB tab's dropdown selection.</summary>
         public double LeftMotorDisplay { get => _leftMotorDisplay; set => SetProperty(ref _leftMotorDisplay, value); }
 
         private double _rightMotorDisplay;
         public double RightMotorDisplay { get => _rightMotorDisplay; set => SetProperty(ref _rightMotorDisplay, value); }
+
+        private double _deviceLeftMotorDisplay;
+        /// <summary>Selected device's own motor activity (its PadSetting's
+        /// gain / motor strengths / audio rumble / constant force applied
+        /// to the slot's raw vibration). Drives the FFB-tab motor bar —
+        /// that meter MUST be device-specific so users editing one device's
+        /// FFB settings see what's effectively reaching THAT device, not
+        /// the slot-wide max.</summary>
+        public double DeviceLeftMotorDisplay { get => _deviceLeftMotorDisplay; set => SetProperty(ref _deviceLeftMotorDisplay, value); }
+
+        private double _deviceRightMotorDisplay;
+        public double DeviceRightMotorDisplay { get => _deviceRightMotorDisplay; set => SetProperty(ref _deviceRightMotorDisplay, value); }
 
         // ── Audio Bass Rumble (per-device) ──
 
@@ -2123,7 +2140,7 @@ namespace PadForge.ViewModels
         //  State update (30Hz from InputService)
         // ═══════════════════════════════════════════════
 
-        public void UpdateFromEngineState(Gamepad gp, Engine.Vibration vibration)
+        public void UpdateFromEngineState(Gamepad gp, Engine.Vibration vibration, Engine.Vibration selectedDeviceVibration = null)
         {
             ButtonA = gp.IsButtonPressed(Gamepad.A);
             ButtonB = gp.IsButtonPressed(Gamepad.B);
@@ -2158,12 +2175,20 @@ namespace PadForge.ViewModels
 
             if (vibration != null)
             {
-                // Vibration is FinalVibrationStates — audio mix + ForceOverall
-                // × Left/Right motor strength + Swap are already applied by
-                // InputManager.ComputeFinalVibrationStates. Don't re-apply or
-                // the bars will under-read.
+                // FinalVibrationStates — slot-wide max-across-all-devices,
+                // each scaled by its own PadSetting. Feeds the Controller-
+                // preview-tab motor bar.
                 LeftMotorDisplay = vibration.LeftMotorSpeed / 65535.0;
                 RightMotorDisplay = vibration.RightMotorSpeed / 65535.0;
+            }
+
+            if (selectedDeviceVibration != null)
+            {
+                // SelectedDeviceVibrationStates — the FFB-tab dropdown's
+                // selected device's own scaled output. Feeds the FFB-tab
+                // motor bar (device-specific by design).
+                DeviceLeftMotorDisplay = selectedDeviceVibration.LeftMotorSpeed / 65535.0;
+                DeviceRightMotorDisplay = selectedDeviceVibration.RightMotorSpeed / 65535.0;
             }
         }
 

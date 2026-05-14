@@ -1068,12 +1068,28 @@
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Gyro Tangage</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Lacet</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roulis</value></data>
+  <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>Gyro Horizontal (Yaw + Roll)</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Calibrer le gyro</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Pose la manette sur une surface plane et clique sur Calibrer le gyro pour échantillonner la lecture au repos pendant ~1,5 seconde. Soustrait des lectures brutes afin que les mappings gyro ne fassent pas dériver la souris / le stick quand la manette est immobile.</value></data>
   <data name="Devices_Sensors" xml:space="preserve"><value>Capteurs</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Dernier étalonnage : {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Jamais étalonné</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Étalonnage… ne bouge pas</value></data>
+  <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Réinitialiser l'étalonnage</value></data>
+  <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Efface le biais du gyroscope au repos et l'horodatage du dernier étalonnage. Le prochain cycle de sondage relance l'auto-étalonnage de 1,5 seconde sur cet appareil.</value></data>
+  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Taux en direct</value></data>
+  <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Sensibilité horizontale</value></data>
+  <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Met à l'échelle la contribution horizontale (Yaw + Roll) du gyroscope. 1,0 laisse le taux tel quel ; valeurs plus élevées amplifient, plus basses atténuent. S'applique à tout l'appareil.</value></data>
+  <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Sensibilité verticale</value></data>
+  <data name="Settings_GyroSensitivityV_Tooltip" xml:space="preserve"><value>Met à l'échelle la contribution verticale (Pitch) du gyroscope. Séparée de l'horizontale pour ajuster les axes X et Y indépendamment.</value></data>
+  <data name="Settings_GyroDeadZone" xml:space="preserve"><value>Zone morte</value></data>
+  <data name="Settings_GyroDeadZone_Tooltip" xml:space="preserve"><value>Taux de rotation minimal (degrés par seconde) en dessous duquel la sortie du gyroscope est traitée comme zéro. Rejette les tremblements de main sans saut discontinu.</value></data>
+  <data name="Settings_GyroSmoothing" xml:space="preserve"><value>Lissage</value></data>
+  <data name="Settings_GyroSmoothing_Tooltip" xml:space="preserve"><value>Filtre EMA à un pôle sur le taux gyroscopique. 0 = désactivé (signal brut, latence minimale). Des valeurs plus élevées réduisent le jitter au prix de plus de retard. 0,5 est un bon point de départ si le curseur tremble.</value></data>
+  <data name="Settings_GyroAcceleration" xml:space="preserve"><value>Accélération</value></data>
+  <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>Gain dépendant de la vitesse. 0 = désactivé (mise à l'échelle linéaire). Des valeurs plus élevées laissent les mouvements lents inchangés et amplifient les mouvements rapides — utile pour combiner visée précise et virages rapides.</value></data>
+  <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>Courbe de sortie</value></data>
+  <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>Modèle la réponse. Linear = passe-tout. Aggressive = x² (lent reste lent). Relaxed = √x (lent amplifie, rapide sature). Wide / ExtraWide entre agressive et saturée. Se combine avec l'Accélération.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicateur de sensibilité du gyroscope par source. 1,0 = valeur par défaut du moteur (500°/s → pleine déviation). Au-dessus de 1,0 = plus sensible ; en dessous = moins sensible.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Pavé tactile 1 Y</value></data>

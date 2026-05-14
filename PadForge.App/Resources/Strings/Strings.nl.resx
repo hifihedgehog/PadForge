@@ -1088,12 +1088,28 @@
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Gyro Pitch</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roll</value></data>
+  <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>Gyro Horizontaal (Yaw + Roll)</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Gyro kalibreren</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Leg de controller op een vlak oppervlak en klik op Gyro kalibreren om de waarde in rust ongeveer 1,5 seconde te bemonsteren. Wordt afgetrokken van ruwe metingen zodat gyro-toewijzingen de muis / stick niet laten driften wanneer de controller stilstaat.</value></data>
   <data name="Devices_Sensors" xml:space="preserve"><value>Sensoren</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Laatst gekalibreerd: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Nooit gekalibreerd</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibreren… houd stil</value></data>
+  <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Kalibratie resetten</value></data>
+  <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Wist de rust-gyro-bias en de tijdstempel van de laatste kalibratie. De volgende polling-cyclus voert de 1,5-seconde automatische kalibratie opnieuw uit op dit apparaat.</value></data>
+  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Huidige snelheid</value></data>
+  <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Horizontale gevoeligheid</value></data>
+  <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Schaalt de horizontale (Yaw + Roll) gyro-bijdrage. 1,0 laat de snelheid ongewijzigd; hogere waarden versterken, lagere dempen. Geldt apparaatbreed.</value></data>
+  <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Verticale gevoeligheid</value></data>
+  <data name="Settings_GyroSensitivityV_Tooltip" xml:space="preserve"><value>Schaalt de verticale (Pitch) gyro-bijdrage. Apart van horizontaal zodat X- en Y-as onafhankelijk afstembaar zijn.</value></data>
+  <data name="Settings_GyroDeadZone" xml:space="preserve"><value>Dode zone</value></data>
+  <data name="Settings_GyroDeadZone_Tooltip" xml:space="preserve"><value>Minimale rotatiesnelheid (graden per seconde) waaronder de gyro-uitvoer als nul wordt behandeld. Filtert handtremor zonder discontinue sprong.</value></data>
+  <data name="Settings_GyroSmoothing" xml:space="preserve"><value>Afvlakking</value></data>
+  <data name="Settings_GyroSmoothing_Tooltip" xml:space="preserve"><value>Enkelpolige EMA-filter op de gyro-snelheid. 0 = uit (rauw signaal, laagste latentie). Hogere waarden verminderen jitter ten koste van vertraging. 0,5 is een redelijk startpunt als de cursor trilt.</value></data>
+  <data name="Settings_GyroAcceleration" xml:space="preserve"><value>Versnelling</value></data>
+  <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>Snelheidsafhankelijke versterking. 0 = uit (lineaire schaling). Hogere waarden laten trage bewegingen ongewijzigd en versterken snelle — handig voor precieze richting in combinatie met snelle bochten.</value></data>
+  <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>Uitvoercurve</value></data>
+  <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>Vormt de respons. Linear = doorgang. Aggressive = x² (langzaam blijft langzaam). Relaxed = √x (langzaam versterkt, snel verzadigt). Wide / ExtraWide zit ertussenin. Combineert met Versnelling.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheidsvermenigvuldiger van de gyroscoop per bron. 1,0 = standaard van de engine (500°/s → volledige uitslag). Waarden boven 1,0 zijn gevoeliger; daaronder minder.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>

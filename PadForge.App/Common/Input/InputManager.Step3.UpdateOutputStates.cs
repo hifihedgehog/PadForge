@@ -1984,15 +1984,15 @@ namespace PadForge.Common.Input
             // thread; a raw indexed iteration here on the polling thread
             // could read past Count and surface as the "Error mapping
             // device" error in Step 3's outer try/catch.
-            var rows = SnapshotRows(mappingSet);
-            for (int i = 0; i < rows.Length; i++)
+            var rows = SnapshotRows(mappingSet, out int rowsCount);
+            for (int i = 0; i < rowsCount; i++)
             {
                 var r = rows[i];
                 if (r == null) continue;
                 if (!string.Equals(r.LayerMask ?? "Base", "Base", StringComparison.Ordinal)) continue;
                 if (!string.Equals(r.Target, targetName, StringComparison.Ordinal)) continue;
-                var srcs = SnapshotSources(r);
-                if (srcs.Length == 0) break;
+                var srcs = SnapshotSources(r, out int srcsCount);
+                if (srcsCount == 0) break;
                 return srcs[0]?.Descriptor ?? legacyDescriptor;
             }
             return legacyDescriptor;

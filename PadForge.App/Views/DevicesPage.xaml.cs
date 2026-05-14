@@ -36,6 +36,22 @@ namespace PadForge.Views
             _ = svc.GyroCalibrator.RecalibrateAsync(ud);
         }
 
+        private void ResetGyroCalibration_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.DevicesViewModel vm) return;
+            var selected = vm.SelectedDevice;
+            if (selected == null) return;
+            var svc = InputService;
+            if (svc == null) return;
+            var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(selected.InstanceGuid);
+            if (ud == null || !ud.HasGyro) return;
+            svc.GyroCalibrator.ResetCalibration(ud);
+            // Clear the auto-calibrate dedup latch so the next polling pass
+            // re-fires the 1500 ms auto-calibration on this device.
+            svc.ClearGyroAutoCalibLatch(ud.InstanceGuid);
+            vm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroNeverCalibrated;
+        }
+
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (e.OldValue is ViewModels.DevicesViewModel oldVm)

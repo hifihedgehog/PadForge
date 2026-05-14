@@ -1068,12 +1068,28 @@
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>ジャイロ ピッチ</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>ジャイロ ヨー</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>ジャイロ ロール</value></data>
+  <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>ジャイロ水平 (Yaw + Roll)</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>ジャイロを較正</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>コントローラーを平らな面に置いて「ジャイロを較正」をクリックすると、約 1.5 秒間静止時の値をサンプリングします。生の読み取り値から差し引かれるため、コントローラーが静止しているときにジャイロ マッピングがマウス / スティックを漂流させません。</value></data>
   <data name="Devices_Sensors" xml:space="preserve"><value>センサー</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>最後の較正: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>未較正</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>較正中… 動かさないでください</value></data>
+  <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>較正をリセット</value></data>
+  <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>静止時のジャイロバイアスと最終較正のタイムスタンプをクリアします。次のポーリングサイクルで、このデバイスの 1.5 秒自動較正が再実行されます。</value></data>
+  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>現在のレート</value></data>
+  <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>水平感度</value></data>
+  <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>ジャイロの水平 (Yaw + Roll) 出力をスケールします。1.0 はエンジンが見るレートのまま、それより大きい値は増幅、小さい値は減衰させます。デバイス全体に適用されます。</value></data>
+  <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>垂直感度</value></data>
+  <data name="Settings_GyroSensitivityV_Tooltip" xml:space="preserve"><value>ジャイロの垂直 (Pitch) 出力をスケールします。水平とは別なので X 軸と Y 軸を独立して調整できます。</value></data>
+  <data name="Settings_GyroDeadZone" xml:space="preserve"><value>デッドゾーン</value></data>
+  <data name="Settings_GyroDeadZone_Tooltip" xml:space="preserve"><value>ジャイロ出力がゼロとして扱われる最小回転速度 (度/秒)。手の震えを除去しますが、しきい値を超えるレートはしきい値を引いたうえで連続的に通過します。</value></data>
+  <data name="Settings_GyroSmoothing" xml:space="preserve"><value>スムージング</value></data>
+  <data name="Settings_GyroSmoothing_Tooltip" xml:space="preserve"><value>ジャイロレートに対する単極 EMA フィルタ。0 = オフ (生信号、最小遅延)。高い値ほどジッタを抑えますが遅延が増えます。カーソルがブレるなら 0.5 から始めるのが妥当です。</value></data>
+  <data name="Settings_GyroAcceleration" xml:space="preserve"><value>加速</value></data>
+  <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>速度依存ゲイン。0 = オフ (リニアスケール)。高い値は遅い動きをそのまま通し、速い動きを増幅します。精密エイムと素早い旋回の両立に有効。</value></data>
+  <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>出力カーブ</value></data>
+  <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>応答を整形します。Linear = そのまま。Aggressive = x² (遅いままで速いほど増幅)。Relaxed = √x (遅い側を増幅、速い側で飽和)。Wide / ExtraWide はその中間。加速と組み合わせ可能。</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>感度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ソースごとのジャイロ感度倍率。1.0 = エンジンの既定 (500°/s → フルディフレクション)。1.0 を超えると敏感になり、1.0 未満では鈍くなります。</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>タッチパッド 1 Y</value></data>

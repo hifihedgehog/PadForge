@@ -201,24 +201,40 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Per-slot post-processed vibration *as seen by the slot's
-        /// <see cref="SelectedDeviceGuids"/> device* — audio bass mix and
-        /// gain/balance/swap applied per the SelectedMappedDevice's
-        /// PadSetting. Drives the FFB-tab activity meter only. The SDL
+        /// Per-slot post-processed vibration. Each motor is the max
+        /// across every device mapped to the slot, with each device's
+        /// own PadSetting applied (gain/balance/swap, audio rumble,
+        /// constant force). Drives the Controller-preview-tab motor
+        /// meter — that meter answers "is anything rumbling right now?"
+        /// so it is intentionally device-filter-independent. The SDL
         /// physical-rumble path and the DS5/DS4 dispatcher each compute
-        /// their own per-device scaled rumble from each mapped device's
-        /// own PadSetting (different physical devices can have different
-        /// gain / audio rumble settings on the same slot), so they do
-        /// NOT read this array.
+        /// their own per-device scaled rumble from each device's own
+        /// PadSetting, so they do NOT read this array.
         /// </summary>
         public Vibration[] FinalVibrationStates { get; } = new Vibration[MaxPads];
 
         /// <summary>
+        /// Per-slot vibration scaled by the FFB-tab dropdown's currently-
+        /// selected device's PadSetting (gain/balance/swap, audio rumble,
+        /// constant force). Drives the FFB tab's Motor Activity meter —
+        /// that meter MUST be device-specific so users editing one
+        /// device's settings see the effective output for THAT device,
+        /// not the slot-wide max. Falls back to zero when no device is
+        /// selected. Populated in the same loop as
+        /// <see cref="FinalVibrationStates"/> by
+        /// <c>ComputeFinalVibrationStates</c>.
+        /// </summary>
+        public Vibration[] SelectedDeviceVibrationStates { get; } = new Vibration[MaxPads];
+
+        /// <summary>
         /// Per-slot InstanceGuid of the device the user has selected on
-        /// the slot's FFB tab — drives whose PadSetting populates
-        /// <see cref="FinalVibrationStates"/> for the meter. Updated by
-        /// <c>InputService.SyncViewModelToPadSettings</c> at 30 Hz.
-        /// <see cref="Guid.Empty"/> when no device is selected.
+        /// the slot's FFB tab. Drives (a) the audio-bass detector's
+        /// per-tick Sensitivity / CutoffHz settings via
+        /// <c>ApplyDetectorSettingsForTick</c> and (b) which device's
+        /// scaled vibration lands in
+        /// <see cref="SelectedDeviceVibrationStates"/> for the FFB-tab
+        /// meter. Updated by <c>InputService.SyncViewModelToPadSettings</c>
+        /// at 30 Hz. <see cref="Guid.Empty"/> when no device is selected.
         /// </summary>
         public Guid[] SelectedDeviceGuids { get; } = new Guid[MaxPads];
 
@@ -317,6 +333,7 @@ namespace PadForge.Common.Input
             {
                 VibrationStates[i] = new Vibration();
                 FinalVibrationStates[i] = new Vibration();
+                SelectedDeviceVibrationStates[i] = new Vibration();
             }
         }
 
@@ -855,6 +872,18 @@ namespace PadForge.Common.Input
 
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {
+                // Empty pad — nothing mapped means no motion data to snapshot
+                // and no battery to read. Skip the FindByPadIndex lock+scan
+                // that would otherwise run 14× per cycle on a 2-active-slot
+                // setup.
+                if (!SettingsManager.SlotCreated[padIndex])
+                {
+                    var mb = MotionSnapshots[padIndex];
+                    if (mb.HasMotion)
+                        MotionSnapshots[padIndex] = new MotionSnapshot { HasMotion = false };
+                    continue;
+                }
+
                 int slotCount = settings.FindByPadIndex(padIndex, _padIndexBuffer);
                 bool found = false;
                 int batteryPercent = -1;

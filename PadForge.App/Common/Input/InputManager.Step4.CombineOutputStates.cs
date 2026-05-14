@@ -32,6 +32,10 @@ namespace PadForge.Common.Input
             {
                 try
                 {
+                    // Empty pad — no VC means nothing downstream reads the
+                    // combined output. Skip the FindByPadIndex lock+scan.
+                    if (!SettingsManager.SlotCreated[padIndex]) continue;
+
                     // Use non-allocating overload with pre-allocated buffer.
                     int slotCount = settings.FindByPadIndex(padIndex, _padIndexBuffer);
 

@@ -56,6 +56,88 @@ namespace PadForge.Engine.Common.Mapping
         /// break user expectations if synced.</summary>
         public static Func<string, (float pitch, float yaw, float roll)> GyroBiasProvider { get; set; }
 
+        /// <summary>v3.3 per-device gyro tuning bundle. App layer wires
+        /// <see cref="GyroTuningProvider"/> at startup with a lookup
+        /// against <c>UserDevice</c>. Returned struct's fields:
+        /// <list type="bullet">
+        /// <item><c>SensH</c> / <c>SensV</c> — multipliers, default 1.0</item>
+        /// <item><c>DeadZoneRadPerSec</c> — gyro deadzone, rad/s (App
+        ///   converts the UserDevice deg/s storage)</item>
+        /// <item><c>SmoothingAlpha</c> — EMA alpha 0–1, 0 = off</item>
+        /// <item><c>Acceleration</c> — rate-dependent gain 0–2, 0 = off</item>
+        /// <item><c>OutputCurve</c> — preset name (Linear / Aggressive /
+        ///   Relaxed / Wide / ExtraWide)</item>
+        /// </list>
+        /// </summary>
+        public struct GyroTuning
+        {
+            public float SensH;
+            public float SensV;
+            public float DeadZoneRadPerSec;
+            public float SmoothingAlpha;
+            public float Acceleration;
+            public string OutputCurve;
+        }
+
+        public static Func<string, GyroTuning> GyroTuningProvider { get; set; }
+
+        private static GyroTuning GetGyroTuning(string deviceGuid)
+        {
+            var provider = GyroTuningProvider;
+            if (provider == null || string.IsNullOrEmpty(deviceGuid))
+                return new GyroTuning { SensH = 1f, SensV = 1f, OutputCurve = "Linear" };
+            return provider(deviceGuid);
+        }
+
+        // Per-device EMA smoothing state for gyro rates. Single-threaded
+        // (polling thread is the only reader/writer for binding-layer
+        // gyro reads); a stale read post-recalibration self-heals in
+        // 1/(1-α) frames so no explicit clear is required.
+        private static readonly Dictionary<string, float[]> _gyroSmoothingState = new();
+
+        private static float ApplyGyroSmoothing(string deviceGuid, int axis, float rawRate, float alpha)
+        {
+            if (alpha <= 0f) return rawRate;
+            if (alpha > 0.99f) alpha = 0.99f; // pinning at 1 freezes the output
+            string key = deviceGuid ?? "";
+            if (!_gyroSmoothingState.TryGetValue(key, out var smoothed))
+            {
+                smoothed = new float[3];
+                _gyroSmoothingState[key] = smoothed;
+            }
+            if (axis < 0 || axis >= smoothed.Length) return rawRate;
+            smoothed[axis] = smoothed[axis] * alpha + rawRate * (1f - alpha);
+            return smoothed[axis];
+        }
+
+        private static float ApplyOutputCurve(float normalized, string curveName)
+        {
+            // normalized is in [-1..+1] before the caller's clamp.
+            // Curves preserve sign and map |x| → |y| in [0..1].
+            if (string.IsNullOrEmpty(curveName) || curveName == "Linear") return normalized;
+            float sign = normalized < 0 ? -1f : 1f;
+            float abs = normalized < 0 ? -normalized : normalized;
+            float shaped = curveName switch
+            {
+                "Aggressive" => abs * abs,                                          // x²: slow stays slow
+                "Relaxed"    => (float)System.Math.Sqrt(abs),                       // √x: slow amplifies
+                "Wide"       => (float)System.Math.Pow(abs, 1.5),                   // between linear and aggressive
+                "ExtraWide"  => (float)System.Math.Pow(abs, 2.5),                   // more than aggressive
+                _            => abs,
+            };
+            return sign * shaped;
+        }
+
+        private static float ApplyGyroAcceleration(float normalized, float accel)
+        {
+            // Rate-dependent gain: slow movements pass through unchanged,
+            // fast movements amplify. accel=0 → no-op. accel=2 → ~3× boost
+            // at saturation (|x|=1). Clamping happens at the caller.
+            if (accel <= 0f) return normalized;
+            float absX = normalized < 0 ? -normalized : normalized;
+            return normalized * (1f + accel * absX);
+        }
+
         /// <summary>Inspects the descriptor of a MappingSource (without
         /// the legacy "I" / "H" / "IH" prefix — the new schema stores
         /// flags separately).</summary>
@@ -85,16 +167,32 @@ namespace PadForge.Engine.Common.Mapping
 
         /// <summary>Parses a gyro descriptor "Gyro Pitch/Yaw/Roll" into
         /// the corresponding <see cref="CustomInputState.Gyro"/> index
-        /// (0=pitch, 1=yaw, 2=roll). Returns -1 on unrecognized.</summary>
+        /// (0=pitch, 1=yaw, 2=roll). Returns -1 on unrecognized.
+        /// "Gyro Horizontal" returns 1 (yaw is the horizontal anchor;
+        /// callers must check <see cref="IsHorizontalBlendDescriptor"/>
+        /// to apply the yaw+roll blend logic).</summary>
         private static int ParseGyroAxisIndex(string descriptor)
         {
             string s = (descriptor ?? "").Trim();
             if (!s.StartsWith("Gyro ", StringComparison.Ordinal)) return -1;
             string axis = s.Substring(5).Trim();
-            if (axis.Equals("Pitch", StringComparison.OrdinalIgnoreCase)) return 0;
-            if (axis.Equals("Yaw",   StringComparison.OrdinalIgnoreCase)) return 1;
-            if (axis.Equals("Roll",  StringComparison.OrdinalIgnoreCase)) return 2;
+            if (axis.Equals("Pitch",      StringComparison.OrdinalIgnoreCase)) return 0;
+            if (axis.Equals("Yaw",        StringComparison.OrdinalIgnoreCase)) return 1;
+            if (axis.Equals("Roll",       StringComparison.OrdinalIgnoreCase)) return 2;
+            if (axis.Equals("Horizontal", StringComparison.OrdinalIgnoreCase)) return 1; // yaw anchor
             return -1;
+        }
+
+        /// <summary>True for the <c>Gyro Horizontal</c> auto-blend
+        /// descriptor — caller reads BOTH yaw and roll and picks the
+        /// dominant axis with sign. Steam's Handheld+Roll style: works
+        /// whether the user grips the controller upright (yaw drives
+        /// horizontal aim) or flat (roll drives it).</summary>
+        private static bool IsHorizontalBlendDescriptor(string descriptor)
+        {
+            string s = (descriptor ?? "").Trim();
+            if (!s.StartsWith("Gyro ", StringComparison.Ordinal)) return false;
+            return s.Substring(5).Trim().Equals("Horizontal", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>True for "Gyro Pitch" / "Gyro Yaw" / "Gyro Roll"
@@ -118,6 +216,70 @@ namespace PadForge.Engine.Common.Mapping
             int axis = ParseGyroAxisIndex(src.Descriptor);
             if (axis < 0) return 0f;
             return ReadCalibratedGyroRate(state, axis, src.DeviceGuid);
+        }
+
+        /// <summary>Returns a gyro reading processed through the full
+        /// per-device tuning chain:
+        /// <list type="number">
+        /// <item>bias subtraction (per-device calibration)</item>
+        /// <item>deadzone (subtract-style: rates within deadzone → 0,
+        ///   rates past deadzone pass through with deadzone subtracted
+        ///   so there is no discontinuous jump at the threshold)</item>
+        /// <item>axis sensitivity (H for Yaw/Roll, V for Pitch)</item>
+        /// <item>per-source <see cref="MappingSource.GyroSensitivity"/>
+        ///   multiplier on top of device-level H/V</item>
+        /// </list>
+        /// Returns 0 for non-gyro descriptors / unknown axes / null
+        /// state.Gyro. Used by all three reader branches (bool / bipolar
+        /// / unipolar) so device-level tuning applies uniformly.</summary>
+        private static float ReadTunedGyroRate(CustomInputState state, MappingSource src, out int gyroAxis, out GyroTuning tuning)
+        {
+            gyroAxis = -1;
+            tuning = default;
+            if (state == null || src == null) return 0f;
+
+            // Gyro Horizontal — auto-blend of yaw + roll for grip-style-
+            // agnostic horizontal aim. Read both axes, smooth + deadzone
+            // each independently, pick the larger absolute, return its
+            // signed value. Same H sensitivity multiplier as plain Yaw/Roll.
+            if (IsHorizontalBlendDescriptor(src.Descriptor))
+            {
+                tuning = GetGyroTuning(src.DeviceGuid);
+                float yaw  = ProcessSingleAxis(state, src, 1, tuning); // Yaw
+                float roll = ProcessSingleAxis(state, src, 2, tuning); // Roll
+                gyroAxis = (Math.Abs(yaw) >= Math.Abs(roll)) ? 1 : 2;
+                return gyroAxis == 1 ? yaw : roll;
+            }
+
+            gyroAxis = ParseGyroAxisIndex(src.Descriptor);
+            if (gyroAxis < 0) return 0f;
+            tuning = GetGyroTuning(src.DeviceGuid);
+            return ProcessSingleAxis(state, src, gyroAxis, tuning);
+        }
+
+        /// <summary>Shared per-axis processing chain: bias subtract,
+        /// smoothing, deadzone, axis sensitivity, per-source multiplier.
+        /// Returns the tuned rate in rad/s (pre-scale, pre-curve).</summary>
+        private static float ProcessSingleAxis(CustomInputState state, MappingSource src, int axis, GyroTuning tuning)
+        {
+            float rate = ReadCalibratedGyroRate(state, axis, src.DeviceGuid);
+
+            // Smoothing: single-pole EMA on the bias-subtracted rate.
+            rate = ApplyGyroSmoothing(src.DeviceGuid, axis, rate, tuning.SmoothingAlpha);
+
+            // Subtract-style deadzone.
+            float deadzone = tuning.DeadZoneRadPerSec;
+            if (deadzone > 0f)
+            {
+                if (rate > deadzone) rate -= deadzone;
+                else if (rate < -deadzone) rate += deadzone;
+                else rate = 0f;
+            }
+
+            // Axis sensitivity: Yaw (1) and Roll (2) take H; Pitch (0) takes V.
+            float axisSens = axis == 0 ? tuning.SensV : tuning.SensH;
+            float perSourceSens = (float)(src.GyroSensitivity > 0 ? src.GyroSensitivity : 1.0);
+            return rate * axisSens * perSourceSens;
         }
 
         /// <summary>Reads <c>state.Gyro[gyroAxis]</c> minus the device's
@@ -218,16 +380,17 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
             {
-                int gyroAxis = ParseGyroAxisIndex(s);
+                float tunedRate = ReadTunedGyroRate(state, src, out int gyroAxis, out _);
                 if (gyroAxis < 0) return false;
-                float rate = ReadCalibratedGyroRate(state, gyroAxis, src.DeviceGuid);
-                float sens = (float)(src.GyroSensitivity > 0 ? src.GyroSensitivity : 1.0);
                 // Per-source DeadZone (when set) overrides the default
                 // 30°/s button threshold so users can dial in sensitivity.
+                // Device-level deadzone has already been applied inside
+                // ReadTunedGyroRate; this knob is the button-activation
+                // threshold ON TOP of that.
                 float gyroThresh = src.DeadZone > 0
                     ? src.DeadZone / 100f * GyroButtonThreshold * 3f  // DeadZone% × ~90°/s headroom
                     : GyroButtonThreshold;
-                return Math.Abs(rate * sens) > gyroThresh;
+                return Math.Abs(tunedRate) > gyroThresh;
             }
 
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
@@ -297,11 +460,12 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
             {
-                int gyroAxis = ParseGyroAxisIndex(s);
+                float tunedRate = ReadTunedGyroRate(state, src, out int gyroAxis, out var tuning);
                 if (gyroAxis < 0) return 0f;
-                float rate = ReadCalibratedGyroRate(state, gyroAxis, src.DeviceGuid);
-                float sens = (float)(src.GyroSensitivity > 0 ? src.GyroSensitivity : 1.0);
-                float v = rate * GyroScale * sens;
+                float v = tunedRate * GyroScale;
+                // Phase 2 response shaping in normalized space.
+                v = ApplyOutputCurve(v, tuning.OutputCurve);
+                v = ApplyGyroAcceleration(v, tuning.Acceleration);
                 if (v < -1f) v = -1f;
                 else if (v > 1f) v = 1f;
                 return v;
@@ -355,11 +519,12 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
             {
-                int gyroAxis = ParseGyroAxisIndex(s);
+                float tunedRate = ReadTunedGyroRate(state, src, out int gyroAxis, out var tuning);
                 if (gyroAxis < 0) return 0f;
-                float rate = ReadCalibratedGyroRate(state, gyroAxis, src.DeviceGuid);
-                float sens = (float)(src.GyroSensitivity > 0 ? src.GyroSensitivity : 1.0);
-                float v = Math.Abs(rate) * GyroScale * sens;
+                float v = Math.Abs(tunedRate) * GyroScale;
+                // Phase 2 response shaping in normalized space (unsigned trigger).
+                v = ApplyOutputCurve(v, tuning.OutputCurve);
+                v = ApplyGyroAcceleration(v, tuning.Acceleration);
                 if (v > 1f) v = 1f;
                 return v;
             }

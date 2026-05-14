@@ -147,9 +147,10 @@ namespace PadForge.Common
             {
                 var si = Strings.Instance;
                 string axis = s.Substring(5).Trim();
-                if (axis.Equals("Pitch", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroPitch;
-                if (axis.Equals("Yaw",   System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroYaw;
-                if (axis.Equals("Roll",  System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroRoll;
+                if (axis.Equals("Pitch",      System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroPitch;
+                if (axis.Equals("Yaw",        System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroYaw;
+                if (axis.Equals("Roll",       System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroRoll;
+                if (axis.Equals("Horizontal", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroHorizontal;
                 return null;
             }
 
@@ -512,9 +513,10 @@ namespace PadForge.Common
             // third-party pad whose driver exposes SDL_SENSOR_GYRO.
             if (ud.HasGyro)
             {
-                list.Add(new InputChoice { Descriptor = "Gyro Pitch", DisplayName = si.Mapping_GyroPitch });
-                list.Add(new InputChoice { Descriptor = "Gyro Yaw",   DisplayName = si.Mapping_GyroYaw });
-                list.Add(new InputChoice { Descriptor = "Gyro Roll",  DisplayName = si.Mapping_GyroRoll });
+                list.Add(new InputChoice { Descriptor = "Gyro Pitch",      DisplayName = si.Mapping_GyroPitch });
+                list.Add(new InputChoice { Descriptor = "Gyro Yaw",        DisplayName = si.Mapping_GyroYaw });
+                list.Add(new InputChoice { Descriptor = "Gyro Roll",       DisplayName = si.Mapping_GyroRoll });
+                list.Add(new InputChoice { Descriptor = "Gyro Horizontal", DisplayName = si.Mapping_GyroHorizontal });
             }
 
             return list.ToArray();

@@ -1068,12 +1068,28 @@
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Giroscópio Pitch</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Giroscópio Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Giroscópio Roll</value></data>
+  <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>Giroscópio horizontal (Yaw + Roll)</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Calibrar giroscópio</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Coloque o controle em uma superfície plana e clique em Calibrar giroscópio para amostrar a leitura em repouso por ~1,5 segundo. Subtraído das leituras brutas para que os mapeamentos do giroscópio não desviem o mouse / stick quando o controle estiver parado.</value></data>
   <data name="Devices_Sensors" xml:space="preserve"><value>Sensores</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Última calibração: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Nunca calibrado</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Calibrando… mantenha parado</value></data>
+  <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Redefinir calibração</value></data>
+  <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Limpa o viés do giroscópio em repouso e o carimbo de data/hora da última calibração. O próximo ciclo de polling executa novamente a autocalibração de 1,5 segundo neste dispositivo.</value></data>
+  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Taxa atual</value></data>
+  <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Sensibilidade horizontal</value></data>
+  <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Escala a contribuição horizontal (Yaw + Roll) do giroscópio. 1,0 deixa a taxa inalterada; valores maiores amplificam, menores atenuam. Aplica-se a todo o dispositivo.</value></data>
+  <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Sensibilidade vertical</value></data>
+  <data name="Settings_GyroSensitivityV_Tooltip" xml:space="preserve"><value>Escala a contribuição vertical (Pitch) do giroscópio. Separada da horizontal para ajustar X e Y independentemente.</value></data>
+  <data name="Settings_GyroDeadZone" xml:space="preserve"><value>Zona morta</value></data>
+  <data name="Settings_GyroDeadZone_Tooltip" xml:space="preserve"><value>Taxa mínima de rotação (graus por segundo) abaixo da qual a saída do giroscópio é tratada como zero. Rejeita tremor das mãos sem salto descontínuo.</value></data>
+  <data name="Settings_GyroSmoothing" xml:space="preserve"><value>Suavização</value></data>
+  <data name="Settings_GyroSmoothing_Tooltip" xml:space="preserve"><value>Filtro EMA de pólo único sobre a taxa do giroscópio. 0 = desativado (sinal bruto, menor latência). Valores maiores reduzem o jitter à custa de atraso. 0,5 é um ponto de partida razoável se o cursor estiver tremendo.</value></data>
+  <data name="Settings_GyroAcceleration" xml:space="preserve"><value>Aceleração</value></data>
+  <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>Ganho dependente da velocidade. 0 = desativado (escala linear). Valores maiores deixam movimentos lentos inalterados e amplificam os rápidos — útil para combinar mira precisa com giros rápidos.</value></data>
+  <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>Curva de saída</value></data>
+  <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>Modela a resposta. Linear = passagem direta. Aggressive = x² (lento permanece lento). Relaxed = √x (lento amplifica, rápido satura). Wide / ExtraWide entre agressiva e saturada. Combina com a Aceleração.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilidade</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicador de sensibilidade do giroscópio por fonte. 1,0 = padrão do motor (500°/s → deflexão total). Valores acima de 1,0 são mais sensíveis; abaixo, menos sensíveis.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>

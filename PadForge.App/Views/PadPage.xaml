@@ -3487,13 +3487,13 @@
                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="{Binding Pad_LeftMotorLabel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                            <ProgressBar Value="{Binding LeftMotorDisplay, Mode=OneWay}"
+                            <ProgressBar Value="{Binding DeviceLeftMotorDisplay, Mode=OneWay}"
                                          Minimum="0" Maximum="1"
                                          Width="200" Height="16" VerticalAlignment="Center"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="{Binding Pad_RightMotorLabel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                            <ProgressBar Value="{Binding RightMotorDisplay, Mode=OneWay}"
+                            <ProgressBar Value="{Binding DeviceRightMotorDisplay, Mode=OneWay}"
                                          Minimum="0" Maximum="1"
                                          Width="200" Height="16" VerticalAlignment="Center"/>
                         </StackPanel>

@@ -819,8 +819,8 @@ namespace PadForge.Common.Input
             // a save raced the polling-thread iteration here. The snapshot
             // is an array of MappingRow references, so per-row Sources
             // still need SnapshotSources to handle the inner-list race.
-            var rowsSnapshot = SnapshotRows(mappingSet);
-            if (rowsSnapshot.Length == 0) return;
+            var rowsSnapshot = SnapshotRows(mappingSet, out int rowsSnapshotCount);
+            if (rowsSnapshotCount == 0) return;
 
             var runtime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
                 ? _slotSourceKindRuntime[slotIndex]
@@ -858,10 +858,15 @@ namespace PadForge.Common.Input
                     break;
                 }
             }
-            HashSet<string> shiftCoveredTargets = (activeMask != "Base" && inheritUnmapped) ? new HashSet<string>() : null;
+            HashSet<string> shiftCoveredTargets = null;
+            if (activeMask != "Base" && inheritUnmapped)
+            {
+                shiftCoveredTargets = _shiftCoveredTargetsBuf ??= new HashSet<string>(System.StringComparer.Ordinal);
+                shiftCoveredTargets.Clear();
+            }
             if (shiftCoveredTargets != null)
             {
-                for (int i = 0; i < rowsSnapshot.Length; i++)
+                for (int i = 0; i < rowsSnapshotCount; i++)
                 {
                     var r = rowsSnapshot[i];
                     if (r == null) continue;
@@ -879,7 +884,7 @@ namespace PadForge.Common.Input
                 }
             }
 
-            for (int rowIdx = 0; rowIdx < rowsSnapshot.Length; rowIdx++)
+            for (int rowIdx = 0; rowIdx < rowsSnapshotCount; rowIdx++)
             {
                 var row = rowsSnapshot[rowIdx];
                 if (row == null) continue;
@@ -980,8 +985,9 @@ namespace PadForge.Common.Input
                         }
                         else
                         {
-                            var bools = new List<bool>(positional.Count);
-                            foreach (var v in positional) bools.Add(v > 0.5f);
+                            var bools = _contribBoolBuf ??= new List<bool>(8);
+                            bools.Clear();
+                            for (int bi = 0; bi < positional.Count; bi++) bools.Add(positional[bi] > 0.5f);
                             combined = CombineHelper.CombineButton(row.CombineMode, bools);
                         }
                         WriteBoolTarget(row.Target, combined, ref gp);
@@ -1134,6 +1140,25 @@ namespace PadForge.Common.Input
         [System.ThreadStatic] private static List<float> _msAxisBuf;
         [System.ThreadStatic] private static List<bool> _msBoolBuf;
 
+        // Per-row scratch for the Build*/multi-source paths. Reused across
+        // the three Build helpers (each clears at entry); used sequentially
+        // on the polling thread so one buffer per type is sufficient.
+        [System.ThreadStatic] private static List<float> _contribFloatBuf;
+        [System.ThreadStatic] private static List<bool> _contribBoolBuf;
+        [System.ThreadStatic] private static List<float> _contribFlagsBuf;
+        [System.ThreadStatic] private static List<float> _contribActiveBuf;
+        [System.ThreadStatic] private static HashSet<string> _shiftCoveredTargetsBuf;
+        // Pooled snapshot buffers + cached Base-row index. The KBM eval
+        // calls FindBaseRowForTarget ~104×/slot/cycle; before caching, each
+        // call allocated a MappingRow[] and linearly scanned. The dict
+        // cache rebuilds on (mappingSet, Count) change — same race
+        // tolerance as the prior SnapshotRows + scan.
+        [System.ThreadStatic] private static MappingRow[] _rowsSnapshotBuf;
+        [System.ThreadStatic] private static MappingSource[] _sourcesSnapshotBuf;
+        [System.ThreadStatic] private static Dictionary<string, MappingRow> _baseRowIndex;
+        [System.ThreadStatic] private static MappingSet _baseRowIndexFor;
+        [System.ThreadStatic] private static int _baseRowIndexCount;
+
         private static bool SourceMatchesDevice(MappingSource src, string thisDeviceGuid)
         {
             if (src == null) return false;
@@ -1225,43 +1250,40 @@ namespace PadForge.Common.Input
             || target == "RightThumbAxisX" || target == "RightThumbAxisY"
             || (target != null && target.StartsWith("ExtendedAxis", System.StringComparison.Ordinal));
 
-        /// <summary>Snapshots row.Sources into a thread-local buffer to
-        /// give the cross-device evaluation a stable view. The save
-        /// path (PushUiExtraSourcesIntoSlotMappingSets) mutates
-        /// row.Sources without taking a lock — a polling-thread
-        /// iteration during a Clear+Add would otherwise throw an
-        /// IndexOutOfRangeException as the row briefly empties.</summary>
-        private static MappingSource[] SnapshotSources(MappingRow row)
+        /// <summary>Snapshots row.Sources into the thread-local pooled
+        /// buffer. The save path mutates row.Sources without locking;
+        /// a polling-thread Clear+Add race would otherwise throw. Returns
+        /// the shared buffer and writes the populated count to
+        /// <paramref name="count"/>. Iterate to <c>count</c>, not buf.Length.</summary>
+        private static MappingSource[] SnapshotSources(MappingRow row, out int count)
         {
             var src = row?.Sources;
-            if (src == null) return System.Array.Empty<MappingSource>();
+            if (src == null) { count = 0; return System.Array.Empty<MappingSource>(); }
             int n = src.Count;
-            var arr = new MappingSource[n];
-            for (int i = 0; i < n && i < src.Count; i++) arr[i] = src[i];
-            return arr;
+            var buf = _sourcesSnapshotBuf;
+            if (buf == null || buf.Length < n)
+                _sourcesSnapshotBuf = buf = new MappingSource[System.Math.Max(n, 8)];
+            for (int i = 0; i < n && i < src.Count; i++) buf[i] = src[i];
+            count = n;
+            return buf;
         }
 
         /// <summary>Race-safe snapshot of <c>mappingSet.Rows</c> for the
-        /// polling-thread eval. The save path
-        /// (<c>PushUiExtraSourcesIntoSlotMappingSets</c>) mutates the same
-        /// list on the UI thread — calling <c>Rows.Add</c> for new targets
-        /// and <c>Sources.Clear/Add</c> on each row. A direct <c>foreach</c>
-        /// over the live list could throw <c>InvalidOperationException</c>
-        /// (collection modified during enumeration) or an indexed access
-        /// could read past <c>Count</c>; the result is the user-visible
-        /// "Error: Error mapping device {guid}" status when the polling
-        /// thread's try/catch around <c>UpdateOutputStates</c> swallows the
-        /// throw. Snapshotting once at the start of evaluation hands the
-        /// polling thread a stable array even mid-save. Sources are
-        /// snapshotted separately by <see cref="SnapshotSources"/>.</summary>
-        internal static MappingRow[] SnapshotRows(MappingSet mappingSet)
+        /// polling-thread eval. Reuses <see cref="_rowsSnapshotBuf"/>
+        /// across calls — Step 3 is single-threaded so the pool is
+        /// zero-alloc in steady state. Iterate to <paramref name="count"/>,
+        /// not buf.Length.</summary>
+        internal static MappingRow[] SnapshotRows(MappingSet mappingSet, out int count)
         {
             var rows = mappingSet?.Rows;
-            if (rows == null) return System.Array.Empty<MappingRow>();
+            if (rows == null) { count = 0; return System.Array.Empty<MappingRow>(); }
             int n = rows.Count;
-            var arr = new MappingRow[n];
-            for (int i = 0; i < n && i < rows.Count; i++) arr[i] = rows[i];
-            return arr;
+            var buf = _rowsSnapshotBuf;
+            if (buf == null || buf.Length < n)
+                _rowsSnapshotBuf = buf = new MappingRow[System.Math.Max(n, 16)];
+            for (int i = 0; i < n && i < rows.Count; i++) buf[i] = rows[i];
+            count = n;
+            return buf;
         }
 
         /// <summary>Builds the row's positional contributions list for
@@ -1275,18 +1297,19 @@ namespace PadForge.Common.Input
         {
             var slotRuntime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
                 ? _slotSourceKindRuntime[slotIndex] : null;
-            var list = new List<float>();
-            var srcs = SnapshotSources(row);
-            if (srcs.Length == 0) return list;
+            var list = _contribFloatBuf ??= new List<float>(8);
+            list.Clear();
+            var srcs = SnapshotSources(row, out int srcsCount);
+            if (srcsCount == 0) return list;
 
             int negPairIndex = -1;
-            if (TargetIsBipolarAxis(row.Target) && srcs.Length >= 2
+            if (TargetIsBipolarAxis(row.Target) && srcsCount >= 2
                 && IsBipolarNegPair(srcs[0], srcs[1]))
             {
                 negPairIndex = 1;
             }
 
-            for (int i = 0; i < srcs.Length; i++)
+            for (int i = 0; i < srcsCount; i++)
             {
                 if (i == negPairIndex) continue;
                 var src = srcs[i];
@@ -1322,9 +1345,10 @@ namespace PadForge.Common.Input
         {
             var slotRuntime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
                 ? _slotSourceKindRuntime[slotIndex] : null;
-            var list = new List<float>();
-            var srcs = SnapshotSources(row);
-            for (int i = 0; i < srcs.Length; i++)
+            var list = _contribFloatBuf ??= new List<float>(8);
+            list.Clear();
+            var srcs = SnapshotSources(row, out int srcsCount);
+            for (int i = 0; i < srcsCount; i++)
             {
                 var src = srcs[i];
                 if (IsRowModifierSource(src)) continue;
@@ -1344,9 +1368,10 @@ namespace PadForge.Common.Input
         {
             var slotRuntime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
                 ? _slotSourceKindRuntime[slotIndex] : null;
-            var list = new List<float>();
-            var srcs = SnapshotSources(row);
-            for (int i = 0; i < srcs.Length; i++)
+            var list = _contribFloatBuf ??= new List<float>(8);
+            list.Clear();
+            var srcs = SnapshotSources(row, out int srcsCount);
+            for (int i = 0; i < srcsCount; i++)
             {
                 var src = srcs[i];
                 if (IsRowModifierSource(src)) continue;
@@ -1382,23 +1407,48 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>Looks up the Base-layer <see cref="MappingRow"/> for a
-        /// target by name. Mirrors the row filter used by
-        /// <see cref="ApplyMappingSetToGamepad"/>.</summary>
+        /// target by name via a polling-thread-local dictionary cache.
+        /// Mirrors the row filter used by
+        /// <see cref="ApplyMappingSetToGamepad"/>. KBM mapping calls this
+        /// ~104×/slot/cycle (one per keyboard key + mouse button + axis);
+        /// without the cache each call was O(rows) with a per-call array
+        /// allocation. The cache rebuilds when MappingSet identity OR
+        /// Rows.Count changes — same race tolerance as the prior path.</summary>
         private static MappingRow FindBaseRowForTarget(MappingSet mappingSet, string targetName)
         {
-            // Snapshot to avoid racing the save path's Rows.Add/Sources mutations.
-            // See SnapshotRows for the race details.
-            var rows = SnapshotRows(mappingSet);
-            for (int i = 0; i < rows.Length; i++)
+            if (mappingSet == null || string.IsNullOrEmpty(targetName)) return null;
+            var rows = mappingSet.Rows;
+            if (rows == null) return null;
+
+            int currentCount = rows.Count;
+            if (_baseRowIndex == null
+                || _baseRowIndexFor != mappingSet
+                || _baseRowIndexCount != currentCount)
             {
-                var r = rows[i];
-                if (r == null) continue;
-                if (!string.Equals(r.LayerMask ?? "Base", "Base", System.StringComparison.Ordinal))
-                    continue;
-                if (string.Equals(r.Target, targetName, System.StringComparison.Ordinal))
-                    return r;
+                if (_baseRowIndex == null)
+                    _baseRowIndex = new Dictionary<string, MappingRow>(64, System.StringComparer.Ordinal);
+                else
+                    _baseRowIndex.Clear();
+
+                // Defensive read: rows.Count can shrink mid-iteration if the
+                // save path is mutating. Bound by the captured count AND
+                // re-check rows.Count on each step — same pattern SnapshotRows
+                // uses. Stale read in the rare race self-heals next cycle.
+                for (int i = 0; i < currentCount && i < rows.Count; i++)
+                {
+                    var r = rows[i];
+                    if (r == null) continue;
+                    if (!string.Equals(r.LayerMask ?? "Base", "Base", System.StringComparison.Ordinal)) continue;
+                    string target = r.Target;
+                    if (string.IsNullOrEmpty(target)) continue;
+                    _baseRowIndex[target] = r;
+                }
+
+                _baseRowIndexFor = mappingSet;
+                _baseRowIndexCount = currentCount;
             }
-            return null;
+
+            return _baseRowIndex.TryGetValue(targetName, out var row) ? row : null;
         }
 
         /// <summary>Evaluates a button-class target through the per-VC
@@ -1435,8 +1485,9 @@ namespace PadForge.Common.Input
                 }
                 else
                 {
-                    var bools = new List<bool>(positional.Count);
-                    foreach (var v in positional) bools.Add(v > 0.5f);
+                    var bools = _contribBoolBuf ??= new List<bool>(8);
+                    bools.Clear();
+                    for (int bi = 0; bi < positional.Count; bi++) bools.Add(positional[bi] > 0.5f);
                     value = CombineHelper.CombineButton(row.CombineMode, bools);
                 }
                 return true;
@@ -1548,12 +1599,14 @@ namespace PadForge.Common.Input
             double dt = (slotIndex >= 0 && slotIndex < _lastEvalTime.Length)
                 ? ComputeAndAdvanceDelta(slotIndex) : 0;
 
-            var sources = SnapshotSources(row);
-            var values = new List<float>(sources.Length);
-            var flags = new List<float>(sources.Length);
+            var sources = SnapshotSources(row, out int sourcesCount);
+            var values = _contribFloatBuf ??= new List<float>(8);
+            values.Clear();
+            var flags = _contribFlagsBuf ??= new List<float>(8);
+            flags.Clear();
             int activeCount = 0;
 
-            for (int i = 0; i < sources.Length; i++)
+            for (int i = 0; i < sourcesCount; i++)
             {
                 var src = sources[i];
                 if (IsRowModifierSource(src)) continue;
@@ -1615,10 +1668,11 @@ namespace PadForge.Common.Input
                 var compiled = GetOrCompileExpression(row);
                 combined = ClampBipolar(compiled.Evaluate(values, flags));
             }
-            else if (sources.Length > 1)
+            else if (sourcesCount > 1)
             {
                 // Built-in modes: filter to active sources only, then combine.
-                var activeValues = new List<float>(activeCount);
+                var activeValues = _contribActiveBuf ??= new List<float>(8);
+                activeValues.Clear();
                 for (int i = 0; i < values.Count; i++)
                     if (flags[i] > 0.5f) activeValues.Add(values[i]);
                 combined = ClampBipolar(CombineHelper.CombineAxis(row.CombineMode, activeValues));

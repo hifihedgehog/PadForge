@@ -469,15 +469,22 @@ namespace PadForge.Common.Input
         /// the variable values, runs the cached compiled formula, and reports
         /// "trigger active" as result ≥ 0.5. Returns false on any malformed input
         /// so the macro stays dormant rather than misfiring.</summary>
+        // Polling-thread-local List<float> for custom-expression macro
+        // triggers. Called per macro per cycle; pool removes the per-call
+        // alloc. List<T> (not float[]) so its Count tracks populated length
+        // for the IList<float> Evaluate overload.
+        [System.ThreadStatic] private static List<float> _macroExprSourcesBuf;
+
         private bool EvaluateCustomExpressionTrigger(MacroItem macro, in Gamepad gp)
         {
             var compiled = macro.TriggerExpressionCompiled;
             if (compiled == null || !compiled.IsValid) return false;
             var vars = macro.TriggerExpressionVariables;
             int n = vars?.Count ?? 0;
-            var sources = new float[n];
+            var sources = _macroExprSourcesBuf ??= new List<float>(8);
+            sources.Clear();
             for (int i = 0; i < n; i++)
-                sources[i] = ReadExpressionVariable(vars[i], in gp);
+                sources.Add(ReadExpressionVariable(vars[i], in gp));
             float result = compiled.Evaluate(sources);
             return result >= 0.5f;
         }
@@ -491,9 +498,10 @@ namespace PadForge.Common.Input
             if (compiled == null || !compiled.IsValid) return false;
             var vars = macro.TriggerExpressionVariables;
             int n = vars?.Count ?? 0;
-            var sources = new float[n];
+            var sources = _macroExprSourcesBuf ??= new List<float>(8);
+            sources.Clear();
             for (int i = 0; i < n; i++)
-                sources[i] = ReadExpressionVariableRaw(vars[i], in raw);
+                sources.Add(ReadExpressionVariableRaw(vars[i], in raw));
             float result = compiled.Evaluate(sources);
             return result >= 0.5f;
         }

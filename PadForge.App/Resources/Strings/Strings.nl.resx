@@ -1151,10 +1151,25 @@
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Vermenigvuldiger</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Graden per schermrotatie</value></data>
   <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>De volgende fysieke invoer opnemen als activatieknop</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Bias-kalibratie op nul zetten en automatische kalibratie voor deze slot opnieuw aanzetten</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Ruimte, gevoeligheid, omkering en realistische kalibratie terug naar standaard</value></data>
-  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Dode zone, smoothing-drempels, venster, versnelling en uitvoercurve terug naar standaard</value></data>
-  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Drempel rechterstick en activatieknop wissen</value></data>
+  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Kalibratie resetten</value></data>
+  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Gevoeligheid resetten</value></data>
+  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Responsvorm resetten</value></data>
+  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Activering resetten</value></data>
+  <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Ruimte resetten</value></data>
+  <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Horizontale gevoeligheid resetten</value></data>
+  <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Verticale gevoeligheid resetten</value></data>
+  <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>Eenheden resetten</value></data>
+  <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>Pitch-omkering resetten</value></data>
+  <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Yaw-omkering resetten</value></data>
+  <data name="Pad_ResetGyroRealWorldCalibration" xml:space="preserve"><value>Realistische kalibratie resetten</value></data>
+  <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Dode zone resetten</value></data>
+  <data name="Pad_ResetGyroTightening" xml:space="preserve"><value>Aanscherping resetten</value></data>
+  <data name="Pad_ResetGyroSmoothingThreshold" xml:space="preserve"><value>Smoothing-drempel resetten</value></data>
+  <data name="Pad_ResetGyroSmoothingWindow" xml:space="preserve"><value>Smoothing-venster resetten</value></data>
+  <data name="Pad_ResetGyroAcceleration" xml:space="preserve"><value>Versnelling resetten</value></data>
+  <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>Uitvoercurve resetten</value></data>
+  <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim-drempel resetten</value></data>
+  <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Activatieknop resetten</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Afstemming op standaard zetten</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Zet H/V-gevoeligheid, dode zone, smoothing, versnelling, uitvoercurve, eenheden en Easy Aim-drempel terug op de fabrieksinstellingen. De kalibratiebias blijft ongewijzigd.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>

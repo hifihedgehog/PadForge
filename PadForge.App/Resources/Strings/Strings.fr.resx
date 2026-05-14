@@ -1131,10 +1131,25 @@
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplicateur</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Degrés par tour d'écran</value></data>
   <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>Enregistrer la prochaine entrée physique comme bouton d'activation</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Remettre l'étalonnage du biais à zéro et réarmer l'étalonnage automatique pour ce slot</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Réinitialiser espace, sensibilité, inversion et étalonnage réel aux valeurs par défaut</value></data>
-  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Réinitialiser zone morte, seuils de lissage, fenêtre, accélération et courbe de sortie aux valeurs par défaut</value></data>
-  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Effacer le seuil du stick droit et le bouton d'activation</value></data>
+  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Réinitialiser l'étalonnage</value></data>
+  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Réinitialiser la sensibilité</value></data>
+  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Réinitialiser la forme de réponse</value></data>
+  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Réinitialiser l'activation</value></data>
+  <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Réinitialiser l'espace</value></data>
+  <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Réinitialiser la sensibilité horizontale</value></data>
+  <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Réinitialiser la sensibilité verticale</value></data>
+  <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>Réinitialiser les unités</value></data>
+  <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>Réinitialiser l'inversion du tangage</value></data>
+  <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Réinitialiser l'inversion du lacet</value></data>
+  <data name="Pad_ResetGyroRealWorldCalibration" xml:space="preserve"><value>Réinitialiser l'étalonnage réel</value></data>
+  <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Réinitialiser la zone morte</value></data>
+  <data name="Pad_ResetGyroTightening" xml:space="preserve"><value>Réinitialiser le resserrage</value></data>
+  <data name="Pad_ResetGyroSmoothingThreshold" xml:space="preserve"><value>Réinitialiser le seuil de lissage</value></data>
+  <data name="Pad_ResetGyroSmoothingWindow" xml:space="preserve"><value>Réinitialiser la fenêtre de lissage</value></data>
+  <data name="Pad_ResetGyroAcceleration" xml:space="preserve"><value>Réinitialiser l'accélération</value></data>
+  <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>Réinitialiser la courbe de sortie</value></data>
+  <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Réinitialiser le seuil Easy Aim</value></data>
+  <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Réinitialiser le bouton d'activation</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Réinitialiser le réglage</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Rétablit la sensibilité H/V, la zone morte, le lissage, l'accélération, la courbe de sortie, les unités et le seuil Easy Aim aux valeurs d'usine. N'affecte pas l'étalonnage du biais.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilité</value></data>

@@ -1055,6 +1055,17 @@ public class Strings : INotifyPropertyChanged
     public string Settings_GyroAimEngageButton_Tooltip => Get("Settings_GyroAimEngageButton_Tooltip");
     public string Pad_Gyro_Engage_Header => Get("Pad_Gyro_Engage_Header");
     public string Pad_Gyro_Engage_Subtitle => Get("Pad_Gyro_Engage_Subtitle");
+    public string Pad_Gyro_Space_Local => Get("Pad_Gyro_Space_Local");
+    public string Pad_Gyro_Space_Player => Get("Pad_Gyro_Space_Player");
+    public string Pad_Gyro_Space_World => Get("Pad_Gyro_Space_World");
+    public string Pad_Gyro_Curve_Linear => Get("Pad_Gyro_Curve_Linear");
+    public string Pad_Gyro_Curve_Aggressive => Get("Pad_Gyro_Curve_Aggressive");
+    public string Pad_Gyro_Curve_Relaxed => Get("Pad_Gyro_Curve_Relaxed");
+    public string Pad_Gyro_Curve_Wide => Get("Pad_Gyro_Curve_Wide");
+    public string Pad_Gyro_Curve_ExtraWide => Get("Pad_Gyro_Curve_ExtraWide");
+    public string Pad_Gyro_Units_Multiplier => Get("Pad_Gyro_Units_Multiplier");
+    public string Pad_Gyro_Units_DegPerScreenTurn => Get("Pad_Gyro_Units_DegPerScreenTurn");
+    public string Pad_Gyro_AimEngage_Record => Get("Pad_Gyro_AimEngage_Record");
     public string Pad_Gyro_ResetTuning => Get("Pad_Gyro_ResetTuning");
     public string Pad_Gyro_ResetTuning_Tooltip => Get("Pad_Gyro_ResetTuning_Tooltip");
     public string Mapping_GyroSensitivity => Get("Mapping_GyroSensitivity");

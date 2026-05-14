@@ -1120,6 +1120,17 @@
   <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>ジャイロ出力をゲートするボタンの記述子。このボタンを押している間だけジャイロが作動。空欄 = ボタンによるゲートなし。上の右スティック偏倚しきい値と AND 合成。</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>アクティベート</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ジャイロの作動条件を任意で制限。右スティック偏倚とアクティベートボタンのいずれかで出力をゲート可能。両方設定した場合は両方アクティブでなければ作動しません。</value></data>
+  <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>ローカル</value></data>
+  <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>プレイヤー</value></data>
+  <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>ワールド</value></data>
+  <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>リニア</value></data>
+  <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>アグレッシブ</value></data>
+  <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>ソフト</value></data>
+  <data name="Pad_Gyro_Curve_Wide" xml:space="preserve"><value>ワイド</value></data>
+  <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>エクストラワイド</value></data>
+  <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>倍率</value></data>
+  <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>画面 1 回転あたりの角度</value></data>
+  <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>次に押された物理入力をアクティベートボタンとして記録</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>調整を初期値にリセット</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>H/V 感度、デッドゾーン、スムージング、加速、出力カーブ、単位、Easy Aim しきい値を工場出荷時の既定値に戻します。校正バイアスには影響しません。</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>感度</value></data>

@@ -1120,6 +1120,17 @@
   <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>用于门控陀螺仪输出的按键描述符：仅在按住该按键期间陀螺仪生效。留空 = 不使用按键门控。与上方右摇杆偏移阈值按 AND 组合。</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>激活</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>可选条件，用以限制陀螺仪何时生效。右摇杆偏移与激活按键各自可门控输出；可单独配置或同时配置。两者都配置时必须同时满足，陀螺仪才会触发。</value></data>
+  <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>本地</value></data>
+  <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>玩家</value></data>
+  <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>世界</value></data>
+  <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>线性</value></data>
+  <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>激进</value></data>
+  <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>平缓</value></data>
+  <data name="Pad_Gyro_Curve_Wide" xml:space="preserve"><value>宽广</value></data>
+  <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>极宽</value></data>
+  <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>倍率</value></data>
+  <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>每屏旋转角度</value></data>
+  <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>将下一次按下的物理输入记录为激活键</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>将调节重置为默认值</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>将 H/V 灵敏度、死区、平滑、加速、输出曲线、单位以及 Easy Aim 阈值恢复为出厂默认值。不影响校准零偏。</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>灵敏度</value></data>

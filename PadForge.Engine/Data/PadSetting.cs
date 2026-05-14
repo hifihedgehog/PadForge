@@ -373,12 +373,12 @@ namespace PadForge.Engine.Data
         [XmlElement] public string GyroCalibratedAtUtc { get; set; } = "";
 
         // ─────────────────────────────────────────────
-        //  v3.4 Jibb-canon gyro extensions
-        //  Player Space + dual-threshold smoothing +
-        //  real-world calibration + button-gated aim
-        //  engage + per-axis invert toggles. Closes the
-        //  gap between SteamInput parity (v3.3) and the
-        //  JoyShockMapper / GamepadMotion canon.
+        //  JoyShockMapper-canon gyro extensions: Player
+        //  Space + dual-threshold smoothing + real-world
+        //  calibration + button-gated aim engage +
+        //  per-axis invert toggles. Closes the gap
+        //  between the SteamInput-parity baseline and
+        //  the JoyShockMapper / GamepadMotion canon.
         // ─────────────────────────────────────────────
 
         /// <summary>Gyro coordinate space: "Local" (default, raw

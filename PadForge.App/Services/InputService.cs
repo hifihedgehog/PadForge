@@ -63,7 +63,7 @@ namespace PadForge.Services
         // UpdatePadDeviceInfo sees the same pair pre-completion.
         private readonly HashSet<(Guid InstanceGuid, int Slot)> _gyroAutoCalibKicked = new();
 
-        // v3.4 — per-device gravity vector for Player/World Space gyro
+        // — per-device gravity vector for Player/World Space gyro
         // projection. Low-pass-filtered against state.Accel[] each
         // Update tick. Cleared in Stop().
         private readonly Dictionary<Guid, (float gx, float gy, float gz)> _gravityState = new();
@@ -468,7 +468,7 @@ namespace PadForge.Services
                     Acceleration = TryParseFloatPs(ps.GyroAcceleration, 0f),
                     OutputCurve = ps.GyroOutputCurve ?? "Linear",
                     EasyAimStickThreshold01 = TryParseFloatPs(ps.GyroEasyAimStickThreshold, 0f) / 100f,
-                    // v3.4 Jibb-canon extensions
+                    // Jibb-canon extensions
                     Space = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace,
                     PlayerYawRelax = TryParseFloatPs(ps.GyroPlayerSpaceYawRelaxFactor, 1.41f),
                     WorldSideReduction = TryParseFloatPs(ps.GyroWorldSpaceSideReductionThreshold, 0.125f),
@@ -499,7 +499,7 @@ namespace PadForge.Services
                 return ax > ay ? ax : ay;
             };
 
-            // v3.4 Player/World Space gyro — gravity vector estimator.
+            // Player/World Space gyro — gravity vector estimator.
             // Per-device low-pass on state.Accel[] (alpha 0.02 at 60Hz
             // poll ≈ 0.5Hz cutoff). Stored in _gravityState dict,
             // updated each Update tick alongside the live-rate readout.
@@ -515,7 +515,7 @@ namespace PadForge.Services
                 }
             };
 
-            // v3.4 Aim Engage button gate — reads the named device's
+            // Aim Engage button gate — reads the named device's
             // current button state via SourceCoercion's existing bool
             // reader. The synthetic MappingSource carries just the
             // device + descriptor; tuning fields don't matter here
@@ -536,7 +536,7 @@ namespace PadForge.Services
                     ud.InputState, synth, 50, slotIndex);
             };
 
-            // v3.4 — sample rate for the dual-threshold smoothing buffer.
+            // — sample rate for the dual-threshold smoothing buffer.
             // Reads the live PollingRateMs setting; falls back to 60Hz
             // if the setting is missing or invalid.
             PadForge.Engine.Common.Mapping.SourceCoercion.PollHzProvider = () =>
@@ -902,7 +902,7 @@ namespace PadForge.Services
 
                 // v3.3 — push live gyro rate + calibration label so the
                 // Gyro tab readouts track the selected (device, slot).
-                // v3.4 — also tick the per-device gravity low-pass so
+                // — also tick the per-device gravity low-pass so
                 // Player/World Space gyro projection has fresh state.
                 {
                     var selected = padVm.SelectedMappedDevice;
@@ -940,7 +940,7 @@ namespace PadForge.Services
                 }
             }
 
-            // ── v3.4 gravity low-pass for Player/World Space gyro ──
+            // ── gravity low-pass for Player/World Space gyro ──
             UpdateGravityEstimates();
 
             // ── Update Dashboard ──
@@ -2440,7 +2440,7 @@ namespace PadForge.Services
                 mapping.RefreshAllExtraSourceInputs();
             }
 
-            // v3.4 — also refresh the slot-level cross-device picker
+            // — also refresh the slot-level cross-device picker
             // list (used by the Gyro tab's Aim Engage button picker).
             // Fire SelectedInput re-eval so the ComboBox resolves the
             // saved descriptor against the freshly-populated list.
@@ -4646,7 +4646,7 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>v3.4 Player/World Space gyro — low-pass-filters every
+        /// <summary>Player/World Space gyro — low-pass-filters every
         /// online accel-capable UserDevice's <c>state.Accel[]</c> into a
         /// gravity vector. Per-device, stored in <c>_gravityState</c>.
         /// Alpha 0.02 at 60Hz UI tick ≈ 0.5Hz cutoff: tracks slow tilt,

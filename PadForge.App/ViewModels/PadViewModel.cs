@@ -14,6 +14,25 @@ using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
+    /// <summary>Localized display + canonical-value pair for combo-box
+    /// option lists where the stored value must stay locale-stable
+    /// (e.g. gyro space "Local"/"Player"/"World", output curve names,
+    /// units selector). Display is a lazy lookup against
+    /// <c>Strings.Instance</c> so the visible text follows the current
+    /// UI culture without rebuilding the list.</summary>
+    public sealed class GyroLabeledOption
+    {
+        private readonly Func<string> _displayLookup;
+        public GyroLabeledOption(Func<string> displayLookup, string value)
+        {
+            _displayLookup = displayLookup;
+            Value = value;
+        }
+        public string Display => _displayLookup?.Invoke() ?? Value;
+        public string Value { get; }
+        public override string ToString() => Display;
+    }
+
     /// <summary>
     /// ViewModel for a single virtual controller slot (one of 16 pads).
     /// Features:
@@ -1211,8 +1230,14 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gyroOutputCurve, value ?? "Linear");
         }
 
-        public System.Collections.Generic.IReadOnlyList<string> GyroOutputCurveOptions { get; }
-            = new[] { "Linear", "Aggressive", "Relaxed", "Wide", "ExtraWide" };
+        public System.Collections.Generic.IReadOnlyList<GyroLabeledOption> GyroOutputCurveOptions { get; } = new[]
+        {
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Curve_Linear,     "Linear"),
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Curve_Aggressive, "Aggressive"),
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Curve_Relaxed,    "Relaxed"),
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Curve_Wide,       "Wide"),
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Curve_ExtraWide,  "ExtraWide"),
+        };
 
         private string _gyroSensitivityUnits = "Multiplier";
         public string GyroSensitivityUnits
@@ -1221,8 +1246,11 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gyroSensitivityUnits, value ?? "Multiplier");
         }
 
-        public System.Collections.Generic.IReadOnlyList<string> GyroSensitivityUnitsOptions { get; }
-            = new[] { "Multiplier", "DegPerScreenTurn" };
+        public System.Collections.Generic.IReadOnlyList<GyroLabeledOption> GyroSensitivityUnitsOptions { get; } = new[]
+        {
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Units_Multiplier,        "Multiplier"),
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Units_DegPerScreenTurn,  "DegPerScreenTurn"),
+        };
 
         private double _gyroEasyAimStickThreshold;
         /// <summary>Right-stick deflection threshold (0-100%) below which
@@ -1233,7 +1261,7 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gyroEasyAimStickThreshold, Math.Clamp(value, 0, 100));
         }
 
-        // ─── v3.4 Jibb-canon extensions ───────────────────────
+        // ─── JoyShockMapper-canonextensions ───────────────────────
 
         private string _gyroSpace = "Local";
         public string GyroSpace
@@ -1241,8 +1269,16 @@ namespace PadForge.ViewModels
             get => _gyroSpace;
             set => SetProperty(ref _gyroSpace, string.IsNullOrEmpty(value) ? "Local" : value);
         }
-        public IReadOnlyList<string> GyroSpaceOptions { get; } =
-            new[] { "Local", "Player", "World" };
+        /// <summary>Localized-display + stored-value pairs for the gyro
+        /// space dropdown. Stored value stays as the canonical English
+        /// identifier so PadForge.xml round-trips are stable across
+        /// locale changes; display text is read from the strings resx.</summary>
+        public IReadOnlyList<GyroLabeledOption> GyroSpaceOptions { get; } = new[]
+        {
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Space_Local,  "Local"),
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Space_Player, "Player"),
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Space_World,  "World"),
+        };
 
         private double _gyroPlayerSpaceYawRelaxFactor = 1.41;
         public double GyroPlayerSpaceYawRelaxFactor
@@ -1413,7 +1449,7 @@ namespace PadForge.ViewModels
                 GyroOutputCurve = "Linear";
                 GyroSensitivityUnits = "Multiplier";
                 GyroEasyAimStickThreshold = 0;
-                // v3.4 Jibb-canon defaults
+                // JoyShockMapper-canondefaults
                 GyroSpace = "Local";
                 GyroPlayerSpaceYawRelaxFactor = 1.41;
                 GyroWorldSpaceSideReductionThreshold = 0.125;
@@ -1495,6 +1531,18 @@ namespace PadForge.ViewModels
                 GyroAimEngageButton = "";
                 GyroAimEngageDeviceGuid = "";
             });
+
+        /// <summary>Fires when the user clicks the Record button next to
+        /// the Aim Engage picker. MainWindow listens and calls
+        /// <c>RecorderService.StartRecordingFreeform</c>; the recorded
+        /// (descriptor, deviceGuid) pair lands in
+        /// <see cref="GyroAimEngageButton"/> + <see cref="GyroAimEngageDeviceGuid"/>.</summary>
+        public event EventHandler GyroAimEngageRecordRequested;
+        public void FireGyroAimEngageRecord() => GyroAimEngageRecordRequested?.Invoke(this, EventArgs.Empty);
+
+        private RelayCommand _gyroAimEngageRecordCommand;
+        public RelayCommand GyroAimEngageRecordCommand =>
+            _gyroAimEngageRecordCommand ??= new RelayCommand(FireGyroAimEngageRecord);
 
         private int _forceOverallGain = 100;
         public int ForceOverallGain { get => _forceOverallGain; set => SetProperty(ref _forceOverallGain, Math.Clamp(value, 0, 100)); }

@@ -1120,6 +1120,17 @@
   <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>자이로 출력을 게이트하는 버튼의 디스크립터. 해당 버튼을 누르고 있는 동안에만 자이로 작동. 비어 있음 = 버튼 게이트 없음. 위 오른쪽 스틱 임계값과 AND 결합.</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>활성화</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>자이로 활성 시점을 선택적으로 제한. 오른쪽 스틱 편향과 활성화 버튼 각각이 자이로 출력을 게이트할 수 있음. 둘 다 설정한 경우 둘 다 활성화되어야 자이로가 작동.</value></data>
+  <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>로컬</value></data>
+  <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>플레이어</value></data>
+  <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>월드</value></data>
+  <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>선형</value></data>
+  <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>공격적</value></data>
+  <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>완만</value></data>
+  <data name="Pad_Gyro_Curve_Wide" xml:space="preserve"><value>넓게</value></data>
+  <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>매우 넓게</value></data>
+  <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>배율</value></data>
+  <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>화면 1회전당 각도</value></data>
+  <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>다음에 누르는 물리 입력을 활성화 버튼으로 녹화</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>튜닝을 기본값으로 재설정</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>H/V 감도, 데드존, 스무딩, 가속, 출력 커브, 단위, Easy Aim 임계값을 공장 기본값으로 되돌립니다. 보정 바이어스에는 영향을 주지 않습니다.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>감도</value></data>

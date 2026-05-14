@@ -1079,6 +1079,17 @@
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Setzt den Ruhe-Gyro-Bias und den letzten Kalibrierungszeitpunkt zurück. Beim nächsten Polling-Zyklus läuft die 1,5-Sekunden-Auto-Kalibrierung für dieses Gerät erneut.</value></data>
   <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Aktuelle Rate</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Horizontale Empfindlichkeit</value></data>
+  <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokal</value></data>
+  <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Spieler</value></data>
+  <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Welt</value></data>
+  <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Linear</value></data>
+  <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Aggressiv</value></data>
+  <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Sanft</value></data>
+  <data name="Pad_Gyro_Curve_Wide" xml:space="preserve"><value>Breit</value></data>
+  <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Extra breit</value></data>
+  <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplikator</value></data>
+  <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Grad pro Bildschirmdrehung</value></data>
+  <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>Nächste physische Eingabe als Aktivierungs-Taste aufnehmen</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Skaliert den horizontalen (Yaw + Roll) Gyro-Anteil zur Ausgabe. 1,0 belässt die Rate unverändert; höhere Werte verstärken, niedrigere dämpfen. Gilt geräteweit.</value></data>
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Vertikale Empfindlichkeit</value></data>
   <data name="Settings_GyroSensitivityV_Tooltip" xml:space="preserve"><value>Skaliert den vertikalen (Pitch) Gyro-Anteil. Getrennt von horizontal, sodass X und Y unabhängig abgestimmt werden können.</value></data>

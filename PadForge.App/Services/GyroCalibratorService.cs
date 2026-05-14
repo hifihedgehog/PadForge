@@ -42,6 +42,24 @@ namespace PadForge.Services
             return RecalibrateAsync(ud, 1500);
         }
 
+        /// <summary>Zeroes the gyro bias fields and clears the
+        /// <c>GyroCalibratedAtUtc</c> timestamp on <paramref name="ud"/>,
+        /// reverting the device to its uncalibrated state. The next
+        /// <see cref="EnsureAutoCalibratedAsync"/> pass (fired by
+        /// InputService whenever it sees a gyro device with
+        /// <c>GyroCalibratedAtUtc == default</c>) will re-run the
+        /// 1500 ms at-rest sample on the next polling tick. Triggers
+        /// the persist callback so the cleared state hits PadForge.xml.</summary>
+        public void ResetCalibration(UserDevice ud)
+        {
+            if (ud == null || !ud.HasGyro) return;
+            ud.GyroBiasPitch = 0f;
+            ud.GyroBiasYaw   = 0f;
+            ud.GyroBiasRoll  = 0f;
+            ud.GyroCalibratedAtUtc = default;
+            _persistCallback?.Invoke();
+        }
+
         /// <summary>Samples <paramref name="ud"/>'s gyro readings for
         /// <paramref name="durationMs"/>, averages each axis, and writes
         /// the result to the UserDevice's bias fields. Returns false if

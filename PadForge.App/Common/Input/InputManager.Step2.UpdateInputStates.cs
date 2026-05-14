@@ -169,6 +169,11 @@ namespace PadForge.Common.Input
             var settingsForPoke = SettingsManager.UserSettings;
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {
+                // Empty pad — no VC means no dispatcher to poke. Skip the
+                // lock acquire + UserSettings scan that would otherwise
+                // run 14× per cycle on a typical 2-active-slot setup.
+                if (!SettingsManager.SlotCreated[padIndex]) continue;
+
                 var raw = VibrationStates[padIndex];
                 bool hasGameRumble = raw != null && (raw.LeftMotorSpeed > 0 || raw.RightMotorSpeed > 0);
                 // An active macro rumble override on a Sony slot needs
@@ -460,13 +465,27 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Per-slot pre-pass that fills <see cref="FinalVibrationStates"/>
-        /// using the slot's <see cref="SelectedDeviceGuids"/> device's
-        /// PadSetting — drives the FFB-tab activity meter only. The SDL
-        /// physical-rumble path and the DS5/DS4 dispatcher each compute
-        /// their own per-device scaled rumble (different physical devices
-        /// on the same slot can have different gain / audio rumble
-        /// settings), so they do NOT read this array.
+        /// Per-slot pre-pass that fills two parallel meter feeds:
+        /// <list type="bullet">
+        /// <item><see cref="FinalVibrationStates"/> — strongest per-motor
+        ///   output across every device mapped to the slot, each scaled
+        ///   by its OWN PadSetting (gain, motor strengths, audio rumble,
+        ///   constant force). Drives the Controller-preview-tab motor
+        ///   meter. Device-filter-independent so a force coming through
+        ///   any device on the slot is visible regardless of which device
+        ///   the user is editing.</item>
+        /// <item><see cref="SelectedDeviceVibrationStates"/> — the
+        ///   <see cref="SelectedDeviceGuids"/> device's own scaled output
+        ///   (its own gain / audio rumble / constant force applied).
+        ///   Drives the FFB-tab motor meter. Device-specific so the
+        ///   user editing one device's FFB settings sees what's actually
+        ///   reaching THAT device.</item>
+        /// </list>
+        ///
+        /// <para>Macro rumble and constant force layering match Step 2's
+        /// per-device ApplyForceFeedback path so both meters track what
+        /// the firmware actually receives, not just the raw game-driven
+        /// values.</para>
         /// </summary>
         public void ComputeFinalVibrationStates()
         {
@@ -475,72 +494,119 @@ namespace PadForge.Common.Input
             {
                 var raw = VibrationStates[padIndex];
                 var final = FinalVibrationStates[padIndex];
-                if (raw == null || final == null) continue;
+                var selected = SelectedDeviceVibrationStates[padIndex];
+                if (raw == null || final == null || selected == null) continue;
 
-                // Resolve the slot's currently-selected device PadSetting.
-                // Falls back to slotSettings[0] when no device is selected
-                // (e.g. before the first 30 Hz UI sync) so the meter still
-                // reads something reasonable.
-                PadSetting ps = null;
-                if (settings != null)
-                {
-                    Guid selected = SelectedDeviceGuids[padIndex];
-                    if (selected != Guid.Empty)
-                    {
-                        var slotSettings = settings.FindByPadIndex(padIndex);
-                        if (slotSettings != null)
-                        {
-                            for (int i = 0; i < slotSettings.Count; i++)
-                            {
-                                if (slotSettings[i].InstanceGuid == selected)
-                                {
-                                    ps = slotSettings[i].GetPadSetting();
-                                    break;
-                                }
-                            }
-                            if (ps == null && slotSettings.Count > 0)
-                                ps = slotSettings[0].GetPadSetting();
-                        }
-                    }
-                    else
-                    {
-                        var slotSettings = settings.FindByPadIndex(padIndex);
-                        if (slotSettings != null && slotSettings.Count > 0)
-                            ps = slotSettings[0].GetPadSetting();
-                    }
-                }
-
-                // Apply the same macro-rumble + constant-force layering
-                // here so the FFB-tab Motor Activity meter reflects what's
-                // actually being sent to the physical device — Step 2's
-                // per-device ApplyForceFeedback path and InputService's
-                // Sony rumble pump both already inject macro and constant
-                // force. Reading raw here would leave the meter at zero
-                // whenever those overrides are the only writers, which
-                // mismatches the real motor state.
+                // Macro rumble override is slot-level — apply once before
+                // the per-device loop so audio rumble / constant force
+                // resolution sees the merged baseline.
                 if (_macroRumbleScratch == null) _macroRumbleScratch = new Vibration();
                 var withMacro = MacroRumbleOverride.Merge(raw, MacroRumbleOverrides[padIndex], _macroRumbleScratch);
 
-                if (_constantForceScratch == null) _constantForceScratch = new Vibration();
-                var effective = ConstantForceEvaluator.Resolve(withMacro, ps, _constantForceScratch);
+                ushort bestL = 0, bestR = 0;
+                ushort selL = 0, selR = 0;
+                Vibration directionalSource = null;
+                Vibration selectedDirectional = null;
+                Guid selectedGuid = SelectedDeviceGuids[padIndex];
+                int slotCount = settings != null
+                    ? settings.FindByPadIndex(padIndex, _instanceGuidBuffer) : 0;
 
-                ScaleRumbleForDevice(effective.LeftMotorSpeed, effective.RightMotorSpeed,
-                    ps, out ushort finalL, out ushort finalR);
-                final.LeftMotorSpeed = finalL;
-                final.RightMotorSpeed = finalR;
+                if (slotCount == 0)
+                {
+                    // No devices mapped → preview meter mirrors raw (no
+                    // scaling to apply) so the user still sees a test
+                    // rumble in flight. FFB-tab meter shows zero (no
+                    // device == no per-device output to display).
+                    final.LeftMotorSpeed = withMacro.LeftMotorSpeed;
+                    final.RightMotorSpeed = withMacro.RightMotorSpeed;
+                    final.HasDirectionalData = withMacro.HasDirectionalData;
+                    final.HasConditionData = withMacro.HasConditionData;
+                    final.EffectType = withMacro.EffectType;
+                    final.SignedMagnitude = withMacro.SignedMagnitude;
+                    final.Direction = withMacro.Direction;
+                    final.Period = withMacro.Period;
+                    final.DeviceGain = withMacro.DeviceGain;
+                    final.ConditionAxisCount = withMacro.ConditionAxisCount;
+                    final.ConditionAxes = withMacro.ConditionAxes;
+                    selected.LeftMotorSpeed = 0;
+                    selected.RightMotorSpeed = 0;
+                    selected.HasDirectionalData = false;
+                    selected.HasConditionData = false;
+                    continue;
+                }
 
-                // Directional / condition data passes through unchanged —
-                // ForceFeedbackState handles overallGain on those branches
-                // via SignedMagnitude scaling, which we leave as-is.
-                final.HasDirectionalData = effective.HasDirectionalData;
-                final.HasConditionData = effective.HasConditionData;
-                final.EffectType = effective.EffectType;
-                final.SignedMagnitude = effective.SignedMagnitude;
-                final.Direction = effective.Direction;
-                final.Period = effective.Period;
-                final.DeviceGain = effective.DeviceGain;
-                final.ConditionAxisCount = effective.ConditionAxisCount;
-                final.ConditionAxes = effective.ConditionAxes;
+                for (int i = 0; i < slotCount; i++)
+                {
+                    var us = _instanceGuidBuffer[i];
+                    if (us == null) continue;
+                    var devicePs = us.GetPadSetting();
+
+                    if (_constantForceScratch == null) _constantForceScratch = new Vibration();
+                    var effective = ConstantForceEvaluator.Resolve(withMacro, devicePs, _constantForceScratch);
+
+                    ScaleRumbleForDevice(effective.LeftMotorSpeed, effective.RightMotorSpeed,
+                        devicePs, out ushort scaledL, out ushort scaledR);
+
+                    if (scaledL > bestL) bestL = scaledL;
+                    if (scaledR > bestR) bestR = scaledR;
+
+                    if (directionalSource == null
+                        && (effective.HasDirectionalData || effective.HasConditionData))
+                        directionalSource = effective;
+
+                    // Capture the selected device's own scaled output for
+                    // the FFB-tab meter.
+                    if (selectedGuid != Guid.Empty && us.InstanceGuid == selectedGuid)
+                    {
+                        selL = scaledL;
+                        selR = scaledR;
+                        if (effective.HasDirectionalData || effective.HasConditionData)
+                            selectedDirectional = effective;
+                    }
+                }
+
+                final.LeftMotorSpeed = bestL;
+                final.RightMotorSpeed = bestR;
+                selected.LeftMotorSpeed = selL;
+                selected.RightMotorSpeed = selR;
+
+                // Directional / condition data passes through unchanged
+                // from the first contributing device.
+                if (directionalSource != null)
+                {
+                    final.HasDirectionalData = directionalSource.HasDirectionalData;
+                    final.HasConditionData = directionalSource.HasConditionData;
+                    final.EffectType = directionalSource.EffectType;
+                    final.SignedMagnitude = directionalSource.SignedMagnitude;
+                    final.Direction = directionalSource.Direction;
+                    final.Period = directionalSource.Period;
+                    final.DeviceGain = directionalSource.DeviceGain;
+                    final.ConditionAxisCount = directionalSource.ConditionAxisCount;
+                    final.ConditionAxes = directionalSource.ConditionAxes;
+                }
+                else
+                {
+                    final.HasDirectionalData = false;
+                    final.HasConditionData = false;
+                }
+
+                if (selectedDirectional != null)
+                {
+                    selected.HasDirectionalData = selectedDirectional.HasDirectionalData;
+                    selected.HasConditionData = selectedDirectional.HasConditionData;
+                    selected.EffectType = selectedDirectional.EffectType;
+                    selected.SignedMagnitude = selectedDirectional.SignedMagnitude;
+                    selected.Direction = selectedDirectional.Direction;
+                    selected.Period = selectedDirectional.Period;
+                    selected.DeviceGain = selectedDirectional.DeviceGain;
+                    selected.ConditionAxisCount = selectedDirectional.ConditionAxisCount;
+                    selected.ConditionAxes = selectedDirectional.ConditionAxes;
+                }
+                else
+                {
+                    selected.HasDirectionalData = false;
+                    selected.HasConditionData = false;
+                }
             }
         }
 

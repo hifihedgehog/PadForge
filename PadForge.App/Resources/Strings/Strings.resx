@@ -921,11 +921,27 @@
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Gyro Pitch</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roll</value></data>
+  <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>Gyro Horizontal (Yaw + Roll)</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Calibrate Gyro</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Place the controller on a flat surface and click Calibrate Gyro to sample the at-rest reading for ~1.5 seconds. Subtracted from raw readings so gyro mappings don't drift the mouse / stick when the controller is still.</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Last calibrated: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Never calibrated</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Calibrating… hold still</value></data>
+  <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Reset Calibration</value></data>
+  <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Clears the at-rest gyro bias and the last-calibrated timestamp. The next polling cycle re-runs the 1.5-second auto-calibration on this device.</value></data>
+  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Live rate</value></data>
+  <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Horizontal Sensitivity</value></data>
+  <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Scales the horizontal (Yaw + Roll) gyro contribution to the output. 1.0 leaves the rate as the engine sees it; higher values amplify, lower values attenuate. Apply at the device level so every gyro binding on this controller inherits the same horizontal feel.</value></data>
+  <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Vertical Sensitivity</value></data>
+  <data name="Settings_GyroSensitivityV_Tooltip" xml:space="preserve"><value>Scales the vertical (Pitch) gyro contribution to the output. Separate from horizontal so you can tune aim X and Y independently.</value></data>
+  <data name="Settings_GyroDeadZone" xml:space="preserve"><value>Dead Zone</value></data>
+  <data name="Settings_GyroDeadZone_Tooltip" xml:space="preserve"><value>Minimum rotation rate (degrees per second) below which gyro output is treated as zero. Rejects at-rest hand tremor without snapping behavior — rates past the threshold pass through with the threshold subtracted.</value></data>
+  <data name="Settings_GyroSmoothing" xml:space="preserve"><value>Smoothing</value></data>
+  <data name="Settings_GyroSmoothing_Tooltip" xml:space="preserve"><value>Single-pole EMA filter on the gyro rate. 0 = off (raw signal, lowest latency). Higher values reduce per-frame jitter at the cost of added lag. 0.5 is a reasonable starting point if the cursor feels twitchy.</value></data>
+  <data name="Settings_GyroAcceleration" xml:space="preserve"><value>Acceleration</value></data>
+  <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>Rate-dependent gain. 0 = off (linear scaling). Higher values let slow movements pass through unchanged while amplifying fast movements — useful for combining precision aim with quick turns.</value></data>
+  <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>Output Curve</value></data>
+  <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>Reshapes the response. Linear = pass-through. Aggressive = x² (slow stays slow, fast amplifies). Relaxed = √x (slow amplifies, fast saturates). Wide / ExtraWide sit between aggressive and saturated. Composes with Acceleration.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Per-source gyro sensitivity multiplier. 1.0 = the engine's default (500°/s → full deflection). Values above 1.0 are more sensitive; values below 1.0 are less sensitive.</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>

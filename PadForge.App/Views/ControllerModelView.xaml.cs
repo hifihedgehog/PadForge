@@ -952,6 +952,7 @@ namespace PadForge.Views
 
         private void ApplyHoverHighlight(Model3DGroup group)
         {
+            if (_currentModel == null) return;
             if (group.Children.Count == 0 || group.Children[0] is not GeometryModel3D geo)
                 return;
 
@@ -964,6 +965,13 @@ namespace PadForge.Views
 
         private void RestoreHoverGroup(Model3DGroup group)
         {
+            // _currentModel goes null when the slot's OutputType swaps to
+            // a non-3D preview (KBM / MIDI) but _hoverGroup can linger from
+            // the previous viewport's last hover. The next mouse-leave fires
+            // ClearHover → RestoreHoverGroup with that stale group reference,
+            // and the material dictionary lookup NRE'd at line 979 before
+            // this guard. Treat "no current model" as "nothing to restore."
+            if (_currentModel == null) return;
             if (group == null) return;
             if (group.Children.Count == 0 || group.Children[0] is not GeometryModel3D geo)
                 return;

@@ -38,7 +38,7 @@
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="FontWeight" Value="SemiBold"/>
             </Style>
-            <Style x:Key="DzRgbSlider" TargetType="Slider">
+            <Style x:Key="DzRgbSlider" TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
                 <Setter Property="Minimum" Value="0"/>
                 <Setter Property="Maximum" Value="255"/>
                 <Setter Property="Width" Value="148"/>
@@ -47,11 +47,12 @@
                 <Setter Property="IsSnapToTickEnabled" Value="True"/>
                 <Setter Property="TickFrequency" Value="1"/>
             </Style>
-            <Style x:Key="DzValueEditTight" TargetType="TextBox">
-                <Setter Property="Width" Value="36"/>
+            <Style x:Key="DzValueEditTight" TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
+                <Setter Property="Width" Value="48"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
                 <Setter Property="TextAlignment" Value="Right"/>
-                <Setter Property="Margin" Value="4,0,0,0"/>
+                <Setter Property="Margin" Value="6,0,0,0"/>
                 <Setter Property="Padding" Value="2,1"/>
             </Style>
             <Style x:Key="ResetButtonTight" TargetType="Button" BasedOn="{StaticResource ResetButton}">

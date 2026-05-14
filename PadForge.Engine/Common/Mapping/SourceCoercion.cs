@@ -56,17 +56,19 @@ namespace PadForge.Engine.Common.Mapping
         /// break user expectations if synced.</summary>
         public static Func<string, (float pitch, float yaw, float roll)> GyroBiasProvider { get; set; }
 
-        /// <summary>v3.3 per-device gyro tuning bundle. App layer wires
-        /// <see cref="GyroTuningProvider"/> at startup with a lookup
-        /// against <c>UserDevice</c>. Returned struct's fields:
+        /// <summary>v3.3 per-(device, slot) gyro tuning bundle. App
+        /// layer wires <see cref="GyroTuningProvider"/> at startup with
+        /// a lookup against the slot's <c>PadSetting</c> for the named
+        /// device. Returned struct's fields:
         /// <list type="bullet">
         /// <item><c>SensH</c> / <c>SensV</c> — multipliers, default 1.0</item>
-        /// <item><c>DeadZoneRadPerSec</c> — gyro deadzone, rad/s (App
-        ///   converts the UserDevice deg/s storage)</item>
+        /// <item><c>DeadZoneRadPerSec</c> — gyro deadzone, rad/s</item>
         /// <item><c>SmoothingAlpha</c> — EMA alpha 0–1, 0 = off</item>
         /// <item><c>Acceleration</c> — rate-dependent gain 0–2, 0 = off</item>
         /// <item><c>OutputCurve</c> — preset name (Linear / Aggressive /
         ///   Relaxed / Wide / ExtraWide)</item>
+        /// <item><c>EasyAimStickThreshold01</c> — right-stick deflection
+        ///   (0..1) below which gyro output is zeroed. 0 = always on.</item>
         /// </list>
         /// </summary>
         public struct GyroTuning
@@ -77,16 +79,29 @@ namespace PadForge.Engine.Common.Mapping
             public float SmoothingAlpha;
             public float Acceleration;
             public string OutputCurve;
+            public float EasyAimStickThreshold01;
         }
 
-        public static Func<string, GyroTuning> GyroTuningProvider { get; set; }
+        /// <summary>Looks up the per-(device, slot) gyro tuning bundle
+        /// from the slot's PadSetting. <paramref name="slotIndex"/>
+        /// distinguishes the same device's tuning across different
+        /// game-binding configurations.</summary>
+        public static Func<string, int, GyroTuning> GyroTuningProvider { get; set; }
 
-        private static GyroTuning GetGyroTuning(string deviceGuid)
+        /// <summary>Reads the slot's right-stick deflection (0..1) so
+        /// Easy Aim can gate gyro output on aim-stick movement without
+        /// the binding layer needing direct access to the combined
+        /// gamepad state. App wires this against
+        /// <c>InputManager.CombinedOutputStates[slot]</c> at startup.
+        /// Returns 0 when slot is empty / state unavailable.</summary>
+        public static Func<int, float> SlotRightStickDeflectionProvider { get; set; }
+
+        private static GyroTuning GetGyroTuning(string deviceGuid, int slotIndex)
         {
             var provider = GyroTuningProvider;
             if (provider == null || string.IsNullOrEmpty(deviceGuid))
                 return new GyroTuning { SensH = 1f, SensV = 1f, OutputCurve = "Linear" };
-            return provider(deviceGuid);
+            return provider(deviceGuid, slotIndex);
         }
 
         // Per-device EMA smoothing state for gyro rates. Single-threaded
@@ -207,15 +222,42 @@ namespace PadForge.Engine.Common.Mapping
         /// <summary>Public form of <see cref="ReadCalibratedGyroRate"/>:
         /// returns the bias-subtracted gyro rate (rad/s) for the source's
         /// descriptor on the given state, or 0 for non-gyro descriptors /
-        /// unknown axes / null state.Gyro. Lets the integrator path in
-        /// <c>SourceKindRuntime.TickGyroIntegrated</c> reuse the same
-        /// bias-subtraction logic as the bipolar/unipolar/bool readers.</summary>
+        /// unknown axes / null state.Gyro.</summary>
         public static float GetCalibratedGyroRate(CustomInputState state, MappingSource src)
         {
             if (src == null) return 0f;
             int axis = ParseGyroAxisIndex(src.Descriptor);
             if (axis < 0) return 0f;
             return ReadCalibratedGyroRate(state, axis, src.DeviceGuid);
+        }
+
+        /// <summary>Public access to the full per-(device, slot) gyro
+        /// tuning chain — bias, smoothing, deadzone, H/V sensitivity,
+        /// per-source sensitivity, Easy Aim gating. Returns the tuned
+        /// rate in rad/s (pre-scale, pre-curve, pre-acceleration). Used
+        /// by the gyro→stick integrator path so that path picks up the
+        /// same tuning as the mouse/scroll bipolar/unipolar readers.
+        /// <paramref name="tuning"/> exits with the resolved tuning
+        /// bundle so callers can apply curve + acceleration to the
+        /// post-integration normalized value.</summary>
+        public static float GetTunedGyroRate(CustomInputState state, MappingSource src, int slotIndex, out GyroTuning tuning)
+        {
+            tuning = default;
+            return ReadTunedGyroRate(state, src, slotIndex, out _, out tuning);
+        }
+
+        /// <summary>Applies the Phase 2 output curve + acceleration to a
+        /// normalized [-1..+1] value. Composes the same way as the
+        /// in-line application inside <c>ReadAsBipolar</c>, but exposed
+        /// for the gyro→stick integrator path to call after its
+        /// integration step.</summary>
+        public static float ShapeGyroNormalized(float normalized, GyroTuning tuning)
+        {
+            float v = ApplyOutputCurve(normalized, tuning.OutputCurve);
+            v = ApplyGyroAcceleration(v, tuning.Acceleration);
+            if (v < -1f) v = -1f;
+            else if (v > 1f) v = 1f;
+            return v;
         }
 
         /// <summary>Returns a gyro reading processed through the full
@@ -232,11 +274,26 @@ namespace PadForge.Engine.Common.Mapping
         /// Returns 0 for non-gyro descriptors / unknown axes / null
         /// state.Gyro. Used by all three reader branches (bool / bipolar
         /// / unipolar) so device-level tuning applies uniformly.</summary>
-        private static float ReadTunedGyroRate(CustomInputState state, MappingSource src, out int gyroAxis, out GyroTuning tuning)
+        private static float ReadTunedGyroRate(CustomInputState state, MappingSource src, int slotIndex, out int gyroAxis, out GyroTuning tuning)
         {
             gyroAxis = -1;
             tuning = default;
             if (state == null || src == null) return 0f;
+
+            // Easy Aim — gate gyro on right-stick deflection past the
+            // configured threshold. Threshold 0 = always-on (default).
+            // Slot must be valid; otherwise pass through unconditionally.
+            tuning = GetGyroTuning(src.DeviceGuid, slotIndex);
+            if (tuning.EasyAimStickThreshold01 > 0f && slotIndex >= 0)
+            {
+                float defl = SlotRightStickDeflectionProvider?.Invoke(slotIndex) ?? 1f;
+                if (defl < tuning.EasyAimStickThreshold01)
+                {
+                    gyroAxis = ParseGyroAxisIndex(src.Descriptor);
+                    if (IsHorizontalBlendDescriptor(src.Descriptor)) gyroAxis = 1;
+                    return 0f;
+                }
+            }
 
             // Gyro Horizontal — auto-blend of yaw + roll for grip-style-
             // agnostic horizontal aim. Read both axes, smooth + deadzone
@@ -244,7 +301,6 @@ namespace PadForge.Engine.Common.Mapping
             // signed value. Same H sensitivity multiplier as plain Yaw/Roll.
             if (IsHorizontalBlendDescriptor(src.Descriptor))
             {
-                tuning = GetGyroTuning(src.DeviceGuid);
                 float yaw  = ProcessSingleAxis(state, src, 1, tuning); // Yaw
                 float roll = ProcessSingleAxis(state, src, 2, tuning); // Roll
                 gyroAxis = (Math.Abs(yaw) >= Math.Abs(roll)) ? 1 : 2;
@@ -253,7 +309,6 @@ namespace PadForge.Engine.Common.Mapping
 
             gyroAxis = ParseGyroAxisIndex(src.Descriptor);
             if (gyroAxis < 0) return 0f;
-            tuning = GetGyroTuning(src.DeviceGuid);
             return ProcessSingleAxis(state, src, gyroAxis, tuning);
         }
 
@@ -312,11 +367,11 @@ namespace PadForge.Engine.Common.Mapping
         /// threshold (per-source DeadZone overrides the global threshold
         /// when set).</summary>
         public static bool EvaluateForButtonTarget(
-            CustomInputState state, MappingSource src, int globalThresholdPercent)
+            CustomInputState state, MappingSource src, int globalThresholdPercent, int slotIndex = -1)
         {
             if (state == null || src == null) return false;
 
-            bool raw = ReadAsBool(state, src, globalThresholdPercent);
+            bool raw = ReadAsBool(state, src, globalThresholdPercent, slotIndex);
 
             // Axis sources internalize Invert inside ReadAsBool — for
             // half-axis it picks which half to test, for full-axis it
@@ -334,13 +389,16 @@ namespace PadForge.Engine.Common.Mapping
         /// <summary>Evaluates a source for a bipolar axis target. Returns
         /// a float in [-1, +1]. Buttons map to ±1 (sign from Invert);
         /// unipolar sliders map to 0..+1 → -1..+1 only when not HalfAxis;
-        /// otherwise they stay 0..+1 then sign-flipped via Invert.</summary>
+        /// otherwise they stay 0..+1 then sign-flipped via Invert.
+        /// <paramref name="slotIndex"/> is required for gyro-target
+        /// tuning lookups (per-(device, slot) PadSetting); pass -1 for
+        /// non-slot contexts (legacy / utility callers).</summary>
         public static float EvaluateForBipolarAxisTarget(
-            CustomInputState state, MappingSource src)
+            CustomInputState state, MappingSource src, int slotIndex = -1)
         {
             if (state == null || src == null) return 0f;
 
-            float raw = ReadAsBipolar(state, src);
+            float raw = ReadAsBipolar(state, src, slotIndex);
             return src.Invert ? -raw : raw;
         }
 
@@ -349,11 +407,11 @@ namespace PadForge.Engine.Common.Mapping
         /// absolute value; buttons map to 0/1; HalfAxis still respects
         /// the active half.</summary>
         public static float EvaluateForTriggerTarget(
-            CustomInputState state, MappingSource src)
+            CustomInputState state, MappingSource src, int slotIndex = -1)
         {
             if (state == null || src == null) return 0f;
 
-            float raw = ReadAsUnipolar(state, src);
+            float raw = ReadAsUnipolar(state, src, slotIndex);
             return src.Invert ? 1f - raw : raw;
         }
 
@@ -361,16 +419,16 @@ namespace PadForge.Engine.Common.Mapping
         /// (DPadUp/Down/Left/Right). Same shape as button-target with
         /// PovDirection sources matching the descriptor's direction.</summary>
         public static bool EvaluateForPovDirectionTarget(
-            CustomInputState state, MappingSource src, int globalThresholdPercent)
+            CustomInputState state, MappingSource src, int globalThresholdPercent, int slotIndex = -1)
         {
             // POV-direction targets are bool; reuse the button path (which
             // already special-cases POV-direction sources via the parser).
-            return EvaluateForButtonTarget(state, src, globalThresholdPercent);
+            return EvaluateForButtonTarget(state, src, globalThresholdPercent, slotIndex);
         }
 
         // ─── Internal readers ──────────────────────────────────────────
 
-        private static bool ReadAsBool(CustomInputState state, MappingSource src, int globalThresholdPercent)
+        private static bool ReadAsBool(CustomInputState state, MappingSource src, int globalThresholdPercent, int slotIndex)
         {
             string s = (src.Descriptor ?? "").Trim();
             if (string.IsNullOrEmpty(s)) return false;
@@ -380,7 +438,7 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
             {
-                float tunedRate = ReadTunedGyroRate(state, src, out int gyroAxis, out _);
+                float tunedRate = ReadTunedGyroRate(state, src, slotIndex, out int gyroAxis, out _);
                 if (gyroAxis < 0) return false;
                 // Per-source DeadZone (when set) overrides the default
                 // 30°/s button threshold so users can dial in sensitivity.
@@ -443,7 +501,7 @@ namespace PadForge.Engine.Common.Mapping
             }
         }
 
-        private static float ReadAsBipolar(CustomInputState state, MappingSource src)
+        private static float ReadAsBipolar(CustomInputState state, MappingSource src, int slotIndex)
         {
             string s = (src.Descriptor ?? "").Trim();
             if (string.IsNullOrEmpty(s)) return 0f;
@@ -460,7 +518,7 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
             {
-                float tunedRate = ReadTunedGyroRate(state, src, out int gyroAxis, out var tuning);
+                float tunedRate = ReadTunedGyroRate(state, src, slotIndex, out int gyroAxis, out var tuning);
                 if (gyroAxis < 0) return 0f;
                 float v = tunedRate * GyroScale;
                 // Phase 2 response shaping in normalized space.
@@ -504,7 +562,7 @@ namespace PadForge.Engine.Common.Mapping
             }
         }
 
-        private static float ReadAsUnipolar(CustomInputState state, MappingSource src)
+        private static float ReadAsUnipolar(CustomInputState state, MappingSource src, int slotIndex)
         {
             string s = (src.Descriptor ?? "").Trim();
             if (string.IsNullOrEmpty(s)) return 0f;
@@ -519,7 +577,7 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
             {
-                float tunedRate = ReadTunedGyroRate(state, src, out int gyroAxis, out var tuning);
+                float tunedRate = ReadTunedGyroRate(state, src, slotIndex, out int gyroAxis, out var tuning);
                 if (gyroAxis < 0) return 0f;
                 float v = Math.Abs(tunedRate) * GyroScale;
                 // Phase 2 response shaping in normalized space (unsigned trigger).

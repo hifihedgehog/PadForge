@@ -1090,6 +1090,20 @@
   <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>Ganancia dependiente de la velocidad. 0 = desactivado (escalado lineal). Valores mayores dejan los movimientos lentos sin cambios y amplifican los rápidos — útil para combinar puntería precisa con giros rápidos.</value></data>
   <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>Curva de salida</value></data>
   <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>Da forma a la respuesta. Linear = paso directo. Aggressive = x² (lento permanece lento). Relaxed = √x (lento amplifica, rápido satura). Wide / ExtraWide entre agresiva y saturada. Compone con la Aceleración.</value></data>
+  <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Unidades</value></data>
+  <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Unidad de visualización de la sensibilidad. Multiplier es la escala × interna (1 = línea base). DegPerScreenTurn al estilo Steam: grados de rotación física del mando por un giro completo en pantalla.</value></data>
+  <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Umbral de Easy Aim</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Desviación del stick derecho (0–100%) por debajo de la cual la salida del giroscopio es cero. 0 = siempre activo. Estilo Steam: el giroscopio actúa solo al pasar del umbral.</value></data>
+  <data name="Pad_Gyro" xml:space="preserve"><value>Giroscopio</value></data>
+  <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroscopio</value></data>
+  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Ajuste del giroscopio por dispositivo y por slot. La calibración del sesgo se comparte entre slots; sensibilidad, zona muerta, suavizado, curva, aceleración y Easy Aim son por (dispositivo, slot) — cada configuración de asignaciones tiene su propio comportamiento.</value></data>
+  <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibración</value></data>
+  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilidad</value></data>
+  <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Forma de respuesta</value></data>
+  <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
+  <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>Activa el giroscopio solo mientras el stick derecho esté desplazado. 0% lo desactiva (giroscopio siempre activo).</value></data>
+  <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Restablecer ajustes a predeterminados</value></data>
+  <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Restaura sensibilidad H/V, zona muerta, suavizado, aceleración, curva de salida, unidades y umbral de Easy Aim a sus valores de fábrica. No afecta a la calibración del sesgo.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicador de sensibilidad del giroscopio por fuente. 1,0 = predeterminado del motor (500°/s → desviación completa). Valores superiores a 1,0 son más sensibles; valores inferiores son menos sensibles.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>

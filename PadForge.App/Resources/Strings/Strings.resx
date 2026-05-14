@@ -942,6 +942,20 @@
   <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>Rate-dependent gain. 0 = off (linear scaling). Higher values let slow movements pass through unchanged while amplifying fast movements — useful for combining precision aim with quick turns.</value></data>
   <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>Output Curve</value></data>
   <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>Reshapes the response. Linear = pass-through. Aggressive = x² (slow stays slow, fast amplifies). Relaxed = √x (slow amplifies, fast saturates). Wide / ExtraWide sit between aggressive and saturated. Composes with Acceleration.</value></data>
+  <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Units</value></data>
+  <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Sensitivity unit display. Multiplier is the internal × scale (1 = baseline). DegPerScreenTurn is Steam-style — degrees of physical controller rotation per one full screen turn.</value></data>
+  <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim Threshold</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Right-stick deflection (0–100%) below which gyro output is zeroed. 0 = always on. Steam's "gyro engaged while aiming" feel — gyro fires only when the user pushes the right stick past the threshold.</value></data>
+  <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
+  <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
+  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Per-device gyro tuning for this slot. Bias calibration is shared across slots; sensitivity, deadzone, smoothing, curve, acceleration, and Easy Aim are all per-(device, slot) so each binding config has its own feel.</value></data>
+  <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
+  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Response shaping</value></data>
+  <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
+  <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>Engage gyro only while the right stick is deflected. 0% disables (gyro always-on).</value></data>
+  <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Reset tuning to defaults</value></data>
+  <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Restores H/V sensitivity, deadzone, smoothing, acceleration, output curve, units, and Easy Aim threshold to their factory defaults. Does not affect calibration bias.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Per-source gyro sensitivity multiplier. 1.0 = the engine's default (500°/s → full deflection). Values above 1.0 are more sensitive; values below 1.0 are less sensitive.</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>

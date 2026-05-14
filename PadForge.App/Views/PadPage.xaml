@@ -4845,7 +4845,20 @@
                                               ToolTip="{Binding Settings_GyroSensitivityUnits_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
+                                <!-- v3.4 Player/World Space — Jibb's recommended default
+                                     is Player Space; we keep Local as the conservative default
+                                     so existing configs feel identical. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                    <TextBlock Text="{Binding Settings_GyroSpace, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_GyroSpace_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBox ItemsSource="{Binding GyroSpaceOptions}"
+                                              SelectedItem="{Binding GyroSpace, Mode=TwoWay}"
+                                              Width="200" VerticalAlignment="Center"
+                                              ToolTip="{Binding Settings_GyroSpace_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                     <TextBlock Text="{Binding Settings_GyroSensitivityH, Source={x:Static strings:Strings.Instance}}"
                                                Width="140" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroSensitivityH_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -4874,6 +4887,34 @@
                                     <TextBlock Text="{Binding GyroSensitivityV_DegPerTurn, StringFormat={}≈ {0:0}°/turn}"
                                                VerticalAlignment="Center" Margin="14,0,0,0" Opacity="0.55" FontSize="11"/>
                                 </StackPanel>
+
+                                <!-- v3.4 Per-axis invert toggles. Independent from per-source
+                                     Invert flags on the mapping table — Steam-style top-level
+                                     convenience. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <CheckBox Content="{Binding Settings_GyroInvertPitch, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding GyroInvertPitch, Mode=TwoWay}"
+                                              VerticalAlignment="Center" Margin="0,0,16,0"
+                                              ToolTip="{Binding Settings_GyroInvertPitch_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <CheckBox Content="{Binding Settings_GyroInvertYaw, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding GyroInvertYaw, Mode=TwoWay}"
+                                              VerticalAlignment="Center"
+                                              ToolTip="{Binding Settings_GyroInvertYaw_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <!-- v3.4 Real-world calibration. 0 = disabled. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <TextBlock Text="{Binding Settings_GyroRealWorldCalibration, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_GyroRealWorldCalibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding GyroRealWorldCalibration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Minimum="0" Maximum="2" SmallChange="0.01" LargeChange="0.1"
+                                            Width="200" VerticalAlignment="Center"
+                                            ToolTip="{Binding Settings_GyroRealWorldCalibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding GyroRealWorldCalibration, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                             Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
+                                    <TextBlock Text="×" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
+                                </StackPanel>
                             </StackPanel>
                         </Border>
 
@@ -4896,16 +4937,47 @@
                                     <TextBlock Text="°/s" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
                                 </StackPanel>
 
+                                <!-- v3.4 dual-threshold smoothing (JSM-style).
+                                     Tightening = full smoothing below this rate (drop hand tremor).
+                                     Smoothing threshold = pass-through above this rate (fast turns).
+                                     Between thresholds = linear ramp. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <TextBlock Text="{Binding Settings_GyroSmoothing, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Text="{Binding Settings_GyroTightening, Source={x:Static strings:Strings.Instance}}"
                                                Width="140" VerticalAlignment="Center"
-                                               ToolTip="{Binding Settings_GyroSmoothing_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Slider Value="{Binding GyroSmoothingAlpha, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            Minimum="0" Maximum="0.95" SmallChange="0.05" LargeChange="0.1"
+                                               ToolTip="{Binding Settings_GyroTightening_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding GyroTighteningThresholdDegPerSec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Minimum="0" Maximum="30" SmallChange="0.5" LargeChange="5"
                                             Width="200" VerticalAlignment="Center"
-                                            ToolTip="{Binding Settings_GyroSmoothing_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <TextBox Text="{Binding GyroSmoothingAlpha, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                            ToolTip="{Binding Settings_GyroTightening_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding GyroTighteningThresholdDegPerSec, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.0}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
+                                    <TextBlock Text="°/s" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <TextBlock Text="{Binding Settings_GyroSmoothingThreshold, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_GyroSmoothingThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding GyroSmoothingThresholdDegPerSec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Minimum="0" Maximum="30" SmallChange="0.5" LargeChange="5"
+                                            Width="200" VerticalAlignment="Center"
+                                            ToolTip="{Binding Settings_GyroSmoothingThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding GyroSmoothingThresholdDegPerSec, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.0}}"
+                                             Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
+                                    <TextBlock Text="°/s" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <TextBlock Text="{Binding Settings_GyroSmoothingWindow, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_GyroSmoothingWindow_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding GyroSmoothingWindowMs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Minimum="10" Maximum="200" SmallChange="5" LargeChange="20"
+                                            Width="200" VerticalAlignment="Center"
+                                            ToolTip="{Binding Settings_GyroSmoothingWindow_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding GyroSmoothingWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0}}"
+                                             Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
+                                    <TextBlock Text="ms" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
@@ -4932,12 +5004,12 @@
                             </StackPanel>
                         </Border>
 
-                        <!-- ─── Easy Aim card ─── -->
+                        <!-- ─── Engage card (v3.4: was Easy Aim) ─── -->
                         <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
                             <StackPanel>
-                                <TextBlock Text="{Binding Pad_Gyro_EasyAim_Header, Source={x:Static strings:Strings.Instance}}"
+                                <TextBlock Text="{Binding Pad_Gyro_Engage_Header, Source={x:Static strings:Strings.Instance}}"
                                            FontWeight="SemiBold" FontSize="13" Margin="0,0,0,4"/>
-                                <TextBlock Text="{Binding Pad_Gyro_EasyAim_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                <TextBlock Text="{Binding Pad_Gyro_Engage_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            TextWrapping="Wrap" Margin="0,0,0,8" FontSize="11"/>
                                 <StackPanel Orientation="Horizontal">
@@ -4951,6 +5023,22 @@
                                     <TextBox Text="{Binding GyroEasyAimStickThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
                                     <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
+                                </StackPanel>
+
+                                <!-- v3.4 Aim Engage button: gyro fires only while this button
+                                     is pressed (AND-composed with the right-stick threshold). -->
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <TextBlock Text="{Binding Settings_GyroAimEngageButton, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_GyroAimEngageButton_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding GyroAimEngageButton, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Width="200" VerticalAlignment="Center"
+                                             Padding="4,2" VerticalContentAlignment="Center"
+                                             ToolTip="{Binding Settings_GyroAimEngageButton_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding GyroAimEngageDeviceGuid, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Width="180" Margin="6,0,0,0" VerticalAlignment="Center"
+                                             Padding="4,2" VerticalContentAlignment="Center"
+                                             ToolTip="Device GUID owning the descriptor"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

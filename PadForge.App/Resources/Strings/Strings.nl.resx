@@ -1122,6 +1122,24 @@
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Responsvorm</value></data>
   <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
   <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>Activeer de gyro alleen wanneer de rechterstick wordt uitgeslagen. 0% schakelt uit (gyro altijd aan).</value></data>
+  <data name="Settings_GyroSpace" xml:space="preserve"><value>Ruimte</value></data>
+  <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = ruwe controller-assen. Player = yaw geprojecteerd op de echte verticale as (zwaartekracht); pitch blijft lokaal — door Jibb Smart aanbevolen standaard voor natuurlijk gevoel bij elke kanteling. World = yaw én pitch geprojecteerd op wereldassen.</value></data>
+  <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Pitch (Y) omkeren</value></data>
+  <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Globale pitch-omkering. Wordt na de Player/World-projectie toegepast — onafhankelijk van de Invert-vlaggen per bron in de toewijzingstabel.</value></data>
+  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Yaw (X) omkeren</value></data>
+  <data name="Settings_GyroInvertYaw_Tooltip" xml:space="preserve"><value>Globale yaw-omkering. Geldt ook voor Roll- en Gyro-Horizontal-bronnen.</value></data>
+  <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Realistische kalibratie</value></data>
+  <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>Graden in het spel per graad fysieke controller-rotatie. 0 = uitgeschakeld. 1 = 1:1 (controller 90° draaien → in-game beeld 90°). Per spel één keer kalibreren door de controller 360° te draaien en aan te passen tot het in-game beeld ook 360° draait.</value></data>
+  <data name="Settings_GyroTightening" xml:space="preserve"><value>Aanscherping</value></data>
+  <data name="Settings_GyroTightening_Tooltip" xml:space="preserve"><value>Onder deze snelheid wordt de invoer volledig vervangen door het gemiddelde van de smoothing-buffer — dempt handtrilling en micro-drift. Standaard 3°/s.</value></data>
+  <data name="Settings_GyroSmoothingThreshold" xml:space="preserve"><value>Smoothing-drempel</value></data>
+  <data name="Settings_GyroSmoothingThreshold_Tooltip" xml:space="preserve"><value>Boven deze snelheid passeert de invoer ongefilterd — snelle draaiingen behouden precisie. Tussen de drempels wordt lineair gemengd. Standaard 8°/s.</value></data>
+  <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Smoothing-venster</value></data>
+  <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Lengte van het tijdvenster van de smoothing-buffer. Groter = meer smoothing onder de aanscherpings-drempel; kleiner = directer. Standaard 50 ms.</value></data>
+  <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Activatieknop</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Descriptor van een knop die de gyro-uitvoer regelt: gyro werkt alleen terwijl deze knop wordt ingedrukt. Leeg = geen knop-restrictie. EN-gecombineerd met de stickdrempel hierboven.</value></data>
+  <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Activering</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optionele beperkingen op wanneer de gyro actief is. Stickuitslag rechts en een activatieknop kunnen elk de gyro-uitvoer beperken; configureer één of beide. Als beide zijn ingesteld moeten beide actief zijn voor de gyro werkt.</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Afstemming op standaard zetten</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Zet H/V-gevoeligheid, dode zone, smoothing, versnelling, uitvoercurve, eenheden en Easy Aim-drempel terug op de fabrieksinstellingen. De kalibratiebias blijft ongewijzigd.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>

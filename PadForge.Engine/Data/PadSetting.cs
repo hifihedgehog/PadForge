@@ -373,6 +373,79 @@ namespace PadForge.Engine.Data
         [XmlElement] public string GyroCalibratedAtUtc { get; set; } = "";
 
         // ─────────────────────────────────────────────
+        //  v3.4 Jibb-canon gyro extensions
+        //  Player Space + dual-threshold smoothing +
+        //  real-world calibration + button-gated aim
+        //  engage + per-axis invert toggles. Closes the
+        //  gap between SteamInput parity (v3.3) and the
+        //  JoyShockMapper / GamepadMotion canon.
+        // ─────────────────────────────────────────────
+
+        /// <summary>Gyro coordinate space: "Local" (default, raw
+        /// controller axes), "Player" (yaw projected onto real-world
+        /// vertical via gravity; pitch stays local — Jibb's recommended
+        /// default), "World" (both yaw and pitch projected onto world
+        /// axes). Player is the popular sweet spot.</summary>
+        [XmlElement] public string GyroSpace { get; set; } = "Local";
+
+        /// <summary>Player Space yaw relaxation factor. Default 1.41
+        /// (~√2) per GamepadMotion.hpp. Lets the projected yaw range
+        /// slightly past the raw magnitude so feel doesn't get muted
+        /// at extreme tilts.</summary>
+        [XmlElement] public string GyroPlayerSpaceYawRelaxFactor { get; set; } = "1.41";
+
+        /// <summary>World Space side-reduction threshold (0–1, default
+        /// 0.125 per GamepadMotion.hpp). Smoothly fades the pitch
+        /// contribution as the controller is rolled onto its side,
+        /// avoiding feel cliffs.</summary>
+        [XmlElement] public string GyroWorldSpaceSideReductionThreshold { get; set; } = "0.125";
+
+        /// <summary>Gyro tightening (lower) threshold in deg/s. Below
+        /// this rate, the input is fully replaced by the smoothing
+        /// buffer's average — hand tremor and microscopic drift get
+        /// attenuated. Default 3°/s.</summary>
+        [XmlElement] public string GyroTighteningThresholdDegPerSec { get; set; } = "3.0";
+
+        /// <summary>Gyro smoothing (upper) threshold in deg/s. Above
+        /// this rate, the input passes through raw — fast turns retain
+        /// precision. Between tightening and smoothing, a linear ramp
+        /// blends. Default 8°/s.</summary>
+        [XmlElement] public string GyroSmoothingThresholdDegPerSec { get; set; } = "8.0";
+
+        /// <summary>Length of the smoothing-buffer time window in
+        /// milliseconds. At 60-fps poll, 50ms ≈ 3 samples. Larger =
+        /// heavier smoothing below tightening; smaller = snappier.
+        /// Default 50ms.</summary>
+        [XmlElement] public string GyroSmoothingWindowMs { get; set; } = "50";
+
+        /// <summary>Real-world calibration: in-game degrees per physical
+        /// degree of controller rotation. 0 (default) = disabled. The
+        /// user calibrates this once per game profile via the JSM-style
+        /// "rotate the pad 360°, look at the in-game rotation, divide"
+        /// recipe.</summary>
+        [XmlElement] public string GyroRealWorldCalibration { get; set; } = "0";
+
+        /// <summary>Cross-device button descriptor that gates gyro
+        /// output: gyro fires only while this button is pressed. Empty
+        /// = always-on (gyro is gated only by Easy Aim, if configured).
+        /// Pairs naturally with Easy Aim; both are AND-composed (both
+        /// must be active).</summary>
+        [XmlElement] public string GyroAimEngageButton { get; set; } = "";
+
+        /// <summary>Device GUID owning the
+        /// <see cref="GyroAimEngageButton"/> descriptor.</summary>
+        [XmlElement] public string GyroAimEngageDeviceGuid { get; set; } = "";
+
+        /// <summary>Top-level invert toggle for the projected pitch
+        /// axis. Applies post-tuning, after Player/World projection,
+        /// so its effect is consistent across gyro spaces.</summary>
+        [XmlElement] public string GyroInvertPitch { get; set; } = "0";
+
+        /// <summary>Top-level invert toggle for the projected yaw axis
+        /// (includes Roll for Local space and Horizontal blend).</summary>
+        [XmlElement] public string GyroInvertYaw { get; set; } = "0";
+
+        // ─────────────────────────────────────────────
         //  Axis-to-button threshold
         // ─────────────────────────────────────────────
 

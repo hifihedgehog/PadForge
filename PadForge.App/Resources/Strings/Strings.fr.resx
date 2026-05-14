@@ -1102,6 +1102,24 @@
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Forme de réponse</value></data>
   <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
   <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>Active le gyroscope uniquement quand le stick droit est dévié. 0% désactive (gyroscope toujours actif).</value></data>
+  <data name="Settings_GyroSpace" xml:space="preserve"><value>Espace</value></data>
+  <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = axes bruts du contrôleur. Player = le lacet est projeté sur la verticale réelle (gravité) ; le tangage reste local — défaut recommandé par Jibb Smart pour un ressenti naturel quelle que soit l'inclinaison. World = lacet et tangage projetés sur les axes du monde.</value></data>
+  <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Inverser le tangage (Y)</value></data>
+  <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Inversion globale du tangage. S'applique après la projection Player/World — indépendante des indicateurs Invert par source dans la table d'affectations.</value></data>
+  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Inverser le lacet (X)</value></data>
+  <data name="Settings_GyroInvertYaw_Tooltip" xml:space="preserve"><value>Inversion globale du lacet. Couvre également les sources Roll et Gyro Horizontal.</value></data>
+  <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Étalonnage réel</value></data>
+  <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>Degrés en jeu par degré physique de rotation du contrôleur. 0 = désactivé. 1 = 1:1 (manette tournée de 90° → vue en jeu de 90°). Étalonner une fois par jeu en tournant la manette de 360° et en ajustant jusqu'à ce que la vue en jeu tourne aussi de 360°.</value></data>
+  <data name="Settings_GyroTightening" xml:space="preserve"><value>Resserrage</value></data>
+  <data name="Settings_GyroTightening_Tooltip" xml:space="preserve"><value>En dessous de ce taux, l'entrée est entièrement remplacée par la moyenne du tampon de lissage — supprime tremblement de main et micro-dérive. Défaut 3°/s.</value></data>
+  <data name="Settings_GyroSmoothingThreshold" xml:space="preserve"><value>Seuil de lissage</value></data>
+  <data name="Settings_GyroSmoothingThreshold_Tooltip" xml:space="preserve"><value>Au-dessus de ce taux, l'entrée passe sans filtre — les rotations rapides conservent leur précision. Entre les seuils, un mélange linéaire opère. Défaut 8°/s.</value></data>
+  <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Fenêtre de lissage</value></data>
+  <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Durée de la fenêtre du tampon de lissage. Plus grande = plus de lissage sous le seuil de resserrage ; plus petite = plus direct. Défaut 50 ms.</value></data>
+  <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Bouton d'activation</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Descripteur d'un bouton qui conditionne la sortie gyroscope : le gyroscope agit uniquement lorsque ce bouton est maintenu. Vide = aucune contrainte de bouton. Composé en ET avec le seuil de déflexion du stick ci-dessus.</value></data>
+  <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Activation</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Restrictions optionnelles qui limitent l'activité du gyroscope. La déflexion du stick droit et un bouton d'activation peuvent chacun conditionner la sortie ; configurez l'un ou les deux. Si les deux sont configurés, ils doivent être actifs simultanément.</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Réinitialiser le réglage</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Rétablit la sensibilité H/V, la zone morte, le lissage, l'accélération, la courbe de sortie, les unités et le seuil Easy Aim aux valeurs d'usine. N'affecte pas l'étalonnage du biais.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilité</value></data>

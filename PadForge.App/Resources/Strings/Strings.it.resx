@@ -1122,6 +1122,24 @@
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Forma della risposta</value></data>
   <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
   <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>Attiva il giroscopio solo quando lo stick destro è deflesso. 0% disattiva (giroscopio sempre attivo).</value></data>
+  <data name="Settings_GyroSpace" xml:space="preserve"><value>Spazio</value></data>
+  <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = assi grezzi del controller. Player = lo yaw è proiettato sulla verticale reale (gravità); il pitch resta locale — predefinito consigliato da Jibb Smart per un feel naturale a qualsiasi inclinazione. World = yaw e pitch entrambi proiettati sugli assi del mondo.</value></data>
+  <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Inverti Pitch (Y)</value></data>
+  <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Inversione globale del pitch. Si applica dopo la proiezione Player/World — indipendente dai flag Invert per sorgente nella tabella di mappatura.</value></data>
+  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Inverti Yaw (X)</value></data>
+  <data name="Settings_GyroInvertYaw_Tooltip" xml:space="preserve"><value>Inversione globale dello yaw. Copre anche le sorgenti Roll e Gyro Horizontal.</value></data>
+  <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Calibrazione reale</value></data>
+  <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>Gradi in gioco per grado fisico di rotazione del controller. 0 = disattivato. 1 = 1:1 (ruoti il pad di 90°, la vista ruota di 90°). Calibra una volta per gioco ruotando il pad di 360° e regolando finché la vista in gioco ruota anch'essa di 360°.</value></data>
+  <data name="Settings_GyroTightening" xml:space="preserve"><value>Stringimento</value></data>
+  <data name="Settings_GyroTightening_Tooltip" xml:space="preserve"><value>Sotto questa velocità l'input è completamente sostituito dalla media del buffer di smussatura — elimina tremori della mano e micro-deriva. Predefinito 3°/s.</value></data>
+  <data name="Settings_GyroSmoothingThreshold" xml:space="preserve"><value>Soglia di smussatura</value></data>
+  <data name="Settings_GyroSmoothingThreshold_Tooltip" xml:space="preserve"><value>Sopra questa velocità l'input passa grezzo — le rotazioni veloci mantengono precisione. Tra le soglie si mescola linearmente. Predefinito 8°/s.</value></data>
+  <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Finestra di smussatura</value></data>
+  <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Durata della finestra del buffer. Più grande = più smussatura sotto la soglia di stringimento; più piccola = più diretto. Predefinito 50 ms.</value></data>
+  <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Pulsante di attivazione</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Descrittore di un pulsante che vincola l'uscita del giroscopio: il giroscopio attiva solo mentre questo pulsante è tenuto. Vuoto = nessun vincolo. Composto in AND con la soglia di deflessione dello stick sopra.</value></data>
+  <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Attivazione</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Vincoli opzionali che limitano quando il giroscopio è attivo. Sia la deflessione dello stick destro sia un pulsante di attivazione possono vincolare l'uscita; configura uno o entrambi. Se sono configurati entrambi, devono essere attivi contemporaneamente.</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Ripristina valori predefiniti</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Ripristina sensibilità H/V, zona morta, smussatura, accelerazione, curva di output, unità e soglia Easy Aim ai valori di fabbrica. Non modifica la calibrazione del bias.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilità</value></data>

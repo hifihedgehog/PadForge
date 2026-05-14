@@ -1140,6 +1140,17 @@
   <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Descriptor van een knop die de gyro-uitvoer regelt: gyro werkt alleen terwijl deze knop wordt ingedrukt. Leeg = geen knop-restrictie. EN-gecombineerd met de stickdrempel hierboven.</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Activering</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optionele beperkingen op wanneer de gyro actief is. Stickuitslag rechts en een activatieknop kunnen elk de gyro-uitvoer beperken; configureer één of beide. Als beide zijn ingesteld moeten beide actief zijn voor de gyro werkt.</value></data>
+  <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokaal</value></data>
+  <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Speler</value></data>
+  <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Wereld</value></data>
+  <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Lineair</value></data>
+  <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Agressief</value></data>
+  <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Soepel</value></data>
+  <data name="Pad_Gyro_Curve_Wide" xml:space="preserve"><value>Breed</value></data>
+  <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Extra breed</value></data>
+  <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Vermenigvuldiger</value></data>
+  <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Graden per schermrotatie</value></data>
+  <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>De volgende fysieke invoer opnemen als activatieknop</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Afstemming op standaard zetten</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Zet H/V-gevoeligheid, dode zone, smoothing, versnelling, uitvoercurve, eenheden en Easy Aim-drempel terug op de fabrieksinstellingen. De kalibratiebias blijft ongewijzigd.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>

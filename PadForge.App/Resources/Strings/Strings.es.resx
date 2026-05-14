@@ -1120,6 +1120,17 @@
   <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Descriptor de un botón que controla la salida del giroscopio: el giroscopio actúa solo mientras se mantiene este botón. Vacío = sin restricción por botón. Se combina con AND con el umbral del stick derecho.</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Activación</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Restricciones opcionales que limitan cuándo está activo el giroscopio. La deflexión del stick derecho y un botón de activación pueden controlar la salida; configura uno o ambos. Si ambos están configurados, deben estar activos a la vez.</value></data>
+  <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Local</value></data>
+  <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Jugador</value></data>
+  <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Mundo</value></data>
+  <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Lineal</value></data>
+  <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Agresiva</value></data>
+  <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Suave</value></data>
+  <data name="Pad_Gyro_Curve_Wide" xml:space="preserve"><value>Amplia</value></data>
+  <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Extra amplia</value></data>
+  <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplicador</value></data>
+  <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Grados por giro de pantalla</value></data>
+  <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>Grabar la próxima entrada física como botón de activación</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Restablecer ajustes a predeterminados</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Restaura sensibilidad H/V, zona muerta, suavizado, aceleración, curva de salida, unidades y umbral de Easy Aim a sus valores de fábrica. No afecta a la calibración del sesgo.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>

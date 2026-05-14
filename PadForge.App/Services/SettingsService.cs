@@ -1583,7 +1583,7 @@ namespace PadForge.Services
                 padVm.GyroSensitivityUnits = string.IsNullOrEmpty(ps.GyroSensitivityUnits) ? "Multiplier" : ps.GyroSensitivityUnits;
                 padVm.GyroEasyAimStickThreshold = TryParseDouble(ps.GyroEasyAimStickThreshold, 0);
 
-                // Load v3.4 Jibb-canon gyro extensions.
+                // Load JoyShockMapper-canongyro extensions.
                 padVm.GyroSpace = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace;
                 padVm.GyroPlayerSpaceYawRelaxFactor = TryParseDouble(ps.GyroPlayerSpaceYawRelaxFactor, 1.41);
                 padVm.GyroWorldSpaceSideReductionThreshold = TryParseDouble(ps.GyroWorldSpaceSideReductionThreshold, 0.125);
@@ -2628,7 +2628,7 @@ namespace PadForge.Services
                     ps.GyroSensitivityUnits = padVm.GyroSensitivityUnits ?? "Multiplier";
                     ps.GyroEasyAimStickThreshold = padVm.GyroEasyAimStickThreshold.ToString(ic);
 
-                    // Write v3.4 Jibb-canon gyro extensions.
+                    // Write JoyShockMapper-canongyro extensions.
                     ps.GyroSpace = padVm.GyroSpace ?? "Local";
                     ps.GyroPlayerSpaceYawRelaxFactor = padVm.GyroPlayerSpaceYawRelaxFactor.ToString(ic);
                     ps.GyroWorldSpaceSideReductionThreshold = padVm.GyroWorldSpaceSideReductionThreshold.ToString(ic);

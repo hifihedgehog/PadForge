@@ -297,6 +297,56 @@ namespace PadForge.Engine.Data
         [XmlElement] public string ConstantForceY { get; set; } = "0";
 
         // ─────────────────────────────────────────────
+        //  v3.3 Gyro tuning — per-(device, slot).
+        //  Lives on PadSetting so each binding config (game profile +
+        //  slot assignment) gets its own gyro feel, matching SteamInput.
+        //  Bias + calibration timestamp stay on UserDevice because
+        //  those are device-physical IMU properties, not per-binding.
+        //  Defaults preserve v3.2 baseline (1× scale, no deadzone /
+        //  smoothing / acceleration, Linear curve, always-on Easy Aim).
+        // ─────────────────────────────────────────────
+
+        /// <summary>Horizontal sensitivity multiplier — applied to gyro
+        /// Yaw and Roll source contributions. Stored as string for the
+        /// XML schema's "everything is a string" convention.</summary>
+        [XmlElement] public string GyroSensitivityH { get; set; } = "1.0";
+
+        /// <summary>Vertical sensitivity multiplier — applied to gyro
+        /// Pitch source contributions.</summary>
+        [XmlElement] public string GyroSensitivityV { get; set; } = "1.0";
+
+        /// <summary>Gyro deadzone in degrees per second. Subtract-style:
+        /// rates inside the threshold zero out, rates past pass through
+        /// with the threshold subtracted. Default 3°/s.</summary>
+        [XmlElement] public string GyroDeadZoneDegPerSec { get; set; } = "3.0";
+
+        /// <summary>Single-pole EMA smoothing alpha (0 = off, 0.95 = max).
+        /// Applied to the bias-subtracted rate before deadzone.</summary>
+        [XmlElement] public string GyroSmoothingAlpha { get; set; } = "0";
+
+        /// <summary>Rate-dependent gain (0 = off, 2 = max). output =
+        /// input × (1 + accel × |input|). Composes with the output curve.</summary>
+        [XmlElement] public string GyroAcceleration { get; set; } = "0";
+
+        /// <summary>Output curve preset name: Linear, Aggressive, Relaxed,
+        /// Wide, ExtraWide. Reshapes the normalized [-1..+1] output.</summary>
+        [XmlElement] public string GyroOutputCurve { get; set; } = "Linear";
+
+        /// <summary>Sensitivity unit display mode: Multiplier (× scale,
+        /// default) or DegPerScreenTurn (Steam-style — degrees of
+        /// physical rotation per one full screen turn). Underlying
+        /// stored values remain multipliers; the dropdown only changes
+        /// how the slider value is presented + entered.</summary>
+        [XmlElement] public string GyroSensitivityUnits { get; set; } = "Multiplier";
+
+        /// <summary>Easy-Aim right-stick deflection threshold (0–100%).
+        /// 0 = always-on (default). When > 0, gyro output is zeroed when
+        /// the slot's right stick is deflected less than this threshold
+        /// — matches Steam's "gyro engaged while aiming" feel without
+        /// requiring a manual Shift Activator setup.</summary>
+        [XmlElement] public string GyroEasyAimStickThreshold { get; set; } = "0";
+
+        // ─────────────────────────────────────────────
         //  Axis-to-button threshold
         // ─────────────────────────────────────────────
 

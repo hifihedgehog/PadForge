@@ -1090,6 +1090,20 @@
   <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>Geschwindigkeitsabhängige Verstärkung. 0 = aus (lineare Skalierung). Höhere Werte lassen langsame Bewegungen unverändert und verstärken schnelle Bewegungen — gut für präzises Zielen kombiniert mit schnellen Drehungen.</value></data>
   <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>Ausgabekurve</value></data>
   <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>Formt die Antwort. Linear = Durchgang. Aggressive = x² (langsam bleibt langsam). Relaxed = √x (langsam verstärkt, schnell sättigt). Wide / ExtraWide liegen zwischen aggressive und gesättigt. Kombinierbar mit Beschleunigung.</value></data>
+  <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Einheiten</value></data>
+  <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Anzeigeeinheit für die Empfindlichkeit. Multiplier ist die interne ×-Skala (1 = Baseline). DegPerScreenTurn ist Steam-Stil — Grad physischer Controllerdrehung pro voller Bildschirmdrehung.</value></data>
+  <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Easy-Aim-Schwelle</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Rechte-Stick-Auslenkung (0–100%), unterhalb derer die Gyro-Ausgabe auf null gesetzt wird. 0 = immer an. Steam-Modus: Gyro aktiviert nur, wenn der Stick über die Schwelle bewegt wird.</value></data>
+  <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
+  <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
+  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Gyro-Tuning pro Gerät und Slot. Die Bias-Kalibrierung gilt geräteweit; Empfindlichkeit, Totzone, Glättung, Kurve, Beschleunigung und Easy Aim sind pro (Gerät, Slot) — jede Bindungskonfiguration hat ihr eigenes Spielgefühl.</value></data>
+  <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrierung</value></data>
+  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Empfindlichkeit</value></data>
+  <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Antwortform</value></data>
+  <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
+  <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>Gyro aktivieren, sobald der rechte Stick ausgelenkt wird. 0% deaktiviert (Gyro immer an).</value></data>
+  <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Tuning auf Standard zurücksetzen</value></data>
+  <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Setzt H/V-Empfindlichkeit, Totzone, Glättung, Beschleunigung, Ausgabekurve, Einheiten und Easy-Aim-Schwelle auf Werkseinstellungen zurück. Bias-Kalibrierung bleibt unverändert.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Empfindlichkeit</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Empfindlichkeitsfaktor pro Quelle für das Gyroskop. 1,0 = Engine-Standard (500°/s → volle Auslenkung). Werte über 1,0 sind empfindlicher, Werte unter 1,0 weniger empfindlich.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>

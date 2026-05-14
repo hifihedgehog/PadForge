@@ -77,10 +77,31 @@ namespace PadForge.Engine.Common.Mapping
             public float SensH;
             public float SensV;
             public float DeadZoneRadPerSec;
-            public float SmoothingAlpha;
+            public float SmoothingAlpha;             // v3.3 legacy EMA (unused when v3.4 thresholds > 0)
             public float Acceleration;
             public string OutputCurve;
             public float EasyAimStickThreshold01;
+
+            // v3.4 Player / World space
+            public string Space;                     // "Local" / "Player" / "World"
+            public float PlayerYawRelax;
+            public float WorldSideReduction;
+
+            // v3.4 dual-threshold smoothing
+            public float TighteningRadPerSec;
+            public float SmoothingThresholdRadPerSec;
+            public float SmoothingWindowSeconds;
+
+            // v3.4 real-world calibration (0 = disabled)
+            public float RealWorldCalibration;
+
+            // v3.4 aim-engage button
+            public string AimEngageDevice;
+            public string AimEngageDescriptor;
+
+            // v3.4 per-axis invert toggles
+            public bool InvertPitch;
+            public bool InvertYaw;
         }
 
         /// <summary>Looks up the per-(device, slot) gyro tuning bundle
@@ -97,12 +118,126 @@ namespace PadForge.Engine.Common.Mapping
         /// Returns 0 when slot is empty / state unavailable.</summary>
         public static Func<int, float> SlotRightStickDeflectionProvider { get; set; }
 
+        /// <summary>v3.4 — per-(device, slot) gravity vector estimator.
+        /// The app layer low-pass-filters <c>state.Accel[]</c> per
+        /// device and exposes the smoothed result here. Returns the
+        /// gravity-aligned vector in the controller's local frame.
+        /// Used by Player Space / World Space gyro projection. App
+        /// returns <c>(0, 0, -1)</c> (flat, face-up) for unknown
+        /// devices.</summary>
+        public static Func<string, int, (float gx, float gy, float gz)> GravityProvider { get; set; }
+
+        /// <summary>v3.4 — reads whether the given (deviceGuid,
+        /// descriptor) is currently pressed on the named slot. Used
+        /// by the gyro "Aim Engage button" gate. App wires this
+        /// against the per-device InputState bool reader.</summary>
+        public static Func<string, string, int, bool> ButtonHeldProvider { get; set; }
+
+        /// <summary>v3.4 — current polling frequency (Hz). Used by the
+        /// dual-threshold smoothing buffer to convert
+        /// <c>GyroSmoothingWindowMs</c> into a sample count. App
+        /// returns <c>1000 / Settings.PollingIntervalMs</c>; returns
+        /// 60Hz if unwired.</summary>
+        public static Func<float> PollHzProvider { get; set; }
+
         private static GyroTuning GetGyroTuning(string deviceGuid, int slotIndex)
         {
             var provider = GyroTuningProvider;
             if (provider == null || string.IsNullOrEmpty(deviceGuid))
-                return new GyroTuning { SensH = 1f, SensV = 1f, OutputCurve = "Linear" };
+                return new GyroTuning
+                {
+                    SensH = 1f, SensV = 1f, OutputCurve = "Linear",
+                    Space = "Local", PlayerYawRelax = 1.41f, WorldSideReduction = 0.125f,
+                    TighteningRadPerSec = 0f, SmoothingThresholdRadPerSec = 0f, SmoothingWindowSeconds = 0.05f,
+                    RealWorldCalibration = 0f,
+                };
             return provider(deviceGuid, slotIndex);
+        }
+
+        // v3.4 dual-threshold gyro smoothing buffer. Keyed by
+        // (deviceGuid, slotIndex). Single-threaded (polling thread only).
+        private static readonly Dictionary<(string, int), (float x, float y)[]> _gyroSampleBuffers = new();
+        private static readonly Dictionary<(string, int), int> _gyroSampleHeads = new();
+
+        private static (float, float) ApplyDualThresholdSmoothing(
+            string deviceGuid, int slotIndex, float yaw, float pitch, GyroTuning tuning)
+        {
+            float bottom = tuning.TighteningRadPerSec;
+            float top    = tuning.SmoothingThresholdRadPerSec;
+            // Disabled (both zero) → pass through.
+            if (bottom <= 0f && top <= 0f) return (yaw, pitch);
+
+            float mag = (float)System.Math.Sqrt(yaw * yaw + pitch * pitch);
+            float immediate = top <= bottom
+                ? (mag < bottom ? 0f : 1f)
+                : System.Math.Clamp((mag - bottom) / (top - bottom), 0f, 1f);
+            float smooth = 1f - immediate;
+
+            float hz = PollHzProvider?.Invoke() ?? 60f;
+            int N = (int)System.Math.Max(1, tuning.SmoothingWindowSeconds * hz);
+
+            var key = (deviceGuid ?? "", slotIndex);
+            if (!_gyroSampleBuffers.TryGetValue(key, out var buf) || buf.Length != N)
+            {
+                buf = new (float x, float y)[N];
+                _gyroSampleBuffers[key] = buf;
+                _gyroSampleHeads[key] = 0;
+            }
+            int head = (_gyroSampleHeads[key] + 1) % N;
+            _gyroSampleHeads[key] = head;
+            buf[head] = (yaw * smooth, pitch * smooth);
+
+            float xSum = 0, ySum = 0;
+            for (int i = 0; i < N; i++) { xSum += buf[i].x; ySum += buf[i].y; }
+            return (xSum / N + yaw * immediate, ySum / N + pitch * immediate);
+        }
+
+        /// <summary>v3.4 Player Space projection. Yaw projected onto
+        /// the controller's gravity-vertical axis; pitch stays local.
+        /// Mirrors GamepadMotion.hpp:CalculatePlayerSpaceGyro. The
+        /// gravX argument is unused (the player-space formula only
+        /// needs gravity's Y and Z components) but kept in the
+        /// signature for symmetry with WorldSpaceProject.</summary>
+        private static (float yaw, float pitch) PlayerSpaceProject(
+            float gPitch, float gYaw, float gRoll,
+            float _gravX, float gravY, float gravZ, float yawRelax)
+        {
+            // worldYaw = -(gravY * gyroY + gravZ * gyroZ)
+            float worldYaw = -(gravY * gYaw + gravZ * gRoll);
+            float worldSign = worldYaw < 0f ? -1f : 1f;
+            float yzMag = (float)Math.Sqrt(gYaw * gYaw + gRoll * gRoll);
+            float yawOut = worldSign * Math.Min(Math.Abs(worldYaw) * yawRelax, yzMag);
+            return (yawOut, gPitch);
+        }
+
+        /// <summary>v3.4 World Space projection. Both yaw and pitch
+        /// projected onto world axes. Mirrors
+        /// GamepadMotion.hpp:CalculateWorldSpaceGyro.</summary>
+        private static (float yaw, float pitch) WorldSpaceProject(
+            float gPitch, float gYaw, float gRoll,
+            float gravX, float gravY, float gravZ, float sideReduce)
+        {
+            float worldYaw = -gravX * gPitch - gravY * gYaw - gravZ * gRoll;
+
+            // pitchAxis = (1 - gravX*gravX, -gravY*gravX, -gravZ*gravX), normalized
+            float pxX = 1f - gravX * gravX;
+            float pxY = -gravY * gravX;
+            float pxZ = -gravZ * gravX;
+            float pxLenSq = pxX * pxX + pxY * pxY + pxZ * pxZ;
+            float pitchOut = 0f;
+            if (pxLenSq > 0f)
+            {
+                float inv = 1f / (float)System.Math.Sqrt(pxLenSq);
+                pxX *= inv; pxY *= inv; pxZ *= inv;
+                float flatness = System.Math.Abs(gravY);
+                float upness   = System.Math.Abs(gravZ);
+                float maxFU    = System.Math.Max(flatness, upness);
+                float reduction = sideReduce <= 0f
+                    ? 1f
+                    : System.Math.Clamp((maxFU - sideReduce) / sideReduce, 0f, 1f);
+                pitchOut = reduction * (pxX * gPitch + pxY * gYaw + pxZ * gRoll);
+            }
+            return (worldYaw, pitchOut);
         }
 
         // Per-device EMA smoothing state for gyro rates. Single-threaded
@@ -284,61 +419,113 @@ namespace PadForge.Engine.Common.Mapping
             tuning = default;
             if (state == null || src == null) return 0f;
 
+            tuning = GetGyroTuning(src.DeviceGuid, slotIndex);
+
+            int descAxis = ParseGyroAxisIndex(src.Descriptor);
+            bool isHorizontal = IsHorizontalBlendDescriptor(src.Descriptor);
+            bool isPitchSource = descAxis == 0;
+            bool isRollSource  = descAxis == 2;
+            gyroAxis = isHorizontal ? 1 : descAxis;
+            if (descAxis < 0 && !isHorizontal) return 0f;
+
+            // ─── Gates ───────────────────────────────────────────
             // Easy Aim — gate gyro on right-stick deflection past the
             // configured threshold. Threshold 0 = always-on (default).
-            // Slot must be valid; otherwise pass through unconditionally.
-            tuning = GetGyroTuning(src.DeviceGuid, slotIndex);
             if (tuning.EasyAimStickThreshold01 > 0f && slotIndex >= 0)
             {
                 float defl = SlotRightStickDeflectionProvider?.Invoke(slotIndex) ?? 1f;
-                if (defl < tuning.EasyAimStickThreshold01)
-                {
-                    gyroAxis = ParseGyroAxisIndex(src.Descriptor);
-                    if (IsHorizontalBlendDescriptor(src.Descriptor)) gyroAxis = 1;
-                    return 0f;
-                }
+                if (defl < tuning.EasyAimStickThreshold01) return 0f;
             }
-
-            // Gyro Horizontal — auto-blend of yaw + roll for grip-style-
-            // agnostic horizontal aim. Read both axes, smooth + deadzone
-            // each independently, pick the larger absolute, return its
-            // signed value. Same H sensitivity multiplier as plain Yaw/Roll.
-            if (IsHorizontalBlendDescriptor(src.Descriptor))
+            // Aim Engage button — gate gyro on a held button. Composes
+            // AND-style with Easy Aim (both must be active).
+            if (!string.IsNullOrEmpty(tuning.AimEngageDescriptor) && slotIndex >= 0)
             {
-                float yaw  = ProcessSingleAxis(state, src, 1, slotIndex, tuning); // Yaw
-                float roll = ProcessSingleAxis(state, src, 2, slotIndex, tuning); // Roll
-                gyroAxis = (Math.Abs(yaw) >= Math.Abs(roll)) ? 1 : 2;
-                return gyroAxis == 1 ? yaw : roll;
+                bool held = ButtonHeldProvider?.Invoke(
+                    tuning.AimEngageDevice ?? "", tuning.AimEngageDescriptor, slotIndex) ?? true;
+                if (!held) return 0f;
             }
 
-            gyroAxis = ParseGyroAxisIndex(src.Descriptor);
-            if (gyroAxis < 0) return 0f;
-            return ProcessSingleAxis(state, src, gyroAxis, slotIndex, tuning);
+            // ─── Bias-subtracted gyro components ─────────────────
+            string deviceGuid = src.DeviceGuid;
+            float gPitch = ReadCalibratedGyroRate(state, 0, deviceGuid, slotIndex);
+            float gYaw   = ReadCalibratedGyroRate(state, 1, deviceGuid, slotIndex);
+            float gRoll  = ReadCalibratedGyroRate(state, 2, deviceGuid, slotIndex);
+
+            // ─── Space projection ────────────────────────────────
+            float yaw, pitch;
+            string space = tuning.Space ?? "Local";
+            if (space == "Player")
+            {
+                var grav = GravityProvider?.Invoke(deviceGuid, slotIndex) ?? (0f, 0f, -1f);
+                (yaw, pitch) = PlayerSpaceProject(
+                    gPitch, gYaw, gRoll, grav.gx, grav.gy, grav.gz, tuning.PlayerYawRelax);
+            }
+            else if (space == "World")
+            {
+                var grav = GravityProvider?.Invoke(deviceGuid, slotIndex) ?? (0f, 0f, -1f);
+                (yaw, pitch) = WorldSpaceProject(
+                    gPitch, gYaw, gRoll, grav.gx, grav.gy, grav.gz, tuning.WorldSideReduction);
+            }
+            else // Local
+            {
+                pitch = gPitch;
+                if (isHorizontal)
+                    yaw = Math.Abs(gYaw) >= Math.Abs(gRoll) ? gYaw : gRoll;
+                else if (isRollSource)
+                    yaw = gRoll;
+                else
+                    yaw = gYaw;
+            }
+
+            // ─── Smoothing (dual-threshold supersedes legacy EMA) ───
+            bool useDualThreshold =
+                tuning.TighteningRadPerSec > 0f || tuning.SmoothingThresholdRadPerSec > 0f;
+            if (useDualThreshold)
+            {
+                (yaw, pitch) = ApplyDualThresholdSmoothing(
+                    deviceGuid, slotIndex, yaw, pitch, tuning);
+            }
+            else if (tuning.SmoothingAlpha > 0f)
+            {
+                // v3.3 legacy EMA path — kept for back-compat when the
+                // user has a non-zero SmoothingAlpha and both v3.4
+                // thresholds at zero.
+                yaw   = ApplyGyroSmoothing(deviceGuid, 1, yaw,   tuning.SmoothingAlpha);
+                pitch = ApplyGyroSmoothing(deviceGuid, 0, pitch, tuning.SmoothingAlpha);
+            }
+
+            // In non-Local space, Gyro Roll source has no independent
+            // output (roll folds into the yaw projection).
+            if (isRollSource && space != "Local") return 0f;
+
+            // ─── Per-axis tuning (deadzone, sens, RWC, invert) ───
+            float perSourceSens = (float)(src.GyroSensitivity > 0 ? src.GyroSensitivity : 1.0);
+            float rwc = tuning.RealWorldCalibration > 0f ? tuning.RealWorldCalibration : 1f;
+            float rate;
+            if (isPitchSource)
+            {
+                rate = ApplyDeadZone(pitch, tuning.DeadZoneRadPerSec)
+                       * tuning.SensV * perSourceSens * rwc;
+                if (tuning.InvertPitch) rate = -rate;
+            }
+            else
+            {
+                rate = ApplyDeadZone(yaw, tuning.DeadZoneRadPerSec)
+                       * tuning.SensH * perSourceSens * rwc;
+                if (tuning.InvertYaw) rate = -rate;
+            }
+            return rate;
         }
 
-        /// <summary>Shared per-axis processing chain: bias subtract,
-        /// smoothing, deadzone, axis sensitivity, per-source multiplier.
-        /// Returns the tuned rate in rad/s (pre-scale, pre-curve).</summary>
-        private static float ProcessSingleAxis(CustomInputState state, MappingSource src, int axis, int slotIndex, GyroTuning tuning)
+        /// <summary>Subtract-style deadzone: rates within ±dz zero out,
+        /// rates past pass through with dz subtracted (no discontinuity
+        /// at the threshold).</summary>
+        private static float ApplyDeadZone(float rate, float dz)
         {
-            float rate = ReadCalibratedGyroRate(state, axis, src.DeviceGuid, slotIndex);
-
-            // Smoothing: single-pole EMA on the bias-subtracted rate.
-            rate = ApplyGyroSmoothing(src.DeviceGuid, axis, rate, tuning.SmoothingAlpha);
-
-            // Subtract-style deadzone.
-            float deadzone = tuning.DeadZoneRadPerSec;
-            if (deadzone > 0f)
-            {
-                if (rate > deadzone) rate -= deadzone;
-                else if (rate < -deadzone) rate += deadzone;
-                else rate = 0f;
-            }
-
-            // Axis sensitivity: Yaw (1) and Roll (2) take H; Pitch (0) takes V.
-            float axisSens = axis == 0 ? tuning.SensV : tuning.SensH;
-            float perSourceSens = (float)(src.GyroSensitivity > 0 ? src.GyroSensitivity : 1.0);
-            return rate * axisSens * perSourceSens;
+            if (dz <= 0f) return rate;
+            if (rate > dz)  return rate - dz;
+            if (rate < -dz) return rate + dz;
+            return 0f;
         }
 
         /// <summary>Reads <c>state.Gyro[gyroAxis]</c> minus the

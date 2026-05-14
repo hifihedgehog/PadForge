@@ -1203,6 +1203,87 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gyroEasyAimStickThreshold, Math.Clamp(value, 0, 100));
         }
 
+        // ─── v3.4 Jibb-canon extensions ───────────────────────
+
+        private string _gyroSpace = "Local";
+        public string GyroSpace
+        {
+            get => _gyroSpace;
+            set => SetProperty(ref _gyroSpace, string.IsNullOrEmpty(value) ? "Local" : value);
+        }
+        public IReadOnlyList<string> GyroSpaceOptions { get; } =
+            new[] { "Local", "Player", "World" };
+
+        private double _gyroPlayerSpaceYawRelaxFactor = 1.41;
+        public double GyroPlayerSpaceYawRelaxFactor
+        {
+            get => _gyroPlayerSpaceYawRelaxFactor;
+            set => SetProperty(ref _gyroPlayerSpaceYawRelaxFactor, Math.Clamp(value, 1.0, 2.0));
+        }
+
+        private double _gyroWorldSpaceSideReductionThreshold = 0.125;
+        public double GyroWorldSpaceSideReductionThreshold
+        {
+            get => _gyroWorldSpaceSideReductionThreshold;
+            set => SetProperty(ref _gyroWorldSpaceSideReductionThreshold, Math.Clamp(value, 0.0, 0.5));
+        }
+
+        private double _gyroTighteningThresholdDegPerSec = 3.0;
+        public double GyroTighteningThresholdDegPerSec
+        {
+            get => _gyroTighteningThresholdDegPerSec;
+            set => SetProperty(ref _gyroTighteningThresholdDegPerSec, Math.Clamp(value, 0, 30));
+        }
+
+        private double _gyroSmoothingThresholdDegPerSec = 8.0;
+        public double GyroSmoothingThresholdDegPerSec
+        {
+            get => _gyroSmoothingThresholdDegPerSec;
+            set => SetProperty(ref _gyroSmoothingThresholdDegPerSec, Math.Clamp(value, 0, 30));
+        }
+
+        private double _gyroSmoothingWindowMs = 50;
+        public double GyroSmoothingWindowMs
+        {
+            get => _gyroSmoothingWindowMs;
+            set => SetProperty(ref _gyroSmoothingWindowMs, Math.Clamp(value, 10, 200));
+        }
+
+        private double _gyroRealWorldCalibration;
+        public double GyroRealWorldCalibration
+        {
+            get => _gyroRealWorldCalibration;
+            set => SetProperty(ref _gyroRealWorldCalibration, Math.Clamp(value, 0, 2));
+        }
+
+        private string _gyroAimEngageButton = "";
+        public string GyroAimEngageButton
+        {
+            get => _gyroAimEngageButton;
+            set => SetProperty(ref _gyroAimEngageButton, value ?? "");
+        }
+
+        private string _gyroAimEngageDeviceGuid = "";
+        public string GyroAimEngageDeviceGuid
+        {
+            get => _gyroAimEngageDeviceGuid;
+            set => SetProperty(ref _gyroAimEngageDeviceGuid, value ?? "");
+        }
+
+        private bool _gyroInvertPitch;
+        public bool GyroInvertPitch
+        {
+            get => _gyroInvertPitch;
+            set => SetProperty(ref _gyroInvertPitch, value);
+        }
+
+        private bool _gyroInvertYaw;
+        public bool GyroInvertYaw
+        {
+            get => _gyroInvertYaw;
+            set => SetProperty(ref _gyroInvertYaw, value);
+        }
+
         // Live calibrated rate readouts (deg/s) — refreshed by InputService
         // when a Pad page is visible on a slot with a gyro-capable device.
         private double _gyroLiveRatePitch;
@@ -1249,6 +1330,18 @@ namespace PadForge.ViewModels
                 GyroOutputCurve = "Linear";
                 GyroSensitivityUnits = "Multiplier";
                 GyroEasyAimStickThreshold = 0;
+                // v3.4 Jibb-canon defaults
+                GyroSpace = "Local";
+                GyroPlayerSpaceYawRelaxFactor = 1.41;
+                GyroWorldSpaceSideReductionThreshold = 0.125;
+                GyroTighteningThresholdDegPerSec = 3.0;
+                GyroSmoothingThresholdDegPerSec = 8.0;
+                GyroSmoothingWindowMs = 50;
+                GyroRealWorldCalibration = 0;
+                GyroAimEngageButton = "";
+                GyroAimEngageDeviceGuid = "";
+                GyroInvertPitch = false;
+                GyroInvertYaw = false;
             });
 
         private int _forceOverallGain = 100;

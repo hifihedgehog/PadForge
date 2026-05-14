@@ -1583,6 +1583,19 @@ namespace PadForge.Services
                 padVm.GyroSensitivityUnits = string.IsNullOrEmpty(ps.GyroSensitivityUnits) ? "Multiplier" : ps.GyroSensitivityUnits;
                 padVm.GyroEasyAimStickThreshold = TryParseDouble(ps.GyroEasyAimStickThreshold, 0);
 
+                // Load v3.4 Jibb-canon gyro extensions.
+                padVm.GyroSpace = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace;
+                padVm.GyroPlayerSpaceYawRelaxFactor = TryParseDouble(ps.GyroPlayerSpaceYawRelaxFactor, 1.41);
+                padVm.GyroWorldSpaceSideReductionThreshold = TryParseDouble(ps.GyroWorldSpaceSideReductionThreshold, 0.125);
+                padVm.GyroTighteningThresholdDegPerSec = TryParseDouble(ps.GyroTighteningThresholdDegPerSec, 3.0);
+                padVm.GyroSmoothingThresholdDegPerSec = TryParseDouble(ps.GyroSmoothingThresholdDegPerSec, 8.0);
+                padVm.GyroSmoothingWindowMs = TryParseDouble(ps.GyroSmoothingWindowMs, 50);
+                padVm.GyroRealWorldCalibration = TryParseDouble(ps.GyroRealWorldCalibration, 0);
+                padVm.GyroAimEngageButton = ps.GyroAimEngageButton ?? "";
+                padVm.GyroAimEngageDeviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
+                padVm.GyroInvertPitch = ps.GyroInvertPitch == "1";
+                padVm.GyroInvertYaw = ps.GyroInvertYaw == "1";
+
                 // Load audio bass rumble settings.
                 padVm.AudioRumbleEnabled = ps.AudioRumbleEnabled == "1";
                 padVm.AudioRumbleSensitivity = TryParseDouble(ps.AudioRumbleSensitivity, 4.0);
@@ -2614,6 +2627,19 @@ namespace PadForge.Services
                     ps.GyroOutputCurve = padVm.GyroOutputCurve ?? "Linear";
                     ps.GyroSensitivityUnits = padVm.GyroSensitivityUnits ?? "Multiplier";
                     ps.GyroEasyAimStickThreshold = padVm.GyroEasyAimStickThreshold.ToString(ic);
+
+                    // Write v3.4 Jibb-canon gyro extensions.
+                    ps.GyroSpace = padVm.GyroSpace ?? "Local";
+                    ps.GyroPlayerSpaceYawRelaxFactor = padVm.GyroPlayerSpaceYawRelaxFactor.ToString(ic);
+                    ps.GyroWorldSpaceSideReductionThreshold = padVm.GyroWorldSpaceSideReductionThreshold.ToString(ic);
+                    ps.GyroTighteningThresholdDegPerSec = padVm.GyroTighteningThresholdDegPerSec.ToString(ic);
+                    ps.GyroSmoothingThresholdDegPerSec = padVm.GyroSmoothingThresholdDegPerSec.ToString(ic);
+                    ps.GyroSmoothingWindowMs = padVm.GyroSmoothingWindowMs.ToString(ic);
+                    ps.GyroRealWorldCalibration = padVm.GyroRealWorldCalibration.ToString(ic);
+                    ps.GyroAimEngageButton = padVm.GyroAimEngageButton ?? "";
+                    ps.GyroAimEngageDeviceGuid = padVm.GyroAimEngageDeviceGuid ?? "";
+                    ps.GyroInvertPitch = padVm.GyroInvertPitch ? "1" : "0";
+                    ps.GyroInvertYaw = padVm.GyroInvertYaw ? "1" : "0";
 
                     // Write audio bass rumble settings.
                     ps.AudioRumbleEnabled = padVm.AudioRumbleEnabled ? "1" : "0";

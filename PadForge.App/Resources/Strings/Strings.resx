@@ -954,6 +954,24 @@
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Response shaping</value></data>
   <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
   <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>Engage gyro only while the right stick is deflected. 0% disables (gyro always-on).</value></data>
+  <data name="Settings_GyroSpace" xml:space="preserve"><value>Space</value></data>
+  <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = raw controller axes. Player = yaw projected onto the real-world vertical (gravity); pitch stays local — Jibb Smart's recommended default for natural feel at any tilt. World = both yaw and pitch projected onto world axes.</value></data>
+  <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Invert Pitch (Y)</value></data>
+  <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Top-level pitch-axis invert. Applies after Player/World projection — independent from per-source Invert flags on the mapping table.</value></data>
+  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Invert Yaw (X)</value></data>
+  <data name="Settings_GyroInvertYaw_Tooltip" xml:space="preserve"><value>Top-level yaw-axis invert. Also covers Roll and Gyro Horizontal sources.</value></data>
+  <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Real-world calibration</value></data>
+  <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>In-game degrees per physical degree of controller rotation. 0 = disabled. 1 = 1:1 (rotate the pad 90°, the in-game view rotates 90°). Calibrate once per game by rotating the pad 360° and adjusting until the in-game view also rotates 360°.</value></data>
+  <data name="Settings_GyroTightening" xml:space="preserve"><value>Tightening</value></data>
+  <data name="Settings_GyroTightening_Tooltip" xml:space="preserve"><value>Below this rate, the input is fully replaced by the smoothing buffer's average — drops hand tremor and microscopic drift. Default 3°/s.</value></data>
+  <data name="Settings_GyroSmoothingThreshold" xml:space="preserve"><value>Smoothing threshold</value></data>
+  <data name="Settings_GyroSmoothingThreshold_Tooltip" xml:space="preserve"><value>Above this rate, the input passes through raw — fast turns retain precision. Between tightening and smoothing thresholds, a linear ramp blends the two. Default 8°/s.</value></data>
+  <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Smoothing window</value></data>
+  <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Length of the smoothing-buffer time window. Larger = heavier smoothing below the tightening threshold; smaller = snappier. Default 50ms.</value></data>
+  <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Aim engage button</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Descriptor of a button that gates gyro output: gyro fires only while this button is held. Empty = no button gate. AND-composes with the right-stick deflection threshold above.</value></data>
+  <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Engage</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optional gates that limit when gyro is active. Right-stick deflection and an Aim Engage button can each gate gyro output; configure either or both. Both must be active for gyro to fire when both are configured.</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Reset tuning to defaults</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Restores H/V sensitivity, deadzone, smoothing, acceleration, output curve, units, and Easy Aim threshold to their factory defaults. Does not affect calibration bias.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>

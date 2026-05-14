@@ -63,6 +63,12 @@ namespace PadForge.Services
         // UpdatePadDeviceInfo sees the same pair pre-completion.
         private readonly HashSet<(Guid InstanceGuid, int Slot)> _gyroAutoCalibKicked = new();
 
+        // v3.4 — per-device gravity vector for Player/World Space gyro
+        // projection. Low-pass-filtered against state.Accel[] each
+        // Update tick. Cleared in Stop().
+        private readonly Dictionary<Guid, (float gx, float gy, float gz)> _gravityState = new();
+        private readonly object _gravityStateLock = new();
+
         /// <summary>
         /// Whether the Devices page is currently visible.
         /// When true, the UI timer syncs raw device state to DevicesViewModel.
@@ -462,6 +468,18 @@ namespace PadForge.Services
                     Acceleration = TryParseFloatPs(ps.GyroAcceleration, 0f),
                     OutputCurve = ps.GyroOutputCurve ?? "Linear",
                     EasyAimStickThreshold01 = TryParseFloatPs(ps.GyroEasyAimStickThreshold, 0f) / 100f,
+                    // v3.4 Jibb-canon extensions
+                    Space = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace,
+                    PlayerYawRelax = TryParseFloatPs(ps.GyroPlayerSpaceYawRelaxFactor, 1.41f),
+                    WorldSideReduction = TryParseFloatPs(ps.GyroWorldSpaceSideReductionThreshold, 0.125f),
+                    TighteningRadPerSec = TryParseFloatPs(ps.GyroTighteningThresholdDegPerSec, 0f) * DegToRad,
+                    SmoothingThresholdRadPerSec = TryParseFloatPs(ps.GyroSmoothingThresholdDegPerSec, 0f) * DegToRad,
+                    SmoothingWindowSeconds = TryParseFloatPs(ps.GyroSmoothingWindowMs, 50f) / 1000f,
+                    RealWorldCalibration = TryParseFloatPs(ps.GyroRealWorldCalibration, 0f),
+                    AimEngageDevice = ps.GyroAimEngageDeviceGuid ?? "",
+                    AimEngageDescriptor = ps.GyroAimEngageButton ?? "",
+                    InvertPitch = TryParseBoolPs(ps.GyroInvertPitch, false),
+                    InvertYaw = TryParseBoolPs(ps.GyroInvertYaw, false),
                 };
             };
 
@@ -479,6 +497,52 @@ namespace PadForge.Services
                 float ax = rx < 0 ? -rx : rx;
                 float ay = ry < 0 ? -ry : ry;
                 return ax > ay ? ax : ay;
+            };
+
+            // v3.4 Player/World Space gyro — gravity vector estimator.
+            // Per-device low-pass on state.Accel[] (alpha 0.02 at 60Hz
+            // poll ≈ 0.5Hz cutoff). Stored in _gravityState dict,
+            // updated each Update tick alongside the live-rate readout.
+            // Returns (0, 0, -1) (flat, face-up) for unknown devices —
+            // matches the v3.2 motion-snapshot default orientation.
+            PadForge.Engine.Common.Mapping.SourceCoercion.GravityProvider = (deviceGuid, slotIndex) =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid)) return (0f, 0f, -1f);
+                if (!Guid.TryParse(deviceGuid, out var g)) return (0f, 0f, -1f);
+                lock (_gravityStateLock)
+                {
+                    return _gravityState.TryGetValue(g, out var v) ? v : (0f, 0f, -1f);
+                }
+            };
+
+            // v3.4 Aim Engage button gate — reads the named device's
+            // current button state via SourceCoercion's existing bool
+            // reader. The synthetic MappingSource carries just the
+            // device + descriptor; tuning fields don't matter here
+            // because we read at the boolean level.
+            PadForge.Engine.Common.Mapping.SourceCoercion.ButtonHeldProvider = (deviceGuid, descriptor, slotIndex) =>
+            {
+                if (string.IsNullOrEmpty(descriptor)) return true; // unconfigured = pass-through
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return false;
+                var ud = FindUserDevice(g);
+                if (ud == null || ud.InputState == null) return false;
+                var synth = new PadForge.Engine.Data.MappingSource
+                {
+                    Kind = "Direct",
+                    DeviceGuid = deviceGuid,
+                    Descriptor = descriptor,
+                };
+                return PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForButtonTarget(
+                    ud.InputState, synth, 50, slotIndex);
+            };
+
+            // v3.4 — sample rate for the dual-threshold smoothing buffer.
+            // Reads the live PollingRateMs setting; falls back to 60Hz
+            // if the setting is missing or invalid.
+            PadForge.Engine.Common.Mapping.SourceCoercion.PollHzProvider = () =>
+            {
+                int ms = _mainVm?.Settings?.PollingRateMs ?? 0;
+                return ms > 0 ? 1000f / ms : 60f;
             };
 
             // Per-(slot, device) lightbar configs — drives the
@@ -682,6 +746,10 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.GyroBiasProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuningProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.SlotRightStickDeflectionProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.GravityProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.ButtonHeldProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.PollHzProvider = null;
+                lock (_gravityStateLock) _gravityState.Clear();
             }
 
             // Final UI-thread VM updates: marshal back to the dispatcher
@@ -834,6 +902,8 @@ namespace PadForge.Services
 
                 // v3.3 — push live gyro rate + calibration label so the
                 // Gyro tab readouts track the selected (device, slot).
+                // v3.4 — also tick the per-device gravity low-pass so
+                // Player/World Space gyro projection has fresh state.
                 {
                     var selected = padVm.SelectedMappedDevice;
                     if (selected != null && selected.InstanceGuid != Guid.Empty)
@@ -869,6 +939,9 @@ namespace PadForge.Services
                     }
                 }
             }
+
+            // ── v3.4 gravity low-pass for Player/World Space gyro ──
+            UpdateGravityEstimates();
 
             // ── Update Dashboard ──
             UpdateDashboard();
@@ -2249,6 +2322,14 @@ namespace PadForge.Services
             if (string.IsNullOrEmpty(value)) return defaultValue;
             return float.TryParse(value, System.Globalization.NumberStyles.Float,
                 System.Globalization.CultureInfo.InvariantCulture, out float result) ? result : defaultValue;
+        }
+
+        private static bool TryParseBoolPs(string value, bool defaultValue)
+        {
+            if (string.IsNullOrEmpty(value)) return defaultValue;
+            if (value == "1") return true;
+            if (value == "0") return false;
+            return bool.TryParse(value, out bool result) ? result : defaultValue;
         }
 
         /// <summary>
@@ -4553,6 +4634,40 @@ namespace PadForge.Services
                 var selected = padVm.SelectedMappedDevice;
                 if (selected != null && selected.InstanceGuid != Guid.Empty)
                     PopulateAvailableInputs(padVm, FindUserDevice(selected.InstanceGuid));
+            }
+        }
+
+        /// <summary>v3.4 Player/World Space gyro — low-pass-filters every
+        /// online accel-capable UserDevice's <c>state.Accel[]</c> into a
+        /// gravity vector. Per-device, stored in <c>_gravityState</c>.
+        /// Alpha 0.02 at 60Hz UI tick ≈ 0.5Hz cutoff: tracks slow tilt,
+        /// rejects motion impulses. The SourceCoercion gravity provider
+        /// reads this dict under <c>_gravityStateLock</c>.</summary>
+        private void UpdateGravityEstimates()
+        {
+            const float a = 0.02f;
+            var devs = SettingsManager.UserDevices?.Items;
+            if (devs == null) return;
+            lock (SettingsManager.UserDevices.SyncRoot)
+            lock (_gravityStateLock)
+            {
+                foreach (var d in devs)
+                {
+                    if (d == null || !d.HasAccel || !d.IsOnline) continue;
+                    var st = d.InputState;
+                    if (st == null || st.Accel == null || st.Accel.Length < 3) continue;
+                    if (!_gravityState.TryGetValue(d.InstanceGuid, out var prev))
+                    {
+                        // Seed with the first observed accel sample so the
+                        // filter converges fast on (re)connect.
+                        _gravityState[d.InstanceGuid] = (st.Accel[0], st.Accel[1], st.Accel[2]);
+                        continue;
+                    }
+                    _gravityState[d.InstanceGuid] = (
+                        prev.gx * (1f - a) + st.Accel[0] * a,
+                        prev.gy * (1f - a) + st.Accel[1] * a,
+                        prev.gz * (1f - a) + st.Accel[2] * a);
+                }
             }
         }
 

@@ -1102,6 +1102,24 @@
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>応答整形</value></data>
   <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
   <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>右スティックを倒している間だけジャイロを有効にします。0% で無効 (ジャイロ常時オン)。</value></data>
+  <data name="Settings_GyroSpace" xml:space="preserve"><value>座標系</value></data>
+  <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = コントローラー素のローカル軸。Player = ヨーを現実の鉛直 (重力) 軸に投影、ピッチはローカルのまま — Jibb Smart 推奨の既定。傾けてもナチュラル。World = ヨーもピッチもワールド軸に投影。</value></data>
+  <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>ピッチ (Y) 反転</value></data>
+  <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>ピッチ軸の全体反転。Player/World 投影の後に適用 — マッピング表のソース単位 Invert とは独立。</value></data>
+  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>ヨー (X) 反転</value></data>
+  <data name="Settings_GyroInvertYaw_Tooltip" xml:space="preserve"><value>ヨー軸の全体反転。Roll と Gyro Horizontal ソースにも適用。</value></data>
+  <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>実世界キャリブレーション</value></data>
+  <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>コントローラーの物理回転 1° あたりのゲーム内回転 (度)。0 = 無効。1 = 1:1 (パッドを 90° 回転→ゲーム内視点も 90°)。ゲームごとに 1 回、パッドを 360° 回しゲーム内視点も 360° 回るよう調整して設定。</value></data>
+  <data name="Settings_GyroTightening" xml:space="preserve"><value>タイトニング</value></data>
+  <data name="Settings_GyroTightening_Tooltip" xml:space="preserve"><value>このレート未満では入力をスムージングバッファの平均で完全に置き換える — 手ぶれや微小ドリフトを除去。既定 3°/s。</value></data>
+  <data name="Settings_GyroSmoothingThreshold" xml:space="preserve"><value>スムージングしきい値</value></data>
+  <data name="Settings_GyroSmoothingThreshold_Tooltip" xml:space="preserve"><value>このレート超で入力を素通し — 速い旋回の精度を維持。両しきい値の間は線形にブレンド。既定 8°/s。</value></data>
+  <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>スムージング窓</value></data>
+  <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>スムージング・バッファの時間窓長。大きい = タイトニング以下でより強く平滑化、小さい = よりキビキビ。既定 50ms。</value></data>
+  <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>アクティベートボタン</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>ジャイロ出力をゲートするボタンの記述子。このボタンを押している間だけジャイロが作動。空欄 = ボタンによるゲートなし。上の右スティック偏倚しきい値と AND 合成。</value></data>
+  <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>アクティベート</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ジャイロの作動条件を任意で制限。右スティック偏倚とアクティベートボタンのいずれかで出力をゲート可能。両方設定した場合は両方アクティブでなければ作動しません。</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>調整を初期値にリセット</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>H/V 感度、デッドゾーン、スムージング、加速、出力カーブ、単位、Easy Aim しきい値を工場出荷時の既定値に戻します。校正バイアスには影響しません。</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>感度</value></data>

@@ -326,6 +326,14 @@
                              Visibility="Collapsed">
                     <TextBlock Text="{Binding Pad_Lighting, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
+
+                <!-- Gyro tab — per-(device, slot) gyro tuning. Visible when
+                     the selected mapped device has a gyroscope sensor
+                     (driven from SyncTabVisibility via UserDevice.HasGyro). -->
+                <RadioButton x:Name="TabGyro" Tag="8" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             Visibility="Collapsed">
+                    <TextBlock Text="{Binding Pad_Gyro, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
+                </RadioButton>
             </WrapPanel>
         </Border>
 
@@ -4752,6 +4760,188 @@
                             </StackPanel>
                         </Border>
 
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ══════════════════════════════════════
+                 TAB 8: GYRO
+                 (visible when the selected mapped device has a gyroscope)
+                 ══════════════════════════════════════ -->
+            <TabItem>
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="0,16,0,16">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="&#xF259;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding Pad_Gyro_Header, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Pad_Gyro_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
+
+                        <!-- ─── Calibration card ─── -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Pad_Gyro_Calibration_Header, Source={x:Static strings:Strings.Instance}}"
+                                           FontWeight="SemiBold" FontSize="13" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <Button Content="{Binding Settings_GyroCalibrate_Button, Source={x:Static strings:Strings.Instance}}"
+                                            Command="{Binding GyroCalibrateCommand}"
+                                            Padding="10,4" VerticalAlignment="Center"
+                                            ToolTip="{Binding Settings_GyroCalibrate_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Settings_GyroResetCalibration_Button, Source={x:Static strings:Strings.Instance}}"
+                                            Command="{Binding GyroResetCalibrationCommand}"
+                                            Padding="10,4" Margin="6,0,0,0" VerticalAlignment="Center"
+                                            ToolTip="{Binding Settings_GyroResetCalibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBlock Text="{Binding GyroCalibrationLabel}"
+                                               FontSize="11" Opacity="0.7" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <!-- Live rate readout. -->
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Settings_GyroLiveRate_Label, Source={x:Static strings:Strings.Instance}}"
+                                               FontSize="11" Opacity="0.7" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding GyroLiveRatePitch, StringFormat={}P {0:+0.0;-0.0;0.0}°/s}"
+                                               FontFamily="Consolas" FontSize="11" Width="80" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding GyroLiveRateYaw,   StringFormat={}Y {0:+0.0;-0.0;0.0}°/s}"
+                                               FontFamily="Consolas" FontSize="11" Width="80" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding GyroLiveRateRoll,  StringFormat={}R {0:+0.0;-0.0;0.0}°/s}"
+                                               FontFamily="Consolas" FontSize="11" Width="80" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- ─── Sensitivity card ─── -->
+                        <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pad_Gyro_Sensitivity_Header, Source={x:Static strings:Strings.Instance}}"
+                                               FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Settings_GyroSensitivityUnits, Source={x:Static strings:Strings.Instance}}"
+                                               FontSize="11" Opacity="0.6" Margin="14,0,4,0" VerticalAlignment="Center"/>
+                                    <ComboBox ItemsSource="{Binding GyroSensitivityUnitsOptions}"
+                                              SelectedItem="{Binding GyroSensitivityUnits, Mode=TwoWay}"
+                                              Width="160" VerticalAlignment="Center"
+                                              ToolTip="{Binding Settings_GyroSensitivityUnits_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                    <TextBlock Text="{Binding Settings_GyroSensitivityH, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_GyroSensitivityH_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding GyroSensitivityH, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Minimum="0.1" Maximum="10" SmallChange="0.1" LargeChange="1"
+                                            Width="200" VerticalAlignment="Center"
+                                            ToolTip="{Binding Settings_GyroSensitivityH_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding GyroSensitivityH, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                             Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
+                                    <TextBlock Text="×" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
+                                    <TextBlock Text="{Binding GyroSensitivityH_DegPerTurn, StringFormat={}≈ {0:0}°/turn}"
+                                               VerticalAlignment="Center" Margin="14,0,0,0" Opacity="0.55" FontSize="11"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <TextBlock Text="{Binding Settings_GyroSensitivityV, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_GyroSensitivityV_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding GyroSensitivityV, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Minimum="0.1" Maximum="10" SmallChange="0.1" LargeChange="1"
+                                            Width="200" VerticalAlignment="Center"
+                                            ToolTip="{Binding Settings_GyroSensitivityV_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding GyroSensitivityV, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                             Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
+                                    <TextBlock Text="×" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
+                                    <TextBlock Text="{Binding GyroSensitivityV_DegPerTurn, StringFormat={}≈ {0:0}°/turn}"
+                                               VerticalAlignment="Center" Margin="14,0,0,0" Opacity="0.55" FontSize="11"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- ─── Response shaping card ─── -->
+                        <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Pad_Gyro_Response_Header, Source={x:Static strings:Strings.Instance}}"
+                                           FontWeight="SemiBold" FontSize="13" Margin="0,0,0,8"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                    <TextBlock Text="{Binding Settings_GyroDeadZone, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_GyroDeadZone_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding GyroDeadZoneDegPerSec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Minimum="0" Maximum="30" SmallChange="0.5" LargeChange="5"
+                                            Width="200" VerticalAlignment="Center"
+                                            ToolTip="{Binding Settings_GyroDeadZone_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding GyroDeadZoneDegPerSec, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.0}}"
+                                             Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
+                                    <TextBlock Text="°/s" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <TextBlock Text="{Binding Settings_GyroSmoothing, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_GyroSmoothing_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding GyroSmoothingAlpha, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Minimum="0" Maximum="0.95" SmallChange="0.05" LargeChange="0.1"
+                                            Width="200" VerticalAlignment="Center"
+                                            ToolTip="{Binding Settings_GyroSmoothing_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding GyroSmoothingAlpha, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                             Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <TextBlock Text="{Binding Settings_GyroAcceleration, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_GyroAcceleration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding GyroAcceleration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Minimum="0" Maximum="2" SmallChange="0.05" LargeChange="0.5"
+                                            Width="200" VerticalAlignment="Center"
+                                            ToolTip="{Binding Settings_GyroAcceleration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding GyroAcceleration, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                             Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <TextBlock Text="{Binding Settings_GyroOutputCurve, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_GyroOutputCurve_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBox ItemsSource="{Binding GyroOutputCurveOptions}"
+                                              SelectedItem="{Binding GyroOutputCurve, Mode=TwoWay}"
+                                              Width="200" VerticalAlignment="Center"
+                                              ToolTip="{Binding Settings_GyroOutputCurve_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- ─── Easy Aim card ─── -->
+                        <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Pad_Gyro_EasyAim_Header, Source={x:Static strings:Strings.Instance}}"
+                                           FontWeight="SemiBold" FontSize="13" Margin="0,0,0,4"/>
+                                <TextBlock Text="{Binding Pad_Gyro_EasyAim_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           TextWrapping="Wrap" Margin="0,0,0,8" FontSize="11"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Settings_GyroEasyAimThreshold, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_GyroEasyAimThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding GyroEasyAimStickThreshold, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Minimum="0" Maximum="100" SmallChange="1" LargeChange="10"
+                                            Width="200" VerticalAlignment="Center" TickFrequency="5"
+                                            ToolTip="{Binding Settings_GyroEasyAimThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding GyroEasyAimStickThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0}}"
+                                             Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
+                                    <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Reset all tuning to defaults -->
+                        <Button Content="{Binding Pad_Gyro_ResetTuning, Source={x:Static strings:Strings.Instance}}"
+                                Command="{Binding GyroResetTuningCommand}"
+                                Padding="10,4" Margin="0,12,0,0"
+                                HorizontalAlignment="Right"
+                                ToolTip="{Binding Pad_Gyro_ResetTuning_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

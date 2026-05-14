@@ -1114,6 +1114,143 @@ namespace PadForge.ViewModels
         //  Force feedback — unchanged
         // ═══════════════════════════════════════════════
 
+        // ═══════════════════════════════════════════════
+        //  Gyro tuning (per-device, per-slot) — v3.3 SteamInput parity
+        // ═══════════════════════════════════════════════
+
+        private double _gyroSensitivityH = 1.0;
+        public double GyroSensitivityH
+        {
+            get => _gyroSensitivityH;
+            set
+            {
+                if (SetProperty(ref _gyroSensitivityH, Math.Clamp(value, 0.1, 10)))
+                {
+                    OnPropertyChanged(nameof(GyroSensitivityH_DegPerTurn));
+                }
+            }
+        }
+
+        private double _gyroSensitivityV = 1.0;
+        public double GyroSensitivityV
+        {
+            get => _gyroSensitivityV;
+            set
+            {
+                if (SetProperty(ref _gyroSensitivityV, Math.Clamp(value, 0.1, 10)))
+                {
+                    OnPropertyChanged(nameof(GyroSensitivityV_DegPerTurn));
+                }
+            }
+        }
+
+        /// <summary>Real-world readout: degrees of physical rotation per
+        /// one full screen turn at the current H sensitivity. Steam-style
+        /// reference; 360° baseline at multiplier 1.0.</summary>
+        public double GyroSensitivityH_DegPerTurn
+            => _gyroSensitivityH > 0 ? 360.0 / _gyroSensitivityH : 0;
+
+        public double GyroSensitivityV_DegPerTurn
+            => _gyroSensitivityV > 0 ? 360.0 / _gyroSensitivityV : 0;
+
+        private double _gyroDeadZoneDegPerSec = 3.0;
+        public double GyroDeadZoneDegPerSec
+        {
+            get => _gyroDeadZoneDegPerSec;
+            set => SetProperty(ref _gyroDeadZoneDegPerSec, Math.Clamp(value, 0, 30));
+        }
+
+        private double _gyroSmoothingAlpha;
+        public double GyroSmoothingAlpha
+        {
+            get => _gyroSmoothingAlpha;
+            set => SetProperty(ref _gyroSmoothingAlpha, Math.Clamp(value, 0, 0.95));
+        }
+
+        private double _gyroAcceleration;
+        public double GyroAcceleration
+        {
+            get => _gyroAcceleration;
+            set => SetProperty(ref _gyroAcceleration, Math.Clamp(value, 0, 2));
+        }
+
+        private string _gyroOutputCurve = "Linear";
+        public string GyroOutputCurve
+        {
+            get => _gyroOutputCurve;
+            set => SetProperty(ref _gyroOutputCurve, value ?? "Linear");
+        }
+
+        public System.Collections.Generic.IReadOnlyList<string> GyroOutputCurveOptions { get; }
+            = new[] { "Linear", "Aggressive", "Relaxed", "Wide", "ExtraWide" };
+
+        private string _gyroSensitivityUnits = "Multiplier";
+        public string GyroSensitivityUnits
+        {
+            get => _gyroSensitivityUnits;
+            set => SetProperty(ref _gyroSensitivityUnits, value ?? "Multiplier");
+        }
+
+        public System.Collections.Generic.IReadOnlyList<string> GyroSensitivityUnitsOptions { get; }
+            = new[] { "Multiplier", "DegPerScreenTurn" };
+
+        private double _gyroEasyAimStickThreshold;
+        /// <summary>Right-stick deflection threshold (0-100%) below which
+        /// gyro output is zeroed. 0 = always on (default).</summary>
+        public double GyroEasyAimStickThreshold
+        {
+            get => _gyroEasyAimStickThreshold;
+            set => SetProperty(ref _gyroEasyAimStickThreshold, Math.Clamp(value, 0, 100));
+        }
+
+        // Live calibrated rate readouts (deg/s) — refreshed by InputService
+        // when a Pad page is visible on a slot with a gyro-capable device.
+        private double _gyroLiveRatePitch;
+        public double GyroLiveRatePitch { get => _gyroLiveRatePitch; set => SetProperty(ref _gyroLiveRatePitch, value); }
+        private double _gyroLiveRateYaw;
+        public double GyroLiveRateYaw   { get => _gyroLiveRateYaw;   set => SetProperty(ref _gyroLiveRateYaw,   value); }
+        private double _gyroLiveRateRoll;
+        public double GyroLiveRateRoll  { get => _gyroLiveRateRoll;  set => SetProperty(ref _gyroLiveRateRoll,  value); }
+
+        private string _gyroCalibrationLabel = "";
+        public string GyroCalibrationLabel
+        {
+            get => _gyroCalibrationLabel;
+            set => SetProperty(ref _gyroCalibrationLabel, value);
+        }
+
+        /// <summary>Raised when the user clicks Calibrate Gyro on the
+        /// Pad page's Gyro tab. MainWindow wires the handler to
+        /// InputService.GyroCalibrator.RecalibrateAsync against the
+        /// slot's selected mapped device.</summary>
+        public event EventHandler GyroCalibrateRequested;
+        public void FireGyroCalibrate() => GyroCalibrateRequested?.Invoke(this, EventArgs.Empty);
+
+        public event EventHandler GyroResetCalibrationRequested;
+        public void FireGyroResetCalibration() => GyroResetCalibrationRequested?.Invoke(this, EventArgs.Empty);
+
+        private RelayCommand _gyroCalibrateCommand;
+        public RelayCommand GyroCalibrateCommand
+            => _gyroCalibrateCommand ??= new RelayCommand(FireGyroCalibrate);
+
+        private RelayCommand _gyroResetCalibrationCommand;
+        public RelayCommand GyroResetCalibrationCommand
+            => _gyroResetCalibrationCommand ??= new RelayCommand(FireGyroResetCalibration);
+
+        private RelayCommand _gyroResetTuningCommand;
+        public RelayCommand GyroResetTuningCommand =>
+            _gyroResetTuningCommand ??= new RelayCommand(() =>
+            {
+                GyroSensitivityH = 1.0;
+                GyroSensitivityV = 1.0;
+                GyroDeadZoneDegPerSec = 3.0;
+                GyroSmoothingAlpha = 0;
+                GyroAcceleration = 0;
+                GyroOutputCurve = "Linear";
+                GyroSensitivityUnits = "Multiplier";
+                GyroEasyAimStickThreshold = 0;
+            });
+
         private int _forceOverallGain = 100;
         public int ForceOverallGain { get => _forceOverallGain; set => SetProperty(ref _forceOverallGain, Math.Clamp(value, 0, 100)); }
 

@@ -262,6 +262,7 @@ namespace PadForge.Views
             bool hasLightbar = false;
             bool hasIndicatorLeds = false;
             bool hasForceFeedback = false;
+            bool hasGyro = false;
             if (DataContext is PadViewModel vmProfile
                 && vmProfile.SelectedMappedDevice != null
                 && vmProfile.SelectedMappedDevice.InstanceGuid != Guid.Empty
@@ -281,6 +282,8 @@ namespace PadForge.Views
                             || ud.CapType == InputDeviceType.Driving
                             || ud.CapType == InputDeviceType.Flight
                             || ud.CapType == InputDeviceType.FirstPerson;
+
+                        hasGyro = ud.HasGyro;
 
                         if (ud.VendorId == 0x054C)
                         {
@@ -302,6 +305,8 @@ namespace PadForge.Views
                 TabAdaptiveTriggers.Visibility = hasAdaptiveTriggers ? Visibility.Visible : Visibility.Collapsed;
             if (TabLighting != null)
                 TabLighting.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
+            if (TabGyro != null)
+                TabGyro.Visibility = hasGyro ? Visibility.Visible : Visibility.Collapsed;
             if (IndicatorLedsCard != null)
                 IndicatorLedsCard.Visibility = hasIndicatorLeds ? Visibility.Visible : Visibility.Collapsed;
 
@@ -310,11 +315,12 @@ namespace PadForge.Views
 
             // SelectedConfigTab tag values: 0 Controller, 1 Macros, 2 Mappings,
             // 3 Sticks, 4 Triggers, 5 Force Feedback, 6 Adaptive Triggers,
-            // 7 Lighting. Macros, Mappings, and Force Feedback are visible
-            // for every VC type. MIDI hides Sticks and Triggers; K+M hides
-            // Triggers only. Adaptive Triggers and Lighting are gated on
-            // profile capability above. Kick the user back to the Controller
-            // tab if they're sitting on a now-hidden one.
+            // 7 Lighting, 8 Gyro. Macros, Mappings, and Force Feedback are
+            // visible for every VC type. MIDI hides Sticks and Triggers;
+            // K+M hides Triggers only. Adaptive Triggers, Lighting, and
+            // Gyro are gated on the selected device's capabilities above.
+            // Kick the user back to the Controller tab if they're sitting
+            // on a now-hidden one.
             if (DataContext is PadViewModel vm)
             {
                 if (isMidi && (vm.SelectedConfigTab == 3 || vm.SelectedConfigTab == 4))
@@ -324,6 +330,8 @@ namespace PadForge.Views
                 else if (vm.SelectedConfigTab == 6 && !hasAdaptiveTriggers)
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 7 && !hasLightbar)
+                    vm.SelectedConfigTab = 0;
+                else if (vm.SelectedConfigTab == 8 && !hasGyro)
                     vm.SelectedConfigTab = 0;
             }
         }

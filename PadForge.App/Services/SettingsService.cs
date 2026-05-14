@@ -1571,6 +1571,16 @@ namespace PadForge.Services
                 padVm.SwapMotors = ps.ForceSwapMotor == "1" ||
                     (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
 
+                // Load gyro tuning (v3.3 per-(device, slot)).
+                padVm.GyroSensitivityH = TryParseDouble(ps.GyroSensitivityH, 1.0);
+                padVm.GyroSensitivityV = TryParseDouble(ps.GyroSensitivityV, 1.0);
+                padVm.GyroDeadZoneDegPerSec = TryParseDouble(ps.GyroDeadZoneDegPerSec, 3.0);
+                padVm.GyroSmoothingAlpha = TryParseDouble(ps.GyroSmoothingAlpha, 0);
+                padVm.GyroAcceleration = TryParseDouble(ps.GyroAcceleration, 0);
+                padVm.GyroOutputCurve = string.IsNullOrEmpty(ps.GyroOutputCurve) ? "Linear" : ps.GyroOutputCurve;
+                padVm.GyroSensitivityUnits = string.IsNullOrEmpty(ps.GyroSensitivityUnits) ? "Multiplier" : ps.GyroSensitivityUnits;
+                padVm.GyroEasyAimStickThreshold = TryParseDouble(ps.GyroEasyAimStickThreshold, 0);
+
                 // Load audio bass rumble settings.
                 padVm.AudioRumbleEnabled = ps.AudioRumbleEnabled == "1";
                 padVm.AudioRumbleSensitivity = TryParseDouble(ps.AudioRumbleSensitivity, 4.0);
@@ -2592,6 +2602,16 @@ namespace PadForge.Services
                     // — NOT bare .ToString(). See InputService.SaveViewModelToPadSetting
                     // for the full explanation of the locale data-loss bug.
                     var ic = System.Globalization.CultureInfo.InvariantCulture;
+
+                    // Write gyro tuning (v3.3 per-(device, slot)).
+                    ps.GyroSensitivityH = padVm.GyroSensitivityH.ToString(ic);
+                    ps.GyroSensitivityV = padVm.GyroSensitivityV.ToString(ic);
+                    ps.GyroDeadZoneDegPerSec = padVm.GyroDeadZoneDegPerSec.ToString(ic);
+                    ps.GyroSmoothingAlpha = padVm.GyroSmoothingAlpha.ToString(ic);
+                    ps.GyroAcceleration = padVm.GyroAcceleration.ToString(ic);
+                    ps.GyroOutputCurve = padVm.GyroOutputCurve ?? "Linear";
+                    ps.GyroSensitivityUnits = padVm.GyroSensitivityUnits ?? "Multiplier";
+                    ps.GyroEasyAimStickThreshold = padVm.GyroEasyAimStickThreshold.ToString(ic);
 
                     // Write audio bass rumble settings.
                     ps.AudioRumbleEnabled = padVm.AudioRumbleEnabled ? "1" : "0";

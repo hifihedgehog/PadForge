@@ -601,6 +601,32 @@ namespace PadForge
                     if (s is PadViewModel pvm)
                         _inputService.SendTestRumble(pvm.PadIndex, null, false, true);
                 };
+
+                // v3.3 — Gyro tab calibrate / reset wired to the slot's
+                // currently-selected mapped device. Bias is per-device
+                // (on UserDevice); tuning is per-(device, slot) but
+                // bias lookup keys only by InstanceGuid.
+                pad.GyroCalibrateRequested += (s, e) =>
+                {
+                    if (s is not PadViewModel pvm) return;
+                    var selected = pvm.SelectedMappedDevice;
+                    if (selected == null || selected.InstanceGuid == Guid.Empty) return;
+                    var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(selected.InstanceGuid);
+                    if (ud == null || !ud.HasGyro) return;
+                    pvm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroCalibrating;
+                    _ = _inputService.GyroCalibrator.RecalibrateAsync(ud);
+                };
+                pad.GyroResetCalibrationRequested += (s, e) =>
+                {
+                    if (s is not PadViewModel pvm) return;
+                    var selected = pvm.SelectedMappedDevice;
+                    if (selected == null || selected.InstanceGuid == Guid.Empty) return;
+                    var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(selected.InstanceGuid);
+                    if (ud == null || !ud.HasGyro) return;
+                    _inputService.GyroCalibrator.ResetCalibration(ud);
+                    _inputService.ClearGyroAutoCalibLatch(ud.InstanceGuid);
+                    pvm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroNeverCalibrated;
+                };
             }
 
             // Wire recorder for each pad's mapping rows.

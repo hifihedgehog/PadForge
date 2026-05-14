@@ -1090,6 +1090,20 @@
   <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>속도 의존 게인. 0 = 꺼짐(선형 스케일링). 값이 높을수록 느린 움직임은 그대로 통과시키고 빠른 움직임을 증폭합니다. 정밀 조준과 빠른 시점 전환을 함께 쓸 때 유용합니다.</value></data>
   <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>출력 커브</value></data>
   <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>응답을 형성합니다. Linear = 통과. Aggressive = x²(느림은 느림 유지). Relaxed = √x(느림은 증폭, 빠름은 포화). Wide / ExtraWide는 그 사이. 가속과 함께 적용 가능.</value></data>
+  <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>단위</value></data>
+  <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>감도 표시 단위. Multiplier는 내부 × 배율(1 = 기본). DegPerScreenTurn은 Steam 방식 — 화면을 한 바퀴 돌리는 데 필요한 컨트롤러의 물리적 회전 각도(도)입니다.</value></data>
+  <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim 임계값</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>오른쪽 스틱 편향(0–100%)이 이 값 미만이면 자이로 출력을 0으로 만듭니다. 0 = 항상 켜짐. Steam의 “조준할 때만 자이로” 느낌 — 임계값을 넘었을 때만 자이로가 작동합니다.</value></data>
+  <data name="Pad_Gyro" xml:space="preserve"><value>자이로</value></data>
+  <data name="Pad_Gyro_Header" xml:space="preserve"><value>자이로</value></data>
+  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>이 슬롯에 대한 디바이스별 자이로 튜닝. 바이어스 보정은 슬롯 간에 공유됩니다. 감도, 데드존, 스무딩, 커브, 가속, Easy Aim은 모두 (디바이스, 슬롯)별이므로 각 바인딩 구성마다 별도의 조작감을 갖습니다.</value></data>
+  <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>보정</value></data>
+  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>감도</value></data>
+  <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>응답 형성</value></data>
+  <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
+  <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>오른쪽 스틱을 기울인 동안에만 자이로를 활성화합니다. 0%면 비활성화(자이로 상시 켜짐).</value></data>
+  <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>튜닝을 기본값으로 재설정</value></data>
+  <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>H/V 감도, 데드존, 스무딩, 가속, 출력 커브, 단위, Easy Aim 임계값을 공장 기본값으로 되돌립니다. 보정 바이어스에는 영향을 주지 않습니다.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>감도</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>소스별 자이로 감도 배율. 1.0 = 엔진 기본값 (500°/s → 최대 편향). 1.0보다 크면 더 민감하고, 1.0보다 작으면 덜 민감합니다.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>터치패드 1 Y</value></data>

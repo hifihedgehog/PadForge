@@ -1090,6 +1090,20 @@
   <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>与速度相关的增益。0 = 关闭（线性缩放）。较高的值让慢速移动保持原样，加快快速移动 — 适合在精确瞄准和快速转向之间切换。</value></data>
   <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>输出曲线</value></data>
   <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>对响应进行整形。Linear = 直通。Aggressive = x²（慢的更慢，快的更猛）。Relaxed = √x（慢的放大、快的饱和）。Wide / ExtraWide 介于其间。可与加速组合。</value></data>
+  <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>单位</value></data>
+  <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>灵敏度的显示单位。Multiplier 为内部 × 倍率（1 = 基准）。DegPerScreenTurn 为 Steam 风格 — 屏幕转动一整圈所需的手柄物理转动角度。</value></data>
+  <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim 阈值</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>右摇杆偏转量（0–100%）低于该值时，陀螺仪输出归零。0 = 始终开启。Steam 的“仅在瞄准时陀螺”手感 — 只有当右摇杆超过阈值时陀螺仪才生效。</value></data>
+  <data name="Pad_Gyro" xml:space="preserve"><value>陀螺仪</value></data>
+  <data name="Pad_Gyro_Header" xml:space="preserve"><value>陀螺仪</value></data>
+  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>当前插槽的逐设备陀螺仪调节。零偏校准在所有插槽间共享；灵敏度、死区、平滑、曲线、加速以及 Easy Aim 均按（设备, 插槽）独立，每套绑定配置都拥有各自的手感。</value></data>
+  <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>校准</value></data>
+  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>灵敏度</value></data>
+  <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>响应整形</value></data>
+  <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
+  <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>仅在推动右摇杆时启用陀螺仪。0% 关闭（陀螺仪始终开启）。</value></data>
+  <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>将调节重置为默认值</value></data>
+  <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>将 H/V 灵敏度、死区、平滑、加速、输出曲线、单位以及 Easy Aim 阈值恢复为出厂默认值。不影响校准零偏。</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>灵敏度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>每个源的陀螺仪灵敏度倍数。1.0 = 引擎默认值（500°/s → 最大偏转）。大于 1.0 更灵敏；小于 1.0 不太灵敏。</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>触控板 1 Y</value></data>

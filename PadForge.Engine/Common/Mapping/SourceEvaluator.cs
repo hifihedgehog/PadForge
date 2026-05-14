@@ -42,10 +42,10 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     bool modifier = ReadButtonLikeBool(state, src.ParamModifier);
                     var inner = CloneAsDirect(src, invertOverride: src.Invert ^ modifier);
-                    return SourceCoercion.EvaluateForButtonTarget(state, inner, globalThresholdPercent);
+                    return SourceCoercion.EvaluateForButtonTarget(state, inner, globalThresholdPercent, slotIndex);
                 }
                 default: // Direct
-                    return SourceCoercion.EvaluateForButtonTarget(state, src, globalThresholdPercent);
+                    return SourceCoercion.EvaluateForButtonTarget(state, src, globalThresholdPercent, slotIndex);
             }
         }
 
@@ -74,7 +74,7 @@ namespace PadForge.Engine.Common.Mapping
                     if (runtime != null && IsVirtualStickAxisTarget(target)
                         && SourceCoercion.IsGyroDescriptor(inner.Descriptor))
                         return EvaluateGyroIntegrated(state, inner, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds);
-                    return SourceCoercion.EvaluateForBipolarAxisTarget(state, inner);
+                    return SourceCoercion.EvaluateForBipolarAxisTarget(state, inner, slotIndex);
                 }
                 default:
                     // Gyro + virtual stick = integrate rate over time. The
@@ -87,7 +87,7 @@ namespace PadForge.Engine.Common.Mapping
                     if (runtime != null && IsVirtualStickAxisTarget(target)
                         && SourceCoercion.IsGyroDescriptor(src.Descriptor))
                         return EvaluateGyroIntegrated(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds);
-                    return SourceCoercion.EvaluateForBipolarAxisTarget(state, src);
+                    return SourceCoercion.EvaluateForBipolarAxisTarget(state, src, slotIndex);
             }
         }
 
@@ -106,11 +106,20 @@ namespace PadForge.Engine.Common.Mapping
             int slotIndex, string target, int sourceIndex,
             SourceKindRuntime runtime, double frameDeltaSeconds)
         {
-            float rate = SourceCoercion.GetCalibratedGyroRate(state, src);
-            double sens = src.GyroSensitivity > 0 ? src.GyroSensitivity : 1.0;
+            // Full per-(device, slot) tuning chain: bias, smoothing,
+            // deadzone, H/V sensitivity, per-source sens, Easy Aim
+            // gating. Returns rad/s ready for integration.
+            float tunedRate = SourceCoercion.GetTunedGyroRate(state, src, slotIndex, out var tuning);
+            // Sensitivity already baked into tunedRate; pass 1.0 to the
+            // integrator so it doesn't double-apply.
             double v = runtime.TickGyroIntegrated(slotIndex, target, sourceIndex,
-                rate, sens, frameDeltaSeconds);
-            return src.Invert ? -(float)v : (float)v;
+                tunedRate, 1.0, frameDeltaSeconds);
+            // Post-integration: apply output curve + acceleration in
+            // normalized stick-deflection space. Same shaping the
+            // mouse/scroll path applies, just after the integrator
+            // accumulates instead of pre-clamp.
+            float shaped = SourceCoercion.ShapeGyroNormalized((float)v, tuning);
+            return src.Invert ? -shaped : shaped;
         }
 
         public static float EvaluateForTriggerTarget(
@@ -135,10 +144,10 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     bool modifier = ReadButtonLikeBool(state, src.ParamModifier);
                     var inner = CloneAsDirect(src, invertOverride: src.Invert ^ modifier);
-                    return SourceCoercion.EvaluateForTriggerTarget(state, inner);
+                    return SourceCoercion.EvaluateForTriggerTarget(state, inner, slotIndex);
                 }
                 default:
-                    return SourceCoercion.EvaluateForTriggerTarget(state, src);
+                    return SourceCoercion.EvaluateForTriggerTarget(state, src, slotIndex);
             }
         }
 

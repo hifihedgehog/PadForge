@@ -409,43 +409,65 @@ namespace PadForge.Services
                 return (0f, 0f, 0f);
             };
 
-            // v3.3 — per-device gyro tuning bundle (H/V sensitivity,
-            // deadzone, smoothing, acceleration, output curve). Mirrors
-            // the bias provider's lookup pattern. Returns sane defaults
-            // when the device guid is unknown so an absent provider
-            // never breaks the read path. Deadzone is converted from
-            // UserDevice's deg/s storage to rad/s for SourceCoercion.
+            // v3.3 — per-(device, slot) gyro tuning bundle (H/V sens,
+            // deadzone, smoothing, acceleration, output curve, Easy
+            // Aim threshold). Lookup goes through the slot's PadSetting
+            // for the named device so each binding config has its own
+            // gyro feel — matches SteamInput semantics. Deadzone is
+            // converted from the PadSetting's deg/s string storage to
+            // rad/s for the SourceCoercion read site.
             const float DegToRad = (float)(System.Math.PI / 180.0);
             var defaultTuning = new PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuning
             {
                 SensH = 1f, SensV = 1f, OutputCurve = "Linear",
             };
-            PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuningProvider = deviceGuid =>
+            PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuningProvider = (deviceGuid, slotIndex) =>
             {
                 if (string.IsNullOrEmpty(deviceGuid)) return defaultTuning;
+                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return defaultTuning;
                 if (!Guid.TryParse(deviceGuid, out var g)) return defaultTuning;
-                var devs = SettingsManager.UserDevices?.Items;
-                if (devs == null) return defaultTuning;
-                lock (SettingsManager.UserDevices.SyncRoot)
+                var settings = SettingsManager.UserSettings;
+                if (settings == null) return defaultTuning;
+                PadSetting ps = null;
+                lock (settings.SyncRoot)
                 {
-                    for (int i = 0; i < devs.Count; i++)
+                    for (int i = 0; i < settings.Items.Count; i++)
                     {
-                        var d = devs[i];
-                        if (d != null && d.InstanceGuid == g)
-                        {
-                            return new PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuning
-                            {
-                                SensH = d.GyroSensitivityH > 0 ? d.GyroSensitivityH : 1f,
-                                SensV = d.GyroSensitivityV > 0 ? d.GyroSensitivityV : 1f,
-                                DeadZoneRadPerSec = (d.GyroDeadZoneDegPerSec > 0 ? d.GyroDeadZoneDegPerSec : 0f) * DegToRad,
-                                SmoothingAlpha = d.GyroSmoothingAlpha,
-                                Acceleration = d.GyroAcceleration,
-                                OutputCurve = d.GyroOutputCurve ?? "Linear",
-                            };
-                        }
+                        var us = settings.Items[i];
+                        if (us == null) continue;
+                        if (us.InstanceGuid != g) continue;
+                        if (us.MapTo != slotIndex) continue;
+                        ps = us.GetPadSetting();
+                        break;
                     }
                 }
-                return defaultTuning;
+                if (ps == null) return defaultTuning;
+                return new PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuning
+                {
+                    SensH = TryParseFloatPs(ps.GyroSensitivityH, 1f),
+                    SensV = TryParseFloatPs(ps.GyroSensitivityV, 1f),
+                    DeadZoneRadPerSec = TryParseFloatPs(ps.GyroDeadZoneDegPerSec, 0f) * DegToRad,
+                    SmoothingAlpha = TryParseFloatPs(ps.GyroSmoothingAlpha, 0f),
+                    Acceleration = TryParseFloatPs(ps.GyroAcceleration, 0f),
+                    OutputCurve = ps.GyroOutputCurve ?? "Linear",
+                    EasyAimStickThreshold01 = TryParseFloatPs(ps.GyroEasyAimStickThreshold, 0f) / 100f,
+                };
+            };
+
+            // Right-stick deflection provider for Easy Aim gating. The
+            // gyro reader passes its slotIndex; we look up the slot's
+            // combined gamepad output and compute the larger absolute
+            // of the right-stick's two axes, normalized to 0..1.
+            PadForge.Engine.Common.Mapping.SourceCoercion.SlotRightStickDeflectionProvider = slotIndex =>
+            {
+                if (_inputManager == null) return 0f;
+                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return 0f;
+                var gp = _inputManager.CombinedOutputStates[slotIndex];
+                float rx = (gp.ThumbRX - (float)short.MinValue) / 65535f * 2f - 1f;
+                float ry = (gp.ThumbRY - (float)short.MinValue) / 65535f * 2f - 1f;
+                float ax = rx < 0 ? -rx : rx;
+                float ay = ry < 0 ? -ry : ry;
+                return ax > ay ? ax : ay;
             };
 
             // Per-(slot, device) lightbar configs — drives the
@@ -648,6 +670,7 @@ namespace PadForge.Services
                 UserEffectsDispatcher.SlotPerDeviceConfigsProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GyroBiasProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuningProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.SlotRightStickDeflectionProvider = null;
             }
 
             // Final UI-thread VM updates: marshal back to the dispatcher
@@ -795,6 +818,30 @@ namespace PadForge.Services
                     else
                     {
                         padVm.UpdateDeviceState(gp);
+                    }
+                }
+
+                // v3.3 — push live gyro rate + calibration label so the
+                // Gyro tab readouts track the selected device.
+                {
+                    var selected = padVm.SelectedMappedDevice;
+                    if (selected != null && selected.InstanceGuid != Guid.Empty)
+                    {
+                        UserDevice ud = FindUserDevice(selected.InstanceGuid);
+                        if (ud != null && ud.HasGyro)
+                        {
+                            const double RadToDeg = 180.0 / System.Math.PI;
+                            var st = ud.InputState;
+                            if (st != null && st.Gyro != null && st.Gyro.Length >= 3)
+                            {
+                                padVm.GyroLiveRatePitch = (st.Gyro[0] - ud.GyroBiasPitch) * RadToDeg;
+                                padVm.GyroLiveRateYaw   = (st.Gyro[1] - ud.GyroBiasYaw)   * RadToDeg;
+                                padVm.GyroLiveRateRoll  = (st.Gyro[2] - ud.GyroBiasRoll)  * RadToDeg;
+                            }
+                            padVm.GyroCalibrationLabel = ud.GyroCalibratedAtUtc == default
+                                ? Strings.Instance.Settings_GyroNeverCalibrated
+                                : string.Format(Strings.Instance.Settings_GyroLastCalibrated_Format, ud.GyroCalibratedAtUtc.ToLocalTime());
+                        }
                     }
                 }
             }
@@ -1151,39 +1198,10 @@ namespace PadForge.Services
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad2;
-
-                // v3.3 — pull the device's gyro tuning into the VM
-                // sliders, and wire the push-back callback so subsequent
-                // slider edits write back to the UserDevice + mark
-                // settings dirty for autosave.
-                if (ud.HasGyro)
-                {
-                    devVm.LoadGyroTuningFromDevice(ud);
-                    var capturedUd = ud;
-                    devVm.GyroTuningPushedToDevice = () =>
-                    {
-                        capturedUd.GyroSensitivityH = (float)devVm.GyroSensitivityH;
-                        capturedUd.GyroSensitivityV = (float)devVm.GyroSensitivityV;
-                        capturedUd.GyroDeadZoneDegPerSec = (float)devVm.GyroDeadZoneDegPerSec;
-                        capturedUd.GyroSmoothingAlpha = (float)devVm.GyroSmoothingAlpha;
-                        capturedUd.GyroAcceleration = (float)devVm.GyroAcceleration;
-                        capturedUd.GyroOutputCurve = devVm.GyroOutputCurve ?? "Linear";
-                        _settingsService?.MarkDirty();
-                    };
-                }
-                else
-                {
-                    devVm.GyroTuningPushedToDevice = null;
-                }
             }
 
-            // Refresh the gyro calibration label so it tracks
-            // mid-session recalibrations and the auto-calibrate first
-            // run. Cheap (one string assignment, dedup'd by SetProperty).
-            if (ud.HasGyro)
-                devVm.GyroCalibrationLabel = ud.GyroCalibratedAtUtc == default
-                    ? Strings.Instance.Settings_GyroNeverCalibrated
-                    : string.Format(Strings.Instance.Settings_GyroLastCalibrated_Format, ud.GyroCalibratedAtUtc.ToLocalTime());
+            // v3.3 — gyro UI lives on the Pad page Gyro tab now; no
+            // calibration label / tuning sync happens here.
 
             devVm.HasRawData = true;
 
@@ -1234,21 +1252,14 @@ namespace PadForge.Services
             for (int i = 0; i < devVm.RawPovs.Count; i++)
                 devVm.RawPovs[i].Centidegrees = state.Povs[i];
 
-            // Update gyro/accel values.
+            // Update gyro/accel values. (Pad page's Gyro tab pulls its
+            // own live-rate readout in the UI-tick loop above; this is
+            // just the Devices-page raw-state display.)
             if (ud.HasGyro)
             {
                 devVm.GyroX = state.Gyro[0];
                 devVm.GyroY = state.Gyro[1];
                 devVm.GyroZ = state.Gyro[2];
-
-                // v3.3 — calibrated rate readout in deg/s for the
-                // tuning sliders. Subtract the bias, convert to deg/s,
-                // so the user sees the actual signal the binding layer
-                // is consuming (not the raw with at-rest offset).
-                const double RadToDeg = 180.0 / System.Math.PI;
-                devVm.GyroLiveRatePitch = (state.Gyro[0] - ud.GyroBiasPitch) * RadToDeg;
-                devVm.GyroLiveRateYaw   = (state.Gyro[1] - ud.GyroBiasYaw)   * RadToDeg;
-                devVm.GyroLiveRateRoll  = (state.Gyro[2] - ud.GyroBiasRoll)  * RadToDeg;
             }
             if (ud.HasAccel)
             {
@@ -1762,6 +1773,18 @@ namespace PadForge.Services
             ps.AudioRumbleLeftMotor = padVm.AudioRumbleLeftMotor.ToString();
             ps.AudioRumbleRightMotor = padVm.AudioRumbleRightMotor.ToString();
 
+            // Gyro tuning (v3.3 per-(device, slot)) — sliders push live
+            // changes to the polling-thread read site via the
+            // GyroTuningProvider's PadSetting lookup.
+            ps.GyroSensitivityH = padVm.GyroSensitivityH.ToString("F2", ic);
+            ps.GyroSensitivityV = padVm.GyroSensitivityV.ToString("F2", ic);
+            ps.GyroDeadZoneDegPerSec = padVm.GyroDeadZoneDegPerSec.ToString("F1", ic);
+            ps.GyroSmoothingAlpha = padVm.GyroSmoothingAlpha.ToString("F2", ic);
+            ps.GyroAcceleration = padVm.GyroAcceleration.ToString("F2", ic);
+            ps.GyroOutputCurve = padVm.GyroOutputCurve ?? "Linear";
+            ps.GyroSensitivityUnits = padVm.GyroSensitivityUnits ?? "Multiplier";
+            ps.GyroEasyAimStickThreshold = padVm.GyroEasyAimStickThreshold.ToString("F0", ic);
+
             // Constant force (per-device override).
             ps.ConstantForceEnabled = padVm.ConstantForceEnabled ? "1" : "0";
             ps.ConstantForceX = padVm.ConstantForceX.ToString("F4", ic);
@@ -1975,6 +1998,16 @@ namespace PadForge.Services
             padVm.AudioRumbleLeftMotor = TryParseInt(ps.AudioRumbleLeftMotor, 100);
             padVm.AudioRumbleRightMotor = TryParseInt(ps.AudioRumbleRightMotor, 100);
 
+            // Gyro tuning (v3.3 per-(device, slot)).
+            padVm.GyroSensitivityH = TryParseDouble(ps.GyroSensitivityH, 1.0);
+            padVm.GyroSensitivityV = TryParseDouble(ps.GyroSensitivityV, 1.0);
+            padVm.GyroDeadZoneDegPerSec = TryParseDouble(ps.GyroDeadZoneDegPerSec, 3.0);
+            padVm.GyroSmoothingAlpha = TryParseDouble(ps.GyroSmoothingAlpha, 0);
+            padVm.GyroAcceleration = TryParseDouble(ps.GyroAcceleration, 0);
+            padVm.GyroOutputCurve = string.IsNullOrEmpty(ps.GyroOutputCurve) ? "Linear" : ps.GyroOutputCurve;
+            padVm.GyroSensitivityUnits = string.IsNullOrEmpty(ps.GyroSensitivityUnits) ? "Multiplier" : ps.GyroSensitivityUnits;
+            padVm.GyroEasyAimStickThreshold = TryParseDouble(ps.GyroEasyAimStickThreshold, 0);
+
             // Constant force.
             padVm.ConstantForceEnabled = ps.ConstantForceEnabled == "1";
             padVm.ConstantForceX = TryParseDouble(ps.ConstantForceX, 0.0);
@@ -2181,6 +2214,15 @@ namespace PadForge.Services
             if (string.IsNullOrEmpty(value)) return defaultValue;
             return double.TryParse(value, System.Globalization.NumberStyles.Float,
                 System.Globalization.CultureInfo.InvariantCulture, out double result) ? result : defaultValue;
+        }
+
+        /// <summary>InvariantCulture float parse used by the gyro tuning
+        /// provider to convert PadSetting's string-typed schema fields.</summary>
+        private static float TryParseFloatPs(string value, float defaultValue)
+        {
+            if (string.IsNullOrEmpty(value)) return defaultValue;
+            return float.TryParse(value, System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out float result) ? result : defaultValue;
         }
 
         /// <summary>

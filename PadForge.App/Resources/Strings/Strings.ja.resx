@@ -1090,6 +1090,20 @@
   <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>速度依存ゲイン。0 = オフ (リニアスケール)。高い値は遅い動きをそのまま通し、速い動きを増幅します。精密エイムと素早い旋回の両立に有効。</value></data>
   <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>出力カーブ</value></data>
   <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>応答を整形します。Linear = そのまま。Aggressive = x² (遅いままで速いほど増幅)。Relaxed = √x (遅い側を増幅、速い側で飽和)。Wide / ExtraWide はその中間。加速と組み合わせ可能。</value></data>
+  <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>単位</value></data>
+  <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>感度の表示単位。Multiplier は内部の × スケール (1 = 基準)。DegPerScreenTurn は Steam 方式 — 画面 1 回転に必要なコントローラーの物理回転角度 (度) です。</value></data>
+  <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim しきい値</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>右スティックのたわみ (0–100%) がこの値未満のときジャイロ出力をゼロにします。0 = 常時オン。Steam の「狙っている間だけジャイロ」感 — しきい値を超えたときだけジャイロが効きます。</value></data>
+  <data name="Pad_Gyro" xml:space="preserve"><value>ジャイロ</value></data>
+  <data name="Pad_Gyro_Header" xml:space="preserve"><value>ジャイロ</value></data>
+  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>このスロットでのデバイス別ジャイロ調整。バイアス校正はスロット間で共有。感度、デッドゾーン、スムージング、カーブ、加速、Easy Aim はすべて (デバイス, スロット) 単位なので、バインディング設定ごとに別々の操作感になります。</value></data>
+  <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>校正</value></data>
+  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>感度</value></data>
+  <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>応答整形</value></data>
+  <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
+  <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>右スティックを倒している間だけジャイロを有効にします。0% で無効 (ジャイロ常時オン)。</value></data>
+  <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>調整を初期値にリセット</value></data>
+  <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>H/V 感度、デッドゾーン、スムージング、加速、出力カーブ、単位、Easy Aim しきい値を工場出荷時の既定値に戻します。校正バイアスには影響しません。</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>感度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ソースごとのジャイロ感度倍率。1.0 = エンジンの既定 (500°/s → フルディフレクション)。1.0 を超えると敏感になり、1.0 未満では鈍くなります。</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>タッチパッド 1 Y</value></data>

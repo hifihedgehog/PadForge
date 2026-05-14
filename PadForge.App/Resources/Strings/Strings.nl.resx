@@ -1110,6 +1110,20 @@
   <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>Snelheidsafhankelijke versterking. 0 = uit (lineaire schaling). Hogere waarden laten trage bewegingen ongewijzigd en versterken snelle — handig voor precieze richting in combinatie met snelle bochten.</value></data>
   <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>Uitvoercurve</value></data>
   <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>Vormt de respons. Linear = doorgang. Aggressive = x² (langzaam blijft langzaam). Relaxed = √x (langzaam versterkt, snel verzadigt). Wide / ExtraWide zit ertussenin. Combineert met Versnelling.</value></data>
+  <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Eenheden</value></data>
+  <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Weergave-eenheid van de gevoeligheid. Multiplier is de interne × schaal (1 = basis). DegPerScreenTurn is Steam-stijl — graden fysieke controllerrotatie per één volledige schermdraai.</value></data>
+  <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim-drempel</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Uitslag van de rechterstick (0–100%) waaronder de gyro-uitvoer op nul wordt gezet. 0 = altijd aan. Steam-gevoel “gyro alleen tijdens richten” — de gyro werkt alleen als de stick voorbij de drempel komt.</value></data>
+  <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
+  <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
+  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Gyro-afstemming per apparaat voor deze slot. Bias-kalibratie is gedeeld over slots; gevoeligheid, dode zone, smoothing, curve, versnelling en Easy Aim zijn allemaal per (apparaat, slot) — elke bindingconfiguratie heeft een eigen gevoel.</value></data>
+  <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibratie</value></data>
+  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Gevoeligheid</value></data>
+  <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Responsvorm</value></data>
+  <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
+  <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>Activeer de gyro alleen wanneer de rechterstick wordt uitgeslagen. 0% schakelt uit (gyro altijd aan).</value></data>
+  <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Afstemming op standaard zetten</value></data>
+  <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Zet H/V-gevoeligheid, dode zone, smoothing, versnelling, uitvoercurve, eenheden en Easy Aim-drempel terug op de fabrieksinstellingen. De kalibratiebias blijft ongewijzigd.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheidsvermenigvuldiger van de gyroscoop per bron. 1,0 = standaard van de engine (500°/s → volledige uitslag). Waarden boven 1,0 zijn gevoeliger; daaronder minder.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>

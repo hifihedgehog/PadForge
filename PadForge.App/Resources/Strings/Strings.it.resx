@@ -1116,7 +1116,7 @@
   <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Deflessione dello stick destro (0–100%) sotto la quale l'output del giroscopio è azzerato. 0 = sempre attivo. Stile Steam: il giroscopio si attiva solo oltre la soglia.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Giroscopio</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroscopio</value></data>
-  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Impostazioni del giroscopio per questo dispositivo in questo slot. Tutto — calibrazione del bias, sensibilità, zona morta, smussatura, curva, accelerazione ed Easy Aim — viene salvato per (dispositivo, slot). Lo stesso controller fisico in slot 0 e slot 1 mantiene due tarature indipendenti.</value></data>
+  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Regola come il sensore di movimento di questo pad pilota mouse o stick. Calibra prima su una superficie piana per azzerare la deriva a riposo, poi imposta sensibilità, smussatura e regole di attivazione a piacere.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibrazione</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilità</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Forma della risposta</value></data>

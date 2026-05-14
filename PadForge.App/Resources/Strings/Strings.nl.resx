@@ -1116,7 +1116,7 @@
   <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Uitslag van de rechterstick (0–100%) waaronder de gyro-uitvoer op nul wordt gezet. 0 = altijd aan. Steam-gevoel “gyro alleen tijdens richten” — de gyro werkt alleen als de stick voorbij de drempel komt.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
-  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Gyro-instellingen voor dit apparaat in deze slot. Alles — bias-kalibratie, gevoeligheid, dode zone, smoothing, curve, versnelling en Easy Aim — wordt per (apparaat, slot) opgeslagen. Dezelfde fysieke controller in slot 0 en slot 1 houdt twee onafhankelijke instellingen aan.</value></data>
+  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Stel in hoe de bewegingssensor van deze controller muis- of stickuitvoer aanstuurt. Kalibreer eerst op een vlakke ondergrond om rust-drift te verwijderen, en stem daarna gevoeligheid, smoothing en activatieregels af naar smaak.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibratie</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Responsvorm</value></data>

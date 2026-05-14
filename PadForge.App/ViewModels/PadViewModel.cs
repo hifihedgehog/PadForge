@@ -1,6 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -486,6 +488,34 @@ namespace PadForge.ViewModels
 
         /// <summary>All physical devices currently mapped to this slot.</summary>
         public ObservableCollection<MappedDeviceInfo> MappedDevices { get; } = new();
+
+        /// <summary>Slot-level cross-device InputChoice list. Mirrors the
+        /// per-MappingItem AvailableInputs but exposed at the slot level
+        /// so the Gyro tab's Aim Engage picker (and any future slot-wide
+        /// pickers) can bind without proxy-walking the Mappings list.
+        /// Populated by <c>InputService.PopulateAvailableInputs</c>.</summary>
+        public ObservableCollection<InputChoice> SlotAvailableInputs { get; } = new();
+
+        private ICollectionView _slotAvailableInputsView;
+        /// <summary>Grouped CollectionView over <see cref="SlotAvailableInputs"/>
+        /// keyed on <c>DeviceLabel</c> for the picker's GroupStyle header.</summary>
+        public ICollectionView SlotAvailableInputsView
+        {
+            get
+            {
+                if (_slotAvailableInputsView == null)
+                {
+                    _slotAvailableInputsView = CollectionViewSource.GetDefaultView(SlotAvailableInputs);
+                    if (_slotAvailableInputsView.GroupDescriptions != null
+                        && _slotAvailableInputsView.GroupDescriptions.Count == 0)
+                    {
+                        _slotAvailableInputsView.GroupDescriptions.Add(
+                            new PropertyGroupDescription(nameof(InputChoice.DeviceLabel)));
+                    }
+                }
+                return _slotAvailableInputsView;
+            }
+        }
 
         private MappedDeviceInfo _selectedMappedDevice;
 
@@ -1260,14 +1290,67 @@ namespace PadForge.ViewModels
         public string GyroAimEngageButton
         {
             get => _gyroAimEngageButton;
-            set => SetProperty(ref _gyroAimEngageButton, value ?? "");
+            set
+            {
+                if (SetProperty(ref _gyroAimEngageButton, value ?? ""))
+                    OnPropertyChanged(nameof(GyroAimEngageSelectedInput));
+            }
         }
 
         private string _gyroAimEngageDeviceGuid = "";
         public string GyroAimEngageDeviceGuid
         {
             get => _gyroAimEngageDeviceGuid;
-            set => SetProperty(ref _gyroAimEngageDeviceGuid, value ?? "");
+            set
+            {
+                if (SetProperty(ref _gyroAimEngageDeviceGuid, value ?? ""))
+                    OnPropertyChanged(nameof(GyroAimEngageSelectedInput));
+            }
+        }
+
+        /// <summary>Tells the view to re-resolve
+        /// <see cref="GyroAimEngageSelectedInput"/> after
+        /// <see cref="SlotAvailableInputs"/> is populated. Called by
+        /// InputService.PopulateAvailableInputs after rebuilding the
+        /// slot's cross-device input list — without it, the picker
+        /// stays empty until the user reselects.</summary>
+        public void OnGyroAimEngageSelectedInputRefresh()
+            => OnPropertyChanged(nameof(GyroAimEngageSelectedInput));
+
+        /// <summary>InputChoice projection over the
+        /// <see cref="GyroAimEngageButton"/> + <see cref="GyroAimEngageDeviceGuid"/>
+        /// pair. Getter resolves the matching entry in
+        /// <see cref="SlotAvailableInputs"/>; setter writes both
+        /// backing strings atomically. Returning null collapses the
+        /// ComboBox to its placeholder. Wired by the Aim Engage
+        /// cross-device picker on the Gyro tab.</summary>
+        public InputChoice GyroAimEngageSelectedInput
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_gyroAimEngageButton)) return null;
+                foreach (var c in SlotAvailableInputs)
+                {
+                    if (c == null) continue;
+                    if (string.Equals(c.Descriptor, _gyroAimEngageButton, StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(c.DeviceGuid ?? "", _gyroAimEngageDeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
+                        return c;
+                }
+                return null;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    GyroAimEngageButton = "";
+                    GyroAimEngageDeviceGuid = "";
+                }
+                else
+                {
+                    GyroAimEngageButton = value.Descriptor ?? "";
+                    GyroAimEngageDeviceGuid = value.DeviceGuid ?? "";
+                }
+            }
         }
 
         private bool _gyroInvertPitch;
@@ -1342,6 +1425,75 @@ namespace PadForge.ViewModels
                 GyroAimEngageDeviceGuid = "";
                 GyroInvertPitch = false;
                 GyroInvertYaw = false;
+            });
+
+        // ─── Per-row reset commands. Each restores ONE field to its
+        //     default so the user can revert a single tweak without
+        //     clobbering the rest of the gyro tuning. Matches the
+        //     per-control reset-button convention used across the
+        //     Triggers / AT / Lighting tabs. ───
+        private RelayCommand _resetGyroSpaceCommand;
+        public RelayCommand ResetGyroSpaceCommand =>
+            _resetGyroSpaceCommand ??= new RelayCommand(() => GyroSpace = "Local");
+
+        private RelayCommand _resetGyroSensitivityHCommand;
+        public RelayCommand ResetGyroSensitivityHCommand =>
+            _resetGyroSensitivityHCommand ??= new RelayCommand(() => GyroSensitivityH = 1.0);
+
+        private RelayCommand _resetGyroSensitivityVCommand;
+        public RelayCommand ResetGyroSensitivityVCommand =>
+            _resetGyroSensitivityVCommand ??= new RelayCommand(() => GyroSensitivityV = 1.0);
+
+        private RelayCommand _resetGyroSensitivityUnitsCommand;
+        public RelayCommand ResetGyroSensitivityUnitsCommand =>
+            _resetGyroSensitivityUnitsCommand ??= new RelayCommand(() => GyroSensitivityUnits = "Multiplier");
+
+        private RelayCommand _resetGyroInvertPitchCommand;
+        public RelayCommand ResetGyroInvertPitchCommand =>
+            _resetGyroInvertPitchCommand ??= new RelayCommand(() => GyroInvertPitch = false);
+
+        private RelayCommand _resetGyroInvertYawCommand;
+        public RelayCommand ResetGyroInvertYawCommand =>
+            _resetGyroInvertYawCommand ??= new RelayCommand(() => GyroInvertYaw = false);
+
+        private RelayCommand _resetGyroRealWorldCalibrationCommand;
+        public RelayCommand ResetGyroRealWorldCalibrationCommand =>
+            _resetGyroRealWorldCalibrationCommand ??= new RelayCommand(() => GyroRealWorldCalibration = 0);
+
+        private RelayCommand _resetGyroDeadZoneCommand;
+        public RelayCommand ResetGyroDeadZoneCommand =>
+            _resetGyroDeadZoneCommand ??= new RelayCommand(() => GyroDeadZoneDegPerSec = 3.0);
+
+        private RelayCommand _resetGyroTighteningCommand;
+        public RelayCommand ResetGyroTighteningCommand =>
+            _resetGyroTighteningCommand ??= new RelayCommand(() => GyroTighteningThresholdDegPerSec = 3.0);
+
+        private RelayCommand _resetGyroSmoothingThresholdCommand;
+        public RelayCommand ResetGyroSmoothingThresholdCommand =>
+            _resetGyroSmoothingThresholdCommand ??= new RelayCommand(() => GyroSmoothingThresholdDegPerSec = 8.0);
+
+        private RelayCommand _resetGyroSmoothingWindowCommand;
+        public RelayCommand ResetGyroSmoothingWindowCommand =>
+            _resetGyroSmoothingWindowCommand ??= new RelayCommand(() => GyroSmoothingWindowMs = 50);
+
+        private RelayCommand _resetGyroAccelerationCommand;
+        public RelayCommand ResetGyroAccelerationCommand =>
+            _resetGyroAccelerationCommand ??= new RelayCommand(() => GyroAcceleration = 0);
+
+        private RelayCommand _resetGyroOutputCurveCommand;
+        public RelayCommand ResetGyroOutputCurveCommand =>
+            _resetGyroOutputCurveCommand ??= new RelayCommand(() => GyroOutputCurve = "Linear");
+
+        private RelayCommand _resetGyroEasyAimStickThresholdCommand;
+        public RelayCommand ResetGyroEasyAimStickThresholdCommand =>
+            _resetGyroEasyAimStickThresholdCommand ??= new RelayCommand(() => GyroEasyAimStickThreshold = 0);
+
+        private RelayCommand _resetGyroAimEngageButtonCommand;
+        public RelayCommand ResetGyroAimEngageButtonCommand =>
+            _resetGyroAimEngageButtonCommand ??= new RelayCommand(() =>
+            {
+                GyroAimEngageButton = "";
+                GyroAimEngageDeviceGuid = "";
             });
 
         private int _forceOverallGain = 100;

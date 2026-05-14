@@ -1096,7 +1096,7 @@
   <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Rechte-Stick-Auslenkung (0–100%), unterhalb derer die Gyro-Ausgabe auf null gesetzt wird. 0 = immer an. Steam-Modus: Gyro aktiviert nur, wenn der Stick über die Schwelle bewegt wird.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
-  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Gyro-Einstellungen für dieses Gerät auf diesem Slot. Alles — Bias-Kalibrierung, Empfindlichkeit, Totzone, Glättung, Kurve, Beschleunigung und Easy Aim — wird pro (Gerät, Slot) gespeichert. Dasselbe physische Pad in Slot 0 und Slot 1 behält zwei unabhängige Einstellungen.</value></data>
+  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Steuere, wie der Bewegungssensor dieses Pads Maus- und Stick-Ausgaben antreibt. Zuerst auf ebener Fläche kalibrieren, um die Ruhedrift auszugleichen, dann Empfindlichkeit, Glättung und Aktivierungsregeln nach Geschmack einstellen.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrierung</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Empfindlichkeit</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Antwortform</value></data>

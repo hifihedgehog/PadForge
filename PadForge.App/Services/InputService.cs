@@ -2439,6 +2439,15 @@ namespace PadForge.Services
                 mapping.SyncSelectedInputFromDescriptor();
                 mapping.RefreshAllExtraSourceInputs();
             }
+
+            // v3.4 — also refresh the slot-level cross-device picker
+            // list (used by the Gyro tab's Aim Engage button picker).
+            // Fire SelectedInput re-eval so the ComboBox resolves the
+            // saved descriptor against the freshly-populated list.
+            padVm.SlotAvailableInputs.Clear();
+            foreach (var c in flat)
+                padVm.SlotAvailableInputs.Add(c);
+            padVm.OnGyroAimEngageSelectedInputRefresh();
         }
 
         // ─────────────────────────────────────────────

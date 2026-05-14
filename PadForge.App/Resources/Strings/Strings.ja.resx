@@ -1096,7 +1096,7 @@
   <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>右スティックのたわみ (0–100%) がこの値未満のときジャイロ出力をゼロにします。0 = 常時オン。Steam の「狙っている間だけジャイロ」感 — しきい値を超えたときだけジャイロが効きます。</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>ジャイロ</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ジャイロ</value></data>
-  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>このスロットの、このデバイスのジャイロ設定。バイアス校正、感度、デッドゾーン、スムージング、カーブ、加速、Easy Aim — すべて (デバイス, スロット) 単位で保存されます。同じ物理パッドでもスロット 0 とスロット 1 では独立した 2 セットの設定を保持します。</value></data>
+  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>このパッドのモーションセンサーがマウスやスティック出力をどう動かすか調整します。まず平らな所で校正して静止時のドリフトをゼロにし、その後で感度、スムージング、アクティベートルールを好みに合わせて詰めてください。</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>校正</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>感度</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>応答整形</value></data>

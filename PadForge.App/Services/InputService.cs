@@ -1870,9 +1870,14 @@ namespace PadForge.Services
             ps.AudioRumbleLeftMotor = padVm.AudioRumbleLeftMotor.ToString();
             ps.AudioRumbleRightMotor = padVm.AudioRumbleRightMotor.ToString();
 
-            // Gyro tuning (v3.3 per-(device, slot)) — sliders push live
+            // Gyro tuning (per-(device, slot)) — sliders push live
             // changes to the polling-thread read site via the
-            // GyroTuningProvider's PadSetting lookup.
+            // GyroTuningProvider's PadSetting lookup. Every gyro field
+            // listed here also needs a load mirror in
+            // LoadPadSettingToViewModel and a serialization mirror in
+            // SettingsService.UpdatePadSettingsFromViewModels for the
+            // four-way sync (VM ↔ PadSetting ↔ XML ↔ engine) to be
+            // race-free.
             ps.GyroSensitivityH = padVm.GyroSensitivityH.ToString("F2", ic);
             ps.GyroSensitivityV = padVm.GyroSensitivityV.ToString("F2", ic);
             ps.GyroDeadZoneDegPerSec = padVm.GyroDeadZoneDegPerSec.ToString("F1", ic);
@@ -1881,6 +1886,18 @@ namespace PadForge.Services
             ps.GyroOutputCurve = padVm.GyroOutputCurve ?? "Linear";
             ps.GyroSensitivityUnits = padVm.GyroSensitivityUnits ?? "Multiplier";
             ps.GyroEasyAimStickThreshold = padVm.GyroEasyAimStickThreshold.ToString("F0", ic);
+            // JoyShockMapper-canon extensions.
+            ps.GyroSpace = padVm.GyroSpace ?? "Local";
+            ps.GyroPlayerSpaceYawRelaxFactor = padVm.GyroPlayerSpaceYawRelaxFactor.ToString("F2", ic);
+            ps.GyroWorldSpaceSideReductionThreshold = padVm.GyroWorldSpaceSideReductionThreshold.ToString("F3", ic);
+            ps.GyroTighteningThresholdDegPerSec = padVm.GyroTighteningThresholdDegPerSec.ToString("F1", ic);
+            ps.GyroSmoothingThresholdDegPerSec = padVm.GyroSmoothingThresholdDegPerSec.ToString("F1", ic);
+            ps.GyroSmoothingWindowMs = padVm.GyroSmoothingWindowMs.ToString("F0", ic);
+            ps.GyroRealWorldCalibration = padVm.GyroRealWorldCalibration.ToString("F2", ic);
+            ps.GyroAimEngageButton = padVm.GyroAimEngageButton ?? "";
+            ps.GyroAimEngageDeviceGuid = padVm.GyroAimEngageDeviceGuid ?? "";
+            ps.GyroInvertPitch = padVm.GyroInvertPitch ? "1" : "0";
+            ps.GyroInvertYaw = padVm.GyroInvertYaw ? "1" : "0";
 
             // Constant force (per-device override).
             ps.ConstantForceEnabled = padVm.ConstantForceEnabled ? "1" : "0";
@@ -2095,7 +2112,11 @@ namespace PadForge.Services
             padVm.AudioRumbleLeftMotor = TryParseInt(ps.AudioRumbleLeftMotor, 100);
             padVm.AudioRumbleRightMotor = TryParseInt(ps.AudioRumbleRightMotor, 100);
 
-            // Gyro tuning (v3.3 per-(device, slot)).
+            // Gyro tuning (per-(device, slot)). Must mirror the field
+            // set written by SaveViewModelToPadSetting above — every
+            // sync direction in the VM ↔ PadSetting ↔ XML chain has to
+            // cover the SAME fields or the missing ones get clobbered
+            // when the device dropdown is switched.
             padVm.GyroSensitivityH = TryParseDouble(ps.GyroSensitivityH, 1.0);
             padVm.GyroSensitivityV = TryParseDouble(ps.GyroSensitivityV, 1.0);
             padVm.GyroDeadZoneDegPerSec = TryParseDouble(ps.GyroDeadZoneDegPerSec, 3.0);
@@ -2104,6 +2125,18 @@ namespace PadForge.Services
             padVm.GyroOutputCurve = string.IsNullOrEmpty(ps.GyroOutputCurve) ? "Linear" : ps.GyroOutputCurve;
             padVm.GyroSensitivityUnits = string.IsNullOrEmpty(ps.GyroSensitivityUnits) ? "Multiplier" : ps.GyroSensitivityUnits;
             padVm.GyroEasyAimStickThreshold = TryParseDouble(ps.GyroEasyAimStickThreshold, 0);
+            // JoyShockMapper-canon extensions.
+            padVm.GyroSpace = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace;
+            padVm.GyroPlayerSpaceYawRelaxFactor = TryParseDouble(ps.GyroPlayerSpaceYawRelaxFactor, 1.41);
+            padVm.GyroWorldSpaceSideReductionThreshold = TryParseDouble(ps.GyroWorldSpaceSideReductionThreshold, 0.125);
+            padVm.GyroTighteningThresholdDegPerSec = TryParseDouble(ps.GyroTighteningThresholdDegPerSec, 3.0);
+            padVm.GyroSmoothingThresholdDegPerSec = TryParseDouble(ps.GyroSmoothingThresholdDegPerSec, 8.0);
+            padVm.GyroSmoothingWindowMs = TryParseDouble(ps.GyroSmoothingWindowMs, 50);
+            padVm.GyroRealWorldCalibration = TryParseDouble(ps.GyroRealWorldCalibration, 0);
+            padVm.GyroAimEngageButton = ps.GyroAimEngageButton ?? "";
+            padVm.GyroAimEngageDeviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
+            padVm.GyroInvertPitch = ps.GyroInvertPitch == "1";
+            padVm.GyroInvertYaw = ps.GyroInvertYaw == "1";
 
             // Constant force.
             padVm.ConstantForceEnabled = ps.ConstantForceEnabled == "1";

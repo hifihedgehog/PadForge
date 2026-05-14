@@ -1066,6 +1066,10 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Gyro_Units_Multiplier => Get("Pad_Gyro_Units_Multiplier");
     public string Pad_Gyro_Units_DegPerScreenTurn => Get("Pad_Gyro_Units_DegPerScreenTurn");
     public string Pad_Gyro_AimEngage_Record => Get("Pad_Gyro_AimEngage_Record");
+    public string Pad_Gyro_ResetCalibration_All_Tooltip => Get("Pad_Gyro_ResetCalibration_All_Tooltip");
+    public string Pad_Gyro_ResetSensitivity_All_Tooltip => Get("Pad_Gyro_ResetSensitivity_All_Tooltip");
+    public string Pad_Gyro_ResetResponse_All_Tooltip => Get("Pad_Gyro_ResetResponse_All_Tooltip");
+    public string Pad_Gyro_ResetEngage_All_Tooltip => Get("Pad_Gyro_ResetEngage_All_Tooltip");
     public string Pad_Gyro_ResetTuning => Get("Pad_Gyro_ResetTuning");
     public string Pad_Gyro_ResetTuning_Tooltip => Get("Pad_Gyro_ResetTuning_Tooltip");
     public string Mapping_GyroSensitivity => Get("Mapping_GyroSensitivity");

@@ -1096,7 +1096,7 @@
   <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Déflexion du stick droit (0–100%) en dessous de laquelle la sortie gyroscope est mise à zéro. 0 = toujours actif. Style Steam : le gyroscope se déclenche uniquement au-delà du seuil.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyroscope</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyroscope</value></data>
-  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Réglage gyroscope par appareil et par slot. L'étalonnage du biais est partagé entre slots ; sensibilité, zone morte, lissage, courbe, accélération et Easy Aim sont par (appareil, slot) — chaque configuration possède son ressenti.</value></data>
+  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Réglages gyroscope pour cet appareil sur ce slot. Tout — étalonnage du biais, sensibilité, zone morte, lissage, courbe, accélération et Easy Aim — est enregistré par (appareil, slot). Le même contrôleur physique en slot 0 et slot 1 conserve deux réglages indépendants.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Étalonnage</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Forme de réponse</value></data>

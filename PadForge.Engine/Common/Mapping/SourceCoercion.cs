@@ -44,17 +44,18 @@ namespace PadForge.Engine.Common.Mapping
         private static readonly float GyroButtonThreshold = 30f * (float)Math.PI / 180f;
 
         /// <summary>Static lookup hook so SourceCoercion can subtract
-        /// per-device at-rest gyro bias without taking a UserDevice
-        /// reference (the Engine library is self-contained). The App
-        /// layer wires this provider at startup from UserDevices.
-        /// Returns the three-axis bias tuple for the given device GUID
-        /// string, or zero for unknown / uncalibrated devices. NOTE:
-        /// the per-source <c>Invert</c> toggle handles user-perception
-        /// direction inversion — do NOT apply any cemuhook-style
-        /// (-gx, gy, -gz) flip here. Those flips live exclusively in
-        /// the DSU / MotionSnapshot aggregation path and would silently
-        /// break user expectations if synced.</summary>
-        public static Func<string, (float pitch, float yaw, float roll)> GyroBiasProvider { get; set; }
+        /// per-(device, slot) at-rest gyro bias without taking a
+        /// PadSetting reference (the Engine library is self-contained).
+        /// The App layer wires this provider at startup from the per-
+        /// slot PadSetting. Returns the three-axis bias tuple for the
+        /// given (deviceGuid, slotIndex), or zero for unknown /
+        /// uncalibrated (device, slot) pairs. NOTE: the per-source
+        /// <c>Invert</c> toggle handles user-perception direction
+        /// inversion — do NOT apply any cemuhook-style (-gx, gy, -gz)
+        /// flip here. Those flips live exclusively in the DSU /
+        /// MotionSnapshot aggregation path and would silently break
+        /// user expectations if synced.</summary>
+        public static Func<string, int, (float pitch, float yaw, float roll)> GyroBiasProvider { get; set; }
 
         /// <summary>v3.3 per-(device, slot) gyro tuning bundle. App
         /// layer wires <see cref="GyroTuningProvider"/> at startup with
@@ -222,13 +223,16 @@ namespace PadForge.Engine.Common.Mapping
         /// <summary>Public form of <see cref="ReadCalibratedGyroRate"/>:
         /// returns the bias-subtracted gyro rate (rad/s) for the source's
         /// descriptor on the given state, or 0 for non-gyro descriptors /
-        /// unknown axes / null state.Gyro.</summary>
-        public static float GetCalibratedGyroRate(CustomInputState state, MappingSource src)
+        /// unknown axes / null state.Gyro. <paramref name="slotIndex"/>
+        /// selects which slot's per-(device, slot) bias to subtract; pass
+        /// -1 for callers that have no slot context (no bias subtraction
+        /// is applied in that case — the read passes through raw).</summary>
+        public static float GetCalibratedGyroRate(CustomInputState state, MappingSource src, int slotIndex = -1)
         {
             if (src == null) return 0f;
             int axis = ParseGyroAxisIndex(src.Descriptor);
             if (axis < 0) return 0f;
-            return ReadCalibratedGyroRate(state, axis, src.DeviceGuid);
+            return ReadCalibratedGyroRate(state, axis, src.DeviceGuid, slotIndex);
         }
 
         /// <summary>Public access to the full per-(device, slot) gyro
@@ -301,23 +305,23 @@ namespace PadForge.Engine.Common.Mapping
             // signed value. Same H sensitivity multiplier as plain Yaw/Roll.
             if (IsHorizontalBlendDescriptor(src.Descriptor))
             {
-                float yaw  = ProcessSingleAxis(state, src, 1, tuning); // Yaw
-                float roll = ProcessSingleAxis(state, src, 2, tuning); // Roll
+                float yaw  = ProcessSingleAxis(state, src, 1, slotIndex, tuning); // Yaw
+                float roll = ProcessSingleAxis(state, src, 2, slotIndex, tuning); // Roll
                 gyroAxis = (Math.Abs(yaw) >= Math.Abs(roll)) ? 1 : 2;
                 return gyroAxis == 1 ? yaw : roll;
             }
 
             gyroAxis = ParseGyroAxisIndex(src.Descriptor);
             if (gyroAxis < 0) return 0f;
-            return ProcessSingleAxis(state, src, gyroAxis, tuning);
+            return ProcessSingleAxis(state, src, gyroAxis, slotIndex, tuning);
         }
 
         /// <summary>Shared per-axis processing chain: bias subtract,
         /// smoothing, deadzone, axis sensitivity, per-source multiplier.
         /// Returns the tuned rate in rad/s (pre-scale, pre-curve).</summary>
-        private static float ProcessSingleAxis(CustomInputState state, MappingSource src, int axis, GyroTuning tuning)
+        private static float ProcessSingleAxis(CustomInputState state, MappingSource src, int axis, int slotIndex, GyroTuning tuning)
         {
-            float rate = ReadCalibratedGyroRate(state, axis, src.DeviceGuid);
+            float rate = ReadCalibratedGyroRate(state, axis, src.DeviceGuid, slotIndex);
 
             // Smoothing: single-pole EMA on the bias-subtracted rate.
             rate = ApplyGyroSmoothing(src.DeviceGuid, axis, rate, tuning.SmoothingAlpha);
@@ -337,20 +341,21 @@ namespace PadForge.Engine.Common.Mapping
             return rate * axisSens * perSourceSens;
         }
 
-        /// <summary>Reads <c>state.Gyro[gyroAxis]</c> minus the device's
-        /// at-rest bias (looked up via <see cref="GyroBiasProvider"/>).
-        /// Returns 0 when the device has no calibration entry — caller
-        /// gets the raw reading minus zero, which is the right default
-        /// for "uncalibrated yet, just connected." Defensive against
-        /// null state.Gyro[].</summary>
-        private static float ReadCalibratedGyroRate(CustomInputState state, int gyroAxis, string deviceGuid)
+        /// <summary>Reads <c>state.Gyro[gyroAxis]</c> minus the
+        /// (device, slot) at-rest bias (looked up via
+        /// <see cref="GyroBiasProvider"/>). Returns 0 when the
+        /// (device, slot) has no calibration entry — caller gets the
+        /// raw reading minus zero, which is the right default for
+        /// "uncalibrated yet, just connected." Defensive against null
+        /// state.Gyro[].</summary>
+        private static float ReadCalibratedGyroRate(CustomInputState state, int gyroAxis, string deviceGuid, int slotIndex)
         {
             if (state == null || state.Gyro == null) return 0f;
             if (gyroAxis < 0 || gyroAxis >= state.Gyro.Length) return 0f;
             float raw = state.Gyro[gyroAxis];
             var provider = GyroBiasProvider;
             if (provider == null || string.IsNullOrEmpty(deviceGuid)) return raw;
-            var bias = provider(deviceGuid);
+            var bias = provider(deviceGuid, slotIndex);
             return gyroAxis switch
             {
                 0 => raw - bias.pitch,

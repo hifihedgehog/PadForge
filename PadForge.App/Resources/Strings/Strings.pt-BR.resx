@@ -1096,7 +1096,7 @@
   <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Deflexão do analógico direito (0–100%) abaixo da qual a saída do giroscópio é zerada. 0 = sempre ativo. Sensação do Steam “giroscópio só ao mirar” — o giroscópio atua apenas quando o analógico passa do limiar.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Giroscópio</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroscópio</value></data>
-  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Ajuste do giroscópio por dispositivo para este slot. A calibração de viés é compartilhada entre slots; sensibilidade, zona morta, suavização, curva, aceleração e Easy Aim são todos por (dispositivo, slot) — cada configuração de vínculo tem o seu próprio toque.</value></data>
+  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Ajustes do giroscópio para este dispositivo neste slot. Tudo — calibração de viés, sensibilidade, zona morta, suavização, curva, aceleração e Easy Aim — é salvo por (dispositivo, slot). O mesmo controle físico no slot 0 e no slot 1 mantém dois ajustes independentes.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibração</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilidade</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Forma da resposta</value></data>

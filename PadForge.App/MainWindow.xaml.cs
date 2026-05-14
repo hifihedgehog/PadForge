@@ -603,9 +603,10 @@ namespace PadForge
                 };
 
                 // v3.3 — Gyro tab calibrate / reset wired to the slot's
-                // currently-selected mapped device. Bias is per-device
-                // (on UserDevice); tuning is per-(device, slot) but
-                // bias lookup keys only by InstanceGuid.
+                // currently-selected mapped device. Both bias AND tuning
+                // are per-(device, slot) on the PadSetting; the handlers
+                // look up the slot's PadSetting via the same key the
+                // mapping editor uses (InstanceGuid + slot index).
                 pad.GyroCalibrateRequested += (s, e) =>
                 {
                     if (s is not PadViewModel pvm) return;
@@ -613,8 +614,11 @@ namespace PadForge
                     if (selected == null || selected.InstanceGuid == Guid.Empty) return;
                     var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(selected.InstanceGuid);
                     if (ud == null || !ud.HasGyro) return;
+                    var us = PadForge.Common.Input.SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, pvm.PadIndex);
+                    var ps = us?.GetPadSetting();
+                    if (ps == null) return;
                     pvm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroCalibrating;
-                    _ = _inputService.GyroCalibrator.RecalibrateAsync(ud);
+                    _ = _inputService.GyroCalibrator.RecalibrateAsync(ud, ps);
                 };
                 pad.GyroResetCalibrationRequested += (s, e) =>
                 {
@@ -623,8 +627,11 @@ namespace PadForge
                     if (selected == null || selected.InstanceGuid == Guid.Empty) return;
                     var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(selected.InstanceGuid);
                     if (ud == null || !ud.HasGyro) return;
-                    _inputService.GyroCalibrator.ResetCalibration(ud);
-                    _inputService.ClearGyroAutoCalibLatch(ud.InstanceGuid);
+                    var us = PadForge.Common.Input.SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, pvm.PadIndex);
+                    var ps = us?.GetPadSetting();
+                    if (ps == null) return;
+                    _inputService.GyroCalibrator.ResetCalibration(ps);
+                    _inputService.ClearGyroAutoCalibLatch(ud.InstanceGuid, pvm.PadIndex);
                     pvm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroNeverCalibrated;
                 };
             }

@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using PadForge.Engine.Data;
@@ -8,10 +9,16 @@ namespace PadForge.Services
     /// <summary>
     /// Samples the live <see cref="UserDevice.InputState"/>'s gyro readings
     /// while the user holds the controller still, averages each axis, and
-    /// writes the result back as the device's at-rest bias.
+    /// writes the result back as the (device, slot)'s at-rest bias on the
+    /// associated <see cref="PadSetting"/>.
     /// <see cref="PadForge.Engine.Common.Mapping.SourceCoercion"/>'s gyro
     /// reader subtracts the bias inline so mappings don't drift the mouse
     /// or stick when the controller is stationary.
+    ///
+    /// <para>Per-(device, slot): the same physical pad in slot 0 and
+    /// slot 1 gets two independent bias entries on two independent
+    /// <c>PadSetting</c>s, so re-calibrating one slot does not disturb
+    /// the other.</para>
     ///
     /// <para>Thread model: sampling runs on a worker task, polling
     /// <c>ud.InputState.Gyro[]</c> at ~5 ms intervals. The state object
@@ -25,53 +32,52 @@ namespace PadForge.Services
         private readonly Action _persistCallback;
 
         /// <param name="persistCallback">Called on completion to ask
-        /// SettingsService to write UserDevices back to disk.</param>
+        /// SettingsService to write PadSettings back to disk.</param>
         public GyroCalibratorService(Action persistCallback = null)
         {
             _persistCallback = persistCallback;
         }
 
         /// <summary>Auto-runs the 1500 ms calibration the first time a
-        /// gyro-capable device is seen (GyroCalibratedAtUtc == default).
-        /// No-op for already-calibrated devices.</summary>
-        public Task EnsureAutoCalibratedAsync(UserDevice ud)
+        /// (device, slot) is seen with no calibration timestamp on its
+        /// <see cref="PadSetting"/>. No-op if either argument is null or
+        /// the device lacks a gyro.</summary>
+        public Task EnsureAutoCalibratedAsync(UserDevice ud, PadSetting ps)
         {
-            if (ud == null) return Task.CompletedTask;
+            if (ud == null || ps == null) return Task.CompletedTask;
             if (!ud.HasGyro) return Task.CompletedTask;
-            if (ud.GyroCalibratedAtUtc != default) return Task.CompletedTask;
-            return RecalibrateAsync(ud, 1500);
+            if (!string.IsNullOrEmpty(ps.GyroCalibratedAtUtc)) return Task.CompletedTask;
+            return RecalibrateAsync(ud, ps, 1500);
         }
 
         /// <summary>Zeroes the gyro bias fields and clears the
-        /// <c>GyroCalibratedAtUtc</c> timestamp on <paramref name="ud"/>,
-        /// reverting the device to its uncalibrated state. The next
-        /// <see cref="EnsureAutoCalibratedAsync"/> pass (fired by
-        /// InputService whenever it sees a gyro device with
-        /// <c>GyroCalibratedAtUtc == default</c>) will re-run the
-        /// 1500 ms at-rest sample on the next polling tick. Triggers
-        /// the persist callback so the cleared state hits PadForge.xml.</summary>
-        public void ResetCalibration(UserDevice ud)
+        /// calibration timestamp on the given <see cref="PadSetting"/>,
+        /// reverting the (device, slot) pair to its uncalibrated state.
+        /// The next <see cref="EnsureAutoCalibratedAsync"/> pass will
+        /// re-run the 1500 ms at-rest sample for that slot. Triggers the
+        /// persist callback so the cleared state hits PadForge.xml.</summary>
+        public void ResetCalibration(PadSetting ps)
         {
-            if (ud == null || !ud.HasGyro) return;
-            ud.GyroBiasPitch = 0f;
-            ud.GyroBiasYaw   = 0f;
-            ud.GyroBiasRoll  = 0f;
-            ud.GyroCalibratedAtUtc = default;
+            if (ps == null) return;
+            ps.GyroBiasPitch = "0";
+            ps.GyroBiasYaw   = "0";
+            ps.GyroBiasRoll  = "0";
+            ps.GyroCalibratedAtUtc = "";
             _persistCallback?.Invoke();
         }
 
         /// <summary>Samples <paramref name="ud"/>'s gyro readings for
         /// <paramref name="durationMs"/>, averages each axis, and writes
-        /// the result to the UserDevice's bias fields. Returns false if
-        /// the device went offline mid-sample or has no gyro.</summary>
-        public Task<bool> RecalibrateAsync(UserDevice ud, int durationMs = 1500, CancellationToken ct = default)
+        /// the result to <paramref name="ps"/>'s bias fields. Returns
+        /// false if the device went offline mid-sample or has no gyro.</summary>
+        public Task<bool> RecalibrateAsync(UserDevice ud, PadSetting ps, int durationMs = 1500, CancellationToken ct = default)
         {
-            if (ud == null || !ud.HasGyro) return Task.FromResult(false);
+            if (ud == null || ps == null || !ud.HasGyro) return Task.FromResult(false);
             durationMs = Math.Clamp(durationMs, 250, 5000);
-            return Task.Run(() => RunSampling(ud, durationMs, ct), ct);
+            return Task.Run(() => RunSampling(ud, ps, durationMs, ct), ct);
         }
 
-        private bool RunSampling(UserDevice ud, int durationMs, CancellationToken ct)
+        private bool RunSampling(UserDevice ud, PadSetting ps, int durationMs, CancellationToken ct)
         {
             double accPitch = 0, accYaw = 0, accRoll = 0;
             int samples = 0;
@@ -97,10 +103,10 @@ namespace PadForge.Services
             }
             if (samples == 0) return false;
 
-            ud.GyroBiasPitch = (float)(accPitch / samples);
-            ud.GyroBiasYaw   = (float)(accYaw   / samples);
-            ud.GyroBiasRoll  = (float)(accRoll  / samples);
-            ud.GyroCalibratedAtUtc = DateTime.UtcNow;
+            ps.GyroBiasPitch = ((float)(accPitch / samples)).ToString("R", CultureInfo.InvariantCulture);
+            ps.GyroBiasYaw   = ((float)(accYaw   / samples)).ToString("R", CultureInfo.InvariantCulture);
+            ps.GyroBiasRoll  = ((float)(accRoll  / samples)).ToString("R", CultureInfo.InvariantCulture);
+            ps.GyroCalibratedAtUtc = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture);
 
             _persistCallback?.Invoke();
             return true;

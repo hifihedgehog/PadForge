@@ -948,7 +948,7 @@
   <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Right-stick deflection (0–100%) below which gyro output is zeroed. 0 = always on. Steam's "gyro engaged while aiming" feel — gyro fires only when the user pushes the right stick past the threshold.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
-  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Per-device gyro tuning for this slot. Bias calibration is shared across slots; sensitivity, deadzone, smoothing, curve, acceleration, and Easy Aim are all per-(device, slot) so each binding config has its own feel.</value></data>
+  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Gyro settings for this device on this slot. Everything — bias calibration, sensitivity, deadzone, smoothing, curve, acceleration, and Easy Aim — is stored per-(device, slot). The same physical pad in slot 0 and slot 1 keeps two independent tunings.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Response shaping</value></data>

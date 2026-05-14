@@ -402,6 +402,30 @@ namespace PadForge.Common.Input
         internal IReadOnlyDictionary<Guid, PlayStationSlotConfig>[] _perDevicePlayStationConfigs
             = new IReadOnlyDictionary<Guid, PlayStationSlotConfig>[MaxPads];
 
+        // Parallel non-HM dispatcher ownership. HM-backed slots get their
+        // UserEffectsDispatcher created inside HMaestroVirtualController.
+        // AttachPlayStationConfig and disposed in HM's Disconnect — that
+        // lifecycle is untouched. For KBM / MIDI slots there's no HM VC,
+        // so without a parallel owner here Sony pads mapped to those slots
+        // would have NO writer at all (Step 2 ApplyForceFeedback skips Sony
+        // VID/PID, expecting the dispatcher to handle them). This array
+        // gives those slots a dispatcher of their own, registered in the
+        // same static _instances map the polling-tick poke reads.
+        private readonly UserEffectsDispatcher[] _nonHmDispatchers
+            = new UserEffectsDispatcher[MaxPads];
+
+        /// <summary>Fires <see cref="UserEffectsDispatcher.ApplyOnce"/>
+        /// on every live non-HM dispatcher. Called from InputService's
+        /// DevicesUpdated handler so a Sony pad reconnecting on a KBM /
+        /// MIDI slot gets its lightbar / triggers / mic LED re-pushed,
+        /// matching the HM-side <see cref="HMaestroVirtualController.
+        /// ReApplyUserEffects"/> behavior.</summary>
+        public void ReApplyNonHmUserEffects()
+        {
+            for (int i = 0; i < _nonHmDispatchers.Length; i++)
+                _nonHmDispatchers[i]?.ApplyOnce();
+        }
+
         /// <summary>
         /// Tracks how many consecutive polling cycles each slot has been inactive.
         /// Virtual controllers are only destroyed after a sustained inactivity period
@@ -1355,6 +1379,26 @@ namespace PadForge.Common.Input
                     if (psCfg != null)
                         hmVc.AttachPlayStationConfig(psCfg);
                 }
+                else
+                {
+                    // KBM / MIDI: no HM VC means no HM-owned dispatcher.
+                    // Create one inline here so any Sony pad mapped to the
+                    // slot still receives effect packets. Step 2's
+                    // ApplyForceFeedback returns early for Sony VID/PID,
+                    // and the per-slot poke loop calls
+                    // UserEffectsDispatcher.OnPollingTick — both expect a
+                    // dispatcher to exist in _instances[padIndex]. The
+                    // dispatcher's runtime resolve gates on physical Sony
+                    // VID/PID, so attaching for every non-HM slot is cheap
+                    // when no Sony pad is mapped.
+                    var psCfg = _playStationConfigs[padIndex];
+                    if (psCfg != null)
+                    {
+                        var d = new UserEffectsDispatcher(padIndex, psCfg);
+                        d.ApplyOnce();
+                        _nonHmDispatchers[padIndex] = d;
+                    }
+                }
 
                 return vc;
             }
@@ -1857,6 +1901,18 @@ namespace PadForge.Common.Input
         {
             var vc = _virtualControllers[padIndex];
             if (vc == null) return;
+
+            // Non-HM dispatcher (KBM / MIDI) lives outside the VC, so the
+            // VC's Disconnect doesn't dispose it. Tear down explicitly here.
+            // HM-owned dispatchers are disposed inside HM VC.Disconnect; this
+            // array stays null for HM slots and is a no-op for them.
+            var nonHmDisp = _nonHmDispatchers[padIndex];
+            if (nonHmDisp != null)
+            {
+                _nonHmDispatchers[padIndex] = null;
+                try { nonHmDisp.Dispose(); }
+                catch { /* best effort */ }
+            }
 
             // Release this slot's OEM-name claim, if it held one. Ref count
             // gates the actual HMOemNameOverride.Clear call so sibling slots

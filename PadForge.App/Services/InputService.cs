@@ -88,6 +88,18 @@ namespace PadForge.Services
         public GyroCalibratorService GyroCalibrator
             => _gyroCalibrator ??= new GyroCalibratorService(() => _settingsService?.MarkDirty());
 
+        /// <summary>Clears the per-device auto-calibrate dedup latch so the
+        /// next <see cref="UpdatePadDeviceInfo"/> pass re-fires the 1500 ms
+        /// auto-calibration for this device. Called by the Devices page
+        /// "Reset Calibration" handler after
+        /// <c>GyroCalibrator.ResetCalibration</c> zeroes the bias.</summary>
+        public void ClearGyroAutoCalibLatch(Guid instanceGuid)
+        {
+            if (instanceGuid == Guid.Empty) return;
+            lock (SettingsManager.UserDevices.SyncRoot)
+                _gyroAutoCalibKicked.Remove(instanceGuid);
+        }
+
         /// <summary>Proxy to <see cref="InputManager.IsHmVcAt"/> so callers
         /// outside InputService (notably MainWindow's pre-delete capture)
         /// can ask whether a slot currently has an HM virtual controller
@@ -397,6 +409,45 @@ namespace PadForge.Services
                 return (0f, 0f, 0f);
             };
 
+            // v3.3 — per-device gyro tuning bundle (H/V sensitivity,
+            // deadzone, smoothing, acceleration, output curve). Mirrors
+            // the bias provider's lookup pattern. Returns sane defaults
+            // when the device guid is unknown so an absent provider
+            // never breaks the read path. Deadzone is converted from
+            // UserDevice's deg/s storage to rad/s for SourceCoercion.
+            const float DegToRad = (float)(System.Math.PI / 180.0);
+            var defaultTuning = new PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuning
+            {
+                SensH = 1f, SensV = 1f, OutputCurve = "Linear",
+            };
+            PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuningProvider = deviceGuid =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid)) return defaultTuning;
+                if (!Guid.TryParse(deviceGuid, out var g)) return defaultTuning;
+                var devs = SettingsManager.UserDevices?.Items;
+                if (devs == null) return defaultTuning;
+                lock (SettingsManager.UserDevices.SyncRoot)
+                {
+                    for (int i = 0; i < devs.Count; i++)
+                    {
+                        var d = devs[i];
+                        if (d != null && d.InstanceGuid == g)
+                        {
+                            return new PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuning
+                            {
+                                SensH = d.GyroSensitivityH > 0 ? d.GyroSensitivityH : 1f,
+                                SensV = d.GyroSensitivityV > 0 ? d.GyroSensitivityV : 1f,
+                                DeadZoneRadPerSec = (d.GyroDeadZoneDegPerSec > 0 ? d.GyroDeadZoneDegPerSec : 0f) * DegToRad,
+                                SmoothingAlpha = d.GyroSmoothingAlpha,
+                                Acceleration = d.GyroAcceleration,
+                                OutputCurve = d.GyroOutputCurve ?? "Linear",
+                            };
+                        }
+                    }
+                }
+                return defaultTuning;
+            };
+
             // Per-(slot, device) lightbar configs — drives the
             // dispatcher's per-device synthesis loop and per-device
             // pulse rolls. Lighting tab is per-device (parallel to
@@ -596,6 +647,7 @@ namespace PadForge.Services
                 UserEffectsDispatcher.SlotBatteryPercentProvider = null;
                 UserEffectsDispatcher.SlotPerDeviceConfigsProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GyroBiasProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuningProvider = null;
             }
 
             // Final UI-thread VM updates: marshal back to the dispatcher
@@ -688,12 +740,13 @@ namespace PadForge.Services
             {
                 var padVm = _mainVm.Pads[i];
                 var gp = _inputManager.CombinedOutputStates[i];
-                // Meter reads post-mix-post-gain values so the activity bars
-                // match what the physical device and the DS5/DS4 effect
-                // packet are sending.
+                // Two meter feeds:
+                //   FinalVibrationStates           → preview-tab bar (slot max)
+                //   SelectedDeviceVibrationStates  → FFB-tab bar (selected dev)
                 var vibration = _inputManager.FinalVibrationStates[i];
+                var selectedDeviceVibration = _inputManager.SelectedDeviceVibrationStates[i];
 
-                padVm.UpdateFromEngineState(gp, vibration);
+                padVm.UpdateFromEngineState(gp, vibration, selectedDeviceVibration);
                 padVm.UpdateFromTouchpadState(_inputManager.CombinedTouchpadStates[i]);
 
                 // For custom Extended slots, also push the combined ExtendedRawState.
@@ -1098,6 +1151,30 @@ namespace PadForge.Services
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad2;
+
+                // v3.3 — pull the device's gyro tuning into the VM
+                // sliders, and wire the push-back callback so subsequent
+                // slider edits write back to the UserDevice + mark
+                // settings dirty for autosave.
+                if (ud.HasGyro)
+                {
+                    devVm.LoadGyroTuningFromDevice(ud);
+                    var capturedUd = ud;
+                    devVm.GyroTuningPushedToDevice = () =>
+                    {
+                        capturedUd.GyroSensitivityH = (float)devVm.GyroSensitivityH;
+                        capturedUd.GyroSensitivityV = (float)devVm.GyroSensitivityV;
+                        capturedUd.GyroDeadZoneDegPerSec = (float)devVm.GyroDeadZoneDegPerSec;
+                        capturedUd.GyroSmoothingAlpha = (float)devVm.GyroSmoothingAlpha;
+                        capturedUd.GyroAcceleration = (float)devVm.GyroAcceleration;
+                        capturedUd.GyroOutputCurve = devVm.GyroOutputCurve ?? "Linear";
+                        _settingsService?.MarkDirty();
+                    };
+                }
+                else
+                {
+                    devVm.GyroTuningPushedToDevice = null;
+                }
             }
 
             // Refresh the gyro calibration label so it tracks
@@ -1163,6 +1240,15 @@ namespace PadForge.Services
                 devVm.GyroX = state.Gyro[0];
                 devVm.GyroY = state.Gyro[1];
                 devVm.GyroZ = state.Gyro[2];
+
+                // v3.3 — calibrated rate readout in deg/s for the
+                // tuning sliders. Subtract the bias, convert to deg/s,
+                // so the user sees the actual signal the binding layer
+                // is consuming (not the raw with at-rest offset).
+                const double RadToDeg = 180.0 / System.Math.PI;
+                devVm.GyroLiveRatePitch = (state.Gyro[0] - ud.GyroBiasPitch) * RadToDeg;
+                devVm.GyroLiveRateYaw   = (state.Gyro[1] - ud.GyroBiasYaw)   * RadToDeg;
+                devVm.GyroLiveRateRoll  = (state.Gyro[2] - ud.GyroBiasRoll)  * RadToDeg;
             }
             if (ud.HasAccel)
             {
@@ -2943,6 +3029,12 @@ namespace PadForge.Services
                                 hmVc.ReApplyUserEffects();
                             }
                         }
+                        // Sony pads mapped to KBM / MIDI slots use a
+                        // parallel slot-level dispatcher (owned by Step 5,
+                        // not by an HM VC). Re-fire those too so the
+                        // reconnected pad's lightbar / triggers / mic LED
+                        // refresh in the same window as HM-side pads.
+                        _inputManager.ReApplyNonHmUserEffects();
 
                         // Retry burst — SDL3's PS5 driver writes the
                         // player-index DEFAULT color to the lightbar at
@@ -2997,6 +3089,7 @@ namespace PadForge.Services
                             hmVc.ReApplyUserEffects();
                         }
                     }
+                    _inputManager.ReApplyNonHmUserEffects();
                 }));
             });
         }

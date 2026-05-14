@@ -132,6 +132,61 @@ namespace PadForge.Engine.Data
         public DateTime GyroCalibratedAtUtc { get; set; }
 
         // ─────────────────────────────────────────────────────────────
+        //  Gyro tuning — SteamInput-style per-device controls.
+        //  Applied at the SourceCoercion read point alongside bias
+        //  subtraction. v3.3 ships H/V sensitivity + deadzone in
+        //  Phase 1; smoothing + curve + acceleration in Phase 2.
+        //  Defaults preserve v3.2.0 behavior (1.0× scale, no
+        //  deadzone, no smoothing, linear curve).
+        // ─────────────────────────────────────────────────────────────
+
+        /// <summary>Horizontal sensitivity multiplier — applied to
+        /// gyro Yaw and Roll source contributions. Default 1.0
+        /// matches the v3.2 per-source default.</summary>
+        [XmlElement]
+        public float GyroSensitivityH { get; set; } = 1.0f;
+
+        /// <summary>Vertical sensitivity multiplier — applied to
+        /// gyro Pitch source contributions.</summary>
+        [XmlElement]
+        public float GyroSensitivityV { get; set; } = 1.0f;
+
+        /// <summary>At-rest jitter rejection — minimum angular rate
+        /// in degrees per second below which gyro output is treated
+        /// as zero. Subtract-style: rates past the threshold pass
+        /// through with the threshold subtracted (no discontinuous
+        /// jump). Default 3°/s matches SteamInput's typical setting.</summary>
+        [XmlElement]
+        public float GyroDeadZoneDegPerSec { get; set; } = 3.0f;
+
+        /// <summary>v3.3 Phase 2 — single-pole EMA smoothing alpha for
+        /// gyro rate. 0.0 = off (default), 1.0 = max smoothing. Schema
+        /// is forward-compatible; reader path lights up in Phase 2.</summary>
+        [XmlElement]
+        public float GyroSmoothingAlpha { get; set; } = 0.0f;
+
+        /// <summary>v3.3 Phase 2 — rate-dependent gain. 0.0 = off
+        /// (default), 2.0 = max. Slow movements pass unchanged; fast
+        /// movements amplify. Composes with <see cref="GyroOutputCurve"/>.</summary>
+        [XmlElement]
+        public float GyroAcceleration { get; set; } = 0.0f;
+
+        /// <summary>v3.3 Phase 2 — output curve preset that reshapes
+        /// the post-sensitivity rate. Values: <c>"Linear"</c> (default),
+        /// <c>"Aggressive"</c> (x²), <c>"Relaxed"</c> (√x),
+        /// <c>"Wide"</c> (x^1.5), <c>"ExtraWide"</c> (x^2.5).</summary>
+        [XmlElement]
+        public string GyroOutputCurve { get; set; } = "Linear";
+
+        /// <summary>v3.3 Phase 3 — sensitivity unit selection. Values:
+        /// <c>"Multiplier"</c> (default, 0–10× scale) or
+        /// <c>"DegPerScreenTurn"</c> (Steam-style — degrees of physical
+        /// rotation per full screen turn). Reader path uses the chosen
+        /// unit to convert sliders into the internal scale.</summary>
+        [XmlElement]
+        public string GyroSensitivityUnits { get; set; } = "Multiplier";
+
+        // ─────────────────────────────────────────────────────────────
         //  Serializable metadata
         // ─────────────────────────────────────────────────────────────
 

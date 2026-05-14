@@ -1068,12 +1068,28 @@
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>陀螺仪 俯仰</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>陀螺仪 偏航</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>陀螺仪 翻滚</value></data>
+  <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>陀螺仪 水平 (Yaw + Roll)</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>校准陀螺仪</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>将控制器放在平坦表面上,点击"校准陀螺仪"以采样约 1.5 秒的静止读数。从原始读数中减去,以便陀螺仪映射在控制器静止时不会使鼠标 / 摇杆漂移。</value></data>
   <data name="Devices_Sensors" xml:space="preserve"><value>传感器</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>上次校准:{0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>从未校准</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>正在校准… 请保持静止</value></data>
+  <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>重置校准</value></data>
+  <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>清除陀螺仪的静止偏置和上次校准时间戳。下一个轮询周期会重新对此设备执行 1.5 秒的自动校准。</value></data>
+  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>当前速率</value></data>
+  <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>水平灵敏度</value></data>
+  <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>缩放陀螺仪的水平 (Yaw + Roll) 输出。1.0 保持引擎读取的速率不变；较高放大，较低衰减。整个设备范围生效。</value></data>
+  <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>垂直灵敏度</value></data>
+  <data name="Settings_GyroSensitivityV_Tooltip" xml:space="preserve"><value>缩放陀螺仪的垂直 (Pitch) 输出。与水平分离，可独立调整 X 与 Y 轴。</value></data>
+  <data name="Settings_GyroDeadZone" xml:space="preserve"><value>死区</value></data>
+  <data name="Settings_GyroDeadZone_Tooltip" xml:space="preserve"><value>陀螺仪输出被视为零的最小旋转速率（度/秒）。过滤手部抖动，超出阈值的速率会扣除阈值后连续通过。</value></data>
+  <data name="Settings_GyroSmoothing" xml:space="preserve"><value>平滑</value></data>
+  <data name="Settings_GyroSmoothing_Tooltip" xml:space="preserve"><value>对陀螺仪速率的单极 EMA 滤波。0 = 关闭（原始信号，最低延迟）。值越高抖动越小，但增加延迟。若光标抖动，0.5 是合理起点。</value></data>
+  <data name="Settings_GyroAcceleration" xml:space="preserve"><value>加速</value></data>
+  <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>与速度相关的增益。0 = 关闭（线性缩放）。较高的值让慢速移动保持原样，加快快速移动 — 适合在精确瞄准和快速转向之间切换。</value></data>
+  <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>输出曲线</value></data>
+  <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>对响应进行整形。Linear = 直通。Aggressive = x²（慢的更慢，快的更猛）。Relaxed = √x（慢的放大、快的饱和）。Wide / ExtraWide 介于其间。可与加速组合。</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>灵敏度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>每个源的陀螺仪灵敏度倍数。1.0 = 引擎默认值（500°/s → 最大偏转）。大于 1.0 更灵敏；小于 1.0 不太灵敏。</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>触控板 1 Y</value></data>

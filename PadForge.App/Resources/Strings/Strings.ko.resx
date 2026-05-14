@@ -1068,12 +1068,28 @@
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>자이로 피치</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>자이로 요</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>자이로 롤</value></data>
+  <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>자이로 수평 (Yaw + Roll)</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>자이로 보정</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>컨트롤러를 평평한 표면에 놓고 자이로 보정을 클릭하여 약 1.5초 동안 정지 상태 값을 샘플링합니다. 원시 값에서 차감되므로 컨트롤러가 정지해 있을 때 자이로 매핑이 마우스 / 스틱을 표류시키지 않습니다.</value></data>
   <data name="Devices_Sensors" xml:space="preserve"><value>센서</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>마지막 보정: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>보정되지 않음</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>보정 중… 가만히 잡으세요</value></data>
+  <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>보정 재설정</value></data>
+  <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>정지 상태의 자이로 바이어스와 마지막 보정 타임스탬프를 지웁니다. 다음 폴링 주기에서 이 장치의 1.5초 자동 보정이 다시 실행됩니다.</value></data>
+  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>현재 속도</value></data>
+  <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>수평 감도</value></data>
+  <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>자이로의 수평(Yaw + Roll) 출력에 적용할 배율입니다. 1.0은 엔진이 보는 속도를 그대로 사용; 더 높으면 증폭, 낮으면 감쇠합니다. 장치 전체에 적용됩니다.</value></data>
+  <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>수직 감도</value></data>
+  <data name="Settings_GyroSensitivityV_Tooltip" xml:space="preserve"><value>자이로의 수직(Pitch) 출력 배율. 수평과 분리되어 X축과 Y축을 독립적으로 조정할 수 있습니다.</value></data>
+  <data name="Settings_GyroDeadZone" xml:space="preserve"><value>데드존</value></data>
+  <data name="Settings_GyroDeadZone_Tooltip" xml:space="preserve"><value>자이로 출력이 0으로 처리되는 최소 회전 속도(초당 각도). 손떨림을 걸러내며, 임계값 이상의 속도는 임계값을 뺀 채 연속적으로 통과합니다.</value></data>
+  <data name="Settings_GyroSmoothing" xml:space="preserve"><value>스무딩</value></data>
+  <data name="Settings_GyroSmoothing_Tooltip" xml:space="preserve"><value>자이로 속도에 적용되는 단극 EMA 필터. 0 = 꺼짐(원시 신호, 최소 지연). 값이 높을수록 지터가 줄지만 지연이 생깁니다. 커서가 떨리면 0.5부터 시작해 보세요.</value></data>
+  <data name="Settings_GyroAcceleration" xml:space="preserve"><value>가속</value></data>
+  <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>속도 의존 게인. 0 = 꺼짐(선형 스케일링). 값이 높을수록 느린 움직임은 그대로 통과시키고 빠른 움직임을 증폭합니다. 정밀 조준과 빠른 시점 전환을 함께 쓸 때 유용합니다.</value></data>
+  <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>출력 커브</value></data>
+  <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>응답을 형성합니다. Linear = 통과. Aggressive = x²(느림은 느림 유지). Relaxed = √x(느림은 증폭, 빠름은 포화). Wide / ExtraWide는 그 사이. 가속과 함께 적용 가능.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>감도</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>소스별 자이로 감도 배율. 1.0 = 엔진 기본값 (500°/s → 최대 편향). 1.0보다 크면 더 민감하고, 1.0보다 작으면 덜 민감합니다.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>터치패드 1 Y</value></data>

@@ -132,7 +132,7 @@ namespace PadForge.Controls
         private double GetUsableWidth()
         {
             if (_track == null) return 0;
-            double thumbWidth = _lowerThumb?.ActualWidth ?? 11;
+            double thumbWidth = _lowerThumb?.ActualWidth ?? 20;
             return _track.ActualWidth - thumbWidth;
         }
 
@@ -141,7 +141,7 @@ namespace PadForge.Controls
             if (_track == null) return;
 
             double trackWidth = _track.ActualWidth;
-            double thumbWidth = _lowerThumb?.ActualWidth ?? 11;
+            double thumbWidth = _lowerThumb?.ActualWidth ?? 20;
             double thumbHalf = thumbWidth / 2;
             double usable = trackWidth - thumbWidth;
             double range = Maximum - Minimum;

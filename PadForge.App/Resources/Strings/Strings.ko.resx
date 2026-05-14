@@ -1131,10 +1131,25 @@
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>배율</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>화면 1회전당 각도</value></data>
   <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>다음에 누르는 물리 입력을 활성화 버튼으로 녹화</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>바이어스 보정을 0으로 되돌리고 이 슬롯의 자동 보정을 재활성화</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>좌표계, 감도, 반전, 실세계 보정을 기본값으로 복원</value></data>
-  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>데드존, 스무딩 임계값, 윈도우, 가속, 출력 커브를 기본값으로 복원</value></data>
-  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>오른쪽 스틱 임계값과 활성화 버튼을 비움</value></data>
+  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>보정 재설정</value></data>
+  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>감도 재설정</value></data>
+  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>응답 형성 재설정</value></data>
+  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>활성화 재설정</value></data>
+  <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>좌표계 재설정</value></data>
+  <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>수평 감도 재설정</value></data>
+  <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>수직 감도 재설정</value></data>
+  <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>단위 재설정</value></data>
+  <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>피치 반전 재설정</value></data>
+  <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>요 반전 재설정</value></data>
+  <data name="Pad_ResetGyroRealWorldCalibration" xml:space="preserve"><value>실세계 보정 재설정</value></data>
+  <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>데드존 재설정</value></data>
+  <data name="Pad_ResetGyroTightening" xml:space="preserve"><value>타이트닝 재설정</value></data>
+  <data name="Pad_ResetGyroSmoothingThreshold" xml:space="preserve"><value>스무딩 임계값 재설정</value></data>
+  <data name="Pad_ResetGyroSmoothingWindow" xml:space="preserve"><value>스무딩 윈도우 재설정</value></data>
+  <data name="Pad_ResetGyroAcceleration" xml:space="preserve"><value>가속 재설정</value></data>
+  <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>출력 커브 재설정</value></data>
+  <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim 임계값 재설정</value></data>
+  <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>활성화 버튼 재설정</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>튜닝을 기본값으로 재설정</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>H/V 감도, 데드존, 스무딩, 가속, 출력 커브, 단위, Easy Aim 임계값을 공장 기본값으로 되돌립니다. 보정 바이어스에는 영향을 주지 않습니다.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>감도</value></data>

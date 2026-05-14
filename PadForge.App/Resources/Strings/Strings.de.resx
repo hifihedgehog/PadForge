@@ -1090,10 +1090,25 @@
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplikator</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Grad pro Bildschirmdrehung</value></data>
   <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>Nächste physische Eingabe als Aktivierungs-Taste aufnehmen</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Bias-Kalibrierung auf null setzen und Auto-Kalibrierung für diesen Slot neu scharfstellen</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Bezugssystem, Empfindlichkeit, Invertierung und reale Kalibrierung auf Standard zurücksetzen</value></data>
-  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Totzone, Glättungsschwellen, Glättungsfenster, Beschleunigung und Ausgabekurve auf Standard zurücksetzen</value></data>
-  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Rechten-Stick-Schwellenwert und Aktivierungs-Taste leeren</value></data>
+  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Kalibrierung zurücksetzen</value></data>
+  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Empfindlichkeit zurücksetzen</value></data>
+  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Antwortform zurücksetzen</value></data>
+  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Aktivierung zurücksetzen</value></data>
+  <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Bezugssystem zurücksetzen</value></data>
+  <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Horizontale Empfindlichkeit zurücksetzen</value></data>
+  <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Vertikale Empfindlichkeit zurücksetzen</value></data>
+  <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>Einheiten zurücksetzen</value></data>
+  <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>Pitch-Invertierung zurücksetzen</value></data>
+  <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Yaw-Invertierung zurücksetzen</value></data>
+  <data name="Pad_ResetGyroRealWorldCalibration" xml:space="preserve"><value>Reale Kalibrierung zurücksetzen</value></data>
+  <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Totzone zurücksetzen</value></data>
+  <data name="Pad_ResetGyroTightening" xml:space="preserve"><value>Verdichtung zurücksetzen</value></data>
+  <data name="Pad_ResetGyroSmoothingThreshold" xml:space="preserve"><value>Glättungsschwelle zurücksetzen</value></data>
+  <data name="Pad_ResetGyroSmoothingWindow" xml:space="preserve"><value>Glättungsfenster zurücksetzen</value></data>
+  <data name="Pad_ResetGyroAcceleration" xml:space="preserve"><value>Beschleunigung zurücksetzen</value></data>
+  <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>Ausgabekurve zurücksetzen</value></data>
+  <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Easy-Aim-Schwellenwert zurücksetzen</value></data>
+  <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Aktivierungs-Taste zurücksetzen</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Skaliert den horizontalen (Yaw + Roll) Gyro-Anteil zur Ausgabe. 1,0 belässt die Rate unverändert; höhere Werte verstärken, niedrigere dämpfen. Gilt geräteweit.</value></data>
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Vertikale Empfindlichkeit</value></data>
   <data name="Settings_GyroSensitivityV_Tooltip" xml:space="preserve"><value>Skaliert den vertikalen (Pitch) Gyro-Anteil. Getrennt von horizontal, sodass X und Y unabhängig abgestimmt werden können.</value></data>

@@ -1131,10 +1131,25 @@
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>倍率</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>每屏旋转角度</value></data>
   <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>将下一次按下的物理输入记录为激活键</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>将零偏校准清零，并为此插槽重新启用自动校准</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>将坐标系、灵敏度、反转、真实世界校准恢复为默认值</value></data>
-  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>将死区、平滑阈值、窗口、加速、输出曲线恢复为默认值</value></data>
-  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>清除右摇杆阈值与激活键</value></data>
+  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>重置校准</value></data>
+  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>重置灵敏度</value></data>
+  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>重置响应整形</value></data>
+  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>重置激活</value></data>
+  <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>重置坐标系</value></data>
+  <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>重置水平灵敏度</value></data>
+  <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>重置垂直灵敏度</value></data>
+  <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>重置单位</value></data>
+  <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>重置俯仰反转</value></data>
+  <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>重置偏航反转</value></data>
+  <data name="Pad_ResetGyroRealWorldCalibration" xml:space="preserve"><value>重置真实世界校准</value></data>
+  <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>重置死区</value></data>
+  <data name="Pad_ResetGyroTightening" xml:space="preserve"><value>重置收紧</value></data>
+  <data name="Pad_ResetGyroSmoothingThreshold" xml:space="preserve"><value>重置平滑阈值</value></data>
+  <data name="Pad_ResetGyroSmoothingWindow" xml:space="preserve"><value>重置平滑窗口</value></data>
+  <data name="Pad_ResetGyroAcceleration" xml:space="preserve"><value>重置加速</value></data>
+  <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>重置输出曲线</value></data>
+  <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>重置 Easy Aim 阈值</value></data>
+  <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>重置激活键</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>将调节重置为默认值</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>将 H/V 灵敏度、死区、平滑、加速、输出曲线、单位以及 Easy Aim 阈值恢复为出厂默认值。不影响校准零偏。</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>灵敏度</value></data>

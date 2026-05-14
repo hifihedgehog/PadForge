@@ -635,17 +635,26 @@ namespace PadForge
                     pvm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroNeverCalibrated;
                 };
 
-                // Record button on the Aim Engage picker. Reuses the
-                // existing freeform recorder path — listens to every
-                // device assigned to the slot; first input wins; result
-                // lands directly in GyroAimEngageButton + DeviceGuid.
+                // Record button on the Aim Engage picker. Toggles like
+                // the mapping table's per-row record: idle click starts
+                // a freeform recorder session, click again while
+                // recording cancels. Result lands directly in
+                // GyroAimEngageButton + DeviceGuid.
                 pad.GyroAimEngageRecordRequested += (s, e) =>
                 {
                     if (s is not PadViewModel pvm) return;
+                    if (pvm.GyroAimEngageRecording)
+                    {
+                        _recorderService.CancelRecording();
+                        pvm.GyroAimEngageRecording = false;
+                        return;
+                    }
+                    pvm.GyroAimEngageRecording = true;
                     _recorderService.StartRecordingFreeform(pvm.PadIndex, (descriptor, deviceGuid) =>
                     {
                         pvm.GyroAimEngageButton = descriptor ?? "";
                         pvm.GyroAimEngageDeviceGuid = deviceGuid ?? "";
+                        pvm.GyroAimEngageRecording = false;
                         _settingsService.MarkDirty();
                     });
                 };
@@ -1007,6 +1016,10 @@ namespace PadForge
                         activePad.OnMapAllItemCompleted();
                     else
                         activePad.CurrentRecordingTarget = null;
+                    // Aim Engage Record button: timeout also clears the
+                    // recording flag so the icon flips back to Record.
+                    if (activePad.GyroAimEngageRecording)
+                        activePad.GyroAimEngageRecording = false;
                 }
             };
 

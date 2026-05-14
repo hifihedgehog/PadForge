@@ -1131,6 +1131,10 @@
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplicador</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Graus por giro de tela</value></data>
   <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>Gravar a próxima entrada física como botão de ativação</value></data>
+  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Zerar a calibração de viés e rearmar a auto-calibração para este slot</value></data>
+  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Restaurar espaço, sensibilidade, inversão e calibração real aos valores padrão</value></data>
+  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Restaurar zona morta, limiares de suavização, janela, aceleração e curva de saída aos valores padrão</value></data>
+  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Limpar o limiar do analógico direito e o botão de ativação</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Restaurar ajustes para o padrão</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Restaura sensibilidade H/V, zona morta, suavização, aceleração, curva de saída, unidades e limiar do Easy Aim aos valores de fábrica. Não afeta o viés de calibração.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilidade</value></data>

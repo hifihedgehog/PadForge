@@ -4791,7 +4791,7 @@
                 <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Margin="0,16,0,16">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="&#xF259;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                            <TextBlock Text="&#xE7AD;" FontFamily="Segoe MDL2 Assets" FontSize="20"
                                        VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <TextBlock Text="{Binding Pad_Gyro_Header, Source={x:Static strings:Strings.Instance}}"
                                        Style="{StaticResource TitleTextBlockStyle}"/>
@@ -4803,8 +4803,15 @@
                         <!-- ─── Calibration card ─── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <TextBlock Text="{Binding Pad_Gyro_Calibration_Header, Source={x:Static strings:Strings.Instance}}"
-                                           FontWeight="SemiBold" FontSize="13" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE945;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Gyro_Calibration_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding ResetGyroCalibrationCardCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_Gyro_ResetCalibration_All_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <Button Content="{Binding Settings_GyroCalibrate_Button, Source={x:Static strings:Strings.Instance}}"
                                             Command="{Binding GyroCalibrateCommand}"
@@ -4835,10 +4842,18 @@
                         <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE9E9;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Gyro_Sensitivity_Header, Source={x:Static strings:Strings.Instance}}"
-                                               FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
+                                               Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding ResetGyroSensitivityCardCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_Gyro_ResetSensitivity_All_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Settings_GyroSensitivityUnits, Source={x:Static strings:Strings.Instance}}"
-                                               FontSize="11" Opacity="0.6" Margin="14,0,4,0" VerticalAlignment="Center"/>
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_GyroSensitivityUnits_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBox ItemsSource="{Binding GyroSensitivityUnitsOptions}"
                                               SelectedValue="{Binding GyroSensitivityUnits, Mode=TwoWay}"
                                               SelectedValuePath="Value" DisplayMemberPath="Display"
@@ -4930,8 +4945,15 @@
                         <!-- ─── Response shaping card ─── -->
                         <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
                             <StackPanel>
-                                <TextBlock Text="{Binding Pad_Gyro_Response_Header, Source={x:Static strings:Strings.Instance}}"
-                                           FontWeight="SemiBold" FontSize="13" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xF1CB;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Gyro_Response_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding ResetGyroResponseCardCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_Gyro_ResetResponse_All_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                                     <TextBlock Text="{Binding Settings_GyroDeadZone, Source={x:Static strings:Strings.Instance}}"
@@ -5023,8 +5045,15 @@
                         <!-- ─── Engage card ─── -->
                         <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
                             <StackPanel>
-                                <TextBlock Text="{Binding Pad_Gyro_Engage_Header, Source={x:Static strings:Strings.Instance}}"
-                                           FontWeight="SemiBold" FontSize="13" Margin="0,0,0,4"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Gyro_Engage_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding ResetGyroEngageCardCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_Gyro_ResetEngage_All_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                                 <TextBlock Text="{Binding Pad_Gyro_Engage_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            TextWrapping="Wrap" Margin="0,0,0,8" FontSize="11"/>
@@ -5071,9 +5100,9 @@
                                     </ComboBox>
                                     <Button Command="{Binding GyroAimEngageRecordCommand}"
                                             Width="40" VerticalAlignment="Center" Margin="6,0,0,0">
-                                        <TextBlock Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"/>
+                                        <TextBlock Text="{Binding GyroAimEngageRecordButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
                                         <Button.ToolTip>
-                                            <TextBlock Text="{Binding Pad_Gyro_AimEngage_Record, Source={x:Static strings:Strings.Instance}}"/>
+                                            <TextBlock Text="{Binding GyroAimEngageRecordButtonText}"/>
                                         </Button.ToolTip>
                                     </Button>
                                     <Button Command="{Binding ResetGyroAimEngageButtonCommand}" Style="{StaticResource ResetButton}"/>

@@ -1532,17 +1532,89 @@ namespace PadForge.ViewModels
                 GyroAimEngageDeviceGuid = "";
             });
 
+        /// <summary>Whether the Aim Engage recorder is currently
+        /// listening for the next physical input. Drives the record
+        /// button's icon + tooltip swap so the affordance matches the
+        /// mapping-table convention (Stop glyph + "Recording…" tooltip
+        /// while active, Record glyph + "Record" tooltip while idle).</summary>
+        private bool _gyroAimEngageRecording;
+        public bool GyroAimEngageRecording
+        {
+            get => _gyroAimEngageRecording;
+            set
+            {
+                if (SetProperty(ref _gyroAimEngageRecording, value))
+                {
+                    OnPropertyChanged(nameof(GyroAimEngageRecordButtonIcon));
+                    OnPropertyChanged(nameof(GyroAimEngageRecordButtonText));
+                }
+            }
+        }
+        /// <summary>Segoe MDL2 glyph for the record button — Stop while
+        /// recording, Record while idle. Mirrors
+        /// <see cref="MappingItem.RecordButtonIcon"/>.</summary>
+        // Note: the property below uses  (Stop) and  (Record)
+        // via the implicit literal — keep the body single-line so future
+        // edits don't desync the glyphs.
+        public string GyroAimEngageRecordButtonIcon => _gyroAimEngageRecording ? "" : "";
+        /// <summary>Localized tooltip for the record button. Mirrors
+        /// <see cref="MappingItem.RecordButtonText"/>.</summary>
+        public string GyroAimEngageRecordButtonText => _gyroAimEngageRecording
+            ? Strings.Instance.Common_Recording
+            : Strings.Instance.Common_Record;
+
         /// <summary>Fires when the user clicks the Record button next to
-        /// the Aim Engage picker. MainWindow listens and calls
-        /// <c>RecorderService.StartRecordingFreeform</c>; the recorded
-        /// (descriptor, deviceGuid) pair lands in
-        /// <see cref="GyroAimEngageButton"/> + <see cref="GyroAimEngageDeviceGuid"/>.</summary>
+        /// the Aim Engage picker. MainWindow listens and either starts a
+        /// freeform recorder session (if idle) or cancels (if already
+        /// recording), matching the mapping-table Toggle pattern.</summary>
         public event EventHandler GyroAimEngageRecordRequested;
         public void FireGyroAimEngageRecord() => GyroAimEngageRecordRequested?.Invoke(this, EventArgs.Empty);
 
         private RelayCommand _gyroAimEngageRecordCommand;
         public RelayCommand GyroAimEngageRecordCommand =>
             _gyroAimEngageRecordCommand ??= new RelayCommand(FireGyroAimEngageRecord);
+
+        // ─── Per-card Reset All commands. Each clears every field
+        //     inside its card to the canonical default — matches the
+        //     "Reset All" button next to each card title used in the
+        //     Triggers, AT, Lighting, and Force Feedback tabs. ───
+        private RelayCommand _resetGyroCalibrationCardCommand;
+        public RelayCommand ResetGyroCalibrationCardCommand =>
+            _resetGyroCalibrationCardCommand ??= new RelayCommand(FireGyroResetCalibration);
+
+        private RelayCommand _resetGyroSensitivityCardCommand;
+        public RelayCommand ResetGyroSensitivityCardCommand =>
+            _resetGyroSensitivityCardCommand ??= new RelayCommand(() =>
+            {
+                GyroSpace = "Local";
+                GyroSensitivityH = 1.0;
+                GyroSensitivityV = 1.0;
+                GyroSensitivityUnits = "Multiplier";
+                GyroInvertPitch = false;
+                GyroInvertYaw = false;
+                GyroRealWorldCalibration = 0;
+            });
+
+        private RelayCommand _resetGyroResponseCardCommand;
+        public RelayCommand ResetGyroResponseCardCommand =>
+            _resetGyroResponseCardCommand ??= new RelayCommand(() =>
+            {
+                GyroDeadZoneDegPerSec = 3.0;
+                GyroTighteningThresholdDegPerSec = 3.0;
+                GyroSmoothingThresholdDegPerSec = 8.0;
+                GyroSmoothingWindowMs = 50;
+                GyroAcceleration = 0;
+                GyroOutputCurve = "Linear";
+            });
+
+        private RelayCommand _resetGyroEngageCardCommand;
+        public RelayCommand ResetGyroEngageCardCommand =>
+            _resetGyroEngageCardCommand ??= new RelayCommand(() =>
+            {
+                GyroEasyAimStickThreshold = 0;
+                GyroAimEngageButton = "";
+                GyroAimEngageDeviceGuid = "";
+            });
 
         private int _forceOverallGain = 100;
         public int ForceOverallGain { get => _forceOverallGain; set => SetProperty(ref _forceOverallGain, Math.Clamp(value, 0, 100)); }

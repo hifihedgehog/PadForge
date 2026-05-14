@@ -983,6 +983,10 @@
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplier</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Degrees per screen turn</value></data>
   <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>Record the next physical input press as the aim engage button</value></data>
+  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Reset bias calibration to zero and re-arm auto-calibration for this slot</value></data>
+  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Reset gyro space, sensitivity, invert, and real-world calibration to defaults</value></data>
+  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Reset dead zone, smoothing thresholds, smoothing window, acceleration, and output curve to defaults</value></data>
+  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Clear the right-stick threshold and aim engage button</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Reset tuning to defaults</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Restores H/V sensitivity, deadzone, smoothing, acceleration, output curve, units, and Easy Aim threshold to their factory defaults. Does not affect calibration bias.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>

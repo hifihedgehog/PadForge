@@ -1131,10 +1131,25 @@
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>倍率</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>画面 1 回転あたりの角度</value></data>
   <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>次に押された物理入力をアクティベートボタンとして記録</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>バイアス校正をゼロに戻し、このスロットの自動校正を再武装</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>座標系、感度、反転、実世界キャリブレーションを既定値に戻す</value></data>
-  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>デッドゾーン、スムージングしきい値、窓、加速、出力カーブを既定値に戻す</value></data>
-  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>右スティックしきい値とアクティベートボタンをクリア</value></data>
+  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>校正をリセット</value></data>
+  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>感度をリセット</value></data>
+  <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>応答整形をリセット</value></data>
+  <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>アクティベートをリセット</value></data>
+  <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>座標系をリセット</value></data>
+  <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>水平感度をリセット</value></data>
+  <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>垂直感度をリセット</value></data>
+  <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>単位をリセット</value></data>
+  <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>ピッチ反転をリセット</value></data>
+  <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>ヨー反転をリセット</value></data>
+  <data name="Pad_ResetGyroRealWorldCalibration" xml:space="preserve"><value>実世界キャリブレーションをリセット</value></data>
+  <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>デッドゾーンをリセット</value></data>
+  <data name="Pad_ResetGyroTightening" xml:space="preserve"><value>タイトニングをリセット</value></data>
+  <data name="Pad_ResetGyroSmoothingThreshold" xml:space="preserve"><value>スムージングしきい値をリセット</value></data>
+  <data name="Pad_ResetGyroSmoothingWindow" xml:space="preserve"><value>スムージング窓をリセット</value></data>
+  <data name="Pad_ResetGyroAcceleration" xml:space="preserve"><value>加速をリセット</value></data>
+  <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>出力カーブをリセット</value></data>
+  <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim しきい値をリセット</value></data>
+  <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>アクティベートボタンをリセット</value></data>
   <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>調整を初期値にリセット</value></data>
   <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>H/V 感度、デッドゾーン、スムージング、加速、出力カーブ、単位、Easy Aim しきい値を工場出荷時の既定値に戻します。校正バイアスには影響しません。</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>感度</value></data>

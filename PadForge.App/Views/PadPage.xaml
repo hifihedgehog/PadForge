@@ -4859,7 +4859,8 @@
                                               SelectedValuePath="Value" DisplayMemberPath="Display"
                                               Width="200" VerticalAlignment="Center"
                                               ToolTip="{Binding Settings_GyroSensitivityUnits_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Button Command="{Binding ResetGyroSensitivityUnitsCommand}" Style="{StaticResource ResetButton}"/>
+                                    <Button Command="{Binding ResetGyroSensitivityUnitsCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroSensitivityUnits, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <!-- Player/World Space — Jibb's recommended default
@@ -4874,7 +4875,8 @@
                                               SelectedValuePath="Value" DisplayMemberPath="Display"
                                               Width="200" VerticalAlignment="Center"
                                               ToolTip="{Binding Settings_GyroSpace_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Button Command="{Binding ResetGyroSpaceCommand}" Style="{StaticResource ResetButton}"/>
+                                    <Button Command="{Binding ResetGyroSpaceCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroSpace, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
@@ -4888,7 +4890,8 @@
                                     <TextBox Text="{Binding GyroSensitivityH, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
                                     <TextBlock Text="×" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
-                                    <Button Command="{Binding ResetGyroSensitivityHCommand}" Style="{StaticResource ResetButton}"/>
+                                    <Button Command="{Binding ResetGyroSensitivityHCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroSensitivityH, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBlock Text="{Binding GyroSensitivityH_DegPerTurn, StringFormat={}≈ {0:0}°/turn}"
                                                VerticalAlignment="Center" Margin="14,0,0,0" Opacity="0.55" FontSize="11"/>
                                 </StackPanel>
@@ -4904,7 +4907,8 @@
                                     <TextBox Text="{Binding GyroSensitivityV, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
                                     <TextBlock Text="×" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
-                                    <Button Command="{Binding ResetGyroSensitivityVCommand}" Style="{StaticResource ResetButton}"/>
+                                    <Button Command="{Binding ResetGyroSensitivityVCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroSensitivityV, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBlock Text="{Binding GyroSensitivityV_DegPerTurn, StringFormat={}≈ {0:0}°/turn}"
                                                VerticalAlignment="Center" Margin="14,0,0,0" Opacity="0.55" FontSize="11"/>
                                 </StackPanel>
@@ -4917,12 +4921,14 @@
                                               IsChecked="{Binding GyroInvertPitch, Mode=TwoWay}"
                                               VerticalAlignment="Center" Margin="0,0,4,0"
                                               ToolTip="{Binding Settings_GyroInvertPitch_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Button Command="{Binding ResetGyroInvertPitchCommand}" Style="{StaticResource ResetButton}" Margin="0,0,12,0"/>
+                                    <Button Command="{Binding ResetGyroInvertPitchCommand}" Style="{StaticResource ResetButton}" Margin="0,0,12,0"
+                                            ToolTip="{Binding Pad_ResetGyroInvertPitch, Source={x:Static strings:Strings.Instance}}"/>
                                     <CheckBox Content="{Binding Settings_GyroInvertYaw, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding GyroInvertYaw, Mode=TwoWay}"
                                               VerticalAlignment="Center" Margin="0,0,4,0"
                                               ToolTip="{Binding Settings_GyroInvertYaw_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Button Command="{Binding ResetGyroInvertYawCommand}" Style="{StaticResource ResetButton}"/>
+                                    <Button Command="{Binding ResetGyroInvertYawCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroInvertYaw, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <!-- Real-world calibration. 0 = disabled. -->
@@ -4937,7 +4943,8 @@
                                     <TextBox Text="{Binding GyroRealWorldCalibration, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
                                     <TextBlock Text="×" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
-                                    <Button Command="{Binding ResetGyroRealWorldCalibrationCommand}" Style="{StaticResource ResetButton}"/>
+                                    <Button Command="{Binding ResetGyroRealWorldCalibrationCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroRealWorldCalibration, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>
@@ -4966,7 +4973,8 @@
                                     <TextBox Text="{Binding GyroDeadZoneDegPerSec, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.0}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
                                     <TextBlock Text="°/s" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
-                                    <Button Command="{Binding ResetGyroDeadZoneCommand}" Style="{StaticResource ResetButton}"/>
+                                    <Button Command="{Binding ResetGyroDeadZoneCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroDeadZone, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <!-- dual-threshold smoothing (JSM-style).
@@ -4984,7 +4992,8 @@
                                     <TextBox Text="{Binding GyroTighteningThresholdDegPerSec, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.0}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
                                     <TextBlock Text="°/s" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
-                                    <Button Command="{Binding ResetGyroTighteningCommand}" Style="{StaticResource ResetButton}"/>
+                                    <Button Command="{Binding ResetGyroTighteningCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroTightening, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
@@ -4998,7 +5007,8 @@
                                     <TextBox Text="{Binding GyroSmoothingThresholdDegPerSec, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.0}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
                                     <TextBlock Text="°/s" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
-                                    <Button Command="{Binding ResetGyroSmoothingThresholdCommand}" Style="{StaticResource ResetButton}"/>
+                                    <Button Command="{Binding ResetGyroSmoothingThresholdCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroSmoothingThreshold, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
@@ -5012,7 +5022,8 @@
                                     <TextBox Text="{Binding GyroSmoothingWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
                                     <TextBlock Text="ms" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
-                                    <Button Command="{Binding ResetGyroSmoothingWindowCommand}" Style="{StaticResource ResetButton}"/>
+                                    <Button Command="{Binding ResetGyroSmoothingWindowCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroSmoothingWindow, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
@@ -5025,7 +5036,8 @@
                                             ToolTip="{Binding Settings_GyroAcceleration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBox Text="{Binding GyroAcceleration, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
-                                    <Button Command="{Binding ResetGyroAccelerationCommand}" Style="{StaticResource ResetButton}"/>
+                                    <Button Command="{Binding ResetGyroAccelerationCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroAcceleration, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
@@ -5037,7 +5049,8 @@
                                               SelectedValuePath="Value" DisplayMemberPath="Display"
                                               Width="200" VerticalAlignment="Center"
                                               ToolTip="{Binding Settings_GyroOutputCurve_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Button Command="{Binding ResetGyroOutputCurveCommand}" Style="{StaticResource ResetButton}"/>
+                                    <Button Command="{Binding ResetGyroOutputCurveCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroOutputCurve, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>
@@ -5068,7 +5081,8 @@
                                     <TextBox Text="{Binding GyroEasyAimStickThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0}}"
                                              Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
                                     <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
-                                    <Button Command="{Binding ResetGyroEasyAimStickThresholdCommand}" Style="{StaticResource ResetButton}"/>
+                                    <Button Command="{Binding ResetGyroEasyAimStickThresholdCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroEasyAimThreshold, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <!-- Aim Engage button — cross-device picker that writes
@@ -5105,7 +5119,8 @@
                                             <TextBlock Text="{Binding GyroAimEngageRecordButtonText}"/>
                                         </Button.ToolTip>
                                     </Button>
-                                    <Button Command="{Binding ResetGyroAimEngageButtonCommand}" Style="{StaticResource ResetButton}"/>
+                                    <Button Command="{Binding ResetGyroAimEngageButtonCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroAimEngageButton, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

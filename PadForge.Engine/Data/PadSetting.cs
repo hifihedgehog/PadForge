@@ -299,11 +299,14 @@ namespace PadForge.Engine.Data
         // ─────────────────────────────────────────────
         //  v3.3 Gyro tuning — per-(device, slot).
         //  Lives on PadSetting so each binding config (game profile +
-        //  slot assignment) gets its own gyro feel, matching SteamInput.
-        //  Bias + calibration timestamp stay on UserDevice because
-        //  those are device-physical IMU properties, not per-binding.
+        //  slot assignment) gets its own gyro feel AND its own bias
+        //  calibration, matching SteamInput's slot-scoped feel and
+        //  letting the user re-zero per slot if the IMU drifts in a
+        //  particular orientation.
         //  Defaults preserve v3.2 baseline (1× scale, no deadzone /
-        //  smoothing / acceleration, Linear curve, always-on Easy Aim).
+        //  smoothing / acceleration, Linear curve, always-on Easy Aim,
+        //  zero bias / uncalibrated → InputService auto-calibrates on
+        //  first (device, slot) sighting).
         // ─────────────────────────────────────────────
 
         /// <summary>Horizontal sensitivity multiplier — applied to gyro
@@ -345,6 +348,29 @@ namespace PadForge.Engine.Data
         /// — matches Steam's "gyro engaged while aiming" feel without
         /// requiring a manual Shift Activator setup.</summary>
         [XmlElement] public string GyroEasyAimStickThreshold { get; set; } = "0";
+
+        /// <summary>At-rest bias for Pitch axis (rad/s), subtracted from
+        /// the raw SDL3 gyro reading at the source-coercion read point.
+        /// Per-(device, slot) — re-running calibration on slot A doesn't
+        /// disturb slot B's bias for the same physical pad. "0" = no
+        /// correction; <see cref="GyroCalibratedAtUtc"/> default means
+        /// InputService auto-calibrates this (device, slot) on first
+        /// sight.</summary>
+        [XmlElement] public string GyroBiasPitch { get; set; } = "0";
+
+        /// <summary>At-rest bias for Yaw axis (rad/s).</summary>
+        [XmlElement] public string GyroBiasYaw { get; set; } = "0";
+
+        /// <summary>At-rest bias for Roll axis (rad/s).</summary>
+        [XmlElement] public string GyroBiasRoll { get; set; } = "0";
+
+        /// <summary>UTC timestamp of the most recent successful
+        /// calibration for this (device, slot). Default
+        /// (DateTime.MinValue) flags "uncalibrated; auto-calibrate on
+        /// first poll". Stored as an ISO-8601 round-trip string for
+        /// schema consistency; reset to empty by the Reset Calibration
+        /// button.</summary>
+        [XmlElement] public string GyroCalibratedAtUtc { get; set; } = "";
 
         // ─────────────────────────────────────────────
         //  Axis-to-button threshold

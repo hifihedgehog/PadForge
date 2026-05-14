@@ -58,10 +58,10 @@ namespace PadForge.Services
         private bool _disposed;
         private readonly HashSet<string> _managedWhitelistDosPaths = new(StringComparer.OrdinalIgnoreCase);
         private GyroCalibratorService _gyroCalibrator;
-        // Track which devices have had auto-calibration kicked off so we
-        // don't double-fire the worker if UpdatePadDeviceInfo sees the
-        // same device pre-completion.
-        private readonly HashSet<Guid> _gyroAutoCalibKicked = new();
+        // Track which (device, slot) pairs have had auto-calibration
+        // kicked off so we don't double-fire the worker if
+        // UpdatePadDeviceInfo sees the same pair pre-completion.
+        private readonly HashSet<(Guid InstanceGuid, int Slot)> _gyroAutoCalibKicked = new();
 
         /// <summary>
         /// Whether the Devices page is currently visible.
@@ -88,16 +88,16 @@ namespace PadForge.Services
         public GyroCalibratorService GyroCalibrator
             => _gyroCalibrator ??= new GyroCalibratorService(() => _settingsService?.MarkDirty());
 
-        /// <summary>Clears the per-device auto-calibrate dedup latch so the
-        /// next <see cref="UpdatePadDeviceInfo"/> pass re-fires the 1500 ms
-        /// auto-calibration for this device. Called by the Devices page
-        /// "Reset Calibration" handler after
+        /// <summary>Clears the per-(device, slot) auto-calibrate dedup
+        /// latch so the next <see cref="UpdatePadDeviceInfo"/> pass
+        /// re-fires the 1500 ms auto-calibration for this pair. Called
+        /// by the Pad page "Reset Calibration" handler after
         /// <c>GyroCalibrator.ResetCalibration</c> zeroes the bias.</summary>
-        public void ClearGyroAutoCalibLatch(Guid instanceGuid)
+        public void ClearGyroAutoCalibLatch(Guid instanceGuid, int slot)
         {
             if (instanceGuid == Guid.Empty) return;
             lock (SettingsManager.UserDevices.SyncRoot)
-                _gyroAutoCalibKicked.Remove(instanceGuid);
+                _gyroAutoCalibKicked.Remove((instanceGuid, slot));
         }
 
         /// <summary>Proxy to <see cref="InputManager.IsHmVcAt"/> so callers
@@ -385,28 +385,39 @@ namespace PadForge.Services
                 return (byte)pct;
             };
 
-            // Per-device gyro at-rest bias for SourceCoercion's gyro
-            // descriptor reader. SourceCoercion lives in the Engine
-            // library and can't reach UserDevices directly — App-side
-            // wires this static delegate at startup so the binding
-            // layer can subtract bias inline. Returns zeros for
-            // unknown / uncalibrated devices (raw - 0 = raw).
-            PadForge.Engine.Common.Mapping.SourceCoercion.GyroBiasProvider = deviceGuid =>
+            // Per-(device, slot) gyro at-rest bias for SourceCoercion's
+            // gyro descriptor reader. SourceCoercion lives in the Engine
+            // library and can't reach PadSettings directly — App-side
+            // wires this static delegate at startup so the binding layer
+            // can subtract bias inline. Returns zeros for unknown /
+            // uncalibrated (device, slot) pairs or when slotIndex is
+            // negative (raw - 0 = raw).
+            PadForge.Engine.Common.Mapping.SourceCoercion.GyroBiasProvider = (deviceGuid, slotIndex) =>
             {
                 if (string.IsNullOrEmpty(deviceGuid)) return (0f, 0f, 0f);
+                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return (0f, 0f, 0f);
                 if (!Guid.TryParse(deviceGuid, out var g)) return (0f, 0f, 0f);
-                var devs = SettingsManager.UserDevices?.Items;
-                if (devs == null) return (0f, 0f, 0f);
-                lock (SettingsManager.UserDevices.SyncRoot)
+                var settings = SettingsManager.UserSettings;
+                if (settings == null) return (0f, 0f, 0f);
+                PadSetting ps = null;
+                lock (settings.SyncRoot)
                 {
-                    for (int i = 0; i < devs.Count; i++)
+                    for (int i = 0; i < settings.Items.Count; i++)
                     {
-                        var d = devs[i];
-                        if (d != null && d.InstanceGuid == g)
-                            return (d.GyroBiasPitch, d.GyroBiasYaw, d.GyroBiasRoll);
+                        var us = settings.Items[i];
+                        if (us == null) continue;
+                        if (us.InstanceGuid != g) continue;
+                        if (us.MapTo != slotIndex) continue;
+                        ps = us.GetPadSetting();
+                        break;
                     }
                 }
-                return (0f, 0f, 0f);
+                if (ps == null) return (0f, 0f, 0f);
+                return (
+                    TryParseFloatPs(ps.GyroBiasPitch, 0f),
+                    TryParseFloatPs(ps.GyroBiasYaw,   0f),
+                    TryParseFloatPs(ps.GyroBiasRoll,  0f)
+                );
             };
 
             // v3.3 — per-(device, slot) gyro tuning bundle (H/V sens,
@@ -822,7 +833,7 @@ namespace PadForge.Services
                 }
 
                 // v3.3 — push live gyro rate + calibration label so the
-                // Gyro tab readouts track the selected device.
+                // Gyro tab readouts track the selected (device, slot).
                 {
                     var selected = padVm.SelectedMappedDevice;
                     if (selected != null && selected.InstanceGuid != Guid.Empty)
@@ -831,16 +842,29 @@ namespace PadForge.Services
                         if (ud != null && ud.HasGyro)
                         {
                             const double RadToDeg = 180.0 / System.Math.PI;
+                            var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, i);
+                            var ps = us?.GetPadSetting();
+                            float bp = ps != null ? TryParseFloatPs(ps.GyroBiasPitch, 0f) : 0f;
+                            float by = ps != null ? TryParseFloatPs(ps.GyroBiasYaw,   0f) : 0f;
+                            float br = ps != null ? TryParseFloatPs(ps.GyroBiasRoll,  0f) : 0f;
                             var st = ud.InputState;
                             if (st != null && st.Gyro != null && st.Gyro.Length >= 3)
                             {
-                                padVm.GyroLiveRatePitch = (st.Gyro[0] - ud.GyroBiasPitch) * RadToDeg;
-                                padVm.GyroLiveRateYaw   = (st.Gyro[1] - ud.GyroBiasYaw)   * RadToDeg;
-                                padVm.GyroLiveRateRoll  = (st.Gyro[2] - ud.GyroBiasRoll)  * RadToDeg;
+                                padVm.GyroLiveRatePitch = (st.Gyro[0] - bp) * RadToDeg;
+                                padVm.GyroLiveRateYaw   = (st.Gyro[1] - by) * RadToDeg;
+                                padVm.GyroLiveRateRoll  = (st.Gyro[2] - br) * RadToDeg;
                             }
-                            padVm.GyroCalibrationLabel = ud.GyroCalibratedAtUtc == default
-                                ? Strings.Instance.Settings_GyroNeverCalibrated
-                                : string.Format(Strings.Instance.Settings_GyroLastCalibrated_Format, ud.GyroCalibratedAtUtc.ToLocalTime());
+                            string ts = ps?.GyroCalibratedAtUtc;
+                            if (string.IsNullOrEmpty(ts) ||
+                                !DateTime.TryParse(ts, System.Globalization.CultureInfo.InvariantCulture,
+                                                   System.Globalization.DateTimeStyles.RoundtripKind, out var when))
+                            {
+                                padVm.GyroCalibrationLabel = Strings.Instance.Settings_GyroNeverCalibrated;
+                            }
+                            else
+                            {
+                                padVm.GyroCalibrationLabel = string.Format(Strings.Instance.Settings_GyroLastCalibrated_Format, when.ToLocalTime());
+                            }
                         }
                     }
                 }
@@ -4530,33 +4554,50 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>For each online gyro-capable UserDevice whose
-        /// GyroCalibratedAtUtc is still default (never been calibrated),
-        /// fire a background recalibration. Idempotent — guarded by
-        /// _gyroAutoCalibKicked to survive concurrent UpdatePadDeviceInfo
-        /// passes while the 1500 ms worker is still running.</summary>
+        /// <summary>For each (UserDevice × assigned slot) pair where the
+        /// device is online + gyro-capable and the slot's PadSetting has
+        /// no calibration timestamp, fire a background recalibration on
+        /// that (device, slot)'s PadSetting. Idempotent — guarded by
+        /// _gyroAutoCalibKicked (keyed by (InstanceGuid, slot)) to
+        /// survive concurrent UpdatePadDeviceInfo passes while the
+        /// 1500 ms worker is still running.</summary>
         private void TryAutoCalibrateGyros()
         {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return;
             var devs = SettingsManager.UserDevices?.Items;
             if (devs == null) return;
-            UserDevice[] candidates;
+            (UserDevice ud, PadSetting ps)[] candidates;
+            lock (settings.SyncRoot)
             lock (SettingsManager.UserDevices.SyncRoot)
             {
-                var found = new List<UserDevice>();
-                foreach (var d in devs)
+                var found = new List<(UserDevice, PadSetting)>();
+                for (int i = 0; i < settings.Items.Count; i++)
                 {
-                    if (d == null) continue;
-                    if (!d.HasGyro) continue;
-                    if (!d.IsOnline) continue;
-                    if (d.GyroCalibratedAtUtc != default) continue;
-                    if (_gyroAutoCalibKicked.Contains(d.InstanceGuid)) continue;
-                    _gyroAutoCalibKicked.Add(d.InstanceGuid);
-                    found.Add(d);
+                    var us = settings.Items[i];
+                    if (us == null) continue;
+                    int slot = us.MapTo;
+                    if (slot < 0 || slot >= InputManager.MaxPads) continue;
+                    UserDevice ud = null;
+                    foreach (var d in devs)
+                    {
+                        if (d != null && d.InstanceGuid == us.InstanceGuid) { ud = d; break; }
+                    }
+                    if (ud == null) continue;
+                    if (!ud.HasGyro) continue;
+                    if (!ud.IsOnline) continue;
+                    var ps = us.GetPadSetting();
+                    if (ps == null) continue;
+                    if (!string.IsNullOrEmpty(ps.GyroCalibratedAtUtc)) continue;
+                    var key = (ud.InstanceGuid, slot);
+                    if (_gyroAutoCalibKicked.Contains(key)) continue;
+                    _gyroAutoCalibKicked.Add(key);
+                    found.Add((ud, ps));
                 }
                 candidates = found.ToArray();
             }
-            foreach (var d in candidates)
-                _ = GyroCalibrator.EnsureAutoCalibratedAsync(d);
+            foreach (var (ud, ps) in candidates)
+                _ = GyroCalibrator.EnsureAutoCalibratedAsync(ud, ps);
         }
 
         public void UpdatePadDeviceInfo()
@@ -4564,10 +4605,10 @@ namespace PadForge.Services
             var settings = SettingsManager.UserSettings;
             if (settings == null) return;
 
-            // Auto-calibrate any newly-seen gyro-capable device. Worker
-            // task; non-blocking; guarded by _gyroAutoCalibKicked so a
-            // device polling the still-running calibration window
-            // doesn't get double-fired.
+            // Auto-calibrate any newly-seen gyro-capable (device, slot)
+            // pair. Worker task; non-blocking; guarded by
+            // _gyroAutoCalibKicked so a (device, slot) polling the
+            // still-running calibration window doesn't get double-fired.
             TryAutoCalibrateGyros();
 
             for (int i = 0; i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)

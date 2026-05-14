@@ -1096,7 +1096,7 @@
   <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Desviación del stick derecho (0–100%) por debajo de la cual la salida del giroscopio es cero. 0 = siempre activo. Estilo Steam: el giroscopio actúa solo al pasar del umbral.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Giroscopio</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroscopio</value></data>
-  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Ajuste del giroscopio por dispositivo y por slot. La calibración del sesgo se comparte entre slots; sensibilidad, zona muerta, suavizado, curva, aceleración y Easy Aim son por (dispositivo, slot) — cada configuración de asignaciones tiene su propio comportamiento.</value></data>
+  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Ajustes del giroscopio para este dispositivo en este slot. Todo — calibración del sesgo, sensibilidad, zona muerta, suavizado, curva, aceleración y Easy Aim — se guarda por (dispositivo, slot). El mismo controlador físico en slot 0 y slot 1 conserva dos ajustes independientes.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibración</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilidad</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Forma de respuesta</value></data>

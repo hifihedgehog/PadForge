@@ -1096,7 +1096,7 @@
   <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>右摇杆偏转量（0–100%）低于该值时，陀螺仪输出归零。0 = 始终开启。Steam 的“仅在瞄准时陀螺”手感 — 只有当右摇杆超过阈值时陀螺仪才生效。</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>陀螺仪</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>陀螺仪</value></data>
-  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>当前插槽的逐设备陀螺仪调节。零偏校准在所有插槽间共享；灵敏度、死区、平滑、曲线、加速以及 Easy Aim 均按（设备, 插槽）独立，每套绑定配置都拥有各自的手感。</value></data>
+  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>当前插槽中此设备的陀螺仪设置。零偏校准、灵敏度、死区、平滑、曲线、加速以及 Easy Aim — 全部按（设备, 插槽）保存。同一只物理手柄在 0 号槽和 1 号槽中保留两套相互独立的设置。</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>校准</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>灵敏度</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>响应整形</value></data>

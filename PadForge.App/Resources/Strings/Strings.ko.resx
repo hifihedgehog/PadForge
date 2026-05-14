@@ -1096,7 +1096,7 @@
   <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>오른쪽 스틱 편향(0–100%)이 이 값 미만이면 자이로 출력을 0으로 만듭니다. 0 = 항상 켜짐. Steam의 “조준할 때만 자이로” 느낌 — 임계값을 넘었을 때만 자이로가 작동합니다.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>자이로</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>자이로</value></data>
-  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>이 슬롯에 대한 디바이스별 자이로 튜닝. 바이어스 보정은 슬롯 간에 공유됩니다. 감도, 데드존, 스무딩, 커브, 가속, Easy Aim은 모두 (디바이스, 슬롯)별이므로 각 바인딩 구성마다 별도의 조작감을 갖습니다.</value></data>
+  <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>이 슬롯의 이 디바이스에 대한 자이로 설정. 바이어스 보정, 감도, 데드존, 스무딩, 커브, 가속, Easy Aim — 모두 (디바이스, 슬롯)별로 저장됩니다. 같은 물리 패드라도 슬롯 0과 슬롯 1에서 서로 독립된 두 벌의 설정을 갖습니다.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>보정</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>감도</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>응답 형성</value></data>

@@ -106,6 +106,19 @@ namespace PadForge.Engine.Common.Mapping
             int slotIndex, string target, int sourceIndex,
             SourceKindRuntime runtime, double frameDeltaSeconds)
         {
+            // When an Aim Engage gate (right-stick threshold or button)
+            // is configured and closed, recenter the integrator so the
+            // virtual stick snaps to (0, 0). Without this the
+            // accumulator would freeze at the last position on release.
+            // Mouse/scroll targets don't go through this path — their
+            // "rest" is already "no further cursor delta", which is
+            // exactly what a zero rate produces, so they need no fix.
+            if (!SourceCoercion.IsGyroGateOpen(src, slotIndex))
+            {
+                runtime.RecenterGyroIntegrated(slotIndex, target, sourceIndex);
+                return 0f;
+            }
+
             // Full per-(device, slot) tuning chain: bias, smoothing,
             // deadzone, H/V sensitivity, per-source sens, Easy Aim
             // gating. Returns rad/s ready for integration.

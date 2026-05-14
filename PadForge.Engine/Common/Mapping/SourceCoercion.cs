@@ -385,6 +385,31 @@ namespace PadForge.Engine.Common.Mapping
             return ReadTunedGyroRate(state, src, slotIndex, out _, out tuning);
         }
 
+        /// <summary>Returns false when either of the Aim Engage gates
+        /// (Easy Aim right-stick threshold OR the aim-engage button) is
+        /// configured AND not currently satisfied — i.e. gyro should be
+        /// suppressed. Returns true when no gate is configured or every
+        /// configured gate is active. Used by the gyro→stick integrator
+        /// path to recenter the stick to (0, 0) on gate release rather
+        /// than freezing it at the last accumulated position.</summary>
+        public static bool IsGyroGateOpen(MappingSource src, int slotIndex)
+        {
+            if (src == null) return true;
+            var tuning = GetGyroTuning(src.DeviceGuid, slotIndex);
+            if (tuning.EasyAimStickThreshold01 > 0f && slotIndex >= 0)
+            {
+                float defl = SlotRightStickDeflectionProvider?.Invoke(slotIndex) ?? 1f;
+                if (defl < tuning.EasyAimStickThreshold01) return false;
+            }
+            if (!string.IsNullOrEmpty(tuning.AimEngageDescriptor) && slotIndex >= 0)
+            {
+                bool held = ButtonHeldProvider?.Invoke(
+                    tuning.AimEngageDevice ?? "", tuning.AimEngageDescriptor, slotIndex) ?? true;
+                if (!held) return false;
+            }
+            return true;
+        }
+
         /// <summary>Applies the Phase 2 output curve + acceleration to a
         /// normalized [-1..+1] value. Composes the same way as the
         /// in-line application inside <c>ReadAsBipolar</c>, but exposed

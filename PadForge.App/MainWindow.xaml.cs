@@ -708,7 +708,21 @@ namespace PadForge
                         nameof(PadViewModel.AudioRumbleRightMotor) or
                         nameof(PadViewModel.ConstantForceEnabled) or
                         nameof(PadViewModel.ConstantForceX) or nameof(PadViewModel.ConstantForceY) or
-                        nameof(PadViewModel.OutputType))
+                        nameof(PadViewModel.OutputType) or
+                        // Gyro tab — v3.3 + JoyShockMapper-canon fields all per-(device, slot).
+                        nameof(PadViewModel.GyroSensitivityH) or nameof(PadViewModel.GyroSensitivityV) or
+                        nameof(PadViewModel.GyroDeadZoneDegPerSec) or nameof(PadViewModel.GyroSmoothingAlpha) or
+                        nameof(PadViewModel.GyroAcceleration) or nameof(PadViewModel.GyroOutputCurve) or
+                        nameof(PadViewModel.GyroSensitivityUnits) or nameof(PadViewModel.GyroEasyAimStickThreshold) or
+                        nameof(PadViewModel.GyroSpace) or
+                        nameof(PadViewModel.GyroPlayerSpaceYawRelaxFactor) or
+                        nameof(PadViewModel.GyroWorldSpaceSideReductionThreshold) or
+                        nameof(PadViewModel.GyroTighteningThresholdDegPerSec) or
+                        nameof(PadViewModel.GyroSmoothingThresholdDegPerSec) or
+                        nameof(PadViewModel.GyroSmoothingWindowMs) or
+                        nameof(PadViewModel.GyroRealWorldCalibration) or
+                        nameof(PadViewModel.GyroAimEngageButton) or nameof(PadViewModel.GyroAimEngageDeviceGuid) or
+                        nameof(PadViewModel.GyroInvertPitch) or nameof(PadViewModel.GyroInvertYaw))
                         _settingsService.MarkDirty();
                 };
 

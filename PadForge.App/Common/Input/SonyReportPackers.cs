@@ -104,8 +104,13 @@ namespace PadForge.Common.Input
             byte b5 = 0;
             if (gp.IsButtonPressed(Gamepad.LEFT_SHOULDER))  b5 |= 0x01;
             if (gp.IsButtonPressed(Gamepad.RIGHT_SHOULDER)) b5 |= 0x02;
-            if (gp.LeftTrigger  > 0x80FF)                   b5 |= 0x04; // L2 digital
-            if (gp.RightTrigger > 0x80FF)                   b5 |= 0x08; // R2 digital
+            // Real DS4 / DualSense: digital L2/R2 bits ride the analog axis
+            // — any non-zero pull asserts the corresponding button. The
+            // earlier 0x80FF (~50%) threshold here was a leftover from
+            // bridging XInput's no-digital-trigger surface and made DInput
+            // observers report button 7/8 only on hard pulls.
+            if (gp.LeftTrigger  > 0)                        b5 |= 0x04; // L2 digital
+            if (gp.RightTrigger > 0)                        b5 |= 0x08; // R2 digital
             if (gp.IsButtonPressed(Gamepad.BACK))           b5 |= 0x10; // Share
             if (gp.IsButtonPressed(Gamepad.START))          b5 |= 0x20; // Options
             if (gp.IsButtonPressed(Gamepad.LEFT_THUMB))     b5 |= 0x40; // L3
@@ -247,8 +252,11 @@ namespace PadForge.Common.Input
             byte b8 = 0;
             if (gp.IsButtonPressed(Gamepad.LEFT_SHOULDER))  b8 |= 0x01;
             if (gp.IsButtonPressed(Gamepad.RIGHT_SHOULDER)) b8 |= 0x02;
-            if (gp.LeftTrigger  > 0x80FF)                   b8 |= 0x04;
-            if (gp.RightTrigger > 0x80FF)                   b8 |= 0x08;
+            // Real DualSense: digital L2/R2 bits ride the analog axis —
+            // any non-zero pull asserts the corresponding button. See the
+            // matching comment in PackDs4UsbReport01.
+            if (gp.LeftTrigger  > 0)                        b8 |= 0x04;
+            if (gp.RightTrigger > 0)                        b8 |= 0x08;
             if (gp.IsButtonPressed(Gamepad.BACK))           b8 |= 0x10; // Create
             if (gp.IsButtonPressed(Gamepad.START))          b8 |= 0x20; // Options
             if (gp.IsButtonPressed(Gamepad.LEFT_THUMB))     b8 |= 0x40;

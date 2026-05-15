@@ -102,9 +102,11 @@ namespace PadForge.Common.Input
             // 0x0133, etc. AxisMap stores only the low usage byte, so
             // a 2-digit key must be promoted to page-1 (Generic Desktop)
             // before casting. 4-digit keys carry the page byte already.
+            var axisMap = _profile.AxisMap;
             HMAxis ResolveAxisByRole(string role, HMAxis defaultAxis)
             {
-                foreach (var kvp in _profile.AxisMap)
+                if (axisMap == null) return defaultAxis;
+                foreach (var kvp in axisMap)
                 {
                     if (!string.Equals(kvp.Value, role, StringComparison.OrdinalIgnoreCase))
                         continue;
@@ -134,10 +136,14 @@ namespace PadForge.Common.Input
             // AvailableAxes that we don't recognize as a stick or trigger
             // defaults to 0.5 (safe stick-like rest) so unhandled extras
             // don't manifest as phantom presses on their wire bytes.
-            foreach (var hmAxis in _profile.AvailableAxes)
+            var availableAxes = _profile.AvailableAxes;
+            if (availableAxes != null)
             {
-                float rest = (hmAxis == _axLeftTrigger || hmAxis == _axRightTrigger) ? 0f : 0.5f;
-                _axesScratch[hmAxis] = rest;
+                foreach (var hmAxis in availableAxes)
+                {
+                    float rest = (hmAxis == _axLeftTrigger || hmAxis == _axRightTrigger) ? 0f : 0.5f;
+                    _axesScratch[hmAxis] = rest;
+                }
             }
         }
 

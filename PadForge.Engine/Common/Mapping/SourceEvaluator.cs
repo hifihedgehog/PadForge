@@ -71,68 +71,22 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     bool modifier = ReadButtonLikeBool(state, src.ParamModifier);
                     var inner = CloneAsDirect(src, invertOverride: src.Invert ^ modifier);
-                    if (runtime != null && IsVirtualStickAxisTarget(target)
-                        && SourceCoercion.IsGyroDescriptor(inner.Descriptor))
-                        return EvaluateGyroIntegrated(state, inner, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds);
                     return SourceCoercion.EvaluateForBipolarAxisTarget(state, inner, slotIndex);
                 }
                 default:
-                    // Gyro + virtual stick = integrate rate over time. The
-                    // raw bipolar coercion is rate-direct (correct for mouse
-                    // / scroll velocity), but a virtual stick wants the
-                    // angular displacement, not the instantaneous rate, so
-                    // releasing the controller doesn't snap the stick to
-                    // center. Other source kinds / non-stick targets fall
-                    // through to the stateless coercion.
-                    if (runtime != null && IsVirtualStickAxisTarget(target)
-                        && SourceCoercion.IsGyroDescriptor(src.Descriptor))
-                        return EvaluateGyroIntegrated(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds);
+                    // Gyro → virtual stick is rate-direct, same as gyro →
+                    // mouse / scroll: instantaneous angular rate (post-tuning)
+                    // maps to stick deflection magnitude. Stop tilting and
+                    // the stick recenters; the camera ends up rotated by
+                    // the integral of stick deflection over time, which the
+                    // game's own stick-to-camera curve handles. The earlier
+                    // "integrate angular rate into stick position" path
+                    // produced sustained deflection that read as
+                    // "hold the controller tilted to keep turning" — the
+                    // opposite of how gyro is supposed to feel (JSM
+                    // MOUSE_JOYSTICK, Steam Input gyro→stick, Splatoon).
                     return SourceCoercion.EvaluateForBipolarAxisTarget(state, src, slotIndex);
             }
-        }
-
-        // Engine-side mirror of InputManager.Step3.MappingSetEval's
-        // TargetIsBipolarAxis predicate, restricted to *physical-stick*
-        // virtual targets (the four thumb axes + Extended virtual sticks).
-        // Mouse / scroll targets share the bipolar coercion path but want
-        // rate-direct gyro, so they MUST NOT match.
-        private static bool IsVirtualStickAxisTarget(string target)
-            => target == "LeftThumbAxisX" || target == "LeftThumbAxisY"
-            || target == "RightThumbAxisX" || target == "RightThumbAxisY"
-            || (target != null && target.StartsWith("ExtendedAxis", System.StringComparison.Ordinal));
-
-        private static float EvaluateGyroIntegrated(
-            CustomInputState state, MappingSource src,
-            int slotIndex, string target, int sourceIndex,
-            SourceKindRuntime runtime, double frameDeltaSeconds)
-        {
-            // When an Aim Engage gate (right-stick threshold or button)
-            // is configured and closed, recenter the integrator so the
-            // virtual stick snaps to (0, 0). Without this the
-            // accumulator would freeze at the last position on release.
-            // Mouse/scroll targets don't go through this path — their
-            // "rest" is already "no further cursor delta", which is
-            // exactly what a zero rate produces, so they need no fix.
-            if (!SourceCoercion.IsGyroGateOpen(src, slotIndex))
-            {
-                runtime.RecenterGyroIntegrated(slotIndex, target, sourceIndex);
-                return 0f;
-            }
-
-            // Full per-(device, slot) tuning chain: bias, smoothing,
-            // deadzone, H/V sensitivity, per-source sens, Easy Aim
-            // gating. Returns rad/s ready for integration.
-            float tunedRate = SourceCoercion.GetTunedGyroRate(state, src, slotIndex, out var tuning);
-            // Sensitivity already baked into tunedRate; pass 1.0 to the
-            // integrator so it doesn't double-apply.
-            double v = runtime.TickGyroIntegrated(slotIndex, target, sourceIndex,
-                tunedRate, 1.0, frameDeltaSeconds);
-            // Post-integration: apply output curve + acceleration in
-            // normalized stick-deflection space. Same shaping the
-            // mouse/scroll path applies, just after the integrator
-            // accumulates instead of pre-clamp.
-            float shaped = SourceCoercion.ShapeGyroNormalized((float)v, tuning);
-            return src.Invert ? -shaped : shaped;
         }
 
         public static float EvaluateForTriggerTarget(

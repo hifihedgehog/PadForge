@@ -1440,32 +1440,6 @@ namespace PadForge.ViewModels
         public RelayCommand GyroResetCalibrationCommand
             => _gyroResetCalibrationCommand ??= new RelayCommand(FireGyroResetCalibration);
 
-        private RelayCommand _gyroResetTuningCommand;
-        public RelayCommand GyroResetTuningCommand =>
-            _gyroResetTuningCommand ??= new RelayCommand(() =>
-            {
-                GyroSensitivityH = 1.0;
-                GyroSensitivityV = 1.0;
-                GyroDeadZoneDegPerSec = 3.0;
-                GyroSmoothingAlpha = 0;
-                GyroAcceleration = 0;
-                GyroOutputCurve = "Linear";
-                GyroSensitivityUnits = "Multiplier";
-                GyroEasyAimStickThreshold = 0;
-                // JoyShockMapper-canondefaults
-                GyroSpace = "Local";
-                GyroPlayerSpaceYawRelaxFactor = 1.41;
-                GyroWorldSpaceSideReductionThreshold = 0.125;
-                GyroTighteningThresholdDegPerSec = 3.0;
-                GyroSmoothingThresholdDegPerSec = 8.0;
-                GyroSmoothingWindowMs = 50;
-                GyroRealWorldCalibration = 0;
-                GyroAimEngageButton = "";
-                GyroAimEngageDeviceGuid = "";
-                GyroInvertPitch = false;
-                GyroInvertYaw = false;
-            });
-
         // ─── Per-row reset commands. Each restores ONE field to its
         //     default so the user can revert a single tweak without
         //     clobbering the rest of the gyro tuning. Matches the

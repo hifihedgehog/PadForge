@@ -426,7 +426,7 @@ namespace PadForge.Services
                 );
             };
 
-            // v3.3 — per-(device, slot) gyro tuning bundle (H/V sens,
+            // Per-(device, slot) gyro tuning bundle (H/V sens,
             // deadzone, smoothing, acceleration, output curve, Easy
             // Aim threshold). Lookup goes through the slot's PadSetting
             // for the named device so each binding config has its own
@@ -900,7 +900,7 @@ namespace PadForge.Services
                     }
                 }
 
-                // v3.3 — push live gyro rate + calibration label so the
+                // Push live gyro rate + calibration label so the
                 // Gyro tab readouts track the selected (device, slot).
                 // — also tick the per-device gravity low-pass so
                 // Player/World Space gyro projection has fresh state.
@@ -1297,7 +1297,7 @@ namespace PadForge.Services
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad2;
             }
 
-            // v3.3 — gyro UI lives on the Pad page Gyro tab now; no
+            // Gyro UI lives on the Pad page Gyro tab now; no
             // calibration label / tuning sync happens here.
 
             devVm.HasRawData = true;
@@ -3076,10 +3076,18 @@ namespace PadForge.Services
             }
 
             // Load the new device's PadSetting into the ViewModel.
+            // PopulateAvailableInputs MUST run before LoadPadSettingToViewModel.
+            // The Aim Engage InputChoice projection's getter walks
+            // SlotAvailableInputs to resolve the (descriptor, deviceGuid)
+            // pair into a real ComboBox entry; if the list still holds the
+            // PREVIOUS device's inputs when GyroAimEngageButton gets
+            // assigned, the getter returns null and the ComboBox's TwoWay
+            // binding writes that null back through the setter, silently
+            // clearing the freshly-loaded binding.
             if (newGuid != Guid.Empty)
             {
-                LoadPadSettingToViewModel(padVm, newGuid);
                 PopulateAvailableInputs(padVm, FindUserDevice(newGuid));
+                LoadPadSettingToViewModel(padVm, newGuid);
                 _previousSelectedDevice[padVm.PadIndex] = newGuid;
             }
 

@@ -1376,16 +1376,19 @@ namespace PadForge.ViewModels
             }
             set
             {
-                if (value == null)
-                {
-                    GyroAimEngageButton = "";
-                    GyroAimEngageDeviceGuid = "";
-                }
-                else
-                {
-                    GyroAimEngageButton = value.Descriptor ?? "";
-                    GyroAimEngageDeviceGuid = value.DeviceGuid ?? "";
-                }
+                // Ignore a null write-back from the ComboBox's TwoWay
+                // binding. The picker's SelectedItem goes to null any time
+                // the getter can't find the current (descriptor, deviceGuid)
+                // in SlotAvailableInputs — which happens whenever
+                // LoadPadSettingToViewModel runs before PopulateAvailableInputs
+                // has rebuilt the list for the newly-selected device.
+                // Treating that transient null as "the user picked nothing"
+                // silently wipes the saved Aim Engage binding on every
+                // device switch / restart. The Reset button (Pad page
+                // convention) is the only sanctioned clear path.
+                if (value == null) return;
+                GyroAimEngageButton = value.Descriptor ?? "";
+                GyroAimEngageDeviceGuid = value.DeviceGuid ?? "";
             }
         }
 

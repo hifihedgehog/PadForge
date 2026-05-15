@@ -1573,7 +1573,7 @@ namespace PadForge.Services
                 padVm.SwapMotors = ps.ForceSwapMotor == "1" ||
                     (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
 
-                // Load gyro tuning (v3.3 per-(device, slot)).
+                // Load gyro tuning (per-(device, slot)).
                 padVm.GyroSensitivityH = TryParseDouble(ps.GyroSensitivityH, 1.0);
                 padVm.GyroSensitivityV = TryParseDouble(ps.GyroSensitivityV, 1.0);
                 padVm.GyroDeadZoneDegPerSec = TryParseDouble(ps.GyroDeadZoneDegPerSec, 3.0);
@@ -2618,7 +2618,7 @@ namespace PadForge.Services
                     // for the full explanation of the locale data-loss bug.
                     var ic = System.Globalization.CultureInfo.InvariantCulture;
 
-                    // Write gyro tuning (v3.3 per-(device, slot)).
+                    // Write gyro tuning (per-(device, slot)).
                     ps.GyroSensitivityH = padVm.GyroSensitivityH.ToString(ic);
                     ps.GyroSensitivityV = padVm.GyroSensitivityV.ToString(ic);
                     ps.GyroDeadZoneDegPerSec = padVm.GyroDeadZoneDegPerSec.ToString(ic);

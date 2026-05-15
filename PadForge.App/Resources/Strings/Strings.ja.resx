@@ -1150,8 +1150,6 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>出力カーブをリセット</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim しきい値をリセット</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>アクティベートボタンをリセット</value></data>
-  <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>調整を初期値にリセット</value></data>
-  <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>H/V 感度、デッドゾーン、スムージング、加速、出力カーブ、単位、Easy Aim しきい値を工場出荷時の既定値に戻します。校正バイアスには影響しません。</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>感度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ソースごとのジャイロ感度倍率。1.0 = エンジンの既定 (500°/s → フルディフレクション)。1.0 を超えると敏感になり、1.0 未満では鈍くなります。</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>タッチパッド 1 Y</value></data>

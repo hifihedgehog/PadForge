@@ -1150,8 +1150,6 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>重置输出曲线</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>重置 Easy Aim 阈值</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>重置激活键</value></data>
-  <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>将调节重置为默认值</value></data>
-  <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>将 H/V 灵敏度、死区、平滑、加速、输出曲线、单位以及 Easy Aim 阈值恢复为出厂默认值。不影响校准零偏。</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>灵敏度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>每个源的陀螺仪灵敏度倍数。1.0 = 引擎默认值（500°/s → 最大偏转）。大于 1.0 更灵敏；小于 1.0 不太灵敏。</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>触控板 1 Y</value></data>

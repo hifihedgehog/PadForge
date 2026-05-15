@@ -1150,8 +1150,6 @@
   <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Deskriptor einer Taste, die das Gyro freigibt: Gyro feuert nur, solange diese Taste gehalten wird. Leer = keine Tastenverriegelung. UND-verknüpft mit der Stick-Auslenkungsschwelle oben.</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktivierung</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optionale Bedingungen, wann das Gyro aktiv ist. Stick-Auslenkung und eine Aktivierungs-Taste können das Gyro jeweils freigeben; eine oder beide konfigurierbar. Sind beide gesetzt, müssen beide aktiv sein, damit das Gyro feuert.</value></data>
-  <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Tuning auf Standard zurücksetzen</value></data>
-  <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Setzt H/V-Empfindlichkeit, Totzone, Glättung, Beschleunigung, Ausgabekurve, Einheiten und Easy-Aim-Schwelle auf Werkseinstellungen zurück. Bias-Kalibrierung bleibt unverändert.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Empfindlichkeit</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Empfindlichkeitsfaktor pro Quelle für das Gyroskop. 1,0 = Engine-Standard (500°/s → volle Auslenkung). Werte über 1,0 sind empfindlicher, Werte unter 1,0 weniger empfindlich.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>

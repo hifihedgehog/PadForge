@@ -1150,8 +1150,6 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>Restablecer curva de salida</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Restablecer umbral de Easy Aim</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Restablecer botón de activación</value></data>
-  <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Restablecer ajustes a predeterminados</value></data>
-  <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Restaura sensibilidad H/V, zona muerta, suavizado, aceleración, curva de salida, unidades y umbral de Easy Aim a sus valores de fábrica. No afecta a la calibración del sesgo.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicador de sensibilidad del giroscopio por fuente. 1,0 = predeterminado del motor (500°/s → desviación completa). Valores superiores a 1,0 son más sensibles; valores inferiores son menos sensibles.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>

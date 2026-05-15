@@ -1170,8 +1170,6 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>Uitvoercurve resetten</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim-drempel resetten</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Activatieknop resetten</value></data>
-  <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Afstemming op standaard zetten</value></data>
-  <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Zet H/V-gevoeligheid, dode zone, smoothing, versnelling, uitvoercurve, eenheden en Easy Aim-drempel terug op de fabrieksinstellingen. De kalibratiebias blijft ongewijzigd.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheidsvermenigvuldiger van de gyroscoop per bron. 1,0 = standaard van de engine (500°/s → volledige uitslag). Waarden boven 1,0 zijn gevoeliger; daaronder minder.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>

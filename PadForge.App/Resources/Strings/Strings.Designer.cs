@@ -1085,8 +1085,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetGyroOutputCurve => Get("Pad_ResetGyroOutputCurve");
     public string Pad_ResetGyroEasyAimThreshold => Get("Pad_ResetGyroEasyAimThreshold");
     public string Pad_ResetGyroAimEngageButton => Get("Pad_ResetGyroAimEngageButton");
-    public string Pad_Gyro_ResetTuning => Get("Pad_Gyro_ResetTuning");
-    public string Pad_Gyro_ResetTuning_Tooltip => Get("Pad_Gyro_ResetTuning_Tooltip");
     public string Mapping_GyroSensitivity => Get("Mapping_GyroSensitivity");
     public string Mapping_GyroSensitivity_Tooltip => Get("Mapping_GyroSensitivity_Tooltip");
     public string MappingCategory_Touchpad => Get("MappingCategory_Touchpad");

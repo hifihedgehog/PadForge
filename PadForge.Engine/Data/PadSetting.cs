@@ -968,6 +968,34 @@ namespace PadForge.Engine.Data
             sb.Append(ConstantForceX); sb.Append('|');
             sb.Append(ConstantForceY); sb.Append('|');
 
+            // Gyro tuning (per-(device, slot)). Gyro fields not being in
+            // the checksum used to let SaveToFile's dedup-by-checksum drop
+            // a PadSetting when two devices had identical mapping
+            // descriptors but only the gyro tuning differed.
+            sb.Append(GyroSensitivityH); sb.Append('|');
+            sb.Append(GyroSensitivityV); sb.Append('|');
+            sb.Append(GyroDeadZoneDegPerSec); sb.Append('|');
+            sb.Append(GyroSmoothingAlpha); sb.Append('|');
+            sb.Append(GyroAcceleration); sb.Append('|');
+            sb.Append(GyroOutputCurve); sb.Append('|');
+            sb.Append(GyroSensitivityUnits); sb.Append('|');
+            sb.Append(GyroEasyAimStickThreshold); sb.Append('|');
+            sb.Append(GyroBiasPitch); sb.Append('|');
+            sb.Append(GyroBiasYaw); sb.Append('|');
+            sb.Append(GyroBiasRoll); sb.Append('|');
+            sb.Append(GyroCalibratedAtUtc); sb.Append('|');
+            sb.Append(GyroSpace); sb.Append('|');
+            sb.Append(GyroPlayerSpaceYawRelaxFactor); sb.Append('|');
+            sb.Append(GyroWorldSpaceSideReductionThreshold); sb.Append('|');
+            sb.Append(GyroTighteningThresholdDegPerSec); sb.Append('|');
+            sb.Append(GyroSmoothingThresholdDegPerSec); sb.Append('|');
+            sb.Append(GyroSmoothingWindowMs); sb.Append('|');
+            sb.Append(GyroRealWorldCalibration); sb.Append('|');
+            sb.Append(GyroAimEngageButton); sb.Append('|');
+            sb.Append(GyroAimEngageDeviceGuid); sb.Append('|');
+            sb.Append(GyroInvertPitch); sb.Append('|');
+            sb.Append(GyroInvertYaw); sb.Append('|');
+
             // Inversion overrides
             sb.Append(LeftThumbAxisXInvert); sb.Append('|');
             sb.Append(LeftThumbAxisYInvert); sb.Append('|');
@@ -1246,6 +1274,24 @@ namespace PadForge.Engine.Data
             nameof(AudioRumbleCutoffHz), nameof(AudioRumbleLeftMotor), nameof(AudioRumbleRightMotor),
             // Constant force
             nameof(ConstantForceEnabled), nameof(ConstantForceX), nameof(ConstantForceY),
+            // Gyro tuning — per-(device, slot). Omitting these from the
+            // clone list is the bug that makes Gyro tab sliders revert on
+            // restart: LoadFromFile's CloneDeep would drop them, leaving
+            // every in-memory PadSetting at constructor defaults regardless
+            // of what the XML round-tripped through the XmlSerializer.
+            nameof(GyroSensitivityH), nameof(GyroSensitivityV),
+            nameof(GyroDeadZoneDegPerSec), nameof(GyroSmoothingAlpha),
+            nameof(GyroAcceleration), nameof(GyroOutputCurve),
+            nameof(GyroSensitivityUnits), nameof(GyroEasyAimStickThreshold),
+            nameof(GyroBiasPitch), nameof(GyroBiasYaw), nameof(GyroBiasRoll),
+            nameof(GyroCalibratedAtUtc),
+            nameof(GyroSpace), nameof(GyroPlayerSpaceYawRelaxFactor),
+            nameof(GyroWorldSpaceSideReductionThreshold),
+            nameof(GyroTighteningThresholdDegPerSec),
+            nameof(GyroSmoothingThresholdDegPerSec),
+            nameof(GyroSmoothingWindowMs), nameof(GyroRealWorldCalibration),
+            nameof(GyroAimEngageButton), nameof(GyroAimEngageDeviceGuid),
+            nameof(GyroInvertPitch), nameof(GyroInvertYaw),
             // Axis inversion
             nameof(LeftThumbAxisXInvert), nameof(LeftThumbAxisYInvert),
             nameof(RightThumbAxisXInvert), nameof(RightThumbAxisYInvert),

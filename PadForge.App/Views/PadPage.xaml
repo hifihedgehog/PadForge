@@ -5124,13 +5124,6 @@
                                 </StackPanel>
                             </StackPanel>
                         </Border>
-
-                        <!-- Reset all tuning to defaults -->
-                        <Button Content="{Binding Pad_Gyro_ResetTuning, Source={x:Static strings:Strings.Instance}}"
-                                Command="{Binding GyroResetTuningCommand}"
-                                Padding="10,4" Margin="0,12,0,0"
-                                HorizontalAlignment="Right"
-                                ToolTip="{Binding Pad_Gyro_ResetTuning_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

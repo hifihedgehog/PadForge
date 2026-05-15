@@ -1002,8 +1002,6 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>Reset Output Curve</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Reset Easy Aim Threshold</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Reset Aim Engage Button</value></data>
-  <data name="Pad_Gyro_ResetTuning" xml:space="preserve"><value>Reset tuning to defaults</value></data>
-  <data name="Pad_Gyro_ResetTuning_Tooltip" xml:space="preserve"><value>Restores H/V sensitivity, deadzone, smoothing, acceleration, output curve, units, and Easy Aim threshold to their factory defaults. Does not affect calibration bias.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Per-source gyro sensitivity multiplier. 1.0 = the engine's default (500°/s → full deflection). Values above 1.0 are more sensitive; values below 1.0 are less sensitive.</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using HIDMaestro;
 using PadForge.Engine;
 using PadForge.Services;
@@ -76,20 +78,67 @@ namespace PadForge.Common.Input
             _profile = profile ?? throw new ArgumentNullException(nameof(profile));
             _type = type;
 
-            // Resolve the 6-slot canonical axis keys from the profile's
-            // Sticks / Triggers simple-view lists once. Sticks beyond
-            // index 1 and triggers beyond index 1 don't fit the canonical
-            // gamepad surface and are left unresolved (HMAxis.None) — the
-            // Custom Extended path uses _profile.Sticks / .Triggers
-            // directly to address every available axis.
-            var sticks = _profile.Sticks;
-            var triggers = _profile.Triggers;
-            _axLeftStickX  = sticks.Count   > 0 ? sticks[0].XAxis  : HMAxis.None;
-            _axLeftStickY  = sticks.Count   > 0 ? sticks[0].YAxis  : HMAxis.None;
-            _axRightStickX = sticks.Count   > 1 ? sticks[1].XAxis  : HMAxis.None;
-            _axRightStickY = sticks.Count   > 1 ? sticks[1].YAxis  : HMAxis.None;
-            _axLeftTrigger  = triggers.Count > 0 ? triggers[0].Axis : HMAxis.None;
-            _axRightTrigger = triggers.Count > 1 ? triggers[1].Axis : HMAxis.None;
+            // Resolve the 6-slot canonical axis keys via the profile's
+            // AxisMap, which maps wire HMAxis → semantic role string
+            // ("leftStickX", "rightStickX", "leftTrigger", etc.). For Sony
+            // profiles, AxisMap declares HMAxis.Z → "rightStickX",
+            // HMAxis.Rx → "leftTrigger", HMAxis.Ry → "rightTrigger",
+            // HMAxis.Rz → "rightStickY" — the inverse of the XInput
+            // convention StandardAxes ships (rightStick=Rx/Ry, triggers=
+            // Z/Rz). Walking AxisMap directly lands each role on the wire
+            // byte the consumer expects.
+            //
+            // Trusting HMGamepadStateHelpers.StandardAxes for this routing
+            // was the bug behind the phantom 50% L2/R2 on every PlayStation
+            // virtual output: it routed rightStickX (which idles at center
+            // = 0.5) onto HMAxis.Rx — the wire position Sony declares as
+            // the L2 trigger — so the OS read byte 4 = 0x80 = 50% trigger
+            // pull, which auto-asserts the coupled L2 digital button
+            // (DInput button 7), with the same flip on Ry → R2.
+            // AxisMap is Dictionary<string, string>: key = hex HID usage
+            // code ("0x32" for HMAxis.Z), value = role name ("rightStickX").
+            // HMAxis is a ushort enum whose values are full HID usage
+            // codes (page << 8 | usage) — HMAxis.Z = 0x0132, HMAxis.Rx =
+            // 0x0133, etc. AxisMap stores only the low usage byte, so
+            // a 2-digit key must be promoted to page-1 (Generic Desktop)
+            // before casting. 4-digit keys carry the page byte already.
+            HMAxis ResolveAxisByRole(string role, HMAxis defaultAxis)
+            {
+                foreach (var kvp in _profile.AxisMap)
+                {
+                    if (!string.Equals(kvp.Value, role, StringComparison.OrdinalIgnoreCase))
+                        continue;
+                    string keyHex = kvp.Key ?? "";
+                    if (keyHex.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+                        keyHex = keyHex.Substring(2);
+                    if (!int.TryParse(keyHex,
+                            System.Globalization.NumberStyles.HexNumber,
+                            System.Globalization.CultureInfo.InvariantCulture,
+                            out int axisCode))
+                        continue;
+                    if (axisCode <= 0xFF) axisCode |= 0x0100;
+                    return (HMAxis)axisCode;
+                }
+                return defaultAxis;
+            }
+            _axLeftStickX  = ResolveAxisByRole("leftStickX",  HMAxis.X);
+            _axLeftStickY  = ResolveAxisByRole("leftStickY",  HMAxis.Y);
+            _axRightStickX = ResolveAxisByRole("rightStickX", HMAxis.Rx);
+            _axRightStickY = ResolveAxisByRole("rightStickY", HMAxis.Ry);
+            _axLeftTrigger  = ResolveAxisByRole("leftTrigger",  HMAxis.Z);
+            _axRightTrigger = ResolveAxisByRole("rightTrigger", HMAxis.Rz);
+
+            // Seed the hot-path scratch dict so HM's encoder receives
+            // sensible rest values for every declared axis. Sticks center
+            // at 0.5, triggers release at 0. Any HMAxis from
+            // AvailableAxes that we don't recognize as a stick or trigger
+            // defaults to 0.5 (safe stick-like rest) so unhandled extras
+            // don't manifest as phantom presses on their wire bytes.
+            foreach (var hmAxis in _profile.AvailableAxes)
+            {
+                float rest = (hmAxis == _axLeftTrigger || hmAxis == _axRightTrigger) ? 0f : 0.5f;
+                _axesScratch[hmAxis] = rest;
+            }
         }
 
         public void Connect()
@@ -247,12 +296,11 @@ namespace PadForge.Common.Input
             //     ThumbLY=0      (centered)    -> 0.5
             //   * Trigger: already unsigned, just divide.
             //
-            // Hot-path: clear and repopulate the cached _axesScratch dict.
-            // Cached HMAxis keys (resolved at construction from the profile's
-            // simple-view Sticks/Triggers lists) skip the per-call list walk
-            // and let Sony's Z=right-stick / Rx=left-trigger remap land
-            // automatically.
-            _axesScratch.Clear();
+            // Hot-path: overwrite the 6 standard slots in the pre-seeded
+            // _axesScratch (constructor seeded it with the profile's full
+            // axis set at rest values). DO NOT Clear() the dict — any
+            // extra-axis entries seeded by the constructor must persist
+            // or HM's encoder would default those bytes to logical mid.
             if (_axLeftStickX  != HMAxis.None) _axesScratch[_axLeftStickX]  = (gp.ThumbLX  + 32768f) / 65535f;
             if (_axLeftStickY  != HMAxis.None) _axesScratch[_axLeftStickY]  = (32768f - gp.ThumbLY)  / 65535f;
             if (_axRightStickX != HMAxis.None) _axesScratch[_axRightStickX] = (gp.ThumbRX  + 32768f) / 65535f;
@@ -327,9 +375,10 @@ namespace PadForge.Common.Input
 
             // Same axis-dict population as the basic SubmitGamepadState
             // overload — see the explanatory comment block there for the
-            // XInput → HM v1.3.9 [0..1] conversion rules and why the
-            // cached HMAxis keys avoid the per-call list-walk allocation.
-            _axesScratch.Clear();
+            // XInput → HM v1.3.9 [0..1] conversion rules. DO NOT Clear()
+            // — _axesScratch was pre-seeded at construction with the
+            // profile's full axis set at rest values so extra-axis entries
+            // survive frame to frame.
             if (_axLeftStickX  != HMAxis.None) _axesScratch[_axLeftStickX]  = (gp.ThumbLX  + 32768f) / 65535f;
             if (_axLeftStickY  != HMAxis.None) _axesScratch[_axLeftStickY]  = (32768f - gp.ThumbLY)  / 65535f;
             if (_axRightStickX != HMAxis.None) _axesScratch[_axRightStickX] = (gp.ThumbRX  + 32768f) / 65535f;

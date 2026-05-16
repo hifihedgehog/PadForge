@@ -63,25 +63,42 @@ namespace PadForge.Engine
         public uint SdlInstanceId { get; }
         public string Name { get; }
         public int NumAxes => _isTouchpadDevice ? 0 : NumGamepadAxes;
-        // NumButtons stays at NumGamepadButtons (11) for the mappable
-        // gamepad-shape count. The touchpad click lives at Buttons[16]
-        // (SDL_GAMEPAD_BUTTON_TOUCHPAD's canonical slot) and is reached
-        // through the "Touchpad 0 Click" descriptor — counting it here
-        // would double-list it in the mapping picker alongside the
-        // canonical touchpad-source block.
-        public int NumButtons => _isTouchpadDevice ? 0 : NumGamepadButtons;
-        public int RawButtonCount => _isTouchpadDevice ? 0 : NumGamepadButtons;
+        // Touchpad-equipped layouts expose Buttons[16] (SDL_GAMEPAD_BUTTON_TOUCHPAD's
+        // canonical PadForge slot) in addition to the 11 standard gamepad
+        // buttons (0-10). NumButtons covers up through that slot so any
+        // state-buffer sizing fallback can see it; the sparse list below
+        // is what the Devices preview reads to surface the click as a
+        // regular button. GetDeviceObjects deliberately does NOT add slot
+        // 16 — the mapping picker keeps the canonical "Touchpad 0 Click"
+        // descriptor as the single source-of-truth there.
+        public int NumButtons =>
+            _isTouchpadDevice ? 17
+            : HasTouchpad ? 17
+            : NumGamepadButtons;
+        public int RawButtonCount =>
+            _isTouchpadDevice ? 17
+            : HasTouchpad ? 17
+            : NumGamepadButtons;
         public int NumHats => _isTouchpadDevice ? 0 : NumGamepadPovs;
         public int[] SupportedButtonIndices
         {
             get
             {
-                int n = NumButtons;
-                var a = new int[n];
-                for (int i = 0; i < n; i++) a[i] = i;
-                return a;
+                if (_isTouchpadDevice)
+                    return _touchpadOnlyButtons;
+                if (HasTouchpad)
+                {
+                    var a = new int[NumGamepadButtons + 1];
+                    for (int i = 0; i < NumGamepadButtons; i++) a[i] = i;
+                    a[NumGamepadButtons] = 16;
+                    return a;
+                }
+                var dense = new int[NumGamepadButtons];
+                for (int i = 0; i < NumGamepadButtons; i++) dense[i] = i;
+                return dense;
             }
         }
+        private static readonly int[] _touchpadOnlyButtons = { 16 };
         public IntPtr GamepadHandle => IntPtr.Zero;
         public bool HasRumble => true;
         public bool HasHaptic => false;

@@ -63,17 +63,20 @@ namespace PadForge.Engine
         public uint SdlInstanceId { get; }
         public string Name { get; }
         public int NumAxes => _isTouchpadDevice ? 0 : NumGamepadAxes;
-        // Button counts are the actual number of buttons exposed, not the
-        // high-water slot index — state.Buttons is a fixed-size 256-slot
-        // array, so NumButtons just describes the device's surface. The
-        // touchpad click lives at Buttons[16] (SDL_GAMEPAD_BUTTON_TOUCHPAD's
-        // canonical slot) and is surfaced via the sparse SupportedButtonIndices
-        // list below. GetDeviceObjects deliberately does NOT add slot 16 —
-        // the mapping picker keeps the canonical "Touchpad 0 Click"
-        // descriptor as the single source-of-truth there.
+        // NumButtons describes the slot range, not the count of populated
+        // slots. The touchpad click rides Buttons[16] (SDL_GAMEPAD_BUTTON_TOUCHPAD's
+        // canonical slot), so touchpad-equipped layouts need NumButtons=17
+        // for dense-iter consumers (macro-trigger recorder, mapping picker's
+        // raw-button list) to actually reach slot 16. The sparse
+        // SupportedButtonIndices below is what the Devices preview reads
+        // to surface which slots are real, so its grid still shows 11
+        // circles for a ds4 gamepad client (plus the touchpad-click circle)
+        // and 1 for the touchpad-only client. GetDeviceObjects deliberately
+        // does NOT add slot 16 — the mapping picker keeps the canonical
+        // "Touchpad 0 Click" descriptor as the single source-of-truth.
         public int NumButtons =>
-            _isTouchpadDevice ? 1
-            : HasTouchpad ? NumGamepadButtons + 1
+            _isTouchpadDevice ? 17
+            : HasTouchpad ? 17
             : NumGamepadButtons;
         public int RawButtonCount => NumButtons;
         public int NumHats => _isTouchpadDevice ? 0 : NumGamepadPovs;

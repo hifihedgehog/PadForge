@@ -30,11 +30,15 @@ namespace PadForge.Engine
         public uint SdlInstanceId => 0xFFFFFFFE;
         public string Name => "Touchpad Overlay";
         public int NumAxes => 0;
-        // One button: the touchpad click. It rides Buttons[16] —
-        // SDL_GAMEPAD_BUTTON_TOUCHPAD's canonical PadForge slot — so
-        // SupportedButtonIndices is sparse {16}, not a dense 0..0.
-        public int NumButtons => 1;
-        public int RawButtonCount => 1;
+        // The touchpad click rides Buttons[16] (SDL_GAMEPAD_BUTTON_TOUCHPAD's
+        // canonical PadForge slot). NumButtons describes the slot range —
+        // dense-iter consumers (macro-trigger recorder, mapping picker's
+        // raw-button list) walk 0..NumButtons-1, so 17 is the right value
+        // here even though only one slot is populated. The sparse
+        // SupportedButtonIndices below tells the Devices preview which
+        // slots are real, so the grid still shows exactly 1 circle.
+        public int NumButtons => 17;
+        public int RawButtonCount => 17;
         public int NumHats => 0;
         public int[] SupportedButtonIndices => _supportedButtons;
         private static readonly int[] _supportedButtons = { 16 };

@@ -76,10 +76,11 @@ namespace PadForge.Engine
 
         /// <summary>
         /// Sparse list of button positions that this device actually exposes.
-        /// For SDL3-recognized gamepads: 0-10 always, plus 11-20 only when
+        /// For SDL3-recognized gamepads: 0-10 always, plus 11-21 only when
         /// <c>SDL_GamepadHasButton</c> reports the corresponding extended
-        /// button (Misc1, paddles, Misc2-6) is present, plus any raw passthrough
-        /// indices ≥21 that aren't already consumed by the gamepad mapping.
+        /// button (Misc1, paddles, Touchpad, Misc2-6) is present, plus any
+        /// raw passthrough indices ≥22 that aren't already consumed by the
+        /// gamepad mapping.
         /// For raw joystick devices: 0..NumButtons-1.
         /// Computed once at <see cref="Open"/> time and used by the Devices
         /// preview to avoid showing button slots the device doesn't have.
@@ -209,8 +210,12 @@ namespace PadForge.Engine
             if (GameController != IntPtr.Zero)
             {
                 NumAxes = 6;     // LX, LY, LT, RX, RY, RT
-                NumButtons = 21; // 0-10 standard + 11-20 extended (Misc1, paddles, Misc2-6).
-                                 // TOUCHPAD has its own descriptor, not a numeric slot.
+                NumButtons = 22; // 22 standardized slots, SDL3 canonical order:
+                                 //   0-10  std XInput (A/B/X/Y/LB/RB/Back/Start/LS/RS/Guide)
+                                 //   11    Misc1
+                                 //   12-15 RPaddle1 / LPaddle1 / RPaddle2 / LPaddle2
+                                 //   16    Touchpad click (SDL_GAMEPAD_BUTTON_TOUCHPAD)
+                                 //   17-21 Misc2-Misc6
                 NumHats = 1;     // D-pad synthesized from gamepad buttons
 
                 // Parse the gamepad mapping to find which raw button indices are
@@ -632,8 +637,11 @@ namespace PadForge.Engine
             }
 
             // --- Buttons ---
-            // Use RawButtonCount when available — NumButtons may be capped at 11
-            // for devices opened as gamepads (e.g., DS3 via DsHidMini in force-raw mode).
+            // Prefer RawButtonCount so devices with more raw HID buttons than
+            // the 22 standardized gamepad slots (e.g., flight sticks, fight
+            // sticks, force-raw DS3 via DsHidMini) populate every native
+            // button. NumButtons (22) is the standardized-range cap and is
+            // only the fallback when RawButtonCount is unavailable.
             int btnCount = Math.Min(
                 RawButtonCount > 0 ? RawButtonCount : NumButtons,
                 state.Buttons.Length);
@@ -893,7 +901,7 @@ namespace PadForge.Engine
             }
 
             // --- Buttons ---
-            // For SDL3-recognized gamepads, skip positions 11-20 the device
+            // For SDL3-recognized gamepads, skip positions 11-21 the device
             // doesn't physically have (asked via SDL_GamepadHasButton) so
             // an Xbox 360 doesn't show "Misc 1" / "Right Paddle 1" in the
             // dropdown. Positions 0-10 are always present on any recognized
@@ -903,7 +911,7 @@ namespace PadForge.Engine
             for (int i = 0; i < btnCount; i++)
             {
                 bool include = true;
-                if (isGamepad && i >= 11 && i <= 20)
+                if (isGamepad && i >= 11 && i <= 21)
                 {
                     int sdlButton = GamepadButtonForPosition(i);
                     include = sdlButton >= 0 && SDL_GamepadHasButton(GameController, sdlButton);
@@ -1126,7 +1134,7 @@ namespace PadForge.Engine
 
         /// <summary>
         /// Returns a gamepad-friendly button name for the standardized gamepad
-        /// button positions (0-10 standard + 11-20 extended). The extended
+        /// button positions (0-10 standard + 11-21 extended). The extended
         /// positions are read via the SDL gamepad API in
         /// <see cref="GetGamepadState"/>; SDL returns false for buttons the
         /// device doesn't have, so callers should also gate inclusion in

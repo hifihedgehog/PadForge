@@ -68,11 +68,8 @@ public static class DS4Layout
         new("DS4_V2_RightAnalogStick.png", "RightThumbRing", OverlayElementType.StickRing, 874, 530, 165, 147),
         new("DS4_AnalogStick_Click.png", "LeftThumbButton", OverlayElementType.StickClick, 427, 528, 165, 147),
         new("DS4_AnalogStick_Click.png", "RightThumbButton", OverlayElementType.StickClick, 875, 528, 165, 147),
-        // Click bar sits below the touchpad surface so the touchpad area
-        // stays clear for two-finger tracking. Rendered visibly by the web
-        // client as an imageless button; sends Buttons[16].
-        new("", "Touchpad", OverlayElementType.Touchpad, 496, 230, 471, 175),
-        new("", "TouchpadClick", OverlayElementType.Button, 496, 415, 471, 50),
+        new("", "TouchpadClick", OverlayElementType.Button, 492, 148, 482, 289),
+        new("", "Touchpad", OverlayElementType.Touchpad, 496, 230, 471, 200),
     };
 }
 
@@ -106,11 +103,8 @@ public static class DualSenseLayout
         new("DualSense_RightAnalogStick.png", "RightThumbRing", OverlayElementType.StickRing, 888, 561, 175, 148),
         new("DualSense_AnalogStick_Click.png", "LeftThumbButton", OverlayElementType.StickClick, 408, 560, 171, 148),
         new("DualSense_AnalogStick_Click.png", "RightThumbButton", OverlayElementType.StickClick, 890, 561, 171, 148),
-        // Click bar sits below the touchpad surface so the touchpad area
-        // stays clear for two-finger tracking. Rendered visibly by the web
-        // client as an imageless button; sends Buttons[16].
-        new("", "Touchpad", OverlayElementType.Touchpad, 484, 220, 499, 195),
-        new("", "TouchpadClick", OverlayElementType.Button, 484, 425, 499, 55),
+        new("", "TouchpadClick", OverlayElementType.Button, 423, 160, 621, 322),
+        new("", "Touchpad", OverlayElementType.Touchpad, 484, 220, 499, 220),
     };
 }
 

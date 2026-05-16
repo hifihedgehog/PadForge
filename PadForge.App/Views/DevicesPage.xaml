@@ -675,18 +675,9 @@
                                    Visibility="{Binding HasTouchpadData, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <Border x:Name="TouchpadPreviewBorder"
                                 Visibility="{Binding HasTouchpadData, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Background="#10888888"
                                 CornerRadius="6" Margin="0,0,0,8"
                                 Height="100" ClipToBounds="True">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="Background" Value="#10888888"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TouchpadClickPressed}" Value="True">
-                                            <Setter Property="Background" Value="#40FF6600"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
                             <Canvas>
                                 <Ellipse x:Name="TouchpadDot0" Width="14" Height="14" Fill="#CCFF6600"
                                          Visibility="{Binding TouchpadDown0, Converter={StaticResource BoolToVisibilityConverter}}"/>

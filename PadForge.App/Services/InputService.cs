@@ -1365,7 +1365,9 @@ namespace PadForge.Services
                 devVm.AccelZ = state.Accel[2];
             }
 
-            // Update touchpad finger positions and click state.
+            // Update touchpad finger positions. Click state is shown in
+            // the Buttons grid at slot 16 (SDL_GAMEPAD_BUTTON_TOUCHPAD),
+            // so no separate VM write here.
             if (ud.HasTouchpad || ud.IsTouchpad)
             {
                 devVm.TouchpadX0 = state.TouchpadFingers[0];
@@ -1374,9 +1376,6 @@ namespace PadForge.Services
                 devVm.TouchpadX1 = state.TouchpadFingers[3];
                 devVm.TouchpadY1 = state.TouchpadFingers[4];
                 devVm.TouchpadDown1 = state.TouchpadDown[1];
-                devVm.TouchpadClickPressed = state.Buttons != null
-                    && state.Buttons.Length > 16
-                    && state.Buttons[16];
             }
         }
 

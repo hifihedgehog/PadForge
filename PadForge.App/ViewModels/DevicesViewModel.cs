@@ -131,17 +131,17 @@ namespace PadForge.ViewModels
         }
 
         // Touchpad finger positions (0-1 normalized) for the preview.
+        // Touchpad click pressed state is shown in the Buttons grid at
+        // slot 16 (SDL_GAMEPAD_BUTTON_TOUCHPAD), not on this preview's
+        // background.
         private double _touchpadX0, _touchpadY0, _touchpadX1, _touchpadY1;
-        private bool _touchpadDown0, _touchpadDown1, _touchpadClickPressed;
+        private bool _touchpadDown0, _touchpadDown1;
         public double TouchpadX0 { get => _touchpadX0; set => SetProperty(ref _touchpadX0, value); }
         public double TouchpadY0 { get => _touchpadY0; set => SetProperty(ref _touchpadY0, value); }
         public double TouchpadX1 { get => _touchpadX1; set => SetProperty(ref _touchpadX1, value); }
         public double TouchpadY1 { get => _touchpadY1; set => SetProperty(ref _touchpadY1, value); }
         public bool TouchpadDown0 { get => _touchpadDown0; set => SetProperty(ref _touchpadDown0, value); }
         public bool TouchpadDown1 { get => _touchpadDown1; set => SetProperty(ref _touchpadDown1, value); }
-
-        /// <summary>Whether the touchpad surface is being pressed (the click button under the touchpad).</summary>
-        public bool TouchpadClickPressed { get => _touchpadClickPressed; set => SetProperty(ref _touchpadClickPressed, value); }
 
         private double _mouseMotionX, _mouseMotionY;
         public double MouseMotionX { get => _mouseMotionX; set => SetProperty(ref _mouseMotionX, value); }

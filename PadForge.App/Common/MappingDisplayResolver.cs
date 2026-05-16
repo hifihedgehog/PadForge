@@ -469,13 +469,34 @@ namespace PadForge.Common
                               si.DevObj_Guide }
                     : null;
 
-                int btnCount = System.Math.Max(ud.CapButtonCount, ud.RawButtonCount);
-                for (int i = 0; i < btnCount; i++)
+                // Prefer the live device's sparse SupportedButtonIndices so
+                // devices that populate only specific slots (e.g.,
+                // TouchpadOverlayDevice with just slot 16, or the touchpad-only
+                // WebControllerDevice) don't surface phantom raw "Button N"
+                // entries for every slot between 0 and the highest populated
+                // index. Falls back to the dense range when no live wrapper
+                // is available (offline device).
+                var sparse = ud.Device?.SupportedButtonIndices;
+                if (sparse != null && sparse.Length > 0)
                 {
-                    string display = (gpBtnNames != null && i < gpBtnNames.Length)
-                        ? gpBtnNames[i]
-                        : string.Format(si.DevObj_Button, i);
-                    list.Add(new InputChoice { Descriptor = $"Button {i}", DisplayName = display });
+                    foreach (int i in sparse)
+                    {
+                        string display = (gpBtnNames != null && i < gpBtnNames.Length)
+                            ? gpBtnNames[i]
+                            : string.Format(si.DevObj_Button, i);
+                        list.Add(new InputChoice { Descriptor = $"Button {i}", DisplayName = display });
+                    }
+                }
+                else
+                {
+                    int btnCount = System.Math.Max(ud.CapButtonCount, ud.RawButtonCount);
+                    for (int i = 0; i < btnCount; i++)
+                    {
+                        string display = (gpBtnNames != null && i < gpBtnNames.Length)
+                            ? gpBtnNames[i]
+                            : string.Format(si.DevObj_Button, i);
+                        list.Add(new InputChoice { Descriptor = $"Button {i}", DisplayName = display });
+                    }
                 }
 
                 for (int i = 0; i < ud.CapPovCount; i++)

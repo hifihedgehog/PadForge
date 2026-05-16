@@ -264,6 +264,22 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlElement] public string RightMotorStrength { get; set; } = "100";
 
+        /// <summary>
+        /// Left impulse trigger motor strength (0–100%, Xbox One+ controllers).
+        /// </summary>
+        [XmlElement] public string ImpulseLeftStrength { get; set; } = "100";
+
+        /// <summary>
+        /// Right impulse trigger motor strength (0–100%, Xbox One+ controllers).
+        /// </summary>
+        [XmlElement] public string ImpulseRightStrength { get; set; } = "100";
+
+        /// <summary>
+        /// Whether to swap left and right impulse trigger motors.
+        /// "0" = no swap, "1" = swap.
+        /// </summary>
+        [XmlElement] public string ImpulseSwapTriggers { get; set; } = "0";
+
         /// <summary>Enable audio bass rumble for this device. "0" = off (default), "1" = on.</summary>
         [XmlElement] public string AudioRumbleEnabled { get; set; } = "0";
 
@@ -955,6 +971,9 @@ namespace PadForge.Engine.Data
             sb.Append(ForceSwapMotor); sb.Append('|');
             sb.Append(LeftMotorStrength); sb.Append('|');
             sb.Append(RightMotorStrength); sb.Append('|');
+            sb.Append(ImpulseLeftStrength); sb.Append('|');
+            sb.Append(ImpulseRightStrength); sb.Append('|');
+            sb.Append(ImpulseSwapTriggers); sb.Append('|');
 
             // Audio bass rumble
             sb.Append(AudioRumbleEnabled); sb.Append('|');
@@ -1269,6 +1288,9 @@ namespace PadForge.Engine.Data
             // Force feedback
             nameof(ForceType), nameof(ForceOverall), nameof(ForceSwapMotor),
             nameof(LeftMotorStrength), nameof(RightMotorStrength),
+            // Impulse trigger motors (Xbox One+)
+            nameof(ImpulseLeftStrength), nameof(ImpulseRightStrength),
+            nameof(ImpulseSwapTriggers),
             // Audio bass rumble
             nameof(AudioRumbleEnabled), nameof(AudioRumbleSensitivity),
             nameof(AudioRumbleCutoffHz), nameof(AudioRumbleLeftMotor), nameof(AudioRumbleRightMotor),

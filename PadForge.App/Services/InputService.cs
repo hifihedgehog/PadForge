@@ -1865,6 +1865,11 @@ namespace PadForge.Services
             ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
             ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
 
+            // Impulse triggers (Xbox One+).
+            ps.ImpulseLeftStrength = padVm.ImpulseLeftStrength.ToString();
+            ps.ImpulseRightStrength = padVm.ImpulseRightStrength.ToString();
+            ps.ImpulseSwapTriggers = padVm.ImpulseSwapTriggers ? "1" : "0";
+
             // Audio bass rumble.
             ps.AudioRumbleEnabled = padVm.AudioRumbleEnabled ? "1" : "0";
             ps.AudioRumbleSensitivity = padVm.AudioRumbleSensitivity.ToString("F1", ic);
@@ -2106,6 +2111,12 @@ namespace PadForge.Services
             padVm.RightMotorStrength = TryParseInt(ps.RightMotorStrength, 100);
             padVm.SwapMotors = ps.ForceSwapMotor == "1" ||
                 (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
+
+            // Impulse triggers (Xbox One+).
+            padVm.ImpulseLeftStrength = TryParseInt(ps.ImpulseLeftStrength, 100);
+            padVm.ImpulseRightStrength = TryParseInt(ps.ImpulseRightStrength, 100);
+            padVm.ImpulseSwapTriggers = ps.ImpulseSwapTriggers == "1" ||
+                (ps.ImpulseSwapTriggers ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
 
             // Audio bass rumble.
             padVm.AudioRumbleEnabled = ps.AudioRumbleEnabled == "1";
@@ -5031,6 +5042,40 @@ namespace PadForge.Services
         public void SendTestRumble(int padIndex, Guid? deviceGuid)
         {
             SendTestRumble(padIndex, deviceGuid, true, true);
+        }
+
+        /// <summary>
+        /// Fires an impulse-trigger rumble pulse on the targeted device (or
+        /// all devices in the slot when <paramref name="deviceGuid"/> is null).
+        /// Writes into <c>VibrationStates[padIndex].Left/RightTriggerMotorSpeed</c>
+        /// and lets the existing Step-2 ApplyForceFeedback path forward via
+        /// SDL_RumbleGamepadTriggers — same architecture as main-motor test
+        /// rumble, just on the parallel trigger channel.
+        /// </summary>
+        public void SendTestImpulseTrigger(int padIndex, Guid? deviceGuid, bool left, bool right)
+        {
+            if (_inputManager == null || padIndex < 0 || padIndex >= InputManager.MaxPads)
+                return;
+
+            if (deviceGuid.HasValue && deviceGuid.Value != Guid.Empty)
+                _inputManager.TestRumbleTargetGuid[padIndex] = deviceGuid.Value;
+
+            var vib = _inputManager.VibrationStates[padIndex];
+            if (left) vib.LeftTriggerMotorSpeed = 65535;
+            if (right) vib.RightTriggerMotorSpeed = 65535;
+
+            var clearTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
+            clearTimer.Tick += (s2, e2) =>
+            {
+                if (_inputManager != null && padIndex < InputManager.MaxPads)
+                {
+                    if (left) vib.LeftTriggerMotorSpeed = 0;
+                    if (right) vib.RightTriggerMotorSpeed = 0;
+                    _inputManager.TestRumbleTargetGuid[padIndex] = Guid.Empty;
+                }
+                clearTimer.Stop();
+            };
+            clearTimer.Start();
         }
 
         public void SendTestRumble(int padIndex, Guid? deviceGuid, bool left, bool right)

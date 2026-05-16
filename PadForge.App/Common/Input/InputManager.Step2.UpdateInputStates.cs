@@ -317,6 +317,7 @@ namespace PadForge.Common.Input
             // does. For directional FFB data, use the first slot that
             // has it (no sensible way to combine two polar directions).
             ushort combinedL = 0, combinedR = 0;
+            ushort combinedLT = 0, combinedRT = 0;
             Vibration directionalSource = null;
             PadSetting firstPadSetting = null;
             for (int i = 0; i < slotCount; i++)
@@ -353,6 +354,15 @@ namespace PadForge.Common.Input
                 if (scaledL > combinedL) combinedL = scaledL;
                 if (scaledR > combinedR) combinedR = scaledR;
 
+                // Impulse triggers: parallel max-combine. Constant-force /
+                // macro merge layers don't apply to impulse triggers — they
+                // carry game-driven trigger feedback only.
+                ScaleTriggerRumbleForDevice(raw.LeftTriggerMotorSpeed, raw.RightTriggerMotorSpeed,
+                    devicePs, out ushort scaledLT, out ushort scaledRT);
+
+                if (scaledLT > combinedLT) combinedLT = scaledLT;
+                if (scaledRT > combinedRT) combinedRT = scaledRT;
+
                 if (directionalSource == null
                     && (effective.HasDirectionalData || effective.HasConditionData))
                     directionalSource = effective;
@@ -367,6 +377,8 @@ namespace PadForge.Common.Input
             if (_combinedVibration == null) _combinedVibration = new Vibration();
             _combinedVibration.LeftMotorSpeed = combinedL;
             _combinedVibration.RightMotorSpeed = combinedR;
+            _combinedVibration.LeftTriggerMotorSpeed = combinedLT;
+            _combinedVibration.RightTriggerMotorSpeed = combinedRT;
 
             // Copy directional/condition FFB data from the first slot that has it.
             // Without this, HasDirectionalData is always false and the haptic path
@@ -519,6 +531,8 @@ namespace PadForge.Common.Input
                     // device == no per-device output to display).
                     final.LeftMotorSpeed = withMacro.LeftMotorSpeed;
                     final.RightMotorSpeed = withMacro.RightMotorSpeed;
+                    final.LeftTriggerMotorSpeed = raw.LeftTriggerMotorSpeed;
+                    final.RightTriggerMotorSpeed = raw.RightTriggerMotorSpeed;
                     final.HasDirectionalData = withMacro.HasDirectionalData;
                     final.HasConditionData = withMacro.HasConditionData;
                     final.EffectType = withMacro.EffectType;
@@ -530,10 +544,15 @@ namespace PadForge.Common.Input
                     final.ConditionAxes = withMacro.ConditionAxes;
                     selected.LeftMotorSpeed = 0;
                     selected.RightMotorSpeed = 0;
+                    selected.LeftTriggerMotorSpeed = 0;
+                    selected.RightTriggerMotorSpeed = 0;
                     selected.HasDirectionalData = false;
                     selected.HasConditionData = false;
                     continue;
                 }
+
+                ushort bestLT = 0, bestRT = 0;
+                ushort selLT = 0, selRT = 0;
 
                 for (int i = 0; i < slotCount; i++)
                 {
@@ -550,6 +569,12 @@ namespace PadForge.Common.Input
                     if (scaledL > bestL) bestL = scaledL;
                     if (scaledR > bestR) bestR = scaledR;
 
+                    ScaleTriggerRumbleForDevice(raw.LeftTriggerMotorSpeed, raw.RightTriggerMotorSpeed,
+                        devicePs, out ushort scaledLT, out ushort scaledRT);
+
+                    if (scaledLT > bestLT) bestLT = scaledLT;
+                    if (scaledRT > bestRT) bestRT = scaledRT;
+
                     if (directionalSource == null
                         && (effective.HasDirectionalData || effective.HasConditionData))
                         directionalSource = effective;
@@ -560,6 +585,8 @@ namespace PadForge.Common.Input
                     {
                         selL = scaledL;
                         selR = scaledR;
+                        selLT = scaledLT;
+                        selRT = scaledRT;
                         if (effective.HasDirectionalData || effective.HasConditionData)
                             selectedDirectional = effective;
                     }
@@ -567,8 +594,12 @@ namespace PadForge.Common.Input
 
                 final.LeftMotorSpeed = bestL;
                 final.RightMotorSpeed = bestR;
+                final.LeftTriggerMotorSpeed = bestLT;
+                final.RightTriggerMotorSpeed = bestRT;
                 selected.LeftMotorSpeed = selL;
                 selected.RightMotorSpeed = selR;
+                selected.LeftTriggerMotorSpeed = selLT;
+                selected.RightTriggerMotorSpeed = selRT;
 
                 // Directional / condition data passes through unchanged
                 // from the first contributing device.
@@ -621,6 +652,37 @@ namespace PadForge.Common.Input
         /// 100 % gain) so transient pre-init frames still produce sane
         /// rumble.
         /// </summary>
+        /// <summary>
+        /// Applies per-device impulse-trigger scaling (ImpulseLeftStrength /
+        /// ImpulseRightStrength gain + ImpulseSwapTriggers + the shared
+        /// ForceOverall gain that already governs main motors). No audio-
+        /// rumble mix on the trigger path — impulse triggers carry
+        /// game-driven content only.
+        /// </summary>
+        public void ScaleTriggerRumbleForDevice(
+            ushort rawLeft, ushort rawRight, PadSetting ps,
+            out ushort scaledLeft, out ushort scaledRight)
+        {
+            int overallGain = 100;
+            int leftGain = 100;
+            int rightGain = 100;
+            bool swap = false;
+            if (ps != null)
+            {
+                overallGain = Math.Clamp(TryParseInt(ps.ForceOverall, 100), 0, 100);
+                leftGain = Math.Clamp(TryParseInt(ps.ImpulseLeftStrength, 100), 0, 100);
+                rightGain = Math.Clamp(TryParseInt(ps.ImpulseRightStrength, 100), 0, 100);
+                swap = TryParseBool(ps.ImpulseSwapTriggers);
+            }
+            double sL = rawLeft * (leftGain / 100.0) * (overallGain / 100.0);
+            double sR = rawRight * (rightGain / 100.0) * (overallGain / 100.0);
+            ushort finalL = (ushort)Math.Clamp(sL, 0, 65535);
+            ushort finalR = (ushort)Math.Clamp(sR, 0, 65535);
+            if (swap) (finalL, finalR) = (finalR, finalL);
+            scaledLeft = finalL;
+            scaledRight = finalR;
+        }
+
         public void ScaleRumbleForDevice(
             ushort rawLeft, ushort rawRight, PadSetting ps,
             out ushort scaledLeft, out ushort scaledRight)

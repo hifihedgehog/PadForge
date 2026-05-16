@@ -205,6 +205,12 @@
     // Small meta-buttons that should always be on top of d-pad/trigger zones.
     var smallButtons = ["ButtonBack", "ButtonStart", "ButtonGuide", "TouchpadClick"];
 
+    // Labels for imageless buttons (zones rendered visibly because there's
+    // no overlay PNG). Keyed by target name; falls back to target name.
+    var imagelessLabels = {
+        "TouchpadClick": "Click"
+    };
+
     function setupTouchZones() {
         var dpadOverlays = [];
 
@@ -228,19 +234,23 @@
             var zone = document.createElement("div");
             zone.className = "touch-zone";
 
-            // Touchpad click: exact positioning, invisible until pressed.
-            if (ov.target === "TouchpadClick") {
+            // Imageless buttons (TouchpadClick on DS4/DualSense, etc.) render
+            // the zone itself as a labeled, always-visible button — same wire
+            // shape as every other button, just self-rendered visuals.
+            var isButton = ov.type === "button" && ov.inputKind === "button";
+            var isImageless = isButton && !overlayImages[ov.target];
+
+            if (isImageless) {
+                // Exact positioning, no fat-finger padding so the visible
+                // border matches the click area precisely.
+                zone.classList.add("button-imageless");
+                zone.textContent = imagelessLabels[ov.target] || ov.target;
                 zone.style.left = (ov.x / layout.baseWidth * 100) + "%";
                 zone.style.top = (ov.y / layout.baseHeight * 100) + "%";
                 zone.style.width = (ov.w / layout.baseWidth * 100) + "%";
                 zone.style.height = (ov.h / layout.baseHeight * 100) + "%";
                 zone.style.zIndex = "15";
-                zone.style.borderRadius = "8px";
-                zone.style.border = "3px solid #00c8e8";
-                zone.style.background = "rgba(152,174,184,0.7)";
-                zone.style.opacity = "0";
-                zone.style.transition = "opacity 0.05s";
-                bindTouchpadClickZone(zone, ov);
+                bindButtonZone(zone, ov);
                 touchLayer.appendChild(zone);
                 continue;
             }
@@ -259,7 +269,7 @@
             if (ov.type === "trigger" && ov.inputKind === "axis") {
                 zone.style.zIndex = "12";
                 bindTriggerZone(zone, ov);
-            } else if (ov.type === "button" && ov.inputKind === "button") {
+            } else if (isButton) {
                 zone.style.zIndex = smallButtons.indexOf(ov.target) >= 0 ? "15" : "14";
                 bindButtonZone(zone, ov);
             }
@@ -280,6 +290,7 @@
             e.preventDefault();
             var img = overlayImages[target];
             if (img) img.classList.add("active");
+            else zone.classList.add("pressed");
             send({ type: "input", kind: "button", code: code, value: 1 });
             haptic();
         }
@@ -287,6 +298,7 @@
             e.preventDefault();
             var img = overlayImages[target];
             if (img) img.classList.remove("active");
+            else zone.classList.remove("pressed");
             send({ type: "input", kind: "button", code: code, value: 0 });
         }
 
@@ -327,31 +339,6 @@
         if (!img) return;
         var topClip = (1.0 - fraction) * 100;
         img.style.clipPath = "inset(" + topClip + "% 0 0 0)";
-    }
-
-    function bindTouchpadClickZone(zone, ov) {
-        // Touchpad click rides Buttons[16] on the server side
-        // (SDL_GAMEPAD_BUTTON_TOUCHPAD's canonical slot — between paddles
-        // and Misc2-Misc6 per SDL's enum order). Sent as a standard
-        // button-press, same shape as every other web-controller button —
-        // no bespoke {type:"touchpad", click:bool} wire format anymore.
-        function down(e) {
-            e.preventDefault();
-            zone.style.opacity = "1";
-            send({ type: "input", kind: "button", code: 16, value: 1 });
-            haptic();
-        }
-        function up(e) {
-            e.preventDefault();
-            zone.style.opacity = "0";
-            send({ type: "input", kind: "button", code: 16, value: 0 });
-        }
-        zone.addEventListener("touchstart", down, { passive: false });
-        zone.addEventListener("touchend", up, { passive: false });
-        zone.addEventListener("touchcancel", up, { passive: false });
-        zone.addEventListener("mousedown", down);
-        zone.addEventListener("mouseup", up);
-        zone.addEventListener("mouseleave", up);
     }
 
     // ── Touchpad: multi-touch zone for DS4 touchpad ──

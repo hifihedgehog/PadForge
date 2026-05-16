@@ -453,8 +453,6 @@ namespace PadForge.Engine
             // so the indices read consistently regardless of source device.
             // SDL_GetGamepadButton returns false on devices that lack a given
             // button, so this is harmless on a plain Xbox 360 / DualShock 4.
-            // TOUCHPAD is intentionally NOT mirrored into a numeric Button slot;
-            // the canonical descriptor is "Touchpad 0 Click" via state.TouchpadClick.
             state.Buttons[11] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC1);
             state.Buttons[12] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1);
             state.Buttons[13] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2);
@@ -466,14 +464,19 @@ namespace PadForge.Engine
             state.Buttons[19] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC5);
             state.Buttons[20] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC6);
 
+            // Buttons[21] is reserved for SDL_GAMEPAD_BUTTON_TOUCHPAD; written
+            // by the touchpad section below when HasTouchpad is true. Stays
+            // false on non-touchpad devices.
+
             // --- Extra raw buttons ---
-            // Append raw joystick buttons beyond the 21 standardized gamepad
-            // positions (0-10 standard + 11-20 extended). This exposes native
-            // device buttons that aren't part of any SDL gamepad button enum
-            // for use as macro triggers. Skip indices already consumed by the
-            // gamepad mapping to avoid double-reporting.
+            // Append raw joystick buttons beyond the 22 standardized gamepad
+            // positions (0-10 standard + 11-20 Misc1-Misc6 + paddles + 21
+            // TouchpadClick). This exposes native device buttons that aren't
+            // part of any SDL gamepad button enum for use as macro triggers.
+            // Skip indices already consumed by the gamepad mapping to avoid
+            // double-reporting.
             int rawCount = RawButtonCount;
-            for (int i = 21; i < rawCount && i < CustomInputState.MaxButtons; i++)
+            for (int i = 22; i < rawCount && i < CustomInputState.MaxButtons; i++)
             {
                 if (_mappedRawButtonIndices != null && _mappedRawButtonIndices.Contains(i))
                     continue;
@@ -535,18 +538,16 @@ namespace PadForge.Engine
                     }
                 }
 
-                // Touchpad click button. Stored on the dedicated
-                // state.TouchpadClick field; consumers reach it via the
-                // "Touchpad 0 Click" descriptor (see Step 3
-                // MapToButtonPressedSingle), parallel to the existing
-                // "Touchpad 0 Finger N X/Y/Down" descriptors. We deliberately
-                // do NOT mirror this into state.Buttons[<index>] — SDL3's
-                // HIDAPI PS5/PS4 drivers report the touchpad at joystick
-                // button 11 and the gamecontrollerdb mapping has
-                // touchpad:b11, putting 11 in _mappedRawButtonIndices, so
-                // the raw-button loop above already skips it. The dedicated
-                // descriptor is the only canonical path.
-                state.TouchpadClick = SDL_GetGamepadButton(GameController,
+                // Touchpad click lands at Buttons[21] — the canonical
+                // PadForge slot for SDL_GAMEPAD_BUTTON_TOUCHPAD. Consumers
+                // reach it via the "Touchpad 0 Click" descriptor (see
+                // SourceCoercion.ReadTouchpadBool), parallel to the existing
+                // "Touchpad 0 Finger N X/Y/Down" descriptors. SDL3's HIDAPI
+                // PS5/PS4 drivers report the touchpad at joystick button 11
+                // and the gamecontrollerdb mapping has touchpad:b11, putting
+                // 11 in _mappedRawButtonIndices so the raw-button loop above
+                // skips the double-report.
+                state.Buttons[21] = SDL_GetGamepadButton(GameController,
                     SDL_GAMEPAD_BUTTON_TOUCHPAD);
             }
 

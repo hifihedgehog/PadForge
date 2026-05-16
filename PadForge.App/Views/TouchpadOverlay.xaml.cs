@@ -36,11 +36,11 @@ namespace PadForge.Views
         private float _x0, _y0, _x1, _y1;
         private bool _down0, _down1;
         // Click bar: held while the user presses the bottom strip (mouse
-        // or touch) — reported as a sustained TouchpadClick=true so
+        // or touch) — reported as a sustained Buttons[21]=true so
         // click-and-hold patterns (click-drag, sustained context input)
         // work. _clickPulse is the legacy double-tap-on-surface pulse,
         // single-frame, kept as a quick momentary fallback. Both feed
-        // TouchpadClick via OR in GetTouchpadState.
+        // Buttons[21] via OR in GetTouchpadState.
         private bool _clickBarHeld;
         private int? _clickBarTouchId;
         private bool _clickPulse;

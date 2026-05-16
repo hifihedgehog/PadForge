@@ -217,11 +217,14 @@
                 send({ type: 'touchpad', finger: finger, x: 0, y: 0, down: false });
                 updateDot(finger === 0 ? dot0 : dot1, null, false);
 
-                // Double-tap detection for click
+                // Double-tap detection for click — momentary press; the
+                // engine sees a single down without a matching up for the
+                // double-tap path (the dedicated click button below handles
+                // the held-press flow).
                 if (finger === 0) {
                     var now = Date.now();
                     if (now - lastTap < 300) {
-                        send({ type: 'touchpad', click: true });
+                        send({ type: 'input', kind: 'button', code: 21, value: 1 });
                         lastTap = 0;
                     } else {
                         lastTap = now;
@@ -247,19 +250,19 @@
         });
 
         // Dedicated click button — sends a press/release pair so the
-        // engine sees a sustained TouchpadClick=true. Supports both touch
+        // engine sees a sustained Buttons[21]=true. Supports both touch
         // (primary on mobile) and mouse (desktop browsers). The double-
         // tap-to-click path on the touchpad surface above stays as a
         // momentary fallback for single-handed use.
         function clickDown(e) {
             e.preventDefault();
             clickButton.classList.add('active');
-            send({ type: 'touchpad', click: true });
+            send({ type: 'input', kind: 'button', code: 21, value: 1 });
         }
         function clickUp(e) {
             e.preventDefault();
             clickButton.classList.remove('active');
-            send({ type: 'touchpad', click: false });
+            send({ type: 'input', kind: 'button', code: 21, value: 0 });
         }
         clickButton.addEventListener('touchstart', function(e) {
             if (e.changedTouches.length > 0)

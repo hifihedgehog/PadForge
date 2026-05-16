@@ -51,8 +51,9 @@
             </Grid>
 
             <!-- Click bar (bottom row).  Hold mouse-left or touch to set
-                 state.TouchpadClick; releases when the touch lifts or the
-                 mouse button rises. Required for click-and-hold operations
+                 state.Buttons[21] (SDL_GAMEPAD_BUTTON_TOUCHPAD's canonical
+                 PadForge slot); releases when the touch lifts or the mouse
+                 button rises. Required for click-and-hold operations
                  (drags, sustained context input) that the surface's
                  momentary double-tap pulse can't cover. -->
             <Border x:Name="ClickBar"

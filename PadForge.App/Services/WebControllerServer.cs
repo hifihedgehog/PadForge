@@ -414,31 +414,20 @@ namespace PadForge.Services
                 }
                 else if (type == "touchpad")
                 {
-                    // DS4 controller page sends touchpad messages from a gamepad
-                    // connection — enable touchpad capability on first touch.
+                    // DS4 controller page sends touchpad-finger messages from
+                    // a gamepad connection — enable touchpad capability on
+                    // first touch. Touchpad CLICK is no longer a special-case
+                    // payload: controller_client.js emits a standard
+                    // {type:"input", kind:"button", code:21, ...} message
+                    // (handled by the "input" branch above) so this branch
+                    // only carries finger position now.
                     device.HasTouchpad = true;
 
-                    if (root.TryGetProperty("click", out var clickProp))
-                    {
-                        // controller_client.js's DS4 touchpad zone sends a
-                        // press/release pair as "click: true / click: false"
-                        // so the touchpad-click output toggles cleanly.
-                        // touchpad.html's double-tap-to-click only emits
-                        // "click: true" — that path stays a press without
-                        // a matching release (separate UX, not in scope).
-                        bool down = clickProp.ValueKind == System.Text.Json.JsonValueKind.True
-                                  || (clickProp.ValueKind == System.Text.Json.JsonValueKind.Number
-                                      && clickProp.GetInt32() != 0);
-                        device.UpdateTouchpadClick(down);
-                    }
-                    else
-                    {
-                        int finger = root.TryGetProperty("finger", out var fp) ? fp.GetInt32() : 0;
-                        float x = root.TryGetProperty("x", out var xp) ? (float)xp.GetDouble() : 0f;
-                        float y = root.TryGetProperty("y", out var yp) ? (float)yp.GetDouble() : 0f;
-                        bool down = root.TryGetProperty("down", out var dp) && dp.GetBoolean();
-                        device.UpdateTouchpadFinger(finger, x, y, down);
-                    }
+                    int finger = root.TryGetProperty("finger", out var fp) ? fp.GetInt32() : 0;
+                    float x = root.TryGetProperty("x", out var xp) ? (float)xp.GetDouble() : 0f;
+                    float y = root.TryGetProperty("y", out var yp) ? (float)yp.GetDouble() : 0f;
+                    bool down = root.TryGetProperty("down", out var dp) && dp.GetBoolean();
+                    device.UpdateTouchpadFinger(finger, x, y, down);
                 }
             }
             catch
@@ -523,13 +512,7 @@ namespace PadForge.Services
             ["RightTrigger"] = ("axis", 5),
             ["LeftThumbRing"] = ("stick", 0),   // axes 0,1
             ["RightThumbRing"] = ("stick", 3),  // axes 3,4
-            // TouchpadClick deliberately absent — the JS handles the
-            // overlay specially via target-name dispatch in
-            // bindTouchpadClickZone, sending "type: touchpad, click: bool"
-            // directly. Routing it through inputCode 11 (the historical
-            // value here) re-introduced the regression where DS4 web
-            // controllers reported touchpad click as a generic button 11
-            // press, blocking the PlayStation auto-map.
+            ["TouchpadClick"] = ("button", 21), // SDL_GAMEPAD_BUTTON_TOUCHPAD slot
         };
 
         private void ServeLayoutApi(HttpListenerContext ctx)

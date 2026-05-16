@@ -111,6 +111,12 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public bool HasTouchpad { get; set; }
 
+        /// <summary>Whether the device exposes per-trigger ("impulse") rumble
+        /// motors (Xbox One / Elite / Series). Driven by
+        /// <c>SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN</c>.</summary>
+        [XmlElement]
+        public bool HasRumbleTriggers { get; set; }
+
         // Gyro bias, calibration timestamp, and tuning (H/V sensitivity,
         // deadzone, smoothing, acceleration, output curve, units) all
         // moved to PadSetting in v3.3 so each (device, slot) pair gets
@@ -349,6 +355,7 @@ namespace PadForge.Engine.Data
             HasGyro = wrapper.HasGyro;
             HasAccel = wrapper.HasAccel;
             HasTouchpad = wrapper.HasTouchpad;
+            HasRumbleTriggers = wrapper.HasRumbleTriggers;
 
             VendorId = wrapper.VendorId;
             ProdId = wrapper.ProductId;

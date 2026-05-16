@@ -53,6 +53,7 @@ namespace SDL3
         // ─────────────────────────────────────────────
 
         public const string SDL_PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN = "SDL.joystick.cap.rumble";
+        public const string SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN = "SDL.joystick.cap.trigger_rumble";
 
         // ─────────────────────────────────────────────
         //  Enums
@@ -555,6 +556,21 @@ namespace SDL3
         public static bool SDL_RumbleJoystick(IntPtr joystick,
             ushort low_frequency_rumble, ushort high_frequency_rumble, uint duration_ms) =>
             _SDL_RumbleJoystick(joystick, low_frequency_rumble, high_frequency_rumble, duration_ms);
+
+        /// <summary>
+        /// Rumble a gamepad's impulse-trigger motors (Xbox One+ family).
+        /// </summary>
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RumbleGamepadTriggers")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_RumbleGamepadTriggers(
+            IntPtr gamepad,
+            ushort left_rumble,
+            ushort right_rumble,
+            uint duration_ms);
+
+        public static bool SDL_RumbleGamepadTriggers(IntPtr gamepad,
+            ushort left_rumble, ushort right_rumble, uint duration_ms) =>
+            _SDL_RumbleGamepadTriggers(gamepad, left_rumble, right_rumble, duration_ms);
 
         // ─────────────────────────────────────────────
         //  Gamepad effect (DualSense / DS4 vendor output reports)

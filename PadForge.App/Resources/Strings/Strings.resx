@@ -381,6 +381,21 @@
   <data name="Pad_Sticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Triggers</value></data>
   <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
+  <!-- Impulse Triggers tab (Xbox One+ family) -->
+  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse Triggers</value></data>
+  <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse Triggers</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Forwards per-trigger motor commands (Xbox Impulse Triggers) from the virtual controller to the assigned physical Xbox One, Elite, or Series controller. Game-driven trigger rumble passes through automatically; the controls below scale the magnitude per trigger.</value></data>
+  <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Left Trigger</value></data>
+  <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Right Trigger</value></data>
+  <data name="Pad_ImpulseTriggers_LeftStrength" xml:space="preserve"><value>Left Trigger Strength</value></data>
+  <data name="Pad_ImpulseTriggers_RightStrength" xml:space="preserve"><value>Right Trigger Strength</value></data>
+  <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Swap left and right trigger motors</value></data>
+  <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>Test Left Trigger</value></data>
+  <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>Test Right Trigger</value></data>
+  <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>Trigger motor activity</value></data>
+  <data name="Pad_ResetImpulseTriggers" xml:space="preserve"><value>Reset Impulse Triggers</value></data>
+  <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Reset Left Trigger Strength</value></data>
+  <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Reset Right Trigger Strength</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptive Triggers</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptive Triggers</value></data>

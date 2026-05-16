@@ -1573,6 +1573,12 @@ namespace PadForge.Services
                 padVm.SwapMotors = ps.ForceSwapMotor == "1" ||
                     (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
 
+                // Load impulse trigger settings (Xbox One+).
+                padVm.ImpulseLeftStrength = TryParseInt(ps.ImpulseLeftStrength, 100);
+                padVm.ImpulseRightStrength = TryParseInt(ps.ImpulseRightStrength, 100);
+                padVm.ImpulseSwapTriggers = ps.ImpulseSwapTriggers == "1" ||
+                    (ps.ImpulseSwapTriggers ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
+
                 // Load gyro tuning (per-(device, slot)).
                 padVm.GyroSensitivityH = TryParseDouble(ps.GyroSensitivityH, 1.0);
                 padVm.GyroSensitivityV = TryParseDouble(ps.GyroSensitivityV, 1.0);
@@ -2612,6 +2618,11 @@ namespace PadForge.Services
                     ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
                     ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
 
+                    // Write impulse trigger settings.
+                    ps.ImpulseLeftStrength = padVm.ImpulseLeftStrength.ToString();
+                    ps.ImpulseRightStrength = padVm.ImpulseRightStrength.ToString();
+                    ps.ImpulseSwapTriggers = padVm.ImpulseSwapTriggers ? "1" : "0";
+
                     // Issue #50: all double→string conversions MUST use InvariantCulture.
                     // WARNING: if you add a new double property below, use .ToString(ic)
                     // — NOT bare .ToString(). See InputService.SaveViewModelToPadSetting
@@ -2770,6 +2781,9 @@ namespace PadForge.Services
                 padVm.LeftMotorStrength = 100;
                 padVm.RightMotorStrength = 100;
                 padVm.SwapMotors = false;
+                padVm.ImpulseLeftStrength = 100;
+                padVm.ImpulseRightStrength = 100;
+                padVm.ImpulseSwapTriggers = false;
                 padVm.AudioRumbleEnabled = false;
                 padVm.AudioRumbleSensitivity = 4.0;
                 padVm.AudioRumbleCutoffHz = 80.0;

@@ -101,6 +101,7 @@ namespace PadForge.Engine
         private static readonly int[] _touchpadOnlyButtons = { 16 };
         public IntPtr GamepadHandle => IntPtr.Zero;
         public bool HasRumble => true;
+        public bool HasRumbleTriggers => false;
         public bool HasHaptic => false;
         public bool HasGyro => false;
         public bool HasAccel => false;

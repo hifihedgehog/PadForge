@@ -1622,6 +1622,42 @@ namespace PadForge.ViewModels
             ConstantForceY = 0;
         });
 
+        // ── Impulse Triggers (Xbox One+ per-trigger motors) ──
+        // Gated on at least one assigned device exposing
+        // SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN. Settings round-trip
+        // through PadSetting.ImpulseLeftStrength / ImpulseRightStrength /
+        // ImpulseSwapTriggers; meter bars feed from FinalVibrationStates +
+        // SelectedDeviceVibrationStates (trigger-motor fields populated by
+        // ComputeFinalVibrationStates).
+
+        private int _impulseLeftStrength = 100;
+        public int ImpulseLeftStrength { get => _impulseLeftStrength; set => SetProperty(ref _impulseLeftStrength, Math.Clamp(value, 0, 100)); }
+
+        private int _impulseRightStrength = 100;
+        public int ImpulseRightStrength { get => _impulseRightStrength; set => SetProperty(ref _impulseRightStrength, Math.Clamp(value, 0, 100)); }
+
+        private bool _impulseSwapTriggers;
+        public bool ImpulseSwapTriggers { get => _impulseSwapTriggers; set => SetProperty(ref _impulseSwapTriggers, value); }
+
+        private double _deviceLeftTriggerMotorDisplay;
+        public double DeviceLeftTriggerMotorDisplay { get => _deviceLeftTriggerMotorDisplay; set => SetProperty(ref _deviceLeftTriggerMotorDisplay, value); }
+
+        private double _deviceRightTriggerMotorDisplay;
+        public double DeviceRightTriggerMotorDisplay { get => _deviceRightTriggerMotorDisplay; set => SetProperty(ref _deviceRightTriggerMotorDisplay, value); }
+
+        private ICommand _resetImpulseAllCommand;
+        public ICommand ResetImpulseAllCommand => _resetImpulseAllCommand ??= new RelayCommand(() =>
+        {
+            ImpulseLeftStrength = 100;
+            ImpulseRightStrength = 100;
+            ImpulseSwapTriggers = false;
+        });
+
+        private ICommand _resetImpulseLeftCommand;
+        public ICommand ResetImpulseLeftCommand => _resetImpulseLeftCommand ??= new RelayCommand(() => ImpulseLeftStrength = 100);
+        private ICommand _resetImpulseRightCommand;
+        public ICommand ResetImpulseRightCommand => _resetImpulseRightCommand ??= new RelayCommand(() => ImpulseRightStrength = 100);
+
         private ICommand _resetOverallGainCommand;
         public ICommand ResetOverallGainCommand => _resetOverallGainCommand ??= new RelayCommand(() => ForceOverallGain = 100);
         private ICommand _resetLeftMotorCommand;
@@ -1742,6 +1778,9 @@ namespace PadForge.ViewModels
             ForceOverallGain = 100;
             LeftMotorStrength = 100;
             RightMotorStrength = 100;
+            ImpulseLeftStrength = 100;
+            ImpulseRightStrength = 100;
+            ImpulseSwapTriggers = false;
             ConstantForceEnabled = false;
             ConstantForceX = 0;
             ConstantForceY = 0;
@@ -2343,6 +2382,26 @@ namespace PadForge.ViewModels
         public event EventHandler TestRightMotorRequested;
         public void FireTestRightMotor() => TestRightMotorRequested?.Invoke(this, EventArgs.Empty);
 
+        /// <summary>Raised to test only the left impulse trigger motor.</summary>
+        public event EventHandler TestLeftImpulseTriggerRequested;
+        public void FireTestLeftImpulseTrigger() => TestLeftImpulseTriggerRequested?.Invoke(this, EventArgs.Empty);
+
+        /// <summary>Raised to test only the right impulse trigger motor.</summary>
+        public event EventHandler TestRightImpulseTriggerRequested;
+        public void FireTestRightImpulseTrigger() => TestRightImpulseTriggerRequested?.Invoke(this, EventArgs.Empty);
+
+        private RelayCommand _testLeftImpulseTriggerCommand;
+        public RelayCommand TestLeftImpulseTriggerCommand =>
+            _testLeftImpulseTriggerCommand ??= new RelayCommand(
+                () => TestLeftImpulseTriggerRequested?.Invoke(this, EventArgs.Empty),
+                () => IsDeviceOnline);
+
+        private RelayCommand _testRightImpulseTriggerCommand;
+        public RelayCommand TestRightImpulseTriggerCommand =>
+            _testRightImpulseTriggerCommand ??= new RelayCommand(
+                () => TestRightImpulseTriggerRequested?.Invoke(this, EventArgs.Empty),
+                () => IsDeviceOnline);
+
         /// <summary>
         /// The TargetSettingName of the mapping currently being recorded
         /// (single-click or Map All). Null when idle. Used to drive
@@ -2668,6 +2727,8 @@ namespace PadForge.ViewModels
                 // motor bar (device-specific by design).
                 DeviceLeftMotorDisplay = selectedDeviceVibration.LeftMotorSpeed / 65535.0;
                 DeviceRightMotorDisplay = selectedDeviceVibration.RightMotorSpeed / 65535.0;
+                DeviceLeftTriggerMotorDisplay = selectedDeviceVibration.LeftTriggerMotorSpeed / 65535.0;
+                DeviceRightTriggerMotorDisplay = selectedDeviceVibration.RightTriggerMotorSpeed / 65535.0;
             }
         }
 

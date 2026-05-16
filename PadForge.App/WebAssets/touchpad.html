@@ -224,7 +224,7 @@
                 if (finger === 0) {
                     var now = Date.now();
                     if (now - lastTap < 300) {
-                        send({ type: 'input', kind: 'button', code: 21, value: 1 });
+                        send({ type: 'input', kind: 'button', code: 16, value: 1 });
                         lastTap = 0;
                     } else {
                         lastTap = now;
@@ -250,19 +250,19 @@
         });
 
         // Dedicated click button — sends a press/release pair so the
-        // engine sees a sustained Buttons[21]=true. Supports both touch
+        // engine sees a sustained Buttons[16]=true. Supports both touch
         // (primary on mobile) and mouse (desktop browsers). The double-
         // tap-to-click path on the touchpad surface above stays as a
         // momentary fallback for single-handed use.
         function clickDown(e) {
             e.preventDefault();
             clickButton.classList.add('active');
-            send({ type: 'input', kind: 'button', code: 21, value: 1 });
+            send({ type: 'input', kind: 'button', code: 16, value: 1 });
         }
         function clickUp(e) {
             e.preventDefault();
             clickButton.classList.remove('active');
-            send({ type: 'input', kind: 'button', code: 21, value: 0 });
+            send({ type: 'input', kind: 'button', code: 16, value: 0 });
         }
         clickButton.addEventListener('touchstart', function(e) {
             if (e.changedTouches.length > 0)

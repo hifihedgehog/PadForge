@@ -253,7 +253,7 @@ namespace PadForge.Common.Input
                 b.TouchpadDown = new bool[state.TouchpadDown.Length];
                 System.Array.Copy(state.TouchpadDown, b.TouchpadDown, state.TouchpadDown.Length);
             }
-            // TouchpadClick lives in Buttons[21] now and is already captured
+            // TouchpadClick lives in Buttons[16] now and is already captured
             // by the Buttons[] copy above.
             return b;
         }
@@ -303,7 +303,7 @@ namespace PadForge.Common.Input
                     if (current.TouchpadDown[k] && !baseline.TouchpadDown[k]) return true;
             }
             // Touchpad-click rising edge is covered by the Buttons[] loop
-            // above (Buttons[21] = SDL_GAMEPAD_BUTTON_TOUCHPAD).
+            // above (Buttons[16] = SDL_GAMEPAD_BUTTON_TOUCHPAD).
             return false;
         }
 

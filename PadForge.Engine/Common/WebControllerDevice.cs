@@ -64,7 +64,7 @@ namespace PadForge.Engine
         public string Name { get; }
         public int NumAxes => _isTouchpadDevice ? 0 : NumGamepadAxes;
         // NumButtons stays at NumGamepadButtons (11) for the mappable
-        // gamepad-shape count. The touchpad click lives at Buttons[21]
+        // gamepad-shape count. The touchpad click lives at Buttons[16]
         // (SDL_GAMEPAD_BUTTON_TOUCHPAD's canonical slot) and is reached
         // through the "Touchpad 0 Click" descriptor — counting it here
         // would double-list it in the mapping picker alongside the
@@ -221,7 +221,7 @@ namespace PadForge.Engine
             // Gamepad-shaped surface (6 axes + 11 buttons + 1 POV).
             // Touchpad finger axes and the touchpad click button do NOT
             // belong here — finger data lives in CustomInputState.Touchpad*
-            // and the click bit lives at Buttons[21]. Adding them here
+            // and the click bit lives at Buttons[16]. Adding them here
             // would double-list the mapping dropdown: BuildInputChoices
             // walks DeviceObjects AND has its own canonical
             // "Touchpad 0 Finger N X/Y/Down" + "Touchpad 0 Click" block

@@ -9,12 +9,17 @@ namespace PadForge.Engine
     ///   POVs:         centidegrees 0–35900, or -1 for centered
     ///   Buttons:      true = pressed, false = released
     ///
-    /// Button index reference (PadForge-internal, matches SdlDeviceWrapper's population):
+    /// Button index reference (PadForge-internal, matches SdlDeviceWrapper's population).
+    /// Indices 11-21 follow SDL3's SDL_GamepadButton enum order, skipping the four
+    /// DPad slots that PadForge synthesizes into POV[0]:
     ///   0-10  Standard XInput-shape (A/B/X/Y/LB/RB/Back/Start/LS/RS/Guide)
     ///   11    Misc1 (Capture / Share / Mute)
-    ///   12-15 Paddles 1-4 (Xbox Elite, DualSense Edge, Steam Deck, Steam Controller 2026)
-    ///   16-20 Misc2-Misc6 (driver-specific extras)
-    ///   21    TouchpadClick — maps to SDL_GAMEPAD_BUTTON_TOUCHPAD
+    ///   12    Right Paddle 1
+    ///   13    Left Paddle 1
+    ///   14    Right Paddle 2
+    ///   15    Left Paddle 2
+    ///   16    TouchpadClick — maps to SDL_GAMEPAD_BUTTON_TOUCHPAD
+    ///   17-21 Misc2-Misc6 (driver-specific extras)
     ///   22+   Raw joystick buttons beyond the standardized gamepad range
     ///
     /// This replaces the former CustomDiState class. The field layout is intentionally

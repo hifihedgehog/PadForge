@@ -69,10 +69,10 @@ namespace PadForge.Engine
                 s.TouchpadFingers[5] = tp.Down1 ? 1f : 0f;
                 s.TouchpadDown[0] = tp.Down0;
                 s.TouchpadDown[1] = tp.Down1;
-                // Touchpad click rides Buttons[21] (SDL_GAMEPAD_BUTTON_TOUCHPAD's
+                // Touchpad click rides Buttons[16] (SDL_GAMEPAD_BUTTON_TOUCHPAD's
                 // canonical PadForge slot). The "Touchpad 0 Click" descriptor
                 // reads from this index — same path as a physical DS4/DualSense.
-                s.Buttons[21] = tp.Click;
+                s.Buttons[16] = tp.Click;
                 _currentState = s;
             }
         }

@@ -418,7 +418,7 @@ namespace PadForge.Services
                     // a gamepad connection — enable touchpad capability on
                     // first touch. Touchpad CLICK is no longer a special-case
                     // payload: controller_client.js emits a standard
-                    // {type:"input", kind:"button", code:21, ...} message
+                    // {type:"input", kind:"button", code:16, ...} message
                     // (handled by the "input" branch above) so this branch
                     // only carries finger position now.
                     device.HasTouchpad = true;
@@ -512,7 +512,7 @@ namespace PadForge.Services
             ["RightTrigger"] = ("axis", 5),
             ["LeftThumbRing"] = ("stick", 0),   // axes 0,1
             ["RightThumbRing"] = ("stick", 3),  // axes 3,4
-            ["TouchpadClick"] = ("button", 21), // SDL_GAMEPAD_BUTTON_TOUCHPAD slot
+            ["TouchpadClick"] = ("button", 16), // SDL_GAMEPAD_BUTTON_TOUCHPAD slot
         };
 
         private void ServeLayoutApi(HttpListenerContext ctx)

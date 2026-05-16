@@ -8,7 +8,15 @@ namespace PadForge.Engine
     ///   Axes/Sliders: 0–65535  (center = 32767)
     ///   POVs:         centidegrees 0–35900, or -1 for centered
     ///   Buttons:      true = pressed, false = released
-    /// 
+    ///
+    /// Button index reference (PadForge-internal, matches SdlDeviceWrapper's population):
+    ///   0-10  Standard XInput-shape (A/B/X/Y/LB/RB/Back/Start/LS/RS/Guide)
+    ///   11    Misc1 (Capture / Share / Mute)
+    ///   12-15 Paddles 1-4 (Xbox Elite, DualSense Edge, Steam Deck, Steam Controller 2026)
+    ///   16-20 Misc2-Misc6 (driver-specific extras)
+    ///   21    TouchpadClick — maps to SDL_GAMEPAD_BUTTON_TOUCHPAD
+    ///   22+   Raw joystick buttons beyond the standardized gamepad range
+    ///
     /// This replaces the former CustomDiState class. The field layout is intentionally
     /// compatible with the mapping pipeline (Steps 3–5) which indexes into these arrays
     /// by ordinal position.
@@ -71,9 +79,6 @@ namespace PadForge.Engine
         /// <summary>Finger contact state: [0]=finger 0, [1]=finger 1.</summary>
         public bool[] TouchpadDown;
 
-        /// <summary>Physical touchpad click button.</summary>
-        public bool TouchpadClick;
-
         /// <summary>Battery percentage from SDL3 (0..100, or -1 if unknown).
         /// Refreshed periodically by SdlDeviceWrapper, not every frame.</summary>
         public int BatteryPercent;
@@ -117,7 +122,6 @@ namespace PadForge.Engine
             Array.Copy(Accel, clone.Accel, 3);
             Array.Copy(TouchpadFingers, clone.TouchpadFingers, 6);
             Array.Copy(TouchpadDown, clone.TouchpadDown, 2);
-            clone.TouchpadClick = TouchpadClick;
             clone.BatteryPercent = BatteryPercent;
             clone.BatteryCharging = BatteryCharging;
             return clone;

@@ -63,12 +63,12 @@ namespace PadForge.Engine
         public uint SdlInstanceId { get; }
         public string Name { get; }
         public int NumAxes => _isTouchpadDevice ? 0 : NumGamepadAxes;
-        // Button count stays at NumGamepadButtons (11) regardless of
-        // touchpad capability. Touchpad click is its own discrete input
-        // routed through state.TouchpadClick, not through the button
-        // enumeration — adding +1 for HasTouchpad here was leftover from
-        // the legacy "touchpad click is button 11" scheme and surfaced
-        // a phantom 12th button in the Devices preview.
+        // NumButtons stays at NumGamepadButtons (11) for the mappable
+        // gamepad-shape count. The touchpad click lives at Buttons[21]
+        // (SDL_GAMEPAD_BUTTON_TOUCHPAD's canonical slot) and is reached
+        // through the "Touchpad 0 Click" descriptor — counting it here
+        // would double-list it in the mapping picker alongside the
+        // canonical touchpad-source block.
         public int NumButtons => _isTouchpadDevice ? 0 : NumGamepadButtons;
         public int RawButtonCount => _isTouchpadDevice ? 0 : NumGamepadButtons;
         public int NumHats => _isTouchpadDevice ? 0 : NumGamepadPovs;
@@ -201,17 +201,6 @@ namespace PadForge.Engine
             }
         }
 
-        /// <summary>Sets the touchpad click state (momentary).</summary>
-        public void UpdateTouchpadClick(bool clicked)
-        {
-            lock (_stateLock)
-            {
-                var s = _currentState.Clone();
-                s.TouchpadClick = clicked;
-                _currentState = s;
-            }
-        }
-
         /// <summary>Sets the connection state.</summary>
         public void SetConnected(bool connected) => _connected = connected;
 
@@ -231,18 +220,14 @@ namespace PadForge.Engine
 
             // Gamepad-shaped surface (6 axes + 11 buttons + 1 POV).
             // Touchpad finger axes and the touchpad click button do NOT
-            // belong here — the live touchpad data flows through
-            // UpdateTouchpadFinger / UpdateTouchpadClick into the
-            // CustomInputState.Touchpad / TouchpadClick fields, not into
-            // the axis / button arrays this list describes. Adding them
-            // here doubled the mapping dropdown: BuildInputChoices walks
-            // DeviceObjects AND has its own canonical "Touchpad 0
-            // Finger N X/Y/Down" + "Touchpad 0 Click" block for any
-            // HasTouchpad device, so the same inputs appeared twice
-            // (once as numbered Axis 18..23 / Button 11, once with the
-            // canonical touchpad descriptors). The touchpad descriptors
-            // are the right source for mappings; this surface stays
-            // gamepad-shaped.
+            // belong here — finger data lives in CustomInputState.Touchpad*
+            // and the click bit lives at Buttons[21]. Adding them here
+            // would double-list the mapping dropdown: BuildInputChoices
+            // walks DeviceObjects AND has its own canonical
+            // "Touchpad 0 Finger N X/Y/Down" + "Touchpad 0 Click" block
+            // for any HasTouchpad device, so the same inputs appeared
+            // twice. The touchpad descriptors are the right source for
+            // mappings; this surface stays gamepad-shaped.
             var items = new DeviceObjectItem[NumGamepadAxes + NumGamepadButtons + NumGamepadPovs];
             int idx = 0;
 

@@ -131,7 +131,6 @@ namespace PadForge.Common.Input
             public int[]  Sliders;
             public int[]  Povs;
             public bool[] TouchpadDown;
-            public bool   TouchpadClick;
         }
 
         /// <summary>Per-activator snapshot of every slot-assigned device's
@@ -254,7 +253,8 @@ namespace PadForge.Common.Input
                 b.TouchpadDown = new bool[state.TouchpadDown.Length];
                 System.Array.Copy(state.TouchpadDown, b.TouchpadDown, state.TouchpadDown.Length);
             }
-            b.TouchpadClick = state.TouchpadClick;
+            // TouchpadClick lives in Buttons[21] now and is already captured
+            // by the Buttons[] copy above.
             return b;
         }
 
@@ -302,7 +302,8 @@ namespace PadForge.Common.Input
                 for (int k = 0; k < n; k++)
                     if (current.TouchpadDown[k] && !baseline.TouchpadDown[k]) return true;
             }
-            if (current.TouchpadClick && !baseline.TouchpadClick) return true;
+            // Touchpad-click rising edge is covered by the Buttons[] loop
+            // above (Buttons[21] = SDL_GAMEPAD_BUTTON_TOUCHPAD).
             return false;
         }
 

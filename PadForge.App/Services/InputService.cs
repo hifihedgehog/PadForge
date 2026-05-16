@@ -1374,7 +1374,9 @@ namespace PadForge.Services
                 devVm.TouchpadX1 = state.TouchpadFingers[3];
                 devVm.TouchpadY1 = state.TouchpadFingers[4];
                 devVm.TouchpadDown1 = state.TouchpadDown[1];
-                devVm.TouchpadClickPressed = state.TouchpadClick;
+                devVm.TouchpadClickPressed = state.Buttons != null
+                    && state.Buttons.Length > 21
+                    && state.Buttons[21];
             }
         }
 
@@ -1636,7 +1638,8 @@ namespace PadForge.Services
                 if (s.Contains("Finger 1 X")) return (int)(state.TouchpadFingers[3] * 1000);
                 if (s.Contains("Finger 1 Y")) return (int)(state.TouchpadFingers[4] * 1000);
                 if (s.Contains("Finger 1 Down")) return state.TouchpadDown[1] ? 1 : 0;
-                if (s.EndsWith(" Click", StringComparison.Ordinal)) return state.TouchpadClick ? 1 : 0;
+                if (s.EndsWith(" Click", StringComparison.Ordinal))
+                    return (state.Buttons != null && state.Buttons.Length > 21 && state.Buttons[21]) ? 1 : 0;
                 return 0;
             }
 

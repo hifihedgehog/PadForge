@@ -425,7 +425,7 @@ namespace PadForge.Services
                 // ── Wait-for-release phase: skip detection until all buttons/POVs are neutral ──
                 if (_waitForRelease)
                 {
-                    bool anyHeld = current.TouchpadClick;
+                    bool anyHeld = false;
                     for (int i = 0; i < CustomInputState.MaxButtons && !anyHeld; i++)
                         anyHeld = current.Buttons[i];
                     for (int i = 0; i < CustomInputState.MaxPovs && !anyHeld; i++)
@@ -444,16 +444,24 @@ namespace PadForge.Services
                     continue;
                 }
 
-                // ── Touchpad click (dedicated bool — not in Buttons[]) ──
-                if (current.TouchpadClick && !baseline.TouchpadClick)
+                // ── Touchpad click rides Buttons[21] — record with the
+                //     canonical "Touchpad 0 Click" descriptor so the user
+                //     sees the touchpad-friendly name instead of "Button 21".
+                //     Checked before the generic Buttons[] sweep so the
+                //     descriptor wins. ──
+                if (current.Buttons.Length > 21 && current.Buttons[21]
+                    && baseline.Buttons.Length > 21 && !baseline.Buttons[21])
                 {
                     CompleteRecordingWithDescriptor("Touchpad 0 Click", dg);
                     return;
                 }
 
-                // ── Check buttons first (instant detection) ──
+                // ── Check buttons first (instant detection). Skip index 21:
+                //     handled above as "Touchpad 0 Click" so the recorder
+                //     never reports the touchpad as raw "Button 21". ──
                 for (int i = 0; i < CustomInputState.MaxButtons; i++)
                 {
+                    if (i == 21) continue;
                     if (current.Buttons[i] && !baseline.Buttons[i])
                     {
                         CompleteRecording(MapType.Button, i, null, axisPositive: false, winningDevice: dg);
@@ -763,10 +771,10 @@ namespace PadForge.Services
 
         /// <summary>
         /// Finishes the active recording with a literal descriptor string,
-        /// bypassing <see cref="BuildDescriptor"/>. Used for inputs that don't
-        /// fit the (MapType, index) shape — e.g. touchpad click, which lives in
-        /// CustomInputState.TouchpadClick rather than the Buttons[] array and
-        /// emits the engine-recognized "Touchpad 0 Click" form directly.
+        /// bypassing <see cref="BuildDescriptor"/>. Used for inputs whose
+        /// canonical descriptor differs from the raw (MapType, index) — the
+        /// touchpad click rides Buttons[21] but records as "Touchpad 0 Click"
+        /// so the user sees the touchpad-friendly name in the picker.
         /// </summary>
         private void CompleteRecordingWithDescriptor(string descriptor, Guid winningDevice = default)
         {

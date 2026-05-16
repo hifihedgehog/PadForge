@@ -94,27 +94,6 @@ body {
     position: absolute;
 }
 
-/* Buttons without an overlay PNG (e.g., DS4/DualSense touchpad click)
-   render the zone itself as a labeled, always-visible button. */
-.touch-zone.button-imageless {
-    border: 2px solid rgba(0, 200, 232, 0.55);
-    border-radius: 8px;
-    background: rgba(152, 174, 184, 0.18);
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 13px;
-    font-weight: 600;
-    font-family: 'Segoe UI', sans-serif;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.05s, border-color 0.05s;
-}
-.touch-zone.button-imageless.pressed {
-    background: rgba(0, 200, 232, 0.65);
-    border-color: rgba(0, 200, 232, 1);
-}
-
 .stick-zone {
     position: absolute;
     z-index: 11;

@@ -44,6 +44,7 @@ namespace PadForge.Engine
         private static readonly int[] _supportedButtons = { 16 };
         public IntPtr GamepadHandle => IntPtr.Zero;
         public bool HasRumble => false;
+        public bool HasRumbleTriggers => false;
         public bool HasHaptic => false;
         public bool HasGyro => false;
         public bool HasAccel => false;

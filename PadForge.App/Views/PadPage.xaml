@@ -312,6 +312,16 @@
                     <TextBlock Text="{Binding Pad_ForceFeedback, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
 
+                <!-- Impulse Triggers tab — Xbox One / Elite / Series only.
+                     Visibility driven from code-behind via SyncTabVisibility
+                     which checks the assigned device's HasRumbleTriggers
+                     (SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN). Hidden
+                     on Xbox 360, PlayStation, generic, MIDI, KbM. -->
+                <RadioButton x:Name="TabImpulseTriggers" Tag="9" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             Visibility="Collapsed">
+                    <TextBlock Text="{Binding Pad_ImpulseTriggers, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
+                </RadioButton>
+
                 <!-- Adaptive Triggers tab — DualSense / DualSense Edge only.
                      Visibility driven from code-behind via SyncTabStripSelection
                      which reads OutputType + ProfileId.  PadPage's runtime
@@ -5121,6 +5131,98 @@
                                     </Button>
                                     <Button Command="{Binding ResetGyroAimEngageButtonCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetGyroAimEngageButton, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ══════════════════════════════════════
+                 TAB 9: IMPULSE TRIGGERS
+                 (visible when the selected mapped device exposes
+                 SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN —
+                 Xbox One / Elite / Series).
+                 ══════════════════════════════════════ -->
+            <TabItem>
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="0,16,0,16">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="&#xE945;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding Pad_ImpulseTriggers_Header, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Pad_ImpulseTriggers_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
+
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE945;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_ImpulseTriggers_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding ResetImpulseAllCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetImpulseTriggers, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <!-- Left trigger strength -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pad_ImpulseTriggers_LeftStrength, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding ImpulseLeftStrength, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding ImpulseLeftStrength, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                    <Button Command="{Binding ResetImpulseLeftCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetImpulseLeft, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <!-- Right trigger strength -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pad_ImpulseTriggers_RightStrength, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding ImpulseRightStrength, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding ImpulseRightStrength, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                    <Button Command="{Binding ResetImpulseRightCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetImpulseRight, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <!-- Swap trigger motors -->
+                                <CheckBox Content="{Binding Pad_ImpulseTriggers_SwapTriggers, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding ImpulseSwapTriggers, Mode=TwoWay}"
+                                          Margin="0,0,0,12"/>
+
+                                <!-- Test trigger buttons -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                    <Button Content="{Binding Pad_ImpulseTriggers_TestLeftTrigger, Source={x:Static strings:Strings.Instance}}"
+                                            Command="{Binding TestLeftImpulseTriggerCommand}"
+                                            Padding="12,6" Margin="0,0,8,0"/>
+                                    <Button Content="{Binding Pad_ImpulseTriggers_TestRightTrigger, Source={x:Static strings:Strings.Instance}}"
+                                            Command="{Binding TestRightImpulseTriggerCommand}"
+                                            Padding="12,6"/>
+                                </StackPanel>
+
+                                <!-- Live trigger motor display -->
+                                <TextBlock Text="{Binding Pad_ImpulseTriggers_MotorActivity, Source={x:Static strings:Strings.Instance}}"
+                                           FontWeight="SemiBold" Margin="0,8,0,8"
+                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="{Binding Pad_ImpulseTriggers_LeftTrigger, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ProgressBar Value="{Binding DeviceLeftTriggerMotorDisplay, Mode=OneWay}"
+                                                 Minimum="0" Maximum="1"
+                                                 Width="200" Height="16" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="{Binding Pad_ImpulseTriggers_RightTrigger, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ProgressBar Value="{Binding DeviceRightTriggerMotorDisplay, Mode=OneWay}"
+                                                 Minimum="0" Maximum="1"
+                                                 Width="200" Height="16" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

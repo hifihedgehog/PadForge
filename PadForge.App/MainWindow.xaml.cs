@@ -601,6 +601,16 @@ namespace PadForge
                     if (s is PadViewModel pvm)
                         _inputService.SendTestRumble(pvm.PadIndex, null, false, true);
                 };
+                pad.TestLeftImpulseTriggerRequested += (s, e) =>
+                {
+                    if (s is PadViewModel pvm)
+                        _inputService.SendTestImpulseTrigger(pvm.PadIndex, pvm.SelectedMappedDevice?.InstanceGuid, true, false);
+                };
+                pad.TestRightImpulseTriggerRequested += (s, e) =>
+                {
+                    if (s is PadViewModel pvm)
+                        _inputService.SendTestImpulseTrigger(pvm.PadIndex, pvm.SelectedMappedDevice?.InstanceGuid, false, true);
+                };
 
                 // v3.3 — Gyro tab calibrate / reset wired to the slot's
                 // currently-selected mapped device. Both bias AND tuning
@@ -703,6 +713,8 @@ namespace PadForge
                         nameof(PadViewModel.LeftTriggerMaxRange) or nameof(PadViewModel.RightTriggerMaxRange) or
                         nameof(PadViewModel.ForceOverallGain) or nameof(PadViewModel.LeftMotorStrength) or
                         nameof(PadViewModel.RightMotorStrength) or nameof(PadViewModel.SwapMotors) or
+                        nameof(PadViewModel.ImpulseLeftStrength) or nameof(PadViewModel.ImpulseRightStrength) or
+                        nameof(PadViewModel.ImpulseSwapTriggers) or
                         nameof(PadViewModel.AudioRumbleEnabled) or nameof(PadViewModel.AudioRumbleSensitivity) or
                         nameof(PadViewModel.AudioRumbleCutoffHz) or nameof(PadViewModel.AudioRumbleLeftMotor) or
                         nameof(PadViewModel.AudioRumbleRightMotor) or

@@ -34,6 +34,7 @@ namespace PadForge.Engine
         private static int[] BuildDense(int n) { var a = new int[n]; for (int i = 0; i < n; i++) a[i] = i; return a; }
         public IntPtr GamepadHandle => IntPtr.Zero;
         public bool HasRumble => false;
+        public bool HasRumbleTriggers => false;
         public bool HasHaptic => false;
         public bool HasGyro => false;
         public bool HasAccel => false;

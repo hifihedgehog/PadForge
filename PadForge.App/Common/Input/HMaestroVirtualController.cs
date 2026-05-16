@@ -648,10 +648,33 @@ namespace PadForge.Common.Input
                 // Gamepad API sends dual-rumble through this path with
                 // alternating hi=127 / hi=0 — that's a square-wave
                 // duty cycle, not keepalive noise; don't filter zeros.
+                //
+                // Extended XINPUT_VIBRATION_EX (Xbox One+ impulse triggers)
+                // arrives via the same IOCTL with a longer payload — two
+                // extra bytes carry the per-trigger motor magnitudes. HM
+                // forwards the IOCTL data verbatim (confirmed against
+                // HIDMaestro driver/companion.c:651-730 — size-agnostic
+                // WdfRequestRetrieveInputBuffer + PublishOutput pass-through),
+                // so the extended bytes land at offsets 4 and 5 right after
+                // the standard motor bytes when present. When the standard
+                // 5-byte packet arrives without the extended bytes, the
+                // game is signalling "no trigger rumble," so zero the
+                // trigger motors to clear stale values.
                 if (pkt.Source == HMOutputSource.XInput && data.Length >= 5)
                 {
                     vibrationStates[idx].LeftMotorSpeed = (ushort)(data[2] * 257);
                     vibrationStates[idx].RightMotorSpeed = (ushort)(data[3] * 257);
+
+                    if (data.Length >= 7)
+                    {
+                        vibrationStates[idx].LeftTriggerMotorSpeed = (ushort)(data[4] * 257);
+                        vibrationStates[idx].RightTriggerMotorSpeed = (ushort)(data[5] * 257);
+                    }
+                    else
+                    {
+                        vibrationStates[idx].LeftTriggerMotorSpeed = 0;
+                        vibrationStates[idx].RightTriggerMotorSpeed = 0;
+                    }
                     return;
                 }
 

@@ -43,6 +43,8 @@ namespace PadForge.Engine
 
         private ushort _cachedLeftMotorSpeed;
         private ushort _cachedRightMotorSpeed;
+        private ushort _cachedLeftTriggerMotorSpeed;
+        private ushort _cachedRightTriggerMotorSpeed;
 
         // Haptic effect tracking
         private int _hapticEffectId = -1;
@@ -69,6 +71,16 @@ namespace PadForge.Engine
         /// The most recent right (high-frequency) motor speed sent to the device (0–65535).
         /// </summary>
         public ushort RightMotorSpeed { get; private set; }
+
+        /// <summary>
+        /// The most recent left impulse trigger motor speed sent to the device (0–65535).
+        /// </summary>
+        public ushort LeftTriggerMotorSpeed { get; private set; }
+
+        /// <summary>
+        /// The most recent right impulse trigger motor speed sent to the device (0–65535).
+        /// </summary>
+        public ushort RightTriggerMotorSpeed { get; private set; }
 
         /// <summary>
         /// Whether force feedback is currently active on the device.
@@ -101,8 +113,17 @@ namespace PadForge.Engine
                 return;
             }
 
+            // Impulse triggers stop in parallel — different SDL handle
+            // (gamepad vs joystick) but the same "kill all motors" semantic.
+            if (device.HasRumbleTriggers && device.GamepadHandle != IntPtr.Zero)
+            {
+                SDL_RumbleGamepadTriggers(device.GamepadHandle, 0, 0, 0);
+            }
+
             _cachedLeftMotorSpeed = 0;
             _cachedRightMotorSpeed = 0;
+            _cachedLeftTriggerMotorSpeed = 0;
+            _cachedRightTriggerMotorSpeed = 0;
             _cachedEffectType = 0;
             _cachedSignedMag = 0;
             _cachedDirection = 0;
@@ -111,6 +132,8 @@ namespace PadForge.Engine
             _cachedHasCondition = false;
             LeftMotorSpeed = 0;
             RightMotorSpeed = 0;
+            LeftTriggerMotorSpeed = 0;
+            RightTriggerMotorSpeed = 0;
             IsActive = false;
         }
 
@@ -243,34 +266,53 @@ namespace PadForge.Engine
             ushort finalLeft = v.LeftMotorSpeed;
             ushort finalRight = v.RightMotorSpeed;
 
-            // Only send to hardware when values change.
-            if (finalLeft == _cachedLeftMotorSpeed && finalRight == _cachedRightMotorSpeed)
-                return;
+            // Main rumble — only send to hardware when values change.
+            if (finalLeft != _cachedLeftMotorSpeed || finalRight != _cachedRightMotorSpeed)
+            {
+                bool scalarSuccess;
+                if (device.HasHaptic)
+                {
+                    scalarSuccess = SetHapticForces(device, finalLeft, finalRight);
+                }
+                else if (finalLeft == 0 && finalRight == 0)
+                {
+                    scalarSuccess = device.StopRumble();
+                }
+                else
+                {
+                    scalarSuccess = device.SetRumble(finalLeft, finalRight, uint.MaxValue);
+                }
 
-
-            bool scalarSuccess;
-            if (device.HasHaptic)
-            {
-                scalarSuccess = SetHapticForces(device, finalLeft, finalRight);
-            }
-            else if (finalLeft == 0 && finalRight == 0)
-            {
-                scalarSuccess = device.StopRumble();
-            }
-            else
-            {
-                scalarSuccess = device.SetRumble(finalLeft, finalRight, uint.MaxValue);
-            }
-
-            if (scalarSuccess)
-            {
-                _cachedLeftMotorSpeed = finalLeft;
-                _cachedRightMotorSpeed = finalRight;
+                if (scalarSuccess)
+                {
+                    _cachedLeftMotorSpeed = finalLeft;
+                    _cachedRightMotorSpeed = finalRight;
+                }
             }
 
             LeftMotorSpeed = finalLeft;
             RightMotorSpeed = finalRight;
-            IsActive = finalLeft > 0 || finalRight > 0;
+
+            // Impulse triggers — gated on device capability; uses SDL3's
+            // gamepad-level trigger rumble (Xbox One+ family). Already
+            // scaled and swapped by ApplyForceFeedback / ScaleTriggerRumble
+            // before the Vibration lands here.
+            ushort finalLT = v.LeftTriggerMotorSpeed;
+            ushort finalRT = v.RightTriggerMotorSpeed;
+            if (device.HasRumbleTriggers
+                && device.GamepadHandle != IntPtr.Zero
+                && (finalLT != _cachedLeftTriggerMotorSpeed || finalRT != _cachedRightTriggerMotorSpeed))
+            {
+                if (SDL_RumbleGamepadTriggers(device.GamepadHandle, finalLT, finalRT, uint.MaxValue))
+                {
+                    _cachedLeftTriggerMotorSpeed = finalLT;
+                    _cachedRightTriggerMotorSpeed = finalRT;
+                }
+            }
+            LeftTriggerMotorSpeed = finalLT;
+            RightTriggerMotorSpeed = finalRT;
+
+            IsActive = finalLeft > 0 || finalRight > 0 || finalLT > 0 || finalRT > 0;
         }
 
         // ─────────────────────────────────────────────
@@ -602,6 +644,15 @@ namespace PadForge.Engine
 
         /// <summary>Right motor (high-frequency, light buzz) speed. Range: 0–65535.</summary>
         public ushort RightMotorSpeed { get; set; }
+
+        /// <summary>Left impulse trigger motor speed (Xbox One+ controllers).
+        /// Driven by XINPUT_VIBRATION_EX / GameInput's per-trigger vibration API.
+        /// 0 on devices without impulse-trigger motors. Range: 0–65535.</summary>
+        public ushort LeftTriggerMotorSpeed { get; set; }
+
+        /// <summary>Right impulse trigger motor speed (Xbox One+ controllers).
+        /// 0 on devices without impulse-trigger motors. Range: 0–65535.</summary>
+        public ushort RightTriggerMotorSpeed { get; set; }
 
         // ── Directional FFB (populated by Extended FFB callback for haptic devices) ──
 

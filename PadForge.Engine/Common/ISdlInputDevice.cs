@@ -35,6 +35,15 @@ namespace PadForge.Engine
         /// </summary>
         IntPtr GamepadHandle { get; }
         bool HasRumble { get; }
+
+        /// <summary>
+        /// True when the device exposes per-trigger ("impulse") rumble motors.
+        /// Xbox One / Elite / Series controllers report true; Xbox 360,
+        /// DualSense, DS4, generic non-Xbox HID gamepads report false.
+        /// Driven by <c>SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN</c>.
+        /// </summary>
+        bool HasRumbleTriggers { get; }
+
         bool HasHaptic { get; }
         bool HasGyro { get; }
         bool HasAccel { get; }

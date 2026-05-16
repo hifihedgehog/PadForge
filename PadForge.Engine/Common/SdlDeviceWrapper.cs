@@ -43,6 +43,10 @@ namespace PadForge.Engine
         /// <summary>Whether the device supports rumble vibration.</summary>
         public bool HasRumble { get; private set; }
 
+        /// <summary>Whether the device exposes per-trigger ("impulse") rumble motors
+        /// (Xbox One / Elite / Series).</summary>
+        public bool HasRumbleTriggers { get; private set; }
+
         /// <summary>SDL haptic device handle. Non-zero when haptic FFB is available (and rumble is not).</summary>
         public IntPtr Haptic { get; private set; } = IntPtr.Zero;
 
@@ -245,6 +249,7 @@ namespace PadForge.Engine
             // Check rumble support via properties system (replaces SDL_JoystickHasRumble).
             uint props = SDL_GetJoystickProperties(Joystick);
             HasRumble = props != 0 && SDL_GetBooleanProperty(props, SDL_PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN, false);
+            HasRumbleTriggers = props != 0 && SDL_GetBooleanProperty(props, SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN, false);
 
             // Detect and enable motion sensors (gyro / accelerometer).
             if (GameController != IntPtr.Zero)

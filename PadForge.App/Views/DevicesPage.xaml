@@ -399,7 +399,10 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                        <!-- Buttons label (joysticks/gamepads only) -->
+                        <!-- Buttons label and grid: shown for any device that exposes
+                             button slots (gamepads, joysticks, touchpads with a
+                             click button). Keyboards / mice have their own
+                             dedicated visual previews instead. -->
                         <TextBlock Text="{Binding Devices_Buttons, Source={x:Static strings:Strings.Instance}}" FontSize="11" Opacity="0.6" Margin="0,0,0,3">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
@@ -411,14 +414,10 @@
                                         <DataTrigger Binding="{Binding IsMouseDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsTouchpadDevice}" Value="True">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <!-- Buttons: circle grid (non-keyboard, non-mouse devices) -->
                         <ItemsControl ItemsSource="{Binding RawButtons}" Margin="0,0,0,8">
                             <ItemsControl.Style>
                                 <Style TargetType="ItemsControl">
@@ -427,9 +426,6 @@
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsMouseDevice}" Value="True">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsTouchpadDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>

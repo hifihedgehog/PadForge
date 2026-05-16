@@ -81,8 +81,11 @@ namespace PadForge.Engine.Data
 
         /// <summary>
         /// Total number of raw joystick buttons (before gamepad remapping).
-        /// For gamepad devices, this is higher than <see cref="CapButtonCount"/> (11),
-        /// exposing extra native buttons like DualSense touchpad or mic.
+        /// For gamepad devices this may exceed <see cref="CapButtonCount"/>
+        /// when the underlying HID descriptor reports more buttons than the
+        /// 22 standardized SDL gamepad slots (0-21 = std XInput + Misc1 +
+        /// paddles + Touchpad + Misc2-6) — extras are surfaced as raw
+        /// passthrough indices ≥22 for use as macro triggers.
         /// For non-gamepad devices, this equals <see cref="CapButtonCount"/>.
         /// </summary>
         [XmlElement]
@@ -322,13 +325,14 @@ namespace PadForge.Engine.Data
                 wrapper.ProductGuid,
                 wrapper.Name);
 
-            // Persist the gated button count (paddles / Misc1-6 only when SDL
-            // says the device has them) rather than the wrapper's NumButtons,
-            // which is a fixed 21 for any SDL3-recognized gamepad. This keeps
-            // the Devices list summary consistent with the live preview when
-            // the device is offline. Fall back to NumButtons for wrappers
-            // that don't expose a sparse list (keyboard / touchpad return
-            // empty arrays, mice return a dense 0..N-1).
+            // Persist the gated button count (Misc1 / paddles / Touchpad /
+            // Misc2-6 only when SDL says the device has them) rather than
+            // the wrapper's NumButtons, which is a fixed 22 for any SDL3-
+            // recognized gamepad. This keeps the Devices list summary
+            // consistent with the live preview when the device is offline.
+            // Fall back to NumButtons for wrappers that don't expose a
+            // sparse list (keyboard / touchpad return empty arrays, mice
+            // return a dense 0..N-1).
             int gatedButtons = wrapper.SupportedButtonIndices?.Length ?? 0;
             if (gatedButtons <= 0) gatedButtons = wrapper.NumButtons;
 

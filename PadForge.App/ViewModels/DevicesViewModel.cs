@@ -235,7 +235,7 @@ namespace PadForge.ViewModels
                 // needs entries so InputService can update IsPressed for the
                 // mouse preview's left/middle/right/X1/X2 lookups by index.
                 for (int i = 0; i < buttonCount; i++)
-                    RawButtons.Add(new ButtonDisplayItem { Index = buttonIndices[i] });
+                    RawButtons.Add(new ButtonDisplayItem { Index = buttonIndices[i], DisplayNumber = i });
             }
 
             RawPovs.Clear();
@@ -546,7 +546,18 @@ namespace PadForge.ViewModels
     /// <summary>Visual display item for a single button state.</summary>
     public class ButtonDisplayItem : ObservableObject
     {
+        /// <summary>
+        /// Underlying slot index into <c>state.Buttons[]</c>. May be sparse
+        /// (e.g., 16 for a touchpad-click when the device skips earlier
+        /// extended slots) and is not shown to the user.
+        /// </summary>
         public int Index { get; set; }
+
+        /// <summary>
+        /// 0-based display number — position in the visible Buttons grid.
+        /// Always consecutive so the user sees 0..N-1 without gaps.
+        /// </summary>
+        public int DisplayNumber { get; set; }
 
         private bool _isPressed;
         /// <summary>Whether the button is currently pressed.</summary>

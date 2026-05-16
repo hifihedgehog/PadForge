@@ -848,15 +848,16 @@ namespace PadForge.Engine.Common.Mapping
             // "Touchpad N Click"
             if (parts.Length == 3 && parts[2].Equals("Click", StringComparison.Ordinal))
             {
-                // Canonical touchpad click rides Buttons[21] (the slot
-                // SdlDeviceWrapper populates from SDL_GAMEPAD_BUTTON_TOUCHPAD).
+                // Canonical touchpad click rides Buttons[16] (the slot
+                // SdlDeviceWrapper populates from SDL_GAMEPAD_BUTTON_TOUCHPAD,
+                // matching SDL's enum position between paddles and Misc2-6).
                 // Multi-touchpad devices (Steam Controller 2026) route their
                 // additional clicks through the SDL3 fork patch into other
                 // Buttons[] slots; that mapping lives in the device-specific
                 // recipe, not here.
                 if (padIdx != 0) return false;
-                if (state.Buttons == null || state.Buttons.Length <= 21) return false;
-                return state.Buttons[21];
+                if (state.Buttons == null || state.Buttons.Length <= 16) return false;
+                return state.Buttons[16];
             }
 
             // "Touchpad N Finger M Down"

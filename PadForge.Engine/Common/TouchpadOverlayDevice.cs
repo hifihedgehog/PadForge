@@ -30,13 +30,11 @@ namespace PadForge.Engine
         public uint SdlInstanceId => 0xFFFFFFFE;
         public string Name => "Touchpad Overlay";
         public int NumAxes => 0;
-        // Touchpad click rides Buttons[16] (SDL_GAMEPAD_BUTTON_TOUCHPAD's
-        // canonical PadForge slot). NumButtons covers up through that slot
-        // so the state-buffer sizing fallback in UserDevice can see it; the
-        // sparse SupportedButtonIndices below tells the Devices preview the
-        // click is the only button this device exposes.
-        public int NumButtons => 17;
-        public int RawButtonCount => 17;
+        // One button: the touchpad click. It rides Buttons[16] —
+        // SDL_GAMEPAD_BUTTON_TOUCHPAD's canonical PadForge slot — so
+        // SupportedButtonIndices is sparse {16}, not a dense 0..0.
+        public int NumButtons => 1;
+        public int RawButtonCount => 1;
         public int NumHats => 0;
         public int[] SupportedButtonIndices => _supportedButtons;
         private static readonly int[] _supportedButtons = { 16 };

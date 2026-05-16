@@ -63,22 +63,19 @@ namespace PadForge.Engine
         public uint SdlInstanceId { get; }
         public string Name { get; }
         public int NumAxes => _isTouchpadDevice ? 0 : NumGamepadAxes;
-        // Touchpad-equipped layouts expose Buttons[16] (SDL_GAMEPAD_BUTTON_TOUCHPAD's
-        // canonical PadForge slot) in addition to the 11 standard gamepad
-        // buttons (0-10). NumButtons covers up through that slot so any
-        // state-buffer sizing fallback can see it; the sparse list below
-        // is what the Devices preview reads to surface the click as a
-        // regular button. GetDeviceObjects deliberately does NOT add slot
-        // 16 — the mapping picker keeps the canonical "Touchpad 0 Click"
+        // Button counts are the actual number of buttons exposed, not the
+        // high-water slot index — state.Buttons is a fixed-size 256-slot
+        // array, so NumButtons just describes the device's surface. The
+        // touchpad click lives at Buttons[16] (SDL_GAMEPAD_BUTTON_TOUCHPAD's
+        // canonical slot) and is surfaced via the sparse SupportedButtonIndices
+        // list below. GetDeviceObjects deliberately does NOT add slot 16 —
+        // the mapping picker keeps the canonical "Touchpad 0 Click"
         // descriptor as the single source-of-truth there.
         public int NumButtons =>
-            _isTouchpadDevice ? 17
-            : HasTouchpad ? 17
+            _isTouchpadDevice ? 1
+            : HasTouchpad ? NumGamepadButtons + 1
             : NumGamepadButtons;
-        public int RawButtonCount =>
-            _isTouchpadDevice ? 17
-            : HasTouchpad ? 17
-            : NumGamepadButtons;
+        public int RawButtonCount => NumButtons;
         public int NumHats => _isTouchpadDevice ? 0 : NumGamepadPovs;
         public int[] SupportedButtonIndices
         {

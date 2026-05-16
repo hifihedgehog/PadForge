@@ -157,7 +157,7 @@ namespace PadForge.Engine
         }
 
         /// <summary>Updates a button state. Called from WebSocket receive thread.</summary>
-        /// <param name="code">Button index (0=A, 1=B, ..., 10=Guide, 20=Touchpad Click).</param>
+        /// <param name="code">Button index (0=A, 1=B, ..., 10=Guide, 16=Touchpad Click).</param>
         /// <param name="pressed">True if pressed.</param>
         public void UpdateButton(int code, bool pressed)
         {

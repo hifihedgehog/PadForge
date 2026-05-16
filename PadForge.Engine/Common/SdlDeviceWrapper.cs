@@ -445,36 +445,35 @@ namespace PadForge.Engine
             if (state.Buttons[6] && state.Buttons[7] && state.Buttons[10])
                 state.Buttons[10] = false;
 
-            // --- Extended gamepad buttons (positions 11-20) ---
-            // SDL3 exposes additional well-known buttons beyond the standard 11
-            // (Share / Mute on MISC1, four paddles on Xbox Elite / DualSense
-            // Edge, plus five generic MISC2-MISC6 slots). We populate them in
-            // Xbox-paddle order (P1=R-upper, P2=R-lower, P3=L-upper, P4=L-lower)
-            // so the indices read consistently regardless of source device.
-            // SDL_GetGamepadButton returns false on devices that lack a given
-            // button, so this is harmless on a plain Xbox 360 / DualShock 4.
+            // --- Extended gamepad buttons (positions 11-21) ---
+            // Indices 11-21 follow SDL3's SDL_GamepadButton enum order
+            // (skipping the four DPad slots, which PadForge synthesizes
+            // into POV[0] above). SDL_GetGamepadButton returns false on
+            // devices that lack a given button, so this is harmless on a
+            // plain Xbox 360 / DualShock 4.
             state.Buttons[11] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC1);
             state.Buttons[12] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1);
-            state.Buttons[13] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2);
-            state.Buttons[14] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_LEFT_PADDLE1);
+            state.Buttons[13] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_LEFT_PADDLE1);
+            state.Buttons[14] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2);
             state.Buttons[15] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_LEFT_PADDLE2);
-            state.Buttons[16] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC2);
-            state.Buttons[17] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC3);
-            state.Buttons[18] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC4);
-            state.Buttons[19] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC5);
-            state.Buttons[20] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC6);
 
-            // Buttons[21] is reserved for SDL_GAMEPAD_BUTTON_TOUCHPAD; written
+            // Buttons[16] is reserved for SDL_GAMEPAD_BUTTON_TOUCHPAD; written
             // by the touchpad section below when HasTouchpad is true. Stays
             // false on non-touchpad devices.
 
+            state.Buttons[17] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC2);
+            state.Buttons[18] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC3);
+            state.Buttons[19] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC4);
+            state.Buttons[20] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC5);
+            state.Buttons[21] = SDL_GetGamepadButton(GameController, SDL_GAMEPAD_BUTTON_MISC6);
+
             // --- Extra raw buttons ---
             // Append raw joystick buttons beyond the 22 standardized gamepad
-            // positions (0-10 standard + 11-20 Misc1-Misc6 + paddles + 21
-            // TouchpadClick). This exposes native device buttons that aren't
-            // part of any SDL gamepad button enum for use as macro triggers.
-            // Skip indices already consumed by the gamepad mapping to avoid
-            // double-reporting.
+            // positions (0-10 PadForge standard + 11-21 SDL extended). This
+            // exposes native device buttons that aren't part of any SDL
+            // gamepad button enum for use as macro triggers. Skip indices
+            // already consumed by the gamepad mapping to avoid double-
+            // reporting.
             int rawCount = RawButtonCount;
             for (int i = 22; i < rawCount && i < CustomInputState.MaxButtons; i++)
             {
@@ -538,16 +537,17 @@ namespace PadForge.Engine
                     }
                 }
 
-                // Touchpad click lands at Buttons[21] — the canonical
-                // PadForge slot for SDL_GAMEPAD_BUTTON_TOUCHPAD. Consumers
-                // reach it via the "Touchpad 0 Click" descriptor (see
+                // Touchpad click lands at Buttons[16] — PadForge's slot for
+                // SDL_GAMEPAD_BUTTON_TOUCHPAD, matching SDL's enum position
+                // (between paddles and Misc2-Misc6). Consumers reach it via
+                // the "Touchpad 0 Click" descriptor (see
                 // SourceCoercion.ReadTouchpadBool), parallel to the existing
                 // "Touchpad 0 Finger N X/Y/Down" descriptors. SDL3's HIDAPI
                 // PS5/PS4 drivers report the touchpad at joystick button 11
                 // and the gamecontrollerdb mapping has touchpad:b11, putting
                 // 11 in _mappedRawButtonIndices so the raw-button loop above
                 // skips the double-report.
-                state.Buttons[21] = SDL_GetGamepadButton(GameController,
+                state.Buttons[16] = SDL_GetGamepadButton(GameController,
                     SDL_GAMEPAD_BUTTON_TOUCHPAD);
             }
 
@@ -1149,34 +1149,39 @@ namespace PadForge.Engine
                 10 => "Guide",
                 11 => "Misc 1",
                 12 => "Right Paddle 1",
-                13 => "Right Paddle 2",
-                14 => "Left Paddle 1",
+                13 => "Left Paddle 1",
+                14 => "Right Paddle 2",
                 15 => "Left Paddle 2",
-                16 => "Misc 2",
-                17 => "Misc 3",
-                18 => "Misc 4",
-                19 => "Misc 5",
-                20 => "Misc 6",
+                16 => "Touchpad Click",
+                17 => "Misc 2",
+                18 => "Misc 3",
+                19 => "Misc 4",
+                20 => "Misc 5",
+                21 => "Misc 6",
                 _ => $"Button {buttonIndex}"
             };
         }
 
         /// <summary>
-        /// Maps a PadForge button position (0-20) to the SDL gamepad button
+        /// Maps a PadForge button position (0-21) to the SDL gamepad button
         /// enum it reads from. Used by <see cref="GetDeviceObjects"/> to skip
         /// positions whose backing button isn't physically present on the
         /// device (so an Xbox 360 doesn't show "Misc 1" / "Right Paddle 1"
-        /// in the dropdown).
+        /// in the dropdown). Positions 11-21 follow SDL's
+        /// <c>SDL_GamepadButton</c> enum order (Misc1, paddles R1/L1/R2/L2,
+        /// Touchpad, Misc2-Misc6), skipping the four DPad slots that
+        /// PadForge synthesizes into POV[0].
         /// </summary>
         /// <summary>
         /// Builds the sparse list of button positions this device exposes,
         /// used to populate <see cref="SupportedButtonIndices"/>. For SDL3
-        /// gamepads, positions 11-20 are gated on <c>SDL_GamepadHasButton</c>
-        /// so an Xbox 360 (no paddles, no Misc) reports just 0-10, while a
-        /// DualSense Edge reports 0-10 plus its actual paddle / Mute slots.
-        /// Raw passthrough indices ≥21 are included only when not already
-        /// consumed by the gamepad mapping (matches <see cref="GetGamepadState"/>'s
-        /// passthrough loop). Non-gamepad devices get a dense 0..NumButtons-1 list.
+        /// gamepads, positions 11-21 are gated on <c>SDL_GamepadHasButton</c>
+        /// so an Xbox 360 (no paddles, no Misc, no touchpad) reports just
+        /// 0-10, while a DualSense Edge reports 0-10 plus its actual
+        /// paddle / Mute / touchpad slots. Raw passthrough indices ≥22 are
+        /// included only when not already consumed by the gamepad mapping
+        /// (matches <see cref="GetGamepadState"/>'s passthrough loop).
+        /// Non-gamepad devices get a dense 0..NumButtons-1 list.
         /// </summary>
         private int[] ComputeSupportedButtonIndices()
         {
@@ -1188,7 +1193,7 @@ namespace PadForge.Engine
                 for (int i = 0; i < 11 && i < max; i++)
                     list.Add(i);
 
-                for (int i = 11; i <= 20 && i < max; i++)
+                for (int i = 11; i <= 21 && i < max; i++)
                 {
                     int sdlButton = GamepadButtonForPosition(i);
                     if (sdlButton >= 0 && SDL_GamepadHasButton(GameController, sdlButton))
@@ -1196,7 +1201,7 @@ namespace PadForge.Engine
                 }
 
                 int rawCount = Math.Min(RawButtonCount, CustomInputState.MaxButtons);
-                for (int i = 21; i < rawCount; i++)
+                for (int i = 22; i < rawCount; i++)
                 {
                     if (_mappedRawButtonIndices != null && _mappedRawButtonIndices.Contains(i))
                         continue;
@@ -1229,14 +1234,15 @@ namespace PadForge.Engine
                 10 => SDL_GAMEPAD_BUTTON_GUIDE,
                 11 => SDL_GAMEPAD_BUTTON_MISC1,
                 12 => SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1,
-                13 => SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2,
-                14 => SDL_GAMEPAD_BUTTON_LEFT_PADDLE1,
+                13 => SDL_GAMEPAD_BUTTON_LEFT_PADDLE1,
+                14 => SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2,
                 15 => SDL_GAMEPAD_BUTTON_LEFT_PADDLE2,
-                16 => SDL_GAMEPAD_BUTTON_MISC2,
-                17 => SDL_GAMEPAD_BUTTON_MISC3,
-                18 => SDL_GAMEPAD_BUTTON_MISC4,
-                19 => SDL_GAMEPAD_BUTTON_MISC5,
-                20 => SDL_GAMEPAD_BUTTON_MISC6,
+                16 => SDL_GAMEPAD_BUTTON_TOUCHPAD,
+                17 => SDL_GAMEPAD_BUTTON_MISC2,
+                18 => SDL_GAMEPAD_BUTTON_MISC3,
+                19 => SDL_GAMEPAD_BUTTON_MISC4,
+                20 => SDL_GAMEPAD_BUTTON_MISC5,
+                21 => SDL_GAMEPAD_BUTTON_MISC6,
                 _ => -1
             };
         }

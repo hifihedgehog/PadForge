@@ -481,7 +481,7 @@ namespace PadForge.Common.Input
             // Touchpad-typed descriptors that resolve to a bool. Parallel to the
             // "Touchpad N Finger M X/Y/Down" descriptors consumed by Step 3's
             // touchpad output path; here we recognize:
-            //   "Touchpad N Click"          → state.Buttons[21] (SDL_GAMEPAD_BUTTON_TOUCHPAD;
+            //   "Touchpad N Click"          → state.Buttons[16] (SDL_GAMEPAD_BUTTON_TOUCHPAD;
             //                                  N>0 returns false until a per-device
             //                                  multi-touchpad-click extension lands)
             //   "Touchpad N Finger M Down"  → state.TouchpadDown[M] for finger M
@@ -2044,7 +2044,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Resolves bool-yielding touchpad descriptors against a CustomInputState.
         /// Recognized forms:
-        ///   "Touchpad N Click"          — state.Buttons[21] (SDL_GAMEPAD_BUTTON_TOUCHPAD;
+        ///   "Touchpad N Click"          — state.Buttons[16] (SDL_GAMEPAD_BUTTON_TOUCHPAD;
         ///                                  N is parsed but only N==0 currently
         ///                                  has a backing slot — multi-touchpad
         ///                                  devices route their extras through
@@ -2070,8 +2070,8 @@ namespace PadForge.Common.Input
             if (parts.Length == 3 && string.Equals(parts[2], "Click", StringComparison.Ordinal))
             {
                 if (touchpadIndex != 0) return false;
-                if (state.Buttons == null || state.Buttons.Length <= 21) return false;
-                return state.Buttons[21];
+                if (state.Buttons == null || state.Buttons.Length <= 16) return false;
+                return state.Buttons[16];
             }
 
             // Finger down: "Touchpad N Finger M Down" — 5 parts.

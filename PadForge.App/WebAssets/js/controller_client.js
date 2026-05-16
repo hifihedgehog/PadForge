@@ -330,21 +330,21 @@
     }
 
     function bindTouchpadClickZone(zone, ov) {
-        // Touchpad click rides Buttons[21] on the server side
-        // (SDL_GAMEPAD_BUTTON_TOUCHPAD's canonical slot). Sent as a
-        // standard button-press, same shape as every other web-controller
-        // button — no bespoke {type:"touchpad", click:bool} wire format
-        // anymore.
+        // Touchpad click rides Buttons[16] on the server side
+        // (SDL_GAMEPAD_BUTTON_TOUCHPAD's canonical slot — between paddles
+        // and Misc2-Misc6 per SDL's enum order). Sent as a standard
+        // button-press, same shape as every other web-controller button —
+        // no bespoke {type:"touchpad", click:bool} wire format anymore.
         function down(e) {
             e.preventDefault();
             zone.style.opacity = "1";
-            send({ type: "input", kind: "button", code: 21, value: 1 });
+            send({ type: "input", kind: "button", code: 16, value: 1 });
             haptic();
         }
         function up(e) {
             e.preventDefault();
             zone.style.opacity = "0";
-            send({ type: "input", kind: "button", code: 21, value: 0 });
+            send({ type: "input", kind: "button", code: 16, value: 0 });
         }
         zone.addEventListener("touchstart", down, { passive: false });
         zone.addEventListener("touchend", up, { passive: false });

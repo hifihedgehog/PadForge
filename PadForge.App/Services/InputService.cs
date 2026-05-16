@@ -4947,10 +4947,11 @@ namespace PadForge.Services
         /// Returns the button positions to surface in the Devices preview for
         /// <paramref name="ud"/>. When the live <c>ISdlInputDevice</c> is
         /// available, prefer its <c>SupportedButtonIndices</c> so SDL3 gamepads
-        /// only show the extended slots (paddles, Misc1-6) the device actually
-        /// has. Falls back to a dense 0..count-1 list (using RawButtonCount in
-        /// raw passthrough mode, otherwise CapButtonCount) when the device is
-        /// offline or doesn't expose a supported list.
+        /// only show the extended slots (Misc1, paddles, Touchpad, Misc2-6)
+        /// the device actually has. Falls back to a dense 0..count-1 list
+        /// (using RawButtonCount in raw passthrough mode, otherwise
+        /// CapButtonCount) when the device is offline or doesn't expose a
+        /// supported list.
         /// </summary>
         private static int[] ResolveButtonIndices(UserDevice ud)
         {

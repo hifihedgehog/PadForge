@@ -249,7 +249,17 @@ namespace PadForge.Engine
             // Check rumble support via properties system (replaces SDL_JoystickHasRumble).
             uint props = SDL_GetJoystickProperties(Joystick);
             HasRumble = props != 0 && SDL_GetBooleanProperty(props, SDL_PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN, false);
-            HasRumbleTriggers = props != 0 && SDL_GetBooleanProperty(props, SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN, false);
+            // Trigger rumble: SDL property OR'd with a hardware fact —
+            // every Microsoft Xbox One+ controller has impulse-trigger
+            // motors regardless of what SDL's current backend reports.
+            // PadForge writes those triggers via XboxImpulseHidWriter
+            // (raw HID) so we don't depend on SDL to expose the
+            // capability. The UI tab is gated on HasRumbleTriggers,
+            // so this also unblocks the tab whenever the controller is
+            // connected.
+            HasRumbleTriggers =
+                (props != 0 && SDL_GetBooleanProperty(props, SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN, false))
+                || XboxControllerIdentity.IsImpulseTriggerDevice(VendorId, ProductId);
 
             // Detect and enable motion sensors (gyro / accelerometer).
             if (GameController != IntPtr.Zero)

@@ -3189,6 +3189,8 @@ namespace PadForge.ViewModels
         public void RefreshCommands()
         {
             _testRumbleCommand?.NotifyCanExecuteChanged();
+            _testLeftImpulseTriggerCommand?.NotifyCanExecuteChanged();
+            _testRightImpulseTriggerCommand?.NotifyCanExecuteChanged();
             _removeMacroCommand?.NotifyCanExecuteChanged();
             _copySettingsCommand?.NotifyCanExecuteChanged();
             _pasteSettingsCommand?.NotifyCanExecuteChanged();

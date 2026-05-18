@@ -261,9 +261,23 @@ namespace PadForge.Common.Input
             if (ud == null || ud.ForceFeedbackState == null)
                 return;
 
-            // Only SDL devices with rumble or haptic FFB support.
-            if (ud.Device == null || (!ud.Device.HasRumble && !ud.Device.HasHaptic))
+            // Xbox One+ routing: those devices skip the SDL-rumble path
+            // entirely and write through XboxImpulseHidWriter (raw HID,
+            // 9-byte BT or 13-byte GIP report). SDL's HasRumble flag is
+            // ignored — every Microsoft Xbox One+ controller has rumble
+            // + impulse-trigger motors as a hardware fact. We still
+            // require ud.Device != null so we know the controller is
+            // currently connected.
+            bool isXboxImpulse = XboxControllerIdentity.IsImpulseTriggerDevice(ud.VendorId, ud.ProdId);
+            if (!isXboxImpulse)
+            {
+                if (ud.Device == null || (!ud.Device.HasRumble && !ud.Device.HasHaptic))
+                    return;
+            }
+            else if (ud.Device == null)
+            {
                 return;
+            }
 
             // ══════════════════════════════════════════════════════════════
             // SONY DS5 / DS4 SKIP — DO NOT REMOVE.
@@ -400,6 +414,23 @@ namespace PadForge.Common.Input
                 // Clear stale directional data from previous frame.
                 _combinedVibration.HasDirectionalData = false;
                 _combinedVibration.HasConditionData = false;
+            }
+
+            if (isXboxImpulse)
+            {
+                // Xbox One+ sole-writer path. PadForge writes the HID
+                // output report (9-byte BT or 13-byte GIP) directly to
+                // the physical controller. SDL_RumbleGamepad /
+                // SDL_RumbleGamepadTriggers are NOT called for these
+                // devices. Change-detection on ForceFeedbackState avoids
+                // CreateFile + WriteFile churn at polling cadence.
+                if (ud.ForceFeedbackState.TryRecordXboxImpulseSnapshot(
+                        combinedL, combinedR, combinedLT, combinedRT))
+                {
+                    XboxImpulseHidWriter.Write(
+                        ud, combinedL, combinedR, combinedLT, combinedRT);
+                }
+                return;
             }
 
             ud.ForceFeedbackState.SetDeviceForces(ud, ud.Device, firstPadSetting, _combinedVibration);

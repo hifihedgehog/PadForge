@@ -88,6 +88,45 @@ namespace PadForge.Engine
         public bool IsActive { get; private set; }
 
         // ─────────────────────────────────────────────
+        //  Xbox One+ skip-SDL path bookkeeping
+        // ─────────────────────────────────────────────
+
+        /// <summary>Used by <c>InputManager.Step2.ApplyForceFeedback</c> for
+        /// Xbox One+ controllers (Microsoft VID 0x045E + an impulse-trigger
+        /// PID — see <see cref="XboxControllerIdentity"/>). PadForge writes
+        /// those devices via raw HID through
+        /// <c>XboxImpulseHidWriter</c>, bypassing SDL entirely. This method
+        /// owns the change-detection bookkeeping that
+        /// <see cref="SetDeviceForces"/> normally provides for SDL devices:
+        /// returns true when motor values differ from the last write
+        /// (caller should issue a fresh HID write), false when they match
+        /// (skip the HID write entirely). The public motor-speed and
+        /// <see cref="IsActive"/> fields are always updated so the UI
+        /// activity meter and FFB tab reflect what was dispatched.</summary>
+        public bool TryRecordXboxImpulseSnapshot(
+            ushort leftMotor, ushort rightMotor,
+            ushort leftTrigger, ushort rightTrigger)
+        {
+            bool changed = leftMotor != _cachedLeftMotorSpeed
+                        || rightMotor != _cachedRightMotorSpeed
+                        || leftTrigger != _cachedLeftTriggerMotorSpeed
+                        || rightTrigger != _cachedRightTriggerMotorSpeed;
+
+            _cachedLeftMotorSpeed = leftMotor;
+            _cachedRightMotorSpeed = rightMotor;
+            _cachedLeftTriggerMotorSpeed = leftTrigger;
+            _cachedRightTriggerMotorSpeed = rightTrigger;
+
+            LeftMotorSpeed = leftMotor;
+            RightMotorSpeed = rightMotor;
+            LeftTriggerMotorSpeed = leftTrigger;
+            RightTriggerMotorSpeed = rightTrigger;
+            IsActive = leftMotor > 0 || rightMotor > 0 || leftTrigger > 0 || rightTrigger > 0;
+
+            return changed;
+        }
+
+        // ─────────────────────────────────────────────
         //  Stop
         // ─────────────────────────────────────────────
 

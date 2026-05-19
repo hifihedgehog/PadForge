@@ -406,7 +406,7 @@
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Reset Left Trigger</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Reset Right Trigger</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Audio Bass Trigger Rumble</value></data>
-  <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Drive the trigger motors from system audio bass. Has its own sensitivity and bass cutoff. Game-driven trigger force overrides while it's active.</value></data>
+  <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Drive the trigger motors from system audio bass. Game-driven trigger force overrides while it's active.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Drive trigger motors from audio</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Pad_AudioTriggerRumble_Cutoff" xml:space="preserve"><value>Bass Cutoff (Hz)</value></data>

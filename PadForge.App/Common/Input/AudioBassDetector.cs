@@ -22,8 +22,15 @@ namespace PadForge.Common.Input
         private readonly float[] _filterStates = new float[FilterOrder];
         private float _alpha;
 
+        // Parallel filter chain for the trigger-motor audio rumble path,
+        // with its own sensitivity + cutoff so the Impulse Triggers tab
+        // is independent of Force Feedback's Audio Bass Rumble settings.
+        private readonly float[] _triggerFilterStates = new float[FilterOrder];
+        private float _triggerAlpha;
+
         // Envelope follower output — the bass energy value (0.0–1.0).
         private volatile float _bassEnergy;
+        private volatile float _triggerBassEnergy;
         // Pre-filter full-spectrum peak (0.0–1.0). Computed in the same
         // OnDataAvailable pass as the bass-filtered RMS, but BEFORE the
         // 8th-order IIR low-pass touches the samples — so audio-to-LED
@@ -35,6 +42,8 @@ namespace PadForge.Common.Input
         // User-configurable parameters.
         private float _sensitivity = 4f;
         private float _cutoffHz = 80f;
+        private float _triggerSensitivity = 4f;
+        private float _triggerCutoffHz = 80f;
         private float _leftMotorScale = 1f;
         private float _rightMotorScale = 0.5f;
 
@@ -57,6 +66,14 @@ namespace PadForge.Common.Input
         /// <summary>Motor value as ushort (0–65535).</summary>
         public ushort MotorValue => (ushort)(_bassEnergy * 65535f);
 
+        /// <summary>Trigger-path bass energy (0.0–1.0). Independent of the
+        /// main-motor path; uses <see cref="TriggerSensitivity"/> and
+        /// <see cref="TriggerCutoffHz"/>.</summary>
+        public float TriggerBassEnergy => _triggerBassEnergy;
+
+        /// <summary>Trigger-path motor value as ushort (0–65535).</summary>
+        public ushort TriggerMotorValue => (ushort)(_triggerBassEnergy * 65535f);
+
         /// <summary>Sensitivity multiplier (1.0–20.0). Default 4.0.</summary>
         public float Sensitivity
         {
@@ -73,6 +90,22 @@ namespace PadForge.Common.Input
                 _cutoffHz = Math.Clamp(value, 20f, 200f);
                 // Alpha is recalculated on next DataAvailable if sample rate is known.
             }
+        }
+
+        /// <summary>Sensitivity multiplier for the trigger-path bass
+        /// detector (1.0–20.0). Default 4.0.</summary>
+        public float TriggerSensitivity
+        {
+            get => _triggerSensitivity;
+            set => _triggerSensitivity = Math.Clamp(value, 1f, 20f);
+        }
+
+        /// <summary>Low-pass filter cutoff for the trigger-path bass
+        /// detector, in Hz (20–200). Default 80.</summary>
+        public float TriggerCutoffHz
+        {
+            get => _triggerCutoffHz;
+            set => _triggerCutoffHz = Math.Clamp(value, 20f, 200f);
         }
 
         /// <summary>Left motor scale (0.0–1.0). Default 1.0.</summary>
@@ -123,6 +156,7 @@ namespace PadForge.Common.Input
             }
 
             _bassEnergy = 0f;
+            _triggerBassEnergy = 0f;
             _fullSpectrumPeak = 0f;
         }
 
@@ -139,6 +173,12 @@ namespace PadForge.Common.Input
                     _bassEnergy = current * 0.95f;
                 else
                     _bassEnergy = 0f;
+
+                float triggerCurrent = _triggerBassEnergy;
+                if (triggerCurrent > 0.001f)
+                    _triggerBassEnergy = triggerCurrent * 0.95f;
+                else
+                    _triggerBassEnergy = 0f;
 
                 float currentPeak = _fullSpectrumPeak;
                 if (currentPeak > 0.001f)
@@ -158,6 +198,7 @@ namespace PadForge.Common.Input
                 int sampleRate = _capture.WaveFormat.SampleRate;
                 RecalcAlpha(sampleRate);
                 Array.Clear(_filterStates);
+                Array.Clear(_triggerFilterStates);
 
                 _capture.DataAvailable += OnDataAvailable;
                 _capture.RecordingStopped += OnRecordingStopped;
@@ -194,6 +235,8 @@ namespace PadForge.Common.Input
         {
             double twoPiCutoff = 2.0 * Math.PI * _cutoffHz;
             _alpha = (float)(twoPiCutoff / (twoPiCutoff + sampleRate));
+            double twoPiTriggerCutoff = 2.0 * Math.PI * _triggerCutoffHz;
+            _triggerAlpha = (float)(twoPiTriggerCutoff / (twoPiTriggerCutoff + sampleRate));
         }
 
         // ─── WASAPI callbacks ───
@@ -209,7 +252,7 @@ namespace PadForge.Common.Input
             int frameCount = floatSpan.Length / channels;
             if (frameCount == 0) return;
 
-            // Recalculate alpha if cutoff changed.
+            // Recalculate alpha if cutoff changed (main + trigger paths).
             int sr = _capture?.WaveFormat?.SampleRate ?? 48000;
             float currentAlpha = _alpha;
             {
@@ -221,13 +264,28 @@ namespace PadForge.Common.Input
                     currentAlpha = expectedAlpha;
                 }
             }
+            float currentTriggerAlpha = _triggerAlpha;
+            {
+                double twoPiTriggerCutoff = 2.0 * Math.PI * _triggerCutoffHz;
+                float expectedTriggerAlpha = (float)(twoPiTriggerCutoff / (twoPiTriggerCutoff + sr));
+                if (Math.Abs(expectedTriggerAlpha - currentTriggerAlpha) > 0.0001f)
+                {
+                    _triggerAlpha = expectedTriggerAlpha;
+                    currentTriggerAlpha = expectedTriggerAlpha;
+                }
+            }
 
             // Copy filter states to locals for the hot loop.
             Span<float> fs = stackalloc float[FilterOrder];
+            Span<float> tfs = stackalloc float[FilterOrder];
             for (int s = 0; s < FilterOrder; s++)
+            {
                 fs[s] = _filterStates[s];
+                tfs[s] = _triggerFilterStates[s];
+            }
 
             float sumSq = 0f;
+            float triggerSumSq = 0f;
             float fullPeak = 0f;
 
             for (int i = 0; i < floatSpan.Length; i += channels)
@@ -247,31 +305,46 @@ namespace PadForge.Common.Input
                 if (absSample > fullPeak)
                     fullPeak = absSample;
 
-                // 8th-order cascaded single-pole IIR low-pass (48dB/octave).
+                // 8th-order cascaded single-pole IIR low-pass (48dB/octave) — main.
                 fs[0] += currentAlpha * (sample - fs[0]);
                 for (int s = 1; s < FilterOrder; s++)
                     fs[s] += currentAlpha * (fs[s - 1] - fs[s]);
 
                 sumSq += fs[FilterOrder - 1] * fs[FilterOrder - 1];
+
+                // Parallel filter chain — trigger path, own cutoff.
+                tfs[0] += currentTriggerAlpha * (sample - tfs[0]);
+                for (int s = 1; s < FilterOrder; s++)
+                    tfs[s] += currentTriggerAlpha * (tfs[s - 1] - tfs[s]);
+
+                triggerSumSq += tfs[FilterOrder - 1] * tfs[FilterOrder - 1];
             }
 
             _fullSpectrumPeak = fullPeak;
 
-            // Write filter states back.
+            // Write filter states back (both chains).
             for (int s = 0; s < FilterOrder; s++)
+            {
                 _filterStates[s] = fs[s];
+                _triggerFilterStates[s] = tfs[s];
+            }
 
             // RMS of filtered samples.
             float rms = MathF.Sqrt(sumSq / frameCount);
+            float triggerRms = MathF.Sqrt(triggerSumSq / frameCount);
 
             // Scale by sensitivity, clamp to [0, 1].
             float scaled = Math.Clamp(rms * _sensitivity, 0f, 1f);
+            float triggerScaled = Math.Clamp(triggerRms * _triggerSensitivity, 0f, 1f);
 
-            // Envelope follower: fast attack, slow decay.
+            // Envelope follower: fast attack, slow decay (per chain).
             float current = _bassEnergy;
             float coeff = scaled > current ? AttackCoeff : DecayCoeff;
-            float smoothed = current + coeff * (scaled - current);
-            _bassEnergy = smoothed;
+            _bassEnergy = current + coeff * (scaled - current);
+
+            float triggerCurrent = _triggerBassEnergy;
+            float triggerCoeff = triggerScaled > triggerCurrent ? AttackCoeff : DecayCoeff;
+            _triggerBassEnergy = triggerCurrent + triggerCoeff * (triggerScaled - triggerCurrent);
 
             Interlocked.Exchange(ref _lastCallbackTick, Environment.TickCount64);
         }
@@ -311,7 +384,9 @@ namespace PadForge.Common.Input
                 {
                     StopCapture();
                     Array.Clear(_filterStates);
+                    Array.Clear(_triggerFilterStates);
                     _bassEnergy = 0f;
+                    _triggerBassEnergy = 0f;
                     StartCapture();
                 }
             });

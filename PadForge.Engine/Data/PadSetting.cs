@@ -307,11 +307,18 @@ namespace PadForge.Engine.Data
         [XmlElement] public string ConstantTriggerForceRight { get; set; } = "0";
 
         /// <summary>Enable audio-driven impulse-trigger rumble
-        /// (Xbox One+). "0" = off (default), "1" = on. Shares the
-        /// detector + sensitivity / cutoff with
-        /// <see cref="AudioRumbleEnabled"/>; only the per-trigger
-        /// scales are independent.</summary>
+        /// (Xbox One+). "0" = off (default), "1" = on. Runs a parallel
+        /// filter chain inside <see cref="Common.Input.AudioBassDetector"/>
+        /// with its own sensitivity / cutoff so it stays independent of
+        /// the Force Feedback tab's Audio Bass Rumble.</summary>
         [XmlElement] public string AudioRumbleTriggersEnabled { get; set; } = "0";
+
+        /// <summary>Audio-trigger rumble sensitivity (1–20, default 4).</summary>
+        [XmlElement] public string AudioRumbleTriggersSensitivity { get; set; } = "4";
+
+        /// <summary>Audio-trigger rumble bass cutoff frequency in Hz
+        /// (40–200, default 80).</summary>
+        [XmlElement] public string AudioRumbleTriggersCutoffHz { get; set; } = "80";
 
         /// <summary>Audio-trigger rumble: left trigger motor scale
         /// (0..100%).</summary>
@@ -1020,6 +1027,8 @@ namespace PadForge.Engine.Data
             sb.Append(ConstantTriggerForceLeft).Append('|');
             sb.Append(ConstantTriggerForceRight).Append('|');
             sb.Append(AudioRumbleTriggersEnabled).Append('|');
+            sb.Append(AudioRumbleTriggersSensitivity).Append('|');
+            sb.Append(AudioRumbleTriggersCutoffHz).Append('|');
             sb.Append(AudioRumbleLeftTrigger).Append('|');
             sb.Append(AudioRumbleRightTrigger).Append('|');
 
@@ -1343,6 +1352,7 @@ namespace PadForge.Engine.Data
             nameof(ConstantTriggerForceEnabled),
             nameof(ConstantTriggerForceLeft), nameof(ConstantTriggerForceRight),
             nameof(AudioRumbleTriggersEnabled),
+            nameof(AudioRumbleTriggersSensitivity), nameof(AudioRumbleTriggersCutoffHz),
             nameof(AudioRumbleLeftTrigger), nameof(AudioRumbleRightTrigger),
             // Audio bass rumble
             nameof(AudioRumbleEnabled), nameof(AudioRumbleSensitivity),

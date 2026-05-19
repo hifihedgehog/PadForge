@@ -265,6 +265,13 @@ namespace PadForge.Engine.Data
         [XmlElement] public string RightMotorStrength { get; set; } = "100";
 
         /// <summary>
+        /// Overall impulse-trigger gain (0–100%, Xbox One+ controllers).
+        /// Multiplied with per-trigger strength before reaching the
+        /// physical motor — mirrors <see cref="ForceOverall"/>.
+        /// </summary>
+        [XmlElement] public string ImpulseOverallGain { get; set; } = "100";
+
+        /// <summary>
         /// Left impulse trigger motor strength (0–100%, Xbox One+ controllers).
         /// </summary>
         [XmlElement] public string ImpulseLeftStrength { get; set; } = "100";
@@ -279,6 +286,40 @@ namespace PadForge.Engine.Data
         /// "0" = no swap, "1" = swap.
         /// </summary>
         [XmlElement] public string ImpulseSwapTriggers { get; set; } = "0";
+
+        /// <summary>Enable constant-trigger-force override (Xbox One+).
+        /// "0" = off (default), "1" = on. Mirrors
+        /// <see cref="ConstantForceEnabled"/> for impulse-trigger
+        /// motors with the same override-with-resume semantics: when
+        /// game/macro trigger rumble is silent the user-set
+        /// <see cref="ConstantTriggerForceLeft"/> /
+        /// <see cref="ConstantTriggerForceRight"/> values drive the
+        /// motors; on the next non-zero game-trigger tick the
+        /// constant force pauses.</summary>
+        [XmlElement] public string ConstantTriggerForceEnabled { get; set; } = "0";
+
+        /// <summary>Constant left-trigger motor magnitude (0..1 as
+        /// InvariantCulture string).</summary>
+        [XmlElement] public string ConstantTriggerForceLeft { get; set; } = "0";
+
+        /// <summary>Constant right-trigger motor magnitude (0..1 as
+        /// InvariantCulture string).</summary>
+        [XmlElement] public string ConstantTriggerForceRight { get; set; } = "0";
+
+        /// <summary>Enable audio-driven impulse-trigger rumble
+        /// (Xbox One+). "0" = off (default), "1" = on. Shares the
+        /// detector + sensitivity / cutoff with
+        /// <see cref="AudioRumbleEnabled"/>; only the per-trigger
+        /// scales are independent.</summary>
+        [XmlElement] public string AudioRumbleTriggersEnabled { get; set; } = "0";
+
+        /// <summary>Audio-trigger rumble: left trigger motor scale
+        /// (0..100%).</summary>
+        [XmlElement] public string AudioRumbleLeftTrigger { get; set; } = "100";
+
+        /// <summary>Audio-trigger rumble: right trigger motor scale
+        /// (0..100%).</summary>
+        [XmlElement] public string AudioRumbleRightTrigger { get; set; } = "100";
 
         /// <summary>Enable audio bass rumble for this device. "0" = off (default), "1" = on.</summary>
         [XmlElement] public string AudioRumbleEnabled { get; set; } = "0";
@@ -971,9 +1012,16 @@ namespace PadForge.Engine.Data
             sb.Append(ForceSwapMotor); sb.Append('|');
             sb.Append(LeftMotorStrength); sb.Append('|');
             sb.Append(RightMotorStrength); sb.Append('|');
-            sb.Append(ImpulseLeftStrength); sb.Append('|');
-            sb.Append(ImpulseRightStrength); sb.Append('|');
-            sb.Append(ImpulseSwapTriggers); sb.Append('|');
+            sb.Append(ImpulseOverallGain).Append('|');
+            sb.Append(ImpulseLeftStrength).Append('|');
+            sb.Append(ImpulseRightStrength).Append('|');
+            sb.Append(ImpulseSwapTriggers).Append('|');
+            sb.Append(ConstantTriggerForceEnabled).Append('|');
+            sb.Append(ConstantTriggerForceLeft).Append('|');
+            sb.Append(ConstantTriggerForceRight).Append('|');
+            sb.Append(AudioRumbleTriggersEnabled).Append('|');
+            sb.Append(AudioRumbleLeftTrigger).Append('|');
+            sb.Append(AudioRumbleRightTrigger).Append('|');
 
             // Audio bass rumble
             sb.Append(AudioRumbleEnabled); sb.Append('|');
@@ -1289,8 +1337,13 @@ namespace PadForge.Engine.Data
             nameof(ForceType), nameof(ForceOverall), nameof(ForceSwapMotor),
             nameof(LeftMotorStrength), nameof(RightMotorStrength),
             // Impulse trigger motors (Xbox One+)
+            nameof(ImpulseOverallGain),
             nameof(ImpulseLeftStrength), nameof(ImpulseRightStrength),
             nameof(ImpulseSwapTriggers),
+            nameof(ConstantTriggerForceEnabled),
+            nameof(ConstantTriggerForceLeft), nameof(ConstantTriggerForceRight),
+            nameof(AudioRumbleTriggersEnabled),
+            nameof(AudioRumbleLeftTrigger), nameof(AudioRumbleRightTrigger),
             // Audio bass rumble
             nameof(AudioRumbleEnabled), nameof(AudioRumbleSensitivity),
             nameof(AudioRumbleCutoffHz), nameof(AudioRumbleLeftMotor), nameof(AudioRumbleRightMotor),

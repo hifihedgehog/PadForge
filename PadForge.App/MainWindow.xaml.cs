@@ -713,13 +713,18 @@ namespace PadForge
                         nameof(PadViewModel.LeftTriggerMaxRange) or nameof(PadViewModel.RightTriggerMaxRange) or
                         nameof(PadViewModel.ForceOverallGain) or nameof(PadViewModel.LeftMotorStrength) or
                         nameof(PadViewModel.RightMotorStrength) or nameof(PadViewModel.SwapMotors) or
+                        nameof(PadViewModel.ImpulseOverallGain) or
                         nameof(PadViewModel.ImpulseLeftStrength) or nameof(PadViewModel.ImpulseRightStrength) or
                         nameof(PadViewModel.ImpulseSwapTriggers) or
                         nameof(PadViewModel.AudioRumbleEnabled) or nameof(PadViewModel.AudioRumbleSensitivity) or
                         nameof(PadViewModel.AudioRumbleCutoffHz) or nameof(PadViewModel.AudioRumbleLeftMotor) or
                         nameof(PadViewModel.AudioRumbleRightMotor) or
+                        nameof(PadViewModel.AudioRumbleTriggersEnabled) or
+                        nameof(PadViewModel.AudioRumbleLeftTrigger) or nameof(PadViewModel.AudioRumbleRightTrigger) or
                         nameof(PadViewModel.ConstantForceEnabled) or
                         nameof(PadViewModel.ConstantForceX) or nameof(PadViewModel.ConstantForceY) or
+                        nameof(PadViewModel.ConstantTriggerForceEnabled) or
+                        nameof(PadViewModel.ConstantTriggerForceLeft) or nameof(PadViewModel.ConstantTriggerForceRight) or
                         nameof(PadViewModel.OutputType) or
                         // Gyro tab — v3.3 + JoyShockMapper-canon fields all per-(device, slot).
                         nameof(PadViewModel.GyroSensitivityH) or nameof(PadViewModel.GyroSensitivityV) or

@@ -720,6 +720,7 @@ namespace PadForge
                         nameof(PadViewModel.AudioRumbleCutoffHz) or nameof(PadViewModel.AudioRumbleLeftMotor) or
                         nameof(PadViewModel.AudioRumbleRightMotor) or
                         nameof(PadViewModel.AudioRumbleTriggersEnabled) or
+                        nameof(PadViewModel.AudioRumbleTriggersSensitivity) or nameof(PadViewModel.AudioRumbleTriggersCutoffHz) or
                         nameof(PadViewModel.AudioRumbleLeftTrigger) or nameof(PadViewModel.AudioRumbleRightTrigger) or
                         nameof(PadViewModel.ConstantForceEnabled) or
                         nameof(PadViewModel.ConstantForceX) or nameof(PadViewModel.ConstantForceY) or

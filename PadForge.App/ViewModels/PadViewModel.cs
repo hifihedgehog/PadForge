@@ -1669,13 +1669,28 @@ namespace PadForge.ViewModels
 
         // ── Audio Trigger Rumble (Xbox One+ trigger-motor analogue of
         //    Audio Bass Rumble). Shares the slot's
-        //    AudioBassDetector + Sensitivity + CutoffHz with the main
-        //    audio rumble; only the per-trigger scales are independent.
+        //    AudioBassDetector but uses its own parallel filter chain
+        //    with independent Sensitivity / CutoffHz. Per-trigger
+        //    scales also independent.
         private bool _audioRumbleTriggersEnabled;
         public bool AudioRumbleTriggersEnabled
         {
             get => _audioRumbleTriggersEnabled;
             set => SetProperty(ref _audioRumbleTriggersEnabled, value);
+        }
+
+        private double _audioRumbleTriggersSensitivity = 4.0;
+        public double AudioRumbleTriggersSensitivity
+        {
+            get => _audioRumbleTriggersSensitivity;
+            set => SetProperty(ref _audioRumbleTriggersSensitivity, Math.Clamp(value, 1.0, 20.0));
+        }
+
+        private double _audioRumbleTriggersCutoffHz = 80.0;
+        public double AudioRumbleTriggersCutoffHz
+        {
+            get => _audioRumbleTriggersCutoffHz;
+            set => SetProperty(ref _audioRumbleTriggersCutoffHz, Math.Clamp(value, 20.0, 200.0));
         }
 
         private int _audioRumbleLeftTrigger = 100;
@@ -1690,6 +1705,13 @@ namespace PadForge.ViewModels
         {
             get => _audioRumbleRightTrigger;
             set => SetProperty(ref _audioRumbleRightTrigger, Math.Clamp(value, 0, 100));
+        }
+
+        private double _audioRumbleTriggersLevelMeter;
+        public double AudioRumbleTriggersLevelMeter
+        {
+            get => _audioRumbleTriggersLevelMeter;
+            set => SetProperty(ref _audioRumbleTriggersLevelMeter, value);
         }
 
         private double _deviceLeftTriggerMotorDisplay;
@@ -1709,6 +1731,8 @@ namespace PadForge.ViewModels
             ConstantTriggerForceLeft = 0;
             ConstantTriggerForceRight = 0;
             AudioRumbleTriggersEnabled = false;
+            AudioRumbleTriggersSensitivity = 4.0;
+            AudioRumbleTriggersCutoffHz = 80.0;
             AudioRumbleLeftTrigger = 100;
             AudioRumbleRightTrigger = 100;
         });
@@ -1739,10 +1763,16 @@ namespace PadForge.ViewModels
         public ICommand ResetAudioTriggerRumbleAllCommand => _resetAudioTriggerRumbleAllCommand ??= new RelayCommand(() =>
         {
             AudioRumbleTriggersEnabled = false;
+            AudioRumbleTriggersSensitivity = 4.0;
+            AudioRumbleTriggersCutoffHz = 80.0;
             AudioRumbleLeftTrigger = 100;
             AudioRumbleRightTrigger = 100;
         });
 
+        private ICommand _resetAudioTriggerSensitivityCommand;
+        public ICommand ResetAudioTriggerSensitivityCommand => _resetAudioTriggerSensitivityCommand ??= new RelayCommand(() => AudioRumbleTriggersSensitivity = 4.0);
+        private ICommand _resetAudioTriggerCutoffCommand;
+        public ICommand ResetAudioTriggerCutoffCommand => _resetAudioTriggerCutoffCommand ??= new RelayCommand(() => AudioRumbleTriggersCutoffHz = 80.0);
         private ICommand _resetAudioLeftTriggerCommand;
         public ICommand ResetAudioLeftTriggerCommand => _resetAudioLeftTriggerCommand ??= new RelayCommand(() => AudioRumbleLeftTrigger = 100);
         private ICommand _resetAudioRightTriggerCommand;
@@ -1876,6 +1906,8 @@ namespace PadForge.ViewModels
             ConstantTriggerForceLeft = 0;
             ConstantTriggerForceRight = 0;
             AudioRumbleTriggersEnabled = false;
+            AudioRumbleTriggersSensitivity = 4.0;
+            AudioRumbleTriggersCutoffHz = 80.0;
             AudioRumbleLeftTrigger = 100;
             AudioRumbleRightTrigger = 100;
             ConstantForceEnabled = false;

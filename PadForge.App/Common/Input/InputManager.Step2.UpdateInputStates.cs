@@ -474,13 +474,23 @@ namespace PadForge.Common.Input
         {
             var settings = SettingsManager.UserSettings;
             if (settings == null) return;
+
+            // Two independent walks: first slot with main-motor audio
+            // rumble enabled drives the detector's main filter chain;
+            // first slot with audio-trigger rumble enabled drives the
+            // detector's parallel trigger filter chain. The two paths
+            // are decoupled so the Impulse Triggers tab does not
+            // inherit Force Feedback's bass cutoff / sensitivity.
+            bool mainSet = false;
+            bool triggerSet = false;
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {
+                if (mainSet && triggerSet) break;
                 Guid selected = SelectedDeviceGuids[padIndex];
                 var slotSettings = settings.FindByPadIndex(padIndex);
                 if (slotSettings == null || slotSettings.Count == 0) continue;
                 // Prefer SelectedMappedDevice's PadSetting (matches the
-                // FFB tab the user is editing); fall back to the first
+                // tab the user is editing); fall back to the first
                 // mapped device on the slot.
                 PadSetting ps = null;
                 if (selected != Guid.Empty)
@@ -496,14 +506,19 @@ namespace PadForge.Common.Input
                 }
                 if (ps == null) ps = slotSettings[0].GetPadSetting();
                 if (ps == null) continue;
-                // Either main-motor audio rumble OR audio-trigger rumble
-                // active counts as a wakeup for the detector — they share
-                // the same sensitivity / cutoff and the same MotorValue.
-                if (ps.AudioRumbleEnabled != "1" && ps.AudioRumbleTriggersEnabled != "1") continue;
 
-                detector.Sensitivity = TryParseFloat(ps.AudioRumbleSensitivity, 4f);
-                detector.CutoffHz = TryParseFloat(ps.AudioRumbleCutoffHz, 80f);
-                return; // first audio-enabled slot wins
+                if (!mainSet && ps.AudioRumbleEnabled == "1")
+                {
+                    detector.Sensitivity = TryParseFloat(ps.AudioRumbleSensitivity, 4f);
+                    detector.CutoffHz = TryParseFloat(ps.AudioRumbleCutoffHz, 80f);
+                    mainSet = true;
+                }
+                if (!triggerSet && ps.AudioRumbleTriggersEnabled == "1")
+                {
+                    detector.TriggerSensitivity = TryParseFloat(ps.AudioRumbleTriggersSensitivity, 4f);
+                    detector.TriggerCutoffHz = TryParseFloat(ps.AudioRumbleTriggersCutoffHz, 80f);
+                    triggerSet = true;
+                }
             }
         }
 
@@ -725,7 +740,10 @@ namespace PadForge.Common.Input
             var detector = AudioBassDetector;
             if (detector != null && ps != null && ps.AudioRumbleTriggersEnabled == "1")
             {
-                ushort motorVal = detector.MotorValue;
+                // Trigger path reads the detector's parallel filter chain
+                // (TriggerMotorValue), driven by AudioRumbleTriggers*
+                // settings — independent of the main-motor path.
+                ushort motorVal = detector.TriggerMotorValue;
                 float leftScale = TryParseFloat(ps.AudioRumbleLeftTrigger, 100f) / 100f;
                 float rightScale = TryParseFloat(ps.AudioRumbleRightTrigger, 100f) / 100f;
                 ushort audioL = (ushort)(motorVal * leftScale);

@@ -5316,6 +5316,28 @@
                                           Margin="0,0,0,12"/>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding AudioRumbleTriggersEnabled}">
+                                    <TextBlock Text="{Binding Pad_AudioTriggerRumble_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding AudioRumbleTriggersSensitivity, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}"
+                                            Minimum="1" Maximum="20" TickFrequency="0.1"/>
+                                    <TextBox Text="{Binding AudioRumbleTriggersSensitivity, Mode=TwoWay, StringFormat=F1, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <Button Command="{Binding ResetAudioTriggerSensitivityCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetAudioTriggerSensitivity, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding AudioRumbleTriggersEnabled}">
+                                    <TextBlock Text="{Binding Pad_AudioTriggerRumble_Cutoff, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding AudioRumbleTriggersCutoffHz, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}"
+                                            Minimum="20" Maximum="200" TickFrequency="1"/>
+                                    <TextBox Text="{Binding AudioRumbleTriggersCutoffHz, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <Button Command="{Binding ResetAudioTriggerCutoffCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetAudioTriggerCutoff, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding AudioRumbleTriggersEnabled}">
                                     <TextBlock Text="{Binding Pad_AudioTriggerRumble_LeftTrigger, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <Slider Value="{Binding AudioRumbleLeftTrigger, Mode=TwoWay}"
                                             Style="{StaticResource DzSlider}"/>
@@ -5335,6 +5357,13 @@
                                     <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                     <Button Command="{Binding ResetAudioRightTriggerCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetAudioRightTrigger, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,4,0,0" IsEnabled="{Binding AudioRumbleTriggersEnabled}">
+                                    <TextBlock Text="{Binding Pad_AudioTriggerRumble_Level, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ProgressBar Value="{Binding AudioRumbleTriggersLevelMeter, Mode=OneWay}"
+                                                 Minimum="0" Maximum="1"
+                                                 Width="200" Height="16" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

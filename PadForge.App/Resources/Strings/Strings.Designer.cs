@@ -425,9 +425,14 @@ public class Strings : INotifyPropertyChanged
     public string Pad_AudioTriggerRumble_Header => Get("Pad_AudioTriggerRumble_Header");
     public string Pad_AudioTriggerRumble_Description => Get("Pad_AudioTriggerRumble_Description");
     public string Pad_AudioTriggerRumble_Toggle => Get("Pad_AudioTriggerRumble_Toggle");
+    public string Pad_AudioTriggerRumble_Sensitivity => Get("Pad_AudioTriggerRumble_Sensitivity");
+    public string Pad_AudioTriggerRumble_Cutoff => Get("Pad_AudioTriggerRumble_Cutoff");
     public string Pad_AudioTriggerRumble_LeftTrigger => Get("Pad_AudioTriggerRumble_LeftTrigger");
     public string Pad_AudioTriggerRumble_RightTrigger => Get("Pad_AudioTriggerRumble_RightTrigger");
+    public string Pad_AudioTriggerRumble_Level => Get("Pad_AudioTriggerRumble_Level");
     public string Pad_ResetAudioTriggerRumble => Get("Pad_ResetAudioTriggerRumble");
+    public string Pad_ResetAudioTriggerSensitivity => Get("Pad_ResetAudioTriggerSensitivity");
+    public string Pad_ResetAudioTriggerCutoff => Get("Pad_ResetAudioTriggerCutoff");
     public string Pad_ResetAudioLeftTrigger => Get("Pad_ResetAudioLeftTrigger");
     public string Pad_ResetAudioRightTrigger => Get("Pad_ResetAudioRightTrigger");
     public string Pad_AdaptiveTriggers => Get("Pad_AdaptiveTriggers");

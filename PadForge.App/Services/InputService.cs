@@ -994,10 +994,14 @@ namespace PadForge.Services
             if (_audioBassDetector != null)
             {
                 double level = _audioBassDetector.BassEnergy;
+                double triggerLevel = _audioBassDetector.TriggerBassEnergy;
                 for (int i = 0; i < _mainVm.Pads.Count; i++)
                 {
-                    if (SettingsManager.SlotCreated[i] && _mainVm.Pads[i].AudioRumbleEnabled)
+                    if (!SettingsManager.SlotCreated[i]) continue;
+                    if (_mainVm.Pads[i].AudioRumbleEnabled)
                         _mainVm.Pads[i].AudioRumbleLevelMeter = level;
+                    if (_mainVm.Pads[i].AudioRumbleTriggersEnabled)
+                        _mainVm.Pads[i].AudioRumbleTriggersLevelMeter = triggerLevel;
                 }
             }
 
@@ -1706,7 +1710,7 @@ namespace PadForge.Services
                     _inputManager._perDevicePlayStationConfigs[i] = padVm.PerDevicePlayStationConfigs;
                 }
 
-                if (SettingsManager.SlotCreated[i] && padVm.AudioRumbleEnabled)
+                if (SettingsManager.SlotCreated[i] && (padVm.AudioRumbleEnabled || padVm.AudioRumbleTriggersEnabled))
                     anyAudioRumble = true;
 
                 var selected = padVm.SelectedMappedDevice;
@@ -1887,6 +1891,8 @@ namespace PadForge.Services
             ps.ConstantTriggerForceLeft = padVm.ConstantTriggerForceLeft.ToString("F4", ic);
             ps.ConstantTriggerForceRight = padVm.ConstantTriggerForceRight.ToString("F4", ic);
             ps.AudioRumbleTriggersEnabled = padVm.AudioRumbleTriggersEnabled ? "1" : "0";
+            ps.AudioRumbleTriggersSensitivity = padVm.AudioRumbleTriggersSensitivity.ToString("F1", ic);
+            ps.AudioRumbleTriggersCutoffHz = padVm.AudioRumbleTriggersCutoffHz.ToString("F0", ic);
             ps.AudioRumbleLeftTrigger = padVm.AudioRumbleLeftTrigger.ToString();
             ps.AudioRumbleRightTrigger = padVm.AudioRumbleRightTrigger.ToString();
 
@@ -2142,6 +2148,8 @@ namespace PadForge.Services
             padVm.ConstantTriggerForceLeft = TryParseDouble(ps.ConstantTriggerForceLeft, 0.0);
             padVm.ConstantTriggerForceRight = TryParseDouble(ps.ConstantTriggerForceRight, 0.0);
             padVm.AudioRumbleTriggersEnabled = ps.AudioRumbleTriggersEnabled == "1";
+            padVm.AudioRumbleTriggersSensitivity = TryParseDouble(ps.AudioRumbleTriggersSensitivity, 4.0);
+            padVm.AudioRumbleTriggersCutoffHz = TryParseDouble(ps.AudioRumbleTriggersCutoffHz, 80.0);
             padVm.AudioRumbleLeftTrigger = TryParseInt(ps.AudioRumbleLeftTrigger, 100);
             padVm.AudioRumbleRightTrigger = TryParseInt(ps.AudioRumbleRightTrigger, 100);
 
@@ -3654,7 +3662,7 @@ namespace PadForge.Services
                         if (us.MapTo < 0 || us.MapTo >= InputManager.MaxPads) continue;
                         if (!SettingsManager.SlotCreated[us.MapTo]) continue;
                         var ps = us.GetPadSetting();
-                        if (ps != null && ps.AudioRumbleEnabled == "1")
+                        if (ps != null && (ps.AudioRumbleEnabled == "1" || ps.AudioRumbleTriggersEnabled == "1"))
                         {
                             anyEnabled = true;
                             break;

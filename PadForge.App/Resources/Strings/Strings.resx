@@ -384,7 +384,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse Triggers</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse Triggers</value></data>
-  <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Forwards per-trigger motor commands (Xbox Impulse Triggers) from the virtual controller to the assigned physical Xbox One, Elite, or Series controller. Game-driven trigger rumble passes through automatically; the controls below scale the magnitude per trigger.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Forwards per-trigger motor commands (Xbox Impulse Triggers) from the virtual controller to the assigned physical Xbox One, Elite, or Series controller. Game-driven trigger rumble passes through automatically. The controls below scale the magnitude per trigger.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Left Trigger</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Right Trigger</value></data>
   <data name="Pad_ImpulseTriggers_LeftStrength" xml:space="preserve"><value>Left Trigger Strength</value></data>
@@ -406,11 +406,16 @@
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Reset Left Trigger</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Reset Right Trigger</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Audio Bass Trigger Rumble</value></data>
-  <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Drive the trigger motors from system audio bass. Shares sensitivity and bass cutoff with Force Feedback's Audio Bass Rumble. Game-driven trigger force overrides while it's active.</value></data>
+  <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Drive the trigger motors from system audio bass. Has its own sensitivity and bass cutoff. Game-driven trigger force overrides while it's active.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Drive trigger motors from audio</value></data>
+  <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Pad_AudioTriggerRumble_Cutoff" xml:space="preserve"><value>Bass Cutoff (Hz)</value></data>
   <data name="Pad_AudioTriggerRumble_LeftTrigger" xml:space="preserve"><value>Left Trigger</value></data>
   <data name="Pad_AudioTriggerRumble_RightTrigger" xml:space="preserve"><value>Right Trigger</value></data>
+  <data name="Pad_AudioTriggerRumble_Level" xml:space="preserve"><value>Level</value></data>
   <data name="Pad_ResetAudioTriggerRumble" xml:space="preserve"><value>Reset Audio Trigger Rumble</value></data>
+  <data name="Pad_ResetAudioTriggerSensitivity" xml:space="preserve"><value>Reset Sensitivity</value></data>
+  <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>Reset Bass Cutoff</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Reset Left Trigger</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Reset Right Trigger</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->

@@ -1583,6 +1583,8 @@ namespace PadForge.Services
                 padVm.ConstantTriggerForceLeft = TryParseDouble(ps.ConstantTriggerForceLeft, 0.0);
                 padVm.ConstantTriggerForceRight = TryParseDouble(ps.ConstantTriggerForceRight, 0.0);
                 padVm.AudioRumbleTriggersEnabled = ps.AudioRumbleTriggersEnabled == "1";
+                padVm.AudioRumbleTriggersSensitivity = TryParseDouble(ps.AudioRumbleTriggersSensitivity, 4.0);
+                padVm.AudioRumbleTriggersCutoffHz = TryParseDouble(ps.AudioRumbleTriggersCutoffHz, 80.0);
                 padVm.AudioRumbleLeftTrigger = TryParseInt(ps.AudioRumbleLeftTrigger, 100);
                 padVm.AudioRumbleRightTrigger = TryParseInt(ps.AudioRumbleRightTrigger, 100);
 
@@ -2642,6 +2644,8 @@ namespace PadForge.Services
                     var ic = System.Globalization.CultureInfo.InvariantCulture;
                     ps.ConstantTriggerForceLeft = padVm.ConstantTriggerForceLeft.ToString("F4", ic);
                     ps.ConstantTriggerForceRight = padVm.ConstantTriggerForceRight.ToString("F4", ic);
+                    ps.AudioRumbleTriggersSensitivity = padVm.AudioRumbleTriggersSensitivity.ToString("F1", ic);
+                    ps.AudioRumbleTriggersCutoffHz = padVm.AudioRumbleTriggersCutoffHz.ToString("F0", ic);
 
                     // Write gyro tuning (per-(device, slot)).
                     ps.GyroSensitivityH = padVm.GyroSensitivityH.ToString(ic);
@@ -2805,6 +2809,8 @@ namespace PadForge.Services
                 padVm.AudioRumbleLeftMotor = 100;
                 padVm.AudioRumbleRightMotor = 100;
                 padVm.AudioRumbleTriggersEnabled = false;
+                padVm.AudioRumbleTriggersSensitivity = 4.0;
+                padVm.AudioRumbleTriggersCutoffHz = 80.0;
                 padVm.AudioRumbleLeftTrigger = 100;
                 padVm.AudioRumbleRightTrigger = 100;
                 padVm.ConstantForceEnabled = false;

@@ -394,8 +394,25 @@
   <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>Test Right Trigger</value></data>
   <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>Trigger motor activity</value></data>
   <data name="Pad_ResetImpulseTriggers" xml:space="preserve"><value>Reset Impulse Triggers</value></data>
-  <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Reset Left Trigger Strength</value></data>
-  <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Reset Right Trigger Strength</value></data>
+  <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Reset Overall Gain</value></data>
+  <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Reset Left Trigger</value></data>
+  <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Reset Right Trigger</value></data>
+  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Constant Trigger Force</value></data>
+  <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Apply a continuous force to each trigger motor until you toggle off. Game-driven trigger force from any source overrides while it's active and resumes when the game stops.</value></data>
+  <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Apply constant trigger force</value></data>
+  <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Left Trigger</value></data>
+  <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Right Trigger</value></data>
+  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Reset Constant Trigger Force</value></data>
+  <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Reset Left Trigger</value></data>
+  <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Reset Right Trigger</value></data>
+  <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Audio Bass Trigger Rumble</value></data>
+  <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Drive the trigger motors from system audio bass. Shares sensitivity and bass cutoff with Force Feedback's Audio Bass Rumble. Game-driven trigger force overrides while it's active.</value></data>
+  <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Drive trigger motors from audio</value></data>
+  <data name="Pad_AudioTriggerRumble_LeftTrigger" xml:space="preserve"><value>Left Trigger</value></data>
+  <data name="Pad_AudioTriggerRumble_RightTrigger" xml:space="preserve"><value>Right Trigger</value></data>
+  <data name="Pad_ResetAudioTriggerRumble" xml:space="preserve"><value>Reset Audio Trigger Rumble</value></data>
+  <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Reset Left Trigger</value></data>
+  <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Reset Right Trigger</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptive Triggers</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptive Triggers</value></data>

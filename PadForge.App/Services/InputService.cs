@@ -1879,9 +1879,16 @@ namespace PadForge.Services
             ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
 
             // Impulse triggers (Xbox One+).
+            ps.ImpulseOverallGain = padVm.ImpulseOverallGain.ToString();
             ps.ImpulseLeftStrength = padVm.ImpulseLeftStrength.ToString();
             ps.ImpulseRightStrength = padVm.ImpulseRightStrength.ToString();
             ps.ImpulseSwapTriggers = padVm.ImpulseSwapTriggers ? "1" : "0";
+            ps.ConstantTriggerForceEnabled = padVm.ConstantTriggerForceEnabled ? "1" : "0";
+            ps.ConstantTriggerForceLeft = padVm.ConstantTriggerForceLeft.ToString("F4", ic);
+            ps.ConstantTriggerForceRight = padVm.ConstantTriggerForceRight.ToString("F4", ic);
+            ps.AudioRumbleTriggersEnabled = padVm.AudioRumbleTriggersEnabled ? "1" : "0";
+            ps.AudioRumbleLeftTrigger = padVm.AudioRumbleLeftTrigger.ToString();
+            ps.AudioRumbleRightTrigger = padVm.AudioRumbleRightTrigger.ToString();
 
             // Audio bass rumble.
             ps.AudioRumbleEnabled = padVm.AudioRumbleEnabled ? "1" : "0";
@@ -2126,10 +2133,17 @@ namespace PadForge.Services
                 (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
 
             // Impulse triggers (Xbox One+).
+            padVm.ImpulseOverallGain = TryParseInt(ps.ImpulseOverallGain, 100);
             padVm.ImpulseLeftStrength = TryParseInt(ps.ImpulseLeftStrength, 100);
             padVm.ImpulseRightStrength = TryParseInt(ps.ImpulseRightStrength, 100);
             padVm.ImpulseSwapTriggers = ps.ImpulseSwapTriggers == "1" ||
                 (ps.ImpulseSwapTriggers ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
+            padVm.ConstantTriggerForceEnabled = ps.ConstantTriggerForceEnabled == "1";
+            padVm.ConstantTriggerForceLeft = TryParseDouble(ps.ConstantTriggerForceLeft, 0.0);
+            padVm.ConstantTriggerForceRight = TryParseDouble(ps.ConstantTriggerForceRight, 0.0);
+            padVm.AudioRumbleTriggersEnabled = ps.AudioRumbleTriggersEnabled == "1";
+            padVm.AudioRumbleLeftTrigger = TryParseInt(ps.AudioRumbleLeftTrigger, 100);
+            padVm.AudioRumbleRightTrigger = TryParseInt(ps.AudioRumbleRightTrigger, 100);
 
             // Audio bass rumble.
             padVm.AudioRumbleEnabled = ps.AudioRumbleEnabled == "1";

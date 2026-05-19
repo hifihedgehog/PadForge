@@ -1630,6 +1630,9 @@ namespace PadForge.ViewModels
         // SelectedDeviceVibrationStates (trigger-motor fields populated by
         // ComputeFinalVibrationStates).
 
+        private int _impulseOverallGain = 100;
+        public int ImpulseOverallGain { get => _impulseOverallGain; set => SetProperty(ref _impulseOverallGain, Math.Clamp(value, 0, 100)); }
+
         private int _impulseLeftStrength = 100;
         public int ImpulseLeftStrength { get => _impulseLeftStrength; set => SetProperty(ref _impulseLeftStrength, Math.Clamp(value, 0, 100)); }
 
@@ -1638,6 +1641,56 @@ namespace PadForge.ViewModels
 
         private bool _impulseSwapTriggers;
         public bool ImpulseSwapTriggers { get => _impulseSwapTriggers; set => SetProperty(ref _impulseSwapTriggers, value); }
+
+        // ── Constant Trigger Force (Xbox One+ trigger-motor analogue of
+        //    Constant Force). Two independent 0..1 magnitudes that the
+        //    Engine ConstantTriggerForceEvaluator applies when game/macro
+        //    trigger rumble is silent and the enable flag is on.
+        private bool _constantTriggerForceEnabled;
+        public bool ConstantTriggerForceEnabled
+        {
+            get => _constantTriggerForceEnabled;
+            set => SetProperty(ref _constantTriggerForceEnabled, value);
+        }
+
+        private double _constantTriggerForceLeft;
+        public double ConstantTriggerForceLeft
+        {
+            get => _constantTriggerForceLeft;
+            set => SetProperty(ref _constantTriggerForceLeft, Math.Clamp(value, 0.0, 1.0));
+        }
+
+        private double _constantTriggerForceRight;
+        public double ConstantTriggerForceRight
+        {
+            get => _constantTriggerForceRight;
+            set => SetProperty(ref _constantTriggerForceRight, Math.Clamp(value, 0.0, 1.0));
+        }
+
+        // ── Audio Trigger Rumble (Xbox One+ trigger-motor analogue of
+        //    Audio Bass Rumble). Shares the slot's
+        //    AudioBassDetector + Sensitivity + CutoffHz with the main
+        //    audio rumble; only the per-trigger scales are independent.
+        private bool _audioRumbleTriggersEnabled;
+        public bool AudioRumbleTriggersEnabled
+        {
+            get => _audioRumbleTriggersEnabled;
+            set => SetProperty(ref _audioRumbleTriggersEnabled, value);
+        }
+
+        private int _audioRumbleLeftTrigger = 100;
+        public int AudioRumbleLeftTrigger
+        {
+            get => _audioRumbleLeftTrigger;
+            set => SetProperty(ref _audioRumbleLeftTrigger, Math.Clamp(value, 0, 100));
+        }
+
+        private int _audioRumbleRightTrigger = 100;
+        public int AudioRumbleRightTrigger
+        {
+            get => _audioRumbleRightTrigger;
+            set => SetProperty(ref _audioRumbleRightTrigger, Math.Clamp(value, 0, 100));
+        }
 
         private double _deviceLeftTriggerMotorDisplay;
         public double DeviceLeftTriggerMotorDisplay { get => _deviceLeftTriggerMotorDisplay; set => SetProperty(ref _deviceLeftTriggerMotorDisplay, value); }
@@ -1648,15 +1701,52 @@ namespace PadForge.ViewModels
         private ICommand _resetImpulseAllCommand;
         public ICommand ResetImpulseAllCommand => _resetImpulseAllCommand ??= new RelayCommand(() =>
         {
+            ImpulseOverallGain = 100;
             ImpulseLeftStrength = 100;
             ImpulseRightStrength = 100;
             ImpulseSwapTriggers = false;
+            ConstantTriggerForceEnabled = false;
+            ConstantTriggerForceLeft = 0;
+            ConstantTriggerForceRight = 0;
+            AudioRumbleTriggersEnabled = false;
+            AudioRumbleLeftTrigger = 100;
+            AudioRumbleRightTrigger = 100;
         });
 
+        private ICommand _resetImpulseOverallGainCommand;
+        public ICommand ResetImpulseOverallGainCommand => _resetImpulseOverallGainCommand ??= new RelayCommand(() => ImpulseOverallGain = 100);
         private ICommand _resetImpulseLeftCommand;
         public ICommand ResetImpulseLeftCommand => _resetImpulseLeftCommand ??= new RelayCommand(() => ImpulseLeftStrength = 100);
         private ICommand _resetImpulseRightCommand;
         public ICommand ResetImpulseRightCommand => _resetImpulseRightCommand ??= new RelayCommand(() => ImpulseRightStrength = 100);
+
+        // ── Constant Trigger Force reset commands ──
+        private ICommand _resetConstantTriggerForceCommand;
+        public ICommand ResetConstantTriggerForceCommand => _resetConstantTriggerForceCommand ??= new RelayCommand(() =>
+        {
+            ConstantTriggerForceEnabled = false;
+            ConstantTriggerForceLeft = 0;
+            ConstantTriggerForceRight = 0;
+        });
+
+        private ICommand _resetConstantTriggerLeftCommand;
+        public ICommand ResetConstantTriggerLeftCommand => _resetConstantTriggerLeftCommand ??= new RelayCommand(() => ConstantTriggerForceLeft = 0);
+        private ICommand _resetConstantTriggerRightCommand;
+        public ICommand ResetConstantTriggerRightCommand => _resetConstantTriggerRightCommand ??= new RelayCommand(() => ConstantTriggerForceRight = 0);
+
+        // ── Audio Trigger Rumble reset commands ──
+        private ICommand _resetAudioTriggerRumbleAllCommand;
+        public ICommand ResetAudioTriggerRumbleAllCommand => _resetAudioTriggerRumbleAllCommand ??= new RelayCommand(() =>
+        {
+            AudioRumbleTriggersEnabled = false;
+            AudioRumbleLeftTrigger = 100;
+            AudioRumbleRightTrigger = 100;
+        });
+
+        private ICommand _resetAudioLeftTriggerCommand;
+        public ICommand ResetAudioLeftTriggerCommand => _resetAudioLeftTriggerCommand ??= new RelayCommand(() => AudioRumbleLeftTrigger = 100);
+        private ICommand _resetAudioRightTriggerCommand;
+        public ICommand ResetAudioRightTriggerCommand => _resetAudioRightTriggerCommand ??= new RelayCommand(() => AudioRumbleRightTrigger = 100);
 
         private ICommand _resetOverallGainCommand;
         public ICommand ResetOverallGainCommand => _resetOverallGainCommand ??= new RelayCommand(() => ForceOverallGain = 100);
@@ -1778,9 +1868,16 @@ namespace PadForge.ViewModels
             ForceOverallGain = 100;
             LeftMotorStrength = 100;
             RightMotorStrength = 100;
+            ImpulseOverallGain = 100;
             ImpulseLeftStrength = 100;
             ImpulseRightStrength = 100;
             ImpulseSwapTriggers = false;
+            ConstantTriggerForceEnabled = false;
+            ConstantTriggerForceLeft = 0;
+            ConstantTriggerForceRight = 0;
+            AudioRumbleTriggersEnabled = false;
+            AudioRumbleLeftTrigger = 100;
+            AudioRumbleRightTrigger = 100;
             ConstantForceEnabled = false;
             ConstantForceX = 0;
             ConstantForceY = 0;

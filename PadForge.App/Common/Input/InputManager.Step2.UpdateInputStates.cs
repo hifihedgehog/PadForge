@@ -362,16 +362,25 @@ namespace PadForge.Common.Input
                 if (_constantForceScratch == null) _constantForceScratch = new Vibration();
                 var effective = ConstantForceEvaluator.Resolve(withMacro, devicePs, _constantForceScratch);
 
+                // Constant-trigger-force evaluator: trigger-motor analogue
+                // of ConstantForceEvaluator. When game/macro trigger
+                // rumble is silent AND the impulse-triggers tab has
+                // ConstantTriggerForce enabled, fills the trigger fields
+                // with the user-set values. Same override-with-resume
+                // semantics. Composes onto the main-motor result.
+                if (_constantTriggerForceScratch == null) _constantTriggerForceScratch = new Vibration();
+                effective = ConstantTriggerForceEvaluator.Resolve(effective, devicePs, _constantTriggerForceScratch);
+
                 ScaleRumbleForDevice(effective.LeftMotorSpeed, effective.RightMotorSpeed,
                     devicePs, out ushort scaledL, out ushort scaledR);
 
                 if (scaledL > combinedL) combinedL = scaledL;
                 if (scaledR > combinedR) combinedR = scaledR;
 
-                // Impulse triggers: parallel max-combine. Constant-force /
-                // macro merge layers don't apply to impulse triggers — they
-                // carry game-driven trigger feedback only.
-                ScaleTriggerRumbleForDevice(raw.LeftTriggerMotorSpeed, raw.RightTriggerMotorSpeed,
+                // Impulse triggers: parallel max-combine. Pulls from
+                // `effective` (post-constant-trigger-force resolution)
+                // so the user-set static trigger pressure layers in.
+                ScaleTriggerRumbleForDevice(effective.LeftTriggerMotorSpeed, effective.RightTriggerMotorSpeed,
                     devicePs, out ushort scaledLT, out ushort scaledRT);
 
                 if (scaledLT > combinedLT) combinedLT = scaledLT;
@@ -445,6 +454,11 @@ namespace PadForge.Common.Input
         // on every device with multi-slot mappings.
         private Vibration _constantForceScratch;
 
+        // Constant-trigger-force evaluator's scratch — same shape as
+        // _constantForceScratch but composes onto the post-main-constant-
+        // force result so both layers can be active simultaneously.
+        private Vibration _constantTriggerForceScratch;
+
         // Same shape as _constantForceScratch but for the macro rumble
         // merge layer that runs ahead of constant-force resolution.
         private Vibration _macroRumbleScratch;
@@ -482,7 +496,10 @@ namespace PadForge.Common.Input
                 }
                 if (ps == null) ps = slotSettings[0].GetPadSetting();
                 if (ps == null) continue;
-                if (ps.AudioRumbleEnabled != "1") continue;
+                // Either main-motor audio rumble OR audio-trigger rumble
+                // active counts as a wakeup for the detector — they share
+                // the same sensitivity / cutoff and the same MotorValue.
+                if (ps.AudioRumbleEnabled != "1" && ps.AudioRumbleTriggersEnabled != "1") continue;
 
                 detector.Sensitivity = TryParseFloat(ps.AudioRumbleSensitivity, 4f);
                 detector.CutoffHz = TryParseFloat(ps.AudioRumbleCutoffHz, 80f);
@@ -684,29 +701,52 @@ namespace PadForge.Common.Input
         /// rumble.
         /// </summary>
         /// <summary>
-        /// Applies per-device impulse-trigger scaling (ImpulseLeftStrength /
-        /// ImpulseRightStrength gain + ImpulseSwapTriggers + the shared
-        /// ForceOverall gain that already governs main motors). No audio-
-        /// rumble mix on the trigger path — impulse triggers carry
-        /// game-driven content only.
+        /// Applies per-device impulse-trigger scaling: per-trigger
+        /// strength (<c>ImpulseLeftStrength</c> / <c>ImpulseRightStrength</c>)
+        /// × impulse-tab overall gain (<c>ImpulseOverallGain</c>) +
+        /// <c>ImpulseSwapTriggers</c>. The impulse-triggers tab now owns
+        /// its own overall-gain slider so it doesn't share the main-motor
+        /// gain (<c>ForceOverall</c>). No audio-rumble mix on the trigger
+        /// path — impulse triggers carry game-driven content only.
         /// </summary>
         public void ScaleTriggerRumbleForDevice(
             ushort rawLeft, ushort rawRight, PadSetting ps,
             out ushort scaledLeft, out ushort scaledRight)
         {
+            ushort baseL = rawLeft;
+            ushort baseR = rawRight;
+
+            // Audio-trigger rumble: same MotorValue from the shared
+            // AudioBassDetector that the main-motor path consumes,
+            // scaled by the per-trigger AudioRumbleLeftTrigger /
+            // AudioRumbleRightTrigger. Detector params (sensitivity,
+            // cutoff) are set once per tick by ApplyDetectorSettingsForTick
+            // — no work here, just read MotorValue.
+            var detector = AudioBassDetector;
+            if (detector != null && ps != null && ps.AudioRumbleTriggersEnabled == "1")
+            {
+                ushort motorVal = detector.MotorValue;
+                float leftScale = TryParseFloat(ps.AudioRumbleLeftTrigger, 100f) / 100f;
+                float rightScale = TryParseFloat(ps.AudioRumbleRightTrigger, 100f) / 100f;
+                ushort audioL = (ushort)(motorVal * leftScale);
+                ushort audioR = (ushort)(motorVal * rightScale);
+                if (audioL > baseL) baseL = audioL;
+                if (audioR > baseR) baseR = audioR;
+            }
+
             int overallGain = 100;
             int leftGain = 100;
             int rightGain = 100;
             bool swap = false;
             if (ps != null)
             {
-                overallGain = Math.Clamp(TryParseInt(ps.ForceOverall, 100), 0, 100);
+                overallGain = Math.Clamp(TryParseInt(ps.ImpulseOverallGain, 100), 0, 100);
                 leftGain = Math.Clamp(TryParseInt(ps.ImpulseLeftStrength, 100), 0, 100);
                 rightGain = Math.Clamp(TryParseInt(ps.ImpulseRightStrength, 100), 0, 100);
                 swap = TryParseBool(ps.ImpulseSwapTriggers);
             }
-            double sL = rawLeft * (leftGain / 100.0) * (overallGain / 100.0);
-            double sR = rawRight * (rightGain / 100.0) * (overallGain / 100.0);
+            double sL = baseL * (leftGain / 100.0) * (overallGain / 100.0);
+            double sR = baseR * (rightGain / 100.0) * (overallGain / 100.0);
             ushort finalL = (ushort)Math.Clamp(sL, 0, 65535);
             ushort finalR = (ushort)Math.Clamp(sR, 0, 65535);
             if (swap) (finalL, finalR) = (finalR, finalL);

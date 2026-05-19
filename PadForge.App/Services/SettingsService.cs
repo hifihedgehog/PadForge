@@ -1574,10 +1574,17 @@ namespace PadForge.Services
                     (ps.ForceSwapMotor ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
 
                 // Load impulse trigger settings (Xbox One+).
+                padVm.ImpulseOverallGain = TryParseInt(ps.ImpulseOverallGain, 100);
                 padVm.ImpulseLeftStrength = TryParseInt(ps.ImpulseLeftStrength, 100);
                 padVm.ImpulseRightStrength = TryParseInt(ps.ImpulseRightStrength, 100);
                 padVm.ImpulseSwapTriggers = ps.ImpulseSwapTriggers == "1" ||
                     (ps.ImpulseSwapTriggers ?? "").Equals("true", StringComparison.OrdinalIgnoreCase);
+                padVm.ConstantTriggerForceEnabled = ps.ConstantTriggerForceEnabled == "1";
+                padVm.ConstantTriggerForceLeft = TryParseDouble(ps.ConstantTriggerForceLeft, 0.0);
+                padVm.ConstantTriggerForceRight = TryParseDouble(ps.ConstantTriggerForceRight, 0.0);
+                padVm.AudioRumbleTriggersEnabled = ps.AudioRumbleTriggersEnabled == "1";
+                padVm.AudioRumbleLeftTrigger = TryParseInt(ps.AudioRumbleLeftTrigger, 100);
+                padVm.AudioRumbleRightTrigger = TryParseInt(ps.AudioRumbleRightTrigger, 100);
 
                 // Load gyro tuning (per-(device, slot)).
                 padVm.GyroSensitivityH = TryParseDouble(ps.GyroSensitivityH, 1.0);
@@ -2619,15 +2626,22 @@ namespace PadForge.Services
                     ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
 
                     // Write impulse trigger settings.
+                    ps.ImpulseOverallGain = padVm.ImpulseOverallGain.ToString();
                     ps.ImpulseLeftStrength = padVm.ImpulseLeftStrength.ToString();
                     ps.ImpulseRightStrength = padVm.ImpulseRightStrength.ToString();
                     ps.ImpulseSwapTriggers = padVm.ImpulseSwapTriggers ? "1" : "0";
+                    ps.ConstantTriggerForceEnabled = padVm.ConstantTriggerForceEnabled ? "1" : "0";
+                    ps.AudioRumbleTriggersEnabled = padVm.AudioRumbleTriggersEnabled ? "1" : "0";
+                    ps.AudioRumbleLeftTrigger = padVm.AudioRumbleLeftTrigger.ToString();
+                    ps.AudioRumbleRightTrigger = padVm.AudioRumbleRightTrigger.ToString();
 
                     // Issue #50: all double→string conversions MUST use InvariantCulture.
                     // WARNING: if you add a new double property below, use .ToString(ic)
                     // — NOT bare .ToString(). See InputService.SaveViewModelToPadSetting
                     // for the full explanation of the locale data-loss bug.
                     var ic = System.Globalization.CultureInfo.InvariantCulture;
+                    ps.ConstantTriggerForceLeft = padVm.ConstantTriggerForceLeft.ToString("F4", ic);
+                    ps.ConstantTriggerForceRight = padVm.ConstantTriggerForceRight.ToString("F4", ic);
 
                     // Write gyro tuning (per-(device, slot)).
                     ps.GyroSensitivityH = padVm.GyroSensitivityH.ToString(ic);
@@ -2781,6 +2795,7 @@ namespace PadForge.Services
                 padVm.LeftMotorStrength = 100;
                 padVm.RightMotorStrength = 100;
                 padVm.SwapMotors = false;
+                padVm.ImpulseOverallGain = 100;
                 padVm.ImpulseLeftStrength = 100;
                 padVm.ImpulseRightStrength = 100;
                 padVm.ImpulseSwapTriggers = false;
@@ -2789,9 +2804,15 @@ namespace PadForge.Services
                 padVm.AudioRumbleCutoffHz = 80.0;
                 padVm.AudioRumbleLeftMotor = 100;
                 padVm.AudioRumbleRightMotor = 100;
+                padVm.AudioRumbleTriggersEnabled = false;
+                padVm.AudioRumbleLeftTrigger = 100;
+                padVm.AudioRumbleRightTrigger = 100;
                 padVm.ConstantForceEnabled = false;
                 padVm.ConstantForceX = 0;
                 padVm.ConstantForceY = 0;
+                padVm.ConstantTriggerForceEnabled = false;
+                padVm.ConstantTriggerForceLeft = 0;
+                padVm.ConstantTriggerForceRight = 0;
                 padVm.LeftDeadZoneX = 0;
                 padVm.LeftDeadZoneY = 0;
                 padVm.RightDeadZoneX = 0;

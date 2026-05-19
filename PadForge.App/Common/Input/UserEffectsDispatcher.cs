@@ -1201,8 +1201,20 @@ namespace PadForge.Common.Input
                     bool assertLeftTrig  = padForgeWantsLeftAt
                         || devOverrides.LeftTriggerEffect != null
                         || prevPadForgeWantsLeftAt;
-                    _prevPadForgeWantsRightTrig[ud.InstanceGuid] = padForgeWantsRightAt;
-                    _prevPadForgeWantsLeftTrig[ud.InstanceGuid]  = padForgeWantsLeftAt;
+                    // Track whether THIS tick wrote a trigger effect for
+                    // either source — PadForge cfg OR a dispatcher-injected
+                    // override (external mirror, impulse-trigger → AT
+                    // Vibration auto-route). The next-tick drop-frame logic
+                    // needs both: when the override drops AND cfg is Off,
+                    // we still owe the firmware one final write with the
+                    // cfg-or-Off block so it leaves Vibration mode.
+                    // Without this, the DS5 firmware latches whatever
+                    // trigger effect was last asserted (Vibration with
+                    // impulse-trigger amplitude) and never disengages.
+                    _prevPadForgeWantsRightTrig[ud.InstanceGuid] = padForgeWantsRightAt
+                        || devOverrides.RightTriggerEffect != null;
+                    _prevPadForgeWantsLeftTrig[ud.InstanceGuid]  = padForgeWantsLeftAt
+                        || devOverrides.LeftTriggerEffect != null;
 
                     try
                     {

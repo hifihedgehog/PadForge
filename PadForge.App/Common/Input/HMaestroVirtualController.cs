@@ -643,19 +643,6 @@ namespace PadForge.Common.Input
                 var data = pkt.Data.Span;
                 bool isXbox = HMaestroProfileCatalog.IsXboxProfile(_profile);
 
-                // 2026-05-19 impulse-trigger pipeline probe. Raw-byte dump
-                // unconditionally on every OutputReceived event so we can
-                // see whether HM is delivering >= 7-byte payloads (impulse
-                // triggers via GameInput SDK / GameInputSvc) vs the
-                // standard 5-byte payload (classic xinput1_4 dual-rumble).
-                // Same-window positive control: every regular XInput
-                // rumble write produces a length=5 line right next to
-                // the impulse-trigger writes that should be length=7.
-                // Disabled in release after verification — see
-                // feedback_no_speculative_user_facing_failure_modes.md
-                // (probe-only, do not ship as user-facing).
-                ImpulseTriggerProbe.Log(idx, _profile, pkt.Source, data);
-
                 // XInput vibration packet (IOCTL_XUSB_SET_STATE):
                 // [00, 08, leftHi, rightHi, reserved]. Chromium browser
                 // Gamepad API sends dual-rumble through this path with

@@ -422,8 +422,8 @@ namespace PadForge.Common.Input
 
         private static MMDevice GetDefaultRenderDevice()
         {
-            return new MMDeviceEnumerator()
-                .GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+            using var enumerator = new MMDeviceEnumerator();
+            return enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
         }
 
         protected override AudioClientStreamFlags GetAudioClientStreamFlags()

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 using Microsoft.Win32.SafeHandles;
 using PadForge.Engine;
 using PadForge.Engine.Data;
@@ -46,19 +47,6 @@ namespace PadForge.Common.Input
     internal static class XboxImpulseHidWriter
     {
         // ─────────────────────────────────────────────
-        //  Bluetooth-PID detection
-        // ─────────────────────────────────────────────
-
-        /// <summary>Bluetooth-attached Xbox controllers use the simpler
-        /// 9-byte HID output report. USB / Xbox Wireless Adapter
-        /// controllers use the 13-byte GIP report.</summary>
-        private static bool IsBluetoothPid(ushort pid)
-            => pid == 0x02E0  // Xbox One S Bluetooth
-            || pid == 0x02FD  // Xbox One S Bluetooth (alt firmware)
-            || pid == 0x0B05  // Xbox Elite Series 2 Bluetooth
-            || pid == 0x0B13; // Xbox Series X|S Bluetooth
-
-        // ─────────────────────────────────────────────
         //  Public write entry
         // ─────────────────────────────────────────────
 
@@ -80,7 +68,10 @@ namespace PadForge.Common.Input
 
             string interfacePath = ResolveInterfacePath(ud);
             if (string.IsNullOrEmpty(interfacePath))
+            {
+                Probe($"path=NULL vid={ud.VendorId:X4} pid={ud.ProdId:X4} dp={ud.DevicePath}");
                 return false;
+            }
 
             // SDL3 HIDAPI scales 16-bit → 0..100 via `/ 655`. Match that.
             byte lt = (byte)Math.Min(100, leftTrigger16 / 655);
@@ -88,57 +79,70 @@ namespace PadForge.Common.Input
             byte lm = (byte)Math.Min(100, leftMotor16 / 655);
             byte rm = (byte)Math.Min(100, rightMotor16 / 655);
 
-            bool bt = IsBluetoothPid(ud.ProdId);
-            byte[] buf;
-            if (bt)
-            {
-                buf = new byte[] { 0x03, 0x0F, lt, rt, lm, rm, 0xFF, 0x00, 0xEB };
-            }
-            else
-            {
-                // GIP protocol (Gaming Input Protocol) — used by Xbox One
-                // wired controllers and Xbox Wireless Adapter dongle.
-                buf = new byte[] { 0x09, 0x00, 0x00, 0x09, 0x00, 0x0F, lt, rt, lm, rm, 0xFF, 0x00, 0xEB };
-            }
+            // X1nput's MS-driver branch writes a 9-byte report to the
+            // XUSB device handle, and 9 bytes to the HID handle on
+            // Bluetooth pads. SDL3 HIDAPI uses a 13-byte GIP shape for
+            // its OWN bus-bypassing HIDAPI path, but that requires Steam
+            // Xbox Extended Feature Driver and is not what we are doing
+            // here. Stock XUSB driver accepts the 9-byte shape on the
+            // XUSB interface — verified by X1nput.
+            byte[] buf = new byte[] { 0x03, 0x0F, lt, rt, lm, rm, 0xFF, 0x00, 0xEB };
 
-            return WriteRaw(interfacePath, buf);
+            (bool ok, int err) = WriteRawDiag(interfacePath, buf);
+            Probe($"write {(ok ? "OK" : "FAIL")} err={err} pid={ud.ProdId:X4} bytes={buf.Length} motors=L{lm}/R{rm}/LT{lt}/RT{rt} path={interfacePath}");
+            return ok;
         }
 
         // ─────────────────────────────────────────────
         //  HID interface enumeration
         // ─────────────────────────────────────────────
 
-        /// <summary>Enumerates connected HID interfaces, filters to Xbox
-        /// One+ controllers (by HidD_GetAttributes VID/PID, not by
-        /// instance-ID string match), applies the HIDMaestro loopback
-        /// filter via StableXInputInstance, and disambiguates by
-        /// <c>ud.DevicePath</c>'s XInput slot index when multiple
-        /// candidates exist.</summary>
+        /// <summary>Resolves the XUSB device interface path PadForge
+        /// CreateFile+WriteFiles to send the 9-byte rumble report.
+        ///
+        /// <para>Pairing logic, matching OpenXInput's
+        /// <c>EnumerateXInputDevices</c> at <c>OpenXinput.cpp:1057</c>:
+        /// enumerate <see cref="XUSB_INTERFACE_CLASS_GUID"/> in
+        /// SetupAPI's natural order, skip HIDMaestro virtual XInput
+        /// devices by substring on the interface path, take the Nth
+        /// surviving interface where N is the slot parsed from SDL's
+        /// <c>"XInput#N"</c> device path. SDL's XInput backend
+        /// inherits this same OpenXInput enumeration order through our
+        /// embedded <c>xinput1_4.dll</c>, so position N in the
+        /// HM-filtered list is the same physical controller SDL sees
+        /// at <c>XInput#N</c>.</para>
+        ///
+        /// <para>Verifies via P/Invoke into <c>OpenXInputGetDeviceUSBIds</c>
+        /// (an added export in PadForge's OpenXInput fork — header at
+        /// <c>OpenXinput.h:439</c>) that the slot OpenXInput reports
+        /// has the same VID/PID as PadForge expects. Mismatch logs a
+        /// warning but doesn't abort — VID/PID is identical for
+        /// same-model duplicates anyway, so this is a sanity check, not
+        /// a discriminator.</para></summary>
         private static string ResolveInterfacePath(UserDevice ud)
         {
-            // Cross-reference: get the HM-filtered list of physical
-            // instance IDs for this VID/PID. Any HID interface we find
-            // whose instance portion isn't in this list is rejected as
-            // a possible virtual.
-            IReadOnlyList<string> hmFiltered;
-            try { hmFiltered = StableXInputInstance.FindAll(ud.VendorId, ud.ProdId); }
-            catch { return null; }
+            int slot = ParseXInputSlot(ud.DevicePath);
+            if (slot < 0)
+            {
+                Probe($"non-XInput path dp={ud.DevicePath} — writer only supports XInput-slot-bound devices");
+                return null;
+            }
 
-            // Enumerate all HID interfaces and collect those matching
-            // ud.VendorId / ud.ProdId via HidD_GetAttributes. This open-
-            // and-query pattern is what tools/Ds4InputDump uses and is
-            // robust against filter drivers that hide the device class
-            // from SetupDiEnumDeviceInfo.
-            var matches = new List<string>(); // interface paths
-            Guid hidGuid = Guid.Empty;
-            HidD_GetHidGuid(ref hidGuid);
+            Guid classGuid = XUSB_INTERFACE_CLASS_GUID;
+            string matchedPath = null;
 
             IntPtr devInfoSet = SetupDiGetClassDevsW(
-                ref hidGuid, IntPtr.Zero, IntPtr.Zero,
+                ref classGuid, IntPtr.Zero, IntPtr.Zero,
                 DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
 
             if (devInfoSet == new IntPtr(-1))
+            {
+                Probe($"SetupDiGetClassDevs(XUSB) INVALID, err={Marshal.GetLastWin32Error()}");
                 return null;
+            }
+            Probe($"target slot={slot} (Nth non-HM XUSB iface in enumeration order)");
+
+            int survivingIdx = 0;
 
             try
             {
@@ -146,7 +150,7 @@ namespace PadForge.Common.Input
                 ifaceData.cbSize = Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>();
 
                 for (uint i = 0;
-                     SetupDiEnumDeviceInterfaces(devInfoSet, IntPtr.Zero, ref hidGuid, i, ref ifaceData);
+                     SetupDiEnumDeviceInterfaces(devInfoSet, IntPtr.Zero, ref classGuid, i, ref ifaceData);
                      i++)
                 {
                     int required = 0;
@@ -157,55 +161,65 @@ namespace PadForge.Common.Input
                     try
                     {
                         Marshal.WriteInt32(detail, IntPtr.Size == 8 ? 8 : 6);
-                        if (!SetupDiGetDeviceInterfaceDetailW(devInfoSet, ref ifaceData, detail, required, ref required, IntPtr.Zero))
+                        var devInfo = new SP_DEVINFO_DATA();
+                        devInfo.cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>();
+                        if (!SetupDiGetDeviceInterfaceDetailW(devInfoSet, ref ifaceData, detail, required, ref required, ref devInfo))
                             continue;
 
                         string path = Marshal.PtrToStringUni(IntPtr.Add(detail, 4));
                         if (string.IsNullOrEmpty(path)) continue;
+                        Probe($"  iface[{i}] enumerated path={path}");
 
-                        // Open with access=0 — sufficient for HidD_GetAttributes
-                        // and HidD_GetSerialNumberString, doesn't require
-                        // elevation, and won't conflict with other
-                        // consumers' exclusive locks.
-                        using var probeHandle = CreateFileSafe(path, 0,
+                        // Open the XUSB interface with the same flags
+                        // OpenXInput uses (OpenXinput.cpp:2887).
+                        // GENERIC_READ|GENERIC_WRITE so we can issue
+                        // IOCTL_XINPUT_GET_INFORMATION (and later the
+                        // WriteFile for rumble).
+                        // FILE_SHARE_READ|FILE_SHARE_WRITE lets us share
+                        // with xinput1_4.dll if a game has the same
+                        // device open.
+                        using var probeHandle = CreateFileSafe(path,
+                            GENERIC_READ | GENERIC_WRITE,
                             FILE_SHARE_READ | FILE_SHARE_WRITE, 0);
-                        if (probeHandle.IsInvalid) continue;
-
-                        var attr = new HIDD_ATTRIBUTES { Size = Marshal.SizeOf<HIDD_ATTRIBUTES>() };
-                        if (!HidD_GetAttributes(probeHandle, ref attr)) continue;
-
-                        if (attr.VendorID != ud.VendorId || attr.ProductID != ud.ProdId)
-                            continue;
-
-                        // Extract instance ID from interface path so we
-                        // can cross-check against the HM-filtered list.
-                        // Interface path: \\?\HID#VID_045E&PID_0B13&...#7&abc&0&0000#{4d1e55b2-...}
-                        // Instance ID:   HID\VID_045E&PID_0B13&...\7&abc&0&0000
-                        string instanceId = InterfacePathToInstanceId(path);
-                        bool inHmFiltered = false;
-                        if (hmFiltered != null && instanceId != null)
+                        if (probeHandle.IsInvalid)
                         {
-                            foreach (var hm in hmFiltered)
+                            Probe($"  iface[{i}] open FAIL err={Marshal.GetLastWin32Error()} path={path}");
+                            continue;
+                        }
+
+                        // HM virtual filter — substring on the path,
+                        // case-insensitive. Matches the cheap fast-path
+                        // OpenXInput uses to skip HIDMaestro virtual
+                        // XInput devices during its enumeration.
+                        if (path.IndexOf("hidmaestro", StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            Probe($"  iface[{i}] HM-virtual, skipping path={path}");
+                            continue;
+                        }
+
+                        // XUSB device's VID/PID via IOCTL. Used as a
+                        // sanity check that this slot is actually the
+                        // VID/PID PadForge expects.
+                        if (!QueryXusbDeviceInfo(probeHandle, out ushort vid, out ushort pid))
+                        {
+                            Probe($"  iface[{i}] xusb info IOCTL FAIL err={Marshal.GetLastWin32Error()} path={path}");
+                            continue;
+                        }
+
+                        bool atTarget = survivingIdx == slot;
+                        Probe($"  iface[{i}] surviving-pos={survivingIdx} vid={vid:X4} pid={pid:X4} target={atTarget} path={path}");
+
+                        if (atTarget)
+                        {
+                            if (vid != ud.VendorId || pid != ud.ProdId)
                             {
-                                if (string.Equals(hm, instanceId, StringComparison.OrdinalIgnoreCase))
-                                {
-                                    inHmFiltered = true;
-                                    break;
-                                }
+                                Probe($"  WARNING: target slot VID/PID {vid:X4}/{pid:X4} != ud {ud.VendorId:X4}/{ud.ProdId:X4} — writing anyway since slot ordering is the source of truth");
                             }
+                            matchedPath = path;
+                            break;
                         }
 
-                        if (!inHmFiltered)
-                        {
-                            // Either it's an HM virtual or our path→instance
-                            // conversion missed something. Either way, skip
-                            // it — we only write to confirmed-physical
-                            // controllers that StableXInputInstance vouches
-                            // for.
-                            continue;
-                        }
-
-                        matches.Add(path);
+                        survivingIdx++;
                     }
                     finally
                     {
@@ -218,53 +232,49 @@ namespace PadForge.Common.Input
                 SetupDiDestroyDeviceInfoList(devInfoSet);
             }
 
-            if (matches.Count == 0) return null;
-            if (matches.Count == 1) return matches[0];
-
-            // Disambiguation: SDL XInput backend's "XInput#N" path. Slot
-            // index picks the candidate. Mirrors BuildInstanceGuid's
-            // XInput-path branch.
-            int slot = ParseXInputSlot(ud.DevicePath);
-            if (slot >= 0 && slot < matches.Count)
-            {
-                // Sort matches deterministically so the slot-N mapping
-                // matches StableXInputInstance.FindAll's sort order
-                // (lexicographic on instance ID).
-                matches.Sort(StringComparer.OrdinalIgnoreCase);
-                return matches[slot];
-            }
-
-            // Otherwise take the first match (acknowledged: if multiple
-            // controllers, this picks one — caller should pass a more
-            // discriminating ud.DevicePath next time).
-            matches.Sort(StringComparer.OrdinalIgnoreCase);
-            return matches[0];
+            Probe($"resolved={(matchedPath != null ? "OK" : "NULL")} for vid={ud.VendorId:X4} pid={ud.ProdId:X4} dp={ud.DevicePath}");
+            return matchedPath;
         }
 
-        /// <summary>Converts a HID interface path to the device instance
-        /// ID format. Interface paths look like
-        /// <c>\\?\HID#VID_045E&amp;PID_0B13&amp;...#7&amp;abc&amp;0&amp;0000#{4d1e55b2-...}</c>;
-        /// instance IDs look like
-        /// <c>HID\VID_045E&amp;PID_0B13&amp;...\7&amp;abc&amp;0&amp;0000</c>.
-        /// Conversion: strip the leading <c>\\?\</c>, drop the trailing
-        /// device-class-GUID segment, replace remaining <c>#</c> with
-        /// <c>\</c>. Use <c>LastIndexOf("#{")</c> — Bluetooth-paired
-        /// Xbox controllers embed the BT GATT service GUID
-        /// <c>{00001812-...}</c> mid-path, so the FIRST <c>#{</c> isn't
-        /// the trailing class GUID.</summary>
-        private static string InterfacePathToInstanceId(string interfacePath)
+        /// <summary>Walks the PnP tree from <paramref name="leafDevInst"/>
+        /// upward (up to 16 levels) and checks each node's instance ID
+        /// against <paramref name="targetInstanceId"/> case-insensitively.
+        /// Returns true if the target is found anywhere in the parent
+        /// chain (inclusive of the leaf). Used to bridge the format
+        /// difference between
+        /// <see cref="StableXInputInstance.FindAll"/> (returns
+        /// HID-class node — for BT-paired Xbox, that's the
+        /// BTHLEDEVICE parent) and HID-interface enumeration (returns
+        /// the HID-child grandchild).</summary>
+        private static bool MatchesTargetInPnpChain(
+            uint leafDevInst, string targetInstanceId, out string matchedNodeId)
         {
-            if (string.IsNullOrEmpty(interfacePath)) return null;
-            string s = interfacePath;
-            if (s.StartsWith(@"\\?\", StringComparison.Ordinal))
-                s = s.Substring(4);
+            matchedNodeId = null;
+            if (string.IsNullOrEmpty(targetInstanceId)) return false;
 
-            // Drop trailing #{class-guid} segment — must be the LAST
-            // occurrence to avoid clipping mid-path BT service GUIDs.
-            int hashBrace = s.LastIndexOf("#{", StringComparison.Ordinal);
-            if (hashBrace >= 0) s = s.Substring(0, hashBrace);
+            uint devInst = leafDevInst;
+            var idBuf = new StringBuilder(512);
 
-            return s.Replace('#', '\\');
+            for (int depth = 0; depth < 16; depth++)
+            {
+                idBuf.Clear();
+                idBuf.EnsureCapacity(512);
+                if (CM_Get_Device_IDW(devInst, idBuf, idBuf.Capacity, 0) != 0)
+                    break;
+
+                string nodeId = idBuf.ToString();
+                if (string.Equals(nodeId, targetInstanceId, StringComparison.OrdinalIgnoreCase))
+                {
+                    matchedNodeId = nodeId;
+                    return true;
+                }
+
+                if (CM_Get_Parent(out uint parent, devInst, 0) != 0) break;
+                if (parent == 0 || parent == devInst) break;
+                devInst = parent;
+            }
+
+            return false;
         }
 
         private static int ParseXInputSlot(string devicePath)
@@ -286,7 +296,7 @@ namespace PadForge.Common.Input
         //  HID write (synchronous, no overlapped — matches X1nput)
         // ─────────────────────────────────────────────
 
-        private static bool WriteRaw(string devicePath, byte[] buf)
+        private static (bool ok, int err) WriteRawDiag(string devicePath, byte[] buf)
         {
             using var handle = CreateFileSafe(
                 devicePath,
@@ -294,15 +304,69 @@ namespace PadForge.Common.Input
                 FILE_SHARE_READ | FILE_SHARE_WRITE,
                 0); // synchronous open — matches X1nput
 
-            if (handle.IsInvalid) return false;
+            if (handle.IsInvalid)
+                return (false, Marshal.GetLastWin32Error());
 
-            return WriteFile(handle, buf, (uint)buf.Length, out _, IntPtr.Zero);
+            bool ok = WriteFile(handle, buf, (uint)buf.Length, out _, IntPtr.Zero);
+            return (ok, ok ? 0 : Marshal.GetLastWin32Error());
         }
 
         private static SafeFileHandle CreateFileSafe(
             string path, uint access, uint share, uint flags)
         {
             return CreateFileW(path, access, share, IntPtr.Zero, OPEN_EXISTING, flags, IntPtr.Zero);
+        }
+
+        /// <summary>Queries an XUSB-interface device handle for its
+        /// controller VID/PID via IOCTL_XINPUT_GET_INFORMATION
+        /// (0x80006000). Matches OpenXinput.cpp's
+        /// <c>GetDeviceInfoFromInterface</c>. The output buffer layout
+        /// is <c>OutDeviceInfos_t</c>: WORD XUSBVersion, BYTE
+        /// deviceIndex, 3 BYTE unk, WORD unk, WORD vendorId, WORD
+        /// productId.</summary>
+        private static bool QueryXusbDeviceInfo(SafeFileHandle handle, out ushort vid, out ushort pid)
+        {
+            vid = 0;
+            pid = 0;
+            byte[] outBuf = new byte[13]; // sizeof(OutDeviceInfos_t)
+
+            bool ok = DeviceIoControl(
+                handle,
+                IOCTL_XINPUT_GET_INFORMATION,
+                IntPtr.Zero, 0,
+                outBuf, (uint)outBuf.Length,
+                out _, IntPtr.Zero);
+            if (!ok) return false;
+
+            // OutDeviceInfos_t layout (#pragma pack(1) — OpenXinput.cpp:176-186):
+            //   WORD XUSBVersion;   // 0-1
+            //   BYTE deviceIndex;   // 2
+            //   BYTE unk1,unk2,unk3;// 3,4,5
+            //   WORD unk4;          // 6-7
+            //   WORD vendorId;      // 8-9
+            //   WORD productId;     // 10-11
+            vid = (ushort)(outBuf[8] | (outBuf[9] << 8));
+            pid = (ushort)(outBuf[10] | (outBuf[11] << 8));
+            return true;
+        }
+
+        // Diagnostic probe (USB Xbox investigation).
+        private static readonly string s_probePath =
+            System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-xbox-hid-writer.log");
+        private static readonly object s_probeLock = new();
+
+        private static void Probe(string line)
+        {
+            try
+            {
+                lock (s_probeLock)
+                {
+                    System.IO.File.AppendAllText(s_probePath,
+                        $"{DateTime.Now:HH:mm:ss.fff} {line}\n",
+                        System.Text.Encoding.UTF8);
+                }
+            }
+            catch { }
         }
 
         // ─────────────────────────────────────────────
@@ -316,6 +380,20 @@ namespace PadForge.Common.Input
         private const uint OPEN_EXISTING         = 3u;
         private const int  DIGCF_PRESENT         = 0x00000002;
         private const int  DIGCF_DEVICEINTERFACE = 0x00000010;
+
+        /// <summary>XUSB driver's device interface class GUID, used by
+        /// <c>xinput1_4.dll</c> + OpenXInput to enumerate Xbox
+        /// controllers (OpenXinput.cpp:506). PadForge uses the same
+        /// enumeration to reach the device handle that
+        /// <c>IOCTL_XINPUT_SET_GAMEPAD_STATE</c> hits and that X1nput's
+        /// 9-byte WriteFile lands on for impulse-trigger rumble.</summary>
+        private static readonly Guid XUSB_INTERFACE_CLASS_GUID =
+            new Guid(0xEC87F1E3, 0xC13B, 0x4100, 0xB5, 0xF7, 0x8B, 0x84, 0xD5, 0x42, 0x60, 0xCB);
+
+        /// <summary>CTL_CODE(0x8000, 0x800, METHOD_BUFFERED,
+        /// FILE_READ_ACCESS) per OpenXinput.cpp:510. Returns
+        /// OutDeviceInfos_t.</summary>
+        private const uint IOCTL_XINPUT_GET_INFORMATION = 0x80006000;
 
         [StructLayout(LayoutKind.Sequential)]
         private struct SP_DEVICE_INTERFACE_DATA
@@ -353,7 +431,7 @@ namespace PadForge.Common.Input
             ref Guid InterfaceClassGuid, uint MemberIndex,
             ref SP_DEVICE_INTERFACE_DATA DeviceInterfaceData);
 
-        [DllImport("setupapi.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        [DllImport("setupapi.dll", SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "SetupDiGetDeviceInterfaceDetailW")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetupDiGetDeviceInterfaceDetailW(
             IntPtr DeviceInfoSet,
@@ -362,6 +440,31 @@ namespace PadForge.Common.Input
             int DeviceInterfaceDetailDataSize,
             ref int RequiredSize,
             IntPtr DeviceInfoData);
+
+        [DllImport("setupapi.dll", SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "SetupDiGetDeviceInterfaceDetailW")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetupDiGetDeviceInterfaceDetailW(
+            IntPtr DeviceInfoSet,
+            ref SP_DEVICE_INTERFACE_DATA DeviceInterfaceData,
+            IntPtr DeviceInterfaceDetailData,
+            int DeviceInterfaceDetailDataSize,
+            ref int RequiredSize,
+            ref SP_DEVINFO_DATA DeviceInfoData);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct SP_DEVINFO_DATA
+        {
+            public int cbSize;
+            public Guid ClassGuid;
+            public uint DevInst;
+            public IntPtr Reserved;
+        }
+
+        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
+        private static extern int CM_Get_Device_IDW(uint devInst, StringBuilder buffer, int len, int flags);
+
+        [DllImport("cfgmgr32.dll")]
+        private static extern int CM_Get_Parent(out uint parent, uint devInst, int flags);
 
         [DllImport("setupapi.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -378,5 +481,13 @@ namespace PadForge.Common.Input
         private static extern bool WriteFile(
             SafeFileHandle hFile, byte[] lpBuffer, uint nNumberOfBytesToWrite,
             out uint lpNumberOfBytesWritten, IntPtr lpOverlapped);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool DeviceIoControl(
+            SafeFileHandle hDevice, uint dwIoControlCode,
+            IntPtr lpInBuffer, uint nInBufferSize,
+            byte[] lpOutBuffer, uint nOutBufferSize,
+            out uint lpBytesReturned, IntPtr lpOverlapped);
     }
 }

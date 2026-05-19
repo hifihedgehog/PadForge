@@ -885,7 +885,20 @@ namespace PadForge.Services
                         if (_inputManager.SlotExtendedIsCustom[i] && us != null)
                             padVm.UpdateFromExtendedDeviceState(us.ExtendedRawOutputState);
                         else
-                            padVm.UpdateDeviceState(us?.RawMappedState ?? default);
+                        {
+                            // Per-device Sticks/Triggers preview reads the
+                            // PHYSICAL device's raw stick/trigger axes, NOT
+                            // the post-MappingSet intermediate. Multi-device
+                            // slots use MappingSet rows whose sources are
+                            // bound to a specific InstanceGuid, so a row
+                            // sourcing from Device A produces zero output
+                            // when Device B's UserSetting is evaluated —
+                            // which is correct for output mapping but wrong
+                            // for a per-device input preview. Reading
+                            // ud.InputState directly shows each physical
+                            // device's actual stick/trigger position.
+                            padVm.UpdateDeviceState(BuildPerDeviceSticksFromInputState(selected.InstanceGuid));
+                        }
                     }
                     else if (_inputManager.SlotExtendedIsCustom[i])
                     {
@@ -7101,6 +7114,36 @@ namespace PadForge.Services
 
             try { Stop(); } catch { /* Best effort on shutdown */ }
             _disposed = true;
+        }
+
+        /// <summary>Builds a <see cref="Gamepad"/> from the physical
+        /// device's raw <see cref="UserDevice.InputState"/> axes, used
+        /// by the per-device Sticks/Triggers tab preview. Bypasses the
+        /// post-MappingSet intermediate so each physical device shows
+        /// its own stick/trigger position in a multi-device slot.
+        /// Layout per <see cref="SdlDeviceWrapper.GetGamepadState"/>:
+        /// Axis[0]=LX, [1]=LY, [2]=LT, [3]=RX, [4]=RY, [5]=RT
+        /// (unsigned 0..65535).</summary>
+        private Gamepad BuildPerDeviceSticksFromInputState(Guid instanceGuid)
+        {
+            var ud = FindUserDevice(instanceGuid);
+            var devState = ud?.InputState;
+            Gamepad gp = default;
+            if (devState?.Axis == null || devState.Axis.Length < 6)
+                return gp;
+
+            // 0..65535 → signed -32768..32767 for stick axes; pass through for triggers.
+            // Y axes are negated: SDL convention is positive-down (screen
+            // coords); Gamepad/XInput convention is positive-up. The
+            // standard SDL→Gamepad path applies the same negation
+            // (SdlDeviceWrapper -> MapToThumbAxisWithNeg via PadSetting).
+            gp.ThumbLX = (short)(devState.Axis[0] + short.MinValue);
+            gp.ThumbLY = (short)Math.Clamp(-(devState.Axis[1] + short.MinValue), short.MinValue, short.MaxValue);
+            gp.ThumbRX = (short)(devState.Axis[3] + short.MinValue);
+            gp.ThumbRY = (short)Math.Clamp(-(devState.Axis[4] + short.MinValue), short.MinValue, short.MaxValue);
+            gp.LeftTrigger = (ushort)Math.Clamp(devState.Axis[2], 0, 65535);
+            gp.RightTrigger = (ushort)Math.Clamp(devState.Axis[5], 0, 65535);
+            return gp;
         }
     }
 }

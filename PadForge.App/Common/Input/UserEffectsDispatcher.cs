@@ -1131,7 +1131,15 @@ namespace PadForge.Common.Input
                     // external writer already owns it (preserves the
                     // existing external-mirror precedence). Only DS5 has AT;
                     // DS4 falls through unchanged.
-                    if (isDs5)
+                    //
+                    // Test-rumble target gate mirrors Step 2's Xbox writer
+                    // path (InputManager.Step2.UpdateInputStates.cs:344-346):
+                    // when a test rumble targets a specific device in the
+                    // slot, only that device receives the override. Real-game
+                    // impulse-trigger writes (testTarget == Empty) apply to
+                    // every assigned Sony pad with the per-device scaling
+                    // already baked into the provider's returned byte.
+                    if (isDs5 && (testTarget == Guid.Empty || ud.InstanceGuid == testTarget))
                     {
                         var (impR, impL) = SlotImpulseTriggerForDeviceProvider?.Invoke(_padIndex, ud.InstanceGuid)
                                            ?? ((byte)0, (byte)0);

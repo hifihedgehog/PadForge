@@ -643,6 +643,19 @@ namespace PadForge.Common.Input
                 var data = pkt.Data.Span;
                 bool isXbox = HMaestroProfileCatalog.IsXboxProfile(_profile);
 
+                // 2026-05-19 impulse-trigger pipeline probe. Raw-byte dump
+                // unconditionally on every OutputReceived event so we can
+                // see whether HM is delivering >= 7-byte payloads (impulse
+                // triggers via GameInput SDK / GameInputSvc) vs the
+                // standard 5-byte payload (classic xinput1_4 dual-rumble).
+                // Same-window positive control: every regular XInput
+                // rumble write produces a length=5 line right next to
+                // the impulse-trigger writes that should be length=7.
+                // Disabled in release after verification — see
+                // feedback_no_speculative_user_facing_failure_modes.md
+                // (probe-only, do not ship as user-facing).
+                ImpulseTriggerProbe.Log(idx, _profile, pkt.Source, data);
+
                 // XInput vibration packet (IOCTL_XUSB_SET_STATE):
                 // [00, 08, leftHi, rightHi, reserved]. Chromium browser
                 // Gamepad API sends dual-rumble through this path with
@@ -678,14 +691,28 @@ namespace PadForge.Common.Input
                     return;
                 }
 
-                // Xbox Series BT browser-Gamepad short HID rumble:
+                // Xbox Series BT browser-Gamepad / Game Controller Tester
+                // / Game Pass app short HID rumble:
                 // [trigL, trigR, motorL, motorR, dur, delay, loop].
-                // Motors are 0..100; scale to ushort (~655x).
+                // Same shape as SDL3 HIDAPI's HIDAPI_DriverXboxOne_UpdateRumble
+                // outbound payload with the 2-byte header (0x03 0x0F)
+                // stripped. Motors are 0..100; scale to ushort (~655x).
+                //
+                // Probe data 2026-05-19 (1518 captures during Game
+                // Controller Tester impulse-trigger run, all len=7,
+                // src=HidOutput): nonzero trigger values consistently
+                // land at bytes 0/1, never at bytes 2/3, and the
+                // tail bytes 4/5/6 are constant 0xFF 0x00 0xEB markers.
+                // The previous parser shape read motorL/motorR but
+                // dropped the trigger bytes entirely — fixed by also
+                // surfacing data[0]/data[1] as impulse trigger motors.
                 if (isXbox
                     && pkt.Source == HMOutputSource.HidOutput
                     && data.Length >= 4
                     && data.Length < 8)
                 {
+                    vibrationStates[idx].LeftTriggerMotorSpeed = (ushort)(data[0] * 655);
+                    vibrationStates[idx].RightTriggerMotorSpeed = (ushort)(data[1] * 655);
                     vibrationStates[idx].LeftMotorSpeed = (ushort)(data[2] * 655);
                     vibrationStates[idx].RightMotorSpeed = (ushort)(data[3] * 655);
                     return;

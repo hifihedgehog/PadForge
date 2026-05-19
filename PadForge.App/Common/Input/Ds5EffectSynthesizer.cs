@@ -105,6 +105,12 @@ namespace PadForge.Common.Input
         private const byte HidModeFeedback      = 0x21;  // multi-position resistance
         private const byte HidModeVibration     = 0x26;  // multi-position vibration
 
+        // Frequency parameter for impulse-trigger → AT Vibration auto-routing.
+        // Matches Special K's value (SpecialK/src/input/hid_reports/playstation.cpp:4926
+        // — the AutoTrigger effect data array's byte 1 default of 15). Produces
+        // a noticeable buzz across the trigger's range without feeling too sharp.
+        private const byte ImpulseAtVibrationFrequency = 15;
+
         /// <summary>Builds the parsed-field dictionary for one DualSense
         /// effect packet. Pass to <c>HMOutputEncoder.Encode</c> with either
         /// the USB (Report 0x02) or BT (Report 0x31) DualSense profile —
@@ -739,6 +745,31 @@ namespace PadForge.Common.Input
         /// multi-position zones are at trigger positions 0..9 mapped
         /// linearly across the byte range.</para>
         /// </summary>
+        /// <summary>Builds an 11-byte trigger effect block in AdaptiveTrigger
+        /// Vibration mode (HidModeAutoTrigger, 0x06) for the impulse-trigger
+        /// auto-route. When the virtual controller is XInput-class and the
+        /// game writes an impulse trigger motor value (XINPUT_VIBRATION_EX
+        /// bytes 4 / 5), the dispatcher synthesizes one of these blocks and
+        /// stuffs it into <see cref="UserEffectsDispatcher.ExternalSubsystemOverrides.RightTriggerEffect"/>
+        /// (or LeftTriggerEffect), which takes precedence over the user's
+        /// configured Adaptive Triggers tab cfg. The user's cfg resumes the
+        /// moment the game stops writing the motor — override-with-resume
+        /// semantics, same shape as <c>ConstantTriggerForceEvaluator</c>.
+        /// Reference: Special K's playstation.cpp:3004 / 4926.</summary>
+        /// <param name="strength">Amplitude byte (0..255). Caller has already
+        /// scaled by ImpulseOverallGain / Impulse{Left,Right}Strength + audio-
+        /// trigger mix + ImpulseSwapTriggers via
+        /// <c>InputManager.ScaleTriggerRumbleForDevice</c>.</param>
+        public static byte[] BuildAtVibrationOverrideBlock(byte strength)
+        {
+            var block = new byte[11];
+            block[0] = HidModeAutoTrigger;
+            block[1] = ImpulseAtVibrationFrequency;
+            block[2] = strength;
+            block[3] = 0; // start position 0 — buzz active across full trigger range
+            return block;
+        }
+
         private static void EncodeTrigger(
             AdaptiveTriggerMode mode,
             byte startPosition,

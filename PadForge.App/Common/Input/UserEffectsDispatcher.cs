@@ -143,6 +143,26 @@ namespace PadForge.Common.Input
         /// the empty color when battery telemetry is unavailable).</summary>
         public static Func<int, byte> SlotBatteryPercentProvider { get; set; }
 
+        /// <summary>Static provider for the per-(slot, physical device)
+        /// impulse-trigger motor values (8-bit right / left). Returns the
+        /// game's XINPUT_VIBRATION_EX trigger magnitudes after per-device
+        /// scaling (ImpulseOverallGain + Impulse{Left,Right}Strength +
+        /// audio-trigger mix + ImpulseSwapTriggers). Returns (0, 0) when
+        /// the slot's output VC is not Xbox-class — other VCs don't emit
+        /// impulse trigger commands.
+        ///
+        /// Drives the impulse-to-AdaptiveTrigger-Vibration auto-routing on
+        /// DualSense pads. The dispatcher injects an AT Vibration block
+        /// into <see cref="ExternalSubsystemOverrides.RightTriggerEffect"/>
+        /// / LeftTriggerEffect for each trigger with a non-zero magnitude,
+        /// taking precedence over the user's configured Adaptive Triggers
+        /// tab cfg. The user's cfg resumes the moment the motor returns to
+        /// 0 — override-with-resume semantics, same as
+        /// <c>ConstantTriggerForceEvaluator</c>. Matches Special K's pattern
+        /// (SpecialK/src/input/hid_reports/playstation.cpp:2995-3030).
+        /// </summary>
+        public static Func<int, Guid, (byte right, byte left)> SlotImpulseTriggerForDeviceProvider { get; set; }
+
         // Animated-lightbar polling cadence — 30Hz is enough to feel
         // responsive without flooding the BT HID write path. WriteFile
         // open+close is ~1ms per call; 30Hz = 30ms budget.
@@ -1031,6 +1051,15 @@ namespace PadForge.Common.Input
                     if (!ud.IsOnline) continue;
                     if (!isPs) continue;
 
+                    // Per-device shadow of the external-mirror override struct.
+                    // Each device may receive its own dispatcher-injected
+                    // overrides (e.g. impulse-trigger → AT Vibration auto-route
+                    // with per-device strength scaling), and a struct mutation
+                    // on `overrides` would leak to the next iteration. The
+                    // outer `overrides` is preserved as the read-only external
+                    // capture; the per-device copy carries dispatcher adds.
+                    var devOverrides = overrides;
+
                     string path = ud.DevicePath;
                     if (string.IsNullOrEmpty(path)) continue;
                     bool isBluetooth = SonyEffectWriter.IsBluetoothPath(path);
@@ -1071,7 +1100,7 @@ namespace PadForge.Common.Input
                     // so the override is null and this branch is skipped —
                     // the bytes flow through to the real DualSense via
                     // the dispatcher path, which is the only writer.
-                    bool gameDrivenRumble = overrides.RumbleRight.HasValue && overrides.RumbleLeft.HasValue;
+                    bool gameDrivenRumble = devOverrides.RumbleRight.HasValue && devOverrides.RumbleLeft.HasValue;
                     if (gameDrivenRumble && isDs5
                         && DualSensePassthroughDispatcher.IsPassthroughTarget(_padIndex, ud.InstanceGuid))
                     {
@@ -1088,6 +1117,29 @@ namespace PadForge.Common.Input
                         devCfg = resolved;
                     devCfg ??= _config;
                     if (devCfg == null) continue;
+
+                    // Impulse-trigger → DualSense Adaptive Trigger Vibration
+                    // auto-route. When the slot's output VC is XInput-class
+                    // and the game writes an impulse trigger motor magnitude
+                    // (XINPUT_VIBRATION_EX bytes 4/5), the provider returns
+                    // a non-zero byte and we synthesize an AT Vibration block
+                    // overriding that trigger's effect for the tick. The
+                    // user's configured AT cfg (resistance, weapon,
+                    // galloping…) resumes the moment the motor returns to 0
+                    // — override-with-resume, same shape as the constant-
+                    // trigger-force evaluator. Skip the trigger if the
+                    // external writer already owns it (preserves the
+                    // existing external-mirror precedence). Only DS5 has AT;
+                    // DS4 falls through unchanged.
+                    if (isDs5)
+                    {
+                        var (impR, impL) = SlotImpulseTriggerForDeviceProvider?.Invoke(_padIndex, ud.InstanceGuid)
+                                           ?? ((byte)0, (byte)0);
+                        if (impR > 0 && devOverrides.RightTriggerEffect == null)
+                            devOverrides.RightTriggerEffect = Ds5EffectSynthesizer.BuildAtVibrationOverrideBlock(impR);
+                        if (impL > 0 && devOverrides.LeftTriggerEffect == null)
+                            devOverrides.LeftTriggerEffect = Ds5EffectSynthesizer.BuildAtVibrationOverrideBlock(impL);
+                    }
 
                     // Per-device peak scaling (each device has own
                     // AudioLightbarSensitivity).
@@ -1136,10 +1188,10 @@ namespace PadForge.Common.Input
                     // misconfigured slot doesn't paint empty-battery red.
                     byte pctByte = SlotBatteryPercentProvider?.Invoke(_padIndex) ?? (byte)100;
                     bool assertRightTrig = padForgeWantsRightAt
-                        || overrides.RightTriggerEffect != null
+                        || devOverrides.RightTriggerEffect != null
                         || prevPadForgeWantsRightAt;
                     bool assertLeftTrig  = padForgeWantsLeftAt
-                        || overrides.LeftTriggerEffect != null
+                        || devOverrides.LeftTriggerEffect != null
                         || prevPadForgeWantsLeftAt;
                     _prevPadForgeWantsRightTrig[ud.InstanceGuid] = padForgeWantsRightAt;
                     _prevPadForgeWantsLeftTrig[ud.InstanceGuid]  = padForgeWantsLeftAt;
@@ -1193,11 +1245,11 @@ namespace PadForge.Common.Input
                                 devCfg, devPeak, nowMs,
                                 _randomColor, devPulseColor, devPulseIntensity,
                                 rR, rL, assertRumbleEnable,
-                                assertRightTrig, assertLeftTrig, overrides, pctByte)
+                                assertRightTrig, assertLeftTrig, devOverrides, pctByte)
                             : Ds4EffectSynthesizer.BuildFields(
                                 devCfg, devPeak, nowMs,
                                 _randomColor, devPulseColor, devPulseIntensity,
-                                rR, rL, assertRumbleEnable, overrides, pctByte);
+                                rR, rL, assertRumbleEnable, devOverrides, pctByte);
                         SonyEffectWriter.Write(path, profile, fields);
                     }
                     catch

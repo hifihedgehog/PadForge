@@ -48,6 +48,7 @@ namespace PadForge.Services
         // dispatcher's per-device rumble pump doesn't allocate per tick.
         private Vibration _constantForceScratchSony;
         private Vibration _macroRumbleScratchSony;
+        private Vibration _constantTriggerForceScratchSony;
         private DispatcherTimer _uiTimer;
         private ForegroundMonitorService _foregroundMonitor;
         private ProfileData _defaultProfileSnapshot;
@@ -365,6 +366,55 @@ namespace PadForge.Services
                 var raw = _inputManager.VibrationStates[padIndex];
                 if (raw == null) return ((byte)0, (byte)0);
                 return ((byte)(raw.RightMotorSpeed >> 8), (byte)(raw.LeftMotorSpeed >> 8));
+            };
+
+            // Per-(slot, device) impulse-trigger magnitudes for the
+            // impulse-to-AdaptiveTrigger-Vibration auto-route on DualSense
+            // pads. Returns (0, 0) when the slot's output VC isn't Xbox-
+            // class — other VC types don't emit impulse trigger commands.
+            // Otherwise mirrors the main-rumble provider shape: apply
+            // ConstantTriggerForceEvaluator (override-with-resume) then
+            // ScaleTriggerRumbleForDevice (per-device strength + audio-
+            // trigger mix + ImpulseSwapTriggers), and return the high
+            // byte of each ushort.
+            UserEffectsDispatcher.SlotImpulseTriggerForDeviceProvider = (padIndex, deviceGuid) =>
+            {
+                if (_inputManager == null) return ((byte)0, (byte)0);
+                if (padIndex < 0 || padIndex >= InputManager.MaxPads) return ((byte)0, (byte)0);
+                if (padIndex < 0 || padIndex >= _mainVm.Pads.Count) return ((byte)0, (byte)0);
+                if (_mainVm.Pads[padIndex].OutputType != VirtualControllerType.Xbox)
+                    return ((byte)0, (byte)0);
+
+                var raw = _inputManager.VibrationStates[padIndex];
+                if (raw == null) return ((byte)0, (byte)0);
+
+                PadSetting devicePs = null;
+                var settings = SettingsManager.UserSettings;
+                if (settings != null && deviceGuid != Guid.Empty)
+                {
+                    lock (settings.SyncRoot)
+                    {
+                        for (int i = 0; i < settings.Items.Count; i++)
+                        {
+                            var us = settings.Items[i];
+                            if (us == null) continue;
+                            if (us.MapTo != padIndex) continue;
+                            if (us.InstanceGuid != deviceGuid) continue;
+                            devicePs = us.GetPadSetting();
+                            break;
+                        }
+                    }
+                }
+
+                if (_constantTriggerForceScratchSony == null)
+                    _constantTriggerForceScratchSony = new Vibration();
+                var effective = ConstantTriggerForceEvaluator.Resolve(
+                    raw, devicePs, _constantTriggerForceScratchSony);
+
+                _inputManager.ScaleTriggerRumbleForDevice(
+                    effective.LeftTriggerMotorSpeed, effective.RightTriggerMotorSpeed,
+                    devicePs, out ushort scaledL, out ushort scaledR);
+                return ((byte)(scaledR >> 8), (byte)(scaledL >> 8));
             };
 
             // Active test-rumble target for the slot, so the dispatcher's
@@ -740,6 +790,7 @@ namespace PadForge.Services
                 UserEffectsDispatcher.SlotButtonsProvider = null;
                 UserEffectsDispatcher.SlotRumbleForDeviceProvider = null;
                 UserEffectsDispatcher.SlotRawRumbleProvider = null;
+                UserEffectsDispatcher.SlotImpulseTriggerForDeviceProvider = null;
                 UserEffectsDispatcher.TestRumbleTargetGuidProvider = null;
                 UserEffectsDispatcher.SlotBatteryPercentProvider = null;
                 UserEffectsDispatcher.SlotPerDeviceConfigsProvider = null;

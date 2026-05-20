@@ -67,6 +67,23 @@ namespace PadForge.Views
             OnShortcutsChanged?.Invoke();
         }
 
+        // Persistent ProfileChoices / DeviceChoices stay alive across the
+        // shortcut row's lifetime; rebuild on DropDownOpened so newly-saved
+        // profiles / newly-connected devices surface without needing a
+        // shortcut row teardown. Mirrors the pattern used elsewhere (e.g.
+        // MicLedDevicePicker_DropDownOpened in PadPage.xaml.cs).
+        private void ProfileChoices_DropDownOpened(object sender, EventArgs e)
+        {
+            if (sender is FrameworkElement fe && fe.DataContext is ProfileShortcutViewModel shortcut)
+                shortcut.RebuildProfileChoices();
+        }
+
+        private void DeviceChoices_DropDownOpened(object sender, EventArgs e)
+        {
+            if (sender is FrameworkElement fe && fe.DataContext is ProfileShortcutViewModel shortcut)
+                shortcut.RebuildDeviceChoices();
+        }
+
         // ─────────────────────────────────────────────
         //  Shortcut button recording
         // ─────────────────────────────────────────────

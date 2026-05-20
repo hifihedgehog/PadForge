@@ -237,15 +237,21 @@
 
                                     <!-- Profile dropdown (Specific only) -->
                                     <ComboBox Grid.Column="1"
-                                              ItemsSource="{Binding ProfileNames}"
-                                              SelectedItem="{Binding TargetProfileName}"
+                                              ItemsSource="{Binding ProfileChoices}"
+                                              SelectedValue="{Binding TargetProfileId}"
+                                              SelectedValuePath="ProfileId"
+                                              DisplayMemberPath="DisplayName"
+                                              DropDownOpened="ProfileChoices_DropDownOpened"
                                               Width="140" Margin="0,0,6,0"
                                               Visibility="{Binding IsSpecificMode, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                     <!-- Device dropdown -->
                                     <ComboBox Grid.Column="2"
-                                              ItemsSource="{Binding DeviceOptions}"
-                                              SelectedItem="{Binding SelectedDeviceName}"
+                                              ItemsSource="{Binding DeviceChoices}"
+                                              SelectedValue="{Binding TriggerDeviceGuid}"
+                                              SelectedValuePath="DeviceGuid"
+                                              DisplayMemberPath="DisplayName"
+                                              DropDownOpened="DeviceChoices_DropDownOpened"
                                               Width="220" Margin="0,0,6,0"/>
 
                                     <!-- Button combo display (fills remaining space, marquee scrolls if too long) -->

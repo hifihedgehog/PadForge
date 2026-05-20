@@ -23,6 +23,17 @@ namespace PadForge.Common.Input
         // Previous mouse button state
         private byte _prevMouseButtons;
 
+        // Sub-pixel accumulators for mouse delta + scroll. Sources like
+        // gyro-to-mouse produce per-frame deltas well under 1 pixel that
+        // would truncate to 0 in a raw (int) cast and never move the
+        // cursor. Accumulate the fractional residue across frames so the
+        // cursor moves once the residue crosses an integer boundary.
+        // Same pattern as the macro-action mouse-move path at
+        // InputManager.Step4b.EvaluateMacros.cs:814-816.
+        private float _mxAccumulator;
+        private float _myAccumulator;
+        private float _scrollAccumulator;
+
         // Mouse sensitivity: pixels per frame at full axis deflection.
         private const float MouseSensitivity = 15.0f;
 
@@ -51,6 +62,9 @@ namespace PadForge.Common.Input
             if (!_connected) return;
             _connected = false;
             ReleaseAll();
+            _mxAccumulator = 0f;
+            _myAccumulator = 0f;
+            _scrollAccumulator = 0f;
         }
 
         /// <summary>
@@ -83,18 +97,24 @@ namespace PadForge.Common.Input
             // --- Mouse movement (deadzone already applied in Step 3) ---
             if (raw.MouseDeltaX != 0 || raw.MouseDeltaY != 0)
             {
-                float mx = raw.MouseDeltaX / 32767.0f * MouseSensitivity;
-                float my = -(raw.MouseDeltaY / 32767.0f * MouseSensitivity);
-                if (mx != 0 || my != 0)
-                    SendMouseMove((int)mx, (int)my);
+                _mxAccumulator += raw.MouseDeltaX / 32767.0f * MouseSensitivity;
+                _myAccumulator += -(raw.MouseDeltaY / 32767.0f * MouseSensitivity);
+                int dx = (int)_mxAccumulator;
+                int dy = (int)_myAccumulator;
+                _mxAccumulator -= dx;
+                _myAccumulator -= dy;
+                if (dx != 0 || dy != 0)
+                    SendMouseMove(dx, dy);
             }
 
             // --- Mouse scroll (deadzone already applied in Step 3) ---
             if (raw.ScrollDelta != 0)
             {
-                float scroll = raw.ScrollDelta / 32767.0f * ScrollSensitivity;
+                _scrollAccumulator += raw.ScrollDelta / 32767.0f * ScrollSensitivity;
+                int scroll = (int)_scrollAccumulator;
+                _scrollAccumulator -= scroll;
                 if (scroll != 0)
-                    SendMouseWheel((int)(scroll * 120)); // 120 = WHEEL_DELTA
+                    SendMouseWheel(scroll * 120); // 120 = WHEEL_DELTA
             }
         }
 

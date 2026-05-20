@@ -1430,4 +1430,5 @@
   <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>베이스 컷오프 재설정</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>왼쪽 트리거 재설정</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>오른쪽 트리거 재설정</value></data>
+  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>임펄스 트리거</value></data>
 </root>

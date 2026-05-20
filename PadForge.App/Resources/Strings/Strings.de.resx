@@ -1430,4 +1430,5 @@
   <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>Bassfrequenz-Grenze zurücksetzen</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Linken Trigger zurücksetzen</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Rechten Trigger zurücksetzen</value></data>
+  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse-Trigger</value></data>
 </root>

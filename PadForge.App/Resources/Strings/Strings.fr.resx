@@ -1430,4 +1430,5 @@
   <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>Réinitialiser la coupure basses</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Réinitialiser la gâchette gauche</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Réinitialiser la gâchette droite</value></data>
+  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Gâchettes Impulse</value></data>
 </root>

@@ -1450,4 +1450,5 @@
   <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>Ripristina taglio bassi</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Ripristina grilletto sinistro</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Ripristina grilletto destro</value></data>
+  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Grilletti Impulse</value></data>
 </root>

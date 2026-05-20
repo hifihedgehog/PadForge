@@ -1430,4 +1430,5 @@
   <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>Restaurar corte de graves</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Restaurar gatilho esquerdo</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Restaurar gatilho direito</value></data>
+  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Gatilhos Impulse</value></data>
 </root>

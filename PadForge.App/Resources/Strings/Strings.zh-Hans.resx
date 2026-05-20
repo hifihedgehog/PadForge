@@ -1430,4 +1430,5 @@
   <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>重置低音截止</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>重置左扳机</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>重置右扳机</value></data>
+  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>冲击扳机</value></data>
 </root>

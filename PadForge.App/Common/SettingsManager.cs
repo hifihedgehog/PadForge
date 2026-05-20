@@ -564,6 +564,16 @@ namespace PadForge.Common.Input
                 ps.RightThumbButton = "Button 9";
                 ps.ButtonGuide = "Button 10";
 
+                // Xbox Series Share button — only auto-mapped for Xbox
+                // VC output. SDL3 surfaces it at SDL_GAMEPAD_BUTTON_MISC1
+                // (button 11), which is the same physical button on
+                // every modern controller (Xbox Share, DualSense Mic,
+                // Switch Capture). Devices that don't expose MISC1
+                // (Xbox 360, classic gamepads) never fire button 11,
+                // so the binding is silently inert there.
+                if (outputType == Engine.VirtualControllerType.Xbox)
+                    ps.ButtonShare = "Button 11";
+
                 // Default deadzones and gains.
                 ps.LeftThumbDeadZoneX = "0";
                 ps.LeftThumbDeadZoneY = "0";

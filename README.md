@@ -32,10 +32,14 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 ## What you can do with PadForge
 
 - **Use any controller in any game.** Plug a PS5 DualSense into a Steam game that only accepts Xbox pads. Plug a Logitech G29 wheel into a racing game that ignores wheels. Plug a Saitek HOTAS into a flight game that wants gamepads.
-- **Keep what's special about your controller.** Adaptive triggers in racing games. DualSense lightbar that reacts to game audio. Gyro routed to mouse aim. Touchpad finger contacts forwarded to the game.
+- **Combine inputs from many devices into one virtual controller.** Pedal set + wheel + HOTAS throttle as one virtual stick. Left hand on a pad, right hand on a flight stick, both feeding the same virtual controller. Strongest / Combined / Average / Either / Both / Custom-formula combine modes. Cross-device chords.
+- **Layer your mappings with Shift keys.** Each slot can carry extra mapping tables that activate while a button, chord, or axis is held. Five activation modes (Hold, Toggle, Sticky, Cycle, Custom jump-to). Per-layer color and emoji icon. Win11-style flyout confirms the active layer.
+- **Aim with gyro at Steam Input parity.** Reference frames (Local, Player, World), dual-threshold smoothing, real-world calibration, cross-device Aim Engage button. Per-(device, slot) tuning persistence. Bind Gyro Pitch / Yaw / Roll like any other source.
+- **Drive trigger motors from games, audio, or constant force.** Xbox Impulse Trigger passthrough (Forza, Gears, Halo). The same trigger data routes to DualSense as Adaptive Trigger Vibration. Audio-bass-driven trigger rumble. Constant trigger force with override-and-resume.
+- **Keep what's special about your controller.** Adaptive triggers in racing games. DualSense lightbar that reacts to game audio. Touchpad finger contacts forwarded to the game. Lightbar Battery and Strobe modes.
 - **Play with whatever's in front of you.** Phone in the room? Open a browser tab. The tab becomes a controller with sticks, D-pad, and rumble feedback. Keyboard handy? Map WASD plus mouse to a virtual Xbox pad.
-- **Run up to 16 controllers at once.** Local co-op with mixed gamepad types. Two sim racers on two wheels. A flight stick + throttle + rudder pedals all together as one virtual HOTAS.
-- **Map motion to emulators.** Stream gyro and accelerometer to Cemu, Dolphin, Yuzu, and Ryujinx over the DSU/Cemuhook protocol on UDP port 26760.
+- **Run up to 16 controllers at once.** Local co-op with mixed gamepad types. Two sim racers on two wheels. A flight stick + throttle + rudder pedals all together as one virtual HOTAS. One combo press toggles every virtual controller on or off.
+- **Map motion to emulators.** Stream gyroscope and accelerometer to Cemu, Dolphin, Yuzu, and Ryujinx over the DSU / Cemuhook protocol on UDP port 26760.
 - **Make MIDI from a gamepad.** Map sticks to Control Change, buttons to notes. Play music with whatever's in your hand.
 
 ---
@@ -52,6 +56,13 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 | Flight stick / wheel / HOTAS virtual output | ✅ 225+ profiles | ❌ | ❌ | ❌ | ❌ | ❌ |
 | MIDI virtual output | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Keyboard + Mouse virtual output | ✅ | ❌ | ⚠️ basic | ✅ | ❌ | ✅ |
+| Multi-source per row (one output, many inputs) | ✅ 6 combine modes + custom formula | ❌ | ❌ | ⚠️ basic | ❌ | ✅ |
+| Shift layers (Hold / Toggle / Sticky / Cycle / Custom) | ✅ + chord + axis activators | ❌ | ❌ | ✅ | ❌ | ⚠️ basic |
+| Cross-device chords (button on pad A + button on pad B) | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Formula editor with chips (arithmetic, logic, if-then-else) | ✅ | ❌ | ❌ | ❌ | ❌ | ⚠️ basic |
+| Gyro Steam Input parity (Local / Player / World, RWC) | ✅ | ❌ | ❌ | ⚠️ basic | ⚠️ basic | ✅ |
+| Xbox Impulse Triggers passthrough | ✅ + DualSense auto-route | ❌ | ❌ | ❌ | ❌ | ⚠️ Xbox-only |
+| Constant trigger force + audio-driven trigger rumble | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | DualSense Adaptive Triggers | ✅ 7 modes + GameCube preset | ❌ | ❌ | ✅ | ⚠️ basic | ✅ |
 | DualSense lightbar | ✅ 13 modes + audio-reactive | ❌ | ❌ | ⚠️ basic | ⚠️ basic | ❌ |
 | Force feedback for wheels & joysticks | ✅ HID PID 1.0 | ❌ | ❌ | ❌ | ❌ | ❌ |

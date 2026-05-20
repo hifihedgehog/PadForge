@@ -65,7 +65,9 @@ Seven adaptive trigger modes with a live preview that draws the resistance curve
 
 ### Open a browser. Press buttons.
 
-PadForge runs a tiny web server. Any device with a browser on your Wi-Fi can load it, pick a layout (Xbox 360 or DualShock 4), and play. Touch buttons, dual analog sticks, an 8-way D-pad, rumble feedback through the Vibration API. No app to install on the phone.
+PadForge runs a tiny web server. Any device with a browser on your Wi-Fi can load it, pick a layout (Xbox 360, DualShock 4, or multi-touch touchpad), and play. Up to 16 phones at once, each a separate virtual pad. Touch buttons, dual analog sticks, an 8-way D-pad. Rumble feedback through the Vibration API. No app to install on the phone.
+
+No phone handy? Turn on **Touchpad Overlay** from the Dashboard. A transparent on-screen touch surface pins to any monitor and drives the DS4 or DualSense touchpad directly.
 
 ![Web controller](screenshots/web-controller.jpg)
 

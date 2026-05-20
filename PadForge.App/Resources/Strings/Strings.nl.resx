@@ -1417,4 +1417,37 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Ook de eigen toewijzing van de activator activeren</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Indien aangevinkt stuurt de activatorknop nog steeds elke rij aan die hem als bron gebruikt — één druk wisselt de laag EN activeert de eigen toewijzing van de knop. Indien niet aangevinkt (standaard) wordt de druk alleen verbruikt door de laagwissel.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Indien aangevinkt vallen doelen die deze laag niet expliciet toewijst terug op de Basislaag. Indien niet aangevinkt (standaard) vervangt de laag Basis volledig en blijven niet-toegewezen doelen uit.</value></data>
+  <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse-triggers</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Stuurt motor-opdrachten per trigger (Xbox Impulse-triggers) door van de virtuele controller naar de toegewezen fysieke Xbox One-, Elite- of Series-controller. Door games gestuurde trigger-vibratie wordt automatisch doorgegeven. De regelaars hieronder schalen de sterkte per trigger.</value></data>
+  <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Linkertrigger</value></data>
+  <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Rechtertrigger</value></data>
+  <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Linker- en rechtertriggermotor verwisselen</value></data>
+  <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>Linkertrigger testen</value></data>
+  <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>Rechtertrigger testen</value></data>
+  <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>Triggermotor-activiteit</value></data>
+  <data name="Pad_ResetImpulseTriggers" xml:space="preserve"><value>Impulse-triggers resetten</value></data>
+  <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Totaalversterking resetten</value></data>
+  <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Linkertrigger resetten</value></data>
+  <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Rechtertrigger resetten</value></data>
+  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Constante triggerkracht</value></data>
+  <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Past een continue kracht toe op elke triggermotor totdat je het uitschakelt. Door games gestuurde triggerkracht heeft tijdens de uitvoering voorrang en wordt hervat zodra het spel stopt.</value></data>
+  <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Constante triggerkracht toepassen</value></data>
+  <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Linkertrigger</value></data>
+  <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Rechtertrigger</value></data>
+  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Constante triggerkracht resetten</value></data>
+  <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Linkertrigger resetten</value></data>
+  <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Rechtertrigger resetten</value></data>
+  <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Trigger-trillen op audiobas</value></data>
+  <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Stuurt de triggermotoren aan vanuit de bas van het systeemgeluid. Door games gestuurde triggerkracht heeft tijdens de uitvoering voorrang.</value></data>
+  <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Triggermotoren aansturen vanuit audio</value></data>
+  <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
+  <data name="Pad_AudioTriggerRumble_Cutoff" xml:space="preserve"><value>Bas-afkapfrequentie (Hz)</value></data>
+  <data name="Pad_AudioTriggerRumble_LeftTrigger" xml:space="preserve"><value>Linkertrigger</value></data>
+  <data name="Pad_AudioTriggerRumble_RightTrigger" xml:space="preserve"><value>Rechtertrigger</value></data>
+  <data name="Pad_AudioTriggerRumble_Level" xml:space="preserve"><value>Niveau</value></data>
+  <data name="Pad_ResetAudioTriggerRumble" xml:space="preserve"><value>Trigger-trillen op audio resetten</value></data>
+  <data name="Pad_ResetAudioTriggerSensitivity" xml:space="preserve"><value>Gevoeligheid resetten</value></data>
+  <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>Basafkapping resetten</value></data>
+  <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Linkertrigger resetten</value></data>
+  <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Rechtertrigger resetten</value></data>
 </root>

@@ -387,8 +387,6 @@
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Forwards per-trigger motor commands (Xbox Impulse Triggers) from the virtual controller to the assigned physical Xbox One, Elite, or Series controller. Game-driven trigger rumble passes through automatically. The controls below scale the magnitude per trigger.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Left Trigger</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Right Trigger</value></data>
-  <data name="Pad_ImpulseTriggers_LeftStrength" xml:space="preserve"><value>Left Trigger Strength</value></data>
-  <data name="Pad_ImpulseTriggers_RightStrength" xml:space="preserve"><value>Right Trigger Strength</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Swap left and right trigger motors</value></data>
   <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>Test Left Trigger</value></data>
   <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>Test Right Trigger</value></data>

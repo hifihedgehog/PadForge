@@ -404,8 +404,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ImpulseTriggers_Subtitle => Get("Pad_ImpulseTriggers_Subtitle");
     public string Pad_ImpulseTriggers_LeftTrigger => Get("Pad_ImpulseTriggers_LeftTrigger");
     public string Pad_ImpulseTriggers_RightTrigger => Get("Pad_ImpulseTriggers_RightTrigger");
-    public string Pad_ImpulseTriggers_LeftStrength => Get("Pad_ImpulseTriggers_LeftStrength");
-    public string Pad_ImpulseTriggers_RightStrength => Get("Pad_ImpulseTriggers_RightStrength");
     public string Pad_ImpulseTriggers_SwapTriggers => Get("Pad_ImpulseTriggers_SwapTriggers");
     public string Pad_ImpulseTriggers_TestLeftTrigger => Get("Pad_ImpulseTriggers_TestLeftTrigger");
     public string Pad_ImpulseTriggers_TestRightTrigger => Get("Pad_ImpulseTriggers_TestRightTrigger");

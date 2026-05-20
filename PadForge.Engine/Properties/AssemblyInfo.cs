@@ -14,5 +14,6 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("A1B2C3D4-E5F6-7890-ABCD-EF1234567890")]
 
-[assembly: AssemblyVersion("3.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.0.0")]
+// AssemblyVersion + AssemblyFileVersion live in ..\SharedVersion.cs,
+// linked into both PadForge.App and PadForge.Engine so the two
+// assemblies can never drift apart.

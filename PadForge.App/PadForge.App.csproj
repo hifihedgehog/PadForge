@@ -116,6 +116,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Shared AssemblyVersion + AssemblyFileVersion — single source of truth
+         across PadForge.App and PadForge.Engine. -->
+    <Compile Include="..\SharedVersion.cs" Link="Properties\SharedVersion.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PadForge.Engine\PadForge.Engine.csproj" />
     <!-- HIDMaestro SDK, pre-built release DLL, NOT a ProjectReference.
          Using a ProjectReference would build from source and pick up

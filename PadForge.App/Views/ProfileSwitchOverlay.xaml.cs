@@ -27,6 +27,8 @@ namespace PadForge.Views
         private const string InitializingIcon = "\uE895";
         private const string ActiveIcon = "\uE73E";
         private const string OfflineIcon = "\uE7BA";
+        private const string VCsEnabledIcon = "\uE73E";   // checkmark \u2014 same as ActiveIcon
+        private const string VCsDisabledIcon = "\uE7E8";  // Cancel glyph
 
         // Slide travel distance — enough to fully hide the flyout below the clip boundary.
         private const double SlideTravel = 80;
@@ -136,6 +138,32 @@ namespace PadForge.Views
         {
             _dismissTimer.Stop();
             _initMonitorTimer.Stop();
+        }
+
+        /// <summary>Show the Win11-volume-OSD-style flyout for a bulk virtual-controller
+        /// enable/disable toggle (#91). 2-second slide-in + dismiss, no init monitoring.</summary>
+        public void ShowVCsToggle(bool enabled)
+        {
+            _dismissTimer.Stop();
+            _initMonitorTimer.Stop();
+            _showingInitializing = false;
+
+            ApplyTheme();
+            StatusIcon.BeginAnimation(OpacityProperty, null);
+            StatusIcon.Opacity = 1;
+            StatusIcon.Text = enabled ? VCsEnabledIcon : VCsDisabledIcon;
+            StatusText.Text = enabled
+                ? Strings.Instance.Main_VCsEnabled
+                : Strings.Instance.Main_VCsDisabled;
+
+            ShowFlyout();
+
+            _dismissTimer.Tick -= OnDismissThenClose;
+            _dismissTimer.Tick -= OnDismissThenMonitorInit;
+            _dismissTimer.Tick -= OnDismissThenCheckOffline;
+            _dismissTimer.Tick += OnDismissThenClose;
+            _dismissTimer.Interval = TimeSpan.FromSeconds(2);
+            _dismissTimer.Start();
         }
 
         public void ShowProfileName(string profileName)

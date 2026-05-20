@@ -836,7 +836,7 @@
   <data name="Pad_OverallGain" xml:space="preserve"><value>Ganancia total</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor izquierdo</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor derecho</value></data>
-  <data name="Pad_SwapMotors" xml:space="preserve"><value>Intercambiar motores izquierdo/derecho</value></data>
+  <data name="Pad_SwapMotors" xml:space="preserve"><value>Intercambiar motores izquierdo y derecho</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Probar vibración</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Actividad del motor</value></data>
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Fuerza constante</value></data>
@@ -1036,7 +1036,7 @@
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>Botón {0}</value></data>
   <data name="DevObj_AxisN" xml:space="preserve"><value>Eje {0}</value></data>
-  <data name="DevObj_Misc1" xml:space="preserve"><value>Misc 1</value></data>
+  <data name="DevObj_Misc1" xml:space="preserve"><value>Compartir</value></data>
   <data name="DevObj_Misc2" xml:space="preserve"><value>Misc 2</value></data>
   <data name="DevObj_Misc3" xml:space="preserve"><value>Misc 3</value></data>
   <data name="DevObj_Misc4" xml:space="preserve"><value>Misc 4</value></data>

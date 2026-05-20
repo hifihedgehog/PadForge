@@ -836,7 +836,7 @@
   <data name="Pad_OverallGain" xml:space="preserve"><value>전체 게인</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>왼쪽 모터</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>오른쪽 모터</value></data>
-  <data name="Pad_SwapMotors" xml:space="preserve"><value>왼쪽/오른쪽 모터 교체</value></data>
+  <data name="Pad_SwapMotors" xml:space="preserve"><value>왼쪽과 오른쪽 모터 교체</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>진동 테스트</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>모터 활동</value></data>
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>상시 포스</value></data>
@@ -1036,7 +1036,7 @@
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>버튼 {0}</value></data>
   <data name="DevObj_AxisN" xml:space="preserve"><value>축 {0}</value></data>
-  <data name="DevObj_Misc1" xml:space="preserve"><value>기타 1</value></data>
+  <data name="DevObj_Misc1" xml:space="preserve"><value>공유</value></data>
   <data name="DevObj_Misc2" xml:space="preserve"><value>기타 2</value></data>
   <data name="DevObj_Misc3" xml:space="preserve"><value>기타 3</value></data>
   <data name="DevObj_Misc4" xml:space="preserve"><value>기타 4</value></data>

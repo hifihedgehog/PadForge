@@ -831,7 +831,7 @@
   <data name="Pad_OverallGain" xml:space="preserve"><value>Guadagno complessivo</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motore sinistro</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motore destro</value></data>
-  <data name="Pad_SwapMotors" xml:space="preserve"><value>Scambia motori sinistro/destro</value></data>
+  <data name="Pad_SwapMotors" xml:space="preserve"><value>Scambia motori sinistro e destro</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Prova vibrazione</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Attività motori</value></data>
 
@@ -1056,7 +1056,7 @@
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>Pulsante {0}</value></data>
   <data name="DevObj_AxisN" xml:space="preserve"><value>Asse {0}</value></data>
-  <data name="DevObj_Misc1" xml:space="preserve"><value>Vari 1</value></data>
+  <data name="DevObj_Misc1" xml:space="preserve"><value>Condividi</value></data>
   <data name="DevObj_Misc2" xml:space="preserve"><value>Vari 2</value></data>
   <data name="DevObj_Misc3" xml:space="preserve"><value>Vari 3</value></data>
   <data name="DevObj_Misc4" xml:space="preserve"><value>Vari 4</value></data>

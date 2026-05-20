@@ -1071,7 +1071,7 @@
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>Button {0}</value></data>
   <data name="DevObj_AxisN" xml:space="preserve"><value>Axis {0}</value></data>
-  <data name="DevObj_Misc1" xml:space="preserve"><value>Misc 1</value></data>
+  <data name="DevObj_Misc1" xml:space="preserve"><value>Share</value></data>
   <data name="DevObj_Misc2" xml:space="preserve"><value>Misc 2</value></data>
   <data name="DevObj_Misc3" xml:space="preserve"><value>Misc 3</value></data>
   <data name="DevObj_Misc4" xml:space="preserve"><value>Misc 4</value></data>
@@ -1168,7 +1168,7 @@
   <data name="Pad_OverallGain" xml:space="preserve"><value>Overall Gain</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Left Motor</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Right Motor</value></data>
-  <data name="Pad_SwapMotors" xml:space="preserve"><value>Swap left/right motors</value></data>
+  <data name="Pad_SwapMotors" xml:space="preserve"><value>Swap left and right motors</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Test Rumble</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motor Activity</value></data>
 

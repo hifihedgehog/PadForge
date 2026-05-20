@@ -141,7 +141,10 @@ namespace PadForge.Views
         }
 
         /// <summary>Show the Win11-volume-OSD-style flyout for a bulk virtual-controller
-        /// enable/disable toggle (#91). 2-second slide-in + dismiss, no init monitoring.</summary>
+        /// enable/disable toggle (#91). 2-second slide-in + dismiss, no init monitoring.
+        /// Glyph reads at a glance even with sound off — green checkmark for
+        /// enabled, red Cancel glyph for disabled — matching the universal
+        /// traffic-light convention used in Windows system OSDs.</summary>
         public void ShowVCsToggle(bool enabled)
         {
             _dismissTimer.Stop();
@@ -152,6 +155,9 @@ namespace PadForge.Views
             StatusIcon.BeginAnimation(OpacityProperty, null);
             StatusIcon.Opacity = 1;
             StatusIcon.Text = enabled ? VCsEnabledIcon : VCsDisabledIcon;
+            StatusIcon.Foreground = enabled
+                ? new SolidColorBrush(Color.FromRgb(0x37, 0xC8, 0x52))  // Fluent success green
+                : new SolidColorBrush(Color.FromRgb(0xE8, 0x1B, 0x1C)); // Fluent critical red
             StatusText.Text = enabled
                 ? Strings.Instance.Main_VCsEnabled
                 : Strings.Instance.Main_VCsDisabled;

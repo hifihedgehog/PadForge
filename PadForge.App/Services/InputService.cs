@@ -897,10 +897,32 @@ namespace PadForge.Services
             // ── Handle macro-requested bulk VC disable/enable toggle (#91) ──
             // Action wired by MainWindow — fans out to DeviceService.SetSlotEnabled
             // across every created slot and refreshes the sidebar power visuals.
+            // Overlay confirmation slides in afterward with the resulting state.
             if (_inputManager.PendingToggleVCsDisabled)
             {
                 _inputManager.PendingToggleVCsDisabled = false;
-                ToggleVCsDisabled?.Invoke();
+
+                // Skip silently when no slots are created — combo pressed with
+                // an empty config produces no observable state, so no toast.
+                bool anyCreated = false;
+                for (int i = 0; i < InputManager.MaxPads; i++)
+                {
+                    if (SettingsManager.SlotCreated[i]) { anyCreated = true; break; }
+                }
+                if (anyCreated)
+                {
+                    ToggleVCsDisabled?.Invoke();
+
+                    // Resulting state: any created slot still enabled after the
+                    // bulk flip ⇒ we just enabled them; otherwise we disabled them.
+                    bool anyEnabled = false;
+                    for (int i = 0; i < InputManager.MaxPads; i++)
+                    {
+                        if (SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
+                        { anyEnabled = true; break; }
+                    }
+                    ShowVCsToggleOverlay(anyEnabled);
+                }
             }
 
             // ── Update Pad ViewModels ──
@@ -4115,6 +4137,17 @@ namespace PadForge.Services
             }
 
             _switchOverlay.ShowProfileName(name ?? Strings.Instance.Common_Default);
+        }
+
+        private void ShowVCsToggleOverlay(bool enabled)
+        {
+            if (_switchOverlay == null)
+            {
+                _switchOverlay = new Views.ProfileSwitchOverlay();
+                _switchOverlay.CheckInitState = CheckAllSlotsInitState;
+                _switchOverlay.CheckAnyOffline = CheckAnyControllerOffline;
+            }
+            _switchOverlay.ShowVCsToggle(enabled);
         }
 
         private (bool anyInitializing, bool allReady) CheckAllSlotsInitState()

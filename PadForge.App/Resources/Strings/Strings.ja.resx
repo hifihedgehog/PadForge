@@ -122,6 +122,8 @@
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>デバイス待機中</value></data>
   <data name="Main_Active" xml:space="preserve"><value>アクティブ</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>初期化中</value></data>
+  <data name="Main_VCsEnabled" xml:space="preserve"><value>仮想コントローラーを有効化</value></data>
+  <data name="Main_VCsDisabled" xml:space="preserve"><value>仮想コントローラーを無効化</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>1 台以上のコントローラーがオフライン</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (最大 {0} 台)</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (最大 {0} 台)</value></data>

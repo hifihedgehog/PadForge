@@ -46,11 +46,18 @@ namespace PadForge.ViewModels
 
         private void OnCultureChanged()
         {
+            // ItemsSource collections MUST refresh before their SelectedItem
+            // counterparts. Both TargetProfileName and SelectedDeviceName
+            // return culture-dependent sentinel strings (Common_Default,
+            // Profiles_ShortcutDevice_Any). If SelectedItem refreshes first
+            // the ComboBox reads the newly-localized string, fails to find
+            // it in the still-old ItemsSource, and falls back to null —
+            // which paints the dropdown red and clears the selection.
             OnPropertyChanged(nameof(SwitchModes));
-            OnPropertyChanged(nameof(TargetProfileName));
             OnPropertyChanged(nameof(ProfileNames));
-            OnPropertyChanged(nameof(SelectedDeviceName));
             OnPropertyChanged(nameof(DeviceOptions));
+            OnPropertyChanged(nameof(TargetProfileName));
+            OnPropertyChanged(nameof(SelectedDeviceName));
             OnPropertyChanged(nameof(ButtonComboDisplay));
             OnPropertyChanged(nameof(LearnButtonText));
         }

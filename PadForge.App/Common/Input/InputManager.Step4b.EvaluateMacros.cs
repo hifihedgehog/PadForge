@@ -2178,6 +2178,12 @@ namespace PadForge.Common.Input
                 return;
             }
 
+            if (gm.SwitchMode == SwitchProfileMode.ToggleVCsDisabled)
+            {
+                PendingToggleVCsDisabled = true;
+                return;
+            }
+
             string targetId;
             switch (gm.SwitchMode)
             {

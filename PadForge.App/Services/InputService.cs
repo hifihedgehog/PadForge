@@ -119,6 +119,12 @@ namespace PadForge.Services
         /// <summary>Callback to toggle main window visibility. Set by MainWindow.</summary>
         public Action ToggleMainWindow { get; set; }
 
+        /// <summary>Callback to bulk-toggle all created VC slots enabled/disabled.
+        /// Set by MainWindow because DeviceService.SetSlotEnabled and
+        /// MainViewModel.RefreshNavControllerItems are reachable there. Triggered
+        /// from the #91 profile-shortcut mode <see cref="SwitchProfileMode.ToggleVCsDisabled"/>.</summary>
+        public Action ToggleVCsDisabled { get; set; }
+
         // ── Macro trigger recording state ──
         private MacroItem _recordingMacro;
         private int _recordingPadIndex;
@@ -886,6 +892,15 @@ namespace PadForge.Services
             {
                 _inputManager.PendingToggleWindow = false;
                 ToggleMainWindow?.Invoke();
+            }
+
+            // ── Handle macro-requested bulk VC disable/enable toggle (#91) ──
+            // Action wired by MainWindow — fans out to DeviceService.SetSlotEnabled
+            // across every created slot and refreshes the sidebar power visuals.
+            if (_inputManager.PendingToggleVCsDisabled)
+            {
+                _inputManager.PendingToggleVCsDisabled = false;
+                ToggleVCsDisabled?.Invoke();
             }
 
             // ── Update Pad ViewModels ──

@@ -381,7 +381,7 @@ namespace PadForge.Services
             {
                 if (_inputManager == null) return ((byte)0, (byte)0);
                 if (padIndex < 0 || padIndex >= InputManager.MaxPads) return ((byte)0, (byte)0);
-                if (padIndex < 0 || padIndex >= _mainVm.Pads.Count) return ((byte)0, (byte)0);
+                if (padIndex >= _mainVm.Pads.Count) return ((byte)0, (byte)0);
                 if (_mainVm.Pads[padIndex].OutputType != VirtualControllerType.Xbox)
                     return ((byte)0, (byte)0);
 

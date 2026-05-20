@@ -33,6 +33,26 @@ namespace PadForge.ViewModels
             });
 
             _switchMode = Data.SwitchMode;
+
+            // Culture change must refresh every dropdown / computed-label
+            // property that reads from Strings.Instance.* under the hood —
+            // the Profiles page binds these directly to ComboBox ItemsSource
+            // and TextBlock Text, neither of which observes Strings's static
+            // PropertyChanged for null. Weak handler tracking inside
+            // Strings.CultureChanged keeps this VM eligible for GC without
+            // an explicit unsubscribe.
+            Strings.CultureChanged += OnCultureChanged;
+        }
+
+        private void OnCultureChanged()
+        {
+            OnPropertyChanged(nameof(SwitchModes));
+            OnPropertyChanged(nameof(TargetProfileName));
+            OnPropertyChanged(nameof(ProfileNames));
+            OnPropertyChanged(nameof(SelectedDeviceName));
+            OnPropertyChanged(nameof(DeviceOptions));
+            OnPropertyChanged(nameof(ButtonComboDisplay));
+            OnPropertyChanged(nameof(LearnButtonText));
         }
 
         public GlobalMacroData Data { get; }
@@ -58,7 +78,10 @@ namespace PadForge.ViewModels
 
         public bool IsSpecificMode => _switchMode == SwitchProfileMode.Specific;
 
-        public static ObservableCollection<SwitchProfileModeItem> SwitchModes { get; } = new()
+        // Instance property (was static) — the DisplayName strings are
+        // captured per-build, so a culture change re-creates the list when
+        // OnCultureChanged raises the property-changed notification.
+        public ObservableCollection<SwitchProfileModeItem> SwitchModes => new()
         {
             new(SwitchProfileMode.Next, Strings.Instance.Profiles_ShortcutMode_Next),
             new(SwitchProfileMode.Previous, Strings.Instance.Profiles_ShortcutMode_Previous),

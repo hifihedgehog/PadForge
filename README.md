@@ -106,7 +106,7 @@ Map sticks to Control Change messages. Map buttons to Note On / Note Off. Set ve
 | MIDI virtual output | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Keyboard + Mouse virtual output | ✅ | ❌ | ❌ | ✅ | ✅ | ✅ |
 | Multi-source per row (one output, many inputs) | ✅ 6 combine modes + formula | ⚠️ "Combine Into" merges pads | ⚠️ MapperDataCollection (basic) | ❌ uses per-input Activators | ❌ | ⚠️ per-input Activators |
-| Custom formula editor (arithmetic, logic, if-then-else) | ✅ chip palette + 9 recipes | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Custom formula editor (arithmetic, logic, if-then-else) | ✅ chip palette + 10 starter recipes | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Shift layers / modifier overlays | ✅ Hold / Toggle / Sticky / Cycle / Custom | ❌ | ❌ | ✅ up to 10 (Hold / Toggle / Custom) | ✅ Mode Shifts | ✅ Action Set Layers (stackable) |
 | Cross-device chords (input on pad A + input on pad B) | ✅ | ❌ | ❌ | ✅ via Group of devices | ❌ | ❌ same controller only |
 | Gyro mapping | ✅ Local / Player / World, RWC, Aim Engage | ❌ | ❌ | ✅ since v5.3 (curves, Flick Stick) | ✅ gyro-to-mouse, gyro-to-RS | ✅ |

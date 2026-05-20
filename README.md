@@ -26,7 +26,7 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
     </picture>
   </a>
   <br>
-  <em>Powered by HIDMaestro &mdash; one driver, 225+ device profiles.</em>
+  <em>Powered by HIDMaestro. One driver, 225+ device profiles.</em>
 </p>
 
 ---
@@ -128,7 +128,7 @@ Floor and ceiling per trigger. Anti-deadzone. Sensitivity curves. Live value bar
 
 ### Force feedback and rumble
 ![Force Feedback](screenshots/force-feedback.jpg)
-Per-motor strength, overall gain, motor swap. Live motor activity bars. Audio bass rumble: PadForge captures system audio, isolates bass frequencies through a 48 dB/octave filter, and routes that to controller rumble.
+Per-motor strength, overall gain, motor swap. Live motor activity bars. Audio Bass Rumble captures system audio, isolates bass through a 48 dB/octave filter, and pushes it to the rumble motors. Music feels physical even when the game is silent.
 
 ### DualSense Adaptive Triggers
 ![Adaptive Triggers](screenshots/adaptive-triggers.jpg)
@@ -195,7 +195,7 @@ Windows 10 or 11 on x64. The [.NET 10 Desktop Runtime](https://dotnet.microsoft.
 
 ### Drivers
 
-PadForge installs **HIDMaestro** on first run. HIDMaestro is the engine that creates virtual controllers — when you add a slot, HIDMaestro spins up a HID device matching the controller "shape" you picked.
+PadForge installs **HIDMaestro** on first run. HIDMaestro is the engine that creates virtual controllers. Add a slot and HIDMaestro spins up a HID device matching the controller "shape" you picked.
 
 Two more drivers are optional. PadForge offers to install each one only when you need its feature:
 

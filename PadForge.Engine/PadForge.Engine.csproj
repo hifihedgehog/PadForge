@@ -23,4 +23,10 @@
     <DebugType>embedded</DebugType>
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- Shared AssemblyVersion + AssemblyFileVersion — single source of truth
+         across PadForge.App and PadForge.Engine. -->
+    <Compile Include="..\SharedVersion.cs" Link="Properties\SharedVersion.cs" />
+  </ItemGroup>
+
 </Project>

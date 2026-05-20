@@ -228,13 +228,24 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <!-- Mode: Next/Previous/Specific -->
+                                    <!-- Mode: Next/Previous/Specific/ToggleWindow/ToggleVCsDisabled.
+                                         Widened to fit the longest English label ("Toggle Virtual
+                                         Controllers Disabled"). Longer Romance-language locales
+                                         (Spanish/French ~45 chars) truncate via the ItemTemplate's
+                                         TextTrimming with the full name on hover. -->
                                     <ComboBox Grid.Column="0"
                                               ItemsSource="{Binding SwitchModes}"
                                               SelectedValue="{Binding SwitchMode}"
                                               SelectedValuePath="Mode"
-                                              DisplayMemberPath="DisplayName"
-                                              Width="155" Margin="0,0,6,0"/>
+                                              Width="290" Margin="0,0,6,0">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding DisplayName}"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           ToolTip="{Binding DisplayName}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
 
                                     <!-- Profile dropdown (Specific only) -->
                                     <ComboBox Grid.Column="1"

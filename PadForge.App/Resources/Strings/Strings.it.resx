@@ -122,6 +122,8 @@
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>In attesa dei dispositivi</value></data>
   <data name="Main_Active" xml:space="preserve"><value>Attivo</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>Inizializzazione</value></data>
+  <data name="Main_VCsEnabled" xml:space="preserve"><value>Controller virtuali attivati</value></data>
+  <data name="Main_VCsDisabled" xml:space="preserve"><value>Controller virtuali disattivati</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Uno o più controller offline</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (max {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (max {0})</value></data>

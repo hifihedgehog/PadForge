@@ -164,6 +164,8 @@ public class Strings : INotifyPropertyChanged
     public string Main_AwaitingDevices => Get("Main_AwaitingDevices");
     public string Main_Active => Get("Main_Active");
     public string Main_Initializing => Get("Main_Initializing");
+    public string Main_VCsEnabled => Get("Main_VCsEnabled");
+    public string Main_VCsDisabled => Get("Main_VCsDisabled");
     public string Main_ControllersOffline => Get("Main_ControllersOffline");
     public string Main_Xbox_Max_Format => Get("Main_Xbox_Max_Format");
     public string Main_PlayStation_Max_Format => Get("Main_PlayStation_Max_Format");

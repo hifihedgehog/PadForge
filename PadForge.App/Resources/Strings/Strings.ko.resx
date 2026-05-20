@@ -122,6 +122,8 @@
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>장치 대기 중</value></data>
   <data name="Main_Active" xml:space="preserve"><value>활성</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>초기화 중</value></data>
+  <data name="Main_VCsEnabled" xml:space="preserve"><value>가상 컨트롤러 활성화</value></data>
+  <data name="Main_VCsDisabled" xml:space="preserve"><value>가상 컨트롤러 비활성화</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>하나 이상의 컨트롤러 오프라인</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (최대 {0}개)</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (최대 {0}개)</value></data>

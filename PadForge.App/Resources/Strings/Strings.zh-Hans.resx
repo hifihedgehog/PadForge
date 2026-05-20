@@ -122,6 +122,8 @@
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>等待设备</value></data>
   <data name="Main_Active" xml:space="preserve"><value>活跃</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>正在初始化</value></data>
+  <data name="Main_VCsEnabled" xml:space="preserve"><value>虚拟控制器已启用</value></data>
+  <data name="Main_VCsDisabled" xml:space="preserve"><value>虚拟控制器已禁用</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>一个或多个控制器离线</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox（最多 {0} 台）</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation（最多 {0} 台）</value></data>

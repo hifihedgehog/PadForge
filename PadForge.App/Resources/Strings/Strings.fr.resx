@@ -1112,7 +1112,7 @@
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Inverser le lacet (X)</value></data>
   <data name="Settings_GyroInvertYaw_Tooltip" xml:space="preserve"><value>Inversion globale du lacet. Couvre également les sources Roll et Gyro Horizontal.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Étalonnage réel</value></data>
-  <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>Degrés en jeu par degré physique de rotation du contrôleur. 0 = désactivé. 1 = 1:1 (manette tournée de 90° → vue en jeu de 90°). Étalonner une fois par jeu en tournant la manette de 360° et en ajustant jusqu'à ce que la vue en jeu tourne aussi de 360°.</value></data>
+  <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>Degrés en jeu par degré physique de rotation du contrôleur. 0 = désactivé. 1 = 1:1 (contrôleur tourné de 90° → vue en jeu de 90°). Étalonner une fois par jeu en tournant le contrôleur de 360° et en ajustant jusqu'à ce que la vue en jeu tourne aussi de 360°.</value></data>
   <data name="Settings_GyroTightening" xml:space="preserve"><value>Resserrage</value></data>
   <data name="Settings_GyroTightening_Tooltip" xml:space="preserve"><value>En dessous de ce taux, l'entrée est entièrement remplacée par la moyenne du tampon de lissage — supprime tremblement de main et micro-dérive. Défaut 3°/s.</value></data>
   <data name="Settings_GyroSmoothingThreshold" xml:space="preserve"><value>Seuil de lissage</value></data>
@@ -1401,7 +1401,7 @@
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Si coché, le bouton activateur continue de piloter toute ligne qui l'utilise comme source — une pression change la couche ET déclenche le mapping propre du bouton. Si non coché (par défaut), la pression est consommée uniquement par le changement de couche.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Lorsque coché, les cibles que cette couche n'affecte pas explicitement retombent sur la couche Base. Lorsque décoché (par défaut), la couche remplace entièrement Base et les cibles non affectées restent désactivées.</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Gâchettes Impulse</value></data>
-  <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Transmet les commandes par moteur de gâchette (gâchettes Impulse Xbox) du contrôleur virtuel vers la manette physique Xbox One, Elite ou Series assignée. La vibration de gâchette générée par un jeu est transmise automatiquement. Les contrôles ci-dessous ajustent l'amplitude par gâchette.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Transmet les commandes par moteur de gâchette (gâchettes Impulse Xbox) du contrôleur virtuel vers le contrôleur physique Xbox One, Elite ou Series assigné. La vibration de gâchette générée par un jeu est transmise automatiquement. Les contrôles ci-dessous ajustent l'amplitude par gâchette.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gâchette gauche</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gâchette droite</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Inverser les moteurs des gâchettes gauche et droite</value></data>

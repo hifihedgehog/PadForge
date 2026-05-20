@@ -31,18 +31,59 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 
 ---
 
-## What you can do with PadForge
+## What PadForge does for you
 
-- **Use any controller in any game.** Plug a PS5 DualSense into a Steam game that only accepts Xbox pads. Plug a Logitech G29 wheel into a racing game that ignores wheels. Plug a Saitek HOTAS into a flight game that wants gamepads.
-- **Combine inputs from many devices into one virtual controller.** Pedal set + wheel + HOTAS throttle as one virtual stick. Left hand on a pad, right hand on a flight stick, both feeding the same virtual controller. Strongest / Combined / Average / Either / Both / Custom-formula combine modes. Cross-device chords.
-- **Layer your mappings with Shift keys.** Each slot can carry extra mapping tables that activate while a button, chord, or axis is held. Five activation modes (Hold, Toggle, Sticky, Cycle, Custom jump-to). Per-layer color and emoji icon. Win11-style flyout confirms the active layer.
-- **Aim with gyro at Steam Input parity.** Reference frames (Local, Player, World), dual-threshold smoothing, real-world calibration, cross-device Aim Engage button. Per-(device, slot) tuning persistence. Bind Gyro Pitch / Yaw / Roll like any other source.
-- **Drive trigger motors from games, audio, or constant force.** Xbox Impulse Trigger passthrough (Forza, Gears, Halo). The same trigger data routes to DualSense as Adaptive Trigger Vibration. Audio-bass-driven trigger rumble. Constant trigger force with override-and-resume.
-- **Keep what's special about your controller.** Adaptive triggers in racing games. DualSense lightbar that reacts to game audio. Touchpad finger contacts forwarded to the game. Lightbar Battery and Strobe modes.
-- **Play with whatever's in front of you.** Phone in the room? Open a browser tab. The tab becomes a controller with sticks, D-pad, and rumble feedback. Keyboard handy? Map WASD plus mouse to a virtual Xbox pad.
-- **Run up to 16 controllers at once.** Local co-op with mixed gamepad types. Two sim racers on two wheels. A flight stick + throttle + rudder pedals all together as one virtual HOTAS. One combo press toggles every virtual controller on or off.
-- **Map motion to emulators.** Stream gyroscope and accelerometer to Cemu, Dolphin, Yuzu, and Ryujinx over the DSU / Cemuhook protocol on UDP port 26760.
-- **Make MIDI from a gamepad.** Map sticks to Control Change, buttons to notes. Play music with whatever's in your hand.
+### That game that won't read your wheel? It will now.
+
+PadForge translates a PS5 DualSense into the Xbox pad a Steam game expects. A Logitech G29 wheel into the gamepad a racing game accepts. A Saitek HOTAS into the gamepad a flight game stubbornly insists on. The game never knows the difference.
+
+![Mappings tab](screenshots/mappings.jpg)
+
+### Pedals, wheel, and HOTAS throttle. One virtual stick.
+
+One mapping row can read from any number of physical inputs across any number of physical devices. Six combine modes (Strongest, Combined, Average, Either, Both, Only one) plus a chip-based custom formula editor. Cross-device chords so a button on the wheel and a button on the shifter trigger one virtual press.
+
+### Caps Lock for your controller.
+
+Each slot can carry extra mapping tables that turn on while a button, chord, or axis is held. Five activation modes (Hold, Toggle, Sticky, Cycle, Custom jump-to). Per-layer color and emoji icon. A Win11-style flyout pops to confirm the active layer the moment it engages.
+
+### Aim with the controller, not the stick.
+
+Reference frames (Local, Player, World). Dual-threshold smoothing. Real-world calibration. A cross-device Aim Engage button. Per-(device, slot) tuning so the same pad on two slots can feel two different ways. Gyro Pitch / Yaw / Roll bind as first-class sources in the mapping table.
+
+![Gyro tab](screenshots/gyro.jpg)
+
+### Forza, Gears, and Halo on your real Xbox pad.
+
+PadForge passes Xbox impulse trigger data straight to the assigned physical Xbox One, Elite, or Series pad. The same data routes to DualSense as Adaptive Trigger Vibration so a DualSense playing Forza buzzes the triggers in step with an Xbox One pad doing the same. Plus audio-bass-driven trigger rumble and a constant trigger force that resumes when the game stops.
+
+![Force Feedback tab](screenshots/force-feedback.jpg)
+
+### Adaptive triggers and lightbar that don't need the game's blessing.
+
+Seven adaptive trigger modes with a live preview that draws the resistance curve as you drag. Thirteen lightbar modes, three of them tied to your system audio. The DualSense lights and triggers light up in games that have never heard of a DualSense.
+
+### Open a browser. Press buttons.
+
+PadForge runs a tiny web server. Any device with a browser on your Wi-Fi can load it, pick a layout (Xbox 360 or DualShock 4), and play. Touch buttons, dual analog sticks, an 8-way D-pad, rumble feedback through the Vibration API. No app to install on the phone.
+
+![Web controller](screenshots/web-controller.jpg)
+
+### Local co-op without limits.
+
+Two sim racers on two wheels at once. A flight stick plus throttle plus rudder pedals as one virtual HOTAS. Mixed gamepad types in one session. Up to 16 controllers. One combo press toggles every virtual controller on or off when you need to step away.
+
+![Dashboard with multiple slots](screenshots/dashboard.jpg)
+
+### Gyro into Cemu, Dolphin, Yuzu, and Ryujinx.
+
+The built-in DSU / Cemuhook server broadcasts gyroscope and accelerometer on UDP port 26760 so emulators can use real motion for Splatoon, Wii titles, 3DS games, and anything else that asks for it. DualSense, DualShock 4, Switch Pro, and the new 2026 Steam Controller sources all work out of the box.
+
+### A 16-channel MIDI controller, no extra hardware.
+
+Map sticks to Control Change messages. Map buttons to Note On / Note Off. Set velocity per slot. PadForge creates a real Windows MIDI endpoint through Windows MIDI Services that DAWs (Ableton Live, FL Studio, Reaper), VJ tools, and stage lighting apps can subscribe to. No loopMIDI bridge.
+
+![MIDI virtual controller](screenshots/midi.jpg)
 
 ---
 

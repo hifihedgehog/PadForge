@@ -77,7 +77,7 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 | DSU / Cemuhook motion server | ✅ | ❌ | ❌ | ✅ port 26760 | ✅ | ❌ |
 | Phone as controller | ✅ in-browser, no app install | ❌ | ❌ | reWASD Mobile app | ❌ | ❌ |
 | Per-app profile switching | ✅ | ✅ since v4.17.12 (Nov 2020) | ❌ | ✅ Autodetect | ✅ | ✅ per-game by design |
-| Max simultaneous virtual controllers | 16 | 4 | 4 (ViGEm cap) | 4 (UDP cap) | 4 (ViGEm cap) | 1 per physical pad |
+| Max simultaneous virtual controllers | 16 | 4 (hard-coded PAD1-4 in UI) | 4 (UI matches XInput slot indices) | 4 (Slot UI cap) | 4 (Output Slots UI cap) | 1 per physical pad |
 | 1000 Hz polling | ✅ | ⚠️ unverified | ⚠️ unverified | ✅ user-selectable 500 / 1000 Hz | ✅ on USB DS4 | ⚠️ unverified |
 | 3D + 2D controller visualization | ✅ | ❌ | ❌ | ⚠️ 2D only | ⚠️ basic | ⚠️ configurator preview |
 | Multi-point sensitivity curve editor | ✅ draggable points | ⚠️ single slider | ⚠️ deadzone only | ✅ custom 4-point | ⚠️ preset curves | ✅ response curves |

@@ -10,9 +10,11 @@
 
 ---
 
-PadForge is a Windows controller remapper. It takes input from whatever physical device you have (gamepads, joysticks, keyboards, mice, touchscreens) and feeds it into virtual controllers that games see as real hardware: Xbox, PlayStation, flight sticks, wheels, third-party gamepads, MIDI, or keyboard and mouse.
+**PadForge makes any input look like any controller.** Plug in a steering wheel. The game sees a PlayStation pad. Use a DualSense. The game sees an Xbox 360. Map your keyboard. The game sees a flight stick. Open a tab on your phone. That tab becomes a gamepad your PC games can use.
 
-Fork of [x360ce](https://github.com/x360ce/x360ce), rewritten on SDL3, [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro), HidHide, Windows MIDI Services, HelixToolkit, WPF UI, and .NET 10.
+Free Windows app. No subscription. No paywall. No nag screens. Built on SDL3, [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro), [OpenXInput](https://github.com/hifihedgehog/OpenXinput), HidHide, Windows MIDI Services, HelixToolkit, WPF UI, and .NET 10.
+
+PadForge is for sim racers running wheels in games that only understand Xbox controllers. For DualSense owners who want adaptive triggers and lightbar effects in Steam games that ignore them. For accessibility users mapping whatever hardware they can use. For anyone whose controller doesn't match what their game expects.
 
 <p align="center">
   <a href="https://github.com/hifihedgehog/HIDMaestro">
@@ -27,72 +29,54 @@ Fork of [x360ce](https://github.com/x360ce/x360ce), rewritten on SDL3, [HIDMaest
 
 ---
 
-## Features
+## What you can do with PadForge
 
-### Input and output
+- **Use any controller in any game.** Plug a PS5 DualSense into a Steam game that only accepts Xbox pads. Plug a Logitech G29 wheel into a racing game that ignores wheels. Plug a Saitek HOTAS into a flight game that wants gamepads.
+- **Keep what's special about your controller.** Adaptive triggers in racing games. DualSense lightbar that reacts to game audio. Gyro routed to mouse aim. Touchpad finger contacts forwarded to the game.
+- **Play with whatever's in front of you.** Phone in the room? Open a browser tab. The tab becomes a controller with sticks, D-pad, and rumble feedback. Keyboard handy? Map WASD plus mouse to a virtual Xbox pad.
+- **Run up to 16 controllers at once.** Local co-op with mixed gamepad types. Two sim racers on two wheels. A flight stick + throttle + rudder pedals all together as one virtual HOTAS.
+- **Map motion to emulators.** Stream gyro and accelerometer to Cemu, Dolphin, Yuzu, and Ryujinx over the DSU/Cemuhook protocol on UDP port 26760.
+- **Make MIDI from a gamepad.** Map sticks to Control Change, buttons to notes. Play music with whatever's in your hand.
 
-- Any physical input into any virtual controller. Joysticks, gamepads, keyboards, mice, and touchscreens feed 225+ HIDMaestro profiles spanning Xbox (360, One, Series, Elite, Adaptive), PlayStation (DualShock 3/4, DualSense, DualSense Edge), flight sticks, wheels, HOTAS, and generic gamepads, plus virtual MIDI or keyboard and mouse output. Extended profiles support up to 8 axes, 128 buttons, and 4 POV hats with customizable VID:PID, product string, and HID descriptor.
-- Up to 16 virtual controllers at once, mixing types. Each slot can merge input from multiple physical devices. Drag-reorder slots within a type group on the Dashboard; the order persists per group. Reorders that change the relative position of active virtuals with different HIDMaestro profiles rebuild the affected VCs so the kernel re-allocates slots in the new visual order. Same-profile shuffles, moves of disabled or unassigned slots, and reorders that don't shift the active-VC profile sequence stay zero-flicker.
-- DualShock 4 and DualSense outputs pass the source device's gyro, accelerometer, touchpad, and battery through to the game when the physical controller exposes them.
-- Keyboard and mouse output without a driver: map buttons to key presses, sticks or triggers to mouse movement or scroll.
-- DSU / Cemuhook gyro and accelerometer broadcast over UDP port 26760 for Cemu, Dolphin, and similar emulators.
+---
 
-### Mapping
+## PadForge vs other controller mappers
 
-- Record a binding by pressing a button, pick from a dropdown (which includes raw buttons beyond the standard 11), or run "Map All" for a one-pass setup. On PlayStation outputs, Map All ends with TouchpadClick.
-- Auto-mapping for recognized gamepads. Force-raw mode bypasses SDL3's remapping when it guesses wrong.
-- Dropdowns persist while devices are offline so you don't lose state on disconnect.
-- Per-axis sensitivity curves for sticks (independent X and Y) and triggers. Six presets (Linear, Smooth, Aggressive, Instant, S-Curve, Delay) or custom multi-point curves with a drag-and-drop editor and a live position indicator.
-- Six deadzone algorithms (Scaled Radial, Radial, Axial, Hybrid, Sloped Scaled Axial, Sloped Axial) with per-axis deadzone, anti-deadzone, linear response, stick-center calibration, max range, and per-mapping axis-to-button activation thresholds with half-axis support for centered joysticks.
+| | PadForge | x360ce | XOutput | reWASD | DS4Windows | Steam Input |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| Free | ✅ | ✅ | ✅ | ❌ paid | ✅ | ✅ Steam-only |
+| Open source | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
+| Works outside Steam | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Xbox 360 / One / Series virtual output | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| PlayStation DS4 / DualSense virtual output | ✅ | ❌ | ❌ | ✅ | ⚠️ basic | ❌ |
+| Flight stick / wheel / HOTAS virtual output | ✅ 225+ profiles | ❌ | ❌ | ❌ | ❌ | ❌ |
+| MIDI virtual output | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Keyboard + Mouse virtual output | ✅ | ❌ | ⚠️ basic | ✅ | ❌ | ✅ |
+| DualSense Adaptive Triggers | ✅ 7 modes + GameCube preset | ❌ | ❌ | ✅ | ⚠️ basic | ✅ |
+| DualSense lightbar | ✅ 13 modes + audio-reactive | ❌ | ❌ | ⚠️ basic | ⚠️ basic | ❌ |
+| Force feedback for wheels & joysticks | ✅ HID PID 1.0 | ❌ | ❌ | ❌ | ❌ | ❌ |
+| DSU motion server | ✅ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Phone-as-controller (browser, Wi-Fi) | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Per-app profile switching | ✅ | ⚠️ basic | ❌ | ✅ | ❌ | ✅ |
+| Up to 16 simultaneous virtual controllers | ✅ | ≤4 | ≤4 | ≤4 | ≤4 | ≤4 |
+| 1000 Hz polling | ✅ | ❌ | ❌ | ⚠️ | ⚠️ | ⚠️ |
+| 3D + 2D controller visualization | ✅ | ❌ | ⚠️ basic | ⚠️ basic | ❌ | ⚠️ basic |
+| Sensitivity curve editor with custom points | ✅ | ⚠️ basic | ⚠️ basic | ✅ | ⚠️ basic | ✅ |
 
-### Rumble and force feedback
+Cells marked ⚠️ basic mean the feature exists but is limited compared to PadForge's implementation. ❌ means the feature is absent. Comparison reflects each tool's shipping release as of May 2026.
 
-- Rumble passthrough with per-motor strength, overall gain, and motor swap. Haptic fallback for devices without native rumble.
-- HID PID 1.0 force feedback on Extended controllers: constant, ramp, periodic (sine, square, triangle, sawtooth), and condition effects (spring, damper, friction, inertia) decoded and routed to physical wheels and joysticks with directional pass-through.
-- Audio bass rumble: captures system audio and converts bass frequencies to per-device vibration through a 48 dB/octave filter with configurable sensitivity and cutoff.
-- Constant force per device. A toggle plus a 2D X / Y grid drives a continuous force or scalar rumble until disabled or until a game sends its own non-zero force; resumes when the game returns to silence. Real `DICONSTANTFORCE` for FFB-capable wheels and joysticks (single-axis devices project the angle onto the steering axis), quadrant motor mapping for rumble-only pads. Solves the "wheel mapped to a virtual Xbox controller needs a centering pull" case (issue #29).
+---
 
-### DualSense adaptive triggers and lighting
+## Quick start
 
-- Seven trigger effect modes for slots with a DualSense assigned: Off, Feedback (constant resistance), Weapon (soft zone + click), Vibration (continuous buzz), Multi-Position Feedback (ratcheting bumps), Slope Feedback (gradient ramp), and Multi-Position Vibration (stuttering bursts). A live effect-profile preview draws the resistance / amplitude shape across the trigger pull and updates as you drag the Range, Strength, and Frequency sliders. One-click **Load GameCube preset** button under Weapon mode loads firmware parameters that mimic the physical click-feel of a real GameCube trigger. Game-driven trigger effects pass through unchanged via a separate dispatch path.
-- Eleven base lightbar modes for slots with a DualShock 4, DualSense, or DualSense Edge assigned: Static Color, Breathing, Rainbow Cycle, palette-based Color Cycle, three Audio Pulse variants (static / random / rainbow), and three Audio Bands variants (hard transitions / smooth gradient / crossfade at boundaries). A separate Input Reactive overlay dropdown layers per-press flashes (random color / palette cycle / configurable fixed color) over any base mode and decays back. Per-(slot, device) Lighting configuration so two Sony pads on one slot can carry different modes; macro lightbar actions fan out across them.
+1. Download `PadForge.exe` from the [latest release](https://github.com/hifihedgehog/PadForge/releases/latest).
+2. Run it. PadForge installs HIDMaestro on first launch (admin prompt once).
+3. Click **Add Controller** on the Dashboard. Pick Xbox, PlayStation, Extended, MIDI, or Keyboard+Mouse.
+4. On the new slot, drag a physical device onto it from the sidebar.
+5. Click **Map All** to record every button in one pass, or open the **Mappings** tab and bind one at a time.
+6. Launch your game. The game sees the virtual controller as real hardware.
 
-### Visualization
-
-- Per-profile 3D and 2D renders. Xbox 360, Xbox One / Elite / Adaptive, Xbox Series, DualShock 4, and DualSense each have their own native artwork — assigning a profile swaps the model and overlays to match. Xbox Series profiles add a clickable Share button on the 3D mesh; non-Series Xbox profiles leave the same mesh inert so it stays visually accurate without firing on press.
-- 3D HelixToolkit controller model. Rotate, zoom, pan. Buttons, sticks, and triggers highlight in real time.
-- 2D schematic showing the same live state in a compact layout.
-- PlayStation 3D and 2D views render a live touchpad surface with finger contact spheres. The touchpad surface itself is a click target for recording the TouchpadClick mapping.
-- Dynamic Extended schematic that auto-sizes to any HIDMaestro profile's sticks, triggers, POVs, and buttons.
-- Keyboard and mouse preview for the KBM output type, showing every mapped key and button.
-- Built-in WebSocket server turns any touchscreen into a wireless controller. Xbox 360 and DualShock 4 layouts share the same 2D artwork as the desktop view, with the trigger silhouette pushed behind the controller body and the press-fill drawn in front so analog pull renders the same way it does in the app. Dual analog sticks, 8-way D-pad, rumble feedback.
-
-### Macros
-
-- Combo triggers built from up to 8 buttons, axes (with configurable threshold), and POV directions, sourced from the virtual output or a physical input device.
-- Action sequences: button presses, key presses, mouse move / click / scroll, delays, system and per-app volume, axis manipulation, lightbar overrides (Reactive flash / Sticky hold), and rumble overrides (Reactive pulse with hold + decay-fade, or Sticky hold-until-stop). Four fire modes (on press, on release, while held, always). Supports 128 buttons on Extended controllers and repeat modes.
-
-### Profiles
-
-- Per-application profiles. Switch automatically when a given app gains focus. A Win11-style flyout shows the active profile, initialization progress, and warnings for offline controllers.
-- Controller shortcuts: assign button combos (cross-device, axis direction supported) to cycle Next / Previous, jump to a specific profile, or toggle the PadForge window without touching the keyboard.
-
-### System integration
-
-- HidHide driver-level hiding of physical controllers so games don't see double input. Low-level hooks consume only mapped keyboard and mouse input. Per-device toggles auto-enable for gamepads, with warnings for mice and keyboards. Optional "Keep devices cloaked between launches" leaves the cloaks asserted across PadForge sessions for setups where another launcher (e.g. Steam) scans for controllers while PadForge is closed.
-- Built-in installer for HIDMaestro, HidHide, and Windows MIDI Services. Status, version info, and device blacklist / app whitelist controls live in Settings.
-
-### MIDI output
-
-- Virtual MIDI endpoint output. Axes send Control Change, buttons send Note On / Off. Channel 1 to 16, configurable CC mapping, note mapping, and velocity. PadForge creates its own system-wide endpoint, so loopMIDI is not required. Needs Windows MIDI Services (installable from Settings).
-
-### Performance
-
-- 1000 Hz polling with sub-millisecond jitter via high-resolution waitable timers.
-- Bit-perfect axis passthrough at default settings. Double-precision deadzone math. Up to 16-bit axis output on profiles that declare it, exceeding the resolution of most physical ADCs.
-- Live language switching in Settings, no restart required. Community translations via .resx resource files.
-- Minimize to tray, start minimized, or launch at login.
-- Single-file self-contained executable. No installer.
+Most games "just work" after step 5. If a game sees both your physical and virtual controller at once, install HidHide from **Settings → Drivers** to hide the physical one.
 
 ---
 
@@ -100,127 +84,114 @@ Fork of [x360ce](https://github.com/x360ce/x360ce), rewritten on SDL3, [HIDMaest
 
 ### Dashboard
 ![Dashboard](screenshots/dashboard.jpg)
-Polling rate, device count, virtual controller slots with type badges, DSU motion server status, and driver health on one screen.
+Polling rate, device count, every virtual controller slot, DSU motion server, web controller server, and driver health on one screen.
 
 ### 3D controller visualization
 ![Controller](screenshots/controller.jpg)
-Interactive 3D model. Rotate, zoom, and pan to inspect from any angle while buttons, sticks, and triggers highlight live.
+Interactive 3D model per profile. Rotate, zoom, pan. Buttons, sticks, and triggers highlight while you press them. Xbox Series profiles add a clickable Share button.
 
 ### 2D controller visualization
 ![Controller 2D](screenshots/controller-2d.jpg)
-Flat schematic reflecting the same live state as the 3D view.
+Flat schematic of the same controller, same live state. Useful on small monitors or for streaming overlays.
 
 ### Button and axis mappings
 ![Mappings](screenshots/mappings.jpg)
-Full mapping grid with record-by-press, dropdown selection, inversion, and half-axis options. Output labels adapt to controller type (DS4 shown).
+Record a binding by pressing a button. Pick from a dropdown of every available input (including raw HID buttons past the standard 11). Set Invert, Half-axis, or a per-mapping threshold for axis-to-button activation.
 
 ### Stick deadzones
 ![Sticks](screenshots/sticks.jpg)
-Per-axis deadzone, anti-deadzone, and linear response with live circular previews, six shape algorithms, and per-axis sensitivity curve editors.
+Six deadzone shapes (Scaled Radial, Radial, Axial, Hybrid, Sloped Scaled Axial, Sloped Axial). Per-axis deadzone, anti-deadzone, linear response, center calibration, and a custom sensitivity-curve editor with draggable points.
 
 ### Trigger deadzones
 ![Triggers](screenshots/triggers.jpg)
-Range sliders, anti-deadzone, and live value bars for each trigger alongside per-trigger sensitivity curves.
+Floor and ceiling per trigger. Anti-deadzone. Sensitivity curves. Live value bars at 0.1% precision.
 
 ### Force feedback and rumble
 ![Force Feedback](screenshots/force-feedback.jpg)
-Overall gain, per-motor strength, motor swap, audio bass rumble with configurable sensitivity and cutoff, test button, and live motor activity meters.
+Per-motor strength, overall gain, motor swap. Live motor activity bars. Audio bass rumble: PadForge captures system audio, isolates bass frequencies through a 48 dB/octave filter, and routes that to controller rumble.
 
-### Macro editor
+### DualSense Adaptive Triggers
+![Adaptive Triggers](screenshots/adaptive-triggers.jpg)
+Seven trigger effect modes. Off, Feedback, Weapon, Vibration, Multi-Position Feedback, Slope, Multi-Position Vibration. A live preview draws the resistance and amplitude curve while you drag Range, Strength, and Frequency. One-click GameCube preset loads parameters that mimic the click of a real GameCube trigger.
+
+### DualSense lightbar
+![Lighting](screenshots/lighting.jpg)
+Thirteen lightbar modes including three Audio Pulse variants and three Audio Bands variants that react to system audio in real time. Two Input Reactive modes flash on button presses. Plus the indicator-LED card for player pattern, mute LED, and brightness.
+
+### Macros
 ![Macros](screenshots/macros.jpg)
-Combo triggers from buttons, axes, and POV hats fire action sequences of key presses, mouse actions, delays, volume control, and axis manipulation across four fire modes.
+Combo triggers from buttons, axes, and POV directions. Action sequences with key presses, mouse moves, scroll, delays, system volume, app volume, lightbar overrides, and rumble overrides. Four fire modes (on press, on release, while held, always).
 
-### Keyboard and mouse virtual controller
+### Per-app profiles
+![Profiles](screenshots/profiles.jpg)
+Each profile holds its own mappings, deadzones, force feedback, lighting, and macros. PadForge watches the foreground window and switches profiles automatically when a matching app gains focus. Controller-shortcut combos cycle profiles without touching the keyboard.
+
+### Keyboard + Mouse virtual controller
 ![KBM Preview](screenshots/kbm-preview.jpg)
-Preview highlighting every mapped key and button in real time.
+Map a controller stick to mouse movement. Map face buttons to WASD. The preview lights up every mapped key and mouse button in real time.
 
 ### Extended virtual controller
 ![Extended](screenshots/extended.jpg)
-225+ HIDMaestro profiles (Xbox, PlayStation, flight sticks, wheels, generic gamepads) plus a synthetic "Custom" entry for building a HID descriptor from scratch. Configure thumbsticks, triggers (up to 8 axes shared between them), buttons (1 to 128), POV hats (0 to 4), VID, PID, product string, and OEM override for the DirectInput name table.
+Flight sticks, racing wheels, HOTAS, third-party gamepads. 225+ HIDMaestro profiles plus a Custom mode that builds a HID descriptor from scratch. Up to 8 axes, 128 buttons, 4 POV hats. Configurable VID, PID, and product string.
 
 ### PlayStation virtual controller
 ![PlayStation](screenshots/playstation.jpg)
-DualShock 4 / DualSense / DualSense Edge output through HIDMaestro with a 3D model that rotates and highlights live state.
-
-### Adaptive triggers
-![Adaptive Triggers](screenshots/adaptive-triggers.jpg)
-Seven DualSense trigger effect modes with a live preview that draws the resistance or amplitude shape across the trigger pull. Range, Strength, and Frequency sliders update the preview in real time. Game-driven effects pass through unchanged.
-
-### Lighting
-![Lighting](screenshots/lighting.jpg)
-Thirteen lightbar modes &mdash; Static Color, Breathing, Rainbow Cycle, palette Color Cycle, three Audio Pulse variants, three Audio Bands variants, and two Input Reactive variants &mdash; plus the Indicator LEDs card for the player pattern, mute LED mode, and brightness. Every dropdown has a one-click reset to its default.
+DualShock 4, DualSense, and DualSense Edge through HIDMaestro. Source gyro, accelerometer, touchpad, and battery passed through to the game.
 
 ### MIDI virtual controller
 ![MIDI](screenshots/midi.jpg)
-Channel selection (1 to 16), velocity control, CC and note mapping. Axes as Control Change, buttons as Note On / Off.
+Channel 1-16. Configurable CC mapping, note mapping, and velocity. Axes send Control Change. Buttons send Note On / Off. No loopMIDI required — PadForge creates its own system endpoint via Windows MIDI Services.
 
 ### Add controller
 ![Add Controller](screenshots/add-controller-popup.jpg)
-Create Xbox, PlayStation, Extended (flight sticks, wheels, third-party gamepads), Keyboard+Mouse, or MIDI virtual controllers. Type buttons dim at their per-type limit.
+Pick the virtual controller type. Buttons dim when you hit the per-type limit.
 
-### Profiles
-![Profiles](screenshots/profiles.jpg)
-Named profiles that activate automatically when specific applications gain focus, each with its own mappings and settings.
-
-### Device list
+### Devices
 ![Devices](screenshots/devices.jpg)
-Card-based list of all detected gamepads, joysticks, keyboards, and mice with status, type, VID/PID, slot assignment, and per-device input hiding toggles. Select a device to see raw axes, buttons, POV compass, and gyro / accelerometer values.
+Every detected gamepad, joystick, keyboard, and mouse as a card. Live raw axes, buttons, POV compass, and gyro/accelerometer values for the selected device. Per-device HidHide toggle and Force Raw Joystick mode for when SDL3 guesses the gamepad layout wrong.
+
+### Web controller
+![Web Controller](screenshots/web-controller.jpg)
+Connect a phone or tablet over Wi-Fi. Browser shows an Xbox 360 or DualShock 4 layout with virtual sticks, D-pad, triggers, and rumble. Touch the sticks to push them; tap to click.
 
 ### Settings
 ![Settings](screenshots/settings.jpg)
-Language, appearance theme, input engine options (auto-start, background polling, configurable polling interval, master input hiding toggle), and window behavior.
-
-### Settings, input hiding
-![Settings — Input Hiding](screenshots/settings-hidhide.jpg)
-HidHide driver-level configuration with app whitelisting, per-device toggles, and low-level keyboard/mouse hook options.
-
-### Settings, drivers and diagnostics
-![Settings — Drivers](screenshots/settings-drivers.jpg)
-Driver management for HIDMaestro, HidHide, and Windows MIDI Services with version info, settings file controls, and diagnostics.
-
-### About
-![About](screenshots/about.jpg)
-Application info, technology stack, and license details.
-
-### Web controller
-![Web Controller - Landing](screenshots/web-landing.jpg)
-![Web Controller - Xbox 360](screenshots/web-controller.jpg)
-Built-in web server turns any touchscreen into a virtual controller with dual analog sticks, 8-way D-pad, triggers, and live visual feedback.
+Language (10 locales, live-switch — no restart). Theme (System / Light / Dark). Polling interval (1-16 ms). Auto-start at login, minimize to tray, master input-hiding toggle.
 
 ---
 
-## Known limitations
+## Known limits
 
-- PadForge runs elevated so it can install and manage drivers. Non-elevated apps still read the virtual controllers normally, but driver operations need admin.
-- HidHide's device hiding is global per machine account, not per-process.
-- Some games poll directly via xinput1_4 rather than going through the standard XInput slot assignments; behavior there depends on the game.
-- Windows MIDI Services requires Windows 10 or Windows 11. The MIDI output type is hidden on systems without it.
+- PadForge runs elevated so it can install and manage the HIDMaestro driver. Non-elevated games still read the virtual controllers normally.
+- HidHide's device hiding is global per user account, not per-game.
+- Some games poll `xinput1_4.dll` directly instead of going through Windows' standard XInput slot enumeration. Behavior in those games depends on the game.
+- The MIDI virtual controller needs Windows MIDI Services (Windows 11 24H2 / build 26100 or later). On older systems the MIDI type is hidden.
 
 ---
 
 ## Requirements
 
-| Requirement | Details |
+| | |
 |---|---|
-| **OS** | Windows 10 or 11 (x64) |
-| **Runtime** | [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) (included in the single-file publish) |
+| OS | Windows 10 or 11 (x64) |
+| Runtime | [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) — bundled in the single-file release |
 
-### What's required vs. optional
+### Drivers
 
-PadForge ships with the [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro) runtime built in. HIDMaestro is what creates virtual controllers &mdash; when you add a slot to the Dashboard, HIDMaestro instantiates a HID device matching the controller "shape" you picked (Xbox Series, DualSense, Logitech wheel, etc.). The HM driver itself is installed once from Settings on first run; per-slot device creation is automatic after that. Required for any output other than Keyboard+Mouse.
+PadForge installs **HIDMaestro** on first run. HIDMaestro is the engine that creates virtual controllers — when you add a slot, HIDMaestro spins up a HID device matching the controller "shape" you picked.
 
-The [OpenXInput](https://github.com/hifihedgehog/OpenXinput) shim is bundled inside the PadForge EXE (no install) and filters PadForge's own virtual controllers from its own XInput enumeration.
+Two more drivers are optional. PadForge offers to install each one only when you need its feature:
 
-Two genuinely optional drivers install from Settings only if you need their features:
-
-| Optional driver | Install when |
+| Driver | Install when |
 |---|---|
-| [HidHide](https://github.com/nefarius/HidHide) | Games detect both your physical and virtual controller and you see double input |
-| [Windows MIDI Services](https://github.com/microsoft/MIDI) | You need the MIDI virtual controller type. Requires Windows 11 24H2 (build 26100) or later |
+| [HidHide](https://github.com/nefarius/HidHide) | A game sees both your physical and virtual controller at once |
+| [Windows MIDI Services](https://github.com/microsoft/MIDI) | You want the MIDI virtual controller type |
+
+**OpenXInput** is bundled inside `PadForge.exe`. No separate install. It filters PadForge's own virtual controllers out of its own XInput view so device enumeration stays clean.
 
 ---
 
-## Build
+## Build from source
 
 ```bash
 dotnet publish PadForge.App/PadForge.App.csproj -c Release
@@ -228,60 +199,60 @@ dotnet publish PadForge.App/PadForge.App.csproj -c Release
 
 Output: `PadForge.App/bin/Release/net10.0-windows10.0.26100.0/win-x64/publish/PadForge.exe`
 
-See [BUILD.md](BUILD.md) for project structure, architecture, and developer reference.
+See [BUILD.md](BUILD.md) for project structure, architecture notes, and developer reference. See the [wiki](https://github.com/hifihedgehog/PadForge/wiki) for deeper dives into the input pipeline, virtual controller backends, settings file format, and visualization renderer.
 
 ---
 
-## Missing an emulation target?
+## Don't see your controller in the picker?
 
-PadForge's controller picker is the set of HIDMaestro profiles with a captured HID descriptor. A few known controllers are still missing their captures, so they don't appear in the picker. If you own one of those controllers, you can capture it yourself using PadForge's built-in **Imported Profiles** dialog — no extra downloads, no standalone tool.
+PadForge's controller picker is the set of HIDMaestro profiles that ship with a captured HID descriptor. A few controllers are missing their captures, so they don't appear yet. If you own one of those controllers, you can capture it yourself from inside PadForge — no extra tools, no admin.
 
 To capture and use a profile locally:
 
-- Create or open any Extended-type slot
-- On the slot's Controller page, click **Imported profiles…** on the Extended config bar
-- Under **Connected devices available to import**, pick your plugged-in device and click **Import**
-- Your new profile appears in the slot's dropdown with a "(User Generated)" suffix and is selectable on every Extended slot going forward
+1. Create or open any **Extended**-type slot.
+2. On the Controller page, click **Imported profiles…** on the Extended config bar.
+3. Under **Connected devices available to import**, pick your plugged-in device and click **Import**.
+4. The new profile appears in the slot's dropdown with a "(User Generated)" suffix and stays available across every Extended slot from then on.
 
-Profiles live inside `PadForge.xml`, so they travel with your settings.
+Profiles live inside `PadForge.xml` and travel with your settings.
 
-To share or contribute upstream:
+To share a captured profile upstream:
 
-- In the same dialog, select your imported profile under **Your imported profiles**
-- Click **Export…** and save the JSON
-- Open a [profile contribution issue on HIDMaestro](https://github.com/hifihedgehog/HIDMaestro/issues/new?template=profile-contribution.yml) and attach the file — once merged, the profile ships in the next HIDMaestro release for everyone
+1. In the same dialog, select your imported profile under **Your imported profiles**.
+2. Click **Export…** and save the JSON.
+3. Open a [profile contribution issue on HIDMaestro](https://github.com/hifihedgehog/HIDMaestro/issues/new?template=profile-contribution.yml) and attach the file. Once merged, the profile ships in the next HIDMaestro release for everyone.
 
-To use a profile someone else captured:
+To import a profile someone else captured:
 
-- Click **Import from file…** in the same dialog and select the `.json` they sent you
+1. Click **Import from file…** in the same dialog and pick the `.json` they sent you.
 
-PadForge reads only the cached HID descriptor (metadata). It does not read, record, or forward your controller's input during capture. No admin required.
+PadForge reads only the HID descriptor during capture. It does not record or forward your controller's input.
 
 ---
 
-## Upstream projects and acknowledgments
+## Built on the work of these projects
 
 PadForge stands on these projects. Please consider supporting them directly.
 
-| Project | Role in PadForge | License |
+| Project | Role | License |
 |---|---|---|
-| [x360ce](https://github.com/x360ce/x360ce) | Original codebase this project was forked from | MIT |
-| [SDL3](https://github.com/libsdl-org/SDL) | Controller input: joystick, gamepad, and sensor enumeration and reading | zlib |
-| HIDMaestro | Virtual HID controller engine (user-mode UMDF2 driver) with 225+ device profiles covering Xbox, PlayStation, flight sticks, wheels, and generic gamepads | MIT |
-| OpenXInput | Drop-in `xinput1_4.dll` / `devobj.dll` replacement that filters PadForge's own virtual controllers from its own XInput view | upstream trademark disclaimer |
-| [Handheld Companion](https://github.com/Valkirie/HandheldCompanion) | 3D controller models (Xbox 360, DualShock 4 OBJ meshes) | CC BY-NC-SA 4.0 |
-| [Gamepad-Asset-Pack](https://github.com/AL2009man/Gamepad-Asset-Pack) | 2D controller schematic overlays (Xbox 360, DS4 PNG assets) | MIT |
+| [x360ce](https://github.com/x360ce/x360ce) | Original codebase this fork started from | MIT |
+| [SDL3](https://github.com/libsdl-org/SDL) | Controller input: joystick, gamepad, and sensor enumeration | zlib |
+| [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro) | User-mode UMDF2 virtual HID controller engine with 225+ device profiles | MIT |
+| [OpenXInput](https://github.com/hifihedgehog/OpenXinput) | Drop-in `xinput1_4.dll` / `devobj.dll` replacement that filters PadForge's own virtual controllers from its own XInput view | upstream trademark disclaimer |
+| [Handheld Companion](https://github.com/Valkirie/HandheldCompanion) | 3D controller OBJ meshes (Xbox 360, DualShock 4) | CC BY-NC-SA 4.0 |
+| [Gamepad-Asset-Pack](https://github.com/AL2009man/Gamepad-Asset-Pack) | 2D controller PNG schematics | MIT |
 | [HelixToolkit](https://github.com/helix-toolkit/helix-toolkit) | 3D viewport rendering for WPF | MIT |
 | [WPF UI](https://github.com/lepoco/wpfui) | Fluent 2 design system for WPF | MIT |
 | [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) | MVVM data binding framework | MIT |
-| [HidHide](https://github.com/nefarius/HidHide) | Device hiding driver to prevent double input | MIT |
-| [Windows MIDI Services](https://github.com/microsoft/MIDI) | Virtual MIDI device SDK for MIDI controller output | MIT |
+| [HidHide](https://github.com/nefarius/HidHide) | Per-device hiding driver to prevent double input | MIT |
+| [Windows MIDI Services](https://github.com/microsoft/MIDI) | Virtual MIDI device SDK | MIT |
 
 ---
 
 ## Donations
 
-Knowing PadForge is useful is reward enough. If you truly insist on donating, please donate to your charity of choice and bless humanity. If you can't think of one, consider [Humanitarian Services of The Church of Jesus Christ of Latter-day Saints](https://philanthropies.churchofjesuschrist.org/humanitarian-services). Also consider donating directly to the upstream projects listed above. They made all of this possible.
+Knowing PadForge is useful is reward enough. If you truly insist on donating, please donate to your charity of choice and bless humanity. If you can't think of one, consider [Humanitarian Services of The Church of Jesus Christ of Latter-day Saints](https://philanthropies.churchofjesuschrist.org/humanitarian-services). Also consider donating directly to the upstream projects above. They made all of this possible.
 
 **My promise:** PadForge will never become paid, freemium, or Patreon early-access paywalled. Free means free.
 

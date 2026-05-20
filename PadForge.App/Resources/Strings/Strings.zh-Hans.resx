@@ -1397,4 +1397,37 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>同时触发激活器自身的映射</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>选中时,激活器按钮继续驱动以它为源的任何行 — 一次按压同时切换层并触发按钮自身的映射。未选中(默认)时,按压仅被层切换消费。</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>选中时,此层未明确映射的目标会回退到基础层。未选中时(默认),层完全替换基础,未映射的目标保持关闭。</value></data>
+  <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>冲击扳机</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>将每个扳机的电机指令（Xbox 冲击扳机）从虚拟控制器转发到所分配的物理 Xbox One / Elite / Series 手柄。游戏产生的扳机振动自动通过。下方控件可分别调节每个扳机的强度。</value></data>
+  <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>左扳机</value></data>
+  <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>右扳机</value></data>
+  <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>交换左右扳机马达</value></data>
+  <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>测试左扳机</value></data>
+  <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>测试右扳机</value></data>
+  <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>扳机马达活动</value></data>
+  <data name="Pad_ResetImpulseTriggers" xml:space="preserve"><value>重置冲击扳机</value></data>
+  <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>重置总体增益</value></data>
+  <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>重置左扳机</value></data>
+  <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>重置右扳机</value></data>
+  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>扳机持续力</value></data>
+  <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>在你关闭前持续向每个扳机马达施加力。游戏产生的扳机力在生效期间优先,游戏停止后恢复。</value></data>
+  <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>应用扳机持续力</value></data>
+  <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>左扳机</value></data>
+  <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>右扳机</value></data>
+  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>重置扳机持续力</value></data>
+  <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>重置左扳机</value></data>
+  <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>重置右扳机</value></data>
+  <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>音频低音扳机振动</value></data>
+  <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>用系统音频的低音驱动扳机马达。游戏产生的扳机力在生效期间优先。</value></data>
+  <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>用音频驱动扳机马达</value></data>
+  <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>灵敏度</value></data>
+  <data name="Pad_AudioTriggerRumble_Cutoff" xml:space="preserve"><value>低音截止 (Hz)</value></data>
+  <data name="Pad_AudioTriggerRumble_LeftTrigger" xml:space="preserve"><value>左扳机</value></data>
+  <data name="Pad_AudioTriggerRumble_RightTrigger" xml:space="preserve"><value>右扳机</value></data>
+  <data name="Pad_AudioTriggerRumble_Level" xml:space="preserve"><value>级别</value></data>
+  <data name="Pad_ResetAudioTriggerRumble" xml:space="preserve"><value>重置音频扳机振动</value></data>
+  <data name="Pad_ResetAudioTriggerSensitivity" xml:space="preserve"><value>重置灵敏度</value></data>
+  <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>重置低音截止</value></data>
+  <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>重置左扳机</value></data>
+  <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>重置右扳机</value></data>
 </root>

@@ -227,6 +227,25 @@ namespace PadForge.Common.Input
         private readonly Dictionary<Guid, bool> _prevPadForgeWantsRightTrig = new();
         private readonly Dictionary<Guid, bool> _prevPadForgeWantsLeftTrig = new();
 
+        // Per-device timestamp of the last non-zero impulse-trigger sample
+        // for the right / left trigger. Drives the linger window for the
+        // impulse-to-AT Vibration auto-route — between rapid game pulses
+        // the dispatcher's 30 Hz tick frequently catches a 0 sample even
+        // though the trigger is actively being driven, so we hold the
+        // Vibration mode override active until the timestamp ages out.
+        // Strength is still the CURRENT impR/impL value (so the firmware
+        // buzzes at the right amplitude when a pulse hits and goes silent
+        // immediately between pulses) — only the MODE is held.
+        private readonly Dictionary<Guid, long> _impulseLastNonZeroTickRight = new();
+        private readonly Dictionary<Guid, long> _impulseLastNonZeroTickLeft = new();
+
+        // Linger window (ms) for the impulse-to-AT Vibration override.
+        // 100 ms is ~3 dispatcher ticks at 30 Hz, enough to bridge GCT's
+        // ~20 ms intra-burst pulse gaps without delaying the drop to
+        // cfg / Off by long enough to feel laggy when the game stops
+        // writing the impulse motor.
+        private const long ImpulseAtLingerMs = 100;
+
         // Per-subsystem external-writer mirroring. When a host (game,
         // ds.daidr.me, any WebHID / hidapi consumer granted access to a
         // PadForge virtual) writes an effect packet, the validFlag bits
@@ -1123,14 +1142,25 @@ namespace PadForge.Common.Input
                     // and the game writes an impulse trigger motor magnitude
                     // (XINPUT_VIBRATION_EX bytes 4/5), the provider returns
                     // a non-zero byte and we synthesize an AT Vibration block
-                    // overriding that trigger's effect for the tick. The
-                    // user's configured AT cfg (resistance, weapon,
-                    // galloping…) resumes the moment the motor returns to 0
-                    // — override-with-resume, same shape as the constant-
-                    // trigger-force evaluator. Skip the trigger if the
-                    // external writer already owns it (preserves the
-                    // existing external-mirror precedence). Only DS5 has AT;
-                    // DS4 falls through unchanged.
+                    // overriding that trigger's effect for the tick.
+                    //
+                    // Linger window: the dispatcher polls at 30 Hz but games
+                    // (and GCT) drive the impulse motor high-low at sub-tick
+                    // intervals. Without a linger window the dispatcher
+                    // catches a 0 sample on most ticks and constantly drops
+                    // out of Vibration mode, silencing the trigger between
+                    // pulses we should feel as one continuous buzz. Hold
+                    // Vibration mode for ~100 ms after the last non-zero
+                    // sample. Strength still tracks the current sample —
+                    // 0 during inter-pulse gaps produces no buzz, the
+                    // amplitude when a pulse hits buzzes immediately, and
+                    // the mode stays so successive pulses don't pay the
+                    // mode-switch cost.
+                    //
+                    // After the linger expires the override drops, the
+                    // drop-frame logic in the assert below emits one final
+                    // cfg-or-Off encode, and the user's configured AT cfg
+                    // (resistance, weapon, galloping…) resumes.
                     //
                     // Test-rumble target gate mirrors Step 2's Xbox writer
                     // path (InputManager.Step2.UpdateInputStates.cs:344-346):
@@ -1143,9 +1173,16 @@ namespace PadForge.Common.Input
                     {
                         var (impR, impL) = SlotImpulseTriggerForDeviceProvider?.Invoke(_padIndex, ud.InstanceGuid)
                                            ?? ((byte)0, (byte)0);
-                        if (impR > 0 && devOverrides.RightTriggerEffect == null)
+                        long nowTickMs = Environment.TickCount64;
+                        if (impR > 0) _impulseLastNonZeroTickRight[ud.InstanceGuid] = nowTickMs;
+                        if (impL > 0) _impulseLastNonZeroTickLeft[ud.InstanceGuid]  = nowTickMs;
+                        bool rightLingerActive = _impulseLastNonZeroTickRight.TryGetValue(ud.InstanceGuid, out var lrR)
+                            && nowTickMs - lrR < ImpulseAtLingerMs;
+                        bool leftLingerActive  = _impulseLastNonZeroTickLeft.TryGetValue(ud.InstanceGuid, out var lrL)
+                            && nowTickMs - lrL < ImpulseAtLingerMs;
+                        if (rightLingerActive && devOverrides.RightTriggerEffect == null)
                             devOverrides.RightTriggerEffect = Ds5EffectSynthesizer.BuildAtVibrationOverrideBlock(impR);
-                        if (impL > 0 && devOverrides.LeftTriggerEffect == null)
+                        if (leftLingerActive && devOverrides.LeftTriggerEffect == null)
                             devOverrides.LeftTriggerEffect = Ds5EffectSynthesizer.BuildAtVibrationOverrideBlock(impL);
                     }
 

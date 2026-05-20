@@ -201,7 +201,7 @@ DualShock 4, DualSense, and DualSense Edge through HIDMaestro. Source gyro, acce
 
 ### MIDI virtual controller
 ![MIDI](screenshots/midi.jpg)
-Channel 1-16. Configurable CC mapping, note mapping, and velocity. Axes send Control Change. Buttons send Note On / Off. No loopMIDI required — PadForge creates its own system endpoint via Windows MIDI Services.
+Channel 1-16. Configurable CC mapping, note mapping, and velocity. Axes send Control Change. Buttons send Note On / Off. No loopMIDI required. PadForge creates its own system endpoint via Windows MIDI Services.
 
 ### Add controller
 ![Add Controller](screenshots/add-controller-popup.jpg)
@@ -217,7 +217,7 @@ Connect a phone or tablet over Wi-Fi. Browser shows an Xbox 360 or DualShock 4 l
 
 ### Settings
 ![Settings](screenshots/settings.jpg)
-Language (10 locales, live-switch — no restart). Theme (System / Light / Dark). Polling interval (1-16 ms). Auto-start at login, minimize to tray, master input-hiding toggle.
+Language (10 locales, live-switch with no restart). Theme (System / Light / Dark). Polling interval (1-16 ms). Auto-start at login, minimize to tray, master input-hiding toggle.
 
 ---
 
@@ -262,7 +262,7 @@ See [BUILD.md](BUILD.md) for project structure, architecture notes, and develope
 
 ## Don't see your controller in the picker?
 
-PadForge's controller picker is the set of HIDMaestro profiles that ship with a captured HID descriptor. A few controllers are missing their captures, so they don't appear yet. If you own one of those controllers, you can capture it yourself from inside PadForge — no extra tools, no admin.
+PadForge's controller picker is the set of HIDMaestro profiles that ship with a captured HID descriptor. A few controllers are missing their captures, so they don't appear yet. If you own one of those controllers, you can capture it yourself from inside PadForge. No extra tools, no admin.
 
 To capture and use a profile locally:
 

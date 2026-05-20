@@ -1430,4 +1430,5 @@
   <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>バスカットオフをリセット</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>左トリガーをリセット</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>右トリガーをリセット</value></data>
+  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>インパルストリガー</value></data>
 </root>

@@ -5098,38 +5098,59 @@
                                 <!-- Aim Engage button — cross-device picker that writes
                                      both the descriptor and owning device GUID atomically.
                                      ItemsSource is the slot's combined cross-device InputChoice
-                                     list, populated by InputService.PopulateAvailableInputs. -->
+                                     list, populated by InputService.PopulateAvailableInputs.
+                                     Subtitle under the picker shows the owning device, matching
+                                     the mapping row pattern at PadPage.xaml:2785-2800. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                                     <TextBlock Text="{Binding Settings_GyroAimEngageButton, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
+                                               Width="140" VerticalAlignment="Top" Margin="0,4,0,0"
                                                ToolTip="{Binding Settings_GyroAimEngageButton_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
-                                              SelectedItem="{Binding GyroAimEngageSelectedInput, Mode=TwoWay}"
-                                              DisplayMemberPath="DisplayName"
-                                              MinWidth="260" Padding="4,2" VerticalAlignment="Center"
-                                              ToolTip="{Binding Settings_GyroAimEngageButton_Tooltip, Source={x:Static strings:Strings.Instance}}">
-                                        <ComboBox.GroupStyle>
-                                            <GroupStyle>
-                                                <GroupStyle.HeaderTemplate>
-                                                    <DataTemplate>
-                                                        <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
-                                                            <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                                       TextTrimming="CharacterEllipsis"/>
-                                                        </Border>
-                                                    </DataTemplate>
-                                                </GroupStyle.HeaderTemplate>
-                                            </GroupStyle>
-                                        </ComboBox.GroupStyle>
-                                    </ComboBox>
+                                    <StackPanel Orientation="Vertical">
+                                        <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
+                                                  SelectedItem="{Binding GyroAimEngageSelectedInput, Mode=TwoWay}"
+                                                  DisplayMemberPath="DisplayName"
+                                                  MinWidth="260" Padding="4,2"
+                                                  ToolTip="{Binding Settings_GyroAimEngageButton_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <ComboBox.GroupStyle>
+                                                <GroupStyle>
+                                                    <GroupStyle.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           TextTrimming="CharacterEllipsis"/>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </GroupStyle.HeaderTemplate>
+                                                </GroupStyle>
+                                            </ComboBox.GroupStyle>
+                                        </ComboBox>
+                                        <TextBlock FontSize="10"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Margin="4,1,0,0"
+                                                   TextTrimming="CharacterEllipsis">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Text" Value="{Binding GyroAimEngageSelectedInput.DeviceLabel}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding GyroAimEngageSelectedInput}" Value="{x:Null}">
+                                                            <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <Setter Property="FontStyle" Value="Italic"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
                                     <Button Command="{Binding GyroAimEngageRecordCommand}"
-                                            Width="40" VerticalAlignment="Center" Margin="6,0,0,0">
+                                            Width="40" VerticalAlignment="Top" Margin="6,0,0,0">
                                         <TextBlock Text="{Binding GyroAimEngageRecordButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
                                         <Button.ToolTip>
                                             <TextBlock Text="{Binding GyroAimEngageRecordButtonText}"/>
                                         </Button.ToolTip>
                                     </Button>
                                     <Button Command="{Binding ResetGyroAimEngageButtonCommand}" Style="{StaticResource ResetButton}"
+                                            VerticalAlignment="Top"
                                             ToolTip="{Binding Pad_ResetGyroAimEngageButton, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>

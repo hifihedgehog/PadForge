@@ -233,6 +233,7 @@
                                               ItemsSource="{Binding SwitchModes}"
                                               SelectedValue="{Binding SwitchMode}"
                                               SelectedValuePath="Mode"
+                                              DisplayMemberPath="DisplayName"
                                               Width="155" Margin="0,0,6,0"/>
 
                                     <!-- Profile dropdown (Specific only) -->

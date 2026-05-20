@@ -1397,4 +1397,37 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Auch eigenes Mapping des Auslösers feuern</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Wenn aktiviert, treibt die Auslöser-Taste weiterhin jede Zeile an, die sie als Quelle verwendet — ein Druck wechselt die Ebene UND feuert das eigene Mapping der Taste. Wenn deaktiviert (Standard), wird der Druck nur vom Ebenenwechsel verbraucht.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Wenn aktiviert, fallen Ziele, die diese Ebene nicht explizit zuweist, auf die Basis-Ebene zurück. Wenn deaktiviert (Standard), ersetzt die Ebene Basis vollständig und nicht zugewiesene Ziele bleiben aus.</value></data>
+  <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse-Trigger</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Leitet Befehle pro Trigger-Motor (Xbox Impulse-Trigger) vom virtuellen Controller an den zugewiesenen physischen Xbox One-, Elite- oder Series-Controller weiter. Spielgesteuerte Trigger-Vibrationen werden automatisch durchgereicht. Die Regler unten skalieren die Stärke pro Trigger.</value></data>
+  <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Linker Trigger</value></data>
+  <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Rechter Trigger</value></data>
+  <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Linken und rechten Trigger-Motor tauschen</value></data>
+  <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>Linken Trigger testen</value></data>
+  <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>Rechten Trigger testen</value></data>
+  <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>Trigger-Motoraktivität</value></data>
+  <data name="Pad_ResetImpulseTriggers" xml:space="preserve"><value>Impulse-Trigger zurücksetzen</value></data>
+  <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Gesamtverstärkung zurücksetzen</value></data>
+  <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Linken Trigger zurücksetzen</value></data>
+  <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Rechten Trigger zurücksetzen</value></data>
+  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Konstante Trigger-Kraft</value></data>
+  <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Wendet eine kontinuierliche Kraft auf jeden Trigger-Motor an, bis du sie ausschaltest. Spielgesteuerte Trigger-Kraft hat während ihrer Aktivität Vorrang und wird fortgesetzt, sobald das Spiel stoppt.</value></data>
+  <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Konstante Trigger-Kraft anwenden</value></data>
+  <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Linker Trigger</value></data>
+  <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Rechter Trigger</value></data>
+  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Konstante Trigger-Kraft zurücksetzen</value></data>
+  <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Linken Trigger zurücksetzen</value></data>
+  <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Rechten Trigger zurücksetzen</value></data>
+  <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Audio-Bass-Trigger-Vibration</value></data>
+  <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Steuert die Trigger-Motoren über die Bässe des Systemaudios. Spielgesteuerte Trigger-Kraft hat während ihrer Aktivität Vorrang.</value></data>
+  <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Trigger-Motoren über Audio steuern</value></data>
+  <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Empfindlichkeit</value></data>
+  <data name="Pad_AudioTriggerRumble_Cutoff" xml:space="preserve"><value>Bassfrequenz-Grenze (Hz)</value></data>
+  <data name="Pad_AudioTriggerRumble_LeftTrigger" xml:space="preserve"><value>Linker Trigger</value></data>
+  <data name="Pad_AudioTriggerRumble_RightTrigger" xml:space="preserve"><value>Rechter Trigger</value></data>
+  <data name="Pad_AudioTriggerRumble_Level" xml:space="preserve"><value>Pegel</value></data>
+  <data name="Pad_ResetAudioTriggerRumble" xml:space="preserve"><value>Audio-Trigger-Vibration zurücksetzen</value></data>
+  <data name="Pad_ResetAudioTriggerSensitivity" xml:space="preserve"><value>Empfindlichkeit zurücksetzen</value></data>
+  <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>Bassfrequenz-Grenze zurücksetzen</value></data>
+  <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Linken Trigger zurücksetzen</value></data>
+  <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Rechten Trigger zurücksetzen</value></data>
 </root>

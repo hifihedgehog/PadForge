@@ -1397,4 +1397,37 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>アクティベーター自身のマッピングも発火</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>有効にすると、アクティベーターのボタンはそれをソースとして使用するすべての行を引き続き駆動します — 1回押すとレイヤーが変更され、ボタン自身のマッピングも発火します。無効(既定)にすると、押下はレイヤー変更でのみ消費されます。</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>オンにすると、このレイヤーが明示的に割り当てていないターゲットはベース レイヤーにフォールスルーします。オフ(既定)にすると、レイヤーはベースを完全に置き換え、未割り当てターゲットはオフのままになります。</value></data>
+  <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>インパルストリガー</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>仮想コントローラーから割り当てられた物理 Xbox One / Elite / Series コントローラーへ、トリガーごとのモーターコマンド（Xbox インパルストリガー）を転送します。ゲームが発するトリガー振動は自動的に通過します。下のコントロールでトリガーごとの強度を調整できます。</value></data>
+  <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>左トリガー</value></data>
+  <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>右トリガー</value></data>
+  <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>左右のトリガーモーターを入れ替える</value></data>
+  <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>左トリガーをテスト</value></data>
+  <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>右トリガーをテスト</value></data>
+  <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>トリガーモーターの動作</value></data>
+  <data name="Pad_ResetImpulseTriggers" xml:space="preserve"><value>インパルストリガーをリセット</value></data>
+  <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>全体ゲインをリセット</value></data>
+  <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>左トリガーをリセット</value></data>
+  <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>右トリガーをリセット</value></data>
+  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>トリガー定常力</value></data>
+  <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>各トリガーモーターに連続的な力を加え、オフにするまで保持します。ゲームが発するトリガー力が動作中はそちらが優先され、ゲームが止まると再開します。</value></data>
+  <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>トリガー定常力を適用する</value></data>
+  <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>左トリガー</value></data>
+  <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>右トリガー</value></data>
+  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>トリガー定常力をリセット</value></data>
+  <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>左トリガーをリセット</value></data>
+  <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>右トリガーをリセット</value></data>
+  <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>オーディオ低音トリガー振動</value></data>
+  <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>システム音声の低音でトリガーモーターを駆動します。ゲームが発するトリガー力が動作中はそちらが優先されます。</value></data>
+  <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>オーディオでトリガーモーターを駆動する</value></data>
+  <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>感度</value></data>
+  <data name="Pad_AudioTriggerRumble_Cutoff" xml:space="preserve"><value>バスカットオフ (Hz)</value></data>
+  <data name="Pad_AudioTriggerRumble_LeftTrigger" xml:space="preserve"><value>左トリガー</value></data>
+  <data name="Pad_AudioTriggerRumble_RightTrigger" xml:space="preserve"><value>右トリガー</value></data>
+  <data name="Pad_AudioTriggerRumble_Level" xml:space="preserve"><value>レベル</value></data>
+  <data name="Pad_ResetAudioTriggerRumble" xml:space="preserve"><value>オーディオトリガー振動をリセット</value></data>
+  <data name="Pad_ResetAudioTriggerSensitivity" xml:space="preserve"><value>感度をリセット</value></data>
+  <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>バスカットオフをリセット</value></data>
+  <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>左トリガーをリセット</value></data>
+  <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>右トリガーをリセット</value></data>
 </root>

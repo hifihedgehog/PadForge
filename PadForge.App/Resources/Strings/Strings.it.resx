@@ -1417,4 +1417,37 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Attiva anche la mappatura propria dell'attivatore</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Se selezionato, il pulsante attivatore continua a guidare ogni riga che lo usa come sorgente — una pressione cambia livello E attiva la mappatura propria del pulsante. Se non selezionato (predefinito), la pressione è consumata solo dal cambio di livello.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Quando selezionato, gli obiettivi che questo livello non assegna esplicitamente ricadono sul livello Base. Quando deselezionato (predefinito), il livello sostituisce completamente Base e gli obiettivi non assegnati rimangono spenti.</value></data>
+  <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Grilletti Impulse</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Inoltra i comandi per motore di grilletto (grilletti Impulse Xbox) dal controller virtuale al controller fisico Xbox One, Elite o Series assegnato. La vibrazione dei grilletti generata da un gioco passa automaticamente. I controlli sottostanti regolano l'intensità per grilletto.</value></data>
+  <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Grilletto sinistro</value></data>
+  <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Grilletto destro</value></data>
+  <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Scambia motori dei grilletti sinistro e destro</value></data>
+  <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>Prova grilletto sinistro</value></data>
+  <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>Prova grilletto destro</value></data>
+  <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>Attività del motore dei grilletti</value></data>
+  <data name="Pad_ResetImpulseTriggers" xml:space="preserve"><value>Reimposta grilletti Impulse</value></data>
+  <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Reimposta guadagno complessivo</value></data>
+  <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Reimposta grilletto sinistro</value></data>
+  <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Reimposta grilletto destro</value></data>
+  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Forza costante sui grilletti</value></data>
+  <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Applica una forza continua a ciascun motore di grilletto finché non la disattivi. La forza di grilletto generata da un gioco ha la priorità mentre è attiva e riprende quando il gioco si ferma.</value></data>
+  <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Applica forza costante sui grilletti</value></data>
+  <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Grilletto sinistro</value></data>
+  <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Grilletto destro</value></data>
+  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Reimposta forza costante sui grilletti</value></data>
+  <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Reimposta grilletto sinistro</value></data>
+  <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Reimposta grilletto destro</value></data>
+  <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Vibrazione grilletti da bassi audio</value></data>
+  <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Pilota i motori dei grilletti dai bassi dell'audio di sistema. La forza di grilletto generata da un gioco ha la priorità mentre è attiva.</value></data>
+  <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Pilota i motori dei grilletti dall'audio</value></data>
+  <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Sensibilità</value></data>
+  <data name="Pad_AudioTriggerRumble_Cutoff" xml:space="preserve"><value>Taglio bassi (Hz)</value></data>
+  <data name="Pad_AudioTriggerRumble_LeftTrigger" xml:space="preserve"><value>Grilletto sinistro</value></data>
+  <data name="Pad_AudioTriggerRumble_RightTrigger" xml:space="preserve"><value>Grilletto destro</value></data>
+  <data name="Pad_AudioTriggerRumble_Level" xml:space="preserve"><value>Livello</value></data>
+  <data name="Pad_ResetAudioTriggerRumble" xml:space="preserve"><value>Reimposta vibrazione grilletti da audio</value></data>
+  <data name="Pad_ResetAudioTriggerSensitivity" xml:space="preserve"><value>Ripristina sensibilità</value></data>
+  <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>Ripristina taglio bassi</value></data>
+  <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Ripristina grilletto sinistro</value></data>
+  <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Ripristina grilletto destro</value></data>
 </root>

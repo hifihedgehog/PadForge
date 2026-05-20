@@ -1397,4 +1397,37 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Disparar también el mapeo propio del activador</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Cuando se marca, el botón activador sigue impulsando cualquier fila que lo use como fuente: una pulsación cambia la capa Y dispara el mapeo propio del botón. Cuando no se marca (por defecto), la pulsación es consumida solo por el cambio de capa.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Cuando está marcado, los objetivos que esta capa no asigna explícitamente retroceden a la capa Base. Cuando no está marcado (predeterminado), la capa reemplaza Base completamente y los objetivos sin asignar permanecen apagados.</value></data>
+  <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Gatillos de impulso</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Reenvía los comandos por motor de gatillo (gatillos de impulso de Xbox) desde el controlador virtual al controlador físico Xbox One, Elite o Series asignado. La vibración de gatillo generada por un juego pasa automáticamente. Los controles a continuación escalan la magnitud por gatillo.</value></data>
+  <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gatillo izquierdo</value></data>
+  <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gatillo derecho</value></data>
+  <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Intercambiar motores de gatillo izquierdo y derecho</value></data>
+  <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>Probar gatillo izquierdo</value></data>
+  <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>Probar gatillo derecho</value></data>
+  <data name="Pad_ImpulseTriggers_MotorActivity" xml:space="preserve"><value>Actividad del motor de gatillo</value></data>
+  <data name="Pad_ResetImpulseTriggers" xml:space="preserve"><value>Restablecer gatillos de impulso</value></data>
+  <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Restablecer ganancia total</value></data>
+  <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Restablecer gatillo izquierdo</value></data>
+  <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Restablecer gatillo derecho</value></data>
+  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Fuerza constante en gatillos</value></data>
+  <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Aplica una fuerza continua a cada motor de gatillo hasta que la desactives. La fuerza de gatillo generada por un juego prevalece mientras está activa y se reanuda cuando el juego se detiene.</value></data>
+  <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Aplicar fuerza constante en gatillos</value></data>
+  <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Gatillo izquierdo</value></data>
+  <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Gatillo derecho</value></data>
+  <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Restablecer fuerza constante en gatillos</value></data>
+  <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Restablecer gatillo izquierdo</value></data>
+  <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Restablecer gatillo derecho</value></data>
+  <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Vibración de gatillo por graves de audio</value></data>
+  <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Acciona los motores de gatillo desde los graves del audio del sistema. La fuerza de gatillo generada por un juego prevalece mientras está activa.</value></data>
+  <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Accionar motores de gatillo desde el audio</value></data>
+  <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
+  <data name="Pad_AudioTriggerRumble_Cutoff" xml:space="preserve"><value>Corte de graves (Hz)</value></data>
+  <data name="Pad_AudioTriggerRumble_LeftTrigger" xml:space="preserve"><value>Gatillo izquierdo</value></data>
+  <data name="Pad_AudioTriggerRumble_RightTrigger" xml:space="preserve"><value>Gatillo derecho</value></data>
+  <data name="Pad_AudioTriggerRumble_Level" xml:space="preserve"><value>Nivel</value></data>
+  <data name="Pad_ResetAudioTriggerRumble" xml:space="preserve"><value>Restablecer vibración de gatillo por audio</value></data>
+  <data name="Pad_ResetAudioTriggerSensitivity" xml:space="preserve"><value>Restablecer sensibilidad</value></data>
+  <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>Restablecer corte de graves</value></data>
+  <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Restablecer gatillo izquierdo</value></data>
+  <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Restablecer gatillo derecho</value></data>
 </root>

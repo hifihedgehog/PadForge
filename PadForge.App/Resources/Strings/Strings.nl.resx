@@ -1450,4 +1450,5 @@
   <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>Basafkapping resetten</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Linkertrigger resetten</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Rechtertrigger resetten</value></data>
+  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse-triggers</value></data>
 </root>

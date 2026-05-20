@@ -122,8 +122,8 @@
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>Aguardando dispositivos</value></data>
   <data name="Main_Active" xml:space="preserve"><value>Ativo</value></data>
   <data name="Main_Initializing" xml:space="preserve"><value>Inicializando</value></data>
-  <data name="Main_VCsEnabled" xml:space="preserve"><value>Controladores virtuais ativados</value></data>
-  <data name="Main_VCsDisabled" xml:space="preserve"><value>Controladores virtuais desativados</value></data>
+  <data name="Main_VCsEnabled" xml:space="preserve"><value>Controles virtuais ativados</value></data>
+  <data name="Main_VCsDisabled" xml:space="preserve"><value>Controles virtuais desativados</value></data>
   <data name="Main_ControllersOffline" xml:space="preserve"><value>Um ou mais controles offline</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (máx. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (máx. {0})</value></data>
@@ -157,7 +157,7 @@
   <data name="Status_SettingsPasted" xml:space="preserve"><value>Configurações coladas da área de transferência.</value></data>
   <data name="Status_PasteFailed_Format" xml:space="preserve"><value>Falha ao colar: {0}</value></data>
   <data name="Status_NoDeviceToCopyFrom" xml:space="preserve"><value>Nenhum dispositivo selecionado para copiar.</value></data>
-  <data name="Status_NoOtherDevices" xml:space="preserve"><value>Nenhum outro controlador virtual configurado encontrado para copiar.</value></data>
+  <data name="Status_NoOtherDevices" xml:space="preserve"><value>Nenhum outro controle virtual configurado encontrado para copiar.</value></data>
   <data name="Status_SettingsCopiedFromDevice" xml:space="preserve"><value>Configurações copiadas do dispositivo selecionado.</value></data>
   <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>Perfil "{0}" criado (vazio).</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Perfil "{0}" criado.</value></data>
@@ -192,7 +192,7 @@
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Perfil anterior</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Perfil específico</value></data>
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Alternar janela</value></data>
-  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Alternar controladores virtuais desativados</value></data>
+  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Alternar controles virtuais desativados</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Qualquer dispositivo conectado</value></data>
   <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Gravar</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Gravando...</value></data>

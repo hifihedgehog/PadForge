@@ -34,30 +34,50 @@ namespace PadForge.ViewModels
 
             _switchMode = Data.SwitchMode;
 
-            // Culture change must refresh every dropdown / computed-label
-            // property that reads from Strings.Instance.* under the hood —
-            // the Profiles page binds these directly to ComboBox ItemsSource
-            // and TextBlock Text, neither of which observes Strings's static
-            // PropertyChanged for null. Weak handler tracking inside
-            // Strings.CultureChanged keeps this VM eligible for GC without
-            // an explicit unsubscribe.
+            // Persistent collections + stable-identity wrapper items.
+            // The previous "return a new ObservableCollection each getter"
+            // pattern replaced the ItemsSource instance on every culture
+            // refresh; ComboBox responded by clearing SelectedItem and
+            // writing null back through the binding setters, wiping
+            // Data.TargetProfileId / TriggerDeviceGuid / SwitchMode.
+            // Keeping the collection instance stable and binding selection
+            // to a non-localized ID (ProfileId / DeviceGuid / Mode) means
+            // culture refresh just mutates the sentinel item's DisplayName
+            // in place — WPF re-renders the displayed text without touching
+            // selection.
+            InitSwitchModes();
+            RebuildProfileChoices();
+            RebuildDeviceChoices();
+
             Strings.CultureChanged += OnCultureChanged;
         }
 
         private void OnCultureChanged()
         {
-            // ItemsSource collections MUST refresh before their SelectedItem
-            // counterparts. Both TargetProfileName and SelectedDeviceName
-            // return culture-dependent sentinel strings (Common_Default,
-            // Profiles_ShortcutDevice_Any). If SelectedItem refreshes first
-            // the ComboBox reads the newly-localized string, fails to find
-            // it in the still-old ItemsSource, and falls back to null —
-            // which paints the dropdown red and clears the selection.
-            OnPropertyChanged(nameof(SwitchModes));
-            OnPropertyChanged(nameof(ProfileNames));
-            OnPropertyChanged(nameof(DeviceOptions));
-            OnPropertyChanged(nameof(TargetProfileName));
-            OnPropertyChanged(nameof(SelectedDeviceName));
+            // Update localized sentinel-item display names in place. Selection
+            // by Mode / ProfileId / DeviceGuid is unaffected because no item
+            // is added or removed.
+            foreach (var item in _switchModes)
+            {
+                item.DisplayName = item.Mode switch
+                {
+                    SwitchProfileMode.Next => Strings.Instance.Profiles_ShortcutMode_Next,
+                    SwitchProfileMode.Previous => Strings.Instance.Profiles_ShortcutMode_Previous,
+                    SwitchProfileMode.Specific => Strings.Instance.Profiles_ShortcutMode_Specific,
+                    SwitchProfileMode.ToggleWindow => Strings.Instance.Profiles_ShortcutMode_ToggleWindow,
+                    _ => item.DisplayName,
+                };
+            }
+            foreach (var p in _profileChoices)
+            {
+                if (string.IsNullOrEmpty(p.ProfileId))
+                    p.DisplayName = Strings.Instance.Common_Default;
+            }
+            foreach (var d in _deviceChoices)
+            {
+                if (d.DeviceGuid == Guid.Empty)
+                    d.DisplayName = Strings.Instance.Profiles_ShortcutDevice_Any;
+            }
             OnPropertyChanged(nameof(ButtonComboDisplay));
             OnPropertyChanged(nameof(LearnButtonText));
         }
@@ -85,117 +105,106 @@ namespace PadForge.ViewModels
 
         public bool IsSpecificMode => _switchMode == SwitchProfileMode.Specific;
 
-        // Instance property (was static) — the DisplayName strings are
-        // captured per-build, so a culture change re-creates the list when
-        // OnCultureChanged raises the property-changed notification.
-        public ObservableCollection<SwitchProfileModeItem> SwitchModes => new()
+        private readonly ObservableCollection<SwitchProfileModeItem> _switchModes = new();
+        public ObservableCollection<SwitchProfileModeItem> SwitchModes => _switchModes;
+
+        private void InitSwitchModes()
         {
-            new(SwitchProfileMode.Next, Strings.Instance.Profiles_ShortcutMode_Next),
-            new(SwitchProfileMode.Previous, Strings.Instance.Profiles_ShortcutMode_Previous),
-            new(SwitchProfileMode.Specific, Strings.Instance.Profiles_ShortcutMode_Specific),
-            new(SwitchProfileMode.ToggleWindow, Strings.Instance.Profiles_ShortcutMode_ToggleWindow),
-        };
+            _switchModes.Add(new SwitchProfileModeItem(SwitchProfileMode.Next, Strings.Instance.Profiles_ShortcutMode_Next));
+            _switchModes.Add(new SwitchProfileModeItem(SwitchProfileMode.Previous, Strings.Instance.Profiles_ShortcutMode_Previous));
+            _switchModes.Add(new SwitchProfileModeItem(SwitchProfileMode.Specific, Strings.Instance.Profiles_ShortcutMode_Specific));
+            _switchModes.Add(new SwitchProfileModeItem(SwitchProfileMode.ToggleWindow, Strings.Instance.Profiles_ShortcutMode_ToggleWindow));
+        }
 
         // ─────────────────────────────────────────────
         //  Target profile (Specific mode)
         // ─────────────────────────────────────────────
 
-        public string TargetProfileName
+        /// <summary>Stable-ID selection target for the Profile dropdown.
+        /// Empty string represents the localized "Default" sentinel; any
+        /// other value is a profile's <see cref="ProfileEntry.Id"/>.</summary>
+        public string TargetProfileId
         {
-            get
-            {
-                if (Data.TargetProfileId == null) return Strings.Instance.Common_Default;
-                var profile = SettingsManager.Profiles?.Find(p => p.Id == Data.TargetProfileId);
-                return profile?.Name ?? Data.TargetProfileId;
-            }
+            get => Data.TargetProfileId ?? "";
             set
             {
-                if (value == Strings.Instance.Common_Default)
-                    Data.TargetProfileId = null;
-                else
-                {
-                    var profile = SettingsManager.Profiles?.Find(p => p.Name == value);
-                    Data.TargetProfileId = profile?.Id;
-                }
+                string id = string.IsNullOrEmpty(value) ? null : value;
+                if (Data.TargetProfileId == id) return;
+                Data.TargetProfileId = id;
                 OnPropertyChanged();
                 _saveCallback?.Invoke(this);
             }
         }
 
-        public ObservableCollection<string> ProfileNames
+        private readonly ObservableCollection<ProfileChoice> _profileChoices = new();
+        public ObservableCollection<ProfileChoice> ProfileChoices => _profileChoices;
+
+        /// <summary>Rebuilds <see cref="ProfileChoices"/> from
+        /// <see cref="SettingsManager.Profiles"/>. The page's DropDownOpened
+        /// handler calls this so newly-saved / deleted profiles surface
+        /// without a shortcut row teardown.</summary>
+        public void RebuildProfileChoices()
         {
-            get
+            string currentId = Data.TargetProfileId;
+            _profileChoices.Clear();
+            _profileChoices.Add(new ProfileChoice("", Strings.Instance.Common_Default));
+            var profiles = SettingsManager.Profiles;
+            if (profiles != null)
             {
-                var names = new ObservableCollection<string> { Strings.Instance.Common_Default };
-                var profiles = SettingsManager.Profiles;
-                if (profiles != null)
-                    foreach (var p in profiles)
-                        names.Add(p.Name);
-                return names;
+                foreach (var p in profiles)
+                    _profileChoices.Add(new ProfileChoice(p.Id, p.Name));
             }
+            // Re-notify so the ComboBox re-matches against the rebuilt list
+            // (it would otherwise hold the cleared null from Clear()).
+            OnPropertyChanged(nameof(TargetProfileId));
+            Data.TargetProfileId = currentId; // restore in case binding write-back overwrote it
         }
 
         // ─────────────────────────────────────────────
         //  Trigger device
         // ─────────────────────────────────────────────
 
-        public string SelectedDeviceName
+        /// <summary>Stable-ID selection target for the Device dropdown.
+        /// <see cref="Guid.Empty"/> represents the localized "Any device"
+        /// sentinel.</summary>
+        public Guid TriggerDeviceGuid
         {
-            get
-            {
-                if (Data.TriggerDeviceGuid == Guid.Empty)
-                    return Strings.Instance.Profiles_ShortcutDevice_Any;
-                var devices = SettingsManager.UserDevices?.Items;
-                if (devices != null)
-                {
-                    lock (SettingsManager.UserDevices.SyncRoot)
-                    {
-                        var ud = devices.FirstOrDefault(d => d.InstanceGuid == Data.TriggerDeviceGuid);
-                        if (ud != null) return ud.ResolvedName;
-                    }
-                }
-                return Data.TriggerDeviceGuid.ToString("N").Substring(0, 8) + "...";
-            }
+            get => Data.TriggerDeviceGuid;
             set
             {
-                if (value == Strings.Instance.Profiles_ShortcutDevice_Any)
-                    Data.TriggerDeviceGuid = Guid.Empty;
-                else
-                {
-                    var devices = SettingsManager.UserDevices?.Items;
-                    if (devices != null)
-                    {
-                        lock (SettingsManager.UserDevices.SyncRoot)
-                        {
-                            var ud = devices.FirstOrDefault(d => d.ResolvedName == value);
-                            if (ud != null) Data.TriggerDeviceGuid = ud.InstanceGuid;
-                        }
-                    }
-                }
+                if (Data.TriggerDeviceGuid == value) return;
+                Data.TriggerDeviceGuid = value;
                 OnPropertyChanged();
                 _saveCallback?.Invoke(this);
             }
         }
 
-        public ObservableCollection<string> DeviceOptions
+        private readonly ObservableCollection<DeviceChoice> _deviceChoices = new();
+        public ObservableCollection<DeviceChoice> DeviceChoices => _deviceChoices;
+
+        /// <summary>Rebuilds <see cref="DeviceChoices"/> from
+        /// <see cref="SettingsManager.UserDevices"/>. Called from the page's
+        /// DropDownOpened handler so newly-connected / disconnected devices
+        /// surface without a shortcut row teardown.</summary>
+        public void RebuildDeviceChoices()
         {
-            get
+            Guid currentGuid = Data.TriggerDeviceGuid;
+            _deviceChoices.Clear();
+            _deviceChoices.Add(new DeviceChoice(Guid.Empty, Strings.Instance.Profiles_ShortcutDevice_Any));
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices != null)
             {
-                var options = new ObservableCollection<string> { Strings.Instance.Profiles_ShortcutDevice_Any };
-                var devices = SettingsManager.UserDevices?.Items;
-                if (devices != null)
+                lock (SettingsManager.UserDevices.SyncRoot)
                 {
-                    lock (SettingsManager.UserDevices.SyncRoot)
+                    foreach (var ud in devices)
                     {
-                        foreach (var ud in devices)
-                        {
-                            if (ud.IsOnline && !string.IsNullOrEmpty(ud.ResolvedName))
-                                options.Add(ud.ResolvedName);
-                        }
+                        if (ud.IsOnline && !string.IsNullOrEmpty(ud.ResolvedName))
+                            _deviceChoices.Add(new DeviceChoice(ud.InstanceGuid, ud.ResolvedName));
                     }
                 }
-                return options;
             }
+            OnPropertyChanged(nameof(TriggerDeviceGuid));
+            Data.TriggerDeviceGuid = currentGuid;
         }
 
         // ─────────────────────────────────────────────
@@ -293,7 +302,7 @@ namespace PadForge.ViewModels
                 }
             }
 
-            string dirSuffix = direction == AxisTriggerDirection.Positive ? "+" : "\u2013"; // + or –
+            string dirSuffix = direction == AxisTriggerDirection.Positive ? "+" : "–"; // + or –
 
             if (isGamepad && index >= 0 && index <= 5)
             {
@@ -347,7 +356,7 @@ namespace PadForge.ViewModels
             ? Strings.Instance.Profiles_ShortcutLearning
             : Strings.Instance.Profiles_ShortcutLearn;
 
-        public string LearnButtonIcon => _isRecording ? "\uE71A" : "\uE7C8"; // Stop : Record
+        public string LearnButtonIcon => _isRecording ? "" : ""; // Stop : Record
 
         /// <summary>
         /// Called when Learn mode captures buttons. Sets TriggerEntries from
@@ -391,8 +400,63 @@ namespace PadForge.ViewModels
         public RelayCommand ClearCommand { get; }
     }
 
-    public record SwitchProfileModeItem(SwitchProfileMode Mode, string DisplayName)
+    /// <summary>Mutable mode-list item — the Mode value is stable, the
+    /// DisplayName updates in place on culture change so the persistent
+    /// ItemsSource collection never has to be rebuilt.</summary>
+    public class SwitchProfileModeItem : ObservableObject
     {
-        public override string ToString() => DisplayName;
+        public SwitchProfileMode Mode { get; }
+        private string _displayName;
+        public string DisplayName
+        {
+            get => _displayName;
+            set => SetProperty(ref _displayName, value);
+        }
+        public SwitchProfileModeItem(SwitchProfileMode mode, string displayName)
+        {
+            Mode = mode;
+            _displayName = displayName;
+        }
+        public override string ToString() => _displayName;
+    }
+
+    /// <summary>Mutable profile-list item — ProfileId is stable (empty
+    /// string for the "Default" sentinel), DisplayName updates in place
+    /// on culture change.</summary>
+    public class ProfileChoice : ObservableObject
+    {
+        public string ProfileId { get; }
+        private string _displayName;
+        public string DisplayName
+        {
+            get => _displayName;
+            set => SetProperty(ref _displayName, value);
+        }
+        public ProfileChoice(string profileId, string displayName)
+        {
+            ProfileId = profileId ?? "";
+            _displayName = displayName;
+        }
+        public override string ToString() => _displayName;
+    }
+
+    /// <summary>Mutable device-list item — DeviceGuid is stable
+    /// (<see cref="Guid.Empty"/> for the "Any device" sentinel),
+    /// DisplayName updates in place on culture change.</summary>
+    public class DeviceChoice : ObservableObject
+    {
+        public Guid DeviceGuid { get; }
+        private string _displayName;
+        public string DisplayName
+        {
+            get => _displayName;
+            set => SetProperty(ref _displayName, value);
+        }
+        public DeviceChoice(Guid deviceGuid, string displayName)
+        {
+            DeviceGuid = deviceGuid;
+            _displayName = displayName;
+        }
+        public override string ToString() => _displayName;
     }
 }

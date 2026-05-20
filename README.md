@@ -16,6 +16,8 @@ Free Windows app. No subscription. No paywall. No nag screens. Built on SDL3, [H
 
 PadForge is for sim racers running wheels in games that only understand Xbox controllers. For DualSense owners who want adaptive triggers and lightbar effects in Steam games that ignore them. For accessibility users mapping whatever hardware they can use. For anyone whose controller doesn't match what their game expects.
 
+> **New in 3.2.** Rebuilt mapping engine: one virtual output can read from any number of physical sources, with shift layers, cross-device chords, and a chip-based formula editor on top. Gyro overhaul at Steam Input parity (Local / Player / World, real-world calibration, cross-device Aim Engage). Dedicated Impulse Triggers tab for Xbox and DualSense pads (game passthrough, constant force, audio-bass trigger rumble). Custom Expression macro triggers. Lightbar Strobe and Battery modes. Bulk virtual-controller toggle. [Full release notes](https://github.com/hifihedgehog/PadForge/releases/tag/v3.2.0) · [Wiki](https://github.com/hifihedgehog/PadForge/wiki).
+
 <p align="center">
   <a href="https://github.com/hifihedgehog/HIDMaestro">
     <picture>

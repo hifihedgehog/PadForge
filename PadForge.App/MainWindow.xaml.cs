@@ -335,6 +335,34 @@ namespace PadForge
                 }
             });
 
+            // #91 — bulk VC enable/disable from a profile-shortcut combo.
+            // Rule: if any created slot is currently enabled, disable all
+            // created slots; else (all already disabled) enable all. Uncreated
+            // slots are not touched. DeviceService.SetSlotEnabled is the
+            // canonical setter — calling it per-slot keeps SettingsManager,
+            // SettingsService.MarkDirty, and the Step5 dispatcher reconciliation
+            // path all wired up the same way the per-slot sidebar power toggle uses.
+            _inputService.ToggleVCsDisabled = () => Dispatcher.Invoke(() =>
+            {
+                bool anyEnabled = false;
+                for (int i = 0; i < InputManager.MaxPads; i++)
+                {
+                    if (SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
+                    {
+                        anyEnabled = true;
+                        break;
+                    }
+                }
+                bool target = !anyEnabled;
+                for (int i = 0; i < InputManager.MaxPads; i++)
+                {
+                    if (!SettingsManager.SlotCreated[i]) continue;
+                    if (SettingsManager.SlotEnabled[i] == target) continue;
+                    _deviceService.SetSlotEnabled(i, target);
+                }
+                _viewModel.RefreshNavControllerItems();
+            });
+
             // Wire driver uninstall guards — lambda queries the ViewModel's Pads for active slot types.
             _viewModel.Settings.HasAnyMidiSlots = () =>
             {

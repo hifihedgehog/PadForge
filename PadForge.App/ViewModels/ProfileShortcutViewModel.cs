@@ -65,6 +65,7 @@ namespace PadForge.ViewModels
                     SwitchProfileMode.Previous => Strings.Instance.Profiles_ShortcutMode_Previous,
                     SwitchProfileMode.Specific => Strings.Instance.Profiles_ShortcutMode_Specific,
                     SwitchProfileMode.ToggleWindow => Strings.Instance.Profiles_ShortcutMode_ToggleWindow,
+                    SwitchProfileMode.ToggleVCsDisabled => Strings.Instance.Profiles_ShortcutMode_ToggleVCsDisabled,
                     _ => item.DisplayName,
                 };
             }
@@ -114,6 +115,7 @@ namespace PadForge.ViewModels
             _switchModes.Add(new SwitchProfileModeItem(SwitchProfileMode.Previous, Strings.Instance.Profiles_ShortcutMode_Previous));
             _switchModes.Add(new SwitchProfileModeItem(SwitchProfileMode.Specific, Strings.Instance.Profiles_ShortcutMode_Specific));
             _switchModes.Add(new SwitchProfileModeItem(SwitchProfileMode.ToggleWindow, Strings.Instance.Profiles_ShortcutMode_ToggleWindow));
+            _switchModes.Add(new SwitchProfileModeItem(SwitchProfileMode.ToggleVCsDisabled, Strings.Instance.Profiles_ShortcutMode_ToggleVCsDisabled));
         }
 
         // ─────────────────────────────────────────────

@@ -3977,6 +3977,7 @@ namespace PadForge.Services
         Specific,
         Next,
         Previous,
-        ToggleWindow
+        ToggleWindow,
+        ToggleVCsDisabled,
     }
 }

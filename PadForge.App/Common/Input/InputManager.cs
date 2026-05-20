@@ -165,6 +165,12 @@ namespace PadForge.Common.Input
         public volatile bool PendingToggleWindow;
 
         /// <summary>
+        /// Pending bulk VC disable/enable toggle queued by global macro
+        /// evaluation. Consumed by InputService on the UI thread.
+        /// </summary>
+        public volatile bool PendingToggleVCsDisabled;
+
+        /// <summary>
         /// Set true while recording a shortcut combo. Suppresses global macro
         /// evaluation so the recorded buttons don't immediately trigger a switch.
         /// </summary>

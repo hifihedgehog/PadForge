@@ -134,7 +134,7 @@ Comparison reflects each tool's shipping release at the time of this README. Ver
 2. Run it. PadForge installs HIDMaestro on first launch (admin prompt once).
 3. Click **Add Controller** on the Dashboard. Pick Xbox, PlayStation, Extended, MIDI, or Keyboard+Mouse.
 4. On the new slot, drag a physical device onto it from the sidebar.
-5. Click **Map All** to record every button in one pass, or open the **Mappings** tab and bind one at a time.
+5. Most controllers auto-map on assign. For the rest, click **Map All** to walk every button in one pass, or use the **Mappings** tab to bind one at a time.
 6. Launch your game. The game sees the virtual controller as real hardware.
 
 Most games "just work" after step 5. If a game sees both your physical and virtual controller at once, install HidHide from **Settings → Drivers** to hide the physical one.

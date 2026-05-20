@@ -16,7 +16,7 @@ Free Windows app. No subscription. No paywall. No nag screens. Built on SDL3, [H
 
 PadForge is for sim racers running wheels in games that only understand Xbox controllers. For DualSense owners who want adaptive triggers and lightbar effects in Steam games that ignore them. For accessibility users mapping whatever hardware they can use. For anyone whose controller doesn't match what their game expects.
 
-> **New in 3.2.** Rebuilt mapping engine: one virtual output can read from any number of physical sources, with shift layers, cross-device chords, and a chip-based formula editor on top. Gyro overhaul at Steam Input parity (Local / Player / World, real-world calibration, cross-device Aim Engage). Dedicated Impulse Triggers tab for Xbox and DualSense pads (game passthrough, constant force, audio-bass trigger rumble). Custom Expression macro triggers. Lightbar Strobe and Battery modes. Bulk virtual-controller toggle. [Full release notes](https://github.com/hifihedgehog/PadForge/releases/tag/v3.2.0) · [Wiki](https://github.com/hifihedgehog/PadForge/wiki).
+> **New in 3.2.** Rebuilt mapping engine: one virtual output can read from any number of physical sources, with shift layers, cross-device chords, and a chip-based formula editor on top. Gyro overhaul at Steam Input parity (Local / Player / World, real-world calibration, cross-device Aim Engage). Dedicated Impulse Triggers tab for Xbox and DualSense pads (game passthrough, constant force, audio-bass trigger rumble). Custom Expression macro triggers. Lightbar Strobe and Battery modes. Bulk virtual-controller toggle. **2026 Steam Controller supported** through the bundled SDL3 fork once Valve's mainline change landed. [Full release notes](https://github.com/hifihedgehog/PadForge/releases/tag/v3.2.0) · [Wiki](https://github.com/hifihedgehog/PadForge/wiki).
 
 <p align="center">
   <a href="https://github.com/hifihedgehog/HIDMaestro">
@@ -50,33 +50,40 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 
 | | PadForge | x360ce | XOutput | reWASD | DS4Windows | Steam Input |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|
-| Free | ✅ | ✅ | ✅ | ❌ paid | ✅ | ✅ Steam-only |
-| Open source | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
-| Works outside Steam | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
-| Xbox 360 / One / Series virtual output | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| PlayStation DS4 / DualSense virtual output | ✅ | ❌ | ❌ | ✅ | ⚠️ basic | ❌ |
-| Flight stick / wheel / HOTAS virtual output | ✅ 225+ profiles | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Free | ✅ | ✅ | ✅ | $9.99+ | ✅ | ✅ |
+| Open source | ✅ | ✅ | ✅ archived | ❌ | ✅ | ❌ |
+| Works outside Steam | ✅ | ✅ | ✅ | ✅ | ✅ | only via Add Non-Steam Game |
+| Actively developed | ✅ 2026 | no release since Nov 2020 | deprecated 2024 | ✅ v9.4 (2026) | ✅ v3.5 (Feb 2026) | ✅ |
+| Xbox 360 virtual output | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Xbox One / Series virtual output | ✅ | ❌ | ❌ | ✅ Xbox One | ❌ | ❌ |
+| DualShock 4 virtual output | ✅ | ❌ | ❌ | ✅ | ✅ | ❌ |
+| DualSense virtual output | ✅ | ❌ | ❌ | ❌ input only | ❌ | ❌ |
+| Switch Pro virtual output | ✅ via HIDMaestro | ❌ | ❌ | ✅ | ❌ | ❌ |
+| Flight stick / wheel / HOTAS virtual output (DirectInput) | ✅ 225+ HM profiles | ❌ | ❌ | ❌ | ❌ | ❌ |
 | MIDI virtual output | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Keyboard + Mouse virtual output | ✅ | ❌ | ⚠️ basic | ✅ | ❌ | ✅ |
-| Multi-source per row (one output, many inputs) | ✅ 6 combine modes + custom formula | ❌ | ❌ | ⚠️ basic | ❌ | ✅ |
-| Shift layers (Hold / Toggle / Sticky / Cycle / Custom) | ✅ + chord + axis activators | ❌ | ❌ | ✅ | ❌ | ⚠️ basic |
-| Cross-device chords (button on pad A + button on pad B) | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Formula editor with chips (arithmetic, logic, if-then-else) | ✅ | ❌ | ❌ | ❌ | ❌ | ⚠️ basic |
-| Gyro Steam Input parity (Local / Player / World, RWC) | ✅ | ❌ | ❌ | ⚠️ basic | ⚠️ basic | ✅ |
-| Xbox Impulse Triggers passthrough | ✅ + DualSense auto-route | ❌ | ❌ | ❌ | ❌ | ⚠️ Xbox-only |
-| Constant trigger force + audio-driven trigger rumble | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| DualSense Adaptive Triggers | ✅ 7 modes + GameCube preset | ❌ | ❌ | ✅ | ⚠️ basic | ✅ |
-| DualSense lightbar | ✅ 13 modes + audio-reactive | ❌ | ❌ | ⚠️ basic | ⚠️ basic | ❌ |
-| Force feedback for wheels & joysticks | ✅ HID PID 1.0 | ❌ | ❌ | ❌ | ❌ | ❌ |
-| DSU motion server | ✅ | ❌ | ❌ | ❌ | ✅ | ❌ |
-| Phone-as-controller (browser, Wi-Fi) | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Per-app profile switching | ✅ | ⚠️ basic | ❌ | ✅ | ❌ | ✅ |
-| Up to 16 simultaneous virtual controllers | ✅ | ≤4 | ≤4 | ≤4 | ≤4 | ≤4 |
-| 1000 Hz polling | ✅ | ❌ | ❌ | ⚠️ | ⚠️ | ⚠️ |
-| 3D + 2D controller visualization | ✅ | ❌ | ⚠️ basic | ⚠️ basic | ❌ | ⚠️ basic |
-| Sensitivity curve editor with custom points | ✅ | ⚠️ basic | ⚠️ basic | ✅ | ⚠️ basic | ✅ |
+| Keyboard + Mouse virtual output | ✅ | ❌ | ❌ | ✅ | ✅ | ✅ |
+| Multi-source per row (one output, many inputs) | ✅ 6 combine modes + formula | ⚠️ "Combine Into" merges pads | ⚠️ MapperDataCollection (basic) | ❌ uses per-input Activators | ❌ | ⚠️ per-input Activators |
+| Custom formula editor (arithmetic, logic, if-then-else) | ✅ chip palette + 9 recipes | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Shift layers / modifier overlays | ✅ Hold / Toggle / Sticky / Cycle / Custom | ❌ | ❌ | ✅ up to 10 (Hold / Toggle / Custom) | ✅ Mode Shifts | ✅ Action Set Layers (stackable) |
+| Cross-device chords (one input on pad A + another on pad B) | ✅ | ❌ | ❌ | ✅ via Group of devices | ❌ | ❌ same controller only |
+| Gyro mapping | ✅ Local / Player / World, RWC, Aim Engage | ❌ | ❌ | ✅ since v5.3 (curves, Flick Stick) | ✅ gyro-to-mouse, gyro-to-RS | ✅ |
+| Xbox Impulse Trigger passthrough | ✅ + DualSense AT Vibration auto-route | ❌ | ❌ | ✅ Xbox One output only | ❌ | ❌ |
+| Constant trigger force | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Audio-bass trigger rumble | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Audio-bass body rumble | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| DualSense Adaptive Triggers | ✅ 7 modes + GameCube preset | ❌ | ❌ | ✅ 11 presets | ⚠️ limited | ❌ |
+| DualSense lightbar | ✅ 13 modes inc. Strobe + Battery | ❌ | ❌ | ✅ 6 modes + Player LED + Mic LED | ⚠️ basic, no audio | ⚠️ unverified |
+| HID PID 1.0 force feedback (wheels) | ✅ | ✅ constant + periodic (DirectInput) | ⚠️ basic passthrough only | ❌ | ❌ | ❌ |
+| DSU / Cemuhook motion server | ✅ | ❌ | ❌ | ✅ port 26760 | ✅ | ❌ |
+| Phone as controller | ✅ in-browser, no app install | ❌ | ❌ | reWASD Mobile app | ❌ | ❌ |
+| Per-app profile switching | ✅ | ✅ since v4.17.12 (Nov 2020) | ❌ | ✅ Autodetect | ✅ | ✅ per-game by design |
+| Max simultaneous virtual controllers | 16 | 4 | 4 (ViGEm cap) | 4 (UDP cap) | 4 (ViGEm cap) | 1 per physical pad |
+| 1000 Hz polling | ✅ | ⚠️ unverified | ⚠️ unverified | ✅ user-selectable 500 / 1000 Hz | ✅ on USB DS4 | ⚠️ unverified |
+| 3D + 2D controller visualization | ✅ | ❌ | ❌ | ⚠️ 2D only | ⚠️ basic | ⚠️ configurator preview |
+| Multi-point sensitivity curve editor | ✅ draggable points | ⚠️ single slider | ⚠️ deadzone only | ✅ custom 4-point | ⚠️ preset curves | ✅ response curves |
+| 2026 Steam Controller support | ✅ via SDL3 fork (NEW!) | ❌ | ❌ | ⚠️ unverified | ❌ | ✅ |
 
-Cells marked ⚠️ basic mean the feature exists but is limited compared to PadForge's implementation. ❌ means the feature is absent. Comparison reflects each tool's shipping release as of May 2026.
+Comparison reflects each tool's shipping release at the time of this README. Verified against each project's own docs and source: x360ce v4.17.15.0 changelog; XOutput README + 3.x source; reWASD help.rewasd.com (v9.4); ds4windowsapp/DS4Windows v3.5; Steamworks Documentation (Action Set Layers / Activators / Mode Shifting / Input Source Modes). ⚠️ means the feature exists but is limited or unverified at the level of detail PadForge implements it.
 
 ---
 
@@ -184,10 +191,7 @@ Language (10 locales, live-switch — no restart). Theme (System / Light / Dark)
 
 ## Requirements
 
-| | |
-|---|---|
-| OS | Windows 10 or 11 (x64) |
-| Runtime | [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) — bundled in the single-file release |
+Windows 10 or 11 on x64. The [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) is bundled in the single-file release, so there is nothing else to install.
 
 ### Drivers
 

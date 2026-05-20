@@ -225,7 +225,6 @@ Language (10 locales, live-switch — no restart). Theme (System / Light / Dark)
 
 - PadForge runs elevated so it can install and manage the HIDMaestro driver. Non-elevated games still read the virtual controllers normally.
 - HidHide's device hiding is global per user account, not per-game.
-- Some games poll `xinput1_4.dll` directly instead of going through Windows' standard XInput slot enumeration. Behavior in those games depends on the game.
 - The MIDI virtual controller needs Windows MIDI Services (Windows 11 24H2 / build 26100 or later). On older systems the MIDI type is hidden.
 
 ---

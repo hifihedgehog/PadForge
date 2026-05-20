@@ -175,7 +175,15 @@ namespace PadForge.Common.Input
                 if (!SettingsManager.SlotCreated[padIndex]) continue;
 
                 var raw = VibrationStates[padIndex];
-                bool hasGameRumble = raw != null && (raw.LeftMotorSpeed > 0 || raw.RightMotorSpeed > 0);
+                // Impulse trigger motors keep the dispatcher's timer
+                // alive same as main motors. Without this, the Xbox-VC →
+                // DualSense AT Vibration auto-route never fires: a game
+                // writing only impulse triggers (no main rumble, no
+                // animated lightbar, no audio rumble) parks the timer
+                // and the dispatcher never polls VibrationStates.
+                bool hasGameRumble = raw != null && (
+                    raw.LeftMotorSpeed > 0 || raw.RightMotorSpeed > 0
+                    || raw.LeftTriggerMotorSpeed > 0 || raw.RightTriggerMotorSpeed > 0);
                 // An active macro rumble override on a Sony slot needs
                 // the dispatcher's timer running so the override actually
                 // reaches the motors. Treat it as game-rumble equivalent
@@ -195,7 +203,13 @@ namespace PadForge.Common.Input
                             if (us == null || us.MapTo != padIndex) continue;
                             var ps = us.GetPadSetting();
                             if (ps == null) continue;
-                            if (ps.AudioRumbleEnabled == "1") hasAudioRumbleEnabled = true;
+                            // Either main-motor audio rumble OR audio-trigger
+                            // rumble keeps the dispatcher alive; both pull
+                            // from the same WASAPI capture / detector and
+                            // both need the per-tick dispatch to apply.
+                            if (ps.AudioRumbleEnabled == "1"
+                                || ps.AudioRumbleTriggersEnabled == "1")
+                                hasAudioRumbleEnabled = true;
                             // Constant force: when any per-device PadSetting on
                             // this slot has it enabled with nonzero X or Y,
                             // treat as game-rumble-equivalent so the Sony
@@ -209,6 +223,14 @@ namespace PadForge.Common.Input
                             if (!hasGameRumble && ps.ConstantForceEnabled == "1"
                                 && (ParseConstantForceComponent(ps.ConstantForceX) != 0.0
                                     || ParseConstantForceComponent(ps.ConstantForceY) != 0.0))
+                            {
+                                hasGameRumble = true;
+                            }
+                            // Constant trigger force: mirror the main-motor
+                            // keepalive — same shape, trigger-motor analogue.
+                            if (!hasGameRumble && ps.ConstantTriggerForceEnabled == "1"
+                                && (ParseConstantForceComponent(ps.ConstantTriggerForceLeft) != 0.0
+                                    || ParseConstantForceComponent(ps.ConstantTriggerForceRight) != 0.0))
                             {
                                 hasGameRumble = true;
                             }

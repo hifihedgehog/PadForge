@@ -257,14 +257,14 @@
                                               Width="140" Margin="0,0,6,0"
                                               Visibility="{Binding IsSpecificMode, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-                                    <!-- Device dropdown -->
+                                    <!-- Device dropdown — matches the SwitchMode dropdown width. -->
                                     <ComboBox Grid.Column="2"
                                               ItemsSource="{Binding DeviceChoices}"
                                               SelectedValue="{Binding TriggerDeviceGuid}"
                                               SelectedValuePath="DeviceGuid"
                                               DisplayMemberPath="DisplayName"
                                               DropDownOpened="DeviceChoices_DropDownOpened"
-                                              Width="220" Margin="0,0,6,0"/>
+                                              Width="290" Margin="0,0,6,0"/>
 
                                     <!-- Button combo display (fills remaining space, marquee scrolls if too long) -->
                                     <Border Grid.Column="3" ClipToBounds="True" Margin="0,0,6,0">

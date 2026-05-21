@@ -142,7 +142,7 @@ Comparison reflects each tool's shipping release at the time of this README. Ver
 ## Quick start
 
 1. Download `PadForge.exe` from the [latest release](https://github.com/hifihedgehog/PadForge/releases/latest).
-2. Run it. PadForge installs HIDMaestro on first launch (admin prompt once).
+2. Run it. PadForge always runs elevated, so Windows shows the UAC prompt at startup. The first launch installs HIDMaestro inside that same elevated session.
 3. Click **Add Controller** on the Dashboard. Pick Xbox, PlayStation, Extended, MIDI, or Keyboard+Mouse.
 4. On the new slot, drag a physical device onto it from the sidebar.
 5. Most controllers auto-map on assign. For the rest, click **Map All** to walk every button in one pass, or use the **Mappings** tab to bind one at a time.

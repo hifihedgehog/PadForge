@@ -2533,6 +2533,7 @@
                                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                             <CheckBox Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"
                                                                       IsChecked="{Binding HalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                      IsEnabled="{Binding IsHalfAxisApplicable}"
                                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                             <CheckBox Content="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}"
                                                                       ToolTip="{Binding Pad_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"
@@ -2866,6 +2867,7 @@
                                             <CheckBox Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding IsInverted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
                                             <CheckBox Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding IsHalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      IsEnabled="{Binding IsHalfAxisApplicable}"
                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
                                             <CheckBox Content="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}"
                                                       ToolTip="{Binding Pad_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"

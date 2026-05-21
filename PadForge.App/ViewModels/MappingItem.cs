@@ -228,6 +228,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SourceDisplayText));
                     OnPropertyChanged(nameof(IsMapped));
                     OnPropertyChanged(nameof(IsDeadZoneApplicable));
+                    OnPropertyChanged(nameof(IsHalfAxisApplicable));
                     OnPropertyChanged(nameof(IsGyroSource));
                     OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
                     // Toggling the primary source flips the row's
@@ -741,6 +742,43 @@ namespace PadForge.ViewModels
                     return false;
 
                 return true;
+            }
+        }
+
+        /// <summary>
+        /// True when the Half checkbox (and the dependent Either) is
+        /// meaningful for this row's source. Half-axis only applies to
+        /// continuous-range sources: Axis, Slider, Touchpad X/Y/Pressure,
+        /// and Gyro Pitch/Yaw/Roll. Discrete sources (Button, POV
+        /// direction, Touchpad Click / Finger Down) have no upper or
+        /// lower half to pick.
+        /// </summary>
+        public bool IsHalfAxisApplicable
+        {
+            get
+            {
+                var desc = _sourceDescriptor;
+                if (string.IsNullOrEmpty(desc)) return false;
+
+                // Gyro is always axis-like.
+                if (desc.StartsWith("Gyro ", StringComparison.Ordinal))
+                    return true;
+
+                // Touchpad: X / Y / Pressure are continuous; Click and
+                // Finger Down are discrete.
+                if (desc.StartsWith("Touchpad ", StringComparison.Ordinal))
+                {
+                    return desc.EndsWith(" X", StringComparison.Ordinal)
+                        || desc.EndsWith(" Y", StringComparison.Ordinal)
+                        || desc.EndsWith(" Pressure", StringComparison.Ordinal);
+                }
+
+                // Strip leading I / H prefix flags before checking the type token.
+                int start = 0;
+                if (start < desc.Length && desc[start] == 'I') start++;
+                if (start < desc.Length && desc[start] == 'H') start++;
+                var body = desc.AsSpan(start);
+                return body.StartsWith("Axis") || body.StartsWith("Slider");
             }
         }
 

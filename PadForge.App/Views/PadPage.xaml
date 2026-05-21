@@ -2856,12 +2856,16 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <!-- Invert / Half-axis / Bidirectional / Do-not-inherit options.
-                                 Width=Auto lets the column collapse to whatever the
-                                 widest row actually needs: the three always-visible
-                                 checkboxes set a localization-aware floor, and the
-                                 column expands when a row also shows NoInherit or the
+                                 Width=SizeToCells (not Auto) so the column sizes
+                                 strictly to the widest cell — Auto in DataGrid also
+                                 absorbs the empty space the fixed-width columns
+                                 leave on a wide container, which made the column
+                                 stretch hugely. SizeToCells skips that, so the
+                                 three always-visible checkboxes set the natural
+                                 localization-aware floor and the column only
+                                 expands when a row also shows NoInherit or the
                                  gyro sensitivity slider. -->
-                            <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="Auto">
+                            <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="SizeToCells">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">

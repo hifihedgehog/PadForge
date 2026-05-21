@@ -906,13 +906,29 @@ namespace PadForge.Engine.Common.Mapping
 
         /// <summary>Per-frame multiplier applied to (current - previous)
         /// touchpad position to convert pad fraction into bipolar source
-        /// magnitude. Calibrated so a full-pad sweep in ~300 ms produces
-        /// ~1000 px/sec cursor motion at the default KBM
-        /// MouseSensitivity=15 (per-frame at 1000 Hz polling: delta ≈
-        /// 0.003 → bipolar ≈ 0.09 → 1.4 px/frame → ~1400 px/sec). Users
-        /// scale further via per-row sensitivity curves and per-axis
-        /// max-range on the slot's left-thumb settings.</summary>
-        private const float TouchpadDeltaScale = 30f;
+        /// magnitude. Calibrated to match the proven DualSenseY-v2
+        /// touchpad-as-mouse model (see
+        /// <c>GitHub/DualSenseY-v2/source/keyboardMouseMapper.cpp:76-102</c>):
+        /// the DualSense touchpad reports raw deltas in a 1920×1080
+        /// native-pixel space, and DualSenseY-v2 maps 1 native pad-pixel
+        /// directly to 1 cursor pixel at sensitivity = 1.0. SDL3
+        /// normalizes touchpad position to [0..1], so 1920 native pixels
+        /// = 1.0 SDL units. We need
+        /// <c>bipolar × KbmMouseSensitivity = native_pixel_delta</c>,
+        /// where <c>KbmMouseSensitivity = 15</c>
+        /// (see <c>KeyboardMouseVirtualController.cs:38</c>), giving
+        /// <c>scale = 1920 / 15 ≈ 128</c>. With this, a single full-pad
+        /// X sweep moves the cursor 1920 pixels — a 1:1 sweep across a
+        /// 1920-wide screen, matching a typical laptop trackpad's
+        /// non-accelerated feel. Users dial further via per-row
+        /// sensitivity curves and per-axis max-range on the slot's
+        /// left-thumb settings.
+        /// <para>Steam Controller 2026 and other touchpads with
+        /// different native resolutions still feel intuitive because
+        /// the model is "fraction of pad swept = fraction of standard
+        /// screen swept," independent of the source pad's native
+        /// resolution.</para></summary>
+        private const float TouchpadDeltaScale = 128f;
 
         /// <summary>Returns the relative-motion delta of a touchpad finger
         /// axis as bipolar [-1..+1]. Used by ReadAsBipolar so touchpad-to-

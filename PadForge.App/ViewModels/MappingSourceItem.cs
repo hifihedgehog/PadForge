@@ -197,6 +197,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsButtonClassDescriptor));
                     OnPropertyChanged(nameof(DirectionBadge));
                     OnPropertyChanged(nameof(IsDeadZoneApplicable));
+                    OnPropertyChanged(nameof(IsHalfAxisApplicable));
                     OnPropertyChanged(nameof(IsGyroSource));
                 }
             }
@@ -250,6 +251,41 @@ namespace PadForge.ViewModels
             }
         }
         public bool HalfAxis { get => _halfAxis; set => SetProperty(ref _halfAxis, value); }
+
+        /// <summary>True when the Half checkbox (and the dependent Either)
+        /// is meaningful for this source. Half-axis only applies to
+        /// continuous-range sources: Axis, Slider, Touchpad X/Y/Pressure,
+        /// and Gyro Pitch/Yaw/Roll. Discrete sources (Button, POV
+        /// direction, Touchpad Click / Finger Down) have no upper or
+        /// lower half to pick.</summary>
+        public bool IsHalfAxisApplicable
+        {
+            get
+            {
+                var d = _descriptor?.Trim() ?? "";
+                if (d.Length == 0) return false;
+
+                // Gyro is always axis-like.
+                if (d.StartsWith("Gyro ", System.StringComparison.Ordinal))
+                    return true;
+
+                // Touchpad: X / Y / Pressure are continuous; Click and
+                // Finger Down are discrete.
+                if (d.StartsWith("Touchpad ", System.StringComparison.Ordinal))
+                {
+                    return d.EndsWith(" X", System.StringComparison.Ordinal)
+                        || d.EndsWith(" Y", System.StringComparison.Ordinal)
+                        || d.EndsWith(" Pressure", System.StringComparison.Ordinal);
+                }
+
+                // Strip leading I / H prefix flags before checking the type token.
+                int start = 0;
+                if (start < d.Length && d[start] == 'I') start++;
+                if (start < d.Length && d[start] == 'H') start++;
+                var body = d.AsSpan(start);
+                return body.StartsWith("Axis") || body.StartsWith("Slider");
+            }
+        }
 
         /// <summary>When <c>true</c> AND <see cref="HalfAxis"/> is also on,
         /// the axis-to-button check fires on absolute deflection past the

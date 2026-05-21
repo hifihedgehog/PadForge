@@ -2737,8 +2737,15 @@
                             <DataGridTextColumn Header="{Binding Pad_HeaderOutput, Source={x:Static strings:Strings.Instance}}"
                                                 Binding="{Binding TargetLabel}"
                                                 Width="195"/>
+                            <!-- Source column absorbs any leftover horizontal width the
+                                 fixed-width columns leave behind. Without a Star
+                                 column somewhere, the Options column's Auto / SizeToCells
+                                 measurement would gobble that slack instead and bloat
+                                 to fill the container. Source benefits from the extra
+                                 width — device names ("DualSense Wireless Controller",
+                                 "Steam Controller 2026", etc.) are routinely long. -->
                             <DataGridTemplateColumn Header="{Binding Pad_HeaderSource, Source={x:Static strings:Strings.Instance}}"
-                                                Width="260">
+                                                Width="*" MinWidth="260">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Vertical">

@@ -49,7 +49,7 @@ Each slot can carry extra mapping tables that turn on while a button, chord, or 
 
 ### Aim with the controller, not the stick.
 
-Reference frames (Local, Player, World). Dual-threshold smoothing. Real-world calibration. A cross-device Aim Engage button. Per-(device, slot) tuning so the same pad on two slots can feel two different ways. Gyro Pitch / Yaw / Roll bind as first-class sources in the mapping table.
+Reference frames (Local, Player, World). Dual-threshold smoothing. Real-world calibration. A cross-device Aim Engage button. Tuning saves per pad per slot, so the same pad on two slots can feel two different ways. Gyro Pitch / Yaw / Roll bind as first-class sources in the mapping table.
 
 ![Gyro tab](screenshots/gyro.jpg)
 

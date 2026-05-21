@@ -41,7 +41,7 @@ PadForge translates a PS5 DualSense into the Xbox pad a Steam game expects. A Lo
 
 ### Pedals, wheel, and HOTAS throttle. One virtual stick.
 
-One mapping row can read from any number of physical inputs across any number of physical devices. Six combine modes (Strongest, Combined, Average, Either, Both, Only one) plus a chip-based custom formula editor. Cross-device chords so a button on the wheel and a button on the shifter trigger one virtual press.
+One mapping row can read from any number of physical inputs across any number of physical devices. Six combine modes (Strongest, Combined, Average, Either, Both, Only one) plus a drag-and-drop custom formula editor. Cross-device chords so a button on the wheel and a button on the shifter trigger one virtual press.
 
 ![Multi-source mapping row with combine modes and formula editor](screenshots/mappings.jpg)
 
@@ -115,7 +115,7 @@ Map sticks to Control Change messages. Map buttons to Note On / Note Off. Set ve
 | MIDI virtual output | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Keyboard + Mouse virtual output | ✅ | ❌ | ❌ | ✅ | ✅ | ✅ |
 | Multi-source per row (one output, many inputs) | ✅ 6 combine modes + formula | ⚠️ "Combine Into" merges pads | ⚠️ MapperDataCollection (basic) | ❌ uses per-input Activators | ❌ | ⚠️ per-input Activators |
-| Custom formula editor (arithmetic, logic, if-then-else) | ✅ chip palette + 10 starter recipes | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Custom formula editor (arithmetic, logic, if-then-else) | ✅ drag-and-drop operators + 10 starter recipes | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Shift layers / modifier overlays | ✅ Hold / Toggle / Sticky / Cycle / Custom | ❌ | ❌ | ✅ up to 10 (Hold / Toggle / Custom) | ✅ Mode Shifts | ✅ Action Set Layers (stackable) |
 | Cross-device chords (input on pad A + input on pad B) | ✅ | ❌ | ❌ | ✅ via Group of devices | ❌ | ❌ same controller only |
 | Gyro mapping | ✅ Local / Player / World, RWC, Aim Engage | ❌ | ❌ | ✅ since v5.3 (curves, Flick Stick) | ✅ gyro-to-mouse, gyro-to-RS | ✅ |

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using PadForge.Engine.Data;
 
 namespace PadForge.Engine.Common.Mapping
@@ -675,7 +676,7 @@ namespace PadForge.Engine.Common.Mapping
                 // as a bipolar axis: [0..1] mapped to [-1..+1] (left/top = -1,
                 // center = 0, right/bottom = +1). Lets passthrough sources
                 // participate in multi-source rows the same way stick axes do.
-                if (TryReadTouchpadAxis(state, s, out float bipolar)) return bipolar;
+                if (TryReadTouchpadAxis(state, src, s, out float bipolar)) return bipolar;
                 return ReadTouchpadBool(state, s) ? 1f : 0f;
             }
 
@@ -887,37 +888,107 @@ namespace PadForge.Engine.Common.Mapping
         // reader in InputManager: [F0.X, F0.Y, F0.Pressure, F1.X, F1.Y,
         // F1.Pressure]. So finger M's X index is M*3, Y index is M*3+1.
 
-        /// <summary>Returns finger position as bipolar [-1..+1] (center = 0).
-        /// Used by ReadAsBipolar so touchpad-passthrough sources combine with
-        /// stick / button sources in the same multi-source row.
-        /// <para>Returns 0 (no motion) when the corresponding finger is not in
-        /// contact. SDL reports x=y=0 for lifted fingers, which would otherwise
-        /// (raw=0 - 0.5) * 2 = -1 map to "hard top-left" and pin a touchpad-to-
-        /// mouse mapping to one corner whenever the user lifts a finger.</para></summary>
-        private static bool TryReadTouchpadAxis(CustomInputState state, string descriptor, out float bipolar)
+        /// <summary>Per-(deviceGuid, finger, axis) delta tracker for the
+        /// touchpad bipolar reader. Touchpad X/Y feeding a bipolar target
+        /// (notably KBM mouse X/Y) reads as a relative-motion delta, not as
+        /// absolute pad position. The state machine here remembers the
+        /// previous frame's position so the bipolar reader can return
+        /// (current - previous), and seeds itself on every fresh touch-down
+        /// so a re-touch doesn't generate a jump. Lifted finger collapses
+        /// the entry back to "needs seeding."</summary>
+        private struct TouchpadAxisDelta
+        {
+            public float PrevValue;
+            public bool Seeded;
+        }
+
+        private static readonly ConcurrentDictionary<string, TouchpadAxisDelta> _touchpadDeltas = new();
+
+        /// <summary>Per-frame multiplier applied to (current - previous)
+        /// touchpad position to convert pad fraction into bipolar source
+        /// magnitude. Calibrated so a full-pad sweep in ~300 ms produces
+        /// ~1000 px/sec cursor motion at the default KBM
+        /// MouseSensitivity=15 (per-frame at 1000 Hz polling: delta ≈
+        /// 0.003 → bipolar ≈ 0.09 → 1.4 px/frame → ~1400 px/sec). Users
+        /// scale further via per-row sensitivity curves and per-axis
+        /// max-range on the slot's left-thumb settings.</summary>
+        private const float TouchpadDeltaScale = 30f;
+
+        /// <summary>Returns the relative-motion delta of a touchpad finger
+        /// axis as bipolar [-1..+1]. Used by ReadAsBipolar so touchpad-to-
+        /// mouse mappings behave like a real trackpad (finger motion →
+        /// proportional cursor motion) instead of absolute position
+        /// (holding finger at edge → cursor pegged to that edge at max
+        /// speed). Pressure (axisOffset == 2) bypasses delta and returns
+        /// the raw [0..1] magnitude — pressure is a unipolar level,
+        /// recentering it at 0.5 was nonsense.
+        /// <para>Behavior:</para>
+        /// <list type="bullet">
+        /// <item>Finger not in contact: return 0, mark state as needs-seeding.</item>
+        /// <item>First frame after touch-down: seed prev=current, return 0
+        /// (no jump on re-touch).</item>
+        /// <item>Subsequent frames: return (current - prev) * scale,
+        /// clamped to [-1, +1], and update prev=current.</item>
+        /// </list>
+        /// <para>State is keyed by (DeviceGuid, fingerIdx, axisOffset). The
+        /// dedicated touchpad-passthrough path
+        /// (TryEvaluateMappingSetTouchpadAxis) bypasses this and continues
+        /// to read absolute position into the DS4 touchpad-X/Y target.</para></summary>
+        private static bool TryReadTouchpadAxis(CustomInputState state, MappingSource src, string descriptor, out float bipolar)
         {
             bipolar = 0f;
             if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset))
                 return false;
             if (padIdx != 0) return false; // single touchpad supported today
             if (state.TouchpadFingers == null) return false;
-            // Gate on finger contact. Lifted finger → no motion contribution.
-            if (state.TouchpadDown != null
-                && fingerIdx >= 0 && fingerIdx < state.TouchpadDown.Length
-                && !state.TouchpadDown[fingerIdx])
-            {
-                return true; // bipolar already 0
-            }
             int idx = fingerIdx * 3 + axisOffset;
             if (idx < 0 || idx >= state.TouchpadFingers.Length) return false;
+
+            string deviceGuid = src?.DeviceGuid ?? string.Empty;
+            string key = deviceGuid + "|" + fingerIdx + "|" + axisOffset;
+
+            // Lifted finger → reset delta tracker, return 0.
+            bool fingerDown = state.TouchpadDown != null
+                && fingerIdx >= 0 && fingerIdx < state.TouchpadDown.Length
+                && state.TouchpadDown[fingerIdx];
+            if (!fingerDown)
+            {
+                _touchpadDeltas.TryRemove(key, out _);
+                return true; // bipolar already 0
+            }
+
             float raw = state.TouchpadFingers[idx]; // [0..1]
-            // Pressure (axisOffset == 2) is a unipolar magnitude; don't recenter
-            // it. X / Y are absolute positions on the pad, so map [0..1] →
-            // [-1..+1] with 0.5 as center.
+
+            // Pressure is unipolar — pass it through directly (no delta,
+            // no recentering) so a pressure → axis mapping reads the
+            // actual pressure magnitude.
             if (axisOffset == 2)
+            {
                 bipolar = raw < 0f ? 0f : (raw > 1f ? 1f : raw);
-            else
-                bipolar = (raw - 0.5f) * 2f;
+                return true;
+            }
+
+            // X / Y → delta from previous frame. Seed on first contact.
+            var prev = _touchpadDeltas.GetOrAdd(key, _ => new TouchpadAxisDelta { PrevValue = raw, Seeded = false });
+            if (!prev.Seeded)
+            {
+                _touchpadDeltas[key] = new TouchpadAxisDelta { PrevValue = raw, Seeded = true };
+                return true; // bipolar 0 on the seed frame
+            }
+            float delta = raw - prev.PrevValue;
+            _touchpadDeltas[key] = new TouchpadAxisDelta { PrevValue = raw, Seeded = true };
+
+            // Y axis: SDL touchpad raw_y=0 at top, raw_y=1 at bottom.
+            // A finger moving down has positive delta. KBM mouse Y
+            // convention (per KeyboardMouseVirtualController line 101)
+            // is positive = cursor UP. Without this flip, finger-down →
+            // bipolar positive → MouseDeltaY positive → cursor UP, which
+            // inverts the user's motion. Flip the delta so finger-down
+            // matches cursor-down.
+            if (axisOffset == 1)
+                delta = -delta;
+
+            bipolar = delta * TouchpadDeltaScale;
             if (bipolar < -1f) bipolar = -1f;
             else if (bipolar > 1f) bipolar = 1f;
             return true;

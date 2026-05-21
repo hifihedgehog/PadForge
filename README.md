@@ -338,6 +338,6 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **WPF UI** is licensed under the MIT License.
 - **Windows MIDI Services** is licensed under the MIT License.
 - **HidHide** is licensed under the MIT License.
-- **OpenXInput** ships only an upstream Microsoft-trademark disclaimer (no OSS license grant); redistributed as-is under the same terms.
+- **OpenXInput** ships only an upstream Microsoft-trademark disclaimer (no OSS license grant). Redistributed as-is under the same terms.
 
 See [LICENSE](LICENSE) for the full license text.

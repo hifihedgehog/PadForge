@@ -188,7 +188,7 @@ Seven trigger effect modes. Off, Feedback, Weapon, Vibration, Multi-Position Fee
 
 ### DualSense lightbar
 ![Lighting](screenshots/lighting.jpg)
-Thirteen lightbar modes including three Audio Pulse variants and three Audio Bands variants that react to system audio in real time. Two Input Reactive modes flash on button presses. Plus the indicator-LED card for player pattern, mute LED, and brightness.
+Thirteen lightbar modes including three Audio Pulse variants and three Audio Bands variants that react to system audio in real time. Three Input Reactive variants flash on button presses (Random Color, Cycle Through Palette, Base Color). Plus the indicator-LED card for player pattern, mute LED, and brightness.
 
 ### Macros
 ![Macros](screenshots/macros.jpg)

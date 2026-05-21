@@ -65,7 +65,7 @@ PadForge passes Xbox impulse trigger data straight to the assigned physical Xbox
 
 ### Adaptive triggers and lightbar that don't need the game's blessing.
 
-Seven adaptive trigger modes with a live preview that draws the resistance curve as you drag. Thirteen lightbar modes, three of them tied to your system audio. The DualSense lights and triggers light up in games that have never heard of a DualSense.
+Seven adaptive trigger modes with a live preview that draws the resistance curve as you drag. Thirteen lightbar modes, six of them tied to your system audio (three Audio Pulse variants, three Audio Bands variants). The DualSense lights and triggers light up in games that have never heard of a DualSense.
 
 | ![Adaptive Triggers tab](screenshots/adaptive-triggers.jpg) | ![Lighting tab](screenshots/lighting.jpg) |
 |:---:|:---:|

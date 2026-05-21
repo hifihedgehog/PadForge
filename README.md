@@ -43,9 +43,13 @@ PadForge translates a PS5 DualSense into the Xbox pad a Steam game expects. A Lo
 
 One mapping row can read from any number of physical inputs across any number of physical devices. Six combine modes (Strongest, Combined, Average, Either, Both, Only one) plus a chip-based custom formula editor. Cross-device chords so a button on the wheel and a button on the shifter trigger one virtual press.
 
+![Multi-source mapping row with combine modes and formula editor](screenshots/mappings.jpg)
+
 ### Caps Lock for your controller.
 
 Each slot can carry extra mapping tables that turn on while a button, chord, or axis is held. Five activation modes (Hold, Toggle, Sticky, Cycle, Custom jump-to). Per-layer color and emoji icon. A Win11-style flyout pops to confirm the active layer the moment it engages.
+
+![Shift layer tab strip above the mapping grid](screenshots/mappings.jpg)
 
 ### Aim with the controller, not the stick.
 
@@ -57,11 +61,14 @@ Reference frames (Local, Player, World). Dual-threshold smoothing. Real-world ca
 
 PadForge passes Xbox impulse trigger data straight to the assigned physical Xbox One, Elite, or Series pad. The same data routes to DualSense as Adaptive Trigger Vibration so a DualSense playing Forza buzzes the triggers in step with an Xbox One pad doing the same. Plus audio-bass-driven trigger rumble and a constant trigger force that resumes when the game stops.
 
-![Force Feedback tab](screenshots/force-feedback.jpg)
+![Impulse Triggers tab](screenshots/impulse-triggers.jpg)
 
 ### Adaptive triggers and lightbar that don't need the game's blessing.
 
 Seven adaptive trigger modes with a live preview that draws the resistance curve as you drag. Thirteen lightbar modes, three of them tied to your system audio. The DualSense lights and triggers light up in games that have never heard of a DualSense.
+
+| ![Adaptive Triggers tab](screenshots/adaptive-triggers.jpg) | ![Lighting tab](screenshots/lighting.jpg) |
+|:---:|:---:|
 
 ### Open a browser. Press buttons.
 
@@ -80,6 +87,8 @@ Two sim racers on two wheels at once. A flight stick plus throttle plus rudder p
 ### Gyro into Cemu, Dolphin, Yuzu, and Ryujinx.
 
 The built-in DSU / Cemuhook server broadcasts gyroscope and accelerometer on UDP port 26760 so emulators can use real motion for Splatoon, Wii titles, 3DS games, and anything else that asks for it. DualSense, DualShock 4, Switch Pro, and the new 2026 Steam Controller sources all work out of the box.
+
+![Dashboard Motion Server section with port and enable toggle](screenshots/dashboard.jpg)
 
 ### A 16-channel MIDI controller, no extra hardware.
 

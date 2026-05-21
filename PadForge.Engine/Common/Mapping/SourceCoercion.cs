@@ -889,7 +889,11 @@ namespace PadForge.Engine.Common.Mapping
 
         /// <summary>Returns finger position as bipolar [-1..+1] (center = 0).
         /// Used by ReadAsBipolar so touchpad-passthrough sources combine with
-        /// stick / button sources in the same multi-source row.</summary>
+        /// stick / button sources in the same multi-source row.
+        /// <para>Returns 0 (no motion) when the corresponding finger is not in
+        /// contact. SDL reports x=y=0 for lifted fingers, which would otherwise
+        /// (raw=0 - 0.5) * 2 = -1 map to "hard top-left" and pin a touchpad-to-
+        /// mouse mapping to one corner whenever the user lifts a finger.</para></summary>
         private static bool TryReadTouchpadAxis(CustomInputState state, string descriptor, out float bipolar)
         {
             bipolar = 0f;
@@ -897,10 +901,23 @@ namespace PadForge.Engine.Common.Mapping
                 return false;
             if (padIdx != 0) return false; // single touchpad supported today
             if (state.TouchpadFingers == null) return false;
+            // Gate on finger contact. Lifted finger → no motion contribution.
+            if (state.TouchpadDown != null
+                && fingerIdx >= 0 && fingerIdx < state.TouchpadDown.Length
+                && !state.TouchpadDown[fingerIdx])
+            {
+                return true; // bipolar already 0
+            }
             int idx = fingerIdx * 3 + axisOffset;
             if (idx < 0 || idx >= state.TouchpadFingers.Length) return false;
             float raw = state.TouchpadFingers[idx]; // [0..1]
-            bipolar = (raw - 0.5f) * 2f;            // → [-1..+1]
+            // Pressure (axisOffset == 2) is a unipolar magnitude; don't recenter
+            // it. X / Y are absolute positions on the pad, so map [0..1] →
+            // [-1..+1] with 0.5 as center.
+            if (axisOffset == 2)
+                bipolar = raw < 0f ? 0f : (raw > 1f ? 1f : raw);
+            else
+                bipolar = (raw - 0.5f) * 2f;
             if (bipolar < -1f) bipolar = -1f;
             else if (bipolar > 1f) bipolar = 1f;
             return true;
@@ -908,7 +925,7 @@ namespace PadForge.Engine.Common.Mapping
 
         /// <summary>Returns finger position as unipolar [0..1]. Used by
         /// ReadAsUnipolar so a touchpad axis feeding a trigger target reads
-        /// the raw position.</summary>
+        /// the raw position. Returns 0 when the finger is not in contact.</summary>
         private static bool TryReadTouchpadAxisRaw(CustomInputState state, string descriptor, out float unipolar)
         {
             unipolar = 0f;
@@ -916,6 +933,12 @@ namespace PadForge.Engine.Common.Mapping
                 return false;
             if (padIdx != 0) return false;
             if (state.TouchpadFingers == null) return false;
+            if (state.TouchpadDown != null
+                && fingerIdx >= 0 && fingerIdx < state.TouchpadDown.Length
+                && !state.TouchpadDown[fingerIdx])
+            {
+                return true; // unipolar already 0
+            }
             int idx = fingerIdx * 3 + axisOffset;
             if (idx < 0 || idx >= state.TouchpadFingers.Length) return false;
             float raw = state.TouchpadFingers[idx];

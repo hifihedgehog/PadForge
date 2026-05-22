@@ -2866,11 +2866,16 @@
                                  always-visible checkboxes set the natural floor;
                                  the column expands when a row also shows NoInherit
                                  or the gyro sensitivity slider, and collapses when
-                                 no such row exists. -->
+                                 no such row exists. HorizontalAlignment=Left on the
+                                 cell-template StackPanel keeps it from being
+                                 measured against the cell's stretched arrange
+                                 rectangle — without it, the WPF-UI DataGrid cell
+                                 template feeds the StackPanel the column's stretched
+                                 width during measurement, and the column inflates. -->
                             <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="Auto">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
                                             <CheckBox Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding IsInverted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
                                             <CheckBox Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding IsHalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

@@ -1158,6 +1158,7 @@
   <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Gevoeligheid resetten</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Responsvorm resetten</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Activering resetten</value></data>
+  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Bewegingsdoorgifte resetten</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Ruimte resetten</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Horizontale gevoeligheid resetten</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Verticale gevoeligheid resetten</value></data>

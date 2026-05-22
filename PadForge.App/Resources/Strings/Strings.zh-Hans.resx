@@ -1138,6 +1138,7 @@
   <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>重置灵敏度</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>重置响应整形</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>重置激活</value></data>
+  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>重置运动透传</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>重置坐标系</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>重置水平灵敏度</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>重置垂直灵敏度</value></data>

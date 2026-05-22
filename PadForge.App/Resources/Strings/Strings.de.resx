@@ -1097,6 +1097,7 @@
   <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Empfindlichkeit zurücksetzen</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Antwortform zurücksetzen</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Aktivierung zurücksetzen</value></data>
+  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Bewegungsdurchleitung zurücksetzen</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Bezugssystem zurücksetzen</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Horizontale Empfindlichkeit zurücksetzen</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Vertikale Empfindlichkeit zurücksetzen</value></data>

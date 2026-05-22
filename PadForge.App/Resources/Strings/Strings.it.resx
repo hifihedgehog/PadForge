@@ -1158,6 +1158,7 @@
   <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Ripristina sensibilità</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Ripristina forma della risposta</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Ripristina attivazione</value></data>
+  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Ripristina trasmissione del movimento</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Ripristina spazio</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Ripristina sensibilità orizzontale</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Ripristina sensibilità verticale</value></data>

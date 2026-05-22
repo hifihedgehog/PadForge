@@ -1138,6 +1138,7 @@
   <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>감도 재설정</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>응답 형성 재설정</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>활성화 재설정</value></data>
+  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>모션 패스스루 재설정</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>좌표계 재설정</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>수평 감도 재설정</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>수직 감도 재설정</value></data>

@@ -1025,6 +1025,7 @@
   <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Reset Sensitivity</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Reset Response Shaping</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Reset Engage</value></data>
+  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Reset Motion Passthrough</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Reset Space</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Reset Horizontal Sensitivity</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Reset Vertical Sensitivity</value></data>

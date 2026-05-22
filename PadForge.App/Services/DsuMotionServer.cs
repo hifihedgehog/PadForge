@@ -460,15 +460,22 @@ namespace PadForge.Services
             // Motion timestamp (microseconds)
             BinaryPrimitives.WriteInt64LittleEndian(packet.AsSpan(o + 48), snapshot.TimestampUs);
 
+            // The DSU/cemuhook convention negates accelerometer X/Y/Z and
+            // gyro pitch/roll relative to SDL's native sensor frame. The
+            // MotionSnapshot is kept in SDL's native frame (so the Sony
+            // HID report packers stay faithful to a real controller); the
+            // DSU sign transform is applied here, at the DSU packet, so
+            // only DSU clients see it.
+
             // Accelerometer (3 × float)
-            WriteFloat(packet, o + 56, snapshot.AccelX);
-            WriteFloat(packet, o + 60, snapshot.AccelY);
-            WriteFloat(packet, o + 64, snapshot.AccelZ);
+            WriteFloat(packet, o + 56, -snapshot.AccelX);
+            WriteFloat(packet, o + 60, -snapshot.AccelY);
+            WriteFloat(packet, o + 64, -snapshot.AccelZ);
 
             // Gyroscope (3 × float)
-            WriteFloat(packet, o + 68, snapshot.GyroPitch);
+            WriteFloat(packet, o + 68, -snapshot.GyroPitch);
             WriteFloat(packet, o + 72, snapshot.GyroYaw);
-            WriteFloat(packet, o + 76, snapshot.GyroRoll);
+            WriteFloat(packet, o + 76, -snapshot.GyroRoll);
 
             FinalizeCrc(packet);
 

@@ -928,9 +928,24 @@ namespace PadForge.Common.Input
                     if (!ud.Device.HasGyro && !ud.Device.HasAccel)
                         continue;
 
-                    // SDL standard: Accel in m/s² (Y=up has gravity), Gyro in rad/s
-                    // DSU/DS4 convention: negated accel signs, consistent frame
-                    // Derived from Switch Pro SDL→DSU mapping (BetterJoy reference)
+                    // MotionSnapshot carries the gyro / accel in SDL's
+                    // native sensor frame — accel in g, gyro in deg/s, no
+                    // sign transform. SDL's PS4 / PS5 HIDAPI drivers read a
+                    // real controller's report with no sign flip, so a
+                    // virtual controller's report must carry the native
+                    // frame too for a consumer to see what the physical pad
+                    // shows. The DSU server applies its own DSU-convention
+                    // sign transform when it builds its packet; the Sony
+                    // HID report packers use this snapshot as-is.
+                    //
+                    // The previous code applied a DSU sign transform here
+                    // (-accel all axes, -gyro X/Z) to the shared snapshot.
+                    // That negated accel as -I (point inversion) but gyro
+                    // as (-,+,-); a true vector and a pseudovector cannot
+                    // share that transform, so gyro and accel ended up in
+                    // inconsistent frames. A consumer's gyro-drift sensor
+                    // fusion can't converge on an inconsistent IMU frame,
+                    // which read as at-rest drift on the virtual pad.
                     float ax = state.Accel[0] * MsToG;
                     float ay = state.Accel[1] * MsToG;
                     float az = state.Accel[2] * MsToG;
@@ -952,12 +967,12 @@ namespace PadForge.Common.Input
 
                     MotionSnapshots[padIndex] = new MotionSnapshot
                     {
-                        AccelX = -ax,
-                        AccelY = -ay,
-                        AccelZ = -az,
-                        GyroPitch = -gx,
+                        AccelX = ax,
+                        AccelY = ay,
+                        AccelZ = az,
+                        GyroPitch = gx,
                         GyroYaw = gy,
-                        GyroRoll = -gz,
+                        GyroRoll = gz,
                         TimestampUs = timestampUs,
                         HasMotion = true
                     };

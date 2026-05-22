@@ -493,6 +493,7 @@ namespace PadForge.Services
             var defaultTuning = new PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuning
             {
                 SensH = 1f, SensV = 1f, OutputCurve = "Linear",
+                ApplyToPassthrough = true,
             };
             PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuningProvider = (deviceGuid, slotIndex) =>
             {
@@ -536,6 +537,7 @@ namespace PadForge.Services
                     AimEngageDescriptor = ps.GyroAimEngageButton ?? "",
                     InvertPitch = TryParseBoolPs(ps.GyroInvertPitch, false),
                     InvertYaw = TryParseBoolPs(ps.GyroInvertYaw, false),
+                    ApplyToPassthrough = TryParseBoolPs(ps.GyroApplyTuningToPassthrough, true),
                 };
             };
 
@@ -2019,6 +2021,7 @@ namespace PadForge.Services
             ps.GyroAimEngageDeviceGuid = padVm.GyroAimEngageDeviceGuid ?? "";
             ps.GyroInvertPitch = padVm.GyroInvertPitch ? "1" : "0";
             ps.GyroInvertYaw = padVm.GyroInvertYaw ? "1" : "0";
+            ps.GyroApplyTuningToPassthrough = padVm.GyroApplyTuningToPassthrough ? "1" : "0";
 
             // Constant force (per-device override).
             ps.ConstantForceEnabled = padVm.ConstantForceEnabled ? "1" : "0";
@@ -2273,6 +2276,7 @@ namespace PadForge.Services
             padVm.GyroAimEngageDeviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
             padVm.GyroInvertPitch = ps.GyroInvertPitch == "1";
             padVm.GyroInvertYaw = ps.GyroInvertYaw == "1";
+            padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough != "0";
 
             // Constant force.
             padVm.ConstantForceEnabled = ps.ConstantForceEnabled == "1";

@@ -1113,6 +1113,9 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetGyroSensitivityUnits => Get("Pad_ResetGyroSensitivityUnits");
     public string Pad_ResetGyroInvertPitch => Get("Pad_ResetGyroInvertPitch");
     public string Pad_ResetGyroInvertYaw => Get("Pad_ResetGyroInvertYaw");
+    public string Pad_Gyro_ApplyToPassthrough => Get("Pad_Gyro_ApplyToPassthrough");
+    public string Pad_Gyro_ApplyToPassthrough_Tooltip => Get("Pad_Gyro_ApplyToPassthrough_Tooltip");
+    public string Pad_ResetGyroApplyToPassthrough => Get("Pad_ResetGyroApplyToPassthrough");
     public string Pad_ResetGyroRealWorldCalibration => Get("Pad_ResetGyroRealWorldCalibration");
     public string Pad_ResetGyroDeadZone => Get("Pad_ResetGyroDeadZone");
     public string Pad_ResetGyroTightening => Get("Pad_ResetGyroTightening");

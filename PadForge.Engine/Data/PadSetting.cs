@@ -509,6 +509,16 @@ namespace PadForge.Engine.Data
         /// (includes Roll for Local space and Horizontal blend).</summary>
         [XmlElement] public string GyroInvertYaw { get; set; } = "0";
 
+        /// <summary>When "1" (default), the Gyro tab tuning chain is
+        /// applied to this device's motion passthrough on this slot —
+        /// the virtual controller's gyro report and the DSU broadcast.
+        /// When "0", the passthrough relays the raw sensor reading and
+        /// the Gyro tab affects only gyro-as-mapping-source reads.
+        /// Stored per-(device, slot) like the rest of the gyro tuning.
+        /// Defaults to "1" so an absent element on an upgraded profile
+        /// applies the tuning.</summary>
+        [XmlElement] public string GyroApplyTuningToPassthrough { get; set; } = "1";
+
         // ─────────────────────────────────────────────
         //  Axis-to-button threshold
         // ─────────────────────────────────────────────
@@ -1071,6 +1081,7 @@ namespace PadForge.Engine.Data
             sb.Append(GyroAimEngageDeviceGuid); sb.Append('|');
             sb.Append(GyroInvertPitch); sb.Append('|');
             sb.Append(GyroInvertYaw); sb.Append('|');
+            sb.Append(GyroApplyTuningToPassthrough); sb.Append('|');
 
             // Inversion overrides
             sb.Append(LeftThumbAxisXInvert); sb.Append('|');
@@ -1377,6 +1388,7 @@ namespace PadForge.Engine.Data
             nameof(GyroSmoothingWindowMs), nameof(GyroRealWorldCalibration),
             nameof(GyroAimEngageButton), nameof(GyroAimEngageDeviceGuid),
             nameof(GyroInvertPitch), nameof(GyroInvertYaw),
+            nameof(GyroApplyTuningToPassthrough),
             // Axis inversion
             nameof(LeftThumbAxisXInvert), nameof(LeftThumbAxisYInvert),
             nameof(RightThumbAxisXInvert), nameof(RightThumbAxisYInvert),

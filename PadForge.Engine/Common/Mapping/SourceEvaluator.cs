@@ -56,6 +56,14 @@ namespace PadForge.Engine.Common.Mapping
         {
             if (src == null) return 0f;
 
+            // Touchpad source readings differ between relative-motion
+            // targets (KBM mouse / scroll consume per-frame deltas) and
+            // absolute-position targets (touchpad-output passthrough,
+            // stick axes, extended axes — all want raw pad position).
+            // SourceCoercion has both readers; the flag picks which one
+            // it uses for touchpad descriptors.
+            bool relativeTouchpad = IsRelativeMotionTarget(target);
+
             switch (src.Kind ?? "Direct")
             {
                 case "Incremental":
@@ -71,7 +79,7 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     bool modifier = ReadButtonLikeBool(state, src.ParamModifier);
                     var inner = CloneAsDirect(src, invertOverride: src.Invert ^ modifier);
-                    return SourceCoercion.EvaluateForBipolarAxisTarget(state, inner, slotIndex);
+                    return SourceCoercion.EvaluateForBipolarAxisTarget(state, inner, slotIndex, relativeTouchpad);
                 }
                 default:
                     // Gyro → virtual stick is rate-direct, same as gyro →
@@ -85,8 +93,21 @@ namespace PadForge.Engine.Common.Mapping
                     // "hold the controller tilted to keep turning" — the
                     // opposite of how gyro is supposed to feel (JSM
                     // MOUSE_JOYSTICK, Steam Input gyro→stick, Splatoon).
-                    return SourceCoercion.EvaluateForBipolarAxisTarget(state, src, slotIndex);
+                    return SourceCoercion.EvaluateForBipolarAxisTarget(state, src, slotIndex, relativeTouchpad);
             }
+        }
+
+        /// <summary>True when the target name names a relative-motion
+        /// channel — the only ones in PadForge are KBM mouse X/Y and
+        /// scroll. Stick axes, touchpad output passthrough, and
+        /// extended-config axes are absolute-position; for them a
+        /// touchpad source should read raw pad position, not deltas.</summary>
+        internal static bool IsRelativeMotionTarget(string target)
+        {
+            if (string.IsNullOrEmpty(target)) return false;
+            return target == "KbmMouseX"
+                || target == "KbmMouseY"
+                || target == "KbmScroll";
         }
 
         public static float EvaluateForTriggerTarget(

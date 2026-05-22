@@ -4832,22 +4832,33 @@
                         </StackPanel>
                         <TextBlock Text="{Binding Pad_Gyro_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                   TextWrapping="Wrap" Margin="0,0,0,12"/>
+                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
 
-                        <!-- Tab-wide scope toggle: whether the tuning below
+                        <!-- ─── Motion Passthrough card ─── -->
+                        <!-- Tab-wide scope toggle: whether this tab's tuning
                              reaches the virtual controller's motion passthrough
                              (gyro report + DSU), not only gyro-as-mapping-source. -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
-                            <CheckBox Content="{Binding Pad_Gyro_ApplyToPassthrough, Source={x:Static strings:Strings.Instance}}"
-                                      IsChecked="{Binding GyroApplyTuningToPassthrough, Mode=TwoWay}"
-                                      VerticalAlignment="Center" Margin="0,0,4,0"
-                                      ToolTip="{Binding Pad_Gyro_ApplyToPassthrough_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                            <Button Command="{Binding ResetGyroApplyToPassthroughCommand}" Style="{StaticResource ResetButton}"
-                                    ToolTip="{Binding Pad_ResetGyroApplyToPassthrough, Source={x:Static strings:Strings.Instance}}"/>
-                        </StackPanel>
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE72A;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Gyro_Passthrough_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox Content="{Binding Pad_Gyro_ApplyToPassthrough, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding GyroApplyTuningToPassthrough, Mode=TwoWay}"
+                                              VerticalAlignment="Center" Margin="0,0,4,0"
+                                              ToolTip="{Binding Pad_Gyro_ApplyToPassthrough_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Command="{Binding ResetGyroApplyToPassthroughCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroApplyToPassthrough, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
 
                         <!-- ─── Calibration card ─── -->
-                        <Border Style="{StaticResource CardBorder}">
+                        <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE945;" FontFamily="Segoe MDL2 Assets" FontSize="16"

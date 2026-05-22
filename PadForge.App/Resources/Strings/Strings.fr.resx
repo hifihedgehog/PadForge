@@ -1153,6 +1153,7 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>Réinitialiser la courbe de sortie</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Réinitialiser le seuil Easy Aim</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Réinitialiser le bouton d'activation</value></data>
+  <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Transmission du mouvement</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Appliquer le réglage du gyroscope à la transmission du mouvement</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Applique le réglage facultatif du gyroscope de cet onglet (zone morte, sensibilité, lissage, courbe de réponse, inversion) au mouvement que la manette virtuelle transmet au jeu ou à l'émulateur. Désactivez-le pour n'envoyer que la lecture étalonnée et laisser le jeu appliquer sa propre sensibilité et son propre lissage. La correction de dérive par étalonnage s'applique dans tous les cas.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Réinitialiser le réglage de transmission</value></data>

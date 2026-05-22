@@ -1406,6 +1406,16 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gyroInvertYaw, value);
         }
 
+        // Default true: a user expects the Gyro tab knobs to affect the
+        // motion the virtual controller hands to the game. Unchecking it
+        // makes the passthrough relay the raw sensor reading.
+        private bool _gyroApplyTuningToPassthrough = true;
+        public bool GyroApplyTuningToPassthrough
+        {
+            get => _gyroApplyTuningToPassthrough;
+            set => SetProperty(ref _gyroApplyTuningToPassthrough, value);
+        }
+
         // Live calibrated rate readouts (deg/s) — refreshed by InputService
         // when a Pad page is visible on a slot with a gyro-capable device.
         private double _gyroLiveRatePitch;
@@ -1468,6 +1478,10 @@ namespace PadForge.ViewModels
         private RelayCommand _resetGyroInvertYawCommand;
         public RelayCommand ResetGyroInvertYawCommand =>
             _resetGyroInvertYawCommand ??= new RelayCommand(() => GyroInvertYaw = false);
+
+        private RelayCommand _resetGyroApplyToPassthroughCommand;
+        public RelayCommand ResetGyroApplyToPassthroughCommand =>
+            _resetGyroApplyToPassthroughCommand ??= new RelayCommand(() => GyroApplyTuningToPassthrough = true);
 
         private RelayCommand _resetGyroRealWorldCalibrationCommand;
         public RelayCommand ResetGyroRealWorldCalibrationCommand =>

@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using PadForge.Engine;
+using PadForge.Engine.Common.Mapping;
 using PadForge.Engine.Data;
 using PadForge.Services;
 using SDL3;
@@ -928,9 +929,21 @@ namespace PadForge.Common.Input
                     float ax = state.Accel[0] * MsToG;
                     float ay = state.Accel[1] * MsToG;
                     float az = state.Accel[2] * MsToG;
-                    float gx = state.Gyro[0] * RadToDeg;
-                    float gy = state.Gyro[1] * RadToDeg;
-                    float gz = state.Gyro[2] * RadToDeg;
+
+                    // Gyro: run the per-(device, slot) Gyro tab tuning
+                    // chain — calibration bias, deadzone, sensitivity,
+                    // smoothing, invert, etc. — before the rad-to-deg
+                    // conversion and DSU sign convention. GetPassthroughGyro
+                    // returns the raw reading unchanged when the slot's
+                    // "apply to passthrough" toggle is off, or when every
+                    // Gyro tab control is at its default on an uncalibrated
+                    // device.
+                    SourceCoercion.GetPassthroughGyro(
+                        state, us.InstanceGuid.ToString(), padIndex,
+                        out float tunedPitch, out float tunedYaw, out float tunedRoll);
+                    float gx = tunedPitch * RadToDeg;
+                    float gy = tunedYaw * RadToDeg;
+                    float gz = tunedRoll * RadToDeg;
 
                     MotionSnapshots[padIndex] = new MotionSnapshot
                     {

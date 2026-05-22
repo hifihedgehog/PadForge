@@ -969,21 +969,21 @@
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Clears the at-rest gyro bias and the last-calibrated timestamp. The next polling cycle re-runs the 1.5-second auto-calibration on this device.</value></data>
   <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Live rate</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Horizontal Sensitivity</value></data>
-  <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Scales the horizontal (Yaw + Roll) gyro contribution to the output. 1.0 leaves the rate as the engine sees it; higher values amplify, lower values attenuate. Apply at the device level so every gyro binding on this controller inherits the same horizontal feel.</value></data>
+  <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Scales the horizontal (Yaw + Roll) gyro contribution to the output. 1.0 leaves the rate as the engine sees it. Higher values amplify, lower values attenuate. Apply at the device level so every gyro binding on this controller inherits the same horizontal feel.</value></data>
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Vertical Sensitivity</value></data>
   <data name="Settings_GyroSensitivityV_Tooltip" xml:space="preserve"><value>Scales the vertical (Pitch) gyro contribution to the output. Separate from horizontal so you can tune aim X and Y independently.</value></data>
-  <data name="Settings_GyroDeadZone" xml:space="preserve"><value>Dead Zone</value></data>
-  <data name="Settings_GyroDeadZone_Tooltip" xml:space="preserve"><value>Minimum rotation rate (degrees per second) below which gyro output is treated as zero. Rejects at-rest hand tremor without snapping behavior — rates past the threshold pass through with the threshold subtracted.</value></data>
+  <data name="Settings_GyroDeadZone" xml:space="preserve"><value>Deadzone</value></data>
+  <data name="Settings_GyroDeadZone_Tooltip" xml:space="preserve"><value>Minimum rotation rate (degrees per second) below which gyro output is treated as zero. Rejects at-rest hand tremor without snapping behavior. Rates past the threshold pass through with the threshold subtracted.</value></data>
   <data name="Settings_GyroSmoothing" xml:space="preserve"><value>Smoothing</value></data>
   <data name="Settings_GyroSmoothing_Tooltip" xml:space="preserve"><value>Single-pole EMA filter on the gyro rate. 0 = off (raw signal, lowest latency). Higher values reduce per-frame jitter at the cost of added lag. 0.5 is a reasonable starting point if the cursor feels twitchy.</value></data>
   <data name="Settings_GyroAcceleration" xml:space="preserve"><value>Acceleration</value></data>
-  <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>Rate-dependent gain. 0 = off (linear scaling). Higher values let slow movements pass through unchanged while amplifying fast movements — useful for combining precision aim with quick turns.</value></data>
+  <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>Rate-dependent gain. 0 = off (linear scaling). Higher values let slow movements pass through unchanged while amplifying fast movements. Useful for combining precision aim with quick turns.</value></data>
   <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>Output Curve</value></data>
   <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>Reshapes the response. Linear = pass-through. Aggressive = x² (slow stays slow, fast amplifies). Relaxed = √x (slow amplifies, fast saturates). Wide / ExtraWide sit between aggressive and saturated. Composes with Acceleration.</value></data>
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Units</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Sensitivity unit display. Multiplier is the internal × scale (1 = baseline). DegPerScreenTurn is Steam-style — degrees of physical controller rotation per one full screen turn.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim Threshold</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Right-stick deflection (0–100%) below which gyro output is zeroed. 0 = always on. Steam's "gyro engaged while aiming" feel — gyro fires only when the user pushes the right stick past the threshold.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Right-stick deflection (0–100%) below which gyro output is zeroed. 0 = always on. Steam's "gyro engaged while aiming" feel. Gyro fires only when the user pushes the right stick past the threshold.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Tune how this pad's motion sensor drives mouse and stick output. Calibrate on a flat surface to zero at-rest drift, then dial in sensitivity, smoothing, and engage rules to taste.</value></data>
@@ -1009,7 +1009,7 @@
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Aim Engage Button</value></data>
   <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Button that gates gyro output. Gyro fires only while this button is held. Leave unset to disable the button gate. When both this and the right-stick deflection are configured, both must be active for gyro to fire.</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Engage</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optional gates that limit when gyro is active. Right-stick deflection and the aim engage button can each be configured; gyro fires only while every configured gate is active.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optional gates that limit when gyro is active. Right-stick deflection and the aim engage button can each be configured. Gyro fires only while every configured gate is active.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Local</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Player</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>World</value></data>

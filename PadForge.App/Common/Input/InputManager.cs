@@ -875,7 +875,12 @@ namespace PadForge.Common.Input
             var settings = SettingsManager.UserSettings;
             if (settings == null) return;
 
-            long timestampUs = Stopwatch.GetTimestamp() * 1_000_000 / Stopwatch.Frequency;
+            // Microseconds since an arbitrary epoch. Scale in double:
+            // GetTimestamp() * 1_000_000 overflows Int64 once the machine
+            // has been up long enough (~10 days at a 10 MHz QPC), which
+            // would make the relayed sensor timestamp wrap and jump.
+            long timestampUs = (long)(Stopwatch.GetTimestamp()
+                * (1_000_000.0 / Stopwatch.Frequency));
 
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {

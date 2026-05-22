@@ -1949,9 +1949,15 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <!-- Mapping DataGrid -->
+                    <!-- Mapping DataGrid. HorizontalAlignment=Left so the DataGrid
+                         doesn't stretch wider than its columns sum to — without
+                         this, any Auto / SizeToCells column absorbs the leftover
+                         horizontal slack and bloats. With HorizontalAlignment=Left,
+                         each column genuinely auto-collapses to its own content
+                         and any empty space sits to the right of the grid. -->
                     <DataGrid Grid.Row="2"
                               x:Name="MappingDataGrid"
+                              HorizontalAlignment="Left"
                               ItemsSource="{Binding Mappings}"
                               AutoGenerateColumns="False"
                               CanUserAddRows="False"
@@ -2737,15 +2743,8 @@
                             <DataGridTextColumn Header="{Binding Pad_HeaderOutput, Source={x:Static strings:Strings.Instance}}"
                                                 Binding="{Binding TargetLabel}"
                                                 Width="195"/>
-                            <!-- Source column absorbs any leftover horizontal width the
-                                 fixed-width columns leave behind. Without a Star
-                                 column somewhere, the Options column's Auto / SizeToCells
-                                 measurement would gobble that slack instead and bloat
-                                 to fill the container. Source benefits from the extra
-                                 width — device names ("DualSense Wireless Controller",
-                                 "Steam Controller 2026", etc.) are routinely long. -->
                             <DataGridTemplateColumn Header="{Binding Pad_HeaderSource, Source={x:Static strings:Strings.Instance}}"
-                                                Width="*" MinWidth="260">
+                                                Width="260">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Vertical">
@@ -2863,16 +2862,12 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <!-- Invert / Half-axis / Bidirectional / Do-not-inherit options.
-                                 Width=SizeToCells (not Auto) so the column sizes
-                                 strictly to the widest cell — Auto in DataGrid also
-                                 absorbs the empty space the fixed-width columns
-                                 leave on a wide container, which made the column
-                                 stretch hugely. SizeToCells skips that, so the
-                                 three always-visible checkboxes set the natural
-                                 localization-aware floor and the column only
-                                 expands when a row also shows NoInherit or the
-                                 gyro sensitivity slider. -->
-                            <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="SizeToCells">
+                                 Width=Auto sizes to the widest cell + header. The
+                                 always-visible checkboxes set the natural floor;
+                                 the column expands when a row also shows NoInherit
+                                 or the gyro sensitivity slider, and collapses when
+                                 no such row exists. -->
+                            <DataGridTemplateColumn Header="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}" Width="Auto">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">

@@ -286,8 +286,13 @@ namespace PadForge.Common.Input
             WriteI16(dest, 23, ScaleAccel(motion.AccelY));
             WriteI16(dest, 25, ScaleAccel(motion.AccelZ));
 
-            // Sensor timestamp (bytes 27-30): 32-bit LE microseconds.
-            WriteU32(dest, 27, (uint)(motion.TimestampUs & 0xFFFFFFFFL));
+            // Sensor timestamp (bytes 27-30): 32-bit LE. The DualSense
+            // 0x31 sensor-timestamp field counts in 0.33 µs ticks
+            // (SDL3's PS5 driver decodes it as ticks * 1000 / 3 ns), so
+            // microseconds must be multiplied by 3 to land in the right
+            // unit. Writing raw µs made consumers see the sensor clock
+            // advance at 1/3 real rate.
+            WriteU32(dest, 27, (uint)((motion.TimestampUs * 3L) & 0xFFFFFFFFL));
 
             // Sensor temp (byte 31) stays zero — informational, not required.
 
@@ -344,21 +349,27 @@ namespace PadForge.Common.Input
             return 8; // neutral
         }
 
-        // Gyro range ±2000 deg/s mapped to int16 (matches HandheldCompanion's
-        // DualShock4Target reference scaling).
+        // Gyro deg/s to the raw int16 a Sony report carries. The consumer
+        // decodes it with no hardware calibration (PadForge's virtual pad
+        // serves no IMU calibration feature report), so SDL3's PS5/PS4
+        // HIDAPI fallback applies: deg/s = raw * 64 / GYRO_RES_PER_DEGREE,
+        // with GYRO_RES_PER_DEGREE = 1024. Inverting: raw = deg/s * 16.
+        // (The old 32767/2000 ≈ 16.38 over-scaled gyro by ~2.4 %.)
         private static short ScaleGyro(float degPerSec)
         {
-            const float scale = 32767f / 2000f;
+            const float scale = 1024f / 64f; // = 16
             float v = degPerSec * scale;
             if (v >  32767f) return  32767;
             if (v < -32768f) return -32768;
             return (short)v;
         }
 
-        // Accel range ±4 g mapped to int16 (same HC reference).
+        // Accel g to raw int16. SDL3's no-calibration fallback is
+        // g = raw / ACCEL_RES_PER_G, ACCEL_RES_PER_G = 8192, so
+        // raw = g * 8192.
         private static short ScaleAccel(float gForce)
         {
-            const float scale = 32767f / 4f;
+            const float scale = 8192f;
             float v = gForce * scale;
             if (v >  32767f) return  32767;
             if (v < -32768f) return -32768;

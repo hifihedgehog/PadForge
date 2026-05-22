@@ -601,22 +601,29 @@ namespace PadForge.Engine.Common.Mapping
             // Smoothing. Dual-threshold supersedes the legacy EMA. The
             // dual-threshold filter works on the (yaw, pitch) aim pair;
             // roll gets its own buffer via a channel-suffixed key.
+            //
+            // The buffers are keyed by device. The passthrough and the
+            // gyro-mapping path (ReadTunedGyroRate) are separate signal
+            // chains, so the passthrough takes a distinct key suffix —
+            // the bare deviceGuid would advance the shared buffer twice
+            // per frame on a slot running both, halving the window.
+            string smKey = (deviceGuid ?? "") + "pt";
             bool useDualThreshold =
                 tuning.TighteningRadPerSec > 0f || tuning.SmoothingThresholdRadPerSec > 0f;
             if (useDualThreshold)
             {
                 (pYaw, pPitch) = ApplyDualThresholdSmoothing(
-                    deviceGuid, slotIndex, pYaw, pPitch, tuning);
+                    smKey, slotIndex, pYaw, pPitch, tuning);
                 if (local)
                     (pRoll, _) = ApplyDualThresholdSmoothing(
-                        (deviceGuid ?? "") + "roll", slotIndex, pRoll, 0f, tuning);
+                        smKey + "roll", slotIndex, pRoll, 0f, tuning);
             }
             else if (tuning.SmoothingAlpha > 0f)
             {
-                pYaw   = ApplyGyroSmoothing(deviceGuid, 1, pYaw,   tuning.SmoothingAlpha);
-                pPitch = ApplyGyroSmoothing(deviceGuid, 0, pPitch, tuning.SmoothingAlpha);
+                pYaw   = ApplyGyroSmoothing(smKey, 1, pYaw,   tuning.SmoothingAlpha);
+                pPitch = ApplyGyroSmoothing(smKey, 0, pPitch, tuning.SmoothingAlpha);
                 if (local)
-                    pRoll = ApplyGyroSmoothing(deviceGuid, 2, pRoll, tuning.SmoothingAlpha);
+                    pRoll = ApplyGyroSmoothing(smKey, 2, pRoll, tuning.SmoothingAlpha);
             }
 
             float rwc = tuning.RealWorldCalibration > 0f ? tuning.RealWorldCalibration : 1f;

@@ -1173,6 +1173,9 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>Uitvoercurve resetten</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim-drempel resetten</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Activatieknop resetten</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Gyro-afstemming toepassen op bewegingsdoorgifte</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Past de optionele gyro-afstemming van dit tabblad (dode zone, gevoeligheid, afvlakking, responscurve, omkering) toe op de beweging die de virtuele controller aan het spel of de emulator doorgeeft. Schakel het uit om alleen de gekalibreerde meting te sturen en het spel zijn eigen gevoeligheid en afvlakking te laten toepassen. De kalibratie-driftcorrectie geldt in beide gevallen.</value></data>
+  <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Doorgifte-afstemming resetten</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheidsvermenigvuldiger van de gyroscoop per bron. 1,0 = standaard van de engine (500°/s → volledige uitslag). Waarden boven 1,0 zijn gevoeliger; daaronder minder.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>

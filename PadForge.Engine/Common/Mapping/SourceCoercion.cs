@@ -556,13 +556,21 @@ namespace PadForge.Engine.Common.Mapping
         /// otherwise they stay 0..+1 then sign-flipped via Invert.
         /// <paramref name="slotIndex"/> is required for gyro-target
         /// tuning lookups (per-(device, slot) PadSetting); pass -1 for
-        /// non-slot contexts (legacy / utility callers).</summary>
+        /// non-slot contexts (legacy / utility callers).
+        /// <para><paramref name="relativeTouchpad"/> picks between the
+        /// two touchpad-source readings: <c>true</c> = per-frame delta
+        /// (KBM mouse / scroll consume this), <c>false</c> = absolute
+        /// pad position (touchpad-output passthrough, stick axes,
+        /// extended axes all want this). Default is absolute because
+        /// the relative case is the narrower one — only the KBM mouse
+        /// path opts in.</para></summary>
         public static float EvaluateForBipolarAxisTarget(
-            CustomInputState state, MappingSource src, int slotIndex = -1)
+            CustomInputState state, MappingSource src, int slotIndex = -1,
+            bool relativeTouchpad = false)
         {
             if (state == null || src == null) return 0f;
 
-            float raw = ReadAsBipolar(state, src, slotIndex);
+            float raw = ReadAsBipolar(state, src, slotIndex, relativeTouchpad);
             return src.Invert ? -raw : raw;
         }
 
@@ -665,18 +673,30 @@ namespace PadForge.Engine.Common.Mapping
             }
         }
 
-        private static float ReadAsBipolar(CustomInputState state, MappingSource src, int slotIndex)
+        private static float ReadAsBipolar(CustomInputState state, MappingSource src, int slotIndex, bool relativeTouchpad)
         {
             string s = (src.Descriptor ?? "").Trim();
             if (string.IsNullOrEmpty(s)) return 0f;
 
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
             {
-                // "Touchpad N Finger M X" / "...Y" — physical finger position
-                // as a bipolar axis: [0..1] mapped to [-1..+1] (left/top = -1,
-                // center = 0, right/bottom = +1). Lets passthrough sources
-                // participate in multi-source rows the same way stick axes do.
-                if (TryReadTouchpadAxis(state, src, s, out float bipolar)) return bipolar;
+                // Two readings for touchpad sources:
+                //   relative — per-frame delta scaled to mouse-style
+                //     bipolar, used by KBM mouse / scroll targets.
+                //   absolute — raw pad position [0..1] mapped to
+                //     [-1..+1], used by touchpad-output passthrough,
+                //     stick axes, and extended-config axes (everything
+                //     that needs "where is the finger right now," not
+                //     "how far has it moved this frame").
+                // Caller signals which one it wants via relativeTouchpad.
+                if (relativeTouchpad)
+                {
+                    if (TryReadTouchpadAxis(state, src, s, out float bipolar)) return bipolar;
+                }
+                else
+                {
+                    if (TryReadTouchpadAxisAbsolute(state, s, out float bipolar)) return bipolar;
+                }
                 return ReadTouchpadBool(state, s) ? 1f : 0f;
             }
 
@@ -946,10 +966,12 @@ namespace PadForge.Engine.Common.Mapping
         /// <item>Subsequent frames: return (current - prev) * scale,
         /// clamped to [-1, +1], and update prev=current.</item>
         /// </list>
-        /// <para>State is keyed by (DeviceGuid, fingerIdx, axisOffset). The
-        /// dedicated touchpad-passthrough path
-        /// (TryEvaluateMappingSetTouchpadAxis) bypasses this and continues
-        /// to read absolute position into the DS4 touchpad-X/Y target.</para></summary>
+        /// <para>State is keyed by (DeviceGuid, fingerIdx, axisOffset).
+        /// Selected by <c>ReadAsBipolar</c> only when its caller flags
+        /// the target as relative-motion (KBM mouse / scroll). Absolute-
+        /// position targets — touchpad-output passthrough, stick axes,
+        /// extended axes — go through <c>TryReadTouchpadAxisAbsolute</c>
+        /// instead.</para></summary>
         private static bool TryReadTouchpadAxis(CustomInputState state, MappingSource src, string descriptor, out float bipolar)
         {
             bipolar = 0f;
@@ -1007,6 +1029,41 @@ namespace PadForge.Engine.Common.Mapping
             bipolar = delta * TouchpadDeltaScale;
             if (bipolar < -1f) bipolar = -1f;
             else if (bipolar > 1f) bipolar = 1f;
+            return true;
+        }
+
+        /// <summary>Returns finger position as bipolar [-1..+1] without
+        /// delta tracking. Used by ReadAsBipolar for absolute-position
+        /// targets — touchpad-output passthrough, stick axes, extended
+        /// axes. SDL touchpad X/Y is reported as [0..1] (top/left = 0,
+        /// bottom/right = 1); this reader maps that to [-1..+1] directly
+        /// so a DualSense touchpad → DualSense virtual touchpad
+        /// passthrough preserves SDL's convention end-to-end. No Y flip
+        /// here — the relative reader has its own Y flip for the KBM
+        /// mouse convention, which does not apply to absolute-position
+        /// outputs. Pressure (axisOffset == 2) is unipolar, kept as
+        /// [0..1] without recentering — pressure isn't a signed axis.
+        /// Returns 0 when the finger is not in contact (the caller's
+        /// gating wrapper usually filters us out first, but this is
+        /// the right defensive default).</summary>
+        private static bool TryReadTouchpadAxisAbsolute(CustomInputState state, string descriptor, out float bipolar)
+        {
+            bipolar = 0f;
+            if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset))
+                return false;
+            if (padIdx != 0) return false; // single touchpad supported today
+            if (state.TouchpadFingers == null) return false;
+            if (state.TouchpadDown != null
+                && fingerIdx >= 0 && fingerIdx < state.TouchpadDown.Length
+                && !state.TouchpadDown[fingerIdx])
+            {
+                return true; // bipolar already 0
+            }
+            int idx = fingerIdx * 3 + axisOffset;
+            if (idx < 0 || idx >= state.TouchpadFingers.Length) return false;
+            float raw = state.TouchpadFingers[idx];
+            if (raw < 0f) raw = 0f; else if (raw > 1f) raw = 1f;
+            bipolar = axisOffset == 2 ? raw : (raw * 2f - 1f);
             return true;
         }
 

@@ -1153,6 +1153,7 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>出力カーブをリセット</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim しきい値をリセット</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>アクティベートボタンをリセット</value></data>
+  <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>モーションのパススルー</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>ジャイロ調整をモーションのパススルーに適用</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>このタブの任意のジャイロ調整 (デッドゾーン、感度、スムージング、応答カーブ、反転) を、仮想コントローラーがゲームまたはエミュレーターに報告するモーションに適用します。オフにすると校正済みの値のみを送り、感度とスムージングはゲーム側に任せます。校正によるドリフト補正はどちらの場合も常に適用されます。</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>パススルー調整をリセット</value></data>

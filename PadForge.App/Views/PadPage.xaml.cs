@@ -1828,52 +1828,155 @@ namespace PadForge.Views
         /// unit type Auto / SizeToCells / SizeToHeader, measure realized
         /// cell content with unbounded width, compute the honest max
         /// content width across rows + header, and lock the column to
-        /// that as <see cref="DataGridLengthUnitType.Pixel"/>.</summary>
+        /// that as <see cref="DataGridLengthUnitType.Pixel"/>.
+        ///
+        /// <para>Special handling: when a cell contains a
+        /// <see cref="ComboBox"/>, measuring the cell only captures the
+        /// currently-selected item's width — a row with no selection (or
+        /// a short selection like "A") would size the column to almost
+        /// nothing. The widest dropdown ITEM is what the user actually
+        /// needs the column to accommodate, so each cell's measurement
+        /// is augmented with the widest item across every ComboBox in
+        /// the cell's visual tree (plus a small dropdown-arrow allowance).</para>
+        ///
+        /// <para>Row virtualization is forced off via
+        /// <see cref="VirtualizingPanel.SetIsVirtualizing(DependencyObject, bool)"/>
+        /// for the duration of the measurement so scrolled-off rows are
+        /// realized and contribute their honest content widths to the
+        /// max.</para></summary>
         private static void AutoFitFlexibleColumns(DataGrid grid)
         {
             const double CellChromePadding = 12.0; // matches WPF's gripper-double-click delta
+            const double ComboBoxArrowPadding = 32.0; // dropdown-arrow + ComboBox border insets
 
-            foreach (var col in grid.Columns)
+            // Force-realize every row so cells in scrolled-off rows
+            // contribute to the max. The original virtualization state is
+            // restored at the end so runtime scroll performance is
+            // unaffected.
+            bool wasVirtualizing = VirtualizingPanel.GetIsVirtualizing(grid);
+            VirtualizingPanel.SetIsVirtualizing(grid, false);
+            grid.UpdateLayout();
+
+            try
             {
-                var unit = col.Width.UnitType;
-                bool flexible = unit == DataGridLengthUnitType.Auto
-                             || unit == DataGridLengthUnitType.SizeToCells
-                             || unit == DataGridLengthUnitType.SizeToHeader;
-                if (!flexible) continue;
-
-                double maxContent = 0.0;
-
-                // Header DesiredSize (when SizeToCells skip header).
-                if (unit != DataGridLengthUnitType.SizeToCells)
+                foreach (var col in grid.Columns)
                 {
-                    if (FindHeader(grid, col) is DataGridColumnHeader header)
+                    var unit = col.Width.UnitType;
+                    bool flexible = unit == DataGridLengthUnitType.Auto
+                                 || unit == DataGridLengthUnitType.SizeToCells
+                                 || unit == DataGridLengthUnitType.SizeToHeader;
+                    if (!flexible) continue;
+
+                    double maxContent = 0.0;
+
+                    // Header DesiredSize (when SizeToCells skip header).
+                    if (unit != DataGridLengthUnitType.SizeToCells)
                     {
-                        header.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                        maxContent = Math.Max(maxContent, header.DesiredSize.Width);
+                        if (FindHeader(grid, col) is DataGridColumnHeader header)
+                        {
+                            header.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                            maxContent = Math.Max(maxContent, header.DesiredSize.Width);
+                        }
                     }
-                }
 
-                // Cell content DesiredSize across every realized row (when
-                // SizeToHeader skip cells).
-                if (unit != DataGridLengthUnitType.SizeToHeader)
-                {
-                    foreach (var item in grid.Items)
+                    // Cell content DesiredSize across every realized row (when
+                    // SizeToHeader skip cells).
+                    if (unit != DataGridLengthUnitType.SizeToHeader)
                     {
-                        if (grid.ItemContainerGenerator.ContainerFromItem(item) is not DataGridRow row)
-                            continue;
-                        var cellContent = col.GetCellContent(row);
-                        if (cellContent == null) continue;
-                        cellContent.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                        maxContent = Math.Max(maxContent, cellContent.DesiredSize.Width);
-                    }
-                }
+                        foreach (var item in grid.Items)
+                        {
+                            if (grid.ItemContainerGenerator.ContainerFromItem(item) is not DataGridRow row)
+                                continue;
+                            var cellContent = col.GetCellContent(row);
+                            if (cellContent == null) continue;
+                            cellContent.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                            double cellWidth = cellContent.DesiredSize.Width;
 
-                if (maxContent > 0)
-                {
-                    col.Width = new DataGridLength(maxContent + CellChromePadding,
-                        DataGridLengthUnitType.Pixel);
+                            // Augment with the widest dropdown item across every
+                            // ComboBox in the cell's visual tree — a Source-style
+                            // cell shouldn't shrink to the selected item's width
+                            // when the dropdown carries longer entries.
+                            double comboMax = MeasureWidestComboBoxItem(cellContent);
+                            if (comboMax > 0)
+                                cellWidth = Math.Max(cellWidth, comboMax + ComboBoxArrowPadding);
+
+                            maxContent = Math.Max(maxContent, cellWidth);
+                        }
+                    }
+
+                    if (maxContent > 0)
+                    {
+                        col.Width = new DataGridLength(maxContent + CellChromePadding,
+                            DataGridLengthUnitType.Pixel);
+                    }
                 }
             }
+            finally
+            {
+                VirtualizingPanel.SetIsVirtualizing(grid, wasVirtualizing);
+            }
+        }
+
+        /// <summary>Walks the visual tree rooted at <paramref name="root"/>,
+        /// finds every <see cref="ComboBox"/>, and returns the widest item
+        /// width across all of their ItemsSources. Each item is measured by
+        /// rendering its DisplayName (or string form) into a
+        /// <see cref="TextBlock"/> that inherits the ComboBox's font
+        /// metrics. Returns 0 when no ComboBox is present or every dropdown
+        /// is empty.</summary>
+        private static double MeasureWidestComboBoxItem(DependencyObject root)
+        {
+            double widest = 0.0;
+            ForEachDescendant<ComboBox>(root, cb =>
+            {
+                if (cb.ItemsSource == null && cb.Items.Count == 0) return;
+                string memberPath = cb.DisplayMemberPath;
+                System.Collections.IEnumerable source = cb.ItemsSource ?? cb.Items;
+                foreach (var item in source)
+                {
+                    if (item == null) continue;
+                    string text = ResolveDisplayText(item, memberPath);
+                    if (string.IsNullOrEmpty(text)) continue;
+                    var tb = new TextBlock
+                    {
+                        Text = text,
+                        FontFamily = cb.FontFamily,
+                        FontSize = cb.FontSize,
+                        FontStretch = cb.FontStretch,
+                        FontStyle = cb.FontStyle,
+                        FontWeight = cb.FontWeight,
+                    };
+                    tb.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                    if (tb.DesiredSize.Width > widest)
+                        widest = tb.DesiredSize.Width;
+                }
+            });
+            return widest;
+        }
+
+        /// <summary>Reads <paramref name="memberPath"/> off
+        /// <paramref name="item"/> via reflection (matches WPF's
+        /// DisplayMemberPath behavior), or falls back to
+        /// <c>item.ToString()</c> when the path is empty / missing.</summary>
+        private static string ResolveDisplayText(object item, string memberPath)
+        {
+            if (string.IsNullOrEmpty(memberPath))
+                return item.ToString();
+            var prop = item.GetType().GetProperty(memberPath);
+            if (prop == null) return item.ToString();
+            return prop.GetValue(item)?.ToString() ?? string.Empty;
+        }
+
+        /// <summary>Depth-first visual-tree walk that invokes
+        /// <paramref name="action"/> on every descendant of type
+        /// <typeparamref name="T"/>.</summary>
+        private static void ForEachDescendant<T>(DependencyObject root, Action<T> action)
+            where T : DependencyObject
+        {
+            if (root is T match) action(match);
+            int n = VisualTreeHelper.GetChildrenCount(root);
+            for (int i = 0; i < n; i++)
+                ForEachDescendant(VisualTreeHelper.GetChild(root, i), action);
         }
 
         /// <summary>Walks the DataGrid's visual tree to find the

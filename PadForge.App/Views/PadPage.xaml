@@ -2752,9 +2752,9 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="{Binding Pad_HeaderOutput, Source={x:Static strings:Strings.Instance}}"
                                                 Binding="{Binding TargetLabel}"
-                                                Width="195"/>
+                                                Width="Auto"/>
                             <DataGridTemplateColumn Header="{Binding Pad_HeaderSource, Source={x:Static strings:Strings.Instance}}"
-                                                Width="260">
+                                                Width="Auto">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Vertical">
@@ -2841,9 +2841,9 @@
                             </DataGridTemplateColumn>
                             <DataGridTextColumn Header="{Binding Pad_HeaderValue, Source={x:Static strings:Strings.Instance}}"
                                                 Binding="{Binding CurrentValueText, Mode=OneWay}"
-                                                Width="60"/>
+                                                Width="Auto"/>
                             <!-- Record button -->
-                            <DataGridTemplateColumn Header="" Width="50">
+                            <DataGridTemplateColumn Header="" Width="Auto">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Command="{Binding ToggleRecordCommand}"
@@ -2858,7 +2858,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <!-- Clear button -->
-                            <DataGridTemplateColumn Header="" Width="50">
+                            <DataGridTemplateColumn Header="" Width="Auto">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Command="{Binding ClearCommand}"
@@ -2931,7 +2931,7 @@
                             </DataGridTemplateColumn>
 
                             <!-- Deadzone (per-mapping axis activation threshold) -->
-                            <DataGridTemplateColumn Header="{Binding Pad_HeaderDeadZone, Source={x:Static strings:Strings.Instance}}" Width="230">
+                            <DataGridTemplateColumn Header="{Binding Pad_HeaderDeadZone, Source={x:Static strings:Strings.Instance}}" Width="Auto">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0">

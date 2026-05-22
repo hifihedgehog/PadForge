@@ -1153,6 +1153,9 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>重置输出曲线</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>重置 Easy Aim 阈值</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>重置激活键</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>将陀螺仪调校应用于运动透传</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>将本选项卡的可选陀螺仪调校（死区、灵敏度、平滑、响应曲线、反转）应用到虚拟手柄上报给游戏或模拟器的运动数据。关闭后仅发送校准后的读数，由游戏自行应用灵敏度与平滑。无论是否开启，校准漂移校正始终生效。</value></data>
+  <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>重置透传调校</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>灵敏度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>每个源的陀螺仪灵敏度倍数。1.0 = 引擎默认值（500°/s → 最大偏转）。大于 1.0 更灵敏；小于 1.0 不太灵敏。</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>触控板 1 Y</value></data>

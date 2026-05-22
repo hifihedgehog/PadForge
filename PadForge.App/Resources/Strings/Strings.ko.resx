@@ -1153,6 +1153,9 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>출력 커브 재설정</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim 임계값 재설정</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>활성화 버튼 재설정</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>자이로 조정을 모션 패스스루에 적용</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>이 탭의 선택적 자이로 조정(데드존, 감도, 스무딩, 응답 커브, 반전)을 가상 컨트롤러가 게임이나 에뮬레이터에 보고하는 모션에 적용합니다. 끄면 보정된 값만 전송하고 감도와 스무딩은 게임에 맡깁니다. 보정 드리프트 교정은 어느 쪽이든 항상 적용됩니다.</value></data>
+  <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>패스스루 조정 재설정</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>감도</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>소스별 자이로 감도 배율. 1.0 = 엔진 기본값 (500°/s → 최대 편향). 1.0보다 크면 더 민감하고, 1.0보다 작으면 덜 민감합니다.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>터치패드 1 Y</value></data>

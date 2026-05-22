@@ -510,14 +510,14 @@ namespace PadForge.Engine.Common.Mapping
         /// rad-to-deg conversion and the DSU sign convention exactly as
         /// before.</para>
         ///
-        /// <para>When the slot's <see cref="GyroTuning.ApplyToPassthrough"/>
-        /// flag is off, the raw reading passes through unchanged — the
-        /// original raw-relay behavior. With every Gyro tab control at
-        /// its default and the device uncalibrated, the result also
-        /// equals the raw reading: bias is zero, deadzone is zero, the
-        /// curve is Linear, sensitivity is 1. So the only thing this
-        /// changes at defaults is removing the at-rest drift of a
-        /// calibrated controller.</para>
+        /// <para>Calibration bias subtraction always applies, both
+        /// toggle states — it is drift correction, not tuning. When the
+        /// slot's <see cref="GyroTuning.ApplyToPassthrough"/> flag is
+        /// off, only the calibrated reading is returned and the
+        /// discretionary tuning is skipped. With the flag on and every
+        /// Gyro tab control at its default, the tuning chain is the
+        /// identity, so the on and off paths agree: both relay the
+        /// calibrated reading.</para>
         ///
         /// <para>Distinct from <see cref="ReadTunedGyroRate"/>: that
         /// produces one normalized axis for a mapping source; this
@@ -531,11 +531,29 @@ namespace PadForge.Engine.Common.Mapping
             if (state == null || state.Gyro == null || state.Gyro.Length < 3) return;
 
             var tuning = GetGyroTuning(deviceGuid, slotIndex);
+
+            // Calibration bias subtraction is mandatory drift correction,
+            // NOT optional tuning — it always applies to the passthrough,
+            // both toggle states. The at-rest bias the calibration
+            // measured would otherwise relay straight into the motion
+            // report and the consuming game / emulator would integrate it
+            // as continuous drift. The Gyro tab's Live rate readout
+            // subtracts this same bias for display, so a drifting
+            // passthrough still reads ~0 there — the readout was masking
+            // the bug.
+            float gPitch = ReadCalibratedGyroRate(state, 0, deviceGuid, slotIndex);
+            float gYaw   = ReadCalibratedGyroRate(state, 1, deviceGuid, slotIndex);
+            float gRoll  = ReadCalibratedGyroRate(state, 2, deviceGuid, slotIndex);
+
             if (!tuning.ApplyToPassthrough)
             {
-                pitch = state.Gyro[0];
-                yaw   = state.Gyro[1];
-                roll  = state.Gyro[2];
+                // Toggle off: send the calibrated reading only — no
+                // discretionary tuning (sensitivity, smoothing, deadzone,
+                // curve, invert, space projection, Easy Aim / Aim Engage
+                // gates). Calibration still applies; it is not tuning.
+                pitch = gPitch;
+                yaw   = gYaw;
+                roll  = gRoll;
                 return;
             }
 
@@ -554,11 +572,6 @@ namespace PadForge.Engine.Common.Mapping
                     tuning.AimEngageDevice ?? "", tuning.AimEngageDescriptor, slotIndex) ?? true;
                 if (!held) return;
             }
-
-            // Bias-subtracted components (the at-rest-drift fix).
-            float gPitch = ReadCalibratedGyroRate(state, 0, deviceGuid, slotIndex);
-            float gYaw   = ReadCalibratedGyroRate(state, 1, deviceGuid, slotIndex);
-            float gRoll  = ReadCalibratedGyroRate(state, 2, deviceGuid, slotIndex);
 
             // Space projection. Local keeps three independent axes;
             // Player / World fold roll into the yaw projection so roll

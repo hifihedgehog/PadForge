@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -1796,43 +1797,99 @@ namespace PadForge.Views
         }
 
         /// <summary>
-        /// Mimics the double-click-on-the-header-gripper auto-fit behavior for
-        /// every column with <see cref="DataGridLengthUnitType.Auto"/> /
-        /// <see cref="DataGridLengthUnitType.SizeToCells"/> /
-        /// <see cref="DataGridLengthUnitType.SizeToHeader"/>. WPF's
-        /// <see cref="DataGrid"/> measures Auto columns against the available
-        /// width during its initial layout pass, which lets one of them
-        /// silently absorb the leftover horizontal space the fixed-width
-        /// columns leave behind (which is why the Options column was rendering
-        /// wide despite Width=Auto). The user-visible workaround for this is
-        /// to double-click the column-header gripper, which the DataGrid
-        /// internally handles by re-applying Auto — that forces a fresh
-        /// measurement pass without the leftover slack. We do the same thing
-        /// here at Loaded time, after the layout has settled, so the columns
-        /// snap to their honest content widths on first display.
+        /// WPF's <see cref="DataGrid"/> doesn't honestly auto-collapse columns
+        /// to their content during its initial layout pass — the Auto sizing
+        /// path lets a flexible column quietly absorb the leftover horizontal
+        /// space the fixed-width columns leave behind. The user-visible
+        /// workaround is to double-click the column-header gripper, which the
+        /// DataGrid handles by re-applying Auto and forcing a fresh
+        /// measurement.
+        ///
+        /// Re-applying <see cref="DataGridLength.Auto"/> programmatically at
+        /// Loaded time doesn't reproduce the double-click behavior reliably
+        /// (the value-equality check on the property setter can short-circuit
+        /// the re-measurement). Instead, walk each flexible column, measure
+        /// every realized cell's child template with infinite available
+        /// width, take the max DesiredSize, add a small padding fudge to
+        /// match WPF's own gripper-double-click result, and lock the column
+        /// to that pixel width. That matches the user-initiated double-click
+        /// outcome exactly.
         /// </summary>
         private void MappingDataGrid_Loaded(object sender, RoutedEventArgs e)
         {
             if (sender is not DataGrid grid) return;
-            // Defer until the DataGrid has laid out rows + cells so each
-            // column's measured DesiredValue reflects real cell content,
-            // not the initial empty-grid measure.
-            Dispatcher.BeginInvoke(new Action(() =>
+            // Defer until the DataGrid has realized rows + cells so each
+            // cell's template has been measured at least once.
+            Dispatcher.BeginInvoke(new Action(() => AutoFitFlexibleColumns(grid)),
+                DispatcherPriority.ApplicationIdle);
+        }
+
+        /// <summary>For each column with <see cref="DataGridLength"/>
+        /// unit type Auto / SizeToCells / SizeToHeader, measure realized
+        /// cell content with unbounded width, compute the honest max
+        /// content width across rows + header, and lock the column to
+        /// that as <see cref="DataGridLengthUnitType.Pixel"/>.</summary>
+        private static void AutoFitFlexibleColumns(DataGrid grid)
+        {
+            const double CellChromePadding = 12.0; // matches WPF's gripper-double-click delta
+
+            foreach (var col in grid.Columns)
             {
-                foreach (var col in grid.Columns)
+                var unit = col.Width.UnitType;
+                bool flexible = unit == DataGridLengthUnitType.Auto
+                             || unit == DataGridLengthUnitType.SizeToCells
+                             || unit == DataGridLengthUnitType.SizeToHeader;
+                if (!flexible) continue;
+
+                double maxContent = 0.0;
+
+                // Header DesiredSize (when SizeToCells skip header).
+                if (unit != DataGridLengthUnitType.SizeToCells)
                 {
-                    if (col.Width.IsAuto || col.Width.IsSizeToCells || col.Width.IsSizeToHeader)
+                    if (FindHeader(grid, col) is DataGridColumnHeader header)
                     {
-                        var unit = col.Width.UnitType;
-                        // Re-apply the same unit type. WPF treats this as a
-                        // fresh user-initiated auto-fit (the same path the
-                        // header-gripper double-click takes) and computes the
-                        // column width from cells / header DesiredSize without
-                        // pulling in the row's leftover slack.
-                        col.Width = new DataGridLength(0, unit);
+                        header.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                        maxContent = Math.Max(maxContent, header.DesiredSize.Width);
                     }
                 }
-            }), DispatcherPriority.Loaded);
+
+                // Cell content DesiredSize across every realized row (when
+                // SizeToHeader skip cells).
+                if (unit != DataGridLengthUnitType.SizeToHeader)
+                {
+                    foreach (var item in grid.Items)
+                    {
+                        if (grid.ItemContainerGenerator.ContainerFromItem(item) is not DataGridRow row)
+                            continue;
+                        var cellContent = col.GetCellContent(row);
+                        if (cellContent == null) continue;
+                        cellContent.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                        maxContent = Math.Max(maxContent, cellContent.DesiredSize.Width);
+                    }
+                }
+
+                if (maxContent > 0)
+                {
+                    col.Width = new DataGridLength(maxContent + CellChromePadding,
+                        DataGridLengthUnitType.Pixel);
+                }
+            }
+        }
+
+        /// <summary>Walks the DataGrid's visual tree to find the
+        /// <see cref="DataGridColumnHeader"/> for a given column. Necessary
+        /// because <see cref="DataGridColumn"/> doesn't expose its header
+        /// element publicly.</summary>
+        private static DataGridColumnHeader FindHeader(DependencyObject root, DataGridColumn col)
+        {
+            if (root is DataGridColumnHeader h && h.Column == col) return h;
+            int n = VisualTreeHelper.GetChildrenCount(root);
+            for (int i = 0; i < n; i++)
+            {
+                var found = FindHeader(VisualTreeHelper.GetChild(root, i), col);
+                if (found != null) return found;
+            }
+            return null;
         }
 
         private void MappingDataGrid_UnloadingRow(object sender, DataGridRowEventArgs e)

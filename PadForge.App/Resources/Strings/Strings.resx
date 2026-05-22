@@ -1040,6 +1040,7 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>Reset Output Curve</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Reset Easy Aim Threshold</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Reset Aim Engage Button</value></data>
+  <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Motion Passthrough</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Apply Gyro Tuning to Motion Passthrough</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Runs this tab's discretionary gyro tuning (deadzone, sensitivity, smoothing, response curve, invert) on the motion the virtual controller reports to the game or emulator. Turn it off to send only the calibrated reading and let the game apply its own sensitivity and smoothing. Calibration drift correction always applies either way.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Reset Passthrough Tuning</value></data>

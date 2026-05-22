@@ -644,13 +644,20 @@ namespace PadForge.Views
                 }
             }
 
-            // Check triggers
+            // Check triggers. Flash the BACKGROUND rect's stroke
+            // (matches the button-widget pattern) instead of the inner
+            // progress-fill rect's color. The fill starts at Height = 0
+            // when the trigger is at rest, so recoloring an invisible
+            // zero-height rectangle never shows up — that was the bug:
+            // click-to-record on an extended trigger produced no visible
+            // flash until the user pressed the source.
             foreach (var w in _triggerWidgets)
             {
                 if (baseTarget == $"ExtendedAxis{w.AxisIndex}")
                 {
-                    if (highlight) w.Fill.Fill = FlashBrush;
-                    else w.Fill.SetResourceReference(Shape.FillProperty, AccentKey);
+                    if (highlight) w.Background.Stroke = FlashBrush;
+                    else w.Background.SetResourceReference(Shape.StrokeProperty, DimKey);
+                    w.Background.StrokeThickness = highlight ? 2.5 : 1;
                     return;
                 }
             }

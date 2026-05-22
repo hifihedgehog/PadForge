@@ -1970,7 +1970,8 @@
                               VerticalScrollBarVisibility="Visible"
                               LoadingRow="MappingDataGrid_LoadingRow"
                               UnloadingRow="MappingDataGrid_UnloadingRow"
-                              SelectionChanged="MappingDataGrid_SelectionChanged">
+                              SelectionChanged="MappingDataGrid_SelectionChanged"
+                              Loaded="MappingDataGrid_Loaded">
                         <DataGrid.CellStyle>
                             <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
                                 <!-- HorizontalContentAlignment used to be Stretch here.

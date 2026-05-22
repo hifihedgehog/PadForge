@@ -1138,6 +1138,7 @@
   <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>感度をリセット</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>応答整形をリセット</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>アクティベートをリセット</value></data>
+  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>モーションのパススルーをリセット</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>座標系をリセット</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>水平感度をリセット</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>垂直感度をリセット</value></data>

@@ -1107,6 +1107,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Gyro_ResetSensitivity_All_Tooltip => Get("Pad_Gyro_ResetSensitivity_All_Tooltip");
     public string Pad_Gyro_ResetResponse_All_Tooltip => Get("Pad_Gyro_ResetResponse_All_Tooltip");
     public string Pad_Gyro_ResetEngage_All_Tooltip => Get("Pad_Gyro_ResetEngage_All_Tooltip");
+    public string Pad_Gyro_ResetPassthrough_All_Tooltip => Get("Pad_Gyro_ResetPassthrough_All_Tooltip");
     public string Pad_ResetGyroSpace => Get("Pad_ResetGyroSpace");
     public string Pad_ResetGyroSensitivityH => Get("Pad_ResetGyroSensitivityH");
     public string Pad_ResetGyroSensitivityV => Get("Pad_ResetGyroSensitivityV");

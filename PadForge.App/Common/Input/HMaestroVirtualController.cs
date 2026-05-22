@@ -324,16 +324,14 @@ namespace PadForge.Common.Input
             _controller.SubmitState(state);
         }
 
-        // Sony int16 sensor scaling — matches SonyReportPackers.ScaleGyro
-        // and ScaleAccel exactly, which is the working USB path's known-
-        // good conversion:
-        //   Gyro range ±2000 deg/s → int16 (scale 32767/2000 ≈ 16.38)
-        //   Accel range ±4 g       → int16 (scale 32767/4    ≈ 8191.75)
-        // Don't reinvent: BT virtuals must produce the same byte values
-        // the USB SubmitRawReport path produces, just at different byte
-        // positions (the BT Report 0x31 vendor-blob layout).
-        private const float GyroScale  = 32767f / 2000f;
-        private const float AccelScale = 32767f / 4f;
+        // Sony int16 sensor scaling — must stay identical to
+        // SonyReportPackers.ScaleGyro / ScaleAccel: BT virtuals produce
+        // the same byte values the USB SubmitRawReport path produces,
+        // just at the Report 0x31 vendor-blob positions. The scales are
+        // the inverse of SDL3's no-hardware-calibration HIDAPI decode
+        // (deg/s = raw * 64 / 1024; g = raw / 8192).
+        private const float GyroScale  = 1024f / 64f; // = 16
+        private const float AccelScale = 8192f;
 
         // Counters for the touchpad packet sequence + finger tracking IDs.
         // PadForge's TouchpadState carries down/up bools per finger but no
@@ -414,7 +412,9 @@ namespace PadForge.Common.Input
                 AccelX    = motion.HasMotion ? (short)Math.Clamp((int)Math.Round(motion.AccelX    * AccelScale), short.MinValue, short.MaxValue) : (short)0,
                 AccelY    = motion.HasMotion ? (short)Math.Clamp((int)Math.Round(motion.AccelY    * AccelScale), short.MinValue, short.MaxValue) : (short)0,
                 AccelZ    = motion.HasMotion ? (short)Math.Clamp((int)Math.Round(motion.AccelZ    * AccelScale), short.MinValue, short.MaxValue) : (short)0,
-                SensorTimestamp = (uint)(motion.TimestampUs & 0xFFFFFFFF),
+                // The DualSense 0x31 sensor-timestamp field is in 0.33 µs
+                // ticks; convert from microseconds by × 3.
+                SensorTimestamp = (uint)((motion.TimestampUs * 3L) & 0xFFFFFFFF),
 
                 BatteryLevel    = battery10,
                 BatteryCharging = batteryCharging,

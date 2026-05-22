@@ -564,14 +564,18 @@ namespace PadForge.Common.Input
                 ps.RightThumbButton = "Button 9";
                 ps.ButtonGuide = "Button 10";
 
-                // Xbox Series Share button — only auto-mapped for Xbox
-                // VC output. SDL3 surfaces it at SDL_GAMEPAD_BUTTON_MISC1
-                // (button 11), which is the same physical button on
-                // every modern controller (Xbox Share, DualSense Mic,
-                // Switch Capture). Devices that don't expose MISC1
-                // (Xbox 360, classic gamepads) never fire button 11,
-                // so the binding is silently inert there.
-                if (outputType == Engine.VirtualControllerType.Xbox)
+                // Xbox Share auto-map: any controller that exposes
+                // SDL_GAMEPAD_BUTTON_MISC1 (Xbox Share, DualSense Mic,
+                // Switch Capture, etc., all reported by SDL3 at button
+                // index 11) maps to the Xbox VC's ButtonShare output.
+                // Gated on the device actually having the button so
+                // controllers without it (Xbox 360, classic gamepads)
+                // don't carry a dead binding through the mapping table.
+                bool hasMisc1 = ud.DeviceObjects != null
+                    && ud.DeviceObjects.Any(o => o != null
+                        && (o.ObjectType & DeviceObjectTypeFlags.PushButton) != 0
+                        && o.InputIndex == 11);
+                if (outputType == Engine.VirtualControllerType.Xbox && hasMisc1)
                     ps.ButtonShare = "Button 11";
 
                 // Default deadzones and gains.

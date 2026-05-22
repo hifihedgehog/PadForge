@@ -96,4 +96,9 @@ $RECYCLE.BIN/
 # Editor/tool artifacts
 null
 publish_output/
+*.lscache
+
+# Python bytecode cache (tools/)
+__pycache__/
+*.pyc
 

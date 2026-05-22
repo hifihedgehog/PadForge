@@ -768,7 +768,8 @@ namespace PadForge
                         nameof(PadViewModel.GyroSmoothingWindowMs) or
                         nameof(PadViewModel.GyroRealWorldCalibration) or
                         nameof(PadViewModel.GyroAimEngageButton) or nameof(PadViewModel.GyroAimEngageDeviceGuid) or
-                        nameof(PadViewModel.GyroInvertPitch) or nameof(PadViewModel.GyroInvertYaw))
+                        nameof(PadViewModel.GyroInvertPitch) or nameof(PadViewModel.GyroInvertYaw) or
+                        nameof(PadViewModel.GyroApplyTuningToPassthrough))
                         _settingsService.MarkDirty();
                 };
 

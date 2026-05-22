@@ -1032,7 +1032,7 @@
   <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>Reset Invert Pitch</value></data>
   <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Reset Invert Yaw</value></data>
   <data name="Pad_ResetGyroRealWorldCalibration" xml:space="preserve"><value>Reset Real-World Calibration</value></data>
-  <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Reset Dead Zone</value></data>
+  <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Reset Deadzone</value></data>
   <data name="Pad_ResetGyroTightening" xml:space="preserve"><value>Reset Tightening</value></data>
   <data name="Pad_ResetGyroSmoothingThreshold" xml:space="preserve"><value>Reset Smoothing Threshold</value></data>
   <data name="Pad_ResetGyroSmoothingWindow" xml:space="preserve"><value>Reset Smoothing Window</value></data>
@@ -1040,6 +1040,9 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>Reset Output Curve</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Reset Easy Aim Threshold</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Reset Aim Engage Button</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Apply Gyro Tuning to Motion Passthrough</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Runs this tab's gyro tuning (calibration, deadzone, sensitivity, smoothing, invert) on the motion the virtual controller reports to the game or emulator. Turn it off to pass the raw sensor reading straight through and let the game handle gyro itself.</value></data>
+  <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Reset Passthrough Tuning</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Per-source gyro sensitivity multiplier. 1.0 = the engine's default (500°/s → full deflection). Values above 1.0 are more sensitive; values below 1.0 are less sensitive.</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>

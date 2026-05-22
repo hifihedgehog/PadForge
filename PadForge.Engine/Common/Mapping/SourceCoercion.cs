@@ -103,6 +103,12 @@ namespace PadForge.Engine.Common.Mapping
             // per-axis invert toggles
             public bool InvertPitch;
             public bool InvertYaw;
+
+            // When true, this whole tuning chain is applied to the
+            // virtual controller's motion passthrough (Sony report
+            // packer + DSU broadcast), not only to gyro-as-mapping-
+            // source reads. Default true. See GetPassthroughGyro.
+            public bool ApplyToPassthrough;
         }
 
         /// <summary>Looks up the per-(device, slot) gyro tuning bundle
@@ -151,6 +157,7 @@ namespace PadForge.Engine.Common.Mapping
                     Space = "Local", PlayerYawRelax = 1.41f, WorldSideReduction = 0.125f,
                     TighteningRadPerSec = 0f, SmoothingThresholdRadPerSec = 0f, SmoothingWindowSeconds = 0.05f,
                     RealWorldCalibration = 0f,
+                    ApplyToPassthrough = true,
                 };
             return provider(deviceGuid, slotIndex);
         }
@@ -487,6 +494,149 @@ namespace PadForge.Engine.Common.Mapping
                 if (tuning.InvertYaw) rate = -rate;
             }
             return rate;
+        }
+
+        /// <summary>Applies the per-(device, slot) gyro tuning chain to
+        /// the raw motion-sensor reading so the virtual controller's
+        /// motion passthrough (the Sony report packer and the DSU
+        /// broadcast) reflects the Gyro tab settings — calibration bias,
+        /// deadzone, sensitivity, smoothing, space projection, real-world
+        /// calibration, response curve, acceleration, invert, and the
+        /// Easy Aim / Aim Engage gates.
+        ///
+        /// <para>Outputs the tuned pitch / yaw / roll in rad/s, the same
+        /// frame and unit as <see cref="CustomInputState.Gyro"/>. The
+        /// caller (<c>InputManager.UpdateMotionSnapshots</c>) handles the
+        /// rad-to-deg conversion and the DSU sign convention exactly as
+        /// before.</para>
+        ///
+        /// <para>When the slot's <see cref="GyroTuning.ApplyToPassthrough"/>
+        /// flag is off, the raw reading passes through unchanged — the
+        /// original raw-relay behavior. With every Gyro tab control at
+        /// its default and the device uncalibrated, the result also
+        /// equals the raw reading: bias is zero, deadzone is zero, the
+        /// curve is Linear, sensitivity is 1. So the only thing this
+        /// changes at defaults is removing the at-rest drift of a
+        /// calibrated controller.</para>
+        ///
+        /// <para>Distinct from <see cref="ReadTunedGyroRate"/>: that
+        /// produces one normalized axis for a mapping source; this
+        /// produces all three physical-rate axes for the motion report
+        /// and is not clamped to the mapping [-1, +1] range.</para></summary>
+        public static void GetPassthroughGyro(
+            CustomInputState state, string deviceGuid, int slotIndex,
+            out float pitch, out float yaw, out float roll)
+        {
+            pitch = yaw = roll = 0f;
+            if (state == null || state.Gyro == null || state.Gyro.Length < 3) return;
+
+            var tuning = GetGyroTuning(deviceGuid, slotIndex);
+            if (!tuning.ApplyToPassthrough)
+            {
+                pitch = state.Gyro[0];
+                yaw   = state.Gyro[1];
+                roll  = state.Gyro[2];
+                return;
+            }
+
+            // Gates — Easy Aim (right-stick deflection) and Aim Engage
+            // (held button). Both default to no-op; when either is set
+            // and not satisfied the passthrough gyro zeroes, the same as
+            // the mapping path.
+            if (tuning.EasyAimStickThreshold01 > 0f && slotIndex >= 0)
+            {
+                float defl = SlotRightStickDeflectionProvider?.Invoke(slotIndex) ?? 1f;
+                if (defl < tuning.EasyAimStickThreshold01) return;
+            }
+            if (!string.IsNullOrEmpty(tuning.AimEngageDescriptor) && slotIndex >= 0)
+            {
+                bool held = ButtonHeldProvider?.Invoke(
+                    tuning.AimEngageDevice ?? "", tuning.AimEngageDescriptor, slotIndex) ?? true;
+                if (!held) return;
+            }
+
+            // Bias-subtracted components (the at-rest-drift fix).
+            float gPitch = ReadCalibratedGyroRate(state, 0, deviceGuid, slotIndex);
+            float gYaw   = ReadCalibratedGyroRate(state, 1, deviceGuid, slotIndex);
+            float gRoll  = ReadCalibratedGyroRate(state, 2, deviceGuid, slotIndex);
+
+            // Space projection. Local keeps three independent axes;
+            // Player / World fold roll into the yaw projection so roll
+            // has no separate output (matches the mapping path).
+            string space = tuning.Space ?? "Local";
+            bool local = space != "Player" && space != "World";
+            float pPitch, pYaw, pRoll;
+            if (space == "Player")
+            {
+                var grav = GravityProvider?.Invoke(deviceGuid, slotIndex) ?? (0f, 0f, -1f);
+                (pYaw, pPitch) = PlayerSpaceProject(
+                    gPitch, gYaw, gRoll, grav.gx, grav.gy, grav.gz, tuning.PlayerYawRelax);
+                pRoll = 0f;
+            }
+            else if (space == "World")
+            {
+                var grav = GravityProvider?.Invoke(deviceGuid, slotIndex) ?? (0f, 0f, -1f);
+                (pYaw, pPitch) = WorldSpaceProject(
+                    gPitch, gYaw, gRoll, grav.gx, grav.gy, grav.gz, tuning.WorldSideReduction);
+                pRoll = 0f;
+            }
+            else
+            {
+                pPitch = gPitch; pYaw = gYaw; pRoll = gRoll;
+            }
+
+            // Smoothing. Dual-threshold supersedes the legacy EMA. The
+            // dual-threshold filter works on the (yaw, pitch) aim pair;
+            // roll gets its own buffer via a channel-suffixed key.
+            bool useDualThreshold =
+                tuning.TighteningRadPerSec > 0f || tuning.SmoothingThresholdRadPerSec > 0f;
+            if (useDualThreshold)
+            {
+                (pYaw, pPitch) = ApplyDualThresholdSmoothing(
+                    deviceGuid, slotIndex, pYaw, pPitch, tuning);
+                if (local)
+                    (pRoll, _) = ApplyDualThresholdSmoothing(
+                        (deviceGuid ?? "") + "roll", slotIndex, pRoll, 0f, tuning);
+            }
+            else if (tuning.SmoothingAlpha > 0f)
+            {
+                pYaw   = ApplyGyroSmoothing(deviceGuid, 1, pYaw,   tuning.SmoothingAlpha);
+                pPitch = ApplyGyroSmoothing(deviceGuid, 0, pPitch, tuning.SmoothingAlpha);
+                if (local)
+                    pRoll = ApplyGyroSmoothing(deviceGuid, 2, pRoll, tuning.SmoothingAlpha);
+            }
+
+            float rwc = tuning.RealWorldCalibration > 0f ? tuning.RealWorldCalibration : 1f;
+
+            // Pitch uses vertical sensitivity; yaw and roll use
+            // horizontal. Invert pitch / yaw flags mirror the mapping
+            // path (the yaw flag also covers roll).
+            pitch = ShapePassthroughAxis(pPitch, tuning.DeadZoneRadPerSec,
+                tuning.SensV * rwc, tuning.InvertPitch, tuning.OutputCurve, tuning.Acceleration);
+            yaw = ShapePassthroughAxis(pYaw, tuning.DeadZoneRadPerSec,
+                tuning.SensH * rwc, tuning.InvertYaw, tuning.OutputCurve, tuning.Acceleration);
+            roll = ShapePassthroughAxis(pRoll, tuning.DeadZoneRadPerSec,
+                tuning.SensH * rwc, tuning.InvertYaw, tuning.OutputCurve, tuning.Acceleration);
+        }
+
+        /// <summary>Per-axis tail of the passthrough chain: deadzone,
+        /// sensitivity, invert, then response curve + acceleration in the
+        /// normalized space the mapping path uses. Unlike the mapping
+        /// path the result is NOT clamped — the motion report carries a
+        /// physical rate, not a [-1, +1] deflection, so a fast spin past
+        /// the curve's reference rate must stay a fast spin.</summary>
+        private static float ShapePassthroughAxis(
+            float rate, float deadZone, float sens, bool invert,
+            string curve, float accel)
+        {
+            float v = ApplyDeadZone(rate, deadZone) * sens;
+            if (invert) v = -v;
+            bool linear = string.IsNullOrEmpty(curve) || curve == "Linear";
+            if (linear && accel <= 0f) return v;
+            float norm = v * GyroScale;
+            norm = ApplyOutputCurve(norm, curve);
+            norm = ApplyGyroAcceleration(norm, accel);
+            return norm / GyroScale;
         }
 
         /// <summary>Subtract-style deadzone: rates within ±dz zero out,

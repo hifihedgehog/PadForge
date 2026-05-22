@@ -1818,10 +1818,14 @@ namespace PadForge.Views
         private void MappingDataGrid_Loaded(object sender, RoutedEventArgs e)
         {
             if (sender is not DataGrid grid) return;
-            // Defer until the DataGrid has realized rows + cells so each
-            // cell's template has been measured at least once.
-            Dispatcher.BeginInvoke(new Action(() => AutoFitFlexibleColumns(grid)),
-                DispatcherPriority.ApplicationIdle);
+            // Run synchronously: containers for the visible viewport
+            // are realized by the time Loaded fires, and
+            // AutoFitFlexibleColumns disables virtualization +
+            // UpdateLayout()s to force-realize the rest. Deferring to
+            // ApplicationIdle (the original approach) let WPF's natural
+            // Auto sizing paint first, producing a brief wide-Options
+            // flash before the measure pass tightened the column.
+            AutoFitFlexibleColumns(grid);
         }
 
         /// <summary>For each column with <see cref="DataGridLength"/>

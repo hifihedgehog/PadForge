@@ -1973,7 +1973,16 @@
                               SelectionChanged="MappingDataGrid_SelectionChanged">
                         <DataGrid.CellStyle>
                             <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <!-- HorizontalContentAlignment used to be Stretch here.
+                                     That made every cell hand its child the full column
+                                     width during arrange, which (combined with the
+                                     CellsPanel's measure pass) inflated the Auto Options
+                                     column to absorb the leftover horizontal slack of
+                                     the row. Switched to Left so cells size and align
+                                     to their content's actual DesiredSize. Columns
+                                     that need horizontal fill (the Source ComboBox)
+                                     set Stretch on their own template root. -->
+                                <Setter Property="HorizontalContentAlignment" Value="Left"/>
                             </Style>
                         </DataGrid.CellStyle>
                         <DataGrid.RowStyle>

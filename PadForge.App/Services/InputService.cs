@@ -617,6 +617,39 @@ namespace PadForge.Services
                     || _inputManager.GyroEngagedFromMacro[slotIndex];
             };
 
+            // — touchpad-gesture fire lookup. Reads from the per-
+            // (device, pad) gesture context that the recognizer
+            // populates each polling tick in Step 2. Returns false when
+            // the InputManager isn't wired, no gesture context exists
+            // for the device/pad pair, or the gesture didn't fire on
+            // the current tick.
+            PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureFiredProvider =
+                (deviceGuid, padIdx, gestureName) =>
+            {
+                if (_inputManager == null) return false;
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return false;
+                if (!_inputManager.GestureContexts.TryGetValue((g, padIdx), out var ctx)) return false;
+                return ctx.FiredGesturesThisFrame.Contains(
+                    $"Touchpad {padIdx} {gestureName}");
+            };
+
+            // — touchpad-gesture continuous-axis reader for PinchAxis
+            // and RotateAxis. Same per-(device, pad) context lookup;
+            // returns 0 when no 2-finger session is active.
+            PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureAxisProvider =
+                (deviceGuid, padIdx, axisName) =>
+            {
+                if (_inputManager == null) return 0f;
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return 0f;
+                if (!_inputManager.GestureContexts.TryGetValue((g, padIdx), out var ctx)) return 0f;
+                return axisName switch
+                {
+                    "PinchAxis"  => ctx.CurrentPinchAxis,
+                    "RotateAxis" => ctx.CurrentRotateAxis,
+                    _ => 0f
+                };
+            };
+
             // Per-(slot, device) lightbar configs — drives the
             // dispatcher's per-device synthesis loop and per-device
             // pulse rolls. Lighting tab is per-device (parallel to
@@ -823,6 +856,8 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.ButtonHeldProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.PollHzProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.AimEngageStateProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureFiredProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureAxisProvider = null;
                 lock (_gravityStateLock) _gravityState.Clear();
             }
 
@@ -6888,6 +6923,7 @@ namespace PadForge.Services
                     Common.Input.InputManager.ClearSourceKindRuntime();
                     Common.Input.InputManager.ClearAllShiftRuntime();
                     _inputManager?.ResetGyroEngageStates();
+                    _inputManager?.ResetGestureContexts();
                     _mainVm.StatusText = string.Format(Strings.Instance.Status_ProfileSwitched_Format, target.Name);
                 }
             }

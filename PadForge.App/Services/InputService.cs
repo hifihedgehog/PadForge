@@ -55,6 +55,10 @@ namespace PadForge.Services
         private DsuMotionServer _dsuServer;
         private WebControllerServer _webServer;
         private InputHookManager _hookManager;
+        // Registration id for the global touchpad-gesture-suspend hotkey. 0 = none bound.
+        // Created by SetTouchpadGestureSuspendHotkey, cleared on engine stop.
+        private int _gestureSuspendHotkeyId;
+        private string _gestureSuspendHotkeyCombo = string.Empty;
         private SettingsService _settingsService;
         private bool _disposed;
         private readonly HashSet<string> _managedWhitelistDosPaths = new(StringComparer.OrdinalIgnoreCase);
@@ -4603,19 +4607,20 @@ namespace PadForge.Services
                 CollectSuppressedInputs(ud, suppressedKeys, suppressedMouse);
             }
 
-            if (suppressedKeys.Count > 0 || suppressedMouse.Count > 0)
+            // The hook stays alive when either suppressed inputs OR a global
+            // hotkey (e.g. touchpad-gesture suspend) needs it. The latter is
+            // tracked via _gestureSuspendHotkeyId; if the user binds one and
+            // there are no suppressed inputs, the hook still has to run.
+            bool needHookForGestureHotkey = _gestureSuspendHotkeyId > 0;
+            if (suppressedKeys.Count > 0 || suppressedMouse.Count > 0 || needHookForGestureHotkey)
             {
-                if (_hookManager == null)
-                {
-                    _hookManager = new InputHookManager();
-                    _hookManager.Start();
-                }
+                EnsureHookManager();
                 _hookManager.SetSuppressedKeys(suppressedKeys);
                 _hookManager.SetSuppressedMouseButtons(suppressedMouse);
             }
             else
             {
-                // No inputs to suppress — stop hooks if running.
+                // No inputs to suppress and no global hotkeys registered — stop hooks if running.
                 if (_hookManager != null)
                 {
                     _hookManager.Stop();
@@ -4623,6 +4628,19 @@ namespace PadForge.Services
                     _hookManager = null;
                 }
             }
+        }
+
+        /// <summary>
+        /// Idempotent: create + start the keyboard / mouse hook manager if it
+        /// is not yet running. Called by SyncInputHooks AND by global-hotkey
+        /// registration paths that need the hook alive even with zero
+        /// suppressed inputs.
+        /// </summary>
+        private void EnsureHookManager()
+        {
+            if (_hookManager != null) return;
+            _hookManager = new InputHookManager();
+            _hookManager.Start();
         }
 
         /// <summary>
@@ -4700,10 +4718,13 @@ namespace PadForge.Services
             // ── Input hooks ──
             if (_hookManager != null)
             {
+                _hookManager.ClearGlobalHotkeys();
                 _hookManager.Stop();
                 _hookManager.Dispose();
                 _hookManager = null;
             }
+            _gestureSuspendHotkeyId = 0;
+            _gestureSuspendHotkeyCombo = string.Empty;
         }
 
         /// <summary>
@@ -6663,6 +6684,44 @@ namespace PadForge.Services
                 }
             }
             _inputManager.SetShapeTemplates(templates);
+        }
+
+        /// <summary>
+        /// Bind (or rebind) the global touchpad-gesture suspend hotkey. Pass
+        /// null or empty to clear the binding. Registers with the running
+        /// keyboard hook (starting it if needed) so the combo fires even
+        /// when PadForge is not focused. The callback toggles
+        /// <see cref="InputManager.GestureSuspendActive"/> on the engine,
+        /// pausing all touchpad gesture detection until pressed again.
+        /// Idempotent: re-binding the same combo is cheap.
+        /// </summary>
+        public void SetTouchpadGestureSuspendHotkey(string combo)
+        {
+            if (_inputManager == null) return;
+            var trimmed = combo?.Trim() ?? string.Empty;
+            if (string.Equals(trimmed, _gestureSuspendHotkeyCombo, StringComparison.Ordinal))
+                return; // No-op: same combo already bound.
+
+            // Tear down any prior registration.
+            if (_gestureSuspendHotkeyId > 0 && _hookManager != null)
+            {
+                _hookManager.UnregisterGlobalHotkey(_gestureSuspendHotkeyId);
+            }
+            _gestureSuspendHotkeyId = 0;
+            _gestureSuspendHotkeyCombo = trimmed;
+
+            if (string.IsNullOrEmpty(trimmed)) return;
+
+            var vks = PadForge.Engine.Common.GlobalHotkeyParser.Parse(trimmed);
+            if (vks == null) return; // unparseable — silently ignore
+
+            EnsureHookManager();
+            var mgr = _inputManager;
+            _gestureSuspendHotkeyId = _hookManager.RegisterGlobalHotkey(vks, () =>
+            {
+                if (mgr == null) return;
+                mgr.GestureSuspendActive = !mgr.GestureSuspendActive;
+            });
         }
 
         public void ApplyProfile(ProfileData profile)

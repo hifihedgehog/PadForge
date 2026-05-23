@@ -1609,7 +1609,7 @@ namespace PadForge.Services
                 padVm.GyroAimEngageButton = ps.GyroAimEngageButton ?? "";
                 padVm.GyroAimEngageDeviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
                 padVm.GyroInvertPitch = ps.GyroInvertPitch == "1";
-                padVm.GyroInvertYaw = ps.GyroInvertYaw == "1";
+                padVm.GyroInvertYawRoll = ps.GyroInvertYawRoll == "1";
                 padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough != "0";
 
                 // Load audio bass rumble settings.
@@ -2669,7 +2669,7 @@ namespace PadForge.Services
                     ps.GyroAimEngageButton = padVm.GyroAimEngageButton ?? "";
                     ps.GyroAimEngageDeviceGuid = padVm.GyroAimEngageDeviceGuid ?? "";
                     ps.GyroInvertPitch = padVm.GyroInvertPitch ? "1" : "0";
-                    ps.GyroInvertYaw = padVm.GyroInvertYaw ? "1" : "0";
+                    ps.GyroInvertYawRoll = padVm.GyroInvertYawRoll ? "1" : "0";
                     ps.GyroApplyTuningToPassthrough = padVm.GyroApplyTuningToPassthrough ? "1" : "0";
 
                     // Write audio bass rumble settings.

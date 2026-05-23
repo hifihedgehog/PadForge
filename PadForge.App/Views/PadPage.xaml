@@ -4985,12 +4985,12 @@
                                               ToolTip="{Binding Settings_GyroInvertPitch_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Command="{Binding ResetGyroInvertPitchCommand}" Style="{StaticResource ResetButton}" Margin="0,0,12,0"
                                             ToolTip="{Binding Pad_ResetGyroInvertPitch, Source={x:Static strings:Strings.Instance}}"/>
-                                    <CheckBox Content="{Binding Settings_GyroInvertYaw, Source={x:Static strings:Strings.Instance}}"
-                                              IsChecked="{Binding GyroInvertYaw, Mode=TwoWay}"
+                                    <CheckBox Content="{Binding Settings_GyroInvertYawRoll, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding GyroInvertYawRoll, Mode=TwoWay}"
                                               VerticalAlignment="Center" Margin="0,0,4,0"
-                                              ToolTip="{Binding Settings_GyroInvertYaw_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Button Command="{Binding ResetGyroInvertYawCommand}" Style="{StaticResource ResetButton}"
-                                            ToolTip="{Binding Pad_ResetGyroInvertYaw, Source={x:Static strings:Strings.Instance}}"/>
+                                              ToolTip="{Binding Settings_GyroInvertYawRoll_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Command="{Binding ResetGyroInvertYawRollCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroInvertYawRoll, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <!-- Real-world calibration. 0 = disabled. -->

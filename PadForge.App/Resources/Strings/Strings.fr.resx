@@ -1543,6 +1543,31 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Aucun geste personnalisé enregistré pour ce profil. Clique sur Enregistrer un nouveau geste pour en capturer un.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 doigt</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} doigts</value></data>
+  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Réinitialiser la détection</value></data>
+  <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Réinitialiser les gestes intégrés</value></data>
+  <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Réinitialiser les gestes</value></data>
+  <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Réinitialiser la reconnaissance</value></data>
+  <data name="Pad_ResetTouchpadCooldownMs" xml:space="preserve"><value>Réinitialiser le délai de repos</value></data>
+  <data name="Pad_ResetTouchpadFourWaySwipes" xml:space="preserve"><value>Réinitialiser les balayages 4 directions</value></data>
+  <data name="Pad_ResetTouchpadEightWaySwipes" xml:space="preserve"><value>Réinitialiser les balayages 8 directions</value></data>
+  <data name="Pad_ResetTouchpadSwipeDistance" xml:space="preserve"><value>Réinitialiser la distance de balayage</value></data>
+  <data name="Pad_ResetTouchpadSwipeTimeWindow" xml:space="preserve"><value>Réinitialiser la fenêtre temporelle de balayage</value></data>
+  <data name="Pad_ResetTouchpadRadialZones" xml:space="preserve"><value>Réinitialiser les zones radiales</value></data>
+  <data name="Pad_ResetTouchpadRadialZoneCount" xml:space="preserve"><value>Réinitialiser le nombre de zones</value></data>
+  <data name="Pad_ResetTouchpadRadialCenterDeadzone" xml:space="preserve"><value>Réinitialiser la zone morte centrale</value></data>
+  <data name="Pad_ResetTouchpadTaps" xml:space="preserve"><value>Réinitialiser tape / double tape / triple tape</value></data>
+  <data name="Pad_ResetTouchpadTapTimeWindow" xml:space="preserve"><value>Réinitialiser la fenêtre temporelle de tape</value></data>
+  <data name="Pad_ResetTouchpadMultiTapGap" xml:space="preserve"><value>Réinitialiser l'intervalle entre tapes</value></data>
+  <data name="Pad_ResetTouchpadLongPress" xml:space="preserve"><value>Réinitialiser l'appui long</value></data>
+  <data name="Pad_ResetTouchpadLongPressTimeWindow" xml:space="preserve"><value>Réinitialiser la durée d'appui long</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipes" xml:space="preserve"><value>Réinitialiser les balayages à deux doigts</value></data>
+  <data name="Pad_ResetTouchpadPinchSpread" xml:space="preserve"><value>Réinitialiser pincement / écartement</value></data>
+  <data name="Pad_ResetTouchpadRotate" xml:space="preserve"><value>Réinitialiser la rotation</value></data>
+  <data name="Pad_ResetTouchpadThreeFinger" xml:space="preserve"><value>Réinitialiser les gestes à trois doigts</value></data>
+  <data name="Pad_ResetTouchpadFourFinger" xml:space="preserve"><value>Réinitialiser les gestes à quatre doigts</value></data>
+  <data name="Pad_ResetTouchpadFiveFinger" xml:space="preserve"><value>Réinitialiser la tape à cinq doigts</value></data>
+  <data name="Pad_ResetTouchpadShapeGestures" xml:space="preserve"><value>Réinitialiser les gestes de formes</value></data>
+  <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Réinitialiser le seuil de correspondance de forme</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>Enregistrer un geste pavé tactile</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Dessine le geste sur la surface ci-dessous. La boîte de dialogue capture chaque doigt que tu poses. Lorsque tu retires tous les doigts de la surface, l'échantillon est enregistré. Dessiner un nombre de doigts différent des échantillons précédents réinitialise la pile.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>En attente d'un contact sur la surface</value></data>

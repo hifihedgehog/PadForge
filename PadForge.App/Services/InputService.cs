@@ -2461,6 +2461,14 @@ namespace PadForge.Services
             padVm.ConstantForceX = TryParseDouble(ps.ConstantForceX, 0.0);
             padVm.ConstantForceY = TryParseDouble(ps.ConstantForceY, 0.0);
 
+            // Touchpad-gestures tab — per-(device, pad) settings live
+            // under PadSetting.TouchpadSettings as a typed sub-tree
+            // (TouchpadSettingsEntry[]). Reading them into the VM
+            // requires resolving the active pad index; defer that to
+            // the VM-side loader, which reads the active device and
+            // selected touchpad index off itself.
+            padVm.LoadTouchpadGestureSettingsForActiveDevice();
+
             // Sync dynamic stick/trigger config items.
             padVm.SyncAllConfigItemsFromVm();
 

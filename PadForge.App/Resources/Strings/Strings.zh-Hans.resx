@@ -1545,7 +1545,10 @@
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} 根手指</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>录制触控板手势</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>在下方画板上画出手势。对话框会捕获所有按下的手指。当所有手指离开画板时，样本即被记录。绘制不同手指数的样本会重置堆栈。</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>等待手指触摸</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>等待手指触摸画板</value></data>
+  <data name="Recorder_Waiting_Device" xml:space="preserve"><value>在触控板上绘制，画板会实时镜像。</value></data>
+  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>正在从 {0}（手柄 {1}）录制</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>无活动触控板。用鼠标或触摸在画板上绘制。</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>绘制中…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>已采集所有样本。命名手势并点击“保存”。</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>第 {0} 个样本，共 {1} 个</value></data>

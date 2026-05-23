@@ -1136,6 +1136,9 @@ public class Strings : INotifyPropertyChanged
     public string Recorder_Title => Get("Recorder_Title");
     public string Recorder_Subtitle => Get("Recorder_Subtitle");
     public string Recorder_Waiting => Get("Recorder_Waiting");
+    public string Recorder_Waiting_Device => Get("Recorder_Waiting_Device");
+    public string Recorder_TargetDevice_Format => Get("Recorder_TargetDevice_Format");
+    public string Recorder_TargetDevice_None => Get("Recorder_TargetDevice_None");
     public string Recorder_Drawing => Get("Recorder_Drawing");
     public string Recorder_Complete => Get("Recorder_Complete");
     public string Recorder_NextSample_Format => Get("Recorder_NextSample_Format");

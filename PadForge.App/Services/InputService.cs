@@ -6795,6 +6795,22 @@ namespace PadForge.Services
         public PadForge.Engine.Touchpad.TouchpadCustomGesture[] GetActiveTouchpadGestures()
             => _activeTouchpadGestures.ToArray();
 
+        /// <summary>Hand the recorder dialog a live stream of finger
+        /// snapshots from the supplied (device, pad). While the target
+        /// is set, normal gesture recognition for that pad is bypassed
+        /// (so drawing custom shapes doesn't spam fires). Pass null
+        /// + Guid.Empty + -1 to clear.</summary>
+        public void SetTouchpadRecordingTarget(Guid deviceGuid, int padIdx,
+            Action<PadForge.Engine.TouchpadInputState> onTick)
+        {
+            _inputManager?.SetRecordingTarget(deviceGuid, padIdx, onTick);
+        }
+
+        public void ClearTouchpadRecordingTarget()
+        {
+            _inputManager?.ClearRecordingTarget();
+        }
+
         /// <summary>
         /// Bind (or rebind) the global touchpad-gesture suspend hotkey. Pass
         /// null or empty to clear the binding. Registers with the running

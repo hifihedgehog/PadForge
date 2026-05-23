@@ -1565,7 +1565,10 @@
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} vingers</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>Touchpad-gebaar opnemen</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Teken het gebaar op het oppervlak hieronder. Het venster legt elke vinger vast die je neerzet. Wanneer je alle vingers van het oppervlak haalt, wordt de opname vastgelegd. Tekenen met een ander aantal vingers dan eerdere opnames wist de stapel.</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>Wachten op vingercontact</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>Wachten op vingercontact op het oppervlak</value></data>
+  <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Teken op de touchpad. Het oppervlak weerspiegelt het live.</value></data>
+  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Opnemen van {0}, pad {1}</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Geen actieve touchpad. Teken op het oppervlak met muis of aanraking.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Tekenen…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Alle opnames vastgelegd. Geef het gebaar een naam en klik op Opslaan.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Opname {0} van {1}</value></data>

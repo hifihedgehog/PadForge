@@ -298,14 +298,25 @@ namespace PadForge.ViewModels
 
         private RelayCommand _recordTouchpadGestureCommand;
 
-        /// <summary>Opens the recorder dialog (TouchpadGestureRecorderDialog,
-        /// wired in C8). Raised so the View can show the dialog without
-        /// the VM taking a UI dependency.</summary>
+        /// <summary>Opens the recorder dialog. Raises an event so the
+        /// View can show the dialog without the VM taking a UI
+        /// dependency. The event payload carries the (device, pad)
+        /// the user is currently editing so the dialog mirrors live
+        /// finger input from the right pad.</summary>
         public RelayCommand RecordTouchpadGestureCommand =>
-            _recordTouchpadGestureCommand ??= new RelayCommand(
-                () => RecordTouchpadGestureRequested?.Invoke(this, EventArgs.Empty));
+            _recordTouchpadGestureCommand ??= new RelayCommand(() =>
+            {
+                var us = GetActiveUserSettingForTouchpad(out var guid);
+                var args = new RecordTouchpadGestureArgs
+                {
+                    DeviceGuid = guid,
+                    DeviceName = us?.InstanceName ?? string.Empty,
+                    PadIndex = _selectedTouchpadIndex,
+                };
+                RecordTouchpadGestureRequested?.Invoke(this, args);
+            });
 
-        public event EventHandler RecordTouchpadGestureRequested;
+        public event EventHandler<RecordTouchpadGestureArgs> RecordTouchpadGestureRequested;
 
         private RelayCommand<TouchpadCustomGestureItem> _deleteTouchpadGestureCommand;
 
@@ -499,6 +510,17 @@ namespace PadForge.ViewModels
             }
             return TouchpadGestureSettings.Default();
         }
+    }
+
+    /// <summary>Payload carried by
+    /// <see cref="PadViewModel.RecordTouchpadGestureRequested"/> so the
+    /// View can open the recorder dialog with the right (device, pad)
+    /// to mirror live finger input from.</summary>
+    public sealed class RecordTouchpadGestureArgs : EventArgs
+    {
+        public Guid DeviceGuid { get; set; }
+        public string DeviceName { get; set; } = string.Empty;
+        public int PadIndex { get; set; }
     }
 
     /// <summary>UI-facing wrapper around a <see cref="TouchpadCustomGesture"/>

@@ -189,6 +189,52 @@ namespace PadForge.Common.Input
         /// and is checked first.</summary>
         public volatile bool TouchpadGesturesGloballyEnabled = true;
 
+        // ─── Recording-mode hook (gesture recorder dialog) ───
+        //
+        // The recorder dialog sets RecordingTargetDeviceGuid +
+        // RecordingTargetPadIdx to the (device, pad) it's capturing.
+        // While set, UpdateGestureContexts skips recognition for that
+        // specific pad and instead invokes RecordingTick with the raw
+        // TouchpadInputState every poll. The dialog uses this to draw
+        // live finger paths from the real touchpad onto its canvas.
+        // Other pads on the same device — and every other device —
+        // continue normal gesture detection.
+        //
+        // Guid can't be volatile (CS0677). All writes go through
+        // SetRecordingTarget on the UI thread; reads happen on the
+        // polling thread. The 128-bit Guid read isn't strictly atomic
+        // on 64-bit Windows but the worst case is a one-tick mismatch
+        // where the engine evaluates the wrong pad once during a
+        // recording-target swap — visually invisible to the user.
+        public Guid RecordingTargetDeviceGuid;
+        public volatile int RecordingTargetPadIdx = -1;
+
+        /// <summary>Per-tick callback fired with the raw touchpad
+        /// state of whichever pad matches the recording target. The
+        /// recorder dialog subscribes; the engine clears the subscription
+        /// when the dialog closes via <see cref="ClearRecordingTarget"/>.
+        /// Always fires on the polling thread — marshal to the UI thread
+        /// before touching WPF visuals.</summary>
+        public event Action<PadForge.Engine.TouchpadInputState> RecordingTick;
+
+        /// <summary>Install (or replace) the recording target. Pass
+        /// <c>Guid.Empty</c> / <c>-1</c> + null callback to clear.
+        /// Idempotent.</summary>
+        public void SetRecordingTarget(Guid deviceGuid, int padIdx, Action<PadForge.Engine.TouchpadInputState> onTick)
+        {
+            RecordingTick = null;
+            RecordingTargetDeviceGuid = deviceGuid;
+            RecordingTargetPadIdx = padIdx;
+            if (onTick != null) RecordingTick += onTick;
+        }
+
+        public void ClearRecordingTarget()
+        {
+            RecordingTick = null;
+            RecordingTargetDeviceGuid = Guid.Empty;
+            RecordingTargetPadIdx = -1;
+        }
+
         /// <summary>
         /// Retrieved output states copied from Step 4 for UI display in Step 6.
         /// </summary>
@@ -1070,6 +1116,24 @@ namespace PadForge.Common.Input
                 }
                 if (ctx.State == Engine.Touchpad.GestureState.Suspended)
                     ctx.State = Engine.Touchpad.GestureState.Idle;
+
+                // Recording-mode bypass: while the recorder dialog is
+                // capturing this (device, pad), feed it the raw
+                // TouchpadInputState and skip recognizer evaluation.
+                // Drops any in-flight context for the pad so a stale
+                // path doesn't fire the moment recording stops.
+                if (RecordingTargetPadIdx == p &&
+                    RecordingTargetDeviceGuid == ud.InstanceGuid)
+                {
+                    ctx.Reset();
+                    var tickHandler = RecordingTick;
+                    if (tickHandler != null)
+                    {
+                        try { tickHandler(pad); }
+                        catch { /* dialog teardown can race — ignore */ }
+                    }
+                    continue;
+                }
 
                 var settings = TouchpadGestureSettingsProvider?.Invoke(ud.InstanceGuid, p)
                     ?? Engine.Touchpad.TouchpadGestureSettings.Default();

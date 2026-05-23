@@ -1545,7 +1545,10 @@
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} Finger</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>Touchpad-Geste aufnehmen</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Zeichne die Geste auf der Fläche unten. Der Dialog erfasst jeden aufgesetzten Finger. Sobald du alle Finger von der Fläche nimmst, wird das Sample aufgenommen. Wird mit einer anderen Fingeranzahl als bei vorherigen Samples gezeichnet, wird der Stapel zurückgesetzt.</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>Warte auf Fingerkontakt</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>Warte auf Fingerkontakt auf der Fläche</value></data>
+  <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Zeichne auf dem Touchpad. Die Fläche spiegelt es live.</value></data>
+  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Aufnahme von {0}, Pad {1}</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Kein aktives Touchpad. Zeichne mit Maus oder Touch auf der Fläche.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Zeichnet…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Alle Samples erfasst. Benenne die Geste und klicke auf Speichern.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sample {0} von {1}</value></data>

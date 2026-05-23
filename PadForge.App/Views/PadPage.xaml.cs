@@ -265,6 +265,8 @@ namespace PadForge.Views
             bool hasForceFeedback = false;
             bool hasGyro = false;
             bool hasImpulseTriggers = false;
+            bool hasTouchpad = false;
+            int numTouchpads = 0;
             if (DataContext is PadViewModel vmProfile
                 && vmProfile.SelectedMappedDevice != null
                 && vmProfile.SelectedMappedDevice.InstanceGuid != Guid.Empty
@@ -287,6 +289,20 @@ namespace PadForge.Views
 
                         hasGyro = ud.HasGyro;
                         hasImpulseTriggers = ud.HasRumbleTriggers;
+                        hasTouchpad = ud.HasTouchpad;
+                        // Pad count drives the Touchpad tab's per-pad
+                        // pivot. Most devices = 1; Steam Controller 2026
+                        // = 2 (Triton); original Steam Controller = 3.
+                        if (hasTouchpad)
+                        {
+                            try
+                            {
+                                var st = ud.Device?.GetCurrentState();
+                                numTouchpads = st?.Touchpads?.Length ?? 1;
+                                if (numTouchpads <= 0) numTouchpads = 1;
+                            }
+                            catch { numTouchpads = 1; }
+                        }
 
                         if (ud.VendorId == 0x054C)
                         {
@@ -312,8 +328,23 @@ namespace PadForge.Views
                 TabGyro.Visibility = hasGyro ? Visibility.Visible : Visibility.Collapsed;
             if (TabImpulseTriggers != null)
                 TabImpulseTriggers.Visibility = hasImpulseTriggers ? Visibility.Visible : Visibility.Collapsed;
+            if (TabTouchpad != null)
+                TabTouchpad.Visibility = hasTouchpad ? Visibility.Visible : Visibility.Collapsed;
             if (IndicatorLedsCard != null)
                 IndicatorLedsCard.Visibility = hasIndicatorLeds ? Visibility.Visible : Visibility.Collapsed;
+
+            // Sync the per-pad pivot to the active device. PadViewModel
+            // recomputes MaxTouchpadIndex / SelectedTouchpadIndex and
+            // triggers a settings reload for the new (device, pad).
+            if (DataContext is PadViewModel vmTouch && hasTouchpad)
+            {
+                vmTouch.RecomputeTouchpadCountForActiveDevice(numTouchpads);
+                vmTouch.LoadTouchpadGestureSettingsForActiveDevice();
+            }
+            else if (DataContext is PadViewModel vmNoTouch)
+            {
+                vmNoTouch.RecomputeTouchpadCountForActiveDevice(0);
+            }
 
             if (MotorBarsGrid != null)
                 MotorBarsGrid.Visibility = Visibility.Visible;
@@ -339,6 +370,8 @@ namespace PadForge.Views
                 else if (vm.SelectedConfigTab == 8 && !hasGyro)
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 9 && !hasImpulseTriggers)
+                    vm.SelectedConfigTab = 0;
+                else if (vm.SelectedConfigTab == 10 && !hasTouchpad)
                     vm.SelectedConfigTab = 0;
             }
         }

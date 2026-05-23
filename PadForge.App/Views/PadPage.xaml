@@ -346,6 +346,14 @@
                              Visibility="Collapsed">
                     <TextBlock Text="{Binding Pad_Gyro, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
+
+                <!-- Touchpad tab — per-(device, pad) gesture detection
+                     settings. Visible when the selected mapped device
+                     has at least one touchpad (UserDevice.HasTouchpad). -->
+                <RadioButton x:Name="TabTouchpad" Tag="10" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             Visibility="Collapsed">
+                    <TextBlock Text="{Binding Pad_Touchpad, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
+                </RadioButton>
             </WrapPanel>
         </Border>
 
@@ -5495,6 +5503,212 @@
                                                  Minimum="0" Maximum="1"
                                                  Width="200" Height="16" VerticalAlignment="Center"/>
                                 </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ═══════════════════════════════════════════
+                 INDEX 10 — Touchpad tab (per-(device, pad)
+                 gesture settings). Visibility on the tab
+                 strip is gated by SyncTabVisibility based on
+                 UserDevice.HasTouchpad of the currently
+                 selected mapped device.
+                 ═══════════════════════════════════════════ -->
+            <TabItem>
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="0,16,0,16">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding Pad_Touchpad_Header, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Pad_Touchpad_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
+
+                        <!-- Per-pad pivot — visible only on multi-pad devices -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12"
+                                    Visibility="{Binding HasMultipleTouchpads, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="{Binding Pad_Touchpad_TouchpadIndex_Label, Source={x:Static strings:Strings.Instance}}"
+                                       VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <ComboBox ItemsSource="{Binding TouchpadIndexOptions}"
+                                      SelectedItem="{Binding SelectedTouchpadIndex, Mode=TwoWay}"
+                                      Width="120" VerticalAlignment="Center"
+                                      ScrollViewer.VerticalScrollBarVisibility="Visible"/>
+                        </StackPanel>
+
+                        <!-- ─── Detection card ─── -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE945;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Touchpad_Detection_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
+                                <CheckBox Content="{Binding Pad_Touchpad_GesturesEnabled, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding TouchpadGesturesEnabled, Mode=TwoWay}"
+                                          ToolTip="{Binding Pad_Touchpad_GesturesEnabled_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                          Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pad_Touchpad_Mode_Label, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="160"/>
+                                    <ComboBox SelectedValue="{Binding TouchpadGestureMode, Mode=TwoWay}"
+                                              SelectedValuePath="Tag"
+                                              Width="180" VerticalAlignment="Center"
+                                              ToolTip="{Binding Pad_Touchpad_Mode_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                        <ComboBoxItem Tag="InBoxOnly" Content="{Binding Pad_Touchpad_Mode_InBoxOnly, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Tag="CustomOnly" Content="{Binding Pad_Touchpad_Mode_CustomOnly, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Tag="Both" Content="{Binding Pad_Touchpad_Mode_Both, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pad_Touchpad_CooldownMs_Label, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="160"/>
+                                    <TextBox Text="{Binding TouchpadCooldownMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Width="80" VerticalAlignment="Center"
+                                             ToolTip="{Binding Pad_Touchpad_CooldownMs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- ─── In-box gestures card ─── -->
+                        <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Touchpad_InBox_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
+
+                                <CheckBox Content="{Binding Pad_Touchpad_FourWaySwipes, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding TouchpadEnableFourWaySwipes, Mode=TwoWay}" Margin="0,0,0,6"/>
+                                <CheckBox Content="{Binding Pad_Touchpad_EightWaySwipes, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding TouchpadEnableEightWaySwipes, Mode=TwoWay}" Margin="0,0,0,6"/>
+                                <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
+                                    <TextBlock Text="{Binding Pad_Touchpad_SwipeDistanceThreshold, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="220"/>
+                                    <TextBox Text="{Binding TouchpadSwipeDistanceThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
+                                             Width="80" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
+                                    <TextBlock Text="{Binding Pad_Touchpad_SwipeTimeWindow, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="220"/>
+                                    <TextBox Text="{Binding TouchpadSwipeTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Width="80" VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <CheckBox Content="{Binding Pad_Touchpad_RadialZones, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding TouchpadEnableRadialZones, Mode=TwoWay}" Margin="0,0,0,6"/>
+                                <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
+                                    <TextBlock Text="{Binding Pad_Touchpad_RadialZoneCount, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="220"/>
+                                    <ComboBox ItemsSource="{Binding TouchpadRadialZoneCountOptions}"
+                                              SelectedItem="{Binding TouchpadRadialZoneCount, Mode=TwoWay}"
+                                              Width="80" VerticalAlignment="Center"
+                                              ScrollViewer.VerticalScrollBarVisibility="Visible"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
+                                    <TextBlock Text="{Binding Pad_Touchpad_RadialCenterDeadzone, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="220"/>
+                                    <TextBox Text="{Binding TouchpadRadialCenterDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
+                                             Width="80" VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <CheckBox Content="{Binding Pad_Touchpad_Taps, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding TouchpadEnableTaps, Mode=TwoWay}" Margin="0,0,0,6"/>
+                                <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
+                                    <TextBlock Text="{Binding Pad_Touchpad_TapTimeWindow, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="220"/>
+                                    <TextBox Text="{Binding TouchpadTapTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Width="80" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
+                                    <TextBlock Text="{Binding Pad_Touchpad_MultiTapGap, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="220"/>
+                                    <TextBox Text="{Binding TouchpadMultiTapGapMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Width="80" VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <CheckBox Content="{Binding Pad_Touchpad_LongPress, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding TouchpadEnableLongPress, Mode=TwoWay}" Margin="0,0,0,6"/>
+                                <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
+                                    <TextBlock Text="{Binding Pad_Touchpad_LongPressTimeWindow, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="220"/>
+                                    <TextBox Text="{Binding TouchpadLongPressTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Width="80" VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <CheckBox Content="{Binding Pad_Touchpad_TwoFingerSwipes, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding TouchpadEnableTwoFingerSwipes, Mode=TwoWay}" Margin="0,0,0,6"/>
+                                <CheckBox Content="{Binding Pad_Touchpad_PinchSpread, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding TouchpadEnablePinchSpread, Mode=TwoWay}" Margin="0,0,0,6"/>
+                                <CheckBox Content="{Binding Pad_Touchpad_Rotate, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding TouchpadEnableRotate, Mode=TwoWay}" Margin="0,0,0,6"/>
+                                <CheckBox Content="{Binding Pad_Touchpad_ThreeFinger, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding TouchpadEnableThreeFingerGestures, Mode=TwoWay}" Margin="0,0,0,6"/>
+                                <CheckBox Content="{Binding Pad_Touchpad_FourFinger, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding TouchpadEnableFourFingerGestures, Mode=TwoWay}" Margin="0,0,0,6"/>
+                                <CheckBox Content="{Binding Pad_Touchpad_FiveFinger, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding TouchpadEnableFiveFingerGestures, Mode=TwoWay}" Margin="0,0,0,6"/>
+                                <CheckBox Content="{Binding Pad_Touchpad_ShapeGestures, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding TouchpadEnableShapeGestures, Mode=TwoWay}" Margin="0,0,0,6"/>
+                                <StackPanel Orientation="Horizontal" Margin="20,0,0,0">
+                                    <TextBlock Text="{Binding Pad_Touchpad_MatchThreshold, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="220"/>
+                                    <TextBox Text="{Binding TouchpadGestureMatchThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
+                                             Width="80" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- ─── Custom gestures card ─── -->
+                        <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE8D2;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Touchpad_Custom_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
+
+                                <TextBlock Text="{Binding Pad_Touchpad_Custom_Empty, Source={x:Static strings:Strings.Instance}}"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           TextWrapping="Wrap" Margin="0,0,0,8"
+                                           Visibility="{Binding HasNoCustomTouchpadGestures, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                <ItemsControl ItemsSource="{Binding CustomTouchpadGestures}" Margin="0,0,0,8">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding Name}"
+                                                           VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding Summary}"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                           VerticalAlignment="Center" Margin="12,0"/>
+                                                <Button Grid.Column="2"
+                                                        Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"
+                                                        Command="{Binding DataContext.DeleteTouchpadGestureCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        Padding="8,2"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <Button Content="{Binding Pad_Touchpad_RecordNew, Source={x:Static strings:Strings.Instance}}"
+                                        Command="{Binding RecordTouchpadGestureCommand}"
+                                        HorizontalAlignment="Left" Padding="10,4"/>
                             </StackPanel>
                         </Border>
                     </StackPanel>

@@ -604,6 +604,19 @@ namespace PadForge.Common.Input
                     ps.TouchpadClick = "Touchpad 0 Click";
                 }
 
+                // Motion passthrough auto-mapping for PlayStation output +
+                // sensor-capable device. The bundled-source descriptor
+                // markers ("Motion Gyro" / "Motion Accel") flag this
+                // device as contributing its sensor stream to the
+                // slot's motion channel. EnsureMotionRows mirrors the
+                // marker into the per-slot MappingSet so the engine
+                // sees the row.
+                if (outputType == Engine.VirtualControllerType.PlayStation)
+                {
+                    if (ud.HasGyro)  ps.MotionGyro  = "Motion Gyro";
+                    if (ud.HasAccel) ps.MotionAccel = "Motion Accel";
+                }
+
                 ps.UpdateChecksum();
                 return ps;
             }

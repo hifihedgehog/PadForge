@@ -1284,11 +1284,13 @@ namespace PadForge.Views
         //  Touchpad recorder dialog hooks
         // ─────────────────────────────────────────────
 
-        private void OnRecordTouchpadGestureRequested(object sender, EventArgs e)
+        private void OnRecordTouchpadGestureRequested(object sender, ViewModels.RecordTouchpadGestureArgs e)
         {
             try
             {
-                var dlg = new TouchpadGestureRecorderDialog
+                var dlg = new TouchpadGestureRecorderDialog(e?.DeviceGuid ?? Guid.Empty,
+                                                            e?.PadIndex ?? 0,
+                                                            e?.DeviceName ?? string.Empty)
                 {
                     Owner = System.Windows.Window.GetWindow(this),
                 };

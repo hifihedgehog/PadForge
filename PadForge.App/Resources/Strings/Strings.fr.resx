@@ -1545,7 +1545,10 @@
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} doigts</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>Enregistrer un geste pavé tactile</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Dessine le geste sur la surface ci-dessous. La boîte de dialogue capture chaque doigt que tu poses. Lorsque tu retires tous les doigts de la surface, l'échantillon est enregistré. Dessiner un nombre de doigts différent des échantillons précédents réinitialise la pile.</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>En attente d'un contact</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>En attente d'un contact sur la surface</value></data>
+  <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Dessine sur le pavé tactile. La surface le reproduit en direct.</value></data>
+  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Enregistrement depuis {0}, manette {1}</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Aucun pavé tactile actif. Dessine sur la surface à la souris ou au doigt.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Dessin en cours…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Tous les échantillons sont capturés. Nomme le geste et clique sur Enregistrer.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Échantillon {0} sur {1}</value></data>

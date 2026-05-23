@@ -269,10 +269,71 @@ namespace PadForge.Services
 
                 // Load profiles.
                 LoadProfiles(data.Profiles, data.AppSettings);
+
+                // Backfill motion-passthrough rows for every Sony-class
+                // slot. Runs after LoadAppSettings has populated slot
+                // types so we know which slots are eligible. Idempotent
+                // — a device already represented in the slot's motion
+                // row is not re-added.
+                EnsureMotionRowsForAllSlots();
             }
             catch (Exception ex)
             {
                 _mainVm.StatusText = string.Format(Strings.Instance.Status_ErrorLoadingSettings_Format, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Post-load backfill: for every slot, ensure the slot's
+        /// <see cref="MappingSet"/> has motion-passthrough rows for every
+        /// gyro / accel-capable assigned device. Sony-class slots only.
+        /// Idempotent — safe to call multiple times.
+        /// </summary>
+        private void EnsureMotionRowsForAllSlots()
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null || _mainVm?.Pads == null) return;
+
+            UserDevice[] devSnapshot;
+            UserSetting[] userSettingsSnapshot;
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                devSnapshot = SettingsManager.UserDevices.Items.ToArray();
+            }
+            lock (SettingsManager.UserSettings.SyncRoot)
+            {
+                userSettingsSnapshot = SettingsManager.UserSettings.Items.ToArray();
+            }
+
+            // Per-guid capability lookup. Devices not currently known
+            // (offline / never enumerated) report no caps and get no row;
+            // they'll be backfilled on the next load after they appear.
+            (bool HasGyro, bool HasAccel) Caps(Guid guid)
+            {
+                foreach (var ud in devSnapshot)
+                {
+                    if (ud != null && ud.InstanceGuid == guid)
+                        return (ud.HasGyro, ud.HasAccel);
+                }
+                return (false, false);
+            }
+
+            for (int slot = 0; slot < sets.Length && slot < _mainVm.Pads.Count; slot++)
+            {
+                if (!SettingsManager.SlotCreated[slot]) continue;
+                var slotType = _mainVm.Pads[slot].OutputType;
+
+                var devicesForSlot = new List<(string DeviceGuid, bool HasGyro, bool HasAccel)>();
+                foreach (var us in userSettingsSnapshot)
+                {
+                    if (us == null || us.MapTo != slot) continue;
+                    var caps = Caps(us.InstanceGuid);
+                    devicesForSlot.Add((us.InstanceGuid.ToString(), caps.HasGyro, caps.HasAccel));
+                }
+                if (devicesForSlot.Count == 0) continue;
+
+                var ms = sets[slot] ?? (sets[slot] = new MappingSet());
+                MappingSetMigrator.EnsureMotionRows(ms, (int)slotType, devicesForSlot);
             }
         }
 

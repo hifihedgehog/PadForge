@@ -102,7 +102,7 @@ namespace PadForge.Engine.Common.Mapping
 
             // per-axis invert toggles
             public bool InvertPitch;
-            public bool InvertYaw;
+            public bool InvertYawRoll;
 
             // When true, this whole tuning chain is applied to the
             // virtual controller's motion passthrough (Sony report
@@ -491,7 +491,7 @@ namespace PadForge.Engine.Common.Mapping
             {
                 rate = ApplyDeadZone(yaw, tuning.DeadZoneRadPerSec)
                        * tuning.SensH * perSourceSens * rwc;
-                if (tuning.InvertYaw) rate = -rate;
+                if (tuning.InvertYawRoll) rate = -rate;
             }
             return rate;
         }
@@ -634,9 +634,9 @@ namespace PadForge.Engine.Common.Mapping
             pitch = ShapePassthroughAxis(pPitch, tuning.DeadZoneRadPerSec,
                 tuning.SensV * rwc, tuning.InvertPitch, tuning.OutputCurve, tuning.Acceleration);
             yaw = ShapePassthroughAxis(pYaw, tuning.DeadZoneRadPerSec,
-                tuning.SensH * rwc, tuning.InvertYaw, tuning.OutputCurve, tuning.Acceleration);
+                tuning.SensH * rwc, tuning.InvertYawRoll, tuning.OutputCurve, tuning.Acceleration);
             roll = ShapePassthroughAxis(pRoll, tuning.DeadZoneRadPerSec,
-                tuning.SensH * rwc, tuning.InvertYaw, tuning.OutputCurve, tuning.Acceleration);
+                tuning.SensH * rwc, tuning.InvertYawRoll, tuning.OutputCurve, tuning.Acceleration);
         }
 
         /// <summary>Per-axis tail of the passthrough chain: deadzone,

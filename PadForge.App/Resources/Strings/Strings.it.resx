@@ -1129,8 +1129,8 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = assi grezzi del controller. Player = lo yaw è proiettato sulla verticale reale (gravità); il pitch resta locale — predefinito consigliato da Jibb Smart per un feel naturale a qualsiasi inclinazione. World = yaw e pitch entrambi proiettati sugli assi del mondo.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Inverti Pitch (Y)</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Inversione globale del pitch. Si applica dopo la proiezione Player/World — indipendente dai flag Invert per sorgente nella tabella di mappatura.</value></data>
-  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Inverti Yaw / Roll (X)</value></data>
-  <data name="Settings_GyroInvertYaw_Tooltip" xml:space="preserve"><value>Inversione globale dello yaw. Copre anche le sorgenti Roll e Gyro Horizontal.</value></data>
+  <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>Inverti Yaw / Roll (X)</value></data>
+  <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>Inversione globale dello yaw. Copre anche le sorgenti Roll e Gyro Horizontal.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Calibrazione reale</value></data>
   <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>Gradi in gioco per grado fisico di rotazione del controller. 0 = disattivato. 1 = 1:1 (ruoti il pad di 90°, la vista ruota di 90°). Calibra una volta per gioco ruotando il pad di 360° e regolando finché la vista in gioco ruota anch'essa di 360°.</value></data>
   <data name="Settings_GyroTightening" xml:space="preserve"><value>Stringimento</value></data>
@@ -1164,7 +1164,7 @@
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Ripristina sensibilità verticale</value></data>
   <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>Ripristina unità</value></data>
   <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>Ripristina inversione pitch</value></data>
-  <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Ripristina inversione yaw</value></data>
+  <data name="Pad_ResetGyroInvertYawRoll" xml:space="preserve"><value>Ripristina inversione yaw / roll</value></data>
   <data name="Pad_ResetGyroRealWorldCalibration" xml:space="preserve"><value>Ripristina calibrazione reale</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Ripristina zona morta</value></data>
   <data name="Pad_ResetGyroTightening" xml:space="preserve"><value>Ripristina stringimento</value></data>

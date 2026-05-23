@@ -1078,8 +1078,8 @@ public class Strings : INotifyPropertyChanged
     public string Settings_GyroSpace_Tooltip => Get("Settings_GyroSpace_Tooltip");
     public string Settings_GyroInvertPitch => Get("Settings_GyroInvertPitch");
     public string Settings_GyroInvertPitch_Tooltip => Get("Settings_GyroInvertPitch_Tooltip");
-    public string Settings_GyroInvertYaw => Get("Settings_GyroInvertYaw");
-    public string Settings_GyroInvertYaw_Tooltip => Get("Settings_GyroInvertYaw_Tooltip");
+    public string Settings_GyroInvertYawRoll => Get("Settings_GyroInvertYawRoll");
+    public string Settings_GyroInvertYawRoll_Tooltip => Get("Settings_GyroInvertYawRoll_Tooltip");
     public string Settings_GyroRealWorldCalibration => Get("Settings_GyroRealWorldCalibration");
     public string Settings_GyroRealWorldCalibration_Tooltip => Get("Settings_GyroRealWorldCalibration_Tooltip");
     public string Settings_GyroTightening => Get("Settings_GyroTightening");
@@ -1113,7 +1113,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetGyroSensitivityV => Get("Pad_ResetGyroSensitivityV");
     public string Pad_ResetGyroSensitivityUnits => Get("Pad_ResetGyroSensitivityUnits");
     public string Pad_ResetGyroInvertPitch => Get("Pad_ResetGyroInvertPitch");
-    public string Pad_ResetGyroInvertYaw => Get("Pad_ResetGyroInvertYaw");
+    public string Pad_ResetGyroInvertYawRoll => Get("Pad_ResetGyroInvertYawRoll");
     public string Pad_Gyro_Passthrough_Header => Get("Pad_Gyro_Passthrough_Header");
     public string Pad_Gyro_ApplyToPassthrough => Get("Pad_Gyro_ApplyToPassthrough");
     public string Pad_Gyro_ApplyToPassthrough_Tooltip => Get("Pad_Gyro_ApplyToPassthrough_Tooltip");

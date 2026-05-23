@@ -1109,8 +1109,8 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = コントローラー素のローカル軸。Player = ヨーを現実の鉛直 (重力) 軸に投影、ピッチはローカルのまま — Jibb Smart 推奨の既定。傾けてもナチュラル。World = ヨーもピッチもワールド軸に投影。</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>ピッチ (Y) 反転</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>ピッチ軸の全体反転。Player/World 投影の後に適用 — マッピング表のソース単位 Invert とは独立。</value></data>
-  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>ヨー / ロール (X) 反転</value></data>
-  <data name="Settings_GyroInvertYaw_Tooltip" xml:space="preserve"><value>ヨー軸の全体反転。Roll と Gyro Horizontal ソースにも適用。</value></data>
+  <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>ヨー / ロール (X) 反転</value></data>
+  <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>ヨー軸の全体反転。Roll と Gyro Horizontal ソースにも適用。</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>実世界キャリブレーション</value></data>
   <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>コントローラーの物理回転 1° あたりのゲーム内回転 (度)。0 = 無効。1 = 1:1 (パッドを 90° 回転→ゲーム内視点も 90°)。ゲームごとに 1 回、パッドを 360° 回しゲーム内視点も 360° 回るよう調整して設定。</value></data>
   <data name="Settings_GyroTightening" xml:space="preserve"><value>タイトニング</value></data>
@@ -1144,7 +1144,7 @@
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>垂直感度をリセット</value></data>
   <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>単位をリセット</value></data>
   <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>ピッチ反転をリセット</value></data>
-  <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>ヨー反転をリセット</value></data>
+  <data name="Pad_ResetGyroInvertYawRoll" xml:space="preserve"><value>ヨー / ロール反転をリセット</value></data>
   <data name="Pad_ResetGyroRealWorldCalibration" xml:space="preserve"><value>実世界キャリブレーションをリセット</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>デッドゾーンをリセット</value></data>
   <data name="Pad_ResetGyroTightening" xml:space="preserve"><value>タイトニングをリセット</value></data>

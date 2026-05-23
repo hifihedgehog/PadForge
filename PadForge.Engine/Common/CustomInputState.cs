@@ -76,13 +76,19 @@ namespace PadForge.Engine
         public float[] Accel;
 
         /// <summary>
-        /// Touchpad finger data: 6 floats — [finger*3+0]=x, [finger*3+1]=y, [finger*3+2]=pressure.
-        /// Values are normalized 0-1. Only populated for devices with a touchpad.
+        /// Per-touchpad finger state. One <see cref="TouchpadInputState"/>
+        /// per physical touchpad surface the device exposes (1 for DS4 /
+        /// DualSense / Shield / PTP, 2 for Steam Controller 2026 / Steam
+        /// Deck, 3 for the original Steam Controller). Supports up to N
+        /// fingers per pad (PTP max 5, SDL gamepads typically 1-2) and
+        /// tracks contact identity across slot up/down transitions so
+        /// the gesture engine can distinguish "same finger continuing"
+        /// from "new finger landed in the same slot." Null when the
+        /// device has no touchpad. Replaced the legacy
+        /// <c>TouchpadFingers[6]</c> / <c>TouchpadDown[2]</c> single-pad
+        /// shape in v3.3 to support multi-touchpad devices natively.
         /// </summary>
-        public float[] TouchpadFingers;
-
-        /// <summary>Finger contact state: [0]=finger 0, [1]=finger 1.</summary>
-        public bool[] TouchpadDown;
+        public TouchpadInputState[] Touchpads;
 
         /// <summary>Battery percentage from SDL3 (0..100, or -1 if unknown).
         /// Refreshed periodically by SdlDeviceWrapper, not every frame.</summary>
@@ -104,8 +110,11 @@ namespace PadForge.Engine
             Buttons = new bool[MaxButtons];
             Gyro = new float[3];
             Accel = new float[3];
-            TouchpadFingers = new float[6];
-            TouchpadDown = new bool[2];
+            // Touchpads starts null. Device wrappers allocate the per-pad
+            // TouchpadState[] at device-open time with the right pad count
+            // and per-pad finger slot count for the actual hardware. Null
+            // here means "no touchpad surface on this device."
+            Touchpads = null;
             BatteryPercent = -1;
 
             // Initialize POVs to centered.
@@ -125,8 +134,12 @@ namespace PadForge.Engine
             Array.Copy(Buttons, clone.Buttons, MaxButtons);
             Array.Copy(Gyro, clone.Gyro, 3);
             Array.Copy(Accel, clone.Accel, 3);
-            Array.Copy(TouchpadFingers, clone.TouchpadFingers, 6);
-            Array.Copy(TouchpadDown, clone.TouchpadDown, 2);
+            if (Touchpads != null)
+            {
+                clone.Touchpads = new TouchpadInputState[Touchpads.Length];
+                for (int i = 0; i < Touchpads.Length; i++)
+                    clone.Touchpads[i] = Touchpads[i]?.Clone();
+            }
             clone.BatteryPercent = BatteryPercent;
             clone.BatteryCharging = BatteryCharging;
             return clone;

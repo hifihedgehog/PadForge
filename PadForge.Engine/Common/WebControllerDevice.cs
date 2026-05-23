@@ -200,24 +200,39 @@ namespace PadForge.Engine
             }
         }
 
-        /// <summary>Updates a touchpad finger's position and contact state.</summary>
+        /// <summary>Updates a touchpad finger's position and contact state.
+        /// Phone clients drive a single-pad two-finger virtual touchpad
+        /// over WebSocket. Contact IDs are synthesized on rising / falling
+        /// edges so the gesture engine sees a stable input shape across
+        /// devices.</summary>
         public void UpdateTouchpadFinger(int finger, float x, float y, bool down)
         {
             lock (_stateLock)
             {
                 var s = _currentState.Clone();
-                int offset = finger * 3;
-                if (offset + 2 < s.TouchpadFingers.Length)
+                if (s.Touchpads == null || s.Touchpads.Length < 1
+                    || s.Touchpads[0] == null || s.Touchpads[0].MaxFingers < 2)
                 {
-                    s.TouchpadFingers[offset] = x;
-                    s.TouchpadFingers[offset + 1] = y;
-                    s.TouchpadFingers[offset + 2] = down ? 1f : 0f;
+                    s.Touchpads = new[] { new TouchpadInputState(2) };
                 }
-                if (finger < s.TouchpadDown.Length)
-                    s.TouchpadDown[finger] = down;
+                var pad = s.Touchpads[0];
+                if (finger >= 0 && finger < pad.MaxFingers)
+                {
+                    pad.FingerX[finger] = x;
+                    pad.FingerY[finger] = y;
+                    pad.FingerPressure[finger] = down ? 1f : 0f;
+                    bool wasDown = pad.FingerDown[finger];
+                    pad.FingerDown[finger] = down;
+                    if (down && !wasDown) pad.FingerContactId[finger] = _webContactIdNext++;
+                    else if (!down && wasDown) pad.FingerContactId[finger] = -1;
+                }
                 _currentState = s;
             }
         }
+
+        // Monotonic contact-ID counter for the web phone-controller's
+        // virtual touchpad surface. Increments on each finger rising edge.
+        private int _webContactIdNext = 1;
 
         /// <summary>Sets the connection state.</summary>
         public void SetConnected(bool connected) => _connected = connected;

@@ -356,16 +356,40 @@ namespace PadForge.Engine
                 ds.Down1 = false;
             }
 
-            state.TouchpadFingers[0] = ds.X0;
-            state.TouchpadFingers[1] = ds.Y0;
-            state.TouchpadFingers[2] = ds.Down0 ? 1f : 0f;
-            state.TouchpadDown[0] = ds.Down0;
+            // PadForge's PTP reader currently exposes 2 fingers per device
+            // (the spec supports up to 5; expansion is a separate refactor
+            // inside this file's HID descriptor parsing). One pad per
+            // device. Contact-ID synthesis matches SdlDeviceWrapper's
+            // pattern: per-slot monotonic, increments on rising edge.
+            if (state.Touchpads == null || state.Touchpads.Length < 1
+                || state.Touchpads[0] == null || state.Touchpads[0].MaxFingers < 2)
+            {
+                state.Touchpads = new[] { new TouchpadInputState(2) };
+            }
+            var tp = state.Touchpads[0];
 
-            state.TouchpadFingers[3] = ds.X1;
-            state.TouchpadFingers[4] = ds.Y1;
-            state.TouchpadFingers[5] = ds.Down1 ? 1f : 0f;
-            state.TouchpadDown[1] = ds.Down1;
+            tp.FingerX[0] = ds.X0;
+            tp.FingerY[0] = ds.Y0;
+            tp.FingerPressure[0] = ds.Down0 ? 1f : 0f;
+            bool wasDown0 = tp.FingerDown[0];
+            tp.FingerDown[0] = ds.Down0;
+            if (ds.Down0 && !wasDown0) tp.FingerContactId[0] = _ptpContactIdNext++;
+            else if (!ds.Down0 && wasDown0) tp.FingerContactId[0] = -1;
+
+            tp.FingerX[1] = ds.X1;
+            tp.FingerY[1] = ds.Y1;
+            tp.FingerPressure[1] = ds.Down1 ? 1f : 0f;
+            bool wasDown1 = tp.FingerDown[1];
+            tp.FingerDown[1] = ds.Down1;
+            if (ds.Down1 && !wasDown1) tp.FingerContactId[1] = _ptpContactIdNext++;
+            else if (!ds.Down1 && wasDown1) tp.FingerContactId[1] = -1;
         }
+
+        // Monotonic per-PTP-device contact ID source. Synthesizes contact
+        // IDs from finger up/down transitions; future expansion will use
+        // the native HID contact-identifier bytes from the PTP report
+        // collection directly.
+        private int _ptpContactIdNext = 1;
 
         /// <summary>
         /// Legacy: reads the first device's state (for backward compat).

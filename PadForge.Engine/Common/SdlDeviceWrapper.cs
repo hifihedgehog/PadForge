@@ -268,7 +268,31 @@ namespace PadForge.Engine
                 HasAccel = SDL_GamepadHasSensor(GameController, SDL_SENSOR_ACCEL);
                 if (HasGyro) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_GYRO, true);
                 if (HasAccel) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL, true);
-                HasTouchpad = SDL_GetNumGamepadTouchpads(GameController) > 0;
+
+                int numPads = SDL_GetNumGamepadTouchpads(GameController);
+                HasTouchpad = numPads > 0;
+                if (HasTouchpad)
+                {
+                    // Per-pad scratch for contact-ID synthesis. SDL3 doesn't
+                    // expose HID contact IDs via SDL_GetGamepadTouchpadFinger,
+                    // so we synthesize them: a per-pad monotonic counter
+                    // increments each time a finger slot transitions from
+                    // up to down. The currently-assigned ID for each slot
+                    // is held across polling ticks (the CustomInputState is
+                    // re-allocated each tick) and written into the snapshot
+                    // each frame.
+                    _padFingerCounts = new int[numPads];
+                    _padContactIdNext = new int[numPads];
+                    _padCurrentContactIds = new int[numPads][];
+                    for (int p = 0; p < numPads; p++)
+                    {
+                        int nf = SDL_GetNumGamepadTouchpadFingers(GameController, p);
+                        if (nf <= 0) nf = 1;
+                        _padFingerCounts[p] = nf;
+                        _padCurrentContactIds[p] = new int[nf];
+                        for (int f = 0; f < nf; f++) _padCurrentContactIds[p][f] = -1;
+                    }
+                }
             }
 
             // Always try the haptic API for force feedback devices (joysticks,
@@ -516,57 +540,56 @@ namespace PadForge.Engine
             if (HasAccel)
                 SDL_GetGamepadSensorData(GameController, SDL_SENSOR_ACCEL, state.Accel, 3);
 
-            // --- Touchpad (DS4/DualSense/Steam Deck) ---
-            if (HasTouchpad)
+            // --- Touchpad (DS4/DualSense/Steam Deck/Steam Controller/Triton) ---
+            if (HasTouchpad && _padFingerCounts != null)
             {
-                int numTouchpads = SDL_GetNumGamepadTouchpads(GameController);
-
-                // Finger 0: touchpad 0, finger 0
-                if (SDL_GetGamepadTouchpadFinger(GameController, 0, 0,
-                        out bool down0, out float x0, out float y0, out float p0))
+                int numPads = _padFingerCounts.Length;
+                state.Touchpads = new TouchpadInputState[numPads];
+                for (int p = 0; p < numPads; p++)
                 {
-                    state.TouchpadDown[0] = down0;
-                    state.TouchpadFingers[0] = x0;
-                    state.TouchpadFingers[1] = y0;
-                    state.TouchpadFingers[2] = p0;
-                }
-
-                // Finger 1: touchpad 0 finger 1, or touchpad 1 finger 0 (Steam Deck)
-                bool gotFinger1 = false;
-                if (SDL_GetNumGamepadTouchpadFingers(GameController, 0) >= 2)
-                {
-                    gotFinger1 = SDL_GetGamepadTouchpadFinger(GameController, 0, 1,
-                        out bool d1, out float x1, out float y1, out float p1);
-                    if (gotFinger1)
+                    int nf = _padFingerCounts[p];
+                    var tp = new TouchpadInputState(nf);
+                    var currIds = _padCurrentContactIds[p];
+                    for (int f = 0; f < nf; f++)
                     {
-                        state.TouchpadDown[1] = d1;
-                        state.TouchpadFingers[3] = x1;
-                        state.TouchpadFingers[4] = y1;
-                        state.TouchpadFingers[5] = p1;
+                        if (SDL_GetGamepadTouchpadFinger(GameController, p, f,
+                                out bool fDown, out float fx, out float fy, out float fp))
+                        {
+                            tp.FingerX[f] = fx;
+                            tp.FingerY[f] = fy;
+                            tp.FingerPressure[f] = fp;
+                            tp.FingerDown[f] = fDown;
+
+                            // Contact-ID synthesis. SDL3 doesn't surface HID
+                            // contact IDs; we infer them from slot up/down
+                            // transitions. On a rising edge, allocate a
+                            // new ID from the per-pad counter; on a falling
+                            // edge, clear to -1. Steady state holds the
+                            // previously-assigned ID.
+                            if (fDown && currIds[f] < 0)
+                                currIds[f] = _padContactIdNext[p]++;
+                            else if (!fDown && currIds[f] >= 0)
+                                currIds[f] = -1;
+                            tp.FingerContactId[f] = currIds[f];
+                        }
                     }
-                }
-                if (!gotFinger1 && numTouchpads >= 2)
-                {
-                    if (SDL_GetGamepadTouchpadFinger(GameController, 1, 0,
-                            out bool d1b, out float x1b, out float y1b, out float p1b))
-                    {
-                        state.TouchpadDown[1] = d1b;
-                        state.TouchpadFingers[3] = x1b;
-                        state.TouchpadFingers[4] = y1b;
-                        state.TouchpadFingers[5] = p1b;
-                    }
+                    // Per-pad click. Pad 0 reads SDL_GAMEPAD_BUTTON_TOUCHPAD
+                    // (state.Buttons[16] in PadForge's layout). Multi-touchpad
+                    // devices like the Triton (Steam Controller 2026) expose
+                    // additional pad clicks through MISC2..MISC6 per the
+                    // touchpad-click-as-button recipe; map them here too.
+                    if (p == 0)
+                        tp.Clicked = SDL_GetGamepadButton(GameController,
+                            SDL_GAMEPAD_BUTTON_TOUCHPAD);
+                    else if (p == 1 && state.Buttons.Length > 17)
+                        tp.Clicked = state.Buttons[17]; // MISC2 — second pad click
+                    state.Touchpads[p] = tp;
                 }
 
-                // Touchpad click lands at Buttons[16] — PadForge's slot for
-                // SDL_GAMEPAD_BUTTON_TOUCHPAD, matching SDL's enum position
-                // (between paddles and Misc2-Misc6). Consumers reach it via
-                // the "Touchpad 0 Click" descriptor (see
-                // SourceCoercion.ReadTouchpadBool), parallel to the existing
-                // "Touchpad 0 Finger N X/Y/Down" descriptors. SDL3's HIDAPI
-                // PS5/PS4 drivers report the touchpad at joystick button 11
-                // and the gamecontrollerdb mapping has touchpad:b11, putting
-                // 11 in _mappedRawButtonIndices so the raw-button loop above
-                // skips the double-report.
+                // Buttons[16] = primary touchpad click — kept current with
+                // the gamepad button so existing readers (Touchpad 0 Click
+                // descriptor, virtual-DualSense output) continue to work
+                // unchanged.
                 state.Buttons[16] = SDL_GetGamepadButton(GameController,
                     SDL_GAMEPAD_BUTTON_TOUCHPAD);
             }
@@ -590,6 +613,15 @@ namespace PadForge.Engine
         private long _lastBatteryReadTick;
         private int _cachedBatteryPercent = -1;
         private bool _cachedBatteryCharging;
+
+        // Per-touchpad scratch — sized once at OpenInternal time when
+        // HasTouchpad is true. _padFingerCounts is the per-pad finger
+        // slot count from SDL_GetNumGamepadTouchpadFingers; the contact-
+        // ID counter and per-slot current ID survive across polling ticks
+        // even though the CustomInputState gets re-allocated each tick.
+        private int[] _padFingerCounts;
+        private int[] _padContactIdNext;
+        private int[][] _padCurrentContactIds;
 
         /// <summary>
         /// Parses the SDL gamepad mapping string to find which raw button indices (bN)

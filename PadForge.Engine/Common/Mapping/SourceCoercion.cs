@@ -1109,13 +1109,24 @@ namespace PadForge.Engine.Common.Mapping
                 && parts[4].Equals("Down", StringComparison.Ordinal))
             {
                 if (!int.TryParse(parts[3], out int fingerIdx)) return false;
-                if (padIdx != 0) return false; // single touchpad supported today
-                if (state.TouchpadDown == null) return false;
-                if (fingerIdx < 0 || fingerIdx >= state.TouchpadDown.Length) return false;
-                return state.TouchpadDown[fingerIdx];
+                var pad = GetTouchpad(state, padIdx);
+                if (pad == null) return false;
+                if (fingerIdx < 0 || fingerIdx >= pad.MaxFingers) return false;
+                return pad.FingerDown[fingerIdx];
             }
 
             return false;
+        }
+
+        /// <summary>Returns the <see cref="TouchpadInputState"/> for the
+        /// requested pad index, or <c>null</c> when the device has no
+        /// touchpad or the requested pad index is out of range. Centralizes
+        /// the null + bounds guards every touchpad descriptor reader needs.</summary>
+        private static TouchpadInputState GetTouchpad(CustomInputState state, int padIdx)
+        {
+            if (state == null || state.Touchpads == null) return null;
+            if (padIdx < 0 || padIdx >= state.Touchpads.Length) return null;
+            return state.Touchpads[padIdx];
         }
 
         // ─── Touchpad axis descriptors ──────────────────────────────────
@@ -1199,25 +1210,27 @@ namespace PadForge.Engine.Common.Mapping
             bipolar = 0f;
             if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset))
                 return false;
-            if (padIdx != 0) return false; // single touchpad supported today
-            if (state.TouchpadFingers == null) return false;
-            int idx = fingerIdx * 3 + axisOffset;
-            if (idx < 0 || idx >= state.TouchpadFingers.Length) return false;
+            var pad = GetTouchpad(state, padIdx);
+            if (pad == null) return false;
+            if (fingerIdx < 0 || fingerIdx >= pad.MaxFingers) return false;
 
             string deviceGuid = src?.DeviceGuid ?? string.Empty;
-            string key = deviceGuid + "|" + fingerIdx + "|" + axisOffset;
+            string key = deviceGuid + "|" + padIdx + "|" + fingerIdx + "|" + axisOffset;
 
             // Lifted finger → reset delta tracker, return 0.
-            bool fingerDown = state.TouchpadDown != null
-                && fingerIdx >= 0 && fingerIdx < state.TouchpadDown.Length
-                && state.TouchpadDown[fingerIdx];
-            if (!fingerDown)
+            if (!pad.FingerDown[fingerIdx])
             {
                 _touchpadDeltas.TryRemove(key, out _);
                 return true; // bipolar already 0
             }
 
-            float raw = state.TouchpadFingers[idx]; // [0..1]
+            float raw = axisOffset switch
+            {
+                0 => pad.FingerX[fingerIdx],
+                1 => pad.FingerY[fingerIdx],
+                2 => pad.FingerPressure[fingerIdx],
+                _ => 0f
+            }; // [0..1]
 
             // Pressure is unipolar — pass it through directly (no delta,
             // no recentering) so a pressure → axis mapping reads the
@@ -1273,17 +1286,17 @@ namespace PadForge.Engine.Common.Mapping
             bipolar = 0f;
             if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset))
                 return false;
-            if (padIdx != 0) return false; // single touchpad supported today
-            if (state.TouchpadFingers == null) return false;
-            if (state.TouchpadDown != null
-                && fingerIdx >= 0 && fingerIdx < state.TouchpadDown.Length
-                && !state.TouchpadDown[fingerIdx])
+            var pad = GetTouchpad(state, padIdx);
+            if (pad == null) return false;
+            if (fingerIdx < 0 || fingerIdx >= pad.MaxFingers) return false;
+            if (!pad.FingerDown[fingerIdx]) return true; // bipolar already 0
+            float raw = axisOffset switch
             {
-                return true; // bipolar already 0
-            }
-            int idx = fingerIdx * 3 + axisOffset;
-            if (idx < 0 || idx >= state.TouchpadFingers.Length) return false;
-            float raw = state.TouchpadFingers[idx];
+                0 => pad.FingerX[fingerIdx],
+                1 => pad.FingerY[fingerIdx],
+                2 => pad.FingerPressure[fingerIdx],
+                _ => 0f
+            };
             if (raw < 0f) raw = 0f; else if (raw > 1f) raw = 1f;
             bipolar = axisOffset == 2 ? raw : (raw * 2f - 1f);
             return true;
@@ -1297,17 +1310,17 @@ namespace PadForge.Engine.Common.Mapping
             unipolar = 0f;
             if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset))
                 return false;
-            if (padIdx != 0) return false;
-            if (state.TouchpadFingers == null) return false;
-            if (state.TouchpadDown != null
-                && fingerIdx >= 0 && fingerIdx < state.TouchpadDown.Length
-                && !state.TouchpadDown[fingerIdx])
+            var pad = GetTouchpad(state, padIdx);
+            if (pad == null) return false;
+            if (fingerIdx < 0 || fingerIdx >= pad.MaxFingers) return false;
+            if (!pad.FingerDown[fingerIdx]) return true; // unipolar already 0
+            float raw = axisOffset switch
             {
-                return true; // unipolar already 0
-            }
-            int idx = fingerIdx * 3 + axisOffset;
-            if (idx < 0 || idx >= state.TouchpadFingers.Length) return false;
-            float raw = state.TouchpadFingers[idx];
+                0 => pad.FingerX[fingerIdx],
+                1 => pad.FingerY[fingerIdx],
+                2 => pad.FingerPressure[fingerIdx],
+                _ => 0f
+            };
             if (raw < 0f) raw = 0f; else if (raw > 1f) raw = 1f;
             unipolar = raw;
             return true;

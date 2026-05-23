@@ -63,21 +63,47 @@ namespace PadForge.Engine
         public bool IsAttached => true;
 
         /// <summary>
-        /// Updates the touchpad state. Called from UI thread.
+        /// Updates the touchpad state. Called from UI thread. The overlay
+        /// surface is a single virtual pad with up to 2 fingers (matching
+        /// the DS4 touchpad reference). The new <see cref="TouchpadInputState"/>
+        /// per-pad model carries the same data with explicit per-slot
+        /// arrays and contact-ID synthesis on rising/falling edges so the
+        /// gesture recognizer sees a stable input shape regardless of
+        /// touchpad source (overlay vs SDL vs PTP).
         /// </summary>
         public void UpdateState(TouchpadState tp)
         {
             lock (_stateLock)
             {
                 var s = new CustomInputState();
-                s.TouchpadFingers[0] = tp.X0;
-                s.TouchpadFingers[1] = tp.Y0;
-                s.TouchpadFingers[2] = tp.Down0 ? 1f : 0f;
-                s.TouchpadFingers[3] = tp.X1;
-                s.TouchpadFingers[4] = tp.Y1;
-                s.TouchpadFingers[5] = tp.Down1 ? 1f : 0f;
-                s.TouchpadDown[0] = tp.Down0;
-                s.TouchpadDown[1] = tp.Down1;
+                s.Touchpads = new[] { new TouchpadInputState(2) };
+                var pad = s.Touchpads[0];
+                pad.FingerX[0] = tp.X0;
+                pad.FingerY[0] = tp.Y0;
+                pad.FingerPressure[0] = tp.Down0 ? 1f : 0f;
+                pad.FingerDown[0] = tp.Down0;
+                pad.FingerX[1] = tp.X1;
+                pad.FingerY[1] = tp.Y1;
+                pad.FingerPressure[1] = tp.Down1 ? 1f : 0f;
+                pad.FingerDown[1] = tp.Down1;
+                // Contact-ID synthesis for the overlay: each fresh
+                // UpdateState replaces the snapshot wholesale, so we
+                // synthesize IDs against the prior snapshot held on this
+                // device wrapper. On rising edge allocate from the
+                // monotonic counter; on falling edge clear to -1; else
+                // carry the prior ID.
+                var prev = _currentState?.Touchpads?[0];
+                bool prev0 = prev?.FingerDown != null && prev.FingerDown.Length > 0 && prev.FingerDown[0];
+                bool prev1 = prev?.FingerDown != null && prev.FingerDown.Length > 1 && prev.FingerDown[1];
+                int prevId0 = prev?.FingerContactId != null && prev.FingerContactId.Length > 0 ? prev.FingerContactId[0] : -1;
+                int prevId1 = prev?.FingerContactId != null && prev.FingerContactId.Length > 1 ? prev.FingerContactId[1] : -1;
+                pad.FingerContactId[0] = tp.Down0
+                    ? (prev0 ? prevId0 : _overlayContactIdNext++)
+                    : -1;
+                pad.FingerContactId[1] = tp.Down1
+                    ? (prev1 ? prevId1 : _overlayContactIdNext++)
+                    : -1;
+                pad.Clicked = tp.Click;
                 // Touchpad click rides Buttons[16] (SDL_GAMEPAD_BUTTON_TOUCHPAD's
                 // canonical PadForge slot). The "Touchpad 0 Click" descriptor
                 // reads from this index — same path as a physical DS4/DualSense.
@@ -85,6 +111,9 @@ namespace PadForge.Engine
                 _currentState = s;
             }
         }
+
+        // Monotonic contact-ID source for the overlay's two finger slots.
+        private int _overlayContactIdNext = 1;
 
         public CustomInputState GetCurrentState(bool forceRaw = false)
         {

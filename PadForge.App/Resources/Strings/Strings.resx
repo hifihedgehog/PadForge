@@ -1014,6 +1014,49 @@
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>Checkmark</value></data>
   <data name="Mapping_TouchpadGesture_X" xml:space="preserve"><value>X Shape</value></data>
 
+  <!-- ═══ Pad Touchpad Tab ═══ -->
+  <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad Gestures</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Per-touchpad gesture detection. Each finger swipe, tap, pinch, and shape becomes a mapping source you can bind on the Mappings tab.</value></data>
+  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Pad {0}</value></data>
+  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detection</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Enable gestures on this pad</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Master toggle for this touchpad. When off, no gesture descriptors fire for this pad. Existing finger / click / position mappings still work.</value></data>
+  <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Recognize</value></data>
+  <data name="Pad_Touchpad_Mode_InBoxOnly" xml:space="preserve"><value>In-box only</value></data>
+  <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>Custom only</value></data>
+  <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Both</value></data>
+  <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>Which gesture catalog the engine evaluates against the live finger paths. "Both" is the default.</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Cooldown (ms)</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>After a gesture fires, ignore new gestures on this pad for this many milliseconds. Prevents bounce-fires from rapid back-and-forth motion.</value></data>
+  <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>In-box gestures</value></data>
+  <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4-way swipes (up / down / left / right)</value></data>
+  <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8-way swipes (adds diagonals)</value></data>
+  <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Swipe distance (0..1)</value></data>
+  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Swipe time window (ms)</value></data>
+  <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Radial zones (weapon-wheel style)</value></data>
+  <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Zone count</value></data>
+  <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Center deadzone (0..1)</value></data>
+  <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tap / Double tap / Triple tap</value></data>
+  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>Tap time window (ms)</value></data>
+  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>Multi-tap gap (ms)</value></data>
+  <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>Long press</value></data>
+  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>Long-press duration (ms)</value></data>
+  <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>Two-finger swipes</value></data>
+  <data name="Pad_Touchpad_PinchSpread" xml:space="preserve"><value>Pinch / Spread</value></data>
+  <data name="Pad_Touchpad_Rotate" xml:space="preserve"><value>Rotate</value></data>
+  <data name="Pad_Touchpad_ThreeFinger" xml:space="preserve"><value>Three-finger gestures</value></data>
+  <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>Four-finger gestures</value></data>
+  <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>Five-finger tap</value></data>
+  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Shape gestures (Circle, Square, Triangle, Z, Checkmark, X)</value></data>
+  <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Shape match threshold</value></data>
+  <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Custom gestures</value></data>
+  <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Record new gesture</value></data>
+  <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>No custom gestures recorded for this profile. Click Record new gesture to capture one.</value></data>
+  <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 finger</value></data>
+  <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} fingers</value></data>
+
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Motion Gyro</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>Motion Accel</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Gyro Pitch</value></data>

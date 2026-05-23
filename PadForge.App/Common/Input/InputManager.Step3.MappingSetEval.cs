@@ -130,7 +130,15 @@ namespace PadForge.Common.Input
             public int[]  Axis;
             public int[]  Sliders;
             public int[]  Povs;
-            public bool[] TouchpadDown;
+            /// <summary>Per-pad-per-slot finger-down snapshot, flattened
+            /// across every touchpad surface on the device. Layout:
+            /// <c>[pad0.f0, pad0.f1, ..., pad1.f0, pad1.f1, ...]</c>.
+            /// Used only for cross-pad rising-edge detection in
+            /// <see cref="ComputeStickyConsumerHeld"/>; order is stable
+            /// across captures within a single device session because
+            /// <see cref="CustomInputState.Touchpads"/> shape is fixed
+            /// at device-open time.</summary>
+            public bool[] TouchpadFingerDown;
         }
 
         /// <summary>Per-activator snapshot of every slot-assigned device's
@@ -248,10 +256,23 @@ namespace PadForge.Common.Input
                 b.Povs = new int[state.Povs.Length];
                 System.Array.Copy(state.Povs, b.Povs, state.Povs.Length);
             }
-            if (state.TouchpadDown != null)
+            if (state.Touchpads != null)
             {
-                b.TouchpadDown = new bool[state.TouchpadDown.Length];
-                System.Array.Copy(state.TouchpadDown, b.TouchpadDown, state.TouchpadDown.Length);
+                int total = 0;
+                for (int p = 0; p < state.Touchpads.Length; p++)
+                    total += state.Touchpads[p]?.MaxFingers ?? 0;
+                if (total > 0)
+                {
+                    b.TouchpadFingerDown = new bool[total];
+                    int o = 0;
+                    for (int p = 0; p < state.Touchpads.Length; p++)
+                    {
+                        var pad = state.Touchpads[p];
+                        if (pad == null) continue;
+                        for (int f = 0; f < pad.MaxFingers; f++)
+                            b.TouchpadFingerDown[o++] = pad.FingerDown[f];
+                    }
+                }
             }
             // TouchpadClick lives in Buttons[16] now and is already captured
             // by the Buttons[] copy above.
@@ -296,11 +317,23 @@ namespace PadForge.Common.Input
                     if (current.Povs[k] != -1 && current.Povs[k] != baseline.Povs[k])
                         return true;
             }
-            if (baseline.TouchpadDown != null && current.TouchpadDown != null)
+            if (baseline.TouchpadFingerDown != null && current.Touchpads != null)
             {
-                int n = System.Math.Min(baseline.TouchpadDown.Length, current.TouchpadDown.Length);
-                for (int k = 0; k < n; k++)
-                    if (current.TouchpadDown[k] && !baseline.TouchpadDown[k]) return true;
+                // Walk the flattened per-pad-per-slot snapshot in the same
+                // order CaptureBaseline laid it down. Rising edge on any
+                // slot = consumer-input activity.
+                int o = 0;
+                for (int p = 0; p < current.Touchpads.Length; p++)
+                {
+                    var pad = current.Touchpads[p];
+                    if (pad == null) continue;
+                    for (int f = 0; f < pad.MaxFingers; f++)
+                    {
+                        if (o >= baseline.TouchpadFingerDown.Length) break;
+                        if (pad.FingerDown[f] && !baseline.TouchpadFingerDown[o]) return true;
+                        o++;
+                    }
+                }
             }
             // Touchpad-click rising edge is covered by the Buttons[] loop
             // above (Buttons[16] = SDL_GAMEPAD_BUTTON_TOUCHPAD).
@@ -1623,19 +1656,25 @@ namespace PadForge.Common.Input
                     && src.Descriptor.StartsWith("Touchpad ", System.StringComparison.Ordinal);
                 if (isTouchpadSrc)
                 {
-                    // Parse finger index from "Touchpad N Finger M X|Y".
+                    // Parse pad + finger index from "Touchpad N Finger M X|Y".
+                    int padIdx = 0;
                     int fingerIdx = defaultFingerIdx;
                     var parts = src.Descriptor.Split(new[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+                    if (parts.Length >= 2 && int.TryParse(parts[1], out int parsedPad))
+                        padIdx = parsedPad;
                     if (parts.Length == 5
                         && string.Equals(parts[2], "Finger", System.StringComparison.Ordinal)
                         && int.TryParse(parts[3], out int parsedFinger))
                     {
                         fingerIdx = parsedFinger;
                     }
-                    isActive = devState?.TouchpadDown != null
+                    var pad = devState?.Touchpads != null
+                        && padIdx >= 0 && padIdx < devState.Touchpads.Length
+                        ? devState.Touchpads[padIdx] : null;
+                    isActive = pad != null
                         && fingerIdx >= 0
-                        && fingerIdx < devState.TouchpadDown.Length
-                        && devState.TouchpadDown[fingerIdx];
+                        && fingerIdx < pad.MaxFingers
+                        && pad.FingerDown[fingerIdx];
                 }
                 else
                 {

@@ -56,6 +56,14 @@ namespace PadForge.Engine.Data
         private const string TriggerLeft = "LeftTrigger";
         private const string TriggerRight = "RightTrigger";
 
+        // Bundled motion-passthrough targets. Sony-class VCs only — Xbox and
+        // friends have no motion channel to relay. Sub-channels: one row per
+        // sensor type, source descriptors "Motion Gyro" / "Motion Accel".
+        public const string MotionGyroTarget  = "MotionGyro";
+        public const string MotionAccelTarget = "MotionAccel";
+        public const string MotionGyroSourceDescriptor  = "Motion Gyro";
+        public const string MotionAccelSourceDescriptor = "Motion Accel";
+
         // Touchpad output targets. Stored as plain string properties on
         // PadSetting (TouchpadX1, TouchpadY1, …, TouchpadClick), reached via
         // the same reflection path as ButtonTargets / AxisTargets. Emitted
@@ -331,6 +339,112 @@ namespace PadForge.Engine.Data
                 HalfAxis = halfAxis,
                 DeadZone = dz,
             };
+        }
+
+        // ─────────────────────────────────────────────
+        //  Motion-passthrough auto-row backfill
+        // ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Idempotent backfill: ensures every gyro / accel-capable device
+        /// assigned to a Sony-class slot has its motion-passthrough source
+        /// represented in the slot's <see cref="MappingSet"/>. Runs every
+        /// load (both XML-content and legacy-migration branches) so the
+        /// engine's motion path can stay rows-only with no first-wins
+        /// fallback.
+        ///
+        /// <para>Non-Sony slots are no-ops — Xbox / Extended-gamepad /
+        /// MIDI / KBM virtual controllers have no motion channel to
+        /// relay. Devices without the relevant sensor capability are
+        /// skipped per sub-channel.</para>
+        ///
+        /// <para>Idempotency: a device already present in a row's
+        /// <c>Sources</c> for the same motion target is not re-added.
+        /// Multiple devices on the same slot accumulate as multiple
+        /// sources on the single per-target row, matching the existing
+        /// multi-source pattern for buttons / axes / touchpad. The
+        /// engine resolves at runtime by walking sources in order and
+        /// picking the first online device (first-mapped-and-active wins).
+        /// </para>
+        /// </summary>
+        public static void EnsureMotionRows(
+            MappingSet ms,
+            int slotType,
+            IReadOnlyList<(string DeviceGuid, bool HasGyro, bool HasAccel)> devices)
+        {
+            if (ms == null || devices == null || devices.Count == 0) return;
+
+            // Sony-class only. slotType integer encoding matches the
+            // VirtualControllerType enum's underlying values (PlayStation=1).
+            // Encoded as int here so PadForge.Engine.Data doesn't need a
+            // back-reference to PadForge.Engine for the enum type.
+            if (slotType != 1) return;
+
+            EnsureMotionRowForSensor(ms, MotionGyroTarget,  MotionGyroSourceDescriptor,
+                devices, dev => dev.HasGyro);
+            EnsureMotionRowForSensor(ms, MotionAccelTarget, MotionAccelSourceDescriptor,
+                devices, dev => dev.HasAccel);
+        }
+
+        private static void EnsureMotionRowForSensor(
+            MappingSet ms, string target, string descriptor,
+            IReadOnlyList<(string DeviceGuid, bool HasGyro, bool HasAccel)> devices,
+            Func<(string DeviceGuid, bool HasGyro, bool HasAccel), bool> capCheck)
+        {
+            // Find or create the target's row.
+            MappingRow row = null;
+            for (int i = 0; i < ms.Rows.Count; i++)
+            {
+                if (ms.Rows[i] != null && ms.Rows[i].Target == target)
+                {
+                    row = ms.Rows[i];
+                    break;
+                }
+            }
+
+            // Collect already-represented device guids for this target so we
+            // don't double-add. Case-insensitive guid match (XML round-trips
+            // can change case).
+            HashSet<string> existing = null;
+            if (row?.Sources != null)
+            {
+                existing = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var src in row.Sources)
+                    if (src != null && !string.IsNullOrEmpty(src.DeviceGuid))
+                        existing.Add(src.DeviceGuid);
+            }
+
+            // Build the additions list in input order.
+            List<MappingSource> additions = null;
+            foreach (var dev in devices)
+            {
+                if (string.IsNullOrEmpty(dev.DeviceGuid)) continue;
+                if (!capCheck(dev)) continue;
+                if (existing != null && existing.Contains(dev.DeviceGuid)) continue;
+                (additions ??= new List<MappingSource>()).Add(new MappingSource
+                {
+                    Kind       = "Direct",
+                    DeviceGuid = dev.DeviceGuid,
+                    Descriptor = descriptor,
+                });
+            }
+
+            if (additions == null) return;
+
+            if (row == null)
+            {
+                ms.Rows.Add(new MappingRow
+                {
+                    Target      = target,
+                    LayerMask   = "Base",
+                    CombineMode = "",  // engine special-cases motion; combine ignored
+                    Sources     = additions,
+                });
+            }
+            else
+            {
+                row.Sources.AddRange(additions);
+            }
         }
     }
 }

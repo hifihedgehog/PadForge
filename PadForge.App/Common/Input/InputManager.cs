@@ -867,8 +867,21 @@ namespace PadForge.Common.Input
         private const float MsToG = 1f / 9.80665f;
 
         /// <summary>
-        /// Snapshots per-slot motion data from the first online device with sensors.
+        /// Snapshots per-slot motion data driven by the slot's MappingSet
+        /// rows. Gyro source comes from the first online device whose
+        /// mapping row targets <c>MotionGyro</c>; accel source from the
+        /// first online device whose mapping row targets <c>MotionAccel</c>.
+        /// The two sub-channels can resolve to different devices.
         /// Called on the polling thread after Step 2 (UpdateInputStates).
+        ///
+        /// <para>Pre-v3.2.3 this function walked <c>UserSettings.Items</c>
+        /// in storage order and took the first-online device with sensors
+        /// as the motion source. That hid the source-selection decision
+        /// from the user; v3.2.3 surfaces it as mapping-table rows that
+        /// the user can add, remove, and reorder. Multi-device hand-off
+        /// (Switch Pro off → DualSense on) still works naturally because
+        /// the engine walks each row's sources in order every tick and
+        /// the first online one wins.</para>
         /// </summary>
         private void UpdateMotionSnapshots()
         {
@@ -896,108 +909,134 @@ namespace PadForge.Common.Input
                     continue;
                 }
 
+                // Battery scan stays as a first-online-with-data walk over
+                // the slot's assigned devices. Independent of motion.
                 int slotCount = settings.FindByPadIndex(padIndex, _padIndexBuffer);
-                bool found = false;
                 int batteryPercent = -1;
                 bool batteryCharging = false;
-
                 for (int i = 0; i < slotCount; i++)
                 {
                     var us = _padIndexBuffer[i];
                     if (us == null) continue;
-
                     var ud = FindOnlineDeviceByInstanceGuid(us.InstanceGuid);
-                    if (ud == null || !ud.IsOnline || ud.Device == null)
-                        continue;
-
+                    if (ud == null || !ud.IsOnline || ud.Device == null) continue;
                     var state = ud.InputState;
-                    if (state == null)
-                        continue;
-
-                    // First assigned device that reports battery wins. Battery
-                    // percent is independent of motion presence — a Sony pad
-                    // with no sensors enabled still wants its battery surfaced.
+                    if (state == null) continue;
                     if (batteryPercent < 0 && state.BatteryPercent >= 0)
                     {
                         batteryPercent = state.BatteryPercent;
                         batteryCharging = state.BatteryCharging;
+                        break;
                     }
-
-                    if (found) continue;
-
-                    if (!ud.Device.HasGyro && !ud.Device.HasAccel)
-                        continue;
-
-                    // MotionSnapshot carries the gyro / accel in SDL's
-                    // native sensor frame — accel in g, gyro in deg/s, no
-                    // sign transform. SDL's PS4 / PS5 HIDAPI drivers read a
-                    // real controller's report with no sign flip, so a
-                    // virtual controller's report must carry the native
-                    // frame too for a consumer to see what the physical pad
-                    // shows. The DSU server applies its own DSU-convention
-                    // sign transform when it builds its packet; the Sony
-                    // HID report packers use this snapshot as-is.
-                    //
-                    // The previous code applied a DSU sign transform here
-                    // (-accel all axes, -gyro X/Z) to the shared snapshot.
-                    // That negated accel as -I (point inversion) but gyro
-                    // as (-,+,-); a true vector and a pseudovector cannot
-                    // share that transform, so gyro and accel ended up in
-                    // inconsistent frames. A consumer's gyro-drift sensor
-                    // fusion can't converge on an inconsistent IMU frame,
-                    // which read as at-rest drift on the virtual pad.
-                    float ax = state.Accel[0] * MsToG;
-                    float ay = state.Accel[1] * MsToG;
-                    float az = state.Accel[2] * MsToG;
-
-                    // Gyro: run the per-(device, slot) Gyro tab tuning
-                    // chain — calibration bias, deadzone, sensitivity,
-                    // smoothing, invert, etc. — before the rad-to-deg
-                    // conversion and DSU sign convention. GetPassthroughGyro
-                    // returns the raw reading unchanged when the slot's
-                    // "apply to passthrough" toggle is off, or when every
-                    // Gyro tab control is at its default on an uncalibrated
-                    // device.
-                    SourceCoercion.GetPassthroughGyro(
-                        state, us.InstanceGuid.ToString(), padIndex,
-                        out float tunedPitch, out float tunedYaw, out float tunedRoll);
-                    float gx = tunedPitch * RadToDeg;
-                    float gy = tunedYaw * RadToDeg;
-                    float gz = tunedRoll * RadToDeg;
-
-                    MotionSnapshots[padIndex] = new MotionSnapshot
-                    {
-                        AccelX = ax,
-                        AccelY = ay,
-                        AccelZ = az,
-                        GyroPitch = gx,
-                        GyroYaw = gy,
-                        GyroRoll = gz,
-                        TimestampUs = timestampUs,
-                        HasMotion = true
-                    };
-                    found = true;
                 }
 
-                // Battery percent transitions push a one-shot dispatcher
-                // refresh so the Lightbar Battery mode lerp tracks the
-                // live percentage without keeping a 33Hz animation timer
-                // alive for what is effectively a once-a-minute change.
                 int prevPct = BatteryPercents[padIndex];
                 BatteryPercents[padIndex] = batteryPercent;
                 BatteryCharging[padIndex] = batteryCharging;
                 if (prevPct != batteryPercent)
                     UserEffectsDispatcher.NotifyBatteryPercentChanged(padIndex);
 
-                if (!found)
+                // Motion source resolution from the slot's MappingSet.
+                // Sony-class slots (and any future motion-capable VC) have
+                // motion rows populated by EnsureMotionRows on load + on
+                // device-assignment events. Non-Sony slots have no motion
+                // rows → both resolves return null → HasMotion=false.
+                var ms = (SettingsManager.SlotMappingSets != null
+                    && padIndex < SettingsManager.SlotMappingSets.Length)
+                    ? SettingsManager.SlotMappingSets[padIndex] : null;
+
+                var gyroSrc  = ResolveMotionSource(ms, MappingSetMigrator.MotionGyroTarget,
+                    requireGyro: true);
+                var accelSrc = ResolveMotionSource(ms, MappingSetMigrator.MotionAccelTarget,
+                    requireGyro: false);
+
+                if (gyroSrc.Ud == null && accelSrc.Ud == null)
                 {
                     MotionSnapshots[padIndex] = new MotionSnapshot
                     {
                         TimestampUs = timestampUs,
                         HasMotion = false
                     };
+                    continue;
+                }
+
+                // Accel: raw scaled read, no tuning chain (PadForge has no
+                // per-axis accel tuning; the Gyro tab knobs are gyro-only).
+                float ax = 0f, ay = 0f, az = 0f;
+                if (accelSrc.Ud != null)
+                {
+                    var s = accelSrc.Ud.InputState;
+                    ax = s.Accel[0] * MsToG;
+                    ay = s.Accel[1] * MsToG;
+                    az = s.Accel[2] * MsToG;
+                }
+
+                // Gyro: per-(device, slot) Gyro tab tuning chain via
+                // GetPassthroughGyro — calibration bias, deadzone,
+                // sensitivity, smoothing, invert, etc. The function
+                // returns raw rad/s when the device's Apply Tuning to
+                // Motion Passthrough toggle is off, or when every
+                // Gyro tab control is at its default on an uncalibrated
+                // device. Native sensor frame preserved (no sign
+                // transform); the DSU server's BuildPadDataPacket and
+                // the Sony report packers apply their own protocol-
+                // specific frames downstream.
+                float gx = 0f, gy = 0f, gz = 0f;
+                if (gyroSrc.Ud != null)
+                {
+                    var s = gyroSrc.Ud.InputState;
+                    SourceCoercion.GetPassthroughGyro(
+                        s, gyroSrc.Ud.InstanceGuid.ToString(), padIndex,
+                        out float tunedPitch, out float tunedYaw, out float tunedRoll);
+                    gx = tunedPitch * RadToDeg;
+                    gy = tunedYaw * RadToDeg;
+                    gz = tunedRoll * RadToDeg;
+                }
+
+                MotionSnapshots[padIndex] = new MotionSnapshot
+                {
+                    AccelX = ax,
+                    AccelY = ay,
+                    AccelZ = az,
+                    GyroPitch = gx,
+                    GyroYaw = gy,
+                    GyroRoll = gz,
+                    TimestampUs = timestampUs,
+                    HasMotion = true
+                };
+            }
+        }
+
+        /// <summary>
+        /// Walks the slot's mapping rows for the given motion target name,
+        /// returning the first source whose owning device is online and
+        /// (when <paramref name="requireGyro"/>) has gyro capability. The
+        /// per-tick walk + first-online wins gives natural hand-off when
+        /// devices come and go without restarting the engine.
+        /// </summary>
+        private (UserDevice Ud, MappingSource Src) ResolveMotionSource(
+            MappingSet ms, string targetName, bool requireGyro)
+        {
+            if (ms?.Rows == null) return (null, null);
+            for (int r = 0; r < ms.Rows.Count; r++)
+            {
+                var row = ms.Rows[r];
+                if (row == null || row.Target != targetName || row.Sources == null) continue;
+                for (int i = 0; i < row.Sources.Count; i++)
+                {
+                    var src = row.Sources[i];
+                    if (src == null) continue;
+                    if (!SourceCoercion.IsMotionDescriptor(src.Descriptor)) continue;
+                    if (string.IsNullOrEmpty(src.DeviceGuid)) continue;
+                    if (!Guid.TryParse(src.DeviceGuid, out var guid)) continue;
+                    var ud = FindOnlineDeviceByInstanceGuid(guid);
+                    if (ud == null || !ud.IsOnline || ud.Device == null) continue;
+                    if (ud.InputState == null) continue;
+                    if (requireGyro ? !ud.Device.HasGyro : !ud.Device.HasAccel) continue;
+                    return (ud, src);
                 }
             }
+            return (null, null);
         }
 
         /// <summary>

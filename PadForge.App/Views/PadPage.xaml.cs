@@ -32,6 +32,11 @@ namespace PadForge.Views
         /// service reference through every code path.</summary>
         public static PadForge.Services.RecorderService Recorder { get; set; }
 
+        /// <summary>Static InputService reference set by MainWindow, used
+        /// by the Touchpad tab's recorder dialog + delete-gesture handlers
+        /// to add / remove custom gestures from the active profile.</summary>
+        public static PadForge.Services.InputService InputService { get; set; }
+
         /// <summary>
         /// Currently-subscribed <see cref="ExtendedSlotConfig"/> for the active
         /// PadViewModel. Tracked separately from <see cref="_currentPadVm"/>
@@ -75,6 +80,8 @@ namespace PadForge.Views
                 _currentPadVm.PropertyChanged -= OnPadVmPropertyChanged;
                 if (_currentPadVm.MappedDevices != null)
                     _currentPadVm.MappedDevices.CollectionChanged -= OnMappedDevicesChanged;
+                _currentPadVm.RecordTouchpadGestureRequested -= OnRecordTouchpadGestureRequested;
+                _currentPadVm.DeleteTouchpadGestureRequested -= OnDeleteTouchpadGestureRequested;
             }
 
             _currentPadVm = DataContext as PadViewModel;
@@ -83,6 +90,8 @@ namespace PadForge.Views
                 _currentPadVm.PropertyChanged += OnPadVmPropertyChanged;
                 if (_currentPadVm.MappedDevices != null)
                     _currentPadVm.MappedDevices.CollectionChanged += OnMappedDevicesChanged;
+                _currentPadVm.RecordTouchpadGestureRequested += OnRecordTouchpadGestureRequested;
+                _currentPadVm.DeleteTouchpadGestureRequested += OnDeleteTouchpadGestureRequested;
             }
 
             // Track the active slot's ExtendedSlotConfig so we can refresh the
@@ -1269,6 +1278,32 @@ namespace PadForge.Views
             System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             SyncTabVisibility();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Touchpad recorder dialog hooks
+        // ─────────────────────────────────────────────
+
+        private void OnRecordTouchpadGestureRequested(object sender, EventArgs e)
+        {
+            try
+            {
+                var dlg = new TouchpadGestureRecorderDialog
+                {
+                    Owner = System.Windows.Window.GetWindow(this),
+                };
+                dlg.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[PadPage] Recorder dialog failed: {ex}");
+            }
+        }
+
+        private void OnDeleteTouchpadGestureRequested(object sender, ViewModels.TouchpadCustomGestureItem item)
+        {
+            if (item == null || item.Source == null) return;
+            InputService?.DeleteCustomTouchpadGesture(item.Source.Name);
         }
 
         private void OnPlayStationConfigChanged(object sender, PropertyChangedEventArgs e)

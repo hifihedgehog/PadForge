@@ -1435,6 +1435,18 @@ namespace PadForge.ViewModels
         private double _gyroLiveRateRoll;
         public double GyroLiveRateRoll  { get => _gyroLiveRateRoll;  set => SetProperty(ref _gyroLiveRateRoll,  value); }
 
+        // Live accelerometer readout (g-units) — refreshed alongside the
+        // gyro live rates above. No bias subtraction (no accel tuning
+        // chain exists in PadForge); the value reflects the raw sensor
+        // reading scaled to g-units so the user can verify the
+        // controller is oriented as they expect.
+        private double _accelLiveX;
+        public double AccelLiveX { get => _accelLiveX; set => SetProperty(ref _accelLiveX, value); }
+        private double _accelLiveY;
+        public double AccelLiveY { get => _accelLiveY; set => SetProperty(ref _accelLiveY, value); }
+        private double _accelLiveZ;
+        public double AccelLiveZ { get => _accelLiveZ; set => SetProperty(ref _accelLiveZ, value); }
+
         private string _gyroCalibrationLabel = "";
         public string GyroCalibrationLabel
         {

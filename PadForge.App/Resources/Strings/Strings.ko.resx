@@ -1081,6 +1081,7 @@
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>보정 재설정</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>정지 상태의 자이로 바이어스와 마지막 보정 타임스탬프를 지웁니다. 다음 폴링 주기에서 이 장치의 1.5초 자동 보정이 다시 실행됩니다.</value></data>
   <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>현재 속도</value></data>
+  <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>현재 가속도</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>수평 감도</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>자이로의 수평(Yaw + Roll) 출력에 적용할 배율입니다. 1.0은 엔진이 보는 속도를 그대로 사용; 더 높으면 증폭, 낮으면 감쇠합니다. 장치 전체에 적용됩니다.</value></data>
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>수직 감도</value></data>

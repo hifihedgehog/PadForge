@@ -1441,6 +1441,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsRumbleType));
                     OnPropertyChanged(nameof(IsRumbleStopType));
                     OnPropertyChanged(nameof(IsAnyRumbleType));
+                    OnPropertyChanged(nameof(IsSetGyroEngagedType));
                     OnPropertyChanged(nameof(IsRumbleReactiveHold));
                     OnPropertyChanged(nameof(IsRumbleStickyHold));
                 }
@@ -1495,6 +1496,11 @@ namespace PadForge.ViewModels
         /// <summary>True when Type is RumbleStop.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsRumbleStopType => _type == MacroActionType.RumbleStop;
+
+        /// <summary>True when Type is SetGyroEngaged. Surfaces the
+        /// Mode dropdown editor in the macro action UI.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsSetGyroEngagedType => _type == MacroActionType.SetGyroEngaged;
 
         /// <summary>True when Type is any rumble-related action — drives
         /// the macro editor's grouping into a single CardBorder.</summary>
@@ -2451,6 +2457,24 @@ namespace PadForge.ViewModels
             }
         }
 
+        private MacroSetGyroEngagedMode _setGyroEngagedMode = MacroSetGyroEngagedMode.Toggle;
+        /// <summary>Write mode for
+        /// <see cref="MacroActionType.SetGyroEngaged"/>.
+        /// <see cref="MacroSetGyroEngagedMode.Toggle"/> flips the per-slot
+        /// macro-engaged bit; <see cref="MacroSetGyroEngagedMode.On"/>
+        /// forces it true; <see cref="MacroSetGyroEngagedMode.Off"/>
+        /// forces it false. OR-combined with the dedicated engage
+        /// button's bit at the gyro evaluator.</summary>
+        public MacroSetGyroEngagedMode SetGyroEngagedMode
+        {
+            get => _setGyroEngagedMode;
+            set
+            {
+                if (SetProperty(ref _setGyroEngagedMode, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
         // CSV of LightbarMode int values for ModeCycle. Default skips
         // Off and the audio modes — most users want a quick visual
         // toggle, not silent output.
@@ -2606,6 +2630,9 @@ namespace PadForge.ViewModels
                         CountSelectedCycleModes()),
                     MacroActionType.Rumble => FormatRumbleSummary(),
                     MacroActionType.RumbleStop => Strings.Instance.MacroAction_RumbleStop,
+                    MacroActionType.SetGyroEngaged => string.Format(
+                        Strings.Instance.MacroAction_SetGyroEngaged_Format,
+                        SetGyroEngagedModeDisplayName(_setGyroEngagedMode)),
                     _ => Strings.Instance.Macro_UnknownAction
                 };
             }
@@ -2711,6 +2738,16 @@ namespace PadForge.ViewModels
             MacroMouseButton.X1 => Strings.Instance.Macro_MouseX1,
             MacroMouseButton.X2 => Strings.Instance.Macro_MouseX2,
             _ => btn.ToString()
+        };
+
+        /// <summary>Localized display name for the SetGyroEngaged
+        /// write mode.</summary>
+        private static string SetGyroEngagedModeDisplayName(MacroSetGyroEngagedMode mode) => mode switch
+        {
+            MacroSetGyroEngagedMode.On     => Strings.Instance.Macro_SetGyroEngaged_On,
+            MacroSetGyroEngagedMode.Off    => Strings.Instance.Macro_SetGyroEngaged_Off,
+            MacroSetGyroEngagedMode.Toggle => Strings.Instance.Macro_SetGyroEngaged_Toggle,
+            _ => mode.ToString()
         };
     }
 
@@ -2828,6 +2865,15 @@ namespace PadForge.ViewModels
         /// volatile — resets on app restart.</summary>
         LightbarModeCycle,
 
+        /// <summary>Sets the slot's gyro engage state. <c>Mode</c>
+        /// controls the write: <c>Toggle</c> flips the per-slot
+        /// macro-engaged bit, <c>On</c> forces it true, <c>Off</c>
+        /// forces it false. The bit OR-combines with the
+        /// <c>GyroAimEngageButton</c>'s per-slot bit at the gyro
+        /// evaluator. Bit is per-slot volatile and resets on profile
+        /// switch and app restart.</summary>
+        SetGyroEngaged,
+
         /// <summary>Drives the slot's macro rumble override. Two hold
         /// modes parallel <see cref="LightbarColor"/>:
         /// <see cref="MacroRumbleHoldMode.Reactive"/> fires a one-shot
@@ -2844,6 +2890,18 @@ namespace PadForge.ViewModels
         /// Pair with <see cref="Rumble"/> Sticky to give the user a
         /// deliberate way to undo the hold via another macro.</summary>
         RumbleStop
+    }
+
+    /// <summary>Write mode for the
+    /// <see cref="MacroActionType.SetGyroEngaged"/> action.</summary>
+    public enum MacroSetGyroEngagedMode
+    {
+        /// <summary>Flip the slot's macro-engaged bit. Each fire toggles.</summary>
+        Toggle = 0,
+        /// <summary>Force the slot's macro-engaged bit true.</summary>
+        On = 1,
+        /// <summary>Force the slot's macro-engaged bit false.</summary>
+        Off = 2
     }
 
     /// <summary>Hold mode for <see cref="MacroActionType.Rumble"/>.

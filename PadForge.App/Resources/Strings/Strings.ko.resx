@@ -739,6 +739,13 @@
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>진동 정지</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>진동 정지</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>할당된 슬롯에서 활성 상태인 진동 오버라이드를 해제합니다. Sticky 진동 액션과 짝지어 다른 매크로에서 유지를 해제하세요.</value></data>
+  <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>자이로 활성 설정</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>매크로에서 슬롯의 자이로 활성 상태를 설정합니다. 토글은 현재 상태를 뒤집습니다. 켜기는 강제로 활성화합니다. 끄기는 강제로 비활성화합니다. Gyro 탭의 활성화 버튼과 독립적이며, 두 소스는 OR로 결합되므로 어느 쪽도 다른 쪽이 활성화한 것을 비활성화할 수 없습니다.</value></data>
+  <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>모드</value></data>
+  <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>토글</value></data>
+  <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>켜기</value></data>
+  <data name="Macro_SetGyroEngaged_Off" xml:space="preserve"><value>끄기</value></data>
+  <data name="MacroAction_SetGyroEngaged_Format" xml:space="preserve"><value>자이로 활성 설정: {0}</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>유지</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>반응형 (페이드)</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>고정형 (유지)</value></data>
@@ -1122,6 +1129,10 @@
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>스무딩 버퍼의 시간 창 길이. 클수록 = 타이트닝 임계 미만에서 더 강한 평활화, 작을수록 = 더 즉각적. 기본 50ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>활성화 버튼</value></data>
   <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>자이로 출력을 게이트하는 버튼의 디스크립터. 해당 버튼을 누르고 있는 동안에만 자이로 작동. 비어 있음 = 버튼 게이트 없음. 위 오른쪽 스틱 임계값과 AND 결합.</value></data>
+  <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>활성화 모드</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>유지: 활성화 버튼을 누르고 있는 동안 자이로가 작동합니다. 토글: 누를 때마다 자이로가 켜지거나 꺼지며, 떼는 동작은 영향을 주지 않습니다. 토글은 폴링 틱 사이에 유지되며 프로필 전환 시 초기화됩니다.</value></data>
+  <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>유지</value></data>
+  <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>토글</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>활성화</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>자이로 활성 시점을 선택적으로 제한. 오른쪽 스틱 편향과 활성화 버튼 각각이 자이로 출력을 게이트할 수 있음. 둘 다 설정한 경우 둘 다 활성화되어야 자이로가 작동.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>로컬</value></data>
@@ -1155,6 +1166,7 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>출력 커브 재설정</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim 임계값 재설정</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>활성화 버튼 재설정</value></data>
+  <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>활성화 모드 재설정</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>모션 패스스루</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>자이로 조정을 모션 패스스루에 적용</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>이 탭의 선택적 자이로 조정(데드존, 감도, 스무딩, 응답 커브, 반전)을 가상 컨트롤러가 게임이나 에뮬레이터에 보고하는 모션에 적용합니다. 끄면 보정된 값만 전송하고 감도와 스무딩은 게임에 맡깁니다. 보정 드리프트 교정은 어느 쪽이든 항상 적용됩니다.</value></data>

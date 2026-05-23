@@ -739,6 +739,13 @@
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Vibration stoppen</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Vibration stoppen</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Hebt eine aktive Vibrations-Überschreibung auf dem zugewiesenen Slot auf. Mit einer Sticky-Vibrations-Aktion kombinieren, um das Halten per Makro aufzuheben.</value></data>
+  <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Gyro-Aktivierung setzen</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Setzt den Gyro-Aktivierungsstatus des Slots über ein Makro. Umschalten kippt den aktuellen Zustand; Ein erzwingt Aktivierung; Aus erzwingt Deaktivierung. Unabhängig von der Aktivierungstaste im Gyro-Tab — beide Quellen werden ODER-kombiniert, sodass keine die andere deaktivieren kann.</value></data>
+  <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Modus</value></data>
+  <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Umschalten</value></data>
+  <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Ein</value></data>
+  <data name="Macro_SetGyroEngaged_Off" xml:space="preserve"><value>Aus</value></data>
+  <data name="MacroAction_SetGyroEngaged_Format" xml:space="preserve"><value>Gyro-Aktivierung setzen: {0}</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>Reaktiv (ausblenden)</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Permanent (halten)</value></data>
@@ -1114,6 +1121,7 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>Ausgabekurve zurücksetzen</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Easy-Aim-Schwellenwert zurücksetzen</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Aktivierungs-Taste zurücksetzen</value></data>
+  <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Aktivierungsmodus zurücksetzen</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Bewegungsdurchleitung</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Gyro-Abstimmung auf Bewegungsdurchleitung anwenden</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Wendet die optionale Gyro-Abstimmung dieses Tabs (Totzone, Empfindlichkeit, Glättung, Antwortkurve, Invertierung) auf die Bewegungsdaten an, die der virtuelle Controller an das Spiel oder den Emulator meldet. Deaktiviere es, um nur die kalibrierte Messung zu senden und das Spiel seine eigene Empfindlichkeit und Glättung anwenden zu lassen. Die Kalibrierungs-Driftkorrektur greift in beiden Fällen.</value></data>
@@ -1157,6 +1165,10 @@
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Zeitlänge des Glättungspuffers. Größer = stärker geglättet unterhalb der Verdichtungs-Schwelle; kleiner = direkter. Standard 50 ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Aktivierungs-Taste</value></data>
   <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Deskriptor einer Taste, die das Gyro freigibt: Gyro feuert nur, solange diese Taste gehalten wird. Leer = keine Tastenverriegelung. UND-verknüpft mit der Stick-Auslenkungsschwelle oben.</value></data>
+  <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Aktivierungsmodus</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Halten: Gyro aktiv, solange die Aktivierungstaste gedrückt ist. Umschalten: Jeder Tastendruck schaltet den Gyro um; Loslassen hat keine Wirkung. Umschalten ist über den Polling-Tick hinweg persistent und setzt beim Profilwechsel zurück.</value></data>
+  <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Halten</value></data>
+  <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Umschalten</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktivierung</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optionale Bedingungen, wann das Gyro aktiv ist. Stick-Auslenkung und eine Aktivierungs-Taste können das Gyro jeweils freigeben; eine oder beide konfigurierbar. Sind beide gesetzt, müssen beide aktiv sein, damit das Gyro feuert.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Empfindlichkeit</value></data>

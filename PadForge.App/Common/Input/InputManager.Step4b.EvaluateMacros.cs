@@ -979,6 +979,29 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
                 }
+
+                case MacroActionType.SetGyroEngaged:
+                {
+                    int slotIndex = macro.PadIndex;
+                    if (slotIndex >= 0 && slotIndex < MaxPads)
+                    {
+                        switch (action.SetGyroEngagedMode)
+                        {
+                            case MacroSetGyroEngagedMode.On:
+                                GyroEngagedFromMacro[slotIndex] = true;
+                                break;
+                            case MacroSetGyroEngagedMode.Off:
+                                GyroEngagedFromMacro[slotIndex] = false;
+                                break;
+                            case MacroSetGyroEngagedMode.Toggle:
+                            default:
+                                GyroEngagedFromMacro[slotIndex] = !GyroEngagedFromMacro[slotIndex];
+                                break;
+                        }
+                    }
+                    AdvanceAction(macro);
+                    break;
+                }
             }
         }
 

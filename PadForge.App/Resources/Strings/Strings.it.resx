@@ -739,6 +739,13 @@
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Ferma vibrazione</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Ferma vibrazione</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Rilascia qualsiasi sovrapposizione di vibrazione attiva sullo slot assegnato. Da abbinare a un'azione Sticky di vibrazione per rilasciare il mantenimento tramite un'altra macro.</value></data>
+  <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Imposta giroscopio attivato</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Imposta lo stato di attivazione del giroscopio dello slot da una macro. Attiva/disattiva inverte lo stato corrente; Attivato forza l'attivazione; Disattivato forza la disattivazione. Indipendente dal pulsante di attivazione della scheda Gyro — le due fonti si combinano con OR, quindi nessuna può disattivare ciò che l'altra ha attivato.</value></data>
+  <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Modalità</value></data>
+  <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Attiva/disattiva</value></data>
+  <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Attivato</value></data>
+  <data name="Macro_SetGyroEngaged_Off" xml:space="preserve"><value>Disattivato</value></data>
+  <data name="MacroAction_SetGyroEngaged_Format" xml:space="preserve"><value>Imposta giroscopio attivato: {0}</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Modalità</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>Reattiva (dissolvenza)</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Persistente (mantieni)</value></data>
@@ -1142,6 +1149,10 @@
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Durata della finestra del buffer. Più grande = più smussatura sotto la soglia di stringimento; più piccola = più diretto. Predefinito 50 ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Pulsante di attivazione</value></data>
   <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Descrittore di un pulsante che vincola l'uscita del giroscopio: il giroscopio attiva solo mentre questo pulsante è tenuto. Vuoto = nessun vincolo. Composto in AND con la soglia di deflessione dello stick sopra.</value></data>
+  <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Modalità di attivazione</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Tieni premuto: il giroscopio si attiva mentre il pulsante di attivazione è premuto. Attiva/disattiva: ogni pressione attiva o disattiva il giroscopio; il rilascio non fa nulla. Attiva/disattiva è persistente per ciclo di polling e si reimposta al cambio di profilo.</value></data>
+  <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Tieni premuto</value></data>
+  <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Attiva/disattiva</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Attivazione</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Vincoli opzionali che limitano quando il giroscopio è attivo. Sia la deflessione dello stick destro sia un pulsante di attivazione possono vincolare l'uscita; configura uno o entrambi. Se sono configurati entrambi, devono essere attivi contemporaneamente.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Locale</value></data>
@@ -1175,6 +1186,7 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>Ripristina curva di output</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Ripristina soglia Easy Aim</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Ripristina pulsante di attivazione</value></data>
+  <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Ripristina modalità di attivazione</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Trasmissione del movimento</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Applica la regolazione del giroscopio alla trasmissione del movimento</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Applica la regolazione facoltativa del giroscopio di questa scheda (zona morta, sensibilità, smussatura, curva di risposta, inversione) al movimento che il controller virtuale invia al gioco o all'emulatore. Disattivala per inviare solo la lettura calibrata e lasciare che il gioco applichi la propria sensibilità e smussatura. La correzione della deriva da calibrazione si applica comunque in entrambi i casi.</value></data>

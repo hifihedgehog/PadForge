@@ -1354,6 +1354,19 @@ namespace PadForge.ViewModels
             }
         }
 
+        private string _gyroAimEngageMode = "Hold";
+        /// <summary>"Hold" (default) — gyro fires while the engage button
+        /// is held. "Toggle" — each rising edge flips a sticky per-slot
+        /// engaged bit. OR-combined with the SetGyroEngaged macro action's
+        /// bit at the gyro evaluator. Per-(device, slot) like the rest of
+        /// the gyro tuning, but the runtime state itself is per-slot
+        /// volatile and resets on profile switch.</summary>
+        public string GyroAimEngageMode
+        {
+            get => _gyroAimEngageMode;
+            set => SetProperty(ref _gyroAimEngageMode, string.IsNullOrEmpty(value) ? "Hold" : value);
+        }
+
         /// <summary>Tells the view to re-resolve
         /// <see cref="GyroAimEngageSelectedInput"/> after
         /// <see cref="SlotAvailableInputs"/> is populated. Called by
@@ -1545,6 +1558,10 @@ namespace PadForge.ViewModels
                 GyroAimEngageDeviceGuid = "";
             });
 
+        private RelayCommand _resetGyroAimEngageModeCommand;
+        public RelayCommand ResetGyroAimEngageModeCommand =>
+            _resetGyroAimEngageModeCommand ??= new RelayCommand(() => GyroAimEngageMode = "Hold");
+
         /// <summary>Whether the Aim Engage recorder is currently
         /// listening for the next physical input. Drives the record
         /// button's icon + tooltip swap so the affordance matches the
@@ -1627,6 +1644,7 @@ namespace PadForge.ViewModels
                 GyroEasyAimStickThreshold = 0;
                 GyroAimEngageButton = "";
                 GyroAimEngageDeviceGuid = "";
+                GyroAimEngageMode = "Hold";
             });
 
         private int _forceOverallGain = 100;

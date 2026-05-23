@@ -921,6 +921,13 @@
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Stop Rumble</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Stop rumble</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Releases any active rumble override on the assigned slot. Pair with a Sticky Rumble action to undo the hold via another macro.</value></data>
+  <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Set Gyro Engaged</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Sets the slot's gyro engage state from a macro. Toggle flips the current state; On forces gyro engaged; Off forces it disengaged. Independent of the Gyro tab's engage button — the two sources OR-combine, so neither can disable what the other engaged.</value></data>
+  <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Mode</value></data>
+  <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>On</value></data>
+  <data name="Macro_SetGyroEngaged_Off" xml:space="preserve"><value>Off</value></data>
+  <data name="MacroAction_SetGyroEngaged_Format" xml:space="preserve"><value>Set gyro engaged: {0}</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Hold</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>Reactive (fade)</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Sticky (hold)</value></data>
@@ -1011,6 +1018,10 @@
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Length of the smoothing-buffer time window. Larger values smooth more heavily below the tightening threshold; smaller values feel snappier. Default 50ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Aim Engage Button</value></data>
   <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Button that gates gyro output. Gyro fires only while this button is held. Leave unset to disable the button gate. When both this and the right-stick deflection are configured, both must be active for gyro to fire.</value></data>
+  <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Engage Mode</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Hold: gyro fires while the engage button is held. Toggle: each press flips gyro on or off; release does nothing. Toggle is sticky across the polling tick and resets on profile switch.</value></data>
+  <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Hold</value></data>
+  <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Engage</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optional gates that limit when gyro is active. Right-stick deflection and the aim engage button can each be configured. Gyro fires only while every configured gate is active.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Local</value></data>
@@ -1044,6 +1055,7 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>Reset Output Curve</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Reset Easy Aim Threshold</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Reset Aim Engage Button</value></data>
+  <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Reset Engage Mode</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Motion Passthrough</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Apply Gyro Tuning to Motion Passthrough</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Runs this tab's discretionary gyro tuning (deadzone, sensitivity, smoothing, response curve, invert) on the motion the virtual controller reports to the game or emulator. Turn it off to send only the calibrated reading and let the game apply its own sensitivity and smoothing. Calibration drift correction always applies either way.</value></data>

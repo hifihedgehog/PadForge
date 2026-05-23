@@ -1201,6 +1201,25 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_RumbleStop, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.RumbleStop}"
                                                           ToolTip="{Binding MacroAction_RumbleStop_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Macro_SetGyroEngaged, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.SetGyroEngaged}"
+                                                          ToolTip="{Binding Macro_SetGyroEngaged_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        </ComboBox>
+                                    </StackPanel>
+
+                                    <!-- SetGyroEngaged Mode picker — Toggle / On / Off -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                                Visibility="{Binding IsSetGyroEngagedType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Macro_SetGyroEngaged_Mode_Label, Source={x:Static strings:Strings.Instance}}"
+                                                   Width="60" VerticalAlignment="Center"/>
+                                        <ComboBox SelectedValue="{Binding SetGyroEngagedMode, Mode=TwoWay}"
+                                                  SelectedValuePath="Tag"
+                                                  Width="160" VerticalAlignment="Center"
+                                                  ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                                  ToolTip="{Binding Macro_SetGyroEngaged_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <ComboBoxItem Content="{Binding Macro_SetGyroEngaged_Toggle, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroSetGyroEngagedMode.Toggle}"/>
+                                            <ComboBoxItem Content="{Binding Macro_SetGyroEngaged_On, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroSetGyroEngagedMode.On}"/>
+                                            <ComboBoxItem Content="{Binding Macro_SetGyroEngaged_Off, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroSetGyroEngagedMode.Off}"/>
                                         </ComboBox>
                                     </StackPanel>
 
@@ -5221,6 +5240,27 @@
                                     <Button Command="{Binding ResetGyroAimEngageButtonCommand}" Style="{StaticResource ResetButton}"
                                             VerticalAlignment="Top"
                                             ToolTip="{Binding Pad_ResetGyroAimEngageButton, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <!-- Engage Mode — Hold (default) follows the
+                                     button state directly; Toggle flips a
+                                     sticky per-slot bit on each rising edge.
+                                     Sibling to the engage-button row above so
+                                     the two parameters of the same feature
+                                     read as a pair. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <TextBlock Text="{Binding Settings_GyroAimEngageMode, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_GyroAimEngageMode_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBox SelectedValue="{Binding GyroAimEngageMode, Mode=TwoWay}"
+                                              SelectedValuePath="Tag"
+                                              Width="200" VerticalAlignment="Center"
+                                              ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                              ToolTip="{Binding Settings_GyroAimEngageMode_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Hold, Source={x:Static strings:Strings.Instance}}" Tag="Hold"/>
+                                        <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Toggle, Source={x:Static strings:Strings.Instance}}" Tag="Toggle"/>
+                                    </ComboBox>
+                                    <Button Command="{Binding ResetGyroAimEngageModeCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroAimEngageMode, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

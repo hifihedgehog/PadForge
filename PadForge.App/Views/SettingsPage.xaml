@@ -183,6 +183,34 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ Touchpad Gestures (global) ═══ -->
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding Settings_TouchpadGestures, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding Settings_TouchpadGesturesDesc, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"
+                               TextWrapping="Wrap"/>
+                    <CheckBox Content="{Binding Settings_EnableTouchpadGestures, Source={x:Static strings:Strings.Instance}}"
+                              IsChecked="{Binding EnableTouchpadGestures}"
+                              ToolTip="{Binding Settings_EnableTouchpadGesturesTooltip, Source={x:Static strings:Strings.Instance}}"
+                              Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding Settings_TouchpadGestureSuspendHotkey, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="13" Margin="0,4,0,4"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="{Binding TouchpadGestureSuspendHotkey, UpdateSourceTrigger=PropertyChanged}"
+                                 Width="220" VerticalAlignment="Center"
+                                 ToolTip="{Binding Settings_TouchpadGestureSuspendHotkeyTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <Button Content="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"
+                                Command="{Binding ClearTouchpadGestureSuspendHotkeyCommand}"
+                                Margin="8,0,0,0" Padding="10,2"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
             <!-- ═══ HIDMaestro Driver ═══ -->
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
                 <StackPanel>

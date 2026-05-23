@@ -52,6 +52,14 @@ namespace PadForge.Services
         private DispatcherTimer _uiTimer;
         private ForegroundMonitorService _foregroundMonitor;
         private ProfileData _defaultProfileSnapshot;
+
+        // Active profile's touchpad custom-gesture working list. Mirrors
+        // whichever profile is active so AddCustomTouchpadGesture /
+        // DeleteCustomTouchpadGesture can mutate in place and the snapshot
+        // path captures the result without a round-trip through profile
+        // reload. ApplyProfileTouchpadGestures re-seeds this from the
+        // incoming profile on every profile switch.
+        private readonly List<PadForge.Engine.Touchpad.TouchpadCustomGesture> _activeTouchpadGestures = new();
         private DsuMotionServer _dsuServer;
         private WebControllerServer _webServer;
         private InputHookManager _hookManager;
@@ -6455,7 +6463,10 @@ namespace PadForge.Services
                 TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft,
                 TouchpadOverlayTop = _mainVm.Dashboard.TouchpadOverlayTop,
                 TouchpadOverlayWidth = _mainVm.Dashboard.TouchpadOverlayWidth,
-                TouchpadOverlayHeight = _mainVm.Dashboard.TouchpadOverlayHeight
+                TouchpadOverlayHeight = _mainVm.Dashboard.TouchpadOverlayHeight,
+                TouchpadGestures = _activeTouchpadGestures.Count > 0
+                    ? _activeTouchpadGestures.ToArray()
+                    : null
             };
         }
 
@@ -6689,16 +6700,26 @@ namespace PadForge.Services
         private void ApplyProfileTouchpadGestures(ProfileData profile)
         {
             if (_inputManager == null) return;
-            var templates = new List<PadForge.Engine.Touchpad.PDollarTemplate>(
-                PadForge.Engine.Touchpad.InBoxShapeTemplates.Build());
+
+            // Re-seed the in-memory working list from the profile so
+            // AddCustomTouchpadGesture / DeleteCustomTouchpadGesture
+            // mutate the same list that the snapshot path picks up.
+            _activeTouchpadGestures.Clear();
             if (profile?.TouchpadGestures != null)
             {
                 foreach (var g in profile.TouchpadGestures)
                 {
                     if (g == null) continue;
-                    var tpl = g.ToTemplate();
-                    if (tpl != null) templates.Add(tpl);
+                    _activeTouchpadGestures.Add(g);
                 }
+            }
+
+            var templates = new List<PadForge.Engine.Touchpad.PDollarTemplate>(
+                PadForge.Engine.Touchpad.InBoxShapeTemplates.Build());
+            foreach (var g in _activeTouchpadGestures)
+            {
+                var tpl = g.ToTemplate();
+                if (tpl != null) templates.Add(tpl);
             }
             _inputManager.SetShapeTemplates(templates);
 
@@ -6709,12 +6730,70 @@ namespace PadForge.Services
             // list.
             try
             {
-                var gestures = profile?.TouchpadGestures;
                 foreach (var padVm in _mainVm.Pads)
-                    padVm?.RefreshCustomTouchpadGestures(gestures);
+                    padVm?.RefreshCustomTouchpadGestures(_activeTouchpadGestures);
             }
             catch { /* refresh is cosmetic — ignore VM enumeration races */ }
         }
+
+        /// <summary>Add a recorded custom gesture to the active profile's
+        /// library. Replaces any existing gesture with the same Name
+        /// (case-insensitive). Rebuilds the engine's shape-template
+        /// catalog, refreshes every Pad page's Custom Gestures list,
+        /// and marks settings dirty so the next save persists it.</summary>
+        public void AddCustomTouchpadGesture(PadForge.Engine.Touchpad.TouchpadCustomGesture gesture)
+        {
+            if (gesture == null || string.IsNullOrWhiteSpace(gesture.Name)) return;
+            // Remove same-named duplicates (case-insensitive) — overwrite
+            // semantics keeps the working list as a unique-name keyed set.
+            _activeTouchpadGestures.RemoveAll(g =>
+                g != null && string.Equals(g.Name, gesture.Name, StringComparison.OrdinalIgnoreCase));
+            _activeTouchpadGestures.Add(gesture);
+            RebuildShapeTemplatesFromWorkingList();
+            try
+            {
+                foreach (var padVm in _mainVm.Pads)
+                    padVm?.RefreshCustomTouchpadGestures(_activeTouchpadGestures);
+            }
+            catch { }
+            _settingsService?.MarkDirty();
+        }
+
+        /// <summary>Remove a recorded custom gesture by name. Idempotent
+        /// when the name isn't in the working list.</summary>
+        public void DeleteCustomTouchpadGesture(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return;
+            int removed = _activeTouchpadGestures.RemoveAll(g =>
+                g != null && string.Equals(g.Name, name, StringComparison.OrdinalIgnoreCase));
+            if (removed == 0) return;
+            RebuildShapeTemplatesFromWorkingList();
+            try
+            {
+                foreach (var padVm in _mainVm.Pads)
+                    padVm?.RefreshCustomTouchpadGestures(_activeTouchpadGestures);
+            }
+            catch { }
+            _settingsService?.MarkDirty();
+        }
+
+        private void RebuildShapeTemplatesFromWorkingList()
+        {
+            if (_inputManager == null) return;
+            var templates = new List<PadForge.Engine.Touchpad.PDollarTemplate>(
+                PadForge.Engine.Touchpad.InBoxShapeTemplates.Build());
+            foreach (var g in _activeTouchpadGestures)
+            {
+                var tpl = g.ToTemplate();
+                if (tpl != null) templates.Add(tpl);
+            }
+            _inputManager.SetShapeTemplates(templates);
+        }
+
+        /// <summary>Snapshot of the active profile's custom-gesture list.
+        /// Returns a copy, so callers may not mutate the working set.</summary>
+        public PadForge.Engine.Touchpad.TouchpadCustomGesture[] GetActiveTouchpadGestures()
+            => _activeTouchpadGestures.ToArray();
 
         /// <summary>
         /// Bind (or rebind) the global touchpad-gesture suspend hotkey. Pass
@@ -7145,6 +7224,7 @@ namespace PadForge.Services
                     profile.TouchpadOverlayTop = snapshot.TouchpadOverlayTop;
                     profile.TouchpadOverlayWidth = snapshot.TouchpadOverlayWidth;
                     profile.TouchpadOverlayHeight = snapshot.TouchpadOverlayHeight;
+                    profile.TouchpadGestures = snapshot.TouchpadGestures;
                 }
             }
         }

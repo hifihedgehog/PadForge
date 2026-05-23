@@ -878,8 +878,17 @@ namespace PadForge.Services
                 return;
 
             // ── Feed touchpad overlay state into the virtual device ──
+            // Multi-finger path: pull the full TouchpadInputState snapshot
+            // from the overlay (slots 0..OverlayMaxFingers-1, contact IDs
+            // mapped from WPF TouchDevice.Id) and forward to the engine
+            // device via UpdateStateMulti. The 2-finger UpdateState(...)
+            // overload is still available for callers that only need the
+            // DS4-shape struct (e.g. virtual-output sites).
             if (_touchpadOverlay?.IsVisible == true && _touchpadOverlayDevice != null)
-                _touchpadOverlayDevice.UpdateState(_touchpadOverlay.GetTouchpadState());
+            {
+                var snap = _touchpadOverlay.GetMultiFingerState(out bool click);
+                _touchpadOverlayDevice.UpdateStateMulti(snap, click);
+            }
 
             // ── Handle macro-requested touchpad overlay toggle ──
             if (_inputManager.ToggleTouchpadOverlayRequested)

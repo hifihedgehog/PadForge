@@ -1709,6 +1709,7 @@ namespace PadForge.Services
                 padVm.GyroRealWorldCalibration = TryParseDouble(ps.GyroRealWorldCalibration, 0);
                 padVm.GyroAimEngageButton = ps.GyroAimEngageButton ?? "";
                 padVm.GyroAimEngageDeviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
+                padVm.GyroAimEngageMode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
                 padVm.GyroInvertPitch = ps.GyroInvertPitch == "1";
                 padVm.GyroInvertYawRoll = ps.GyroInvertYawRoll == "1";
                 padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough != "0";

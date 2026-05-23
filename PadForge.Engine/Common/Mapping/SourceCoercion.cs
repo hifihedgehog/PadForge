@@ -102,7 +102,12 @@ namespace PadForge.Engine.Common.Mapping
             // real-world calibration (0 = disabled)
             public float RealWorldCalibration;
 
-            // aim-engage button
+            // aim-engage button — kept on the tuning bundle for back-
+            // compat with consumers that still snapshot the configured
+            // descriptor (e.g. the UI mirror). The evaluator no longer
+            // reads these to gate; it reads AimEngageStateProvider for
+            // the resolved per-slot bit (Hold/Toggle + macro OR-combined,
+            // settled once per tick by InputManager.UpdateGyroEngageStates).
             public string AimEngageDevice;
             public string AimEngageDescriptor;
 
@@ -145,6 +150,18 @@ namespace PadForge.Engine.Common.Mapping
         /// by the gyro "Aim Engage button" gate. App wires this
         /// against the per-device InputState bool reader.</summary>
         public static Func<string, string, int, bool> ButtonHeldProvider { get; set; }
+
+        /// <summary>— resolved Aim-Engage state for the slot. App
+        /// runs the per-tick Hold/Toggle logic in
+        /// <c>InputManager.UpdateGyroEngageStates</c> against the
+        /// slot's configured engage button and mode, then OR-combines
+        /// with the <c>SetGyroEngaged</c> macro action's per-slot bit.
+        /// Returns true (always-on) when unwired or when no engage
+        /// source is configured on the slot. Both gyro evaluators
+        /// (mapping-row and motion passthrough) read this single
+        /// resolved bit so the engage decision is consistent within
+        /// a tick regardless of how many rows reference gyro.</summary>
+        public static Func<int, bool> AimEngageStateProvider { get; set; }
 
         /// <summary>— current polling frequency (Hz). Used by the
         /// dual-threshold smoothing buffer to convert
@@ -448,13 +465,16 @@ namespace PadForge.Engine.Common.Mapping
                 float defl = SlotRightStickDeflectionProvider?.Invoke(slotIndex) ?? 1f;
                 if (defl < tuning.EasyAimStickThreshold01) return 0f;
             }
-            // Aim Engage button — gate gyro on a held button. Composes
+            // Aim Engage — per-slot resolved engaged bit. Held button or
+            // sticky Toggle bit OR macro engagement; the App layer's
+            // UpdateGyroEngageStates settles the bit once per tick from
+            // the engage button + GyroAimEngageMode, then OR-combines
+            // with the SetGyroEngaged macro action's slot bit. Composes
             // AND-style with Easy Aim (both must be active).
-            if (!string.IsNullOrEmpty(tuning.AimEngageDescriptor) && slotIndex >= 0)
+            if (slotIndex >= 0)
             {
-                bool held = ButtonHeldProvider?.Invoke(
-                    tuning.AimEngageDevice ?? "", tuning.AimEngageDescriptor, slotIndex) ?? true;
-                if (!held) return 0f;
+                bool engaged = AimEngageStateProvider?.Invoke(slotIndex) ?? true;
+                if (!engaged) return 0f;
             }
 
             // ─── Bias-subtracted gyro components ─────────────────
@@ -599,11 +619,10 @@ namespace PadForge.Engine.Common.Mapping
                 float defl = SlotRightStickDeflectionProvider?.Invoke(slotIndex) ?? 1f;
                 if (defl < tuning.EasyAimStickThreshold01) return;
             }
-            if (!string.IsNullOrEmpty(tuning.AimEngageDescriptor) && slotIndex >= 0)
+            if (slotIndex >= 0)
             {
-                bool held = ButtonHeldProvider?.Invoke(
-                    tuning.AimEngageDevice ?? "", tuning.AimEngageDescriptor, slotIndex) ?? true;
-                if (!held) return;
+                bool engaged = AimEngageStateProvider?.Invoke(slotIndex) ?? true;
+                if (!engaged) return;
             }
 
             // Space projection. Local keeps three independent axes;

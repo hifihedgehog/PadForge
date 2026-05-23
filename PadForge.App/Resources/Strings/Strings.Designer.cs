@@ -1007,6 +1007,13 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_Type_RumbleStop => Get("MacroAction_Type_RumbleStop");
     public string MacroAction_RumbleStop => Get("MacroAction_RumbleStop");
     public string MacroAction_RumbleStop_Tooltip => Get("MacroAction_RumbleStop_Tooltip");
+    public string Macro_SetGyroEngaged => Get("Macro_SetGyroEngaged");
+    public string Macro_SetGyroEngaged_Tooltip => Get("Macro_SetGyroEngaged_Tooltip");
+    public string Macro_SetGyroEngaged_Mode_Label => Get("Macro_SetGyroEngaged_Mode_Label");
+    public string Macro_SetGyroEngaged_Toggle => Get("Macro_SetGyroEngaged_Toggle");
+    public string Macro_SetGyroEngaged_On => Get("Macro_SetGyroEngaged_On");
+    public string Macro_SetGyroEngaged_Off => Get("Macro_SetGyroEngaged_Off");
+    public string MacroAction_SetGyroEngaged_Format => Get("MacroAction_SetGyroEngaged_Format");
     public string Macro_RumbleHold_Label => Get("Macro_RumbleHold_Label");
     public string Macro_RumbleHold_Reactive => Get("Macro_RumbleHold_Reactive");
     public string Macro_RumbleHold_Sticky => Get("Macro_RumbleHold_Sticky");
@@ -1093,6 +1100,10 @@ public class Strings : INotifyPropertyChanged
     public string Settings_GyroSmoothingWindow_Tooltip => Get("Settings_GyroSmoothingWindow_Tooltip");
     public string Settings_GyroAimEngageButton => Get("Settings_GyroAimEngageButton");
     public string Settings_GyroAimEngageButton_Tooltip => Get("Settings_GyroAimEngageButton_Tooltip");
+    public string Settings_GyroAimEngageMode => Get("Settings_GyroAimEngageMode");
+    public string Settings_GyroAimEngageMode_Tooltip => Get("Settings_GyroAimEngageMode_Tooltip");
+    public string Settings_GyroAimEngageMode_Hold => Get("Settings_GyroAimEngageMode_Hold");
+    public string Settings_GyroAimEngageMode_Toggle => Get("Settings_GyroAimEngageMode_Toggle");
     public string Pad_Gyro_Engage_Header => Get("Pad_Gyro_Engage_Header");
     public string Pad_Gyro_Engage_Subtitle => Get("Pad_Gyro_Engage_Subtitle");
     public string Pad_Gyro_Space_Local => Get("Pad_Gyro_Space_Local");
@@ -1130,6 +1141,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetGyroOutputCurve => Get("Pad_ResetGyroOutputCurve");
     public string Pad_ResetGyroEasyAimThreshold => Get("Pad_ResetGyroEasyAimThreshold");
     public string Pad_ResetGyroAimEngageButton => Get("Pad_ResetGyroAimEngageButton");
+    public string Pad_ResetGyroAimEngageMode => Get("Pad_ResetGyroAimEngageMode");
     public string Mapping_GyroSensitivity => Get("Mapping_GyroSensitivity");
     public string Mapping_GyroSensitivity_Tooltip => Get("Mapping_GyroSensitivity_Tooltip");
     public string MappingCategory_Touchpad => Get("MappingCategory_Touchpad");

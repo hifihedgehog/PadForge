@@ -1497,14 +1497,28 @@ namespace PadForge.Services
             // Update touchpad finger positions. Click state is shown in
             // the Buttons grid at slot 16 (SDL_GAMEPAD_BUTTON_TOUCHPAD),
             // so no separate VM write here.
-            if (ud.HasTouchpad || ud.IsTouchpad)
+            if ((ud.HasTouchpad || ud.IsTouchpad)
+                && state.Touchpads != null && state.Touchpads.Length > 0
+                && state.Touchpads[0] != null)
             {
-                devVm.TouchpadX0 = state.TouchpadFingers[0];
-                devVm.TouchpadY0 = state.TouchpadFingers[1];
-                devVm.TouchpadDown0 = state.TouchpadDown[0];
-                devVm.TouchpadX1 = state.TouchpadFingers[3];
-                devVm.TouchpadY1 = state.TouchpadFingers[4];
-                devVm.TouchpadDown1 = state.TouchpadDown[1];
+                // Devices preview surfaces the first touchpad's first two
+                // fingers. Multi-pad devices (Steam Controller / Deck /
+                // Triton) have their additional pads surfaced through the
+                // mapping table's per-pad descriptors; preview shows pad 0
+                // for parity with the pre-v3.3 single-pad model.
+                var pad = state.Touchpads[0];
+                if (pad.MaxFingers > 0)
+                {
+                    devVm.TouchpadX0 = pad.FingerX[0];
+                    devVm.TouchpadY0 = pad.FingerY[0];
+                    devVm.TouchpadDown0 = pad.FingerDown[0];
+                }
+                if (pad.MaxFingers > 1)
+                {
+                    devVm.TouchpadX1 = pad.FingerX[1];
+                    devVm.TouchpadY1 = pad.FingerY[1];
+                    devVm.TouchpadDown1 = pad.FingerDown[1];
+                }
             }
         }
 
@@ -1790,17 +1804,27 @@ namespace PadForge.Services
             // Touchpad descriptors: "Touchpad N Finger M X/Y/Down" or "Touchpad N Click".
             if (s.StartsWith("Touchpad", StringComparison.Ordinal))
             {
-                // Parse finger index and axis from descriptor.
-                // Format: "Touchpad 0 Finger 0 X", "Touchpad 0 Finger 1 Down", "Touchpad 0 Click"
-                if (s.Contains("Finger 0 X")) return (int)(state.TouchpadFingers[0] * 1000);
-                if (s.Contains("Finger 0 Y")) return (int)(state.TouchpadFingers[1] * 1000);
-                if (s.Contains("Finger 0 Down")) return state.TouchpadDown[0] ? 1 : 0;
-                if (s.Contains("Finger 1 X")) return (int)(state.TouchpadFingers[3] * 1000);
-                if (s.Contains("Finger 1 Y")) return (int)(state.TouchpadFingers[4] * 1000);
-                if (s.Contains("Finger 1 Down")) return state.TouchpadDown[1] ? 1 : 0;
-                if (s.EndsWith(" Click", StringComparison.Ordinal))
+                // Format: "Touchpad N Finger M X|Y|Pressure|Down", "Touchpad N Click"
+                var tParts = s.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                if (tParts.Length < 3) return 0;
+                if (!int.TryParse(tParts[1], out int padIdx)) return 0;
+                if (tParts.Length == 3 && tParts[2].Equals("Click", StringComparison.Ordinal))
                     return (state.Buttons != null && state.Buttons.Length > 16 && state.Buttons[16]) ? 1 : 0;
-                return 0;
+                if (tParts.Length != 5
+                    || !tParts[2].Equals("Finger", StringComparison.Ordinal)
+                    || !int.TryParse(tParts[3], out int fingerIdx))
+                    return 0;
+                if (state.Touchpads == null || padIdx < 0 || padIdx >= state.Touchpads.Length) return 0;
+                var pad = state.Touchpads[padIdx];
+                if (pad == null || fingerIdx < 0 || fingerIdx >= pad.MaxFingers) return 0;
+                return tParts[4] switch
+                {
+                    "X"        => (int)(pad.FingerX[fingerIdx] * 1000),
+                    "Y"        => (int)(pad.FingerY[fingerIdx] * 1000),
+                    "Pressure" => (int)(pad.FingerPressure[fingerIdx] * 1000),
+                    "Down"     => pad.FingerDown[fingerIdx] ? 1 : 0,
+                    _          => 0
+                };
             }
 
             string[] parts = s.Split(' ', StringSplitOptions.RemoveEmptyEntries);

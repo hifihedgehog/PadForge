@@ -1946,8 +1946,11 @@ namespace PadForge.Common.Input
                     contactKey, legacyContactDesc, globalThreshold, out bool contactFound);
                 outDown = contactFound
                     ? contactPressed
-                    : (state.TouchpadDown != null && physicalFingerIdx < state.TouchpadDown.Length
-                       && state.TouchpadDown[physicalFingerIdx]);
+                    : (state.Touchpads != null && state.Touchpads.Length > 0
+                       && state.Touchpads[0] != null
+                       && physicalFingerIdx >= 0
+                       && physicalFingerIdx < state.Touchpads[0].MaxFingers
+                       && state.Touchpads[0].FingerDown[physicalFingerIdx]);
             }
             else
             {
@@ -2015,8 +2018,11 @@ namespace PadForge.Common.Input
                 // Try a "Touchpad N Finger M X|Y" parse; default to the
                 // expected slot (physicalFingerIdx, X or Y).
                 var parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                int padIdx = 0;
                 int fingerIdx = physicalFingerIdx;
                 int axisOffset = isY ? 1 : 0;
+                if (parts.Length >= 2 && int.TryParse(parts[1], out int parsedPad))
+                    padIdx = parsedPad;
                 if (parts.Length == 5
                     && parts[2].Equals("Finger", StringComparison.Ordinal)
                     && int.TryParse(parts[3], out int parsedFinger))
@@ -2024,10 +2030,16 @@ namespace PadForge.Common.Input
                     fingerIdx = parsedFinger;
                     axisOffset = parts[4] switch { "X" => 0, "Y" => 1, "Pressure" => 2, _ => axisOffset };
                 }
-                if (state.TouchpadFingers == null) return 0f;
-                int idx = fingerIdx * 3 + axisOffset;
-                if (idx < 0 || idx >= state.TouchpadFingers.Length) return 0f;
-                float raw = state.TouchpadFingers[idx];   // [0..1]
+                if (state.Touchpads == null || padIdx < 0 || padIdx >= state.Touchpads.Length) return 0f;
+                var pad = state.Touchpads[padIdx];
+                if (pad == null || fingerIdx < 0 || fingerIdx >= pad.MaxFingers) return 0f;
+                float raw = axisOffset switch
+                {
+                    0 => pad.FingerX[fingerIdx],
+                    1 => pad.FingerY[fingerIdx],
+                    2 => pad.FingerPressure[fingerIdx],
+                    _ => 0f
+                };
                 return Math.Clamp((raw - 0.5f) * 2f, -1f, 1f);
             }
             // Non-touchpad descriptor in passthrough mode (shouldn't happen
@@ -2080,13 +2092,15 @@ namespace PadForge.Common.Input
                 && string.Equals(parts[4], "Down", StringComparison.Ordinal)
                 && int.TryParse(parts[3], out int fingerIndex))
             {
-                if (touchpadIndex != 0) return false;
-                if (fingerIndex < 0 || fingerIndex >= state.TouchpadDown.Length) return false;
-                return state.TouchpadDown[fingerIndex];
+                if (state.Touchpads == null
+                    || touchpadIndex < 0 || touchpadIndex >= state.Touchpads.Length) return false;
+                var pad = state.Touchpads[touchpadIndex];
+                if (pad == null || fingerIndex < 0 || fingerIndex >= pad.MaxFingers) return false;
+                return pad.FingerDown[fingerIndex];
             }
 
             // X/Y descriptors are handled by the touchpad output path in
-            // Step 3 directly (BuildTouchpadState reads state.TouchpadFingers),
+            // Step 3 directly (BuildTouchpadState reads state.Touchpads),
             // not via MapToButtonPressed. They don't have a meaningful bool
             // interpretation, so reject them here so the user can't quietly
             // assign a stick X to a button.

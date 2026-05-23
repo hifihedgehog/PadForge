@@ -1109,7 +1109,7 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = eixos brutos do controle. Player = o yaw é projetado na vertical real (gravidade); o pitch permanece local — padrão recomendado por Jibb Smart para uma sensação natural em qualquer inclinação. World = yaw e pitch projetados nos eixos do mundo.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Inverter Pitch (Y)</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Inversão global do pitch. Aplicada após a projeção Player/World — independente das flags Invert por fonte na tabela de mapeamentos.</value></data>
-  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Inverter Yaw (X)</value></data>
+  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Inverter Yaw / Roll (X)</value></data>
   <data name="Settings_GyroInvertYaw_Tooltip" xml:space="preserve"><value>Inversão global do yaw. Também afeta fontes Roll e Gyro Horizontal.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Calibração real</value></data>
   <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>Graus no jogo por grau físico de rotação do controle. 0 = desativado. 1 = 1:1 (gire o controle 90° → visão no jogo 90°). Calibre uma vez por jogo rotacionando o controle 360° e ajustando até a visão no jogo também rotacionar 360°.</value></data>

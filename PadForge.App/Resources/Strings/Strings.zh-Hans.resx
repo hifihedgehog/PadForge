@@ -1109,7 +1109,7 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = 手柄原始本地轴。Player = 把偏航投影到真实垂直轴（重力），俯仰保持本地 — Jibb Smart 推荐的默认值，在任意倾斜角度都自然。World = 偏航与俯仰均投影到世界坐标轴。</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>反转俯仰（Y）</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>俯仰轴的全局反转。在 Player/World 投影之后应用 — 与映射表中各源的 Invert 标志互相独立。</value></data>
-  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>反转偏航（X）</value></data>
+  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>反转偏航 / 滚转（X）</value></data>
   <data name="Settings_GyroInvertYaw_Tooltip" xml:space="preserve"><value>偏航轴的全局反转。同样作用于 Roll 与 Gyro Horizontal 源。</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>真实世界校准</value></data>
   <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>每物理旋转 1° 对应的游戏内视角旋转角度。0 = 关闭。1 = 1:1（手柄旋转 90° → 游戏视角旋转 90°）。每个游戏校准一次：把手柄转一整圈 360°，调整数值直到游戏内视角也正好转 360°。</value></data>

@@ -1012,20 +1012,27 @@ namespace PadForge.Services
                     if (selected != null && selected.InstanceGuid != Guid.Empty)
                     {
                         UserDevice ud = FindUserDevice(selected.InstanceGuid);
-                        if (ud != null && ud.HasGyro)
+                        if (ud != null && (ud.HasGyro || ud.HasAccel))
                         {
                             const double RadToDeg = 180.0 / System.Math.PI;
+                            const double MsToG    = 1.0 / 9.80665;
                             var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, i);
                             var ps = us?.GetPadSetting();
                             float bp = ps != null ? TryParseFloatPs(ps.GyroBiasPitch, 0f) : 0f;
                             float by = ps != null ? TryParseFloatPs(ps.GyroBiasYaw,   0f) : 0f;
                             float br = ps != null ? TryParseFloatPs(ps.GyroBiasRoll,  0f) : 0f;
                             var st = ud.InputState;
-                            if (st != null && st.Gyro != null && st.Gyro.Length >= 3)
+                            if (st != null && ud.HasGyro && st.Gyro != null && st.Gyro.Length >= 3)
                             {
                                 padVm.GyroLiveRatePitch = (st.Gyro[0] - bp) * RadToDeg;
                                 padVm.GyroLiveRateYaw   = (st.Gyro[1] - by) * RadToDeg;
                                 padVm.GyroLiveRateRoll  = (st.Gyro[2] - br) * RadToDeg;
+                            }
+                            if (st != null && ud.HasAccel && st.Accel != null && st.Accel.Length >= 3)
+                            {
+                                padVm.AccelLiveX = st.Accel[0] * MsToG;
+                                padVm.AccelLiveY = st.Accel[1] * MsToG;
+                                padVm.AccelLiveZ = st.Accel[2] * MsToG;
                             }
                             string ts = ps?.GyroCalibratedAtUtc;
                             if (string.IsNullOrEmpty(ts) ||

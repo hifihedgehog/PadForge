@@ -1081,6 +1081,7 @@
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>較正をリセット</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>静止時のジャイロバイアスと最終較正のタイムスタンプをクリアします。次のポーリングサイクルで、このデバイスの 1.5 秒自動較正が再実行されます。</value></data>
   <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>現在のレート</value></data>
+  <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>現在の加速度</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>水平感度</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>ジャイロの水平 (Yaw + Roll) 出力をスケールします。1.0 はエンジンが見るレートのまま、それより大きい値は増幅、小さい値は減衰させます。デバイス全体に適用されます。</value></data>
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>垂直感度</value></data>

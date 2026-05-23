@@ -1081,6 +1081,7 @@
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>重置校准</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>清除陀螺仪的静止偏置和上次校准时间戳。下一个轮询周期会重新对此设备执行 1.5 秒的自动校准。</value></data>
   <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>当前速率</value></data>
+  <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>当前加速度</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>水平灵敏度</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>缩放陀螺仪的水平 (Yaw + Roll) 输出。1.0 保持引擎读取的速率不变；较高放大，较低衰减。整个设备范围生效。</value></data>
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>垂直灵敏度</value></data>

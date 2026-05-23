@@ -1052,6 +1052,7 @@ public class Strings : INotifyPropertyChanged
     public string Settings_GyroResetCalibration_Button => Get("Settings_GyroResetCalibration_Button");
     public string Settings_GyroResetCalibration_Tooltip => Get("Settings_GyroResetCalibration_Tooltip");
     public string Settings_GyroLiveRate_Label => Get("Settings_GyroLiveRate_Label");
+    public string Settings_GyroLiveAccel_Label => Get("Settings_GyroLiveAccel_Label");
     public string Settings_GyroSensitivityH => Get("Settings_GyroSensitivityH");
     public string Settings_GyroSensitivityH_Tooltip => Get("Settings_GyroSensitivityH_Tooltip");
     public string Settings_GyroSensitivityV => Get("Settings_GyroSensitivityV");

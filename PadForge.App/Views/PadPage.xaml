@@ -4894,7 +4894,7 @@
                                      single-letter abbreviations. Per-axis Width is
                                      wide enough to hold the longest realistic value
                                      without text truncation. -->
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Settings_GyroLiveRate_Label, Source={x:Static strings:Strings.Instance}}"
                                                FontSize="14" Width="160" Opacity="0.85" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding GyroLiveRatePitch, StringFormat={}Pitch {0:+0.0;-0.0;0.0}°/s}"

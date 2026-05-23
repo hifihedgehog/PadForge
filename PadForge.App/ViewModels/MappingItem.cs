@@ -1342,7 +1342,13 @@ namespace PadForge.ViewModels
         Triggers,
         LeftStick,
         RightStick,
-        Touchpad
+        Touchpad,
+        // Bundled motion-passthrough rows: MotionGyro / MotionAccel
+        // targets bound to a device's Motion Gyro / Motion Accel sources.
+        // Auto-created on Sony-class VC slots for every assigned gyro /
+        // accel-capable device; rendered as a single combined Motion row
+        // in the UI when both sub-channels come from the same source.
+        Motion
     }
 
     /// <summary>

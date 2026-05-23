@@ -180,6 +180,15 @@ namespace PadForge.Common.Input
         /// resuming picks up where it left off.</summary>
         public volatile bool GestureSuspendActive;
 
+        /// <summary>Global master enable for the touchpad gesture
+        /// engine. False = every per-tick update returns early without
+        /// recording paths or evaluating recognizers. Distinguished
+        /// from <see cref="GestureSuspendActive"/>: the suspend flag is
+        /// a user-driven runtime toggle and preserves in-flight gesture
+        /// state; this master switch is the persisted settings choice
+        /// and is checked first.</summary>
+        public volatile bool TouchpadGesturesGloballyEnabled = true;
+
         /// <summary>
         /// Retrieved output states copied from Step 4 for UI display in Step 6.
         /// </summary>
@@ -1034,6 +1043,11 @@ namespace PadForge.Common.Input
         {
             if (ud == null || newState == null) return;
             if (newState.Touchpads == null || newState.Touchpads.Length == 0) return;
+
+            // Master switch: skip the whole per-pad walk when gestures
+            // are globally disabled. Per-pad enable lives downstream in
+            // the gesture engine via TouchpadGestureSettings.
+            if (!TouchpadGesturesGloballyEnabled) return;
 
             long nowMs = System.Environment.TickCount64;
             for (int p = 0; p < newState.Touchpads.Length; p++)

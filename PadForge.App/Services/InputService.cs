@@ -707,6 +707,12 @@ namespace PadForge.Services
             _mainVm.Dashboard.PropertyChanged += OnDashboardPropertyChanged;
             _mainVm.Dashboard.ResetTouchpadOverlayPositionRequested += OnResetTouchpadOverlayPosition;
 
+            // Apply the persisted touchpad-gesture suspend hotkey. SyncInputHooks
+            // (called downstream) will start the hook manager if needed; the
+            // registration is recorded now so we don't miss the bind.
+            SetTouchpadGestureSuspendHotkey(_mainVm.Settings.TouchpadGestureSuspendHotkey);
+            _inputManager.TouchpadGesturesGloballyEnabled = _mainVm.Settings.EnableTouchpadGestures;
+
             // Create foreground monitor for auto-profile switching.
             _foregroundMonitor = new ForegroundMonitorService();
             _foregroundMonitor.ProfileSwitchRequired += OnProfileSwitchRequired;
@@ -3780,6 +3786,17 @@ namespace PadForge.Services
                     ApplyDeviceHiding();
                 else
                     RemoveDeviceHiding();
+            }
+            else if (e.PropertyName == nameof(SettingsViewModel.TouchpadGestureSuspendHotkey))
+            {
+                SetTouchpadGestureSuspendHotkey(_mainVm.Settings.TouchpadGestureSuspendHotkey);
+            }
+            else if (e.PropertyName == nameof(SettingsViewModel.EnableTouchpadGestures) && _inputManager != null)
+            {
+                // Master toggle propagates to a single InputManager flag the
+                // gesture engine reads each tick. Per-pad toggles still apply
+                // on top of this.
+                _inputManager.TouchpadGesturesGloballyEnabled = _mainVm.Settings.EnableTouchpadGestures;
             }
         }
 

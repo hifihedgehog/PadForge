@@ -259,6 +259,12 @@
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Whitelisted Applications</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>These applications can still see hidden devices. PadForge is always whitelisted automatically.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Add...</value></data>
+  <data name="Settings_TouchpadGestures" xml:space="preserve"><value>Touchpad Gestures</value></data>
+  <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>Recognize swipes, taps, pinches, and custom shapes on every touchpad PadForge can read. Per-touchpad settings live on each Pad's Touchpad tab; the controls below cover the global master switch and the suspend-hotkey binding.</value></data>
+  <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>Enable touchpad gestures globally</value></data>
+  <data name="Settings_EnableTouchpadGesturesTooltip" xml:space="preserve"><value>Master switch. When off, no touchpad fires gesture descriptors regardless of per-touchpad enable toggles. Existing finger / click / position mappings on touchpads still work.</value></data>
+  <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>Suspend hotkey</value></data>
+  <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>Keyboard combo (e.g. Ctrl+Alt+T) that toggles gesture detection on and off. Useful when a game expects raw touchpad input or when accidental gesture fires interrupt play. Empty = no hotkey bound.</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro Driver</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>User-mode virtual HID controller engine. Embedded in PadForge.App — installed automatically on first virtual controller creation. Replaces ViGEmBus and vJoy in v3.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>

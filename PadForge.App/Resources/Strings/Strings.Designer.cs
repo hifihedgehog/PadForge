@@ -297,6 +297,12 @@ public class Strings : INotifyPropertyChanged
     public string Settings_WhitelistedApps => Get("Settings_WhitelistedApps");
     public string Settings_WhitelistDesc => Get("Settings_WhitelistDesc");
     public string Settings_AddDots => Get("Settings_AddDots");
+    public string Settings_TouchpadGestures => Get("Settings_TouchpadGestures");
+    public string Settings_TouchpadGesturesDesc => Get("Settings_TouchpadGesturesDesc");
+    public string Settings_EnableTouchpadGestures => Get("Settings_EnableTouchpadGestures");
+    public string Settings_EnableTouchpadGesturesTooltip => Get("Settings_EnableTouchpadGesturesTooltip");
+    public string Settings_TouchpadGestureSuspendHotkey => Get("Settings_TouchpadGestureSuspendHotkey");
+    public string Settings_TouchpadGestureSuspendHotkeyTooltip => Get("Settings_TouchpadGestureSuspendHotkeyTooltip");
     public string Settings_HIDMaestro => Get("Settings_HIDMaestro");
     public string Settings_HIDMaestroDesc => Get("Settings_HIDMaestroDesc");
     public string Settings_MidiServices => Get("Settings_MidiServices");

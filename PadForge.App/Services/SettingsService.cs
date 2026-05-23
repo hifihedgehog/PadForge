@@ -899,6 +899,8 @@ namespace PadForge.Services
             vm.SelectedThemeIndex = appSettings.ThemeIndex;
             vm.EnableInputHiding = appSettings.EnableInputHiding;
             vm.KeepHidHideCloaksBetweenLaunches = appSettings.KeepHidHideCloaksBetweenLaunches;
+            vm.EnableTouchpadGestures = appSettings.EnableTouchpadGestures;
+            vm.TouchpadGestureSuspendHotkey = appSettings.TouchpadGestureSuspendHotkey ?? string.Empty;
             vm.HidHideWhitelistPaths.Clear();
             if (appSettings.HidHideWhitelistPaths != null)
             {
@@ -2445,6 +2447,8 @@ namespace PadForge.Services
                 LegacyDriverCleanupOffered = vm.LegacyDriverCleanupOffered,
                 EnableInputHiding = vm.EnableInputHiding,
                 KeepHidHideCloaksBetweenLaunches = vm.KeepHidHideCloaksBetweenLaunches,
+                EnableTouchpadGestures = vm.EnableTouchpadGestures,
+                TouchpadGestureSuspendHotkey = vm.TouchpadGestureSuspendHotkey ?? string.Empty,
                 HidHideWhitelistPaths = vm.HidHideWhitelistPaths.Count > 0
                     ? vm.HidHideWhitelistPaths.ToArray()
                     : null,
@@ -3449,6 +3453,23 @@ namespace PadForge.Services
 
         [XmlElement]
         public bool EnableTouchpadOverlay { get; set; }
+
+        /// <summary>
+        /// Global master switch for touchpad gesture detection. Default true.
+        /// When false, no touchpad pad's gesture engine runs regardless of
+        /// per-pad enable toggles. Added in v3.3.0.
+        /// </summary>
+        [XmlElement]
+        public bool EnableTouchpadGestures { get; set; } = true;
+
+        /// <summary>
+        /// Canonical keyboard-combo string for the global touchpad-gesture
+        /// suspend hotkey (e.g. <c>"Ctrl+Alt+T"</c>). Empty = unbound.
+        /// Pressing it toggles a runtime flag that pauses gesture detection
+        /// across all touchpads. Added in v3.3.0.
+        /// </summary>
+        [XmlElement]
+        public string TouchpadGestureSuspendHotkey { get; set; } = string.Empty;
 
         [XmlElement]
         public double TouchpadOverlayOpacity { get; set; } = 0.25;

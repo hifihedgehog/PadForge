@@ -1565,6 +1565,31 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Nessun gesto personalizzato registrato per questo profilo. Clicca Registra nuovo gesto per acquisirne uno.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 dito</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} dita</value></data>
+  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Ripristina rilevamento</value></data>
+  <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Ripristina gesti integrati</value></data>
+  <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Ripristina gesti</value></data>
+  <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Ripristina riconoscimento</value></data>
+  <data name="Pad_ResetTouchpadCooldownMs" xml:space="preserve"><value>Ripristina cooldown</value></data>
+  <data name="Pad_ResetTouchpadFourWaySwipes" xml:space="preserve"><value>Ripristina scorrimenti a 4 direzioni</value></data>
+  <data name="Pad_ResetTouchpadEightWaySwipes" xml:space="preserve"><value>Ripristina scorrimenti a 8 direzioni</value></data>
+  <data name="Pad_ResetTouchpadSwipeDistance" xml:space="preserve"><value>Ripristina distanza scorrimento</value></data>
+  <data name="Pad_ResetTouchpadSwipeTimeWindow" xml:space="preserve"><value>Ripristina finestra temporale scorrimento</value></data>
+  <data name="Pad_ResetTouchpadRadialZones" xml:space="preserve"><value>Ripristina zone radiali</value></data>
+  <data name="Pad_ResetTouchpadRadialZoneCount" xml:space="preserve"><value>Ripristina numero di zone</value></data>
+  <data name="Pad_ResetTouchpadRadialCenterDeadzone" xml:space="preserve"><value>Ripristina zona morta centrale</value></data>
+  <data name="Pad_ResetTouchpadTaps" xml:space="preserve"><value>Ripristina tocco / doppio tocco / triplo tocco</value></data>
+  <data name="Pad_ResetTouchpadTapTimeWindow" xml:space="preserve"><value>Ripristina finestra temporale tocco</value></data>
+  <data name="Pad_ResetTouchpadMultiTapGap" xml:space="preserve"><value>Ripristina intervallo multi-tocco</value></data>
+  <data name="Pad_ResetTouchpadLongPress" xml:space="preserve"><value>Ripristina pressione prolungata</value></data>
+  <data name="Pad_ResetTouchpadLongPressTimeWindow" xml:space="preserve"><value>Ripristina durata pressione prolungata</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipes" xml:space="preserve"><value>Ripristina scorrimenti a due dita</value></data>
+  <data name="Pad_ResetTouchpadPinchSpread" xml:space="preserve"><value>Ripristina pizzico / allargamento</value></data>
+  <data name="Pad_ResetTouchpadRotate" xml:space="preserve"><value>Ripristina rotazione</value></data>
+  <data name="Pad_ResetTouchpadThreeFinger" xml:space="preserve"><value>Ripristina gesti a tre dita</value></data>
+  <data name="Pad_ResetTouchpadFourFinger" xml:space="preserve"><value>Ripristina gesti a quattro dita</value></data>
+  <data name="Pad_ResetTouchpadFiveFinger" xml:space="preserve"><value>Ripristina tocco a cinque dita</value></data>
+  <data name="Pad_ResetTouchpadShapeGestures" xml:space="preserve"><value>Ripristina gesti di forma</value></data>
+  <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Ripristina soglia di corrispondenza forma</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>Registra gesto touchpad</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Disegna il gesto sulla superficie sottostante. La finestra cattura ogni dito appoggiato. Quando sollevi tutte le dita dalla superficie, il campione viene registrato. Disegnare con un numero di dita diverso dai campioni precedenti azzera lo stack.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>In attesa del contatto delle dita sulla superficie</value></data>

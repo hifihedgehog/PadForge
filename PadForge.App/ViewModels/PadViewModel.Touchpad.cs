@@ -329,6 +329,143 @@ namespace PadForge.ViewModels
 
         public event EventHandler<TouchpadCustomGestureItem> DeleteTouchpadGestureRequested;
 
+        // ─── Reset commands (per-row + per-card) ──────
+        //
+        // Defaults below mirror TouchpadGestureSettings.Default() and
+        // the per-property initializers above so a reset round-trips
+        // to "the engine's out-of-the-box behavior for this pad."
+
+        private RelayCommand _resetTouchpadGesturesEnabledCommand;
+        public RelayCommand ResetTouchpadGesturesEnabledCommand =>
+            _resetTouchpadGesturesEnabledCommand ??= new RelayCommand(() => TouchpadGesturesEnabled = true);
+
+        private RelayCommand _resetTouchpadGestureModeCommand;
+        public RelayCommand ResetTouchpadGestureModeCommand =>
+            _resetTouchpadGestureModeCommand ??= new RelayCommand(() => TouchpadGestureMode = "Both");
+
+        private RelayCommand _resetTouchpadCooldownMsCommand;
+        public RelayCommand ResetTouchpadCooldownMsCommand =>
+            _resetTouchpadCooldownMsCommand ??= new RelayCommand(() => TouchpadCooldownMs = 100);
+
+        private RelayCommand _resetTouchpadEnableFourWaySwipesCommand;
+        public RelayCommand ResetTouchpadEnableFourWaySwipesCommand =>
+            _resetTouchpadEnableFourWaySwipesCommand ??= new RelayCommand(() => TouchpadEnableFourWaySwipes = true);
+
+        private RelayCommand _resetTouchpadEnableEightWaySwipesCommand;
+        public RelayCommand ResetTouchpadEnableEightWaySwipesCommand =>
+            _resetTouchpadEnableEightWaySwipesCommand ??= new RelayCommand(() => TouchpadEnableEightWaySwipes = false);
+
+        private RelayCommand _resetTouchpadSwipeDistanceThresholdCommand;
+        public RelayCommand ResetTouchpadSwipeDistanceThresholdCommand =>
+            _resetTouchpadSwipeDistanceThresholdCommand ??= new RelayCommand(() => TouchpadSwipeDistanceThreshold = 0.15);
+
+        private RelayCommand _resetTouchpadSwipeTimeWindowMsCommand;
+        public RelayCommand ResetTouchpadSwipeTimeWindowMsCommand =>
+            _resetTouchpadSwipeTimeWindowMsCommand ??= new RelayCommand(() => TouchpadSwipeTimeWindowMs = 500);
+
+        private RelayCommand _resetTouchpadEnableRadialZonesCommand;
+        public RelayCommand ResetTouchpadEnableRadialZonesCommand =>
+            _resetTouchpadEnableRadialZonesCommand ??= new RelayCommand(() => TouchpadEnableRadialZones = false);
+
+        private RelayCommand _resetTouchpadRadialZoneCountCommand;
+        public RelayCommand ResetTouchpadRadialZoneCountCommand =>
+            _resetTouchpadRadialZoneCountCommand ??= new RelayCommand(() => TouchpadRadialZoneCount = 8);
+
+        private RelayCommand _resetTouchpadRadialCenterDeadzoneCommand;
+        public RelayCommand ResetTouchpadRadialCenterDeadzoneCommand =>
+            _resetTouchpadRadialCenterDeadzoneCommand ??= new RelayCommand(() => TouchpadRadialCenterDeadzone = 0.30);
+
+        private RelayCommand _resetTouchpadEnableTapsCommand;
+        public RelayCommand ResetTouchpadEnableTapsCommand =>
+            _resetTouchpadEnableTapsCommand ??= new RelayCommand(() => TouchpadEnableTaps = true);
+
+        private RelayCommand _resetTouchpadTapTimeWindowMsCommand;
+        public RelayCommand ResetTouchpadTapTimeWindowMsCommand =>
+            _resetTouchpadTapTimeWindowMsCommand ??= new RelayCommand(() => TouchpadTapTimeWindowMs = 200);
+
+        private RelayCommand _resetTouchpadMultiTapGapMsCommand;
+        public RelayCommand ResetTouchpadMultiTapGapMsCommand =>
+            _resetTouchpadMultiTapGapMsCommand ??= new RelayCommand(() => TouchpadMultiTapGapMs = 300);
+
+        private RelayCommand _resetTouchpadEnableLongPressCommand;
+        public RelayCommand ResetTouchpadEnableLongPressCommand =>
+            _resetTouchpadEnableLongPressCommand ??= new RelayCommand(() => TouchpadEnableLongPress = true);
+
+        private RelayCommand _resetTouchpadLongPressTimeWindowMsCommand;
+        public RelayCommand ResetTouchpadLongPressTimeWindowMsCommand =>
+            _resetTouchpadLongPressTimeWindowMsCommand ??= new RelayCommand(() => TouchpadLongPressTimeWindowMs = 500);
+
+        private RelayCommand _resetTouchpadEnableTwoFingerSwipesCommand;
+        public RelayCommand ResetTouchpadEnableTwoFingerSwipesCommand =>
+            _resetTouchpadEnableTwoFingerSwipesCommand ??= new RelayCommand(() => TouchpadEnableTwoFingerSwipes = true);
+
+        private RelayCommand _resetTouchpadEnablePinchSpreadCommand;
+        public RelayCommand ResetTouchpadEnablePinchSpreadCommand =>
+            _resetTouchpadEnablePinchSpreadCommand ??= new RelayCommand(() => TouchpadEnablePinchSpread = true);
+
+        private RelayCommand _resetTouchpadEnableRotateCommand;
+        public RelayCommand ResetTouchpadEnableRotateCommand =>
+            _resetTouchpadEnableRotateCommand ??= new RelayCommand(() => TouchpadEnableRotate = true);
+
+        private RelayCommand _resetTouchpadEnableThreeFingerGesturesCommand;
+        public RelayCommand ResetTouchpadEnableThreeFingerGesturesCommand =>
+            _resetTouchpadEnableThreeFingerGesturesCommand ??= new RelayCommand(() => TouchpadEnableThreeFingerGestures = true);
+
+        private RelayCommand _resetTouchpadEnableFourFingerGesturesCommand;
+        public RelayCommand ResetTouchpadEnableFourFingerGesturesCommand =>
+            _resetTouchpadEnableFourFingerGesturesCommand ??= new RelayCommand(() => TouchpadEnableFourFingerGestures = false);
+
+        private RelayCommand _resetTouchpadEnableFiveFingerGesturesCommand;
+        public RelayCommand ResetTouchpadEnableFiveFingerGesturesCommand =>
+            _resetTouchpadEnableFiveFingerGesturesCommand ??= new RelayCommand(() => TouchpadEnableFiveFingerGestures = false);
+
+        private RelayCommand _resetTouchpadEnableShapeGesturesCommand;
+        public RelayCommand ResetTouchpadEnableShapeGesturesCommand =>
+            _resetTouchpadEnableShapeGesturesCommand ??= new RelayCommand(() => TouchpadEnableShapeGestures = false);
+
+        private RelayCommand _resetTouchpadGestureMatchThresholdCommand;
+        public RelayCommand ResetTouchpadGestureMatchThresholdCommand =>
+            _resetTouchpadGestureMatchThresholdCommand ??= new RelayCommand(() => TouchpadGestureMatchThreshold = 2.5);
+
+        private RelayCommand _resetTouchpadDetectionCardCommand;
+
+        /// <summary>Reset every Detection-card field to defaults.</summary>
+        public RelayCommand ResetTouchpadDetectionCardCommand =>
+            _resetTouchpadDetectionCardCommand ??= new RelayCommand(() =>
+            {
+                TouchpadGesturesEnabled = true;
+                TouchpadGestureMode = "Both";
+                TouchpadCooldownMs = 100;
+            });
+
+        private RelayCommand _resetTouchpadInBoxCardCommand;
+
+        /// <summary>Reset every In-box-gestures card field to defaults.</summary>
+        public RelayCommand ResetTouchpadInBoxCardCommand =>
+            _resetTouchpadInBoxCardCommand ??= new RelayCommand(() =>
+            {
+                TouchpadEnableFourWaySwipes = true;
+                TouchpadEnableEightWaySwipes = false;
+                TouchpadSwipeDistanceThreshold = 0.15;
+                TouchpadSwipeTimeWindowMs = 500;
+                TouchpadEnableRadialZones = false;
+                TouchpadRadialZoneCount = 8;
+                TouchpadRadialCenterDeadzone = 0.30;
+                TouchpadEnableTaps = true;
+                TouchpadTapTimeWindowMs = 200;
+                TouchpadMultiTapGapMs = 300;
+                TouchpadEnableLongPress = true;
+                TouchpadLongPressTimeWindowMs = 500;
+                TouchpadEnableTwoFingerSwipes = true;
+                TouchpadEnablePinchSpread = true;
+                TouchpadEnableRotate = true;
+                TouchpadEnableThreeFingerGestures = true;
+                TouchpadEnableFourFingerGestures = false;
+                TouchpadEnableFiveFingerGestures = false;
+                TouchpadEnableShapeGestures = false;
+                TouchpadGestureMatchThreshold = 2.5;
+            });
+
         // ─── Per-pad pivot / topology helpers ─────────
 
         /// <summary>Update <see cref="MaxTouchpadIndex"/> from the

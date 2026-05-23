@@ -5548,11 +5548,18 @@
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Touchpad_Detection_Header, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding ResetTouchpadDetectionCardCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetTouchpadDetection, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
-                                <CheckBox Content="{Binding Pad_Touchpad_GesturesEnabled, Source={x:Static strings:Strings.Instance}}"
-                                          IsChecked="{Binding TouchpadGesturesEnabled, Mode=TwoWay}"
-                                          ToolTip="{Binding Pad_Touchpad_GesturesEnabled_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                          Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <CheckBox Content="{Binding Pad_Touchpad_GesturesEnabled, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadGesturesEnabled, Mode=TwoWay}"
+                                              ToolTip="{Binding Pad_Touchpad_GesturesEnabled_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadGesturesEnabledCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadGesturesEnabled, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_Touchpad_Mode_Label, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="160"/>
@@ -5565,6 +5572,8 @@
                                         <ComboBoxItem Tag="CustomOnly" Content="{Binding Pad_Touchpad_Mode_CustomOnly, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Tag="Both" Content="{Binding Pad_Touchpad_Mode_Both, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
+                                    <Button Command="{Binding ResetTouchpadGestureModeCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadGestureMode, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_Touchpad_CooldownMs_Label, Source={x:Static strings:Strings.Instance}}"
@@ -5572,6 +5581,8 @@
                                     <TextBox Text="{Binding TouchpadCooldownMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"
                                              ToolTip="{Binding Pad_Touchpad_CooldownMs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Command="{Binding ResetTouchpadCooldownMsCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadCooldownMs, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>
@@ -5584,27 +5595,46 @@
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Touchpad_InBox_Header, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding ResetTouchpadInBoxCardCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetTouchpadInBox, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <CheckBox Content="{Binding Pad_Touchpad_FourWaySwipes, Source={x:Static strings:Strings.Instance}}"
-                                          IsChecked="{Binding TouchpadEnableFourWaySwipes, Mode=TwoWay}" Margin="0,0,0,6"/>
-                                <CheckBox Content="{Binding Pad_Touchpad_EightWaySwipes, Source={x:Static strings:Strings.Instance}}"
-                                          IsChecked="{Binding TouchpadEnableEightWaySwipes, Mode=TwoWay}" Margin="0,0,0,6"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Content="{Binding Pad_Touchpad_FourWaySwipes, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadEnableFourWaySwipes, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadEnableFourWaySwipesCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadFourWaySwipes, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Content="{Binding Pad_Touchpad_EightWaySwipes, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadEnableEightWaySwipes, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadEnableEightWaySwipesCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadEightWaySwipes, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
                                     <TextBlock Text="{Binding Pad_Touchpad_SwipeDistanceThreshold, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="220"/>
                                     <TextBox Text="{Binding TouchpadSwipeDistanceThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadSwipeDistanceThresholdCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadSwipeDistance, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
                                     <TextBlock Text="{Binding Pad_Touchpad_SwipeTimeWindow, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="220"/>
                                     <TextBox Text="{Binding TouchpadSwipeTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadSwipeTimeWindowMsCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadSwipeTimeWindow, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <CheckBox Content="{Binding Pad_Touchpad_RadialZones, Source={x:Static strings:Strings.Instance}}"
-                                          IsChecked="{Binding TouchpadEnableRadialZones, Mode=TwoWay}" Margin="0,0,0,6"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Content="{Binding Pad_Touchpad_RadialZones, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadEnableRadialZones, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadEnableRadialZonesCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadRadialZones, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
                                     <TextBlock Text="{Binding Pad_Touchpad_RadialZoneCount, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="220"/>
@@ -5612,57 +5642,105 @@
                                               SelectedItem="{Binding TouchpadRadialZoneCount, Mode=TwoWay}"
                                               Width="80" VerticalAlignment="Center"
                                               ScrollViewer.VerticalScrollBarVisibility="Visible"/>
+                                    <Button Command="{Binding ResetTouchpadRadialZoneCountCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadRadialZoneCount, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
                                     <TextBlock Text="{Binding Pad_Touchpad_RadialCenterDeadzone, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="220"/>
                                     <TextBox Text="{Binding TouchpadRadialCenterDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadRadialCenterDeadzoneCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadRadialCenterDeadzone, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <CheckBox Content="{Binding Pad_Touchpad_Taps, Source={x:Static strings:Strings.Instance}}"
-                                          IsChecked="{Binding TouchpadEnableTaps, Mode=TwoWay}" Margin="0,0,0,6"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Content="{Binding Pad_Touchpad_Taps, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadEnableTaps, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadEnableTapsCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadTaps, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
                                     <TextBlock Text="{Binding Pad_Touchpad_TapTimeWindow, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="220"/>
                                     <TextBox Text="{Binding TouchpadTapTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadTapTimeWindowMsCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadTapTimeWindow, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
                                     <TextBlock Text="{Binding Pad_Touchpad_MultiTapGap, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="220"/>
                                     <TextBox Text="{Binding TouchpadMultiTapGapMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadMultiTapGapMsCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadMultiTapGap, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <CheckBox Content="{Binding Pad_Touchpad_LongPress, Source={x:Static strings:Strings.Instance}}"
-                                          IsChecked="{Binding TouchpadEnableLongPress, Mode=TwoWay}" Margin="0,0,0,6"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Content="{Binding Pad_Touchpad_LongPress, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadEnableLongPress, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadEnableLongPressCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadLongPress, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
                                     <TextBlock Text="{Binding Pad_Touchpad_LongPressTimeWindow, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="220"/>
                                     <TextBox Text="{Binding TouchpadLongPressTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadLongPressTimeWindowMsCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadLongPressTimeWindow, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <CheckBox Content="{Binding Pad_Touchpad_TwoFingerSwipes, Source={x:Static strings:Strings.Instance}}"
-                                          IsChecked="{Binding TouchpadEnableTwoFingerSwipes, Mode=TwoWay}" Margin="0,0,0,6"/>
-                                <CheckBox Content="{Binding Pad_Touchpad_PinchSpread, Source={x:Static strings:Strings.Instance}}"
-                                          IsChecked="{Binding TouchpadEnablePinchSpread, Mode=TwoWay}" Margin="0,0,0,6"/>
-                                <CheckBox Content="{Binding Pad_Touchpad_Rotate, Source={x:Static strings:Strings.Instance}}"
-                                          IsChecked="{Binding TouchpadEnableRotate, Mode=TwoWay}" Margin="0,0,0,6"/>
-                                <CheckBox Content="{Binding Pad_Touchpad_ThreeFinger, Source={x:Static strings:Strings.Instance}}"
-                                          IsChecked="{Binding TouchpadEnableThreeFingerGestures, Mode=TwoWay}" Margin="0,0,0,6"/>
-                                <CheckBox Content="{Binding Pad_Touchpad_FourFinger, Source={x:Static strings:Strings.Instance}}"
-                                          IsChecked="{Binding TouchpadEnableFourFingerGestures, Mode=TwoWay}" Margin="0,0,0,6"/>
-                                <CheckBox Content="{Binding Pad_Touchpad_FiveFinger, Source={x:Static strings:Strings.Instance}}"
-                                          IsChecked="{Binding TouchpadEnableFiveFingerGestures, Mode=TwoWay}" Margin="0,0,0,6"/>
-                                <CheckBox Content="{Binding Pad_Touchpad_ShapeGestures, Source={x:Static strings:Strings.Instance}}"
-                                          IsChecked="{Binding TouchpadEnableShapeGestures, Mode=TwoWay}" Margin="0,0,0,6"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Content="{Binding Pad_Touchpad_TwoFingerSwipes, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadEnableTwoFingerSwipes, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadEnableTwoFingerSwipesCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadTwoFingerSwipes, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Content="{Binding Pad_Touchpad_PinchSpread, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadEnablePinchSpread, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadEnablePinchSpreadCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadPinchSpread, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Content="{Binding Pad_Touchpad_Rotate, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadEnableRotate, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadEnableRotateCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadRotate, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Content="{Binding Pad_Touchpad_ThreeFinger, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadEnableThreeFingerGestures, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadEnableThreeFingerGesturesCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadThreeFinger, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Content="{Binding Pad_Touchpad_FourFinger, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadEnableFourFingerGestures, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadEnableFourFingerGesturesCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadFourFinger, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Content="{Binding Pad_Touchpad_FiveFinger, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadEnableFiveFingerGestures, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadEnableFiveFingerGesturesCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadFiveFinger, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Content="{Binding Pad_Touchpad_ShapeGestures, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadEnableShapeGestures, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadEnableShapeGesturesCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadShapeGestures, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,0">
                                     <TextBlock Text="{Binding Pad_Touchpad_MatchThreshold, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="220"/>
                                     <TextBox Text="{Binding TouchpadGestureMatchThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadGestureMatchThresholdCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadMatchThreshold, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

@@ -962,6 +962,8 @@ namespace PadForge.Common.Input
 
                 // Accel: raw scaled read, no tuning chain (PadForge has no
                 // per-axis accel tuning; the Gyro tab knobs are gyro-only).
+                // Per-row Invert on the source flips all three axes uniformly
+                // — same semantics as the gyro path below.
                 float ax = 0f, ay = 0f, az = 0f;
                 if (accelSrc.Ud != null)
                 {
@@ -969,6 +971,10 @@ namespace PadForge.Common.Input
                     ax = s.Accel[0] * MsToG;
                     ay = s.Accel[1] * MsToG;
                     az = s.Accel[2] * MsToG;
+                    if (accelSrc.Src != null && accelSrc.Src.Invert)
+                    {
+                        ax = -ax; ay = -ay; az = -az;
+                    }
                 }
 
                 // Gyro: per-(device, slot) Gyro tab tuning chain via
@@ -980,7 +986,11 @@ namespace PadForge.Common.Input
                 // device. Native sensor frame preserved (no sign
                 // transform); the DSU server's BuildPadDataPacket and
                 // the Sony report packers apply their own protocol-
-                // specific frames downstream.
+                // specific frames downstream. The per-row Invert on the
+                // mapping source stacks on top of the Gyro tab toggles
+                // (both true = no net flip) so the mapping table's
+                // checkbox behaves the same way it does for every
+                // other source kind.
                 float gx = 0f, gy = 0f, gz = 0f;
                 if (gyroSrc.Ud != null)
                 {
@@ -991,6 +1001,10 @@ namespace PadForge.Common.Input
                     gx = tunedPitch * RadToDeg;
                     gy = tunedYaw * RadToDeg;
                     gz = tunedRoll * RadToDeg;
+                    if (gyroSrc.Src != null && gyroSrc.Src.Invert)
+                    {
+                        gx = -gx; gy = -gy; gz = -gz;
+                    }
                 }
 
                 MotionSnapshots[padIndex] = new MotionSnapshot

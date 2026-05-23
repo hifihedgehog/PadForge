@@ -507,7 +507,7 @@ namespace PadForge.Engine.Data
 
         /// <summary>Top-level invert toggle for the projected yaw axis
         /// (includes Roll for Local space and Horizontal blend).</summary>
-        [XmlElement] public string GyroInvertYaw { get; set; } = "0";
+        [XmlElement("GyroInvertYaw")] public string GyroInvertYawRoll { get; set; } = "0";
 
         /// <summary>When "1" (default), the Gyro tab tuning chain is
         /// applied to this device's motion passthrough on this slot —
@@ -1080,7 +1080,7 @@ namespace PadForge.Engine.Data
             sb.Append(GyroAimEngageButton); sb.Append('|');
             sb.Append(GyroAimEngageDeviceGuid); sb.Append('|');
             sb.Append(GyroInvertPitch); sb.Append('|');
-            sb.Append(GyroInvertYaw); sb.Append('|');
+            sb.Append(GyroInvertYawRoll); sb.Append('|');
             sb.Append(GyroApplyTuningToPassthrough); sb.Append('|');
 
             // Inversion overrides
@@ -1387,7 +1387,7 @@ namespace PadForge.Engine.Data
             nameof(GyroSmoothingThresholdDegPerSec),
             nameof(GyroSmoothingWindowMs), nameof(GyroRealWorldCalibration),
             nameof(GyroAimEngageButton), nameof(GyroAimEngageDeviceGuid),
-            nameof(GyroInvertPitch), nameof(GyroInvertYaw),
+            nameof(GyroInvertPitch), nameof(GyroInvertYawRoll),
             nameof(GyroApplyTuningToPassthrough),
             // Axis inversion
             nameof(LeftThumbAxisXInvert), nameof(LeftThumbAxisYInvert),

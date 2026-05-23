@@ -1399,11 +1399,11 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gyroInvertPitch, value);
         }
 
-        private bool _gyroInvertYaw;
-        public bool GyroInvertYaw
+        private bool _gyroInvertYawRoll;
+        public bool GyroInvertYawRoll
         {
-            get => _gyroInvertYaw;
-            set => SetProperty(ref _gyroInvertYaw, value);
+            get => _gyroInvertYawRoll;
+            set => SetProperty(ref _gyroInvertYawRoll, value);
         }
 
         // Default true: a user expects the Gyro tab knobs to affect the
@@ -1475,9 +1475,9 @@ namespace PadForge.ViewModels
         public RelayCommand ResetGyroInvertPitchCommand =>
             _resetGyroInvertPitchCommand ??= new RelayCommand(() => GyroInvertPitch = false);
 
-        private RelayCommand _resetGyroInvertYawCommand;
-        public RelayCommand ResetGyroInvertYawCommand =>
-            _resetGyroInvertYawCommand ??= new RelayCommand(() => GyroInvertYaw = false);
+        private RelayCommand _resetGyroInvertYawRollCommand;
+        public RelayCommand ResetGyroInvertYawRollCommand =>
+            _resetGyroInvertYawRollCommand ??= new RelayCommand(() => GyroInvertYawRoll = false);
 
         private RelayCommand _resetGyroApplyToPassthroughCommand;
         public RelayCommand ResetGyroApplyToPassthroughCommand =>
@@ -1582,7 +1582,7 @@ namespace PadForge.ViewModels
                 GyroSensitivityV = 1.0;
                 GyroSensitivityUnits = "Multiplier";
                 GyroInvertPitch = false;
-                GyroInvertYaw = false;
+                GyroInvertYawRoll = false;
                 GyroRealWorldCalibration = 0;
             });
 

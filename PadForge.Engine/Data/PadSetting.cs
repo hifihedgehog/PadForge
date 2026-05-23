@@ -559,6 +559,22 @@ namespace PadForge.Engine.Data
         [XmlElement] public string TouchpadClick { get; set; } = "";
 
         // ─────────────────────────────────────────────
+        //  Motion passthrough sources (Sony-class slots only)
+        //
+        //  These two descriptors mark whether this device contributes
+        //  its bundled gyro / accel stream to the virtual controller's
+        //  motion channel on this slot. Value is the bundled-source
+        //  descriptor literal "Motion Gyro" / "Motion Accel" when the
+        //  device contributes, or empty when the user has opted out
+        //  by deleting the row. The MappingSetMigrator and the
+        //  EnsureMotionRows backfill keep these in sync with the
+        //  per-slot MappingSet rows that the engine reads.
+        // ─────────────────────────────────────────────
+
+        [XmlElement] public string MotionGyro  { get; set; } = "";
+        [XmlElement] public string MotionAccel { get; set; } = "";
+
+        // ─────────────────────────────────────────────
         //  Extended custom mappings (dictionary-based)
         //  Used for custom Extended configurations with arbitrary axis/button/POV counts.
         //  Keys use target names like "ExtendedAxis0", "ExtendedAxis0Neg", "ExtendedBtn0",
@@ -1091,6 +1107,10 @@ namespace PadForge.Engine.Data
 
             sb.Append(AxisToButtonThreshold); sb.Append('|');
 
+            // Motion passthrough source markers
+            sb.Append(MotionGyro); sb.Append('|');
+            sb.Append(MotionAccel); sb.Append('|');
+
             // Extended custom mappings (sorted for deterministic checksum)
             EnsureExtendedDict();
             if (_extendedMappingDict.Count > 0)
@@ -1399,6 +1419,8 @@ namespace PadForge.Engine.Data
             nameof(TouchpadX2), nameof(TouchpadY2),
             nameof(TouchpadContact1), nameof(TouchpadContact2),
             nameof(TouchpadClick),
+            // Motion passthrough
+            nameof(MotionGyro), nameof(MotionAccel),
         };
 
         /// <summary>Optional payload populated by the clipboard copy

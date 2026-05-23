@@ -31,10 +31,34 @@ namespace PadForge.Views
 
         // Touch tracking: first touch = finger 0, second = finger 1
         private readonly object _stateLock = new();
-        private int? _finger0TouchId;
-        private int? _finger1TouchId;
-        private float _x0, _y0, _x1, _y1;
-        private bool _down0, _down1;
+        // Overlay supports up to OverlayMaxFingers per-slot tracking. The
+        // first two slots feed the legacy DS4-shape TouchpadState struct
+        // (consumed by the virtual-output side); all slots feed the new
+        // TouchpadInputState the gesture engine reads. Slots get
+        // allocated dynamically by TouchDevice.Id on TouchDown; freed on
+        // TouchUp. Mouse-drag drives slot 0 only.
+        private const int OverlaySlotCount = Engine.TouchpadOverlayDevice.OverlayMaxFingers;
+        private readonly int?[] _slotTouchIds = new int?[OverlaySlotCount];
+        private readonly float[] _slotX = new float[OverlaySlotCount];
+        private readonly float[] _slotY = new float[OverlaySlotCount];
+        private readonly bool[] _slotDown = new bool[OverlaySlotCount];
+        private readonly int[] _slotContactIds = new int[OverlaySlotCount]; // -1 when empty
+        private int _slotContactIdNext = 1;
+
+        // Legacy two-finger shortcuts — kept as ref-projections into the
+        // first two slots so the existing 2-finger-shaped UI code
+        // (finger dots, click bar pulse, GetTouchpadState DS4 struct)
+        // keeps reading the same place. Indexers can't return ref to
+        // value-typed array elements in property form, so wrappers use
+        // helper methods where needed.
+        private int? _finger0TouchId { get => _slotTouchIds[0]; set => _slotTouchIds[0] = value; }
+        private int? _finger1TouchId { get => _slotTouchIds[1]; set => _slotTouchIds[1] = value; }
+        private float _x0 { get => _slotX[0]; set => _slotX[0] = value; }
+        private float _y0 { get => _slotY[0]; set => _slotY[0] = value; }
+        private float _x1 { get => _slotX[1]; set => _slotX[1] = value; }
+        private float _y1 { get => _slotY[1]; set => _slotY[1] = value; }
+        private bool _down0 { get => _slotDown[0]; set => _slotDown[0] = value; }
+        private bool _down1 { get => _slotDown[1]; set => _slotDown[1] = value; }
         // Click bar: held while the user presses the bottom strip (mouse
         // or touch) — reported as a sustained Buttons[16]=true so
         // click-and-hold patterns (click-drag, sustained context input)
@@ -58,6 +82,7 @@ namespace PadForge.Views
         public TouchpadOverlay()
         {
             InitializeComponent();
+            for (int i = 0; i < OverlaySlotCount; i++) _slotContactIds[i] = -1;
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
             IsVisibleChanged += OnIsVisibleChanged;
@@ -78,11 +103,14 @@ namespace PadForge.Views
         {
             lock (_stateLock)
             {
-                _finger0TouchId = null;
-                _finger1TouchId = null;
-                _down0 = false;
-                _down1 = false;
-                _x0 = _y0 = _x1 = _y1 = 0f;
+                for (int i = 0; i < OverlaySlotCount; i++)
+                {
+                    _slotTouchIds[i] = null;
+                    _slotDown[i] = false;
+                    _slotX[i] = 0f;
+                    _slotY[i] = 0f;
+                    _slotContactIds[i] = -1;
+                }
                 _clickPulse = false;
                 _clickBarHeld = false;
                 _clickBarTouchId = null;
@@ -458,15 +486,22 @@ namespace PadForge.Views
 
             lock (_stateLock)
             {
-                if (_finger0TouchId == null)
+                // Allocate the lowest free slot. The 3-finger-drag check
+                // above only triggers on the 3rd touch _across the
+                // window_, not via this slot allocation; this loop will
+                // happily fill slots 2/3/4 if it ever runs for them
+                // (currently it doesn't because of the early-return at
+                // _activeTouchIds.Count >= 3, but the slot infra is
+                // ready for a future relaxation of the drag heuristic).
+                for (int i = 0; i < OverlaySlotCount; i++)
                 {
-                    _finger0TouchId = e.TouchDevice.Id;
-                    _x0 = nx; _y0 = ny; _down0 = true;
-                }
-                else if (_finger1TouchId == null)
-                {
-                    _finger1TouchId = e.TouchDevice.Id;
-                    _x1 = nx; _y1 = ny; _down1 = true;
+                    if (_slotTouchIds[i] != null) continue;
+                    _slotTouchIds[i] = e.TouchDevice.Id;
+                    _slotX[i] = nx;
+                    _slotY[i] = ny;
+                    _slotDown[i] = true;
+                    _slotContactIds[i] = _slotContactIdNext++;
+                    break;
                 }
             }
             UpdateFingerDots();
@@ -496,10 +531,15 @@ namespace PadForge.Views
 
             lock (_stateLock)
             {
-                if (_finger0TouchId == e.TouchDevice.Id)
-                { _x0 = nx; _y0 = ny; }
-                else if (_finger1TouchId == e.TouchDevice.Id)
-                { _x1 = nx; _y1 = ny; }
+                for (int i = 0; i < OverlaySlotCount; i++)
+                {
+                    if (_slotTouchIds[i] == e.TouchDevice.Id)
+                    {
+                        _slotX[i] = nx;
+                        _slotY[i] = ny;
+                        break;
+                    }
+                }
             }
             UpdateFingerDots();
         }
@@ -522,42 +562,50 @@ namespace PadForge.Views
 
             lock (_stateLock)
             {
-                if (_finger0TouchId == e.TouchDevice.Id)
+                for (int i = 0; i < OverlaySlotCount; i++)
                 {
-                    _finger0TouchId = null;
-                    _down0 = false;
-
-                    var now = DateTime.UtcNow;
-                    if ((now - _lastTapTime).TotalMilliseconds < DoubleTapMs)
+                    if (_slotTouchIds[i] != e.TouchDevice.Id) continue;
+                    _slotTouchIds[i] = null;
+                    _slotDown[i] = false;
+                    _slotContactIds[i] = -1;
+                    // Double-tap-to-click pulse fires only on slot 0
+                    // releases — preserves the existing single-finger
+                    // tap-to-click muscle memory. Multi-finger releases
+                    // don't trigger the pulse; their click semantics
+                    // come from the dedicated click bar or a future
+                    // multi-finger-tap gesture.
+                    if (i == 0)
                     {
-                        _clickPulse = true;
-                        _lastTapTime = DateTime.MinValue;
+                        var now = DateTime.UtcNow;
+                        if ((now - _lastTapTime).TotalMilliseconds < DoubleTapMs)
+                        {
+                            _clickPulse = true;
+                            _lastTapTime = DateTime.MinValue;
+                        }
+                        else
+                        {
+                            _lastTapTime = now;
+                            _clickPulse = false;
+                        }
                     }
-                    else
-                    {
-                        _lastTapTime = now;
-                        _clickPulse = false;
-                    }
-                }
-                else if (_finger1TouchId == e.TouchDevice.Id)
-                {
-                    _finger1TouchId = null;
-                    _down1 = false;
+                    break;
                 }
             }
             UpdateFingerDots();
         }
 
-        /// <summary>Reads current overlay touchpad state. Called from polling thread.</summary>
+        /// <summary>Reads current overlay touchpad state in the legacy
+        /// 2-finger <see cref="TouchpadState"/> struct shape. Click is
+        /// true while the dedicated click bar is held OR during a single-
+        /// frame pulse from the surface double-tap gesture. The held
+        /// branch supports click-and-hold (drag, hold-to-context); the
+        /// pulse branch preserves the double-tap-to-click muscle memory.
+        /// Used by the DS4-output side; the gesture engine uses
+        /// <see cref="GetMultiFingerState"/> instead.</summary>
         public TouchpadState GetTouchpadState()
         {
             lock (_stateLock)
             {
-                // Click is true while the dedicated click bar is held OR
-                // during a single-frame pulse from the surface double-tap
-                // gesture. The held branch supports click-and-hold patterns
-                // (drag, hold-to-context); the pulse branch preserves the
-                // double-tap-to-click muscle memory.
                 var tp = new TouchpadState
                 {
                     X0 = Math.Clamp(_x0, 0f, 1f),
@@ -571,6 +619,36 @@ namespace PadForge.Views
                 _clickPulse = false;
                 return tp;
             }
+        }
+
+        /// <summary>Reads current overlay touchpad state as a full
+        /// <see cref="Engine.TouchpadInputState"/> snapshot with all
+        /// active slots populated. Used by the engine bridge that feeds
+        /// <see cref="Engine.TouchpadOverlayDevice.UpdateStateMulti"/>
+        /// so the gesture recognizer sees every active finger, not just
+        /// the first two. Click bit returned separately (the snapshot's
+        /// <c>Clicked</c> field is set by the bridge as well so both
+        /// physical-input paths agree on the click state).</summary>
+        public Engine.TouchpadInputState GetMultiFingerState(out bool click)
+        {
+            var snap = new Engine.TouchpadInputState(OverlaySlotCount);
+            lock (_stateLock)
+            {
+                for (int i = 0; i < OverlaySlotCount; i++)
+                {
+                    snap.FingerX[i] = Math.Clamp(_slotX[i], 0f, 1f);
+                    snap.FingerY[i] = Math.Clamp(_slotY[i], 0f, 1f);
+                    snap.FingerPressure[i] = _slotDown[i] ? 1f : 0f;
+                    snap.FingerDown[i] = _slotDown[i];
+                    snap.FingerContactId[i] = _slotContactIds[i];
+                }
+                click = _clickBarHeld || _clickPulse;
+                // Click pulse consumed by the legacy reader path or here,
+                // whichever runs first. Single-shot pulse semantics.
+                _clickPulse = false;
+            }
+            snap.Clicked = click;
+            return snap;
         }
 
         private void UpdateFingerDots()

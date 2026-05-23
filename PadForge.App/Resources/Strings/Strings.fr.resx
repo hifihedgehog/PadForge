@@ -1080,8 +1080,8 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Étalonnage… ne bouge pas</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Réinitialiser l'étalonnage</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Efface le biais du gyroscope au repos et l'horodatage du dernier étalonnage. Le prochain cycle de sondage relance l'auto-étalonnage de 1,5 seconde sur cet appareil.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Taux en direct</value></data>
-  <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Accélération en direct</value></data>
+  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Gyroscope en direct</value></data>
+  <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Accéléromètre en direct</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Sensibilité horizontale</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Met à l'échelle la contribution horizontale (Yaw + Roll) du gyroscope. 1,0 laisse le taux tel quel ; valeurs plus élevées amplifient, plus basses atténuent. S'applique à tout l'appareil.</value></data>
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Sensibilité verticale</value></data>

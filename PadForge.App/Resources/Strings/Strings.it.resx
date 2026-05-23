@@ -1100,8 +1100,8 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Calibrazione… tieni fermo</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Reimposta calibrazione</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Cancella il bias del giroscopio a riposo e il timestamp dell'ultima calibrazione. Il prossimo ciclo di polling riesegue l'autocalibrazione di 1,5 secondi su questo dispositivo.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Frequenza attuale</value></data>
-  <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Accelerazione attuale</value></data>
+  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Giroscopio attuale</value></data>
+  <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Accelerometro attuale</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Sensibilità orizzontale</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Scala il contributo orizzontale (Yaw + Roll) del giroscopio. 1,0 lascia la frequenza invariata; valori maggiori amplificano, minori attenuano. Si applica all'intero dispositivo.</value></data>
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Sensibilità verticale</value></data>

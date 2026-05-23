@@ -1320,6 +1320,12 @@ namespace PadForge
                 SettingsManager.ReAutoMapSlot(args.SlotIndex, args.Type);
                 _viewModel.Pads[args.SlotIndex].OutputType = args.Type;
                 _inputService.MoveSlotToGroupTail(args.SlotIndex);
+                // ReAutoMapSlot rewrites the PadSettings; the per-slot
+                // MappingSet still references the prior shape. Re-merge so
+                // newly-auto-mapped fields (Motion passthrough on Sony,
+                // touchpad rows on Sony, etc.) populate as MappingSet rows
+                // without waiting for a save+reload.
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _settingsService.MarkDirty();
                 _inputService.RefreshDeviceList();
                 _viewModel.Devices.RefreshSlotButtons();
@@ -2378,6 +2384,7 @@ namespace PadForge
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Xbox);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Xbox;
                 _inputService.MoveSlotToGroupTail(padIndex);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _settingsService.MarkDirty();
             }
         }
@@ -2391,6 +2398,7 @@ namespace PadForge
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.PlayStation);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.PlayStation;
                 _inputService.MoveSlotToGroupTail(padIndex);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _settingsService.MarkDirty();
             }
         }
@@ -2404,6 +2412,7 @@ namespace PadForge
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Extended);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Extended;
                 _inputService.MoveSlotToGroupTail(padIndex);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _settingsService.MarkDirty();
             }
         }
@@ -2417,6 +2426,7 @@ namespace PadForge
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.KeyboardMouse);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.KeyboardMouse;
                 _inputService.MoveSlotToGroupTail(padIndex);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _settingsService.MarkDirty();
             }
         }
@@ -2431,6 +2441,7 @@ namespace PadForge
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Midi);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Midi;
                 _inputService.MoveSlotToGroupTail(padIndex);
+                SettingsService.RefreshMappingSetsFromLegacy();
                 _settingsService.MarkDirty();
             }
         }

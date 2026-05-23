@@ -67,6 +67,12 @@ namespace PadForge.Services
         public SettingsService(MainViewModel mainVm)
         {
             _mainVm = mainVm ?? throw new ArgumentNullException(nameof(mainVm));
+
+            // Wire the post-MergeMappingSetsFromLegacy hook so device-
+            // assignment changes (DeviceService) trigger the motion-rows
+            // backfill without each caller needing an instance reference.
+            // See AfterMappingSetsRefreshed for context.
+            AfterMappingSetsRefreshed = EnsureMotionRowsForAllSlots;
         }
 
         // ─────────────────────────────────────────────
@@ -642,7 +648,18 @@ namespace PadForge.Services
         /// (e.g. device-assignment changes) can trigger the merge so
         /// newly-assigned devices' auto-mapped sources appear in the
         /// per-VC view without waiting for the next save / reload.</summary>
-        public static void RefreshMappingSetsFromLegacy() => MergeMappingSetsFromLegacy();
+        /// <summary>Post-refresh hook wired by the SettingsService instance
+        /// constructor so static callers of <see cref="RefreshMappingSetsFromLegacy"/>
+        /// trigger the per-instance motion-rows backfill without taking an
+        /// instance reference. Lets DeviceService / MainWindow keep calling
+        /// the static refresh while the backfill still runs.</summary>
+        public static Action AfterMappingSetsRefreshed { get; set; }
+
+        public static void RefreshMappingSetsFromLegacy()
+        {
+            MergeMappingSetsFromLegacy();
+            AfterMappingSetsRefreshed?.Invoke();
+        }
 
         /// <summary>Removes every source bound to the given device from
         /// every slot's MappingSet, drops any row that ends up empty as

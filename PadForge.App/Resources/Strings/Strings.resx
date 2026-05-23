@@ -996,7 +996,7 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>How gyro motion is interpreted. Local uses the raw controller axes. Player projects horizontal motion onto the real-world vertical (gravity) so the same wrist twist always turns the camera, regardless of how you hold the pad. World additionally re-projects vertical motion onto world axes.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Invert Pitch (Y)</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Flips the pitch axis. Applies after the gyro space projection, independently of any per-source invert flags on the mapping table.</value></data>
-  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Invert Yaw (X)</value></data>
+  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Invert Yaw / Roll (X)</value></data>
   <data name="Settings_GyroInvertYaw_Tooltip" xml:space="preserve"><value>Flips the yaw axis. Also covers the roll and horizontal-blend gyro sources.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Real-World Calibration</value></data>
   <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>In-game degrees per physical degree of controller rotation. 0 turns this off. 1.0 means a 90° wrist rotation produces a 90° camera turn. Calibrate once per game: rotate the pad a full turn and adjust until the in-game camera also rotates a full turn.</value></data>

@@ -1109,7 +1109,7 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = axes bruts du contrôleur. Player = le lacet est projeté sur la verticale réelle (gravité) ; le tangage reste local — défaut recommandé par Jibb Smart pour un ressenti naturel quelle que soit l'inclinaison. World = lacet et tangage projetés sur les axes du monde.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Inverser le tangage (Y)</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Inversion globale du tangage. S'applique après la projection Player/World — indépendante des indicateurs Invert par source dans la table d'affectations.</value></data>
-  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Inverser le lacet (X)</value></data>
+  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Inverser le lacet / roulis (X)</value></data>
   <data name="Settings_GyroInvertYaw_Tooltip" xml:space="preserve"><value>Inversion globale du lacet. Couvre également les sources Roll et Gyro Horizontal.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Étalonnage réel</value></data>
   <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>Degrés en jeu par degré physique de rotation du contrôleur. 0 = désactivé. 1 = 1:1 (contrôleur tourné de 90° → vue en jeu de 90°). Étalonner une fois par jeu en tournant le contrôleur de 360° et en ajustant jusqu'à ce que la vue en jeu tourne aussi de 360°.</value></data>

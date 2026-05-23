@@ -1109,7 +1109,7 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = 컨트롤러 로컬 축. Player = 요(yaw)를 실제 수직축(중력)에 투영, 피치는 로컬 유지 — Jibb Smart 권장 기본값. 어떤 기울기에서도 자연스러움. World = 요와 피치 모두 월드 축에 투영.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>피치(Y) 반전</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>피치 축의 전역 반전. Player/World 투영 후에 적용 — 매핑 표의 소스별 Invert 플래그와 독립.</value></data>
-  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>요(X) 반전</value></data>
+  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>요 / 롤 (X) 반전</value></data>
   <data name="Settings_GyroInvertYaw_Tooltip" xml:space="preserve"><value>요 축의 전역 반전. Roll, Gyro Horizontal 소스에도 적용.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>실세계 보정</value></data>
   <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>컨트롤러 1°의 물리 회전당 게임 내 회전(도). 0 = 비활성화. 1 = 1:1 (패드 90° 회전 → 게임 시점 90°). 게임마다 한 번, 패드를 360° 돌려 게임 시점도 360° 돌도록 조정해 설정.</value></data>

@@ -1129,7 +1129,7 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = ruwe controller-assen. Player = yaw geprojecteerd op de echte verticale as (zwaartekracht); pitch blijft lokaal — door Jibb Smart aanbevolen standaard voor natuurlijk gevoel bij elke kanteling. World = yaw én pitch geprojecteerd op wereldassen.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Pitch (Y) omkeren</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Globale pitch-omkering. Wordt na de Player/World-projectie toegepast — onafhankelijk van de Invert-vlaggen per bron in de toewijzingstabel.</value></data>
-  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Yaw (X) omkeren</value></data>
+  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Yaw / Roll (X) omkeren</value></data>
   <data name="Settings_GyroInvertYaw_Tooltip" xml:space="preserve"><value>Globale yaw-omkering. Geldt ook voor Roll- en Gyro-Horizontal-bronnen.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Realistische kalibratie</value></data>
   <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>Graden in het spel per graad fysieke controller-rotatie. 0 = uitgeschakeld. 1 = 1:1 (controller 90° draaien → in-game beeld 90°). Per spel één keer kalibreren door de controller 360° te draaien en aan te passen tot het in-game beeld ook 360° draait.</value></data>

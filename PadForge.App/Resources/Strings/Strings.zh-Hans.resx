@@ -1166,6 +1166,8 @@
   <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>触控板 1 触摸</value></data>
   <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>触控板 2 触摸</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>触控板点击</value></data>
+  <data name="Mapping_MotionGyro" xml:space="preserve"><value>运动 陀螺仪</value></data>
+  <data name="Mapping_MotionAccel" xml:space="preserve"><value>运动 加速度计</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>触控板</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>数字键盘 *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>数字键盘 +</value></data>

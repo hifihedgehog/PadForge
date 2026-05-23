@@ -1166,6 +1166,8 @@
   <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>Touchpad 1 Berührung</value></data>
   <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>Touchpad 2 Berührung</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Touchpad-Klick</value></data>
+  <data name="Mapping_MotionGyro" xml:space="preserve"><value>Bewegung Gyro</value></data>
+  <data name="Mapping_MotionAccel" xml:space="preserve"><value>Bewegung Beschleunigung</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>Ziffernblock *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>Ziffernblock +</value></data>

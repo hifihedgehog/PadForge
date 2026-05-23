@@ -1519,11 +1519,43 @@ namespace PadForge.Services
             var fallbackState = ud?.InputState;
             var outputType = padVm.OutputType;
 
+            // MotionSnapshot for the slot carries the post-tuning gyro
+            // (deg/s) and accel (g) in SDL's native sensor frame —
+            // exactly what the virtual DualSense's HID report ships and
+            // what the DSU server broadcasts. Read once outside the loop
+            // so both Motion rows use the same tick's reading.
+            MotionSnapshot snap = haveEngine
+                ? _inputManager.MotionSnapshots[padIndex]
+                : default;
+
             foreach (var mapping in padVm.Mappings)
             {
+                string target = mapping.TargetSettingName;
+
+                // Motion rows: three-axis live readout from the slot's
+                // MotionSnapshot. Gyro in deg/s, accel in g.
+                if (target == MappingSetMigrator.MotionGyroTarget)
+                {
+                    mapping.CurrentValueText = snap.HasMotion
+                        ? string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                            "P:{0,4:F0}° Y:{1,4:F0}° R:{2,4:F0}°",
+                            snap.GyroPitch, snap.GyroYaw, snap.GyroRoll)
+                        : string.Empty;
+                    continue;
+                }
+                if (target == MappingSetMigrator.MotionAccelTarget)
+                {
+                    mapping.CurrentValueText = snap.HasMotion
+                        ? string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                            "X:{0,5:+0.00;-0.00}g Y:{1,5:+0.00;-0.00}g Z:{2,5:+0.00;-0.00}g",
+                            snap.AccelX, snap.AccelY, snap.AccelZ)
+                        : string.Empty;
+                    continue;
+                }
+
                 int? combined = null;
                 if (haveEngine)
-                    combined = ReadCombinedOutputValue(padVm, padIndex, outputType, mapping.TargetSettingName);
+                    combined = ReadCombinedOutputValue(padVm, padIndex, outputType, target);
 
                 if (combined.HasValue)
                 {

@@ -6701,6 +6701,19 @@ namespace PadForge.Services
                 }
             }
             _inputManager.SetShapeTemplates(templates);
+
+            // Mirror the profile's custom-gesture list onto every PadViewModel
+            // so the Touchpad tab's Custom Gestures card reflects the new
+            // profile's library. PadViewModel scopes per-slot, but the
+            // gesture library is profile-wide, so every PadVM gets the same
+            // list.
+            try
+            {
+                var gestures = profile?.TouchpadGestures;
+                foreach (var padVm in _mainVm.Pads)
+                    padVm?.RefreshCustomTouchpadGestures(gestures);
+            }
+            catch { /* refresh is cosmetic — ignore VM enumeration races */ }
         }
 
         /// <summary>

@@ -340,6 +340,29 @@ namespace PadForge.Services
 
                 var ms = sets[slot] ?? (sets[slot] = new MappingSet());
                 MappingSetMigrator.EnsureMotionRows(ms, (int)slotType, devicesForSlot);
+
+                // Mirror the row presence into each device's PadSetting
+                // MotionGyro / MotionAccel descriptor fields so the
+                // mapping-table MappingItem (which reads via PadSetting
+                // reflection) shows the right source name for the
+                // row. Sony-class only — non-Sony slots have no
+                // MotionRow and clear the fields.
+                bool isSony = slotType == Engine.VirtualControllerType.PlayStation;
+                foreach (var us in userSettingsSnapshot)
+                {
+                    if (us == null || us.MapTo != slot) continue;
+                    var ps = us.GetPadSetting();
+                    if (ps == null) continue;
+                    var caps = Caps(us.InstanceGuid);
+                    string newGyro  = (isSony && caps.HasGyro)  ? MappingSetMigrator.MotionGyroSourceDescriptor  : "";
+                    string newAccel = (isSony && caps.HasAccel) ? MappingSetMigrator.MotionAccelSourceDescriptor : "";
+                    if (ps.MotionGyro != newGyro || ps.MotionAccel != newAccel)
+                    {
+                        ps.MotionGyro = newGyro;
+                        ps.MotionAccel = newAccel;
+                        ps.UpdateChecksum();
+                    }
+                }
             }
         }
 

@@ -1081,6 +1081,7 @@
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Kalibrierung zurücksetzen</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Setzt den Ruhe-Gyro-Bias und den letzten Kalibrierungszeitpunkt zurück. Beim nächsten Polling-Zyklus läuft die 1,5-Sekunden-Auto-Kalibrierung für dieses Gerät erneut.</value></data>
   <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Aktuelle Rate</value></data>
+  <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Aktuelle Beschleunigung</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Horizontale Empfindlichkeit</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokal</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Spieler</value></data>

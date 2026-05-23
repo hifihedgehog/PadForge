@@ -4884,18 +4884,34 @@
                                             Padding="10,4" Margin="6,0,0,0" VerticalAlignment="Center"
                                             ToolTip="{Binding Settings_GyroResetCalibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBlock Text="{Binding GyroCalibrationLabel}"
-                                               FontSize="11" Opacity="0.7" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                                               FontSize="13" Opacity="0.7" Margin="12,0,0,0" VerticalAlignment="Center"/>
                                 </StackPanel>
-                                <!-- Live rate readout. -->
-                                <StackPanel Orientation="Horizontal">
+                                <!-- Live readouts — calibrated gyro rate (deg/s) and
+                                     raw accelerometer (g). Font matches the rest of the
+                                     Pad-page card body so the Calibration card reads at
+                                     the same weight as the motor previews on the
+                                     Controller tab. Monospace numeric blocks keep the
+                                     three axis columns from jittering left and right
+                                     when the live readings update. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
                                     <TextBlock Text="{Binding Settings_GyroLiveRate_Label, Source={x:Static strings:Strings.Instance}}"
-                                               FontSize="11" Opacity="0.7" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                               FontSize="14" Width="100" Opacity="0.85" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding GyroLiveRatePitch, StringFormat={}P {0:+0.0;-0.0;0.0}°/s}"
-                                               FontFamily="Consolas" FontSize="11" Width="80" VerticalAlignment="Center"/>
+                                               FontFamily="Consolas" FontSize="14" Width="110" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding GyroLiveRateYaw,   StringFormat={}Y {0:+0.0;-0.0;0.0}°/s}"
-                                               FontFamily="Consolas" FontSize="11" Width="80" VerticalAlignment="Center"/>
+                                               FontFamily="Consolas" FontSize="14" Width="110" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding GyroLiveRateRoll,  StringFormat={}R {0:+0.0;-0.0;0.0}°/s}"
-                                               FontFamily="Consolas" FontSize="11" Width="80" VerticalAlignment="Center"/>
+                                               FontFamily="Consolas" FontSize="14" Width="110" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Settings_GyroLiveAccel_Label, Source={x:Static strings:Strings.Instance}}"
+                                               FontSize="14" Width="100" Opacity="0.85" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding AccelLiveX, StringFormat={}X {0:+0.00;-0.00;0.00}g}"
+                                               FontFamily="Consolas" FontSize="14" Width="110" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding AccelLiveY, StringFormat={}Y {0:+0.00;-0.00;0.00}g}"
+                                               FontFamily="Consolas" FontSize="14" Width="110" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding AccelLiveZ, StringFormat={}Z {0:+0.00;-0.00;0.00}g}"
+                                               FontFamily="Consolas" FontSize="14" Width="110" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

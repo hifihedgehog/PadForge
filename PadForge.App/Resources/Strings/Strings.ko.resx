@@ -1166,6 +1166,8 @@
   <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>터치패드 1 터치</value></data>
   <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>터치패드 2 터치</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>터치패드 클릭</value></data>
+  <data name="Mapping_MotionGyro" xml:space="preserve"><value>모션 자이로</value></data>
+  <data name="Mapping_MotionAccel" xml:space="preserve"><value>모션 가속도</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>터치패드</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>숫자 키패드 *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>숫자 키패드 +</value></data>

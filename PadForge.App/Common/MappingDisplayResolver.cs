@@ -563,6 +563,15 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 Y", DisplayName = si.Mapping_TouchpadY2 });
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 Down", DisplayName = si.Mapping_TouchpadContact2 });
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Click", DisplayName = si.Mapping_TouchpadClick });
+
+                // Touchpad gesture descriptors. Surface per actual pad
+                // index (multi-pad devices get per-pad listings) and
+                // gate higher-finger-count gestures by what the pad
+                // actually supports. Live device snapshot tells us the
+                // pad count + per-pad finger count; absent that
+                // (descriptor-only static device entry), fall back to
+                // a single pad with up to 2 fingers.
+                AddTouchpadGestureChoices(list, ud, si);
             }
 
             // Gyro sources (for devices with a gyroscope sensor). SDL3
@@ -600,5 +609,128 @@ namespace PadForge.Common
             (ud.CapType != InputDeviceType.Gamepad &&
              ud.CapType != InputDeviceType.Mouse &&
              ud.CapType != InputDeviceType.Keyboard);
+
+        /// <summary>Surfaces touchpad gesture descriptors in the input
+        /// picker, one block per touchpad surface the device exposes.
+        /// Finger-count gating: 2-finger gestures only on pads with
+        /// ≥2 fingers, 3-finger only on ≥3, etc. Shape gestures
+        /// (Circle / Square / ...) are always available since they're
+        /// single-finger. Custom user-recorded gestures intentionally
+        /// don't surface here — they appear in the picker only after
+        /// the user records them through the Touchpad tab, gated by
+        /// the per-gesture DeviceClass / TouchpadIndex filter.</summary>
+        private static void AddTouchpadGestureChoices(
+            System.Collections.Generic.List<InputChoice> list,
+            UserDevice ud,
+            Strings si)
+        {
+            // Best-effort pad / finger counts. Live device snapshot
+            // gives the authoritative numbers; absent that, fall back
+            // to the historical single-pad, two-finger assumption.
+            int numPads = 1;
+            int[] perPadFingers = new[] { 2 };
+            try
+            {
+                var state = ud.Device?.GetCurrentState();
+                if (state?.Touchpads != null && state.Touchpads.Length > 0)
+                {
+                    numPads = state.Touchpads.Length;
+                    perPadFingers = new int[numPads];
+                    for (int p = 0; p < numPads; p++)
+                        perPadFingers[p] = state.Touchpads[p]?.MaxFingers ?? 0;
+                }
+            }
+            catch { /* defensive: pad-discovery failures fall back to defaults */ }
+
+            for (int p = 0; p < numPads; p++)
+            {
+                int max = perPadFingers[p];
+
+                // Single-finger
+                AddGesture(list, p, "SwipeUp",    si.Mapping_TouchpadGesture_SwipeUp);
+                AddGesture(list, p, "SwipeDown",  si.Mapping_TouchpadGesture_SwipeDown);
+                AddGesture(list, p, "SwipeLeft",  si.Mapping_TouchpadGesture_SwipeLeft);
+                AddGesture(list, p, "SwipeRight", si.Mapping_TouchpadGesture_SwipeRight);
+                AddGesture(list, p, "SwipeNE",    si.Mapping_TouchpadGesture_SwipeNE);
+                AddGesture(list, p, "SwipeNW",    si.Mapping_TouchpadGesture_SwipeNW);
+                AddGesture(list, p, "SwipeSE",    si.Mapping_TouchpadGesture_SwipeSE);
+                AddGesture(list, p, "SwipeSW",    si.Mapping_TouchpadGesture_SwipeSW);
+                AddGesture(list, p, "Tap",        si.Mapping_TouchpadGesture_Tap);
+                AddGesture(list, p, "DoubleTap",  si.Mapping_TouchpadGesture_DoubleTap);
+                AddGesture(list, p, "TripleTap",  si.Mapping_TouchpadGesture_TripleTap);
+                AddGesture(list, p, "LongPress",  si.Mapping_TouchpadGesture_LongPress);
+                // Radial zones — surface all configured counts so a user
+                // who picks 8-zone vs 12-zone in settings sees the
+                // matching descriptors. Settings-side toggle gates which
+                // count fires at runtime.
+                foreach (int zc in new[] { 4, 6, 8, 12 })
+                    for (int z = 0; z < zc; z++)
+                        list.Add(new InputChoice
+                        {
+                            Descriptor = $"Touchpad {p} RadialZone{zc}_{z}",
+                            DisplayName = string.Format(si.Mapping_TouchpadGesture_RadialZone_Format, zc, z),
+                        });
+                // Single-finger shapes — always available.
+                foreach (var name in Engine.Touchpad.InBoxShapeTemplates.Names)
+                    AddGesture(list, p, name, ResolveShapeName(si, name));
+
+                if (max >= 2)
+                {
+                    AddGesture(list, p, "TwoFingerSwipeUp",    si.Mapping_TouchpadGesture_TwoFingerSwipeUp);
+                    AddGesture(list, p, "TwoFingerSwipeDown",  si.Mapping_TouchpadGesture_TwoFingerSwipeDown);
+                    AddGesture(list, p, "TwoFingerSwipeLeft",  si.Mapping_TouchpadGesture_TwoFingerSwipeLeft);
+                    AddGesture(list, p, "TwoFingerSwipeRight", si.Mapping_TouchpadGesture_TwoFingerSwipeRight);
+                    AddGesture(list, p, "TwoFingerTap",  si.Mapping_TouchpadGesture_TwoFingerTap);
+                    AddGesture(list, p, "Pinch",         si.Mapping_TouchpadGesture_Pinch);
+                    AddGesture(list, p, "Spread",        si.Mapping_TouchpadGesture_Spread);
+                    AddGesture(list, p, "PinchAxis",     si.Mapping_TouchpadGesture_PinchAxis);
+                    AddGesture(list, p, "RotateCW",      si.Mapping_TouchpadGesture_RotateCW);
+                    AddGesture(list, p, "RotateCCW",     si.Mapping_TouchpadGesture_RotateCCW);
+                    AddGesture(list, p, "RotateAxis",    si.Mapping_TouchpadGesture_RotateAxis);
+                }
+                if (max >= 3)
+                {
+                    AddGesture(list, p, "ThreeFingerSwipeUp",    si.Mapping_TouchpadGesture_ThreeFingerSwipeUp);
+                    AddGesture(list, p, "ThreeFingerSwipeDown",  si.Mapping_TouchpadGesture_ThreeFingerSwipeDown);
+                    AddGesture(list, p, "ThreeFingerSwipeLeft",  si.Mapping_TouchpadGesture_ThreeFingerSwipeLeft);
+                    AddGesture(list, p, "ThreeFingerSwipeRight", si.Mapping_TouchpadGesture_ThreeFingerSwipeRight);
+                    AddGesture(list, p, "ThreeFingerTap",        si.Mapping_TouchpadGesture_ThreeFingerTap);
+                }
+                if (max >= 4)
+                {
+                    AddGesture(list, p, "FourFingerSwipeUp",    si.Mapping_TouchpadGesture_FourFingerSwipeUp);
+                    AddGesture(list, p, "FourFingerSwipeDown",  si.Mapping_TouchpadGesture_FourFingerSwipeDown);
+                    AddGesture(list, p, "FourFingerSwipeLeft",  si.Mapping_TouchpadGesture_FourFingerSwipeLeft);
+                    AddGesture(list, p, "FourFingerSwipeRight", si.Mapping_TouchpadGesture_FourFingerSwipeRight);
+                    AddGesture(list, p, "FourFingerTap",        si.Mapping_TouchpadGesture_FourFingerTap);
+                }
+                if (max >= 5)
+                {
+                    AddGesture(list, p, "FiveFingerTap", si.Mapping_TouchpadGesture_FiveFingerTap);
+                }
+            }
+        }
+
+        private static void AddGesture(System.Collections.Generic.List<InputChoice> list,
+            int padIdx, string name, string display)
+        {
+            list.Add(new InputChoice
+            {
+                Descriptor = $"Touchpad {padIdx} {name}",
+                DisplayName = string.IsNullOrEmpty(display) ? name : display,
+            });
+        }
+
+        private static string ResolveShapeName(Strings si, string shape) => shape switch
+        {
+            "Circle"     => si.Mapping_TouchpadGesture_Circle,
+            "CircleCCW"  => si.Mapping_TouchpadGesture_CircleCCW,
+            "Square"     => si.Mapping_TouchpadGesture_Square,
+            "Triangle"   => si.Mapping_TouchpadGesture_Triangle,
+            "Z"          => si.Mapping_TouchpadGesture_Z,
+            "Checkmark"  => si.Mapping_TouchpadGesture_Checkmark,
+            "X"          => si.Mapping_TouchpadGesture_X,
+            _            => shape,
+        };
     }
 }

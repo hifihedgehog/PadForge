@@ -1037,6 +1037,8 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_TouchpadContact1 => Get("Mapping_TouchpadContact1");
     public string Mapping_TouchpadContact2 => Get("Mapping_TouchpadContact2");
     public string Mapping_TouchpadClick => Get("Mapping_TouchpadClick");
+    public string Mapping_MotionGyro => Get("Mapping_MotionGyro");
+    public string Mapping_MotionAccel => Get("Mapping_MotionAccel");
     public string Mapping_GyroPitch => Get("Mapping_GyroPitch");
     public string Mapping_GyroYaw => Get("Mapping_GyroYaw");
     public string Mapping_GyroRoll => Get("Mapping_GyroRoll");

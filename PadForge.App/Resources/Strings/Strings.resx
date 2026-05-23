@@ -956,6 +956,8 @@
   <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>Touchpad 1 Touch</value></data>
   <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>Touchpad 2 Touch</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Touchpad Click</value></data>
+  <data name="Mapping_MotionGyro" xml:space="preserve"><value>Motion Gyro</value></data>
+  <data name="Mapping_MotionAccel" xml:space="preserve"><value>Motion Accel</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Gyro Pitch</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roll</value></data>

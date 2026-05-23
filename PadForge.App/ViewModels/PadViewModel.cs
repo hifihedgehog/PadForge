@@ -1008,6 +1008,16 @@ namespace PadForge.ViewModels
                 Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadContact1, "TouchpadContact1", MappingCategory.Touchpad));
                 Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadContact2, "TouchpadContact2", MappingCategory.Touchpad));
                 Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadClick, "TouchpadClick", MappingCategory.Buttons));
+
+                // Motion passthrough — the virtual DualSense / DS4
+                // exposes a 3-axis gyro + 3-axis accel HID report and
+                // a DSU broadcast. These two rows let the user pick
+                // which assigned device contributes each sensor stream
+                // (delete a row → no contribution from that device on
+                // that sub-channel). Auto-created on assignment for
+                // gyro / accel-capable devices via EnsureMotionRows.
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionGyro,  "MotionGyro",  MappingCategory.Motion));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionAccel, "MotionAccel", MappingCategory.Motion));
             }
         }
 

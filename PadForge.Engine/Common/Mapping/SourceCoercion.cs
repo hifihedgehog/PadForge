@@ -29,6 +29,12 @@ namespace PadForge.Engine.Common.Mapping
             PovDirection,
             TouchpadButton,  // "Touchpad N Click" / "Touchpad N Finger M Down"
             Gyro,            // "Gyro Pitch" / "Gyro Yaw" / "Gyro Roll"
+            Motion,          // "Motion Gyro" / "Motion Accel" — bundled 3-axis
+                             // sensor source. Used by motion-passthrough rows
+                             // (target = MotionGyro / MotionAccel). The row's
+                             // existence binds the device's sensor stream to
+                             // the slot's motion channel; per-axis values are
+                             // not coerced through this enum's scalar path.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -308,6 +314,10 @@ namespace PadForge.Engine.Common.Mapping
             string s = descriptor.Trim();
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
                 return SourceType.TouchpadButton;
+            // Order matters: "Motion " before "Gyro " (a "Motion Gyro" must not
+            // fall through to the per-axis Gyro classifier).
+            if (s.StartsWith("Motion ", StringComparison.Ordinal))
+                return SourceType.Motion;
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
                 return SourceType.Gyro;
 
@@ -322,6 +332,29 @@ namespace PadForge.Engine.Common.Mapping
                 "pov"    => SourceType.PovDirection,
                 _        => SourceType.Unmapped,
             };
+        }
+
+        /// <summary>True for the bundled motion-source descriptors
+        /// <c>"Motion Gyro"</c> and <c>"Motion Accel"</c>. The mapping-row
+        /// path uses these to bind a device's 3-axis sensor stream to the
+        /// slot's <c>MotionGyro</c> / <c>MotionAccel</c> targets. Per-axis
+        /// reads (gyro-as-stick) keep using <see cref="IsGyroDescriptor"/>
+        /// against <c>"Gyro Pitch/Yaw/Roll"</c>.</summary>
+        public static bool IsMotionDescriptor(string descriptor)
+            => !string.IsNullOrEmpty(descriptor)
+            && descriptor.StartsWith("Motion ", StringComparison.Ordinal);
+
+        /// <summary>Parses a bundled motion descriptor into its sub-channel.
+        /// <c>"Motion Gyro"</c> → 0, <c>"Motion Accel"</c> → 1, anything
+        /// else → -1.</summary>
+        public static int ParseMotionSubChannel(string descriptor)
+        {
+            string s = (descriptor ?? "").Trim();
+            if (!s.StartsWith("Motion ", StringComparison.Ordinal)) return -1;
+            string sub = s.Substring(7).Trim();
+            if (sub.Equals("Gyro",  StringComparison.OrdinalIgnoreCase)) return 0;
+            if (sub.Equals("Accel", StringComparison.OrdinalIgnoreCase)) return 1;
+            return -1;
         }
 
         /// <summary>Parses a gyro descriptor "Gyro Pitch/Yaw/Roll" into

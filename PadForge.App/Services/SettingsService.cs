@@ -3829,6 +3829,18 @@ namespace PadForge.Services
         [XmlArrayItem("Macro")]
         public MacroData[] Macros { get; set; }
 
+        /// <summary>Custom touchpad gestures recorded by the user.
+        /// Per-profile so different games can use different gesture
+        /// catalogs. Each entry compiles to a
+        /// <see cref="PadForge.Engine.Touchpad.PDollarTemplate"/> at
+        /// profile load and joins the active in-box catalog the
+        /// gesture engine evaluates against. Null on profiles captured
+        /// before v3.3 — the in-box catalog still applies; just no
+        /// custom gestures.</summary>
+        [XmlArray("TouchpadGestures")]
+        [XmlArrayItem("Gesture")]
+        public PadForge.Engine.Touchpad.TouchpadCustomGesture[] TouchpadGestures { get; set; }
+
         /// <summary>
         /// Which virtual controller slots were created when this profile was saved.
         /// Null on old profiles — topology application is skipped.

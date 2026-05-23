@@ -650,6 +650,42 @@ namespace PadForge.Services
                 };
             };
 
+            // — per-(device, pad) touchpad gesture settings. Walks the
+            // active slot's PadSetting collection for the named device
+            // + pad index. Returns defaults when no per-pad entry exists
+            // (matches the engine-side fallback so a fresh assignment
+            // gets sensible behavior without the user opening the
+            // Touchpad tab).
+            _inputManager.TouchpadGestureSettingsProvider = (deviceGuid, padIdx) =>
+            {
+                var settings = SettingsManager.UserSettings;
+                if (settings == null) return PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
+                PadSetting ps = null;
+                lock (settings.SyncRoot)
+                {
+                    for (int i = 0; i < settings.Items.Count; i++)
+                    {
+                        var us = settings.Items[i];
+                        if (us == null || us.InstanceGuid != deviceGuid) continue;
+                        ps = us.GetPadSetting();
+                        break;
+                    }
+                }
+                if (ps?.TouchpadSettings == null)
+                    return PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
+                string guidStr = deviceGuid.ToString();
+                for (int i = 0; i < ps.TouchpadSettings.Length; i++)
+                {
+                    var entry = ps.TouchpadSettings[i];
+                    if (entry == null) continue;
+                    if (entry.TouchpadIndex != padIdx) continue;
+                    if (!string.Equals(entry.DeviceGuid, guidStr, StringComparison.OrdinalIgnoreCase))
+                        continue;
+                    return entry.Settings ?? PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
+                }
+                return PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
+            };
+
             // Per-(slot, device) lightbar configs — drives the
             // dispatcher's per-device synthesis loop and per-device
             // pulse rolls. Lighting tab is per-device (parallel to
@@ -6604,6 +6640,31 @@ namespace PadForge.Services
         /// For each ProfileEntry, finds the matching UserSetting and swaps its
         /// PadSetting and MapTo slot.
         /// </summary>
+        /// <summary>Merges the profile's custom touchpad gestures with
+        /// the in-box shape catalog and hands the combined list to the
+        /// InputManager. Called from ApplyProfile and on initial
+        /// LoadFromFile after the default profile snapshot is
+        /// established. Null / empty TouchpadGestures arrays still
+        /// install the in-box catalog so the engine evaluates Circle /
+        /// Square / etc. when the per-pad EnableShapeGestures toggle
+        /// is on.</summary>
+        private void ApplyProfileTouchpadGestures(ProfileData profile)
+        {
+            if (_inputManager == null) return;
+            var templates = new List<PadForge.Engine.Touchpad.PDollarTemplate>(
+                PadForge.Engine.Touchpad.InBoxShapeTemplates.Build());
+            if (profile?.TouchpadGestures != null)
+            {
+                foreach (var g in profile.TouchpadGestures)
+                {
+                    if (g == null) continue;
+                    var tpl = g.ToTemplate();
+                    if (tpl != null) templates.Add(tpl);
+                }
+            }
+            _inputManager.SetShapeTemplates(templates);
+        }
+
         public void ApplyProfile(ProfileData profile)
         {
             if (profile == null)
@@ -6632,6 +6693,13 @@ namespace PadForge.Services
                 for (int s = 0; s < live.Length && s < profile.SlotMappingSets.Length; s++)
                     live[s] = CloneMappingSetDeep(profile.SlotMappingSets[s]);
             }
+
+            // Rebuild the gesture engine's shape-template catalog for
+            // the new profile: in-box catalog + this profile's custom
+            // user-recorded templates compiled via TouchpadCustomGesture.ToTemplate().
+            // Atomic swap on the InputManager so the polling thread
+            // never sees a half-built catalog mid-tick.
+            ApplyProfileTouchpadGestures(profile);
 
             // ── Apply topology (if present in profile) ──
             if (profile.SlotCreated != null)

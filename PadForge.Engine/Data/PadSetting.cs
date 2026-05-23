@@ -588,6 +588,22 @@ namespace PadForge.Engine.Data
         [XmlElement] public string MotionAccel { get; set; } = "";
 
         // ─────────────────────────────────────────────
+        //  Touchpad gesture detection settings
+        //
+        //  One entry per (assigned device, touchpad-index) pair on
+        //  this slot. Multi-pad devices like the Steam Controller have
+        //  one entry per pad so the left and right pads can have
+        //  independent gesture catalogs and thresholds. Empty / null
+        //  collection means every touchpad uses
+        //  TouchpadGestureSettings.Default() at runtime, which the
+        //  InputManager's provider returns when no entry is found.
+        // ─────────────────────────────────────────────
+
+        [XmlArray("TouchpadSettings")]
+        [XmlArrayItem("Settings")]
+        public PadForge.Engine.Touchpad.TouchpadSettingsEntry[] TouchpadSettings { get; set; }
+
+        // ─────────────────────────────────────────────
         //  Extended custom mappings (dictionary-based)
         //  Used for custom Extended configurations with arbitrary axis/button/POV counts.
         //  Keys use target names like "ExtendedAxis0", "ExtendedAxis0Neg", "ExtendedBtn0",

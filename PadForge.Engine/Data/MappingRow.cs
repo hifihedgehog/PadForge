@@ -26,8 +26,13 @@ namespace PadForge.Engine.Data
     {
         /// <summary>Output target name. Must match a known
         /// <see cref="PadSetting"/> mapping field (e.g. <c>"ButtonA"</c>,
-        /// <c>"LeftThumbAxisX"</c>, <c>"LeftTrigger"</c>, <c>"DPadUp"</c>).
-        /// </summary>
+        /// <c>"LeftThumbAxisX"</c>, <c>"LeftTrigger"</c>, <c>"DPadUp"</c>),
+        /// or one of the slot-scoped non-PadSetting targets
+        /// (<c>"MotionGyro"</c>, <c>"MotionAccel"</c> — bound to a device's
+        /// bundled motion source via <c>"Motion Gyro"</c> / <c>"Motion Accel"</c>
+        /// source descriptors; the engine reads three axes directly from the
+        /// source device's state instead of coercing through the per-source
+        /// scalar pipeline).</summary>
         [XmlAttribute] public string Target { get; set; } = "";
 
         /// <summary>Layer this row belongs to. <c>"Base"</c> (default) is

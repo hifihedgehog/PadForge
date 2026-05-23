@@ -969,8 +969,8 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Calibrating… hold still</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Reset Calibration</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Clears the at-rest gyro bias and the last-calibrated timestamp. The next polling cycle re-runs the 1.5-second auto-calibration on this device.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Live rate</value></data>
-  <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Live accel</value></data>
+  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Live gyroscope</value></data>
+  <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Live accelerometer</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Horizontal Sensitivity</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Scales the horizontal (Yaw + Roll) gyro contribution to the output. 1.0 leaves the rate as the engine sees it. Higher values amplify, lower values attenuate. Apply at the device level so every gyro binding on this controller inherits the same horizontal feel.</value></data>
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Vertical Sensitivity</value></data>

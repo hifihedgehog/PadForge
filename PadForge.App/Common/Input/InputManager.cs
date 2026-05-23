@@ -968,12 +968,15 @@ namespace PadForge.Common.Input
                 if (accelSrc.Ud != null)
                 {
                     var s = accelSrc.Ud.InputState;
-                    ax = s.Accel[0] * MsToG;
-                    ay = s.Accel[1] * MsToG;
-                    az = s.Accel[2] * MsToG;
-                    if (accelSrc.Src != null && accelSrc.Src.Invert)
+                    if (s.Accel != null && s.Accel.Length >= 3)
                     {
-                        ax = -ax; ay = -ay; az = -az;
+                        ax = s.Accel[0] * MsToG;
+                        ay = s.Accel[1] * MsToG;
+                        az = s.Accel[2] * MsToG;
+                        if (accelSrc.Src != null && accelSrc.Src.Invert)
+                        {
+                            ax = -ax; ay = -ay; az = -az;
+                        }
                     }
                 }
 
@@ -995,15 +998,18 @@ namespace PadForge.Common.Input
                 if (gyroSrc.Ud != null)
                 {
                     var s = gyroSrc.Ud.InputState;
-                    SourceCoercion.GetPassthroughGyro(
-                        s, gyroSrc.Ud.InstanceGuid.ToString(), padIndex,
-                        out float tunedPitch, out float tunedYaw, out float tunedRoll);
-                    gx = tunedPitch * RadToDeg;
-                    gy = tunedYaw * RadToDeg;
-                    gz = tunedRoll * RadToDeg;
-                    if (gyroSrc.Src != null && gyroSrc.Src.Invert)
+                    if (s.Gyro != null && s.Gyro.Length >= 3)
                     {
-                        gx = -gx; gy = -gy; gz = -gz;
+                        SourceCoercion.GetPassthroughGyro(
+                            s, gyroSrc.Ud.InstanceGuid.ToString(), padIndex,
+                            out float tunedPitch, out float tunedYaw, out float tunedRoll);
+                        gx = tunedPitch * RadToDeg;
+                        gy = tunedYaw * RadToDeg;
+                        gz = tunedRoll * RadToDeg;
+                        if (gyroSrc.Src != null && gyroSrc.Src.Invert)
+                        {
+                            gx = -gx; gy = -gy; gz = -gz;
+                        }
                     }
                 }
 

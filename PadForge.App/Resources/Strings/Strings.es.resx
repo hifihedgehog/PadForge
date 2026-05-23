@@ -1080,8 +1080,8 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Calibrando… mantén quieto</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Restablecer calibración</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Borra el sesgo del giroscopio en reposo y la marca de tiempo de la última calibración. El próximo ciclo de sondeo vuelve a ejecutar la autocalibración de 1,5 segundos en este dispositivo.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Tasa actual</value></data>
-  <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Aceleración actual</value></data>
+  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Giroscopio actual</value></data>
+  <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Acelerómetro actual</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Sensibilidad horizontal</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Escala la contribución horizontal (Yaw + Roll) del giroscopio. 1,0 deja la tasa tal como la ve el motor; valores mayores amplifican, menores atenúan. Aplica a todo el dispositivo.</value></data>
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Sensibilidad vertical</value></data>

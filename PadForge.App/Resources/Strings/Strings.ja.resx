@@ -1454,4 +1454,110 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>左トリガーをリセット</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>右トリガーをリセット</value></data>
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>インパルストリガー</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeUp" xml:space="preserve"><value>上スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeDown" xml:space="preserve"><value>下スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeLeft" xml:space="preserve"><value>左スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeRight" xml:space="preserve"><value>右スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeNE" xml:space="preserve"><value>右上スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeNW" xml:space="preserve"><value>左上スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeSE" xml:space="preserve"><value>右下スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeSW" xml:space="preserve"><value>左下スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_Tap" xml:space="preserve"><value>タップ</value></data>
+  <data name="Mapping_TouchpadGesture_DoubleTap" xml:space="preserve"><value>ダブルタップ</value></data>
+  <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>トリプルタップ</value></data>
+  <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>ロングプレス</value></data>
+  <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>放射ゾーン {0}/{1}</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeUp" xml:space="preserve"><value>2 本指 上スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeDown" xml:space="preserve"><value>2 本指 下スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>2 本指 左スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>2 本指 右スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>2 本指タップ</value></data>
+  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>ピンチイン</value></data>
+  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>ピンチアウト</value></data>
+  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>ピンチ / スプレッド軸</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>時計回り回転</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>反時計回り回転</value></data>
+  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>回転軸</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeUp" xml:space="preserve"><value>3 本指 上スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeDown" xml:space="preserve"><value>3 本指 下スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeLeft" xml:space="preserve"><value>3 本指 左スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeRight" xml:space="preserve"><value>3 本指 右スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerTap" xml:space="preserve"><value>3 本指タップ</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeUp" xml:space="preserve"><value>4 本指 上スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeDown" xml:space="preserve"><value>4 本指 下スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeLeft" xml:space="preserve"><value>4 本指 左スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeRight" xml:space="preserve"><value>4 本指 右スワイプ</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerTap" xml:space="preserve"><value>4 本指タップ</value></data>
+  <data name="Mapping_TouchpadGesture_FiveFingerTap" xml:space="preserve"><value>5 本指タップ</value></data>
+  <data name="Mapping_TouchpadGesture_Circle" xml:space="preserve"><value>円 (時計回り)</value></data>
+  <data name="Mapping_TouchpadGesture_CircleCCW" xml:space="preserve"><value>円 (反時計回り)</value></data>
+  <data name="Mapping_TouchpadGesture_Square" xml:space="preserve"><value>四角形</value></data>
+  <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>三角形</value></data>
+  <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Z 字</value></data>
+  <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>チェックマーク</value></data>
+  <data name="Mapping_TouchpadGesture_X" xml:space="preserve"><value>X 字</value></data>
+  <data name="Settings_TouchpadGestures" xml:space="preserve"><value>タッチパッドジェスチャー</value></data>
+  <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>PadForge が読み取れるすべてのタッチパッドでスワイプ、タップ、ピンチ、カスタムシェイプを認識します。タッチパッドごとの設定は各パッドのタッチパッドタブにあります。ここではグローバルのマスタースイッチと一時停止ホットキーの割り当てを設定します。</value></data>
+  <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>タッチパッドジェスチャーを全体で有効にする</value></data>
+  <data name="Settings_EnableTouchpadGesturesTooltip" xml:space="preserve"><value>マスタースイッチです。オフの場合、タッチパッドごとの有効化トグルに関わらず、どのタッチパッドもジェスチャーディスクリプタを発火しません。タッチパッドの指 / クリック / 位置のマッピングはそのまま動作します。</value></data>
+  <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>一時停止ホットキー</value></data>
+  <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>ジェスチャー検出のオン / オフを切り替えるキーボード組み合わせ (例: Ctrl+Alt+T)。ゲームが生のタッチパッド入力を必要とする場合や、意図せず発火したジェスチャーがプレイを妨げる場合に便利です。空欄でホットキー未割り当て。</value></data>
+  <data name="Pad_Touchpad" xml:space="preserve"><value>タッチパッド</value></data>
+  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>タッチパッドジェスチャー</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>タッチパッドごとのジェスチャー検出。各指のスワイプ、タップ、ピンチ、シェイプはマッピングタブで割り当てられるマッピングソースになります。</value></data>
+  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>タッチパッド</value></data>
+  <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>パッド {0}</value></data>
+  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>検出</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>このパッドでジェスチャーを有効にする</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>このタッチパッドのマスタートグルです。オフの場合、このパッドではジェスチャーディスクリプタを発火しません。指 / クリック / 位置のマッピングはそのまま動作します。</value></data>
+  <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>認識対象</value></data>
+  <data name="Pad_Touchpad_Mode_InBoxOnly" xml:space="preserve"><value>組み込みのみ</value></data>
+  <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>カスタムのみ</value></data>
+  <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>両方</value></data>
+  <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>ライブの指の軌跡を、どちらのジェスチャーカタログと照合するかを指定します。既定は「両方」です。</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>クールダウン (ms)</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>ジェスチャー発火後、このパッドで指定ミリ秒間は新しいジェスチャーを無視します。素早い往復動作による多重発火を防ぎます。</value></data>
+  <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>組み込みジェスチャー</value></data>
+  <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4 方向スワイプ (上 / 下 / 左 / 右)</value></data>
+  <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8 方向スワイプ (斜め方向を追加)</value></data>
+  <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>スワイプ距離 (0..1)</value></data>
+  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>スワイプ時間ウィンドウ (ms)</value></data>
+  <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>放射ゾーン (ウェポンホイール式)</value></data>
+  <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>ゾーン数</value></data>
+  <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>中心デッドゾーン (0..1)</value></data>
+  <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>タップ / ダブルタップ / トリプルタップ</value></data>
+  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>タップ時間ウィンドウ (ms)</value></data>
+  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>マルチタップ間隔 (ms)</value></data>
+  <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>ロングプレス</value></data>
+  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>ロングプレス時間 (ms)</value></data>
+  <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>2 本指スワイプ</value></data>
+  <data name="Pad_Touchpad_PinchSpread" xml:space="preserve"><value>ピンチイン / ピンチアウト</value></data>
+  <data name="Pad_Touchpad_Rotate" xml:space="preserve"><value>回転</value></data>
+  <data name="Pad_Touchpad_ThreeFinger" xml:space="preserve"><value>3 本指ジェスチャー</value></data>
+  <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>4 本指ジェスチャー</value></data>
+  <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>5 本指タップ</value></data>
+  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>シェイプジェスチャー (円、四角形、三角形、Z、チェックマーク、X)</value></data>
+  <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>シェイプ一致しきい値</value></data>
+  <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>カスタムジェスチャー</value></data>
+  <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ 新しいジェスチャーを記録</value></data>
+  <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>このプロファイルにはカスタムジェスチャーが記録されていません。「新しいジェスチャーを記録」をクリックして取り込んでください。</value></data>
+  <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 本指</value></data>
+  <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} 本指</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>タッチパッドジェスチャーを記録</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>下のサーフェスにジェスチャーを描いてください。ダイアログは置いたすべての指を取り込みます。すべての指をサーフェスから離した時点でサンプルが記録されます。前回までと異なる指本数で描いた場合、サンプルスタックはリセットされます。</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>指の接触を待機中</value></data>
+  <data name="Recorder_Drawing" xml:space="preserve"><value>描画中…</value></data>
+  <data name="Recorder_Complete" xml:space="preserve"><value>すべてのサンプルを取得しました。ジェスチャーに名前を付けて保存をクリックしてください。</value></data>
+  <data name="Recorder_NextSample_Format" xml:space="preserve"><value>サンプル {0} / {1}</value></data>
+  <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} サンプル</value></data>
+  <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>取得するサンプル数</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>標準は 3 です。サンプル数が多いほど判定が安定し、少ないほど記録が速く終わります。</value></data>
+  <data name="Recorder_NameLabel" xml:space="preserve"><value>名前</value></data>
+  <data name="Recorder_TryAgain" xml:space="preserve"><value>やり直す</value></data>
+  <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>名前は必須です</value></data>
+  <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>名前が長すぎます (最大 64 文字)</value></data>
+  <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>名前に使用できない文字が含まれています</value></data>
+  <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>指の本数が変わりました。サンプルをクリアしました。</value></data>
+  <data name="Recorder_Error_NoEngine" xml:space="preserve"><value>エンジンが動作していません。記録前にエンジンを起動してください。</value></data>
+  <data name="Recorder_Error_BadSample" xml:space="preserve"><value>有効なサンプルが取得できませんでした。もう一度ジェスチャーを描いてみてください。</value></data>
 </root>

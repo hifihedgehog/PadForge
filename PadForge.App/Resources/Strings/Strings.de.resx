@@ -1454,4 +1454,110 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Linken Trigger zurücksetzen</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Rechten Trigger zurücksetzen</value></data>
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse-Trigger</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeUp" xml:space="preserve"><value>Wischen nach oben</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeDown" xml:space="preserve"><value>Wischen nach unten</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeLeft" xml:space="preserve"><value>Wischen nach links</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeRight" xml:space="preserve"><value>Wischen nach rechts</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeNE" xml:space="preserve"><value>Wischen oben-rechts</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeNW" xml:space="preserve"><value>Wischen oben-links</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeSE" xml:space="preserve"><value>Wischen unten-rechts</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeSW" xml:space="preserve"><value>Wischen unten-links</value></data>
+  <data name="Mapping_TouchpadGesture_Tap" xml:space="preserve"><value>Tippen</value></data>
+  <data name="Mapping_TouchpadGesture_DoubleTap" xml:space="preserve"><value>Doppeltippen</value></data>
+  <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>Dreifachtippen</value></data>
+  <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>Langes Drücken</value></data>
+  <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>Radialzone {0}/{1}</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeUp" xml:space="preserve"><value>Zwei-Finger-Wischen nach oben</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeDown" xml:space="preserve"><value>Zwei-Finger-Wischen nach unten</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Zwei-Finger-Wischen nach links</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>Zwei-Finger-Wischen nach rechts</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>Zwei-Finger-Tippen</value></data>
+  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Zusammenziehen</value></data>
+  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Aufziehen</value></data>
+  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Pinch/Spread Axis</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>Drehen im Uhrzeigersinn</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>Drehen gegen den Uhrzeigersinn</value></data>
+  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>Drehachse</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeUp" xml:space="preserve"><value>Drei-Finger-Wischen nach oben</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeDown" xml:space="preserve"><value>Drei-Finger-Wischen nach unten</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeLeft" xml:space="preserve"><value>Drei-Finger-Wischen nach links</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeRight" xml:space="preserve"><value>Drei-Finger-Wischen nach rechts</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerTap" xml:space="preserve"><value>Drei-Finger-Tippen</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeUp" xml:space="preserve"><value>Vier-Finger-Wischen nach oben</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeDown" xml:space="preserve"><value>Vier-Finger-Wischen nach unten</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeLeft" xml:space="preserve"><value>Vier-Finger-Wischen nach links</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeRight" xml:space="preserve"><value>Vier-Finger-Wischen nach rechts</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerTap" xml:space="preserve"><value>Vier-Finger-Tippen</value></data>
+  <data name="Mapping_TouchpadGesture_FiveFingerTap" xml:space="preserve"><value>Fünf-Finger-Tippen</value></data>
+  <data name="Mapping_TouchpadGesture_Circle" xml:space="preserve"><value>Kreis (im Uhrzeigersinn)</value></data>
+  <data name="Mapping_TouchpadGesture_CircleCCW" xml:space="preserve"><value>Kreis (gegen den Uhrzeigersinn)</value></data>
+  <data name="Mapping_TouchpadGesture_Square" xml:space="preserve"><value>Quadrat</value></data>
+  <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>Dreieck</value></data>
+  <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Z-Form</value></data>
+  <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>Häkchen</value></data>
+  <data name="Mapping_TouchpadGesture_X" xml:space="preserve"><value>X-Form</value></data>
+  <data name="Settings_TouchpadGestures" xml:space="preserve"><value>Touchpad-Gesten</value></data>
+  <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>Erkennt Wischen, Tippen, Pinch-Gesten und benutzerdefinierte Formen auf jedem Touchpad, das PadForge lesen kann. Einstellungen pro Touchpad findest du im Tab Touchpad jedes Pads. Die Optionen unten betreffen den globalen Hauptschalter und die Belegung des Pausen-Hotkeys.</value></data>
+  <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>Touchpad-Gesten global aktivieren</value></data>
+  <data name="Settings_EnableTouchpadGesturesTooltip" xml:space="preserve"><value>Hauptschalter. Wenn aus, feuert kein Touchpad Gesten-Deskriptoren, unabhängig von den Aktivierungen pro Touchpad. Bestehende Finger-, Klick- und Positionszuordnungen auf Touchpads funktionieren weiterhin.</value></data>
+  <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>Hotkey zum Pausieren</value></data>
+  <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>Tastenkombination (z. B. Ctrl+Alt+T), die die Gestenerkennung ein- und ausschaltet. Hilfreich, wenn ein Spiel rohe Touchpad-Eingaben erwartet oder versehentliche Gestenauslösungen das Spiel stören. Leer = kein Hotkey gebunden.</value></data>
+  <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad-Gesten</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Gestenerkennung pro Touchpad. Jedes Finger-Wischen, Tippen, Zusammenziehen und jede Form wird zu einer Zuordnungsquelle, die du im Tab Zuordnungen binden kannst.</value></data>
+  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Pad {0}</value></data>
+  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Erkennung</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Gesten auf diesem Pad aktivieren</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Hauptschalter für dieses Touchpad. Wenn aus, feuern keine Gesten-Deskriptoren für dieses Pad. Bestehende Finger-, Klick- und Positionszuordnungen funktionieren weiterhin.</value></data>
+  <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Erkennen</value></data>
+  <data name="Pad_Touchpad_Mode_InBoxOnly" xml:space="preserve"><value>Nur eingebaute</value></data>
+  <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>Nur benutzerdefinierte</value></data>
+  <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Beide</value></data>
+  <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>Welcher Gestenkatalog von der Engine gegen die aktiven Fingerpfade ausgewertet wird. &quot;Beide&quot; ist der Standard.</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Abklingzeit (ms)</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Ignoriert nach einer ausgelösten Geste für die angegebene Millisekundenzahl neue Gesten auf diesem Pad. Verhindert Mehrfachauslösungen durch schnelle Hin-und-Her-Bewegungen.</value></data>
+  <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Eingebaute Gesten</value></data>
+  <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4-Wege-Wischen (oben / unten / links / rechts)</value></data>
+  <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8-Wege-Wischen (mit Diagonalen)</value></data>
+  <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Wischdistanz (0..1)</value></data>
+  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Wisch-Zeitfenster (ms)</value></data>
+  <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Radialzonen (Waffenrad-Stil)</value></data>
+  <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Anzahl Zonen</value></data>
+  <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Mittelpunkt-Deadzone (0..1)</value></data>
+  <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tippen / Doppeltippen / Dreifachtippen</value></data>
+  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>Tipp-Zeitfenster (ms)</value></data>
+  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>Multi-Tipp-Pause (ms)</value></data>
+  <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>Langes Drücken</value></data>
+  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>Dauer für langes Drücken (ms)</value></data>
+  <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>Zwei-Finger-Wischen</value></data>
+  <data name="Pad_Touchpad_PinchSpread" xml:space="preserve"><value>Zusammenziehen / Aufziehen</value></data>
+  <data name="Pad_Touchpad_Rotate" xml:space="preserve"><value>Drehen</value></data>
+  <data name="Pad_Touchpad_ThreeFinger" xml:space="preserve"><value>Drei-Finger-Gesten</value></data>
+  <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>Vier-Finger-Gesten</value></data>
+  <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>Fünf-Finger-Tippen</value></data>
+  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Formgesten (Kreis, Quadrat, Dreieck, Z, Häkchen, X)</value></data>
+  <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Schwelle für Formübereinstimmung</value></data>
+  <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Benutzerdefinierte Gesten</value></data>
+  <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Neue Geste aufnehmen</value></data>
+  <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Für dieses Profil sind keine benutzerdefinierten Gesten aufgenommen. Klicke auf Neue Geste aufnehmen, um eine zu erfassen.</value></data>
+  <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 Finger</value></data>
+  <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} Finger</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>Touchpad-Geste aufnehmen</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>Zeichne die Geste auf der Fläche unten. Der Dialog erfasst jeden aufgesetzten Finger. Sobald du alle Finger von der Fläche nimmst, wird das Sample aufgenommen. Wird mit einer anderen Fingeranzahl als bei vorherigen Samples gezeichnet, wird der Stapel zurückgesetzt.</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>Warte auf Fingerkontakt</value></data>
+  <data name="Recorder_Drawing" xml:space="preserve"><value>Zeichnet…</value></data>
+  <data name="Recorder_Complete" xml:space="preserve"><value>Alle Samples erfasst. Benenne die Geste und klicke auf Speichern.</value></data>
+  <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sample {0} von {1}</value></data>
+  <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} Samples</value></data>
+  <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Zu erfassende Samples</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 ist Standard. Mehr Samples = robusterer Treffer, weniger = schnellere Aufnahme.</value></data>
+  <data name="Recorder_NameLabel" xml:space="preserve"><value>Name</value></data>
+  <data name="Recorder_TryAgain" xml:space="preserve"><value>Erneut versuchen</value></data>
+  <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Name erforderlich</value></data>
+  <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Name zu lang (max. 64 Zeichen)</value></data>
+  <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>Name enthält ungültige Zeichen</value></data>
+  <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>Fingeranzahl geändert. Samples zurückgesetzt.</value></data>
+  <data name="Recorder_Error_NoEngine" xml:space="preserve"><value>Engine läuft nicht. Starte die Engine vor der Aufnahme.</value></data>
+  <data name="Recorder_Error_BadSample" xml:space="preserve"><value>Kein gültiges Sample erfasst. Versuche die Geste erneut zu zeichnen.</value></data>
 </root>

@@ -31,6 +31,23 @@ namespace PadForge.Common
                 return;
             }
 
+            // Bundled motion-passthrough descriptors don't depend on
+            // device-objects metadata — they are protocol-level markers
+            // that always resolve to a fixed localized name.
+            {
+                string md = mapping.SourceDescriptor;
+                if (md.StartsWith("Motion ", System.StringComparison.Ordinal))
+                {
+                    var si = Strings.Instance;
+                    string sub = md.Substring(7).Trim();
+                    if (sub.Equals("Gyro",  System.StringComparison.OrdinalIgnoreCase))
+                        { mapping.SetResolvedSourceText(si.Mapping_MotionGyro); return; }
+                    if (sub.Equals("Accel", System.StringComparison.OrdinalIgnoreCase))
+                        { mapping.SetResolvedSourceText(si.Mapping_MotionAccel); return; }
+                    return;
+                }
+            }
+
             var objects = ud?.DeviceObjects;
             if (objects == null || objects.Length == 0)
                 return;
@@ -151,6 +168,16 @@ namespace PadForge.Common
                 if (axis.Equals("Yaw",        System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroYaw;
                 if (axis.Equals("Roll",       System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroRoll;
                 if (axis.Equals("Horizontal", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroHorizontal;
+                return null;
+            }
+
+            // Bundled motion-passthrough descriptors → localized display names.
+            if (s.StartsWith("Motion ", System.StringComparison.Ordinal))
+            {
+                var si = Strings.Instance;
+                string sub = s.Substring(7).Trim();
+                if (sub.Equals("Gyro",  System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_MotionGyro;
+                if (sub.Equals("Accel", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_MotionAccel;
                 return null;
             }
 
@@ -355,6 +382,16 @@ namespace PadForge.Common
             else if (s.StartsWith("H", System.StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
             { prefix = s.Substring(0, 1); s = s.Substring(1); }
 
+            // Bundled motion-passthrough descriptors carry no integer index.
+            if (s.StartsWith("Motion ", System.StringComparison.Ordinal))
+            {
+                var siM = Strings.Instance;
+                string sub = s.Substring(7).Trim();
+                if (sub.Equals("Gyro",  System.StringComparison.OrdinalIgnoreCase)) return prefix + siM.Mapping_MotionGyro;
+                if (sub.Equals("Accel", System.StringComparison.OrdinalIgnoreCase)) return prefix + siM.Mapping_MotionAccel;
+                return null;
+            }
+
             string[] parts = s.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2 || !int.TryParse(parts[1], out int index))
                 return null;
@@ -539,6 +576,17 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = "Gyro Roll",       DisplayName = si.Mapping_GyroRoll });
                 list.Add(new InputChoice { Descriptor = "Gyro Horizontal", DisplayName = si.Mapping_GyroHorizontal });
             }
+
+            // Bundled motion-passthrough sources. Marker descriptors that
+            // bind the device's full 3-axis sensor stream to a virtual
+            // controller's MotionGyro / MotionAccel target. Lets users
+            // re-add a deleted Motion row from the picker, and is what
+            // CreateDefaultPadSetting + EnsureMotionRows write at auto-
+            // map time.
+            if (ud.HasGyro)
+                list.Add(new InputChoice { Descriptor = "Motion Gyro",  DisplayName = si.Mapping_MotionGyro });
+            if (ud.HasAccel)
+                list.Add(new InputChoice { Descriptor = "Motion Accel", DisplayName = si.Mapping_MotionAccel });
 
             return list.ToArray();
         }

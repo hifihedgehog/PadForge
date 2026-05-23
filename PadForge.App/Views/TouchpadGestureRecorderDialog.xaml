@@ -1,0 +1,103 @@
+<Window x:Class="PadForge.Views.TouchpadGestureRecorderDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        Title="{Binding Recorder_Title, Source={x:Static strings:Strings.Instance}}"
+        Width="640" Height="540"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        Background="{DynamicResource ApplicationBackgroundBrush}">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title + subtitle -->
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="{Binding Recorder_Title, Source={x:Static strings:Strings.Instance}}"
+                       FontSize="18" FontWeight="SemiBold"/>
+            <TextBlock Text="{Binding Recorder_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       TextWrapping="Wrap" Margin="0,4,0,8"/>
+        </StackPanel>
+
+        <!-- Status row -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+            <TextBlock x:Name="StatusText"
+                       Text="{Binding Recorder_Waiting, Source={x:Static strings:Strings.Instance}}"
+                       FontSize="13" VerticalAlignment="Center"/>
+            <TextBlock x:Name="SamplesText"
+                       FontSize="13" VerticalAlignment="Center" Margin="20,0,0,0"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+        </StackPanel>
+
+        <!-- Drawing surface — multi-touch + mouse drag.
+             IsManipulationEnabled lets WPF route stylus / touch events;
+             Background must be non-null so hit-testing fires. -->
+        <Border Grid.Row="2"
+                BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
+                BorderThickness="1"
+                Background="{DynamicResource SolidBackgroundFillColorBaseBrush}">
+            <Canvas x:Name="DrawingCanvas"
+                    Background="Transparent"
+                    IsManipulationEnabled="True"
+                    ClipToBounds="True"
+                    TouchDown="DrawingCanvas_TouchDown"
+                    TouchMove="DrawingCanvas_TouchMove"
+                    TouchUp="DrawingCanvas_TouchUp"
+                    MouseDown="DrawingCanvas_MouseDown"
+                    MouseMove="DrawingCanvas_MouseMove"
+                    MouseUp="DrawingCanvas_MouseUp"
+                    StylusDown="DrawingCanvas_StylusDown"/>
+        </Border>
+
+        <!-- Name + finger-count summary -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
+            <TextBlock Text="{Binding Recorder_NameLabel, Source={x:Static strings:Strings.Instance}}"
+                       VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <TextBox x:Name="NameBox" Width="260" VerticalAlignment="Center"
+                     TextChanged="NameBox_TextChanged"/>
+            <TextBlock x:Name="ValidationText"
+                       Foreground="#D13438" FontSize="12"
+                       VerticalAlignment="Center" Margin="12,0,0,0"/>
+        </StackPanel>
+
+        <!-- Sample-count picker -->
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,8,0,0">
+            <TextBlock Text="{Binding Recorder_SampleCount_Label, Source={x:Static strings:Strings.Instance}}"
+                       VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <ComboBox x:Name="SampleCountBox" Width="60" SelectedIndex="1"
+                      VerticalAlignment="Center"
+                      SelectionChanged="SampleCountBox_SelectionChanged"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <ComboBoxItem Content="1"/>
+                <ComboBoxItem Content="3"/>
+                <ComboBoxItem Content="5"/>
+            </ComboBox>
+            <TextBlock Text="{Binding Recorder_SampleCount_Hint, Source={x:Static strings:Strings.Instance}}"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       FontSize="12" VerticalAlignment="Center" Margin="12,0,0,0"/>
+        </StackPanel>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button x:Name="TryAgainBtn"
+                    Content="{Binding Recorder_TryAgain, Source={x:Static strings:Strings.Instance}}"
+                    Padding="12,4" Margin="0,0,8,0"
+                    Click="TryAgainBtn_Click"/>
+            <Button x:Name="SaveBtn"
+                    Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
+                    Padding="12,4" Margin="0,0,8,0"
+                    IsEnabled="False"
+                    Click="SaveBtn_Click"/>
+            <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
+                    Padding="12,4"
+                    Click="CancelBtn_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

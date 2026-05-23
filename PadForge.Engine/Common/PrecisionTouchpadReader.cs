@@ -271,11 +271,23 @@ namespace PadForge.Engine
         /// <summary>Whether any precision touchpad device was detected.</summary>
         public bool IsAvailable { get; private set; }
 
-        /// <summary>Per-device touchpad state.</summary>
+        /// <summary>Maximum simultaneous contacts the PTP reader exposes
+        /// per device. Windows Precision Touchpad HID spec maxes at 5
+        /// fingers; the parser collects up to this many contacts per
+        /// report and ignores any beyond. Sized as a constant rather
+        /// than per-device because the HID descriptor's MaxContacts
+        /// usage is read at registration time but we treat 5 as the
+        /// canonical ceiling.</summary>
+        public const int PtpMaxFingers = 5;
+
+        /// <summary>Per-device touchpad state. Holds up to <see cref="PtpMaxFingers"/>
+        /// simultaneous contact slots; flat arrays simplify the read
+        /// path on the polling thread.</summary>
         internal class PtpDeviceState
         {
-            public float X0, Y0, X1, Y1;
-            public bool Down0, Down1;
+            public readonly float[] X = new float[PtpMaxFingers];
+            public readonly float[] Y = new float[PtpMaxFingers];
+            public readonly bool[] Down = new bool[PtpMaxFingers];
             public string Name = "Precision Touchpad";
             public string DevicePath = "";
             public ushort VendorId, ProductId;
@@ -352,37 +364,35 @@ namespace PadForge.Engine
             long now = DateTime.UtcNow.Ticks;
             if (ds.LastReportTicks > 0 && (now - ds.LastReportTicks) > StaleThresholdTicks)
             {
-                ds.Down0 = false;
-                ds.Down1 = false;
+                for (int i = 0; i < PtpMaxFingers; i++) ds.Down[i] = false;
             }
 
-            // PadForge's PTP reader currently exposes 2 fingers per device
-            // (the spec supports up to 5; expansion is a separate refactor
-            // inside this file's HID descriptor parsing). One pad per
-            // device. Contact-ID synthesis matches SdlDeviceWrapper's
-            // pattern: per-slot monotonic, increments on rising edge.
+            // PTP exposes a single touchpad surface with up to
+            // PtpMaxFingers simultaneous contacts. Allocate the
+            // TouchpadInputState[0] entry to the spec maximum so a
+            // device that reports fewer fingers in a given report still
+            // has the higher slots present (and quiet) for the gesture
+            // engine. Contact IDs synthesize on rising/falling edges,
+            // matching SdlDeviceWrapper's pattern; future HID-side
+            // expansion can replace this with native HID contact IDs
+            // from the report's contact-identifier usage.
             if (state.Touchpads == null || state.Touchpads.Length < 1
-                || state.Touchpads[0] == null || state.Touchpads[0].MaxFingers < 2)
+                || state.Touchpads[0] == null || state.Touchpads[0].MaxFingers < PtpMaxFingers)
             {
-                state.Touchpads = new[] { new TouchpadInputState(2) };
+                state.Touchpads = new[] { new TouchpadInputState(PtpMaxFingers) };
             }
             var tp = state.Touchpads[0];
 
-            tp.FingerX[0] = ds.X0;
-            tp.FingerY[0] = ds.Y0;
-            tp.FingerPressure[0] = ds.Down0 ? 1f : 0f;
-            bool wasDown0 = tp.FingerDown[0];
-            tp.FingerDown[0] = ds.Down0;
-            if (ds.Down0 && !wasDown0) tp.FingerContactId[0] = _ptpContactIdNext++;
-            else if (!ds.Down0 && wasDown0) tp.FingerContactId[0] = -1;
-
-            tp.FingerX[1] = ds.X1;
-            tp.FingerY[1] = ds.Y1;
-            tp.FingerPressure[1] = ds.Down1 ? 1f : 0f;
-            bool wasDown1 = tp.FingerDown[1];
-            tp.FingerDown[1] = ds.Down1;
-            if (ds.Down1 && !wasDown1) tp.FingerContactId[1] = _ptpContactIdNext++;
-            else if (!ds.Down1 && wasDown1) tp.FingerContactId[1] = -1;
+            for (int i = 0; i < PtpMaxFingers; i++)
+            {
+                tp.FingerX[i] = ds.X[i];
+                tp.FingerY[i] = ds.Y[i];
+                tp.FingerPressure[i] = ds.Down[i] ? 1f : 0f;
+                bool wasDown = tp.FingerDown[i];
+                tp.FingerDown[i] = ds.Down[i];
+                if (ds.Down[i] && !wasDown) tp.FingerContactId[i] = _ptpContactIdNext++;
+                else if (!ds.Down[i] && wasDown) tp.FingerContactId[i] = -1;
+            }
         }
 
         // Monotonic per-PTP-device contact ID source. Synthesizes contact
@@ -665,7 +675,7 @@ namespace PadForge.Engine
                     y = Math.Clamp(y, 0f, 1f);
 
                     fingers.Add((x, y, (int)contactId));
-                    if (fingers.Count >= 2) break;
+                    if (fingers.Count >= PtpMaxFingers) break;
                 }
             }
 
@@ -682,21 +692,14 @@ namespace PadForge.Engine
                 ds.LastReportTicks = DateTime.UtcNow.Ticks;
 
                 // Always clear contact state first, then set from parsed data.
-                ds.Down0 = false;
-                ds.Down1 = false;
+                for (int i = 0; i < PtpMaxFingers; i++) ds.Down[i] = false;
 
-                if (contactCount >= 1 && fingers.Count >= 1)
+                int copyCount = System.Math.Min(System.Math.Min((int)contactCount, fingers.Count), PtpMaxFingers);
+                for (int i = 0; i < copyCount; i++)
                 {
-                    ds.X0 = fingers[0].x;
-                    ds.Y0 = fingers[0].y;
-                    ds.Down0 = true;
-                }
-
-                if (contactCount >= 2 && fingers.Count >= 2)
-                {
-                    ds.X1 = fingers[1].x;
-                    ds.Y1 = fingers[1].y;
-                    ds.Down1 = true;
+                    ds.X[i] = fingers[i].x;
+                    ds.Y[i] = fingers[i].y;
+                    ds.Down[i] = true;
                 }
             }
         }

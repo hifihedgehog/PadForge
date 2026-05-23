@@ -62,21 +62,29 @@ namespace PadForge.Engine
         public Guid ProductGuid => OverlayProductGuid;
         public bool IsAttached => true;
 
+        /// <summary>Maximum simultaneous fingers the overlay surface
+        /// exposes. Matches the Windows Precision Touchpad spec ceiling
+        /// so a touch-capable display drawing through the overlay can
+        /// drive multi-finger gestures (pinch, rotate, 3/4/5-finger
+        /// swipes / taps) end-to-end. The mouse-drag fallback uses
+        /// slot 0 only.</summary>
+        public const int OverlayMaxFingers = 5;
+
         /// <summary>
-        /// Updates the touchpad state. Called from UI thread. The overlay
-        /// surface is a single virtual pad with up to 2 fingers (matching
-        /// the DS4 touchpad reference). The new <see cref="TouchpadInputState"/>
-        /// per-pad model carries the same data with explicit per-slot
-        /// arrays and contact-ID synthesis on rising/falling edges so the
-        /// gesture recognizer sees a stable input shape regardless of
-        /// touchpad source (overlay vs SDL vs PTP).
+        /// Mouse-drag fallback path. Two-finger snapshot from the legacy
+        /// <see cref="TouchpadState"/> struct (DS4-shape). Used by the
+        /// overlay window when a touch device isn't available; mouse-
+        /// drag drives slot 0 only and slot 1's fields here are vestigial
+        /// since a mouse cursor has no second contact. Higher slots
+        /// (2..4) stay inert. For real multi-touch from a touch-capable
+        /// display, use the <see cref="UpdateStateMulti"/> overload.
         /// </summary>
         public void UpdateState(TouchpadState tp)
         {
             lock (_stateLock)
             {
                 var s = new CustomInputState();
-                s.Touchpads = new[] { new TouchpadInputState(2) };
+                s.Touchpads = new[] { new TouchpadInputState(OverlayMaxFingers) };
                 var pad = s.Touchpads[0];
                 pad.FingerX[0] = tp.X0;
                 pad.FingerY[0] = tp.Y0;
@@ -86,23 +94,14 @@ namespace PadForge.Engine
                 pad.FingerY[1] = tp.Y1;
                 pad.FingerPressure[1] = tp.Down1 ? 1f : 0f;
                 pad.FingerDown[1] = tp.Down1;
-                // Contact-ID synthesis for the overlay: each fresh
-                // UpdateState replaces the snapshot wholesale, so we
-                // synthesize IDs against the prior snapshot held on this
-                // device wrapper. On rising edge allocate from the
-                // monotonic counter; on falling edge clear to -1; else
-                // carry the prior ID.
-                var prev = _currentState?.Touchpads?[0];
-                bool prev0 = prev?.FingerDown != null && prev.FingerDown.Length > 0 && prev.FingerDown[0];
-                bool prev1 = prev?.FingerDown != null && prev.FingerDown.Length > 1 && prev.FingerDown[1];
-                int prevId0 = prev?.FingerContactId != null && prev.FingerContactId.Length > 0 ? prev.FingerContactId[0] : -1;
-                int prevId1 = prev?.FingerContactId != null && prev.FingerContactId.Length > 1 ? prev.FingerContactId[1] : -1;
-                pad.FingerContactId[0] = tp.Down0
-                    ? (prev0 ? prevId0 : _overlayContactIdNext++)
-                    : -1;
-                pad.FingerContactId[1] = tp.Down1
-                    ? (prev1 ? prevId1 : _overlayContactIdNext++)
-                    : -1;
+                // Slots 2..4 default-init to 0 / false / -1.
+
+                // Contact-ID synthesis: walk both slots, allocate on
+                // rising edges, clear on falling, carry the prior ID
+                // when steady. Generalized form so adding higher slots
+                // doesn't repeat the pattern.
+                CarryContactIds(pad, prevPad: _currentState?.Touchpads?.Length > 0 ? _currentState.Touchpads[0] : null);
+
                 pad.Clicked = tp.Click;
                 // Touchpad click rides Buttons[16] (SDL_GAMEPAD_BUTTON_TOUCHPAD's
                 // canonical PadForge slot). The "Touchpad 0 Click" descriptor
@@ -112,7 +111,73 @@ namespace PadForge.Engine
             }
         }
 
-        // Monotonic contact-ID source for the overlay's two finger slots.
+        /// <summary>
+        /// Multi-finger touch path. Caller (overlay window's WPF
+        /// TouchDown / TouchMove / TouchUp handlers) populates a
+        /// <see cref="TouchpadInputState"/> with up to
+        /// <see cref="OverlayMaxFingers"/> active contacts and passes it
+        /// here. Contact IDs are caller-managed (typically a stable map
+        /// from WPF <c>TouchDevice.Id</c> → slot) so the gesture engine
+        /// can distinguish same-finger continuation from re-touches in
+        /// the same slot. The <paramref name="click"/> bit feeds
+        /// <c>Buttons[16]</c> for parity with physical-pad behavior.
+        /// </summary>
+        public void UpdateStateMulti(TouchpadInputState snapshot, bool click)
+        {
+            if (snapshot == null) return;
+            lock (_stateLock)
+            {
+                var s = new CustomInputState();
+                int slots = System.Math.Min(snapshot.MaxFingers, OverlayMaxFingers);
+                var pad = new TouchpadInputState(OverlayMaxFingers);
+                for (int i = 0; i < slots; i++)
+                {
+                    pad.FingerX[i] = snapshot.FingerX[i];
+                    pad.FingerY[i] = snapshot.FingerY[i];
+                    pad.FingerPressure[i] = snapshot.FingerPressure[i];
+                    pad.FingerDown[i] = snapshot.FingerDown[i];
+                    pad.FingerContactId[i] = snapshot.FingerContactId[i];
+                }
+                // Caller-managed contact IDs are authoritative; do not
+                // re-synthesize. If the caller left them at -1 while
+                // still reporting FingerDown=true, fall back to the
+                // monotonic synth so the gesture engine sees a stable
+                // identifier.
+                for (int i = 0; i < slots; i++)
+                {
+                    if (pad.FingerDown[i] && pad.FingerContactId[i] < 0)
+                        pad.FingerContactId[i] = _overlayContactIdNext++;
+                }
+                pad.Clicked = click;
+                s.Touchpads = new[] { pad };
+                if (s.Buttons.Length > 16) s.Buttons[16] = click;
+                _currentState = s;
+            }
+        }
+
+        /// <summary>Walks every slot on the newly-built pad, carries
+        /// the prior frame's contact ID forward on a steady down,
+        /// allocates a fresh ID from <see cref="_overlayContactIdNext"/>
+        /// on a rising edge, and clears to -1 on a falling edge.
+        /// Shared by both UpdateState overloads.</summary>
+        private void CarryContactIds(TouchpadInputState pad, TouchpadInputState prevPad)
+        {
+            int n = pad.MaxFingers;
+            for (int i = 0; i < n; i++)
+            {
+                bool prevDown = prevPad != null
+                    && i < prevPad.MaxFingers
+                    && prevPad.FingerDown[i];
+                int prevId = prevPad != null && i < prevPad.MaxFingers
+                    ? prevPad.FingerContactId[i] : -1;
+                if (pad.FingerDown[i])
+                    pad.FingerContactId[i] = prevDown ? prevId : _overlayContactIdNext++;
+                else
+                    pad.FingerContactId[i] = -1;
+            }
+        }
+
+        // Monotonic contact-ID source for the overlay's finger slots.
         private int _overlayContactIdNext = 1;
 
         public CustomInputState GetCurrentState(bool forceRaw = false)

@@ -1543,6 +1543,31 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>このプロファイルにはカスタムジェスチャーが記録されていません。「新しいジェスチャーを記録」をクリックして取り込んでください。</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 本指</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} 本指</value></data>
+  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>検出をリセット</value></data>
+  <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>組み込みジェスチャーをリセット</value></data>
+  <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>ジェスチャーをリセット</value></data>
+  <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>認識対象をリセット</value></data>
+  <data name="Pad_ResetTouchpadCooldownMs" xml:space="preserve"><value>クールダウンをリセット</value></data>
+  <data name="Pad_ResetTouchpadFourWaySwipes" xml:space="preserve"><value>4 方向スワイプをリセット</value></data>
+  <data name="Pad_ResetTouchpadEightWaySwipes" xml:space="preserve"><value>8 方向スワイプをリセット</value></data>
+  <data name="Pad_ResetTouchpadSwipeDistance" xml:space="preserve"><value>スワイプ距離をリセット</value></data>
+  <data name="Pad_ResetTouchpadSwipeTimeWindow" xml:space="preserve"><value>スワイプ時間ウィンドウをリセット</value></data>
+  <data name="Pad_ResetTouchpadRadialZones" xml:space="preserve"><value>放射ゾーンをリセット</value></data>
+  <data name="Pad_ResetTouchpadRadialZoneCount" xml:space="preserve"><value>ゾーン数をリセット</value></data>
+  <data name="Pad_ResetTouchpadRadialCenterDeadzone" xml:space="preserve"><value>中心デッドゾーンをリセット</value></data>
+  <data name="Pad_ResetTouchpadTaps" xml:space="preserve"><value>タップ / ダブルタップ / トリプルタップをリセット</value></data>
+  <data name="Pad_ResetTouchpadTapTimeWindow" xml:space="preserve"><value>タップ時間ウィンドウをリセット</value></data>
+  <data name="Pad_ResetTouchpadMultiTapGap" xml:space="preserve"><value>マルチタップ間隔をリセット</value></data>
+  <data name="Pad_ResetTouchpadLongPress" xml:space="preserve"><value>ロングプレスをリセット</value></data>
+  <data name="Pad_ResetTouchpadLongPressTimeWindow" xml:space="preserve"><value>ロングプレス時間をリセット</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipes" xml:space="preserve"><value>2 本指スワイプをリセット</value></data>
+  <data name="Pad_ResetTouchpadPinchSpread" xml:space="preserve"><value>ピンチイン / ピンチアウトをリセット</value></data>
+  <data name="Pad_ResetTouchpadRotate" xml:space="preserve"><value>回転をリセット</value></data>
+  <data name="Pad_ResetTouchpadThreeFinger" xml:space="preserve"><value>3 本指ジェスチャーをリセット</value></data>
+  <data name="Pad_ResetTouchpadFourFinger" xml:space="preserve"><value>4 本指ジェスチャーをリセット</value></data>
+  <data name="Pad_ResetTouchpadFiveFinger" xml:space="preserve"><value>5 本指タップをリセット</value></data>
+  <data name="Pad_ResetTouchpadShapeGestures" xml:space="preserve"><value>シェイプジェスチャーをリセット</value></data>
+  <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>シェイプ一致しきい値をリセット</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>タッチパッドジェスチャーを記録</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>下のサーフェスにジェスチャーを描いてください。ダイアログは置いたすべての指を取り込みます。すべての指をサーフェスから離した時点でサンプルが記録されます。前回までと異なる指本数で描いた場合、サンプルスタックはリセットされます。</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>サーフェスへの指の接触を待機中</value></data>

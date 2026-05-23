@@ -1057,6 +1057,35 @@
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 finger</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} fingers</value></data>
 
+  <!-- Reset-All tooltips per card -->
+  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Reset Detection</value></data>
+  <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Reset In-box Gestures</value></data>
+
+  <!-- Per-row Reset tooltips -->
+  <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Reset Gestures Enabled</value></data>
+  <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Reset Recognize</value></data>
+  <data name="Pad_ResetTouchpadCooldownMs" xml:space="preserve"><value>Reset Cooldown</value></data>
+  <data name="Pad_ResetTouchpadFourWaySwipes" xml:space="preserve"><value>Reset 4-Way Swipes</value></data>
+  <data name="Pad_ResetTouchpadEightWaySwipes" xml:space="preserve"><value>Reset 8-Way Swipes</value></data>
+  <data name="Pad_ResetTouchpadSwipeDistance" xml:space="preserve"><value>Reset Swipe Distance</value></data>
+  <data name="Pad_ResetTouchpadSwipeTimeWindow" xml:space="preserve"><value>Reset Swipe Time Window</value></data>
+  <data name="Pad_ResetTouchpadRadialZones" xml:space="preserve"><value>Reset Radial Zones</value></data>
+  <data name="Pad_ResetTouchpadRadialZoneCount" xml:space="preserve"><value>Reset Zone Count</value></data>
+  <data name="Pad_ResetTouchpadRadialCenterDeadzone" xml:space="preserve"><value>Reset Center Deadzone</value></data>
+  <data name="Pad_ResetTouchpadTaps" xml:space="preserve"><value>Reset Tap / Double Tap / Triple Tap</value></data>
+  <data name="Pad_ResetTouchpadTapTimeWindow" xml:space="preserve"><value>Reset Tap Time Window</value></data>
+  <data name="Pad_ResetTouchpadMultiTapGap" xml:space="preserve"><value>Reset Multi-Tap Gap</value></data>
+  <data name="Pad_ResetTouchpadLongPress" xml:space="preserve"><value>Reset Long Press</value></data>
+  <data name="Pad_ResetTouchpadLongPressTimeWindow" xml:space="preserve"><value>Reset Long-Press Duration</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipes" xml:space="preserve"><value>Reset Two-Finger Swipes</value></data>
+  <data name="Pad_ResetTouchpadPinchSpread" xml:space="preserve"><value>Reset Pinch / Spread</value></data>
+  <data name="Pad_ResetTouchpadRotate" xml:space="preserve"><value>Reset Rotate</value></data>
+  <data name="Pad_ResetTouchpadThreeFinger" xml:space="preserve"><value>Reset Three-Finger Gestures</value></data>
+  <data name="Pad_ResetTouchpadFourFinger" xml:space="preserve"><value>Reset Four-Finger Gestures</value></data>
+  <data name="Pad_ResetTouchpadFiveFinger" xml:space="preserve"><value>Reset Five-Finger Tap</value></data>
+  <data name="Pad_ResetTouchpadShapeGestures" xml:space="preserve"><value>Reset Shape Gestures</value></data>
+  <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Reset Shape Match Threshold</value></data>
+
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
   <data name="Recorder_Title" xml:space="preserve"><value>Record Touchpad Gesture</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Draw the gesture on the surface below. The dialog captures every finger you put down. When you take all fingers off the surface the sample is recorded. Drawing a different finger count from previous samples resets the stack.</value></data>

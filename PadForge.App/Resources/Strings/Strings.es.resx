@@ -1543,6 +1543,31 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>No hay gestos personalizados grabados en este perfil. Haz clic en Grabar gesto nuevo para capturar uno.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 dedo</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} dedos</value></data>
+  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Restablecer detección</value></data>
+  <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Restablecer gestos integrados</value></data>
+  <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Restablecer gestos</value></data>
+  <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Restablecer reconocer</value></data>
+  <data name="Pad_ResetTouchpadCooldownMs" xml:space="preserve"><value>Restablecer tiempo de espera</value></data>
+  <data name="Pad_ResetTouchpadFourWaySwipes" xml:space="preserve"><value>Restablecer deslizamientos de 4 direcciones</value></data>
+  <data name="Pad_ResetTouchpadEightWaySwipes" xml:space="preserve"><value>Restablecer deslizamientos de 8 direcciones</value></data>
+  <data name="Pad_ResetTouchpadSwipeDistance" xml:space="preserve"><value>Restablecer distancia de deslizamiento</value></data>
+  <data name="Pad_ResetTouchpadSwipeTimeWindow" xml:space="preserve"><value>Restablecer ventana de tiempo del deslizamiento</value></data>
+  <data name="Pad_ResetTouchpadRadialZones" xml:space="preserve"><value>Restablecer zonas radiales</value></data>
+  <data name="Pad_ResetTouchpadRadialZoneCount" xml:space="preserve"><value>Restablecer número de zonas</value></data>
+  <data name="Pad_ResetTouchpadRadialCenterDeadzone" xml:space="preserve"><value>Restablecer zona muerta central</value></data>
+  <data name="Pad_ResetTouchpadTaps" xml:space="preserve"><value>Restablecer toque / toque doble / toque triple</value></data>
+  <data name="Pad_ResetTouchpadTapTimeWindow" xml:space="preserve"><value>Restablecer ventana de tiempo del toque</value></data>
+  <data name="Pad_ResetTouchpadMultiTapGap" xml:space="preserve"><value>Restablecer intervalo entre toques</value></data>
+  <data name="Pad_ResetTouchpadLongPress" xml:space="preserve"><value>Restablecer pulsación larga</value></data>
+  <data name="Pad_ResetTouchpadLongPressTimeWindow" xml:space="preserve"><value>Restablecer duración de la pulsación larga</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipes" xml:space="preserve"><value>Restablecer deslizamientos con dos dedos</value></data>
+  <data name="Pad_ResetTouchpadPinchSpread" xml:space="preserve"><value>Restablecer pellizco / apertura</value></data>
+  <data name="Pad_ResetTouchpadRotate" xml:space="preserve"><value>Restablecer rotar</value></data>
+  <data name="Pad_ResetTouchpadThreeFinger" xml:space="preserve"><value>Restablecer gestos con tres dedos</value></data>
+  <data name="Pad_ResetTouchpadFourFinger" xml:space="preserve"><value>Restablecer gestos con cuatro dedos</value></data>
+  <data name="Pad_ResetTouchpadFiveFinger" xml:space="preserve"><value>Restablecer toque con cinco dedos</value></data>
+  <data name="Pad_ResetTouchpadShapeGestures" xml:space="preserve"><value>Restablecer gestos de forma</value></data>
+  <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Restablecer umbral de coincidencia de forma</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>Grabar gesto del touchpad</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Dibuja el gesto sobre la superficie de abajo. El cuadro de diálogo captura todos los dedos que apoyes. Cuando levantas todos los dedos de la superficie, la muestra queda grabada. Dibujar con un número de dedos distinto al de las muestras anteriores reinicia la pila.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>Esperando contacto con los dedos en la superficie</value></data>

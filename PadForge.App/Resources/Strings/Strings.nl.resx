@@ -1563,6 +1563,31 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Geen aangepaste gebaren opgenomen voor dit profiel. Klik op Nieuw gebaar opnemen om er een vast te leggen.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 vinger</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} vingers</value></data>
+  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Detectie resetten</value></data>
+  <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Ingebouwde gebaren resetten</value></data>
+  <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Gebaren resetten</value></data>
+  <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Herkennen resetten</value></data>
+  <data name="Pad_ResetTouchpadCooldownMs" xml:space="preserve"><value>Afkoeling resetten</value></data>
+  <data name="Pad_ResetTouchpadFourWaySwipes" xml:space="preserve"><value>4-richtingsvegen resetten</value></data>
+  <data name="Pad_ResetTouchpadEightWaySwipes" xml:space="preserve"><value>8-richtingsvegen resetten</value></data>
+  <data name="Pad_ResetTouchpadSwipeDistance" xml:space="preserve"><value>Veegafstand resetten</value></data>
+  <data name="Pad_ResetTouchpadSwipeTimeWindow" xml:space="preserve"><value>Tijdsvenster voor veeg resetten</value></data>
+  <data name="Pad_ResetTouchpadRadialZones" xml:space="preserve"><value>Radiale zones resetten</value></data>
+  <data name="Pad_ResetTouchpadRadialZoneCount" xml:space="preserve"><value>Aantal zones resetten</value></data>
+  <data name="Pad_ResetTouchpadRadialCenterDeadzone" xml:space="preserve"><value>Middendeadzone resetten</value></data>
+  <data name="Pad_ResetTouchpadTaps" xml:space="preserve"><value>Tik / dubbele tik / drievoudige tik resetten</value></data>
+  <data name="Pad_ResetTouchpadTapTimeWindow" xml:space="preserve"><value>Tijdsvenster voor tik resetten</value></data>
+  <data name="Pad_ResetTouchpadMultiTapGap" xml:space="preserve"><value>Tussenpoze multi-tik resetten</value></data>
+  <data name="Pad_ResetTouchpadLongPress" xml:space="preserve"><value>Lang indrukken resetten</value></data>
+  <data name="Pad_ResetTouchpadLongPressTimeWindow" xml:space="preserve"><value>Duur lang indrukken resetten</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipes" xml:space="preserve"><value>Tweevingervegen resetten</value></data>
+  <data name="Pad_ResetTouchpadPinchSpread" xml:space="preserve"><value>Knijpen / spreiden resetten</value></data>
+  <data name="Pad_ResetTouchpadRotate" xml:space="preserve"><value>Draaien resetten</value></data>
+  <data name="Pad_ResetTouchpadThreeFinger" xml:space="preserve"><value>Drievingergebaren resetten</value></data>
+  <data name="Pad_ResetTouchpadFourFinger" xml:space="preserve"><value>Viervingergebaren resetten</value></data>
+  <data name="Pad_ResetTouchpadFiveFinger" xml:space="preserve"><value>Vijfvingertik resetten</value></data>
+  <data name="Pad_ResetTouchpadShapeGestures" xml:space="preserve"><value>Vormgebaren resetten</value></data>
+  <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Drempel voor vormovereenkomst resetten</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>Touchpad-gebaar opnemen</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Teken het gebaar op het oppervlak hieronder. Het venster legt elke vinger vast die je neerzet. Wanneer je alle vingers van het oppervlak haalt, wordt de opname vastgelegd. Tekenen met een ander aantal vingers dan eerdere opnames wist de stapel.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>Wachten op vingercontact op het oppervlak</value></data>

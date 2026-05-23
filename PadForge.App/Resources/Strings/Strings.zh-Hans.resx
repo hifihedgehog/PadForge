@@ -1543,6 +1543,31 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>此配置尚未录制自定义手势。点击“录制新手势”进行采集。</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 根手指</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} 根手指</value></data>
+  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>重置检测</value></data>
+  <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>重置内置手势</value></data>
+  <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>重置手势</value></data>
+  <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>重置识别</value></data>
+  <data name="Pad_ResetTouchpadCooldownMs" xml:space="preserve"><value>重置冷却时间</value></data>
+  <data name="Pad_ResetTouchpadFourWaySwipes" xml:space="preserve"><value>重置 4 向滑动</value></data>
+  <data name="Pad_ResetTouchpadEightWaySwipes" xml:space="preserve"><value>重置 8 向滑动</value></data>
+  <data name="Pad_ResetTouchpadSwipeDistance" xml:space="preserve"><value>重置滑动距离</value></data>
+  <data name="Pad_ResetTouchpadSwipeTimeWindow" xml:space="preserve"><value>重置滑动时间窗</value></data>
+  <data name="Pad_ResetTouchpadRadialZones" xml:space="preserve"><value>重置径向扇区</value></data>
+  <data name="Pad_ResetTouchpadRadialZoneCount" xml:space="preserve"><value>重置扇区数量</value></data>
+  <data name="Pad_ResetTouchpadRadialCenterDeadzone" xml:space="preserve"><value>重置中心死区</value></data>
+  <data name="Pad_ResetTouchpadTaps" xml:space="preserve"><value>重置轻触 / 双击 / 三连击</value></data>
+  <data name="Pad_ResetTouchpadTapTimeWindow" xml:space="preserve"><value>重置轻触时间窗</value></data>
+  <data name="Pad_ResetTouchpadMultiTapGap" xml:space="preserve"><value>重置多次点击间隔</value></data>
+  <data name="Pad_ResetTouchpadLongPress" xml:space="preserve"><value>重置长按</value></data>
+  <data name="Pad_ResetTouchpadLongPressTimeWindow" xml:space="preserve"><value>重置长按时长</value></data>
+  <data name="Pad_ResetTouchpadTwoFingerSwipes" xml:space="preserve"><value>重置双指滑动</value></data>
+  <data name="Pad_ResetTouchpadPinchSpread" xml:space="preserve"><value>重置捏合 / 张开</value></data>
+  <data name="Pad_ResetTouchpadRotate" xml:space="preserve"><value>重置旋转</value></data>
+  <data name="Pad_ResetTouchpadThreeFinger" xml:space="preserve"><value>重置三指手势</value></data>
+  <data name="Pad_ResetTouchpadFourFinger" xml:space="preserve"><value>重置四指手势</value></data>
+  <data name="Pad_ResetTouchpadFiveFinger" xml:space="preserve"><value>重置五指轻触</value></data>
+  <data name="Pad_ResetTouchpadShapeGestures" xml:space="preserve"><value>重置形状手势</value></data>
+  <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>重置形状匹配阈值</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>录制触控板手势</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>在下方画板上画出手势。对话框会捕获所有按下的手指。当所有手指离开画板时，样本即被记录。绘制不同手指数的样本会重置堆栈。</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>等待手指触摸画板</value></data>

@@ -262,6 +262,27 @@ namespace PadForge.Common.Input
         /// <summary>Per-slot battery charging flag, paired with <see cref="BatteryPercents"/>.</summary>
         public bool[] BatteryCharging { get; } = new bool[MaxPads];
 
+        /// <summary>Per-slot gyro engage state contributed by the
+        /// dedicated <c>GyroAimEngageButton</c> field. Settled once per
+        /// tick by <see cref="UpdateGyroEngageStates"/>: Hold mode tracks
+        /// the button state directly, Toggle mode flips on each rising
+        /// edge. Reads OR-combine with <see cref="GyroEngagedFromMacro"/>
+        /// in <see cref="SourceCoercion.AimEngageStateProvider"/>; either
+        /// source can engage and neither can disengage what the other
+        /// engaged.</summary>
+        public volatile bool[] GyroEngagedFromButton = new bool[MaxPads];
+
+        /// <summary>Per-slot gyro engage state contributed by the
+        /// <c>SetGyroEngaged</c> macro action. Written from the macro
+        /// evaluator (<c>Step4b.EvaluateMacros</c>), read alongside
+        /// <see cref="GyroEngagedFromButton"/> by the gyro evaluators.</summary>
+        public volatile bool[] GyroEngagedFromMacro = new bool[MaxPads];
+
+        /// <summary>Previous-tick button state for each slot's engage
+        /// button. Owned by <see cref="UpdateGyroEngageStates"/> as the
+        /// edge-detection input for Toggle mode.</summary>
+        private readonly bool[] _prevAimEngageButtonDown = new bool[MaxPads];
+
         /// <summary>Monotonic frame counter feeding the Sony Report 0x01
         /// timestamp / packet-sequence fields. Game-side parsers (e.g. SDL3's
         /// PS5 driver) reject duplicate packet-sequence values, so this MUST
@@ -717,6 +738,7 @@ namespace PadForge.Common.Input
                         }
 
                         UpdateInputStates();
+                        UpdateGyroEngageStates();
                         UpdateMotionSnapshots();
                         BroadcastDsuMotion();
                         UpdateOutputStates();
@@ -853,6 +875,100 @@ namespace PadForge.Common.Input
                         ud.ClearRuntimeState();
                     }
                 }
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        //  Gyro engage state (per-slot, per-tick)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Settles each slot's <see cref="GyroEngagedFromButton"/>
+        /// bit once per tick from the slot's configured
+        /// <c>GyroAimEngageButton</c> + <c>GyroAimEngageMode</c>. Hold mode
+        /// tracks the button state directly (empty descriptor = always-on);
+        /// Toggle mode flips the sticky bit on each rising edge (empty
+        /// descriptor = no-op, the bit stays whatever the macro last set).
+        /// Runs between Step 2 (UpdateInputStates) and Step 3
+        /// (UpdateOutputStates) so both gyro evaluators — mapping-row reads
+        /// and motion passthrough — see a single, consistent engaged
+        /// decision for the tick.
+        ///
+        /// <para>Picks the first device on the slot that has a non-empty
+        /// engage button configured. Multi-device slots with multiple
+        /// engage buttons configured pick the first per UserSettings
+        /// storage order; this is intentional — the engage button is a
+        /// per-slot ergonomic, not a per-device setting at the runtime
+        /// level. Configuring engage on two devices simultaneously is
+        /// supported by editing the second device's PadSetting but only
+        /// the first-listed wins at runtime.</para></summary>
+        private void UpdateGyroEngageStates()
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return;
+
+            for (int slot = 0; slot < MaxPads; slot++)
+            {
+                if (!SettingsManager.SlotCreated[slot])
+                {
+                    GyroEngagedFromButton[slot] = false;
+                    _prevAimEngageButtonDown[slot] = false;
+                    continue;
+                }
+
+                // First device on the slot with a configured engage button
+                // wins. Empty descriptor everywhere → always-on (Hold-default).
+                string descriptor = "";
+                string deviceGuid = "";
+                string mode = "Hold";
+                lock (settings.SyncRoot)
+                {
+                    for (int i = 0; i < settings.Items.Count; i++)
+                    {
+                        var us = settings.Items[i];
+                        if (us == null || us.MapTo != slot) continue;
+                        var ps = us.GetPadSetting();
+                        if (ps == null) continue;
+                        if (string.IsNullOrEmpty(ps.GyroAimEngageButton)) continue;
+                        descriptor = ps.GyroAimEngageButton;
+                        deviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
+                        mode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
+                        break;
+                    }
+                }
+
+                bool buttonDown = !string.IsNullOrEmpty(descriptor)
+                    && (SourceCoercion.ButtonHeldProvider?.Invoke(deviceGuid, descriptor, slot) ?? false);
+
+                if (mode == "Toggle")
+                {
+                    // Rising edge → flip the sticky bit. Falling edge,
+                    // empty descriptor, and held state all leave the bit
+                    // alone — Toggle never auto-disengages.
+                    if (buttonDown && !_prevAimEngageButtonDown[slot])
+                        GyroEngagedFromButton[slot] = !GyroEngagedFromButton[slot];
+                }
+                else
+                {
+                    // Hold mode (default). Empty descriptor reads as
+                    // always-on to preserve the pre-v3.2.4 behavior where
+                    // no engage button = no gating from this source.
+                    GyroEngagedFromButton[slot] = string.IsNullOrEmpty(descriptor) ? true : buttonDown;
+                }
+                _prevAimEngageButtonDown[slot] = buttonDown;
+            }
+        }
+
+        /// <summary>Clears both gyro-engage per-slot bits and the edge-
+        /// detection scratch. Called by the App layer after a profile
+        /// switch / settings reload so the new profile's engage state
+        /// doesn't carry the prior profile's Toggle stickiness.</summary>
+        public void ResetGyroEngageStates()
+        {
+            for (int i = 0; i < MaxPads; i++)
+            {
+                GyroEngagedFromButton[i] = false;
+                GyroEngagedFromMacro[i] = false;
+                _prevAimEngageButtonDown[i] = false;
             }
         }
 

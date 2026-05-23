@@ -739,6 +739,13 @@
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Trillen stoppen</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Trillen stoppen</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Maakt elke actieve trillingsoverschrijving op de toegewezen slot vrij. Combineer met een Sticky trilactie om het houden via een andere macro op te heffen.</value></data>
+  <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Gyro-activering instellen</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Stelt de gyro-activeringsstatus van het slot in vanuit een macro. Schakelen wisselt de huidige status; Aan forceert activering; Uit forceert deactivering. Onafhankelijk van de activeringsknop van het Gyro-tabblad — de twee bronnen worden OR-gecombineerd, dus geen van beide kan uitschakelen wat de ander heeft geactiveerd.</value></data>
+  <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Modus</value></data>
+  <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Schakelen</value></data>
+  <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Aan</value></data>
+  <data name="Macro_SetGyroEngaged_Off" xml:space="preserve"><value>Uit</value></data>
+  <data name="MacroAction_SetGyroEngaged_Format" xml:space="preserve"><value>Gyro-activering instellen: {0}</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Houden</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>Reactief (vervagen)</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Plakkerig (vasthouden)</value></data>
@@ -1142,6 +1149,10 @@
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Lengte van het tijdvenster van de smoothing-buffer. Groter = meer smoothing onder de aanscherpings-drempel; kleiner = directer. Standaard 50 ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Activatieknop</value></data>
   <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Descriptor van een knop die de gyro-uitvoer regelt: gyro werkt alleen terwijl deze knop wordt ingedrukt. Leeg = geen knop-restrictie. EN-gecombineerd met de stickdrempel hierboven.</value></data>
+  <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Activeringsmodus</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Vasthouden: gyro is actief zolang de activeringsknop wordt ingedrukt. Schakelen: elke druk schakelt de gyro aan of uit; loslaten doet niets. Schakelen is persistent over de polling-tick en wordt gereset bij profielwisseling.</value></data>
+  <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Vasthouden</value></data>
+  <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Schakelen</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Activering</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optionele beperkingen op wanneer de gyro actief is. Stickuitslag rechts en een activatieknop kunnen elk de gyro-uitvoer beperken; configureer één of beide. Als beide zijn ingesteld moeten beide actief zijn voor de gyro werkt.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokaal</value></data>
@@ -1175,6 +1186,7 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>Uitvoercurve resetten</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim-drempel resetten</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Activatieknop resetten</value></data>
+  <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Activeringsmodus resetten</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Bewegingsdoorgifte</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Gyro-afstemming toepassen op bewegingsdoorgifte</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Past de optionele gyro-afstemming van dit tabblad (dode zone, gevoeligheid, afvlakking, responscurve, omkering) toe op de beweging die de virtuele controller aan het spel of de emulator doorgeeft. Schakel het uit om alleen de gekalibreerde meting te sturen en het spel zijn eigen gevoeligheid en afvlakking te laten toepassen. De kalibratie-driftcorrectie geldt in beide gevallen.</value></data>

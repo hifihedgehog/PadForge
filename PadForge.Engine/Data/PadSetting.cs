@@ -500,6 +500,19 @@ namespace PadForge.Engine.Data
         /// <see cref="GyroAimEngageButton"/> descriptor.</summary>
         [XmlElement] public string GyroAimEngageDeviceGuid { get; set; } = "";
 
+        /// <summary>Activation semantics for <see cref="GyroAimEngageButton"/>.
+        /// <c>"Hold"</c> (default): gyro fires while the engage button is held;
+        /// empty descriptor = always-on.
+        /// <c>"Toggle"</c>: each rising edge of the engage button flips a
+        /// sticky per-slot bit; release does nothing; empty descriptor =
+        /// never engages from the button (the macro path can still engage).
+        /// The button-bit is OR-combined with the
+        /// <c>SetGyroEngaged</c> macro action's per-slot bit at read time, so
+        /// either source can engage and neither can disengage what the other
+        /// engaged. Both bits reset on profile switch and app restart
+        /// (volatile per-slot state, not persisted).</summary>
+        [XmlElement] public string GyroAimEngageMode { get; set; } = "Hold";
+
         /// <summary>Top-level invert toggle for the projected pitch
         /// axis. Applies post-tuning, after Player/World projection,
         /// so its effect is consistent across gyro spaces.</summary>
@@ -1095,6 +1108,7 @@ namespace PadForge.Engine.Data
             sb.Append(GyroRealWorldCalibration); sb.Append('|');
             sb.Append(GyroAimEngageButton); sb.Append('|');
             sb.Append(GyroAimEngageDeviceGuid); sb.Append('|');
+            sb.Append(GyroAimEngageMode); sb.Append('|');
             sb.Append(GyroInvertPitch); sb.Append('|');
             sb.Append(GyroInvertYawRoll); sb.Append('|');
             sb.Append(GyroApplyTuningToPassthrough); sb.Append('|');
@@ -1407,6 +1421,7 @@ namespace PadForge.Engine.Data
             nameof(GyroSmoothingThresholdDegPerSec),
             nameof(GyroSmoothingWindowMs), nameof(GyroRealWorldCalibration),
             nameof(GyroAimEngageButton), nameof(GyroAimEngageDeviceGuid),
+            nameof(GyroAimEngageMode),
             nameof(GyroInvertPitch), nameof(GyroInvertYawRoll),
             nameof(GyroApplyTuningToPassthrough),
             // Axis inversion

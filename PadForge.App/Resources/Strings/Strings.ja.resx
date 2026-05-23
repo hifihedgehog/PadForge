@@ -739,6 +739,13 @@
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>ランブル停止</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>ランブル停止</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>割り当てられたスロットでアクティブなランブル オーバーライドを解除します。Sticky ランブル アクションと組み合わせて、別のマクロから保持を解除できます。</value></data>
+  <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>ジャイロ起動を設定</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>マクロからスロットのジャイロ起動状態を設定します。トグルは現在の状態を反転します。オンは強制的に起動します。オフは強制的に解除します。Gyro タブの起動ボタンとは独立しており、両ソースは OR で結合されるため、どちらも相手が起動したものを無効化できません。</value></data>
+  <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>モード</value></data>
+  <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>トグル</value></data>
+  <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>オン</value></data>
+  <data name="Macro_SetGyroEngaged_Off" xml:space="preserve"><value>オフ</value></data>
+  <data name="MacroAction_SetGyroEngaged_Format" xml:space="preserve"><value>ジャイロ起動を設定: {0}</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>保持</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>リアクティブ（フェード）</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>スティッキー（保持）</value></data>
@@ -1122,6 +1129,10 @@
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>スムージング・バッファの時間窓長。大きい = タイトニング以下でより強く平滑化、小さい = よりキビキビ。既定 50ms。</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>アクティベートボタン</value></data>
   <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>ジャイロ出力をゲートするボタンの記述子。このボタンを押している間だけジャイロが作動。空欄 = ボタンによるゲートなし。上の右スティック偏倚しきい値と AND 合成。</value></data>
+  <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>起動モード</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>ホールド: 起動ボタンを押している間、ジャイロが作動します。トグル: ボタンを押すたびにジャイロのオン/オフが切り替わります。離しても何も起こりません。トグルはポーリング間で維持され、プロファイル切り替え時にリセットされます。</value></data>
+  <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>ホールド</value></data>
+  <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>トグル</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>アクティベート</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ジャイロの作動条件を任意で制限。右スティック偏倚とアクティベートボタンのいずれかで出力をゲート可能。両方設定した場合は両方アクティブでなければ作動しません。</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>ローカル</value></data>
@@ -1155,6 +1166,7 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>出力カーブをリセット</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim しきい値をリセット</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>アクティベートボタンをリセット</value></data>
+  <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>起動モードをリセット</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>モーションのパススルー</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>ジャイロ調整をモーションのパススルーに適用</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>このタブの任意のジャイロ調整 (デッドゾーン、感度、スムージング、応答カーブ、反転) を、仮想コントローラーがゲームまたはエミュレーターに報告するモーションに適用します。オフにすると校正済みの値のみを送り、感度とスムージングはゲーム側に任せます。校正によるドリフト補正はどちらの場合も常に適用されます。</value></data>

@@ -603,6 +603,20 @@ namespace PadForge.Services
                 return ms > 0 ? 1000f / ms : 60f;
             };
 
+            // — resolved Aim-Engage state for the slot. OR-combines the
+            // per-slot bit settled by UpdateGyroEngageStates (engage
+            // button under Hold / Toggle semantics) with the bit written
+            // by the SetGyroEngaged macro action. Returns true (always-on)
+            // when the InputManager isn't wired yet, matching the gyro
+            // evaluator's null-provider fallback.
+            PadForge.Engine.Common.Mapping.SourceCoercion.AimEngageStateProvider = slotIndex =>
+            {
+                if (_inputManager == null) return true;
+                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return true;
+                return _inputManager.GyroEngagedFromButton[slotIndex]
+                    || _inputManager.GyroEngagedFromMacro[slotIndex];
+            };
+
             // Per-(slot, device) lightbar configs — drives the
             // dispatcher's per-device synthesis loop and per-device
             // pulse rolls. Lighting tab is per-device (parallel to
@@ -808,6 +822,7 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.ButtonHeldProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.PollHzProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.AimEngageStateProvider = null;
                 lock (_gravityStateLock) _gravityState.Clear();
             }
 
@@ -2058,6 +2073,7 @@ namespace PadForge.Services
             ps.GyroRealWorldCalibration = padVm.GyroRealWorldCalibration.ToString("F2", ic);
             ps.GyroAimEngageButton = padVm.GyroAimEngageButton ?? "";
             ps.GyroAimEngageDeviceGuid = padVm.GyroAimEngageDeviceGuid ?? "";
+            ps.GyroAimEngageMode = string.IsNullOrEmpty(padVm.GyroAimEngageMode) ? "Hold" : padVm.GyroAimEngageMode;
             ps.GyroInvertPitch = padVm.GyroInvertPitch ? "1" : "0";
             ps.GyroInvertYawRoll = padVm.GyroInvertYawRoll ? "1" : "0";
             ps.GyroApplyTuningToPassthrough = padVm.GyroApplyTuningToPassthrough ? "1" : "0";
@@ -2313,6 +2329,7 @@ namespace PadForge.Services
             padVm.GyroRealWorldCalibration = TryParseDouble(ps.GyroRealWorldCalibration, 0);
             padVm.GyroAimEngageButton = ps.GyroAimEngageButton ?? "";
             padVm.GyroAimEngageDeviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
+            padVm.GyroAimEngageMode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
             padVm.GyroInvertPitch = ps.GyroInvertPitch == "1";
             padVm.GyroInvertYawRoll = ps.GyroInvertYawRoll == "1";
             padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough != "0";
@@ -6833,10 +6850,11 @@ namespace PadForge.Services
                     _mainVm.Settings.ActiveProfileInfo = target.Name;
                     ApplyProfile(target);
                     // Drop stateful source-kind accumulators (Incremental
-                    // cruise/ramp throttle) and shift-toggle latches so
-                    // the new profile starts neutral.
+                    // cruise/ramp throttle), shift-toggle latches, and the
+                    // gyro engage stickies so the new profile starts neutral.
                     Common.Input.InputManager.ClearSourceKindRuntime();
                     Common.Input.InputManager.ClearAllShiftRuntime();
+                    _inputManager?.ResetGyroEngageStates();
                     _mainVm.StatusText = string.Format(Strings.Instance.Status_ProfileSwitched_Format, target.Name);
                 }
             }
@@ -6849,6 +6867,7 @@ namespace PadForge.Services
                     ApplyProfile(_defaultProfileSnapshot);
                 Common.Input.InputManager.ClearSourceKindRuntime();
                 Common.Input.InputManager.ClearAllShiftRuntime();
+                _inputManager?.ResetGyroEngageStates();
                 _mainVm.StatusText = Strings.Instance.Status_ProfileSwitchedDefault;
             }
         }

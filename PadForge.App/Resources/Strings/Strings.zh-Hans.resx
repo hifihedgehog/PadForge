@@ -1454,4 +1454,110 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>重置左扳机</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>重置右扳机</value></data>
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>冲击扳机</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeUp" xml:space="preserve"><value>向上滑动</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeDown" xml:space="preserve"><value>向下滑动</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeLeft" xml:space="preserve"><value>向左滑动</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeRight" xml:space="preserve"><value>向右滑动</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeNE" xml:space="preserve"><value>向右上滑动</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeNW" xml:space="preserve"><value>向左上滑动</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeSE" xml:space="preserve"><value>向右下滑动</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeSW" xml:space="preserve"><value>向左下滑动</value></data>
+  <data name="Mapping_TouchpadGesture_Tap" xml:space="preserve"><value>轻触</value></data>
+  <data name="Mapping_TouchpadGesture_DoubleTap" xml:space="preserve"><value>双击</value></data>
+  <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>三连击</value></data>
+  <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>长按</value></data>
+  <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>径向扇区 {0}/{1}</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeUp" xml:space="preserve"><value>双指向上滑动</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeDown" xml:space="preserve"><value>双指向下滑动</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>双指向左滑动</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>双指向右滑动</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>双指轻触</value></data>
+  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>捏合</value></data>
+  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>张开</value></data>
+  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>捏合/张开 轴</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>顺时针旋转</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>逆时针旋转</value></data>
+  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>旋转轴</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeUp" xml:space="preserve"><value>三指向上滑动</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeDown" xml:space="preserve"><value>三指向下滑动</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeLeft" xml:space="preserve"><value>三指向左滑动</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeRight" xml:space="preserve"><value>三指向右滑动</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerTap" xml:space="preserve"><value>三指轻触</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeUp" xml:space="preserve"><value>四指向上滑动</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeDown" xml:space="preserve"><value>四指向下滑动</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeLeft" xml:space="preserve"><value>四指向左滑动</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeRight" xml:space="preserve"><value>四指向右滑动</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerTap" xml:space="preserve"><value>四指轻触</value></data>
+  <data name="Mapping_TouchpadGesture_FiveFingerTap" xml:space="preserve"><value>五指轻触</value></data>
+  <data name="Mapping_TouchpadGesture_Circle" xml:space="preserve"><value>圆形（顺时针）</value></data>
+  <data name="Mapping_TouchpadGesture_CircleCCW" xml:space="preserve"><value>圆形（逆时针）</value></data>
+  <data name="Mapping_TouchpadGesture_Square" xml:space="preserve"><value>方形</value></data>
+  <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>三角形</value></data>
+  <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Z 形</value></data>
+  <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>对勾</value></data>
+  <data name="Mapping_TouchpadGesture_X" xml:space="preserve"><value>X 形</value></data>
+  <data name="Settings_TouchpadGestures" xml:space="preserve"><value>触控板手势</value></data>
+  <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>在 PadForge 可识别的每块触控板上识别滑动、轻触、捏合及自定义形状。各触控板的设置位于对应手柄的“触控板”选项卡，下方控件涵盖全局总开关和暂停热键绑定。</value></data>
+  <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>全局启用触控板手势</value></data>
+  <data name="Settings_EnableTouchpadGesturesTooltip" xml:space="preserve"><value>总开关。关闭时，无论各触控板的启用开关如何，所有触控板都不会触发手势描述符。触控板上现有的手指、点击与位置映射仍正常工作。</value></data>
+  <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>暂停热键</value></data>
+  <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>用于切换手势检测开/关的键盘组合键（例如 Ctrl+Alt+T）。当游戏需要原始触控板输入，或意外触发的手势打断操作时很有用。留空表示不绑定热键。</value></data>
+  <data name="Pad_Touchpad" xml:space="preserve"><value>触控板</value></data>
+  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>触控板手势</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>各触控板的手势检测。每种手指滑动、轻触、捏合与形状都会成为可在“映射”选项卡上绑定的映射来源。</value></data>
+  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>触控板</value></data>
+  <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>手柄 {0}</value></data>
+  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>检测</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>在此手柄上启用手势</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>此触控板的总开关。关闭时，此手柄不触发任何手势描述符。现有的手指、点击与位置映射仍正常工作。</value></data>
+  <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>识别</value></data>
+  <data name="Pad_Touchpad_Mode_InBoxOnly" xml:space="preserve"><value>仅内置</value></data>
+  <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>仅自定义</value></data>
+  <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>两者</value></data>
+  <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>引擎用哪个手势库与实时手指轨迹进行匹配。默认为“两者”。</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>冷却时间 (ms)</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>手势触发后，在此毫秒数内忽略此手柄上的新手势。防止快速来回动作引发的连发。</value></data>
+  <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>内置手势</value></data>
+  <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4 向滑动（上、下、左、右）</value></data>
+  <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8 向滑动（加入对角方向）</value></data>
+  <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>滑动距离 (0..1)</value></data>
+  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>滑动时间窗 (ms)</value></data>
+  <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>径向扇区（武器轮盘风格）</value></data>
+  <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>扇区数量</value></data>
+  <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>中心死区 (0..1)</value></data>
+  <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>轻触 / 双击 / 三连击</value></data>
+  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>轻触时间窗 (ms)</value></data>
+  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>多次点击间隔 (ms)</value></data>
+  <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>长按</value></data>
+  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>长按时长 (ms)</value></data>
+  <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>双指滑动</value></data>
+  <data name="Pad_Touchpad_PinchSpread" xml:space="preserve"><value>捏合 / 张开</value></data>
+  <data name="Pad_Touchpad_Rotate" xml:space="preserve"><value>旋转</value></data>
+  <data name="Pad_Touchpad_ThreeFinger" xml:space="preserve"><value>三指手势</value></data>
+  <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>四指手势</value></data>
+  <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>五指轻触</value></data>
+  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>形状手势（圆形、方形、三角形、Z、对勾、X）</value></data>
+  <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>形状匹配阈值</value></data>
+  <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>自定义手势</value></data>
+  <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ 录制新手势</value></data>
+  <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>此配置尚未录制自定义手势。点击“录制新手势”进行采集。</value></data>
+  <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 根手指</value></data>
+  <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} 根手指</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>录制触控板手势</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>在下方画板上画出手势。对话框会捕获所有按下的手指。当所有手指离开画板时，样本即被记录。绘制不同手指数的样本会重置堆栈。</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>等待手指触摸</value></data>
+  <data name="Recorder_Drawing" xml:space="preserve"><value>绘制中…</value></data>
+  <data name="Recorder_Complete" xml:space="preserve"><value>已采集所有样本。命名手势并点击“保存”。</value></data>
+  <data name="Recorder_NextSample_Format" xml:space="preserve"><value>第 {0} 个样本，共 {1} 个</value></data>
+  <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} 个样本</value></data>
+  <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>要采集的样本数</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 为标准值。样本越多匹配越稳，越少录制越快。</value></data>
+  <data name="Recorder_NameLabel" xml:space="preserve"><value>名称</value></data>
+  <data name="Recorder_TryAgain" xml:space="preserve"><value>重试</value></data>
+  <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>名称不能为空</value></data>
+  <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>名称太长（最多 64 个字符）</value></data>
+  <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>名称包含无效字符</value></data>
+  <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>手指数发生变化，样本已清空。</value></data>
+  <data name="Recorder_Error_NoEngine" xml:space="preserve"><value>引擎未运行，请先启动引擎再录制。</value></data>
+  <data name="Recorder_Error_BadSample" xml:space="preserve"><value>未采集到有效样本。请重新绘制手势。</value></data>
 </root>

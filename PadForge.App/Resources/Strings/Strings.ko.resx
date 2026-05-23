@@ -1454,4 +1454,110 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>왼쪽 트리거 재설정</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>오른쪽 트리거 재설정</value></data>
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>임펄스 트리거</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeUp" xml:space="preserve"><value>위로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeDown" xml:space="preserve"><value>아래로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeLeft" xml:space="preserve"><value>왼쪽으로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeRight" xml:space="preserve"><value>오른쪽으로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeNE" xml:space="preserve"><value>오른쪽 위로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeNW" xml:space="preserve"><value>왼쪽 위로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeSE" xml:space="preserve"><value>오른쪽 아래로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeSW" xml:space="preserve"><value>왼쪽 아래로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_Tap" xml:space="preserve"><value>탭</value></data>
+  <data name="Mapping_TouchpadGesture_DoubleTap" xml:space="preserve"><value>더블 탭</value></data>
+  <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>트리플 탭</value></data>
+  <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>길게 누르기</value></data>
+  <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>방사형 영역 {0}/{1}</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeUp" xml:space="preserve"><value>두 손가락 위로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeDown" xml:space="preserve"><value>두 손가락 아래로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>두 손가락 왼쪽으로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>두 손가락 오른쪽으로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>두 손가락 탭</value></data>
+  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>핀치</value></data>
+  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>펼치기</value></data>
+  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>핀치/펼치기 축</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>시계 방향 회전</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>반시계 방향 회전</value></data>
+  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>회전 축</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeUp" xml:space="preserve"><value>세 손가락 위로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeDown" xml:space="preserve"><value>세 손가락 아래로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeLeft" xml:space="preserve"><value>세 손가락 왼쪽으로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeRight" xml:space="preserve"><value>세 손가락 오른쪽으로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerTap" xml:space="preserve"><value>세 손가락 탭</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeUp" xml:space="preserve"><value>네 손가락 위로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeDown" xml:space="preserve"><value>네 손가락 아래로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeLeft" xml:space="preserve"><value>네 손가락 왼쪽으로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeRight" xml:space="preserve"><value>네 손가락 오른쪽으로 스와이프</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerTap" xml:space="preserve"><value>네 손가락 탭</value></data>
+  <data name="Mapping_TouchpadGesture_FiveFingerTap" xml:space="preserve"><value>다섯 손가락 탭</value></data>
+  <data name="Mapping_TouchpadGesture_Circle" xml:space="preserve"><value>원(시계 방향)</value></data>
+  <data name="Mapping_TouchpadGesture_CircleCCW" xml:space="preserve"><value>원(반시계 방향)</value></data>
+  <data name="Mapping_TouchpadGesture_Square" xml:space="preserve"><value>사각형</value></data>
+  <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>삼각형</value></data>
+  <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Z 모양</value></data>
+  <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>체크 표시</value></data>
+  <data name="Mapping_TouchpadGesture_X" xml:space="preserve"><value>X 모양</value></data>
+  <data name="Settings_TouchpadGestures" xml:space="preserve"><value>터치패드 제스처</value></data>
+  <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>PadForge가 읽을 수 있는 모든 터치패드에서 스와이프, 탭, 핀치 및 사용자 지정 도형을 인식합니다. 터치패드별 설정은 각 패드의 터치패드 탭에 있으며, 아래 컨트롤은 전역 마스터 스위치와 일시 중지 단축키 바인딩을 다룹니다.</value></data>
+  <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>터치패드 제스처 전역 활성화</value></data>
+  <data name="Settings_EnableTouchpadGesturesTooltip" xml:space="preserve"><value>마스터 스위치입니다. 끄면 터치패드별 활성화 토글에 관계없이 어떤 터치패드도 제스처 디스크립터를 발생시키지 않습니다. 터치패드의 기존 손가락 / 클릭 / 위치 매핑은 계속 작동합니다.</value></data>
+  <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>일시 중지 단축키</value></data>
+  <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>제스처 감지를 켜고 끄는 키보드 조합(예: Ctrl+Alt+T)입니다. 게임이 원시 터치패드 입력을 예상하거나 우발적인 제스처 실행이 플레이를 방해할 때 유용합니다. 비어 있으면 단축키가 바인딩되지 않습니다.</value></data>
+  <data name="Pad_Touchpad" xml:space="preserve"><value>터치패드</value></data>
+  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>터치패드 제스처</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>터치패드별 제스처 감지. 각 손가락 스와이프, 탭, 핀치, 도형은 매핑 탭에서 바인딩할 수 있는 매핑 소스가 됩니다.</value></data>
+  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>터치패드</value></data>
+  <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>패드 {0}</value></data>
+  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>감지</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>이 패드에서 제스처 활성화</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>이 터치패드의 마스터 토글입니다. 끄면 이 패드에서 제스처 디스크립터가 발생하지 않습니다. 기존 손가락 / 클릭 / 위치 매핑은 계속 작동합니다.</value></data>
+  <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>인식</value></data>
+  <data name="Pad_Touchpad_Mode_InBoxOnly" xml:space="preserve"><value>내장 제스처만</value></data>
+  <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>사용자 지정만</value></data>
+  <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>둘 다</value></data>
+  <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>엔진이 라이브 손가락 경로에 대해 평가할 제스처 카탈로그입니다. 기본값은 "둘 다"입니다.</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>쿨다운(ms)</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>제스처가 발생한 후 이 밀리초 동안 이 패드의 새 제스처를 무시합니다. 빠른 왕복 동작으로 인한 바운스 발생을 방지합니다.</value></data>
+  <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>내장 제스처</value></data>
+  <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4방향 스와이프(위 / 아래 / 왼쪽 / 오른쪽)</value></data>
+  <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8방향 스와이프(대각선 추가)</value></data>
+  <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>스와이프 거리(0..1)</value></data>
+  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>스와이프 시간 창(ms)</value></data>
+  <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>방사형 영역(웨폰 휠 방식)</value></data>
+  <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>영역 수</value></data>
+  <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>중앙 데드존(0..1)</value></data>
+  <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>탭 / 더블 탭 / 트리플 탭</value></data>
+  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>탭 시간 창(ms)</value></data>
+  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>다중 탭 간격(ms)</value></data>
+  <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>길게 누르기</value></data>
+  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>길게 누르기 지속 시간(ms)</value></data>
+  <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>두 손가락 스와이프</value></data>
+  <data name="Pad_Touchpad_PinchSpread" xml:space="preserve"><value>핀치 / 펼치기</value></data>
+  <data name="Pad_Touchpad_Rotate" xml:space="preserve"><value>회전</value></data>
+  <data name="Pad_Touchpad_ThreeFinger" xml:space="preserve"><value>세 손가락 제스처</value></data>
+  <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>네 손가락 제스처</value></data>
+  <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>다섯 손가락 탭</value></data>
+  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>도형 제스처(원, 사각형, 삼각형, Z, 체크 표시, X)</value></data>
+  <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>도형 일치 임계값</value></data>
+  <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>사용자 지정 제스처</value></data>
+  <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ 새 제스처 녹화</value></data>
+  <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>이 프로필에 녹화된 사용자 지정 제스처가 없습니다. 새 제스처 녹화를 클릭하여 캡처하세요.</value></data>
+  <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>손가락 1개</value></data>
+  <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>손가락 {0}개</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>터치패드 제스처 녹화</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>아래 표면에 제스처를 그리세요. 대화상자가 내려놓은 모든 손가락을 캡처합니다. 모든 손가락을 표면에서 떼면 샘플이 녹화됩니다. 이전 샘플과 다른 손가락 수로 그리면 스택이 재설정됩니다.</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>손가락 접촉 대기 중</value></data>
+  <data name="Recorder_Drawing" xml:space="preserve"><value>그리는 중…</value></data>
+  <data name="Recorder_Complete" xml:space="preserve"><value>모든 샘플이 캡처되었습니다. 제스처 이름을 지정하고 저장을 클릭하세요.</value></data>
+  <data name="Recorder_NextSample_Format" xml:space="preserve"><value>샘플 {0} / {1}</value></data>
+  <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} 샘플</value></data>
+  <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>캡처할 샘플 수</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3개가 표준입니다. 샘플이 많을수록 매칭이 견고해지고, 적을수록 녹화가 빨라집니다.</value></data>
+  <data name="Recorder_NameLabel" xml:space="preserve"><value>이름</value></data>
+  <data name="Recorder_TryAgain" xml:space="preserve"><value>다시 시도</value></data>
+  <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>이름이 필요합니다</value></data>
+  <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>이름이 너무 깁니다(최대 64자)</value></data>
+  <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>이름에 잘못된 문자가 포함되어 있습니다</value></data>
+  <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>손가락 수가 변경되어 샘플이 지워졌습니다.</value></data>
+  <data name="Recorder_Error_NoEngine" xml:space="preserve"><value>엔진이 실행되고 있지 않습니다. 녹화하기 전에 엔진을 시작하세요.</value></data>
+  <data name="Recorder_Error_BadSample" xml:space="preserve"><value>유효한 샘플이 캡처되지 않았습니다. 제스처를 다시 그려보세요.</value></data>
 </root>

@@ -1474,4 +1474,110 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Linkertrigger resetten</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Rechtertrigger resetten</value></data>
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse-triggers</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeUp" xml:space="preserve"><value>Veeg omhoog</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeDown" xml:space="preserve"><value>Veeg omlaag</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeLeft" xml:space="preserve"><value>Veeg naar links</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeRight" xml:space="preserve"><value>Veeg naar rechts</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeNE" xml:space="preserve"><value>Veeg rechtsboven</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeNW" xml:space="preserve"><value>Veeg linksboven</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeSE" xml:space="preserve"><value>Veeg rechtsonder</value></data>
+  <data name="Mapping_TouchpadGesture_SwipeSW" xml:space="preserve"><value>Veeg linksonder</value></data>
+  <data name="Mapping_TouchpadGesture_Tap" xml:space="preserve"><value>Tik</value></data>
+  <data name="Mapping_TouchpadGesture_DoubleTap" xml:space="preserve"><value>Dubbele tik</value></data>
+  <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>Drievoudige tik</value></data>
+  <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>Lang indrukken</value></data>
+  <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>Radiale zone {0}/{1}</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeUp" xml:space="preserve"><value>Tweevingerveeg omhoog</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeDown" xml:space="preserve"><value>Tweevingerveeg omlaag</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Tweevingerveeg naar links</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>Tweevingerveeg naar rechts</value></data>
+  <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>Tweevingertik</value></data>
+  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Knijpen</value></data>
+  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Spreiden</value></data>
+  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Knijp/spreid-as</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>Rechtsom draaien</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>Linksom draaien</value></data>
+  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>Draai-as</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeUp" xml:space="preserve"><value>Drievingerveeg omhoog</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeDown" xml:space="preserve"><value>Drievingerveeg omlaag</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeLeft" xml:space="preserve"><value>Drievingerveeg naar links</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerSwipeRight" xml:space="preserve"><value>Drievingerveeg naar rechts</value></data>
+  <data name="Mapping_TouchpadGesture_ThreeFingerTap" xml:space="preserve"><value>Drievingertik</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeUp" xml:space="preserve"><value>Viervingerveeg omhoog</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeDown" xml:space="preserve"><value>Viervingerveeg omlaag</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeLeft" xml:space="preserve"><value>Viervingerveeg naar links</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerSwipeRight" xml:space="preserve"><value>Viervingerveeg naar rechts</value></data>
+  <data name="Mapping_TouchpadGesture_FourFingerTap" xml:space="preserve"><value>Viervingertik</value></data>
+  <data name="Mapping_TouchpadGesture_FiveFingerTap" xml:space="preserve"><value>Vijfvingertik</value></data>
+  <data name="Mapping_TouchpadGesture_Circle" xml:space="preserve"><value>Cirkel (rechtsom)</value></data>
+  <data name="Mapping_TouchpadGesture_CircleCCW" xml:space="preserve"><value>Cirkel (linksom)</value></data>
+  <data name="Mapping_TouchpadGesture_Square" xml:space="preserve"><value>Vierkant</value></data>
+  <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>Driehoek</value></data>
+  <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Z-vorm</value></data>
+  <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>Vinkje</value></data>
+  <data name="Mapping_TouchpadGesture_X" xml:space="preserve"><value>X-vorm</value></data>
+  <data name="Settings_TouchpadGestures" xml:space="preserve"><value>Touchpad-gebaren</value></data>
+  <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>Herkent veegbewegingen, tikken, knijpgebaren en aangepaste vormen op elk touchpad dat PadForge kan uitlezen. Instellingen per touchpad staan op het Touchpad-tabblad van elke pad. De besturingselementen hieronder bevatten de algemene hoofdschakelaar en de koppeling voor de pauze-sneltoets.</value></data>
+  <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>Touchpad-gebaren globaal inschakelen</value></data>
+  <data name="Settings_EnableTouchpadGesturesTooltip" xml:space="preserve"><value>Hoofdschakelaar. Bij uitschakeling activeert geen enkel touchpad gebaardescriptoren, ongeacht de inschakelschakelaars per touchpad. Bestaande vinger-, klik- en positietoewijzingen op touchpads blijven werken.</value></data>
+  <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>Pauze-sneltoets</value></data>
+  <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>Toetsencombinatie (bijv. Ctrl+Alt+T) die gebaarherkenning in- en uitschakelt. Handig wanneer een game ruwe touchpad-invoer verwacht of wanneer per ongeluk uitgevoerde gebaren het spel onderbreken. Leeg = geen sneltoets gekoppeld.</value></data>
+  <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad-gebaren</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Gebaardetectie per touchpad. Elke vingerveeg, tik, knijpbeweging en vorm wordt een toewijzingsbron die je op het Toewijzingen-tabblad kunt koppelen.</value></data>
+  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Pad {0}</value></data>
+  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detectie</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Gebaren op deze pad inschakelen</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Hoofdschakelaar voor dit touchpad. Bij uitschakeling activeert deze pad geen gebaardescriptoren. Bestaande vinger-, klik- en positietoewijzingen blijven werken.</value></data>
+  <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Herkennen</value></data>
+  <data name="Pad_Touchpad_Mode_InBoxOnly" xml:space="preserve"><value>Alleen ingebouwde</value></data>
+  <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>Alleen aangepaste</value></data>
+  <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Beide</value></data>
+  <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>Welke gebarencatalogus de engine vergelijkt met de actuele vingerpaden. &quot;Beide&quot; is standaard.</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Afkoeling (ms)</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Nadat een gebaar is uitgevoerd, negeert deze pad nieuwe gebaren gedurende dit aantal milliseconden. Voorkomt dubbele afvuringen door snelle heen-en-weer-bewegingen.</value></data>
+  <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Ingebouwde gebaren</value></data>
+  <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4-richtingsvegen (omhoog / omlaag / links / rechts)</value></data>
+  <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8-richtingsvegen (voegt diagonalen toe)</value></data>
+  <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Veegafstand (0..1)</value></data>
+  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Tijdsvenster voor veeg (ms)</value></data>
+  <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Radiale zones (wapenwiel-stijl)</value></data>
+  <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Aantal zones</value></data>
+  <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Middendeadzone (0..1)</value></data>
+  <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tik / Dubbele tik / Drievoudige tik</value></data>
+  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>Tijdsvenster voor tik (ms)</value></data>
+  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>Tussenpoze multi-tik (ms)</value></data>
+  <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>Lang indrukken</value></data>
+  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>Duur lang indrukken (ms)</value></data>
+  <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>Tweevingervegen</value></data>
+  <data name="Pad_Touchpad_PinchSpread" xml:space="preserve"><value>Knijpen / Spreiden</value></data>
+  <data name="Pad_Touchpad_Rotate" xml:space="preserve"><value>Draaien</value></data>
+  <data name="Pad_Touchpad_ThreeFinger" xml:space="preserve"><value>Drievingergebaren</value></data>
+  <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>Viervingergebaren</value></data>
+  <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>Vijfvingertik</value></data>
+  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Vormgebaren (Cirkel, Vierkant, Driehoek, Z, Vinkje, X)</value></data>
+  <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Drempel voor vormovereenkomst</value></data>
+  <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Aangepaste gebaren</value></data>
+  <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Nieuw gebaar opnemen</value></data>
+  <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Geen aangepaste gebaren opgenomen voor dit profiel. Klik op Nieuw gebaar opnemen om er een vast te leggen.</value></data>
+  <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 vinger</value></data>
+  <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} vingers</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>Touchpad-gebaar opnemen</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>Teken het gebaar op het oppervlak hieronder. Het venster legt elke vinger vast die je neerzet. Wanneer je alle vingers van het oppervlak haalt, wordt de opname vastgelegd. Tekenen met een ander aantal vingers dan eerdere opnames wist de stapel.</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>Wachten op vingercontact</value></data>
+  <data name="Recorder_Drawing" xml:space="preserve"><value>Tekenen…</value></data>
+  <data name="Recorder_Complete" xml:space="preserve"><value>Alle opnames vastgelegd. Geef het gebaar een naam en klik op Opslaan.</value></data>
+  <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Opname {0} van {1}</value></data>
+  <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} opnames</value></data>
+  <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Op te nemen opnames</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 is standaard. Meer opnames = stevigere overeenkomst, minder = sneller opnemen.</value></data>
+  <data name="Recorder_NameLabel" xml:space="preserve"><value>Naam</value></data>
+  <data name="Recorder_TryAgain" xml:space="preserve"><value>Opnieuw proberen</value></data>
+  <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Naam vereist</value></data>
+  <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Naam te lang (max. 64 tekens)</value></data>
+  <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>Naam bevat ongeldige tekens</value></data>
+  <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>Aantal vingers gewijzigd. Opnames gewist.</value></data>
+  <data name="Recorder_Error_NoEngine" xml:space="preserve"><value>Engine draait niet. Start de engine voordat je opneemt.</value></data>
+  <data name="Recorder_Error_BadSample" xml:space="preserve"><value>Geen geldige opname vastgelegd. Probeer het gebaar opnieuw te tekenen.</value></data>
 </root>

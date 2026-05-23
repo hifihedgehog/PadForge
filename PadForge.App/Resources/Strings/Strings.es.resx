@@ -1545,7 +1545,10 @@
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} dedos</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>Grabar gesto del touchpad</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Dibuja el gesto sobre la superficie de abajo. El cuadro de diálogo captura todos los dedos que apoyes. Cuando levantas todos los dedos de la superficie, la muestra queda grabada. Dibujar con un número de dedos distinto al de las muestras anteriores reinicia la pila.</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>Esperando contacto con los dedos</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>Esperando contacto con los dedos en la superficie</value></data>
+  <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Dibuja en el touchpad. La superficie lo refleja en vivo.</value></data>
+  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Grabando desde {0}, mando {1}</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Sin touchpad activo. Dibuja en la superficie con ratón o dedo.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Dibujando…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Todas las muestras capturadas. Nombra el gesto y haz clic en Guardar.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Muestra {0} de {1}</value></data>

@@ -1060,7 +1060,10 @@
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
   <data name="Recorder_Title" xml:space="preserve"><value>Record Touchpad Gesture</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Draw the gesture on the surface below. The dialog captures every finger you put down. When you take all fingers off the surface the sample is recorded. Drawing a different finger count from previous samples resets the stack.</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>Waiting for finger contact</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>Waiting for finger contact on the canvas</value></data>
+  <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Draw on the touchpad — the canvas mirrors it live</value></data>
+  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Recording from {0}, pad {1}</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>No live touchpad — draw on the canvas with mouse / touch</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Drawing…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>All samples captured. Name the gesture and click Save.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sample {0} of {1}</value></data>

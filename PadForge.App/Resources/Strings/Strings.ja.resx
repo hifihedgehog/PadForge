@@ -1545,7 +1545,10 @@
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} 本指</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>タッチパッドジェスチャーを記録</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>下のサーフェスにジェスチャーを描いてください。ダイアログは置いたすべての指を取り込みます。すべての指をサーフェスから離した時点でサンプルが記録されます。前回までと異なる指本数で描いた場合、サンプルスタックはリセットされます。</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>指の接触を待機中</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>サーフェスへの指の接触を待機中</value></data>
+  <data name="Recorder_Waiting_Device" xml:space="preserve"><value>タッチパッドに描いてください。サーフェスにリアルタイムで反映されます。</value></data>
+  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>{0}（パッド {1}）から記録中</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>アクティブなタッチパッドがありません。マウスまたはタッチでサーフェスに描いてください。</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>描画中…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>すべてのサンプルを取得しました。ジェスチャーに名前を付けて保存をクリックしてください。</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>サンプル {0} / {1}</value></data>

@@ -134,6 +134,52 @@ namespace PadForge.Common.Input
         /// </summary>
         public TouchpadState[] CombinedTouchpadStates { get; } = new TouchpadState[MaxPads];
 
+        /// <summary>Per-(device, touchpad-pad-index) gesture recognizer
+        /// state. Lazily populated when a device with a touchpad shows
+        /// up; read by <see cref="UpdateGestureContexts"/> each tick and
+        /// by the SourceCoercion gesture-fired / gesture-axis providers
+        /// during mapping evaluation. Cleared on device disconnect and
+        /// on profile switch so a stale partial gesture doesn't carry
+        /// across profiles.</summary>
+        public readonly System.Collections.Concurrent.ConcurrentDictionary<(System.Guid DeviceId, int PadIdx), Engine.Touchpad.TouchpadGestureContext> GestureContexts
+            = new System.Collections.Concurrent.ConcurrentDictionary<(System.Guid, int), Engine.Touchpad.TouchpadGestureContext>();
+
+        /// <summary>Active shape templates ready for the gesture
+        /// engine's $P matcher. Built at startup from the in-box
+        /// catalog; profile load can append the user's custom
+        /// gestures via <see cref="SetShapeTemplates"/>.</summary>
+        public System.Collections.Generic.IReadOnlyList<Engine.Touchpad.PDollarTemplate> ShapeTemplates
+        {
+            get => System.Threading.Volatile.Read(ref _shapeTemplates);
+        }
+        private System.Collections.Generic.IReadOnlyList<Engine.Touchpad.PDollarTemplate> _shapeTemplates
+            = Engine.Touchpad.InBoxShapeTemplates.Build();
+
+        /// <summary>Atomically swaps the active shape-template catalog.
+        /// Called on profile load when the per-profile custom gesture
+        /// library lands; passes in the in-box set merged with the
+        /// custom templates so the recognizer evaluates both.</summary>
+        public void SetShapeTemplates(System.Collections.Generic.IReadOnlyList<Engine.Touchpad.PDollarTemplate> templates)
+        {
+            System.Threading.Volatile.Write(ref _shapeTemplates, templates ?? Engine.Touchpad.InBoxShapeTemplates.Build());
+        }
+
+        /// <summary>Per-(device, padIdx) gesture settings provider.
+        /// Wired by the App layer against the active profile's
+        /// <c>PadSetting.TouchpadSettings</c>; returns
+        /// <see cref="Engine.Touchpad.TouchpadGestureSettings.Default"/>
+        /// when unwired or when no per-pad settings exist for the
+        /// requested device + pad.</summary>
+        public System.Func<System.Guid, int, Engine.Touchpad.TouchpadGestureSettings> TouchpadGestureSettingsProvider { get; set; }
+
+        /// <summary>Global suspend flag. Set by
+        /// <see cref="ResetGestureSuspend"/> / its UI counterpart from
+        /// the configurable suspend hotkey. While true, every
+        /// gesture context's per-tick update skips early and returns
+        /// no fires. Existing path / continuous-axis state stays so
+        /// resuming picks up where it left off.</summary>
+        public volatile bool GestureSuspendActive;
+
         /// <summary>
         /// Retrieved output states copied from Step 4 for UI display in Step 6.
         /// </summary>
@@ -971,6 +1017,59 @@ namespace PadForge.Common.Input
                 _prevAimEngageButtonDown[i] = false;
             }
         }
+
+        // ─────────────────────────────────────────────
+        //  Touchpad gesture per-tick driver
+        // ─────────────────────────────────────────────
+
+        /// <summary>Drives the gesture recognizer for every touchpad
+        /// surface this device exposes. One context per
+        /// <c>(device, pad)</c> pair, lazily allocated. Called from
+        /// Step 2 after the device's <c>InputState</c> snapshot lands;
+        /// recognizer fires populate
+        /// <see cref="Engine.Touchpad.TouchpadGestureContext.FiredGesturesThisFrame"/>
+        /// which the SourceCoercion gesture-fired provider reads each
+        /// time a mapping row resolves a touchpad-gesture source.</summary>
+        private void UpdateGestureContexts(Engine.Data.UserDevice ud, CustomInputState newState)
+        {
+            if (ud == null || newState == null) return;
+            if (newState.Touchpads == null || newState.Touchpads.Length == 0) return;
+
+            long nowMs = System.Environment.TickCount64;
+            for (int p = 0; p < newState.Touchpads.Length; p++)
+            {
+                var pad = newState.Touchpads[p];
+                if (pad == null) continue;
+
+                var key = (ud.InstanceGuid, p);
+                if (!GestureContexts.TryGetValue(key, out var ctx))
+                {
+                    ctx = new Engine.Touchpad.TouchpadGestureContext();
+                    GestureContexts[key] = ctx;
+                }
+
+                if (GestureSuspendActive)
+                {
+                    ctx.State = Engine.Touchpad.GestureState.Suspended;
+                    ctx.FiredGesturesThisFrame.Clear();
+                    continue;
+                }
+                if (ctx.State == Engine.Touchpad.GestureState.Suspended)
+                    ctx.State = Engine.Touchpad.GestureState.Idle;
+
+                var settings = TouchpadGestureSettingsProvider?.Invoke(ud.InstanceGuid, p)
+                    ?? Engine.Touchpad.TouchpadGestureSettings.Default();
+
+                Engine.Touchpad.GestureRecognizer.Update(
+                    padIdx: p, ctx: ctx, pad: pad, settings: settings,
+                    nowMs: nowMs, shapeTemplates: _shapeTemplates);
+            }
+        }
+
+        /// <summary>Drops every gesture context. Called on profile
+        /// switch and on engine stop so a stale partial gesture doesn't
+        /// carry across.</summary>
+        public void ResetGestureContexts() => GestureContexts.Clear();
 
         // ─────────────────────────────────────────────
         //  Motion snapshots (for DSU server)

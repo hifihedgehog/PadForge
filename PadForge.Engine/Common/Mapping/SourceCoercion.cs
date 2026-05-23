@@ -29,6 +29,12 @@ namespace PadForge.Engine.Common.Mapping
             PovDirection,
             TouchpadButton,  // "Touchpad N Click" / "Touchpad N Finger M Down"
             Gyro,            // "Gyro Pitch" / "Gyro Yaw" / "Gyro Roll"
+            TouchpadGesture, // "Touchpad N <GestureName>" — one of the in-box
+                             // names (SwipeUp / DoubleTap / Pinch / RadialZone8_3
+                             // / Circle / ...) or "Custom_<UserName>" for a
+                             // user-recorded template. PinchAxis / RotateAxis
+                             // are continuous-axis variants; everything else
+                             // is a one-shot button-fire descriptor.
             Motion,          // "Motion Gyro" / "Motion Accel" — bundled 3-axis
                              // sensor source. Used by motion-passthrough rows
                              // (target = MotionGyro / MotionAccel). The row's
@@ -330,7 +336,22 @@ namespace PadForge.Engine.Common.Mapping
 
             string s = descriptor.Trim();
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
+            {
+                // "Touchpad N ..." can be a touchpad-button (Click /
+                // Finger M Down), a touchpad-finger axis (Finger M X /
+                // Y / Pressure), or a touchpad-gesture. Disambiguate by
+                // the third token: anything that isn't "Click" or
+                // "Finger" is a gesture name. Touchpad-finger axes fall
+                // through TouchpadButton classification today since the
+                // axis readers special-case them by descriptor pattern
+                // rather than enum tag.
+                var tpParts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (tpParts.Length >= 3
+                    && !tpParts[2].Equals("Click", StringComparison.Ordinal)
+                    && !tpParts[2].Equals("Finger", StringComparison.Ordinal))
+                    return SourceType.TouchpadGesture;
                 return SourceType.TouchpadButton;
+            }
             // Order matters: "Motion " before "Gyro " (a "Motion Gyro" must not
             // fall through to the per-axis Gyro classifier).
             if (s.StartsWith("Motion ", StringComparison.Ordinal))
@@ -360,6 +381,71 @@ namespace PadForge.Engine.Common.Mapping
         public static bool IsMotionDescriptor(string descriptor)
             => !string.IsNullOrEmpty(descriptor)
             && descriptor.StartsWith("Motion ", StringComparison.Ordinal);
+
+        /// <summary>True for touchpad-gesture descriptors —
+        /// <c>"Touchpad N <GestureName>"</c> where GestureName is
+        /// neither <c>Click</c> nor <c>Finger ...</c>. Distinguishes
+        /// gesture sources from the legacy touchpad-button and per-
+        /// finger axis descriptors that share the same <c>Touchpad </c>
+        /// prefix.</summary>
+        public static bool IsTouchpadGestureDescriptor(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            if (!descriptor.StartsWith("Touchpad ", StringComparison.Ordinal)) return false;
+            var parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            return parts.Length >= 3
+                && !parts[2].Equals("Click", StringComparison.Ordinal)
+                && !parts[2].Equals("Finger", StringComparison.Ordinal);
+        }
+
+        /// <summary>Parses a touchpad-gesture descriptor into its pad
+        /// index + gesture name. Returns true on success;
+        /// <paramref name="padIdx"/> is the integer N from
+        /// <c>"Touchpad N ..."</c> and <paramref name="gestureName"/>
+        /// is the remainder (joined with single spaces — gesture names
+        /// are conventionally single tokens but the parser doesn't
+        /// enforce that).</summary>
+        public static bool TryParseTouchpadGesture(string descriptor,
+            out int padIdx, out string gestureName)
+        {
+            padIdx = -1;
+            gestureName = null;
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            if (!descriptor.StartsWith("Touchpad ", StringComparison.Ordinal)) return false;
+            var parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 3) return false;
+            if (!int.TryParse(parts[1], out padIdx)) return false;
+            if (parts[2].Equals("Click", StringComparison.Ordinal)) return false;
+            if (parts[2].Equals("Finger", StringComparison.Ordinal)) return false;
+            gestureName = parts.Length == 3
+                ? parts[2]
+                : string.Join(" ", parts, 2, parts.Length - 2);
+            return true;
+        }
+
+        /// <summary>Returns true if the named gesture fired on the
+        /// given <c>(deviceGuid, padIdx)</c> on the current polling
+        /// tick. Wired by the App layer's per-tick gesture-engine
+        /// driver against
+        /// <see cref="PadForge.Engine.Touchpad.TouchpadGestureContext.FiredGesturesThisFrame"/>.
+        /// Returns false when unwired (engine not running, no touchpad
+        /// device).</summary>
+        public static Func<string, int, string, bool> TouchpadGestureFiredProvider { get; set; }
+
+        /// <summary>Returns the current value of a continuous gesture
+        /// axis (<c>PinchAxis</c> / <c>RotateAxis</c>) on the given
+        /// <c>(deviceGuid, padIdx)</c>. Range -1..+1, 0 when no
+        /// 2-finger session active. Returns 0 when unwired.</summary>
+        public static Func<string, int, string, float> TouchpadGestureAxisProvider { get; set; }
+
+        /// <summary>True for the bipolar continuous-axis gesture
+        /// descriptors. These return a float value via
+        /// <see cref="TouchpadGestureAxisProvider"/> rather than a
+        /// button-fire bool via
+        /// <see cref="TouchpadGestureFiredProvider"/>.</summary>
+        public static bool IsTouchpadGestureAxis(string gestureName)
+            => string.Equals(gestureName, "PinchAxis", StringComparison.Ordinal)
+            || string.Equals(gestureName, "RotateAxis", StringComparison.Ordinal);
 
         /// <summary>Parses a bundled motion descriptor into its sub-channel.
         /// <c>"Motion Gyro"</c> → 0, <c>"Motion Accel"</c> → 1, anything
@@ -827,6 +913,25 @@ namespace PadForge.Engine.Common.Mapping
             string s = (src.Descriptor ?? "").Trim();
             if (string.IsNullOrEmpty(s)) return false;
 
+            // Touchpad-gesture descriptors route through the per-tick
+            // gesture engine's fire set; continuous-axis variants
+            // (PinchAxis / RotateAxis) read as "fired" when their
+            // magnitude exceeds the source's deadzone (engine-side
+            // threshold semantics; one-shot variants ignore deadzone).
+            if (IsTouchpadGestureDescriptor(s))
+            {
+                if (!TryParseTouchpadGesture(s, out int gPad, out string gName)) return false;
+                if (IsTouchpadGestureAxis(gName))
+                {
+                    float axisVal = TouchpadGestureAxisProvider?.Invoke(
+                        src.DeviceGuid ?? "", gPad, gName) ?? 0f;
+                    float gThresh = src.DeadZone > 0 ? src.DeadZone / 100f : 0.5f;
+                    return Math.Abs(axisVal) > gThresh;
+                }
+                return TouchpadGestureFiredProvider?.Invoke(
+                    src.DeviceGuid ?? "", gPad, gName) ?? false;
+            }
+
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
                 return ReadTouchpadBool(state, s);
 
@@ -900,6 +1005,23 @@ namespace PadForge.Engine.Common.Mapping
             string s = (src.Descriptor ?? "").Trim();
             if (string.IsNullOrEmpty(s)) return 0f;
 
+            // Touchpad-gesture sources: continuous axes (PinchAxis,
+            // RotateAxis) read their bipolar value from the gesture
+            // engine's axis provider; one-shot gestures map to ±1
+            // when fired (1 on the firing tick, 0 otherwise).
+            if (IsTouchpadGestureDescriptor(s))
+            {
+                if (!TryParseTouchpadGesture(s, out int gPad, out string gName)) return 0f;
+                if (IsTouchpadGestureAxis(gName))
+                {
+                    return TouchpadGestureAxisProvider?.Invoke(
+                        src.DeviceGuid ?? "", gPad, gName) ?? 0f;
+                }
+                bool fired = TouchpadGestureFiredProvider?.Invoke(
+                    src.DeviceGuid ?? "", gPad, gName) ?? false;
+                return fired ? 1f : 0f;
+            }
+
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
             {
                 // Two readings for touchpad sources:
@@ -972,6 +1094,25 @@ namespace PadForge.Engine.Common.Mapping
         {
             string s = (src.Descriptor ?? "").Trim();
             if (string.IsNullOrEmpty(s)) return 0f;
+
+            // Touchpad-gesture sources: continuous-axis variants use
+            // the absolute value of their bipolar reading (a trigger
+            // target driven by PinchAxis fires harder as the pinch
+            // gets more extreme in either direction); one-shot fires
+            // return 0/1.
+            if (IsTouchpadGestureDescriptor(s))
+            {
+                if (!TryParseTouchpadGesture(s, out int gPad, out string gName)) return 0f;
+                if (IsTouchpadGestureAxis(gName))
+                {
+                    float v = TouchpadGestureAxisProvider?.Invoke(
+                        src.DeviceGuid ?? "", gPad, gName) ?? 0f;
+                    return Math.Abs(v);
+                }
+                bool fired = TouchpadGestureFiredProvider?.Invoke(
+                    src.DeviceGuid ?? "", gPad, gName) ?? false;
+                return fired ? 1f : 0f;
+            }
 
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
             {

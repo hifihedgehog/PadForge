@@ -116,6 +116,13 @@ namespace PadForge.Common.Input
                     // Atomic reference swap — safe for cross-thread reading.
                     ud.InputState = newState;
 
+                    // Touchpad gesture engine — runs once per device per
+                    // tick, across every touchpad surface this device
+                    // exposes. Settings come from the per-(device, pad)
+                    // provider wired by the App layer against the active
+                    // profile's PadSetting; defaults apply when unwired.
+                    UpdateGestureContexts(ud, newState);
+
                     // Apply force feedback (rumble) if applicable.
                     ApplyForceFeedback(ud);
                 }

@@ -421,9 +421,20 @@ namespace PadForge.Common
 
         /// <summary>
         /// Builds the list of available input choices from a device.
-        /// Returns axes, buttons, POVs (with directions), sliders, and touchpad sources.
+        /// Returns axes, buttons, POVs (with directions), sliders,
+        /// touchpad raw sources, gyro / motion, and touchpad gesture
+        /// abstractions (last, after the raw layer).
+        ///
+        /// <para>When <paramref name="touchpadSettingsForPad"/> is
+        /// supplied, gesture entries are gated by the per-pad
+        /// <see cref="PadForge.Engine.Touchpad.TouchpadGestureSettings"/>
+        /// — disabled pads + disabled gesture categories + Mode
+        /// (InBoxOnly / CustomOnly / Both) all hide the matching
+        /// dropdown entries. Null = no gating, shows everything the
+        /// device's hardware could support (the legacy behavior).</para>
         /// </summary>
-        internal static InputChoice[] BuildInputChoices(UserDevice ud)
+        internal static InputChoice[] BuildInputChoices(UserDevice ud,
+            System.Func<int, PadForge.Engine.Touchpad.TouchpadGestureSettings> touchpadSettingsForPad = null)
         {
             var list = new System.Collections.Generic.List<InputChoice>();
 
@@ -553,7 +564,14 @@ namespace PadForge.Common
                 }
             }
 
-            // Touchpad sources (for devices with HasTouchpad or Touchpad type).
+            // Touchpad raw sources (per-finger axes + click) for devices
+            // with HasTouchpad or Touchpad type. Distinct from the
+            // higher-level gesture entries below — these are direct
+            // hardware reads (X / Y / Down per finger, Click). Gesture
+            // entries are HARDWARE ABSTRACTIONS that live after the
+            // gyro/motion block at the bottom of the picker, since
+            // their semantics + per-pad enable toggles put them in
+            // a different conceptual layer than the raw axes.
             if (ud.HasTouchpad || ud.IsTouchpad)
             {
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 0 X", DisplayName = si.Mapping_TouchpadX1 });
@@ -563,15 +581,6 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 Y", DisplayName = si.Mapping_TouchpadY2 });
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 Down", DisplayName = si.Mapping_TouchpadContact2 });
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Click", DisplayName = si.Mapping_TouchpadClick });
-
-                // Touchpad gesture descriptors. Surface per actual pad
-                // index (multi-pad devices get per-pad listings) and
-                // gate higher-finger-count gestures by what the pad
-                // actually supports. Live device snapshot tells us the
-                // pad count + per-pad finger count; absent that
-                // (descriptor-only static device entry), fall back to
-                // a single pad with up to 2 fingers.
-                AddTouchpadGestureChoices(list, ud, si);
             }
 
             // Gyro sources (for devices with a gyroscope sensor). SDL3
@@ -596,6 +605,18 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = "Motion Gyro",  DisplayName = si.Mapping_MotionGyro });
             if (ud.HasAccel)
                 list.Add(new InputChoice { Descriptor = "Motion Accel", DisplayName = si.Mapping_MotionAccel });
+
+            // Touchpad gesture descriptors come LAST in the per-device
+            // section so they appear after raw hardware (touchpad axes,
+            // gyro, motion-passthrough) — they're abstractions that
+            // sit on top of the raw input. Surfacing is per actual pad
+            // index (multi-pad devices get per-pad listings); per-pad
+            // enable + category gating runs in
+            // InputService.PopulateAvailableInputs against
+            // _inputManager.TouchpadGestureSettingsProvider so disabled
+            // categories don't show up in the dropdown.
+            if (ud.HasTouchpad || ud.IsTouchpad)
+                AddTouchpadGestureChoices(list, ud, si, touchpadSettingsForPad);
 
             return list.ToArray();
         }
@@ -622,7 +643,8 @@ namespace PadForge.Common
         private static void AddTouchpadGestureChoices(
             System.Collections.Generic.List<InputChoice> list,
             UserDevice ud,
-            Strings si)
+            Strings si,
+            System.Func<int, PadForge.Engine.Touchpad.TouchpadGestureSettings> settingsForPad = null)
         {
             // Best-effort pad / finger counts. Live device snapshot
             // gives the authoritative numbers; absent that, fall back
@@ -657,24 +679,65 @@ namespace PadForge.Common
                     ? string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, p, label)
                     : label;
 
-                // Single-finger
-                AddGesture(list, p, "SwipeUp",    PadWrap(si.Mapping_TouchpadGesture_SwipeUp));
-                AddGesture(list, p, "SwipeDown",  PadWrap(si.Mapping_TouchpadGesture_SwipeDown));
-                AddGesture(list, p, "SwipeLeft",  PadWrap(si.Mapping_TouchpadGesture_SwipeLeft));
-                AddGesture(list, p, "SwipeRight", PadWrap(si.Mapping_TouchpadGesture_SwipeRight));
-                AddGesture(list, p, "SwipeNE",    PadWrap(si.Mapping_TouchpadGesture_SwipeNE));
-                AddGesture(list, p, "SwipeNW",    PadWrap(si.Mapping_TouchpadGesture_SwipeNW));
-                AddGesture(list, p, "SwipeSE",    PadWrap(si.Mapping_TouchpadGesture_SwipeSE));
-                AddGesture(list, p, "SwipeSW",    PadWrap(si.Mapping_TouchpadGesture_SwipeSW));
-                AddGesture(list, p, "Tap",        PadWrap(si.Mapping_TouchpadGesture_Tap));
-                AddGesture(list, p, "DoubleTap",  PadWrap(si.Mapping_TouchpadGesture_DoubleTap));
-                AddGesture(list, p, "TripleTap",  PadWrap(si.Mapping_TouchpadGesture_TripleTap));
-                AddGesture(list, p, "LongPress",  PadWrap(si.Mapping_TouchpadGesture_LongPress));
-                // Radial zones — surface all configured counts so a user
-                // who picks 8-zone vs 12-zone in settings sees the
-                // matching descriptors. Settings-side toggle gates which
-                // count fires at runtime.
-                foreach (int zc in new[] { 4, 6, 8, 12 })
+                // Gating — when the App layer passes a per-pad settings
+                // provider, surface only the gesture categories the
+                // user has enabled. Disabled pads contribute nothing;
+                // "InBoxOnly" suppresses custom (custom is surfaced by
+                // a different code path in InputService); each category
+                // toggle hides its descriptors when off. Provider==null
+                // defaults to "show everything" so callers without
+                // profile context (legacy / future device-only picker)
+                // still get a functional list.
+                var s = settingsForPad?.Invoke(p);
+                if (s != null && !s.Enabled) continue;
+                bool showInBox = s == null
+                    || string.Equals(s.Mode, "Both", System.StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(s.Mode, "InBoxOnly", System.StringComparison.OrdinalIgnoreCase);
+                if (!showInBox) continue;
+                bool gate4Way      = s?.EnableFourWaySwipes        ?? true;
+                bool gate8Way      = s?.EnableEightWaySwipes       ?? true;
+                bool gateRadial    = s?.EnableRadialZones          ?? true;
+                int  radialCount   = s?.RadialZoneCount             ?? 8;
+                bool gateTaps      = s?.EnableTaps                 ?? true;
+                bool gateLongPress = s?.EnableLongPress            ?? true;
+                bool gateTwoSwipe  = s?.EnableTwoFingerSwipes      ?? true;
+                bool gatePinch     = s?.EnablePinchSpread          ?? true;
+                bool gateRotate    = s?.EnableRotate               ?? true;
+                bool gateThree     = s?.EnableThreeFingerGestures  ?? true;
+                bool gateFour      = s?.EnableFourFingerGestures   ?? true;
+                bool gateFive      = s?.EnableFiveFingerGestures   ?? true;
+                bool gateShape     = s?.EnableShapeGestures        ?? true;
+
+                // Single-finger 4-way swipes
+                if (gate4Way)
+                {
+                    AddGesture(list, p, "SwipeUp",    PadWrap(si.Mapping_TouchpadGesture_SwipeUp));
+                    AddGesture(list, p, "SwipeDown",  PadWrap(si.Mapping_TouchpadGesture_SwipeDown));
+                    AddGesture(list, p, "SwipeLeft",  PadWrap(si.Mapping_TouchpadGesture_SwipeLeft));
+                    AddGesture(list, p, "SwipeRight", PadWrap(si.Mapping_TouchpadGesture_SwipeRight));
+                }
+                // 8-way diagonals layer on top of 4-way axial
+                if (gate8Way)
+                {
+                    AddGesture(list, p, "SwipeNE", PadWrap(si.Mapping_TouchpadGesture_SwipeNE));
+                    AddGesture(list, p, "SwipeNW", PadWrap(si.Mapping_TouchpadGesture_SwipeNW));
+                    AddGesture(list, p, "SwipeSE", PadWrap(si.Mapping_TouchpadGesture_SwipeSE));
+                    AddGesture(list, p, "SwipeSW", PadWrap(si.Mapping_TouchpadGesture_SwipeSW));
+                }
+                if (gateTaps)
+                {
+                    AddGesture(list, p, "Tap",       PadWrap(si.Mapping_TouchpadGesture_Tap));
+                    AddGesture(list, p, "DoubleTap", PadWrap(si.Mapping_TouchpadGesture_DoubleTap));
+                    AddGesture(list, p, "TripleTap", PadWrap(si.Mapping_TouchpadGesture_TripleTap));
+                }
+                if (gateLongPress)
+                    AddGesture(list, p, "LongPress", PadWrap(si.Mapping_TouchpadGesture_LongPress));
+                // Radial zones — only the currently-active count
+                // appears in the picker (matching the recipe semantics:
+                // "Settings_side toggle gates which count fires").
+                if (gateRadial)
+                {
+                    int zc = radialCount;
                     for (int z = 0; z < zc; z++)
                         list.Add(new InputChoice
                         {
@@ -682,25 +745,37 @@ namespace PadForge.Common
                             DisplayName = PadWrap(string.Format(
                                 si.Mapping_TouchpadGesture_RadialZone_Format, zc, z)),
                         });
-                // Single-finger shapes — always available.
-                foreach (var name in Engine.Touchpad.InBoxShapeTemplates.Names)
-                    AddGesture(list, p, name, PadWrap(ResolveShapeName(si, name)));
+                }
+                // Single-finger shapes
+                if (gateShape)
+                    foreach (var name in Engine.Touchpad.InBoxShapeTemplates.Names)
+                        AddGesture(list, p, name, PadWrap(ResolveShapeName(si, name)));
 
                 if (max >= 2)
                 {
-                    AddGesture(list, p, "TwoFingerSwipeUp",    PadWrap(si.Mapping_TouchpadGesture_TwoFingerSwipeUp));
-                    AddGesture(list, p, "TwoFingerSwipeDown",  PadWrap(si.Mapping_TouchpadGesture_TwoFingerSwipeDown));
-                    AddGesture(list, p, "TwoFingerSwipeLeft",  PadWrap(si.Mapping_TouchpadGesture_TwoFingerSwipeLeft));
-                    AddGesture(list, p, "TwoFingerSwipeRight", PadWrap(si.Mapping_TouchpadGesture_TwoFingerSwipeRight));
-                    AddGesture(list, p, "TwoFingerTap",  PadWrap(si.Mapping_TouchpadGesture_TwoFingerTap));
-                    AddGesture(list, p, "Pinch",         PadWrap(si.Mapping_TouchpadGesture_Pinch));
-                    AddGesture(list, p, "Spread",        PadWrap(si.Mapping_TouchpadGesture_Spread));
-                    AddGesture(list, p, "PinchAxis",     PadWrap(si.Mapping_TouchpadGesture_PinchAxis));
-                    AddGesture(list, p, "RotateCW",      PadWrap(si.Mapping_TouchpadGesture_RotateCW));
-                    AddGesture(list, p, "RotateCCW",     PadWrap(si.Mapping_TouchpadGesture_RotateCCW));
-                    AddGesture(list, p, "RotateAxis",    PadWrap(si.Mapping_TouchpadGesture_RotateAxis));
+                    if (gateTwoSwipe)
+                    {
+                        AddGesture(list, p, "TwoFingerSwipeUp",    PadWrap(si.Mapping_TouchpadGesture_TwoFingerSwipeUp));
+                        AddGesture(list, p, "TwoFingerSwipeDown",  PadWrap(si.Mapping_TouchpadGesture_TwoFingerSwipeDown));
+                        AddGesture(list, p, "TwoFingerSwipeLeft",  PadWrap(si.Mapping_TouchpadGesture_TwoFingerSwipeLeft));
+                        AddGesture(list, p, "TwoFingerSwipeRight", PadWrap(si.Mapping_TouchpadGesture_TwoFingerSwipeRight));
+                    }
+                    if (gateTaps)
+                        AddGesture(list, p, "TwoFingerTap", PadWrap(si.Mapping_TouchpadGesture_TwoFingerTap));
+                    if (gatePinch)
+                    {
+                        AddGesture(list, p, "Pinch",     PadWrap(si.Mapping_TouchpadGesture_Pinch));
+                        AddGesture(list, p, "Spread",    PadWrap(si.Mapping_TouchpadGesture_Spread));
+                        AddGesture(list, p, "PinchAxis", PadWrap(si.Mapping_TouchpadGesture_PinchAxis));
+                    }
+                    if (gateRotate)
+                    {
+                        AddGesture(list, p, "RotateCW",   PadWrap(si.Mapping_TouchpadGesture_RotateCW));
+                        AddGesture(list, p, "RotateCCW",  PadWrap(si.Mapping_TouchpadGesture_RotateCCW));
+                        AddGesture(list, p, "RotateAxis", PadWrap(si.Mapping_TouchpadGesture_RotateAxis));
+                    }
                 }
-                if (max >= 3)
+                if (max >= 3 && gateThree)
                 {
                     AddGesture(list, p, "ThreeFingerSwipeUp",    PadWrap(si.Mapping_TouchpadGesture_ThreeFingerSwipeUp));
                     AddGesture(list, p, "ThreeFingerSwipeDown",  PadWrap(si.Mapping_TouchpadGesture_ThreeFingerSwipeDown));
@@ -708,7 +783,7 @@ namespace PadForge.Common
                     AddGesture(list, p, "ThreeFingerSwipeRight", PadWrap(si.Mapping_TouchpadGesture_ThreeFingerSwipeRight));
                     AddGesture(list, p, "ThreeFingerTap",        PadWrap(si.Mapping_TouchpadGesture_ThreeFingerTap));
                 }
-                if (max >= 4)
+                if (max >= 4 && gateFour)
                 {
                     AddGesture(list, p, "FourFingerSwipeUp",    PadWrap(si.Mapping_TouchpadGesture_FourFingerSwipeUp));
                     AddGesture(list, p, "FourFingerSwipeDown",  PadWrap(si.Mapping_TouchpadGesture_FourFingerSwipeDown));
@@ -716,7 +791,7 @@ namespace PadForge.Common
                     AddGesture(list, p, "FourFingerSwipeRight", PadWrap(si.Mapping_TouchpadGesture_FourFingerSwipeRight));
                     AddGesture(list, p, "FourFingerTap",        PadWrap(si.Mapping_TouchpadGesture_FourFingerTap));
                 }
-                if (max >= 5)
+                if (max >= 5 && gateFive)
                 {
                     AddGesture(list, p, "FiveFingerTap", PadWrap(si.Mapping_TouchpadGesture_FiveFingerTap));
                 }

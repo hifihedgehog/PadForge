@@ -675,10 +675,23 @@
                                 CornerRadius="6" Margin="0,0,0,8"
                                 Height="100" ClipToBounds="True">
                             <Canvas>
+                                <!-- Up to 5 simultaneous touchpad contacts.
+                                     SDL gamepad pads typically expose 1-2;
+                                     Windows PTP can deliver up to 5. Each
+                                     dot's visibility binds to its own
+                                     TouchpadDownN flag so unused slots
+                                     stay hidden on devices that don't
+                                     report that many contacts. -->
                                 <Ellipse x:Name="TouchpadDot0" Width="14" Height="14" Fill="#CCFF6600"
                                          Visibility="{Binding TouchpadDown0, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 <Ellipse x:Name="TouchpadDot1" Width="14" Height="14" Fill="#CC0066FF"
                                          Visibility="{Binding TouchpadDown1, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <Ellipse x:Name="TouchpadDot2" Width="14" Height="14" Fill="#CC4CAF50"
+                                         Visibility="{Binding TouchpadDown2, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <Ellipse x:Name="TouchpadDot3" Width="14" Height="14" Fill="#CCBA68C8"
+                                         Visibility="{Binding TouchpadDown3, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <Ellipse x:Name="TouchpadDot4" Width="14" Height="14" Fill="#CCFFEB3B"
+                                         Visibility="{Binding TouchpadDown4, Converter={StaticResource BoolToVisibilityConverter}}"/>
                             </Canvas>
                         </Border>
 

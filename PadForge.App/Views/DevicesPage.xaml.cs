@@ -42,7 +42,18 @@ namespace PadForge.Views
             if (e.PropertyName is nameof(ViewModels.DevicesViewModel.TouchpadX0)
                               or nameof(ViewModels.DevicesViewModel.TouchpadY0)
                               or nameof(ViewModels.DevicesViewModel.TouchpadX1)
-                              or nameof(ViewModels.DevicesViewModel.TouchpadY1))
+                              or nameof(ViewModels.DevicesViewModel.TouchpadY1)
+                              or nameof(ViewModels.DevicesViewModel.TouchpadX2)
+                              or nameof(ViewModels.DevicesViewModel.TouchpadY2)
+                              or nameof(ViewModels.DevicesViewModel.TouchpadX3)
+                              or nameof(ViewModels.DevicesViewModel.TouchpadY3)
+                              or nameof(ViewModels.DevicesViewModel.TouchpadX4)
+                              or nameof(ViewModels.DevicesViewModel.TouchpadY4)
+                              or nameof(ViewModels.DevicesViewModel.TouchpadDown0)
+                              or nameof(ViewModels.DevicesViewModel.TouchpadDown1)
+                              or nameof(ViewModels.DevicesViewModel.TouchpadDown2)
+                              or nameof(ViewModels.DevicesViewModel.TouchpadDown3)
+                              or nameof(ViewModels.DevicesViewModel.TouchpadDown4))
             {
                 UpdateTouchpadDots();
             }
@@ -57,10 +68,30 @@ namespace PadForge.Views
             double h = TouchpadPreviewBorder.ActualHeight;
             if (w <= 0 || h <= 0) return;
 
+            // Up to 5 simultaneous contacts (Windows PTP max). SDL
+            // gamepad touchpads typically expose 1-2 so slots 2-4
+            // stay invisible there; the bridge in InputService writes
+            // Down=false for missing slots which hides their dots
+            // via the XAML BoolToVisibility binding.
             Canvas.SetLeft(TouchpadDot0, vm.TouchpadX0 * w - 7);
             Canvas.SetTop(TouchpadDot0, vm.TouchpadY0 * h - 7);
             Canvas.SetLeft(TouchpadDot1, vm.TouchpadX1 * w - 7);
             Canvas.SetTop(TouchpadDot1, vm.TouchpadY1 * h - 7);
+            if (TouchpadDot2 != null)
+            {
+                Canvas.SetLeft(TouchpadDot2, vm.TouchpadX2 * w - 7);
+                Canvas.SetTop(TouchpadDot2, vm.TouchpadY2 * h - 7);
+            }
+            if (TouchpadDot3 != null)
+            {
+                Canvas.SetLeft(TouchpadDot3, vm.TouchpadX3 * w - 7);
+                Canvas.SetTop(TouchpadDot3, vm.TouchpadY3 * h - 7);
+            }
+            if (TouchpadDot4 != null)
+            {
+                Canvas.SetLeft(TouchpadDot4, vm.TouchpadX4 * w - 7);
+                Canvas.SetTop(TouchpadDot4, vm.TouchpadY4 * h - 7);
+            }
         }
 
         private void RemoveDevice_Click(object sender, RoutedEventArgs e)

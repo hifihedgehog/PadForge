@@ -1467,7 +1467,7 @@
   <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>트리플 탭</value></data>
   <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>길게 누르기</value></data>
   <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>방사형 영역 {0}/{1}</value></data>
-  <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>패드 {0} — {1}</value></data>
+  <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>터치패드 {0} — {1}</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeUp" xml:space="preserve"><value>두 손가락 위로 스와이프</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeDown" xml:space="preserve"><value>두 손가락 아래로 스와이프</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>두 손가락 왼쪽으로 스와이프</value></data>
@@ -1507,10 +1507,10 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>터치패드 제스처</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>터치패드별 제스처 감지. 각 손가락 스와이프, 탭, 핀치, 도형은 매핑 탭에서 바인딩할 수 있는 매핑 소스가 됩니다.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>터치패드</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>패드 {0}</value></data>
+  <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>터치패드 {0}</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>감지</value></data>
-  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>이 패드에서 제스처 활성화</value></data>
-  <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>이 터치패드의 마스터 토글입니다. 끄면 이 패드에서 제스처 디스크립터가 발생하지 않습니다. 기존 손가락 / 클릭 / 위치 매핑은 계속 작동합니다.</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>이 터치패드에서 제스처 활성화</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>이 터치패드의 마스터 토글입니다. 끄면 이 터치패드에서 제스처 디스크립터가 발생하지 않습니다. 기존 손가락 / 클릭 / 위치 매핑은 계속 작동합니다.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>인식</value></data>
   <data name="Pad_Touchpad_Mode_InBoxOnly" xml:space="preserve"><value>내장 제스처만</value></data>
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>사용자 지정만</value></data>

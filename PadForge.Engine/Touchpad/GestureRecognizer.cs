@@ -603,11 +603,58 @@ namespace PadForge.Engine.Touchpad
             }
             if (fingerPaths.Count != fingerCount) return;
 
-            string name = PDollarRecognizer.MatchByFingerCount(
+            string pdollarName = PDollarRecognizer.MatchByFingerCount(
                 fingerPaths, templates, fingerCount,
                 settings.GestureMatchThreshold, out _);
-            if (!string.IsNullOrEmpty(name))
-                ctx.FiredGesturesThisFrame.Add($"Touchpad {padIdx} {name}");
+
+            // Single-finger shapes also run through the angular-margin
+            // recognizer (GestureSign-style). It picks up direction-
+            // dependent shapes like Square / Z / Triangle / Checkmark
+            // that $P softens because point-cloud distance is permutation-
+            // invariant and ignores stroke direction. The two matchers
+            // produce different score scales:
+            //   $P: lower = better (returns the lowest distance under threshold)
+            //   angular-margin: higher = better, 1.0 = identical at every segment
+            // We accept whichever matcher fired its match. When both
+            // fire (often the same name), prefer the angular-margin
+            // result because it's the more discriminative algorithm
+            // for the corner-shapes it was designed to detect.
+            string angName = null;
+            float angScore = 0f;
+            if (fingerCount == 1)
+            {
+                // Build a single-finger angular candidate-template list
+                // by selecting templates that carry an AngularSignature
+                // AND that pass the same finger-count + IsCustom / shape-
+                // gestures gating PDollarRecognizer.MatchByFingerCount uses.
+                var angTemplates = new List<AngularTemplate>();
+                for (int i = 0; i < templates.Count; i++)
+                {
+                    var t = templates[i];
+                    if (t == null || !t.Enabled) continue;
+                    if (t.FingerCount != 1) continue;
+                    if (t.AngularSignature == null) continue;
+                    if (!t.IsCustom && !settings.EnableShapeGestures) continue;
+                    angTemplates.Add(new AngularTemplate
+                    {
+                        Name = t.Name,
+                        Angles = t.AngularSignature,
+                        Enabled = true,
+                        IsCustom = t.IsCustom,
+                    });
+                }
+                var path = FirstNonEmptyPath(ctx);
+                if (path != null && angTemplates.Count > 0)
+                {
+                    (angName, angScore) = AngularMarginRecognizer.Match(path, angTemplates);
+                    if (angScore < AngularMarginRecognizer.DefaultAcceptScore)
+                        angName = null;
+                }
+            }
+
+            string firedName = angName ?? pdollarName;
+            if (!string.IsNullOrEmpty(firedName))
+                ctx.FiredGesturesThisFrame.Add($"Touchpad {padIdx} {firedName}");
         }
 
         private static bool HasCustomFingerCount(IReadOnlyList<PDollarTemplate> templates, int n)

@@ -1536,7 +1536,7 @@
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Beide</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>Welke gebarencatalogus de engine vergelijkt met de actuele vingerpaden. &quot;Beide&quot; is standaard.</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Afkoeling (ms)</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Nadat een gebaar is uitgevoerd, negeert deze pad nieuwe gebaren gedurende dit aantal milliseconden. Voorkomt dubbele afvuringen door snelle heen-en-weer-bewegingen.</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Nadat een gebaar is uitgevoerd, negeert deze touchpad nieuwe gebaren gedurende dit aantal milliseconden. Voorkomt dubbele afvuringen door snelle heen-en-weer-bewegingen.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Ingebouwde gebaren</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4-richtingsvegen (omhoog / omlaag / links / rechts)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8-richtingsvegen (voegt diagonalen toe)</value></data>
@@ -1592,7 +1592,7 @@
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Teken het gebaar op het oppervlak hieronder. Het venster legt elke vinger vast die je neerzet. Wanneer je alle vingers van het oppervlak haalt, wordt de opname vastgelegd. Tekenen met een ander aantal vingers dan eerdere opnames wist de stapel.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>Wachten op vingercontact op het oppervlak</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Teken op de touchpad. Het oppervlak weerspiegelt het live.</value></data>
-  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Opnemen van {0}, pad {1}</value></data>
+  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Opnemen van {0}, touchpad {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>deze touchpad</value></data>
   <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Touchpad niet beschikbaar. Gebruik het oppervlak hieronder met muis of aanraking.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Tekenen…</value></data>

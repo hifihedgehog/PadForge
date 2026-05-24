@@ -1538,7 +1538,7 @@
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Entrambi</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>Quale catalogo di gesti il motore valuta rispetto ai percorsi delle dita in tempo reale. "Entrambi" è l'impostazione predefinita.</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Cooldown (ms)</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Dopo l'attivazione di un gesto, ignora nuovi gesti su questo pad per il numero di millisecondi indicato. Evita attivazioni multiple causate da movimenti rapidi avanti e indietro.</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Dopo l'attivazione di un gesto, ignora nuovi gesti su questo touchpad per il numero di millisecondi indicato. Evita attivazioni multiple causate da movimenti rapidi avanti e indietro.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Gesti integrati</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Scorrimenti a 4 direzioni (su / giù / sinistra / destra)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Scorrimenti a 8 direzioni (aggiunge le diagonali)</value></data>
@@ -1594,7 +1594,7 @@
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Disegna il gesto sulla superficie sottostante. La finestra cattura ogni dito appoggiato. Quando sollevi tutte le dita dalla superficie, il campione viene registrato. Disegnare con un numero di dita diverso dai campioni precedenti azzera lo stack.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>In attesa del contatto delle dita sulla superficie</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Disegna sul touchpad. La superficie lo riflette in tempo reale.</value></data>
-  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Registrazione da {0}, pad {1}</value></data>
+  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Registrazione da {0}, touchpad {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>questo touchpad</value></data>
   <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Touchpad non disponibile. Usa la superficie qui sotto con mouse o tocco.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Disegno in corso…</value></data>

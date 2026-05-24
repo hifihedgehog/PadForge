@@ -1516,7 +1516,7 @@
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>둘 다</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>엔진이 라이브 손가락 경로에 대해 평가할 제스처 카탈로그입니다. 기본값은 "둘 다"입니다.</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>쿨다운(ms)</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>제스처가 발생한 후 이 밀리초 동안 이 패드의 새 제스처를 무시합니다. 빠른 왕복 동작으로 인한 바운스 발생을 방지합니다.</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>제스처가 발생한 후 이 밀리초 동안 이 터치패드의 새 제스처를 무시합니다. 빠른 왕복 동작으로 인한 바운스 발생을 방지합니다.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>내장 제스처</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4방향 스와이프(위 / 아래 / 왼쪽 / 오른쪽)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8방향 스와이프(대각선 추가)</value></data>
@@ -1572,7 +1572,7 @@
   <data name="Recorder_Subtitle" xml:space="preserve"><value>아래 표면에 제스처를 그리세요. 대화상자가 내려놓은 모든 손가락을 캡처합니다. 모든 손가락을 표면에서 떼면 샘플이 녹화됩니다. 이전 샘플과 다른 손가락 수로 그리면 스택이 재설정됩니다.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>표면에 손가락 접촉 대기 중</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>터치패드에 그리세요. 표면이 실시간으로 미러링됩니다.</value></data>
-  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>{0}, 패드 {1}에서 녹화 중</value></data>
+  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>{0}, 터치패드 {1}에서 녹화 중</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>이 터치패드</value></data>
   <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>터치패드를 사용할 수 없습니다. 아래 표면을 마우스나 터치로 사용하세요.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>그리는 중…</value></data>

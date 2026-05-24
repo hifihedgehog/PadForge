@@ -1516,7 +1516,7 @@
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Beide</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>Welcher Gestenkatalog von der Engine gegen die aktiven Fingerpfade ausgewertet wird. &quot;Beide&quot; ist der Standard.</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Abklingzeit (ms)</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Ignoriert nach einer ausgelösten Geste für die angegebene Millisekundenzahl neue Gesten auf diesem Pad. Verhindert Mehrfachauslösungen durch schnelle Hin-und-Her-Bewegungen.</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Ignoriert nach einer ausgelösten Geste für die angegebene Millisekundenzahl neue Gesten auf diesem Touchpad. Verhindert Mehrfachauslösungen durch schnelle Hin-und-Her-Bewegungen.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Eingebaute Gesten</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4-Wege-Wischen (oben / unten / links / rechts)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8-Wege-Wischen (mit Diagonalen)</value></data>
@@ -1572,7 +1572,7 @@
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Zeichne die Geste auf der Fläche unten. Der Dialog erfasst jeden aufgesetzten Finger. Sobald du alle Finger von der Fläche nimmst, wird das Sample aufgenommen. Wird mit einer anderen Fingeranzahl als bei vorherigen Samples gezeichnet, wird der Stapel zurückgesetzt.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>Warte auf Fingerkontakt auf der Fläche</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Zeichne auf dem Touchpad. Die Fläche spiegelt es live.</value></data>
-  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Aufnahme von {0}, Pad {1}</value></data>
+  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Aufnahme von {0}, Touchpad {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>dieses Touchpad</value></data>
   <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Touchpad nicht verfügbar. Verwende die Fläche unten mit Maus oder Touch.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Zeichnet…</value></data>

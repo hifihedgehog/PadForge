@@ -1545,6 +1545,7 @@
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Distanza scorrimento (0..1)</value></data>
   <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Finestra temporale scorrimento (ms)</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Zone radiali (stile ruota delle armi)</value></data>
+  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Trascina verso l'esterno dal punto di appoggio del dito verso un settore. La zona 0 è alle 12 in punto (in alto); le zone aumentano in senso orario. Ogni voce nel selettore mostra la sua posizione oraria tra parentesi — "(12)" è in alto, "(3)" è a destra, "(6)" è in basso, "(9)" è a sinistra. Una sola zona è attiva alla volta; trascinare in un'altra rilascia la precedente, così puoi scorrere le zone con un singolo gesto.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Numero di zone</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Zona morta centrale (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tocco / Doppio tocco / Triplo tocco</value></data>

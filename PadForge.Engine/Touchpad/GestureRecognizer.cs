@@ -591,6 +591,32 @@ namespace PadForge.Engine.Touchpad
             IReadOnlyList<PDollarTemplate> templates, int fingerCount)
         {
             if (templates == null || templates.Count == 0) return;
+
+            // Filter the template catalog by the per-pad detection-mode
+            // setting before any matching runs. The dropdown surfaced as
+            // "Recognize: In-box only / Custom only / Both" used to be a
+            // no-op — both matchers always saw the full catalog. Filter
+            // here so the user's selection actually constrains what fires.
+            // Tier 1 (swipes / taps / longpress / radial) and Tier 2
+            // (pinch / rotate / two-finger) are unaffected — they have
+            // no in-box-vs-custom split.
+            string mode = settings.Mode ?? "Both";
+            List<PDollarTemplate> filtered = null;
+            if (mode == "InBoxOnly" || mode == "CustomOnly")
+            {
+                filtered = new List<PDollarTemplate>(templates.Count);
+                bool wantCustom = mode == "CustomOnly";
+                for (int i = 0; i < templates.Count; i++)
+                {
+                    var t = templates[i];
+                    if (t == null) continue;
+                    if (t.IsCustom != wantCustom) continue;
+                    filtered.Add(t);
+                }
+                templates = filtered;
+                if (templates.Count == 0) return;
+            }
+
             if (!settings.EnableShapeGestures && !HasCustomFingerCount(templates, fingerCount))
                 return;
 

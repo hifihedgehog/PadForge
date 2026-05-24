@@ -55,12 +55,23 @@ namespace PadForge.Engine.Touchpad
         /// <summary>Tap / DoubleTap / TripleTap gestures enabled.</summary>
         [XmlAttribute] public bool EnableTaps { get; set; } = true;
 
-        /// <summary>Maximum elapsed time (ms) for a tap gesture (down→up).</summary>
-        [XmlAttribute] public int TapTimeWindowMs { get; set; } = 200;
+        /// <summary>Maximum elapsed time (ms) for a tap gesture (down→up).
+        /// 350 ms is a forgiving default — many users naturally hold a
+        /// finger past 200 ms before lifting, especially on small
+        /// touchpads. Tighten to 200-250 ms if you want crisp rapid
+        /// tap-vs-longpress separation, loosen to 500 ms for slower
+        /// taps. Long-press fires at 500 ms by default so 350 leaves
+        /// a 150 ms band between tap and long-press.</summary>
+        [XmlAttribute] public int TapTimeWindowMs { get; set; } = 350;
 
         /// <summary>Maximum motion (normalized pad units) for a tap.
-        /// Larger movements register as swipes or longpresses.</summary>
-        [XmlAttribute] public float TapMaxMotion { get; set; } = 0.02f;
+        /// Larger movements register as swipes or longpresses. 0.04 is
+        /// looser than the prior 0.02 default — a finger landing on a
+        /// touchpad rarely stays inside a 2% radius without sliding a
+        /// few pixels mid-tap, so 4% catches genuine taps that drift
+        /// slightly without firing on intentional small swipes
+        /// (SwipeDistanceThreshold defaults to 15%).</summary>
+        [XmlAttribute] public float TapMaxMotion { get; set; } = 0.04f;
 
         /// <summary>Maximum gap (ms) between successive taps for the
         /// later one to count as DoubleTap / TripleTap rather than
@@ -121,8 +132,12 @@ namespace PadForge.Engine.Touchpad
         /// <summary>$P recognizer match threshold. Lower = stricter
         /// (fewer false-positives), higher = looser (more matches).
         /// 2.5 is the $P paper's default and gives ~95% accuracy on
-        /// the published gesture set.</summary>
-        [XmlAttribute] public float GestureMatchThreshold { get; set; } = 2.5f;
+        /// the published gesture set, but real touchpad input varies
+        /// more than the paper's stylus dataset; 3.0 is a more
+        /// forgiving default that still rejects clearly-different
+        /// shapes. The angular-margin shape recognizer that runs
+        /// alongside $P uses its own per-axis tolerance internally.</summary>
+        [XmlAttribute] public float GestureMatchThreshold { get; set; } = 3.0f;
 
         public TouchpadGestureSettings Clone()
         {

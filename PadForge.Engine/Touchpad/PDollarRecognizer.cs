@@ -264,5 +264,13 @@ namespace PadForge.Engine.Touchpad
         /// templates always evaluate; in-box shapes only when the
         /// per-pad EnableShapeGestures toggle is on.</summary>
         public bool IsCustom;
+
+        /// <summary>Single-finger angle signature for the angular-margin
+        /// recognizer that runs alongside $P on single-finger shapes.
+        /// Null for multi-finger templates (angular-margin doesn't
+        /// naturally extend to a permutation-invariant cloud across
+        /// strokes the user can't be relied on to draw in the same
+        /// order each time). Built once at template-load time.</summary>
+        public double[] AngularSignature;
     }
 }

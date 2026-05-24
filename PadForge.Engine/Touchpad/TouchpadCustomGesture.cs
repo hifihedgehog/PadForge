@@ -67,6 +67,15 @@ namespace PadForge.Engine.Touchpad
                 fingers.Add(pts);
             }
             if (fingers.Count == 0) return null;
+            // Single-finger custom gestures also carry an angular
+            // signature so the recognizer can run both $P and the
+            // angular-margin matcher and keep the better-scoring
+            // match. Multi-finger custom gestures stay $P-only —
+            // angular-margin doesn't have a clean per-finger
+            // correspondence to compare against.
+            double[] angles = fingers.Count == 1
+                ? AngularMarginRecognizer.BuildAngleSignature(fingers[0])
+                : null;
             return new PDollarTemplate
             {
                 Name = "Custom_" + Name,
@@ -75,6 +84,7 @@ namespace PadForge.Engine.Touchpad
                 ThresholdOverride = Threshold,
                 Enabled = Enabled,
                 IsCustom = true,
+                AngularSignature = angles,
             };
         }
 

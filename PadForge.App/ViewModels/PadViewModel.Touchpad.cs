@@ -133,7 +133,7 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _touchpadEnableFourWaySwipes, value)) PushIfNotLoading(); }
         }
 
-        private bool _touchpadEnableEightWaySwipes;
+        private bool _touchpadEnableEightWaySwipes = true;
         public bool TouchpadEnableEightWaySwipes
         {
             get => _touchpadEnableEightWaySwipes;
@@ -181,7 +181,7 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _touchpadEnableTaps, value)) PushIfNotLoading(); }
         }
 
-        private int _touchpadTapTimeWindowMs = 200;
+        private int _touchpadTapTimeWindowMs = 350;
         public int TouchpadTapTimeWindowMs
         {
             get => _touchpadTapTimeWindowMs;
@@ -242,7 +242,7 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _touchpadEnableRotate, value)) PushIfNotLoading(); }
         }
 
-        private bool _touchpadEnableThreeFingerGestures = true;
+        private bool _touchpadEnableThreeFingerGestures;
         public bool TouchpadEnableThreeFingerGestures
         {
             get => _touchpadEnableThreeFingerGestures;
@@ -270,7 +270,7 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _touchpadEnableShapeGestures, value)) PushIfNotLoading(); }
         }
 
-        private double _touchpadGestureMatchThreshold = 2.5;
+        private double _touchpadGestureMatchThreshold = 3.0;
 
         /// <summary>$P recognizer matching threshold. Lower = stricter
         /// matches; higher = looser. Default 2.5 from the recipe.</summary>
@@ -353,7 +353,7 @@ namespace PadForge.ViewModels
 
         private RelayCommand _resetTouchpadEnableEightWaySwipesCommand;
         public RelayCommand ResetTouchpadEnableEightWaySwipesCommand =>
-            _resetTouchpadEnableEightWaySwipesCommand ??= new RelayCommand(() => TouchpadEnableEightWaySwipes = false);
+            _resetTouchpadEnableEightWaySwipesCommand ??= new RelayCommand(() => TouchpadEnableEightWaySwipes = true);
 
         private RelayCommand _resetTouchpadSwipeDistanceThresholdCommand;
         public RelayCommand ResetTouchpadSwipeDistanceThresholdCommand =>
@@ -381,7 +381,7 @@ namespace PadForge.ViewModels
 
         private RelayCommand _resetTouchpadTapTimeWindowMsCommand;
         public RelayCommand ResetTouchpadTapTimeWindowMsCommand =>
-            _resetTouchpadTapTimeWindowMsCommand ??= new RelayCommand(() => TouchpadTapTimeWindowMs = 200);
+            _resetTouchpadTapTimeWindowMsCommand ??= new RelayCommand(() => TouchpadTapTimeWindowMs = 350);
 
         private RelayCommand _resetTouchpadMultiTapGapMsCommand;
         public RelayCommand ResetTouchpadMultiTapGapMsCommand =>
@@ -409,7 +409,7 @@ namespace PadForge.ViewModels
 
         private RelayCommand _resetTouchpadEnableThreeFingerGesturesCommand;
         public RelayCommand ResetTouchpadEnableThreeFingerGesturesCommand =>
-            _resetTouchpadEnableThreeFingerGesturesCommand ??= new RelayCommand(() => TouchpadEnableThreeFingerGestures = true);
+            _resetTouchpadEnableThreeFingerGesturesCommand ??= new RelayCommand(() => TouchpadEnableThreeFingerGestures = false);
 
         private RelayCommand _resetTouchpadEnableFourFingerGesturesCommand;
         public RelayCommand ResetTouchpadEnableFourFingerGesturesCommand =>
@@ -425,7 +425,7 @@ namespace PadForge.ViewModels
 
         private RelayCommand _resetTouchpadGestureMatchThresholdCommand;
         public RelayCommand ResetTouchpadGestureMatchThresholdCommand =>
-            _resetTouchpadGestureMatchThresholdCommand ??= new RelayCommand(() => TouchpadGestureMatchThreshold = 2.5);
+            _resetTouchpadGestureMatchThresholdCommand ??= new RelayCommand(() => TouchpadGestureMatchThreshold = 3.0);
 
         private RelayCommand _resetTouchpadDetectionCardCommand;
 
@@ -445,25 +445,25 @@ namespace PadForge.ViewModels
             _resetTouchpadInBoxCardCommand ??= new RelayCommand(() =>
             {
                 TouchpadEnableFourWaySwipes = true;
-                TouchpadEnableEightWaySwipes = false;
+                TouchpadEnableEightWaySwipes = true;
                 TouchpadSwipeDistanceThreshold = 0.15;
                 TouchpadSwipeTimeWindowMs = 500;
                 TouchpadEnableRadialZones = false;
                 TouchpadRadialZoneCount = 8;
                 TouchpadRadialCenterDeadzone = 0.30;
                 TouchpadEnableTaps = true;
-                TouchpadTapTimeWindowMs = 200;
+                TouchpadTapTimeWindowMs = 350;
                 TouchpadMultiTapGapMs = 300;
                 TouchpadEnableLongPress = true;
                 TouchpadLongPressTimeWindowMs = 500;
                 TouchpadEnableTwoFingerSwipes = true;
                 TouchpadEnablePinchSpread = true;
                 TouchpadEnableRotate = true;
-                TouchpadEnableThreeFingerGestures = true;
+                TouchpadEnableThreeFingerGestures = false;
                 TouchpadEnableFourFingerGestures = false;
                 TouchpadEnableFiveFingerGestures = false;
                 TouchpadEnableShapeGestures = false;
-                TouchpadGestureMatchThreshold = 2.5;
+                TouchpadGestureMatchThreshold = 3.0;
             });
 
         // ─── Per-pad pivot / topology helpers ─────────

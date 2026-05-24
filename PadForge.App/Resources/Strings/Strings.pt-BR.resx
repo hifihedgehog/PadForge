@@ -1496,7 +1496,6 @@
   <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>Triângulo</value></data>
   <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Formato em Z</value></data>
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>Marca de seleção</value></data>
-  <data name="Mapping_TouchpadGesture_X" xml:space="preserve"><value>Formato em X</value></data>
   <data name="Settings_TouchpadGestures" xml:space="preserve"><value>Gestos de touchpad</value></data>
   <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>Reconhece deslizes, toques, pinças e formas personalizadas em todos os touchpads que o PadForge consegue ler. As configurações por touchpad ficam na aba Touchpad de cada controle. Os controles abaixo cobrem o interruptor mestre global e o atalho de suspensão.</value></data>
   <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>Ativar gestos de touchpad globalmente</value></data>

@@ -1516,7 +1516,6 @@
   <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>Driehoek</value></data>
   <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Z-vorm</value></data>
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>Vinkje</value></data>
-  <data name="Mapping_TouchpadGesture_X" xml:space="preserve"><value>X-vorm</value></data>
   <data name="Settings_TouchpadGestures" xml:space="preserve"><value>Touchpad-gebaren</value></data>
   <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>Herkent veegbewegingen, tikken, knijpgebaren en aangepaste vormen op elk touchpad dat PadForge kan uitlezen. Instellingen per touchpad staan op het Touchpad-tabblad van elke pad. De besturingselementen hieronder bevatten de algemene hoofdschakelaar en de koppeling voor de pauze-sneltoets.</value></data>
   <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>Touchpad-gebaren globaal inschakelen</value></data>

@@ -1092,7 +1092,6 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_TouchpadGesture_Triangle => Get("Mapping_TouchpadGesture_Triangle");
     public string Mapping_TouchpadGesture_Z => Get("Mapping_TouchpadGesture_Z");
     public string Mapping_TouchpadGesture_Checkmark => Get("Mapping_TouchpadGesture_Checkmark");
-    public string Mapping_TouchpadGesture_X => Get("Mapping_TouchpadGesture_X");
     public string Pad_Touchpad => Get("Pad_Touchpad");
     public string Pad_Touchpad_Header => Get("Pad_Touchpad_Header");
     public string Pad_Touchpad_Subtitle => Get("Pad_Touchpad_Subtitle");

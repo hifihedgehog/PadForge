@@ -31,17 +31,25 @@ namespace PadForge.Engine.Touchpad
             // gestures the user can bind independently.
             Add(list, "Circle",     BuildCircle(true),  isClosed: true,  dirAgnostic: false);
             Add(list, "CircleCCW",  BuildCircle(false), isClosed: true,  dirAgnostic: false);
-            // Square / Triangle / X: closed AND look the same drawn
-            // either direction. A square is a square whether the user
-            // started top-left CW or bottom-right CCW.
+            // Square / Triangle: closed AND look the same drawn either
+            // direction. A square is a square whether the user started
+            // top-left CW or bottom-right CCW.
             Add(list, "Square",     BuildSquare(),      isClosed: true,  dirAgnostic: true);
             Add(list, "Triangle",   BuildTriangle(),    isClosed: true,  dirAgnostic: true);
-            Add(list, "X",          BuildXShape(),      isClosed: true,  dirAgnostic: true);
             // Z and Checkmark are open shapes whose first-segment
             // orientation is part of their identity. Leave both flags
             // off so the angular-margin matcher anchors on the start.
             Add(list, "Z",          BuildZ(),           isClosed: false, dirAgnostic: false);
             Add(list, "Checkmark",  BuildCheckmark(),   isClosed: false, dirAgnostic: false);
+            // X removed: fundamentally a two-stroke gesture and the
+            // recognizer is single-stroke-only per the v3.3 recipe.
+            // The prior template's TL→BR→(phantom horizontal
+            // segment)→BL→TR path matched neither what a user would
+            // naturally draw (two crossing diagonals require a pen-
+            // lift between them) nor what angular-margin can score
+            // sensibly. Users who want X-style behavior can record
+            // a custom single-stroke pattern through the recorder
+            // dialog.
             return list;
         }
 
@@ -138,20 +146,6 @@ namespace PadForge.Engine.Touchpad
             return pts;
         }
 
-        private static List<Vector2> BuildXShape()
-        {
-            // TL→BR diagonal, then BL→TR diagonal. $P doesn't model the
-            // pen-up between strokes — the algorithm just sees the union
-            // of points, which is fine for a "what shape did the user
-            // draw" recognizer since X looks the same as a cloud
-            // regardless of which diagonal came first.
-            const int edgeSamples = 12;
-            var pts = new List<Vector2>(edgeSamples * 2 + 1);
-            AppendLerp(pts, new(0.2f, 0.2f), new(0.8f, 0.8f), edgeSamples);
-            AppendLerp(pts, new(0.2f, 0.8f), new(0.8f, 0.2f), edgeSamples);
-            return pts;
-        }
-
         private static void AppendLerp(List<Vector2> dst, Vector2 a, Vector2 b, int n)
         {
             int start = dst.Count > 0 ? 1 : 0; // skip the duplicate of last endpoint
@@ -167,7 +161,7 @@ namespace PadForge.Engine.Touchpad
         public static IReadOnlyList<string> Names => _names;
         private static readonly string[] _names =
         {
-            "Circle", "CircleCCW", "Square", "Triangle", "Z", "Checkmark", "X"
+            "Circle", "CircleCCW", "Square", "Triangle", "Z", "Checkmark"
         };
     }
 }

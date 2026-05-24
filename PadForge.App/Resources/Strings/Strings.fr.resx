@@ -1496,7 +1496,6 @@
   <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>Triangle</value></data>
   <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Forme en Z</value></data>
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>Coche</value></data>
-  <data name="Mapping_TouchpadGesture_X" xml:space="preserve"><value>Forme en X</value></data>
   <data name="Settings_TouchpadGestures" xml:space="preserve"><value>Gestes pavé tactile</value></data>
   <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>Reconnaît balayages, tapes, pincements et formes personnalisées sur chaque pavé tactile que PadForge peut lire. Les réglages par pavé tactile se trouvent sur l'onglet pavé tactile de chaque manette. Les commandes ci-dessous couvrent l'interrupteur global et le raccourci de suspension.</value></data>
   <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>Activer les gestes pavé tactile globalement</value></data>

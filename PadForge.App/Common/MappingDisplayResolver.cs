@@ -816,7 +816,6 @@ namespace PadForge.Common
             "Triangle"   => si.Mapping_TouchpadGesture_Triangle,
             "Z"          => si.Mapping_TouchpadGesture_Z,
             "Checkmark"  => si.Mapping_TouchpadGesture_Checkmark,
-            "X"          => si.Mapping_TouchpadGesture_X,
             _            => shape,
         };
     }

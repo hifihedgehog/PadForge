@@ -1029,7 +1029,7 @@
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Both</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>Which gesture catalog the engine evaluates against the live finger paths. "Both" is the default.</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Cooldown (ms)</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>After a gesture fires, ignore new gestures on this pad for this many milliseconds. Prevents bounce-fires from rapid back-and-forth motion.</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>After a gesture fires, ignore new gestures on this touchpad for this many milliseconds. Prevents bounce-fires from rapid back-and-forth motion.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>In-box gestures</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4-way swipes (up / down / left / right)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8-way swipes (adds diagonals)</value></data>
@@ -1091,7 +1091,7 @@
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Draw the gesture on the surface below. The dialog captures every finger you put down. When you take all fingers off the surface the sample is recorded. Drawing a different finger count from previous samples resets the stack.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>Waiting for finger contact on the canvas</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Draw on the touchpad. The canvas mirrors it live.</value></data>
-  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Recording from {0}, pad {1}</value></data>
+  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Recording from {0}, touchpad {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>this touchpad</value></data>
   <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Touchpad unavailable. Use the canvas below with mouse or touch.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Drawing…</value></data>

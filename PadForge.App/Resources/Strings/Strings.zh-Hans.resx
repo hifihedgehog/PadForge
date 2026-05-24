@@ -1508,15 +1508,15 @@
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>触控板</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>触控板 {0}</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>检测</value></data>
-  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>在此手柄上启用手势</value></data>
-  <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>此触控板的总开关。关闭时，此手柄不触发任何手势描述符。现有的手指、点击与位置映射仍正常工作。</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>在此触控板上启用手势</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>此触控板的总开关。关闭时，此触控板不触发任何手势描述符。现有的手指、点击与位置映射仍正常工作。</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>识别</value></data>
   <data name="Pad_Touchpad_Mode_InBoxOnly" xml:space="preserve"><value>仅内置</value></data>
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>仅自定义</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>两者</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>引擎用哪个手势库与实时手指轨迹进行匹配。默认为“两者”。</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>冷却时间 (ms)</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>手势触发后，在此毫秒数内忽略此手柄上的新手势。防止快速来回动作引发的连发。</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>手势触发后，在此毫秒数内忽略此触控板上的新手势。防止快速来回动作引发的连发。</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>内置手势</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4 向滑动（上、下、左、右）</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8 向滑动（加入对角方向）</value></data>
@@ -1572,7 +1572,7 @@
   <data name="Recorder_Subtitle" xml:space="preserve"><value>在下方画板上画出手势。对话框会捕获所有按下的手指。当所有手指离开画板时，样本即被记录。绘制不同手指数的样本会重置堆栈。</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>等待手指触摸画板</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>在触控板上绘制，画板会实时镜像。</value></data>
-  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>正在从 {0}（手柄 {1}）录制</value></data>
+  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>正在从 {0}（触控板 {1}）录制</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>此触控板</value></data>
   <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>触控板不可用。使用下方画板，用鼠标或触摸操作。</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>绘制中…</value></data>

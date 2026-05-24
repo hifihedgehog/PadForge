@@ -1516,7 +1516,7 @@
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>両方</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>ライブの指の軌跡を、どちらのジェスチャーカタログと照合するかを指定します。既定は「両方」です。</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>クールダウン (ms)</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>ジェスチャー発火後、このパッドで指定ミリ秒間は新しいジェスチャーを無視します。素早い往復動作による多重発火を防ぎます。</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>ジェスチャー発火後、このタッチパッドで指定ミリ秒間は新しいジェスチャーを無視します。素早い往復動作による多重発火を防ぎます。</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>組み込みジェスチャー</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4 方向スワイプ (上 / 下 / 左 / 右)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8 方向スワイプ (斜め方向を追加)</value></data>
@@ -1572,7 +1572,7 @@
   <data name="Recorder_Subtitle" xml:space="preserve"><value>下のサーフェスにジェスチャーを描いてください。ダイアログは置いたすべての指を取り込みます。すべての指をサーフェスから離した時点でサンプルが記録されます。前回までと異なる指本数で描いた場合、サンプルスタックはリセットされます。</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>サーフェスへの指の接触を待機中</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>タッチパッドに描いてください。サーフェスにリアルタイムで反映されます。</value></data>
-  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>{0}（パッド {1}）から記録中</value></data>
+  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>{0}（タッチパッド {1}）から記録中</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>このタッチパッド</value></data>
   <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>タッチパッドが使用できません。下のサーフェスをマウスまたはタッチで使用してください。</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>描画中…</value></data>

@@ -1508,15 +1508,15 @@
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Pavé tactile</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Pavé tactile {0}</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Détection</value></data>
-  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Activer les gestes sur cette manette</value></data>
-  <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Bascule principale pour ce pavé tactile. Désactivé, aucun descripteur de geste n'est déclenché pour cette manette. Les affectations doigt / clic / position existantes continuent de fonctionner.</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Activer les gestes sur ce pavé tactile</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Bascule principale pour ce pavé tactile. Désactivé, aucun descripteur de geste n'est déclenché pour ce pavé tactile. Les affectations doigt / clic / position existantes continuent de fonctionner.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Reconnaître</value></data>
   <data name="Pad_Touchpad_Mode_InBoxOnly" xml:space="preserve"><value>Intégrés uniquement</value></data>
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>Personnalisés uniquement</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Les deux</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>Quel catalogue de gestes le moteur évalue contre les tracés de doigts en direct. &quot;Les deux&quot; est la valeur par défaut.</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Délai de repos (ms)</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Après le déclenchement d'un geste, ignore les nouveaux gestes sur cette manette pendant ce nombre de millisecondes. Empêche les déclenchements en rebond dus à un mouvement rapide d'aller-retour.</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Après le déclenchement d'un geste, ignore les nouveaux gestes sur ce pavé tactile pendant ce nombre de millisecondes. Empêche les déclenchements en rebond dus à un mouvement rapide d'aller-retour.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Gestes intégrés</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Balayages 4 directions (haut / bas / gauche / droite)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Balayages 8 directions (ajoute les diagonales)</value></data>
@@ -1572,7 +1572,7 @@
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Dessine le geste sur la surface ci-dessous. La boîte de dialogue capture chaque doigt que tu poses. Lorsque tu retires tous les doigts de la surface, l'échantillon est enregistré. Dessiner un nombre de doigts différent des échantillons précédents réinitialise la pile.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>En attente d'un contact sur la surface</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Dessine sur le pavé tactile. La surface le reproduit en direct.</value></data>
-  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Enregistrement depuis {0}, manette {1}</value></data>
+  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Enregistrement depuis {0}, pavé tactile {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>ce pavé tactile</value></data>
   <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Pavé tactile indisponible. Utilise la surface ci-dessous à la souris ou au doigt.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Dessin en cours…</value></data>

@@ -521,9 +521,24 @@ namespace PadForge.ViewModels
 
         /// <summary>Writes VM fields back to the per-(device, pad)
         /// entry. Creates the entry on first write. Public so the
-        /// settings-save path can flush before XML serialization.</summary>
+        /// settings-save path can flush before XML serialization.
+        ///
+        /// <para>No-op while LoadTouchpadGestureSettingsForActiveDevice
+        /// is running. That loader sets each VM field in sequence; each
+        /// fires PropertyChanged; any external caller (e.g.
+        /// MainWindow's pad.PropertyChanged hook for the Touchpad tab)
+        /// that calls Sync from inside the PropertyChanged dispatch
+        /// would otherwise write the VM's not-yet-loaded fields back
+        /// to PadSetting and clobber the on-disk state. Symptom: every
+        /// touchpad-tab toggle except <c>TouchpadGesturesEnabled</c>
+        /// (which gets set first in the load and so is the only field
+        /// holding the right value when the stampede fires) reverts
+        /// across relaunches. PushIfNotLoading does the same check for
+        /// the in-class setter path; this gate covers external callers
+        /// too.</para></summary>
         public void SyncTouchpadGestureSettingsToActiveDevice()
         {
+            if (_loadingTouchpadGestures) return;
             var us = GetActiveUserSettingForTouchpad(out _);
             var ps = us?.GetPadSetting();
             if (ps == null) return;

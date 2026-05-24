@@ -1916,6 +1916,34 @@ namespace PadForge.Engine.Data
             _mappingDeadZoneDict = null;
             MappingBidirectionalEntries = DeepCopyMappings(source.MappingBidirectionalEntries);
             _mappingBidirectionalDict = null;
+
+            // Touchpad gesture settings — typed per-(device, pad) entries.
+            // Reflection-driven CopyablePropertyNames can't touch typed
+            // arrays (it would coerce null to "" via the ?? "" guard and
+            // throw on SetValue), so they need a dedicated deep-copy
+            // parallel to the mapping arrays above. Without this clone,
+            // SnapshotCurrentProfile drops the entries entirely and any
+            // named-profile save loses every per-pad gesture setting.
+            TouchpadSettings = DeepCopyTouchpadSettings(source.TouchpadSettings);
+        }
+
+        private static PadForge.Engine.Touchpad.TouchpadSettingsEntry[] DeepCopyTouchpadSettings(
+            PadForge.Engine.Touchpad.TouchpadSettingsEntry[] src)
+        {
+            if (src == null || src.Length == 0) return null;
+            var arr = new PadForge.Engine.Touchpad.TouchpadSettingsEntry[src.Length];
+            for (int i = 0; i < src.Length; i++)
+            {
+                var s = src[i];
+                if (s == null) continue;
+                arr[i] = new PadForge.Engine.Touchpad.TouchpadSettingsEntry
+                {
+                    DeviceGuid = s.DeviceGuid,
+                    TouchpadIndex = s.TouchpadIndex,
+                    Settings = s.Settings?.Clone(),
+                };
+            }
+            return arr;
         }
 
         private static ExtendedMappingEntry[] DeepCopyMappings(ExtendedMappingEntry[] src)

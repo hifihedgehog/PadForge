@@ -1573,7 +1573,8 @@
   <data name="Recorder_Waiting" xml:space="preserve"><value>サーフェスへの指の接触を待機中</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>タッチパッドに描いてください。サーフェスにリアルタイムで反映されます。</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>{0}（パッド {1}）から記録中</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>アクティブなタッチパッドがありません。マウスまたはタッチでサーフェスに描いてください。</value></data>
+  <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>このタッチパッド</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>タッチパッドが使用できません。下のサーフェスをマウスまたはタッチで使用してください。</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>描画中…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>すべてのサンプルを取得しました。ジェスチャーに名前を付けて保存をクリックしてください。</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>サンプル {0} / {1}</value></data>

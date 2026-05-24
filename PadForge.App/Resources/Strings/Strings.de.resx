@@ -1573,7 +1573,8 @@
   <data name="Recorder_Waiting" xml:space="preserve"><value>Warte auf Fingerkontakt auf der Fläche</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Zeichne auf dem Touchpad. Die Fläche spiegelt es live.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Aufnahme von {0}, Pad {1}</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Kein aktives Touchpad. Zeichne mit Maus oder Touch auf der Fläche.</value></data>
+  <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>dieses Touchpad</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Touchpad nicht verfügbar. Verwende die Fläche unten mit Maus oder Touch.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Zeichnet…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Alle Samples erfasst. Benenne die Geste und klicke auf Speichern.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sample {0} von {1}</value></data>

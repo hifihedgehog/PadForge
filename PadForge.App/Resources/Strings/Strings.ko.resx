@@ -1573,7 +1573,8 @@
   <data name="Recorder_Waiting" xml:space="preserve"><value>표면에 손가락 접촉 대기 중</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>터치패드에 그리세요. 표면이 실시간으로 미러링됩니다.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>{0}, 패드 {1}에서 녹화 중</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>활성 터치패드 없음. 마우스 또는 터치로 표면에 그리세요.</value></data>
+  <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>이 터치패드</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>터치패드를 사용할 수 없습니다. 아래 표면을 마우스나 터치로 사용하세요.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>그리는 중…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>모든 샘플이 캡처되었습니다. 제스처 이름을 지정하고 저장을 클릭하세요.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>샘플 {0} / {1}</value></data>

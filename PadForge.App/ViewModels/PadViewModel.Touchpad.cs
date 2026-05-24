@@ -613,26 +613,71 @@ namespace PadForge.ViewModels
             return us?.GetPadSetting();
         }
 
+        /// <summary>Pick the UserSetting whose finger paths the recorder
+        /// should mirror. A slot can have several mapped devices and the
+        /// user-selected one isn't necessarily touchpad-capable (a slot
+        /// with All Keyboards (Merged) + DualSense leaves SelectedMappedDevice
+        /// on the keyboard half the time). Walk every UserSetting on the
+        /// slot, intersect with UserDevices to test HasTouchpad, and
+        /// pick the first qualifying one — preferring the selected
+        /// device if it qualifies, then the first online touchpad-capable
+        /// device, then any touchpad-capable device. Returns null only
+        /// when no device on the slot has a touchpad at all.</summary>
         private UserSetting GetActiveUserSettingForTouchpad(out Guid deviceGuid)
         {
             deviceGuid = Guid.Empty;
-            var sel = SelectedMappedDevice;
-            if (sel == null || sel.InstanceGuid == Guid.Empty) return null;
             var settings = SettingsManager.UserSettings;
             if (settings == null) return null;
+
+            // Snapshot slot settings under their own lock; the device
+            // lookup below takes a different SyncRoot so don't nest.
+            var slotSettings = new List<UserSetting>(4);
             lock (settings.SyncRoot)
             {
                 for (int i = 0; i < settings.Items.Count; i++)
                 {
                     var us = settings.Items[i];
-                    if (us == null) continue;
-                    if (us.InstanceGuid != sel.InstanceGuid) continue;
-                    if (us.MapTo != PadIndex) continue;
-                    deviceGuid = us.InstanceGuid;
-                    return us;
+                    if (us != null && us.MapTo == PadIndex)
+                        slotSettings.Add(us);
                 }
             }
-            return null;
+            if (slotSettings.Count == 0) return null;
+
+            Guid selectedGuid = SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+            var devices = SettingsManager.UserDevices;
+
+            UserSetting selectedMatch = null;
+            UserSetting firstOnlineTouchpad = null;
+            UserSetting firstAnyTouchpad = null;
+
+            foreach (var us in slotSettings)
+            {
+                UserDevice ud = null;
+                if (devices != null)
+                {
+                    lock (devices.SyncRoot)
+                    {
+                        for (int j = 0; j < devices.Items.Count; j++)
+                        {
+                            var d = devices.Items[j];
+                            if (d != null && d.InstanceGuid == us.InstanceGuid)
+                            {
+                                ud = d;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (ud == null || !ud.HasTouchpad) continue;
+
+                firstAnyTouchpad ??= us;
+                if (ud.IsOnline) firstOnlineTouchpad ??= us;
+                if (us.InstanceGuid == selectedGuid) { selectedMatch = us; break; }
+            }
+
+            var chosen = selectedMatch ?? firstOnlineTouchpad ?? firstAnyTouchpad;
+            if (chosen != null) deviceGuid = chosen.InstanceGuid;
+            return chosen;
         }
 
         private static TouchpadGestureSettings ResolveTouchpadGestureSettings(PadSetting ps, int padIdx)

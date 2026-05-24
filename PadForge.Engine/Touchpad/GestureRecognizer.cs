@@ -222,10 +222,17 @@ namespace PadForge.Engine.Touchpad
             ctx.ActiveFingerCount = active;
         }
 
-        /// <summary>Fires <c>Touchpad N RadialZone{count}_{i}</c> when
-        /// the finger is past the center deadzone and in zone i.
-        /// Stable-zone fire-on-entry semantics: each new zone entry
-        /// fires once; re-entering the same zone doesn't re-fire.</summary>
+        /// <summary>Pie-menu semantics. Holds exactly one zone at a
+        /// time as long as the finger is outside the center deadzone.
+        /// Entering a different zone releases the previously-held one
+        /// and presses the new one; re-entering a previously-visited
+        /// zone re-fires because the release cleared the prior latch.
+        /// Falling back into the deadzone releases without pressing
+        /// anything else, letting the user "cancel" mid-gesture.
+        /// Zone 0 is centered on +X (right). Zones increase clockwise
+        /// in visual touchpad space (atan2 over Y-grows-downward
+        /// coordinates), so an 8-zone wheel reads:
+        ///   6 = up, 0 = right, 2 = down, 4 = left.</summary>
         private static void DetectRadialZones(int padIdx,
             TouchpadGestureContext ctx, TouchpadInputState pad,
             TouchpadGestureSettings settings)
@@ -234,27 +241,52 @@ namespace PadForge.Engine.Touchpad
             var path = ctx.FingerPaths[0];
             if (path.Count < 2) return;
 
+            int zones = settings.RadialZoneCount;
+            if (zones < 2) return;
+
             Vector2 start = path[0];
             Vector2 cur = path[path.Count - 1];
             Vector2 delta = cur - start;
             float dist = delta.Length();
-            if (dist < settings.RadialCenterDeadzone) return;
 
-            int zones = settings.RadialZoneCount;
-            if (zones < 2) return;
-            // Angle in radians, 0 = right, π/2 = down (touchpad space:
-            // Y grows downward). Normalize to 0..2π.
+            // Inside the deadzone: release whatever zone was held so
+            // the user can cancel a selection by pulling back to centre.
+            if (dist < settings.RadialCenterDeadzone)
+            {
+                ReleaseCurrentRadialZone(padIdx, ctx, zones);
+                return;
+            }
+
+            // Angle in radians measured from +X axis. atan2 over
+            // (deltaY, deltaX) on touchpad-space (Y grows downward)
+            // produces clockwise-increasing angles in visual space.
             float ang = MathF.Atan2(delta.Y, delta.X);
             if (ang < 0) ang += 2f * MathF.PI;
-            // Zone width = 2π / zones. Zone 0 is centered on +X (right);
-            // offset by half-width so zone 0 spans -half_width..+half_width.
+            // Zone width = 2π / zones. Zone 0 spans -half_width..+half_width
+            // around +X (right); each subsequent zone is the next
+            // clockwise wedge.
             float zoneWidth = 2f * MathF.PI / zones;
             int zone = (int)MathF.Floor((ang + zoneWidth / 2f) / zoneWidth) % zones;
             if (zone != ctx.CurrentRadialZone)
             {
+                ReleaseCurrentRadialZone(padIdx, ctx, zones);
                 ctx.FiredGesturesThisFrame.Add($"Touchpad {padIdx} RadialZone{zones}_{zone}");
                 ctx.CurrentRadialZone = zone;
             }
+        }
+
+        /// <summary>Drops the currently-held radial zone's fire entry
+        /// from the gesture context. No-op when no zone is held.
+        /// Called on every zone transition (so the prior zone's
+        /// mapped button releases before the next one engages) and
+        /// when the finger re-enters the centre deadzone.</summary>
+        private static void ReleaseCurrentRadialZone(int padIdx,
+            TouchpadGestureContext ctx, int zones)
+        {
+            if (ctx.CurrentRadialZone < 0) return;
+            ctx.FiredGesturesThisFrame.Remove(
+                $"Touchpad {padIdx} RadialZone{zones}_{ctx.CurrentRadialZone}");
+            ctx.CurrentRadialZone = -1;
         }
 
         /// <summary>Fires <c>Touchpad N LongPress</c> when a single

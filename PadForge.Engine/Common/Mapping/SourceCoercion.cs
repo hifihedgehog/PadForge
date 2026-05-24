@@ -688,27 +688,31 @@ namespace PadForge.Engine.Common.Mapping
             {
                 // Toggle off: send the calibrated reading only — no
                 // discretionary tuning (sensitivity, smoothing, deadzone,
-                // curve, invert, space projection). Calibration still
-                // applies; it is not tuning.
+                // curve, invert, space projection, Easy Aim / Aim Engage
+                // gates). Calibration still applies; it is not tuning.
                 pitch = gPitch;
                 yaw   = gYaw;
                 roll  = gRoll;
                 return;
             }
 
-            // Easy Aim and Aim Engage are MAPPING-SOURCE concepts —
-            // they gate when gyro-as-mouse-look or gyro-as-button
-            // fires. The motion passthrough is a separate channel:
-            // games and emulators reading the virtual pad's gyro
-            // report expect a continuous signal, not one that drops
-            // to zero when the user isn't holding an engage button.
-            // The earlier passthrough-tuning commit imported these
-            // gates by mistake when it adopted the mapping-path
-            // tuning chain. Leaving them out here means a Toggle /
-            // Hold engage button still works for the user's gyro
-            // mapping rows (mouse aim, button fires) while the
-            // motion passthrough always flows with calibration +
-            // deadzone + sensitivity + smoothing + invert applied.
+            // Gates — Easy Aim (right-stick deflection) and Aim Engage
+            // (held button). Both default to no-op; when either is set
+            // and not satisfied the passthrough gyro zeroes, the same as
+            // the mapping path. Intentional: a user with Toggle/Hold
+            // engage configured expects the virtual pad's gyro report
+            // to follow the same gate so an emulator sees motion only
+            // while engage is active.
+            if (tuning.EasyAimStickThreshold01 > 0f && slotIndex >= 0)
+            {
+                float defl = SlotRightStickDeflectionProvider?.Invoke(slotIndex) ?? 1f;
+                if (defl < tuning.EasyAimStickThreshold01) return;
+            }
+            if (slotIndex >= 0)
+            {
+                bool engaged = AimEngageStateProvider?.Invoke(slotIndex) ?? true;
+                if (!engaged) return;
+            }
 
             // Space projection. Local keeps three independent axes;
             // Player / World fold roll into the yaw projection so roll

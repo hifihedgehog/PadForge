@@ -229,10 +229,11 @@ namespace PadForge.Engine.Touchpad
         /// zone re-fires because the release cleared the prior latch.
         /// Falling back into the deadzone releases without pressing
         /// anything else, letting the user "cancel" mid-gesture.
-        /// Zone 0 is centered on +X (right). Zones increase clockwise
-        /// in visual touchpad space (atan2 over Y-grows-downward
-        /// coordinates), so an 8-zone wheel reads:
-        ///   6 = up, 0 = right, 2 = down, 4 = left.</summary>
+        /// Zone 0 is centered on -Y (up / 12 o'clock). Zones increase
+        /// clockwise in visual touchpad space (atan2 over Y-grows-
+        /// downward coordinates with a +π/2 offset that anchors zone
+        /// 0 to the top), so an 8-zone wheel reads:
+        ///   0 = up, 2 = right, 4 = down, 6 = left.</summary>
         private static void DetectRadialZones(int padIdx,
             TouchpadGestureContext ctx, TouchpadInputState pad,
             TouchpadGestureSettings settings)
@@ -257,14 +258,17 @@ namespace PadForge.Engine.Touchpad
                 return;
             }
 
-            // Angle in radians measured from +X axis. atan2 over
-            // (deltaY, deltaX) on touchpad-space (Y grows downward)
-            // produces clockwise-increasing angles in visual space.
-            float ang = MathF.Atan2(delta.Y, delta.X);
+            // Angle in radians measured from -Y (up / 12 o'clock).
+            // atan2 over (deltaY, deltaX) on touchpad-space (Y grows
+            // downward) produces clockwise-increasing angles measured
+            // from +X (right). Adding π/2 rotates the reference so
+            // zone 0 anchors to the top — the convention everyone
+            // expects from compass dials and clock faces.
+            float ang = MathF.Atan2(delta.Y, delta.X) + MathF.PI / 2f;
             if (ang < 0) ang += 2f * MathF.PI;
             // Zone width = 2π / zones. Zone 0 spans -half_width..+half_width
-            // around +X (right); each subsequent zone is the next
-            // clockwise wedge.
+            // around the top; each subsequent zone is the next clockwise
+            // wedge.
             float zoneWidth = 2f * MathF.PI / zones;
             int zone = (int)MathF.Floor((ang + zoneWidth / 2f) / zoneWidth) % zones;
             if (zone != ctx.CurrentRadialZone)

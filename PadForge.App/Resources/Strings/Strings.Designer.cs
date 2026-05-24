@@ -1113,6 +1113,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Touchpad_SwipeDistanceThreshold => Get("Pad_Touchpad_SwipeDistanceThreshold");
     public string Pad_Touchpad_SwipeTimeWindow => Get("Pad_Touchpad_SwipeTimeWindow");
     public string Pad_Touchpad_RadialZones => Get("Pad_Touchpad_RadialZones");
+    public string Pad_Touchpad_RadialZones_Tooltip => Get("Pad_Touchpad_RadialZones_Tooltip");
     public string Pad_Touchpad_RadialZoneCount => Get("Pad_Touchpad_RadialZoneCount");
     public string Pad_Touchpad_RadialCenterDeadzone => Get("Pad_Touchpad_RadialCenterDeadzone");
     public string Pad_Touchpad_Taps => Get("Pad_Touchpad_Taps");

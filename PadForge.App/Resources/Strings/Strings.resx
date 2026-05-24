@@ -1036,6 +1036,7 @@
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Swipe distance (0..1)</value></data>
   <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Swipe time window (ms)</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Radial zones (weapon-wheel style)</value></data>
+  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Slide outward from your finger's landing point into a wedge. Zone 0 is 12 o'clock (top); zones increase clockwise. Each zone's entry in the picker shows its clock position in parentheses — "(12)" is up, "(3)" is right, "(6)" is down, "(9)" is left. Only one zone is held at a time; sliding into another releases the previous one, so you can cycle through zones in a single swipe.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Zone count</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Center deadzone (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tap / Double tap / Triple tap</value></data>

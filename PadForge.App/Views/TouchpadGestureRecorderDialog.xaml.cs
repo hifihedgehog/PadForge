@@ -99,10 +99,18 @@ namespace PadForge.Views
         private void UpdateDeviceLabel(string deviceName)
         {
             if (DeviceLabel == null) return;
-            if (_hasLiveDevice && !string.IsNullOrWhiteSpace(deviceName))
+            if (_hasLiveDevice)
             {
+                // Live device wired — show the "Recording from …" line
+                // even when the caller couldn't supply a display name.
+                // Falling through to the unavailable string here would
+                // tell the user the touchpad is offline when in fact
+                // their finger paths are about to stream into the canvas.
+                string nameForLabel = string.IsNullOrWhiteSpace(deviceName)
+                    ? Strings.Instance.Recorder_TargetDevice_UnknownName
+                    : deviceName;
                 DeviceLabel.Text = string.Format(Strings.Instance.Recorder_TargetDevice_Format,
-                    deviceName, _padIndex);
+                    nameForLabel, _padIndex);
             }
             else
             {

@@ -1092,7 +1092,8 @@
   <data name="Recorder_Waiting" xml:space="preserve"><value>Waiting for finger contact on the canvas</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Draw on the touchpad. The canvas mirrors it live.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Recording from {0}, pad {1}</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>No live touchpad. Draw on the canvas with mouse / touch.</value></data>
+  <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>this touchpad</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Touchpad unavailable. Use the canvas below with mouse or touch.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Drawing…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>All samples captured. Name the gesture and click Save.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sample {0} of {1}</value></data>

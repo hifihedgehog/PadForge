@@ -1593,7 +1593,8 @@
   <data name="Recorder_Waiting" xml:space="preserve"><value>Wachten op vingercontact op het oppervlak</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Teken op de touchpad. Het oppervlak weerspiegelt het live.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Opnemen van {0}, pad {1}</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Geen actieve touchpad. Teken op het oppervlak met muis of aanraking.</value></data>
+  <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>deze touchpad</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Touchpad niet beschikbaar. Gebruik het oppervlak hieronder met muis of aanraking.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Tekenen…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Alle opnames vastgelegd. Geef het gebaar een naam en klik op Opslaan.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Opname {0} van {1}</value></data>

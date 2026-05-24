@@ -1573,7 +1573,8 @@
   <data name="Recorder_Waiting" xml:space="preserve"><value>Aguardando contato dos dedos na superfície</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Desenhe no touchpad. A superfície espelha em tempo real.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Gravando de {0}, controle {1}</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Nenhum touchpad ativo. Desenhe na superfície com mouse ou toque.</value></data>
+  <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>este touchpad</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Touchpad indisponível. Use a superfície abaixo com mouse ou toque.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Desenhando…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Todas as amostras foram capturadas. Nomeie o gesto e clique em Salvar.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Amostra {0} de {1}</value></data>

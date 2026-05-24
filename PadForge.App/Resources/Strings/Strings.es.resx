@@ -1508,15 +1508,15 @@
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Panel táctil {0}</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detección</value></data>
-  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Activar gestos en este mando</value></data>
-  <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Conmutador principal de este touchpad. Cuando está desactivado, no se dispara ningún descriptor de gesto para este mando. Las asignaciones existentes de dedo / clic / posición siguen funcionando.</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Activar gestos en este touchpad</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Conmutador principal de este touchpad. Cuando está desactivado, no se dispara ningún descriptor de gesto para este touchpad. Las asignaciones existentes de dedo / clic / posición siguen funcionando.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Reconocer</value></data>
   <data name="Pad_Touchpad_Mode_InBoxOnly" xml:space="preserve"><value>Solo integrados</value></data>
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>Solo personalizados</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Ambos</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>Qué catálogo de gestos evalúa el motor contra las trayectorias de los dedos en vivo. &quot;Ambos&quot; es el valor predeterminado.</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Tiempo de espera (ms)</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Después de que se dispare un gesto, ignora gestos nuevos en este mando durante esta cantidad de milisegundos. Evita disparos por rebote causados por movimientos rápidos de ida y vuelta.</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Después de que se dispare un gesto, ignora gestos nuevos en este touchpad durante esta cantidad de milisegundos. Evita disparos por rebote causados por movimientos rápidos de ida y vuelta.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Gestos integrados</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Deslizamientos de 4 direcciones (arriba / abajo / izquierda / derecha)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Deslizamientos de 8 direcciones (añade diagonales)</value></data>
@@ -1572,7 +1572,7 @@
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Dibuja el gesto sobre la superficie de abajo. El cuadro de diálogo captura todos los dedos que apoyes. Cuando levantas todos los dedos de la superficie, la muestra queda grabada. Dibujar con un número de dedos distinto al de las muestras anteriores reinicia la pila.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>Esperando contacto con los dedos en la superficie</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Dibuja en el touchpad. La superficie lo refleja en vivo.</value></data>
-  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Grabando desde {0}, mando {1}</value></data>
+  <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Grabando desde {0}, touchpad {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>este touchpad</value></data>
   <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Touchpad no disponible. Usa la superficie de abajo con ratón o dedo.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Dibujando…</value></data>

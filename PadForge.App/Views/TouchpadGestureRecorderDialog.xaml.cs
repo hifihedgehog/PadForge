@@ -36,7 +36,6 @@ namespace PadForge.Views
     {
         private sealed class FingerTrack
         {
-            public int ContactId;   // mouse=-1, stylus=-2, touch=TouchDevice.Id, device=contact id from pad
             public Polyline Visual;
             public List<Vector2> Points = new();
         }
@@ -45,7 +44,6 @@ namespace PadForge.Views
         private readonly List<List<List<Vector2>>> _capturedSamples = new();
         private int _targetSampleCount = 3;
         private int _expectedFingerCount;
-        private long _gestureStartMs;
         private bool _gestureActive;
 
         private readonly Guid _deviceGuid;
@@ -262,7 +260,6 @@ namespace PadForge.Views
             if (!_gestureActive)
             {
                 _gestureActive = true;
-                _gestureStartMs = Environment.TickCount64;
             }
             int slot = _activeFingers.Count;
             var brush = _fingerBrushes[slot % _fingerBrushes.Length];
@@ -279,7 +276,6 @@ namespace PadForge.Views
 
             _activeFingers[contactKey] = new FingerTrack
             {
-                ContactId = contactKey,
                 Visual = poly,
                 Points = new List<Vector2> { new Vector2((float)pt.X, (float)pt.Y) },
             };

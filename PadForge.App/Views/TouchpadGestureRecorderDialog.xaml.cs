@@ -50,17 +50,20 @@ namespace PadForge.Views
         private readonly int _padIndex;
         private readonly bool _hasLiveDevice;
 
-        // Distinct per-finger colors — same 6-hue palette used elsewhere
-        // for finger / contact display, tuned a bit brighter so the
-        // strokes pop against the Mica backdrop.
+        // Distinct per-finger colors — mid-saturation / mid-luminance
+        // so the strokes have decent contrast against BOTH the dark-
+        // mode and light-mode canvas backgrounds. Pastel highlights
+        // would wash out on the light-mode SolidBackgroundFillColorBaseBrush;
+        // these darker hues read cleanly on white and still stand
+        // out on Mica-dark.
         private static readonly Brush[] _fingerBrushes =
         {
-            new SolidColorBrush(Color.FromRgb(0xF8, 0x96, 0x4E)),
-            new SolidColorBrush(Color.FromRgb(0x6E, 0xD0, 0xFF)),
-            new SolidColorBrush(Color.FromRgb(0x95, 0xE0, 0x9D)),
-            new SolidColorBrush(Color.FromRgb(0xCE, 0x82, 0xE0)),
-            new SolidColorBrush(Color.FromRgb(0xFF, 0xE6, 0x73)),
-            new SolidColorBrush(Color.FromRgb(0xF7, 0x95, 0x95)),
+            new SolidColorBrush(Color.FromRgb(0xE6, 0x7E, 0x22)), // orange
+            new SolidColorBrush(Color.FromRgb(0x29, 0x80, 0xB9)), // blue
+            new SolidColorBrush(Color.FromRgb(0x27, 0xAE, 0x60)), // green
+            new SolidColorBrush(Color.FromRgb(0x8E, 0x44, 0xAD)), // purple
+            new SolidColorBrush(Color.FromRgb(0xD3, 0x5D, 0x0E)), // amber
+            new SolidColorBrush(Color.FromRgb(0xC0, 0x39, 0x2B)), // red
         };
 
         public TouchpadGestureRecorderDialog() : this(Guid.Empty, 0, string.Empty) { }

@@ -225,7 +225,7 @@ namespace PadForge.Engine.Touchpad
 
     /// <summary>
     /// Pre-normalized shape template for the $P recognizer. In-box
-    /// templates (Circle / Square / Triangle / Z / Checkmark / X) are
+    /// templates (Circle / Square / Triangle / Z / Checkmark) are
     /// constructed at app startup from procedural point generators;
     /// custom user templates are constructed at gesture-save time from
     /// the recorded sample(s) after multi-sample averaging.

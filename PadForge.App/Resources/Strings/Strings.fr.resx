@@ -1536,7 +1536,7 @@
   <data name="Pad_Touchpad_ThreeFinger" xml:space="preserve"><value>Gestes à trois doigts</value></data>
   <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>Gestes à quatre doigts</value></data>
   <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>Tape à cinq doigts</value></data>
-  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Gestes de formes (Cercle, Carré, Triangle, Z, Coche, X)</value></data>
+  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Gestes de formes (Cercle, Carré, Triangle, Z, Coche)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Seuil de correspondance de forme</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Gestes personnalisés</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Enregistrer un nouveau geste</value></data>

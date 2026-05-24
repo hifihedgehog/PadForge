@@ -1496,7 +1496,6 @@
   <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>三角形</value></data>
   <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Z 字</value></data>
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>チェックマーク</value></data>
-  <data name="Mapping_TouchpadGesture_X" xml:space="preserve"><value>X 字</value></data>
   <data name="Settings_TouchpadGestures" xml:space="preserve"><value>タッチパッドジェスチャー</value></data>
   <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>PadForge が読み取れるすべてのタッチパッドでスワイプ、タップ、ピンチ、カスタムシェイプを認識します。タッチパッドごとの設定は各パッドのタッチパッドタブにあります。ここではグローバルのマスタースイッチと一時停止ホットキーの割り当てを設定します。</value></data>
   <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>タッチパッドジェスチャーを全体で有効にする</value></data>

@@ -1496,7 +1496,6 @@
   <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>삼각형</value></data>
   <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Z 모양</value></data>
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>체크 표시</value></data>
-  <data name="Mapping_TouchpadGesture_X" xml:space="preserve"><value>X 모양</value></data>
   <data name="Settings_TouchpadGestures" xml:space="preserve"><value>터치패드 제스처</value></data>
   <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>PadForge가 읽을 수 있는 모든 터치패드에서 스와이프, 탭, 핀치 및 사용자 지정 도형을 인식합니다. 터치패드별 설정은 각 패드의 터치패드 탭에 있으며, 아래 컨트롤은 전역 마스터 스위치와 일시 중지 단축키 바인딩을 다룹니다.</value></data>
   <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>터치패드 제스처 전역 활성화</value></data>

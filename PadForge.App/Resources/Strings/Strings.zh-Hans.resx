@@ -1496,7 +1496,6 @@
   <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>三角形</value></data>
   <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Z 形</value></data>
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>对勾</value></data>
-  <data name="Mapping_TouchpadGesture_X" xml:space="preserve"><value>X 形</value></data>
   <data name="Settings_TouchpadGestures" xml:space="preserve"><value>触控板手势</value></data>
   <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>在 PadForge 可识别的每块触控板上识别滑动、轻触、捏合及自定义形状。各触控板的设置位于对应手柄的“触控板”选项卡，下方控件涵盖全局总开关和暂停热键绑定。</value></data>
   <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>全局启用触控板手势</value></data>

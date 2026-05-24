@@ -1013,7 +1013,6 @@
   <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>Triangle</value></data>
   <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Z Shape</value></data>
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>Checkmark</value></data>
-  <data name="Mapping_TouchpadGesture_X" xml:space="preserve"><value>X Shape</value></data>
 
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>

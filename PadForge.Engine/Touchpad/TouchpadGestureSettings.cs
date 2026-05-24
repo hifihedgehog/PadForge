@@ -125,7 +125,7 @@ namespace PadForge.Engine.Touchpad
         // ─── Tier 3: shape templates ──────────────────────────────────
 
         /// <summary>In-box shape gestures (Circle/Square/Triangle/Z/
-        /// Checkmark/X) enabled. Custom user gestures have their own
+        /// Checkmark) enabled. Custom user gestures have their own
         /// per-gesture toggles in the profile's gesture library.</summary>
         [XmlAttribute] public bool EnableShapeGestures { get; set; }
 

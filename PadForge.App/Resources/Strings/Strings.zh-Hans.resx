@@ -1536,7 +1536,7 @@
   <data name="Pad_Touchpad_ThreeFinger" xml:space="preserve"><value>三指手势</value></data>
   <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>四指手势</value></data>
   <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>五指轻触</value></data>
-  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>形状手势（圆形、方形、三角形、Z、对勾、X）</value></data>
+  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>形状手势（圆形、方形、三角形、Z、对勾）</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>形状匹配阈值</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>自定义手势</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ 录制新手势</value></data>

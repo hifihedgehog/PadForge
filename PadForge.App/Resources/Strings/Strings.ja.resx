@@ -1536,7 +1536,7 @@
   <data name="Pad_Touchpad_ThreeFinger" xml:space="preserve"><value>3 本指ジェスチャー</value></data>
   <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>4 本指ジェスチャー</value></data>
   <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>5 本指タップ</value></data>
-  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>シェイプジェスチャー (円、四角形、三角形、Z、チェックマーク、X)</value></data>
+  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>シェイプジェスチャー (円、四角形、三角形、Z、チェックマーク)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>シェイプ一致しきい値</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>カスタムジェスチャー</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ 新しいジェスチャーを記録</value></data>

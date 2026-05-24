@@ -724,6 +724,70 @@ namespace PadForge
                 // Pad setting changes (deadzones, force feedback, etc.) trigger autosave.
                 pad.PropertyChanged += (s, e) =>
                 {
+                    // Touchpad-gesture properties get the full
+                    // MarkDirty + Sync + RefreshAvailableInputsForSlot
+                    // treatment so the picker re-reads PadSetting and
+                    // the next save commits the gesture-tab toggle.
+                    //
+                    // CRITICAL: this branch MUST NOT trip for the
+                    // non-touchpad scalar / gyro fields below. During
+                    // startup load (LoadPadSettingToViewModel), those
+                    // scalars get set from PadSetting one by one — if
+                    // we called Sync for each of them, Sync would write
+                    // the VM's transient touchpad-fields defaults (all
+                    // false) into PadSetting BEFORE
+                    // LoadTouchpadGestureSettingsForActiveDevice ever
+                    // runs to populate them from the loaded entry.
+                    // Result: on every relaunch, the loaded TouchpadSettings
+                    // entry gets clobbered by the VM's empty defaults
+                    // and persisted as false. The toggle reverts.
+                    bool isTouchpadField = e.PropertyName is
+                        nameof(PadViewModel.TouchpadGesturesEnabled) or
+                        nameof(PadViewModel.TouchpadGestureMode) or
+                        nameof(PadViewModel.TouchpadCooldownMs) or
+                        nameof(PadViewModel.TouchpadEnableFourWaySwipes) or
+                        nameof(PadViewModel.TouchpadEnableEightWaySwipes) or
+                        nameof(PadViewModel.TouchpadSwipeDistanceThreshold) or
+                        nameof(PadViewModel.TouchpadSwipeTimeWindowMs) or
+                        nameof(PadViewModel.TouchpadEnableRadialZones) or
+                        nameof(PadViewModel.TouchpadRadialZoneCount) or
+                        nameof(PadViewModel.TouchpadRadialCenterDeadzone) or
+                        nameof(PadViewModel.TouchpadEnableTaps) or
+                        nameof(PadViewModel.TouchpadTapTimeWindowMs) or
+                        nameof(PadViewModel.TouchpadMultiTapGapMs) or
+                        nameof(PadViewModel.TouchpadEnableLongPress) or
+                        nameof(PadViewModel.TouchpadLongPressTimeWindowMs) or
+                        nameof(PadViewModel.TouchpadEnableTwoFingerSwipes) or
+                        nameof(PadViewModel.TouchpadEnablePinchSpread) or
+                        nameof(PadViewModel.TouchpadEnableRotate) or
+                        nameof(PadViewModel.TouchpadEnableThreeFingerGestures) or
+                        nameof(PadViewModel.TouchpadEnableFourFingerGestures) or
+                        nameof(PadViewModel.TouchpadEnableFiveFingerGestures) or
+                        nameof(PadViewModel.TouchpadEnableShapeGestures) or
+                        nameof(PadViewModel.TouchpadGestureMatchThreshold);
+
+                    if (isTouchpadField)
+                    {
+                        _settingsService.MarkDirty();
+                        if (s is PadViewModel pvm2)
+                        {
+                            // Order matters: the VM setter fires this
+                            // PropertyChanged BEFORE its tail-call
+                            // SyncTouchpadGestureSettingsToActiveDevice
+                            // writes the new value into
+                            // PadSetting.TouchpadSettings. Calling Sync
+                            // explicitly first ensures PadSetting is up
+                            // to date when the picker re-reads it.
+                            pvm2.SyncTouchpadGestureSettingsToActiveDevice();
+                            _inputService?.RefreshAvailableInputsForSlot(pvm2);
+                        }
+                        return;
+                    }
+
+                    // Scalar tuning fields — deadzones, sticks, triggers,
+                    // FFB, audio rumble, constant force, gyro. Just mark
+                    // dirty; the next autosave's UpdatePadSettingsFromViewModels
+                    // pass writes them all to PadSetting from the VM.
                     if (e.PropertyName is
                         nameof(PadViewModel.LeftDeadZoneX) or nameof(PadViewModel.LeftDeadZoneY) or
                         nameof(PadViewModel.RightDeadZoneX) or nameof(PadViewModel.RightDeadZoneY) or
@@ -771,60 +835,9 @@ namespace PadForge
                         nameof(PadViewModel.GyroAimEngageButton) or nameof(PadViewModel.GyroAimEngageDeviceGuid) or
                         nameof(PadViewModel.GyroAimEngageMode) or
                         nameof(PadViewModel.GyroInvertPitch) or nameof(PadViewModel.GyroInvertYawRoll) or
-                        nameof(PadViewModel.GyroApplyTuningToPassthrough) or
-                        // Touchpad tab — per-(device, pad) gesture settings. Setters
-                        // already flush through SyncTouchpadGestureSettingsToActiveDevice
-                        // into PadSetting.TouchpadSettings, but the dirty flag must
-                        // still fire so the next debounced save commits the change
-                        // to PadForge.xml.
-                        nameof(PadViewModel.TouchpadGesturesEnabled) or
-                        nameof(PadViewModel.TouchpadGestureMode) or
-                        nameof(PadViewModel.TouchpadCooldownMs) or
-                        nameof(PadViewModel.TouchpadEnableFourWaySwipes) or
-                        nameof(PadViewModel.TouchpadEnableEightWaySwipes) or
-                        nameof(PadViewModel.TouchpadSwipeDistanceThreshold) or
-                        nameof(PadViewModel.TouchpadSwipeTimeWindowMs) or
-                        nameof(PadViewModel.TouchpadEnableRadialZones) or
-                        nameof(PadViewModel.TouchpadRadialZoneCount) or
-                        nameof(PadViewModel.TouchpadRadialCenterDeadzone) or
-                        nameof(PadViewModel.TouchpadEnableTaps) or
-                        nameof(PadViewModel.TouchpadTapTimeWindowMs) or
-                        nameof(PadViewModel.TouchpadMultiTapGapMs) or
-                        nameof(PadViewModel.TouchpadEnableLongPress) or
-                        nameof(PadViewModel.TouchpadLongPressTimeWindowMs) or
-                        nameof(PadViewModel.TouchpadEnableTwoFingerSwipes) or
-                        nameof(PadViewModel.TouchpadEnablePinchSpread) or
-                        nameof(PadViewModel.TouchpadEnableRotate) or
-                        nameof(PadViewModel.TouchpadEnableThreeFingerGestures) or
-                        nameof(PadViewModel.TouchpadEnableFourFingerGestures) or
-                        nameof(PadViewModel.TouchpadEnableFiveFingerGestures) or
-                        nameof(PadViewModel.TouchpadEnableShapeGestures) or
-                        nameof(PadViewModel.TouchpadGestureMatchThreshold))
+                        nameof(PadViewModel.GyroApplyTuningToPassthrough))
                     {
                         _settingsService.MarkDirty();
-                        // Per-pad gating drives which gesture descriptors
-                        // appear in the mapping-row picker. Re-populate
-                        // the dropdown immediately when any of the
-                        // toggles change.
-                        //
-                        // Order matters: the VM setter fires this
-                        // PropertyChanged BEFORE its tail-call
-                        // SyncTouchpadGestureSettingsToActiveDevice
-                        // writes the new value into
-                        // PadSetting.TouchpadSettings. If we refresh
-                        // straight away, the gesture-settings provider
-                        // (which reads from PadSetting) sees stale
-                        // data — the user unchecks 'Enable gestures
-                        // on this touchpad' and the picker still shows
-                        // every gesture. Calling the flush explicitly
-                        // before the refresh ensures PadSetting is up
-                        // to date; the setter's own redundant Push
-                        // afterwards is a no-op write of the same value.
-                        if (s is PadViewModel pvm2)
-                        {
-                            pvm2.SyncTouchpadGestureSettingsToActiveDevice();
-                            _inputService?.RefreshAvailableInputsForSlot(pvm2);
-                        }
                     }
                 };
 

@@ -752,6 +752,20 @@ namespace PadForge.Services
                 catch { /* refresh is cosmetic */ }
             };
 
+            // Rebuild every Pad page's mapping-row dropdown now that the
+            // gesture-settings provider is wired. SettingsService.LoadFromFile
+            // ran BEFORE this StartEngine path and populated AvailableInputs
+            // with no provider available, so the dropdowns currently show
+            // every gesture regardless of the user's per-pad enable / mode /
+            // category toggles. Re-running the picker build here with the
+            // provider in place applies the gating immediately on first paint.
+            try
+            {
+                foreach (var padVm in _mainVm.Pads)
+                    if (padVm != null) RefreshAvailableInputsForSlot(padVm);
+            }
+            catch { /* picker refresh is cosmetic */ }
+
             // Create foreground monitor for auto-profile switching.
             _foregroundMonitor = new ForegroundMonitorService();
             _foregroundMonitor.ProfileSwitchRequired += OnProfileSwitchRequired;

@@ -5520,7 +5520,7 @@
                 <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Margin="0,16,0,16">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                            <TextBlock Text="&#xEFA5;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20"
                                        VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <TextBlock Text="{Binding Pad_Touchpad_Header, Source={x:Static strings:Strings.Instance}}"
                                        Style="{StaticResource TitleTextBlockStyle}"/>

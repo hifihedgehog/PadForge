@@ -1630,11 +1630,17 @@ namespace PadForge.Services
                 && state.Touchpads != null && state.Touchpads.Length > 0
                 && state.Touchpads[0] != null)
             {
-                // Devices preview surfaces the first touchpad's first two
-                // fingers. Multi-pad devices (Steam Controller / Deck /
-                // Triton) have their additional pads surfaced through the
-                // mapping table's per-pad descriptors; preview shows pad 0
-                // for parity with the pre-v3.3 single-pad model.
+                // Devices preview surfaces the first touchpad's first
+                // five fingers (Windows PTP max; SDL gamepad touchpads
+                // typically expose 1-2 so the higher slots stay idle
+                // there). Multi-pad devices (Steam Controller / Deck /
+                // Triton) have their additional pads surfaced through
+                // the mapping table's per-pad descriptors; preview
+                // shows pad 0 for parity with the pre-v3.3 single-
+                // pad model. Surfacing slots 2-4 lets the user verify
+                // their PTP actually reports 3+ contacts (which the
+                // gesture engine then sees) instead of seeing only two
+                // dots and inferring "PTP doesn't support that here."
                 var pad = state.Touchpads[0];
                 if (pad.MaxFingers > 0)
                 {
@@ -1647,6 +1653,24 @@ namespace PadForge.Services
                     devVm.TouchpadX1 = pad.FingerX[1];
                     devVm.TouchpadY1 = pad.FingerY[1];
                     devVm.TouchpadDown1 = pad.FingerDown[1];
+                }
+                if (pad.MaxFingers > 2)
+                {
+                    devVm.TouchpadX2 = pad.FingerX[2];
+                    devVm.TouchpadY2 = pad.FingerY[2];
+                    devVm.TouchpadDown2 = pad.FingerDown[2];
+                }
+                if (pad.MaxFingers > 3)
+                {
+                    devVm.TouchpadX3 = pad.FingerX[3];
+                    devVm.TouchpadY3 = pad.FingerY[3];
+                    devVm.TouchpadDown3 = pad.FingerDown[3];
+                }
+                if (pad.MaxFingers > 4)
+                {
+                    devVm.TouchpadX4 = pad.FingerX[4];
+                    devVm.TouchpadY4 = pad.FingerY[4];
+                    devVm.TouchpadDown4 = pad.FingerDown[4];
                 }
             }
         }
@@ -2805,7 +2829,17 @@ namespace PadForge.Services
             {
                 string key = g.ToString().ToLowerInvariant();
                 string label = ResolveDeviceLabel(g.ToString());
-                var raw = MappingDisplayResolver.BuildInputChoices(udi) ?? System.Array.Empty<PadForge.ViewModels.InputChoice>();
+
+                // Per-pad gesture-settings provider: gates which gesture
+                // categories appear in the dropdown per the user's
+                // Touchpad-tab toggles. _inputManager is null pre-engine-
+                // start so guard for that case.
+                System.Func<int, PadForge.Engine.Touchpad.TouchpadGestureSettings> tpSettingsForPad = null;
+                if (_inputManager?.TouchpadGestureSettingsProvider != null)
+                    tpSettingsForPad = padIdx => _inputManager.TouchpadGestureSettingsProvider(g, padIdx);
+
+                var raw = MappingDisplayResolver.BuildInputChoices(udi, tpSettingsForPad)
+                          ?? System.Array.Empty<PadForge.ViewModels.InputChoice>();
                 foreach (var c in raw)
                 {
                     flat.Add(new PadForge.ViewModels.InputChoice
@@ -2851,6 +2885,17 @@ namespace PadForge.Services
                                        || string.Equals(cg.DeviceClass, devClass, System.StringComparison.OrdinalIgnoreCase);
                         if (!classOk) continue;
                         int padIdx = cg.TouchpadIndex < 0 ? 0 : cg.TouchpadIndex;
+                        // Per-pad settings gate: respects the user's
+                        // Touchpad-tab toggles same as the in-box list.
+                        // "InBoxOnly" mode hides custom; disabled pads
+                        // contribute nothing.
+                        var ps = tpSettingsForPad?.Invoke(padIdx);
+                        if (ps != null)
+                        {
+                            if (!ps.Enabled) continue;
+                            if (string.Equals(ps.Mode, "InBoxOnly", System.StringComparison.OrdinalIgnoreCase))
+                                continue;
+                        }
                         string display = multiPad
                             ? string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, padIdx, cg.Name)
                             : cg.Name;

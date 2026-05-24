@@ -1487,7 +1487,7 @@
   <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>Drievoudige tik</value></data>
   <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>Lang indrukken</value></data>
   <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>Radiale zone {0}/{1}</value></data>
-  <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>Pad {0} — {1}</value></data>
+  <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>Touchpad {0} — {1}</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeUp" xml:space="preserve"><value>Tweevingerveeg omhoog</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeDown" xml:space="preserve"><value>Tweevingerveeg omlaag</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Tweevingerveeg naar links</value></data>
@@ -1527,10 +1527,10 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad-gebaren</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Gebaardetectie per touchpad. Elke vingerveeg, tik, knijpbeweging en vorm wordt een toewijzingsbron die je op het Toewijzingen-tabblad kunt koppelen.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Pad {0}</value></data>
+  <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detectie</value></data>
-  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Gebaren op deze pad inschakelen</value></data>
-  <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Hoofdschakelaar voor dit touchpad. Bij uitschakeling activeert deze pad geen gebaardescriptoren. Bestaande vinger-, klik- en positietoewijzingen blijven werken.</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Gebaren op dit touchpad inschakelen</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Hoofdschakelaar voor dit touchpad. Bij uitschakeling activeert dit touchpad geen gebaardescriptoren. Bestaande vinger-, klik- en positietoewijzingen blijven werken.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Herkennen</value></data>
   <data name="Pad_Touchpad_Mode_InBoxOnly" xml:space="preserve"><value>Alleen ingebouwde</value></data>
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>Alleen aangepaste</value></data>

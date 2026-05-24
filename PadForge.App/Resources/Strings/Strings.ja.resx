@@ -1180,7 +1180,7 @@
   <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>タッチパッド 2 タッチ</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>タッチパッドクリック</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>モーション ジャイロ</value></data>
-  <data name="Mapping_MotionAccel" xml:space="preserve"><value>モーション 加速度</value></data>
+  <data name="Mapping_MotionAccel" xml:space="preserve"><value>モーション 加速度センサー</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>タッチパッド</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>テンキー *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>テンキー +</value></data>
@@ -1467,7 +1467,7 @@
   <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>トリプルタップ</value></data>
   <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>ロングプレス</value></data>
   <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>放射ゾーン {0}/{1}</value></data>
-  <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>タッチパッド {0} — {1}</value></data>
+  <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>タッチパッド {0}: {1}</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeUp" xml:space="preserve"><value>2 本指 上スワイプ</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeDown" xml:space="preserve"><value>2 本指 下スワイプ</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>2 本指 左スワイプ</value></data>

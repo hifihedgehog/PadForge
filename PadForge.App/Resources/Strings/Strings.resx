@@ -984,7 +984,7 @@
   <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>Triple Tap</value></data>
   <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>Long Press</value></data>
   <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>Radial Zone {0}/{1}</value></data>
-  <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>Touchpad {0} — {1}</value></data>
+  <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>Touchpad {0}: {1}</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeUp" xml:space="preserve"><value>Two-Finger Swipe Up</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeDown" xml:space="preserve"><value>Two-Finger Swipe Down</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Two-Finger Swipe Left</value></data>
@@ -1090,9 +1090,9 @@
   <data name="Recorder_Title" xml:space="preserve"><value>Record Touchpad Gesture</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Draw the gesture on the surface below. The dialog captures every finger you put down. When you take all fingers off the surface the sample is recorded. Drawing a different finger count from previous samples resets the stack.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>Waiting for finger contact on the canvas</value></data>
-  <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Draw on the touchpad — the canvas mirrors it live</value></data>
+  <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Draw on the touchpad. The canvas mirrors it live.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Recording from {0}, pad {1}</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>No live touchpad — draw on the canvas with mouse / touch</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>No live touchpad. Draw on the canvas with mouse / touch.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Drawing…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>All samples captured. Name the gesture and click Save.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sample {0} of {1}</value></data>
@@ -1104,12 +1104,12 @@
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Name required</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Name too long (max 64 chars)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>Name contains invalid characters</value></data>
-  <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>Finger count changed — samples cleared.</value></data>
-  <data name="Recorder_Error_NoEngine" xml:space="preserve"><value>Engine not running — start the engine before recording.</value></data>
+  <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>Finger count changed. Samples cleared.</value></data>
+  <data name="Recorder_Error_NoEngine" xml:space="preserve"><value>Engine not running. Start the engine before recording.</value></data>
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>No valid sample captured. Try drawing the gesture again.</value></data>
 
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Motion Gyro</value></data>
-  <data name="Mapping_MotionAccel" xml:space="preserve"><value>Motion Accel</value></data>
+  <data name="Mapping_MotionAccel" xml:space="preserve"><value>Motion Accelerometer</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Gyro Pitch</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roll</value></data>

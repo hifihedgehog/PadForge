@@ -1467,7 +1467,7 @@
   <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>三连击</value></data>
   <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>长按</value></data>
   <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>径向扇区 {0}/{1}</value></data>
-  <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>触控板 {0} — {1}</value></data>
+  <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>触控板 {0}：{1}</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeUp" xml:space="preserve"><value>双指向上滑动</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeDown" xml:space="preserve"><value>双指向下滑动</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>双指向左滑动</value></data>

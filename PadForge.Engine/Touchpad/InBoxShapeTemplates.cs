@@ -39,6 +39,13 @@ namespace PadForge.Engine.Touchpad
         private static void Add(List<PDollarTemplate> list, string name, List<Vector2> path)
         {
             var cloud = PDollarRecognizer.BuildCloud(new[] { path }, PDollarRecognizer.DefaultResampleCount);
+            // Single-finger shapes also get an angular-margin signature
+            // so the recognizer can run both algorithms and keep the
+            // higher-confidence match. $P handles "rough cloud of points"
+            // well; angular-margin handles "consistent stroke direction
+            // at every corner" well — they're complementary on shapes
+            // like Square / Z / Triangle / Checkmark.
+            var angles = AngularMarginRecognizer.BuildAngleSignature(path);
             list.Add(new PDollarTemplate
             {
                 Name = name,
@@ -46,6 +53,7 @@ namespace PadForge.Engine.Touchpad
                 PointCloud = cloud,
                 Enabled = true,
                 IsCustom = false,
+                AngularSignature = angles,
             });
         }
 

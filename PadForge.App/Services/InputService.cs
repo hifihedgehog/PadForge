@@ -2785,6 +2785,34 @@ namespace PadForge.Services
                         DeviceLabel = label,
                     });
                 }
+
+                // Surface the active profile's custom touchpad gestures
+                // for any touchpad-capable device that matches the
+                // per-gesture DeviceClass / TouchpadIndex filter.
+                // BuildInputChoices is device-only and doesn't have
+                // profile context, so the custom-gesture surfacing
+                // lives here next to the per-device flat-list build.
+                if ((udi.HasTouchpad || udi.IsTouchpad) && _activeTouchpadGestures.Count > 0)
+                {
+                    string devClass = ResolveDeviceClass(udi);
+                    foreach (var cg in _activeTouchpadGestures)
+                    {
+                        if (cg == null || string.IsNullOrWhiteSpace(cg.Name)) continue;
+                        if (!cg.Enabled) continue;
+                        bool classOk = string.IsNullOrEmpty(cg.DeviceClass)
+                                       || string.Equals(cg.DeviceClass, "any", System.StringComparison.OrdinalIgnoreCase)
+                                       || string.Equals(cg.DeviceClass, devClass, System.StringComparison.OrdinalIgnoreCase);
+                        if (!classOk) continue;
+                        int padIdx = cg.TouchpadIndex < 0 ? 0 : cg.TouchpadIndex;
+                        flat.Add(new PadForge.ViewModels.InputChoice
+                        {
+                            Descriptor = $"Touchpad {padIdx} Custom_{cg.Name}",
+                            DisplayName = cg.Name,
+                            DeviceGuid = key,
+                            DeviceLabel = label,
+                        });
+                    }
+                }
             }
 
             foreach (var mapping in padVm.Mappings)
@@ -6735,11 +6763,16 @@ namespace PadForge.Services
             // so the Touchpad tab's Custom Gestures card reflects the new
             // profile's library. PadViewModel scopes per-slot, but the
             // gesture library is profile-wide, so every PadVM gets the same
-            // list.
+            // list. Also refresh each slot's mapping-row dropdown so the
+            // custom gestures show up in the input picker after a profile
+            // switch / initial load.
             try
             {
                 foreach (var padVm in _mainVm.Pads)
+                {
                     padVm?.RefreshCustomTouchpadGestures(_activeTouchpadGestures);
+                    if (padVm != null) RefreshAvailableInputsForSlot(padVm);
+                }
             }
             catch { /* refresh is cosmetic — ignore VM enumeration races */ }
         }
@@ -6761,7 +6794,13 @@ namespace PadForge.Services
             try
             {
                 foreach (var padVm in _mainVm.Pads)
+                {
                     padVm?.RefreshCustomTouchpadGestures(_activeTouchpadGestures);
+                    // Re-populate the slot's mapping-row dropdown so the
+                    // new gesture is selectable immediately after recording
+                    // (without waiting for a device-assignment refresh).
+                    if (padVm != null) RefreshAvailableInputsForSlot(padVm);
+                }
             }
             catch { }
             _settingsService?.MarkDirty();
@@ -6779,7 +6818,10 @@ namespace PadForge.Services
             try
             {
                 foreach (var padVm in _mainVm.Pads)
+                {
                     padVm?.RefreshCustomTouchpadGestures(_activeTouchpadGestures);
+                    if (padVm != null) RefreshAvailableInputsForSlot(padVm);
+                }
             }
             catch { }
             _settingsService?.MarkDirty();
@@ -6802,6 +6844,33 @@ namespace PadForge.Services
         /// Returns a copy, so callers may not mutate the working set.</summary>
         public PadForge.Engine.Touchpad.TouchpadCustomGesture[] GetActiveTouchpadGestures()
             => _activeTouchpadGestures.ToArray();
+
+        /// <summary>Maps a UserDevice to one of the canonical
+        /// device-class labels custom gestures use for their
+        /// <see cref="PadForge.Engine.Touchpad.TouchpadCustomGesture.DeviceClass"/>
+        /// filter. Returns "any" when no specific class is recognized so
+        /// gesture matching falls through to the unrestricted path.</summary>
+        private static string ResolveDeviceClass(PadForge.Engine.Data.UserDevice ud)
+        {
+            if (ud == null) return "any";
+            if (ud.IsTouchpad) return "overlay";  // built-in TouchpadOverlay
+            // Sony — VID 054C.
+            if (ud.VendorId == 0x054C)
+            {
+                ushort pid = ud.ProdId;
+                if (pid == 0x0CE6 || pid == 0x0DF2) return "dualsense";
+                if (pid == 0x05C4 || pid == 0x09CC || pid == 0x0BA0) return "ds4";
+            }
+            // Valve — VID 28DE.
+            if (ud.VendorId == 0x28DE)
+            {
+                ushort pid = ud.ProdId;
+                if (pid == 0x1205) return "steamdeck";   // Deck OLED + LCD
+                if (pid == 0x11FF) return "steamcontroller";
+                if (pid == 0x35F0 || pid == 0x35F1) return "triton"; // Steam Controller 2026
+            }
+            return "any";
+        }
 
         /// <summary>Hand the recorder dialog a live stream of finger
         /// snapshots from the supplied (device, pad). While the target

@@ -6,132 +6,117 @@
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         Title="{Binding Recorder_Title, Source={x:Static strings:Strings.Instance}}"
-        Width="680" Height="600"
+        Height="600" Width="640"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="CanResize"
-        MinWidth="520" MinHeight="500">
+        ResizeMode="NoResize">
 
     <ui:FluentWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ui:ThemesDictionary Theme="Dark" />
-                <ui:ControlsDictionary />
+                <ui:ThemesDictionary Theme="Dark"/>
+                <ui:ControlsDictionary/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </ui:FluentWindow.Resources>
 
-    <Grid>
+    <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Custom title bar so the chrome inherits the Mica backdrop -->
-        <ui:TitleBar Grid.Row="0"
-                     Title="{Binding Recorder_Title, Source={x:Static strings:Strings.Instance}}"
-                     ShowMaximize="False" ShowMinimize="False"/>
+        <!-- Subtitle -->
+        <TextBlock Grid.Row="0"
+                   Text="{Binding Recorder_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                   TextWrapping="Wrap" Margin="0,0,0,12"
+                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
 
-        <Grid Grid.Row="1" Margin="16,8,16,16">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <!-- Device / pad target -->
+        <TextBlock Grid.Row="1"
+                   x:Name="DeviceLabel"
+                   FontSize="13" FontWeight="SemiBold"
+                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                   Margin="0,0,0,6"/>
 
-            <!-- Subtitle -->
-            <TextBlock Grid.Row="0"
-                       Text="{Binding Recorder_Subtitle, Source={x:Static strings:Strings.Instance}}"
+        <!-- Status + samples-captured counter -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8">
+            <TextBlock x:Name="StatusText"
+                       Text="{Binding Recorder_Waiting, Source={x:Static strings:Strings.Instance}}"
+                       FontSize="13" VerticalAlignment="Center"/>
+            <TextBlock x:Name="SamplesText"
+                       FontSize="13" VerticalAlignment="Center" Margin="20,0,0,0"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+        </StackPanel>
+
+        <!-- Drawing surface — mirrors live device finger paths when a
+             real touchpad target is wired; accepts mouse / touch /
+             stylus on itself when no live device is targeted. -->
+        <Border Grid.Row="3"
+                BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
+                BorderThickness="1"
+                CornerRadius="4"
+                Background="{DynamicResource SolidBackgroundFillColorBaseBrush}">
+            <Canvas x:Name="DrawingCanvas"
+                    Background="Transparent"
+                    IsManipulationEnabled="True"
+                    ClipToBounds="True"
+                    TouchDown="DrawingCanvas_TouchDown"
+                    TouchMove="DrawingCanvas_TouchMove"
+                    TouchUp="DrawingCanvas_TouchUp"
+                    MouseDown="DrawingCanvas_MouseDown"
+                    MouseMove="DrawingCanvas_MouseMove"
+                    MouseUp="DrawingCanvas_MouseUp"
+                    StylusDown="DrawingCanvas_StylusDown"/>
+        </Border>
+
+        <!-- Name field + validation -->
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,12,0,0">
+            <TextBlock Text="{Binding Recorder_NameLabel, Source={x:Static strings:Strings.Instance}}"
+                       VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <TextBox x:Name="NameBox" Width="260" VerticalAlignment="Center"
+                     TextChanged="NameBox_TextChanged"/>
+            <TextBlock x:Name="ValidationText"
+                       Foreground="#FF6464" FontSize="12"
+                       VerticalAlignment="Center" Margin="12,0,0,0"/>
+        </StackPanel>
+
+        <!-- Sample-count picker -->
+        <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,8,0,0">
+            <TextBlock Text="{Binding Recorder_SampleCount_Label, Source={x:Static strings:Strings.Instance}}"
+                       VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <ComboBox x:Name="SampleCountBox" Width="60" SelectedIndex="1"
+                      VerticalAlignment="Center"
+                      SelectionChanged="SampleCountBox_SelectionChanged"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <ComboBoxItem Content="1"/>
+                <ComboBoxItem Content="3"/>
+                <ComboBoxItem Content="5"/>
+            </ComboBox>
+            <TextBlock Text="{Binding Recorder_SampleCount_Hint, Source={x:Static strings:Strings.Instance}}"
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                       TextWrapping="Wrap" Margin="0,0,0,8"/>
+                       FontSize="12" VerticalAlignment="Center" Margin="12,0,0,0"
+                       TextWrapping="Wrap"/>
+        </StackPanel>
 
-            <!-- Device / pad label — tells the user which pad they're drawing on -->
-            <TextBlock Grid.Row="1"
-                       x:Name="DeviceLabel"
-                       FontSize="13" FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                       Margin="0,0,0,6"/>
-
-            <!-- Status row -->
-            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8">
-                <TextBlock x:Name="StatusText"
-                           Text="{Binding Recorder_Waiting, Source={x:Static strings:Strings.Instance}}"
-                           FontSize="13" VerticalAlignment="Center"/>
-                <TextBlock x:Name="SamplesText"
-                           FontSize="13" VerticalAlignment="Center" Margin="20,0,0,0"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-            </StackPanel>
-
-            <!-- Drawing surface. While a real touchpad device is targeted,
-                 this is a live MIRROR of the device's finger paths. With
-                 no real device (overlay-only profile) it falls back to
-                 accepting mouse / touch on itself. -->
-            <Border Grid.Row="3"
-                    BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
-                    BorderThickness="1"
-                    CornerRadius="4"
-                    Background="{DynamicResource SolidBackgroundFillColorBaseBrush}">
-                <Canvas x:Name="DrawingCanvas"
-                        Background="Transparent"
-                        IsManipulationEnabled="True"
-                        ClipToBounds="True"
-                        TouchDown="DrawingCanvas_TouchDown"
-                        TouchMove="DrawingCanvas_TouchMove"
-                        TouchUp="DrawingCanvas_TouchUp"
-                        MouseDown="DrawingCanvas_MouseDown"
-                        MouseMove="DrawingCanvas_MouseMove"
-                        MouseUp="DrawingCanvas_MouseUp"
-                        StylusDown="DrawingCanvas_StylusDown"/>
-            </Border>
-
-            <!-- Name + finger-count summary -->
-            <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,12,0,0">
-                <TextBlock Text="{Binding Recorder_NameLabel, Source={x:Static strings:Strings.Instance}}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <ui:TextBox x:Name="NameBox" Width="260" VerticalAlignment="Center"
-                            TextChanged="NameBox_TextChanged"/>
-                <TextBlock x:Name="ValidationText"
-                           Foreground="#FF6464" FontSize="12"
-                           VerticalAlignment="Center" Margin="12,0,0,0"/>
-            </StackPanel>
-
-            <!-- Sample-count picker -->
-            <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,8,0,0">
-                <TextBlock Text="{Binding Recorder_SampleCount_Label, Source={x:Static strings:Strings.Instance}}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <ComboBox x:Name="SampleCountBox" Width="60" SelectedIndex="1"
-                          VerticalAlignment="Center"
-                          SelectionChanged="SampleCountBox_SelectionChanged"
-                          ScrollViewer.VerticalScrollBarVisibility="Visible">
-                    <ComboBoxItem Content="1"/>
-                    <ComboBoxItem Content="3"/>
-                    <ComboBoxItem Content="5"/>
-                </ComboBox>
-                <TextBlock Text="{Binding Recorder_SampleCount_Hint, Source={x:Static strings:Strings.Instance}}"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                           FontSize="12" VerticalAlignment="Center" Margin="12,0,0,0"
-                           TextWrapping="Wrap"/>
-            </StackPanel>
-
-            <!-- Buttons -->
-            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
-                <ui:Button x:Name="TryAgainBtn"
-                           Content="{Binding Recorder_TryAgain, Source={x:Static strings:Strings.Instance}}"
-                           Padding="12,4" Margin="0,0,8,0"
-                           Click="TryAgainBtn_Click"/>
-                <ui:Button x:Name="SaveBtn"
-                           Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
-                           Padding="12,4" Margin="0,0,8,0"
-                           Appearance="Primary"
-                           IsEnabled="False"
-                           Click="SaveBtn_Click"/>
-                <ui:Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
-                           Padding="12,4"
-                           Click="CancelBtn_Click"/>
-            </StackPanel>
-        </Grid>
+        <!-- Buttons -->
+        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button x:Name="TryAgainBtn"
+                    Content="{Binding Recorder_TryAgain, Source={x:Static strings:Strings.Instance}}"
+                    MinWidth="90" Margin="0,0,8,0"
+                    Click="TryAgainBtn_Click"/>
+            <Button x:Name="SaveBtn"
+                    Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
+                    MinWidth="90" Margin="0,0,8,0"
+                    IsEnabled="False"
+                    Click="SaveBtn_Click"/>
+            <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
+                    MinWidth="90"
+                    Click="CancelBtn_Click"/>
+        </StackPanel>
     </Grid>
 </ui:FluentWindow>

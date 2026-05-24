@@ -44,6 +44,44 @@ namespace PadForge.Services
         private DispatcherTimer _autoSaveTimer;
         private readonly List<UserProfileData> _userProfiles = new();
 
+        /// <summary>App-layer hook for fetching the active profile's
+        /// custom touchpad gestures at save time. SettingsService
+        /// doesn't own the live list (that's InputService._activeTouchpadGestures);
+        /// this provider lets the save paths pull from it without a
+        /// reverse reference. Returns null = no gestures to persist.</summary>
+        public System.Func<PadForge.Engine.Touchpad.TouchpadCustomGesture[]> TouchpadGesturesProvider { get; set; }
+
+        private System.Action<PadForge.Engine.Touchpad.TouchpadCustomGesture[]> _touchpadGesturesApplier;
+        private PadForge.Engine.Touchpad.TouchpadCustomGesture[] _pendingTouchpadGesturesToApply;
+
+        /// <summary>App-layer hook for restoring touchpad gestures
+        /// after a settings load — InputService re-seeds its working
+        /// list from whatever was persisted (default-profile gestures
+        /// from AppSettings.TouchpadGestures, named-profile gestures
+        /// from each ProfileData.TouchpadGestures, etc.).
+        ///
+        /// <para>The setter auto-flushes any gestures stashed by an
+        /// earlier load that ran before the applier was wired —
+        /// SettingsService.LoadFromFile runs at startup BEFORE
+        /// InputService.StartEngine attaches the applier, so the
+        /// load path stashes the loaded gestures in a pending slot
+        /// and this property's setter invokes them on first
+        /// assignment.</para></summary>
+        public System.Action<PadForge.Engine.Touchpad.TouchpadCustomGesture[]> TouchpadGesturesApplier
+        {
+            get => _touchpadGesturesApplier;
+            set
+            {
+                _touchpadGesturesApplier = value;
+                if (value != null && _pendingTouchpadGesturesToApply != null)
+                {
+                    var pending = _pendingTouchpadGesturesToApply;
+                    _pendingTouchpadGesturesToApply = null;
+                    try { value(pending); } catch { /* applier is best-effort */ }
+                }
+            }
+        }
+
         /// <summary>
         /// Full path to the active settings file.
         /// </summary>
@@ -901,6 +939,18 @@ namespace PadForge.Services
             vm.KeepHidHideCloaksBetweenLaunches = appSettings.KeepHidHideCloaksBetweenLaunches;
             vm.EnableTouchpadGestures = appSettings.EnableTouchpadGestures;
             vm.TouchpadGestureSuspendHotkey = appSettings.TouchpadGestureSuspendHotkey ?? string.Empty;
+            // Default-profile custom-gesture catalog. InputService
+            // wires the applier from StartEngine, which runs AFTER
+            // this load path on cold start, so stash the loaded list
+            // in a pending slot when the applier isn't ready yet —
+            // the setter on TouchpadGesturesApplier flushes it on
+            // first assignment. Named profiles seed via
+            // ApplyProfileTouchpadGestures on the active profile's
+            // TouchpadGestures field instead.
+            if (_touchpadGesturesApplier != null)
+                _touchpadGesturesApplier(appSettings.TouchpadGestures);
+            else
+                _pendingTouchpadGesturesToApply = appSettings.TouchpadGestures;
             vm.HidHideWhitelistPaths.Clear();
             if (appSettings.HidHideWhitelistPaths != null)
             {
@@ -2131,6 +2181,14 @@ namespace PadForge.Services
             profile.TouchpadOverlayTop = _mainVm.Dashboard.TouchpadOverlayTop;
             profile.TouchpadOverlayWidth = _mainVm.Dashboard.TouchpadOverlayWidth;
             profile.TouchpadOverlayHeight = _mainVm.Dashboard.TouchpadOverlayHeight;
+
+            // Custom touchpad gestures live in InputService's working
+            // list; pull through the provider hook so the 250 ms
+            // autosave path captures them the same way SnapshotCurrentProfile
+            // does. Without this, gestures recorded while a named
+            // profile is active vanish at the next save / reload.
+            var tg = TouchpadGesturesProvider?.Invoke();
+            profile.TouchpadGestures = (tg != null && tg.Length > 0) ? tg : null;
         }
 
         /// <summary>
@@ -2449,6 +2507,14 @@ namespace PadForge.Services
                 KeepHidHideCloaksBetweenLaunches = vm.KeepHidHideCloaksBetweenLaunches,
                 EnableTouchpadGestures = vm.EnableTouchpadGestures,
                 TouchpadGestureSuspendHotkey = vm.TouchpadGestureSuspendHotkey ?? string.Empty,
+                // Default profile's custom gestures. When a named profile is
+                // active, defaultSnap.TouchpadGestures carries the gestures
+                // recorded on the default; when default is active, pull
+                // straight from InputService's working list via the provider
+                // so saves of the default profile's gestures round-trip too.
+                TouchpadGestures = isDefault
+                    ? (TouchpadGesturesProvider?.Invoke() is { Length: > 0 } liveTg ? liveTg : null)
+                    : defaultSnap.TouchpadGestures,
                 HidHideWhitelistPaths = vm.HidHideWhitelistPaths.Count > 0
                     ? vm.HidHideWhitelistPaths.ToArray()
                     : null,
@@ -3470,6 +3536,17 @@ namespace PadForge.Services
         /// </summary>
         [XmlElement]
         public string TouchpadGestureSuspendHotkey { get; set; } = string.Empty;
+
+        /// <summary>Default profile's custom touchpad gestures.
+        /// Named profiles store theirs under each profile's
+        /// <c>ProfileData.TouchpadGestures</c>; when the default profile
+        /// is active there's no ProfileData being saved alongside, so
+        /// the active gesture catalog lives here directly. Round-trips
+        /// via the SettingsService load + save paths and re-seeds
+        /// InputService._activeTouchpadGestures at startup.</summary>
+        [XmlArray("DefaultProfileTouchpadGestures")]
+        [XmlArrayItem("Gesture")]
+        public PadForge.Engine.Touchpad.TouchpadCustomGesture[] TouchpadGestures { get; set; }
 
         [XmlElement]
         public double TouchpadOverlayOpacity { get; set; } = 0.25;

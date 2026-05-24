@@ -1230,7 +1230,9 @@ namespace PadForge.Engine.Data
                     sb.Append(s.EnablePinchSpread).Append(',').Append(s.PinchThreshold).Append(',');
                     sb.Append(s.EnableRotate).Append(',').Append(s.RotateThresholdDegrees).Append(',');
                     sb.Append(s.EnableThreeFingerGestures).Append(',').Append(s.EnableFourFingerGestures).Append(',').Append(s.EnableFiveFingerGestures).Append(',');
-                    sb.Append(s.EnableShapeGestures).Append(',').Append(s.GestureMatchThreshold);
+                    sb.Append(s.EnableShapeGestures).Append(',').Append(s.GestureMatchThreshold).Append(',');
+                    sb.Append(s.EnableJoystickOutput).Append(',').Append(s.JoystickMaxRadius).Append(',').Append(s.JoystickInnerDeadzone).Append(',');
+                    sb.Append(s.JoystickDPadMode).Append(',').Append(s.JoystickDPadActivationThreshold);
                     sb.Append('|');
                 }
             }

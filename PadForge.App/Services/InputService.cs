@@ -721,6 +721,37 @@ namespace PadForge.Services
             SetTouchpadGestureSuspendHotkey(_mainVm.Settings.TouchpadGestureSuspendHotkey);
             _inputManager.TouchpadGesturesGloballyEnabled = _mainVm.Settings.EnableTouchpadGestures;
 
+            // Bridge between InputService's _activeTouchpadGestures
+            // working list and SettingsService's save / load paths.
+            // Provider: SettingsService calls this at save time so
+            // UpdateActiveProfileSnapshot (named profile autosave)
+            // and BuildAppSettingsForSave (default profile autosave)
+            // capture the live gesture catalog. Applier: SettingsService
+            // calls this on load with the default profile's gestures
+            // so they re-seed the working list at startup. Named profile
+            // load uses ApplyProfileTouchpadGestures via ApplyProfile.
+            _settingsService.TouchpadGesturesProvider =
+                () => _activeTouchpadGestures.ToArray();
+            _settingsService.TouchpadGesturesApplier = gestures =>
+            {
+                _activeTouchpadGestures.Clear();
+                if (gestures != null)
+                {
+                    foreach (var g in gestures)
+                        if (g != null) _activeTouchpadGestures.Add(g);
+                }
+                RebuildShapeTemplatesFromWorkingList();
+                try
+                {
+                    foreach (var padVm in _mainVm.Pads)
+                    {
+                        padVm?.RefreshCustomTouchpadGestures(_activeTouchpadGestures);
+                        if (padVm != null) RefreshAvailableInputsForSlot(padVm);
+                    }
+                }
+                catch { /* refresh is cosmetic */ }
+            };
+
             // Create foreground monitor for auto-profile switching.
             _foregroundMonitor = new ForegroundMonitorService();
             _foregroundMonitor.ProfileSwitchRequired += OnProfileSwitchRequired;

@@ -800,7 +800,17 @@ namespace PadForge
                         nameof(PadViewModel.TouchpadEnableFiveFingerGestures) or
                         nameof(PadViewModel.TouchpadEnableShapeGestures) or
                         nameof(PadViewModel.TouchpadGestureMatchThreshold))
+                    {
                         _settingsService.MarkDirty();
+                        // Per-pad gating drives which gesture descriptors
+                        // appear in the mapping-row picker. Re-populate
+                        // the dropdown immediately when any of the
+                        // toggles change so the dropdown reflects the
+                        // user's selection without waiting for a device
+                        // reassignment / profile load.
+                        if (s is PadViewModel pvm2)
+                            _inputService?.RefreshAvailableInputsForSlot(pvm2);
+                    }
                 };
 
                 // Extended custom stick/trigger config changes (indices 2+) trigger autosave.

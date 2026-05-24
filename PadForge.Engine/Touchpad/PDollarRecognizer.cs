@@ -272,5 +272,21 @@ namespace PadForge.Engine.Touchpad
         /// strokes the user can't be relied on to draw in the same
         /// order each time). Built once at template-load time.</summary>
         public double[] AngularSignature;
+
+        /// <summary>Closed-shape flag — angular-margin matching tries
+        /// every cyclic starting-point so a user beginning the trace
+        /// from any corner / vertex matches the same template. Open
+        /// shapes leave this false. Carried over to
+        /// <see cref="AngularTemplate.IsClosed"/> during single-finger
+        /// matching.</summary>
+        public bool AngularIsClosed;
+
+        /// <summary>Direction-agnostic flag — angular-margin matching
+        /// also tries the reverse-direction signature so a shape drawn
+        /// CW or CCW both match. Carried over to
+        /// <see cref="AngularTemplate.IsDirectionAgnostic"/> during
+        /// single-finger matching. Stays false on Circle CW / CCW
+        /// (intentionally separate directional gestures).</summary>
+        public bool AngularIsDirectionAgnostic;
     }
 }

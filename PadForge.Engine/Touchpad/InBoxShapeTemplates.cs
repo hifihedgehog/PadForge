@@ -26,17 +26,27 @@ namespace PadForge.Engine.Touchpad
         public static List<PDollarTemplate> Build()
         {
             var list = new List<PDollarTemplate>();
-            Add(list, "Circle",     BuildCircle(true));
-            Add(list, "CircleCCW",  BuildCircle(false));
-            Add(list, "Square",     BuildSquare());
-            Add(list, "Triangle",   BuildTriangle());
-            Add(list, "Z",          BuildZ());
-            Add(list, "Checkmark",  BuildCheckmark());
-            Add(list, "X",          BuildXShape());
+            // Circles: closed shapes (start anywhere on the ring) but
+            // direction matters — CW and CCW are intentionally separate
+            // gestures the user can bind independently.
+            Add(list, "Circle",     BuildCircle(true),  isClosed: true,  dirAgnostic: false);
+            Add(list, "CircleCCW",  BuildCircle(false), isClosed: true,  dirAgnostic: false);
+            // Square / Triangle / X: closed AND look the same drawn
+            // either direction. A square is a square whether the user
+            // started top-left CW or bottom-right CCW.
+            Add(list, "Square",     BuildSquare(),      isClosed: true,  dirAgnostic: true);
+            Add(list, "Triangle",   BuildTriangle(),    isClosed: true,  dirAgnostic: true);
+            Add(list, "X",          BuildXShape(),      isClosed: true,  dirAgnostic: true);
+            // Z and Checkmark are open shapes whose first-segment
+            // orientation is part of their identity. Leave both flags
+            // off so the angular-margin matcher anchors on the start.
+            Add(list, "Z",          BuildZ(),           isClosed: false, dirAgnostic: false);
+            Add(list, "Checkmark",  BuildCheckmark(),   isClosed: false, dirAgnostic: false);
             return list;
         }
 
-        private static void Add(List<PDollarTemplate> list, string name, List<Vector2> path)
+        private static void Add(List<PDollarTemplate> list, string name, List<Vector2> path,
+            bool isClosed, bool dirAgnostic)
         {
             var cloud = PDollarRecognizer.BuildCloud(new[] { path }, PDollarRecognizer.DefaultResampleCount);
             // Single-finger shapes also get an angular-margin signature
@@ -54,6 +64,8 @@ namespace PadForge.Engine.Touchpad
                 Enabled = true,
                 IsCustom = false,
                 AngularSignature = angles,
+                AngularIsClosed = isClosed,
+                AngularIsDirectionAgnostic = dirAgnostic,
             });
         }
 

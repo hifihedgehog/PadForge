@@ -1523,7 +1523,7 @@
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>스와이프 거리(0..1)</value></data>
   <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>스와이프 시간 창(ms)</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>방사형 영역(웨폰 휠 방식)</value></data>
-  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>손가락이 닿은 지점에서 바깥쪽으로 부채꼴 영역으로 슬라이드하세요. 0번 영역은 12시 방향(위)이며, 영역은 시계 방향으로 증가합니다. 픽커의 각 항목은 괄호 안에 시계 위치를 표시합니다 — "(12)"는 위, "(3)"은 오른쪽, "(6)"은 아래, "(9)"는 왼쪽입니다. 한 번에 하나의 영역만 유지되며, 다른 영역으로 슬라이드하면 이전 영역이 해제되므로 한 번의 스와이프로 여러 영역을 순환할 수 있습니다.</value></data>
+  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>손가락이 닿은 지점에서 바깥쪽으로 부채꼴 영역으로 슬라이드하세요. 0번 영역은 위쪽에 고정되어 있고 영역은 시계 방향으로 증가합니다. 픽커의 각 항목은 괄호 안에 위쪽 기준 각도(도 단위)로 방향을 표시합니다 — (0°)는 위, (90°)는 오른쪽, (180°)는 아래, (270°)는 왼쪽입니다. 한 번에 하나의 영역만 유지되며, 다른 영역으로 슬라이드하면 이전 영역이 해제되므로 한 번의 스와이프로 여러 영역을 순환할 수 있습니다.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>영역 수</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>중앙 데드존(0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>탭 / 더블 탭 / 트리플 탭</value></data>

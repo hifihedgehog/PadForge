@@ -1190,6 +1190,51 @@ namespace PadForge.Engine.Data
                 }
             }
 
+            // Per-(device, pad) touchpad gesture-detection settings.
+            // Same shape as the gyro fix above — without these in the
+            // checksum, two devices with otherwise-identical mappings
+            // collide on SaveToFile's dedup-by-checksum and the second
+            // device's per-pad toggles (EnableRadialZones, EnableTaps,
+            // GestureMatchThreshold, the lot) get dropped silently.
+            // Symptom: user toggles a touchpad-tab checkbox, autosave
+            // fires, on next launch the checkbox is back to its prior
+            // value because the PadSetting that actually carried the
+            // mutation lost the dedup race.
+            if (TouchpadSettings != null && TouchpadSettings.Length > 0)
+            {
+                sb.Append("TPS:");
+                // Sort by (DeviceGuid, TouchpadIndex) so two PadSettings
+                // with the same set of entries in different array order
+                // still hash identically — checksum is content-defined,
+                // not order-defined.
+                var sortedEntries = new List<PadForge.Engine.Touchpad.TouchpadSettingsEntry>(TouchpadSettings);
+                sortedEntries.Sort((a, b) =>
+                {
+                    int c = StringComparer.OrdinalIgnoreCase.Compare(a?.DeviceGuid ?? "", b?.DeviceGuid ?? "");
+                    if (c != 0) return c;
+                    return (a?.TouchpadIndex ?? 0).CompareTo(b?.TouchpadIndex ?? 0);
+                });
+                foreach (var entry in sortedEntries)
+                {
+                    if (entry?.Settings == null) continue;
+                    var s = entry.Settings;
+                    sb.Append(entry.DeviceGuid ?? ""); sb.Append('@');
+                    sb.Append(entry.TouchpadIndex); sb.Append(':');
+                    sb.Append(s.Enabled).Append(',').Append(s.Mode).Append(',').Append(s.CooldownMs).Append(',');
+                    sb.Append(s.SwipeDistanceThreshold).Append(',').Append(s.SwipeTimeWindowMs).Append(',');
+                    sb.Append(s.EnableFourWaySwipes).Append(',').Append(s.EnableEightWaySwipes).Append(',');
+                    sb.Append(s.EnableRadialZones).Append(',').Append(s.RadialZoneCount).Append(',').Append(s.RadialCenterDeadzone).Append(',');
+                    sb.Append(s.EnableTaps).Append(',').Append(s.TapTimeWindowMs).Append(',').Append(s.TapMaxMotion).Append(',').Append(s.MultiTapGapMs).Append(',');
+                    sb.Append(s.EnableLongPress).Append(',').Append(s.LongPressTimeWindowMs).Append(',').Append(s.LongPressMaxMotion).Append(',');
+                    sb.Append(s.EnableTwoFingerSwipes).Append(',').Append(s.TwoFingerSwipeAngularTolerance).Append(',');
+                    sb.Append(s.EnablePinchSpread).Append(',').Append(s.PinchThreshold).Append(',');
+                    sb.Append(s.EnableRotate).Append(',').Append(s.RotateThresholdDegrees).Append(',');
+                    sb.Append(s.EnableThreeFingerGestures).Append(',').Append(s.EnableFourFingerGestures).Append(',').Append(s.EnableFiveFingerGestures).Append(',');
+                    sb.Append(s.EnableShapeGestures).Append(',').Append(s.GestureMatchThreshold);
+                    sb.Append('|');
+                }
+            }
+
             byte[] hash = MD5.HashData(Encoding.UTF8.GetBytes(sb.ToString()));
             return BitConverter.ToString(hash, 0, 4).Replace("-", "").ToUpperInvariant();
         }

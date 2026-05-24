@@ -1523,7 +1523,7 @@
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Distância do deslize (0..1)</value></data>
   <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Janela de tempo do deslize (ms)</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Zonas radiais (estilo roda de armas)</value></data>
-  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Deslize para fora a partir do ponto onde o dedo encostou em direção a um setor. A zona 0 é 12 horas (em cima); as zonas aumentam no sentido horário. Cada entrada do seletor mostra sua posição no relógio entre parênteses — "(12)" é em cima, "(3)" é à direita, "(6)" é embaixo, "(9)" é à esquerda. Apenas uma zona fica ativa por vez; deslizar para outra libera a anterior, permitindo percorrer as zonas em um único movimento.</value></data>
+  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Deslize para fora a partir do ponto onde o dedo encostou em direção a um setor. A zona 0 está ancorada em cima e as zonas aumentam no sentido horário. Cada entrada do seletor mostra a direção entre parênteses como graus a partir do topo — (0°) é em cima, (90°) é à direita, (180°) é embaixo, (270°) é à esquerda. Apenas uma zona fica ativa por vez; deslizar para outra libera a anterior, permitindo percorrer as zonas em um único movimento.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Quantidade de zonas</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Zona morta central (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Toque / Toque duplo / Toque triplo</value></data>

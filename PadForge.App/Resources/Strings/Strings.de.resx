@@ -1523,7 +1523,7 @@
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Wischdistanz (0..1)</value></data>
   <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Wisch-Zeitfenster (ms)</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Radialzonen (Waffenrad-Stil)</value></data>
-  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Streiche vom Auflagepunkt deines Fingers nach außen in einen Sektor. Zone 0 ist 12 Uhr (oben); die Zonen steigen im Uhrzeigersinn. Jeder Eintrag im Picker zeigt die Uhrposition in Klammern — „(12)" ist oben, „(3)" ist rechts, „(6)" ist unten, „(9)" ist links. Es ist immer nur eine Zone aktiv; das Hineinstreichen in eine andere löst die vorherige, sodass du in einer einzigen Bewegung durch die Zonen zyklen kannst.</value></data>
+  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Streiche vom Auflagepunkt deines Fingers nach außen in einen Sektor. Zone 0 ist oben verankert, die Zonen steigen im Uhrzeigersinn. Jeder Eintrag im Picker zeigt die Richtung in Klammern als Grad gegenüber oben — (0°) ist oben, (90°) ist rechts, (180°) ist unten, (270°) ist links. Es ist immer nur eine Zone aktiv; das Hineinstreichen in eine andere löst die vorherige, sodass du in einer einzigen Bewegung durch die Zonen zyklen kannst.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Anzahl Zonen</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Mittelpunkt-Deadzone (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tippen / Doppeltippen / Dreifachtippen</value></data>

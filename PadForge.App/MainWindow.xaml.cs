@@ -805,11 +805,26 @@ namespace PadForge
                         // Per-pad gating drives which gesture descriptors
                         // appear in the mapping-row picker. Re-populate
                         // the dropdown immediately when any of the
-                        // toggles change so the dropdown reflects the
-                        // user's selection without waiting for a device
-                        // reassignment / profile load.
+                        // toggles change.
+                        //
+                        // Order matters: the VM setter fires this
+                        // PropertyChanged BEFORE its tail-call
+                        // SyncTouchpadGestureSettingsToActiveDevice
+                        // writes the new value into
+                        // PadSetting.TouchpadSettings. If we refresh
+                        // straight away, the gesture-settings provider
+                        // (which reads from PadSetting) sees stale
+                        // data — the user unchecks 'Enable gestures
+                        // on this touchpad' and the picker still shows
+                        // every gesture. Calling the flush explicitly
+                        // before the refresh ensures PadSetting is up
+                        // to date; the setter's own redundant Push
+                        // afterwards is a no-op write of the same value.
                         if (s is PadViewModel pvm2)
+                        {
+                            pvm2.SyncTouchpadGestureSettingsToActiveDevice();
                             _inputService?.RefreshAvailableInputsForSlot(pvm2);
+                        }
                     }
                 };
 

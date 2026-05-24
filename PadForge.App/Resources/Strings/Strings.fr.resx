@@ -1472,12 +1472,12 @@
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Balayage à deux doigts vers la gauche</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>Balayage à deux doigts vers la droite</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>Tape à deux doigts</value></data>
-  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Pincement</value></data>
-  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Écartement</value></data>
-  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Axe pincement/écartement</value></data>
-  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>Rotation horaire</value></data>
-  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>Rotation antihoraire</value></data>
-  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>Axe de rotation</value></data>
+  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Pincement à deux doigts</value></data>
+  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Écartement à deux doigts</value></data>
+  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Axe pincement/écartement à deux doigts</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>Rotation à deux doigts dans le sens horaire</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>Rotation à deux doigts dans le sens antihoraire</value></data>
+  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>Axe de rotation à deux doigts</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeUp" xml:space="preserve"><value>Balayage à trois doigts vers le haut</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeDown" xml:space="preserve"><value>Balayage à trois doigts vers le bas</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeLeft" xml:space="preserve"><value>Balayage à trois doigts vers la gauche</value></data>

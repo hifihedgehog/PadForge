@@ -1492,12 +1492,12 @@
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Tweevingerveeg naar links</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>Tweevingerveeg naar rechts</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>Tweevingertik</value></data>
-  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Knijpen</value></data>
-  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Spreiden</value></data>
-  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Knijp/spreid-as</value></data>
-  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>Rechtsom draaien</value></data>
-  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>Linksom draaien</value></data>
-  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>Draai-as</value></data>
+  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Tweevingerknijpen</value></data>
+  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Tweevingerspreiden</value></data>
+  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Tweevinger knijp/spreid-as</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>Tweevinger rechtsom draaien</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>Tweevinger linksom draaien</value></data>
+  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>Tweevinger draai-as</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeUp" xml:space="preserve"><value>Drievingerveeg omhoog</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeDown" xml:space="preserve"><value>Drievingerveeg omlaag</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeLeft" xml:space="preserve"><value>Drievingerveeg naar links</value></data>

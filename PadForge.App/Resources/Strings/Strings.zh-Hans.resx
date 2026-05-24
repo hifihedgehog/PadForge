@@ -1472,12 +1472,12 @@
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>双指向左滑动</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>双指向右滑动</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>双指轻触</value></data>
-  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>捏合</value></data>
-  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>张开</value></data>
-  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>捏合/张开 轴</value></data>
-  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>顺时针旋转</value></data>
-  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>逆时针旋转</value></data>
-  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>旋转轴</value></data>
+  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>双指捏合</value></data>
+  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>双指张开</value></data>
+  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>双指捏合/张开 轴</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>双指顺时针旋转</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>双指逆时针旋转</value></data>
+  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>双指旋转轴</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeUp" xml:space="preserve"><value>三指向上滑动</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeDown" xml:space="preserve"><value>三指向下滑动</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeLeft" xml:space="preserve"><value>三指向左滑动</value></data>

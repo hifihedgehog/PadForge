@@ -1472,12 +1472,12 @@
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Zwei-Finger-Wischen nach links</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>Zwei-Finger-Wischen nach rechts</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>Zwei-Finger-Tippen</value></data>
-  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Zusammenziehen</value></data>
-  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Aufziehen</value></data>
-  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Pinch/Spread Axis</value></data>
-  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>Drehen im Uhrzeigersinn</value></data>
-  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>Drehen gegen den Uhrzeigersinn</value></data>
-  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>Drehachse</value></data>
+  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Zwei-Finger-Zusammenziehen</value></data>
+  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Zwei-Finger-Aufziehen</value></data>
+  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Zwei-Finger-Zusammenziehen/Aufziehen-Achse</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>Zwei-Finger-Drehen im Uhrzeigersinn</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>Zwei-Finger-Drehen gegen den Uhrzeigersinn</value></data>
+  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>Zwei-Finger-Drehachse</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeUp" xml:space="preserve"><value>Drei-Finger-Wischen nach oben</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeDown" xml:space="preserve"><value>Drei-Finger-Wischen nach unten</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeLeft" xml:space="preserve"><value>Drei-Finger-Wischen nach links</value></data>

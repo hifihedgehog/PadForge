@@ -32,6 +32,21 @@ namespace PadForge.Engine.Touchpad
         // re-fires the opposite-direction swipe immediately.
         private const float CooldownAdditionalMs = 100f;
 
+        /// <summary>True when the per-pad Mode setting allows in-box
+        /// fires (swipes, taps, longpress, radial, pinch/spread/rotate,
+        /// in-box shape templates). Mirrors the MappingDisplayResolver
+        /// gate used by the InputChoice picker — without this, an
+        /// existing in-box binding made under Mode=Both would keep
+        /// firing after the user switched to Mode=CustomOnly even
+        /// though the picker stopped listing the descriptor.
+        /// Custom shape templates always evaluate regardless; that gating
+        /// lives inside MaybeFireShape's template-filter pass.</summary>
+        private static bool InBoxAllowed(TouchpadGestureSettings settings)
+            => settings == null
+               || settings.Mode == null
+               || string.Equals(settings.Mode, "Both", StringComparison.OrdinalIgnoreCase)
+               || string.Equals(settings.Mode, "InBoxOnly", StringComparison.OrdinalIgnoreCase);
+
         // Tier 2 gating: don't enter the multi-finger session until both
         // fingers have been down for at least this many ms. Avoids
         // single-finger gestures that briefly land a second contact from
@@ -116,14 +131,16 @@ namespace PadForge.Engine.Touchpad
                 ctx.FiredGesturesThisFrame.Clear();
             }
 
+            bool inBoxAllowed = InBoxAllowed(settings);
+
             // Tier 1 mid-gesture fires (radial zone entry, long-press).
-            if (settings.EnableRadialZones && ctx.ActiveFingerCount == 1)
+            if (inBoxAllowed && settings.EnableRadialZones && ctx.ActiveFingerCount == 1)
                 DetectRadialZones(padIdx, ctx, pad, settings);
-            if (settings.EnableLongPress && ctx.ActiveFingerCount == 1)
+            if (inBoxAllowed && settings.EnableLongPress && ctx.ActiveFingerCount == 1)
                 DetectLongPress(padIdx, ctx, pad, settings, nowMs);
 
             // Tier 2 continuous + threshold fires while 2 fingers active.
-            if (ctx.ActiveFingerCount >= 2)
+            if (inBoxAllowed && ctx.ActiveFingerCount >= 2)
                 DetectTwoFingerContinuous(padIdx, ctx, pad, settings, nowMs);
             else if (ctx.TwoFingerSessionActive)
             {
@@ -371,6 +388,8 @@ namespace PadForge.Engine.Touchpad
 
             if (fingerCount == 0) return;
 
+            bool inBoxAllowed = InBoxAllowed(settings);
+
             // Single-finger end-of-gesture: swipe vs tap.
             if (fingerCount == 1)
             {
@@ -383,7 +402,8 @@ namespace PadForge.Engine.Touchpad
                 long elapsed = nowMs - startTs;
 
                 // Tap branch: short, no significant motion.
-                if (settings.EnableTaps
+                if (inBoxAllowed
+                    && settings.EnableTaps
                     && elapsed <= settings.TapTimeWindowMs
                     && dist <= settings.TapMaxMotion)
                 {
@@ -405,7 +425,8 @@ namespace PadForge.Engine.Touchpad
                 ctx.RecentTapCount = 0;
 
                 // Swipe branch: long-enough motion within the time window.
-                if ((settings.EnableFourWaySwipes || settings.EnableEightWaySwipes)
+                if (inBoxAllowed
+                    && (settings.EnableFourWaySwipes || settings.EnableEightWaySwipes)
                     && elapsed <= settings.SwipeTimeWindowMs
                     && dist >= settings.SwipeDistanceThreshold)
                 {
@@ -423,7 +444,7 @@ namespace PadForge.Engine.Touchpad
             // + 2-finger tap (short, no significant motion on either path).
             if (fingerCount == 2)
             {
-                if (settings.EnableTwoFingerSwipes)
+                if (inBoxAllowed && settings.EnableTwoFingerSwipes)
                 {
                     var firstPath = FirstNonEmptyPath(ctx);
                     var secondPath = NthNonEmptyPath(ctx, 1);
@@ -444,7 +465,7 @@ namespace PadForge.Engine.Touchpad
                         }
                     }
                 }
-                if (settings.EnableTaps)
+                if (inBoxAllowed && settings.EnableTaps)
                 {
                     // 2-finger tap: both paths short + small motion.
                     var firstPath = FirstNonEmptyPath(ctx);
@@ -468,14 +489,21 @@ namespace PadForge.Engine.Touchpad
             // same parallel-vectors test as 2-finger swipe.
             if (fingerCount >= 3)
             {
-                bool gate = fingerCount switch
+                bool gate = inBoxAllowed && fingerCount switch
                 {
                     3 => settings.EnableThreeFingerGestures,
                     4 => settings.EnableFourFingerGestures,
                     5 => settings.EnableFiveFingerGestures,
                     _ => false
                 };
-                if (!gate) return;
+                if (!gate)
+                {
+                    // Even when 3+-finger in-box fires are blocked, give
+                    // the shape recognizer a chance — a 3-finger custom
+                    // gesture should still fire under Mode=CustomOnly.
+                    MaybeFireShape(padIdx, ctx, settings, shapeTemplates, fingerCount);
+                    return;
+                }
 
                 string countWord = fingerCount switch
                 {

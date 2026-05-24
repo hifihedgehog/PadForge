@@ -641,6 +641,8 @@ namespace PadForge.Engine.Touchpad
                         Angles = t.AngularSignature,
                         Enabled = true,
                         IsCustom = t.IsCustom,
+                        IsClosed = t.AngularIsClosed,
+                        IsDirectionAgnostic = t.AngularIsDirectionAgnostic,
                     });
                 }
                 var path = FirstNonEmptyPath(ctx);

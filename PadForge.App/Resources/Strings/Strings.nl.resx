@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -1493,6 +1493,13 @@
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Tweevingerveeg naar links</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>Tweevingerveeg naar rechts</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>Tweevingertik</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickX" xml:space="preserve"><value>Joystick X</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickY" xml:space="preserve"><value>Joystick Y</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadUp" xml:space="preserve"><value>Joystick-D-pad omhoog</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadRight" xml:space="preserve"><value>Joystick-D-pad rechts</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadDown" xml:space="preserve"><value>Joystick-D-pad omlaag</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadLeft" xml:space="preserve"><value>Joystick-D-pad links</value></data>
+
   <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Tweevingerknijpen</value></data>
   <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Tweevingerspreiden</value></data>
   <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Tweevinger knijp/spreid-as</value></data>
@@ -1564,8 +1571,22 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Geen aangepaste gebaren opgenomen voor dit profiel. Klik op Nieuw gebaar opnemen om er een vast te leggen.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 vinger</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} vingers</value></data>
+  <data name="Pad_Touchpad_Joystick_Header" xml:space="preserve"><value>Joystick / D-pad-uitvoer</value></data>
+  <data name="Pad_Touchpad_Joystick_Subtitle" xml:space="preserve"><value>Maak van het touchpad een virtuele analoge stick of D-pad. De uitvoer wordt verankerd waar je vinger eerst neerkomt; de huidige positie ten opzichte van dat anker stuurt de stickwaarde en (optioneel) vergrendelde D-pad-richtingbits aan.</value></data>
+  <data name="Pad_Touchpad_JoystickEnabled" xml:space="preserve"><value>Joystick-uitvoer inschakelen</value></data>
+  <data name="Pad_Touchpad_JoystickEnabled_Tooltip" xml:space="preserve"><value>Toont de descriptors JoystickX, JoystickY en JoystickDPad* in de mapping-kiezer. Werkt naast de bestaande touchpad-vinger- en gebarenbronnen, niet in plaats daarvan.</value></data>
+  <data name="Pad_Touchpad_JoystickMaxRadius" xml:space="preserve"><value>Maximale straal (0..1)</value></data>
+  <data name="Pad_Touchpad_JoystickInnerDeadzone" xml:space="preserve"><value>Binnenste dode zone (0..1)</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_Label" xml:space="preserve"><value>D-pad-modus</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_Tooltip" xml:space="preserve"><value>Uit slaat D-pad-uitvoer over. 4-weg geeft één hoofdrichting per keer. 8-weg geeft twee hoofdrichtingen voor diagonalen (zoals fysieke D-pads NE / NW / SE / SW melden).</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_Off" xml:space="preserve"><value>Uit</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_FourWay" xml:space="preserve"><value>4-weg</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_EightWay" xml:space="preserve"><value>8-weg</value></data>
+  <data name="Pad_Touchpad_JoystickDPadActivationThreshold" xml:space="preserve"><value>D-pad-activering (0..1)</value></data>
+
   <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Detectie resetten</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Ingebouwde gebaren resetten</value></data>
+  <data name="Pad_ResetTouchpadJoystick" xml:space="preserve"><value>Joystick / D-pad resetten</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Gebaren resetten</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Herkennen resetten</value></data>
   <data name="Pad_ResetTouchpadCooldownMs" xml:space="preserve"><value>Afkoeling resetten</value></data>
@@ -1589,6 +1610,11 @@
   <data name="Pad_ResetTouchpadFiveFinger" xml:space="preserve"><value>Vijfvingertik resetten</value></data>
   <data name="Pad_ResetTouchpadShapeGestures" xml:space="preserve"><value>Vormgebaren resetten</value></data>
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Drempel voor vormovereenkomst resetten</value></data>
+  <data name="Pad_ResetTouchpadJoystickEnabled" xml:space="preserve"><value>Joystick-uitvoer resetten</value></data>
+  <data name="Pad_ResetTouchpadJoystickMaxRadius" xml:space="preserve"><value>Maximale straal resetten</value></data>
+  <data name="Pad_ResetTouchpadJoystickInnerDeadzone" xml:space="preserve"><value>Binnenste dode zone resetten</value></data>
+  <data name="Pad_ResetTouchpadJoystickDPadMode" xml:space="preserve"><value>D-pad-modus resetten</value></data>
+  <data name="Pad_ResetTouchpadJoystickDPadActivationThreshold" xml:space="preserve"><value>D-pad-activering resetten</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>Touchpad-gebaar opnemen</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Teken het gebaar op het oppervlak hieronder. Het venster legt elke vinger vast die je neerzet. Wanneer je alle vingers van het oppervlak haalt, wordt de opname vastgelegd. Tekenen met een ander aantal vingers dan eerdere opnames wist de stapel.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>Wachten op vingercontact op het oppervlak</value></data>

@@ -689,6 +689,28 @@ namespace PadForge.Common
                 // profile context (legacy / future device-only picker)
                 // still get a functional list.
                 var s = settingsForPad?.Invoke(p);
+
+                // Joystick / D-pad output is independent of the gesture
+                // master toggle and the In-box / Custom mode picker —
+                // it's a separate channel the user opts into via its
+                // own EnableJoystickOutput. Surface its descriptors
+                // first so a user who only wants joystick output (and
+                // has gestures fully disabled) still sees these in the
+                // picker.
+                if (s?.EnableJoystickOutput == true)
+                {
+                    AddGesture(list, p, "JoystickX", PadWrap(si.Mapping_TouchpadGesture_JoystickX));
+                    AddGesture(list, p, "JoystickY", PadWrap(si.Mapping_TouchpadGesture_JoystickY));
+                    string dpadMode = s.JoystickDPadMode ?? "FourWay";
+                    if (!string.Equals(dpadMode, "Off", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        AddGesture(list, p, "JoystickDPadUp",    PadWrap(si.Mapping_TouchpadGesture_JoystickDPadUp));
+                        AddGesture(list, p, "JoystickDPadRight", PadWrap(si.Mapping_TouchpadGesture_JoystickDPadRight));
+                        AddGesture(list, p, "JoystickDPadDown",  PadWrap(si.Mapping_TouchpadGesture_JoystickDPadDown));
+                        AddGesture(list, p, "JoystickDPadLeft",  PadWrap(si.Mapping_TouchpadGesture_JoystickDPadLeft));
+                    }
+                }
+
                 if (s != null && !s.Enabled) continue;
                 bool showInBox = s == null
                     || string.Equals(s.Mode, "Both", System.StringComparison.OrdinalIgnoreCase)

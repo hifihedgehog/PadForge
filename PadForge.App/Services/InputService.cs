@@ -631,29 +631,61 @@ namespace PadForge.Services
 
             // — touchpad-gesture fire lookup. Reads from the per-
             // (device, pad) gesture context that the recognizer
-            // populates each polling tick in Step 2. Returns false when
-            // the InputManager isn't wired, no gesture context exists
-            // for the device/pad pair, or the gesture didn't fire on
-            // the current tick.
+            // populates each polling tick in Step 2. Also routes the
+            // joystick D-pad bool descriptors ("JoystickDPadUp" etc.)
+            // through the same hook by computing them on the fly from
+            // the gesture context's FingerPaths plus the per-pad
+            // joystick settings. Returns false when the InputManager
+            // isn't wired, no gesture context exists for the device/pad
+            // pair, the gesture didn't fire on the current tick, or
+            // (for joystick) joystick output is disabled / no finger
+            // is active.
             PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureFiredProvider =
                 (deviceGuid, padIdx, gestureName) =>
             {
                 if (_inputManager == null) return false;
                 if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return false;
                 if (!_inputManager.GestureContexts.TryGetValue((g, padIdx), out var ctx)) return false;
+
+                // Joystick D-pad descriptors compute their bool from
+                // the same FingerPaths anchor + current delta the
+                // analog stick reader uses. Routed through the same
+                // provider so SourceCoercion only needs one bool hook.
+                if (gestureName != null && gestureName.StartsWith("JoystickDPad", System.StringComparison.Ordinal))
+                {
+                    var settings = _inputManager.TouchpadGestureSettingsProvider?.Invoke(g, padIdx)
+                        ?? PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
+                    var (u, r, d, l) = PadForge.Engine.Touchpad.GestureRecognizer.ComputeJoystickDPad(ctx, settings);
+                    return gestureName switch
+                    {
+                        "JoystickDPadUp"    => u,
+                        "JoystickDPadRight" => r,
+                        "JoystickDPadDown"  => d,
+                        "JoystickDPadLeft"  => l,
+                        _ => false,
+                    };
+                }
+
                 return ctx.FiredGesturesThisFrame.Contains(
                     $"Touchpad {padIdx} {gestureName}");
             };
 
-            // — touchpad-gesture continuous-axis reader for PinchAxis
-            // and RotateAxis. Same per-(device, pad) context lookup;
-            // returns 0 when no 2-finger session is active.
+            // — touchpad-gesture continuous-axis reader for PinchAxis,
+            // RotateAxis, and the joystick stick axes. Same per-(device,
+            // pad) context lookup; returns 0 when no source is active.
             PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureAxisProvider =
                 (deviceGuid, padIdx, axisName) =>
             {
                 if (_inputManager == null) return 0f;
                 if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return 0f;
                 if (!_inputManager.GestureContexts.TryGetValue((g, padIdx), out var ctx)) return 0f;
+                if (axisName == "JoystickX" || axisName == "JoystickY")
+                {
+                    var settings = _inputManager.TouchpadGestureSettingsProvider?.Invoke(g, padIdx)
+                        ?? PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
+                    var (sx, sy) = PadForge.Engine.Touchpad.GestureRecognizer.ComputeJoystickAxis(ctx, settings);
+                    return axisName == "JoystickX" ? sx : sy;
+                }
                 return axisName switch
                 {
                     "PinchAxis"  => ctx.CurrentPinchAxis,

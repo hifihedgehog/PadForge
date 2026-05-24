@@ -284,6 +284,62 @@ namespace PadForge.ViewModels
             }
         }
 
+        // ─── Joystick / D-pad output card ─────────────
+
+        private bool _touchpadEnableJoystickOutput;
+        public bool TouchpadEnableJoystickOutput
+        {
+            get => _touchpadEnableJoystickOutput;
+            set { if (SetProperty(ref _touchpadEnableJoystickOutput, value)) PushIfNotLoading(); }
+        }
+
+        private double _touchpadJoystickMaxRadius = 0.30;
+        public double TouchpadJoystickMaxRadius
+        {
+            get => _touchpadJoystickMaxRadius;
+            set
+            {
+                var v = Math.Clamp(value, 0.05, 0.5);
+                if (SetProperty(ref _touchpadJoystickMaxRadius, v)) PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadJoystickInnerDeadzone = 0.02;
+        public double TouchpadJoystickInnerDeadzone
+        {
+            get => _touchpadJoystickInnerDeadzone;
+            set
+            {
+                var v = Math.Clamp(value, 0.0, 0.10);
+                if (SetProperty(ref _touchpadJoystickInnerDeadzone, v)) PushIfNotLoading();
+            }
+        }
+
+        private string _touchpadJoystickDPadMode = "FourWay";
+
+        /// <summary>"Off" / "FourWay" / "EightWay". Mirrors
+        /// <see cref="TouchpadGestureSettings.JoystickDPadMode"/>.</summary>
+        public string TouchpadJoystickDPadMode
+        {
+            get => _touchpadJoystickDPadMode;
+            set
+            {
+                var s = string.IsNullOrEmpty(value) ? "FourWay" : value;
+                if (SetProperty(ref _touchpadJoystickDPadMode, s)) PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadJoystickDPadActivationThreshold = 0.15;
+        public double TouchpadJoystickDPadActivationThreshold
+        {
+            get => _touchpadJoystickDPadActivationThreshold;
+            set
+            {
+                var v = Math.Clamp(value, 0.05, 0.5);
+                if (SetProperty(ref _touchpadJoystickDPadActivationThreshold, v)) PushIfNotLoading();
+            }
+        }
+
         // ─── Custom gestures card ─────────────────────
 
         /// <summary>Profile-scoped custom touchpad gestures filtered by
@@ -466,6 +522,41 @@ namespace PadForge.ViewModels
                 TouchpadGestureMatchThreshold = 3.0;
             });
 
+        // ─── Joystick / D-pad card reset commands ─────
+
+        private RelayCommand _resetTouchpadEnableJoystickOutputCommand;
+        public RelayCommand ResetTouchpadEnableJoystickOutputCommand =>
+            _resetTouchpadEnableJoystickOutputCommand ??= new RelayCommand(() => TouchpadEnableJoystickOutput = false);
+
+        private RelayCommand _resetTouchpadJoystickMaxRadiusCommand;
+        public RelayCommand ResetTouchpadJoystickMaxRadiusCommand =>
+            _resetTouchpadJoystickMaxRadiusCommand ??= new RelayCommand(() => TouchpadJoystickMaxRadius = 0.30);
+
+        private RelayCommand _resetTouchpadJoystickInnerDeadzoneCommand;
+        public RelayCommand ResetTouchpadJoystickInnerDeadzoneCommand =>
+            _resetTouchpadJoystickInnerDeadzoneCommand ??= new RelayCommand(() => TouchpadJoystickInnerDeadzone = 0.02);
+
+        private RelayCommand _resetTouchpadJoystickDPadModeCommand;
+        public RelayCommand ResetTouchpadJoystickDPadModeCommand =>
+            _resetTouchpadJoystickDPadModeCommand ??= new RelayCommand(() => TouchpadJoystickDPadMode = "FourWay");
+
+        private RelayCommand _resetTouchpadJoystickDPadActivationThresholdCommand;
+        public RelayCommand ResetTouchpadJoystickDPadActivationThresholdCommand =>
+            _resetTouchpadJoystickDPadActivationThresholdCommand ??= new RelayCommand(() => TouchpadJoystickDPadActivationThreshold = 0.15);
+
+        private RelayCommand _resetTouchpadJoystickCardCommand;
+
+        /// <summary>Reset every Joystick / D-pad card field to defaults.</summary>
+        public RelayCommand ResetTouchpadJoystickCardCommand =>
+            _resetTouchpadJoystickCardCommand ??= new RelayCommand(() =>
+            {
+                TouchpadEnableJoystickOutput = false;
+                TouchpadJoystickMaxRadius = 0.30;
+                TouchpadJoystickInnerDeadzone = 0.02;
+                TouchpadJoystickDPadMode = "FourWay";
+                TouchpadJoystickDPadActivationThreshold = 0.15;
+            });
+
         // ─── Per-pad pivot / topology helpers ─────────
 
         /// <summary>Update <see cref="MaxTouchpadIndex"/> from the
@@ -515,6 +606,11 @@ namespace PadForge.ViewModels
                 TouchpadEnableFiveFingerGestures = s.EnableFiveFingerGestures;
                 TouchpadEnableShapeGestures = s.EnableShapeGestures;
                 TouchpadGestureMatchThreshold = s.GestureMatchThreshold;
+                TouchpadEnableJoystickOutput = s.EnableJoystickOutput;
+                TouchpadJoystickMaxRadius = s.JoystickMaxRadius;
+                TouchpadJoystickInnerDeadzone = s.JoystickInnerDeadzone;
+                TouchpadJoystickDPadMode = s.JoystickDPadMode ?? "FourWay";
+                TouchpadJoystickDPadActivationThreshold = s.JoystickDPadActivationThreshold;
             }
             finally { _loadingTouchpadGestures = false; }
         }
@@ -591,6 +687,11 @@ namespace PadForge.ViewModels
             s.EnableFiveFingerGestures = TouchpadEnableFiveFingerGestures;
             s.EnableShapeGestures = TouchpadEnableShapeGestures;
             s.GestureMatchThreshold = (float)TouchpadGestureMatchThreshold;
+            s.EnableJoystickOutput = TouchpadEnableJoystickOutput;
+            s.JoystickMaxRadius = (float)TouchpadJoystickMaxRadius;
+            s.JoystickInnerDeadzone = (float)TouchpadJoystickInnerDeadzone;
+            s.JoystickDPadMode = string.IsNullOrEmpty(TouchpadJoystickDPadMode) ? "FourWay" : TouchpadJoystickDPadMode;
+            s.JoystickDPadActivationThreshold = (float)TouchpadJoystickDPadActivationThreshold;
             entry.Settings = s;
 
             ps.TouchpadSettings = list.ToArray();

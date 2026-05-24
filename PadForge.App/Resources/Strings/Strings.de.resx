@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -1473,6 +1473,13 @@
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Zwei-Finger-Wischen nach links</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>Zwei-Finger-Wischen nach rechts</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>Zwei-Finger-Tippen</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickX" xml:space="preserve"><value>Joystick X</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickY" xml:space="preserve"><value>Joystick Y</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadUp" xml:space="preserve"><value>Joystick-Steuerkreuz oben</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadRight" xml:space="preserve"><value>Joystick-Steuerkreuz rechts</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadDown" xml:space="preserve"><value>Joystick-Steuerkreuz unten</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadLeft" xml:space="preserve"><value>Joystick-Steuerkreuz links</value></data>
+
   <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Zwei-Finger-Zusammenziehen</value></data>
   <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Zwei-Finger-Aufziehen</value></data>
   <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Zwei-Finger-Zusammenziehen/Aufziehen-Achse</value></data>
@@ -1544,8 +1551,22 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Für dieses Profil sind keine benutzerdefinierten Gesten aufgenommen. Klicke auf Neue Geste aufnehmen, um eine zu erfassen.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 Finger</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} Finger</value></data>
+  <data name="Pad_Touchpad_Joystick_Header" xml:space="preserve"><value>Joystick / Steuerkreuz-Ausgabe</value></data>
+  <data name="Pad_Touchpad_Joystick_Subtitle" xml:space="preserve"><value>Verwandle das Touchpad in einen virtuellen Analogstick oder ein Steuerkreuz. Die Ausgabe ankert dort, wo dein Finger zuerst aufsetzt; die aktuelle Position relativ zu diesem Anker steuert den Stickwert und (optional) gehaltene Steuerkreuz-Richtungs-Bits.</value></data>
+  <data name="Pad_Touchpad_JoystickEnabled" xml:space="preserve"><value>Joystick-Ausgabe aktivieren</value></data>
+  <data name="Pad_Touchpad_JoystickEnabled_Tooltip" xml:space="preserve"><value>Macht JoystickX, JoystickY und JoystickDPad*-Deskriptoren im Mapping-Picker verfügbar. Funktioniert zusätzlich zu den bestehenden Touchpad-Finger- und Touchpad-Gesten-Quellen, nicht statt ihnen.</value></data>
+  <data name="Pad_Touchpad_JoystickMaxRadius" xml:space="preserve"><value>Maximaler Radius (0..1)</value></data>
+  <data name="Pad_Touchpad_JoystickInnerDeadzone" xml:space="preserve"><value>Innere Totzone (0..1)</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_Label" xml:space="preserve"><value>Steuerkreuz-Modus</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_Tooltip" xml:space="preserve"><value>Aus deaktiviert die Steuerkreuz-Ausgabe. 4-Wege gibt jeweils eine Kardinalrichtung aus. 8-Wege gibt für Diagonalen zwei Kardinalrichtungen aus (so wie physische Steuerkreuze NE / NW / SE / SW melden).</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_Off" xml:space="preserve"><value>Aus</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_FourWay" xml:space="preserve"><value>4-Wege</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_EightWay" xml:space="preserve"><value>8-Wege</value></data>
+  <data name="Pad_Touchpad_JoystickDPadActivationThreshold" xml:space="preserve"><value>Steuerkreuz-Aktivierung (0..1)</value></data>
+
   <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Erkennung zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Eingebaute Gesten zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadJoystick" xml:space="preserve"><value>Joystick / Steuerkreuz zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Gesten zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Erkennen zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadCooldownMs" xml:space="preserve"><value>Abklingzeit zurücksetzen</value></data>
@@ -1569,6 +1590,11 @@
   <data name="Pad_ResetTouchpadFiveFinger" xml:space="preserve"><value>Fünf-Finger-Tippen zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadShapeGestures" xml:space="preserve"><value>Formgesten zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Schwelle für Formübereinstimmung zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadJoystickEnabled" xml:space="preserve"><value>Joystick-Ausgabe zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadJoystickMaxRadius" xml:space="preserve"><value>Maximalen Radius zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadJoystickInnerDeadzone" xml:space="preserve"><value>Innere Totzone zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadJoystickDPadMode" xml:space="preserve"><value>Steuerkreuz-Modus zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadJoystickDPadActivationThreshold" xml:space="preserve"><value>Steuerkreuz-Aktivierung zurücksetzen</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>Touchpad-Geste aufnehmen</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Zeichne die Geste auf der Fläche unten. Der Dialog erfasst jeden aufgesetzten Finger. Sobald du alle Finger von der Fläche nimmst, wird das Sample aufgenommen. Wird mit einer anderen Fingeranzahl als bei vorherigen Samples gezeichnet, wird der Stapel zurückgesetzt.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>Warte auf Fingerkontakt auf der Fläche</value></data>

@@ -139,6 +139,44 @@ namespace PadForge.Engine.Touchpad
         /// alongside $P uses its own per-axis tolerance internally.</summary>
         [XmlAttribute] public float GestureMatchThreshold { get; set; } = 3.0f;
 
+        // ─── Joystick / D-pad output (anchor-relative continuous) ───────
+        //
+        // Separate feature from gesture recognition. Treats the touchpad
+        // as a virtual analog stick (and/or D-pad) where the finger's
+        // landing position becomes the centre and current-minus-anchor
+        // delta drives stick X/Y or wedge-thresholded D-pad output. Lives
+        // in the same per-(device, pad) settings shape because the data
+        // model already supports it and the user picks both gesture
+        // toggles and joystick toggles from the same Touchpad tab.
+
+        /// <summary>Master enable for the touchpad's joystick / D-pad
+        /// output channel. Off by default so existing users keep their
+        /// behavior; on enables the Touchpad N JoystickX/Y and
+        /// JoystickDPad* descriptors in the mapping picker.</summary>
+        [XmlAttribute] public bool EnableJoystickOutput { get; set; }
+
+        /// <summary>Distance from anchor (normalized 0..1 touchpad units)
+        /// at which stick output saturates to ±1. Smaller = twitchier,
+        /// larger = more travel. 0.30 = half the pad in either direction
+        /// gives full stick deflection.</summary>
+        [XmlAttribute] public float JoystickMaxRadius { get; set; } = 0.30f;
+
+        /// <summary>Magnitude below this maps stick output to (0, 0).
+        /// Prevents sub-millimeter finger drift from registering as
+        /// slow stick input.</summary>
+        [XmlAttribute] public float JoystickInnerDeadzone { get; set; } = 0.02f;
+
+        /// <summary>D-pad output mode: "Off", "FourWay", "EightWay".
+        /// 4-way emits one cardinal at a time; 8-way emits two cardinals
+        /// for diagonals (matches physical D-pads on Xbox / PS pads).</summary>
+        [XmlAttribute] public string JoystickDPadMode { get; set; } = "FourWay";
+
+        /// <summary>Minimum distance from anchor (normalized 0..1) for
+        /// any D-pad direction to fire. Independent of stick output's
+        /// inner deadzone so users can dial in tactile-D-pad-style
+        /// snap separately from analog feel.</summary>
+        [XmlAttribute] public float JoystickDPadActivationThreshold { get; set; } = 0.15f;
+
         public TouchpadGestureSettings Clone()
         {
             return new TouchpadGestureSettings
@@ -171,6 +209,11 @@ namespace PadForge.Engine.Touchpad
                 EnableFiveFingerGestures = EnableFiveFingerGestures,
                 EnableShapeGestures = EnableShapeGestures,
                 GestureMatchThreshold = GestureMatchThreshold,
+                EnableJoystickOutput = EnableJoystickOutput,
+                JoystickMaxRadius = JoystickMaxRadius,
+                JoystickInnerDeadzone = JoystickInnerDeadzone,
+                JoystickDPadMode = JoystickDPadMode,
+                JoystickDPadActivationThreshold = JoystickDPadActivationThreshold,
             };
         }
 

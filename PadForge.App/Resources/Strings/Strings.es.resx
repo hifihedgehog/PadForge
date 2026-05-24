@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -1473,6 +1473,13 @@
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Deslizar con dos dedos hacia la izquierda</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>Deslizar con dos dedos hacia la derecha</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>Toque con dos dedos</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickX" xml:space="preserve"><value>Joystick X</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickY" xml:space="preserve"><value>Joystick Y</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadUp" xml:space="preserve"><value>Cruceta del joystick arriba</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadRight" xml:space="preserve"><value>Cruceta del joystick derecha</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadDown" xml:space="preserve"><value>Cruceta del joystick abajo</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadLeft" xml:space="preserve"><value>Cruceta del joystick izquierda</value></data>
+
   <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Pellizco con dos dedos</value></data>
   <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Apertura con dos dedos</value></data>
   <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Eje de pellizco/apertura con dos dedos</value></data>
@@ -1544,8 +1551,22 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>No hay gestos personalizados grabados en este perfil. Haz clic en Grabar gesto nuevo para capturar uno.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 dedo</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} dedos</value></data>
+  <data name="Pad_Touchpad_Joystick_Header" xml:space="preserve"><value>Salida joystick / cruceta</value></data>
+  <data name="Pad_Touchpad_Joystick_Subtitle" xml:space="preserve"><value>Convierte el touchpad en un stick analógico virtual o una cruceta. La salida se ancla donde el dedo aterriza; la posición actual relativa a ese anclaje controla el valor del stick y, opcionalmente, los bits de dirección de la cruceta.</value></data>
+  <data name="Pad_Touchpad_JoystickEnabled" xml:space="preserve"><value>Activar salida de joystick</value></data>
+  <data name="Pad_Touchpad_JoystickEnabled_Tooltip" xml:space="preserve"><value>Expone los descriptores JoystickX, JoystickY y JoystickDPad* en el selector de mapeo. Funciona junto a las fuentes de dedo y gestos del touchpad existentes, no en su lugar.</value></data>
+  <data name="Pad_Touchpad_JoystickMaxRadius" xml:space="preserve"><value>Radio máximo (0..1)</value></data>
+  <data name="Pad_Touchpad_JoystickInnerDeadzone" xml:space="preserve"><value>Zona muerta interior (0..1)</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_Label" xml:space="preserve"><value>Modo de cruceta</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_Tooltip" xml:space="preserve"><value>Apagado omite la salida de cruceta. 4 direcciones emite una cardinal a la vez. 8 direcciones emite dos cardinales para las diagonales (igual que las crucetas físicas reportan NE / NO / SE / SO).</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_Off" xml:space="preserve"><value>Apagado</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_FourWay" xml:space="preserve"><value>4 direcciones</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_EightWay" xml:space="preserve"><value>8 direcciones</value></data>
+  <data name="Pad_Touchpad_JoystickDPadActivationThreshold" xml:space="preserve"><value>Activación de cruceta (0..1)</value></data>
+
   <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Restablecer detección</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Restablecer gestos integrados</value></data>
+  <data name="Pad_ResetTouchpadJoystick" xml:space="preserve"><value>Restablecer joystick / cruceta</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Restablecer gestos</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Restablecer reconocer</value></data>
   <data name="Pad_ResetTouchpadCooldownMs" xml:space="preserve"><value>Restablecer tiempo de espera</value></data>
@@ -1569,6 +1590,11 @@
   <data name="Pad_ResetTouchpadFiveFinger" xml:space="preserve"><value>Restablecer toque con cinco dedos</value></data>
   <data name="Pad_ResetTouchpadShapeGestures" xml:space="preserve"><value>Restablecer gestos de forma</value></data>
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Restablecer umbral de coincidencia de forma</value></data>
+  <data name="Pad_ResetTouchpadJoystickEnabled" xml:space="preserve"><value>Restablecer salida de joystick</value></data>
+  <data name="Pad_ResetTouchpadJoystickMaxRadius" xml:space="preserve"><value>Restablecer radio máximo</value></data>
+  <data name="Pad_ResetTouchpadJoystickInnerDeadzone" xml:space="preserve"><value>Restablecer zona muerta interior</value></data>
+  <data name="Pad_ResetTouchpadJoystickDPadMode" xml:space="preserve"><value>Restablecer modo de cruceta</value></data>
+  <data name="Pad_ResetTouchpadJoystickDPadActivationThreshold" xml:space="preserve"><value>Restablecer activación de cruceta</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>Grabar gesto del touchpad</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Dibuja el gesto sobre la superficie de abajo. El cuadro de diálogo captura todos los dedos que apoyes. Cuando levantas todos los dedos de la superficie, la muestra queda grabada. Dibujar con un número de dedos distinto al de las muestras anteriores reinicia la pila.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>Esperando contacto con los dedos en la superficie</value></data>

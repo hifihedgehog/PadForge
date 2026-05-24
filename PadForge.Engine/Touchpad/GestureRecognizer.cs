@@ -98,7 +98,17 @@ namespace PadForge.Engine.Touchpad
             // tick. Clear here only when the cooldown window closes,
             // not unconditionally at the top of each Update.
             if (ctx.State == GestureState.Suspended) return;
-            if (!settings.Enabled)
+
+            // Path tracking has to happen whenever EITHER gesture
+            // recognition OR joystick output is enabled — the joystick
+            // path reads anchor + current from the same FingerPaths
+            // structure the gesture engine builds. If only joystick is
+            // enabled (user wants the touchpad as a virtual stick but
+            // doesn't want swipes / taps / etc. firing), we still need
+            // the path. Skip the whole tick only when both are off.
+            bool gesturesEnabled = settings.Enabled;
+            bool joystickEnabled = settings.EnableJoystickOutput;
+            if (!gesturesEnabled && !joystickEnabled)
             {
                 ctx.Reset();
                 return;
@@ -131,9 +141,10 @@ namespace PadForge.Engine.Touchpad
                 ctx.FiredGesturesThisFrame.Clear();
             }
 
-            bool inBoxAllowed = InBoxAllowed(settings);
+            bool inBoxAllowed = gesturesEnabled && InBoxAllowed(settings);
 
             // Tier 1 mid-gesture fires (radial zone entry, long-press).
+            // Gated by gesturesEnabled — joystick-only setups skip these.
             if (inBoxAllowed && settings.EnableRadialZones && ctx.ActiveFingerCount == 1)
                 DetectRadialZones(padIdx, ctx, pad, settings);
             if (inBoxAllowed && settings.EnableLongPress && ctx.ActiveFingerCount == 1)
@@ -156,7 +167,8 @@ namespace PadForge.Engine.Touchpad
             // Transition into Recognizing when all fingers lifted.
             if (ctx.State == GestureState.Accumulating && ctx.ActiveFingerCount == 0)
             {
-                RunEndOfGestureRecognition(padIdx, ctx, settings, nowMs, shapeTemplates);
+                if (gesturesEnabled)
+                    RunEndOfGestureRecognition(padIdx, ctx, settings, nowMs, shapeTemplates);
                 ctx.State = GestureState.Cooldown;
                 ctx.CooldownUntilTimestampMs = nowMs + Math.Max(0, settings.CooldownMs);
                 ctx.FingerPaths.Clear();
@@ -761,6 +773,117 @@ namespace PadForge.Engine.Touchpad
             for (int i = 0; i < ctx.FingerPaths.Count; i++)
                 if (ctx.FingerPaths[i].Count > 0) return ctx.FingerPaths[i];
             return null;
+        }
+
+        // ─── Joystick / D-pad output ──────────────────────────────────
+        //
+        // Anchor-relative continuous output. Reads anchor (first path
+        // point) and current (last path point) from the same FingerPaths
+        // structure the gesture engine builds, applies per-pad joystick
+        // settings, and returns analog stick X/Y and (optionally) D-pad
+        // direction bools. Caller (InputService providers) routes the
+        // values to mapping evaluators via the SourceCoercion layer.
+        //
+        // Single-finger only for v1. Uses FingerPaths[0] (the first
+        // active path). Returns (0, 0) / all-false when no finger is
+        // active or output is disabled.
+
+        /// <summary>Anchor-relative analog stick output. Returns
+        /// (0, 0) when the finger isn't down, output is disabled, or
+        /// the magnitude falls inside <c>JoystickInnerDeadzone</c>.
+        /// Y is flipped from touchpad space so finger-up produces
+        /// positive Y (matches physical stick convention).</summary>
+        public static (float x, float y) ComputeJoystickAxis(
+            TouchpadGestureContext ctx, TouchpadGestureSettings settings)
+        {
+            if (ctx == null || settings == null || !settings.EnableJoystickOutput)
+                return (0f, 0f);
+            var path = FirstNonEmptyPath(ctx);
+            if (path == null || path.Count < 1) return (0f, 0f);
+            Vector2 anchor = path[0];
+            Vector2 cur = path[path.Count - 1];
+            float dx = cur.X - anchor.X;
+            float dy = cur.Y - anchor.Y;
+            float mag = MathF.Sqrt(dx * dx + dy * dy);
+            if (mag < settings.JoystickInnerDeadzone) return (0f, 0f);
+
+            float maxR = settings.JoystickMaxRadius > 0f ? settings.JoystickMaxRadius : 0.30f;
+            float sx = dx / maxR;
+            float sy = -dy / maxR; // touchpad +Y is down; stick +Y is up.
+
+            // Clamp to unit-circle so combined magnitude can't exceed 1.
+            float scaledMag = MathF.Sqrt(sx * sx + sy * sy);
+            if (scaledMag > 1f)
+            {
+                sx /= scaledMag;
+                sy /= scaledMag;
+            }
+            return (sx, sy);
+        }
+
+        /// <summary>Anchor-relative D-pad output. Returns a 4-tuple of
+        /// (up, right, down, left) bools per <c>JoystickDPadMode</c>:
+        /// "Off" returns all false; "FourWay" emits one direction at
+        /// a time inside its 90° wedge; "EightWay" emits two directions
+        /// for diagonals (matching how physical D-pads report NE / NW
+        /// / SE / SW). Magnitude below <c>JoystickDPadActivationThreshold</c>
+        /// suppresses all output.</summary>
+        public static (bool up, bool right, bool down, bool left) ComputeJoystickDPad(
+            TouchpadGestureContext ctx, TouchpadGestureSettings settings)
+        {
+            if (ctx == null || settings == null || !settings.EnableJoystickOutput)
+                return (false, false, false, false);
+            string mode = settings.JoystickDPadMode ?? "FourWay";
+            if (string.Equals(mode, "Off", StringComparison.OrdinalIgnoreCase))
+                return (false, false, false, false);
+            var path = FirstNonEmptyPath(ctx);
+            if (path == null || path.Count < 1) return (false, false, false, false);
+            Vector2 anchor = path[0];
+            Vector2 cur = path[path.Count - 1];
+            float dx = cur.X - anchor.X;
+            float dy = cur.Y - anchor.Y;
+            float mag = MathF.Sqrt(dx * dx + dy * dy);
+            if (mag < settings.JoystickDPadActivationThreshold)
+                return (false, false, false, false);
+
+            // Same angle convention as radial zones: 0° = up (north),
+            // clockwise from there. atan2(dy, dx) on touchpad-space
+            // (Y grows down) is clockwise from +X; +π/2 rotates so
+            // zero anchors at -Y (up).
+            float ang = MathF.Atan2(dy, dx) + MathF.PI / 2f;
+            if (ang < 0) ang += 2f * MathF.PI;
+
+            if (string.Equals(mode, "EightWay", StringComparison.OrdinalIgnoreCase))
+            {
+                float zoneWidth = MathF.PI / 4f; // 45°
+                int zone = (int)MathF.Floor((ang + zoneWidth / 2f) / zoneWidth) % 8;
+                return zone switch
+                {
+                    0 => (true,  false, false, false), // up
+                    1 => (true,  true,  false, false), // up + right
+                    2 => (false, true,  false, false), // right
+                    3 => (false, true,  true,  false), // down + right
+                    4 => (false, false, true,  false), // down
+                    5 => (false, false, true,  true),  // down + left
+                    6 => (false, false, false, true),  // left
+                    7 => (true,  false, false, true),  // up + left
+                    _ => (false, false, false, false),
+                };
+            }
+
+            // 4-way: four 90° wedges centered on each cardinal.
+            {
+                float zoneWidth = MathF.PI / 2f; // 90°
+                int zone = (int)MathF.Floor((ang + zoneWidth / 2f) / zoneWidth) % 4;
+                return zone switch
+                {
+                    0 => (true,  false, false, false), // up
+                    1 => (false, true,  false, false), // right
+                    2 => (false, false, true,  false), // down
+                    3 => (false, false, false, true),  // left
+                    _ => (false, false, false, false),
+                };
+            }
         }
 
         private static List<Vector2> NthNonEmptyPath(TouchpadGestureContext ctx, int n)

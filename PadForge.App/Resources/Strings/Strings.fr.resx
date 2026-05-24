@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -1473,6 +1473,13 @@
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Balayage à deux doigts vers la gauche</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>Balayage à deux doigts vers la droite</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>Tape à deux doigts</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickX" xml:space="preserve"><value>Joystick X</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickY" xml:space="preserve"><value>Joystick Y</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadUp" xml:space="preserve"><value>Croix du joystick haut</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadRight" xml:space="preserve"><value>Croix du joystick droite</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadDown" xml:space="preserve"><value>Croix du joystick bas</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadLeft" xml:space="preserve"><value>Croix du joystick gauche</value></data>
+
   <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Pincement à deux doigts</value></data>
   <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Écartement à deux doigts</value></data>
   <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Axe pincement/écartement à deux doigts</value></data>
@@ -1544,8 +1551,22 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Aucun geste personnalisé enregistré pour ce profil. Clique sur Enregistrer un nouveau geste pour en capturer un.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 doigt</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} doigts</value></data>
+  <data name="Pad_Touchpad_Joystick_Header" xml:space="preserve"><value>Sortie joystick / croix directionnelle</value></data>
+  <data name="Pad_Touchpad_Joystick_Subtitle" xml:space="preserve"><value>Transforme le pavé tactile en stick analogique virtuel ou croix directionnelle. La sortie est ancrée là où ton doigt se pose ; la position actuelle relative à cet ancrage pilote la valeur du stick et, en option, les bits de direction maintenus de la croix.</value></data>
+  <data name="Pad_Touchpad_JoystickEnabled" xml:space="preserve"><value>Activer la sortie joystick</value></data>
+  <data name="Pad_Touchpad_JoystickEnabled_Tooltip" xml:space="preserve"><value>Affiche les descripteurs JoystickX, JoystickY et JoystickDPad* dans le sélecteur de mapping. Fonctionne en complément des sources de doigt et de gestes existantes, pas à leur place.</value></data>
+  <data name="Pad_Touchpad_JoystickMaxRadius" xml:space="preserve"><value>Rayon maximal (0..1)</value></data>
+  <data name="Pad_Touchpad_JoystickInnerDeadzone" xml:space="preserve"><value>Zone morte intérieure (0..1)</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_Label" xml:space="preserve"><value>Mode croix directionnelle</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_Tooltip" xml:space="preserve"><value>Désactivé ignore la sortie de croix. 4 directions émet un cardinal à la fois. 8 directions émet deux cardinaux pour les diagonales (comme les croix physiques signalent NE / NO / SE / SO).</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_Off" xml:space="preserve"><value>Désactivé</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_FourWay" xml:space="preserve"><value>4 directions</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_EightWay" xml:space="preserve"><value>8 directions</value></data>
+  <data name="Pad_Touchpad_JoystickDPadActivationThreshold" xml:space="preserve"><value>Activation de la croix (0..1)</value></data>
+
   <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Réinitialiser la détection</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Réinitialiser les gestes intégrés</value></data>
+  <data name="Pad_ResetTouchpadJoystick" xml:space="preserve"><value>Réinitialiser joystick / croix</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Réinitialiser les gestes</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Réinitialiser la reconnaissance</value></data>
   <data name="Pad_ResetTouchpadCooldownMs" xml:space="preserve"><value>Réinitialiser le délai de repos</value></data>
@@ -1569,6 +1590,11 @@
   <data name="Pad_ResetTouchpadFiveFinger" xml:space="preserve"><value>Réinitialiser la tape à cinq doigts</value></data>
   <data name="Pad_ResetTouchpadShapeGestures" xml:space="preserve"><value>Réinitialiser les gestes de formes</value></data>
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Réinitialiser le seuil de correspondance de forme</value></data>
+  <data name="Pad_ResetTouchpadJoystickEnabled" xml:space="preserve"><value>Réinitialiser la sortie joystick</value></data>
+  <data name="Pad_ResetTouchpadJoystickMaxRadius" xml:space="preserve"><value>Réinitialiser le rayon maximal</value></data>
+  <data name="Pad_ResetTouchpadJoystickInnerDeadzone" xml:space="preserve"><value>Réinitialiser la zone morte intérieure</value></data>
+  <data name="Pad_ResetTouchpadJoystickDPadMode" xml:space="preserve"><value>Réinitialiser le mode de croix</value></data>
+  <data name="Pad_ResetTouchpadJoystickDPadActivationThreshold" xml:space="preserve"><value>Réinitialiser l'activation de la croix</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>Enregistrer un geste pavé tactile</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Dessine le geste sur la surface ci-dessous. La boîte de dialogue capture chaque doigt que tu poses. Lorsque tu retires tous les doigts de la surface, l'échantillon est enregistré. Dessiner un nombre de doigts différent des échantillons précédents réinitialise la pile.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>En attente d'un contact sur la surface</value></data>

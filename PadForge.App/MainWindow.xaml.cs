@@ -764,7 +764,12 @@ namespace PadForge
                         nameof(PadViewModel.TouchpadEnableFourFingerGestures) or
                         nameof(PadViewModel.TouchpadEnableFiveFingerGestures) or
                         nameof(PadViewModel.TouchpadEnableShapeGestures) or
-                        nameof(PadViewModel.TouchpadGestureMatchThreshold);
+                        nameof(PadViewModel.TouchpadGestureMatchThreshold) or
+                        nameof(PadViewModel.TouchpadEnableJoystickOutput) or
+                        nameof(PadViewModel.TouchpadJoystickMaxRadius) or
+                        nameof(PadViewModel.TouchpadJoystickInnerDeadzone) or
+                        nameof(PadViewModel.TouchpadJoystickDPadMode) or
+                        nameof(PadViewModel.TouchpadJoystickDPadActivationThreshold);
 
                     if (isTouchpadField)
                     {

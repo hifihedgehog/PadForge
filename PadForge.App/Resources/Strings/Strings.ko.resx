@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -1473,6 +1473,13 @@
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>두 손가락 왼쪽으로 스와이프</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>두 손가락 오른쪽으로 스와이프</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>두 손가락 탭</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickX" xml:space="preserve"><value>조이스틱 X</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickY" xml:space="preserve"><value>조이스틱 Y</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadUp" xml:space="preserve"><value>조이스틱 방향키 위</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadRight" xml:space="preserve"><value>조이스틱 방향키 오른쪽</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadDown" xml:space="preserve"><value>조이스틱 방향키 아래</value></data>
+  <data name="Mapping_TouchpadGesture_JoystickDPadLeft" xml:space="preserve"><value>조이스틱 방향키 왼쪽</value></data>
+
   <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>두 손가락 핀치</value></data>
   <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>두 손가락 펼치기</value></data>
   <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>두 손가락 핀치/펼치기 축</value></data>
@@ -1544,8 +1551,22 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>이 프로필에 녹화된 사용자 지정 제스처가 없습니다. 새 제스처 녹화를 클릭하여 캡처하세요.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>손가락 1개</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>손가락 {0}개</value></data>
+  <data name="Pad_Touchpad_Joystick_Header" xml:space="preserve"><value>조이스틱 / 방향키 출력</value></data>
+  <data name="Pad_Touchpad_Joystick_Subtitle" xml:space="preserve"><value>터치패드를 가상 아날로그 스틱이나 방향키로 사용합니다. 출력은 손가락이 처음 닿는 지점에 고정되며, 그 기준점에 대한 현재 위치가 스틱 값과 (선택적으로) 유지되는 방향키 방향 비트를 구동합니다.</value></data>
+  <data name="Pad_Touchpad_JoystickEnabled" xml:space="preserve"><value>조이스틱 출력 활성화</value></data>
+  <data name="Pad_Touchpad_JoystickEnabled_Tooltip" xml:space="preserve"><value>매핑 픽커에 JoystickX, JoystickY, JoystickDPad* 디스크립터를 표시합니다. 기존 터치패드의 손가락 / 제스처 소스를 대체하지 않고 함께 작동합니다.</value></data>
+  <data name="Pad_Touchpad_JoystickMaxRadius" xml:space="preserve"><value>최대 반지름 (0..1)</value></data>
+  <data name="Pad_Touchpad_JoystickInnerDeadzone" xml:space="preserve"><value>내부 데드존 (0..1)</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_Label" xml:space="preserve"><value>방향키 모드</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_Tooltip" xml:space="preserve"><value>끄기는 방향키 출력을 건너뜁니다. 4방향은 한 번에 하나의 기본 방향을 출력합니다. 8방향은 대각선에서 두 개의 기본 방향을 출력합니다(물리적 방향키가 NE/NW/SE/SW를 보고하는 방식과 동일).</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_Off" xml:space="preserve"><value>끄기</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_FourWay" xml:space="preserve"><value>4방향</value></data>
+  <data name="Pad_Touchpad_JoystickDPadMode_EightWay" xml:space="preserve"><value>8방향</value></data>
+  <data name="Pad_Touchpad_JoystickDPadActivationThreshold" xml:space="preserve"><value>방향키 활성화 (0..1)</value></data>
+
   <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>감지 재설정</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>내장 제스처 재설정</value></data>
+  <data name="Pad_ResetTouchpadJoystick" xml:space="preserve"><value>조이스틱 / 방향키 재설정</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>제스처 재설정</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>인식 재설정</value></data>
   <data name="Pad_ResetTouchpadCooldownMs" xml:space="preserve"><value>쿨다운 재설정</value></data>
@@ -1569,6 +1590,11 @@
   <data name="Pad_ResetTouchpadFiveFinger" xml:space="preserve"><value>다섯 손가락 탭 재설정</value></data>
   <data name="Pad_ResetTouchpadShapeGestures" xml:space="preserve"><value>도형 제스처 재설정</value></data>
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>도형 일치 임계값 재설정</value></data>
+  <data name="Pad_ResetTouchpadJoystickEnabled" xml:space="preserve"><value>조이스틱 출력 재설정</value></data>
+  <data name="Pad_ResetTouchpadJoystickMaxRadius" xml:space="preserve"><value>최대 반지름 재설정</value></data>
+  <data name="Pad_ResetTouchpadJoystickInnerDeadzone" xml:space="preserve"><value>내부 데드존 재설정</value></data>
+  <data name="Pad_ResetTouchpadJoystickDPadMode" xml:space="preserve"><value>방향키 모드 재설정</value></data>
+  <data name="Pad_ResetTouchpadJoystickDPadActivationThreshold" xml:space="preserve"><value>방향키 활성화 재설정</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>터치패드 제스처 녹화</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>아래 표면에 제스처를 그리세요. 대화상자가 내려놓은 모든 손가락을 캡처합니다. 모든 손가락을 표면에서 떼면 샘플이 녹화됩니다. 이전 샘플과 다른 손가락 수로 그리면 스택이 재설정됩니다.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>표면에 손가락 접촉 대기 중</value></data>

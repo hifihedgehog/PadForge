@@ -288,11 +288,32 @@ namespace PadForge.Engine
             public readonly float[] X = new float[PtpMaxFingers];
             public readonly float[] Y = new float[PtpMaxFingers];
             public readonly bool[] Down = new bool[PtpMaxFingers];
+
+            // Persistent per-slot transition tracking. CustomInputState is
+            // freshly allocated every polling tick (ReadDeviceState's tp =
+            // state.Touchpads[0]), so the rising-edge test can't read
+            // wasDown from tp.FingerDown — that always starts false and
+            // every down-tick falsely registers as a new contact, which
+            // breaks the gesture recognizer's per-(slot, contactId) path
+            // continuity. These arrays survive across ticks and carry
+            // the real previous-down state + the contact ID currently
+            // assigned to whatever finger is on this slot.
+            public readonly bool[] LastFrameDown = new bool[PtpMaxFingers];
+            public readonly int[]  CurrentContactId;
+
             public string Name = "Precision Touchpad";
             public string DevicePath = "";
             public ushort VendorId, ProductId;
             /// <summary>Timestamp of last WM_INPUT report for staleness detection.</summary>
             public long LastReportTicks;
+
+            public PtpDeviceState()
+            {
+                // -1 = "no contact on this slot." Default int (0) would
+                // look like a real contact ID to the recognizer.
+                CurrentContactId = new int[PtpMaxFingers];
+                for (int i = 0; i < PtpMaxFingers; i++) CurrentContactId[i] = -1;
+            }
         }
 
         /// <summary>Staleness threshold: clear contacts if no report in 100ms.</summary>
@@ -388,10 +409,25 @@ namespace PadForge.Engine
                 tp.FingerX[i] = ds.X[i];
                 tp.FingerY[i] = ds.Y[i];
                 tp.FingerPressure[i] = ds.Down[i] ? 1f : 0f;
-                bool wasDown = tp.FingerDown[i];
-                tp.FingerDown[i] = ds.Down[i];
-                if (ds.Down[i] && !wasDown) tp.FingerContactId[i] = _ptpContactIdNext++;
-                else if (!ds.Down[i] && wasDown) tp.FingerContactId[i] = -1;
+
+                // Transition test reads ds.LastFrameDown (persistent across
+                // ticks), NOT tp.FingerDown (allocated fresh every tick and
+                // thus always false at this point). Without this, every
+                // continuous-touch tick looks like a rising edge and the
+                // gesture engine sees N single-point paths instead of one
+                // growing path — no gesture ever recognizes on PTP.
+                bool wasDown = ds.LastFrameDown[i];
+                bool isDown  = ds.Down[i];
+
+                if (isDown && !wasDown)
+                    ds.CurrentContactId[i] = _ptpContactIdNext++;
+                else if (!isDown && wasDown)
+                    ds.CurrentContactId[i] = -1;
+
+                tp.FingerDown[i] = isDown;
+                tp.FingerContactId[i] = ds.CurrentContactId[i];
+
+                ds.LastFrameDown[i] = isDown;
             }
         }
 

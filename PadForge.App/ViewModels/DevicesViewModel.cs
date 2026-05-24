@@ -131,17 +131,31 @@ namespace PadForge.ViewModels
         }
 
         // Touchpad finger positions (0-1 normalized) for the preview.
-        // Touchpad click pressed state is shown in the Buttons grid at
-        // slot 16 (SDL_GAMEPAD_BUTTON_TOUCHPAD), not on this preview's
+        // Up to 5 simultaneous contacts (Windows PTP max; SDL gamepad
+        // touchpads typically expose 1-2). Touchpad click pressed
+        // state is shown in the Buttons grid at slot 16
+        // (SDL_GAMEPAD_BUTTON_TOUCHPAD), not on this preview's
         // background.
-        private double _touchpadX0, _touchpadY0, _touchpadX1, _touchpadY1;
-        private bool _touchpadDown0, _touchpadDown1;
+        private double _touchpadX0, _touchpadY0, _touchpadX1, _touchpadY1,
+                       _touchpadX2, _touchpadY2, _touchpadX3, _touchpadY3,
+                       _touchpadX4, _touchpadY4;
+        private bool _touchpadDown0, _touchpadDown1, _touchpadDown2,
+                     _touchpadDown3, _touchpadDown4;
         public double TouchpadX0 { get => _touchpadX0; set => SetProperty(ref _touchpadX0, value); }
         public double TouchpadY0 { get => _touchpadY0; set => SetProperty(ref _touchpadY0, value); }
         public double TouchpadX1 { get => _touchpadX1; set => SetProperty(ref _touchpadX1, value); }
         public double TouchpadY1 { get => _touchpadY1; set => SetProperty(ref _touchpadY1, value); }
+        public double TouchpadX2 { get => _touchpadX2; set => SetProperty(ref _touchpadX2, value); }
+        public double TouchpadY2 { get => _touchpadY2; set => SetProperty(ref _touchpadY2, value); }
+        public double TouchpadX3 { get => _touchpadX3; set => SetProperty(ref _touchpadX3, value); }
+        public double TouchpadY3 { get => _touchpadY3; set => SetProperty(ref _touchpadY3, value); }
+        public double TouchpadX4 { get => _touchpadX4; set => SetProperty(ref _touchpadX4, value); }
+        public double TouchpadY4 { get => _touchpadY4; set => SetProperty(ref _touchpadY4, value); }
         public bool TouchpadDown0 { get => _touchpadDown0; set => SetProperty(ref _touchpadDown0, value); }
         public bool TouchpadDown1 { get => _touchpadDown1; set => SetProperty(ref _touchpadDown1, value); }
+        public bool TouchpadDown2 { get => _touchpadDown2; set => SetProperty(ref _touchpadDown2, value); }
+        public bool TouchpadDown3 { get => _touchpadDown3; set => SetProperty(ref _touchpadDown3, value); }
+        public bool TouchpadDown4 { get => _touchpadDown4; set => SetProperty(ref _touchpadDown4, value); }
 
         private double _mouseMotionX, _mouseMotionY;
         public double MouseMotionX { get => _mouseMotionX; set => SetProperty(ref _mouseMotionX, value); }

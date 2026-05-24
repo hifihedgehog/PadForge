@@ -5544,7 +5544,7 @@
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="&#xE945;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                    <TextBlock Text="&#xF8B0;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Touchpad_Detection_Header, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>
@@ -5591,7 +5591,7 @@
                         <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                    <TextBlock Text="&#xF12B;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Touchpad_InBox_Header, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>
@@ -5749,7 +5749,7 @@
                         <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="&#xE8D2;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                    <TextBlock Text="&#xF4A5;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Touchpad_Custom_Header, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>

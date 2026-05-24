@@ -1523,7 +1523,7 @@
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>滑动距离 (0..1)</value></data>
   <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>滑动时间窗 (ms)</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>径向扇区（武器轮盘风格）</value></data>
-  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>从手指落下的位置向外滑入扇区。0 区位于 12 点钟方向（上方），扇区按顺时针方向递增。选择器中每一项的括号内显示其钟面位置 —— "(12)" 表示上、"(3)" 表示右、"(6)" 表示下、"(9)" 表示左。同一时间只保持一个扇区激活；滑入另一个扇区会释放前一个，因此可以在一次滑动中循环切换多个扇区。</value></data>
+  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>从手指落下的位置向外滑入扇区。0 区锚定在上方，扇区按顺时针方向递增。选择器中每一项的括号内以相对上方的角度（度）显示方向 —— (0°) 表示上、(90°) 表示右、(180°) 表示下、(270°) 表示左。同一时间只保持一个扇区激活；滑入另一个扇区会释放前一个，因此可以在一次滑动中循环切换多个扇区。</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>扇区数量</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>中心死区 (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>轻触 / 双击 / 三连击</value></data>

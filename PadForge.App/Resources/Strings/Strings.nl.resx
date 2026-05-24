@@ -1543,7 +1543,7 @@
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Veegafstand (0..1)</value></data>
   <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Tijdsvenster voor veeg (ms)</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Radiale zones (wapenwiel-stijl)</value></data>
-  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Veeg vanaf het neerzetpunt van je vinger naar buiten in een sector. Zone 0 is 12 uur (boven); zones lopen met de klok mee op. Elke vermelding in de kiezer toont haar klokpositie tussen haakjes — "(12)" is boven, "(3)" is rechts, "(6)" is onder, "(9)" is links. Er is steeds maar één zone actief; in een andere vegen laat de vorige los, zodat je in één veegbeweging door de zones kunt bladeren.</value></data>
+  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Veeg vanaf het neerzetpunt van je vinger naar buiten in een sector. Zone 0 is bovenaan verankerd en zones lopen met de klok mee op. Elke vermelding in de kiezer toont de richting tussen haakjes als graden ten opzichte van boven — (0°) is boven, (90°) is rechts, (180°) is onder, (270°) is links. Er is steeds maar één zone actief; in een andere vegen laat de vorige los, zodat je in één veegbeweging door de zones kunt bladeren.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Aantal zones</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Middendeadzone (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tik / Dubbele tik / Drievoudige tik</value></data>

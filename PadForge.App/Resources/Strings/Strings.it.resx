@@ -1494,12 +1494,12 @@
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Scorrimento a due dita a sinistra</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>Scorrimento a due dita a destra</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>Tocco a due dita</value></data>
-  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Pizzico</value></data>
-  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Allargamento</value></data>
-  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Asse pizzico/allargamento</value></data>
-  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>Ruota in senso orario</value></data>
-  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>Ruota in senso antiorario</value></data>
-  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>Asse di rotazione</value></data>
+  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Pizzico a due dita</value></data>
+  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Allargamento a due dita</value></data>
+  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Asse pizzico/allargamento a due dita</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>Ruota a due dita in senso orario</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>Ruota a due dita in senso antiorario</value></data>
+  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>Asse di rotazione a due dita</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeUp" xml:space="preserve"><value>Scorrimento a tre dita verso l'alto</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeDown" xml:space="preserve"><value>Scorrimento a tre dita verso il basso</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeLeft" xml:space="preserve"><value>Scorrimento a tre dita a sinistra</value></data>

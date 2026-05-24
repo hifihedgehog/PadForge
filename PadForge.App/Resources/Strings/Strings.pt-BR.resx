@@ -1472,12 +1472,12 @@
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Deslizar dois dedos para a esquerda</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>Deslizar dois dedos para a direita</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>Toque com dois dedos</value></data>
-  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Pinçar</value></data>
-  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Afastar</value></data>
-  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Eixo de pinçar/afastar</value></data>
-  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>Girar no sentido horário</value></data>
-  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>Girar no sentido anti-horário</value></data>
-  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>Eixo de rotação</value></data>
+  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Pinçar com dois dedos</value></data>
+  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Afastar com dois dedos</value></data>
+  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Eixo de pinçar/afastar com dois dedos</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>Girar com dois dedos no sentido horário</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>Girar com dois dedos no sentido anti-horário</value></data>
+  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>Eixo de rotação com dois dedos</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeUp" xml:space="preserve"><value>Deslizar três dedos para cima</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeDown" xml:space="preserve"><value>Deslizar três dedos para baixo</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeLeft" xml:space="preserve"><value>Deslizar três dedos para a esquerda</value></data>

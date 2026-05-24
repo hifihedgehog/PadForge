@@ -1472,12 +1472,12 @@
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Deslizar con dos dedos hacia la izquierda</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>Deslizar con dos dedos hacia la derecha</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>Toque con dos dedos</value></data>
-  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Pellizco</value></data>
-  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Apertura</value></data>
-  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Eje de pellizco/apertura</value></data>
-  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>Rotar en sentido horario</value></data>
-  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>Rotar en sentido antihorario</value></data>
-  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>Eje de rotación</value></data>
+  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Pellizco con dos dedos</value></data>
+  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Apertura con dos dedos</value></data>
+  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Eje de pellizco/apertura con dos dedos</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>Rotar con dos dedos en sentido horario</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>Rotar con dos dedos en sentido antihorario</value></data>
+  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>Eje de rotación con dos dedos</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeUp" xml:space="preserve"><value>Deslizar con tres dedos hacia arriba</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeDown" xml:space="preserve"><value>Deslizar con tres dedos hacia abajo</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeLeft" xml:space="preserve"><value>Deslizar con tres dedos hacia la izquierda</value></data>

@@ -1472,12 +1472,12 @@
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>2 本指 左スワイプ</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>2 本指 右スワイプ</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>2 本指タップ</value></data>
-  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>ピンチイン</value></data>
-  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>ピンチアウト</value></data>
-  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>ピンチ / スプレッド軸</value></data>
-  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>時計回り回転</value></data>
-  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>反時計回り回転</value></data>
-  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>回転軸</value></data>
+  <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>2 本指ピンチイン</value></data>
+  <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>2 本指ピンチアウト</value></data>
+  <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>2 本指ピンチ / スプレッド軸</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCW" xml:space="preserve"><value>2 本指時計回り回転</value></data>
+  <data name="Mapping_TouchpadGesture_RotateCCW" xml:space="preserve"><value>2 本指反時計回り回転</value></data>
+  <data name="Mapping_TouchpadGesture_RotateAxis" xml:space="preserve"><value>2 本指回転軸</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeUp" xml:space="preserve"><value>3 本指 上スワイプ</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeDown" xml:space="preserve"><value>3 本指 下スワイプ</value></data>
   <data name="Mapping_TouchpadGesture_ThreeFingerSwipeLeft" xml:space="preserve"><value>3 本指 左スワイプ</value></data>

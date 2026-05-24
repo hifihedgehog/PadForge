@@ -1467,6 +1467,7 @@
   <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>Toque triple</value></data>
   <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>Pulsación larga</value></data>
   <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>Zona radial {0}/{1}</value></data>
+  <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>Panel táctil {0} — {1}</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeUp" xml:space="preserve"><value>Deslizar con dos dedos hacia arriba</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeDown" xml:space="preserve"><value>Deslizar con dos dedos hacia abajo</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Deslizar con dos dedos hacia la izquierda</value></data>
@@ -1506,7 +1507,7 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Gestos del touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Detección de gestos por touchpad. Cada deslizamiento, toque, pellizco y forma con el dedo se convierte en una fuente de asignación que puedes vincular en la pestaña Asignaciones.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Mando {0}</value></data>
+  <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Panel táctil {0}</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detección</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Activar gestos en este mando</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Conmutador principal de este touchpad. Cuando está desactivado, no se dispara ningún descriptor de gesto para este mando. Las asignaciones existentes de dedo / clic / posición siguen funcionando.</value></data>

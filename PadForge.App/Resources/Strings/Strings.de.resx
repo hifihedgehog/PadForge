@@ -1496,7 +1496,6 @@
   <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>Dreieck</value></data>
   <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Z-Form</value></data>
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>Häkchen</value></data>
-  <data name="Mapping_TouchpadGesture_X" xml:space="preserve"><value>X-Form</value></data>
   <data name="Settings_TouchpadGestures" xml:space="preserve"><value>Touchpad-Gesten</value></data>
   <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>Erkennt Wischen, Tippen, Pinch-Gesten und benutzerdefinierte Formen auf jedem Touchpad, das PadForge lesen kann. Einstellungen pro Touchpad findest du im Tab Touchpad jedes Pads. Die Optionen unten betreffen den globalen Hauptschalter und die Belegung des Pausen-Hotkeys.</value></data>
   <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>Touchpad-Gesten global aktivieren</value></data>

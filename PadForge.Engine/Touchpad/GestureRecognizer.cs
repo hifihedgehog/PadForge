@@ -72,8 +72,16 @@ namespace PadForge.Engine.Touchpad
             IReadOnlyList<PDollarTemplate> shapeTemplates = null)
         {
             if (ctx == null || pad == null || settings == null) return;
-            ctx.FiredGesturesThisFrame.Clear();
-
+            // FiredGesturesThisFrame is the consumer-facing "did this
+            // gesture fire" set. The name is historical — it actually
+            // latches across the cooldown window so downstream readers
+            // (mapping evaluator → button output → macro trigger) see
+            // a stable fire long enough to pick up the rising edge at
+            // any reasonable polling rate. A 1-tick (~1ms) clear-on-
+            // every-tick made gestures invisible to anything except a
+            // mapping evaluator that happened to sample the exact
+            // tick. Clear here only when the cooldown window closes,
+            // not unconditionally at the top of each Update.
             if (ctx.State == GestureState.Suspended) return;
             if (!settings.Enabled)
             {
@@ -83,9 +91,14 @@ namespace PadForge.Engine.Touchpad
             if (ctx.State == GestureState.Cooldown)
             {
                 if (nowMs >= ctx.CooldownUntilTimestampMs)
+                {
                     ctx.State = GestureState.Idle;
+                    ctx.FiredGesturesThisFrame.Clear();
+                }
                 else
+                {
                     return;
+                }
             }
 
             UpdateActivePaths(ctx, pad, nowMs);
@@ -97,6 +110,10 @@ namespace PadForge.Engine.Touchpad
             {
                 ctx.State = GestureState.Accumulating;
                 ctx.GestureStartTimestampMs = nowMs;
+                // Fresh gesture begins — discard any leftover latched
+                // fires from the prior gesture so they don't bleed into
+                // this one's recognition window.
+                ctx.FiredGesturesThisFrame.Clear();
             }
 
             // Tier 1 mid-gesture fires (radial zone entry, long-press).

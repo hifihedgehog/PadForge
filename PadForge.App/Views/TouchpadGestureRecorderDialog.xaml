@@ -10,14 +10,12 @@
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
 
-    <ui:FluentWindow.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ui:ThemesDictionary Theme="Dark"/>
-                <ui:ControlsDictionary/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </ui:FluentWindow.Resources>
+    <!-- No local ThemesDictionary — the App.xaml's ThemesDictionary is
+         theme-aware (ApplicationThemeManager.Apply mutates it on theme
+         change). A local copy here would lock the dialog to whichever
+         theme was hardcoded in XAML regardless of the user's actual
+         light/dark choice. Inheriting from Application.Resources gives
+         the dialog correct theme colors on both modes. -->
 
     <Grid Margin="16">
         <Grid.RowDefinitions>
@@ -81,7 +79,8 @@
             <TextBox x:Name="NameBox" Width="260" VerticalAlignment="Center"
                      TextChanged="NameBox_TextChanged"/>
             <TextBlock x:Name="ValidationText"
-                       Foreground="#FF6464" FontSize="12"
+                       Foreground="{DynamicResource SystemFillColorCriticalBrush}"
+                       FontSize="12"
                        VerticalAlignment="Center" Margin="12,0,0,0"/>
         </StackPanel>
 

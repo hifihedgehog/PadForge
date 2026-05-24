@@ -1487,6 +1487,7 @@
   <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>Drievoudige tik</value></data>
   <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>Lang indrukken</value></data>
   <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>Radiale zone {0}/{1}</value></data>
+  <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>Pad {0} — {1}</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeUp" xml:space="preserve"><value>Tweevingerveeg omhoog</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeDown" xml:space="preserve"><value>Tweevingerveeg omlaag</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Tweevingerveeg naar links</value></data>

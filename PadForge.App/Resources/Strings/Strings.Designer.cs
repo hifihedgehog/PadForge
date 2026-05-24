@@ -1063,6 +1063,7 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_TouchpadGesture_TripleTap => Get("Mapping_TouchpadGesture_TripleTap");
     public string Mapping_TouchpadGesture_LongPress => Get("Mapping_TouchpadGesture_LongPress");
     public string Mapping_TouchpadGesture_RadialZone_Format => Get("Mapping_TouchpadGesture_RadialZone_Format");
+    public string Mapping_TouchpadGesture_PadPrefix_Format => Get("Mapping_TouchpadGesture_PadPrefix_Format");
     public string Mapping_TouchpadGesture_TwoFingerSwipeUp => Get("Mapping_TouchpadGesture_TwoFingerSwipeUp");
     public string Mapping_TouchpadGesture_TwoFingerSwipeDown => Get("Mapping_TouchpadGesture_TwoFingerSwipeDown");
     public string Mapping_TouchpadGesture_TwoFingerSwipeLeft => Get("Mapping_TouchpadGesture_TwoFingerSwipeLeft");

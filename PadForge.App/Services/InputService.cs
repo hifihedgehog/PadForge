@@ -2795,6 +2795,22 @@ namespace PadForge.Services
                 if ((udi.HasTouchpad || udi.IsTouchpad) && _activeTouchpadGestures.Count > 0)
                 {
                     string devClass = ResolveDeviceClass(udi);
+                    // Match MappingDisplayResolver's pad-disambiguator
+                    // policy: only prepend "Pad N — " when the device has
+                    // more than one touchpad surface (Triton / Steam
+                    // Deck / SC original). Single-pad devices keep the
+                    // bare gesture name to avoid label clutter.
+                    int numPads = 1;
+                    try
+                    {
+                        var st = udi.Device?.GetCurrentState();
+                        if (st?.Touchpads != null && st.Touchpads.Length > 0)
+                            numPads = st.Touchpads.Length;
+                    }
+                    catch { /* numPads stays 1 */ }
+                    bool multiPad = numPads > 1;
+                    var si = PadForge.Resources.Strings.Strings.Instance;
+
                     foreach (var cg in _activeTouchpadGestures)
                     {
                         if (cg == null || string.IsNullOrWhiteSpace(cg.Name)) continue;
@@ -2804,10 +2820,13 @@ namespace PadForge.Services
                                        || string.Equals(cg.DeviceClass, devClass, System.StringComparison.OrdinalIgnoreCase);
                         if (!classOk) continue;
                         int padIdx = cg.TouchpadIndex < 0 ? 0 : cg.TouchpadIndex;
+                        string display = multiPad
+                            ? string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, padIdx, cg.Name)
+                            : cg.Name;
                         flat.Add(new PadForge.ViewModels.InputChoice
                         {
                             Descriptor = $"Touchpad {padIdx} Custom_{cg.Name}",
-                            DisplayName = cg.Name,
+                            DisplayName = display,
                             DeviceGuid = key,
                             DeviceLabel = label,
                         });

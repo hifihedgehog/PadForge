@@ -642,23 +642,34 @@ namespace PadForge.Common
             }
             catch { /* defensive: pad-discovery failures fall back to defaults */ }
 
+            // Multi-pad devices (Steam Controller 2026 / Steam Deck /
+            // original Steam Controller) need a per-pad disambiguator
+            // in the display name so the picker doesn't show two
+            // identical "Swipe Up" entries the user can't tell apart.
+            // Single-pad devices (DualSense / DS4 / etc.) skip the
+            // wrapping so the labels stay terse.
+            bool multiPad = numPads > 1;
+
             for (int p = 0; p < numPads; p++)
             {
                 int max = perPadFingers[p];
+                string PadWrap(string label) => multiPad
+                    ? string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, p, label)
+                    : label;
 
                 // Single-finger
-                AddGesture(list, p, "SwipeUp",    si.Mapping_TouchpadGesture_SwipeUp);
-                AddGesture(list, p, "SwipeDown",  si.Mapping_TouchpadGesture_SwipeDown);
-                AddGesture(list, p, "SwipeLeft",  si.Mapping_TouchpadGesture_SwipeLeft);
-                AddGesture(list, p, "SwipeRight", si.Mapping_TouchpadGesture_SwipeRight);
-                AddGesture(list, p, "SwipeNE",    si.Mapping_TouchpadGesture_SwipeNE);
-                AddGesture(list, p, "SwipeNW",    si.Mapping_TouchpadGesture_SwipeNW);
-                AddGesture(list, p, "SwipeSE",    si.Mapping_TouchpadGesture_SwipeSE);
-                AddGesture(list, p, "SwipeSW",    si.Mapping_TouchpadGesture_SwipeSW);
-                AddGesture(list, p, "Tap",        si.Mapping_TouchpadGesture_Tap);
-                AddGesture(list, p, "DoubleTap",  si.Mapping_TouchpadGesture_DoubleTap);
-                AddGesture(list, p, "TripleTap",  si.Mapping_TouchpadGesture_TripleTap);
-                AddGesture(list, p, "LongPress",  si.Mapping_TouchpadGesture_LongPress);
+                AddGesture(list, p, "SwipeUp",    PadWrap(si.Mapping_TouchpadGesture_SwipeUp));
+                AddGesture(list, p, "SwipeDown",  PadWrap(si.Mapping_TouchpadGesture_SwipeDown));
+                AddGesture(list, p, "SwipeLeft",  PadWrap(si.Mapping_TouchpadGesture_SwipeLeft));
+                AddGesture(list, p, "SwipeRight", PadWrap(si.Mapping_TouchpadGesture_SwipeRight));
+                AddGesture(list, p, "SwipeNE",    PadWrap(si.Mapping_TouchpadGesture_SwipeNE));
+                AddGesture(list, p, "SwipeNW",    PadWrap(si.Mapping_TouchpadGesture_SwipeNW));
+                AddGesture(list, p, "SwipeSE",    PadWrap(si.Mapping_TouchpadGesture_SwipeSE));
+                AddGesture(list, p, "SwipeSW",    PadWrap(si.Mapping_TouchpadGesture_SwipeSW));
+                AddGesture(list, p, "Tap",        PadWrap(si.Mapping_TouchpadGesture_Tap));
+                AddGesture(list, p, "DoubleTap",  PadWrap(si.Mapping_TouchpadGesture_DoubleTap));
+                AddGesture(list, p, "TripleTap",  PadWrap(si.Mapping_TouchpadGesture_TripleTap));
+                AddGesture(list, p, "LongPress",  PadWrap(si.Mapping_TouchpadGesture_LongPress));
                 // Radial zones — surface all configured counts so a user
                 // who picks 8-zone vs 12-zone in settings sees the
                 // matching descriptors. Settings-side toggle gates which
@@ -668,45 +679,46 @@ namespace PadForge.Common
                         list.Add(new InputChoice
                         {
                             Descriptor = $"Touchpad {p} RadialZone{zc}_{z}",
-                            DisplayName = string.Format(si.Mapping_TouchpadGesture_RadialZone_Format, zc, z),
+                            DisplayName = PadWrap(string.Format(
+                                si.Mapping_TouchpadGesture_RadialZone_Format, zc, z)),
                         });
                 // Single-finger shapes — always available.
                 foreach (var name in Engine.Touchpad.InBoxShapeTemplates.Names)
-                    AddGesture(list, p, name, ResolveShapeName(si, name));
+                    AddGesture(list, p, name, PadWrap(ResolveShapeName(si, name)));
 
                 if (max >= 2)
                 {
-                    AddGesture(list, p, "TwoFingerSwipeUp",    si.Mapping_TouchpadGesture_TwoFingerSwipeUp);
-                    AddGesture(list, p, "TwoFingerSwipeDown",  si.Mapping_TouchpadGesture_TwoFingerSwipeDown);
-                    AddGesture(list, p, "TwoFingerSwipeLeft",  si.Mapping_TouchpadGesture_TwoFingerSwipeLeft);
-                    AddGesture(list, p, "TwoFingerSwipeRight", si.Mapping_TouchpadGesture_TwoFingerSwipeRight);
-                    AddGesture(list, p, "TwoFingerTap",  si.Mapping_TouchpadGesture_TwoFingerTap);
-                    AddGesture(list, p, "Pinch",         si.Mapping_TouchpadGesture_Pinch);
-                    AddGesture(list, p, "Spread",        si.Mapping_TouchpadGesture_Spread);
-                    AddGesture(list, p, "PinchAxis",     si.Mapping_TouchpadGesture_PinchAxis);
-                    AddGesture(list, p, "RotateCW",      si.Mapping_TouchpadGesture_RotateCW);
-                    AddGesture(list, p, "RotateCCW",     si.Mapping_TouchpadGesture_RotateCCW);
-                    AddGesture(list, p, "RotateAxis",    si.Mapping_TouchpadGesture_RotateAxis);
+                    AddGesture(list, p, "TwoFingerSwipeUp",    PadWrap(si.Mapping_TouchpadGesture_TwoFingerSwipeUp));
+                    AddGesture(list, p, "TwoFingerSwipeDown",  PadWrap(si.Mapping_TouchpadGesture_TwoFingerSwipeDown));
+                    AddGesture(list, p, "TwoFingerSwipeLeft",  PadWrap(si.Mapping_TouchpadGesture_TwoFingerSwipeLeft));
+                    AddGesture(list, p, "TwoFingerSwipeRight", PadWrap(si.Mapping_TouchpadGesture_TwoFingerSwipeRight));
+                    AddGesture(list, p, "TwoFingerTap",  PadWrap(si.Mapping_TouchpadGesture_TwoFingerTap));
+                    AddGesture(list, p, "Pinch",         PadWrap(si.Mapping_TouchpadGesture_Pinch));
+                    AddGesture(list, p, "Spread",        PadWrap(si.Mapping_TouchpadGesture_Spread));
+                    AddGesture(list, p, "PinchAxis",     PadWrap(si.Mapping_TouchpadGesture_PinchAxis));
+                    AddGesture(list, p, "RotateCW",      PadWrap(si.Mapping_TouchpadGesture_RotateCW));
+                    AddGesture(list, p, "RotateCCW",     PadWrap(si.Mapping_TouchpadGesture_RotateCCW));
+                    AddGesture(list, p, "RotateAxis",    PadWrap(si.Mapping_TouchpadGesture_RotateAxis));
                 }
                 if (max >= 3)
                 {
-                    AddGesture(list, p, "ThreeFingerSwipeUp",    si.Mapping_TouchpadGesture_ThreeFingerSwipeUp);
-                    AddGesture(list, p, "ThreeFingerSwipeDown",  si.Mapping_TouchpadGesture_ThreeFingerSwipeDown);
-                    AddGesture(list, p, "ThreeFingerSwipeLeft",  si.Mapping_TouchpadGesture_ThreeFingerSwipeLeft);
-                    AddGesture(list, p, "ThreeFingerSwipeRight", si.Mapping_TouchpadGesture_ThreeFingerSwipeRight);
-                    AddGesture(list, p, "ThreeFingerTap",        si.Mapping_TouchpadGesture_ThreeFingerTap);
+                    AddGesture(list, p, "ThreeFingerSwipeUp",    PadWrap(si.Mapping_TouchpadGesture_ThreeFingerSwipeUp));
+                    AddGesture(list, p, "ThreeFingerSwipeDown",  PadWrap(si.Mapping_TouchpadGesture_ThreeFingerSwipeDown));
+                    AddGesture(list, p, "ThreeFingerSwipeLeft",  PadWrap(si.Mapping_TouchpadGesture_ThreeFingerSwipeLeft));
+                    AddGesture(list, p, "ThreeFingerSwipeRight", PadWrap(si.Mapping_TouchpadGesture_ThreeFingerSwipeRight));
+                    AddGesture(list, p, "ThreeFingerTap",        PadWrap(si.Mapping_TouchpadGesture_ThreeFingerTap));
                 }
                 if (max >= 4)
                 {
-                    AddGesture(list, p, "FourFingerSwipeUp",    si.Mapping_TouchpadGesture_FourFingerSwipeUp);
-                    AddGesture(list, p, "FourFingerSwipeDown",  si.Mapping_TouchpadGesture_FourFingerSwipeDown);
-                    AddGesture(list, p, "FourFingerSwipeLeft",  si.Mapping_TouchpadGesture_FourFingerSwipeLeft);
-                    AddGesture(list, p, "FourFingerSwipeRight", si.Mapping_TouchpadGesture_FourFingerSwipeRight);
-                    AddGesture(list, p, "FourFingerTap",        si.Mapping_TouchpadGesture_FourFingerTap);
+                    AddGesture(list, p, "FourFingerSwipeUp",    PadWrap(si.Mapping_TouchpadGesture_FourFingerSwipeUp));
+                    AddGesture(list, p, "FourFingerSwipeDown",  PadWrap(si.Mapping_TouchpadGesture_FourFingerSwipeDown));
+                    AddGesture(list, p, "FourFingerSwipeLeft",  PadWrap(si.Mapping_TouchpadGesture_FourFingerSwipeLeft));
+                    AddGesture(list, p, "FourFingerSwipeRight", PadWrap(si.Mapping_TouchpadGesture_FourFingerSwipeRight));
+                    AddGesture(list, p, "FourFingerTap",        PadWrap(si.Mapping_TouchpadGesture_FourFingerTap));
                 }
                 if (max >= 5)
                 {
-                    AddGesture(list, p, "FiveFingerTap", si.Mapping_TouchpadGesture_FiveFingerTap);
+                    AddGesture(list, p, "FiveFingerTap", PadWrap(si.Mapping_TouchpadGesture_FiveFingerTap));
                 }
             }
         }

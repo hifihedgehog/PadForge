@@ -735,6 +735,10 @@ namespace PadForge.Common
                 // Radial zones — only the currently-active count
                 // appears in the picker (matching the recipe semantics:
                 // "Settings_side toggle gates which count fires").
+                // Append the clock-position label (12, 1:30, 3, ...) so
+                // the user can tell which direction a zone covers without
+                // counting wedges from the top. Engine math anchors zone
+                // 0 to 12 o'clock and increases clockwise.
                 if (gateRadial)
                 {
                     int zc = radialCount;
@@ -743,7 +747,8 @@ namespace PadForge.Common
                         {
                             Descriptor = $"Touchpad {p} RadialZone{zc}_{z}",
                             DisplayName = PadWrap(string.Format(
-                                si.Mapping_TouchpadGesture_RadialZone_Format, zc, z)),
+                                si.Mapping_TouchpadGesture_RadialZone_Format, zc, z)
+                                + " (" + ClockPositionLabel(zc, z) + ")"),
                         });
                 }
                 // Single-finger shapes
@@ -818,5 +823,24 @@ namespace PadForge.Common
             "Checkmark"  => si.Mapping_TouchpadGesture_Checkmark,
             _            => shape,
         };
+
+        /// <summary>Returns the analog-clock-face position for a radial
+        /// zone. Zone 0 anchors at 12 o'clock (top) and zones increase
+        /// clockwise, matching the engine math. Output is the raw
+        /// clock-face number ("12", "3", "6", "9") or, for zone counts
+        /// that don't land on whole hours (8 zones at 45° steps), the
+        /// half-hour notation ("1:30", "4:30", etc.). Locale-agnostic
+        /// — analog clock numbers read the same in every language.</summary>
+        private static string ClockPositionLabel(int zoneCount, int zoneIdx)
+        {
+            if (zoneCount <= 0) return zoneIdx.ToString();
+            // 12 hours × 2 half-hours = 24 half-hour ticks around the dial.
+            // Zone i sits at (24 * i / zoneCount) half-hour ticks from 12.
+            int halfHourTicks = (24 * zoneIdx) / zoneCount;
+            int wholeHours = halfHourTicks / 2;
+            bool isHalfHour = (halfHourTicks % 2) != 0;
+            int displayHours = wholeHours == 0 ? 12 : wholeHours;
+            return isHalfHour ? $"{displayHours}:30" : displayHours.ToString();
+        }
     }
 }

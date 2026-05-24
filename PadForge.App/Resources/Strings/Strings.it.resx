@@ -1558,7 +1558,7 @@
   <data name="Pad_Touchpad_ThreeFinger" xml:space="preserve"><value>Gesti a tre dita</value></data>
   <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>Gesti a quattro dita</value></data>
   <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>Tocco a cinque dita</value></data>
-  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Gesti di forma (Cerchio, Quadrato, Triangolo, Z, Segno di spunta, X)</value></data>
+  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Gesti di forma (Cerchio, Quadrato, Triangolo, Z, Segno di spunta)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Soglia di corrispondenza forma</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Gesti personalizzati</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Registra nuovo gesto</value></data>

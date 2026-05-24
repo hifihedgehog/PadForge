@@ -1,0 +1,7 @@
+Touchpad shape checkbox: drop the stale "X" mention
+
+The X shape was removed from the in-box catalog in 029a414
+(single-stroke X is un-drawable as one trace). The checkbox
+label and three doc comments still listed it. Fixed in en plus
+nine locales, plus comments in TouchpadGestureSettings.cs,
+PDollarRecognizer.cs, and AngularMarginRecognizer.cs.

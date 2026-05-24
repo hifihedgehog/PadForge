@@ -121,7 +121,7 @@ namespace PadForge.Engine.Touchpad
         /// the original path were traversed in the opposite direction:
         /// the angle array is reversed AND each angle is rotated by π
         /// (a→b becomes b→a, which is the same vector negated). Use
-        /// for direction-agnostic shapes (Square, Triangle, X — any
+        /// for direction-agnostic shapes (Square, Triangle — any
         /// shape that looks the same drawn CW or CCW).</summary>
         public static double[] Reversed(double[] angles)
         {
@@ -263,7 +263,7 @@ namespace PadForge.Engine.Touchpad
         /// in-box shape toggles.</summary>
         public bool IsCustom;
 
-        /// <summary>Closed shapes (Square, Triangle, Circle, X) match
+        /// <summary>Closed shapes (Square, Triangle, Circle) match
         /// against the candidate at every cyclic starting-point so a
         /// user beginning the trace from any corner / vertex / edge
         /// matches the same template. Open shapes (Z, Checkmark) stay

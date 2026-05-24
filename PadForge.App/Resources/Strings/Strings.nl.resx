@@ -1556,7 +1556,7 @@
   <data name="Pad_Touchpad_ThreeFinger" xml:space="preserve"><value>Drievingergebaren</value></data>
   <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>Viervingergebaren</value></data>
   <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>Vijfvingertik</value></data>
-  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Vormgebaren (Cirkel, Vierkant, Driehoek, Z, Vinkje, X)</value></data>
+  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Vormgebaren (Cirkel, Vierkant, Driehoek, Z, Vinkje)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Drempel voor vormovereenkomst</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Aangepaste gebaren</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Nieuw gebaar opnemen</value></data>

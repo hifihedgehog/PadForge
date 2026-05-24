@@ -1536,7 +1536,7 @@
   <data name="Pad_Touchpad_ThreeFinger" xml:space="preserve"><value>세 손가락 제스처</value></data>
   <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>네 손가락 제스처</value></data>
   <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>다섯 손가락 탭</value></data>
-  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>도형 제스처(원, 사각형, 삼각형, Z, 체크 표시, X)</value></data>
+  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>도형 제스처(원, 사각형, 삼각형, Z, 체크 표시)</value></data>
   <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>도형 일치 임계값</value></data>
   <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>사용자 지정 제스처</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ 새 제스처 녹화</value></data>

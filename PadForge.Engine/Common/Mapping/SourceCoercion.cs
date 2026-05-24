@@ -442,10 +442,14 @@ namespace PadForge.Engine.Common.Mapping
         /// descriptors. These return a float value via
         /// <see cref="TouchpadGestureAxisProvider"/> rather than a
         /// button-fire bool via
-        /// <see cref="TouchpadGestureFiredProvider"/>.</summary>
+        /// <see cref="TouchpadGestureFiredProvider"/>. Includes the
+        /// two-finger Pinch / Rotate axes and the single-finger
+        /// Joystick X / Y stick output channels.</summary>
         public static bool IsTouchpadGestureAxis(string gestureName)
             => string.Equals(gestureName, "PinchAxis", StringComparison.Ordinal)
-            || string.Equals(gestureName, "RotateAxis", StringComparison.Ordinal);
+            || string.Equals(gestureName, "RotateAxis", StringComparison.Ordinal)
+            || string.Equals(gestureName, "JoystickX", StringComparison.Ordinal)
+            || string.Equals(gestureName, "JoystickY", StringComparison.Ordinal);
 
         /// <summary>Parses a bundled motion descriptor into its sub-channel.
         /// <c>"Motion Gyro"</c> → 0, <c>"Motion Accel"</c> → 1, anything

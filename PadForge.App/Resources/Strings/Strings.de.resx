@@ -1511,11 +1511,11 @@
   <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>Hotkey zum Pausieren</value></data>
   <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>Tastenkombination (z. B. Ctrl+Alt+T), die die Gestenerkennung ein- und ausschaltet. Hilfreich, wenn ein Spiel rohe Touchpad-Eingaben erwartet oder versehentliche Gestenauslösungen das Spiel stören. Leer = kein Hotkey gebunden.</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad-Gesten</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Gestenerkennung pro Touchpad. Jedes Finger-Wischen, Tippen, Zusammenziehen und jede Form wird zu einer Zuordnungsquelle, die du im Tab Zuordnungen binden kannst.</value></data>
+  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Eingaben pro Touchpad. Gesten (Wischen, Tippen, Zoomen, Formen) und kontinuierliche Ausgabemodi (virtueller Stick / Steuerkreuz, Maus) werden zu Mapping-Quellen, die du auf der Mapping-Registerkarte binden kannst.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
-  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Erkennung</value></data>
+  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Gestenerkennung</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Gesten auf diesem Touchpad aktivieren</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Hauptschalter für dieses Touchpad. Wenn aus, feuern keine Gesten-Deskriptoren für dieses Touchpad. Bestehende Finger-, Klick- und Positionszuordnungen funktionieren weiterhin.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Erkennen</value></data>
@@ -1552,6 +1552,16 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Für dieses Profil sind keine benutzerdefinierten Gesten aufgenommen. Klicke auf Neue Geste aufnehmen, um eine zu erfassen.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 Finger</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} Finger</value></data>
+  <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Mausausgabe</value></data>
+  <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Stellt die Cursorgeschwindigkeit ein, wenn ein Touchpad-Finger auf Maus X/Y eines Tastatur-/Maus-Virtual-Controllers gemappt ist. 1.0 ist der Standard. Höhere Werte beschleunigen den Cursor, niedrigere verlangsamen ihn. Invertieren kehrt die jeweilige Achse um.</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Mausempfindlichkeit X</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplikator für die horizontale Touchpad → Maus-Bewegung. Unter 1.0 verlangsamt den Cursor, über 1.0 beschleunigt ihn.</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityY" xml:space="preserve"><value>Mausempfindlichkeit Y</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityY_Tooltip" xml:space="preserve"><value>Multiplikator für die vertikale Touchpad → Maus-Bewegung.</value></data>
+  <data name="Pad_Touchpad_MouseInvertX" xml:space="preserve"><value>Maus X invertieren</value></data>
+  <data name="Pad_Touchpad_MouseInvertX_Tooltip" xml:space="preserve"><value>Horizontale Bewegung umkehren. Finger nach rechts bewegt den Cursor nach links.</value></data>
+  <data name="Pad_Touchpad_MouseInvertY" xml:space="preserve"><value>Maus Y invertieren</value></data>
+  <data name="Pad_Touchpad_MouseInvertY_Tooltip" xml:space="preserve"><value>Vertikale Bewegung umkehren. Finger nach unten bewegt den Cursor nach oben.</value></data>
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Stick- / Steuerkreuz-Ausgabe</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Verwandle das Touchpad in einen virtuellen Analogstick oder ein Steuerkreuz. Die Ausgabe ankert dort, wo dein Finger zuerst aufsetzt. Die aktuelle Position relativ zu diesem Anker steuert den Stickwert und (optional) gehaltene Steuerkreuz-Richtungs-Bits.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Stick- / Steuerkreuz-Ausgabe aktivieren</value></data>
@@ -1565,8 +1575,13 @@
   <data name="Pad_Touchpad_StickDPadMode_EightWay" xml:space="preserve"><value>8-Wege</value></data>
   <data name="Pad_Touchpad_StickDPadActivationThreshold" xml:space="preserve"><value>Steuerkreuz-Aktivierung (0..1)</value></data>
 
-  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Erkennung zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Gestenerkennung zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Eingebaute Gesten zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadMouse" xml:space="preserve"><value>Mausausgabe zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadMouseSensitivityX" xml:space="preserve"><value>Mausempfindlichkeit X zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>Mausempfindlichkeit Y zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Maus X invertieren zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Maus Y invertieren zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Stick- / Steuerkreuz-Ausgabe zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Gesten zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Erkennen zurücksetzen</value></data>

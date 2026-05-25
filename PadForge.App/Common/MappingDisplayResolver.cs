@@ -1,4 +1,3 @@
-using System.Linq;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 using PadForge.Resources.Strings;
@@ -574,13 +573,13 @@ namespace PadForge.Common
             // their semantics + per-pad enable toggles put them in
             // a different conceptual layer than the raw axes.
             //
-            // Click is gated on whether the device actually exposes
-            // SDL_GAMEPAD_BUTTON_TOUCHPAD (slot 16) — DualSense / DS4
-            // do (physical press on the surface), web touchpad and
-            // overlay device do (virtual button), but system PTP
-            // touchpads (laptop trackpads enumerated via Raw Input)
-            // don't. Without the gate, PTP devices got a Click entry
-            // in the picker that never fires.
+            // Click is dropped only for PTP system touchpads (laptop
+            // trackpads enumerated via Raw Input) which have no click
+            // button. They're uniquely identified by IsTouchpad &&
+            // Device == null — PrecisionTouchpadReader handles them
+            // directly without attaching an ISdlInputDevice wrapper.
+            // Every other touchpad-capable device (DualSense, DS4,
+            // web touchpad, overlay) has a wrapper and a click.
             if (ud.HasTouchpad || ud.IsTouchpad)
             {
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 0 X", DisplayName = si.Mapping_TouchpadX1 });
@@ -589,8 +588,8 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 X", DisplayName = si.Mapping_TouchpadX2 });
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 Y", DisplayName = si.Mapping_TouchpadY2 });
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 Down", DisplayName = si.Mapping_TouchpadContact2 });
-                bool hasTouchpadClick = ud.Device?.SupportedButtonIndices?.Contains(16) ?? false;
-                if (hasTouchpadClick)
+                bool isPtpSystemTouchpad = ud.IsTouchpad && ud.Device == null;
+                if (!isPtpSystemTouchpad)
                     list.Add(new InputChoice { Descriptor = "Touchpad 0 Click", DisplayName = si.Mapping_TouchpadClick });
             }
 

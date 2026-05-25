@@ -5795,20 +5795,19 @@
                         <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <!-- Segoe Fluent Icons F108 is "LeftStick" — it has an "L"
-                                         baked into the cap as the left/right disambiguator.
-                                         For this card we want the generic joystick pictogram
-                                         (outer ring + filled centre cap) without the L
-                                         marker, so it reads as "stick" rather than "left
-                                         stick specifically." Drawn here as two Ellipses
-                                         instead of a font glyph; matches the surrounding
-                                         16px Fluent-icon column. -->
+                                    <!-- Segoe Fluent Icons F108 is "LeftStick" — its glyph
+                                         has an "L" baked into the centre cap as the
+                                         left/right disambiguator and the font has no
+                                         L-less variant. Render F108 as the base, then
+                                         overlay a small solid-fill disc in the cap area
+                                         to mask the L while preserving the rest of the
+                                         glyph (outer ring + cap silhouette). Result:
+                                         F108's authentic stick shape with a plain
+                                         unmarked cap. -->
                                     <Grid Width="16" Height="16" VerticalAlignment="Center" Margin="0,0,8,0">
-                                        <Ellipse Width="15" Height="15"
-                                                 Stroke="{DynamicResource TextFillColorPrimaryBrush}"
-                                                 StrokeThickness="1.3"
-                                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        <Ellipse Width="6" Height="6"
+                                        <TextBlock Text="&#xF108;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <Ellipse Width="7" Height="7"
                                                  Fill="{DynamicResource TextFillColorPrimaryBrush}"
                                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Grid>

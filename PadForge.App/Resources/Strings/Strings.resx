@@ -1081,7 +1081,7 @@
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Mouse Output</value></data>
-  <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Per-axis tuning for touchpad finger motion mapped to mouse X/Y on a Keyboard / Mouse virtual controller. 1.0 is the calibrated baseline (full pad sweep ≈ a 1920-wide screen). Invert flips the axis for that direction.</value></data>
+  <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Tunes cursor speed when a touchpad finger is mapped to mouse X/Y on a Keyboard / Mouse virtual controller. 1.0 is the default. Raise either axis for a faster cursor, lower for slower. Invert flips either axis.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Mouse Sensitivity X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplier on horizontal touchpad → mouse delta. Below 1.0 slows the cursor; above 1.0 speeds it up.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityY" xml:space="preserve"><value>Mouse Sensitivity Y</value></data>

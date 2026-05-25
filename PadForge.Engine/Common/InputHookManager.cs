@@ -159,7 +159,15 @@ namespace PadForge.Engine.Common
             if (_running) return;
             _running = true;
 
+            // Not disposed via `using`: the hook thread captures this MRES
+            // and calls `Set()` once SetWindowsHookExW returns. If `Wait` times
+            // out below, the thread may still try to call Set() after we'd
+            // have left the using block, throwing ObjectDisposedException on
+            // a background thread. Leaking one MRES per Start() is acceptable
+            // versus risking a crash on the (very rare) hook-install timeout.
+#pragma warning disable CA2000
             var ready = new ManualResetEventSlim();
+#pragma warning restore CA2000
 
             _hookThread = new Thread(() => HookThreadProc(ready))
             {
@@ -546,6 +554,7 @@ namespace PadForge.Engine.Common
             if (_disposed) return;
             _disposed = true;
             Stop();
+            GC.SuppressFinalize(this);
         }
     }
 }

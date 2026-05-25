@@ -32,7 +32,6 @@ namespace PadForge.Views
         private static SolidColorBrush F(byte r, byte g, byte b) { var br = new SolidColorBrush(Color.FromRgb(r, g, b)); br.Freeze(); return br; }
 
         private static readonly Brush AccentBrush = F(0x00,0x78,0xD4);
-        private static readonly Brush AccentDimBrush = F(0x00,0x50,0x90);
         private static readonly Brush _dimD = F(0x60,0x60,0x60), _dimL = F(0xA0,0xA0,0xA0);
         private static readonly Brush _bgD = F(0x2D,0x2D,0x2D), _bgL = F(0xE0,0xE0,0xE0);
         private static readonly Brush _lblD = F(0xBB,0xBB,0xBB), _lblL = F(0x50,0x50,0x50);
@@ -67,9 +66,6 @@ namespace PadForge.Views
         private static readonly bool[] IsBlackKey = { false, true, false, true, false, false, true, false, true, false, true, false };
         private static readonly string[] NoteNames = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
 
-        // Black key X offsets relative to preceding white key (as fraction of white key width)
-        // Each black key sits between two white keys, slightly offset
-        private static readonly double[] BlackKeyOffsets = { 0.65, 0.65, 0, 0.65, 0.65, 0.65 };
         // Which chromatic positions are black: 1, 3, 6, 8, 10
 
         // Widget tracking

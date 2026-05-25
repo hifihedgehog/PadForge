@@ -7838,6 +7838,7 @@ namespace PadForge.Services
 
             try { Stop(); } catch { /* Best effort on shutdown */ }
             _disposed = true;
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>Builds a <see cref="Gamepad"/> from the physical

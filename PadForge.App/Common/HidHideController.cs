@@ -134,8 +134,6 @@ namespace PadForge.Common
             new() { fmtid = new Guid("78c34fc8-104a-4aca-9ea4-524d52996e57"), pid = 256 };
 
         private const int CR_SUCCESS = 0;
-        private const int CR_NO_SUCH_VALUE = 0x25;
-        private const int CR_NO_SUCH_DEVNODE = 0x0D;
         private const uint CM_LOCATE_DEVNODE_PHANTOM = 0x01;
         private const uint DEVPROP_TYPE_GUID = 0x0000000D;
         private const uint DEVPROP_TYPE_STRING = 0x00000012;

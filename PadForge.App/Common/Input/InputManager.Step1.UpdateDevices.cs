@@ -582,25 +582,28 @@ namespace PadForge.Common.Input
                 if (_openedKeyboardHandles.Contains(kb.Handle))
                     continue;
 
+                SdlKeyboardWrapper wrapper = null;
                 try
                 {
-                    var wrapper = new SdlKeyboardWrapper();
+                    wrapper = new SdlKeyboardWrapper();
                     if (!wrapper.Open(kb))
-                    {
-                        wrapper.Dispose();
                         continue;
-                    }
 
                     UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid);
                     ud.LoadFromKeyboardDevice(wrapper);
                     ud.IsOnline = true;
 
                     _openedKeyboardHandles.Add(kb.Handle);
+                    wrapper = null; // ownership transferred to UserDevice
                     changed = true;
                 }
                 catch (Exception ex)
                 {
                     RaiseError($"Error opening keyboard ({kb.Name})", ex);
+                }
+                finally
+                {
+                    wrapper?.Dispose();
                 }
             }
 
@@ -632,25 +635,28 @@ namespace PadForge.Common.Input
                         continue;
                 }
 
+                SdlMouseWrapper wrapper = null;
                 try
                 {
-                    var wrapper = new SdlMouseWrapper();
+                    wrapper = new SdlMouseWrapper();
                     if (!wrapper.Open(mouse))
-                    {
-                        wrapper.Dispose();
                         continue;
-                    }
 
                     UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid);
                     ud.LoadFromMouseDevice(wrapper);
                     ud.IsOnline = true;
 
                     _openedMouseHandles.Add(mouse.Handle);
+                    wrapper = null; // ownership transferred to UserDevice
                     changed = true;
                 }
                 catch (Exception ex)
                 {
                     RaiseError($"Error opening mouse ({mouse.Name})", ex);
+                }
+                finally
+                {
+                    wrapper?.Dispose();
                 }
             }
 

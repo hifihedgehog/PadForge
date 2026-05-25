@@ -26,12 +26,6 @@ namespace PadForge.Engine.Touchpad
     /// </summary>
     public static class GestureRecognizer
     {
-        // 100ms cooldown is the recipe default — tight enough that the
-        // user doesn't feel a stutter between gestures, loose enough to
-        // prevent the bounce-fire scenario where a quick reverse motion
-        // re-fires the opposite-direction swipe immediately.
-        private const float CooldownAdditionalMs = 100f;
-
         /// <summary>True when the per-pad Mode setting allows in-box
         /// fires (swipes, taps, longpress, radial, pinch/spread/rotate,
         /// in-box shape templates). Mirrors the MappingDisplayResolver

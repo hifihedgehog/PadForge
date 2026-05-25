@@ -232,11 +232,6 @@ namespace PadForge.Engine
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool PostMessageW(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
-        [DllImport("user32.dll")]
-        private static extern uint MapVirtualKeyW(uint uCode, uint uMapType);
-
-        private const uint MAPVK_VSC_TO_VK_EX = 3;
-
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
         private static extern IntPtr GetModuleHandleW(string lpModuleName);
 

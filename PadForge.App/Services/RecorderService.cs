@@ -994,6 +994,7 @@ namespace PadForge.Services
 
             CancelRecording();
             _disposed = true;
+            GC.SuppressFinalize(this);
         }
     }
 

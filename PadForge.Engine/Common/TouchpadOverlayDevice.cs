@@ -194,6 +194,6 @@ namespace PadForge.Engine
 
         public bool SetRumble(ushort low, ushort high, uint durationMs = uint.MaxValue) => false;
         public bool StopRumble() => false;
-        public void Dispose() { }
+        public void Dispose() => GC.SuppressFinalize(this);
     }
 }

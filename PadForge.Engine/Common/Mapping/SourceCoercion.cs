@@ -438,6 +438,16 @@ namespace PadForge.Engine.Common.Mapping
         /// 2-finger session active. Returns 0 when unwired.</summary>
         public static Func<string, int, string, float> TouchpadGestureAxisProvider { get; set; }
 
+        /// <summary>Returns the per-(deviceGuid, padIdx) touchpad settings
+        /// snapshot used by <see cref="TryReadTouchpadAxis"/> to apply
+        /// per-axis mouse sensitivity and inversion to the touchpad
+        /// finger → KBM mouse delta. App layer wires this against
+        /// <c>InputManager.TouchpadGestureSettingsProvider</c>. Returns
+        /// null when unwired, in which case the reader falls back to a
+        /// neutral 1.0× / non-inverted multiplier so existing behavior
+        /// is preserved.</summary>
+        public static Func<string, int, PadForge.Engine.Touchpad.TouchpadGestureSettings> TouchpadMouseSettingsProvider { get; set; }
+
         /// <summary>True for the bipolar continuous-axis gesture
         /// descriptors. These return a float value via
         /// <see cref="TouchpadGestureAxisProvider"/> rather than a
@@ -1409,7 +1419,20 @@ namespace PadForge.Engine.Common.Mapping
             if (axisOffset == 1)
                 delta = -delta;
 
-            bipolar = delta * TouchpadDeltaScale;
+            // Per-pad mouse tuning: sensitivity multiplier per axis plus
+            // optional invert. Falls back to 1.0× / non-inverted when the
+            // provider isn't wired (engine standalone tests, early
+            // startup before InputService binds).
+            var tpSettings = TouchpadMouseSettingsProvider?.Invoke(deviceGuid, padIdx);
+            float sens = (axisOffset == 0)
+                ? (tpSettings?.MouseSensitivityX ?? 1.0f)
+                : (tpSettings?.MouseSensitivityY ?? 1.0f);
+            bool invert = (axisOffset == 0)
+                ? (tpSettings?.MouseInvertX ?? false)
+                : (tpSettings?.MouseInvertY ?? false);
+            if (invert) delta = -delta;
+
+            bipolar = delta * TouchpadDeltaScale * sens;
             if (bipolar < -1f) bipolar = -1f;
             else if (bipolar > 1f) bipolar = 1f;
             return true;

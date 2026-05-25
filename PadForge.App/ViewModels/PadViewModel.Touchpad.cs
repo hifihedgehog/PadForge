@@ -340,6 +340,44 @@ namespace PadForge.ViewModels
             }
         }
 
+        // ─── Mouse output card (touchpad-as-mouse tuning) ─────────────
+
+        private double _touchpadMouseSensitivityX = 1.0;
+        public double TouchpadMouseSensitivityX
+        {
+            get => _touchpadMouseSensitivityX;
+            set
+            {
+                var v = Math.Clamp(value, 0.05, 10.0);
+                if (SetProperty(ref _touchpadMouseSensitivityX, v)) PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadMouseSensitivityY = 1.0;
+        public double TouchpadMouseSensitivityY
+        {
+            get => _touchpadMouseSensitivityY;
+            set
+            {
+                var v = Math.Clamp(value, 0.05, 10.0);
+                if (SetProperty(ref _touchpadMouseSensitivityY, v)) PushIfNotLoading();
+            }
+        }
+
+        private bool _touchpadMouseInvertX;
+        public bool TouchpadMouseInvertX
+        {
+            get => _touchpadMouseInvertX;
+            set { if (SetProperty(ref _touchpadMouseInvertX, value)) PushIfNotLoading(); }
+        }
+
+        private bool _touchpadMouseInvertY;
+        public bool TouchpadMouseInvertY
+        {
+            get => _touchpadMouseInvertY;
+            set { if (SetProperty(ref _touchpadMouseInvertY, value)) PushIfNotLoading(); }
+        }
+
         // ─── Custom gestures card ─────────────────────
 
         /// <summary>Profile-scoped custom touchpad gestures filtered by
@@ -557,6 +595,36 @@ namespace PadForge.ViewModels
                 TouchpadJoystickDPadActivationThreshold = 0.15;
             });
 
+        // ─── Mouse-output card reset commands ─────────
+
+        private RelayCommand _resetTouchpadMouseSensitivityXCommand;
+        public RelayCommand ResetTouchpadMouseSensitivityXCommand =>
+            _resetTouchpadMouseSensitivityXCommand ??= new RelayCommand(() => TouchpadMouseSensitivityX = 1.0);
+
+        private RelayCommand _resetTouchpadMouseSensitivityYCommand;
+        public RelayCommand ResetTouchpadMouseSensitivityYCommand =>
+            _resetTouchpadMouseSensitivityYCommand ??= new RelayCommand(() => TouchpadMouseSensitivityY = 1.0);
+
+        private RelayCommand _resetTouchpadMouseInvertXCommand;
+        public RelayCommand ResetTouchpadMouseInvertXCommand =>
+            _resetTouchpadMouseInvertXCommand ??= new RelayCommand(() => TouchpadMouseInvertX = false);
+
+        private RelayCommand _resetTouchpadMouseInvertYCommand;
+        public RelayCommand ResetTouchpadMouseInvertYCommand =>
+            _resetTouchpadMouseInvertYCommand ??= new RelayCommand(() => TouchpadMouseInvertY = false);
+
+        private RelayCommand _resetTouchpadMouseCardCommand;
+
+        /// <summary>Reset every Mouse-output card field to defaults.</summary>
+        public RelayCommand ResetTouchpadMouseCardCommand =>
+            _resetTouchpadMouseCardCommand ??= new RelayCommand(() =>
+            {
+                TouchpadMouseSensitivityX = 1.0;
+                TouchpadMouseSensitivityY = 1.0;
+                TouchpadMouseInvertX = false;
+                TouchpadMouseInvertY = false;
+            });
+
         // ─── Per-pad pivot / topology helpers ─────────
 
         /// <summary>Update <see cref="MaxTouchpadIndex"/> from the
@@ -611,6 +679,10 @@ namespace PadForge.ViewModels
                 TouchpadJoystickInnerDeadzone = s.JoystickInnerDeadzone;
                 TouchpadJoystickDPadMode = s.JoystickDPadMode ?? "FourWay";
                 TouchpadJoystickDPadActivationThreshold = s.JoystickDPadActivationThreshold;
+                TouchpadMouseSensitivityX = s.MouseSensitivityX;
+                TouchpadMouseSensitivityY = s.MouseSensitivityY;
+                TouchpadMouseInvertX = s.MouseInvertX;
+                TouchpadMouseInvertY = s.MouseInvertY;
             }
             finally { _loadingTouchpadGestures = false; }
         }
@@ -692,6 +764,10 @@ namespace PadForge.ViewModels
             s.JoystickInnerDeadzone = (float)TouchpadJoystickInnerDeadzone;
             s.JoystickDPadMode = string.IsNullOrEmpty(TouchpadJoystickDPadMode) ? "FourWay" : TouchpadJoystickDPadMode;
             s.JoystickDPadActivationThreshold = (float)TouchpadJoystickDPadActivationThreshold;
+            s.MouseSensitivityX = (float)TouchpadMouseSensitivityX;
+            s.MouseSensitivityY = (float)TouchpadMouseSensitivityY;
+            s.MouseInvertX = TouchpadMouseInvertX;
+            s.MouseInvertY = TouchpadMouseInvertY;
             entry.Settings = s;
 
             ps.TouchpadSettings = list.ToArray();

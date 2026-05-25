@@ -178,6 +178,32 @@ namespace PadForge.Engine.Touchpad
         /// snap separately from analog feel.</summary>
         [XmlAttribute] public float JoystickDPadActivationThreshold { get; set; } = 0.15f;
 
+        // ─── Mouse output (touchpad-as-mouse tuning) ───────────────────
+        //
+        // Applied by SourceCoercion.TryReadTouchpadAxis on the per-frame
+        // delta when a touchpad finger X/Y descriptor feeds a KBM mouse
+        // target. The base delta scale (TouchpadDeltaScale = 128) gives
+        // a 1:1 sweep across a 1920-wide screen at sensitivity 1.0; the
+        // multipliers below let the user dial in slower/faster cursor
+        // feel and flip either axis without leaving the touchpad tab.
+
+        /// <summary>Multiplier on horizontal touchpad-to-mouse delta. 1.0
+        /// matches the calibrated baseline (full pad sweep ≈ 1920 px on
+        /// a typical screen). Below 1.0 = slower cursor, above 1.0 =
+        /// faster.</summary>
+        [XmlAttribute] public float MouseSensitivityX { get; set; } = 1.0f;
+
+        /// <summary>Multiplier on vertical touchpad-to-mouse delta.</summary>
+        [XmlAttribute] public float MouseSensitivityY { get; set; } = 1.0f;
+
+        /// <summary>Flip horizontal touchpad-to-mouse delta. Finger right
+        /// → cursor left when on.</summary>
+        [XmlAttribute] public bool MouseInvertX { get; set; }
+
+        /// <summary>Flip vertical touchpad-to-mouse delta. Finger down →
+        /// cursor up when on.</summary>
+        [XmlAttribute] public bool MouseInvertY { get; set; }
+
         public TouchpadGestureSettings Clone()
         {
             return new TouchpadGestureSettings
@@ -215,6 +241,10 @@ namespace PadForge.Engine.Touchpad
                 JoystickInnerDeadzone = JoystickInnerDeadzone,
                 JoystickDPadMode = JoystickDPadMode,
                 JoystickDPadActivationThreshold = JoystickDPadActivationThreshold,
+                MouseSensitivityX = MouseSensitivityX,
+                MouseSensitivityY = MouseSensitivityY,
+                MouseInvertX = MouseInvertX,
+                MouseInvertY = MouseInvertY,
             };
         }
 

@@ -769,7 +769,11 @@ namespace PadForge
                         nameof(PadViewModel.TouchpadJoystickMaxRadius) or
                         nameof(PadViewModel.TouchpadJoystickInnerDeadzone) or
                         nameof(PadViewModel.TouchpadJoystickDPadMode) or
-                        nameof(PadViewModel.TouchpadJoystickDPadActivationThreshold);
+                        nameof(PadViewModel.TouchpadJoystickDPadActivationThreshold) or
+                        nameof(PadViewModel.TouchpadMouseSensitivityX) or
+                        nameof(PadViewModel.TouchpadMouseSensitivityY) or
+                        nameof(PadViewModel.TouchpadMouseInvertX) or
+                        nameof(PadViewModel.TouchpadMouseInvertY);
 
                     if (isTouchpadField)
                     {

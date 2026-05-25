@@ -188,9 +188,9 @@ namespace PadForge.Engine.Touchpad
         // feel and flip either axis without leaving the touchpad tab.
 
         /// <summary>Multiplier on horizontal touchpad-to-mouse delta. 1.0
-        /// matches the calibrated baseline (full pad sweep ≈ 1920 px on
-        /// a typical screen). Below 1.0 = slower cursor, above 1.0 =
-        /// faster.</summary>
+        /// is the calibrated baseline (a full horizontal pad sweep
+        /// moves the cursor ~1920 pixels). Below 1.0 = slower cursor,
+        /// above 1.0 = faster.</summary>
         [XmlAttribute] public float MouseSensitivityX { get; set; } = 1.0f;
 
         /// <summary>Multiplier on vertical touchpad-to-mouse delta.</summary>

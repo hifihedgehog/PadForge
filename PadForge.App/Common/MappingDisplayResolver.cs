@@ -1,3 +1,4 @@
+using System.Linq;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 using PadForge.Resources.Strings;
@@ -572,6 +573,14 @@ namespace PadForge.Common
             // gyro/motion block at the bottom of the picker, since
             // their semantics + per-pad enable toggles put them in
             // a different conceptual layer than the raw axes.
+            //
+            // Click is gated on whether the device actually exposes
+            // SDL_GAMEPAD_BUTTON_TOUCHPAD (slot 16) — DualSense / DS4
+            // do (physical press on the surface), web touchpad and
+            // overlay device do (virtual button), but system PTP
+            // touchpads (laptop trackpads enumerated via Raw Input)
+            // don't. Without the gate, PTP devices got a Click entry
+            // in the picker that never fires.
             if (ud.HasTouchpad || ud.IsTouchpad)
             {
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 0 X", DisplayName = si.Mapping_TouchpadX1 });
@@ -580,7 +589,9 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 X", DisplayName = si.Mapping_TouchpadX2 });
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 Y", DisplayName = si.Mapping_TouchpadY2 });
                 list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 Down", DisplayName = si.Mapping_TouchpadContact2 });
-                list.Add(new InputChoice { Descriptor = "Touchpad 0 Click", DisplayName = si.Mapping_TouchpadClick });
+                bool hasTouchpadClick = ud.Device?.SupportedButtonIndices?.Contains(16) ?? false;
+                if (hasTouchpadClick)
+                    list.Add(new InputChoice { Descriptor = "Touchpad 0 Click", DisplayName = si.Mapping_TouchpadClick });
             }
 
             // Gyro sources (for devices with a gyroscope sensor). SDL3

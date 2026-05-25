@@ -1080,6 +1080,10 @@ namespace PadForge.ViewModels
             AddKey(Strings.Instance.Key_Tab, 0x09);
             AddKey(Strings.Instance.Key_Backspace, 0x08);
             AddKey(Strings.Instance.Key_CapsLock, 0x14);
+            AddKey(Strings.Instance.Key_NumLock, 0x90);
+            AddKey(Strings.Instance.Key_ScrollLock, 0x91);
+            AddKey(Strings.Instance.Key_PrintScreen, 0x2C);
+            AddKey(Strings.Instance.Key_Pause, 0x13);
 
             // ── Navigation ──
             AddKey(Strings.Instance.Key_Up, 0x26);

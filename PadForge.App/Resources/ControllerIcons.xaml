@@ -87,6 +87,17 @@
          Zacksly outer ring so the two compose. -->
     <StreamGeometry x:Key="ZackslyStickInnerDiscGeometry">M256,152.93 A103.07,103.07,0,1,1,256,359.06 A103.07,103.07,0,1,1,256,152.93 Z</StreamGeometry>
 
+    <!-- Touchpad-stick card-header icon — modelled after the Segoe
+         Fluent Icons LeftStick glyph (F108) with the "L" letter
+         omitted so it reads as a generic stick rather than the left
+         stick specifically. Proportions tuned to match Fluent's
+         chunkier outer ring + nearly-flush inner cap (rather than
+         the thicker-ring, smaller-cap Zacksly look). Composed as
+         outer ring + inner cap, same two-path pattern Zacksly uses.
+         Used by the Touchpad-tab Stick / D-Pad Output card header. -->
+    <StreamGeometry x:Key="TouchpadStickIconOuterRingGeometry">M256,26 A230,230,0,1,0,486,256 A230,230,0,1,0,256,26 Z M256,74 A182,182,0,1,1,74,256 A182,182,0,1,1,256,74 Z</StreamGeometry>
+    <StreamGeometry x:Key="TouchpadStickIconInnerCapGeometry">M256,116 A140,140,0,1,1,116,256 A140,140,0,1,1,256,116 Z</StreamGeometry>
+
     <!-- Trigger outer-body silhouette (left side) — first subpath of
          the Zacksly Left Trigger SVG (the body shell), with the
          lettering subpaths intentionally omitted. -->

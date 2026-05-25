@@ -1511,11 +1511,11 @@
   <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>Atalho para suspender</value></data>
   <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>Combinação de teclas (ex.: Ctrl+Alt+T) que alterna a detecção de gestos. Útil quando um jogo espera entrada bruta do touchpad ou quando disparos acidentais de gestos atrapalham a jogatina. Vazio = nenhum atalho vinculado.</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Gestos de touchpad</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Detecção de gestos por touchpad. Cada deslize, toque, pinça e forma com os dedos vira uma fonte de mapeamento que você pode vincular na aba Mapeamentos.</value></data>
+  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Entrada por touchpad. Gestos (deslizar, tocar, pinçar, formas) e modos de saída contínuos (stick virtual / D-pad, mouse) viram fontes de mapeamento que você pode vincular na aba Mapeamentos.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
-  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detecção</value></data>
+  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detecção de gestos</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Ativar gestos neste touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Chave mestra deste touchpad. Quando desligada, nenhum descritor de gesto dispara para este touchpad. Os mapeamentos de dedo / clique / posição existentes continuam funcionando.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Reconhecer</value></data>
@@ -1552,7 +1552,17 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Nenhum gesto personalizado gravado para este perfil. Clique em Gravar novo gesto para capturar um.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 dedo</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} dedos</value></data>
-  <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Saída Stick / D-Pad</value></data>
+  <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Saída do mouse</value></data>
+  <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Ajusta a velocidade do cursor quando um dedo do touchpad é mapeado para Mouse X/Y em um controle virtual de Teclado / Mouse. 1.0 é o padrão. Aumente qualquer eixo para um cursor mais rápido, reduza para um mais lento. Inverter inverte o eixo correspondente.</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Sensibilidade do mouse X</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplicador do delta horizontal touchpad → mouse. Abaixo de 1.0 desacelera o cursor, acima de 1.0 acelera.</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityY" xml:space="preserve"><value>Sensibilidade do mouse Y</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityY_Tooltip" xml:space="preserve"><value>Multiplicador do delta vertical touchpad → mouse.</value></data>
+  <data name="Pad_Touchpad_MouseInvertX" xml:space="preserve"><value>Inverter mouse X</value></data>
+  <data name="Pad_Touchpad_MouseInvertX_Tooltip" xml:space="preserve"><value>Inverte o movimento horizontal. Dedo para a direita move o cursor para a esquerda.</value></data>
+  <data name="Pad_Touchpad_MouseInvertY" xml:space="preserve"><value>Inverter mouse Y</value></data>
+  <data name="Pad_Touchpad_MouseInvertY_Tooltip" xml:space="preserve"><value>Inverte o movimento vertical. Dedo para baixo move o cursor para cima.</value></data>
+  <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Saída de stick / D-Pad</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Transforme o touchpad em um stick analógico virtual ou D-pad. A saída se ancora onde o dedo encosta primeiro. A posição atual relativa a essa âncora controla o valor do stick e, opcionalmente, bits de direção do D-pad mantidos.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Ativar Saída Stick / D-Pad</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Expõe os descritores Touchpad Stick X, Stick Y e D-pad no seletor de mapeamento. Funciona junto às fontes de dedo e gestos do touchpad existentes, não em lugar delas.</value></data>
@@ -1565,8 +1575,13 @@
   <data name="Pad_Touchpad_StickDPadMode_EightWay" xml:space="preserve"><value>8 Direções</value></data>
   <data name="Pad_Touchpad_StickDPadActivationThreshold" xml:space="preserve"><value>Ativação do D-Pad (0..1)</value></data>
 
-  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Restaurar Detecção</value></data>
+  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Restaurar Detecção de Gestos</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Restaurar Gestos Predefinidos</value></data>
+  <data name="Pad_ResetTouchpadMouse" xml:space="preserve"><value>Restaurar Saída do Mouse</value></data>
+  <data name="Pad_ResetTouchpadMouseSensitivityX" xml:space="preserve"><value>Restaurar Sensibilidade do Mouse X</value></data>
+  <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>Restaurar Sensibilidade do Mouse Y</value></data>
+  <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Restaurar Inverter Mouse X</value></data>
+  <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Restaurar Inverter Mouse Y</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Restaurar Saída Stick / D-Pad</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Restaurar Gestos</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Restaurar Reconhecer</value></data>

@@ -1531,11 +1531,11 @@
   <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>Pauze-sneltoets</value></data>
   <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>Toetsencombinatie (bijv. Ctrl+Alt+T) die gebaarherkenning in- en uitschakelt. Handig wanneer een game ruwe touchpad-invoer verwacht of wanneer per ongeluk uitgevoerde gebaren het spel onderbreken. Leeg = geen sneltoets gekoppeld.</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad-gebaren</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Gebaardetectie per touchpad. Elke vingerveeg, tik, knijpbeweging en vorm wordt een toewijzingsbron die je op het Toewijzingen-tabblad kunt koppelen.</value></data>
+  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Invoer per touchpad. Gebaren (vegen, tikken, knijpen, vormen) en continue uitvoermodi (virtuele stick / D-pad, muis) worden mapping-bronnen die je op het tabblad Mappings kunt binden.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
-  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detectie</value></data>
+  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Gebarendetectie</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Gebaren op dit touchpad inschakelen</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Hoofdschakelaar voor dit touchpad. Bij uitschakeling activeert dit touchpad geen gebaardescriptoren. Bestaande vinger-, klik- en positietoewijzingen blijven werken.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Herkennen</value></data>
@@ -1572,6 +1572,16 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Geen aangepaste gebaren opgenomen voor dit profiel. Klik op Nieuw gebaar opnemen om er een vast te leggen.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 vinger</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} vingers</value></data>
+  <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Muisuitvoer</value></data>
+  <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Past de cursorsnelheid aan wanneer een touchpad-vinger is gekoppeld aan Muis X/Y op een virtuele Toetsenbord / Muis-controller. 1.0 is de standaard. Verhoog een as voor een snellere cursor, verlaag voor een langzamere. Inverteren keert de betreffende as om.</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Muisgevoeligheid X</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Vermenigvuldiger voor horizontale touchpad → muis-delta. Onder 1.0 vertraagt de cursor, boven 1.0 versnelt hem.</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityY" xml:space="preserve"><value>Muisgevoeligheid Y</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityY_Tooltip" xml:space="preserve"><value>Vermenigvuldiger voor verticale touchpad → muis-delta.</value></data>
+  <data name="Pad_Touchpad_MouseInvertX" xml:space="preserve"><value>Muis X inverteren</value></data>
+  <data name="Pad_Touchpad_MouseInvertX_Tooltip" xml:space="preserve"><value>Horizontale beweging omkeren. Vinger naar rechts verplaatst de cursor naar links.</value></data>
+  <data name="Pad_Touchpad_MouseInvertY" xml:space="preserve"><value>Muis Y inverteren</value></data>
+  <data name="Pad_Touchpad_MouseInvertY_Tooltip" xml:space="preserve"><value>Verticale beweging omkeren. Vinger omlaag verplaatst de cursor omhoog.</value></data>
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Stick / D-pad-uitvoer</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Maak van het touchpad een virtuele analoge stick of D-pad. De uitvoer wordt verankerd waar je vinger eerst neerkomt. De huidige positie ten opzichte van dat anker stuurt de stickwaarde en (optioneel) vergrendelde D-pad-richtingbits aan.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Stick / D-pad-uitvoer inschakelen</value></data>
@@ -1585,8 +1595,13 @@
   <data name="Pad_Touchpad_StickDPadMode_EightWay" xml:space="preserve"><value>8-Weg</value></data>
   <data name="Pad_Touchpad_StickDPadActivationThreshold" xml:space="preserve"><value>D-pad-activering (0..1)</value></data>
 
-  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Detectie resetten</value></data>
+  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Gebarendetectie resetten</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Ingebouwde gebaren resetten</value></data>
+  <data name="Pad_ResetTouchpadMouse" xml:space="preserve"><value>Muisuitvoer resetten</value></data>
+  <data name="Pad_ResetTouchpadMouseSensitivityX" xml:space="preserve"><value>Muisgevoeligheid X resetten</value></data>
+  <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>Muisgevoeligheid Y resetten</value></data>
+  <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Muis X inverteren resetten</value></data>
+  <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Muis Y inverteren resetten</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Stick / D-pad-uitvoer resetten</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Gebaren resetten</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Herkennen resetten</value></data>

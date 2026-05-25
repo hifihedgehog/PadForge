@@ -1511,11 +1511,11 @@
   <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>Raccourci de suspension</value></data>
   <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>Combinaison de touches (par ex. Ctrl+Alt+T) qui active ou désactive la détection des gestes. Utile quand un jeu attend l'entrée brute du pavé tactile ou quand des déclenchements accidentels perturbent la partie. Vide = aucun raccourci.</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Pavé tactile</value></data>
-  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Gestes pavé tactile</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Détection de gestes par pavé tactile. Chaque balayage, tape, pincement et forme devient une source d'affectation que tu peux lier dans l'onglet Affectations.</value></data>
+  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Pavé tactile</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Entrée par pavé tactile. Les gestes (glissé, tap, pincement, formes) et les modes de sortie continus (stick virtuel / croix directionnelle, souris) deviennent des sources de mappage à lier dans l'onglet Mappages.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Pavé tactile</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Pavé tactile {0}</value></data>
-  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Détection</value></data>
+  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Détection des gestes</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Activer les gestes sur ce pavé tactile</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Bascule principale pour ce pavé tactile. Désactivé, aucun descripteur de geste n'est déclenché pour ce pavé tactile. Les affectations doigt / clic / position existantes continuent de fonctionner.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Reconnaître</value></data>
@@ -1552,7 +1552,17 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Aucun geste personnalisé enregistré pour ce profil. Clique sur Enregistrer un nouveau geste pour en capturer un.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 doigt</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} doigts</value></data>
-  <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Sortie Stick / Croix directionnelle</value></data>
+  <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Sortie souris</value></data>
+  <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Règle la vitesse du curseur quand un doigt du pavé tactile est mappé sur Souris X/Y d'une manette virtuelle Clavier / Souris. 1.0 est la valeur par défaut. Augmente un axe pour un curseur plus rapide, baisse-le pour le ralentir. Inverser retourne l'axe correspondant.</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Sensibilité de la souris X</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplicateur du delta horizontal pavé tactile → souris. En dessous de 1.0 ralentit le curseur, au-dessus de 1.0 l'accélère.</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityY" xml:space="preserve"><value>Sensibilité de la souris Y</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityY_Tooltip" xml:space="preserve"><value>Multiplicateur du delta vertical pavé tactile → souris.</value></data>
+  <data name="Pad_Touchpad_MouseInvertX" xml:space="preserve"><value>Inverser souris X</value></data>
+  <data name="Pad_Touchpad_MouseInvertX_Tooltip" xml:space="preserve"><value>Retourne le mouvement horizontal. Le doigt vers la droite déplace le curseur vers la gauche.</value></data>
+  <data name="Pad_Touchpad_MouseInvertY" xml:space="preserve"><value>Inverser souris Y</value></data>
+  <data name="Pad_Touchpad_MouseInvertY_Tooltip" xml:space="preserve"><value>Retourne le mouvement vertical. Le doigt vers le bas déplace le curseur vers le haut.</value></data>
+  <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Sortie stick / Croix directionnelle</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Transforme le pavé tactile en stick analogique virtuel ou croix directionnelle. La sortie est ancrée là où ton doigt se pose. La position actuelle relative à cet ancrage pilote la valeur du stick et, en option, les bits de direction maintenus de la croix.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Activer Sortie Stick / Croix directionnelle</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Affiche les descripteurs Pavé tactile Stick X, Stick Y et Croix directionnelle dans le sélecteur de mapping. Fonctionne en complément des sources de doigt et de gestes existantes, pas à leur place.</value></data>
@@ -1565,8 +1575,13 @@
   <data name="Pad_Touchpad_StickDPadMode_EightWay" xml:space="preserve"><value>8 Directions</value></data>
   <data name="Pad_Touchpad_StickDPadActivationThreshold" xml:space="preserve"><value>Activation de la Croix (0..1)</value></data>
 
-  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Réinitialiser la détection</value></data>
+  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Réinitialiser la détection des gestes</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Réinitialiser les gestes intégrés</value></data>
+  <data name="Pad_ResetTouchpadMouse" xml:space="preserve"><value>Réinitialiser la sortie souris</value></data>
+  <data name="Pad_ResetTouchpadMouseSensitivityX" xml:space="preserve"><value>Réinitialiser la sensibilité de la souris X</value></data>
+  <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>Réinitialiser la sensibilité de la souris Y</value></data>
+  <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Réinitialiser inverser souris X</value></data>
+  <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Réinitialiser inverser souris Y</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Réinitialiser Sortie Stick / Croix directionnelle</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Réinitialiser les gestes</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Réinitialiser la reconnaissance</value></data>

@@ -1334,17 +1334,16 @@ namespace PadForge.Engine.Common.Mapping
         /// <c>bipolar × KbmMouseSensitivity = native_pixel_delta</c>,
         /// where <c>KbmMouseSensitivity = 15</c>
         /// (see <c>KeyboardMouseVirtualController.cs:38</c>), giving
-        /// <c>scale = 1920 / 15 ≈ 128</c>. With this, a single full-pad
-        /// X sweep moves the cursor 1920 pixels — a 1:1 sweep across a
-        /// 1920-wide screen, matching a typical laptop trackpad's
-        /// non-accelerated feel. Users dial further via per-row
-        /// sensitivity curves and per-axis max-range on the slot's
-        /// left-thumb settings.
+        /// <c>scale = 1920 / 15 ≈ 128</c>. A full horizontal pad sweep
+        /// at sensitivity 1.0 moves the cursor 1920 pixels, matching a
+        /// typical laptop trackpad's non-accelerated feel. Users dial
+        /// further via the Touchpad tab's per-axis Mouse Sensitivity
+        /// multipliers and per-row sensitivity curves.
         /// <para>Steam Controller 2026 and other touchpads with
-        /// different native resolutions still feel intuitive because
-        /// the model is "fraction of pad swept = fraction of standard
-        /// screen swept," independent of the source pad's native
-        /// resolution.</para></summary>
+        /// different native resolutions still feel intuitive: SDL3
+        /// normalizes every pad to [0..1] before this scale applies,
+        /// so the cursor-delta-per-pad-fraction is constant regardless
+        /// of the source pad's native pixel resolution.</para></summary>
         private const float TouchpadDeltaScale = 128f;
 
         /// <summary>Returns the relative-motion delta of a touchpad finger

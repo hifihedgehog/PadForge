@@ -1027,7 +1027,7 @@
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Per-touchpad input. Gestures (swipes, taps, pinches, shapes) and continuous output modes (virtual stick / D-pad, mouse) become mapping sources you can bind on the Mappings tab.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
-  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detection</value></data>
+  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Gesture Detection</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Enable Gestures on This Touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Master toggle for this touchpad. When off, no gesture descriptors fire for this touchpad. Existing finger / click / position mappings still work.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Recognize</value></data>
@@ -1092,7 +1092,7 @@
   <data name="Pad_Touchpad_MouseInvertY_Tooltip" xml:space="preserve"><value>Flip vertical motion. Finger down moves the cursor up.</value></data>
 
   <!-- Reset-All tooltips per card -->
-  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Reset Detection</value></data>
+  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Reset Gesture Detection</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Reset In-Box Gestures</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Reset Stick / D-Pad Output</value></data>
   <data name="Pad_ResetTouchpadMouse" xml:space="preserve"><value>Reset Mouse Output</value></data>

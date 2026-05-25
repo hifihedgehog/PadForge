@@ -1511,11 +1511,11 @@
   <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>一時停止ホットキー</value></data>
   <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>ジェスチャー検出のオン / オフを切り替えるキーボード組み合わせ (例: Ctrl+Alt+T)。ゲームが生のタッチパッド入力を必要とする場合や、意図せず発火したジェスチャーがプレイを妨げる場合に便利です。空欄でホットキー未割り当て。</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>タッチパッド</value></data>
-  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>タッチパッドジェスチャー</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>タッチパッドごとのジェスチャー検出。各指のスワイプ、タップ、ピンチ、シェイプはマッピングタブで割り当てられるマッピングソースになります。</value></data>
+  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>タッチパッド</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>タッチパッドごとの入力。ジェスチャー（スワイプ、タップ、ピンチ、シェイプ）と連続出力モード（仮想スティック / 方向キー、マウス）がマッピングソースになり、マッピングタブで割り当てられます。</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>タッチパッド</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>タッチパッド {0}</value></data>
-  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>検出</value></data>
+  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>ジェスチャー検出</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>このタッチパッドでジェスチャーを有効にする</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>このタッチパッドのマスタートグルです。オフの場合、このタッチパッドではジェスチャーディスクリプタを発火しません。指 / クリック / 位置のマッピングはそのまま動作します。</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>認識対象</value></data>
@@ -1552,6 +1552,16 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>このプロファイルにはカスタムジェスチャーが記録されていません。「新しいジェスチャーを記録」をクリックして取り込んでください。</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 本指</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} 本指</value></data>
+  <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>マウス出力</value></data>
+  <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>タッチパッドの指がキーボード / マウス仮想コントローラーのマウス X/Y に割り当てられているときのカーソル速度を調整します。1.0 が既定値です。いずれかの軸を上げるとカーソルが速く、下げると遅くなります。「反転」は該当する軸を反転します。</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>マウス感度 X</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>横方向のタッチパッド → マウス差分の乗数。1.0 未満はカーソルを遅く、1.0 超は速くします。</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityY" xml:space="preserve"><value>マウス感度 Y</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityY_Tooltip" xml:space="preserve"><value>縦方向のタッチパッド → マウス差分の乗数。</value></data>
+  <data name="Pad_Touchpad_MouseInvertX" xml:space="preserve"><value>マウス X を反転</value></data>
+  <data name="Pad_Touchpad_MouseInvertX_Tooltip" xml:space="preserve"><value>横方向の動きを反転します。指を右に動かすとカーソルが左に動きます。</value></data>
+  <data name="Pad_Touchpad_MouseInvertY" xml:space="preserve"><value>マウス Y を反転</value></data>
+  <data name="Pad_Touchpad_MouseInvertY_Tooltip" xml:space="preserve"><value>縦方向の動きを反転します。指を下に動かすとカーソルが上に動きます。</value></data>
   <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>スティック／方向キー出力</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>タッチパッドを仮想アナログスティックまたは方向キーとして使用します。指が最初に触れた位置がアンカーとなります。そのアンカーからの現在位置がスティック値と (オプションで) ラッチされた方向キーの方向ビットを駆動します。</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>スティック／方向キー出力を有効にする</value></data>
@@ -1565,8 +1575,13 @@
   <data name="Pad_Touchpad_StickDPadMode_EightWay" xml:space="preserve"><value>8 方向</value></data>
   <data name="Pad_Touchpad_StickDPadActivationThreshold" xml:space="preserve"><value>方向キー作動 (0..1)</value></data>
 
-  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>検出をリセット</value></data>
+  <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>ジェスチャー検出をリセット</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>組み込みジェスチャーをリセット</value></data>
+  <data name="Pad_ResetTouchpadMouse" xml:space="preserve"><value>マウス出力をリセット</value></data>
+  <data name="Pad_ResetTouchpadMouseSensitivityX" xml:space="preserve"><value>マウス感度 X をリセット</value></data>
+  <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>マウス感度 Y をリセット</value></data>
+  <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>マウス X 反転をリセット</value></data>
+  <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>マウス Y 反転をリセット</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>スティック／方向キー出力をリセット</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>ジェスチャーをリセット</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>認識対象をリセット</value></data>

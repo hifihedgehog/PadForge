@@ -695,6 +695,19 @@ namespace PadForge.Services
                 };
             };
 
+            // — touchpad-as-mouse tuning. SourceCoercion.TryReadTouchpadAxis
+            // reads the per-(device, pad) MouseSensitivityX/Y and
+            // MouseInvertX/Y off the same per-pad settings collection the
+            // gesture/joystick providers use, so the user has one place to
+            // tune all touchpad output.
+            PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseSettingsProvider =
+                (deviceGuid, padIdx) =>
+            {
+                if (_inputManager == null) return null;
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return null;
+                return _inputManager.TouchpadGestureSettingsProvider?.Invoke(g, padIdx);
+            };
+
             // — per-(device, pad) touchpad gesture settings. Walks the
             // active slot's PadSetting collection for the named device
             // + pad index. Returns defaults when no per-pad entry exists
@@ -990,6 +1003,7 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.AimEngageStateProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureFiredProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureAxisProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseSettingsProvider = null;
                 lock (_gravityStateLock) _gravityState.Clear();
             }
 

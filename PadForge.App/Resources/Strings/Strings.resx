@@ -1023,8 +1023,8 @@
 
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad Gestures</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Per-touchpad gesture detection. Each finger swipe, tap, pinch, and shape becomes a mapping source you can bind on the Mappings tab.</value></data>
+  <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Per-touchpad input. Gestures (swipes, taps, pinches, shapes) and continuous output modes (virtual stick / D-pad, mouse) become mapping sources you can bind on the Mappings tab.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detection</value></data>
@@ -1079,10 +1079,23 @@
   <data name="Pad_Touchpad_StickDPadMode_EightWay" xml:space="preserve"><value>8-Way</value></data>
   <data name="Pad_Touchpad_StickDPadActivationThreshold" xml:space="preserve"><value>D-Pad Activation (0..1)</value></data>
 
+  <!-- Mouse Output card -->
+  <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Mouse Output</value></data>
+  <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Per-axis tuning for touchpad finger motion mapped to mouse X/Y on a Keyboard / Mouse virtual controller. 1.0 is the calibrated baseline (full pad sweep ≈ a 1920-wide screen). Invert flips the axis for that direction.</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Mouse Sensitivity X</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplier on horizontal touchpad → mouse delta. Below 1.0 slows the cursor; above 1.0 speeds it up.</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityY" xml:space="preserve"><value>Mouse Sensitivity Y</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityY_Tooltip" xml:space="preserve"><value>Multiplier on vertical touchpad → mouse delta.</value></data>
+  <data name="Pad_Touchpad_MouseInvertX" xml:space="preserve"><value>Invert Mouse X</value></data>
+  <data name="Pad_Touchpad_MouseInvertX_Tooltip" xml:space="preserve"><value>Flip horizontal motion. Finger right moves the cursor left.</value></data>
+  <data name="Pad_Touchpad_MouseInvertY" xml:space="preserve"><value>Invert Mouse Y</value></data>
+  <data name="Pad_Touchpad_MouseInvertY_Tooltip" xml:space="preserve"><value>Flip vertical motion. Finger down moves the cursor up.</value></data>
+
   <!-- Reset-All tooltips per card -->
   <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Reset Detection</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Reset In-Box Gestures</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Reset Stick / D-Pad Output</value></data>
+  <data name="Pad_ResetTouchpadMouse" xml:space="preserve"><value>Reset Mouse Output</value></data>
 
   <!-- Per-row Reset tooltips for stick / D-pad card -->
   <data name="Pad_ResetTouchpadStickEnabled" xml:space="preserve"><value>Reset Enable Stick / D-Pad Output</value></data>
@@ -1090,6 +1103,12 @@
   <data name="Pad_ResetTouchpadStickInnerDeadzone" xml:space="preserve"><value>Reset Inner Deadzone</value></data>
   <data name="Pad_ResetTouchpadStickDPadMode" xml:space="preserve"><value>Reset D-Pad Mode</value></data>
   <data name="Pad_ResetTouchpadStickDPadActivationThreshold" xml:space="preserve"><value>Reset D-Pad Activation</value></data>
+
+  <!-- Per-row Reset tooltips for mouse-output card -->
+  <data name="Pad_ResetTouchpadMouseSensitivityX" xml:space="preserve"><value>Reset Mouse Sensitivity X</value></data>
+  <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>Reset Mouse Sensitivity Y</value></data>
+  <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Reset Invert Mouse X</value></data>
+  <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Reset Invert Mouse Y</value></data>
 
   <!-- Per-row Reset tooltips -->
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Reset Gestures Enabled</value></data>

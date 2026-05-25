@@ -631,12 +631,17 @@ namespace PadForge.ViewModels
                 });
             }
 
-            // ── Row 0: Esc, F1–F12 ──
+            // ── Row 0: Esc, F1–F12, PrtSc / ScrLk / Pause cluster ──
             double y0 = 0;
             Add(0x1B, "Esc", 0, y0);
             for (int i = 0; i < 4; i++) Add(0x70 + i, $"F{i + 1}", 2 + i, y0);
             for (int i = 0; i < 4; i++) Add(0x74 + i, $"F{i + 5}", 6.5 + i, y0);
             for (int i = 0; i < 4; i++) Add(0x78 + i, $"F{i + 9}", 11 + i, y0);
+            // PrtSc / ScrLk / Pause sit above the Ins / Hm / PU nav cluster
+            // at the same x-column (nx = 15.5).
+            Add(0x2C, "PrSc", 15.5, y0);
+            Add(0x91, "ScLk", 16.5, y0);
+            Add(0x13, "Pse",  17.5, y0);
 
             // ── Row 1: ` 1–0 - = Bksp ──
             double y1 = rh + 4; // extra gap after Fn row

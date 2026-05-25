@@ -809,7 +809,12 @@ namespace PadForge.Engine.Touchpad
 
             float maxR = settings.JoystickMaxRadius > 0f ? settings.JoystickMaxRadius : 0.30f;
             float sx = dx / maxR;
-            float sy = -dy / maxR; // touchpad +Y is down; stick +Y is up.
+            // Touchpad +Y is down, PadForge/SDL stick axis +Y is also down
+            // (SDL_GAMEPAD_AXIS_LEFTY / RIGHTY convention). Output raw dy
+            // so finger-down on the touchpad = stick-down in-game. Earlier
+            // versions of this method flipped sy assuming an XInput-style
+            // +Y=up convention; that produced inverted vertical motion.
+            float sy = dy / maxR;
 
             // Clamp to unit-circle so combined magnitude can't exceed 1.
             float scaledMag = MathF.Sqrt(sx * sx + sy * sy);

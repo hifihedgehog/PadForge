@@ -16,7 +16,7 @@ Free Windows app. No subscription. No paywall. No nag screens. Built on SDL3, [H
 
 PadForge is for sim racers running wheels in games that only understand Xbox controllers. For DualSense owners who want adaptive triggers and lightbar effects in Steam games that ignore them. For accessibility users mapping whatever hardware they can use. For anyone whose controller doesn't match what their game expects.
 
-> **New in 3.2.** Rebuilt mapping engine: one virtual output can read from any number of physical sources, with shift layers, cross-device chords, and a drag-and-drop formula editor on top. Gyro overhaul at Steam Input parity (Local / Player / World, real-world calibration, cross-device Aim Engage). Dedicated Impulse Triggers tab for Xbox and DualSense pads (game passthrough, constant force, audio-bass trigger rumble). Custom Expression macro triggers. Lightbar Strobe and Battery modes. Bulk virtual-controller toggle. **2026 Steam Controller supported** through the bundled SDL3 fork once Valve's mainline change landed. [Full release notes](https://github.com/hifihedgehog/PadForge/releases/tag/v3.2.0) · [Wiki](https://github.com/hifihedgehog/PadForge/wiki).
+> **New in 3.3.** Touchpad tab grew two output cards: **Mouse Output** (per-axis sensitivity + invert for a touchpad finger driving mouse X/Y) and **Stick / D-Pad Output** (a touchpad finger becomes a virtual analog stick or wedge-thresholded D-pad). Gesture engine fanned out per slot — two slots sharing one physical touchpad each carry their own toggles, tuning, and gesture context. Keyboard / Mouse virtual controller adds Print Screen, Scroll Lock, Pause, and Num Lock. Every touchpad feature toggle is off by default so gestures and outputs are opt-in. Carrying forward from 3.2: the rebuilt mapping engine (multi-source rows, shift layers, cross-device chords, drag-and-drop formula editor), gyro at Steam Input parity, Impulse Triggers tab, and 2026 Steam Controller support through the bundled SDL3 fork. [Wiki](https://github.com/hifihedgehog/PadForge/wiki).
 
 <p align="center">
   <a href="https://github.com/hifihedgehog/HIDMaestro">
@@ -133,7 +133,7 @@ Map sticks to Control Change messages. Map buttons to Note On / Note Off. Set ve
 | 1000 Hz polling | ✅ | ⚠️ unverified | ⚠️ unverified | ✅ user-selectable 500 / 1000 Hz | ✅ on USB DS4 | ⚠️ unverified |
 | 3D + 2D controller visualization | ✅ | ⚠️ 2D Xbox 360 only | ❌ | ⚠️ 2D only | ⚠️ basic | ⚠️ configurator preview |
 | Multi-point sensitivity curve editor | ✅ draggable points | ⚠️ single slider | ⚠️ deadzone only | ✅ custom 4-point | ⚠️ preset curves | ✅ response curves |
-| 2026 Steam Controller support | ✅ via SDL3 fork (NEW!) | ❌ | ❌ | ⚠️ unverified | ❌ | ✅ |
+| 2026 Steam Controller support | ✅ via SDL3 fork | ❌ | ❌ | ⚠️ unverified | ❌ | ✅ |
 
 Comparison reflects each tool's shipping release at the time of this README. Verified against each project's own docs and source: x360ce v4.17.15.0 changelog; XOutput README + 3.x source; reWASD help.rewasd.com (v9.4); ds4windowsapp/DS4Windows v3.5; Steamworks Documentation (Action Set Layers / Activators / Mode Shifting / Input Source Modes). ⚠️ means the feature exists but is limited or unverified at the level of detail PadForge implements it.
 

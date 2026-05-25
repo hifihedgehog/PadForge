@@ -134,15 +134,19 @@ namespace PadForge.Common.Input
         /// </summary>
         public TouchpadState[] CombinedTouchpadStates { get; } = new TouchpadState[MaxPads];
 
-        /// <summary>Per-(device, touchpad-pad-index) gesture recognizer
-        /// state. Lazily populated when a device with a touchpad shows
-        /// up; read by <see cref="UpdateGestureContexts"/> each tick and
-        /// by the SourceCoercion gesture-fired / gesture-axis providers
-        /// during mapping evaluation. Cleared on device disconnect and
-        /// on profile switch so a stale partial gesture doesn't carry
-        /// across profiles.</summary>
-        public readonly System.Collections.Concurrent.ConcurrentDictionary<(System.Guid DeviceId, int PadIdx), Engine.Touchpad.TouchpadGestureContext> GestureContexts
-            = new System.Collections.Concurrent.ConcurrentDictionary<(System.Guid, int), Engine.Touchpad.TouchpadGestureContext>();
+        /// <summary>Per-(slot, device, touchpad-pad-index) gesture
+        /// recognizer state. Slot-keyed so two slots sharing one
+        /// physical touchpad each keep their own context and settings —
+        /// slot 1's "4-way OFF" toggle truly stops slot 1's mapping
+        /// rows from receiving 4-way swipes even when slot 0 has 4-way
+        /// ON. Lazily populated when a device with a touchpad is
+        /// assigned to a slot; read by <see cref="UpdateGestureContexts"/>
+        /// each tick and by the SourceCoercion gesture-fired /
+        /// gesture-axis providers during mapping evaluation. Cleared on
+        /// device disconnect and on profile switch so a stale partial
+        /// gesture doesn't carry across profiles.</summary>
+        public readonly System.Collections.Concurrent.ConcurrentDictionary<(int Slot, System.Guid DeviceId, int PadIdx), Engine.Touchpad.TouchpadGestureContext> GestureContexts
+            = new System.Collections.Concurrent.ConcurrentDictionary<(int, System.Guid, int), Engine.Touchpad.TouchpadGestureContext>();
 
         /// <summary>Active shape templates ready for the gesture
         /// engine's $P matcher. Built at startup from the in-box
@@ -164,13 +168,15 @@ namespace PadForge.Common.Input
             System.Threading.Volatile.Write(ref _shapeTemplates, templates ?? Engine.Touchpad.InBoxShapeTemplates.Build());
         }
 
-        /// <summary>Per-(device, padIdx) gesture settings provider.
-        /// Wired by the App layer against the active profile's
-        /// <c>PadSetting.TouchpadSettings</c>; returns
+        /// <summary>Per-(slot, device, padIdx) gesture settings provider.
+        /// Wired by the App layer against the slot's
+        /// <c>PadSetting.TouchpadSettings</c> via a UserSettings walk
+        /// filtered by both <c>MapTo == slot</c> and
+        /// <c>InstanceGuid == device</c>. Returns
         /// <see cref="Engine.Touchpad.TouchpadGestureSettings.Default"/>
         /// when unwired or when no per-pad settings exist for the
-        /// requested device + pad.</summary>
-        public System.Func<System.Guid, int, Engine.Touchpad.TouchpadGestureSettings> TouchpadGestureSettingsProvider { get; set; }
+        /// requested slot + device + pad.</summary>
+        public System.Func<int, System.Guid, int, Engine.Touchpad.TouchpadGestureSettings> TouchpadGestureSettingsProvider { get; set; }
 
         /// <summary>Global suspend flag. Set by
         /// <see cref="ResetGestureSuspend"/> / its UI counterpart from
@@ -1078,13 +1084,23 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>Drives the gesture recognizer for every touchpad
-        /// surface this device exposes. One context per
-        /// <c>(device, pad)</c> pair, lazily allocated. Called from
-        /// Step 2 after the device's <c>InputState</c> snapshot lands;
-        /// recognizer fires populate
+        /// surface this device exposes, once per slot the device is
+        /// assigned to. One context per <c>(slot, device, pad)</c>
+        /// triple, lazily allocated. Called from Step 2 after the
+        /// device's <c>InputState</c> snapshot lands; recognizer fires
+        /// populate
         /// <see cref="Engine.Touchpad.TouchpadGestureContext.FiredGesturesThisFrame"/>
         /// which the SourceCoercion gesture-fired provider reads each
-        /// time a mapping row resolves a touchpad-gesture source.</summary>
+        /// time a mapping row resolves a touchpad-gesture source.
+        ///
+        /// <para>Slot fan-out: the same physical (device, pad) can be
+        /// assigned to multiple slots with different Touchpad-tab
+        /// toggles. Each slot ticks the recognizer with its own
+        /// settings, so slot 1's "4-way OFF" truly stops slot 1's
+        /// mapping rows from firing even when slot 0 has it ON.
+        /// Recording-mode bypass is slot-agnostic (the recorder
+        /// captures finger paths per (device, pad), not per slot)
+        /// and runs once before any per-slot context update.</para></summary>
         private void UpdateGestureContexts(Engine.Data.UserDevice ud, CustomInputState newState)
         {
             if (ud == null || newState == null) return;
@@ -1095,37 +1111,54 @@ namespace PadForge.Common.Input
             // the gesture engine via TouchpadGestureSettings.
             if (!TouchpadGesturesGloballyEnabled) return;
 
+            // Snapshot the slots this device is currently assigned to.
+            // No assigned slots → no contexts to tick (gestures don't
+            // need to run for an unmapped device).
+            int[] assignedSlots;
+            var userSettings = SettingsManager.UserSettings;
+            if (userSettings == null) return;
+            lock (userSettings.SyncRoot)
+            {
+                int count = 0;
+                System.Span<int> buf = stackalloc int[MaxPads];
+                for (int i = 0; i < userSettings.Items.Count && count < MaxPads; i++)
+                {
+                    var us = userSettings.Items[i];
+                    if (us == null || us.MapTo < 0) continue;
+                    if (us.InstanceGuid != ud.InstanceGuid) continue;
+                    // Dedup — a device should only appear once per slot,
+                    // but defensively skip duplicates so the recognizer
+                    // doesn't tick twice for the same (slot, device, pad).
+                    bool dup = false;
+                    for (int j = 0; j < count; j++) { if (buf[j] == us.MapTo) { dup = true; break; } }
+                    if (dup) continue;
+                    buf[count++] = us.MapTo;
+                }
+                if (count == 0) return;
+                assignedSlots = new int[count];
+                for (int i = 0; i < count; i++) assignedSlots[i] = buf[i];
+            }
+
             long nowMs = System.Environment.TickCount64;
             for (int p = 0; p < newState.Touchpads.Length; p++)
             {
                 var pad = newState.Touchpads[p];
                 if (pad == null) continue;
 
-                var key = (ud.InstanceGuid, p);
-                if (!GestureContexts.TryGetValue(key, out var ctx))
-                {
-                    ctx = new Engine.Touchpad.TouchpadGestureContext();
-                    GestureContexts[key] = ctx;
-                }
-
-                if (GestureSuspendActive)
-                {
-                    ctx.State = Engine.Touchpad.GestureState.Suspended;
-                    ctx.FiredGesturesThisFrame.Clear();
-                    continue;
-                }
-                if (ctx.State == Engine.Touchpad.GestureState.Suspended)
-                    ctx.State = Engine.Touchpad.GestureState.Idle;
-
                 // Recording-mode bypass: while the recorder dialog is
                 // capturing this (device, pad), feed it the raw
-                // TouchpadInputState and skip recognizer evaluation.
+                // TouchpadInputState once (slot-agnostic) and skip
+                // every slot's recognizer evaluation for this pad.
                 // Drops any in-flight context for the pad so a stale
                 // path doesn't fire the moment recording stops.
                 if (RecordingTargetPadIdx == p &&
                     RecordingTargetDeviceGuid == ud.InstanceGuid)
                 {
-                    ctx.Reset();
+                    foreach (int slot in assignedSlots)
+                    {
+                        if (GestureContexts.TryGetValue((slot, ud.InstanceGuid, p), out var ctxR))
+                            ctxR.Reset();
+                    }
                     var tickHandler = RecordingTick;
                     if (tickHandler != null)
                     {
@@ -1135,12 +1168,31 @@ namespace PadForge.Common.Input
                     continue;
                 }
 
-                var settings = TouchpadGestureSettingsProvider?.Invoke(ud.InstanceGuid, p)
-                    ?? Engine.Touchpad.TouchpadGestureSettings.Default();
+                foreach (int slot in assignedSlots)
+                {
+                    var key = (slot, ud.InstanceGuid, p);
+                    if (!GestureContexts.TryGetValue(key, out var ctx))
+                    {
+                        ctx = new Engine.Touchpad.TouchpadGestureContext();
+                        GestureContexts[key] = ctx;
+                    }
 
-                Engine.Touchpad.GestureRecognizer.Update(
-                    padIdx: p, ctx: ctx, pad: pad, settings: settings,
-                    nowMs: nowMs, shapeTemplates: _shapeTemplates);
+                    if (GestureSuspendActive)
+                    {
+                        ctx.State = Engine.Touchpad.GestureState.Suspended;
+                        ctx.FiredGesturesThisFrame.Clear();
+                        continue;
+                    }
+                    if (ctx.State == Engine.Touchpad.GestureState.Suspended)
+                        ctx.State = Engine.Touchpad.GestureState.Idle;
+
+                    var settings = TouchpadGestureSettingsProvider?.Invoke(slot, ud.InstanceGuid, p)
+                        ?? Engine.Touchpad.TouchpadGestureSettings.Default();
+
+                    Engine.Touchpad.GestureRecognizer.Update(
+                        padIdx: p, ctx: ctx, pad: pad, settings: settings,
+                        nowMs: nowMs, shapeTemplates: _shapeTemplates);
+                }
             }
         }
 

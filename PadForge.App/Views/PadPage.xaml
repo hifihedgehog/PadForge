@@ -4890,7 +4890,7 @@
                         </Border>
 
                         <!-- ─── Calibration card ─── -->
-                        <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
+                        <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xF272;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
@@ -4945,7 +4945,7 @@
                         </Border>
 
                         <!-- ─── Sensitivity card ─── -->
-                        <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
+                        <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE9E9;" FontFamily="Segoe MDL2 Assets" FontSize="16"
@@ -5056,7 +5056,7 @@
                         </Border>
 
                         <!-- ─── Response shaping card ─── -->
-                        <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
+                        <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xF1CB;" FontFamily="Segoe MDL2 Assets" FontSize="16"
@@ -5162,7 +5162,7 @@
                         </Border>
 
                         <!-- ─── Engage card ─── -->
-                        <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
+                        <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                     <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="16"
@@ -5588,7 +5588,7 @@
                         </Border>
 
                         <!-- ─── In-box gestures card ─── -->
-                        <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
+                        <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xF12B;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
@@ -5747,7 +5747,7 @@
                         </Border>
 
                         <!-- ─── Custom gestures card ─── -->
-                        <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
+                        <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xF4A5;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
@@ -5792,7 +5792,7 @@
                         </Border>
 
                         <!-- ─── Joystick / D-pad output card ─── -->
-                        <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
+                        <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <!-- Segoe Fluent Icons F108 (LeftStick) silhouette with

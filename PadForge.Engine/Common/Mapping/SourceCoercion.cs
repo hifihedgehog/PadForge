@@ -142,14 +142,15 @@ namespace PadForge.Engine.Common.Mapping
         /// Returns 0 when slot is empty / state unavailable.</summary>
         public static Func<int, float> SlotRightStickDeflectionProvider { get; set; }
 
-        /// <summary>— per-(device, slot) gravity vector estimator.
-        /// The app layer low-pass-filters <c>state.Accel[]</c> per
-        /// device and exposes the smoothed result here. Returns the
-        /// gravity-aligned vector in the controller's local frame.
-        /// Used by Player Space / World Space gyro projection. App
-        /// returns <c>(0, 0, -1)</c> (flat, face-up) for unknown
-        /// devices.</summary>
-        public static Func<string, int, (float gx, float gy, float gz)> GravityProvider { get; set; }
+        /// <summary>— per-device gravity vector estimator. The app
+        /// layer low-pass-filters <c>state.Accel[]</c> per device and
+        /// exposes the smoothed result here. Returns the gravity-aligned
+        /// vector in the controller's local frame. Used by Player
+        /// Space / World Space gyro projection (slot-specific framing
+        /// is applied downstream by the per-slot GyroTuning that
+        /// consumes this vector). App returns <c>(0, 0, -1)</c> (flat,
+        /// face-up) for unknown devices.</summary>
+        public static Func<string, (float gx, float gy, float gz)> GravityProvider { get; set; }
 
         /// <summary>— reads whether the given (deviceGuid,
         /// descriptor) is currently pressed on the named slot. Used
@@ -594,13 +595,13 @@ namespace PadForge.Engine.Common.Mapping
             string space = tuning.Space ?? "Local";
             if (space == "Player")
             {
-                var grav = GravityProvider?.Invoke(deviceGuid, slotIndex) ?? (0f, 0f, -1f);
+                var grav = GravityProvider?.Invoke(deviceGuid) ?? (0f, 0f, -1f);
                 (yaw, pitch) = PlayerSpaceProject(
                     gPitch, gYaw, gRoll, grav.gx, grav.gy, grav.gz, tuning.PlayerYawRelax);
             }
             else if (space == "World")
             {
-                var grav = GravityProvider?.Invoke(deviceGuid, slotIndex) ?? (0f, 0f, -1f);
+                var grav = GravityProvider?.Invoke(deviceGuid) ?? (0f, 0f, -1f);
                 (yaw, pitch) = WorldSpaceProject(
                     gPitch, gYaw, gRoll, grav.gx, grav.gy, grav.gz, tuning.WorldSideReduction);
             }
@@ -742,14 +743,14 @@ namespace PadForge.Engine.Common.Mapping
             float pPitch, pYaw, pRoll;
             if (space == "Player")
             {
-                var grav = GravityProvider?.Invoke(deviceGuid, slotIndex) ?? (0f, 0f, -1f);
+                var grav = GravityProvider?.Invoke(deviceGuid) ?? (0f, 0f, -1f);
                 (pYaw, pPitch) = PlayerSpaceProject(
                     gPitch, gYaw, gRoll, grav.gx, grav.gy, grav.gz, tuning.PlayerYawRelax);
                 pRoll = 0f;
             }
             else if (space == "World")
             {
-                var grav = GravityProvider?.Invoke(deviceGuid, slotIndex) ?? (0f, 0f, -1f);
+                var grav = GravityProvider?.Invoke(deviceGuid) ?? (0f, 0f, -1f);
                 (pYaw, pPitch) = WorldSpaceProject(
                     gPitch, gYaw, gRoll, grav.gx, grav.gy, grav.gz, tuning.WorldSideReduction);
                 pRoll = 0f;

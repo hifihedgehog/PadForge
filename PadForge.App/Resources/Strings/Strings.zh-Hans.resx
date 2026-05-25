@@ -1468,17 +1468,18 @@
   <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>长按</value></data>
   <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>径向扇区 {0}/{1}</value></data>
   <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>触控板 {0}：{1}</value></data>
+  <data name="Mapping_TouchpadGesture_SinglePadNoun_Format" xml:space="preserve"><value>触控板 {0}</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeUp" xml:space="preserve"><value>双指向上滑动</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeDown" xml:space="preserve"><value>双指向下滑动</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>双指向左滑动</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>双指向右滑动</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>双指轻触</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickX" xml:space="preserve"><value>摇杆 X</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickY" xml:space="preserve"><value>摇杆 Y</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickDPadUp" xml:space="preserve"><value>摇杆方向键 上</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickDPadRight" xml:space="preserve"><value>摇杆方向键 右</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickDPadDown" xml:space="preserve"><value>摇杆方向键 下</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickDPadLeft" xml:space="preserve"><value>摇杆方向键 左</value></data>
+  <data name="Mapping_TouchpadGesture_StickX" xml:space="preserve"><value>摇杆 X</value></data>
+  <data name="Mapping_TouchpadGesture_StickY" xml:space="preserve"><value>摇杆 Y</value></data>
+  <data name="Mapping_TouchpadGesture_DPadUp" xml:space="preserve"><value>方向键 上</value></data>
+  <data name="Mapping_TouchpadGesture_DPadRight" xml:space="preserve"><value>方向键 右</value></data>
+  <data name="Mapping_TouchpadGesture_DPadDown" xml:space="preserve"><value>方向键 下</value></data>
+  <data name="Mapping_TouchpadGesture_DPadLeft" xml:space="preserve"><value>方向键 左</value></data>
 
   <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>双指捏合</value></data>
   <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>双指张开</value></data>
@@ -1551,22 +1552,22 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>此配置尚未录制自定义手势。点击“录制新手势”进行采集。</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 根手指</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} 根手指</value></data>
-  <data name="Pad_Touchpad_Joystick_Header" xml:space="preserve"><value>摇杆 / 方向键输出</value></data>
-  <data name="Pad_Touchpad_Joystick_Subtitle" xml:space="preserve"><value>将触控板变为虚拟模拟摇杆或方向键。输出以手指首次落下的位置为锚点；相对该锚点的当前位置驱动摇杆值并（可选）保持方向键方向位。</value></data>
-  <data name="Pad_Touchpad_JoystickEnabled" xml:space="preserve"><value>启用摇杆输出</value></data>
-  <data name="Pad_Touchpad_JoystickEnabled_Tooltip" xml:space="preserve"><value>在映射选择器中显示 JoystickX、JoystickY 和 JoystickDPad* 描述符。与现有的触控板手指和手势源并存，而非替代。</value></data>
-  <data name="Pad_Touchpad_JoystickMaxRadius" xml:space="preserve"><value>最大半径 (0..1)</value></data>
-  <data name="Pad_Touchpad_JoystickInnerDeadzone" xml:space="preserve"><value>内部死区 (0..1)</value></data>
-  <data name="Pad_Touchpad_JoystickDPadMode_Label" xml:space="preserve"><value>方向键模式</value></data>
-  <data name="Pad_Touchpad_JoystickDPadMode_Tooltip" xml:space="preserve"><value>关闭跳过方向键输出。4 方向每次发出一个基本方向。8 方向对角线发出两个基本方向（与物理方向键报告 NE / NW / SE / SW 的方式相同）。</value></data>
-  <data name="Pad_Touchpad_JoystickDPadMode_Off" xml:space="preserve"><value>关闭</value></data>
-  <data name="Pad_Touchpad_JoystickDPadMode_FourWay" xml:space="preserve"><value>4 方向</value></data>
-  <data name="Pad_Touchpad_JoystickDPadMode_EightWay" xml:space="preserve"><value>8 方向</value></data>
-  <data name="Pad_Touchpad_JoystickDPadActivationThreshold" xml:space="preserve"><value>方向键激活 (0..1)</value></data>
+  <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>摇杆 / 方向键输出</value></data>
+  <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>将触控板变为虚拟模拟摇杆或方向键。输出以手指首次落下的位置为锚点。相对该锚点的当前位置驱动摇杆值并（可选）保持方向键方向位。</value></data>
+  <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>启用摇杆 / 方向键输出</value></data>
+  <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>在映射选择器中显示触控板的摇杆 X、摇杆 Y 和方向键描述符。与现有的触控板手指和手势源并存，而非替代。</value></data>
+  <data name="Pad_Touchpad_StickMaxRadius" xml:space="preserve"><value>最大半径 (0..1)</value></data>
+  <data name="Pad_Touchpad_StickInnerDeadzone" xml:space="preserve"><value>内部死区 (0..1)</value></data>
+  <data name="Pad_Touchpad_StickDPadMode_Label" xml:space="preserve"><value>方向键模式</value></data>
+  <data name="Pad_Touchpad_StickDPadMode_Tooltip" xml:space="preserve"><value>关闭跳过方向键输出。4 方向每次发出一个基本方向。8 方向对角线发出两个基本方向（与物理方向键报告 NE / NW / SE / SW 的方式相同）。</value></data>
+  <data name="Pad_Touchpad_StickDPadMode_Off" xml:space="preserve"><value>关闭</value></data>
+  <data name="Pad_Touchpad_StickDPadMode_FourWay" xml:space="preserve"><value>4 方向</value></data>
+  <data name="Pad_Touchpad_StickDPadMode_EightWay" xml:space="preserve"><value>8 方向</value></data>
+  <data name="Pad_Touchpad_StickDPadActivationThreshold" xml:space="preserve"><value>方向键激活 (0..1)</value></data>
 
   <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>重置检测</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>重置内置手势</value></data>
-  <data name="Pad_ResetTouchpadJoystick" xml:space="preserve"><value>重置摇杆 / 方向键</value></data>
+  <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>重置摇杆 / 方向键输出</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>重置手势</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>重置识别</value></data>
   <data name="Pad_ResetTouchpadCooldownMs" xml:space="preserve"><value>重置冷却时间</value></data>
@@ -1590,11 +1591,11 @@
   <data name="Pad_ResetTouchpadFiveFinger" xml:space="preserve"><value>重置五指轻触</value></data>
   <data name="Pad_ResetTouchpadShapeGestures" xml:space="preserve"><value>重置形状手势</value></data>
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>重置形状匹配阈值</value></data>
-  <data name="Pad_ResetTouchpadJoystickEnabled" xml:space="preserve"><value>重置摇杆输出</value></data>
-  <data name="Pad_ResetTouchpadJoystickMaxRadius" xml:space="preserve"><value>重置最大半径</value></data>
-  <data name="Pad_ResetTouchpadJoystickInnerDeadzone" xml:space="preserve"><value>重置内部死区</value></data>
-  <data name="Pad_ResetTouchpadJoystickDPadMode" xml:space="preserve"><value>重置方向键模式</value></data>
-  <data name="Pad_ResetTouchpadJoystickDPadActivationThreshold" xml:space="preserve"><value>重置方向键激活</value></data>
+  <data name="Pad_ResetTouchpadStickEnabled" xml:space="preserve"><value>重置启用摇杆 / 方向键输出</value></data>
+  <data name="Pad_ResetTouchpadStickMaxRadius" xml:space="preserve"><value>重置最大半径</value></data>
+  <data name="Pad_ResetTouchpadStickInnerDeadzone" xml:space="preserve"><value>重置内部死区</value></data>
+  <data name="Pad_ResetTouchpadStickDPadMode" xml:space="preserve"><value>重置方向键模式</value></data>
+  <data name="Pad_ResetTouchpadStickDPadActivationThreshold" xml:space="preserve"><value>重置方向键激活</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>录制触控板手势</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>在下方画板上画出手势。对话框会捕获所有按下的手指。当所有手指离开画板时，样本即被记录。绘制不同手指数的样本会重置堆栈。</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>等待手指触摸画板</value></data>

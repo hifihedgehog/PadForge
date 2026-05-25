@@ -647,21 +647,22 @@ namespace PadForge.Services
                 if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return false;
                 if (!_inputManager.GestureContexts.TryGetValue((g, padIdx), out var ctx)) return false;
 
-                // Joystick D-pad descriptors compute their bool from
-                // the same FingerPaths anchor + current delta the
+                // Touchpad-stick D-pad descriptors compute their bool
+                // from the same FingerPaths anchor + current delta the
                 // analog stick reader uses. Routed through the same
                 // provider so SourceCoercion only needs one bool hook.
-                if (gestureName != null && gestureName.StartsWith("JoystickDPad", System.StringComparison.Ordinal))
+                if (gestureName == "DPadUp" || gestureName == "DPadRight"
+                    || gestureName == "DPadDown" || gestureName == "DPadLeft")
                 {
                     var settings = _inputManager.TouchpadGestureSettingsProvider?.Invoke(g, padIdx)
                         ?? PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
                     var (u, r, d, l) = PadForge.Engine.Touchpad.GestureRecognizer.ComputeJoystickDPad(ctx, settings);
                     return gestureName switch
                     {
-                        "JoystickDPadUp"    => u,
-                        "JoystickDPadRight" => r,
-                        "JoystickDPadDown"  => d,
-                        "JoystickDPadLeft"  => l,
+                        "DPadUp"    => u,
+                        "DPadRight" => r,
+                        "DPadDown"  => d,
+                        "DPadLeft"  => l,
                         _ => false,
                     };
                 }
@@ -679,12 +680,12 @@ namespace PadForge.Services
                 if (_inputManager == null) return 0f;
                 if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return 0f;
                 if (!_inputManager.GestureContexts.TryGetValue((g, padIdx), out var ctx)) return 0f;
-                if (axisName == "JoystickX" || axisName == "JoystickY")
+                if (axisName == "StickX" || axisName == "StickY")
                 {
                     var settings = _inputManager.TouchpadGestureSettingsProvider?.Invoke(g, padIdx)
                         ?? PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
                     var (sx, sy) = PadForge.Engine.Touchpad.GestureRecognizer.ComputeJoystickAxis(ctx, settings);
-                    return axisName == "JoystickX" ? sx : sy;
+                    return axisName == "StickX" ? sx : sy;
                 }
                 return axisName switch
                 {

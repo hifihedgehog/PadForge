@@ -985,17 +985,18 @@
   <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>Long Press</value></data>
   <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>Radial Zone {0}/{1}</value></data>
   <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>Touchpad {0}: {1}</value></data>
+  <data name="Mapping_TouchpadGesture_SinglePadNoun_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeUp" xml:space="preserve"><value>Two-Finger Swipe Up</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeDown" xml:space="preserve"><value>Two-Finger Swipe Down</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Two-Finger Swipe Left</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>Two-Finger Swipe Right</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>Two-Finger Tap</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickX" xml:space="preserve"><value>Joystick X</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickY" xml:space="preserve"><value>Joystick Y</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickDPadUp" xml:space="preserve"><value>Joystick D-pad Up</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickDPadRight" xml:space="preserve"><value>Joystick D-pad Right</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickDPadDown" xml:space="preserve"><value>Joystick D-pad Down</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickDPadLeft" xml:space="preserve"><value>Joystick D-pad Left</value></data>
+  <data name="Mapping_TouchpadGesture_StickX" xml:space="preserve"><value>Stick X</value></data>
+  <data name="Mapping_TouchpadGesture_StickY" xml:space="preserve"><value>Stick Y</value></data>
+  <data name="Mapping_TouchpadGesture_DPadUp" xml:space="preserve"><value>D-Pad Up</value></data>
+  <data name="Mapping_TouchpadGesture_DPadRight" xml:space="preserve"><value>D-Pad Right</value></data>
+  <data name="Mapping_TouchpadGesture_DPadDown" xml:space="preserve"><value>D-Pad Down</value></data>
+  <data name="Mapping_TouchpadGesture_DPadLeft" xml:space="preserve"><value>D-Pad Left</value></data>
   <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Two-Finger Pinch</value></data>
   <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Two-Finger Spread</value></data>
   <data name="Mapping_TouchpadGesture_PinchAxis" xml:space="preserve"><value>Two-Finger Pinch / Spread Axis</value></data>
@@ -1027,68 +1028,68 @@
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detection</value></data>
-  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Enable gestures on this touchpad</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Enable Gestures on This Touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Master toggle for this touchpad. When off, no gesture descriptors fire for this touchpad. Existing finger / click / position mappings still work.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Recognize</value></data>
-  <data name="Pad_Touchpad_Mode_InBoxOnly" xml:space="preserve"><value>In-box only</value></data>
-  <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>Custom only</value></data>
+  <data name="Pad_Touchpad_Mode_InBoxOnly" xml:space="preserve"><value>In-Box Only</value></data>
+  <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>Custom Only</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Both</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>Which gesture catalog the engine evaluates against the live finger paths. "Both" is the default.</value></data>
   <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Cooldown (ms)</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>After a gesture fires, ignore new gestures on this touchpad for this many milliseconds. Prevents bounce-fires from rapid back-and-forth motion.</value></data>
-  <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>In-box gestures</value></data>
-  <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4-way swipes (up / down / left / right)</value></data>
-  <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8-way swipes (adds diagonals)</value></data>
-  <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Swipe distance (0..1)</value></data>
-  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Swipe time window (ms)</value></data>
-  <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Radial zones (weapon-wheel style)</value></data>
-  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Slide outward from your finger's landing point into a wedge. Zone 0 anchors at the top and zones increase clockwise. Each zone's entry in the picker shows its direction in parentheses as degrees from the top — (0°) is up, (90°) is right, (180°) is down, (270°) is left. Only one zone is held at a time; sliding into another releases the previous one, so you can cycle through zones in a single swipe.</value></data>
-  <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Zone count</value></data>
-  <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Center deadzone (0..1)</value></data>
-  <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tap / Double tap / Triple tap</value></data>
-  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>Tap time window (ms)</value></data>
-  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>Multi-tap gap (ms)</value></data>
-  <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>Long press</value></data>
-  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>Long-press duration (ms)</value></data>
-  <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>Two-finger swipes</value></data>
+  <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>In-Box Gestures</value></data>
+  <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4-Way Swipes (Up / Down / Left / Right)</value></data>
+  <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8-Way Swipes (Adds Diagonals)</value></data>
+  <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Swipe Distance (0..1)</value></data>
+  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Swipe Time Window (ms)</value></data>
+  <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Radial Zones (Weapon-Wheel Style)</value></data>
+  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Slide outward from your finger's landing point into a wedge. Zone 0 anchors at the top and zones increase clockwise. Each zone's entry in the picker shows its direction in parentheses as degrees from the top — (0°) is up, (90°) is right, (180°) is down, (270°) is left. Only one zone is held at a time. Sliding into another releases the previous one, so you can cycle through zones in a single swipe.</value></data>
+  <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Zone Count</value></data>
+  <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Center Deadzone (0..1)</value></data>
+  <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tap / Double Tap / Triple Tap</value></data>
+  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>Tap Time Window (ms)</value></data>
+  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>Multi-Tap Gap (ms)</value></data>
+  <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>Long Press</value></data>
+  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>Long-Press Duration (ms)</value></data>
+  <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>Two-Finger Swipes</value></data>
   <data name="Pad_Touchpad_PinchSpread" xml:space="preserve"><value>Pinch / Spread</value></data>
   <data name="Pad_Touchpad_Rotate" xml:space="preserve"><value>Rotate</value></data>
-  <data name="Pad_Touchpad_ThreeFinger" xml:space="preserve"><value>Three-finger gestures</value></data>
-  <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>Four-finger gestures</value></data>
-  <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>Five-finger tap</value></data>
-  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Shape gestures (Circle, Square, Triangle, Z, Checkmark)</value></data>
-  <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Shape match threshold</value></data>
-  <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Custom gestures</value></data>
-  <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Record new gesture</value></data>
-  <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>No custom gestures recorded for this profile. Click Record new gesture to capture one.</value></data>
+  <data name="Pad_Touchpad_ThreeFinger" xml:space="preserve"><value>Three-Finger Gestures</value></data>
+  <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>Four-Finger Gestures</value></data>
+  <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>Five-Finger Tap</value></data>
+  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Shape Gestures (Circle, Square, Triangle, Z, Checkmark)</value></data>
+  <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Shape Match Threshold</value></data>
+  <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Custom Gestures</value></data>
+  <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Record New Gesture</value></data>
+  <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>No custom gestures recorded for this profile. Click Record New Gesture to capture one.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 finger</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} fingers</value></data>
 
-  <!-- Joystick / D-pad output card -->
-  <data name="Pad_Touchpad_Joystick_Header" xml:space="preserve"><value>Joystick / D-pad output</value></data>
-  <data name="Pad_Touchpad_Joystick_Subtitle" xml:space="preserve"><value>Turn the touchpad into a virtual analog stick or D-pad. The output anchors where your finger first lands; current position relative to that anchor drives the stick value and (optionally) latched D-pad direction bools.</value></data>
-  <data name="Pad_Touchpad_JoystickEnabled" xml:space="preserve"><value>Enable joystick output</value></data>
-  <data name="Pad_Touchpad_JoystickEnabled_Tooltip" xml:space="preserve"><value>Surfaces JoystickX, JoystickY, and JoystickDPad* descriptors in the mapping picker. Works alongside the existing touchpad-finger and touchpad-gesture sources, not instead of them.</value></data>
-  <data name="Pad_Touchpad_JoystickMaxRadius" xml:space="preserve"><value>Max radius (0..1)</value></data>
-  <data name="Pad_Touchpad_JoystickInnerDeadzone" xml:space="preserve"><value>Inner deadzone (0..1)</value></data>
-  <data name="Pad_Touchpad_JoystickDPadMode_Label" xml:space="preserve"><value>D-pad mode</value></data>
-  <data name="Pad_Touchpad_JoystickDPadMode_Tooltip" xml:space="preserve"><value>Off skips D-pad output. 4-way emits one cardinal at a time. 8-way emits two cardinals for diagonals (the same way physical D-pads report NE / NW / SE / SW).</value></data>
-  <data name="Pad_Touchpad_JoystickDPadMode_Off" xml:space="preserve"><value>Off</value></data>
-  <data name="Pad_Touchpad_JoystickDPadMode_FourWay" xml:space="preserve"><value>4-way</value></data>
-  <data name="Pad_Touchpad_JoystickDPadMode_EightWay" xml:space="preserve"><value>8-way</value></data>
-  <data name="Pad_Touchpad_JoystickDPadActivationThreshold" xml:space="preserve"><value>D-pad activation (0..1)</value></data>
+  <!-- Stick / D-pad output card -->
+  <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Stick / D-Pad Output</value></data>
+  <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Turn the touchpad into a virtual analog stick or D-pad. The output anchors where your finger first lands. Current position relative to that anchor drives the stick value and (optionally) latched D-pad direction bools.</value></data>
+  <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Enable Stick / D-Pad Output</value></data>
+  <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Surfaces Touchpad Stick X, Stick Y, and D-Pad descriptors in the mapping picker. Works alongside the existing touchpad-finger and touchpad-gesture sources, not instead of them.</value></data>
+  <data name="Pad_Touchpad_StickMaxRadius" xml:space="preserve"><value>Max Radius (0..1)</value></data>
+  <data name="Pad_Touchpad_StickInnerDeadzone" xml:space="preserve"><value>Inner Deadzone (0..1)</value></data>
+  <data name="Pad_Touchpad_StickDPadMode_Label" xml:space="preserve"><value>D-Pad Mode</value></data>
+  <data name="Pad_Touchpad_StickDPadMode_Tooltip" xml:space="preserve"><value>Off skips D-pad output. 4-Way emits one cardinal at a time. 8-Way emits two cardinals for diagonals (the same way physical D-pads report NE / NW / SE / SW).</value></data>
+  <data name="Pad_Touchpad_StickDPadMode_Off" xml:space="preserve"><value>Off</value></data>
+  <data name="Pad_Touchpad_StickDPadMode_FourWay" xml:space="preserve"><value>4-Way</value></data>
+  <data name="Pad_Touchpad_StickDPadMode_EightWay" xml:space="preserve"><value>8-Way</value></data>
+  <data name="Pad_Touchpad_StickDPadActivationThreshold" xml:space="preserve"><value>D-Pad Activation (0..1)</value></data>
 
   <!-- Reset-All tooltips per card -->
   <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Reset Detection</value></data>
-  <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Reset In-box Gestures</value></data>
-  <data name="Pad_ResetTouchpadJoystick" xml:space="preserve"><value>Reset Joystick / D-pad</value></data>
+  <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Reset In-Box Gestures</value></data>
+  <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Reset Stick / D-Pad Output</value></data>
 
-  <!-- Per-row Reset tooltips for joystick card -->
-  <data name="Pad_ResetTouchpadJoystickEnabled" xml:space="preserve"><value>Reset Enable Joystick Output</value></data>
-  <data name="Pad_ResetTouchpadJoystickMaxRadius" xml:space="preserve"><value>Reset Max Radius</value></data>
-  <data name="Pad_ResetTouchpadJoystickInnerDeadzone" xml:space="preserve"><value>Reset Inner Deadzone</value></data>
-  <data name="Pad_ResetTouchpadJoystickDPadMode" xml:space="preserve"><value>Reset D-pad Mode</value></data>
-  <data name="Pad_ResetTouchpadJoystickDPadActivationThreshold" xml:space="preserve"><value>Reset D-pad Activation</value></data>
+  <!-- Per-row Reset tooltips for stick / D-pad card -->
+  <data name="Pad_ResetTouchpadStickEnabled" xml:space="preserve"><value>Reset Enable Stick / D-Pad Output</value></data>
+  <data name="Pad_ResetTouchpadStickMaxRadius" xml:space="preserve"><value>Reset Max Radius</value></data>
+  <data name="Pad_ResetTouchpadStickInnerDeadzone" xml:space="preserve"><value>Reset Inner Deadzone</value></data>
+  <data name="Pad_ResetTouchpadStickDPadMode" xml:space="preserve"><value>Reset D-Pad Mode</value></data>
+  <data name="Pad_ResetTouchpadStickDPadActivationThreshold" xml:space="preserve"><value>Reset D-Pad Activation</value></data>
 
   <!-- Per-row Reset tooltips -->
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Reset Gestures Enabled</value></data>

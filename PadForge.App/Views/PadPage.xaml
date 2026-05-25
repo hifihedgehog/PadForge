@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PadForge.Views.PadPage"
+<UserControl x:Class="PadForge.Views.PadPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -5797,62 +5797,62 @@
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xF108;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                    <TextBlock Text="{Binding Pad_Touchpad_Joystick_Header, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Text="{Binding Pad_Touchpad_Stick_Header, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>
                                     <Button Command="{Binding ResetTouchpadJoystickCardCommand}" Style="{StaticResource ResetAllButton}"
                                             Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
-                                            ToolTip="{Binding Pad_ResetTouchpadJoystick, Source={x:Static strings:Strings.Instance}}"/>
+                                            ToolTip="{Binding Pad_ResetTouchpadStick, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
-                                <TextBlock Text="{Binding Pad_Touchpad_Joystick_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                <TextBlock Text="{Binding Pad_Touchpad_Stick_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            TextWrapping="Wrap" Margin="0,0,0,8"/>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox Content="{Binding Pad_Touchpad_JoystickEnabled, Source={x:Static strings:Strings.Instance}}"
-                                              ToolTip="{Binding Pad_Touchpad_JoystickEnabled_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Content="{Binding Pad_Touchpad_StickEnabled, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Pad_Touchpad_StickEnabled_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadEnableJoystickOutput, Mode=TwoWay}" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadEnableJoystickOutputCommand}" Style="{StaticResource ResetButton}"
-                                            ToolTip="{Binding Pad_ResetTouchpadJoystickEnabled, Source={x:Static strings:Strings.Instance}}"/>
+                                            ToolTip="{Binding Pad_ResetTouchpadStickEnabled, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
-                                    <TextBlock Text="{Binding Pad_Touchpad_JoystickMaxRadius, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Text="{Binding Pad_Touchpad_StickMaxRadius, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="220"/>
                                     <TextBox Text="{Binding TouchpadJoystickMaxRadius, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadJoystickMaxRadiusCommand}" Style="{StaticResource ResetButton}"
-                                            ToolTip="{Binding Pad_ResetTouchpadJoystickMaxRadius, Source={x:Static strings:Strings.Instance}}"/>
+                                            ToolTip="{Binding Pad_ResetTouchpadStickMaxRadius, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
-                                    <TextBlock Text="{Binding Pad_Touchpad_JoystickInnerDeadzone, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Text="{Binding Pad_Touchpad_StickInnerDeadzone, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="220"/>
                                     <TextBox Text="{Binding TouchpadJoystickInnerDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadJoystickInnerDeadzoneCommand}" Style="{StaticResource ResetButton}"
-                                            ToolTip="{Binding Pad_ResetTouchpadJoystickInnerDeadzone, Source={x:Static strings:Strings.Instance}}"/>
+                                            ToolTip="{Binding Pad_ResetTouchpadStickInnerDeadzone, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Text="{Binding Pad_Touchpad_JoystickDPadMode_Label, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Text="{Binding Pad_Touchpad_StickDPadMode_Label, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="220"/>
                                     <ComboBox SelectedValue="{Binding TouchpadJoystickDPadMode, Mode=TwoWay}"
                                               SelectedValuePath="Tag"
                                               Width="120" VerticalAlignment="Center"
-                                              ToolTip="{Binding Pad_Touchpad_JoystickDPadMode_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Pad_Touchpad_StickDPadMode_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                               ScrollViewer.VerticalScrollBarVisibility="Visible">
-                                        <ComboBoxItem Tag="Off" Content="{Binding Pad_Touchpad_JoystickDPadMode_Off, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Tag="FourWay" Content="{Binding Pad_Touchpad_JoystickDPadMode_FourWay, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Tag="EightWay" Content="{Binding Pad_Touchpad_JoystickDPadMode_EightWay, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Tag="Off" Content="{Binding Pad_Touchpad_StickDPadMode_Off, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Tag="FourWay" Content="{Binding Pad_Touchpad_StickDPadMode_FourWay, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Tag="EightWay" Content="{Binding Pad_Touchpad_StickDPadMode_EightWay, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
                                     <Button Command="{Binding ResetTouchpadJoystickDPadModeCommand}" Style="{StaticResource ResetButton}"
-                                            ToolTip="{Binding Pad_ResetTouchpadJoystickDPadMode, Source={x:Static strings:Strings.Instance}}"/>
+                                            ToolTip="{Binding Pad_ResetTouchpadStickDPadMode, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
-                                    <TextBlock Text="{Binding Pad_Touchpad_JoystickDPadActivationThreshold, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Text="{Binding Pad_Touchpad_StickDPadActivationThreshold, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="220"/>
                                     <TextBox Text="{Binding TouchpadJoystickDPadActivationThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadJoystickDPadActivationThresholdCommand}" Style="{StaticResource ResetButton}"
-                                            ToolTip="{Binding Pad_ResetTouchpadJoystickDPadActivationThreshold, Source={x:Static strings:Strings.Instance}}"/>
+                                            ToolTip="{Binding Pad_ResetTouchpadStickDPadActivationThreshold, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

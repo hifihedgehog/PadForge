@@ -5,14 +5,15 @@ namespace PadForge.Engine.Touchpad
     /// <summary>
     /// Per-(device, touchpad-index) gesture detection settings. Round-trips
     /// through PadSetting XML alongside the other per-device tuning.
-    /// Defaults give a sensible out-of-the-box experience: 4-way swipes
-    /// + tap / double-tap / triple-tap + long-press are enabled, radial
-    /// zones and shape gestures are off until the user opts in.
+    /// Every feature toggle defaults to off — touchpad mappings are opt-in.
+    /// The user enables the master switch and individual gesture / joystick
+    /// features as they want them. Numeric thresholds keep calibrated
+    /// defaults so a feature works correctly once the user turns it on.
     /// </summary>
     public sealed class TouchpadGestureSettings
     {
         /// <summary>Master enable for this touchpad's gesture detection.</summary>
-        [XmlAttribute] public bool Enabled { get; set; } = true;
+        [XmlAttribute] public bool Enabled { get; set; }
 
         /// <summary>Detection mode: <c>InBoxOnly</c>, <c>CustomOnly</c>, <c>Both</c>.</summary>
         [XmlAttribute] public string Mode { get; set; } = "Both";
@@ -32,13 +33,13 @@ namespace PadForge.Engine.Touchpad
         [XmlAttribute] public int SwipeTimeWindowMs { get; set; } = 500;
 
         /// <summary>4-way swipe gestures enabled (Up/Down/Left/Right).</summary>
-        [XmlAttribute] public bool EnableFourWaySwipes { get; set; } = true;
+        [XmlAttribute] public bool EnableFourWaySwipes { get; set; }
 
         /// <summary>8-way diagonals enabled (NE/NW/SE/SW). Composes with
         /// <see cref="EnableFourWaySwipes"/>: with both on, swipes
         /// classify into 8 buckets; with only 4-way on, diagonals fold
         /// to the nearest axial.</summary>
-        [XmlAttribute] public bool EnableEightWaySwipes { get; set; } = true;
+        [XmlAttribute] public bool EnableEightWaySwipes { get; set; }
 
         /// <summary>Radial-zone fire on a finger held in an angular
         /// sector past <see cref="RadialCenterDeadzone"/>.</summary>
@@ -53,7 +54,7 @@ namespace PadForge.Engine.Touchpad
         [XmlAttribute] public float RadialCenterDeadzone { get; set; } = 0.30f;
 
         /// <summary>Tap / DoubleTap / TripleTap gestures enabled.</summary>
-        [XmlAttribute] public bool EnableTaps { get; set; } = true;
+        [XmlAttribute] public bool EnableTaps { get; set; }
 
         /// <summary>Maximum elapsed time (ms) for a tap gesture (down→up).
         /// 350 ms is a forgiving default — many users naturally hold a
@@ -79,7 +80,7 @@ namespace PadForge.Engine.Touchpad
         [XmlAttribute] public int MultiTapGapMs { get; set; } = 300;
 
         /// <summary>LongPress gestures enabled (single finger held).</summary>
-        [XmlAttribute] public bool EnableLongPress { get; set; } = true;
+        [XmlAttribute] public bool EnableLongPress { get; set; }
 
         /// <summary>Minimum duration (ms) of finger contact for a
         /// LongPress to fire.</summary>
@@ -93,7 +94,7 @@ namespace PadForge.Engine.Touchpad
         // ─── Tier 2: multi-finger ─────────────────────────────────────
 
         /// <summary>Two-finger swipe gestures enabled.</summary>
-        [XmlAttribute] public bool EnableTwoFingerSwipes { get; set; } = true;
+        [XmlAttribute] public bool EnableTwoFingerSwipes { get; set; }
 
         /// <summary>Maximum angular tolerance (degrees) between the two
         /// fingers' motion vectors for the gesture to count as a
@@ -101,14 +102,14 @@ namespace PadForge.Engine.Touchpad
         [XmlAttribute] public float TwoFingerSwipeAngularTolerance { get; set; } = 25f;
 
         /// <summary>Pinch / Spread gestures enabled.</summary>
-        [XmlAttribute] public bool EnablePinchSpread { get; set; } = true;
+        [XmlAttribute] public bool EnablePinchSpread { get; set; }
 
         /// <summary>Fractional distance change (relative to initial
         /// 2-finger distance) past which a pinch fires.</summary>
         [XmlAttribute] public float PinchThreshold { get; set; } = 0.25f;
 
         /// <summary>Rotate gestures enabled.</summary>
-        [XmlAttribute] public bool EnableRotate { get; set; } = true;
+        [XmlAttribute] public bool EnableRotate { get; set; }
 
         /// <summary>Angular change (degrees) past which a rotate fires.</summary>
         [XmlAttribute] public float RotateThresholdDegrees { get; set; } = 20f;

@@ -70,7 +70,7 @@ namespace PadForge.ViewModels
 
         // ─── Detection card ───────────────────────────
 
-        private bool _touchpadGesturesEnabled = true;
+        private bool _touchpadGesturesEnabled;
         public bool TouchpadGesturesEnabled
         {
             get => _touchpadGesturesEnabled;
@@ -126,14 +126,14 @@ namespace PadForge.ViewModels
             }
         }
 
-        private bool _touchpadEnableFourWaySwipes = true;
+        private bool _touchpadEnableFourWaySwipes;
         public bool TouchpadEnableFourWaySwipes
         {
             get => _touchpadEnableFourWaySwipes;
             set { if (SetProperty(ref _touchpadEnableFourWaySwipes, value)) PushIfNotLoading(); }
         }
 
-        private bool _touchpadEnableEightWaySwipes = true;
+        private bool _touchpadEnableEightWaySwipes;
         public bool TouchpadEnableEightWaySwipes
         {
             get => _touchpadEnableEightWaySwipes;
@@ -174,7 +174,7 @@ namespace PadForge.ViewModels
             }
         }
 
-        private bool _touchpadEnableTaps = true;
+        private bool _touchpadEnableTaps;
         public bool TouchpadEnableTaps
         {
             get => _touchpadEnableTaps;
@@ -203,7 +203,7 @@ namespace PadForge.ViewModels
             }
         }
 
-        private bool _touchpadEnableLongPress = true;
+        private bool _touchpadEnableLongPress;
         public bool TouchpadEnableLongPress
         {
             get => _touchpadEnableLongPress;
@@ -221,21 +221,21 @@ namespace PadForge.ViewModels
             }
         }
 
-        private bool _touchpadEnableTwoFingerSwipes = true;
+        private bool _touchpadEnableTwoFingerSwipes;
         public bool TouchpadEnableTwoFingerSwipes
         {
             get => _touchpadEnableTwoFingerSwipes;
             set { if (SetProperty(ref _touchpadEnableTwoFingerSwipes, value)) PushIfNotLoading(); }
         }
 
-        private bool _touchpadEnablePinchSpread = true;
+        private bool _touchpadEnablePinchSpread;
         public bool TouchpadEnablePinchSpread
         {
             get => _touchpadEnablePinchSpread;
             set { if (SetProperty(ref _touchpadEnablePinchSpread, value)) PushIfNotLoading(); }
         }
 
-        private bool _touchpadEnableRotate = true;
+        private bool _touchpadEnableRotate;
         public bool TouchpadEnableRotate
         {
             get => _touchpadEnableRotate;
@@ -393,7 +393,7 @@ namespace PadForge.ViewModels
 
         private RelayCommand _resetTouchpadGesturesEnabledCommand;
         public RelayCommand ResetTouchpadGesturesEnabledCommand =>
-            _resetTouchpadGesturesEnabledCommand ??= new RelayCommand(() => TouchpadGesturesEnabled = true);
+            _resetTouchpadGesturesEnabledCommand ??= new RelayCommand(() => TouchpadGesturesEnabled = false);
 
         private RelayCommand _resetTouchpadGestureModeCommand;
         public RelayCommand ResetTouchpadGestureModeCommand =>
@@ -405,11 +405,11 @@ namespace PadForge.ViewModels
 
         private RelayCommand _resetTouchpadEnableFourWaySwipesCommand;
         public RelayCommand ResetTouchpadEnableFourWaySwipesCommand =>
-            _resetTouchpadEnableFourWaySwipesCommand ??= new RelayCommand(() => TouchpadEnableFourWaySwipes = true);
+            _resetTouchpadEnableFourWaySwipesCommand ??= new RelayCommand(() => TouchpadEnableFourWaySwipes = false);
 
         private RelayCommand _resetTouchpadEnableEightWaySwipesCommand;
         public RelayCommand ResetTouchpadEnableEightWaySwipesCommand =>
-            _resetTouchpadEnableEightWaySwipesCommand ??= new RelayCommand(() => TouchpadEnableEightWaySwipes = true);
+            _resetTouchpadEnableEightWaySwipesCommand ??= new RelayCommand(() => TouchpadEnableEightWaySwipes = false);
 
         private RelayCommand _resetTouchpadSwipeDistanceThresholdCommand;
         public RelayCommand ResetTouchpadSwipeDistanceThresholdCommand =>
@@ -433,7 +433,7 @@ namespace PadForge.ViewModels
 
         private RelayCommand _resetTouchpadEnableTapsCommand;
         public RelayCommand ResetTouchpadEnableTapsCommand =>
-            _resetTouchpadEnableTapsCommand ??= new RelayCommand(() => TouchpadEnableTaps = true);
+            _resetTouchpadEnableTapsCommand ??= new RelayCommand(() => TouchpadEnableTaps = false);
 
         private RelayCommand _resetTouchpadTapTimeWindowMsCommand;
         public RelayCommand ResetTouchpadTapTimeWindowMsCommand =>
@@ -445,7 +445,7 @@ namespace PadForge.ViewModels
 
         private RelayCommand _resetTouchpadEnableLongPressCommand;
         public RelayCommand ResetTouchpadEnableLongPressCommand =>
-            _resetTouchpadEnableLongPressCommand ??= new RelayCommand(() => TouchpadEnableLongPress = true);
+            _resetTouchpadEnableLongPressCommand ??= new RelayCommand(() => TouchpadEnableLongPress = false);
 
         private RelayCommand _resetTouchpadLongPressTimeWindowMsCommand;
         public RelayCommand ResetTouchpadLongPressTimeWindowMsCommand =>
@@ -453,15 +453,15 @@ namespace PadForge.ViewModels
 
         private RelayCommand _resetTouchpadEnableTwoFingerSwipesCommand;
         public RelayCommand ResetTouchpadEnableTwoFingerSwipesCommand =>
-            _resetTouchpadEnableTwoFingerSwipesCommand ??= new RelayCommand(() => TouchpadEnableTwoFingerSwipes = true);
+            _resetTouchpadEnableTwoFingerSwipesCommand ??= new RelayCommand(() => TouchpadEnableTwoFingerSwipes = false);
 
         private RelayCommand _resetTouchpadEnablePinchSpreadCommand;
         public RelayCommand ResetTouchpadEnablePinchSpreadCommand =>
-            _resetTouchpadEnablePinchSpreadCommand ??= new RelayCommand(() => TouchpadEnablePinchSpread = true);
+            _resetTouchpadEnablePinchSpreadCommand ??= new RelayCommand(() => TouchpadEnablePinchSpread = false);
 
         private RelayCommand _resetTouchpadEnableRotateCommand;
         public RelayCommand ResetTouchpadEnableRotateCommand =>
-            _resetTouchpadEnableRotateCommand ??= new RelayCommand(() => TouchpadEnableRotate = true);
+            _resetTouchpadEnableRotateCommand ??= new RelayCommand(() => TouchpadEnableRotate = false);
 
         private RelayCommand _resetTouchpadEnableThreeFingerGesturesCommand;
         public RelayCommand ResetTouchpadEnableThreeFingerGesturesCommand =>
@@ -489,7 +489,7 @@ namespace PadForge.ViewModels
         public RelayCommand ResetTouchpadDetectionCardCommand =>
             _resetTouchpadDetectionCardCommand ??= new RelayCommand(() =>
             {
-                TouchpadGesturesEnabled = true;
+                TouchpadGesturesEnabled = false;
                 TouchpadGestureMode = "Both";
                 TouchpadCooldownMs = 100;
             });
@@ -500,21 +500,21 @@ namespace PadForge.ViewModels
         public RelayCommand ResetTouchpadInBoxCardCommand =>
             _resetTouchpadInBoxCardCommand ??= new RelayCommand(() =>
             {
-                TouchpadEnableFourWaySwipes = true;
-                TouchpadEnableEightWaySwipes = true;
+                TouchpadEnableFourWaySwipes = false;
+                TouchpadEnableEightWaySwipes = false;
                 TouchpadSwipeDistanceThreshold = 0.15;
                 TouchpadSwipeTimeWindowMs = 500;
                 TouchpadEnableRadialZones = false;
                 TouchpadRadialZoneCount = 8;
                 TouchpadRadialCenterDeadzone = 0.30;
-                TouchpadEnableTaps = true;
+                TouchpadEnableTaps = false;
                 TouchpadTapTimeWindowMs = 350;
                 TouchpadMultiTapGapMs = 300;
-                TouchpadEnableLongPress = true;
+                TouchpadEnableLongPress = false;
                 TouchpadLongPressTimeWindowMs = 500;
-                TouchpadEnableTwoFingerSwipes = true;
-                TouchpadEnablePinchSpread = true;
-                TouchpadEnableRotate = true;
+                TouchpadEnableTwoFingerSwipes = false;
+                TouchpadEnablePinchSpread = false;
+                TouchpadEnableRotate = false;
                 TouchpadEnableThreeFingerGestures = false;
                 TouchpadEnableFourFingerGestures = false;
                 TouchpadEnableFiveFingerGestures = false;

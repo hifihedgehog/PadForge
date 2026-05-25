@@ -695,17 +695,45 @@ namespace PadForge.Services
                 };
             };
 
-            // — touchpad-as-mouse tuning. SourceCoercion.TryReadTouchpadAxis
-            // reads the per-(device, pad) MouseSensitivityX/Y and
-            // MouseInvertX/Y off the same per-pad settings collection the
-            // gesture/joystick providers use, so the user has one place to
-            // tune all touchpad output.
+            // — touchpad-as-mouse tuning. Slot-keyed: the same physical
+            // touchpad in two virtual-controller slots carries its own
+            // MouseSensitivityX/Y + MouseInvertX/Y per slot, stored on
+            // each slot's UserSetting's PadSetting. Walk UserSettings
+            // filtered by `MapTo == slotIndex && InstanceGuid == device`
+            // — the existing TouchpadGestureSettingsProvider returns the
+            // first match by device alone, which would route every slot
+            // through slot 0's tuning.
             PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseSettingsProvider =
-                (deviceGuid, padIdx) =>
+                (slotIndex, deviceGuid, padIdx) =>
             {
-                if (_inputManager == null) return null;
                 if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return null;
-                return _inputManager.TouchpadGestureSettingsProvider?.Invoke(g, padIdx);
+                var settings = SettingsManager.UserSettings;
+                if (settings == null) return null;
+                PadSetting ps = null;
+                lock (settings.SyncRoot)
+                {
+                    for (int i = 0; i < settings.Items.Count; i++)
+                    {
+                        var us = settings.Items[i];
+                        if (us == null) continue;
+                        if (us.MapTo != slotIndex) continue;
+                        if (us.InstanceGuid != g) continue;
+                        ps = us.GetPadSetting();
+                        break;
+                    }
+                }
+                if (ps?.TouchpadSettings == null) return null;
+                string guidStr = g.ToString();
+                for (int i = 0; i < ps.TouchpadSettings.Length; i++)
+                {
+                    var entry = ps.TouchpadSettings[i];
+                    if (entry == null) continue;
+                    if (entry.TouchpadIndex != padIdx) continue;
+                    if (!string.Equals(entry.DeviceGuid, guidStr, StringComparison.OrdinalIgnoreCase))
+                        continue;
+                    return entry.Settings;
+                }
+                return null;
             };
 
             // — per-(device, pad) touchpad gesture settings. Walks the

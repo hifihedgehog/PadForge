@@ -5795,8 +5795,23 @@
                         <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="&#xF108;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
-                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <!-- Segoe Fluent Icons F108 is "LeftStick" — it has an "L"
+                                         baked into the cap as the left/right disambiguator.
+                                         For this card we want the generic joystick pictogram
+                                         (outer ring + filled centre cap) without the L
+                                         marker, so it reads as "stick" rather than "left
+                                         stick specifically." Drawn here as two Ellipses
+                                         instead of a font glyph; matches the surrounding
+                                         16px Fluent-icon column. -->
+                                    <Grid Width="16" Height="16" VerticalAlignment="Center" Margin="0,0,8,0">
+                                        <Ellipse Width="15" Height="15"
+                                                 Stroke="{DynamicResource TextFillColorPrimaryBrush}"
+                                                 StrokeThickness="1.3"
+                                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <Ellipse Width="6" Height="6"
+                                                 Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Grid>
                                     <TextBlock Text="{Binding Pad_Touchpad_Stick_Header, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>
                                     <Button Command="{Binding ResetTouchpadJoystickCardCommand}" Style="{StaticResource ResetAllButton}"

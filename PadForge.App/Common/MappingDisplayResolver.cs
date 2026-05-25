@@ -690,24 +690,35 @@ namespace PadForge.Common
                 // still get a functional list.
                 var s = settingsForPad?.Invoke(p);
 
-                // Joystick / D-pad output is independent of the gesture
+                // Stick / D-pad output is independent of the gesture
                 // master toggle and the In-box / Custom mode picker —
                 // it's a separate channel the user opts into via its
                 // own EnableJoystickOutput. Surface its descriptors
-                // first so a user who only wants joystick output (and
+                // first so a user who only wants stick/D-pad output (and
                 // has gestures fully disabled) still sees these in the
                 // picker.
+                //
+                // Display names ALWAYS include the word "Touchpad" so
+                // the user can tell these apart from a gamepad's own
+                // physical sticks and D-pad — picking "Stick X" out of
+                // a flat list when your DualSense is also on the slot
+                // would be ambiguous otherwise. For single-pad devices
+                // the wrap is plain "Touchpad Stick X"; multi-pad uses
+                // the existing pad-prefix format "Touchpad 0: Stick X".
                 if (s?.EnableJoystickOutput == true)
                 {
-                    AddGesture(list, p, "JoystickX", PadWrap(si.Mapping_TouchpadGesture_JoystickX));
-                    AddGesture(list, p, "JoystickY", PadWrap(si.Mapping_TouchpadGesture_JoystickY));
+                    string StickWrap(string label) => multiPad
+                        ? string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, p, label)
+                        : string.Format(si.Mapping_TouchpadGesture_SinglePadNoun_Format, label);
+                    AddGesture(list, p, "StickX", StickWrap(si.Mapping_TouchpadGesture_StickX));
+                    AddGesture(list, p, "StickY", StickWrap(si.Mapping_TouchpadGesture_StickY));
                     string dpadMode = s.JoystickDPadMode ?? "FourWay";
                     if (!string.Equals(dpadMode, "Off", System.StringComparison.OrdinalIgnoreCase))
                     {
-                        AddGesture(list, p, "JoystickDPadUp",    PadWrap(si.Mapping_TouchpadGesture_JoystickDPadUp));
-                        AddGesture(list, p, "JoystickDPadRight", PadWrap(si.Mapping_TouchpadGesture_JoystickDPadRight));
-                        AddGesture(list, p, "JoystickDPadDown",  PadWrap(si.Mapping_TouchpadGesture_JoystickDPadDown));
-                        AddGesture(list, p, "JoystickDPadLeft",  PadWrap(si.Mapping_TouchpadGesture_JoystickDPadLeft));
+                        AddGesture(list, p, "DPadUp",    StickWrap(si.Mapping_TouchpadGesture_DPadUp));
+                        AddGesture(list, p, "DPadRight", StickWrap(si.Mapping_TouchpadGesture_DPadRight));
+                        AddGesture(list, p, "DPadDown",  StickWrap(si.Mapping_TouchpadGesture_DPadDown));
+                        AddGesture(list, p, "DPadLeft",  StickWrap(si.Mapping_TouchpadGesture_DPadLeft));
                     }
                 }
 

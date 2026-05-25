@@ -1468,17 +1468,18 @@
   <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>Pressão longa</value></data>
   <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>Zona radial {0}/{1}</value></data>
   <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>Touchpad {0}: {1}</value></data>
+  <data name="Mapping_TouchpadGesture_SinglePadNoun_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeUp" xml:space="preserve"><value>Deslizar dois dedos para cima</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeDown" xml:space="preserve"><value>Deslizar dois dedos para baixo</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeLeft" xml:space="preserve"><value>Deslizar dois dedos para a esquerda</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerSwipeRight" xml:space="preserve"><value>Deslizar dois dedos para a direita</value></data>
   <data name="Mapping_TouchpadGesture_TwoFingerTap" xml:space="preserve"><value>Toque com dois dedos</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickX" xml:space="preserve"><value>Joystick X</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickY" xml:space="preserve"><value>Joystick Y</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickDPadUp" xml:space="preserve"><value>D-pad do joystick cima</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickDPadRight" xml:space="preserve"><value>D-pad do joystick direita</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickDPadDown" xml:space="preserve"><value>D-pad do joystick baixo</value></data>
-  <data name="Mapping_TouchpadGesture_JoystickDPadLeft" xml:space="preserve"><value>D-pad do joystick esquerda</value></data>
+  <data name="Mapping_TouchpadGesture_StickX" xml:space="preserve"><value>Stick X</value></data>
+  <data name="Mapping_TouchpadGesture_StickY" xml:space="preserve"><value>Stick Y</value></data>
+  <data name="Mapping_TouchpadGesture_DPadUp" xml:space="preserve"><value>D-pad cima</value></data>
+  <data name="Mapping_TouchpadGesture_DPadRight" xml:space="preserve"><value>D-pad direita</value></data>
+  <data name="Mapping_TouchpadGesture_DPadDown" xml:space="preserve"><value>D-pad baixo</value></data>
+  <data name="Mapping_TouchpadGesture_DPadLeft" xml:space="preserve"><value>D-pad esquerda</value></data>
 
   <data name="Mapping_TouchpadGesture_Pinch" xml:space="preserve"><value>Pinçar com dois dedos</value></data>
   <data name="Mapping_TouchpadGesture_Spread" xml:space="preserve"><value>Afastar com dois dedos</value></data>
@@ -1551,22 +1552,22 @@
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Nenhum gesto personalizado gravado para este perfil. Clique em Gravar novo gesto para capturar um.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 dedo</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} dedos</value></data>
-  <data name="Pad_Touchpad_Joystick_Header" xml:space="preserve"><value>Saída joystick / D-pad</value></data>
-  <data name="Pad_Touchpad_Joystick_Subtitle" xml:space="preserve"><value>Transforme o touchpad em um stick analógico virtual ou D-pad. A saída se ancora onde o dedo encosta primeiro; a posição atual relativa a essa âncora controla o valor do stick e, opcionalmente, bits de direção do D-pad mantidos.</value></data>
-  <data name="Pad_Touchpad_JoystickEnabled" xml:space="preserve"><value>Ativar saída de joystick</value></data>
-  <data name="Pad_Touchpad_JoystickEnabled_Tooltip" xml:space="preserve"><value>Expõe os descritores JoystickX, JoystickY e JoystickDPad* no seletor de mapeamento. Funciona junto às fontes de dedo e gestos do touchpad existentes, não em lugar delas.</value></data>
-  <data name="Pad_Touchpad_JoystickMaxRadius" xml:space="preserve"><value>Raio máximo (0..1)</value></data>
-  <data name="Pad_Touchpad_JoystickInnerDeadzone" xml:space="preserve"><value>Zona morta interna (0..1)</value></data>
-  <data name="Pad_Touchpad_JoystickDPadMode_Label" xml:space="preserve"><value>Modo do D-pad</value></data>
-  <data name="Pad_Touchpad_JoystickDPadMode_Tooltip" xml:space="preserve"><value>Desligado ignora a saída do D-pad. 4 direções emite uma cardinal por vez. 8 direções emite duas cardinais para diagonais (assim como D-pads físicos reportam NE / NO / SE / SO).</value></data>
-  <data name="Pad_Touchpad_JoystickDPadMode_Off" xml:space="preserve"><value>Desligado</value></data>
-  <data name="Pad_Touchpad_JoystickDPadMode_FourWay" xml:space="preserve"><value>4 direções</value></data>
-  <data name="Pad_Touchpad_JoystickDPadMode_EightWay" xml:space="preserve"><value>8 direções</value></data>
-  <data name="Pad_Touchpad_JoystickDPadActivationThreshold" xml:space="preserve"><value>Ativação do D-pad (0..1)</value></data>
+  <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Saída Stick / D-Pad</value></data>
+  <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Transforme o touchpad em um stick analógico virtual ou D-pad. A saída se ancora onde o dedo encosta primeiro. A posição atual relativa a essa âncora controla o valor do stick e, opcionalmente, bits de direção do D-pad mantidos.</value></data>
+  <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Ativar Saída Stick / D-Pad</value></data>
+  <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Expõe os descritores Touchpad Stick X, Stick Y e D-pad no seletor de mapeamento. Funciona junto às fontes de dedo e gestos do touchpad existentes, não em lugar delas.</value></data>
+  <data name="Pad_Touchpad_StickMaxRadius" xml:space="preserve"><value>Raio Máximo (0..1)</value></data>
+  <data name="Pad_Touchpad_StickInnerDeadzone" xml:space="preserve"><value>Zona Morta Interna (0..1)</value></data>
+  <data name="Pad_Touchpad_StickDPadMode_Label" xml:space="preserve"><value>Modo D-Pad</value></data>
+  <data name="Pad_Touchpad_StickDPadMode_Tooltip" xml:space="preserve"><value>Desligado ignora a saída do D-pad. 4 Direções emite uma cardinal por vez. 8 Direções emite duas cardinais para diagonais (assim como D-pads físicos reportam NE / NO / SE / SO).</value></data>
+  <data name="Pad_Touchpad_StickDPadMode_Off" xml:space="preserve"><value>Desligado</value></data>
+  <data name="Pad_Touchpad_StickDPadMode_FourWay" xml:space="preserve"><value>4 Direções</value></data>
+  <data name="Pad_Touchpad_StickDPadMode_EightWay" xml:space="preserve"><value>8 Direções</value></data>
+  <data name="Pad_Touchpad_StickDPadActivationThreshold" xml:space="preserve"><value>Ativação do D-Pad (0..1)</value></data>
 
   <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Restaurar Detecção</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Restaurar Gestos Predefinidos</value></data>
-  <data name="Pad_ResetTouchpadJoystick" xml:space="preserve"><value>Restaurar joystick / D-pad</value></data>
+  <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Restaurar Saída Stick / D-Pad</value></data>
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Restaurar Gestos</value></data>
   <data name="Pad_ResetTouchpadGestureMode" xml:space="preserve"><value>Restaurar Reconhecer</value></data>
   <data name="Pad_ResetTouchpadCooldownMs" xml:space="preserve"><value>Restaurar Tempo de Espera</value></data>
@@ -1590,11 +1591,11 @@
   <data name="Pad_ResetTouchpadFiveFinger" xml:space="preserve"><value>Restaurar Toque com Cinco Dedos</value></data>
   <data name="Pad_ResetTouchpadShapeGestures" xml:space="preserve"><value>Restaurar Gestos de Formato</value></data>
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Restaurar Limite de Correspondência da Forma</value></data>
-  <data name="Pad_ResetTouchpadJoystickEnabled" xml:space="preserve"><value>Restaurar saída de joystick</value></data>
-  <data name="Pad_ResetTouchpadJoystickMaxRadius" xml:space="preserve"><value>Restaurar raio máximo</value></data>
-  <data name="Pad_ResetTouchpadJoystickInnerDeadzone" xml:space="preserve"><value>Restaurar zona morta interna</value></data>
-  <data name="Pad_ResetTouchpadJoystickDPadMode" xml:space="preserve"><value>Restaurar modo do D-pad</value></data>
-  <data name="Pad_ResetTouchpadJoystickDPadActivationThreshold" xml:space="preserve"><value>Restaurar ativação do D-pad</value></data>
+  <data name="Pad_ResetTouchpadStickEnabled" xml:space="preserve"><value>Restaurar Ativar Saída Stick / D-Pad</value></data>
+  <data name="Pad_ResetTouchpadStickMaxRadius" xml:space="preserve"><value>Restaurar Raio Máximo</value></data>
+  <data name="Pad_ResetTouchpadStickInnerDeadzone" xml:space="preserve"><value>Restaurar Zona Morta Interna</value></data>
+  <data name="Pad_ResetTouchpadStickDPadMode" xml:space="preserve"><value>Restaurar Modo D-Pad</value></data>
+  <data name="Pad_ResetTouchpadStickDPadActivationThreshold" xml:space="preserve"><value>Restaurar Ativação do D-Pad</value></data>
   <data name="Recorder_Title" xml:space="preserve"><value>Gravar gesto de touchpad</value></data>
   <data name="Recorder_Subtitle" xml:space="preserve"><value>Desenhe o gesto na superfície abaixo. A janela captura cada dedo que você apoiar. Quando você tira todos os dedos da superfície, a amostra é gravada. Desenhar com uma quantidade de dedos diferente das amostras anteriores reinicia a pilha.</value></data>
   <data name="Recorder_Waiting" xml:space="preserve"><value>Aguardando contato dos dedos na superfície</value></data>

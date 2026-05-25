@@ -593,10 +593,11 @@ namespace PadForge.Common.Input
                 ps.ForceSwapMotor = "0";
 
                 // Touchpad auto-mapping for PlayStation output + touchpad-capable device.
-                // TouchpadClick only auto-maps when the device actually has
-                // a touchpad-click HID button (slot 16 / SDL_GAMEPAD_BUTTON_TOUCHPAD).
-                // DualSense / DS4 / web touchpad / overlay device do; system
-                // PTP touchpads enumerated via Raw Input don't.
+                // This branch is the CapType == Gamepad path — every gamepad
+                // that reports HasTouchpad here (DualSense, DS4, DualSense Edge,
+                // web-gamepad-with-touchpad) exposes a touchpad click. PTP
+                // system touchpads have CapType == Touchpad and never reach
+                // this branch, so no per-device gate is needed.
                 if (outputType == Engine.VirtualControllerType.PlayStation && ud.HasTouchpad)
                 {
                     ps.TouchpadX1 = "Touchpad 0 Finger 0 X";
@@ -605,9 +606,7 @@ namespace PadForge.Common.Input
                     ps.TouchpadX2 = "Touchpad 0 Finger 1 X";
                     ps.TouchpadY2 = "Touchpad 0 Finger 1 Y";
                     ps.TouchpadContact2 = "Touchpad 0 Finger 1 Down";
-                    bool hasTouchpadClick = ud.Device?.SupportedButtonIndices?.Contains(16) ?? false;
-                    if (hasTouchpadClick)
-                        ps.TouchpadClick = "Touchpad 0 Click";
+                    ps.TouchpadClick = "Touchpad 0 Click";
                 }
 
                 // Motion passthrough auto-mapping for PlayStation output +
@@ -627,12 +626,13 @@ namespace PadForge.Common.Input
                 return ps;
             }
 
-            // Touchpad-type devices (web touchpad, PTP) auto-map touchpad data to PlayStation.
-            // Matches the gamepad+PlayStation branch above (line ~555); the
-            // earlier asymmetry left web touchpad clients without an auto-
-            // mapped TouchpadClick. PTP system touchpads share this branch
-            // but don't have a click button — guard on SDL_GAMEPAD_BUTTON_TOUCHPAD
-            // (slot 16) the same way as the gamepad branch above.
+            // Touchpad-type devices (web touchpad, overlay, PTP) auto-map
+            // touchpad data to PlayStation. TouchpadClick is dropped only
+            // for PTP system touchpads, which are uniquely identified by
+            // having no ISdlInputDevice wrapper attached (they're read by
+            // PrecisionTouchpadReader, not SDL). Web touchpad clients and
+            // TouchpadOverlayDevice both attach a wrapper and expose a
+            // virtual click button.
             if (ud.CapType == InputDeviceType.Touchpad && ud.HasTouchpad &&
                 outputType == Engine.VirtualControllerType.PlayStation)
             {
@@ -642,8 +642,7 @@ namespace PadForge.Common.Input
                 ps.TouchpadX2 = "Touchpad 0 Finger 1 X";
                 ps.TouchpadY2 = "Touchpad 0 Finger 1 Y";
                 ps.TouchpadContact2 = "Touchpad 0 Finger 1 Down";
-                bool hasTouchpadClick = ud.Device?.SupportedButtonIndices?.Contains(16) ?? false;
-                if (hasTouchpadClick)
+                if (ud.Device != null)
                     ps.TouchpadClick = "Touchpad 0 Click";
 
                 ps.UpdateChecksum();

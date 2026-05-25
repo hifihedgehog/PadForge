@@ -575,7 +575,7 @@ namespace PadForge.Services
             // updated each Update tick alongside the live-rate readout.
             // Returns (0, 0, -1) (flat, face-up) for unknown devices —
             // matches the v3.2 motion-snapshot default orientation.
-            PadForge.Engine.Common.Mapping.SourceCoercion.GravityProvider = (deviceGuid, slotIndex) =>
+            PadForge.Engine.Common.Mapping.SourceCoercion.GravityProvider = deviceGuid =>
             {
                 if (string.IsNullOrEmpty(deviceGuid)) return (0f, 0f, -1f);
                 if (!Guid.TryParse(deviceGuid, out var g)) return (0f, 0f, -1f);

@@ -5795,22 +5795,20 @@
                         <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <!-- Segoe Fluent Icons F108 is "LeftStick" — its glyph
-                                         has an "L" baked into the centre cap as the
-                                         left/right disambiguator and the font has no
-                                         L-less variant. Render F108 as the base, then
-                                         overlay a small solid-fill disc in the cap area
-                                         to mask the L while preserving the rest of the
-                                         glyph (outer ring + cap silhouette). Result:
-                                         F108's authentic stick shape with a plain
-                                         unmarked cap. -->
-                                    <Grid Width="16" Height="16" VerticalAlignment="Center" Margin="0,0,8,0">
-                                        <TextBlock Text="&#xF108;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
-                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        <Ellipse Width="7" Height="7"
-                                                 Fill="{DynamicResource TextFillColorPrimaryBrush}"
-                                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Grid>
+                                    <!-- Reuses the same outer-ring + inner-disc stick
+                                         geometries that LabeledShapeIcon draws on the
+                                         sticks/triggers tab — authored as 512x512
+                                         vector paths in ControllerIcons.xaml. Viewbox
+                                         scales them to 16px to match the surrounding
+                                         Fluent-icon column. -->
+                                    <Viewbox Width="16" Height="16" Stretch="Uniform" VerticalAlignment="Center" Margin="0,0,8,0">
+                                        <Grid Width="512" Height="512">
+                                            <Path Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                                                  Data="{StaticResource ZackslyStickOuterRingGeometry}"/>
+                                            <Path Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                                                  Data="{StaticResource ZackslyStickInnerDiscGeometry}"/>
+                                        </Grid>
+                                    </Viewbox>
                                     <TextBlock Text="{Binding Pad_Touchpad_Stick_Header, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>
                                     <Button Command="{Binding ResetTouchpadJoystickCardCommand}" Style="{StaticResource ResetAllButton}"

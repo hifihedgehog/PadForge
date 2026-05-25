@@ -5866,6 +5866,59 @@
                                 </StackPanel>
                             </StackPanel>
                         </Border>
+
+                        <!-- ─── Mouse Output card ─── -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE962;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Touchpad_Mouse_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding ResetTouchpadMouseCardCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetTouchpadMouse, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Touchpad_Mouse_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           TextWrapping="Wrap" Margin="0,0,0,8"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_Touchpad_MouseSensitivityX, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="220"/>
+                                    <TextBox Text="{Binding TouchpadMouseSensitivityX, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
+                                             Width="80" VerticalAlignment="Center"
+                                             ToolTip="{Binding Pad_Touchpad_MouseSensitivityX_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Command="{Binding ResetTouchpadMouseSensitivityXCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadMouseSensitivityX, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_Touchpad_MouseSensitivityY, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Width="220"/>
+                                    <TextBox Text="{Binding TouchpadMouseSensitivityY, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
+                                             Width="80" VerticalAlignment="Center"
+                                             ToolTip="{Binding Pad_Touchpad_MouseSensitivityY_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Command="{Binding ResetTouchpadMouseSensitivityYCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadMouseSensitivityY, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Content="{Binding Pad_Touchpad_MouseInvertX, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadMouseInvertX, Mode=TwoWay}"
+                                              ToolTip="{Binding Pad_Touchpad_MouseInvertX_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadMouseInvertXCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadMouseInvertX, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Content="{Binding Pad_Touchpad_MouseInvertY, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadMouseInvertY, Mode=TwoWay}"
+                                              ToolTip="{Binding Pad_Touchpad_MouseInvertY_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetTouchpadMouseInvertYCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadMouseInvertY, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

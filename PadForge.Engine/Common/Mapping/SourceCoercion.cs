@@ -438,15 +438,16 @@ namespace PadForge.Engine.Common.Mapping
         /// 2-finger session active. Returns 0 when unwired.</summary>
         public static Func<string, int, string, float> TouchpadGestureAxisProvider { get; set; }
 
-        /// <summary>Returns the per-(deviceGuid, padIdx) touchpad settings
-        /// snapshot used by <see cref="TryReadTouchpadAxis"/> to apply
-        /// per-axis mouse sensitivity and inversion to the touchpad
-        /// finger → KBM mouse delta. App layer wires this against
-        /// <c>InputManager.TouchpadGestureSettingsProvider</c>. Returns
-        /// null when unwired, in which case the reader falls back to a
-        /// neutral 1.0× / non-inverted multiplier so existing behavior
-        /// is preserved.</summary>
-        public static Func<string, int, PadForge.Engine.Touchpad.TouchpadGestureSettings> TouchpadMouseSettingsProvider { get; set; }
+        /// <summary>Returns the per-(slotIndex, deviceGuid, padIdx) touchpad
+        /// settings snapshot used by <see cref="TryReadTouchpadAxis"/> to
+        /// apply per-axis mouse sensitivity and inversion to the touchpad
+        /// finger → KBM mouse delta. Slot-keyed so the same touchpad in
+        /// two slots can carry different mouse tuning (each slot's
+        /// PadSetting lives on its own UserSetting). Returns null when
+        /// unwired, in which case the reader falls back to a neutral
+        /// 1.0× / non-inverted multiplier so existing behavior is
+        /// preserved.</summary>
+        public static Func<int, string, int, PadForge.Engine.Touchpad.TouchpadGestureSettings> TouchpadMouseSettingsProvider { get; set; }
 
         /// <summary>True for the bipolar continuous-axis gesture
         /// descriptors. These return a float value via
@@ -1052,7 +1053,7 @@ namespace PadForge.Engine.Common.Mapping
                 // Caller signals which one it wants via relativeTouchpad.
                 if (relativeTouchpad)
                 {
-                    if (TryReadTouchpadAxis(state, src, s, out float bipolar)) return bipolar;
+                    if (TryReadTouchpadAxis(state, src, s, slotIndex, out float bipolar)) return bipolar;
                 }
                 else
                 {
@@ -1363,7 +1364,7 @@ namespace PadForge.Engine.Common.Mapping
         /// position targets — touchpad-output passthrough, stick axes,
         /// extended axes — go through <c>TryReadTouchpadAxisAbsolute</c>
         /// instead.</para></summary>
-        private static bool TryReadTouchpadAxis(CustomInputState state, MappingSource src, string descriptor, out float bipolar)
+        private static bool TryReadTouchpadAxis(CustomInputState state, MappingSource src, string descriptor, int slotIndex, out float bipolar)
         {
             bipolar = 0f;
             if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset))
@@ -1419,11 +1420,13 @@ namespace PadForge.Engine.Common.Mapping
             if (axisOffset == 1)
                 delta = -delta;
 
-            // Per-pad mouse tuning: sensitivity multiplier per axis plus
-            // optional invert. Falls back to 1.0× / non-inverted when the
-            // provider isn't wired (engine standalone tests, early
-            // startup before InputService binds).
-            var tpSettings = TouchpadMouseSettingsProvider?.Invoke(deviceGuid, padIdx);
+            // Per-(slot, pad) mouse tuning: sensitivity multiplier per
+            // axis plus optional invert. Slot-keyed so two slots sharing
+            // the same physical touchpad can carry independent tuning.
+            // Falls back to 1.0× / non-inverted when the provider isn't
+            // wired (engine standalone tests, early startup before
+            // InputService binds).
+            var tpSettings = TouchpadMouseSettingsProvider?.Invoke(slotIndex, deviceGuid, padIdx);
             float sens = (axisOffset == 0)
                 ? (tpSettings?.MouseSensitivityX ?? 1.0f)
                 : (tpSettings?.MouseSensitivityY ?? 1.0f);

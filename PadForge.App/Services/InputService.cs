@@ -630,22 +630,24 @@ namespace PadForge.Services
             };
 
             // — touchpad-gesture fire lookup. Reads from the per-
-            // (device, pad) gesture context that the recognizer
-            // populates each polling tick in Step 2. Also routes the
-            // joystick D-pad bool descriptors ("JoystickDPadUp" etc.)
-            // through the same hook by computing them on the fly from
-            // the gesture context's FingerPaths plus the per-pad
-            // joystick settings. Returns false when the InputManager
-            // isn't wired, no gesture context exists for the device/pad
-            // pair, the gesture didn't fire on the current tick, or
-            // (for joystick) joystick output is disabled / no finger
-            // is active.
+            // (slot, device, pad) gesture context the recognizer
+            // populates each polling tick in Step 2. Slot-keyed so two
+            // slots sharing one physical touchpad each get their own
+            // FiredGesturesThisFrame driven by their own Touchpad-tab
+            // toggles. Also routes the joystick D-pad bool descriptors
+            // ("DPadUp" etc.) through the same hook by computing them
+            // on the fly from the per-slot context's FingerPaths plus
+            // the per-slot joystick settings. Returns false when the
+            // InputManager isn't wired, no gesture context exists for
+            // the (slot, device, pad) triple, the gesture didn't fire
+            // on the current tick, or (for joystick) joystick output
+            // is disabled / no finger is active.
             PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureFiredProvider =
-                (deviceGuid, padIdx, gestureName) =>
+                (slotIndex, deviceGuid, padIdx, gestureName) =>
             {
                 if (_inputManager == null) return false;
                 if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return false;
-                if (!_inputManager.GestureContexts.TryGetValue((g, padIdx), out var ctx)) return false;
+                if (!_inputManager.GestureContexts.TryGetValue((slotIndex, g, padIdx), out var ctx)) return false;
 
                 // Touchpad-stick D-pad descriptors compute their bool
                 // from the same FingerPaths anchor + current delta the
@@ -654,7 +656,7 @@ namespace PadForge.Services
                 if (gestureName == "DPadUp" || gestureName == "DPadRight"
                     || gestureName == "DPadDown" || gestureName == "DPadLeft")
                 {
-                    var settings = _inputManager.TouchpadGestureSettingsProvider?.Invoke(g, padIdx)
+                    var settings = _inputManager.TouchpadGestureSettingsProvider?.Invoke(slotIndex, g, padIdx)
                         ?? PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
                     var (u, r, d, l) = PadForge.Engine.Touchpad.GestureRecognizer.ComputeJoystickDPad(ctx, settings);
                     return gestureName switch
@@ -672,17 +674,18 @@ namespace PadForge.Services
             };
 
             // — touchpad-gesture continuous-axis reader for PinchAxis,
-            // RotateAxis, and the joystick stick axes. Same per-(device,
-            // pad) context lookup; returns 0 when no source is active.
+            // RotateAxis, and the joystick stick axes. Same per-(slot,
+            // device, pad) context lookup; returns 0 when no source is
+            // active.
             PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureAxisProvider =
-                (deviceGuid, padIdx, axisName) =>
+                (slotIndex, deviceGuid, padIdx, axisName) =>
             {
                 if (_inputManager == null) return 0f;
                 if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return 0f;
-                if (!_inputManager.GestureContexts.TryGetValue((g, padIdx), out var ctx)) return 0f;
+                if (!_inputManager.GestureContexts.TryGetValue((slotIndex, g, padIdx), out var ctx)) return 0f;
                 if (axisName == "StickX" || axisName == "StickY")
                 {
-                    var settings = _inputManager.TouchpadGestureSettingsProvider?.Invoke(g, padIdx)
+                    var settings = _inputManager.TouchpadGestureSettingsProvider?.Invoke(slotIndex, g, padIdx)
                         ?? PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
                     var (sx, sy) = PadForge.Engine.Touchpad.GestureRecognizer.ComputeJoystickAxis(ctx, settings);
                     return axisName == "StickX" ? sx : sy;
@@ -736,13 +739,15 @@ namespace PadForge.Services
                 return null;
             };
 
-            // — per-(device, pad) touchpad gesture settings. Walks the
-            // active slot's PadSetting collection for the named device
-            // + pad index. Returns defaults when no per-pad entry exists
-            // (matches the engine-side fallback so a fresh assignment
-            // gets sensible behavior without the user opening the
-            // Touchpad tab).
-            _inputManager.TouchpadGestureSettingsProvider = (deviceGuid, padIdx) =>
+            // — per-(slot, device, pad) touchpad gesture settings.
+            // Walks UserSettings filtered by both `MapTo == slot` and
+            // `InstanceGuid == device` so two slots sharing one
+            // touchpad each carry their own toggles / thresholds /
+            // joystick tuning. Returns defaults when no per-pad entry
+            // exists (matches the engine-side fallback so a fresh
+            // assignment gets sensible behavior without the user
+            // opening the Touchpad tab).
+            _inputManager.TouchpadGestureSettingsProvider = (slotIndex, deviceGuid, padIdx) =>
             {
                 var settings = SettingsManager.UserSettings;
                 if (settings == null) return PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
@@ -752,7 +757,9 @@ namespace PadForge.Services
                     for (int i = 0; i < settings.Items.Count; i++)
                     {
                         var us = settings.Items[i];
-                        if (us == null || us.InstanceGuid != deviceGuid) continue;
+                        if (us == null) continue;
+                        if (us.MapTo != slotIndex) continue;
+                        if (us.InstanceGuid != deviceGuid) continue;
                         ps = us.GetPadSetting();
                         break;
                     }
@@ -2921,11 +2928,16 @@ namespace PadForge.Services
 
                 // Per-pad gesture-settings provider: gates which gesture
                 // categories appear in the dropdown per the user's
-                // Touchpad-tab toggles. _inputManager is null pre-engine-
+                // Touchpad-tab toggles. Scoped to the slot whose picker
+                // is being populated so per-slot toggles drive per-slot
+                // dropdown contents. _inputManager is null pre-engine-
                 // start so guard for that case.
                 System.Func<int, PadForge.Engine.Touchpad.TouchpadGestureSettings> tpSettingsForPad = null;
                 if (_inputManager?.TouchpadGestureSettingsProvider != null)
-                    tpSettingsForPad = padIdx => _inputManager.TouchpadGestureSettingsProvider(g, padIdx);
+                {
+                    int slot = padVm.PadIndex;
+                    tpSettingsForPad = padIdx => _inputManager.TouchpadGestureSettingsProvider(slot, g, padIdx);
+                }
 
                 var raw = MappingDisplayResolver.BuildInputChoices(udi, tpSettingsForPad)
                           ?? System.Array.Empty<PadForge.ViewModels.InputChoice>();

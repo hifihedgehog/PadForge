@@ -424,19 +424,24 @@ namespace PadForge.Engine.Common.Mapping
         }
 
         /// <summary>Returns true if the named gesture fired on the
-        /// given <c>(deviceGuid, padIdx)</c> on the current polling
-        /// tick. Wired by the App layer's per-tick gesture-engine
-        /// driver against
-        /// <see cref="PadForge.Engine.Touchpad.TouchpadGestureContext.FiredGesturesThisFrame"/>.
-        /// Returns false when unwired (engine not running, no touchpad
-        /// device).</summary>
-        public static Func<string, int, string, bool> TouchpadGestureFiredProvider { get; set; }
+        /// given <c>(slotIndex, deviceGuid, padIdx)</c> on the current
+        /// polling tick. Slot-keyed because the gesture engine runs
+        /// per-slot now: two slots sharing one physical touchpad each
+        /// keep their own GestureContext / FiredGesturesThisFrame, so
+        /// the toggles on each slot's Touchpad tab apply only to that
+        /// slot's mapping rows. Returns false when unwired (engine not
+        /// running, no touchpad device).</summary>
+        public static Func<int, string, int, string, bool> TouchpadGestureFiredProvider { get; set; }
 
         /// <summary>Returns the current value of a continuous gesture
-        /// axis (<c>PinchAxis</c> / <c>RotateAxis</c>) on the given
-        /// <c>(deviceGuid, padIdx)</c>. Range -1..+1, 0 when no
-        /// 2-finger session active. Returns 0 when unwired.</summary>
-        public static Func<string, int, string, float> TouchpadGestureAxisProvider { get; set; }
+        /// axis (<c>PinchAxis</c> / <c>RotateAxis</c>, plus the per-slot
+        /// Stick X/Y output) on the given <c>(slotIndex, deviceGuid,
+        /// padIdx)</c>. Slot-keyed for the same reason as
+        /// <see cref="TouchpadGestureFiredProvider"/>: each slot reads
+        /// its own JoystickMaxRadius / InnerDeadzone tuning. Range
+        /// -1..+1, 0 when no source is active. Returns 0 when
+        /// unwired.</summary>
+        public static Func<int, string, int, string, float> TouchpadGestureAxisProvider { get; set; }
 
         /// <summary>Returns the per-(slotIndex, deviceGuid, padIdx) touchpad
         /// settings snapshot used by <see cref="TryReadTouchpadAxis"/> to
@@ -942,12 +947,12 @@ namespace PadForge.Engine.Common.Mapping
                 if (IsTouchpadGestureAxis(gName))
                 {
                     float axisVal = TouchpadGestureAxisProvider?.Invoke(
-                        src.DeviceGuid ?? "", gPad, gName) ?? 0f;
+                        slotIndex, src.DeviceGuid ?? "", gPad, gName) ?? 0f;
                     float gThresh = src.DeadZone > 0 ? src.DeadZone / 100f : 0.5f;
                     return Math.Abs(axisVal) > gThresh;
                 }
                 return TouchpadGestureFiredProvider?.Invoke(
-                    src.DeviceGuid ?? "", gPad, gName) ?? false;
+                    slotIndex, src.DeviceGuid ?? "", gPad, gName) ?? false;
             }
 
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
@@ -1033,10 +1038,10 @@ namespace PadForge.Engine.Common.Mapping
                 if (IsTouchpadGestureAxis(gName))
                 {
                     return TouchpadGestureAxisProvider?.Invoke(
-                        src.DeviceGuid ?? "", gPad, gName) ?? 0f;
+                        slotIndex, src.DeviceGuid ?? "", gPad, gName) ?? 0f;
                 }
                 bool fired = TouchpadGestureFiredProvider?.Invoke(
-                    src.DeviceGuid ?? "", gPad, gName) ?? false;
+                    slotIndex, src.DeviceGuid ?? "", gPad, gName) ?? false;
                 return fired ? 1f : 0f;
             }
 
@@ -1124,11 +1129,11 @@ namespace PadForge.Engine.Common.Mapping
                 if (IsTouchpadGestureAxis(gName))
                 {
                     float v = TouchpadGestureAxisProvider?.Invoke(
-                        src.DeviceGuid ?? "", gPad, gName) ?? 0f;
+                        slotIndex, src.DeviceGuid ?? "", gPad, gName) ?? 0f;
                     return Math.Abs(v);
                 }
                 bool fired = TouchpadGestureFiredProvider?.Invoke(
-                    src.DeviceGuid ?? "", gPad, gName) ?? false;
+                    slotIndex, src.DeviceGuid ?? "", gPad, gName) ?? false;
                 return fired ? 1f : 0f;
             }
 

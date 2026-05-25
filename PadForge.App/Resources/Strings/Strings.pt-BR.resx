@@ -1432,7 +1432,7 @@
   <data name="Pad_ResetImpulseOverallGain" xml:space="preserve"><value>Restaurar ganho geral</value></data>
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Restaurar gatilho esquerdo</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Restaurar gatilho direito</value></data>
-  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Força constante nos gatilhos</value></data>
+  <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Força Constante nos Gatilhos</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Aplica uma força contínua a cada motor de gatilho até você desativar. A força de gatilho gerada por um jogo prevalece enquanto está ativa e é retomada quando o jogo para.</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Aplicar força constante nos gatilhos</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Gatilho esquerdo</value></data>
@@ -1440,7 +1440,7 @@
   <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Restaurar força constante nos gatilhos</value></data>
   <data name="Pad_ResetConstantTriggerLeft" xml:space="preserve"><value>Restaurar gatilho esquerdo</value></data>
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Restaurar gatilho direito</value></data>
-  <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Vibração de gatilho por graves de áudio</value></data>
+  <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Vibração de Gatilho por Graves de Áudio</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Aciona os motores de gatilho a partir dos graves do áudio do sistema. A força de gatilho gerada por um jogo prevalece enquanto está ativa.</value></data>
   <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Acionar motores de gatilho a partir do áudio</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Sensibilidade</value></data>
@@ -1515,54 +1515,54 @@
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Entrada por touchpad. Gestos (deslizar, tocar, pinçar, formas) e modos de saída contínuos (stick virtual / D-pad, mouse) viram fontes de mapeamento que você pode vincular na aba Mapeamentos.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
-  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detecção de gestos</value></data>
-  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Ativar gestos neste touchpad</value></data>
+  <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detecção de Gestos</value></data>
+  <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Ativar Gestos neste Touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Chave mestra deste touchpad. Quando desligada, nenhum descritor de gesto dispara para este touchpad. Os mapeamentos de dedo / clique / posição existentes continuam funcionando.</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Reconhecer</value></data>
   <data name="Pad_Touchpad_Mode_InBoxOnly" xml:space="preserve"><value>Somente predefinidos</value></data>
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>Somente personalizados</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Ambos</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>Qual catálogo de gestos o motor avalia contra os caminhos de dedo ao vivo. &quot;Ambos&quot; é o padrão.</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Tempo de espera (ms)</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Tempo de Espera (ms)</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Depois que um gesto dispara, ignora novos gestos neste touchpad por este número de milissegundos. Evita disparos repetidos causados por movimentos rápidos de vai e vem.</value></data>
-  <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Gestos predefinidos</value></data>
-  <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Deslizes em 4 direções (cima / baixo / esquerda / direita)</value></data>
-  <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Deslizes em 8 direções (adiciona diagonais)</value></data>
-  <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Distância do deslize (0..1)</value></data>
-  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Janela de tempo do deslize (ms)</value></data>
-  <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Zonas radiais (estilo roda de armas)</value></data>
+  <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Gestos Predefinidos</value></data>
+  <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Deslizes em 4 Direções (Cima / Baixo / Esquerda / Direita)</value></data>
+  <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Deslizes em 8 Direções (Adiciona Diagonais)</value></data>
+  <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Distância do Deslize (0..1)</value></data>
+  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Janela de Tempo do Deslize (ms)</value></data>
+  <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Zonas Radiais (Estilo Roda de Armas)</value></data>
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Deslize para fora a partir do ponto onde o dedo encostou em direção a um setor. A zona 0 está ancorada em cima e as zonas aumentam no sentido horário. Cada entrada do seletor mostra a direção entre parênteses como graus a partir do topo — (0°) é em cima, (90°) é à direita, (180°) é embaixo, (270°) é à esquerda. Apenas uma zona fica ativa por vez; deslizar para outra libera a anterior, permitindo percorrer as zonas em um único movimento.</value></data>
-  <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Quantidade de zonas</value></data>
-  <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Zona morta central (0..1)</value></data>
-  <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Toque / Toque duplo / Toque triplo</value></data>
-  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>Janela de tempo do toque (ms)</value></data>
-  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>Intervalo entre toques (ms)</value></data>
-  <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>Pressão longa</value></data>
-  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>Duração da pressão longa (ms)</value></data>
-  <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>Deslizes com dois dedos</value></data>
+  <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Quantidade de Zonas</value></data>
+  <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Zona Morta Central (0..1)</value></data>
+  <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Toque / Toque Duplo / Toque Triplo</value></data>
+  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>Janela de Tempo do Toque (ms)</value></data>
+  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>Intervalo entre Toques (ms)</value></data>
+  <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>Pressão Longa</value></data>
+  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>Duração da Pressão Longa (ms)</value></data>
+  <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>Deslizes com Dois Dedos</value></data>
   <data name="Pad_Touchpad_PinchSpread" xml:space="preserve"><value>Pinçar / Afastar</value></data>
   <data name="Pad_Touchpad_Rotate" xml:space="preserve"><value>Girar</value></data>
-  <data name="Pad_Touchpad_ThreeFinger" xml:space="preserve"><value>Gestos com três dedos</value></data>
-  <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>Gestos com quatro dedos</value></data>
-  <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>Toque com cinco dedos</value></data>
-  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Gestos de formato (Círculo, Quadrado, Triângulo, Z, Marca de seleção)</value></data>
-  <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Limite de correspondência da forma</value></data>
-  <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Gestos personalizados</value></data>
+  <data name="Pad_Touchpad_ThreeFinger" xml:space="preserve"><value>Gestos com Três Dedos</value></data>
+  <data name="Pad_Touchpad_FourFinger" xml:space="preserve"><value>Gestos com Quatro Dedos</value></data>
+  <data name="Pad_Touchpad_FiveFinger" xml:space="preserve"><value>Toque com Cinco Dedos</value></data>
+  <data name="Pad_Touchpad_ShapeGestures" xml:space="preserve"><value>Gestos de Formato (Círculo, Quadrado, Triângulo, Z, Marca de Seleção)</value></data>
+  <data name="Pad_Touchpad_MatchThreshold" xml:space="preserve"><value>Limite de Correspondência da Forma</value></data>
+  <data name="Pad_Touchpad_Custom_Header" xml:space="preserve"><value>Gestos Personalizados</value></data>
   <data name="Pad_Touchpad_RecordNew" xml:space="preserve"><value>+ Gravar novo gesto</value></data>
   <data name="Pad_Touchpad_Custom_Empty" xml:space="preserve"><value>Nenhum gesto personalizado gravado para este perfil. Clique em Gravar novo gesto para capturar um.</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>1 dedo</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} dedos</value></data>
-  <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Saída do mouse</value></data>
+  <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Saída do Mouse</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Ajusta a velocidade do cursor quando um dedo do touchpad é mapeado para Mouse X/Y em um controle virtual de Teclado / Mouse. 1.0 é o padrão. Aumente qualquer eixo para um cursor mais rápido, reduza para um mais lento. Inverter inverte o eixo correspondente.</value></data>
-  <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Sensibilidade do mouse X</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Sensibilidade do Mouse X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplicador do delta horizontal touchpad → mouse. Abaixo de 1.0 desacelera o cursor, acima de 1.0 acelera.</value></data>
-  <data name="Pad_Touchpad_MouseSensitivityY" xml:space="preserve"><value>Sensibilidade do mouse Y</value></data>
+  <data name="Pad_Touchpad_MouseSensitivityY" xml:space="preserve"><value>Sensibilidade do Mouse Y</value></data>
   <data name="Pad_Touchpad_MouseSensitivityY_Tooltip" xml:space="preserve"><value>Multiplicador do delta vertical touchpad → mouse.</value></data>
-  <data name="Pad_Touchpad_MouseInvertX" xml:space="preserve"><value>Inverter mouse X</value></data>
+  <data name="Pad_Touchpad_MouseInvertX" xml:space="preserve"><value>Inverter Mouse X</value></data>
   <data name="Pad_Touchpad_MouseInvertX_Tooltip" xml:space="preserve"><value>Inverte o movimento horizontal. Dedo para a direita move o cursor para a esquerda.</value></data>
-  <data name="Pad_Touchpad_MouseInvertY" xml:space="preserve"><value>Inverter mouse Y</value></data>
+  <data name="Pad_Touchpad_MouseInvertY" xml:space="preserve"><value>Inverter Mouse Y</value></data>
   <data name="Pad_Touchpad_MouseInvertY_Tooltip" xml:space="preserve"><value>Inverte o movimento vertical. Dedo para baixo move o cursor para cima.</value></data>
-  <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Saída de stick / D-Pad</value></data>
+  <data name="Pad_Touchpad_Stick_Header" xml:space="preserve"><value>Saída Stick / D-Pad</value></data>
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Transforme o touchpad em um stick analógico virtual ou D-pad. A saída se ancora onde o dedo encosta primeiro. A posição atual relativa a essa âncora controla o valor do stick e, opcionalmente, bits de direção do D-pad mantidos.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Ativar Saída Stick / D-Pad</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Expõe os descritores Touchpad Stick X, Stick Y e D-pad no seletor de mapeamento. Funciona junto às fontes de dedo e gestos do touchpad existentes, não em lugar delas.</value></data>

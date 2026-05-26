@@ -323,6 +323,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 | [HelixToolkit](https://github.com/helix-toolkit/helix-toolkit) | 3D viewport rendering for WPF | MIT |
 | [WPF UI](https://github.com/lepoco/wpfui) | Fluent 2 design system for WPF | MIT |
 | [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) | MVVM data binding framework | MIT |
+| [NAudio.Wasapi](https://github.com/naudio/NAudio) | WASAPI loopback capture for audio-bass rumble | MIT |
 | [HidHide](https://github.com/nefarius/HidHide) | Per-device hiding driver to prevent double input | MIT |
 | [Windows MIDI Services](https://github.com/microsoft/MIDI) | Virtual MIDI device SDK | MIT |
 

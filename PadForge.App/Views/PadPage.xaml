@@ -4865,9 +4865,10 @@
                         <!-- Tab-wide scope toggle: whether this tab's tuning
                              reaches the virtual controller's motion passthrough
                              (gyro report + DSU), not only gyro-as-mapping-source.
-                             Margin="0" overrides CardBorder's default bottom-12
-                             so it doesn't stack with the next card's top-12. -->
-                        <Border Style="{StaticResource CardBorder}" Margin="0">
+                             Uses CardBorder's default bottom-12 margin so the
+                             gap between this and the Calibration card matches
+                             every other adjacent-card gap on the Pad page. -->
+                        <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE72A;" FontFamily="Segoe MDL2 Assets" FontSize="16"

@@ -124,7 +124,8 @@ namespace PadForge.Engine.Common.Mapping
             // When true, this whole tuning chain is applied to the
             // virtual controller's motion passthrough (Sony report
             // packer + DSU broadcast), not only to gyro-as-mapping-
-            // source reads. Default true. See GetPassthroughGyro.
+            // source reads. Default false — fresh profiles relay the
+            // raw sensor reading. See GetPassthroughGyro.
             public bool ApplyToPassthrough;
         }
 
@@ -187,7 +188,7 @@ namespace PadForge.Engine.Common.Mapping
                     Space = "Local", PlayerYawRelax = 1.41f, WorldSideReduction = 0.125f,
                     TighteningRadPerSec = 0f, SmoothingThresholdRadPerSec = 0f, SmoothingWindowSeconds = 0.05f,
                     RealWorldCalibration = 0f,
-                    ApplyToPassthrough = true,
+                    ApplyToPassthrough = false,
                 };
             return provider(deviceGuid, slotIndex);
         }

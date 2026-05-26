@@ -1504,12 +1504,6 @@
   <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>三角形</value></data>
   <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Z 形</value></data>
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>对勾</value></data>
-  <data name="Settings_TouchpadGestures" xml:space="preserve"><value>触控板手势</value></data>
-  <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>在 PadForge 可识别的每块触控板上识别滑动、轻触、捏合及自定义形状。各触控板的设置位于对应手柄的“触控板”选项卡，下方控件涵盖全局总开关和暂停热键绑定。</value></data>
-  <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>全局启用触控板手势</value></data>
-  <data name="Settings_EnableTouchpadGesturesTooltip" xml:space="preserve"><value>总开关。关闭时，无论各触控板的启用开关如何，所有触控板都不会触发手势描述符。触控板上现有的手指、点击与位置映射仍正常工作。</value></data>
-  <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>暂停热键</value></data>
-  <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>用于切换手势检测开/关的键盘组合键（例如 Ctrl+Alt+T）。当游戏需要原始触控板输入，或意外触发的手势打断操作时很有用。留空表示不绑定热键。</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>触控板</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>触控板</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>按触控板的输入。手势（滑动、点按、捏合、形状）和连续输出模式（虚拟摇杆 / 方向键、鼠标）成为可在“映射”选项卡中绑定的映射来源。</value></data>

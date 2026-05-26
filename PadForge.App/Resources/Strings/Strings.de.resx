@@ -1504,12 +1504,6 @@
   <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>Dreieck</value></data>
   <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Z-Form</value></data>
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>Häkchen</value></data>
-  <data name="Settings_TouchpadGestures" xml:space="preserve"><value>Touchpad-Gesten</value></data>
-  <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>Erkennt Wischen, Tippen, Pinch-Gesten und benutzerdefinierte Formen auf jedem Touchpad, das PadForge lesen kann. Einstellungen pro Touchpad findest du im Tab Touchpad jedes Pads. Die Optionen unten betreffen den globalen Hauptschalter und die Belegung des Pausen-Hotkeys.</value></data>
-  <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>Touchpad-Gesten global aktivieren</value></data>
-  <data name="Settings_EnableTouchpadGesturesTooltip" xml:space="preserve"><value>Hauptschalter. Wenn aus, feuert kein Touchpad Gesten-Deskriptoren, unabhängig von den Aktivierungen pro Touchpad. Bestehende Finger-, Klick- und Positionszuordnungen auf Touchpads funktionieren weiterhin.</value></data>
-  <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>Hotkey zum Pausieren</value></data>
-  <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>Tastenkombination (z. B. Ctrl+Alt+T), die die Gestenerkennung ein- und ausschaltet. Hilfreich, wenn ein Spiel rohe Touchpad-Eingaben erwartet oder versehentliche Gestenauslösungen das Spiel stören. Leer = kein Hotkey gebunden.</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Eingaben pro Touchpad. Gesten (Wischen, Tippen, Zoomen, Formen) und kontinuierliche Ausgabemodi (virtueller Stick / Steuerkreuz, Maus) werden zu Mapping-Quellen, die du auf der Mapping-Registerkarte binden kannst.</value></data>

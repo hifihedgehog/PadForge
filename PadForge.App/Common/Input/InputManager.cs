@@ -179,23 +179,6 @@ namespace PadForge.Common.Input
         /// requested slot + device + pad.</summary>
         public System.Func<int, System.Guid, int, Engine.Touchpad.TouchpadGestureSettings> TouchpadGestureSettingsProvider { get; set; }
 
-        /// <summary>Global suspend flag. Set by
-        /// <see cref="ResetGestureSuspend"/> / its UI counterpart from
-        /// the configurable suspend hotkey. While true, every
-        /// gesture context's per-tick update skips early and returns
-        /// no fires. Existing path / continuous-axis state stays so
-        /// resuming picks up where it left off.</summary>
-        public volatile bool GestureSuspendActive;
-
-        /// <summary>Global master enable for the touchpad gesture
-        /// engine. False = every per-tick update returns early without
-        /// recording paths or evaluating recognizers. Distinguished
-        /// from <see cref="GestureSuspendActive"/>: the suspend flag is
-        /// a user-driven runtime toggle and preserves in-flight gesture
-        /// state; this master switch is the persisted settings choice
-        /// and is checked first.</summary>
-        public volatile bool TouchpadGesturesGloballyEnabled = true;
-
         // ─── Recording-mode hook (gesture recorder dialog) ───
         //
         // The recorder dialog sets RecordingTargetDeviceGuid +
@@ -1107,11 +1090,6 @@ namespace PadForge.Common.Input
             if (ud == null || newState == null) return;
             if (newState.Touchpads == null || newState.Touchpads.Length == 0) return;
 
-            // Master switch: skip the whole per-pad walk when gestures
-            // are globally disabled. Per-pad enable lives downstream in
-            // the gesture engine via TouchpadGestureSettings.
-            if (!TouchpadGesturesGloballyEnabled) return;
-
             // Snapshot the slots this device is currently assigned to.
             // No assigned slots → no contexts to tick (gestures don't
             // need to run for an unmapped device).
@@ -1177,15 +1155,6 @@ namespace PadForge.Common.Input
                         ctx = new Engine.Touchpad.TouchpadGestureContext();
                         GestureContexts[key] = ctx;
                     }
-
-                    if (GestureSuspendActive)
-                    {
-                        ctx.State = Engine.Touchpad.GestureState.Suspended;
-                        ctx.FiredGesturesThisFrame.Clear();
-                        continue;
-                    }
-                    if (ctx.State == Engine.Touchpad.GestureState.Suspended)
-                        ctx.State = Engine.Touchpad.GestureState.Idle;
 
                     var settings = TouchpadGestureSettingsProvider?.Invoke(slot, ud.InstanceGuid, p)
                         ?? Engine.Touchpad.TouchpadGestureSettings.Default();

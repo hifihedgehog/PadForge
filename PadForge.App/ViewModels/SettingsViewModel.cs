@@ -447,45 +447,6 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
-        //  Touchpad gestures (global)
-        // ─────────────────────────────────────────────
-
-        private bool _enableTouchpadGestures = true;
-
-        /// <summary>
-        /// Global master switch for touchpad gesture detection. When false,
-        /// per-touchpad detection is gated off regardless of per-pad enable
-        /// toggles or the suspend hotkey. Default true.
-        /// </summary>
-        public bool EnableTouchpadGestures
-        {
-            get => _enableTouchpadGestures;
-            set => SetProperty(ref _enableTouchpadGestures, value);
-        }
-
-        private string _touchpadGestureSuspendHotkey = string.Empty;
-
-        /// <summary>
-        /// Canonical keyboard-combo string (e.g. <c>"Ctrl+Alt+T"</c>) for
-        /// the global gesture-suspend hotkey. Empty = unbound. When
-        /// pressed, toggles a runtime flag that pauses every touchpad's
-        /// gesture engine until pressed again. Round-trips via
-        /// <see cref="PadForge.Engine.Common.GlobalHotkeyParser"/>.
-        /// </summary>
-        public string TouchpadGestureSuspendHotkey
-        {
-            get => _touchpadGestureSuspendHotkey;
-            set => SetProperty(ref _touchpadGestureSuspendHotkey, value ?? string.Empty);
-        }
-
-        private RelayCommand _clearTouchpadGestureSuspendHotkeyCommand;
-
-        /// <summary>Clears the gesture-suspend hotkey binding.</summary>
-        public RelayCommand ClearTouchpadGestureSuspendHotkeyCommand =>
-            _clearTouchpadGestureSuspendHotkeyCommand ??= new RelayCommand(
-                () => TouchpadGestureSuspendHotkey = string.Empty);
-
-        // ─────────────────────────────────────────────
         //  Settings file
         // ─────────────────────────────────────────────
 

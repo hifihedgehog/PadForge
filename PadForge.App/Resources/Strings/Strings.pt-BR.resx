@@ -1504,12 +1504,6 @@
   <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>Triângulo</value></data>
   <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Formato em Z</value></data>
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>Marca de seleção</value></data>
-  <data name="Settings_TouchpadGestures" xml:space="preserve"><value>Gestos de touchpad</value></data>
-  <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>Reconhece deslizes, toques, pinças e formas personalizadas em todos os touchpads que o PadForge consegue ler. As configurações por touchpad ficam na aba Touchpad de cada controle. Os controles abaixo cobrem o interruptor mestre global e o atalho de suspensão.</value></data>
-  <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>Ativar gestos de touchpad globalmente</value></data>
-  <data name="Settings_EnableTouchpadGesturesTooltip" xml:space="preserve"><value>Interruptor mestre. Quando desligado, nenhum touchpad dispara descritores de gestos, independente das chaves de ativação por touchpad. Os mapeamentos de dedo / clique / posição existentes nos touchpads continuam funcionando.</value></data>
-  <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>Atalho para suspender</value></data>
-  <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>Combinação de teclas (ex.: Ctrl+Alt+T) que alterna a detecção de gestos. Útil quando um jogo espera entrada bruta do touchpad ou quando disparos acidentais de gestos atrapalham a jogatina. Vazio = nenhum atalho vinculado.</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Entrada por touchpad. Gestos (deslizar, tocar, pinçar, formas) e modos de saída contínuos (stick virtual / D-pad, mouse) viram fontes de mapeamento que você pode vincular na aba Mapeamentos.</value></data>

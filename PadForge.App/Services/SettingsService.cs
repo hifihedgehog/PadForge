@@ -937,8 +937,6 @@ namespace PadForge.Services
             vm.SelectedThemeIndex = appSettings.ThemeIndex;
             vm.EnableInputHiding = appSettings.EnableInputHiding;
             vm.KeepHidHideCloaksBetweenLaunches = appSettings.KeepHidHideCloaksBetweenLaunches;
-            vm.EnableTouchpadGestures = appSettings.EnableTouchpadGestures;
-            vm.TouchpadGestureSuspendHotkey = appSettings.TouchpadGestureSuspendHotkey ?? string.Empty;
             // Default-profile custom-gesture catalog. InputService
             // wires the applier from StartEngine, which runs AFTER
             // this load path on cold start, so stash the loaded list
@@ -2505,8 +2503,6 @@ namespace PadForge.Services
                 LegacyDriverCleanupOffered = vm.LegacyDriverCleanupOffered,
                 EnableInputHiding = vm.EnableInputHiding,
                 KeepHidHideCloaksBetweenLaunches = vm.KeepHidHideCloaksBetweenLaunches,
-                EnableTouchpadGestures = vm.EnableTouchpadGestures,
-                TouchpadGestureSuspendHotkey = vm.TouchpadGestureSuspendHotkey ?? string.Empty,
                 // Default profile's custom gestures. When a named profile is
                 // active, defaultSnap.TouchpadGestures carries the gestures
                 // recorded on the default; when default is active, pull
@@ -3519,23 +3515,6 @@ namespace PadForge.Services
 
         [XmlElement]
         public bool EnableTouchpadOverlay { get; set; }
-
-        /// <summary>
-        /// Global master switch for touchpad gesture detection. Default true.
-        /// When false, no touchpad pad's gesture engine runs regardless of
-        /// per-pad enable toggles. Added in v3.3.0.
-        /// </summary>
-        [XmlElement]
-        public bool EnableTouchpadGestures { get; set; } = true;
-
-        /// <summary>
-        /// Canonical keyboard-combo string for the global touchpad-gesture
-        /// suspend hotkey (e.g. <c>"Ctrl+Alt+T"</c>). Empty = unbound.
-        /// Pressing it toggles a runtime flag that pauses gesture detection
-        /// across all touchpads. Added in v3.3.0.
-        /// </summary>
-        [XmlElement]
-        public string TouchpadGestureSuspendHotkey { get; set; } = string.Empty;
 
         /// <summary>Default profile's custom touchpad gestures.
         /// Named profiles store theirs under each profile's

@@ -63,10 +63,6 @@ namespace PadForge.Services
         private DsuMotionServer _dsuServer;
         private WebControllerServer _webServer;
         private InputHookManager _hookManager;
-        // Registration id for the global touchpad-gesture-suspend hotkey. 0 = none bound.
-        // Created by SetTouchpadGestureSuspendHotkey, cleared on engine stop.
-        private int _gestureSuspendHotkeyId;
-        private string _gestureSuspendHotkeyCombo = string.Empty;
         private SettingsService _settingsService;
         private bool _disposed;
         private readonly HashSet<string> _managedWhitelistDosPaths = new(StringComparer.OrdinalIgnoreCase);
@@ -795,12 +791,6 @@ namespace PadForge.Services
             _mainVm.Settings.PropertyChanged += OnSettingsPropertyChanged;
             _mainVm.Dashboard.PropertyChanged += OnDashboardPropertyChanged;
             _mainVm.Dashboard.ResetTouchpadOverlayPositionRequested += OnResetTouchpadOverlayPosition;
-
-            // Apply the persisted touchpad-gesture suspend hotkey. SyncInputHooks
-            // (called downstream) will start the hook manager if needed; the
-            // registration is recorded now so we don't miss the bind.
-            SetTouchpadGestureSuspendHotkey(_mainVm.Settings.TouchpadGestureSuspendHotkey);
-            _inputManager.TouchpadGesturesGloballyEnabled = _mainVm.Settings.EnableTouchpadGestures;
 
             // Bridge between InputService's _activeTouchpadGestures
             // working list and SettingsService's save / load paths.
@@ -4172,17 +4162,6 @@ namespace PadForge.Services
                 else
                     RemoveDeviceHiding();
             }
-            else if (e.PropertyName == nameof(SettingsViewModel.TouchpadGestureSuspendHotkey))
-            {
-                SetTouchpadGestureSuspendHotkey(_mainVm.Settings.TouchpadGestureSuspendHotkey);
-            }
-            else if (e.PropertyName == nameof(SettingsViewModel.EnableTouchpadGestures) && _inputManager != null)
-            {
-                // Master toggle propagates to a single InputManager flag the
-                // gesture engine reads each tick. Per-pad toggles still apply
-                // on top of this.
-                _inputManager.TouchpadGesturesGloballyEnabled = _mainVm.Settings.EnableTouchpadGestures;
-            }
         }
 
         private void OnDashboardPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -5009,12 +4988,7 @@ namespace PadForge.Services
                 CollectSuppressedInputs(ud, suppressedKeys, suppressedMouse);
             }
 
-            // The hook stays alive when either suppressed inputs OR a global
-            // hotkey (e.g. touchpad-gesture suspend) needs it. The latter is
-            // tracked via _gestureSuspendHotkeyId; if the user binds one and
-            // there are no suppressed inputs, the hook still has to run.
-            bool needHookForGestureHotkey = _gestureSuspendHotkeyId > 0;
-            if (suppressedKeys.Count > 0 || suppressedMouse.Count > 0 || needHookForGestureHotkey)
+            if (suppressedKeys.Count > 0 || suppressedMouse.Count > 0)
             {
                 EnsureHookManager();
                 _hookManager.SetSuppressedKeys(suppressedKeys);
@@ -5125,8 +5099,6 @@ namespace PadForge.Services
                 _hookManager.Dispose();
                 _hookManager = null;
             }
-            _gestureSuspendHotkeyId = 0;
-            _gestureSuspendHotkeyCombo = string.Empty;
         }
 
         /// <summary>
@@ -7227,44 +7199,6 @@ namespace PadForge.Services
         public void ClearTouchpadRecordingTarget()
         {
             _inputManager?.ClearRecordingTarget();
-        }
-
-        /// <summary>
-        /// Bind (or rebind) the global touchpad-gesture suspend hotkey. Pass
-        /// null or empty to clear the binding. Registers with the running
-        /// keyboard hook (starting it if needed) so the combo fires even
-        /// when PadForge is not focused. The callback toggles
-        /// <see cref="InputManager.GestureSuspendActive"/> on the engine,
-        /// pausing all touchpad gesture detection until pressed again.
-        /// Idempotent: re-binding the same combo is cheap.
-        /// </summary>
-        public void SetTouchpadGestureSuspendHotkey(string combo)
-        {
-            if (_inputManager == null) return;
-            var trimmed = combo?.Trim() ?? string.Empty;
-            if (string.Equals(trimmed, _gestureSuspendHotkeyCombo, StringComparison.Ordinal))
-                return; // No-op: same combo already bound.
-
-            // Tear down any prior registration.
-            if (_gestureSuspendHotkeyId > 0 && _hookManager != null)
-            {
-                _hookManager.UnregisterGlobalHotkey(_gestureSuspendHotkeyId);
-            }
-            _gestureSuspendHotkeyId = 0;
-            _gestureSuspendHotkeyCombo = trimmed;
-
-            if (string.IsNullOrEmpty(trimmed)) return;
-
-            var vks = PadForge.Engine.Common.GlobalHotkeyParser.Parse(trimmed);
-            if (vks == null) return; // unparseable — silently ignore
-
-            EnsureHookManager();
-            var mgr = _inputManager;
-            _gestureSuspendHotkeyId = _hookManager.RegisterGlobalHotkey(vks, () =>
-            {
-                if (mgr == null) return;
-                mgr.GestureSuspendActive = !mgr.GestureSuspendActive;
-            });
         }
 
         public void ApplyProfile(ProfileData profile)

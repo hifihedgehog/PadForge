@@ -1504,12 +1504,6 @@
   <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>삼각형</value></data>
   <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Z 모양</value></data>
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>체크 표시</value></data>
-  <data name="Settings_TouchpadGestures" xml:space="preserve"><value>터치패드 제스처</value></data>
-  <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>PadForge가 읽을 수 있는 모든 터치패드에서 스와이프, 탭, 핀치 및 사용자 지정 도형을 인식합니다. 터치패드별 설정은 각 패드의 터치패드 탭에 있으며, 아래 컨트롤은 전역 마스터 스위치와 일시 중지 단축키 바인딩을 다룹니다.</value></data>
-  <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>터치패드 제스처 전역 활성화</value></data>
-  <data name="Settings_EnableTouchpadGesturesTooltip" xml:space="preserve"><value>마스터 스위치입니다. 끄면 터치패드별 활성화 토글에 관계없이 어떤 터치패드도 제스처 디스크립터를 발생시키지 않습니다. 터치패드의 기존 손가락 / 클릭 / 위치 매핑은 계속 작동합니다.</value></data>
-  <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>일시 중지 단축키</value></data>
-  <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>제스처 감지를 켜고 끄는 키보드 조합(예: Ctrl+Alt+T)입니다. 게임이 원시 터치패드 입력을 예상하거나 우발적인 제스처 실행이 플레이를 방해할 때 유용합니다. 비어 있으면 단축키가 바인딩되지 않습니다.</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>터치패드</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>터치패드</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>터치패드별 입력. 제스처(스와이프, 탭, 핀치, 모양)와 연속 출력 모드(가상 스틱 / 방향키, 마우스)가 매핑 소스가 되어 매핑 탭에서 바인딩할 수 있습니다.</value></data>

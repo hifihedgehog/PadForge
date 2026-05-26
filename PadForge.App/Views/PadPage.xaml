@@ -4958,7 +4958,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Settings_GyroSensitivityUnits, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
+                                               Width="200" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroSensitivityUnits_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBox ItemsSource="{Binding GyroSensitivityUnitsOptions}"
                                               SelectedValue="{Binding GyroSensitivityUnits, Mode=TwoWay}"
@@ -4974,7 +4974,7 @@
                                      so existing configs feel identical. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
                                     <TextBlock Text="{Binding Settings_GyroSpace, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
+                                               Width="200" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroSpace_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBox ItemsSource="{Binding GyroSpaceOptions}"
                                               SelectedValue="{Binding GyroSpace, Mode=TwoWay}"
@@ -4987,7 +4987,7 @@
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                     <TextBlock Text="{Binding Settings_GyroSensitivityH, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
+                                               Width="200" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroSensitivityH_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroSensitivityH, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             Minimum="0.1" Maximum="10" SmallChange="0.1" LargeChange="1"
@@ -5004,7 +5004,7 @@
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                     <TextBlock Text="{Binding Settings_GyroSensitivityV, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
+                                               Width="200" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroSensitivityV_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroSensitivityV, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             Minimum="0.1" Maximum="10" SmallChange="0.1" LargeChange="1"
@@ -5040,7 +5040,7 @@
                                 <!-- Real-world calibration. 0 = disabled. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                                     <TextBlock Text="{Binding Settings_GyroRealWorldCalibration, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
+                                               Width="200" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroRealWorldCalibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroRealWorldCalibration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             Minimum="0" Maximum="2" SmallChange="0.01" LargeChange="0.1"
@@ -5070,7 +5070,7 @@
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                                     <TextBlock Text="{Binding Settings_GyroDeadZone, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
+                                               Width="200" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroDeadZone_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroDeadZoneDegPerSec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             Minimum="0" Maximum="30" SmallChange="0.5" LargeChange="5"
@@ -5089,7 +5089,7 @@
                                      Between thresholds = linear ramp. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                     <TextBlock Text="{Binding Settings_GyroTightening, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
+                                               Width="200" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroTightening_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroTighteningThresholdDegPerSec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             Minimum="0" Maximum="30" SmallChange="0.5" LargeChange="5"
@@ -5104,7 +5104,7 @@
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                     <TextBlock Text="{Binding Settings_GyroSmoothingThreshold, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
+                                               Width="200" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroSmoothingThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroSmoothingThresholdDegPerSec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             Minimum="0" Maximum="30" SmallChange="0.5" LargeChange="5"
@@ -5119,7 +5119,7 @@
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                     <TextBlock Text="{Binding Settings_GyroSmoothingWindow, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
+                                               Width="200" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroSmoothingWindow_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroSmoothingWindowMs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             Minimum="10" Maximum="200" SmallChange="5" LargeChange="20"
@@ -5134,7 +5134,7 @@
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                     <TextBlock Text="{Binding Settings_GyroAcceleration, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
+                                               Width="200" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroAcceleration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroAcceleration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             Minimum="0" Maximum="2" SmallChange="0.05" LargeChange="0.5"
@@ -5148,7 +5148,7 @@
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                     <TextBlock Text="{Binding Settings_GyroOutputCurve, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
+                                               Width="200" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroOutputCurve_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBox ItemsSource="{Binding GyroOutputCurveOptions}"
                                               SelectedValue="{Binding GyroOutputCurve, Mode=TwoWay}"
@@ -5178,7 +5178,7 @@
                                            TextWrapping="Wrap" Margin="0,0,0,8" FontSize="11"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Settings_GyroEasyAimThreshold, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
+                                               Width="200" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroEasyAimThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroEasyAimStickThreshold, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             Minimum="0" Maximum="100" SmallChange="1" LargeChange="10"
@@ -5199,7 +5199,7 @@
                                      the mapping row pattern at PadPage.xaml:2785-2800. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                                     <TextBlock Text="{Binding Settings_GyroAimEngageButton, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Top" Margin="0,4,0,0"
+                                               Width="200" VerticalAlignment="Top" Margin="0,4,0,0"
                                                ToolTip="{Binding Settings_GyroAimEngageButton_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <StackPanel Orientation="Vertical">
                                         <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
@@ -5257,7 +5257,7 @@
                                      read as a pair. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                                     <TextBlock Text="{Binding Settings_GyroAimEngageMode, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
+                                               Width="200" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroAimEngageMode_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBox SelectedValue="{Binding GyroAimEngageMode, Mode=TwoWay}"
                                               SelectedValuePath="Tag"
@@ -5575,7 +5575,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
                                     <TextBlock Text="{Binding Pad_Touchpad_StickMaxRadius, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="220"/>
+                                               VerticalAlignment="Center" Width="200"/>
                                     <TextBox Text="{Binding TouchpadJoystickMaxRadius, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadJoystickMaxRadiusCommand}" Style="{StaticResource ResetButton}"
@@ -5583,7 +5583,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
                                     <TextBlock Text="{Binding Pad_Touchpad_StickInnerDeadzone, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="220"/>
+                                               VerticalAlignment="Center" Width="200"/>
                                     <TextBox Text="{Binding TouchpadJoystickInnerDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadJoystickInnerDeadzoneCommand}" Style="{StaticResource ResetButton}"
@@ -5592,7 +5592,7 @@
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_Touchpad_StickDPadMode_Label, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="220"/>
+                                               VerticalAlignment="Center" Width="200"/>
                                     <ComboBox SelectedValue="{Binding TouchpadJoystickDPadMode, Mode=TwoWay}"
                                               SelectedValuePath="Tag"
                                               Width="120" VerticalAlignment="Center"
@@ -5607,7 +5607,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
                                     <TextBlock Text="{Binding Pad_Touchpad_StickDPadActivationThreshold, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="220"/>
+                                               VerticalAlignment="Center" Width="200"/>
                                     <TextBox Text="{Binding TouchpadJoystickDPadActivationThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadJoystickDPadActivationThresholdCommand}" Style="{StaticResource ResetButton}"
@@ -5634,7 +5634,7 @@
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_Touchpad_MouseSensitivityX, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="220"/>
+                                               VerticalAlignment="Center" Width="200"/>
                                     <TextBox Text="{Binding TouchpadMouseSensitivityX, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"
                                              ToolTip="{Binding Pad_Touchpad_MouseSensitivityX_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -5643,7 +5643,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_Touchpad_MouseSensitivityY, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="220"/>
+                                               VerticalAlignment="Center" Width="200"/>
                                     <TextBox Text="{Binding TouchpadMouseSensitivityY, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"
                                              ToolTip="{Binding Pad_Touchpad_MouseSensitivityY_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -5691,7 +5691,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_Touchpad_Mode_Label, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="160"/>
+                                               VerticalAlignment="Center" Width="200"/>
                                     <ComboBox SelectedValue="{Binding TouchpadGestureMode, Mode=TwoWay}"
                                               SelectedValuePath="Tag"
                                               Width="180" VerticalAlignment="Center"
@@ -5706,7 +5706,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_Touchpad_CooldownMs_Label, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="160"/>
+                                               VerticalAlignment="Center" Width="200"/>
                                     <TextBox Text="{Binding TouchpadCooldownMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"
                                              ToolTip="{Binding Pad_Touchpad_CooldownMs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -5743,7 +5743,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
                                     <TextBlock Text="{Binding Pad_Touchpad_SwipeDistanceThreshold, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="220"/>
+                                               VerticalAlignment="Center" Width="200"/>
                                     <TextBox Text="{Binding TouchpadSwipeDistanceThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadSwipeDistanceThresholdCommand}" Style="{StaticResource ResetButton}"
@@ -5751,7 +5751,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
                                     <TextBlock Text="{Binding Pad_Touchpad_SwipeTimeWindow, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="220"/>
+                                               VerticalAlignment="Center" Width="200"/>
                                     <TextBox Text="{Binding TouchpadSwipeTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadSwipeTimeWindowMsCommand}" Style="{StaticResource ResetButton}"
@@ -5767,7 +5767,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
                                     <TextBlock Text="{Binding Pad_Touchpad_RadialZoneCount, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="220"/>
+                                               VerticalAlignment="Center" Width="200"/>
                                     <ComboBox ItemsSource="{Binding TouchpadRadialZoneCountOptions}"
                                               SelectedItem="{Binding TouchpadRadialZoneCount, Mode=TwoWay}"
                                               Width="80" VerticalAlignment="Center"
@@ -5777,7 +5777,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
                                     <TextBlock Text="{Binding Pad_Touchpad_RadialCenterDeadzone, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="220"/>
+                                               VerticalAlignment="Center" Width="200"/>
                                     <TextBox Text="{Binding TouchpadRadialCenterDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadRadialCenterDeadzoneCommand}" Style="{StaticResource ResetButton}"
@@ -5792,7 +5792,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
                                     <TextBlock Text="{Binding Pad_Touchpad_TapTimeWindow, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="220"/>
+                                               VerticalAlignment="Center" Width="200"/>
                                     <TextBox Text="{Binding TouchpadTapTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadTapTimeWindowMsCommand}" Style="{StaticResource ResetButton}"
@@ -5800,7 +5800,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
                                     <TextBlock Text="{Binding Pad_Touchpad_MultiTapGap, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="220"/>
+                                               VerticalAlignment="Center" Width="200"/>
                                     <TextBox Text="{Binding TouchpadMultiTapGapMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadMultiTapGapMsCommand}" Style="{StaticResource ResetButton}"
@@ -5815,7 +5815,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
                                     <TextBlock Text="{Binding Pad_Touchpad_LongPressTimeWindow, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="220"/>
+                                               VerticalAlignment="Center" Width="200"/>
                                     <TextBox Text="{Binding TouchpadLongPressTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadLongPressTimeWindowMsCommand}" Style="{StaticResource ResetButton}"
@@ -5866,7 +5866,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,0">
                                     <TextBlock Text="{Binding Pad_Touchpad_MatchThreshold, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="220"/>
+                                               VerticalAlignment="Center" Width="200"/>
                                     <TextBox Text="{Binding TouchpadGestureMatchThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadGestureMatchThresholdCommand}" Style="{StaticResource ResetButton}"

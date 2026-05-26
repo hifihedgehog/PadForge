@@ -373,10 +373,10 @@ namespace PadForge.Engine.Touchpad
         /// <summary>Matches the candidate against one template's
         /// cloud + LUT pair. Returns the best (lowest) cloud distance
         /// found across the cyclic-start sweep in either direction.
-        /// The candidate's own LUT (for the reverse-direction lower
-        /// bound) is computed inline.</summary>
+        /// Caller supplies the candidate's LUT pre-built (once per
+        /// <see cref="Match"/> call) so it isn't rebuilt per template.</summary>
         public static float CloudMatch(Vector2[] candidate,
-            ShapeTemplate template, float minSoFar)
+            ushort[] candidateLut, ShapeTemplate template, float minSoFar)
         {
             if (candidate == null || template == null) return float.MaxValue;
             if (template.PointCloud == null || template.LookupTable == null) return float.MaxValue;
@@ -386,19 +386,16 @@ namespace PadForge.Engine.Touchpad
             int lutSize = template.LookupTableSize;
             if (lutSize <= 0 || template.LookupTable.Length != lutSize * lutSize)
                 return float.MaxValue;
+            if (candidateLut == null || candidateLut.Length != lutSize * lutSize)
+                return float.MaxValue;
 
             int step = (int)MathF.Floor(MathF.Sqrt(n));
             if (step < 1) step = 1;
 
-            // Build the candidate's transient LUT for the reverse-
-            // direction lower bound. Cheap relative to the matching
-            // pass it gates.
-            var candLut = BuildLookupTable(candidate, lutSize);
-
             var lb1 = ComputeLowerBound(candidate, template.PointCloud, step,
                 template.LookupTable, lutSize);
             var lb2 = ComputeLowerBound(template.PointCloud, candidate, step,
-                candLut, lutSize);
+                candidateLut, lutSize);
 
             float best = minSoFar;
             int j = 0;
@@ -433,6 +430,12 @@ namespace PadForge.Engine.Touchpad
             if (templates == null || candidate == null || candidate.Length == 0)
                 return null;
 
+            // Build the candidate's LUT once for the whole catalog
+            // walk. CloudMatch needs it for the reverse-direction
+            // lower bound, but the candidate doesn't change across
+            // templates so rebuilding per template was redundant.
+            var candidateLut = BuildLookupTable(candidate, DefaultLookupTableSize);
+
             // Track two things separately: the overall minimum
             // distance (passed as minSoFar to each CloudMatch for
             // early-abandon pruning), and the lowest threshold-passing
@@ -448,9 +451,10 @@ namespace PadForge.Engine.Touchpad
                 if (!tpl.Enabled) continue;
                 if (tpl.PointCloud == null || tpl.PointCloud.Length != candidate.Length) continue;
                 if (tpl.LookupTable == null) continue;
+                if (tpl.LookupTableSize != DefaultLookupTableSize) continue;
                 float effThreshold = tpl.ThresholdOverride > 0f
                     ? tpl.ThresholdOverride : threshold;
-                float d = CloudMatch(candidate, tpl, bestScore);
+                float d = CloudMatch(candidate, candidateLut, tpl, bestScore);
                 if (d < bestScore) bestScore = d;
                 if (d <= effThreshold && d < bestValidScore)
                 {

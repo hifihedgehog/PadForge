@@ -1551,6 +1551,23 @@ namespace PadForge.Engine.Data
         [System.Text.Json.Serialization.JsonIgnore]
         public string SlotMidiConfigJson { get; set; }
 
+        /// <summary>Opaque JSON payload carrying every device's PadSetting
+        /// on the source slot. The outer PadSetting that wraps this field
+        /// still carries the originally-selected device's tuning (legacy
+        /// shape); this array carries the FULL set so all devices'
+        /// per-device tuning (deadzones, sensitivity curves, FFB, Gyro,
+        /// TouchpadSettings) round-trips through Copy / Paste and Copy
+        /// From. Format: <see cref="PerDeviceSettingsEntry"/>[] serialized
+        /// via <c>System.Text.Json</c>. Each entry's PadSettingJson is a
+        /// nested PadSetting.ToJson() string with slot-level fields
+        /// (this one included) zeroed so the nesting doesn't recurse.
+        /// Set by the App-side Copy path; consumed by the App-side Paste
+        /// path. PadSetting just round-trips the string verbatim so the
+        /// Engine stays free of App-ViewModel references.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string SlotPerDeviceSettingsJson { get; set; }
+
         /// <summary>
         /// Serializes all copyable mapping/deadzone/FF properties to a JSON string.
         /// Used for clipboard copy/paste of controller settings.
@@ -1627,6 +1644,8 @@ namespace PadForge.Engine.Data
                 dict["__SlotExtendedConfig"] = SlotExtendedConfigJson;
             if (!string.IsNullOrEmpty(SlotMidiConfigJson))
                 dict["__SlotMidiConfig"] = SlotMidiConfigJson;
+            if (!string.IsNullOrEmpty(SlotPerDeviceSettingsJson))
+                dict["__SlotPerDeviceSettings"] = SlotPerDeviceSettingsJson;
 
             // Issue #61 — round-trip the slot's multi-source row data
             // for this device. Each row snapshot carries Target,
@@ -1726,6 +1745,8 @@ namespace PadForge.Engine.Data
                             ps.SlotExtendedConfigJson = kvp.Value;
                         else if (kvp.Key == "__SlotMidiConfig")
                             ps.SlotMidiConfigJson = kvp.Value;
+                        else if (kvp.Key == "__SlotPerDeviceSettings")
+                            ps.SlotPerDeviceSettingsJson = kvp.Value;
                         continue;
                     }
                     var prop = type.GetProperty(kvp.Key);

@@ -327,6 +327,8 @@ PadForge stands on these projects. Please consider supporting them directly.
 | [NAudio.Wasapi](https://github.com/naudio/NAudio) | WASAPI loopback capture for audio-bass rumble | MIT |
 | [HidHide](https://github.com/nefarius/HidHide) | Per-device hiding driver to prevent double input | MIT |
 | [Windows MIDI Services](https://github.com/microsoft/MIDI) | Virtual MIDI device SDK | MIT |
+| [$Q Recognizer](https://depts.washington.edu/acelab/proj/dollar/qdollar.html) | Touchpad shape-template matcher: re-derived C# port of the canonical JS reference by Magrofuoco / Vatavu / Anthony / Wobbrock | BSD 3-Clause |
+| [GestureSign](https://github.com/TransposonY/GestureSign) | Touchpad angular-margin matcher: scoring approach re-derived from GestureSign's PointPatternAnalyzer | BSD 3-Clause |
 
 ---
 
@@ -351,5 +353,7 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **Windows MIDI Services** is licensed under the MIT License.
 - **HidHide** is licensed under the MIT License.
 - **OpenXInput** ships only an upstream Microsoft-trademark disclaimer (no OSS license grant). Redistributed as-is under the same terms.
+- **$Q Recognizer** is licensed under the BSD 3-Clause License. Copyright (c) 2018-2019, Nathan Magrofuoco, Jacob O. Wobbrock, Radu-Daniel Vatavu, and Lisa Anthony. The touchpad shape-matcher in PadForge.Engine.Touchpad.ShapeRecognizer is a C# re-derivation of the canonical JavaScript reference at depts.washington.edu/acelab/proj/dollar/qdollar.js.
+- **GestureSign's PointPatternAnalyzer** is licensed under the BSD 3-Clause License. Copyright (c) 2016, TransposonY. The angular-margin scoring in PadForge.Engine.Touchpad.AngularMarginRecognizer is a C# re-derivation of that approach.
 
 See [LICENSE](LICENSE) for the full license text.

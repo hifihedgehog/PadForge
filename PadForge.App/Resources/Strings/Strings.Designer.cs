@@ -342,6 +342,10 @@ public class Strings : INotifyPropertyChanged
     public string About_MvvmToolkitDesc => Get("About_MvvmToolkitDesc");
     public string About_ZackslyIcons => Get("About_ZackslyIcons");
     public string About_ZackslyIconsDesc => Get("About_ZackslyIconsDesc");
+    public string About_QDollar => Get("About_QDollar");
+    public string About_QDollarDesc => Get("About_QDollarDesc");
+    public string About_GestureSign => Get("About_GestureSign");
+    public string About_GestureSignDesc => Get("About_GestureSignDesc");
     public string About_License => Get("About_License");
     public string About_LicenseText => Get("About_LicenseText");
     public string DeviceType_Gamepad => Get("DeviceType_Gamepad");

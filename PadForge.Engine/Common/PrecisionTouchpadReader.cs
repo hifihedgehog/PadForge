@@ -301,6 +301,20 @@ namespace PadForge.Engine
             public readonly bool[] LastFrameDown = new bool[PtpMaxFingers];
             public readonly int[]  CurrentContactId;
 
+            // Multi-report frame assembly. PTP devices commonly split a
+            // single touch frame across multiple HID reports — the spec
+            // (and most Windows-certified hardware) caps each report at
+            // 2 contacts, with the contact-count usage on the first
+            // report of a frame indicating the total expected. Without
+            // accumulating across reports, only the last fragment's
+            // contacts survive in ds.Down, so 3+ finger gestures never
+            // observe all fingers down at once.
+            public int FrameExpected;
+            public int FrameSeen;
+            public readonly float[] FrameBufX = new float[PtpMaxFingers];
+            public readonly float[] FrameBufY = new float[PtpMaxFingers];
+            public readonly int[]   FrameBufId = new int[PtpMaxFingers];
+
             public string Name = "Precision Touchpad";
             public string DevicePath = "";
             public ushort VendorId, ProductId;
@@ -386,6 +400,10 @@ namespace PadForge.Engine
             if (ds.LastReportTicks > 0 && (now - ds.LastReportTicks) > StaleThresholdTicks)
             {
                 for (int i = 0; i < PtpMaxFingers; i++) ds.Down[i] = false;
+                // A frame partially assembled then orphaned by silence
+                // shouldn't carry into the next touch session.
+                ds.FrameExpected = 0;
+                ds.FrameSeen = 0;
             }
 
             // PTP exposes a single touchpad surface with up to
@@ -670,11 +688,21 @@ namespace PadForge.Engine
         private void ParseTouchpadReport(IntPtr hDevice, IntPtr preparsed, IntPtr report, uint reportLength,
             HIDP_VALUE_CAPS[] valueCaps, (int logMinX, int logMaxX, int logMinY, int logMaxY) ranges)
         {
-            // Read contact count
+            // Read contact count for THIS report. PTP spec: the first
+            // report of a touch frame carries the total expected contact
+            // count in this usage; subsequent fragments in the same
+            // frame carry zero. The reader uses this to assemble a
+            // multi-report frame before committing — see frame-assembly
+            // block below.
             HidP_GetUsageValue(HidP_Input, HID_USAGE_PAGE_DIGITIZER, 0,
                 HID_USAGE_CONTACT_COUNT, out uint contactCount, preparsed, report, reportLength);
 
-            // Parse up to 2 fingers by iterating link collections.
+            // Parse this report's contacts. The reader iterates the
+            // contact-ID-bearing link collections — each represents one
+            // finger slot in the report descriptor. Most certified PTP
+            // hardware caps a single report at 2 contacts; we read up
+            // to PtpMaxFingers defensively in case a parallel-mode
+            // device packs all fingers into one report.
             var fingers = new List<(float x, float y, int id)>();
 
             foreach (var vc in valueCaps)
@@ -727,16 +755,62 @@ namespace PadForge.Engine
 
                 ds.LastReportTicks = DateTime.UtcNow.Ticks;
 
-                // Always clear contact state first, then set from parsed data.
-                for (int i = 0; i < PtpMaxFingers; i++) ds.Down[i] = false;
-
-                int copyCount = System.Math.Min(System.Math.Min((int)contactCount, fingers.Count), PtpMaxFingers);
-                for (int i = 0; i < copyCount; i++)
+                // Frame-assembly: PTP frames span multiple reports on
+                // most hardware (≤2 contacts per report; total carried
+                // on the first report's contact-count). Without this,
+                // the reader sees at most the LAST report's contacts
+                // and 3+ finger gestures never observe a complete frame.
+                //
+                // Rules:
+                //   - contactCount > 0 marks the start of a new frame.
+                //     Reset the buffer (any partial-prior is truncated)
+                //     and set the expected total.
+                //   - contactCount == 0 marks a continuation of the
+                //     in-progress frame.
+                //   - Commit when the buffer reaches the expected count.
+                //   - If a device never sets contact-count (out-of-spec),
+                //     FrameExpected stays 0 and every report commits as
+                //     its own frame — the legacy behavior, preserved as
+                //     fallback.
+                if (contactCount > 0)
                 {
-                    ds.X[i] = fingers[i].x;
-                    ds.Y[i] = fingers[i].y;
+                    if (ds.FrameSeen > 0 && (int)contactCount != ds.FrameExpected)
+                    {
+                        // Partial prior frame mismatches new total →
+                        // truncated. Discard.
+                        ds.FrameSeen = 0;
+                    }
+                    ds.FrameExpected = System.Math.Min((int)contactCount, PtpMaxFingers);
+                }
+
+                for (int i = 0; i < fingers.Count && ds.FrameSeen < PtpMaxFingers; i++)
+                {
+                    ds.FrameBufX[ds.FrameSeen] = fingers[i].x;
+                    ds.FrameBufY[ds.FrameSeen] = fingers[i].y;
+                    ds.FrameBufId[ds.FrameSeen] = fingers[i].id;
+                    ds.FrameSeen++;
+                }
+
+                bool frameComplete =
+                    (ds.FrameExpected > 0 && ds.FrameSeen >= ds.FrameExpected)
+                    || (ds.FrameExpected == 0 && fingers.Count == 0);
+
+                if (!frameComplete) return;
+
+                // Commit the assembled frame. Clearing ds.Down up-front
+                // is what differentiates a frame commit from a fragment
+                // accumulate; the buffered contacts then re-arm the
+                // slots they actually occupy.
+                for (int i = 0; i < PtpMaxFingers; i++) ds.Down[i] = false;
+                int n = System.Math.Min(ds.FrameSeen, PtpMaxFingers);
+                for (int i = 0; i < n; i++)
+                {
+                    ds.X[i] = ds.FrameBufX[i];
+                    ds.Y[i] = ds.FrameBufY[i];
                     ds.Down[i] = true;
                 }
+                ds.FrameExpected = 0;
+                ds.FrameSeen = 0;
             }
         }
 

@@ -783,7 +783,18 @@ namespace PadForge.Engine
                     ds.FrameExpected = System.Math.Min((int)contactCount, PtpMaxFingers);
                 }
 
-                for (int i = 0; i < fingers.Count && ds.FrameSeen < PtpMaxFingers; i++)
+                // Append this report's contacts, bounded by what the
+                // frame still expects. The HID descriptor commonly
+                // exposes more contact link-collections than the frame
+                // actually carries — empty slots return stale or zero
+                // X/Y but still parse as "contacts." Without the
+                // FrameExpected cap, a 2-finger report on a 5-slot
+                // descriptor commits as a 5-finger frame and the
+                // gesture engine misclassifies the tap.
+                int appendLimit = ds.FrameExpected > 0
+                    ? System.Math.Min(fingers.Count, ds.FrameExpected - ds.FrameSeen)
+                    : fingers.Count;
+                for (int i = 0; i < appendLimit && ds.FrameSeen < PtpMaxFingers; i++)
                 {
                     ds.FrameBufX[ds.FrameSeen] = fingers[i].x;
                     ds.FrameBufY[ds.FrameSeen] = fingers[i].y;
@@ -793,7 +804,7 @@ namespace PadForge.Engine
 
                 bool frameComplete =
                     (ds.FrameExpected > 0 && ds.FrameSeen >= ds.FrameExpected)
-                    || (ds.FrameExpected == 0 && fingers.Count == 0);
+                    || (ds.FrameExpected == 0);
 
                 if (!frameComplete) return;
 

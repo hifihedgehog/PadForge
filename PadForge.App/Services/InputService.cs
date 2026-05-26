@@ -3138,6 +3138,151 @@ namespace PadForge.Services
             PopulateAvailableInputs(padVm, FindUserDevice(viewDevice));
         }
 
+        /// <summary>Builds the per-device PadSetting snapshot array for
+        /// a source slot. One entry per UserSetting whose MapTo equals
+        /// <paramref name="sourcePadIndex"/>. The nested PadSettingJson
+        /// strings are produced via <see cref="PadSetting.ToJson"/> with
+        /// the slot-level fields (SlotPlayStationConfigsJson,
+        /// SlotExtendedConfigJson, SlotMidiConfigJson,
+        /// SlotPerDeviceSettingsJson, SlotMultiSourceRows,
+        /// DeviceScopedMultiSourceRows) cleared so the nesting doesn't
+        /// recurse and the slot-level data isn't redundantly carried on
+        /// every entry. Caller passes the layout type so the outer JSON
+        /// signals the source layout once at the wrapping PadSetting
+        /// level. Returns null when the slot has zero UserSettings.</summary>
+        public static PadForge.Engine.Data.PerDeviceSettingsEntry[]
+            BuildPerDeviceSettingsSnapshot(int sourcePadIndex,
+                VirtualControllerType layoutType, bool layoutIsExtended)
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings?.Items == null) return null;
+
+            var usList = settings.FindByPadIndex(sourcePadIndex);
+            if (usList == null || usList.Count == 0) return null;
+
+            var entries = new System.Collections.Generic.List<
+                PadForge.Engine.Data.PerDeviceSettingsEntry>(usList.Count);
+            foreach (var us in usList)
+            {
+                if (us == null) continue;
+                var sourcePs = us.GetPadSetting();
+                if (sourcePs == null) continue;
+
+                // Clone so we can clear slot-level fields without mutating
+                // the live PadSetting attached to the live UserSetting.
+                var clone = sourcePs.CloneDeep();
+                clone.SlotPlayStationConfigsJson = null;
+                clone.SlotExtendedConfigJson = null;
+                clone.SlotMidiConfigJson = null;
+                clone.SlotPerDeviceSettingsJson = null;
+                clone.SlotMultiSourceRows = null;
+                clone.DeviceScopedMultiSourceRows = null;
+
+                entries.Add(new PadForge.Engine.Data.PerDeviceSettingsEntry
+                {
+                    InstanceGuid = us.InstanceGuid.ToString(),
+                    ProductGuid = us.ProductGuid.ToString(),
+                    ProductName = us.ProductName ?? "",
+                    PadSettingJson = clone.ToJson(layoutType, layoutIsExtended),
+                });
+            }
+            return entries.Count > 0 ? entries.ToArray() : null;
+        }
+
+        /// <summary>Applies a per-device PadSetting snapshot array to a
+        /// target slot. Each entry is matched to a target-slot device by
+        /// InstanceGuid first, then ProductGuid as a fallback (covers the
+        /// "same controller model, different physical unit" case). Entries
+        /// with no match are skipped — paste never auto-creates devices.
+        /// </summary>
+        /// <remarks>Source-layout / target-layout pairs are passed
+        /// through to <see cref="ApplyPadSettingToCurrentDeviceTranslated"/>
+        /// per entry, so cross-layout pastes (e.g. Xbox→PS) still get
+        /// the layout translation that single-device paste enjoys. The
+        /// outer Copy / Paste flow's wholesale MappingSet replacement
+        /// already ran by the time this helper is called; this method
+        /// only carries per-device tuning (deadzones, sensitivity, FFB,
+        /// Gyro, TouchpadSettings).</remarks>
+        public void ApplyPerDeviceSettingsToSlot(int targetPadIndex,
+            PadForge.Engine.Data.PerDeviceSettingsEntry[] entries,
+            VirtualControllerType sourceLayoutType, bool sourceLayoutIsExtended,
+            VirtualControllerType targetLayoutType, bool targetLayoutIsExtended)
+        {
+            if (entries == null || entries.Length == 0) return;
+            if (targetPadIndex < 0 || targetPadIndex >= _mainVm.Pads.Count) return;
+
+            // Build the target slot's device manifest once so the
+            // per-entry match loop doesn't take the UserSettings lock
+            // N times.
+            var targetSlotDevices = new System.Collections.Generic.List<UserSetting>();
+            var us = SettingsManager.UserSettings;
+            if (us != null)
+            {
+                lock (us.SyncRoot)
+                {
+                    for (int i = 0; i < us.Items.Count; i++)
+                    {
+                        if (us.Items[i] != null && us.Items[i].MapTo == targetPadIndex)
+                            targetSlotDevices.Add(us.Items[i]);
+                    }
+                }
+            }
+            if (targetSlotDevices.Count == 0) return;
+
+            foreach (var entry in entries)
+            {
+                if (entry == null || string.IsNullOrEmpty(entry.PadSettingJson)) continue;
+
+                // First-preference: match by InstanceGuid (same physical
+                // device on same machine — perfect round-trip).
+                Guid matchTarget = Guid.Empty;
+                if (Guid.TryParse(entry.InstanceGuid, out var srcInstance))
+                {
+                    foreach (var tu in targetSlotDevices)
+                    {
+                        if (tu.InstanceGuid == srcInstance)
+                        { matchTarget = tu.InstanceGuid; break; }
+                    }
+                }
+
+                // Fallback: match by ProductGuid (same controller model,
+                // different physical unit — e.g. a second DualSense).
+                if (matchTarget == Guid.Empty
+                    && Guid.TryParse(entry.ProductGuid, out var srcProduct)
+                    && srcProduct != Guid.Empty)
+                {
+                    foreach (var tu in targetSlotDevices)
+                    {
+                        if (tu.ProductGuid == srcProduct)
+                        { matchTarget = tu.InstanceGuid; break; }
+                    }
+                }
+
+                // No match → skip. Paste does not auto-create devices.
+                if (matchTarget == Guid.Empty) continue;
+
+                // Re-deserialize the nested PadSetting so we get a fresh
+                // instance with no cross-entry state aliasing.
+                var devicePs = PadSetting.FromJson(entry.PadSettingJson,
+                    out var entrySourceType, out var entrySourceIsExtended);
+                if (devicePs == null) continue;
+
+                // Honour the entry's own layout metadata if present, else
+                // fall back to the wrapping payload's layout.
+                var srcType = entrySourceType != VirtualControllerType.Xbox
+                    || entrySourceIsExtended
+                    ? entrySourceType
+                    : sourceLayoutType;
+                bool srcExt = entrySourceIsExtended || sourceLayoutIsExtended;
+
+                ApplyPadSettingToCurrentDeviceTranslated(
+                    targetPadIndex, devicePs,
+                    srcType, srcExt,
+                    targetLayoutType, targetLayoutIsExtended,
+                    matchTarget);
+            }
+        }
+
         /// <summary>Issue #61 paste helper. For each row in
         /// <paramref name="deviceRows"/> (a snapshot of the source
         /// slot's multi-source rows where the source device

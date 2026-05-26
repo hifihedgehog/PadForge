@@ -4386,6 +4386,18 @@ namespace PadForge
                 if (midiCfg != null)
                     ps.SlotMidiConfigJson = System.Text.Json.JsonSerializer.Serialize(midiCfg, jsonOpts);
 
+                // Bundle EVERY device's PadSetting on the source slot so
+                // per-device tuning (deadzones, sensitivity, FFB, Gyro,
+                // TouchpadSettings) round-trips for all devices, not just
+                // the currently-selected one. Paste matches each entry to
+                // a target-slot device by InstanceGuid first, ProductGuid
+                // fallback. Outer `ps` still carries the selected device's
+                // tuning for legacy compat with older paste payloads.
+                var perDevice = InputService.BuildPerDeviceSettingsSnapshot(
+                    padVm.PadIndex, copyOutputType, copyIsExtended);
+                if (perDevice != null && perDevice.Length > 0)
+                    ps.SlotPerDeviceSettingsJson = System.Text.Json.JsonSerializer.Serialize(perDevice, jsonOpts);
+
                 Clipboard.SetText(ps.ToJson(copyOutputType, copyIsExtended));
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopied;
             }
@@ -4463,6 +4475,26 @@ namespace PadForge
                         _settingsService.ApplyMidiConfigToSlot(padVm.PadIndex, midiCfg);
                     }
                     catch { /* malformed payload — MIDI layout paste skipped */ }
+                }
+
+                // Per-device tuning for EVERY device on the source slot,
+                // not just the currently-selected one. Match by InstanceGuid
+                // first (perfect round-trip on same machine), ProductGuid
+                // fallback (same model, different physical unit). Entries
+                // with no target match are skipped. The outer ApplyPadSetting
+                // call above already wrote the selected device — applying
+                // the per-device array now will overwrite it with the same
+                // (or fresher) data, which is fine and idempotent.
+                if (!string.IsNullOrEmpty(ps.SlotPerDeviceSettingsJson))
+                {
+                    try
+                    {
+                        var perDevice = System.Text.Json.JsonSerializer.Deserialize<
+                            PadForge.Engine.Data.PerDeviceSettingsEntry[]>(ps.SlotPerDeviceSettingsJson);
+                        _inputService.ApplyPerDeviceSettingsToSlot(padVm.PadIndex, perDevice,
+                            srcType, srcIsExtended, targetType, targetIsExtended);
+                    }
+                    catch { /* malformed payload — per-device paste skipped */ }
                 }
 
                 _settingsService.MarkDirty();
@@ -4686,6 +4718,23 @@ namespace PadForge
                     srcEntry.OutputType, srcEntry.IsExtended,
                     targetOutputType, targetIsExtended,
                     targetDeviceOverride);
+
+                // Apply EVERY source-slot device's per-device tuning, not
+                // just the one the dialog highlighted. Match by InstanceGuid
+                // first (perfect round-trip), ProductGuid fallback (same model,
+                // different unit). The dialog's SelectedEntry only identifies
+                // WHICH slot to copy from; the slot's per-device tuning for
+                // gyro, touchpad-tab settings, deadzones, etc. comes along
+                // for every device.
+                if (srcEntry.SourceSlot >= 0 && srcEntry.SourceSlot != padVm.PadIndex)
+                {
+                    var perDevice = InputService.BuildPerDeviceSettingsSnapshot(
+                        srcEntry.SourceSlot, srcEntry.OutputType, srcEntry.IsExtended);
+                    if (perDevice != null && perDevice.Length > 0)
+                        _inputService.ApplyPerDeviceSettingsToSlot(padVm.PadIndex, perDevice,
+                            srcEntry.OutputType, srcEntry.IsExtended,
+                            targetOutputType, targetIsExtended);
+                }
 
                 // PadSetting carries deadzones, sensitivity, FFB, mapping
                 // descriptors. The per-slot config tabs (Lighting / custom

@@ -230,7 +230,7 @@ Pick the virtual controller type. Buttons dim when you hit the per-type limit.
 
 ### Devices
 ![Devices](screenshots/devices.jpg)
-Every detected gamepad, joystick, keyboard, and mouse as a card. Live raw axes, buttons, POV compass, and gyro/accelerometer values for the selected device. Per-device HidHide toggle and Force Raw Joystick mode for when SDL3 guesses the gamepad layout wrong.
+Every detected gamepad, joystick, keyboard, mouse, and touchpad as a card. Live raw axes, buttons, POV compass, gyro / accelerometer values, and touchpad finger positions for the selected device. Per-device HidHide toggle and Force Raw Joystick mode for when SDL3 guesses the gamepad layout wrong.
 
 ### Web controller
 ![Web Controller](screenshots/web-controller.jpg)

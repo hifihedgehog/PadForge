@@ -7,7 +7,7 @@ namespace PadForge.Engine.Touchpad
     /// <summary>
     /// XML-serializable record of one user-recorded touchpad gesture.
     /// Lives under a profile's <c>TouchpadGestures</c> collection;
-    /// gets compiled to a <see cref="PDollarTemplate"/> at profile-load
+    /// gets compiled to a <see cref="ShapeTemplate"/> at profile-load
     /// time and merged into the active shape-template catalog the
     /// gesture engine reads.
     /// </summary>
@@ -51,11 +51,11 @@ namespace PadForge.Engine.Touchpad
         [XmlElement("FingerPath")]
         public List<FingerPath> FingerPaths { get; set; } = new List<FingerPath>();
 
-        /// <summary>Builds the <see cref="PDollarTemplate"/> the
+        /// <summary>Builds the <see cref="ShapeTemplate"/> the
         /// recognizer evaluates against. Resamples + normalizes the
         /// stored finger paths; called once at profile load. Returns
         /// null when the gesture has no finger paths (corrupt entry).</summary>
-        public PDollarTemplate ToTemplate(int resampleCount = PDollarRecognizer.DefaultResampleCount)
+        public ShapeTemplate ToTemplate(int resampleCount = ShapeRecognizer.DefaultResampleCount)
         {
             if (FingerPaths == null || FingerPaths.Count == 0) return null;
             var fingers = new List<List<Vector2>>(FingerPaths.Count);
@@ -68,19 +68,22 @@ namespace PadForge.Engine.Touchpad
             }
             if (fingers.Count == 0) return null;
             // Single-finger custom gestures also carry an angular
-            // signature so the recognizer can run both $P and the
-            // angular-margin matcher and keep the better-scoring
-            // match. Multi-finger custom gestures stay $P-only —
-            // angular-margin doesn't have a clean per-finger
-            // correspondence to compare against.
+            // signature so the recognizer can run both the point-cloud
+            // matcher and the angular-margin matcher and keep the
+            // better-scoring match. Multi-finger custom gestures stay
+            // point-cloud-only — angular-margin doesn't have a clean
+            // per-finger correspondence to compare against.
             double[] angles = fingers.Count == 1
                 ? AngularMarginRecognizer.BuildAngleSignature(fingers[0])
                 : null;
-            return new PDollarTemplate
+            var cloud = ShapeRecognizer.BuildCloud(fingers, resampleCount);
+            return new ShapeTemplate
             {
                 Name = "Custom_" + Name,
                 FingerCount = fingers.Count,
-                PointCloud = PDollarRecognizer.BuildCloud(fingers, resampleCount),
+                PointCloud = cloud,
+                LookupTable = ShapeRecognizer.BuildLookupTable(cloud),
+                LookupTableSize = ShapeRecognizer.DefaultLookupTableSize,
                 ThresholdOverride = Threshold,
                 Enabled = Enabled,
                 IsCustom = true,

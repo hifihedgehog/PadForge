@@ -3930,7 +3930,7 @@ namespace PadForge.Services
         /// <summary>Custom touchpad gestures recorded by the user.
         /// Per-profile so different games can use different gesture
         /// catalogs. Each entry compiles to a
-        /// <see cref="PadForge.Engine.Touchpad.PDollarTemplate"/> at
+        /// <see cref="PadForge.Engine.Touchpad.ShapeTemplate"/> at
         /// profile load and joins the active in-box catalog the
         /// gesture engine evaluates against. Null on profiles captured
         /// before v3.3 — the in-box catalog still applies; just no

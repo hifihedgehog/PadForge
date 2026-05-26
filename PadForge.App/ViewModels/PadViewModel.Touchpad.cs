@@ -272,8 +272,12 @@ namespace PadForge.ViewModels
 
         private double _touchpadGestureMatchThreshold = 3.0;
 
-        /// <summary>$P recognizer matching threshold. Lower = stricter
-        /// matches; higher = looser. Default 2.5 from the recipe.</summary>
+        /// <summary>Shape-recognizer matching threshold. Lower = stricter
+        /// matches; higher = looser. Default 3.0 matches
+        /// <see cref="Engine.Touchpad.TouchpadGestureSettings.GestureMatchThreshold"/>'s
+        /// default; the engine's $Q-based <see cref="Engine.Touchpad.ShapeRecognizer"/>
+        /// uses the same numeric scale as the previous $P implementation
+        /// so user-tuned values transfer across the migration.</summary>
         public double TouchpadGestureMatchThreshold
         {
             get => _touchpadGestureMatchThreshold;

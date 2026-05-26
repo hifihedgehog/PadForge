@@ -28,7 +28,7 @@ namespace PadForge.Views
     ///
     /// Multi-sample averaging happens at save time: each sample's
     /// per-finger paths get resampled + normalized via
-    /// <see cref="PDollarRecognizer"/>, then same-index points are
+    /// <see cref="ShapeRecognizer"/>, then same-index points are
     /// averaged across samples per finger before packing back into the
     /// canonical <see cref="TouchpadCustomGesture"/> shape.
     /// </summary>
@@ -426,7 +426,7 @@ namespace PadForge.Views
         private TouchpadCustomGesture BuildGesture(string name)
         {
             if (_capturedSamples.Count == 0 || _expectedFingerCount <= 0) return null;
-            const int N = PDollarRecognizer.DefaultResampleCount;
+            const int N = ShapeRecognizer.DefaultResampleCount;
             var perSampleNorm = new List<List<Vector2[]>>();
             foreach (var sample in _capturedSamples)
             {
@@ -434,8 +434,8 @@ namespace PadForge.Views
                 foreach (var path in sample)
                 {
                     if (path == null || path.Count < 2) continue;
-                    var resampled = PDollarRecognizer.Resample(path, N);
-                    fingers.Add(PDollarRecognizer.NormalizeCloud(resampled));
+                    var resampled = ShapeRecognizer.Resample(path, N);
+                    fingers.Add(ShapeRecognizer.NormalizeCloud(resampled));
                 }
                 if (fingers.Count == _expectedFingerCount) perSampleNorm.Add(fingers);
             }

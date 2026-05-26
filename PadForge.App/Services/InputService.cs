@@ -7091,7 +7091,7 @@ namespace PadForge.Services
                 }
             }
 
-            var templates = new List<PadForge.Engine.Touchpad.PDollarTemplate>(
+            var templates = new List<PadForge.Engine.Touchpad.ShapeTemplate>(
                 PadForge.Engine.Touchpad.InBoxShapeTemplates.Build());
             foreach (var g in _activeTouchpadGestures)
             {
@@ -7171,7 +7171,7 @@ namespace PadForge.Services
         private void RebuildShapeTemplatesFromWorkingList()
         {
             if (_inputManager == null) return;
-            var templates = new List<PadForge.Engine.Touchpad.PDollarTemplate>(
+            var templates = new List<PadForge.Engine.Touchpad.ShapeTemplate>(
                 PadForge.Engine.Touchpad.InBoxShapeTemplates.Build());
             foreach (var g in _activeTouchpadGestures)
             {

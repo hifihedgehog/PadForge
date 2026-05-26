@@ -20,7 +20,7 @@ namespace PadForge.Engine.Touchpad
     /// inter-finger distance + angle baseline per session.</para>
     ///
     /// <para>Tier 3 (shape templates) lives in
-    /// <c>PDollarRecognizer</c>; this class invokes it at the
+    /// <c>ShapeRecognizer</c>; this class invokes it at the
     /// <c>Accumulating → Recognizing</c> transition when shape gestures
     /// are enabled and a custom-template catalog is provided.</para>
     /// </summary>
@@ -78,7 +78,7 @@ namespace PadForge.Engine.Touchpad
             TouchpadInputState pad,
             TouchpadGestureSettings settings,
             long nowMs,
-            IReadOnlyList<PDollarTemplate> shapeTemplates = null)
+            IReadOnlyList<ShapeTemplate> shapeTemplates = null)
         {
             if (ctx == null || pad == null || settings == null) return;
             // FiredGesturesThisFrame is the consumer-facing "did this
@@ -421,7 +421,7 @@ namespace PadForge.Engine.Touchpad
         /// won't double-fire here.</summary>
         private static void RunEndOfGestureRecognition(int padIdx,
             TouchpadGestureContext ctx, TouchpadGestureSettings settings,
-            long nowMs, IReadOnlyList<PDollarTemplate> shapeTemplates)
+            long nowMs, IReadOnlyList<ShapeTemplate> shapeTemplates)
         {
             // Count fingers in this gesture by counting non-empty paths.
             int fingerCount = 0;
@@ -651,14 +651,14 @@ namespace PadForge.Engine.Touchpad
             }
         }
 
-        /// <summary>Walks the shape-template catalog with the $P
-        /// recognizer if shapes are enabled + the catalog has templates
-        /// matching the finger count. Fires the best match's name when
-        /// the match score is under the per-template (or fallback to
-        /// per-settings) threshold.</summary>
+        /// <summary>Walks the shape-template catalog with the
+        /// <see cref="ShapeRecognizer"/> if shapes are enabled + the
+        /// catalog has templates matching the finger count. Fires the
+        /// best match's name when the match score is under the per-
+        /// template (or fallback to per-settings) threshold.</summary>
         private static void MaybeFireShape(int padIdx,
             TouchpadGestureContext ctx, TouchpadGestureSettings settings,
-            IReadOnlyList<PDollarTemplate> templates, int fingerCount)
+            IReadOnlyList<ShapeTemplate> templates, int fingerCount)
         {
             if (templates == null || templates.Count == 0) return;
 
@@ -671,10 +671,10 @@ namespace PadForge.Engine.Touchpad
             // (pinch / rotate / two-finger) are unaffected — they have
             // no in-box-vs-custom split.
             string mode = settings.Mode ?? "Both";
-            List<PDollarTemplate> filtered = null;
+            List<ShapeTemplate> filtered = null;
             if (mode == "InBoxOnly" || mode == "CustomOnly")
             {
-                filtered = new List<PDollarTemplate>(templates.Count);
+                filtered = new List<ShapeTemplate>(templates.Count);
                 bool wantCustom = mode == "CustomOnly";
                 for (int i = 0; i < templates.Count; i++)
                 {
@@ -699,17 +699,17 @@ namespace PadForge.Engine.Touchpad
             }
             if (fingerPaths.Count != fingerCount) return;
 
-            string pdollarName = PDollarRecognizer.MatchByFingerCount(
+            string cloudMatchName = ShapeRecognizer.MatchByFingerCount(
                 fingerPaths, templates, fingerCount,
                 settings.GestureMatchThreshold, out _);
 
             // Single-finger shapes also run through the angular-margin
             // recognizer (GestureSign-style). It picks up direction-
             // dependent shapes like Square / Z / Triangle / Checkmark
-            // that $P softens because point-cloud distance is permutation-
-            // invariant and ignores stroke direction. The two matchers
-            // produce different score scales:
-            //   $P: lower = better (returns the lowest distance under threshold)
+            // that the point-cloud matcher softens because cloud distance
+            // is permutation-invariant and ignores stroke direction. The
+            // two matchers produce different score scales:
+            //   point-cloud: lower = better (returns lowest distance under threshold)
             //   angular-margin: higher = better, 1.0 = identical at every segment
             // We accept whichever matcher fired its match. When both
             // fire (often the same name), prefer the angular-margin
@@ -722,7 +722,7 @@ namespace PadForge.Engine.Touchpad
                 // Build a single-finger angular candidate-template list
                 // by selecting templates that carry an AngularSignature
                 // AND that pass the same finger-count + IsCustom / shape-
-                // gestures gating PDollarRecognizer.MatchByFingerCount uses.
+                // gestures gating ShapeRecognizer.MatchByFingerCount uses.
                 var angTemplates = new List<AngularTemplate>();
                 for (int i = 0; i < templates.Count; i++)
                 {
@@ -750,12 +750,12 @@ namespace PadForge.Engine.Touchpad
                 }
             }
 
-            string firedName = angName ?? pdollarName;
+            string firedName = angName ?? cloudMatchName;
             if (!string.IsNullOrEmpty(firedName))
                 ctx.FiredGesturesThisFrame.Add($"Touchpad {padIdx} {firedName}");
         }
 
-        private static bool HasCustomFingerCount(IReadOnlyList<PDollarTemplate> templates, int n)
+        private static bool HasCustomFingerCount(IReadOnlyList<ShapeTemplate> templates, int n)
         {
             for (int i = 0; i < templates.Count; i++)
                 if (templates[i].FingerCount == n && templates[i].IsCustom) return true;

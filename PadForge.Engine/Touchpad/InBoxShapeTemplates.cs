@@ -12,20 +12,20 @@ namespace PadForge.Engine.Touchpad
     ///
     /// <para>Each shape is described as a single-finger continuous path
     /// in normalized touchpad space (0..1). Templates are resampled +
-    /// normalized once via <see cref="PDollarRecognizer.BuildCloud"/>
+    /// normalized once via <see cref="ShapeRecognizer.BuildCloud"/>
     /// using the default N=32 so they're ready to match without re-
     /// processing per evaluation.</para>
     /// </summary>
     public static class InBoxShapeTemplates
     {
         /// <summary>Builds the full in-box shape catalog. Returns a
-        /// list of <see cref="PDollarTemplate"/> ready for the
+        /// list of <see cref="ShapeTemplate"/> ready for the
         /// gesture engine. Each entry's <c>IsCustom = false</c> so the
         /// <c>EnableShapeGestures</c> per-pad toggle gates them all
         /// uniformly.</summary>
-        public static List<PDollarTemplate> Build()
+        public static List<ShapeTemplate> Build()
         {
-            var list = new List<PDollarTemplate>();
+            var list = new List<ShapeTemplate>();
             // Circles: closed shapes (start anywhere on the ring) but
             // direction matters — CW and CCW are intentionally separate
             // gestures the user can bind independently.
@@ -53,22 +53,24 @@ namespace PadForge.Engine.Touchpad
             return list;
         }
 
-        private static void Add(List<PDollarTemplate> list, string name, List<Vector2> path,
+        private static void Add(List<ShapeTemplate> list, string name, List<Vector2> path,
             bool isClosed, bool dirAgnostic)
         {
-            var cloud = PDollarRecognizer.BuildCloud(new[] { path }, PDollarRecognizer.DefaultResampleCount);
+            var cloud = ShapeRecognizer.BuildCloud(new[] { path }, ShapeRecognizer.DefaultResampleCount);
             // Single-finger shapes also get an angular-margin signature
             // so the recognizer can run both algorithms and keep the
-            // higher-confidence match. $P handles "rough cloud of points"
-            // well; angular-margin handles "consistent stroke direction
-            // at every corner" well — they're complementary on shapes
-            // like Square / Z / Triangle / Checkmark.
+            // higher-confidence match. The point-cloud matcher handles
+            // "rough cloud of points" well; angular-margin handles
+            // "consistent stroke direction at every corner" well — they're
+            // complementary on shapes like Square / Z / Triangle / Checkmark.
             var angles = AngularMarginRecognizer.BuildAngleSignature(path);
-            list.Add(new PDollarTemplate
+            list.Add(new ShapeTemplate
             {
                 Name = name,
                 FingerCount = 1,
                 PointCloud = cloud,
+                LookupTable = ShapeRecognizer.BuildLookupTable(cloud),
+                LookupTableSize = ShapeRecognizer.DefaultLookupTableSize,
                 Enabled = true,
                 IsCustom = false,
                 AngularSignature = angles,

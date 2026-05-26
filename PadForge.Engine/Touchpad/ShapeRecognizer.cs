@@ -205,15 +205,21 @@ namespace PadForge.Engine.Touchpad
             return lut;
         }
 
-        /// <summary>Computes the $Q "Goodness-of-Match" distance between
-        /// <paramref name="candidate"/> and <paramref name="template"/>'s
-        /// cloud + LUT. For each candidate point, the LUT answers
-        /// "nearest template point index" in O(1); the squared distance
-        /// to that point is accumulated with the $P-style position
-        /// weighting (earlier-in-cloud matches count more). Cyclic
-        /// start at <paramref name="start"/> compensates for the
-        /// position-weight bias toward whichever point happens to be
-        /// first in the cloud's ordering.</summary>
+        /// <summary>Computes the symmetric $Q "Goodness-of-Match"
+        /// distance between <paramref name="candidate"/> and
+        /// <paramref name="template"/>'s cloud + LUT. Forward pass:
+        /// for each candidate point, the LUT answers "nearest template
+        /// point index" in O(1); accumulated with $P-style position
+        /// weighting. Backward pass: for each template point, a linear
+        /// scan finds the nearest candidate point; accumulated the
+        /// same way. Returns the max of the two — symmetric distance
+        /// catches the failure mode of single-direction matchers where
+        /// a degenerate candidate (horizontal line) latches all its
+        /// points onto a few template points and scores low forward,
+        /// but the template's unmatched-by-anyone points produce a
+        /// large backward sum. Cyclic start at <paramref name="start"/>
+        /// applies only to the forward pass; the backward pass walks
+        /// template indices 0..n-1 with its own position weighting.</summary>
         public static float CloudDistance(Vector2[] candidate,
             ShapeTemplate template, int start)
         {
@@ -226,8 +232,9 @@ namespace PadForge.Engine.Touchpad
             if (lutSize <= 0 || template.LookupTable.Length != lutSize * lutSize)
                 return float.MaxValue;
 
+            // Forward: LUT-driven, O(N)
             float cellScale = lutSize / (2f * NormalizedHalfRange);
-            float sum = 0f;
+            float forwardSum = 0f;
             int i = start;
             do
             {
@@ -241,65 +248,49 @@ namespace PadForge.Engine.Touchpad
                 float dx = candidate[i].X - template.PointCloud[tIdx].X;
                 float dy = candidate[i].Y - template.PointCloud[tIdx].Y;
                 float weight = 1f - ((i - start + n) % n) / (float)n;
-                sum += MathF.Sqrt(dx * dx + dy * dy) * weight;
+                forwardSum += MathF.Sqrt(dx * dx + dy * dy) * weight;
                 i = (i + 1) % n;
             } while (i != start);
-            return sum;
-        }
 
-        /// <summary>Bounding-box aspect ratio
-        /// (larger-dimension / smaller-dimension) of a normalized
-        /// point cloud. A small epsilon on the denominator caps the
-        /// ratio for degenerate (collinear) clouds — a horizontal
-        /// line whose bounding box has zero height returns a large
-        /// but finite number instead of infinity.</summary>
-        private static float AspectRatio(Vector2[] cloud)
-        {
-            if (cloud == null || cloud.Length == 0) return 1f;
-            float minX = float.MaxValue, maxX = float.MinValue;
-            float minY = float.MaxValue, maxY = float.MinValue;
-            for (int i = 0; i < cloud.Length; i++)
+            // Backward: brute-force, O(N*N). N is bounded by 5 fingers
+            // x 32 = 160; the worst-case 25600-op pass measures in
+            // microseconds. Cheap relative to the value of catching
+            // line-vs-2D false positives.
+            var pc = template.PointCloud;
+            float backwardSum = 0f;
+            for (int j = 0; j < n; j++)
             {
-                if (cloud[i].X < minX) minX = cloud[i].X;
-                if (cloud[i].X > maxX) maxX = cloud[i].X;
-                if (cloud[i].Y < minY) minY = cloud[i].Y;
-                if (cloud[i].Y > maxY) maxY = cloud[i].Y;
+                float bestSq = float.MaxValue;
+                float tx = pc[j].X;
+                float ty = pc[j].Y;
+                for (int k = 0; k < n; k++)
+                {
+                    float dx = candidate[k].X - tx;
+                    float dy = candidate[k].Y - ty;
+                    float dsq = dx * dx + dy * dy;
+                    if (dsq < bestSq) bestSq = dsq;
+                }
+                float weight = 1f - j / (float)n;
+                backwardSum += MathF.Sqrt(bestSq) * weight;
             }
-            float w = maxX - minX;
-            float h = maxY - minY;
-            float big = MathF.Max(w, h);
-            float small = MathF.Min(w, h);
-            const float Eps = 0.01f;
-            return big / (small + Eps);
-        }
 
-        /// <summary>Aspect-ratio threshold above which a normalized
-        /// cloud is treated as "line-like" — one bounding-box
-        /// dimension vanishes against the other. A horizontal or
-        /// vertical line is the canonical line-like cloud; an M /
-        /// Z / Square / Circle / Triangle template lands well under
-        /// this. Line-like candidates only match line-like templates
-        /// (and vice versa), which kills the "horizontal-line input
-        /// passes the recognizer on a custom M template" false
-        /// positive — any point-cloud matcher with position-weighted
-        /// distance is vulnerable to this because clustered early-
-        /// candidate matches dominate the weighted sum and the late
-        /// large distances fade out under the cyclic weight.</summary>
-        private const float LineLikeAspectGate = 5f;
+            return MathF.Max(forwardSum, backwardSum);
+        }
 
         /// <summary>Matches <paramref name="candidate"/> against the
         /// catalog of <paramref name="templates"/>. Returns the
         /// best-matching template's name (or null when no template is
         /// under threshold). Filters the catalog to entries whose
         /// FingerCount matches <paramref name="fingerCount"/> — multi-
-        /// finger gestures only match same-finger-count templates —
-        /// and rejects line-like candidates against 2D templates (and
-        /// vice versa) via <see cref="LineLikeAspectGate"/> before
-        /// running the distance pass. Two cyclic starts (0 and n/2)
-        /// reduce starting-point bias; the paper recommends an
-        /// ε-greedy sweep of more starts on noisy gesture corpora,
-        /// but two starts already gives stable matches at PadForge's
-        /// resample count without measurable per-match cost.</summary>
+        /// finger gestures only match same-finger-count templates.
+        /// Two cyclic starts (0 and n/2) reduce starting-point bias;
+        /// the paper recommends an ε-greedy sweep of more starts on
+        /// noisy gesture corpora, but two starts already gives stable
+        /// matches at PadForge's resample count without measurable
+        /// per-match cost. CloudDistance returns the symmetric
+        /// max(forward, backward) so degenerate candidates (e.g. a
+        /// horizontal-swipe trace) can't match 2D templates by
+        /// piling onto a few of the template's points.</summary>
         public static string Match(Vector2[] candidate,
             IReadOnlyList<ShapeTemplate> templates,
             int fingerCount, float threshold, out float bestScore)
@@ -308,8 +299,6 @@ namespace PadForge.Engine.Touchpad
             string bestName = null;
             if (templates == null) return null;
             int half = candidate != null ? candidate.Length / 2 : 0;
-            float candidateAspect = AspectRatio(candidate);
-            bool candidateLineLike = candidateAspect > LineLikeAspectGate;
             for (int t = 0; t < templates.Count; t++)
             {
                 var tpl = templates[t];
@@ -317,8 +306,6 @@ namespace PadForge.Engine.Touchpad
                 if (!tpl.Enabled) continue;
                 if (tpl.PointCloud == null || tpl.PointCloud.Length != candidate.Length) continue;
                 if (tpl.LookupTable == null) continue;
-                bool templateLineLike = AspectRatio(tpl.PointCloud) > LineLikeAspectGate;
-                if (candidateLineLike != templateLineLike) continue;
                 float effThreshold = tpl.ThresholdOverride > 0f
                     ? tpl.ThresholdOverride : threshold;
                 float d0 = CloudDistance(candidate, tpl, 0);

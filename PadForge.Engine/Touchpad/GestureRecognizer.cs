@@ -318,14 +318,32 @@ namespace PadForge.Engine.Touchpad
 
             var path = ctx.FingerPaths[0];
             if (path.Count < 2) return;
-            float maxMotion = 0f;
-            Vector2 start = path[0];
-            for (int i = 1; i < path.Count; i++)
+
+            // "Recent stillness" gate rather than "max distance from
+            // touchdown." Users naturally land a finger and settle it
+            // into a slightly-different position before holding still —
+            // common on sensitive touchpads (DualSense in particular)
+            // where the contact patch shifts the reported position by a
+            // few percent during the first hundred ms or so. Measuring
+            // from the touchdown point punishes that settle even when
+            // the finger is now perfectly stable. Measure instead the
+            // bounding-box span of the most recent quarter of the path:
+            // if THAT span is small, the finger is currently still and
+            // the user clearly means a long-press regardless of how it
+            // got there.
+            int tailStart = path.Count * 3 / 4;
+            if (tailStart < 1) tailStart = 1;
+            float minX = float.MaxValue, maxX = float.MinValue;
+            float minY = float.MaxValue, maxY = float.MinValue;
+            for (int i = tailStart; i < path.Count; i++)
             {
-                float d = (path[i] - start).Length();
-                if (d > maxMotion) maxMotion = d;
+                if (path[i].X < minX) minX = path[i].X;
+                if (path[i].X > maxX) maxX = path[i].X;
+                if (path[i].Y < minY) minY = path[i].Y;
+                if (path[i].Y > maxY) maxY = path[i].Y;
             }
-            if (maxMotion > settings.LongPressMaxMotion) return;
+            float recentSpan = MathF.Max(maxX - minX, maxY - minY);
+            if (recentSpan > settings.LongPressMaxMotion) return;
 
             ctx.FiredGesturesThisFrame.Add(key);
             // Skip the end-of-gesture swipe / tap recognition for this

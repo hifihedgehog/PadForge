@@ -12,20 +12,20 @@ namespace PadForge.Engine.Touchpad
     /// reference template's angle sequence — direction-preserving
     /// match that handles shapes with distinct corners (Square,
     /// Triangle, Z, Checkmark) noticeably better than point-cloud
-    /// distance ($P) because it actively rewards consistent stroke
-    /// direction at each interpolated point.
+    /// distance (point-cloud matchers) because it actively rewards
+    /// consistent stroke direction at each interpolated point.
     ///
     /// <para>Algorithm follows GestureSign's PointPatternAnalyzer
     /// (BSD-style permissively-licensed reference); the implementation
     /// here is original C# re-derived from the same description rather
-    /// than a literal port. Pairs with <see cref="PDollarRecognizer"/>:
+    /// than a literal port. Pairs with <see cref="ShapeRecognizer"/>:
     /// the gesture engine runs both against the candidate path on a
     /// single-finger shape and keeps the higher-confidence match.</para>
     ///
-    /// <para>Multi-finger gestures stay with $P only — angular-margin
-    /// doesn't naturally generalize to a multi-stroke point cloud
-    /// without per-finger correspondence the user can't be relied on
-    /// to provide between samples.</para>
+    /// <para>Multi-finger gestures stay with the point-cloud matcher
+    /// only — angular-margin doesn't naturally generalize to a multi-
+    /// stroke point cloud without per-finger correspondence the user
+    /// can't be relied on to provide between samples.</para>
     /// </summary>
     public static class AngularMarginRecognizer
     {
@@ -255,7 +255,7 @@ namespace PadForge.Engine.Touchpad
         public double[] Angles;
 
         /// <summary>Per-template gate. Disabled templates skip the
-        /// score loop — same shape as <see cref="PDollarTemplate.Enabled"/>.</summary>
+        /// score loop — same shape as <see cref="ShapeTemplate.Enabled"/>.</summary>
         public bool Enabled = true;
 
         /// <summary>Custom user gestures flag this true so the

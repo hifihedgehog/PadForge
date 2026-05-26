@@ -130,14 +130,14 @@ namespace PadForge.Engine.Touchpad
         /// per-gesture toggles in the profile's gesture library.</summary>
         [XmlAttribute] public bool EnableShapeGestures { get; set; }
 
-        /// <summary>$P recognizer match threshold. Lower = stricter
-        /// (fewer false-positives), higher = looser (more matches).
-        /// 2.5 is the $P paper's default and gives ~95% accuracy on
-        /// the published gesture set, but real touchpad input varies
-        /// more than the paper's stylus dataset; 3.0 is a more
-        /// forgiving default that still rejects clearly-different
-        /// shapes. The angular-margin shape recognizer that runs
-        /// alongside $P uses its own per-axis tolerance internally.</summary>
+        /// <summary>Point-cloud shape-recognizer match threshold (the
+        /// engine uses <see cref="ShapeRecognizer"/>'s $Q implementation).
+        /// Lower = stricter (fewer false-positives), higher = looser
+        /// (more matches). 3.0 keeps the same scale the prior $P
+        /// implementation used so user-tuned values transfer across
+        /// the $P → $Q migration without re-tuning. The angular-margin
+        /// matcher that runs alongside the point-cloud recognizer uses
+        /// its own per-axis tolerance internally.</summary>
         [XmlAttribute] public float GestureMatchThreshold { get; set; } = 3.0f;
 
         // ─── Joystick / D-pad output (anchor-relative continuous) ───────

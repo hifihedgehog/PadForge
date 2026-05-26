@@ -13,7 +13,7 @@ namespace PadForge.Engine.Touchpad
         /// longpress, pinch threshold crossing).</summary>
         Accumulating,
         /// <summary>All fingers just lifted; ran the end-of-gesture
-        /// recognition pass (Tier 1 swipe direction, Tier 3 $P match).
+        /// recognition pass (Tier 1 swipe direction, Tier 3 shape match).
         /// Transitions immediately to Cooldown.</summary>
         Recognizing,
         /// <summary>Post-gesture quiet period to prevent bounce-fire.

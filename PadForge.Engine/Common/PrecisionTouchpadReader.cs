@@ -308,6 +308,16 @@ namespace PadForge.Engine
             public readonly bool[] LastFrameDown = new bool[PtpMaxFingers];
             public readonly int[]  CurrentContactId;
 
+            // HID contact ID assigned to each engine slot, or -1 when
+            // the slot is free. Carries across frames so a finger
+            // keeps the same slot even when lower-numbered slots
+            // empty out and the device's buffer-arrival order shifts.
+            // Without this, the engine's path data extends with the
+            // wrong physical finger's coordinates after a multi-
+            // finger lift and the resulting motion looks like a
+            // swipe — taps stop firing.
+            public readonly int[]  SlotToHidId;
+
             // Multi-report frame assembly. PTP devices commonly split a
             // single touch frame across multiple HID reports — the spec
             // (and most Windows-certified hardware) caps each report at
@@ -333,7 +343,12 @@ namespace PadForge.Engine
                 // -1 = "no contact on this slot." Default int (0) would
                 // look like a real contact ID to the recognizer.
                 CurrentContactId = new int[PtpMaxFingers];
-                for (int i = 0; i < PtpMaxFingers; i++) CurrentContactId[i] = -1;
+                SlotToHidId = new int[PtpMaxFingers];
+                for (int i = 0; i < PtpMaxFingers; i++)
+                {
+                    CurrentContactId[i] = -1;
+                    SlotToHidId[i] = -1;
+                }
             }
         }
 
@@ -406,7 +421,11 @@ namespace PadForge.Engine
             long now = DateTime.UtcNow.Ticks;
             if (ds.LastReportTicks > 0 && (now - ds.LastReportTicks) > StaleThresholdTicks)
             {
-                for (int i = 0; i < PtpMaxFingers; i++) ds.Down[i] = false;
+                for (int i = 0; i < PtpMaxFingers; i++)
+                {
+                    ds.Down[i] = false;
+                    ds.SlotToHidId[i] = -1;
+                }
                 // A frame partially assembled then orphaned by silence
                 // shouldn't carry into the next touch session.
                 ds.FrameExpected = 0;
@@ -851,17 +870,64 @@ namespace PadForge.Engine
 
                 if (!frameComplete) return;
 
-                // Commit the assembled frame. Clearing ds.Down up-front
-                // is what differentiates a frame commit from a fragment
-                // accumulate; the buffered contacts then re-arm the
-                // slots they actually occupy.
-                for (int i = 0; i < PtpMaxFingers; i++) ds.Down[i] = false;
+                // Commit the assembled frame with slot-stable assignment.
+                // Each buffered contact's HID contact ID looks up its
+                // existing engine-slot index first (pass 1); IDs not
+                // already mapped claim the lowest free slot (pass 2).
+                // Slots whose HID ID is no longer in the frame are
+                // released. This keeps a finger's engine slot stable
+                // across frames even when lower slots empty out.
+                System.Span<int>  assign  = stackalloc int [PtpMaxFingers];
+                System.Span<bool> claimed = stackalloc bool[PtpMaxFingers];
                 int n = System.Math.Min(ds.FrameSeen, PtpMaxFingers);
+                for (int i = 0; i < n; i++) assign[i] = -1;
+
                 for (int i = 0; i < n; i++)
                 {
-                    ds.X[i] = ds.FrameBufX[i];
-                    ds.Y[i] = ds.FrameBufY[i];
-                    ds.Down[i] = true;
+                    int id = ds.FrameBufId[i];
+                    for (int s = 0; s < PtpMaxFingers; s++)
+                    {
+                        if (ds.SlotToHidId[s] == id)
+                        {
+                            assign[i] = s;
+                            claimed[s] = true;
+                            break;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < n; i++)
+                {
+                    if (assign[i] >= 0) continue;
+                    for (int s = 0; s < PtpMaxFingers; s++)
+                    {
+                        if (claimed[s] || ds.SlotToHidId[s] >= 0) continue;
+                        assign[i] = s;
+                        claimed[s] = true;
+                        ds.SlotToHidId[s] = ds.FrameBufId[i];
+                        break;
+                    }
+                }
+
+                // Release slots whose HID ID dropped out of this frame.
+                // The synth-cid pass in ReadDeviceState picks up the
+                // wasDown→!isDown transition from the cleared Down[]
+                // below and assigns -1 to CurrentContactId for these
+                // slots, terminating their paths cleanly.
+                for (int s = 0; s < PtpMaxFingers; s++)
+                {
+                    if (claimed[s]) continue;
+                    ds.SlotToHidId[s] = -1;
+                }
+
+                for (int i = 0; i < PtpMaxFingers; i++) ds.Down[i] = false;
+                for (int i = 0; i < n; i++)
+                {
+                    int s = assign[i];
+                    if (s < 0) continue;
+                    ds.X[s] = ds.FrameBufX[i];
+                    ds.Y[s] = ds.FrameBufY[i];
+                    ds.Down[s] = true;
                 }
                 ds.FrameExpected = 0;
                 ds.FrameSeen = 0;

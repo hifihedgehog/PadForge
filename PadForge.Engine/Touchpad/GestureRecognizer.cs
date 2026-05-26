@@ -346,10 +346,13 @@ namespace PadForge.Engine.Touchpad
             if (recentSpan > settings.LongPressMaxMotion) return;
 
             ctx.FiredGesturesThisFrame.Add(key);
-            // Skip the end-of-gesture swipe / tap recognition for this
-            // gesture: clear the path so they have nothing to evaluate
-            // against on the upcoming Accumulating → Recognizing pass.
-            ctx.FingerPaths[0].Clear();
+            // Don't clear the path here — DetectRadialZones reads
+            // path[0] each tick to compute the angle from touchdown,
+            // and a cleared path collapses start ≈ end so the next
+            // RadialZones tick sees dist < RadialCenterDeadzone and
+            // releases the held zone. End-of-gesture swipe/tap/shape
+            // recognition checks for the LongPress entry in
+            // FiredGesturesThisFrame and skips itself instead.
         }
 
         /// <summary>Manages the 2-finger session lifecycle:
@@ -434,13 +437,22 @@ namespace PadForge.Engine.Touchpad
         /// <summary>Runs at the all-fingers-lifted transition. Picks the
         /// most-fitting end-of-gesture interpretation: swipe (Tier 1),
         /// tap/double/triple (Tier 1), or shape match (Tier 3). Multi-
-        /// finger swipes also handled here. Long-press already fired
-        /// mid-gesture in DetectLongPress and cleared its path, so it
-        /// won't double-fire here.</summary>
+        /// finger swipes also handled here. Skipped entirely when
+        /// LongPress fired mid-gesture so the lift doesn't double-
+        /// fire a tap or shape.</summary>
         private static void RunEndOfGestureRecognition(int padIdx,
             TouchpadGestureContext ctx, TouchpadGestureSettings settings,
             long nowMs, IReadOnlyList<ShapeTemplate> shapeTemplates)
         {
+            // Skip end-of-gesture interpretations when LongPress
+            // already claimed this gesture mid-hold. The held
+            // RadialZone (if any) stays asserted in
+            // FiredGesturesThisFrame and releases when the gesture
+            // transitions to Cooldown along with the rest of the
+            // gesture-context state.
+            if (ctx.FiredGesturesThisFrame.Contains($"Touchpad {padIdx} LongPress"))
+                return;
+
             // Count fingers in this gesture by counting non-empty paths.
             int fingerCount = 0;
             for (int i = 0; i < ctx.FingerPaths.Count; i++)

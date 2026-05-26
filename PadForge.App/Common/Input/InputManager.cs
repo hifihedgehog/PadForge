@@ -149,21 +149,22 @@ namespace PadForge.Common.Input
             = new System.Collections.Concurrent.ConcurrentDictionary<(int, System.Guid, int), Engine.Touchpad.TouchpadGestureContext>();
 
         /// <summary>Active shape templates ready for the gesture
-        /// engine's $P matcher. Built at startup from the in-box
-        /// catalog; profile load can append the user's custom
-        /// gestures via <see cref="SetShapeTemplates"/>.</summary>
-        public System.Collections.Generic.IReadOnlyList<Engine.Touchpad.PDollarTemplate> ShapeTemplates
+        /// engine's point-cloud matcher (<see cref="Engine.Touchpad.ShapeRecognizer"/>).
+        /// Built at startup from the in-box catalog; profile load can
+        /// append the user's custom gestures via
+        /// <see cref="SetShapeTemplates"/>.</summary>
+        public System.Collections.Generic.IReadOnlyList<Engine.Touchpad.ShapeTemplate> ShapeTemplates
         {
             get => System.Threading.Volatile.Read(ref _shapeTemplates);
         }
-        private System.Collections.Generic.IReadOnlyList<Engine.Touchpad.PDollarTemplate> _shapeTemplates
+        private System.Collections.Generic.IReadOnlyList<Engine.Touchpad.ShapeTemplate> _shapeTemplates
             = Engine.Touchpad.InBoxShapeTemplates.Build();
 
         /// <summary>Atomically swaps the active shape-template catalog.
         /// Called on profile load when the per-profile custom gesture
         /// library lands; passes in the in-box set merged with the
         /// custom templates so the recognizer evaluates both.</summary>
-        public void SetShapeTemplates(System.Collections.Generic.IReadOnlyList<Engine.Touchpad.PDollarTemplate> templates)
+        public void SetShapeTemplates(System.Collections.Generic.IReadOnlyList<Engine.Touchpad.ShapeTemplate> templates)
         {
             System.Threading.Volatile.Write(ref _shapeTemplates, templates ?? Engine.Touchpad.InBoxShapeTemplates.Build());
         }

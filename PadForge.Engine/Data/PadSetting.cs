@@ -528,9 +528,10 @@ namespace PadForge.Engine.Data
         /// When "0", the passthrough relays the raw sensor reading and
         /// the Gyro tab affects only gyro-as-mapping-source reads.
         /// Stored per-(device, slot) like the rest of the gyro tuning.
-        /// Defaults to "1" so an absent element on an upgraded profile
-        /// applies the tuning.</summary>
-        [XmlElement] public string GyroApplyTuningToPassthrough { get; set; } = "1";
+        /// Defaults to "0" so a fresh profile (or an absent element on
+        /// an upgraded one) hands the game a clean passthrough; the
+        /// user opts in to having tuning reach the virtual controller.</summary>
+        [XmlElement] public string GyroApplyTuningToPassthrough { get; set; } = "0";
 
         // ─────────────────────────────────────────────
         //  Axis-to-button threshold

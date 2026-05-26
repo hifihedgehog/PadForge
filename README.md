@@ -70,6 +70,12 @@ Seven adaptive trigger modes with a live preview that draws the resistance curve
 | ![Adaptive Triggers tab](screenshots/adaptive-triggers.jpg) | ![Lighting tab](screenshots/lighting.jpg) |
 |:---:|:---:|
 
+### Turn the DualSense pad into a mouse, a stick, or a D-pad.
+
+A Touchpad tab on every slot whose source carries a touchpad surface (DualSense, DualSense Edge, DS4, Web Controller, on-screen Touchpad Overlay, Windows Precision Touchpad). Map a finger to mouse X/Y with per-axis sensitivity and invert. Anchor a virtual analog stick where your finger lands. Drop a wedge-thresholded D-pad on top. The gesture stack covers 4-way and 8-way swipes, taps, longpress, pinch, rotate, three- to five-finger gestures, and shape templates (Circle, Square, Triangle, Z, Checkmark). Every toggle saves per slot.
+
+![Touchpad tab](screenshots/touchpad.jpg)
+
 ### Open a browser. Press buttons.
 
 PadForge runs a tiny web server. Any device with a browser on your Wi-Fi can load it, pick a layout (Xbox 360, DualShock 4, or multi-touch touchpad), and play. Up to 16 phones at once, each a separate virtual pad. Touch buttons, dual analog sticks, an 8-way D-pad. Rumble feedback through the Vibration API. No app to install on the phone.
@@ -189,6 +195,10 @@ Seven trigger effect modes. Off, Feedback, Weapon, Vibration, Multi-Position Fee
 ### DualSense lightbar
 ![Lighting](screenshots/lighting.jpg)
 Thirteen lightbar modes including three Audio Pulse variants and three Audio Bands variants that react to system audio in real time. Three Input Reactive variants flash on button presses (Random Color, Cycle Through Palette, Base Color). Plus the indicator-LED card for player pattern, mute LED, and brightness.
+
+### Touchpad
+![Touchpad](screenshots/touchpad.jpg)
+Per-slot touchpad tuning on any source with a touchpad surface (DualSense, DualSense Edge, DS4, Web Controller, on-screen Touchpad Overlay, Windows Precision Touchpad). Five cards: Stick / D-Pad Output (anchor-relative virtual stick + wedge D-pad), Mouse Output (per-axis sensitivity and invert), Gesture Detection (master enable + cooldown), In-Box Gestures (swipes, taps, longpress, pinch, rotate, three- to five-finger, shape templates), Custom Gestures (recorded shape templates per profile).
 
 ### Macros
 ![Macros](screenshots/macros.jpg)

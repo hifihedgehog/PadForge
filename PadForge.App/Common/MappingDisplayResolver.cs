@@ -658,9 +658,17 @@ namespace PadForge.Common
         {
             // Best-effort pad / finger counts. Live device snapshot
             // gives the authoritative numbers; absent that, fall back
-            // to the historical single-pad, two-finger assumption.
+            // per device type. PTP system touchpads (ud.IsTouchpad with
+            // ud.Device == null — data flows through PrecisionTouchpadReader
+            // rather than an ISdlInputDevice wrapper) always support
+            // PtpMaxFingers (5) per the HID PTP spec, so the fallback
+            // must reflect that or 3/4/5-finger gestures never surface
+            // in the picker.
             int numPads = 1;
-            int[] perPadFingers = new[] { 2 };
+            int fallbackFingers = ud.IsTouchpad
+                ? PadForge.Engine.PrecisionTouchpadReader.PtpMaxFingers
+                : 2;
+            int[] perPadFingers = new[] { fallbackFingers };
             try
             {
                 var state = ud.Device?.GetCurrentState();

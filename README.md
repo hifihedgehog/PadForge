@@ -131,6 +131,7 @@ Map sticks to Control Change messages. Map buttons to Note On / Note Off. Set ve
 | Audio-bass body rumble | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | DualSense Adaptive Triggers | ✅ 7 modes + GameCube preset | ❌ | ❌ | ✅ 11 presets | ⚠️ limited | ❌ |
 | DualSense lightbar | ✅ 13 modes inc. Strobe + Battery | ❌ | ❌ | ✅ 6 modes + Player LED + Mic LED | ⚠️ basic, no audio | ⚠️ unverified |
+| Touchpad: joystick / D-pad / mouse + gesture engine | ✅ joystick (anchor-relative), wedge D-pad, per-axis mouse (sensitivity + invert), in-box gestures (4-way / 8-way swipes, taps, longpress, pinch, rotate, two- to five-finger), shape templates (Circle / Square / Triangle / Z / Checkmark), custom recorded shapes | ❌ | ❌ | ⚠️ touchpad-as-mouse / -as-stick + click, no gesture engine | ⚠️ touchpad-as-mouse + four-direction Touchpad Swipe bindings | ⚠️ joystick / D-pad / mouse / touch menu, no multi-finger or shape recognition |
 | HID PID 1.0 force feedback (wheels) | ✅ | ✅ constant + periodic (DirectInput) | ⚠️ basic passthrough only | ❌ | ❌ | ❌ |
 | DSU / Cemuhook motion server (Cemu, Dolphin, Yuzu) | ✅ | ❌ | ❌ | ✅ port 26760 | ✅ | ❌ |
 | Phone as controller | ✅ in-browser, no app install, up to 16 phones at once, touchpad layout included | ❌ | ❌ | ⚠️ reWASD Mobile app (one phone, no touchpad layout) | ❌ | ❌ |

@@ -234,7 +234,7 @@ Every detected gamepad, joystick, keyboard, and mouse as a card. Live raw axes, 
 
 ### Web controller
 ![Web Controller](screenshots/web-controller.jpg)
-Connect a phone or tablet over Wi-Fi. Browser shows an Xbox 360 or DualShock 4 layout with virtual sticks, D-pad, triggers, and rumble. Touch the sticks to push them. Tap to click.
+Connect a phone or tablet over Wi-Fi. Browser shows an Xbox 360 layout, a DualShock 4 layout, or a multi-touch touchpad layout with virtual sticks, D-pad, triggers, and rumble. Touch the sticks to push them. Tap to click.
 
 ### Settings
 ![Settings](screenshots/settings.jpg)

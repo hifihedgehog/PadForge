@@ -59,6 +59,8 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="{Binding About_DotNet10, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"/>
@@ -111,6 +113,16 @@
                     <TextBlock Grid.Row="10" Text="{Binding About_ZackslyIcons, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
                     <TextBlock Grid.Row="10" Grid.Column="1"
                                Text="{Binding About_ZackslyIconsDesc, Source={x:Static strings:Strings.Instance}}"
+                               Opacity="0.7" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="11" Text="{Binding About_QDollar, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="11" Grid.Column="1"
+                               Text="{Binding About_QDollarDesc, Source={x:Static strings:Strings.Instance}}"
+                               Opacity="0.7" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="12" Text="{Binding About_GestureSign, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="12" Grid.Column="1"
+                               Text="{Binding About_GestureSignDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0" TextWrapping="Wrap"/>
                 </Grid>
             </Border>

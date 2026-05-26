@@ -505,7 +505,7 @@ namespace PadForge.Services
             var defaultTuning = new PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuning
             {
                 SensH = 1f, SensV = 1f, OutputCurve = "Linear",
-                ApplyToPassthrough = true,
+                ApplyToPassthrough = false,
             };
             PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuningProvider = (deviceGuid, slotIndex) =>
             {
@@ -549,7 +549,7 @@ namespace PadForge.Services
                     AimEngageDescriptor = ps.GyroAimEngageButton ?? "",
                     InvertPitch = TryParseBoolPs(ps.GyroInvertPitch, false),
                     InvertYawRoll = TryParseBoolPs(ps.GyroInvertYawRoll, false),
-                    ApplyToPassthrough = TryParseBoolPs(ps.GyroApplyTuningToPassthrough, true),
+                    ApplyToPassthrough = TryParseBoolPs(ps.GyroApplyTuningToPassthrough, false),
                 };
             };
 

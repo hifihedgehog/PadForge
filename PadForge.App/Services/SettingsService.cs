@@ -1764,7 +1764,7 @@ namespace PadForge.Services
                 padVm.GyroAimEngageMode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
                 padVm.GyroInvertPitch = ps.GyroInvertPitch == "1";
                 padVm.GyroInvertYawRoll = ps.GyroInvertYawRoll == "1";
-                padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough != "0";
+                padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough == "1";
 
                 // Load audio bass rumble settings.
                 padVm.AudioRumbleEnabled = ps.AudioRumbleEnabled == "1";

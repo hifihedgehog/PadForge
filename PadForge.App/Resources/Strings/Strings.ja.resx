@@ -1504,12 +1504,6 @@
   <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>三角形</value></data>
   <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Z 字</value></data>
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>チェックマーク</value></data>
-  <data name="Settings_TouchpadGestures" xml:space="preserve"><value>タッチパッドジェスチャー</value></data>
-  <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>PadForge が読み取れるすべてのタッチパッドでスワイプ、タップ、ピンチ、カスタムシェイプを認識します。タッチパッドごとの設定は各パッドのタッチパッドタブにあります。ここではグローバルのマスタースイッチと一時停止ホットキーの割り当てを設定します。</value></data>
-  <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>タッチパッドジェスチャーを全体で有効にする</value></data>
-  <data name="Settings_EnableTouchpadGesturesTooltip" xml:space="preserve"><value>マスタースイッチです。オフの場合、タッチパッドごとの有効化トグルに関わらず、どのタッチパッドもジェスチャーディスクリプタを発火しません。タッチパッドの指 / クリック / 位置のマッピングはそのまま動作します。</value></data>
-  <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>一時停止ホットキー</value></data>
-  <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>ジェスチャー検出のオン / オフを切り替えるキーボード組み合わせ (例: Ctrl+Alt+T)。ゲームが生のタッチパッド入力を必要とする場合や、意図せず発火したジェスチャーがプレイを妨げる場合に便利です。空欄でホットキー未割り当て。</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>タッチパッド</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>タッチパッド</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>タッチパッドごとの入力。ジェスチャー（スワイプ、タップ、ピンチ、シェイプ）と連続出力モード（仮想スティック / 方向キー、マウス）がマッピングソースになり、マッピングタブで割り当てられます。</value></data>

@@ -1504,12 +1504,6 @@
   <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>Triangle</value></data>
   <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Forme en Z</value></data>
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>Coche</value></data>
-  <data name="Settings_TouchpadGestures" xml:space="preserve"><value>Gestes pavé tactile</value></data>
-  <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>Reconnaît balayages, tapes, pincements et formes personnalisées sur chaque pavé tactile que PadForge peut lire. Les réglages par pavé tactile se trouvent sur l'onglet pavé tactile de chaque manette. Les commandes ci-dessous couvrent l'interrupteur global et le raccourci de suspension.</value></data>
-  <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>Activer les gestes pavé tactile globalement</value></data>
-  <data name="Settings_EnableTouchpadGesturesTooltip" xml:space="preserve"><value>Interrupteur principal. Désactivé, aucun pavé tactile ne déclenche de descripteurs de geste, quels que soient les commutateurs par pavé tactile. Les affectations doigt / clic / position existantes continuent de fonctionner.</value></data>
-  <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>Raccourci de suspension</value></data>
-  <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>Combinaison de touches (par ex. Ctrl+Alt+T) qui active ou désactive la détection des gestes. Utile quand un jeu attend l'entrée brute du pavé tactile ou quand des déclenchements accidentels perturbent la partie. Vide = aucun raccourci.</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Pavé tactile</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Pavé tactile</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Entrée par pavé tactile. Les gestes (glissé, tap, pincement, formes) et les modes de sortie continus (stick virtuel / croix directionnelle, souris) deviennent des sources de mappage à lier dans l'onglet Mappages.</value></data>

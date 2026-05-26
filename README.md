@@ -92,7 +92,7 @@ Two sim racers on two wheels at once. A flight stick plus throttle plus rudder p
 
 ### Gyro into Cemu, Dolphin, Yuzu, and Ryujinx.
 
-The built-in DSU / Cemuhook server broadcasts gyroscope and accelerometer on UDP port 26760 so emulators can use real motion for Splatoon, Wii titles, 3DS games, and anything else that asks for it. DualSense, DualShock 4, Switch Pro, and the new 2026 Steam Controller sources all work out of the box.
+The built-in DSU / Cemuhook server broadcasts gyroscope and accelerometer on UDP port 26760 so emulators can use real motion for Splatoon, Wii titles, 3DS games, and anything else that asks for it. DualSense, DualShock 4, Switch Pro, and 2026 Steam Controller sources all work out of the box.
 
 ![Dashboard Motion Server section with port and enable toggle](screenshots/dashboard.jpg)
 

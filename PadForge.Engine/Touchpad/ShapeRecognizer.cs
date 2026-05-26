@@ -247,17 +247,59 @@ namespace PadForge.Engine.Touchpad
             return sum;
         }
 
+        /// <summary>Bounding-box aspect ratio
+        /// (larger-dimension / smaller-dimension) of a normalized
+        /// point cloud. A small epsilon on the denominator caps the
+        /// ratio for degenerate (collinear) clouds — a horizontal
+        /// line whose bounding box has zero height returns a large
+        /// but finite number instead of infinity.</summary>
+        private static float AspectRatio(Vector2[] cloud)
+        {
+            if (cloud == null || cloud.Length == 0) return 1f;
+            float minX = float.MaxValue, maxX = float.MinValue;
+            float minY = float.MaxValue, maxY = float.MinValue;
+            for (int i = 0; i < cloud.Length; i++)
+            {
+                if (cloud[i].X < minX) minX = cloud[i].X;
+                if (cloud[i].X > maxX) maxX = cloud[i].X;
+                if (cloud[i].Y < minY) minY = cloud[i].Y;
+                if (cloud[i].Y > maxY) maxY = cloud[i].Y;
+            }
+            float w = maxX - minX;
+            float h = maxY - minY;
+            float big = MathF.Max(w, h);
+            float small = MathF.Min(w, h);
+            const float Eps = 0.01f;
+            return big / (small + Eps);
+        }
+
+        /// <summary>Aspect-ratio threshold above which a normalized
+        /// cloud is treated as "line-like" — one bounding-box
+        /// dimension vanishes against the other. A horizontal or
+        /// vertical line is the canonical line-like cloud; an M /
+        /// Z / Square / Circle / Triangle template lands well under
+        /// this. Line-like candidates only match line-like templates
+        /// (and vice versa), which kills the "horizontal-line input
+        /// passes the recognizer on a custom M template" false
+        /// positive — any point-cloud matcher with position-weighted
+        /// distance is vulnerable to this because clustered early-
+        /// candidate matches dominate the weighted sum and the late
+        /// large distances fade out under the cyclic weight.</summary>
+        private const float LineLikeAspectGate = 5f;
+
         /// <summary>Matches <paramref name="candidate"/> against the
         /// catalog of <paramref name="templates"/>. Returns the
         /// best-matching template's name (or null when no template is
         /// under threshold). Filters the catalog to entries whose
         /// FingerCount matches <paramref name="fingerCount"/> — multi-
-        /// finger gestures only match same-finger-count templates.
-        /// Two cyclic starts (0 and n/2) reduce starting-point bias;
-        /// the paper recommends an ε-greedy sweep of more starts on
-        /// noisy gesture corpora, but two starts already gives stable
-        /// matches at PadForge's resample count without measurable
-        /// per-match cost.</summary>
+        /// finger gestures only match same-finger-count templates —
+        /// and rejects line-like candidates against 2D templates (and
+        /// vice versa) via <see cref="LineLikeAspectGate"/> before
+        /// running the distance pass. Two cyclic starts (0 and n/2)
+        /// reduce starting-point bias; the paper recommends an
+        /// ε-greedy sweep of more starts on noisy gesture corpora,
+        /// but two starts already gives stable matches at PadForge's
+        /// resample count without measurable per-match cost.</summary>
         public static string Match(Vector2[] candidate,
             IReadOnlyList<ShapeTemplate> templates,
             int fingerCount, float threshold, out float bestScore)
@@ -266,6 +308,8 @@ namespace PadForge.Engine.Touchpad
             string bestName = null;
             if (templates == null) return null;
             int half = candidate != null ? candidate.Length / 2 : 0;
+            float candidateAspect = AspectRatio(candidate);
+            bool candidateLineLike = candidateAspect > LineLikeAspectGate;
             for (int t = 0; t < templates.Count; t++)
             {
                 var tpl = templates[t];
@@ -273,6 +317,8 @@ namespace PadForge.Engine.Touchpad
                 if (!tpl.Enabled) continue;
                 if (tpl.PointCloud == null || tpl.PointCloud.Length != candidate.Length) continue;
                 if (tpl.LookupTable == null) continue;
+                bool templateLineLike = AspectRatio(tpl.PointCloud) > LineLikeAspectGate;
+                if (candidateLineLike != templateLineLike) continue;
                 float effThreshold = tpl.ThresholdOverride > 0f
                     ? tpl.ThresholdOverride : threshold;
                 float d0 = CloudDistance(candidate, tpl, 0);

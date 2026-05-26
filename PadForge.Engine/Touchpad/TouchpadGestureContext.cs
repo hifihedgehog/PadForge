@@ -19,9 +19,6 @@ namespace PadForge.Engine.Touchpad
         /// <summary>Post-gesture quiet period to prevent bounce-fire.
         /// <see cref="TouchpadGestureSettings.CooldownMs"/>.</summary>
         Cooldown,
-        /// <summary>Global suspend hotkey active; no detection runs on
-        /// any touchpad until released.</summary>
-        Suspended,
     }
 
     /// <summary>

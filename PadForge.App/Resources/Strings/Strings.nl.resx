@@ -1524,12 +1524,6 @@
   <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>Driehoek</value></data>
   <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Z-vorm</value></data>
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>Vinkje</value></data>
-  <data name="Settings_TouchpadGestures" xml:space="preserve"><value>Touchpad-gebaren</value></data>
-  <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>Herkent veegbewegingen, tikken, knijpgebaren en aangepaste vormen op elk touchpad dat PadForge kan uitlezen. Instellingen per touchpad staan op het Touchpad-tabblad van elke pad. De besturingselementen hieronder bevatten de algemene hoofdschakelaar en de koppeling voor de pauze-sneltoets.</value></data>
-  <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>Touchpad-gebaren globaal inschakelen</value></data>
-  <data name="Settings_EnableTouchpadGesturesTooltip" xml:space="preserve"><value>Hoofdschakelaar. Bij uitschakeling activeert geen enkel touchpad gebaardescriptoren, ongeacht de inschakelschakelaars per touchpad. Bestaande vinger-, klik- en positietoewijzingen op touchpads blijven werken.</value></data>
-  <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>Pauze-sneltoets</value></data>
-  <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>Toetsencombinatie (bijv. Ctrl+Alt+T) die gebaarherkenning in- en uitschakelt. Handig wanneer een game ruwe touchpad-invoer verwacht of wanneer per ongeluk uitgevoerde gebaren het spel onderbreken. Leeg = geen sneltoets gekoppeld.</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Invoer per touchpad. Gebaren (vegen, tikken, knijpen, vormen) en continue uitvoermodi (virtuele stick / D-pad, muis) worden mapping-bronnen die je op het tabblad Mappings kunt binden.</value></data>

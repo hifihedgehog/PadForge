@@ -1504,12 +1504,6 @@
   <data name="Mapping_TouchpadGesture_Triangle" xml:space="preserve"><value>Triángulo</value></data>
   <data name="Mapping_TouchpadGesture_Z" xml:space="preserve"><value>Forma Z</value></data>
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>Marca de verificación</value></data>
-  <data name="Settings_TouchpadGestures" xml:space="preserve"><value>Gestos del touchpad</value></data>
-  <data name="Settings_TouchpadGesturesDesc" xml:space="preserve"><value>Reconoce deslizamientos, toques, pellizcos y formas personalizadas en todos los touchpads que PadForge puede leer. Los ajustes por touchpad están en la pestaña Touchpad de cada mando. Los controles de abajo cubren el interruptor principal global y la combinación rápida para suspender.</value></data>
-  <data name="Settings_EnableTouchpadGestures" xml:space="preserve"><value>Activar gestos del touchpad globalmente</value></data>
-  <data name="Settings_EnableTouchpadGesturesTooltip" xml:space="preserve"><value>Interruptor principal. Cuando está desactivado, ningún touchpad emite descriptores de gestos, independientemente de los conmutadores de activación por touchpad. Las asignaciones existentes de dedo / clic / posición en los touchpads siguen funcionando.</value></data>
-  <data name="Settings_TouchpadGestureSuspendHotkey" xml:space="preserve"><value>Combinación rápida para suspender</value></data>
-  <data name="Settings_TouchpadGestureSuspendHotkeyTooltip" xml:space="preserve"><value>Combinación de teclado (p. ej. Ctrl+Alt+T) que activa y desactiva la detección de gestos. Útil cuando un juego espera la entrada en bruto del touchpad o cuando disparos accidentales de gestos interrumpen la partida. Vacío = sin combinación asignada.</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Entrada por touchpad. Los gestos (deslizar, tocar, pellizcar, formas) y los modos de salida continuos (palanca virtual / cruceta, ratón) se convierten en fuentes de mapeo que puedes vincular en la pestaña Mapeos.</value></data>

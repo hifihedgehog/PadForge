@@ -91,7 +91,6 @@ namespace PadForge.Engine.Touchpad
             // mapping evaluator that happened to sample the exact
             // tick. Clear here only when the cooldown window closes,
             // not unconditionally at the top of each Update.
-            if (ctx.State == GestureState.Suspended) return;
 
             // Path tracking has to happen whenever EITHER gesture
             // recognition OR joystick output is enabled — the joystick

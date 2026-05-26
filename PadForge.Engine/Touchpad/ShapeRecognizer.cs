@@ -9,38 +9,43 @@ namespace PadForge.Engine.Touchpad
     /// Implements $Q (Vatavu, Anthony, Wobbrock,
     /// <i>"$Q: A Super-Quick, Articulation-Invariant Stroke-Gesture
     /// Recognizer for Low-Resource Devices"</i>, MobileHCI 2018).
-    /// Original C# implementation; public-domain algorithm.
+    /// Faithful port of the BSD-licensed canonical JavaScript reference
+    /// implementation at depts.washington.edu/acelab/proj/dollar/qdollar.js
+    /// (Nathan Magrofuoco / Vatavu / Anthony / Wobbrock, 2018-2019).
     ///
     /// <para>The recognizer is scale / position / rotation invariant by
-    /// construction (resample → centroid-translate → scale-uniform).
-    /// Multi-finger gestures are supported by concatenating each
-    /// finger's normalized path into a single cloud — finger
-    /// correspondence is not tracked, which matches user expectation
-    /// that "I drew this with two fingers" should match regardless of
-    /// which finger drew which stroke.</para>
+    /// construction (resample → scale-to-largest-dimension → translate
+    /// centroid to origin). Multi-finger gestures are supported by
+    /// concatenating each finger's normalized path into a single cloud —
+    /// finger correspondence is not tracked, which matches user
+    /// expectation that "I drew this with two fingers" should match
+    /// regardless of which finger drew which stroke.</para>
     ///
-    /// <para>$Q vs $P: same gesture model (unordered point cloud,
-    /// multi-stroke as one cloud) but the inner "nearest template
-    /// point" lookup is O(1) via a pre-computed
-    /// <see cref="ShapeTemplate.LookupTable"/> instead of $P's linear
-    /// scan over template points. Matching cost drops from O(N²) to
-    /// O(N) per template. The trade-off is ~8 KB of LUT memory per
-    /// template at the reference grid size, which is negligible at
-    /// PadForge's catalog scale.</para>
+    /// <para>$Q vs $P: same gesture model and same per-template
+    /// matched[]-tracked inner loop in CloudDistance (each template
+    /// point can only be matched to one candidate point — this is what
+    /// prevents a degenerate candidate from latching all its points
+    /// onto a few template points and falsely matching). The speedup
+    /// comes from the per-template lookup table feeding ComputeLowerBound:
+    /// for each candidate starting-position, an LUT-derived lower bound
+    /// on the cloud distance is precomputed, and any starting position
+    /// whose lower bound exceeds the best-so-far is skipped before
+    /// CloudDistance ever runs. Matching cost drops from O(N²) on every
+    /// start to O(N²) on a pruned subset of starts — paper reports
+    /// ~142× speedup on low-resource hardware; on a desktop CPU at
+    /// PadForge's template count the win is measured in microseconds.</para>
     ///
     /// <para>Tuning:</para>
     /// <list type="bullet">
-    /// <item><b>N</b> (resample count): 32 by default. Larger = more
-    /// accurate but slower template-load + match cost; the $P / $Q
+    /// <item><b>N</b> (resample count): 32 by default. The $P / $Q
     /// papers both cite 32 as the sweet spot for typical UI gestures.</item>
-    /// <item><b>LUT size</b>: 64×64 cells across the normalized
-    /// <c>[-1, +1]</c> indexing range. Each cell is 0.03125 wide.
-    /// Finer LUTs add memory and template-load cost without measurable
-    /// accuracy gain.</item>
-    /// <item><b>Threshold</b>: 3.0 by default. Lower = stricter
-    /// (fewer false-positives); higher = looser (more matches). Tune
-    /// per-template via <see cref="ShapeTemplate.ThresholdOverride"/>
-    /// if a specific gesture needs different sensitivity.</item>
+    /// <item><b>LUT size</b>: 64×64 cells. Memory per template ≈ 8 KB.</item>
+    /// <item><b>Threshold</b>: 3.0 by default. Lower = stricter. The
+    /// canonical $Q sum is roughly
+    /// <c>Σᵢ weightᵢ · ‖candidateᵢ − templateπ(i)‖²</c> with weights
+    /// <c>N, N-1, …, 1</c>; for clouds normalized to
+    /// <c>[−0.5, +0.5]²</c> the score ranges from <c>~0.05</c> on a
+    /// near-perfect match to <c>~10+</c> on dissimilar shapes.</item>
     /// </list>
     /// </summary>
     public static class ShapeRecognizer
@@ -51,18 +56,31 @@ namespace PadForge.Engine.Touchpad
         public const int DefaultResampleCount = 32;
 
         /// <summary>Default edge count of the per-template lookup grid.
-        /// 64 follows the $Q paper's reference. Memory per template
-        /// at this size is 64 × 64 × 2 bytes = 8 KB.</summary>
+        /// 64 follows the $Q paper's reference implementation. Memory
+        /// per template at this size is 64 × 64 × 2 bytes = 8 KB.</summary>
         public const int DefaultLookupTableSize = 64;
 
-        // Half-width of the normalized-cloud indexing range. The
-        // recognizer scales clouds so the combined bounding-box
-        // diagonal is 1; points therefore land roughly inside
-        // [-0.5/√2, +0.5/√2] (≈ ±0.35) for shapes whose bounding box
-        // is square. The LUT covers a generous [-1, +1] range with
-        // clamping so points falling outside the typical band still
-        // land in a sensible grid cell.
-        private const float NormalizedHalfRange = 1.0f;
+        // Integer-coordinate range used by the LUT scaling factor —
+        // matches the canonical JS reference's MaxIntCoord = 1024.
+        // Points are mapped to integer space [0, MaxIntCoord-1] before
+        // being divided by LUTScaleFactor to land in [0, LUTSize-1].
+        private const int MaxIntCoord = 1024;
+        private const float LutScaleFactor = MaxIntCoord / (float)DefaultLookupTableSize;
+
+        // ─────────────────────────────────────────────────────────
+        //  Normalization pipeline (matches the canonical JS reference)
+        //
+        //  1. Resample to N points by arc length.
+        //  2. Scale so larger of (width, height) becomes 1 (uniform
+        //     scale, preserves aspect ratio).
+        //  3. Translate centroid to origin.
+        //
+        //  After step 3, the larger bounding-box dimension spans
+        //  [-0.5, +0.5] and the smaller spans the same range scaled
+        //  by aspect. A perfectly horizontal line ends up at Y ≈ 0
+        //  across X ∈ [-0.5, +0.5]; a perfectly square shape ends
+        //  up filling [-0.5, +0.5]² evenly.
+        // ─────────────────────────────────────────────────────────
 
         /// <summary>Resamples <paramref name="raw"/> to exactly
         /// <paramref name="n"/> points spaced equally along the path
@@ -109,50 +127,54 @@ namespace PadForge.Engine.Touchpad
                 }
                 distSoFar += segLen;
             }
-            // Floating-point drift can leave the last slot unset.
             for (int i = outIdx; i < n; i++)
                 output[i] = raw[raw.Count - 1];
             return output;
         }
 
-        /// <summary>Translates the centroid of the point set to the
-        /// origin, then scales uniformly so the bounding-box diagonal
-        /// equals 1. The order-preserving normalization keeps the
-        /// numeric range compatible with the legacy $P threshold
-        /// scale, so user-tuned threshold values transfer across the
-        /// $P → $Q migration without re-tuning.</summary>
+        /// <summary>Normalizes a resampled cloud per the canonical $Q
+        /// pipeline: scale so the larger of the bounding-box dimensions
+        /// becomes 1 (uniform scale, aspect-ratio preserving), then
+        /// translate the centroid to origin. Points land roughly in
+        /// <c>[-0.5, +0.5]²</c> for square shapes; a horizontal line
+        /// lands at <c>Y ≈ 0, X ∈ [-0.5, +0.5]</c>.</summary>
         public static Vector2[] NormalizeCloud(Vector2[] pts)
         {
             if (pts == null || pts.Length == 0) return new Vector2[0];
-            float cx = 0, cy = 0;
-            for (int i = 0; i < pts.Length; i++) { cx += pts[i].X; cy += pts[i].Y; }
-            cx /= pts.Length; cy /= pts.Length;
 
             float minX = float.MaxValue, maxX = float.MinValue;
             float minY = float.MaxValue, maxY = float.MinValue;
-            var centered = new Vector2[pts.Length];
             for (int i = 0; i < pts.Length; i++)
             {
-                var p = new Vector2(pts[i].X - cx, pts[i].Y - cy);
-                centered[i] = p;
-                if (p.X < minX) minX = p.X;
-                if (p.X > maxX) maxX = p.X;
-                if (p.Y < minY) minY = p.Y;
-                if (p.Y > maxY) maxY = p.Y;
+                if (pts[i].X < minX) minX = pts[i].X;
+                if (pts[i].X > maxX) maxX = pts[i].X;
+                if (pts[i].Y < minY) minY = pts[i].Y;
+                if (pts[i].Y > maxY) maxY = pts[i].Y;
             }
-            float diag = MathF.Sqrt((maxX - minX) * (maxX - minX) + (maxY - minY) * (maxY - minY));
-            if (diag <= 0f) return centered;
+            float size = MathF.Max(maxX - minX, maxY - minY);
+            if (size <= 0f) return new Vector2[pts.Length];
+
+            // Scale to [0, 1] in the larger dimension, then translate
+            // centroid to origin so subsequent matching is centered.
+            var scaled = new Vector2[pts.Length];
+            float cx = 0f, cy = 0f;
+            for (int i = 0; i < pts.Length; i++)
+            {
+                float qx = (pts[i].X - minX) / size;
+                float qy = (pts[i].Y - minY) / size;
+                scaled[i] = new Vector2(qx, qy);
+                cx += qx; cy += qy;
+            }
+            cx /= pts.Length; cy /= pts.Length;
             var output = new Vector2[pts.Length];
             for (int i = 0; i < pts.Length; i++)
-                output[i] = centered[i] / diag;
+                output[i] = new Vector2(scaled[i].X - cx, scaled[i].Y - cy);
             return output;
         }
 
         /// <summary>Builds the multi-finger point cloud for matching:
         /// resamples each finger's path to <paramref name="perFinger"/>
-        /// points, then concatenates the resampled clouds and normalizes
-        /// the combined cloud. Total cloud size =
-        /// <c>fingerCount × perFinger</c>.</summary>
+        /// points, concatenates, then normalizes the combined cloud.</summary>
         public static Vector2[] BuildCloud(IReadOnlyList<IReadOnlyList<Vector2>> fingers, int perFinger)
         {
             if (fingers == null || fingers.Count == 0) return new Vector2[0];
@@ -168,60 +190,193 @@ namespace PadForge.Engine.Touchpad
             return NormalizeCloud(combined);
         }
 
+        // ─────────────────────────────────────────────────────────
+        //  Lookup table (canonical $Q)
+        //
+        //  For each cell (gx, gy) of a LutSize × LutSize grid covering
+        //  the integer coordinate range [0, MaxIntCoord-1], store the
+        //  index of the template point whose own integer coords map
+        //  to the closest grid cell. Used by ComputeLowerBound to
+        //  estimate "how close could the candidate be to the template
+        //  at this starting position?" in O(N) per start, so
+        //  CloudMatch can skip starting positions whose lower bound
+        //  already exceeds the best-so-far distance.
+        // ─────────────────────────────────────────────────────────
+
         /// <summary>Builds the $Q lookup table for a normalized template
-        /// cloud. Each cell in a <paramref name="lutSize"/> ×
-        /// <paramref name="lutSize"/> grid spanning the
-        /// <c>[-NormalizedHalfRange, +NormalizedHalfRange]</c> indexing
-        /// range stores the index (into <paramref name="template"/>) of
-        /// the template point nearest the cell's center. Storage is
-        /// ushort so the table fits cloud sizes up to 65535 points;
-        /// PadForge's worst case is 5 fingers × 32 = 160 points, well
-        /// within the limit.</summary>
-        public static ushort[] BuildLookupTable(Vector2[] template,
+        /// cloud. Each grid cell stores the index of the cloud point
+        /// whose integer-grid coordinate is closest to that cell. Used
+        /// solely by <see cref="ComputeLowerBound"/> for the cloud-
+        /// match pruning pass.</summary>
+        public static ushort[] BuildLookupTable(Vector2[] cloud,
             int lutSize = DefaultLookupTableSize)
         {
-            if (template == null || template.Length == 0 || lutSize <= 0)
+            if (cloud == null || cloud.Length == 0 || lutSize <= 0)
                 return new ushort[0];
-            var lut = new ushort[lutSize * lutSize];
-            float cellW = (2f * NormalizedHalfRange) / lutSize;
-            for (int gy = 0; gy < lutSize; gy++)
+
+            // Pre-compute every cloud point's grid coordinate so the
+            // per-cell loop doesn't redo the arithmetic.
+            var gx = new int[cloud.Length];
+            var gy = new int[cloud.Length];
+            for (int i = 0; i < cloud.Length; i++)
             {
-                float py = -NormalizedHalfRange + (gy + 0.5f) * cellW;
-                for (int gx = 0; gx < lutSize; gx++)
+                gx[i] = (int)MathF.Round(((cloud[i].X + 1f) * 0.5f * (MaxIntCoord - 1)) / LutScaleFactor);
+                gy[i] = (int)MathF.Round(((cloud[i].Y + 1f) * 0.5f * (MaxIntCoord - 1)) / LutScaleFactor);
+                if (gx[i] < 0) gx[i] = 0; else if (gx[i] >= lutSize) gx[i] = lutSize - 1;
+                if (gy[i] < 0) gy[i] = 0; else if (gy[i] >= lutSize) gy[i] = lutSize - 1;
+            }
+
+            var lut = new ushort[lutSize * lutSize];
+            for (int x = 0; x < lutSize; x++)
+            {
+                for (int y = 0; y < lutSize; y++)
                 {
-                    float px = -NormalizedHalfRange + (gx + 0.5f) * cellW;
-                    ushort bestIdx = 0;
-                    float bestDist = float.MaxValue;
-                    for (int t = 0; t < template.Length; t++)
+                    int best = 0;
+                    int bestSq = int.MaxValue;
+                    for (int i = 0; i < cloud.Length; i++)
                     {
-                        float dx = template[t].X - px;
-                        float dy = template[t].Y - py;
-                        float d = dx * dx + dy * dy;
-                        if (d < bestDist) { bestDist = d; bestIdx = (ushort)t; }
+                        int dx = gx[i] - x;
+                        int dy = gy[i] - y;
+                        int d = dx * dx + dy * dy;
+                        if (d < bestSq) { bestSq = d; best = i; }
                     }
-                    lut[gy * lutSize + gx] = bestIdx;
+                    lut[x * lutSize + y] = (ushort)best;
                 }
             }
             return lut;
         }
 
-        /// <summary>Computes the symmetric $Q "Goodness-of-Match"
-        /// distance between <paramref name="candidate"/> and
-        /// <paramref name="template"/>'s cloud + LUT. Forward pass:
-        /// for each candidate point, the LUT answers "nearest template
-        /// point index" in O(1); accumulated with $P-style position
-        /// weighting. Backward pass: for each template point, a linear
-        /// scan finds the nearest candidate point; accumulated the
-        /// same way. Returns the max of the two — symmetric distance
-        /// catches the failure mode of single-direction matchers where
-        /// a degenerate candidate (horizontal line) latches all its
-        /// points onto a few template points and scores low forward,
-        /// but the template's unmatched-by-anyone points produce a
-        /// large backward sum. Cyclic start at <paramref name="start"/>
-        /// applies only to the forward pass; the backward pass walks
-        /// template indices 0..n-1 with its own position weighting.</summary>
-        public static float CloudDistance(Vector2[] candidate,
-            ShapeTemplate template, int start)
+        // ─────────────────────────────────────────────────────────
+        //  CloudDistance — canonical $Q inner loop
+        //
+        //  Same shape as $P's: walk candidate points starting at
+        //  `start`, greedily match each to the nearest unmatched
+        //  template point, accumulate weight·d² with weights running
+        //  from n down to 1. The matched[] array (here: unmatched
+        //  index list) is what prevents a degenerate candidate from
+        //  latching all its points onto a few template points — drop
+        //  this and the recognizer false-positives on line-vs-2D-shape.
+        //
+        //  Early termination via `minSoFar`: as soon as the running
+        //  sum exceeds the best distance seen across other starts /
+        //  directions / templates, return early. The LUT-derived
+        //  lower bounds in CloudMatch make most starts terminate
+        //  during this loop.
+        // ─────────────────────────────────────────────────────────
+
+        /// <summary>$Q cloud-distance: weighted greedy-nearest-unmatched
+        /// match starting at <paramref name="start"/>. Returns the
+        /// accumulated weight·distance² sum, with early abandonment
+        /// at <paramref name="minSoFar"/>.</summary>
+        public static float CloudDistance(Vector2[] pts1, Vector2[] pts2,
+            int start, float minSoFar)
+        {
+            int n = pts1.Length;
+            if (n == 0 || pts2 == null || pts2.Length != n) return float.MaxValue;
+
+            // Working list of unmatched indices into pts2.
+            var unmatched = new int[n];
+            for (int j = 0; j < n; j++) unmatched[j] = j;
+            int remaining = n;
+
+            int i = start;
+            int weight = n;
+            float sum = 0f;
+            do
+            {
+                int bestSlot = -1;
+                float bestD = float.MaxValue;
+                for (int k = 0; k < remaining; k++)
+                {
+                    int idx = unmatched[k];
+                    float dx = pts1[i].X - pts2[idx].X;
+                    float dy = pts1[i].Y - pts2[idx].Y;
+                    float d = dx * dx + dy * dy;
+                    if (d < bestD) { bestD = d; bestSlot = k; }
+                }
+                // Remove the matched template index by swap-with-last
+                // so the next iteration's scan stays tight.
+                unmatched[bestSlot] = unmatched[remaining - 1];
+                remaining--;
+
+                sum += weight * bestD;
+                if (sum >= minSoFar) return sum; // early abandon
+                weight--;
+                i = (i + 1) % n;
+            } while (i != start);
+            return sum;
+        }
+
+        // ─────────────────────────────────────────────────────────
+        //  ComputeLowerBound — LUT-driven pruning
+        //
+        //  For each candidate starting-position (stepped at sqrt(n)),
+        //  compute a lower-bound estimate of CloudDistance using the
+        //  template's LUT. Each lower-bound value is the sum, over
+        //  the candidate points starting from that position, of
+        //  weight·d² where d is the distance from the candidate
+        //  point to the LUT-nearest template point. The LUT lookup
+        //  is O(1) per candidate point, so this whole pass is O(N)
+        //  per template and provides the early-skip signal that
+        //  makes $Q faster than $P.
+        // ─────────────────────────────────────────────────────────
+
+        /// <summary>Computes per-starting-position lower bounds on
+        /// the cloud distance, used by <see cref="CloudMatch"/> to
+        /// skip starting positions that can't possibly improve on
+        /// the best-so-far.</summary>
+        private static float[] ComputeLowerBound(Vector2[] pts1, Vector2[] pts2,
+            int step, ushort[] lut, int lutSize)
+        {
+            int n = pts1.Length;
+            int slots = n / step + 1;
+            var lb = new float[slots];
+            var sat = new float[n]; // summed-area table of LUT-nearest squared distances
+
+            // Pre-compute SAT and lb[0]: a full pass at start=0.
+            lb[0] = 0f;
+            for (int i = 0; i < n; i++)
+            {
+                int gx = (int)MathF.Round(((pts1[i].X + 1f) * 0.5f * (MaxIntCoord - 1)) / LutScaleFactor);
+                int gy = (int)MathF.Round(((pts1[i].Y + 1f) * 0.5f * (MaxIntCoord - 1)) / LutScaleFactor);
+                if (gx < 0) gx = 0; else if (gx >= lutSize) gx = lutSize - 1;
+                if (gy < 0) gy = 0; else if (gy >= lutSize) gy = lutSize - 1;
+                int idx = lut[gx * lutSize + gy];
+                float dx = pts1[i].X - pts2[idx].X;
+                float dy = pts1[i].Y - pts2[idx].Y;
+                float d = dx * dx + dy * dy;
+                sat[i] = (i == 0) ? d : sat[i - 1] + d;
+                lb[0] += (n - i) * d;
+            }
+
+            // lb[j] for j = step, 2*step, ... — closed-form derivation
+            // from the canonical reference: the weighted sum from a
+            // shifted starting position equals lb[0] + i*sat[n-1] - n*sat[i-1].
+            int slot = 1;
+            for (int i = step; i < n; i += step, slot++)
+                lb[slot] = lb[0] + i * sat[n - 1] - n * sat[i - 1];
+
+            return lb;
+        }
+
+        // ─────────────────────────────────────────────────────────
+        //  CloudMatch — public per-template match entry point
+        //
+        //  Tries cyclic starting positions stepped at sqrt(n), in
+        //  BOTH directions (candidate→template and template→candidate),
+        //  returns the minimum distance. The matched[]-tracked
+        //  CloudDistance plus the LUT-driven lower-bound pruning is
+        //  what produces the canonical $Q's correct behavior on the
+        //  full corpus AND its speed.
+        // ─────────────────────────────────────────────────────────
+
+        /// <summary>Matches the candidate against one template's
+        /// cloud + LUT pair. Returns the best (lowest) cloud distance
+        /// found across the cyclic-start sweep in either direction.
+        /// The candidate's own LUT (for the reverse-direction lower
+        /// bound) is computed inline.</summary>
+        public static float CloudMatch(Vector2[] candidate,
+            ShapeTemplate template, float minSoFar)
         {
             if (candidate == null || template == null) return float.MaxValue;
             if (template.PointCloud == null || template.LookupTable == null) return float.MaxValue;
@@ -232,73 +387,60 @@ namespace PadForge.Engine.Touchpad
             if (lutSize <= 0 || template.LookupTable.Length != lutSize * lutSize)
                 return float.MaxValue;
 
-            // Forward: LUT-driven, O(N)
-            float cellScale = lutSize / (2f * NormalizedHalfRange);
-            float forwardSum = 0f;
-            int i = start;
-            do
-            {
-                float fx = (candidate[i].X + NormalizedHalfRange) * cellScale;
-                float fy = (candidate[i].Y + NormalizedHalfRange) * cellScale;
-                int cellX = (int)fx;
-                int cellY = (int)fy;
-                if (cellX < 0) cellX = 0; else if (cellX >= lutSize) cellX = lutSize - 1;
-                if (cellY < 0) cellY = 0; else if (cellY >= lutSize) cellY = lutSize - 1;
-                int tIdx = template.LookupTable[cellY * lutSize + cellX];
-                float dx = candidate[i].X - template.PointCloud[tIdx].X;
-                float dy = candidate[i].Y - template.PointCloud[tIdx].Y;
-                float weight = 1f - ((i - start + n) % n) / (float)n;
-                forwardSum += MathF.Sqrt(dx * dx + dy * dy) * weight;
-                i = (i + 1) % n;
-            } while (i != start);
+            int step = (int)MathF.Floor(MathF.Sqrt(n));
+            if (step < 1) step = 1;
 
-            // Backward: brute-force, O(N*N). N is bounded by 5 fingers
-            // x 32 = 160; the worst-case 25600-op pass measures in
-            // microseconds. Cheap relative to the value of catching
-            // line-vs-2D false positives.
-            var pc = template.PointCloud;
-            float backwardSum = 0f;
-            for (int j = 0; j < n; j++)
+            // Build the candidate's transient LUT for the reverse-
+            // direction lower bound. Cheap relative to the matching
+            // pass it gates.
+            var candLut = BuildLookupTable(candidate, lutSize);
+
+            var lb1 = ComputeLowerBound(candidate, template.PointCloud, step,
+                template.LookupTable, lutSize);
+            var lb2 = ComputeLowerBound(template.PointCloud, candidate, step,
+                candLut, lutSize);
+
+            float best = minSoFar;
+            int j = 0;
+            for (int i = 0; i < n; i += step, j++)
             {
-                float bestSq = float.MaxValue;
-                float tx = pc[j].X;
-                float ty = pc[j].Y;
-                for (int k = 0; k < n; k++)
+                if (lb1[j] < best)
                 {
-                    float dx = candidate[k].X - tx;
-                    float dy = candidate[k].Y - ty;
-                    float dsq = dx * dx + dy * dy;
-                    if (dsq < bestSq) bestSq = dsq;
+                    float d1 = CloudDistance(candidate, template.PointCloud, i, best);
+                    if (d1 < best) best = d1;
                 }
-                float weight = 1f - j / (float)n;
-                backwardSum += MathF.Sqrt(bestSq) * weight;
+                if (lb2[j] < best)
+                {
+                    float d2 = CloudDistance(template.PointCloud, candidate, i, best);
+                    if (d2 < best) best = d2;
+                }
             }
-
-            return MathF.Max(forwardSum, backwardSum);
+            return best;
         }
 
         /// <summary>Matches <paramref name="candidate"/> against the
         /// catalog of <paramref name="templates"/>. Returns the
-        /// best-matching template's name (or null when no template is
-        /// under threshold). Filters the catalog to entries whose
-        /// FingerCount matches <paramref name="fingerCount"/> — multi-
-        /// finger gestures only match same-finger-count templates.
-        /// Two cyclic starts (0 and n/2) reduce starting-point bias;
-        /// the paper recommends an ε-greedy sweep of more starts on
-        /// noisy gesture corpora, but two starts already gives stable
-        /// matches at PadForge's resample count without measurable
-        /// per-match cost. CloudDistance returns the symmetric
-        /// max(forward, backward) so degenerate candidates (e.g. a
-        /// horizontal-swipe trace) can't match 2D templates by
-        /// piling onto a few of the template's points.</summary>
+        /// best-matching template's name (or null when no template's
+        /// distance lands under the threshold). Filters the catalog
+        /// to entries whose FingerCount matches
+        /// <paramref name="fingerCount"/> — multi-finger gestures only
+        /// match same-finger-count templates.</summary>
         public static string Match(Vector2[] candidate,
             IReadOnlyList<ShapeTemplate> templates,
             int fingerCount, float threshold, out float bestScore)
         {
             bestScore = float.MaxValue;
+            if (templates == null || candidate == null || candidate.Length == 0)
+                return null;
+
+            // Track two things separately: the overall minimum
+            // distance (passed as minSoFar to each CloudMatch for
+            // early-abandon pruning), and the lowest threshold-passing
+            // distance (whose template name we return). Per-template
+            // ThresholdOverride means the threshold check has to
+            // happen per template, not at the return site.
             string bestName = null;
-            if (templates == null) return null;
-            int half = candidate != null ? candidate.Length / 2 : 0;
+            float bestValidScore = float.MaxValue;
             for (int t = 0; t < templates.Count; t++)
             {
                 var tpl = templates[t];
@@ -308,13 +450,12 @@ namespace PadForge.Engine.Touchpad
                 if (tpl.LookupTable == null) continue;
                 float effThreshold = tpl.ThresholdOverride > 0f
                     ? tpl.ThresholdOverride : threshold;
-                float d0 = CloudDistance(candidate, tpl, 0);
-                float dh = half > 0 ? CloudDistance(candidate, tpl, half) : d0;
-                float d = MathF.Min(d0, dh);
-                if (d < bestScore)
+                float d = CloudMatch(candidate, tpl, bestScore);
+                if (d < bestScore) bestScore = d;
+                if (d <= effThreshold && d < bestValidScore)
                 {
-                    bestScore = d;
-                    if (d <= effThreshold) bestName = tpl.Name;
+                    bestValidScore = d;
+                    bestName = tpl.Name;
                 }
             }
             return bestName;

@@ -1086,6 +1086,19 @@ namespace PadForge.Engine
                 {
                     var mouse = Marshal.PtrToStructure<RAWMOUSE>(dataPtr);
 
+                    // Skip absolute-mode events. Per the Raw Input
+                    // spec, MOUSE_MOVE_ABSOLUTE (usFlags bit 0) means
+                    // lLastX/lLastY are absolute coordinates in
+                    // 0..65535 over the active region, not relative
+                    // deltas. RDP's virtual mouse, Wacom tablets in
+                    // absolute mode, and some KVMs send these.
+                    // PadForge uses RawInput as a delta source for
+                    // gamepad-mapping aim and scroll; adding a
+                    // 0..65535 jump as a delta produces wild spurious
+                    // motion. Match SDL3 / XInput behaviour and
+                    // ignore these events.
+                    if ((mouse.usFlags & 1) != 0) return;
+
                     MouseDeviceState state = _mouseStates.GetOrAdd(hDevice, _ => new MouseDeviceState());
 
                     if (mouse.lLastX != 0)

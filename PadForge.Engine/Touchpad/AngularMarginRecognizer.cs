@@ -167,12 +167,27 @@ namespace PadForge.Engine.Touchpad
             if (candAngles == null || templates == null || templates.Count == 0)
                 return (null, 0f);
 
+            double candVariance = CircularVariance(candAngles);
+            bool candidateLineLike = candVariance < LineLikeVarianceGate;
+
             string bestName = null;
             float bestScore = 0f;
             foreach (var t in templates)
             {
                 if (t == null || !t.Enabled) continue;
                 if (t.Angles == null || t.Angles.Length != candAngles.Length) continue;
+
+                // Line-like candidates only match line-like templates (and
+                // vice versa). A horizontal-swipe trace has near-zero
+                // circular variance; an M / Z / Square / corner-rich
+                // template has variance well above the gate. Without
+                // this filter, mean-angular-delta for line-vs-M lands
+                // around π/3 → score 0.67 → above DefaultAcceptScore
+                // and the M fires on a swipe. Same idea as the symmetric-
+                // distance backward pass in ShapeRecognizer, applied at
+                // the angular layer this matcher operates on.
+                bool templateLineLike = CircularVariance(t.Angles) < LineLikeVarianceGate;
+                if (candidateLineLike != templateLineLike) continue;
 
                 float s = t.IsClosed
                     ? BestRotationalScore(candAngles, t.Angles)
@@ -195,6 +210,37 @@ namespace PadForge.Engine.Touchpad
             }
             return (bestName, bestScore);
         }
+
+        /// <summary>Circular variance of an angle array in [0, 1].
+        /// 0 = every segment points the same direction (a perfect
+        /// straight-line path); 1 = uniform distribution across the
+        /// full circle. Computed as <c>1 − R</c> where R is the mean
+        /// resultant length (the magnitude of the per-sample unit
+        /// vectors' average). Correctly handles angles wrapping
+        /// across ±π since it operates on (cos, sin) pairs rather
+        /// than raw radians.</summary>
+        private static double CircularVariance(double[] angles)
+        {
+            if (angles == null || angles.Length == 0) return 0;
+            double sumSin = 0, sumCos = 0;
+            for (int i = 0; i < angles.Length; i++)
+            {
+                sumSin += Math.Sin(angles[i]);
+                sumCos += Math.Cos(angles[i]);
+            }
+            double n = angles.Length;
+            double r = Math.Sqrt(sumSin * sumSin + sumCos * sumCos) / n;
+            return 1.0 - r;
+        }
+
+        /// <summary>Circular-variance threshold below which an angle
+        /// signature is treated as line-like (all segments
+        /// approximately the same direction). 0.1 gives a clear gap:
+        /// realistic wobbly swipes land under 0.05; corner-rich
+        /// templates (M / Z / Square / Triangle / Checkmark) land
+        /// above 0.2; circles land near 1.0 (uniform distribution
+        /// of segment directions).</summary>
+        private const double LineLikeVarianceGate = 0.1;
 
         // ─── Internals ──────────────────────────────────────
 

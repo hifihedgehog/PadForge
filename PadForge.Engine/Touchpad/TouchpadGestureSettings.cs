@@ -88,8 +88,15 @@ namespace PadForge.Engine.Touchpad
 
         /// <summary>Maximum motion (normalized pad units) for a
         /// LongPress to fire. Movement past this turns the gesture
-        /// into a swipe candidate instead.</summary>
-        [XmlAttribute] public float LongPressMaxMotion { get; set; } = 0.02f;
+        /// into a swipe candidate instead. 0.05 (5%) accommodates the
+        /// finger drift that naturally accumulates over a 500 ms hold —
+        /// the prior 2% default was tighter than realistic human
+        /// finger jitter and caused long-press to fire unreliably even
+        /// when the user clearly meant a hold (SwipeDistanceThreshold
+        /// defaults to 15%, so 5% stays well clear of the swipe band).
+        /// Tap uses 4% on its shorter 350 ms window for the same
+        /// reason; long-press needs a touch more headroom.</summary>
+        [XmlAttribute] public float LongPressMaxMotion { get; set; } = 0.05f;
 
         // ─── Tier 2: multi-finger ─────────────────────────────────────
 

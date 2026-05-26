@@ -30,6 +30,7 @@ namespace PadForge.Engine
         // HID Usage IDs within Digitizer page
         private const ushort HID_USAGE_CONTACT_COUNT = 0x54;
         private const ushort HID_USAGE_CONTACT_ID = 0x51;
+        private const ushort HID_USAGE_DIGITIZER_TIP_SWITCH = 0x42;
 
         // HID Usage IDs within Generic Desktop page
         private const ushort HID_USAGE_PAGE_GENERIC = 0x01;
@@ -207,6 +208,12 @@ namespace PadForge.Engine
         private static extern uint HidP_GetUsageValue(
             int ReportType, ushort UsagePage, ushort LinkCollection,
             ushort Usage, out uint UsageValue, IntPtr PreparsedData,
+            IntPtr Report, uint ReportLength);
+
+        [DllImport("hid.dll")]
+        private static extern uint HidP_GetUsages(
+            int ReportType, ushort UsagePage, ushort LinkCollection,
+            [Out] ushort[] UsageList, ref uint UsageLength, IntPtr PreparsedData,
             IntPtr Report, uint ReportLength);
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
@@ -685,6 +692,29 @@ namespace PadForge.Engine
             return ranges;
         }
 
+        /// <summary>Reads the tip-switch (button 0x42 on the digitizer
+        /// page) for one per-finger link collection. Returns true when
+        /// the contact is actually touching the surface, false when
+        /// the contact is in the report only to announce a lift, and
+        /// true again as a defensive fallback when the HID call fails
+        /// (preserves legacy "treat report-present as touching"
+        /// behavior on devices that don't expose tip-switch). The
+        /// per-call ushort[8] stack scratch is plenty: a digitizer
+        /// link collection's button page typically holds tip-switch +
+        /// in-range + confidence at most.</summary>
+        private static bool ReadTipSwitch(IntPtr preparsed, IntPtr report,
+            uint reportLength, ushort linkCollection)
+        {
+            var usageList = new ushort[8];
+            uint length = (uint)usageList.Length;
+            uint hr = HidP_GetUsages(HidP_Input, HID_USAGE_PAGE_DIGITIZER,
+                linkCollection, usageList, ref length, preparsed, report, reportLength);
+            if (hr != HIDP_STATUS_SUCCESS) return true;
+            for (uint i = 0; i < length; i++)
+                if (usageList[i] == HID_USAGE_DIGITIZER_TIP_SWITCH) return true;
+            return false;
+        }
+
         private void ParseTouchpadReport(IntPtr hDevice, IntPtr preparsed, IntPtr report, uint reportLength,
             HIDP_VALUE_CAPS[] valueCaps, (int logMinX, int logMaxX, int logMinY, int logMaxY) ranges)
         {
@@ -716,6 +746,19 @@ namespace PadForge.Engine
                     if (HidP_GetUsageValue(HidP_Input, HID_USAGE_PAGE_DIGITIZER, linkCollection,
                             HID_USAGE_CONTACT_ID, out uint contactId, preparsed, report, reportLength)
                         != HIDP_STATUS_SUCCESS)
+                        continue;
+
+                    // Tip-switch is authoritative for "is this finger
+                    // touching right now." Per the PTP spec, when a
+                    // finger lifts, the device sends one final report
+                    // for that contact with tip-switch = 0 and the
+                    // last X/Y position. Without this check, that
+                    // lift-frame entry inflates the apparent contact
+                    // count and the gesture engine sees a finger that
+                    // physically isn't there anymore. On 5-finger
+                    // taps every lift report contributes one phantom
+                    // contact — fingerCount overshoots, no tap fires.
+                    if (!ReadTipSwitch(preparsed, report, reportLength, linkCollection))
                         continue;
 
                     if (HidP_GetUsageValue(HidP_Input, HID_USAGE_PAGE_GENERIC, linkCollection,

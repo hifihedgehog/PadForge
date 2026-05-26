@@ -1632,6 +1632,17 @@ namespace PadForge.Engine.Data
                 dict["__MappingBidirectional"] = JsonSerializer.Serialize(bidirList);
             }
 
+            // v3.3 — per-(device, pad) Touchpad-tab settings (gesture
+            // toggles + thresholds + Stick/D-Pad output + Mouse output).
+            // Without this, Copy / Paste of a slot's settings silently
+            // wipes the target's Touchpad-tab state because CopyFrom calls
+            // DeepCopyTouchpadSettings with a null source, which returns
+            // null and overwrites the target's existing array.
+            if (TouchpadSettings != null && TouchpadSettings.Length > 0)
+            {
+                dict["__TouchpadSettings"] = JsonSerializer.Serialize(TouchpadSettings);
+            }
+
             // Opaque per-slot config snapshots (Lighting / Adaptive Triggers
             // / Mic LED / Player LED / audio-reactive / palette for
             // PlayStation, custom layout for Extended, CC + note layout
@@ -1739,6 +1750,15 @@ namespace PadForge.Engine.Data
                         }
                         else if (kvp.Key == "__MappingBidirectional")
                             ps.MappingBidirectionalEntries = DeserializeMappingArray(kvp.Value);
+                        else if (kvp.Key == "__TouchpadSettings")
+                        {
+                            try
+                            {
+                                ps.TouchpadSettings = JsonSerializer.Deserialize<
+                                    PadForge.Engine.Touchpad.TouchpadSettingsEntry[]>(kvp.Value);
+                            }
+                            catch { /* malformed payload — leave TouchpadSettings null */ }
+                        }
                         else if (kvp.Key == "__SlotPlayStationConfigs")
                             ps.SlotPlayStationConfigsJson = kvp.Value;
                         else if (kvp.Key == "__SlotExtendedConfig")

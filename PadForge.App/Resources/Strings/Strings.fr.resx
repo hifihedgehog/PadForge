@@ -411,7 +411,6 @@
   <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>Réclame l'entrée de la table OEM DirectInput pour la VID:PID du profil. joy.cpl et DirectInput lisent cette table avant la chaîne iProduct HID — activez pour que le nom du produit ci-dessus prenne le dessus. Désactivé par défaut.</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
-  <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>Pavé tactile</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Retour de force</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>Témoignage</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>« Et nous parlons du Christ, nous nous réjouissons dans le Christ, nous prêchons le Christ, nous prophétisons concernant le Christ, et nous écrivons selon nos prophéties, afin que nos enfants sachent vers quelle source ils peuvent se tourner pour la rémission de leurs péchés. » — 2 Néphi 25:26</value></data>

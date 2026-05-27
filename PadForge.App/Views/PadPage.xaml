@@ -488,11 +488,7 @@
                              TextAlignment="Center" Text="11"
                              LostFocus="ExtendedCustomValue_Changed" KeyDown="ExtendedCustomValue_KeyDown"/>
 
-                    <CheckBox x:Name="ExtendedTouchpadChk" Margin="14,0,0,0"
-                              VerticalAlignment="Center"
-                              Content="{Binding Pad_ExtendedTouchpad, Source={x:Static strings:Strings.Instance}}"
-                              Checked="ExtendedOverride_Changed" Unchecked="ExtendedOverride_Changed"/>
-                    <CheckBox x:Name="ExtendedForceFeedbackChk" Margin="10,0,0,0"
+                    <CheckBox x:Name="ExtendedForceFeedbackChk" Margin="14,0,0,0"
                               VerticalAlignment="Center"
                               Content="{Binding Pad_ExtendedForceFeedback, Source={x:Static strings:Strings.Instance}}"
                               IsChecked="{Binding ExtendedConfig.ForceFeedbackEnabled, Mode=TwoWay}"/>

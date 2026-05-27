@@ -495,28 +495,42 @@ namespace PadForge.Services
             }
 
             // Look up each device's CapType so the migrator can skip
-            // emitting gamepad-target sources for non-gamepad devices
-            // (keyboards, mice, touchpads). Stops keyboards with stale
-            // auto-mapped gamepad descriptors from polluting the per-VC
-            // MappingSet — without this, an axis source pointing at
-            // state.Axis[0] reads uninitialized 0 → bipolar -1 →
-            // joystick stuck pointing left during evaluation.
+            // emitting gamepad-target sources for keyboards / mice /
+            // touchpads (whose auto-mapped stale gamepad descriptors
+            // would pollute the per-VC MappingSet — an axis source
+            // pointing at state.Axis[0] reads uninitialized 0 → bipolar
+            // -1 → joystick stuck pointing left during evaluation).
+            //
+            // Joystick-class devices (DirectInput joysticks, arcade
+            // sticks, throttles, racing wheels, flight sticks) ARE
+            // legitimate gamepad-target contributors — they expose real
+            // axes / buttons / POVs and the user explicitly authored
+            // mappings on them. Excluding them was dropping arcade-stick
+            // and joystick mappings during legacy migration. The
+            // controller-class set mirrors DeviceService.AutoEnableHidingDefaults.
             UserDevice[] devSnapshot;
             lock (SettingsManager.UserDevices.SyncRoot)
             {
                 devSnapshot = SettingsManager.UserDevices.Items.ToArray();
             }
 
-            bool IsGamepad(Guid g)
+            bool IsControllerClass(Guid g)
             {
                 foreach (var ud in devSnapshot)
                 {
                     if (ud != null && ud.InstanceGuid == g)
-                        return ud.CapType == InputDeviceType.Gamepad;
+                    {
+                        return ud.CapType == InputDeviceType.Gamepad
+                            || ud.CapType == InputDeviceType.Joystick
+                            || ud.CapType == InputDeviceType.Driving
+                            || ud.CapType == InputDeviceType.Flight
+                            || ud.CapType == InputDeviceType.FirstPerson
+                            || ud.CapType == InputDeviceType.Supplemental;
+                    }
                 }
-                // Unknown device — be conservative and assume non-gamepad
+                // Unknown device — be conservative and assume non-controller
                 // so we don't pollute. The user can always re-record on
-                // an actual gamepad.
+                // an actual controller.
                 return false;
             }
 
@@ -529,7 +543,7 @@ namespace PadForge.Services
                 devicesForSlot.Add((
                     us.InstanceGuid.ToString(),
                     ps,
-                    IsGamepad(us.InstanceGuid)));
+                    IsControllerClass(us.InstanceGuid)));
             }
 
             return MappingSetMigrator.BuildFromLegacy(slot, devicesForSlot);

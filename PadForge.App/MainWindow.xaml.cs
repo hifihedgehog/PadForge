@@ -4013,6 +4013,15 @@ namespace PadForge
                     // Y axes: record neg (up in game) first due to NegateAxis inversion.
                     // For standard gamepad: TargetSettingName contains "AxisY".
                     // For Extended custom sticks: TargetSettingName is "ExtendedAxisN" — check label for "Y".
+                    //
+                    // negRecording=true on Y axes is what makes ShouldAutoInvert
+                    // return axisPositive (instead of !axisPositive) so an UP
+                    // press records as non-inverted on the user-facing Y-axis
+                    // convention. Any sibling record button on the same row
+                    // (e.g. the per-source Record on an ExtraSource — see
+                    // WireExtraSource below) must mirror this isYAxis check
+                    // or the two buttons will record the same physical press
+                    // with opposite Invert flags.
                     bool isYAxis = mi.HasNegDirection
                         && (mi.TargetSettingName.Contains("AxisY")
                             || mi.TargetLabel.EndsWith(" Y", StringComparison.Ordinal));
@@ -4054,10 +4063,26 @@ namespace PadForge
             // sources added to the collection get the same wiring so
             // their per-row record buttons trigger cross-device recording
             // through the parent MappingItem.
+            //
+            // negRecording parity with the primary Record button (see the
+            // mapping.StartRecordingRequested handler above): Y-axis targets
+            // pass negRecording=true so ShouldAutoInvert returns axisPositive
+            // (rather than !axisPositive) for a Y-axis target. Without this
+            // the extra source records an UP press as Invert=true (the
+            // !axisPositive branch) while the primary records the same UP
+            // press as Invert=false (the axisPositive branch). The two
+            // record buttons on the same row are supposed to agree on the
+            // convention; the parameter has to match.
             void WireExtraSource(MappingSourceItem msi)
             {
                 msi.StartRecordingRequested += (s, e) =>
-                    _recorderService.StartRecordingExtraSource(mapping, msi, capturedPad.PadIndex);
+                {
+                    bool isYAxisExtra = mapping.HasNegDirection
+                        && (mapping.TargetSettingName.Contains("AxisY")
+                            || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal));
+                    _recorderService.StartRecordingExtraSource(mapping, msi, capturedPad.PadIndex,
+                        negRecording: isYAxisExtra);
+                };
                 msi.StopRecordingRequested += (s, e) =>
                     _recorderService.CancelRecording();
                 msi.StartParamRecordingRequested += (s, e) =>

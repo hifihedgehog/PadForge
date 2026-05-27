@@ -3428,16 +3428,31 @@ namespace PadForge.Services
         /// <see cref="Engine.Data.MappingSet.ShiftActivators"/> list. Used by
         /// both <see cref="CloneMappingSetDeep"/> and the Copy-From-Slot path
         /// so shift authoring round-trips alongside row data.</summary>
-        private static void CopyShiftActivators(Engine.Data.MappingSet src, Engine.Data.MappingSet dst)
+        private static void CopyShiftActivators(Engine.Data.MappingSet src, Engine.Data.MappingSet dst,
+            int retargetSlot = -1)
         {
             if (src?.ShiftActivators == null) return;
             dst.ShiftActivators ??= new System.Collections.Generic.List<Engine.Data.ShiftActivator>();
             foreach (var a in src.ShiftActivators)
             {
                 if (a == null) continue;
+                string deviceGuid = a.DeviceGuid ?? "";
+                string chordSecondGuid = a.ChordSecondDeviceGuid ?? "";
+                if (retargetSlot >= 0)
+                {
+                    var retargeted = RetargetDeviceGuidForSlot(deviceGuid, retargetSlot);
+                    if (retargeted == null) continue;
+                    deviceGuid = retargeted;
+                    if (!string.IsNullOrEmpty(chordSecondGuid))
+                    {
+                        var retargetedChord = RetargetDeviceGuidForSlot(chordSecondGuid, retargetSlot);
+                        if (retargetedChord == null) continue;
+                        chordSecondGuid = retargetedChord;
+                    }
+                }
                 dst.ShiftActivators.Add(new Engine.Data.ShiftActivator
                 {
-                    DeviceGuid = a.DeviceGuid ?? "",
+                    DeviceGuid = deviceGuid,
                     Descriptor = a.Descriptor ?? "",
                     Mode = a.Mode ?? "Hold",
                     LayerMask = a.LayerMask ?? "Shift",
@@ -3448,7 +3463,7 @@ namespace PadForge.Services
                     PostponeMapping = a.PostponeMapping,
                     Color = a.Color ?? "",
                     Kind = a.Kind ?? "Button",
-                    ChordSecondDeviceGuid = a.ChordSecondDeviceGuid ?? "",
+                    ChordSecondDeviceGuid = chordSecondGuid,
                     ChordSecondDescriptor = a.ChordSecondDescriptor ?? "",
                     AxisThreshold = a.AxisThreshold,
                     CycleLayers = a.CycleLayers ?? "",
@@ -3513,10 +3528,11 @@ namespace PadForge.Services
 
         /// <summary>Paste companion: replaces a target slot's MappingSet
         /// wholesale from a snapshot built by <see cref="ExtractAllRowsForSlot"/>.
-        /// Source DeviceGuids are preserved exactly so multi-device slots
-        /// keep every device's contribution. Sources whose device isn't
-        /// on the target slot stay in the table but are inert until that
-        /// device is assigned — same semantics as <see cref="ReplaceSlotMappingSet"/>.</summary>
+        /// Each source's DeviceGuid is retargeted onto the target slot's
+        /// same-ProductGuid (same "variation") device — see
+        /// <see cref="RetargetDeviceGuidForSlot"/> for the exact rule.
+        /// Sources whose product isn't represented on the target slot are
+        /// dropped from the cloned row.</summary>
         public static void ApplySlotMappingSetFromRows(int padIndex,
             System.Collections.Generic.IList<Engine.Data.MappingRow> rows)
         {
@@ -3540,10 +3556,12 @@ namespace PadForge.Services
                     foreach (var s in r.Sources)
                     {
                         if (s == null) continue;
+                        var retargeted = RetargetDeviceGuidForSlot(s.DeviceGuid, padIndex);
+                        if (retargeted == null) continue;
                         rc.Sources.Add(new Engine.Data.MappingSource
                         {
                             Kind = s.Kind ?? "Direct",
-                            DeviceGuid = s.DeviceGuid ?? "",
+                            DeviceGuid = retargeted,
                             Descriptor = s.Descriptor ?? "",
                             Invert = s.Invert,
                             HalfAxis = s.HalfAxis,
@@ -3562,6 +3580,55 @@ namespace PadForge.Services
                 copy.Rows.Add(rc);
             }
             SettingsManager.SlotMappingSets[padIndex] = copy;
+        }
+
+        /// <summary>
+        /// Retargets a source row's DeviceGuid onto the target slot's
+        /// equivalent same-ProductGuid device, so Copy From / Copy / Paste
+        /// don't carry the source slot's physical-device GUIDs onto a
+        /// different slot's same-variation devices.
+        ///
+        /// <para>Rule (per user spec): if the source's exact instance is
+        /// itself assigned to the target slot, keep it. Otherwise pick the
+        /// first target-slot UserSetting whose ProductGuid matches the
+        /// source device's ProductGuid. Returns null when the target slot
+        /// has no device of that variation — caller drops the source.</para>
+        /// </summary>
+        private static string RetargetDeviceGuidForSlot(string sourceDeviceGuidStr, int targetSlot)
+        {
+            if (string.IsNullOrEmpty(sourceDeviceGuidStr)) return sourceDeviceGuidStr;
+            if (!Guid.TryParse(sourceDeviceGuidStr, out var sourceInstanceGuid))
+                return sourceDeviceGuidStr;
+
+            var sourceDevice = SettingsManager.FindDeviceByInstanceGuid(sourceInstanceGuid);
+            if (sourceDevice == null) return null;
+            var sourceProductGuid = sourceDevice.ProductGuid;
+            if (sourceProductGuid == Guid.Empty) return null;
+
+            bool sourceIsOnTargetSlot = false;
+            Guid firstOtherSameProductOnTarget = Guid.Empty;
+
+            var settings = SettingsManager.UserSettings;
+            if (settings?.Items == null) return null;
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                {
+                    if (us == null || us.MapTo != targetSlot) continue;
+                    if (us.ProductGuid != sourceProductGuid) continue;
+
+                    if (us.InstanceGuid == sourceInstanceGuid)
+                        sourceIsOnTargetSlot = true;
+                    else if (firstOtherSameProductOnTarget == Guid.Empty)
+                        firstOtherSameProductOnTarget = us.InstanceGuid;
+                }
+            }
+
+            if (sourceIsOnTargetSlot)
+                return sourceInstanceGuid.ToString();
+            if (firstOtherSameProductOnTarget != Guid.Empty)
+                return firstOtherSameProductOnTarget.ToString();
+            return null;
         }
 
         /// <summary>Issue #61 copy helper. Builds the per-device slice
@@ -3605,14 +3672,13 @@ namespace PadForge.Services
 
         /// <summary>Issue #61 — "Copy From" is a SLOT-level copy: it replaces
         /// <paramref name="targetSlot"/>'s per-VC MappingSet with a deep copy
-        /// of <paramref name="sourceSlot"/>'s, keeping every source's
-        /// DeviceGuid as-is. That carries ALL of the source slot's mappings —
-        /// every device's contribution, every extra source, combine modes and
-        /// Custom formulas — not just one device's slice (which is why the
-        /// keyboard-buttons-to-stick rows on the source weren't coming over
-        /// when the user picked the gamepad entry). Sources that reference a
-        /// device not mapped to the target slot stay in the table but are
-        /// inert until that device is added — they're not garbled.</summary>
+        /// of <paramref name="sourceSlot"/>'s rows. Each source's DeviceGuid
+        /// is retargeted onto the target slot's same-ProductGuid (same
+        /// "variation") device — see <see cref="RetargetDeviceGuidForSlot"/>
+        /// for the exact rule. Carries every device's contribution, every
+        /// extra source, combine modes, and Custom formulas (not just one
+        /// device's slice). Sources whose product isn't represented on the
+        /// target slot are dropped from the cloned row.</summary>
         public static void ReplaceSlotMappingSet(int targetSlot, int sourceSlot)
         {
             var sets = SettingsManager.SlotMappingSets;
@@ -3625,7 +3691,7 @@ namespace PadForge.Services
             if (src == null) { sets[targetSlot] = new Engine.Data.MappingSet(); return; }
 
             var copy = new Engine.Data.MappingSet();
-            CopyShiftActivators(src, copy);
+            CopyShiftActivators(src, copy, retargetSlot: targetSlot);
             if (src.Rows != null)
             {
                 foreach (var r in src.Rows)
@@ -3645,10 +3711,12 @@ namespace PadForge.Services
                         foreach (var s in r.Sources)
                         {
                             if (s == null) continue;
+                            var retargeted = RetargetDeviceGuidForSlot(s.DeviceGuid, targetSlot);
+                            if (retargeted == null) continue;
                             rc.Sources.Add(new Engine.Data.MappingSource
                             {
                                 Kind = s.Kind ?? "Direct",
-                                DeviceGuid = s.DeviceGuid ?? "",
+                                DeviceGuid = retargeted,
                                 Descriptor = s.Descriptor ?? "",
                                 Invert = s.Invert,
                                 HalfAxis = s.HalfAxis,

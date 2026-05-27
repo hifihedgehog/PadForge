@@ -165,9 +165,9 @@
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>Profiel "{0}" bijgewerkt.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Profiel geladen: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>Profiel teruggezet naar Standaard</value></data>
-  <data name="Status_VirtualController_Format" xml:space="preserve"><value>Virtuele controller {0} — {1}</value></data>
+  <data name="Status_VirtualController_Format" xml:space="preserve"><value>Virtuele controller {0}: {1}</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>"{0}" toegewezen aan virtuele controller {1}.</value></data>
-  <data name="Status_Unmapped_Format" xml:space="preserve"><value>Niet toegewezen — {0}</value></data>
+  <data name="Status_Unmapped_Format" xml:space="preserve"><value>Niet toegewezen: {0}</value></data>
   <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>Fout bij laden van instellingen: {0}</value></data>
   <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>Instellingen opgeslagen in {0}.</value></data>
   <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>Fout bij opslaan van instellingen: {0}</value></data>
@@ -256,7 +256,7 @@
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Deze toepassingen kunnen verborgen apparaten nog steeds zien. PadForge wordt altijd automatisch toegestaan.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Toevoegen...</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro-stuurprogramma</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Virtuele HID-controllerengine in gebruikersmodus. Ingebed in PadForge.App — wordt automatisch geïnstalleerd bij het eerste aanmaken van een virtuele controller. Vervangt ViGEmBus en vJoy in v3.</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Virtuele HID-controllerengine in gebruikersmodus. Ingebed in PadForge.App. Wordt automatisch geïnstalleerd bij het eerste aanmaken van een virtuele controller. Vervangt ViGEmBus en vJoy in v3.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>SDK-runtime voor virtuele MIDI-apparaatuitvoer. Gedownload van GitHub (~210 MB).</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Vereist Windows 11 24H2 (build 26100) of hoger</value></data>
@@ -277,8 +277,8 @@
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>Over</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>Controller-toewijzingshulpprogramma</value></data>
-  <data name="About_Tagline" xml:space="preserve"><value>Moderne fork van x360ce — opnieuw gebouwd met SDL3, WPF en .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge zet elk invoerapparaat om in elke virtuele controller. Gamepads, joysticks, toetsenborden, muizen en touchscreens worden toegewezen aan virtuele game-controllers (Xbox, PlayStation, flight sticks, stuurwielen, gamepads van derden) of aan toetsenbord+muis/MIDI-uitvoer die games als echte hardware behandelen — mogelijk gemaakt door HIDMaestro en Windows MIDI Services. Het gebruikt SDL3 voor controller-invoer, Windows Raw Input voor toetsenbord en muis, HidHide voor apparaatmaskering per spel, en biedt een moderne Fluent Design-interface voor toewijzing, deadzones, gevoeligheidscurves en force feedback.</value></data>
+  <data name="About_Tagline" xml:space="preserve"><value>Moderne fork van x360ce, opnieuw gebouwd met SDL3, WPF en .NET 10</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge zet elk invoerapparaat om in elke virtuele controller. Gamepads, joysticks, toetsenborden, muizen en touchscreens worden toegewezen aan virtuele game-controllers (Xbox, PlayStation, flight sticks, stuurwielen, gamepads van derden) of aan toetsenbord+muis/MIDI-uitvoer die games als echte hardware behandelen. Mogelijk gemaakt door HIDMaestro en Windows MIDI Services. Het gebruikt SDL3 voor controller-invoer, Windows Raw Input voor toetsenbord en muis, HidHide voor apparaatmaskering per spel, en biedt een moderne Fluent Design-interface voor toewijzing, deadzones, gevoeligheidscurves en force feedback.</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Gebouwd met</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime en WPF-framework</value></data>
@@ -295,7 +295,7 @@
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm voor gegevensbinding</value></data>
   <data name="About_License" xml:space="preserve"><value>Licentie</value></data>
-  <data name="About_LicenseText" xml:space="preserve"><value>Deze software is gelicentieerd onder CC BY-NC-SA 4.0 (Creative Commons Naamsvermelding-NietCommercieel-GelijkDelen 4.0 Internationaal). 3D-controllermodellen aangepast van Handheld Companion (CC BY-NC-SA 4.0). 2D-controllerassets van Gamepad-Asset-Pack door AL2009man (MIT). Oorspronkelijke codebasis geforkt van x360ce (MIT). SDL3 is gelicentieerd onder de zlib License. HIDMaestro, Windows MIDI Services, HidHide, HelixToolkit en WPF UI zijn gelicentieerd onder de MIT License. OpenXInput bevat alleen een handelsmerkdisclaimer van het upstream project; wordt onder dezelfde voorwaarden ongewijzigd opnieuw gedistribueerd.</value></data>
+  <data name="About_LicenseText" xml:space="preserve"><value>Deze software is gelicentieerd onder CC BY-NC-SA 4.0 (Creative Commons Naamsvermelding-NietCommercieel-GelijkDelen 4.0 Internationaal). 3D-controllermodellen aangepast van Handheld Companion (CC BY-NC-SA 4.0). 2D-controllerassets van Gamepad-Asset-Pack door AL2009man (MIT). Oorspronkelijke codebasis geforkt van x360ce (MIT). SDL3 is gelicentieerd onder de zlib License. HIDMaestro, Windows MIDI Services, HidHide, HelixToolkit en WPF UI zijn gelicentieerd onder de MIT License. OpenXInput bevat alleen een handelsmerkdisclaimer van het upstream project. Wordt onder dezelfde voorwaarden ongewijzigd opnieuw gedistribueerd.</value></data>
 
   <!-- ═══ Device Types ═══ -->
   <data name="DeviceType_Gamepad" xml:space="preserve"><value>Gamepad</value></data>
@@ -327,7 +327,7 @@
   <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Toewijzing wisselen</value></data>
   <data name="Devices_InputMode" xml:space="preserve"><value>Invoermodus</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>Raw joystick-modus forceren (gamepad-hertoewijzing omzeilen)</value></data>
-  <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Ruwe HID-indices lezen in plaats van SDL's gamepad-toewijzing — gebruik wanneer SDL de knop-/asindeling verkeerd herkent</value></data>
+  <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Ruwe HID-indices lezen in plaats van SDL's gamepad-toewijzing. Gebruik wanneer SDL de knop-/asindeling verkeerd herkent.</value></data>
   <data name="Devices_InputHiding" xml:space="preserve"><value>Invoerverberging</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Verbergen voor games (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>Verbergt dit apparaat volledig voor andere toepassingen via het HidHide-stuurprogramma</value></data>
@@ -401,14 +401,14 @@
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} HID-interface(s) gevonden.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Enumeratie mislukt: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>Extractie mislukt: {0}</value></data>
-  <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>De geëxtraheerde profiel-JSON kon niet worden geparst — niets is opgeslagen.</value></data>
+  <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>De geëxtraheerde profiel-JSON kon niet worden geparst. Niets is opgeslagen.</value></data>
   <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>Aanpassen</value></data>
   <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>Schakelt de velden voor identiteits- en indelingsoverrides hieronder in. Wanneer uit, gebruikt de virtuele controller het HIDMaestro-profiel exact zoals geleverd.</value></data>
   <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>Zet alle overridevelden terug naar de catalogwaarden van het huidige profiel (productnaam, VID, PID, aantal sticks/triggers/POV's/knoppen) en schakelt de OEM-override uit.</value></data>
   <data name="Pad_ExtendedProductString" xml:space="preserve"><value>Productnaam</value></data>
   <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>Overschrijft de iProduct-tekenreeks die het besturingssysteem aan games en joy.cpl meldt. Bepaalt ook de naam in Apparaatbeheer.</value></data>
   <data name="Pad_ExtendedOemOverride" xml:space="preserve"><value>OEM-override</value></data>
-  <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>Claimt de vermelding in de DirectInput OEM-naamtabel voor de VID:PID van het profiel. joy.cpl en DirectInput lezen deze tabel vóór de HID iProduct-tekenreeks — schakel in zodat de productnaam hierboven wint. Standaard uit.</value></data>
+  <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>Claimt de vermelding in de DirectInput OEM-naamtabel voor de VID:PID van het profiel. joy.cpl en DirectInput lezen deze tabel vóór de HID iProduct-tekenreeks. Schakel in zodat de productnaam hierboven wint. Standaard uit.</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
@@ -435,7 +435,7 @@
   <data name="Pad_RightMotor" xml:space="preserve"><value>Rechtermotor</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Alles toewijzen</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Toewijzen: {0}</value></data>
-  <data name="Pad_MapAllTooltip" xml:space="preserve"><value>Alle toewijzingen achtereenvolgens opnemen — druk op een knop/as bij elke prompt</value></data>
+  <data name="Pad_MapAllTooltip" xml:space="preserve"><value>Alle toewijzingen achtereenvolgens opnemen. Druk op een knop/as bij elke prompt.</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Alle toewijzingen een voor een opnemen</value></data>
   <data name="Pad_MappingHint" xml:space="preserve"><value>Klik op een toewijzingsrij en druk op een knop/as op uw controller om deze toe te wijzen.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Alle toewijzingen en instellingen naar klembord kopiëren</value></data>
@@ -457,9 +457,9 @@
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Inverteren bij vasthouden</value></data>
   <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direct = lees de brondescriptor; Incrementeel = verhoog een accumulator via Omhoog/Omlaag-knoppen; Inverteren bij vasthouden = draai de uitvoer van de rij om terwijl een aanpassingsknop ingedrukt is.</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>Knop die de accumulator omhoog stuurt zolang ingedrukt</value></data>
-  <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Omhoog — knop die de accumulator omhoog stuurt zolang ingedrukt.</value></data>
+  <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Omhoog: knop die de accumulator omhoog stuurt zolang ingedrukt.</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Knop die de accumulator omlaag stuurt zolang ingedrukt</value></data>
-  <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Omlaag — knop die de accumulator omlaag stuurt zolang ingedrukt.</value></data>
+  <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Omlaag: knop die de accumulator omlaag stuurt zolang ingedrukt.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Snelheid</value></data>
   <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Veegsnelheid in eenheden per seconde. 0,5 = volledig bereik in 2 s; 2 = volledig bereik in 0,5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Vasthouden</value></data>
@@ -469,7 +469,7 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Bovengrens van de accumulator. 1 = volledig positief.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Knop die de uitvoer van de rij omkeert zolang ingedrukt</value></data>
-  <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Aanpassingsknop — zolang ingedrukt, keert de uitvoer van de rij van teken.</value></data>
+  <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Aanpassingsknop: zolang ingedrukt, keert de uitvoer van de rij van teken.</value></data>
   <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Bron toevoegen</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Nog een fysieke invoer aan deze rij toevoegen</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Deze bron verwijderen</value></data>
@@ -483,7 +483,7 @@
   <data name="Pad_Combine_Average_Name" xml:space="preserve"><value>Gemiddelde</value></data>
   <data name="Pad_Combine_Average_Description" xml:space="preserve"><value>Halverwege tussen de bronnen</value></data>
   <data name="Pad_Combine_OR_Name" xml:space="preserve"><value>Ofwel</value></data>
-  <data name="Pad_Combine_OR_Description" xml:space="preserve"><value>Activeren als een bron actief is — geschikt voor knoppen</value></data>
+  <data name="Pad_Combine_OR_Description" xml:space="preserve"><value>Activeren als een bron actief is. Geschikt voor knoppen.</value></data>
   <data name="Pad_Combine_AND_Name" xml:space="preserve"><value>Beide</value></data>
   <data name="Pad_Combine_AND_Description" xml:space="preserve"><value>Alleen activeren als alle bronnen actief zijn</value></data>
   <data name="Pad_Combine_XOR_Name" xml:space="preserve"><value>Slechts één</value></data>
@@ -512,7 +512,7 @@
   <data name="Pad_Formula_Chip_NegateA" xml:space="preserve"><value>Eerste bron negeren</value></data>
   <data name="Pad_Formula_Chip_OpenGroup" xml:space="preserve"><value>Groep openen</value></data>
   <data name="Pad_Formula_Chip_CloseGroup" xml:space="preserve"><value>Groep sluiten</value></data>
-  <data name="Pad_Formula_Chip_Half" xml:space="preserve"><value>0.5 — half</value></data>
+  <data name="Pad_Formula_Chip_Half" xml:space="preserve"><value>0.5: half</value></data>
   <data name="Pad_Formula_Chip_LessThan" xml:space="preserve"><value>Kleiner dan</value></data>
   <data name="Pad_Formula_Chip_GreaterThan" xml:space="preserve"><value>Groter dan</value></data>
   <data name="Pad_Formula_Chip_LessOrEqual" xml:space="preserve"><value>Kleiner dan of gelijk aan</value></data>
@@ -522,14 +522,14 @@
   <data name="Pad_Formula_Chip_BothConditions" xml:space="preserve"><value>Beide voorwaarden waar</value></data>
   <data name="Pad_Formula_Chip_EitherCondition" xml:space="preserve"><value>Één van beide voorwaarden waar</value></data>
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Waar/onwaar omdraaien</value></data>
-  <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Als — patroon: (voorwaarde) ? dan : anders</value></data>
+  <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Als, met patroon (voorwaarde) ? dan : anders</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Anders-gedeelte van een als-dan-anders</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Absolute waarde (verwijdert het teken)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Kleinste van twee waarden</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Grootste van twee waarden</value></data>
-  <data name="Pad_Formula_Chip_Clamp" xml:space="preserve"><value>Binnen een bereik houden — clamp(value, low, high)</value></data>
+  <data name="Pad_Formula_Chip_Clamp" xml:space="preserve"><value>Binnen een bereik houden: clamp(value, low, high)</value></data>
   <data name="Pad_Formula_Chip_Sign" xml:space="preserve"><value>-1, 0, of +1 op basis van het teken van de invoer</value></data>
-  <data name="Pad_Formula_Chip_Lerp" xml:space="preserve"><value>Twee waarden mengen — lerp(a, b, mix0to1)</value></data>
+  <data name="Pad_Formula_Chip_Lerp" xml:space="preserve"><value>Twee waarden mengen: lerp(a, b, mix0to1)</value></data>
   <data name="Pad_Formula_Chip_Round" xml:space="preserve"><value>Afronden naar het dichtstbijzijnde gehele getal</value></data>
   <data name="Pad_Formula_Chip_Sqrt" xml:space="preserve"><value>Vierkantswortel</value></data>
   <data name="Pad_Formula_Preset_HalfScale_Name" xml:space="preserve"><value>Halve schaal</value></data>
@@ -545,9 +545,9 @@
   <data name="Pad_Formula_Preset_Difference_Name" xml:space="preserve"><value>Verschil</value></data>
   <data name="Pad_Formula_Preset_Difference_Tooltip" xml:space="preserve"><value>A min B</value></data>
   <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>a tenzij inactief</value></data>
-  <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>Gebruik A — maar als A in rust is, val terug op B</value></data>
+  <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>Gebruik A, maar als A in rust is, val terug op B</value></data>
   <data name="Pad_Formula_Preset_ThresholdGate_Name" xml:space="preserve"><value>Drempelpoort</value></data>
-  <data name="Pad_Formula_Preset_ThresholdGate_Tooltip" xml:space="preserve"><value>Volledig activeren als A verder dan halverwege is, anders nul — zet een as om in een knop</value></data>
+  <data name="Pad_Formula_Preset_ThresholdGate_Tooltip" xml:space="preserve"><value>Volledig activeren als A verder dan halverwege is, anders nul. Zet een as om in een knop.</value></data>
   <data name="Pad_Formula_Preset_BothPressed_Name" xml:space="preserve"><value>Beide ingedrukt</value></data>
   <data name="Pad_Formula_Preset_BothPressed_Tooltip" xml:space="preserve"><value>Alleen activeren als A en B allebei ingedrukt zijn</value></data>
   <data name="Pad_Formula_Preset_StrongerWins_Name" xml:space="preserve"><value>Sterkste wint</value></data>
@@ -562,7 +562,7 @@
   <data name="Pad_Formula_Var_NotYetMapped" xml:space="preserve"><value>nog niet toegewezen</value></data>
   <data name="Pad_Formula_Error_UnexpectedTokenAtEnd" xml:space="preserve"><value>Onverwacht token op positie {0}: '{1}'</value></data>
   <data name="Pad_Formula_Error_InvalidNumber" xml:space="preserve"><value>Ongeldig getal '{0}' op positie {1}</value></data>
-  <data name="Pad_Formula_Error_SingleEqualsNotSupported" xml:space="preserve"><value>Enkel '=' niet ondersteund op positie {0}; gebruik '==' voor gelijkheid</value></data>
+  <data name="Pad_Formula_Error_SingleEqualsNotSupported" xml:space="preserve"><value>Enkel '=' niet ondersteund op positie {0}. Gebruik '==' voor gelijkheid.</value></data>
   <data name="Pad_Formula_Error_UnexpectedCharacter" xml:space="preserve"><value>Onverwacht teken '{0}' op positie {1}</value></data>
   <data name="Pad_Formula_Error_ExpectedColonInTernary" xml:space="preserve"><value>':' verwacht in ternaire expressie</value></data>
   <data name="Pad_Formula_Error_ExpectedRParen" xml:space="preserve"><value>')' verwacht</value></data>
@@ -643,7 +643,7 @@
   <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Touchpad-overlay in-/uitschakelen</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Knoppen</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Toetscombinatie</value></data>
-  <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Toetscombinatie in {Toets1}{Toets2}-formaat — bewerkbaar</value></data>
+  <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Toetscombinatie in {Toets1}{Toets2}-formaat. Bewerkbaar.</value></data>
   <data name="Macro_KeyComboHint" xml:space="preserve"><value>Selecteer een toets om deze toe te voegen. Voorbeeld: {Control}{Alt}{Delete}</value></data>
   <data name="Macro_Duration" xml:space="preserve"><value>Duur</value></data>
   <data name="Macro_Axis" xml:space="preserve"><value>As</value></data>
@@ -659,7 +659,7 @@
   <data name="Macro_Device" xml:space="preserve"><value>Apparaat</value></data>
   <data name="Macro_VolumeLimit" xml:space="preserve"><value>Volumelimiet</value></data>
   <data name="Macro_Process" xml:space="preserve"><value>Proces</value></data>
-  <data name="Macro_ProcessTooltip" xml:space="preserve"><value>Procesnaam zonder .exe — dropdown toont processen met actieve audiosessies</value></data>
+  <data name="Macro_ProcessTooltip" xml:space="preserve"><value>Procesnaam zonder .exe. Dropdown toont processen met actieve audiosessies.</value></data>
   <data name="Macro_MouseLeft" xml:space="preserve"><value>Links</value></data>
   <data name="Macro_MouseRight" xml:space="preserve"><value>Rechts</value></data>
   <data name="Macro_MouseMiddle" xml:space="preserve"><value>Midden</value></data>
@@ -675,7 +675,7 @@
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Nieuwe macro</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Trigger opnemen</value></data>
-  <data name="Macro_NotSet" xml:space="preserve"><value>Niet ingesteld — klik op Opnemen</value></data>
+  <data name="Macro_NotSet" xml:space="preserve"><value>Niet ingesteld. Klik op Opnemen.</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Knop {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(geen)</value></data>
   <data name="Macro_DeviceAxis_Format" xml:space="preserve"><value>Apparaat-as {0}</value></data>
@@ -739,7 +739,7 @@
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Trillen stoppen</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Maakt elke actieve trillingsoverschrijving op de toegewezen slot vrij. Combineer met een Sticky trilactie om het houden via een andere macro op te heffen.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Gyro-activering instellen</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Stelt de gyro-activeringsstatus van het slot in vanuit een macro. Schakelen wisselt de huidige status; Aan forceert activering; Uit forceert deactivering. Onafhankelijk van de activeringsknop van het Gyro-tabblad — de twee bronnen worden OR-gecombineerd, dus geen van beide kan uitschakelen wat de ander heeft geactiveerd.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Stelt de gyro-activeringsstatus van het slot in vanuit een macro. Schakelen wisselt de huidige status. Aan forceert activering. Uit forceert deactivering. Onafhankelijk van de activeringsknop van het Gyro-tabblad. De twee bronnen worden OR-gecombineerd, dus geen van beide kan uitschakelen wat de ander heeft geactiveerd.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Schakelen</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Aan</value></data>
@@ -802,8 +802,8 @@
 
   <!-- ═══ App-Level Messages ═══ -->
   <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge is al actief.</value></data>
-  <data name="App_FatalError" xml:space="preserve"><value>PadForge — Fatale fout</value></data>
-  <data name="App_Error" xml:space="preserve"><value>PadForge — Fout</value></data>
+  <data name="App_FatalError" xml:space="preserve"><value>PadForge: Fatale fout</value></data>
+  <data name="App_Error" xml:space="preserve"><value>PadForge: Fout</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Er is een onverwachte fout opgetreden:\n\n{0}\n\n{1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} extra fout(en) onderdrukt)</value></data>
 
@@ -1109,7 +1109,7 @@
   <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Huidige gyroscoop</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Huidige versnellingsmeter</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Horizontale gevoeligheid</value></data>
-  <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Schaalt de horizontale (Yaw + Roll) gyro-bijdrage. 1,0 laat de snelheid ongewijzigd; hogere waarden versterken, lagere dempen. Geldt apparaatbreed.</value></data>
+  <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Schaalt de horizontale (Yaw + Roll) gyro-bijdrage. 1,0 laat de snelheid ongewijzigd. Hogere waarden versterken, lagere dempen. Geldt apparaatbreed.</value></data>
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Verticale gevoeligheid</value></data>
   <data name="Settings_GyroSensitivityV_Tooltip" xml:space="preserve"><value>Schaalt de verticale (Pitch) gyro-bijdrage. Apart van horizontaal zodat X- en Y-as onafhankelijk afstembaar zijn.</value></data>
   <data name="Settings_GyroDeadZone" xml:space="preserve"><value>Dode zone</value></data>
@@ -1117,13 +1117,13 @@
   <data name="Settings_GyroSmoothing" xml:space="preserve"><value>Afvlakking</value></data>
   <data name="Settings_GyroSmoothing_Tooltip" xml:space="preserve"><value>Enkelpolige EMA-filter op de gyro-snelheid. 0 = uit (rauw signaal, laagste latentie). Hogere waarden verminderen jitter ten koste van vertraging. 0,5 is een redelijk startpunt als de cursor trilt.</value></data>
   <data name="Settings_GyroAcceleration" xml:space="preserve"><value>Versnelling</value></data>
-  <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>Snelheidsafhankelijke versterking. 0 = uit (lineaire schaling). Hogere waarden laten trage bewegingen ongewijzigd en versterken snelle — handig voor precieze richting in combinatie met snelle bochten.</value></data>
+  <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>Snelheidsafhankelijke versterking. 0 = uit (lineaire schaling). Hogere waarden laten trage bewegingen ongewijzigd en versterken snelle. Handig voor precieze richting in combinatie met snelle bochten.</value></data>
   <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>Uitvoercurve</value></data>
   <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>Vormt de respons. Linear = doorgang. Aggressive = x² (langzaam blijft langzaam). Relaxed = √x (langzaam versterkt, snel verzadigt). Wide / ExtraWide zit ertussenin. Combineert met Versnelling.</value></data>
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Eenheden</value></data>
-  <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Weergave-eenheid van de gevoeligheid. Multiplier is de interne × schaal (1 = basis). DegPerScreenTurn is Steam-stijl — graden fysieke controllerrotatie per één volledige schermdraai.</value></data>
+  <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Weergave-eenheid van de gevoeligheid. Multiplier is de interne × schaal (1 = basis). DegPerScreenTurn is Steam-stijl: graden fysieke controllerrotatie per één volledige schermdraai.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim-drempel</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Uitslag van de rechterstick (0–100%) waaronder de gyro-uitvoer op nul wordt gezet. 0 = altijd aan. Steam-gevoel “gyro alleen tijdens richten” — de gyro werkt alleen als de stick voorbij de drempel komt.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Uitslag van de rechterstick (0–100%) waaronder de gyro-uitvoer op nul wordt gezet. 0 = altijd aan. Steam-gevoel “gyro alleen tijdens richten”. De gyro werkt alleen als de stick voorbij de drempel komt.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Stel in hoe de bewegingssensor van deze controller muis- of stickuitvoer aanstuurt. Kalibreer eerst op een vlakke ondergrond om rust-drift te verwijderen, en stem daarna gevoeligheid, smoothing en activatieregels af naar smaak.</value></data>
@@ -1133,27 +1133,27 @@
   <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
   <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>Activeer de gyro alleen wanneer de rechterstick wordt uitgeslagen. 0% schakelt uit (gyro altijd aan).</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Ruimte</value></data>
-  <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = ruwe controller-assen. Player = yaw geprojecteerd op de echte verticale as (zwaartekracht); pitch blijft lokaal — door Jibb Smart aanbevolen standaard voor natuurlijk gevoel bij elke kanteling. World = yaw én pitch geprojecteerd op wereldassen.</value></data>
+  <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = ruwe controller-assen. Player = yaw geprojecteerd op de echte verticale as (zwaartekracht), pitch blijft lokaal. Door Jibb Smart aanbevolen standaard voor natuurlijk gevoel bij elke kanteling. World = yaw én pitch geprojecteerd op wereldassen.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Pitch (Y) omkeren</value></data>
-  <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Globale pitch-omkering. Wordt na de Player/World-projectie toegepast — onafhankelijk van de Invert-vlaggen per bron in de toewijzingstabel.</value></data>
+  <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Globale pitch-omkering. Wordt na de Player/World-projectie toegepast, onafhankelijk van de Invert-vlaggen per bron in de toewijzingstabel.</value></data>
   <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>Yaw / Roll (X) omkeren</value></data>
   <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>Globale yaw-omkering. Geldt ook voor Roll- en Gyro-Horizontal-bronnen.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Realistische kalibratie</value></data>
   <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>Graden in het spel per graad fysieke controller-rotatie. 0 = uitgeschakeld. 1 = 1:1 (controller 90° draaien → in-game beeld 90°). Per spel één keer kalibreren door de controller 360° te draaien en aan te passen tot het in-game beeld ook 360° draait.</value></data>
   <data name="Settings_GyroTightening" xml:space="preserve"><value>Aanscherping</value></data>
-  <data name="Settings_GyroTightening_Tooltip" xml:space="preserve"><value>Onder deze snelheid wordt de invoer volledig vervangen door het gemiddelde van de smoothing-buffer — dempt handtrilling en micro-drift. Standaard 3°/s.</value></data>
+  <data name="Settings_GyroTightening_Tooltip" xml:space="preserve"><value>Onder deze snelheid wordt de invoer volledig vervangen door het gemiddelde van de smoothing-buffer. Dempt handtrilling en micro-drift. Standaard 3°/s.</value></data>
   <data name="Settings_GyroSmoothingThreshold" xml:space="preserve"><value>Smoothing-drempel</value></data>
-  <data name="Settings_GyroSmoothingThreshold_Tooltip" xml:space="preserve"><value>Boven deze snelheid passeert de invoer ongefilterd — snelle draaiingen behouden precisie. Tussen de drempels wordt lineair gemengd. Standaard 8°/s.</value></data>
+  <data name="Settings_GyroSmoothingThreshold_Tooltip" xml:space="preserve"><value>Boven deze snelheid passeert de invoer ongefilterd. Snelle draaiingen behouden precisie. Tussen de drempels wordt lineair gemengd. Standaard 8°/s.</value></data>
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Smoothing-venster</value></data>
-  <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Lengte van het tijdvenster van de smoothing-buffer. Groter = meer smoothing onder de aanscherpings-drempel; kleiner = directer. Standaard 50 ms.</value></data>
+  <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Lengte van het tijdvenster van de smoothing-buffer. Groter = meer smoothing onder de aanscherpings-drempel. Kleiner = directer. Standaard 50 ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Activatieknop</value></data>
   <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Descriptor van een knop die de gyro-uitvoer regelt: gyro werkt alleen terwijl deze knop wordt ingedrukt. Leeg = geen knop-restrictie. EN-gecombineerd met de stickdrempel hierboven.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Activeringsmodus</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Vasthouden: gyro is actief zolang de activeringsknop wordt ingedrukt. Schakelen: elke druk schakelt de gyro aan of uit; loslaten doet niets. Schakelen is persistent over de polling-tick en wordt gereset bij profielwisseling.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Vasthouden: gyro is actief zolang de activeringsknop wordt ingedrukt. Schakelen: elke druk schakelt de gyro aan of uit, en loslaten doet niets. Schakelen is persistent over de polling-tick en wordt gereset bij profielwisseling.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Vasthouden</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Schakelen</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Activering</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optionele beperkingen op wanneer de gyro actief is. Stickuitslag rechts en een activatieknop kunnen elk de gyro-uitvoer beperken; configureer één of beide. Als beide zijn ingesteld moeten beide actief zijn voor de gyro werkt.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optionele beperkingen op wanneer de gyro actief is. Stickuitslag rechts en een activatieknop kunnen elk de gyro-uitvoer beperken. Configureer één of beide. Als beide zijn ingesteld moeten beide actief zijn voor de gyro werkt.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokaal</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Speler</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Wereld</value></data>
@@ -1191,7 +1191,7 @@
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Past de optionele gyro-afstemming van dit tabblad (dode zone, gevoeligheid, afvlakking, responscurve, omkering) toe op de beweging die de virtuele controller aan het spel of de emulator doorgeeft. Schakel het uit om alleen de gekalibreerde meting te sturen en het spel zijn eigen gevoeligheid en afvlakking te laten toepassen. De kalibratie-driftcorrectie geldt in beide gevallen.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Doorgifte-afstemming resetten</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
-  <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheidsvermenigvuldiger van de gyroscoop per bron. 1,0 = standaard van de engine (500°/s → volledige uitslag). Waarden boven 1,0 zijn gevoeliger; daaronder minder.</value></data>
+  <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheidsvermenigvuldiger van de gyroscoop per bron. 1,0 = standaard van de engine (500°/s → volledige uitslag). Waarden boven 1,0 zijn gevoeliger. Daaronder minder.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>
   <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Touchpad 2 X</value></data>
   <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Touchpad 2 Y</value></data>
@@ -1227,7 +1227,7 @@
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
   <data name="About_HidHideDesc" xml:space="preserve"><value>Kernel-stuurprogramma om fysieke apparaten te verbergen voor games</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Drop-in vervanging voor XInput; filtert PadForge's eigen virtuele controllers uit zijn eigen weergave</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Drop-in vervanging voor XInput. Filtert PadForge's eigen virtuele controllers uit zijn eigen weergave.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly-iconenpakket</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Stick- en trigger-iconen afgeleid van "Xbox Series Button Icons and Controls" door Zacksly (CC BY 3.0)</value></data>
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptieve triggers</value></data>
@@ -1257,10 +1257,10 @@
   <data name="Pad_AT_Off_Tooltip" xml:space="preserve"><value>Geen weerstand. De trigger voelt normaal aan.</value></data>
   <data name="Pad_AT_Feedback_Tooltip" xml:space="preserve"><value>Constante weerstand vanaf de startpositie tot volledig ingedrukt. Sterkte bepaalt hoe hard de trigger terugduwt.</value></data>
   <data name="Pad_AT_Weapon_Tooltip" xml:space="preserve"><value>Wapengevoel. Trek door een zachte zone tot de eindpositie en dan een stevige klik. Gebruik start/eind om het klikpunt te bepalen en sterkte voor de klikkracht.</value></data>
-  <data name="Pad_AT_Vibration_Tooltip" xml:space="preserve"><value>Continue trilling zodra je de startpositie passeert. Frequentie bepaalt de pulsfrequentie; sterkte bepaalt de intensiteit.</value></data>
-  <data name="Pad_AT_MultiPosFeedback_Tooltip" xml:space="preserve"><value>Ratelende weerstand — afzonderlijke krachthobbels over het bereik van start tot eind. Het indrukken voelt als klikken door stoppunten in plaats van een doorlopende muur.</value></data>
+  <data name="Pad_AT_Vibration_Tooltip" xml:space="preserve"><value>Continue trilling zodra je de startpositie passeert. Frequentie bepaalt de pulsfrequentie. Sterkte bepaalt de intensiteit.</value></data>
+  <data name="Pad_AT_MultiPosFeedback_Tooltip" xml:space="preserve"><value>Ratelende weerstand. Afzonderlijke krachthobbels over het bereik van start tot eind. Het indrukken voelt als klikken door stoppunten in plaats van een doorlopende muur.</value></data>
   <data name="Pad_AT_Slope_Tooltip" xml:space="preserve"><value>Weerstand loopt op van licht bij de startpositie tot maximaal bij de eindpositie. Voorbij de eindpositie blijft de trigger op piekkracht.</value></data>
-  <data name="Pad_AT_MultiPosVibration_Tooltip" xml:space="preserve"><value>Hortende trilling — korte trillingsuitbarstingen verspreid over het bereik van start tot eind. Het indrukken voelt als het oversteken van afzonderlijke trillingszones in plaats van één doorlopende trilling.</value></data>
+  <data name="Pad_AT_MultiPosVibration_Tooltip" xml:space="preserve"><value>Hortende trilling. Korte trillingsuitbarstingen verspreid over het bereik van start tot eind. Het indrukken voelt als het oversteken van afzonderlijke trillingszones in plaats van één doorlopende trilling.</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>Verlichting</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Verlichting</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Stelt de basiskleur van de lightbar en het audiogedrag in op de toegewezen fysieke controller. Game-schrijfacties winnen altijd. Gebruikersinstellingen gelden wanneer geen spel de lightbar aanstuurt.</value></data>
@@ -1368,15 +1368,15 @@
   <data name="Pad_ResetLightbarRed" xml:space="preserve"><value>Rood herstellen</value></data>
   <data name="Pad_ResetLightbarGreen" xml:space="preserve"><value>Groen herstellen</value></data>
   <data name="Pad_ResetLightbarBlue" xml:space="preserve"><value>Blauw herstellen</value></data>
-  <data name="Pad_ResetAudioLowR" xml:space="preserve"><value>Zachte band — rood herstellen</value></data>
-  <data name="Pad_ResetAudioLowG" xml:space="preserve"><value>Zachte band — groen herstellen</value></data>
-  <data name="Pad_ResetAudioLowB" xml:space="preserve"><value>Zachte band — blauw herstellen</value></data>
-  <data name="Pad_ResetAudioMidR" xml:space="preserve"><value>Middenband — rood herstellen</value></data>
-  <data name="Pad_ResetAudioMidG" xml:space="preserve"><value>Middenband — groen herstellen</value></data>
-  <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Middenband — blauw herstellen</value></data>
-  <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Luide band — rood herstellen</value></data>
-  <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Luide band — groen herstellen</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Luide band — blauw herstellen</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Invoerreactief</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Uit</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Willekeurige kleur per druk</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Door palet bladeren</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Eén kleur per druk</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Invoerreactief herstellen</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Knipperkleur per druk</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>HidHide-cloaks behouden tussen PadForge-sessies. Handig wanneer een andere app (bijv. Steam) controllers scant terwijl PadForge gesloten is en je wilt dat de fysieke apparaten verborgen blijven. Standaard uit. De hoofdschakelaar hierboven middenin een sessie uitzetten maakt de apparaten direct weer zichtbaar.</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Apparaten verborgen houden tussen sessies</value></data>  <data name="Pad_AT_LoadGameCubePreset" xml:space="preserve"><value>GameCube-preset laden</value></data>  <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>Stelt Bereik en Kracht in op waarden die het fysieke klikgevoel van een echte GameCube-trigger nabootsen (begin ~56 %, einde ~63 %, max. kracht). Pas de schuifregelaars daarna aan als je een ander gevoel wilt.</value></data>
+  <data name="Pad_ResetAudioLowR" xml:space="preserve"><value>Zachte band rood herstellen</value></data>
+  <data name="Pad_ResetAudioLowG" xml:space="preserve"><value>Zachte band groen herstellen</value></data>
+  <data name="Pad_ResetAudioLowB" xml:space="preserve"><value>Zachte band blauw herstellen</value></data>
+  <data name="Pad_ResetAudioMidR" xml:space="preserve"><value>Middenband rood herstellen</value></data>
+  <data name="Pad_ResetAudioMidG" xml:space="preserve"><value>Middenband groen herstellen</value></data>
+  <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Middenband blauw herstellen</value></data>
+  <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Luide band rood herstellen</value></data>
+  <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Luide band groen herstellen</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Luide band blauw herstellen</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Invoerreactief</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Uit</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Willekeurige kleur per druk</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Door palet bladeren</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Eén kleur per druk</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Invoerreactief herstellen</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Knipperkleur per druk</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>HidHide-cloaks behouden tussen PadForge-sessies. Handig wanneer een andere app (bijv. Steam) controllers scant terwijl PadForge gesloten is en je wilt dat de fysieke apparaten verborgen blijven. Standaard uit. De hoofdschakelaar hierboven middenin een sessie uitzetten maakt de apparaten direct weer zichtbaar.</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Apparaten verborgen houden tussen sessies</value></data>  <data name="Pad_AT_LoadGameCubePreset" xml:space="preserve"><value>GameCube-preset laden</value></data>  <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>Stelt Bereik en Kracht in op waarden die het fysieke klikgevoel van een echte GameCube-trigger nabootsen (begin ~56 %, einde ~63 %, max. kracht). Pas de schuifregelaars daarna aan als je een ander gevoel wilt.</value></data>
 
 
 
@@ -1388,7 +1388,7 @@
 
   <!-- Shift-modus (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Shift-laag</value></data>
-  <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Voeg een Shift-laag toe — een tweede toewijzingstabel die actief is terwijl een knop wordt ingedrukt of geschakeld.</value></data>
+  <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Voeg een Shift-laag toe. Een tweede toewijzingstabel die actief is terwijl een knop wordt ingedrukt of geschakeld.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Basis</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift-laag</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Laagnaam</value></data>
@@ -1437,7 +1437,7 @@
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tik één keer om te activeren. De volgende toegewezen knopdruk vuurt op de laag, daarna automatische release.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Niet-toegewezen doelen van Basis overerven</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Ook de eigen toewijzing van de activator activeren</value></data>
-  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Indien aangevinkt stuurt de activatorknop nog steeds elke rij aan die hem als bron gebruikt — één druk wisselt de laag EN activeert de eigen toewijzing van de knop. Indien niet aangevinkt (standaard) wordt de druk alleen verbruikt door de laagwissel.</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Indien aangevinkt stuurt de activatorknop nog steeds elke rij aan die hem als bron gebruikt. Één druk wisselt de laag EN activeert de eigen toewijzing van de knop. Indien niet aangevinkt (standaard) wordt de druk alleen verbruikt door de laagwissel.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Indien aangevinkt vallen doelen die deze laag niet expliciet toewijst terug op de Basislaag. Indien niet aangevinkt (standaard) vervangt de laag Basis volledig en blijven niet-toegewezen doelen uit.</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse-triggers</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Stuurt motor-opdrachten per trigger (Xbox Impulse-triggers) door van de virtuele controller naar de toegewezen fysieke Xbox One-, Elite- of Series-controller. Door games gestuurde trigger-vibratie wordt automatisch doorgegeven. De regelaars hieronder schalen de sterkte per trigger.</value></data>
@@ -1544,7 +1544,7 @@
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Veegafstand (0..1)</value></data>
   <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Tijdsvenster voor veeg (ms)</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Radiale zones (wapenwiel-stijl)</value></data>
-  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Veeg vanaf het neerzetpunt van je vinger naar buiten in een sector. Zone 0 is bovenaan verankerd en zones lopen met de klok mee op. Elke vermelding in de kiezer toont de richting tussen haakjes als graden ten opzichte van boven — (0°) is boven, (90°) is rechts, (180°) is onder, (270°) is links. Er is steeds maar één zone actief; in een andere vegen laat de vorige los, zodat je in één veegbeweging door de zones kunt bladeren.</value></data>
+  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Veeg vanaf het neerzetpunt van je vinger naar buiten in een sector. Zone 0 is bovenaan verankerd en zones lopen met de klok mee op. Elke vermelding in de kiezer toont de richting tussen haakjes als graden ten opzichte van boven: (0°) is boven, (90°) is rechts, (180°) is onder, (270°) is links. Er is steeds maar één zone actief. In een andere vegen laat de vorige los, zodat je in één veegbeweging door de zones kunt bladeren.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Aantal zones</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Middendeadzone (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tik / Dubbele tik / Drievoudige tik</value></data>

@@ -165,9 +165,9 @@
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>프로필 "{0}"이(가) 업데이트되었습니다.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>프로필 로드됨: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>프로필이 기본값으로 되돌려졌습니다</value></data>
-  <data name="Status_VirtualController_Format" xml:space="preserve"><value>가상 컨트롤러 {0} — {1}</value></data>
+  <data name="Status_VirtualController_Format" xml:space="preserve"><value>가상 컨트롤러 {0}: {1}</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>"{0}"을(를) 가상 컨트롤러 {1}에 할당했습니다.</value></data>
-  <data name="Status_Unmapped_Format" xml:space="preserve"><value>매핑되지 않음 — {0}</value></data>
+  <data name="Status_Unmapped_Format" xml:space="preserve"><value>매핑되지 않음: {0}</value></data>
   <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>설정 로드 오류: {0}</value></data>
   <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>설정이 {0}에 저장되었습니다.</value></data>
   <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>설정 저장 오류: {0}</value></data>
@@ -277,7 +277,7 @@
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>정보</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>컨트롤러 매핑 유틸리티</value></data>
-  <data name="About_Tagline" xml:space="preserve"><value>x360ce의 현대적 포크 — SDL3, WPF, .NET 10으로 재구축</value></data>
+  <data name="About_Tagline" xml:space="preserve"><value>x360ce의 현대적 포크. SDL3, WPF, .NET 10으로 재구축</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge는 모든 입력 장치를 모든 가상 컨트롤러로 변환합니다. 게임패드, 조이스틱, 키보드, 마우스, 터치스크린을 가상 게임 컨트롤러(Xbox, PlayStation, 플라이트 스틱, 휠, 서드파티 게임패드) 또는 키보드+마우스/MIDI 출력으로 매핑하여 게임이 실제 하드웨어로 인식하게 합니다. HIDMaestro와 Windows MIDI Services로 구동됩니다. 컨트롤러 입력에는 SDL3, 키보드와 마우스 입력에는 Windows Raw Input, 게임별 장치 숨김에는 HidHide를 사용하며, 매핑, 데드존, 감도 곡선, 포스 피드백을 위한 Fluent Design 인터페이스를 제공합니다.</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>사용 기술</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
@@ -457,9 +457,9 @@
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>누른 채 반전</value></data>
   <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>직접 = 소스 디스크립터를 읽음; 증분 = 위/아래 버튼으로 누산기를 조정함; 누른 채 반전 = 수정자 버튼을 누르고 있는 동안 행의 출력을 반전함.</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>누르고 있는 동안 누산기를 위로 증가시키는 버튼</value></data>
-  <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>위 — 누르고 있는 동안 누산기를 위로 증가시키는 버튼.</value></data>
+  <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>위: 누르고 있는 동안 누산기를 위로 증가시키는 버튼.</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>누르고 있는 동안 누산기를 아래로 감소시키는 버튼</value></data>
-  <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>아래 — 누르고 있는 동안 누산기를 아래로 감소시키는 버튼.</value></data>
+  <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>아래: 누르고 있는 동안 누산기를 아래로 감소시키는 버튼.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>속도</value></data>
   <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>초당 단위의 스윕 속도. 0.5 = 2초 내 전체 범위; 2 = 0.5초 내 전체 범위.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>고정</value></data>
@@ -469,7 +469,7 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>최댓값</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>누산기의 상한. 1 = 전체 양수.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>누르고 있는 동안 행의 출력을 반전시키는 버튼</value></data>
-  <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>수정자 — 누르고 있는 동안 행의 출력 부호가 반전됩니다.</value></data>
+  <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>수정자: 누르고 있는 동안 행의 출력 부호가 반전됩니다.</value></data>
   <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ 소스 추가</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>이 행에 다른 물리적 입력을 추가합니다</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>이 소스를 제거합니다</value></data>
@@ -483,7 +483,7 @@
   <data name="Pad_Combine_Average_Name" xml:space="preserve"><value>평균</value></data>
   <data name="Pad_Combine_Average_Description" xml:space="preserve"><value>소스들 사이의 중간값</value></data>
   <data name="Pad_Combine_OR_Name" xml:space="preserve"><value>어느 하나</value></data>
-  <data name="Pad_Combine_OR_Description" xml:space="preserve"><value>어떤 소스든 활성화되면 실행 — 버튼에 적합</value></data>
+  <data name="Pad_Combine_OR_Description" xml:space="preserve"><value>어떤 소스든 활성화되면 실행. 버튼에 적합.</value></data>
   <data name="Pad_Combine_AND_Name" xml:space="preserve"><value>모두</value></data>
   <data name="Pad_Combine_AND_Description" xml:space="preserve"><value>모든 소스가 활성화될 때만 실행</value></data>
   <data name="Pad_Combine_XOR_Name" xml:space="preserve"><value>하나만</value></data>
@@ -512,7 +512,7 @@
   <data name="Pad_Formula_Chip_NegateA" xml:space="preserve"><value>첫 번째 소스를 음수로 변환</value></data>
   <data name="Pad_Formula_Chip_OpenGroup" xml:space="preserve"><value>그룹 열기</value></data>
   <data name="Pad_Formula_Chip_CloseGroup" xml:space="preserve"><value>그룹 닫기</value></data>
-  <data name="Pad_Formula_Chip_Half" xml:space="preserve"><value>0.5 — 절반</value></data>
+  <data name="Pad_Formula_Chip_Half" xml:space="preserve"><value>0.5: 절반</value></data>
   <data name="Pad_Formula_Chip_LessThan" xml:space="preserve"><value>미만</value></data>
   <data name="Pad_Formula_Chip_GreaterThan" xml:space="preserve"><value>초과</value></data>
   <data name="Pad_Formula_Chip_LessOrEqual" xml:space="preserve"><value>이하</value></data>
@@ -522,14 +522,14 @@
   <data name="Pad_Formula_Chip_BothConditions" xml:space="preserve"><value>두 조건 모두 참</value></data>
   <data name="Pad_Formula_Chip_EitherCondition" xml:space="preserve"><value>조건 중 하나 참</value></data>
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>참/거짓 반전</value></data>
-  <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>If — 패턴: (조건) ? 참일 때 : 거짓일 때</value></data>
+  <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>If, 패턴은 (조건) ? 참일 때 : 거짓일 때</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>if-then-else의 else 부분</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>절댓값 (부호 제거)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>두 값 중 작은 값</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>두 값 중 큰 값</value></data>
-  <data name="Pad_Formula_Chip_Clamp" xml:space="preserve"><value>범위 내로 제한 — clamp(value, low, high)</value></data>
+  <data name="Pad_Formula_Chip_Clamp" xml:space="preserve"><value>범위 내로 제한: clamp(value, low, high)</value></data>
   <data name="Pad_Formula_Chip_Sign" xml:space="preserve"><value>입력 부호에 따라 -1, 0 또는 +1</value></data>
-  <data name="Pad_Formula_Chip_Lerp" xml:space="preserve"><value>두 값 혼합 — lerp(a, b, mix0to1)</value></data>
+  <data name="Pad_Formula_Chip_Lerp" xml:space="preserve"><value>두 값 혼합: lerp(a, b, mix0to1)</value></data>
   <data name="Pad_Formula_Chip_Round" xml:space="preserve"><value>가장 가까운 정수로 반올림</value></data>
   <data name="Pad_Formula_Chip_Sqrt" xml:space="preserve"><value>제곱근</value></data>
   <data name="Pad_Formula_Preset_HalfScale_Name" xml:space="preserve"><value>절반 스케일</value></data>
@@ -545,9 +545,9 @@
   <data name="Pad_Formula_Preset_Difference_Name" xml:space="preserve"><value>차이</value></data>
   <data name="Pad_Formula_Preset_Difference_Tooltip" xml:space="preserve"><value>A에서 B를 뺀 값</value></data>
   <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>유휴 시 b 대체</value></data>
-  <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>A를 사용하되 — A가 정지 상태면 B로 대체합니다</value></data>
+  <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>A를 사용하되, A가 정지 상태면 B로 대체합니다</value></data>
   <data name="Pad_Formula_Preset_ThresholdGate_Name" xml:space="preserve"><value>임계값 게이트</value></data>
-  <data name="Pad_Formula_Preset_ThresholdGate_Tooltip" xml:space="preserve"><value>A가 절반을 넘으면 완전히 실행, 그렇지 않으면 0 — 축을 버튼으로 변환</value></data>
+  <data name="Pad_Formula_Preset_ThresholdGate_Tooltip" xml:space="preserve"><value>A가 절반을 넘으면 완전히 실행, 그렇지 않으면 0. 축을 버튼으로 변환.</value></data>
   <data name="Pad_Formula_Preset_BothPressed_Name" xml:space="preserve"><value>둘 다 눌림</value></data>
   <data name="Pad_Formula_Preset_BothPressed_Tooltip" xml:space="preserve"><value>A와 B가 모두 눌렸을 때만 실행</value></data>
   <data name="Pad_Formula_Preset_StrongerWins_Name" xml:space="preserve"><value>강한 쪽 우선</value></data>
@@ -802,8 +802,8 @@
 
   <!-- ═══ App-Level Messages ═══ -->
   <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge가 이미 실행 중입니다.</value></data>
-  <data name="App_FatalError" xml:space="preserve"><value>PadForge — 치명적 오류</value></data>
-  <data name="App_Error" xml:space="preserve"><value>PadForge — 오류</value></data>
+  <data name="App_FatalError" xml:space="preserve"><value>PadForge: 치명적 오류</value></data>
+  <data name="App_Error" xml:space="preserve"><value>PadForge: 오류</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>예기치 않은 오류가 발생했습니다:\n\n{0}\n\n{1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(추가 오류 {0}건이 표시되지 않음)</value></data>
 
@@ -1101,9 +1101,9 @@
   <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>출력 커브</value></data>
   <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>응답을 형성합니다. Linear = 통과. Aggressive = x²(느림은 느림 유지). Relaxed = √x(느림은 증폭, 빠름은 포화). Wide / ExtraWide는 그 사이. 가속과 함께 적용 가능.</value></data>
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>단위</value></data>
-  <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>감도 표시 단위. Multiplier는 내부 × 배율(1 = 기본). DegPerScreenTurn은 Steam 방식 — 화면을 한 바퀴 돌리는 데 필요한 컨트롤러의 물리적 회전 각도(도)입니다.</value></data>
+  <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>감도 표시 단위. Multiplier는 내부 × 배율(1 = 기본). DegPerScreenTurn은 Steam 방식: 화면을 한 바퀴 돌리는 데 필요한 컨트롤러의 물리적 회전 각도(도)입니다.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim 임계값</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>오른쪽 스틱 편향(0–100%)이 이 값 미만이면 자이로 출력을 0으로 만듭니다. 0 = 항상 켜짐. Steam의 “조준할 때만 자이로” 느낌 — 임계값을 넘었을 때만 자이로가 작동합니다.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>오른쪽 스틱 편향(0–100%)이 이 값 미만이면 자이로 출력을 0으로 만듭니다. 0 = 항상 켜짐. Steam의 “조준할 때만 자이로” 느낌. 임계값을 넘었을 때만 자이로가 작동합니다.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>자이로</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>자이로</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>이 패드의 모션 센서가 마우스나 스틱 출력을 어떻게 움직일지 조정하세요. 먼저 평평한 표면에서 보정해 정지 시 드리프트를 0으로 만든 다음, 감도와 스무딩, 활성화 규칙을 취향대로 다듬으세요.</value></data>
@@ -1113,17 +1113,17 @@
   <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
   <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>오른쪽 스틱을 기울인 동안에만 자이로를 활성화합니다. 0%면 비활성화(자이로 상시 켜짐).</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>좌표계</value></data>
-  <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = 컨트롤러 로컬 축. Player = 요(yaw)를 실제 수직축(중력)에 투영, 피치는 로컬 유지 — Jibb Smart 권장 기본값. 어떤 기울기에서도 자연스러움. World = 요와 피치 모두 월드 축에 투영.</value></data>
+  <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = 컨트롤러 로컬 축. Player = 요(yaw)를 실제 수직축(중력)에 투영, 피치는 로컬 유지. Jibb Smart 권장 기본값. 어떤 기울기에서도 자연스러움. World = 요와 피치 모두 월드 축에 투영.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>피치(Y) 반전</value></data>
-  <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>피치 축의 전역 반전. Player/World 투영 후에 적용 — 매핑 표의 소스별 Invert 플래그와 독립.</value></data>
+  <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>피치 축의 전역 반전. Player/World 투영 후에 적용. 매핑 표의 소스별 Invert 플래그와 독립.</value></data>
   <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>요 / 롤 (X) 반전</value></data>
   <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>요 축의 전역 반전. Roll, Gyro Horizontal 소스에도 적용.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>실세계 보정</value></data>
   <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>컨트롤러 1°의 물리 회전당 게임 내 회전(도). 0 = 비활성화. 1 = 1:1 (패드 90° 회전 → 게임 시점 90°). 게임마다 한 번, 패드를 360° 돌려 게임 시점도 360° 돌도록 조정해 설정.</value></data>
   <data name="Settings_GyroTightening" xml:space="preserve"><value>타이트닝</value></data>
-  <data name="Settings_GyroTightening_Tooltip" xml:space="preserve"><value>이 속도 미만에서 입력을 스무딩 버퍼 평균으로 완전히 대체 — 손떨림과 미세 드리프트 제거. 기본 3°/s.</value></data>
+  <data name="Settings_GyroTightening_Tooltip" xml:space="preserve"><value>이 속도 미만에서 입력을 스무딩 버퍼 평균으로 완전히 대체. 손떨림과 미세 드리프트 제거. 기본 3°/s.</value></data>
   <data name="Settings_GyroSmoothingThreshold" xml:space="preserve"><value>스무딩 임계값</value></data>
-  <data name="Settings_GyroSmoothingThreshold_Tooltip" xml:space="preserve"><value>이 속도 초과에서 입력을 원본 그대로 통과 — 빠른 회전의 정밀도 유지. 두 임계값 사이에서는 선형 보간. 기본 8°/s.</value></data>
+  <data name="Settings_GyroSmoothingThreshold_Tooltip" xml:space="preserve"><value>이 속도 초과에서 입력을 원본 그대로 통과. 빠른 회전의 정밀도 유지. 두 임계값 사이에서는 선형 보간. 기본 8°/s.</value></data>
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>스무딩 윈도우</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>스무딩 버퍼의 시간 창 길이. 클수록 = 타이트닝 임계 미만에서 더 강한 평활화, 작을수록 = 더 즉각적. 기본 50ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>활성화 버튼</value></data>
@@ -1238,9 +1238,9 @@
   <data name="Pad_AT_Feedback_Tooltip" xml:space="preserve"><value>시작 위치부터 완전히 누를 때까지 일정한 저항. 강도는 트리거가 밀어내는 정도를 설정합니다.</value></data>
   <data name="Pad_AT_Weapon_Tooltip" xml:space="preserve"><value>총기 트리거 느낌. 부드러운 영역을 거쳐 종료 위치까지 당긴 다음 단단한 클릭이 발생합니다. 시작/종료로 클릭 지점을, 강도로 클릭 힘을 설정합니다.</value></data>
   <data name="Pad_AT_Vibration_Tooltip" xml:space="preserve"><value>시작 위치를 넘으면 연속적인 진동이 발생합니다. 주파수는 펄스 속도를, 강도는 세기를 설정합니다.</value></data>
-  <data name="Pad_AT_MultiPosFeedback_Tooltip" xml:space="preserve"><value>래칫 저항 — 시작에서 종료 범위에 걸쳐 분리된 힘 돌기. 트리거를 당기면 연속된 벽을 미는 것이 아니라 디텐트를 클릭하며 지나가는 느낌입니다.</value></data>
+  <data name="Pad_AT_MultiPosFeedback_Tooltip" xml:space="preserve"><value>래칫 저항. 시작에서 종료 범위에 걸쳐 분리된 힘 돌기. 트리거를 당기면 연속된 벽을 미는 것이 아니라 디텐트를 클릭하며 지나가는 느낌입니다.</value></data>
   <data name="Pad_AT_Slope_Tooltip" xml:space="preserve"><value>저항이 시작 위치에서는 약하게, 종료 위치에서는 최대로 올라갑니다. 종료 위치 너머에서는 트리거가 최대 강도를 유지합니다.</value></data>
-  <data name="Pad_AT_MultiPosVibration_Tooltip" xml:space="preserve"><value>끊어지는 진동 — 시작에서 종료 범위에 걸쳐 짧은 진동 버스트가 배치됩니다. 트리거를 당기면 연속 진동이 아닌 개별 진동 구역을 가로지르는 느낌입니다.</value></data>
+  <data name="Pad_AT_MultiPosVibration_Tooltip" xml:space="preserve"><value>끊어지는 진동. 시작에서 종료 범위에 걸쳐 짧은 진동 버스트가 배치됩니다. 트리거를 당기면 연속 진동이 아닌 개별 진동 구역을 가로지르는 느낌입니다.</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>조명</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>조명</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>할당된 물리 컨트롤러의 라이트바 기본 색상과 오디오 동작을 설정합니다. 게임 쓰기가 항상 우선합니다. 사용자 설정은 게임이 라이트바를 구동하지 않을 때 적용됩니다.</value></data>
@@ -1348,15 +1348,15 @@
   <data name="Pad_ResetLightbarRed" xml:space="preserve"><value>빨강 초기화</value></data>
   <data name="Pad_ResetLightbarGreen" xml:space="preserve"><value>초록 초기화</value></data>
   <data name="Pad_ResetLightbarBlue" xml:space="preserve"><value>파랑 초기화</value></data>
-  <data name="Pad_ResetAudioLowR" xml:space="preserve"><value>저음 밴드 — 빨강 초기화</value></data>
-  <data name="Pad_ResetAudioLowG" xml:space="preserve"><value>저음 밴드 — 초록 초기화</value></data>
-  <data name="Pad_ResetAudioLowB" xml:space="preserve"><value>저음 밴드 — 파랑 초기화</value></data>
-  <data name="Pad_ResetAudioMidR" xml:space="preserve"><value>중음 밴드 — 빨강 초기화</value></data>
-  <data name="Pad_ResetAudioMidG" xml:space="preserve"><value>중음 밴드 — 초록 초기화</value></data>
-  <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>중음 밴드 — 파랑 초기화</value></data>
-  <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>고음 밴드 — 빨강 초기화</value></data>
-  <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>고음 밴드 — 초록 초기화</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>고음 밴드 — 파랑 초기화</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>입력 반응</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>끔</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>누를 때마다 랜덤 색상</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>팔레트 순회</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>누름마다 단일 색상</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>입력 반응 초기화</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>누름당 플래시 색상</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>PadForge 세션 사이에도 HidHide 숨김을 유지합니다. PadForge가 닫혀 있는 동안 다른 앱(예: Steam)이 컨트롤러를 검색해도 물리 장치를 계속 숨김 상태로 보여주려는 경우에 유용합니다. 기본값은 끄기. 세션 중 위의 마스터 스위치를 끄면 장치가 즉시 다시 표시됩니다.</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>실행 간 장치 숨김 유지</value></data>  <data name="Pad_AT_LoadGameCubePreset" xml:space="preserve"><value>게임큐브 프리셋 불러오기</value></data>  <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>범위와 강도를 실제 게임큐브 트리거의 물리적 클릭감과 일치하는 값으로 설정합니다(시작 ~56%, 끝 ~63%, 최대 강도). 다른 느낌을 원하면 이후에 슬라이더를 조정하세요.</value></data>
+  <data name="Pad_ResetAudioLowR" xml:space="preserve"><value>저음 밴드 빨강 초기화</value></data>
+  <data name="Pad_ResetAudioLowG" xml:space="preserve"><value>저음 밴드 초록 초기화</value></data>
+  <data name="Pad_ResetAudioLowB" xml:space="preserve"><value>저음 밴드 파랑 초기화</value></data>
+  <data name="Pad_ResetAudioMidR" xml:space="preserve"><value>중음 밴드 빨강 초기화</value></data>
+  <data name="Pad_ResetAudioMidG" xml:space="preserve"><value>중음 밴드 초록 초기화</value></data>
+  <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>중음 밴드 파랑 초기화</value></data>
+  <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>고음 밴드 빨강 초기화</value></data>
+  <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>고음 밴드 초록 초기화</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>고음 밴드 파랑 초기화</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>입력 반응</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>끔</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>누를 때마다 랜덤 색상</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>팔레트 순회</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>누름마다 단일 색상</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>입력 반응 초기화</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>누름당 플래시 색상</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>PadForge 세션 사이에도 HidHide 숨김을 유지합니다. PadForge가 닫혀 있는 동안 다른 앱(예: Steam)이 컨트롤러를 검색해도 물리 장치를 계속 숨김 상태로 보여주려는 경우에 유용합니다. 기본값은 끄기. 세션 중 위의 마스터 스위치를 끄면 장치가 즉시 다시 표시됩니다.</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>실행 간 장치 숨김 유지</value></data>  <data name="Pad_AT_LoadGameCubePreset" xml:space="preserve"><value>게임큐브 프리셋 불러오기</value></data>  <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>범위와 강도를 실제 게임큐브 트리거의 물리적 클릭감과 일치하는 값으로 설정합니다(시작 ~56%, 끝 ~63%, 최대 강도). 다른 느낌을 원하면 이후에 슬라이더를 조정하세요.</value></data>
 
 
 
@@ -1417,7 +1417,7 @@
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>한 번 탭하여 활성화. 다음 매핑된 버튼 누름이 레이어에서 실행되고 자동 해제됩니다.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>매핑되지 않은 대상을 기본에서 상속</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>활성화 버튼의 자체 매핑도 실행</value></data>
-  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>선택하면 활성화 버튼이 소스로 사용되는 모든 행을 계속 구동합니다 — 한 번 누르면 레이어를 변경하고 버튼의 자체 매핑도 실행합니다. 선택 해제(기본값)하면 누름은 레이어 변경에서만 소비됩니다.</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>선택하면 활성화 버튼이 소스로 사용되는 모든 행을 계속 구동합니다. 한 번 누르면 레이어를 변경하고 버튼의 자체 매핑도 실행합니다. 선택 해제(기본값)하면 누름은 레이어 변경에서만 소비됩니다.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>체크하면 이 레이어가 명시적으로 매핑하지 않은 대상이 기본 레이어로 폴스루됩니다. 체크 해제 시(기본값) 레이어가 기본을 완전히 대체하고 매핑되지 않은 대상은 꺼진 상태로 유지됩니다.</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>임펄스 트리거</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>가상 컨트롤러에서 할당된 물리적 Xbox One, Elite 또는 Series 컨트롤러로 트리거별 모터 명령(Xbox 임펄스 트리거)을 전달합니다. 게임이 보내는 트리거 진동은 자동으로 통과합니다. 아래 컨트롤로 트리거별 강도를 조절할 수 있습니다.</value></data>
@@ -1524,7 +1524,7 @@
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>스와이프 거리(0..1)</value></data>
   <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>스와이프 시간 창(ms)</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>방사형 영역(웨폰 휠 방식)</value></data>
-  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>손가락이 닿은 지점에서 바깥쪽으로 부채꼴 영역으로 슬라이드하세요. 0번 영역은 위쪽에 고정되어 있고 영역은 시계 방향으로 증가합니다. 픽커의 각 항목은 괄호 안에 위쪽 기준 각도(도 단위)로 방향을 표시합니다 — (0°)는 위, (90°)는 오른쪽, (180°)는 아래, (270°)는 왼쪽입니다. 한 번에 하나의 영역만 유지되며, 다른 영역으로 슬라이드하면 이전 영역이 해제되므로 한 번의 스와이프로 여러 영역을 순환할 수 있습니다.</value></data>
+  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>손가락이 닿은 지점에서 바깥쪽으로 부채꼴 영역으로 슬라이드하세요. 0번 영역은 위쪽에 고정되어 있고 영역은 시계 방향으로 증가합니다. 픽커의 각 항목은 괄호 안에 위쪽 기준 각도(도 단위)로 방향을 표시합니다: (0°)는 위, (90°)는 오른쪽, (180°)는 아래, (270°)는 왼쪽입니다. 한 번에 하나의 영역만 유지되며, 다른 영역으로 슬라이드하면 이전 영역이 해제되므로 한 번의 스와이프로 여러 영역을 순환할 수 있습니다.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>영역 수</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>중앙 데드존(0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>탭 / 더블 탭 / 트리플 탭</value></data>

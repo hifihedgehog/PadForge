@@ -165,9 +165,9 @@
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>Profilo "{0}" aggiornato.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Profilo caricato: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>Profilo ripristinato a Predefinito</value></data>
-  <data name="Status_VirtualController_Format" xml:space="preserve"><value>Controller virtuale {0} — {1}</value></data>
+  <data name="Status_VirtualController_Format" xml:space="preserve"><value>Controller virtuale {0}: {1}</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>"{0}" assegnato al controller virtuale {1}.</value></data>
-  <data name="Status_Unmapped_Format" xml:space="preserve"><value>Non assegnato — {0}</value></data>
+  <data name="Status_Unmapped_Format" xml:space="preserve"><value>Non assegnato: {0}</value></data>
   <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>Errore nel caricamento delle impostazioni: {0}</value></data>
   <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>Impostazioni salvate in {0}.</value></data>
   <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>Errore nel salvataggio delle impostazioni: {0}</value></data>
@@ -256,7 +256,7 @@
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Queste applicazioni possono ancora vedere i dispositivi nascosti. PadForge è sempre consentito automaticamente.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Aggiungi...</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>Driver HIDMaestro</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Motore di controller HID virtuale in modalità utente. Integrato in PadForge.App — installato automaticamente alla prima creazione di un controller virtuale. Sostituisce ViGEmBus e vJoy in v3.</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Motore di controller HID virtuale in modalità utente. Integrato in PadForge.App. Installato automaticamente alla prima creazione di un controller virtuale. Sostituisce ViGEmBus e vJoy in v3.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>Runtime SDK per output dispositivi MIDI virtuali. Scaricato da GitHub (~210 MB).</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Richiede Windows 11 24H2 (build 26100) o successivo</value></data>
@@ -277,8 +277,8 @@
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>Informazioni</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>Utilità di mappatura controller</value></data>
-  <data name="About_Tagline" xml:space="preserve"><value>Fork moderno di x360ce — ricostruito con SDL3, WPF e .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge trasforma qualsiasi dispositivo di input in qualsiasi controller virtuale. Gamepad, joystick, tastiere, mouse e touchscreen vengono mappati su controller di gioco virtuali (Xbox, PlayStation, cloche, volanti, gamepad di terze parti) o su uscita tastiera+mouse / MIDI che i giochi trattano come hardware reale — grazie a HIDMaestro e Windows MIDI Services. Utilizza SDL3 per l'input dei controller, Windows Raw Input per tastiera e mouse, HidHide per nascondere i dispositivi per gioco, e offre un'interfaccia moderna Fluent Design per la mappatura, le zone morte, le curve di sensibilità e il force feedback.</value></data>
+  <data name="About_Tagline" xml:space="preserve"><value>Fork moderno di x360ce, ricostruito con SDL3, WPF e .NET 10</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge trasforma qualsiasi dispositivo di input in qualsiasi controller virtuale. Gamepad, joystick, tastiere, mouse e touchscreen vengono mappati su controller di gioco virtuali (Xbox, PlayStation, cloche, volanti, gamepad di terze parti) o su uscita tastiera+mouse / MIDI che i giochi trattano come hardware reale. Grazie a HIDMaestro e Windows MIDI Services. Utilizza SDL3 per l'input dei controller, Windows Raw Input per tastiera e mouse, HidHide per nascondere i dispositivi per gioco, e offre un'interfaccia moderna Fluent Design per la mappatura, le zone morte, le curve di sensibilità e il force feedback.</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Realizzato con</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
   <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime e framework WPF</value></data>
@@ -295,7 +295,7 @@
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm per il data binding</value></data>
   <data name="About_License" xml:space="preserve"><value>Licenza</value></data>
-  <data name="About_LicenseText" xml:space="preserve"><value>Questo software è concesso in licenza sotto CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). I modelli 3D dei controller sono adattati da Handheld Companion (CC BY-NC-SA 4.0). Le risorse 2D dei controller provengono da Gamepad-Asset-Pack di AL2009man (MIT). Il codice originale è un fork di x360ce (MIT). SDL3 è concesso in licenza sotto la zlib License. HIDMaestro, Windows MIDI Services, HidHide, HelixToolkit e WPF UI sono concessi in licenza sotto la MIT License. OpenXInput include solo un disclaimer di marchio dal progetto upstream; ridistribuito così com'è agli stessi termini.</value></data>
+  <data name="About_LicenseText" xml:space="preserve"><value>Questo software è concesso in licenza sotto CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). I modelli 3D dei controller sono adattati da Handheld Companion (CC BY-NC-SA 4.0). Le risorse 2D dei controller provengono da Gamepad-Asset-Pack di AL2009man (MIT). Il codice originale è un fork di x360ce (MIT). SDL3 è concesso in licenza sotto la zlib License. HIDMaestro, Windows MIDI Services, HidHide, HelixToolkit e WPF UI sono concessi in licenza sotto la MIT License. OpenXInput include solo un disclaimer di marchio dal progetto upstream. Ridistribuito così com'è agli stessi termini.</value></data>
 
   <!-- ═══ Device Types ═══ -->
   <data name="DeviceType_Gamepad" xml:space="preserve"><value>Gamepad</value></data>
@@ -327,7 +327,7 @@
   <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Cambia assegnazione</value></data>
   <data name="Devices_InputMode" xml:space="preserve"><value>Modalità di input</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>Forza modalità joystick raw (ignora rimappatura gamepad)</value></data>
-  <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Legge gli indici HID grezzi invece della mappatura gamepad di SDL — usare quando SDL identifica erroneamente il layout di pulsanti/assi</value></data>
+  <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Legge gli indici HID grezzi invece della mappatura gamepad di SDL. Usare quando SDL identifica erroneamente il layout di pulsanti/assi.</value></data>
   <data name="Devices_InputHiding" xml:space="preserve"><value>Nascondimento input</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Nascondi ai giochi (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>Nasconde completamente questo dispositivo alle altre applicazioni tramite il driver HidHide</value></data>
@@ -401,14 +401,14 @@
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Trovate {0} interfacce HID.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Enumerazione fallita: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>Estrazione fallita: {0}</value></data>
-  <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>Impossibile analizzare il JSON del profilo estratto — nulla è stato salvato.</value></data>
+  <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>Impossibile analizzare il JSON del profilo estratto. Nulla è stato salvato.</value></data>
   <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>Personalizza</value></data>
   <data name="Pad_ExtendedCustomizeTooltip" xml:space="preserve"><value>Abilita i campi di sostituzione di identità e layout qui sotto. Se disattivato, il controller virtuale usa l'identità integrata e il descrittore HID del profilo selezionato esattamente come distribuito da HIDMaestro.</value></data>
   <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>Ripristina tutti i campi di sostituzione ai valori del catalogo del profilo attuale (nome prodotto, VID, PID, numero di levette/grilletti/POV/pulsanti) e disattiva la sostituzione OEM.</value></data>
   <data name="Pad_ExtendedProductString" xml:space="preserve"><value>Nome prodotto</value></data>
   <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>Sostituisce la stringa iProduct che il sistema operativo segnala ai giochi e a joy.cpl. Determina il FriendlyName in Gestione dispositivi quando non è impostata una descrizione separata.</value></data>
   <data name="Pad_ExtendedOemOverride" xml:space="preserve"><value>Sostituisci OEM</value></data>
-  <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>Rivendica la voce della tabella OEM di DirectInput per la VID:PID del profilo. joy.cpl e DirectInput leggono quella tabella prima della stringa iProduct HID — abilita per far prevalere il nome prodotto qui sopra. Disattivato per impostazione predefinita.</value></data>
+  <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>Rivendica la voce della tabella OEM di DirectInput per la VID:PID del profilo. joy.cpl e DirectInput leggono quella tabella prima della stringa iProduct HID. Abilita per far prevalere il nome prodotto qui sopra. Disattivato per impostazione predefinita.</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
@@ -435,7 +435,7 @@
   <data name="Pad_RightMotor" xml:space="preserve"><value>Motore destro</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Mappa tutto</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mappa: {0}</value></data>
-  <data name="Pad_MapAllTooltip" xml:space="preserve"><value>Registra tutte le mappature in sequenza — premi un pulsante/asse per ogni richiesta</value></data>
+  <data name="Pad_MapAllTooltip" xml:space="preserve"><value>Registra tutte le mappature in sequenza. Premi un pulsante/asse per ogni richiesta.</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Registra tutte le mappature una per una in sequenza</value></data>
   <data name="Pad_MappingHint" xml:space="preserve"><value>Clicca su una riga di mappatura e premi un pulsante/asse sul controller per assegnarlo.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Copia tutte le mappature e le impostazioni negli appunti</value></data>
@@ -457,9 +457,9 @@
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Inverti al mantenimento</value></data>
   <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Diretto = legge il descrittore della sorgente; Incrementale = incrementa un accumulatore con i pulsanti Su/Giù; Inverti al mantenimento = inverte l'uscita della riga mentre è premuto un pulsante modificatore.</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>Pulsante che incrementa l'accumulatore verso l'alto mentre è tenuto premuto</value></data>
-  <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Su — pulsante che incrementa l'accumulatore verso l'alto mentre è tenuto premuto.</value></data>
+  <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Su: pulsante che incrementa l'accumulatore verso l'alto mentre è tenuto premuto.</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Pulsante che decrementa l'accumulatore verso il basso mentre è tenuto premuto</value></data>
-  <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Giù — pulsante che decrementa l'accumulatore verso il basso mentre è tenuto premuto.</value></data>
+  <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Giù: pulsante che decrementa l'accumulatore verso il basso mentre è tenuto premuto.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Velocità</value></data>
   <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Velocità di scorrimento in unità al secondo. 0,5 = intervallo completo in 2 s; 2 = intervallo completo in 0,5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Fisso</value></data>
@@ -469,7 +469,7 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Limite superiore dell'accumulatore. 1 = positivo completo.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Pulsante che inverte l'uscita della riga mentre è tenuto premuto</value></data>
-  <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modificatore — mentre è tenuto premuto, l'uscita della riga cambia segno.</value></data>
+  <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modificatore: mentre è tenuto premuto, l'uscita della riga cambia segno.</value></data>
   <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Aggiungi sorgente</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Aggiungi un altro ingresso fisico a questa riga</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Rimuovi questa sorgente</value></data>
@@ -483,7 +483,7 @@
   <data name="Pad_Combine_Average_Name" xml:space="preserve"><value>Media</value></data>
   <data name="Pad_Combine_Average_Description" xml:space="preserve"><value>A metà strada tra le sorgenti</value></data>
   <data name="Pad_Combine_OR_Name" xml:space="preserve"><value>Qualsiasi</value></data>
-  <data name="Pad_Combine_OR_Description" xml:space="preserve"><value>Si attiva quando qualsiasi sorgente è attiva — ideale per i pulsanti</value></data>
+  <data name="Pad_Combine_OR_Description" xml:space="preserve"><value>Si attiva quando qualsiasi sorgente è attiva. Ideale per i pulsanti.</value></data>
   <data name="Pad_Combine_AND_Name" xml:space="preserve"><value>Entrambe</value></data>
   <data name="Pad_Combine_AND_Description" xml:space="preserve"><value>Si attiva solo quando tutte le sorgenti sono attive</value></data>
   <data name="Pad_Combine_XOR_Name" xml:space="preserve"><value>Solo una</value></data>
@@ -512,7 +512,7 @@
   <data name="Pad_Formula_Chip_NegateA" xml:space="preserve"><value>Negare la prima sorgente</value></data>
   <data name="Pad_Formula_Chip_OpenGroup" xml:space="preserve"><value>Apri gruppo</value></data>
   <data name="Pad_Formula_Chip_CloseGroup" xml:space="preserve"><value>Chiudi gruppo</value></data>
-  <data name="Pad_Formula_Chip_Half" xml:space="preserve"><value>0,5 — metà</value></data>
+  <data name="Pad_Formula_Chip_Half" xml:space="preserve"><value>0,5: metà</value></data>
   <data name="Pad_Formula_Chip_LessThan" xml:space="preserve"><value>Minore di</value></data>
   <data name="Pad_Formula_Chip_GreaterThan" xml:space="preserve"><value>Maggiore di</value></data>
   <data name="Pad_Formula_Chip_LessOrEqual" xml:space="preserve"><value>Minore o uguale a</value></data>
@@ -522,14 +522,14 @@
   <data name="Pad_Formula_Chip_BothConditions" xml:space="preserve"><value>Entrambe le condizioni vere</value></data>
   <data name="Pad_Formula_Chip_EitherCondition" xml:space="preserve"><value>Una delle condizioni vera</value></data>
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Invertire vero/falso</value></data>
-  <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Se — schema: (condizione) ? allora : altrimenti</value></data>
+  <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Se, con schema (condizione) ? allora : altrimenti</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Parte altrimenti di un se-allora-altrimenti</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Modulo (elimina il segno)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Il minore di due valori</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Il maggiore di due valori</value></data>
-  <data name="Pad_Formula_Chip_Clamp" xml:space="preserve"><value>Mantenere entro un intervallo — clamp(value, low, high)</value></data>
+  <data name="Pad_Formula_Chip_Clamp" xml:space="preserve"><value>Mantenere entro un intervallo: clamp(value, low, high)</value></data>
   <data name="Pad_Formula_Chip_Sign" xml:space="preserve"><value>-1, 0 o +1 dal segno dell'ingresso</value></data>
-  <data name="Pad_Formula_Chip_Lerp" xml:space="preserve"><value>Mescolare due valori — lerp(a, b, mix0to1)</value></data>
+  <data name="Pad_Formula_Chip_Lerp" xml:space="preserve"><value>Mescolare due valori: lerp(a, b, mix0to1)</value></data>
   <data name="Pad_Formula_Chip_Round" xml:space="preserve"><value>Arrotondare al numero intero più vicino</value></data>
   <data name="Pad_Formula_Chip_Sqrt" xml:space="preserve"><value>Radice quadrata</value></data>
   <data name="Pad_Formula_Preset_HalfScale_Name" xml:space="preserve"><value>Scala a metà</value></data>
@@ -545,9 +545,9 @@
   <data name="Pad_Formula_Preset_Difference_Name" xml:space="preserve"><value>Differenza</value></data>
   <data name="Pad_Formula_Preset_Difference_Tooltip" xml:space="preserve"><value>A meno B</value></data>
   <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>a salvo riposo</value></data>
-  <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>Usa A — ma se A è a riposo, ricadi su B</value></data>
+  <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>Usa A, ma se A è a riposo, ricadi su B</value></data>
   <data name="Pad_Formula_Preset_ThresholdGate_Name" xml:space="preserve"><value>Soglia di attivazione</value></data>
-  <data name="Pad_Formula_Preset_ThresholdGate_Tooltip" xml:space="preserve"><value>Si attiva completamente se A supera la metà, altrimenti zero — trasforma un asse in un pulsante</value></data>
+  <data name="Pad_Formula_Preset_ThresholdGate_Tooltip" xml:space="preserve"><value>Si attiva completamente se A supera la metà, altrimenti zero. Trasforma un asse in un pulsante.</value></data>
   <data name="Pad_Formula_Preset_BothPressed_Name" xml:space="preserve"><value>Entrambi premuti</value></data>
   <data name="Pad_Formula_Preset_BothPressed_Tooltip" xml:space="preserve"><value>Si attiva solo quando A e B sono entrambi premuti</value></data>
   <data name="Pad_Formula_Preset_StrongerWins_Name" xml:space="preserve"><value>Il più forte vince</value></data>
@@ -562,7 +562,7 @@
   <data name="Pad_Formula_Var_NotYetMapped" xml:space="preserve"><value>non ancora mappato</value></data>
   <data name="Pad_Formula_Error_UnexpectedTokenAtEnd" xml:space="preserve"><value>Token imprevisto alla posizione {0}: '{1}'</value></data>
   <data name="Pad_Formula_Error_InvalidNumber" xml:space="preserve"><value>Numero non valido '{0}' in {1}</value></data>
-  <data name="Pad_Formula_Error_SingleEqualsNotSupported" xml:space="preserve"><value>'=' singolo non supportato in {0}; usare '==' per l'uguaglianza</value></data>
+  <data name="Pad_Formula_Error_SingleEqualsNotSupported" xml:space="preserve"><value>'=' singolo non supportato in {0}. Usare '==' per l'uguaglianza.</value></data>
   <data name="Pad_Formula_Error_UnexpectedCharacter" xml:space="preserve"><value>Carattere imprevisto '{0}' in {1}</value></data>
   <data name="Pad_Formula_Error_ExpectedColonInTernary" xml:space="preserve"><value>Atteso ':' nell'espressione ternaria</value></data>
   <data name="Pad_Formula_Error_ExpectedRParen" xml:space="preserve"><value>Atteso ')'</value></data>
@@ -643,7 +643,7 @@
   <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Attiva/disattiva overlay touchpad</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Pulsanti</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Combinazione tasti</value></data>
-  <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Combinazione tasti nel formato {Tasto1}{Tasto2} — modificabile</value></data>
+  <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Combinazione tasti nel formato {Tasto1}{Tasto2}. Modificabile.</value></data>
   <data name="Macro_KeyComboHint" xml:space="preserve"><value>Seleziona un tasto per aggiungerlo. Esempio: {Control}{Alt}{Delete}</value></data>
   <data name="Macro_Duration" xml:space="preserve"><value>Durata</value></data>
   <data name="Macro_Axis" xml:space="preserve"><value>Asse</value></data>
@@ -659,7 +659,7 @@
   <data name="Macro_Device" xml:space="preserve"><value>Dispositivo</value></data>
   <data name="Macro_VolumeLimit" xml:space="preserve"><value>Limite volume</value></data>
   <data name="Macro_Process" xml:space="preserve"><value>Processo</value></data>
-  <data name="Macro_ProcessTooltip" xml:space="preserve"><value>Nome del processo senza .exe — il menu a tendina mostra i processi con sessioni audio attive</value></data>
+  <data name="Macro_ProcessTooltip" xml:space="preserve"><value>Nome del processo senza .exe. Il menu a tendina mostra i processi con sessioni audio attive.</value></data>
   <data name="Macro_MouseLeft" xml:space="preserve"><value>Sinistro</value></data>
   <data name="Macro_MouseRight" xml:space="preserve"><value>Destro</value></data>
   <data name="Macro_MouseMiddle" xml:space="preserve"><value>Centrale</value></data>
@@ -675,7 +675,7 @@
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Sensibilità</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Nuova macro</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Registra attivatore</value></data>
-  <data name="Macro_NotSet" xml:space="preserve"><value>Non impostato — clicca Registra</value></data>
+  <data name="Macro_NotSet" xml:space="preserve"><value>Non impostato. Clicca Registra.</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Pulsante {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(nessuno)</value></data>
   <data name="Macro_DeviceAxis_Format" xml:space="preserve"><value>Asse dispositivo {0}</value></data>
@@ -739,7 +739,7 @@
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Ferma vibrazione</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Rilascia qualsiasi sovrapposizione di vibrazione attiva sullo slot assegnato. Da abbinare a un'azione Sticky di vibrazione per rilasciare il mantenimento tramite un'altra macro.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Imposta giroscopio attivato</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Imposta lo stato di attivazione del giroscopio dello slot da una macro. Attiva/disattiva inverte lo stato corrente; Attivato forza l'attivazione; Disattivato forza la disattivazione. Indipendente dal pulsante di attivazione della scheda Gyro — le due fonti si combinano con OR, quindi nessuna può disattivare ciò che l'altra ha attivato.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Imposta lo stato di attivazione del giroscopio dello slot da una macro. Attiva/disattiva inverte lo stato corrente. Attivato forza l'attivazione. Disattivato forza la disattivazione. Indipendente dal pulsante di attivazione della scheda Gyro. Le due fonti si combinano con OR, quindi nessuna può disattivare ciò che l'altra ha attivato.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Modalità</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Attiva/disattiva</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Attivato</value></data>
@@ -802,8 +802,8 @@
 
   <!-- ═══ App-Level Messages ═══ -->
   <data name="App_AlreadyRunning" xml:space="preserve"><value>PadForge è già in esecuzione.</value></data>
-  <data name="App_FatalError" xml:space="preserve"><value>PadForge — Errore fatale</value></data>
-  <data name="App_Error" xml:space="preserve"><value>PadForge — Errore</value></data>
+  <data name="App_FatalError" xml:space="preserve"><value>PadForge: Errore fatale</value></data>
+  <data name="App_Error" xml:space="preserve"><value>PadForge: Errore</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Si è verificato un errore imprevisto:\n\n{0}\n\n{1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} errore/i aggiuntivo/i soppresso/i)</value></data>
 
@@ -1109,7 +1109,7 @@
   <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Giroscopio attuale</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Accelerometro attuale</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Sensibilità orizzontale</value></data>
-  <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Scala il contributo orizzontale (Yaw + Roll) del giroscopio. 1,0 lascia la frequenza invariata; valori maggiori amplificano, minori attenuano. Si applica all'intero dispositivo.</value></data>
+  <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Scala il contributo orizzontale (Yaw + Roll) del giroscopio. 1,0 lascia la frequenza invariata. Valori maggiori amplificano, minori attenuano. Si applica all'intero dispositivo.</value></data>
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Sensibilità verticale</value></data>
   <data name="Settings_GyroSensitivityV_Tooltip" xml:space="preserve"><value>Scala il contributo verticale (Pitch) del giroscopio. Separato da orizzontale per regolare gli assi X e Y in modo indipendente.</value></data>
   <data name="Settings_GyroDeadZone" xml:space="preserve"><value>Zona morta</value></data>
@@ -1117,7 +1117,7 @@
   <data name="Settings_GyroSmoothing" xml:space="preserve"><value>Smussatura</value></data>
   <data name="Settings_GyroSmoothing_Tooltip" xml:space="preserve"><value>Filtro EMA a polo singolo sul rateo del giroscopio. 0 = disattivato (segnale grezzo, latenza minima). Valori più alti riducono il jitter ma aggiungono ritardo. 0,5 è un buon punto di partenza se il cursore vibra.</value></data>
   <data name="Settings_GyroAcceleration" xml:space="preserve"><value>Accelerazione</value></data>
-  <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>Guadagno dipendente dalla velocità. 0 = disattivato (scaling lineare). Valori più alti lasciano i movimenti lenti invariati e amplificano quelli rapidi — utile per combinare mira di precisione con rotazioni veloci.</value></data>
+  <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>Guadagno dipendente dalla velocità. 0 = disattivato (scaling lineare). Valori più alti lasciano i movimenti lenti invariati e amplificano quelli rapidi. Utile per combinare mira di precisione con rotazioni veloci.</value></data>
   <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>Curva di output</value></data>
   <data name="Settings_GyroOutputCurve_Tooltip" xml:space="preserve"><value>Modella la risposta. Linear = passante. Aggressive = x² (lento resta lento). Relaxed = √x (lento amplifica, rapido satura). Wide / ExtraWide tra aggressive e saturata. Si combina con l'Accelerazione.</value></data>
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Unità</value></data>
@@ -1133,27 +1133,27 @@
   <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
   <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>Attiva il giroscopio solo quando lo stick destro è deflesso. 0% disattiva (giroscopio sempre attivo).</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Spazio</value></data>
-  <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = assi grezzi del controller. Player = lo yaw è proiettato sulla verticale reale (gravità); il pitch resta locale — predefinito consigliato da Jibb Smart per un feel naturale a qualsiasi inclinazione. World = yaw e pitch entrambi proiettati sugli assi del mondo.</value></data>
+  <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = assi grezzi del controller. Player = lo yaw è proiettato sulla verticale reale (gravità), il pitch resta locale. Predefinito consigliato da Jibb Smart per un feel naturale a qualsiasi inclinazione. World = yaw e pitch entrambi proiettati sugli assi del mondo.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Inverti Pitch (Y)</value></data>
-  <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Inversione globale del pitch. Si applica dopo la proiezione Player/World — indipendente dai flag Invert per sorgente nella tabella di mappatura.</value></data>
+  <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Inversione globale del pitch. Si applica dopo la proiezione Player/World, indipendente dai flag Invert per sorgente nella tabella di mappatura.</value></data>
   <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>Inverti Yaw / Roll (X)</value></data>
   <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>Inversione globale dello yaw. Copre anche le sorgenti Roll e Gyro Horizontal.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Calibrazione reale</value></data>
   <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>Gradi in gioco per grado fisico di rotazione del controller. 0 = disattivato. 1 = 1:1 (ruoti il pad di 90°, la vista ruota di 90°). Calibra una volta per gioco ruotando il pad di 360° e regolando finché la vista in gioco ruota anch'essa di 360°.</value></data>
   <data name="Settings_GyroTightening" xml:space="preserve"><value>Stringimento</value></data>
-  <data name="Settings_GyroTightening_Tooltip" xml:space="preserve"><value>Sotto questa velocità l'input è completamente sostituito dalla media del buffer di smussatura — elimina tremori della mano e micro-deriva. Predefinito 3°/s.</value></data>
+  <data name="Settings_GyroTightening_Tooltip" xml:space="preserve"><value>Sotto questa velocità l'input è completamente sostituito dalla media del buffer di smussatura. Elimina tremori della mano e micro-deriva. Predefinito 3°/s.</value></data>
   <data name="Settings_GyroSmoothingThreshold" xml:space="preserve"><value>Soglia di smussatura</value></data>
-  <data name="Settings_GyroSmoothingThreshold_Tooltip" xml:space="preserve"><value>Sopra questa velocità l'input passa grezzo — le rotazioni veloci mantengono precisione. Tra le soglie si mescola linearmente. Predefinito 8°/s.</value></data>
+  <data name="Settings_GyroSmoothingThreshold_Tooltip" xml:space="preserve"><value>Sopra questa velocità l'input passa grezzo. Le rotazioni veloci mantengono precisione. Tra le soglie si mescola linearmente. Predefinito 8°/s.</value></data>
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Finestra di smussatura</value></data>
-  <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Durata della finestra del buffer. Più grande = più smussatura sotto la soglia di stringimento; più piccola = più diretto. Predefinito 50 ms.</value></data>
+  <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Durata della finestra del buffer. Più grande = più smussatura sotto la soglia di stringimento. Più piccola = più diretto. Predefinito 50 ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Pulsante di attivazione</value></data>
   <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Descrittore di un pulsante che vincola l'uscita del giroscopio: il giroscopio attiva solo mentre questo pulsante è tenuto. Vuoto = nessun vincolo. Composto in AND con la soglia di deflessione dello stick sopra.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Modalità di attivazione</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Tieni premuto: il giroscopio si attiva mentre il pulsante di attivazione è premuto. Attiva/disattiva: ogni pressione attiva o disattiva il giroscopio; il rilascio non fa nulla. Attiva/disattiva è persistente per ciclo di polling e si reimposta al cambio di profilo.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Tieni premuto: il giroscopio si attiva mentre il pulsante di attivazione è premuto. Attiva/disattiva: ogni pressione attiva o disattiva il giroscopio, e il rilascio non fa nulla. Attiva/disattiva è persistente per ciclo di polling e si reimposta al cambio di profilo.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Tieni premuto</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Attiva/disattiva</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Attivazione</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Vincoli opzionali che limitano quando il giroscopio è attivo. Sia la deflessione dello stick destro sia un pulsante di attivazione possono vincolare l'uscita; configura uno o entrambi. Se sono configurati entrambi, devono essere attivi contemporaneamente.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Vincoli opzionali che limitano quando il giroscopio è attivo. Sia la deflessione dello stick destro sia un pulsante di attivazione possono vincolare l'uscita. Configura uno o entrambi. Se sono configurati entrambi, devono essere attivi contemporaneamente.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Locale</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Giocatore</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Mondo</value></data>
@@ -1191,7 +1191,7 @@
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Applica la regolazione facoltativa del giroscopio di questa scheda (zona morta, sensibilità, smussatura, curva di risposta, inversione) al movimento che il controller virtuale invia al gioco o all'emulatore. Disattivala per inviare solo la lettura calibrata e lasciare che il gioco applichi la propria sensibilità e smussatura. La correzione della deriva da calibrazione si applica comunque in entrambi i casi.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Ripristina regolazione trasmissione</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilità</value></data>
-  <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Moltiplicatore di sensibilità del giroscopio per sorgente. 1,0 = predefinito del motore (500°/s → deflessione completa). Valori superiori a 1,0 sono più sensibili; valori inferiori sono meno sensibili.</value></data>
+  <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Moltiplicatore di sensibilità del giroscopio per sorgente. 1,0 = predefinito del motore (500°/s → deflessione completa). Valori superiori a 1,0 sono più sensibili. Valori inferiori sono meno sensibili.</value></data>
   <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>
   <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Touchpad 2 X</value></data>
   <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Touchpad 2 Y</value></data>
@@ -1227,7 +1227,7 @@
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
   <data name="About_HidHideDesc" xml:space="preserve"><value>Driver kernel per nascondere i dispositivi fisici ai giochi</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Sostituto drop-in di XInput; filtra i controller virtuali di PadForge dalla sua stessa vista</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Sostituto drop-in di XInput. Filtra i controller virtuali di PadForge dalla sua stessa vista.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Pack icone Zacksly</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Icone di levette e grilletti derivate da "Xbox Series Button Icons and Controls" di Zacksly (CC BY 3.0)</value></data>
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Grilletti adattivi</value></data>
@@ -1257,10 +1257,10 @@
   <data name="Pad_AT_Off_Tooltip" xml:space="preserve"><value>Nessuna resistenza. Il grilletto si comporta normalmente.</value></data>
   <data name="Pad_AT_Feedback_Tooltip" xml:space="preserve"><value>Resistenza costante dalla posizione iniziale fino alla pressione completa. Forza regola quanto il grilletto spinge indietro.</value></data>
   <data name="Pad_AT_Weapon_Tooltip" xml:space="preserve"><value>Sensazione del grilletto di un'arma. Tiri attraverso una zona morbida fino alla posizione finale, poi un clic deciso. Usa inizio/fine per impostare il punto di clic e la forza per la pressione del clic.</value></data>
-  <data name="Pad_AT_Vibration_Tooltip" xml:space="preserve"><value>Ronzio continuo non appena si supera la posizione iniziale. La frequenza imposta il ritmo dell'impulso; la forza l'intensità.</value></data>
-  <data name="Pad_AT_MultiPosFeedback_Tooltip" xml:space="preserve"><value>Resistenza a scatti — protuberanze di forza distinte lungo l'intervallo da inizio a fine. Tirare il grilletto dà la sensazione di passare attraverso scatti invece di spingere contro un muro continuo.</value></data>
+  <data name="Pad_AT_Vibration_Tooltip" xml:space="preserve"><value>Ronzio continuo non appena si supera la posizione iniziale. La frequenza imposta il ritmo dell'impulso. La forza imposta l'intensità.</value></data>
+  <data name="Pad_AT_MultiPosFeedback_Tooltip" xml:space="preserve"><value>Resistenza a scatti. Protuberanze di forza distinte lungo l'intervallo da inizio a fine. Tirare il grilletto dà la sensazione di passare attraverso scatti invece di spingere contro un muro continuo.</value></data>
   <data name="Pad_AT_Slope_Tooltip" xml:space="preserve"><value>La resistenza cresce da leggera nella posizione iniziale a massima nella posizione finale. Oltre la posizione finale il grilletto resta alla forza massima.</value></data>
-  <data name="Pad_AT_MultiPosVibration_Tooltip" xml:space="preserve"><value>Vibrazione intermittente — brevi raffiche di ronzio distribuite lungo l'intervallo da inizio a fine. Tirare il grilletto dà la sensazione di attraversare zone di vibrazione distinte, non un ronzio continuo.</value></data>
+  <data name="Pad_AT_MultiPosVibration_Tooltip" xml:space="preserve"><value>Vibrazione intermittente. Brevi raffiche di ronzio distribuite lungo l'intervallo da inizio a fine. Tirare il grilletto dà la sensazione di attraversare zone di vibrazione distinte, non un ronzio continuo.</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>Illuminazione</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Illuminazione</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Imposta il colore base della barra luminosa e il comportamento audio sul controller fisico assegnato. Le scritture del gioco hanno sempre la precedenza. Le impostazioni utente si attivano quando nessun gioco pilota la barra.</value></data>
@@ -1368,15 +1368,15 @@
   <data name="Pad_ResetLightbarRed" xml:space="preserve"><value>Ripristina rosso</value></data>
   <data name="Pad_ResetLightbarGreen" xml:space="preserve"><value>Ripristina verde</value></data>
   <data name="Pad_ResetLightbarBlue" xml:space="preserve"><value>Ripristina blu</value></data>
-  <data name="Pad_ResetAudioLowR" xml:space="preserve"><value>Ripristina banda bassa — rosso</value></data>
-  <data name="Pad_ResetAudioLowG" xml:space="preserve"><value>Ripristina banda bassa — verde</value></data>
-  <data name="Pad_ResetAudioLowB" xml:space="preserve"><value>Ripristina banda bassa — blu</value></data>
-  <data name="Pad_ResetAudioMidR" xml:space="preserve"><value>Ripristina banda media — rosso</value></data>
-  <data name="Pad_ResetAudioMidG" xml:space="preserve"><value>Ripristina banda media — verde</value></data>
-  <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Ripristina banda media — blu</value></data>
-  <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Ripristina banda alta — rosso</value></data>
-  <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Ripristina banda alta — verde</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Ripristina banda alta — blu</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Reattivo all'input</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Disattivato</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Colore casuale per pressione</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Ciclo della tavolozza</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Colore singolo per pressione</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Reimposta reattivo all'input</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Colore del lampo per pressione</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>Mantieni i mascheramenti HidHide tra le sessioni di PadForge. Utile quando un'altra applicazione (per es. Steam) cerca controller mentre PadForge è chiuso e vuoi che continui a vedere i dispositivi fisici come nascosti. Disattivato per impostazione predefinita. Disattivare l'interruttore principale sopra durante la sessione riporta subito i dispositivi visibili.</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Mantieni i dispositivi nascosti tra gli avvii</value></data>  <data name="Pad_AT_LoadGameCubePreset" xml:space="preserve"><value>Carica preset GameCube</value></data>  <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>Imposta Intervallo e Forza con valori che riproducono la sensazione fisica del clic di un vero grilletto GameCube (inizio ~56 %, fine ~63 %, forza massima). Modifica i cursori in seguito se preferisci una sensazione diversa.</value></data>
+  <data name="Pad_ResetAudioLowR" xml:space="preserve"><value>Ripristina banda bassa rossa</value></data>
+  <data name="Pad_ResetAudioLowG" xml:space="preserve"><value>Ripristina banda bassa verde</value></data>
+  <data name="Pad_ResetAudioLowB" xml:space="preserve"><value>Ripristina banda bassa blu</value></data>
+  <data name="Pad_ResetAudioMidR" xml:space="preserve"><value>Ripristina banda media rossa</value></data>
+  <data name="Pad_ResetAudioMidG" xml:space="preserve"><value>Ripristina banda media verde</value></data>
+  <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Ripristina banda media blu</value></data>
+  <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Ripristina banda alta rossa</value></data>
+  <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Ripristina banda alta verde</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Ripristina banda alta blu</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Reattivo all'input</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Disattivato</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Colore casuale per pressione</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Ciclo della tavolozza</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Colore singolo per pressione</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Reimposta reattivo all'input</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Colore del lampo per pressione</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>Mantieni i mascheramenti HidHide tra le sessioni di PadForge. Utile quando un'altra applicazione (per es. Steam) cerca controller mentre PadForge è chiuso e vuoi che continui a vedere i dispositivi fisici come nascosti. Disattivato per impostazione predefinita. Disattivare l'interruttore principale sopra durante la sessione riporta subito i dispositivi visibili.</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Mantieni i dispositivi nascosti tra gli avvii</value></data>  <data name="Pad_AT_LoadGameCubePreset" xml:space="preserve"><value>Carica preset GameCube</value></data>  <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>Imposta Intervallo e Forza con valori che riproducono la sensazione fisica del clic di un vero grilletto GameCube (inizio ~56 %, fine ~63 %, forza massima). Modifica i cursori in seguito se preferisci una sensazione diversa.</value></data>
 
 
 
@@ -1388,7 +1388,7 @@
 
   <!-- Modalità Shift (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Livello Shift</value></data>
-  <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Aggiunge un livello Shift — una seconda tabella di assegnazioni attiva mentre un pulsante è tenuto premuto o attivato.</value></data>
+  <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Aggiunge un livello Shift. Una seconda tabella di assegnazioni attiva mentre un pulsante è tenuto premuto o attivato.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Base</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Livello Shift</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nome del livello</value></data>
@@ -1430,14 +1430,14 @@
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Una singola pressione di pulsante (o direzione POV) attiva il livello.</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Entrambi i pulsanti devono essere tenuti premuti contemporaneamente per attivare. Accordo tra dispositivi supportato.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Si attiva mentre un asse analogico supera il valore soglia.</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Il livello rimane attivo finché l'attivatore è tenuto; si rilascia quando lasci.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Il livello rimane attivo finché l'attivatore è tenuto. Si rilascia quando lasci.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Tocca per attivare. Tocca di nuovo per rilasciare. Il livello persiste tra molte pressioni.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>La pressione salta a un livello specifico. Rimane fino a quando un'altra transizione si attiva.</value></data>
-  <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Ogni pressione avanza attraverso un elenco ordinato di livelli; torna a Base.</value></data>
+  <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Ogni pressione avanza attraverso un elenco ordinato di livelli. Torna a Base.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tocca una volta per attivare. La prossima pressione di pulsante mappato si attiva sul livello, quindi si rilascia automaticamente.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Eredita obiettivi non assegnati da Base</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Attiva anche la mappatura propria dell'attivatore</value></data>
-  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Se selezionato, il pulsante attivatore continua a guidare ogni riga che lo usa come sorgente — una pressione cambia livello E attiva la mappatura propria del pulsante. Se non selezionato (predefinito), la pressione è consumata solo dal cambio di livello.</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Se selezionato, il pulsante attivatore continua a guidare ogni riga che lo usa come sorgente. Una pressione cambia livello E attiva la mappatura propria del pulsante. Se non selezionato (predefinito), la pressione è consumata solo dal cambio di livello.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Quando selezionato, gli obiettivi che questo livello non assegna esplicitamente ricadono sul livello Base. Quando deselezionato (predefinito), il livello sostituisce completamente Base e gli obiettivi non assegnati rimangono spenti.</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Grilletti Impulse</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Inoltra i comandi per motore di grilletto (grilletti Impulse Xbox) dal controller virtuale al controller fisico Xbox One, Elite o Series assegnato. La vibrazione dei grilletti generata da un gioco passa automaticamente. I controlli sottostanti regolano l'intensità per grilletto.</value></data>
@@ -1546,7 +1546,7 @@
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Distanza scorrimento (0..1)</value></data>
   <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Finestra temporale scorrimento (ms)</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Zone radiali (stile ruota delle armi)</value></data>
-  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Trascina verso l'esterno dal punto di appoggio del dito verso un settore. La zona 0 è ancorata in alto e le zone aumentano in senso orario. Ogni voce nel selettore mostra la sua direzione tra parentesi come gradi rispetto all'alto — (0°) è in alto, (90°) è a destra, (180°) è in basso, (270°) è a sinistra. Una sola zona è attiva alla volta; trascinare in un'altra rilascia la precedente, così puoi scorrere le zone con un singolo gesto.</value></data>
+  <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Trascina verso l'esterno dal punto di appoggio del dito verso un settore. La zona 0 è ancorata in alto e le zone aumentano in senso orario. Ogni voce nel selettore mostra la sua direzione tra parentesi come gradi rispetto all'alto: (0°) è in alto, (90°) è a destra, (180°) è in basso, (270°) è a sinistra. Una sola zona è attiva alla volta. Trascinare in un'altra rilascia la precedente, così puoi scorrere le zone con un singolo gesto.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Numero di zone</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Zona morta centrale (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tocco / Doppio tocco / Triplo tocco</value></data>

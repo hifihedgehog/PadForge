@@ -1240,13 +1240,6 @@ namespace PadForge.Views
                 ExtendedPovCountBox.Text = vm.ExtendedConfig.PovCount.ToString();
                 ExtendedButtonCountBox.Text = vm.ExtendedConfig.ButtonCount.ToString();
             }
-
-            // Touchpad caps aren't exposed by HMProfile, so the touchpad
-            // checkbox is currently informational and defaults to false. The
-            // FFB checkbox is bound two-way to ExtendedConfig.ForceFeedbackEnabled
-            // (XAML), so its state is restored from the active slot's config
-            // automatically; no forced default needed here.
-            ExtendedTouchpadChk.IsChecked = false;
         }
 
         private void ExtendedOverride_Changed(object sender, RoutedEventArgs e)

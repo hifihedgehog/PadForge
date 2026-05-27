@@ -411,7 +411,6 @@
   <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>Belegt den DirectInput-OEM-Namenseintrag für die VID:PID des Profils. joy.cpl und DirectInput lesen diese Tabelle vor der HID-iProduct-Zeichenkette — aktivieren, damit der oben eingestellte Produktname Vorrang hat. Standardmäßig deaktiviert.</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
-  <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>Glaubenszeugnis</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>„Und wir reden von Christus, wir freuen uns über Christus, wir predigen von Christus, wir prophezeien von Christus, und wir schreiben gemäß unseren Prophezeiungen, damit unsere Kinder wissen mögen, von welcher Quelle sie die Vergebung ihrer Sünden erbitten können." — 2 Nephi 25:26</value></data>

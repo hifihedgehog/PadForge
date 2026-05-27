@@ -411,7 +411,6 @@
   <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>Reivindica a entrada da tabela OEM do DirectInput para a VID:PID do perfil. O joy.cpl e o DirectInput leem essa tabela antes da string iProduct do HID — ative para que o nome do produto acima prevaleça. Desativado por padrão.</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
-  <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>Testemunho</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>"E falamos de Cristo, regozijamo-nos em Cristo, pregamos Cristo, profetizamos de Cristo e escrevemos segundo as nossas profecias, para que nossos filhos saibam a que fonte podem recorrer em busca da remissão de seus pecados." — 2 Néfi 25:26</value></data>

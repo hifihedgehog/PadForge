@@ -612,7 +612,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ExtendedOemOverrideTooltip => Get("Pad_ExtendedOemOverrideTooltip");
     public string Pad_ExtendedVid => Get("Pad_ExtendedVid");
     public string Pad_ExtendedPid => Get("Pad_ExtendedPid");
-    public string Pad_ExtendedTouchpad => Get("Pad_ExtendedTouchpad");
     public string Pad_ExtendedForceFeedback => Get("Pad_ExtendedForceFeedback");
     public string About_HIDMaestro => Get("About_HIDMaestro");
     public string About_HIDMaestroDesc => Get("About_HIDMaestroDesc");

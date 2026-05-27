@@ -600,7 +600,6 @@
   <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>Claim the Windows DirectInput OEM-name table entry for this profile's VID:PID. joy.cpl and DirectInput UIs normally read that table before the HID iProduct string — enable this so the Product String above wins. Off by default.</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
-  <data name="Pad_ExtendedTouchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Channel</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI channel (1-16)</value></data>

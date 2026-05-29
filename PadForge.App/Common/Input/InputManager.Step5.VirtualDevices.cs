@@ -128,6 +128,34 @@ namespace PadForge.Common.Input
         /// Null entries are slots without an active VC.</summary>
         public IVirtualController[] GetVirtualControllers() => _virtualControllers;
 
+        private volatile bool _neutralizeHMaestroOutputs;
+
+        /// <summary>
+        /// Diagnostic global neutral switch for every HIDMaestro-backed virtual
+        /// controller. Does not destroy or reconnect devices; it forwards to
+        /// HMController.Neutralized on each live HM VC and is applied to newly
+        /// created HM VCs before they receive mapped output.
+        /// </summary>
+        public bool NeutralizeHMaestroOutputs
+        {
+            get => _neutralizeHMaestroOutputs;
+            set
+            {
+                _neutralizeHMaestroOutputs = value;
+                ApplyNeutralizeHMaestroOutputs(value);
+            }
+        }
+
+        private void ApplyNeutralizeHMaestroOutputs(bool value)
+        {
+            foreach (var vc in _virtualControllers)
+            {
+                if (vc is not HMaestroVirtualController hm) continue;
+                try { hm.Neutralized = value; }
+                catch { /* best-effort: live diagnostic toggle must not stop polling */ }
+            }
+        }
+
         /// <summary>
         /// Configured virtual controller category per slot (Xbox / PlayStation /
         /// Extended / MIDI / KBM). The UI writes this via InputService at 30Hz;
@@ -1375,6 +1403,8 @@ namespace PadForge.Common.Input
                 // / live-edit hooks alongside MidiConfig / ExtendedConfig.
                 if (vc is HMaestroVirtualController hmVc)
                 {
+                    hmVc.Neutralized = _neutralizeHMaestroOutputs;
+
                     var psCfg = _playStationConfigs[padIndex];
                     if (psCfg != null)
                         hmVc.AttachPlayStationConfig(psCfg);

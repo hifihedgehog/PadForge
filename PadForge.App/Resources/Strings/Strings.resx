@@ -261,6 +261,9 @@
   <data name="Settings_AddDots" xml:space="preserve"><value>Add...</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro Driver</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>User-mode virtual HID controller engine. Embedded in PadForge.App. Installed automatically on first virtual controller creation. Replaces ViGEmBus and vJoy in v3.</value></data>
+  <data name="Settings_NeutralizeHidMaestroOnTouchKeyboardFocus" xml:space="preserve"><value>Neutralize virtual gamepads when the Windows touch keyboard is detected</value></data>
+  <data name="Settings_NeutralizeHidMaestroOnTouchKeyboardFocusTooltip" xml:space="preserve"><value>Keeps HIDMaestro virtual controllers connected, but sends neutral input while the Windows touch keyboard is visible.</value></data>
+  <data name="Settings_NeutralizeHidMaestroOnTouchKeyboardFocusDesc" xml:space="preserve"><value>Uses a headless COM helper to detect the Windows touch keyboard and prevent gamepad input from reaching games while you type.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>SDK runtime for virtual MIDI device output. Downloaded from GitHub (~210 MB).</value></data>
   <data name="Settings_MidiOsRequired" xml:space="preserve"><value>Requires Windows 11 24H2 (build 26100) or later</value></data>

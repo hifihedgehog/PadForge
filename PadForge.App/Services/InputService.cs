@@ -51,6 +51,8 @@ namespace PadForge.Services
         private Vibration _constantTriggerForceScratchSony;
         private DispatcherTimer _uiTimer;
         private ForegroundMonitorService _foregroundMonitor;
+        private WindowsTouchKeyboardFocusMonitor _touchKeyboardFocusMonitor;
+        private bool _touchKeyboardNeutralActive;
         private ProfileData _defaultProfileSnapshot;
 
         // Active profile's touchpad custom-gesture working list. Mirrors
@@ -252,6 +254,7 @@ namespace PadForge.Services
             _inputManager = new InputManager();
             _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
             _inputManager.HmInactivityTimeoutSeconds = _mainVm.Settings.HmInactivityDestroyTimeoutSeconds;
+            _inputManager.NeutralizeHMaestroOutputs = false;
 
             // Copy controller types and per-slot configs immediately so Step 5
             // creates the correct VC types from the first polling cycle.
@@ -909,6 +912,7 @@ namespace PadForge.Services
 
             // Enter idle immediately if no slots are created.
             UpdateIdleState();
+            ConfigureTouchKeyboardNeutralization();
         }
 
         /// <summary>
@@ -984,6 +988,7 @@ namespace PadForge.Services
                 _foregroundMonitor.ProfileSwitchRequired -= OnProfileSwitchRequired;
                 _foregroundMonitor = null;
             }
+            StopTouchKeyboardFocusMonitor();
             StopDsuServer();
             StopWebServer();
             StopAudioBassDetector();
@@ -4223,6 +4228,10 @@ namespace PadForge.Services
             {
                 _inputManager.HmInactivityTimeoutSeconds = _mainVm.Settings.HmInactivityDestroyTimeoutSeconds;
             }
+            else if (e.PropertyName == nameof(SettingsViewModel.NeutralizeHidMaestroOnTouchKeyboardFocus))
+            {
+                ConfigureTouchKeyboardNeutralization();
+            }
             else if (e.PropertyName == nameof(SettingsViewModel.EnableInputHiding))
             {
                 if (_mainVm.Settings.EnableInputHiding)
@@ -4230,6 +4239,60 @@ namespace PadForge.Services
                 else
                     RemoveDeviceHiding();
             }
+        }
+
+        private void ConfigureTouchKeyboardNeutralization()
+        {
+            if (_mainVm.Settings.NeutralizeHidMaestroOnTouchKeyboardFocus)
+            {
+                if (_touchKeyboardFocusMonitor == null)
+                {
+                    _touchKeyboardFocusMonitor = new WindowsTouchKeyboardFocusMonitor();
+                    _touchKeyboardFocusMonitor.VisibilityChanged += OnTouchKeyboardVisibilityChanged;
+                    _touchKeyboardFocusMonitor.Start();
+                }
+            }
+            else
+            {
+                StopTouchKeyboardFocusMonitor();
+            }
+        }
+
+        private void OnTouchKeyboardVisibilityChanged(bool visible)
+        {
+            if (_dispatcher.CheckAccess())
+            {
+                SetTouchKeyboardNeutralActive(visible);
+            }
+            else
+            {
+                _dispatcher.BeginInvoke(new Action(() => SetTouchKeyboardNeutralActive(visible)));
+            }
+        }
+
+        private void SetTouchKeyboardNeutralActive(bool active)
+        {
+            if (active && !_mainVm.Settings.NeutralizeHidMaestroOnTouchKeyboardFocus)
+                return;
+
+            if (_touchKeyboardNeutralActive == active)
+                return;
+
+            _touchKeyboardNeutralActive = active;
+            if (_inputManager != null)
+                _inputManager.NeutralizeHMaestroOutputs = active;
+        }
+
+        private void StopTouchKeyboardFocusMonitor()
+        {
+            if (_touchKeyboardFocusMonitor != null)
+            {
+                _touchKeyboardFocusMonitor.VisibilityChanged -= OnTouchKeyboardVisibilityChanged;
+                _touchKeyboardFocusMonitor.Dispose();
+                _touchKeyboardFocusMonitor = null;
+            }
+
+            SetTouchKeyboardNeutralActive(false);
         }
 
         private void OnDashboardPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

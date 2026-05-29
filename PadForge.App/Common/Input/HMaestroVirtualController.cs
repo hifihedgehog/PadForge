@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using HIDMaestro;
 using PadForge.Engine;
 using PadForge.Services;
@@ -27,6 +28,8 @@ namespace PadForge.Common.Input
         private DualSensePassthroughDispatcher _ds5Dispatcher;
         private UserEffectsDispatcher _userEffectsDispatcher;
         private bool _disposed;
+        private static readonly PropertyInfo NeutralizedProperty =
+            typeof(HMController).GetProperty("Neutralized", BindingFlags.Instance | BindingFlags.Public);
 
         // DualSense / DualSense Edge VID/PID — used to gate the
         // DS5 effect message pass-through dispatcher.  Both USB and BT
@@ -46,6 +49,32 @@ namespace PadForge.Common.Input
         public string ProfileId => _profile.Id;
         public ushort ProfileVendorId => _profile.VendorId;
         public ushort ProfileProductId => _profile.ProductId;
+
+        private bool _neutralized;
+
+        /// <summary>
+        /// Test/diagnostic neutral-output switch. When enabled, the underlying
+        /// HIDMaestro controller stays connected but publishes neutral input
+        /// frames regardless of PadForge's mapped output.
+        /// </summary>
+        public bool Neutralized
+        {
+            get => _neutralized;
+            set
+            {
+                _neutralized = value;
+                ApplyNeutralizedToController();
+            }
+        }
+
+        private void ApplyNeutralizedToController()
+        {
+            if (_controller == null || NeutralizedProperty == null)
+                return;
+
+            try { NeutralizedProperty.SetValue(_controller, _neutralized); }
+            catch { /* Older or incompatible HIDMaestro builds simply ignore this optional feature. */ }
+        }
 
         // Cached HMAxis keys for the active profile's first two sticks +
         // first two triggers, resolved once at construction so the 1 kHz
@@ -151,6 +180,7 @@ namespace PadForge.Common.Input
         {
             if (IsConnected) return;
             _controller = _ctx.CreateController(_profile);
+            ApplyNeutralizedToController();
 
             // Publish PID Pool + initial PID State BEFORE any GetFeature can
             // race in. DirectInput's CDIEffect::CreateEffect issues

@@ -205,6 +205,13 @@
                         <TextBlock Text="{Binding HIDMaestroVersion}" FontSize="12"
                                    Opacity="0.6" Margin="0,4,0,0"/>
                     </StackPanel>
+                    <CheckBox Content="{Binding Settings_NeutralizeHidMaestroOnTouchKeyboardFocus, Source={x:Static strings:Strings.Instance}}"
+                              IsChecked="{Binding NeutralizeHidMaestroOnTouchKeyboardFocus}"
+                              ToolTip="{Binding Settings_NeutralizeHidMaestroOnTouchKeyboardFocusTooltip, Source={x:Static strings:Strings.Instance}}"
+                              Margin="0,12,0,0"/>
+                    <TextBlock Text="{Binding Settings_NeutralizeHidMaestroOnTouchKeyboardFocusDesc, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="24,4,0,0"
+                               TextWrapping="Wrap"/>
                 </StackPanel>
             </Border>
 

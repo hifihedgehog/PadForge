@@ -948,6 +948,9 @@ namespace PadForge.Services
             vm.EnablePollingOnFocusLoss = appSettings.EnablePollingOnFocusLoss;
             vm.PollingRateMs = appSettings.PollingRateMs;
             vm.HmInactivityDestroyTimeoutSeconds = appSettings.HmInactivityDestroyTimeoutSeconds;
+            vm.NeutralizeHidMaestroOnTouchKeyboardFocus =
+                appSettings.NeutralizeHidMaestroOnTouchKeyboardFocus
+                || appSettings.TestNeutralHidMaestroOutputs;
             vm.SelectedThemeIndex = appSettings.ThemeIndex;
             vm.EnableInputHiding = appSettings.EnableInputHiding;
             vm.KeepHidHideCloaksBetweenLaunches = appSettings.KeepHidHideCloaksBetweenLaunches;
@@ -2483,6 +2486,8 @@ namespace PadForge.Services
                 EnablePollingOnFocusLoss = vm.EnablePollingOnFocusLoss,
                 PollingRateMs = vm.PollingRateMs,
                 HmInactivityDestroyTimeoutSeconds = vm.HmInactivityDestroyTimeoutSeconds,
+                NeutralizeHidMaestroOnTouchKeyboardFocus = vm.NeutralizeHidMaestroOnTouchKeyboardFocus,
+                TestNeutralHidMaestroOutputs = false,
                 ThemeIndex = vm.SelectedThemeIndex,
                 Language = vm.LanguageCode,
                 EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
@@ -3043,6 +3048,7 @@ namespace PadForge.Services
             settingsVm.EnablePollingOnFocusLoss = true;
             settingsVm.PollingRateMs = 1;
             settingsVm.HmInactivityDestroyTimeoutSeconds = 60;
+            settingsVm.NeutralizeHidMaestroOnTouchKeyboardFocus = false;
             settingsVm.SelectedThemeIndex = 0;
             settingsVm.EnableInputHiding = true;
             settingsVm.EnableAutoProfileSwitching = false;
@@ -3440,6 +3446,12 @@ namespace PadForge.Services
         /// </summary>
         [XmlElement]
         public int HmInactivityDestroyTimeoutSeconds { get; set; } = 60;
+
+        [XmlElement]
+        public bool NeutralizeHidMaestroOnTouchKeyboardFocus { get; set; }
+
+        [XmlElement]
+        public bool TestNeutralHidMaestroOutputs { get; set; }
 
         [XmlElement]
         public int ThemeIndex { get; set; }

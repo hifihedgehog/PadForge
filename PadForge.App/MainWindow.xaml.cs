@@ -431,6 +431,7 @@ namespace PadForge
                      or nameof(SettingsViewModel.EnablePollingOnFocusLoss)
                      or nameof(SettingsViewModel.PollingRateMs)
                      or nameof(SettingsViewModel.HmInactivityDestroyTimeoutSeconds)
+                     or nameof(SettingsViewModel.NeutralizeHidMaestroOnTouchKeyboardFocus)
                      or nameof(SettingsViewModel.EnableInputHiding)
                      or nameof(SettingsViewModel.KeepHidHideCloaksBetweenLaunches)
                      or nameof(SettingsViewModel.Use2DControllerView)

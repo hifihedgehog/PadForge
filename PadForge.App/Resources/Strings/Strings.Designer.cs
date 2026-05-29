@@ -299,6 +299,9 @@ public class Strings : INotifyPropertyChanged
     public string Settings_AddDots => Get("Settings_AddDots");
     public string Settings_HIDMaestro => Get("Settings_HIDMaestro");
     public string Settings_HIDMaestroDesc => Get("Settings_HIDMaestroDesc");
+    public string Settings_NeutralizeHidMaestroOnTouchKeyboardFocus => Get("Settings_NeutralizeHidMaestroOnTouchKeyboardFocus");
+    public string Settings_NeutralizeHidMaestroOnTouchKeyboardFocusTooltip => Get("Settings_NeutralizeHidMaestroOnTouchKeyboardFocusTooltip");
+    public string Settings_NeutralizeHidMaestroOnTouchKeyboardFocusDesc => Get("Settings_NeutralizeHidMaestroOnTouchKeyboardFocusDesc");
     public string Settings_MidiServices => Get("Settings_MidiServices");
     public string Settings_MidiDesc => Get("Settings_MidiDesc");
     public string Settings_MidiOsRequired => Get("Settings_MidiOsRequired");

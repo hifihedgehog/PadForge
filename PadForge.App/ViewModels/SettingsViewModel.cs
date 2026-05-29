@@ -409,6 +409,18 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _hmInactivityDestroyTimeoutSeconds, Math.Clamp(value, 0, 3600));
         }
 
+        private bool _neutralizeHidMaestroOnTouchKeyboardFocus;
+
+        /// <summary>
+        /// When enabled, HIDMaestro-backed virtual controllers stay connected
+        /// but publish neutral inputs while Windows' touch keyboard has focus.
+        /// </summary>
+        public bool NeutralizeHidMaestroOnTouchKeyboardFocus
+        {
+            get => _neutralizeHidMaestroOnTouchKeyboardFocus;
+            set => SetProperty(ref _neutralizeHidMaestroOnTouchKeyboardFocus, value);
+        }
+
         private bool _enableInputHiding = true;
 
         /// <summary>

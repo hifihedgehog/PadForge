@@ -40,6 +40,10 @@
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
+    <!-- MUST stay true: bundles WPF's native libs (wpfgfx_cor3, PresentationNative_cor3,
+         PenImc_cor3, D3DCompiler_47_cor3, vcruntime140_cor3) INTO the single exe. Setting
+         false scatters them as loose files next to the exe, breaking the portable-single-
+         exe model and the "copy only PadForge.exe" deploy. -->
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
     <DebugType>embedded</DebugType>

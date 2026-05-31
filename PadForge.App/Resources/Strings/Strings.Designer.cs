@@ -1040,12 +1040,9 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_InvHalf => Get("Mapping_InvHalf");
     public string Mapping_POV_Format => Get("Mapping_POV_Format");
     public string Mapping_NoDeviceMapped => Get("Mapping_NoDeviceMapped");
-    public string Mapping_TouchpadX1 => Get("Mapping_TouchpadX1");
-    public string Mapping_TouchpadY1 => Get("Mapping_TouchpadY1");
-    public string Mapping_TouchpadX2 => Get("Mapping_TouchpadX2");
-    public string Mapping_TouchpadY2 => Get("Mapping_TouchpadY2");
-    public string Mapping_TouchpadContact1 => Get("Mapping_TouchpadContact1");
-    public string Mapping_TouchpadContact2 => Get("Mapping_TouchpadContact2");
+    public string Mapping_TouchpadFingerX_Format => Get("Mapping_TouchpadFingerX_Format");
+    public string Mapping_TouchpadFingerY_Format => Get("Mapping_TouchpadFingerY_Format");
+    public string Mapping_TouchpadFingerTouch_Format => Get("Mapping_TouchpadFingerTouch_Format");
     public string Mapping_TouchpadClick => Get("Mapping_TouchpadClick");
     public string Mapping_TouchpadGesture_SwipeUp => Get("Mapping_TouchpadGesture_SwipeUp");
     public string Mapping_TouchpadGesture_SwipeDown => Get("Mapping_TouchpadGesture_SwipeDown");

@@ -1073,7 +1073,6 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Réinitialiser la coupure basses</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Réinitialiser le moteur gauche</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Réinitialiser le moteur droit</value></data>
-  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>Pavé tactile 1 X</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Gyro Tangage</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Lacet</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roulis</value></data>
@@ -1172,12 +1171,10 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Réinitialiser le réglage de transmission</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicateur de sensibilité du gyroscope par source. 1,0 = valeur par défaut du moteur (500°/s → pleine déviation). Au-dessus de 1,0 = plus sensible. En dessous = moins sensible.</value></data>
-  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Pavé tactile 1 Y</value></data>
-  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Pavé tactile 2 X</value></data>
-  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Pavé tactile 2 Y</value></data>
-  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>Pavé tactile 1 toucher</value></data>
-  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>Pavé tactile 2 toucher</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Clic du pavé tactile</value></data>
+  <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} X</value></data>
+  <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} Y</value></data>
+  <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} toucher</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Mouvement gyroscope</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>Mouvement accéléromètre</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Pavé tactile</value></data>

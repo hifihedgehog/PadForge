@@ -1073,7 +1073,6 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Redefinir Corte de Graves</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Redefinir Motor Esquerdo</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Redefinir Motor Direito</value></data>
-  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>Touchpad 1 X</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Giroscópio Pitch</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Giroscópio Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Giroscópio Roll</value></data>
@@ -1172,12 +1171,10 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Restaurar Ajuste de Transmissão</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilidade</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicador de sensibilidade do giroscópio por fonte. 1,0 = padrão do motor (500°/s → deflexão total). Valores acima de 1,0 são mais sensíveis. Abaixo, menos sensíveis.</value></data>
-  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>
-  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Touchpad 2 X</value></data>
-  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Touchpad 2 Y</value></data>
-  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>Toque no touchpad 1</value></data>
-  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>Toque no touchpad 2</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Clique no touchpad</value></data>
+  <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Touchpad {0} Dedo {1} X</value></data>
+  <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Touchpad {0} Dedo {1} Y</value></data>
+  <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>Touchpad {0} Dedo {1} Toque</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Movimento Giroscópio</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>Movimento Acelerômetro</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>

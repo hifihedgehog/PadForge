@@ -157,6 +157,35 @@ namespace PadForge.ViewModels
         public bool TouchpadDown3 { get => _touchpadDown3; set => SetProperty(ref _touchpadDown3, value); }
         public bool TouchpadDown4 { get => _touchpadDown4; set => SetProperty(ref _touchpadDown4, value); }
 
+        // Second touchpad surface (Steam Controller 2026 / Steam Deck / original
+        // Steam Controller). Same 5-finger preview shape as the first pad; shown
+        // only when HasSecondTouchpadData is true (device reports 2+ pads).
+        private bool _hasSecondTouchpadData;
+        /// <summary>Whether the selected device exposes a second touchpad surface.</summary>
+        public bool HasSecondTouchpadData
+        {
+            get => _hasSecondTouchpadData;
+            set => SetProperty(ref _hasSecondTouchpadData, value);
+        }
+        private double _pad2X0, _pad2Y0, _pad2X1, _pad2Y1, _pad2X2, _pad2Y2,
+                       _pad2X3, _pad2Y3, _pad2X4, _pad2Y4;
+        private bool _pad2Down0, _pad2Down1, _pad2Down2, _pad2Down3, _pad2Down4;
+        public double Pad2X0 { get => _pad2X0; set => SetProperty(ref _pad2X0, value); }
+        public double Pad2Y0 { get => _pad2Y0; set => SetProperty(ref _pad2Y0, value); }
+        public double Pad2X1 { get => _pad2X1; set => SetProperty(ref _pad2X1, value); }
+        public double Pad2Y1 { get => _pad2Y1; set => SetProperty(ref _pad2Y1, value); }
+        public double Pad2X2 { get => _pad2X2; set => SetProperty(ref _pad2X2, value); }
+        public double Pad2Y2 { get => _pad2Y2; set => SetProperty(ref _pad2Y2, value); }
+        public double Pad2X3 { get => _pad2X3; set => SetProperty(ref _pad2X3, value); }
+        public double Pad2Y3 { get => _pad2Y3; set => SetProperty(ref _pad2Y3, value); }
+        public double Pad2X4 { get => _pad2X4; set => SetProperty(ref _pad2X4, value); }
+        public double Pad2Y4 { get => _pad2Y4; set => SetProperty(ref _pad2Y4, value); }
+        public bool Pad2Down0 { get => _pad2Down0; set => SetProperty(ref _pad2Down0, value); }
+        public bool Pad2Down1 { get => _pad2Down1; set => SetProperty(ref _pad2Down1, value); }
+        public bool Pad2Down2 { get => _pad2Down2; set => SetProperty(ref _pad2Down2, value); }
+        public bool Pad2Down3 { get => _pad2Down3; set => SetProperty(ref _pad2Down3, value); }
+        public bool Pad2Down4 { get => _pad2Down4; set => SetProperty(ref _pad2Down4, value); }
+
         private double _mouseMotionX, _mouseMotionY;
         public double MouseMotionX { get => _mouseMotionX; set => SetProperty(ref _mouseMotionX, value); }
         public double MouseMotionY { get => _mouseMotionY; set => SetProperty(ref _mouseMotionY, value); }
@@ -273,6 +302,7 @@ namespace PadForge.ViewModels
             HasGyroData = false;
             HasAccelData = false;
             HasTouchpadData = false;
+            HasSecondTouchpadData = false;
             LastRawStateDeviceGuid = Guid.Empty;
         }
 

@@ -150,13 +150,21 @@ namespace PadForge.Common
             if (s.StartsWith("Touchpad", System.StringComparison.Ordinal))
             {
                 var si = Strings.Instance;
-                if (s.Contains("Finger 0 X")) return prefix + si.Mapping_TouchpadX1;
-                if (s.Contains("Finger 0 Y")) return prefix + si.Mapping_TouchpadY1;
-                if (s.Contains("Finger 0 Down")) return prefix + si.Mapping_TouchpadContact1;
-                if (s.Contains("Finger 1 X")) return prefix + si.Mapping_TouchpadX2;
-                if (s.Contains("Finger 1 Y")) return prefix + si.Mapping_TouchpadY2;
-                if (s.Contains("Finger 1 Down")) return prefix + si.Mapping_TouchpadContact2;
-                return null;
+                string baseName =
+                      s.Contains("Finger 0 X")    ? si.Mapping_TouchpadX1
+                    : s.Contains("Finger 0 Y")    ? si.Mapping_TouchpadY1
+                    : s.Contains("Finger 0 Down") ? si.Mapping_TouchpadContact1
+                    : s.Contains("Finger 1 X")    ? si.Mapping_TouchpadX2
+                    : s.Contains("Finger 1 Y")    ? si.Mapping_TouchpadY2
+                    : s.Contains("Finger 1 Down") ? si.Mapping_TouchpadContact2
+                    : null;
+                if (baseName == null) return null;
+                // Pad-aware: prefix with the pad number for the second+ pad
+                // ("Touchpad N ..."), matching the multi-pad picker labels.
+                var tpParts = s.Split(' ');
+                if (tpParts.Length >= 2 && int.TryParse(tpParts[1], out int padN) && padN > 0)
+                    return prefix + string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, padN, baseName);
+                return prefix + baseName;
             }
 
             // Gyro descriptors → localized display names.
@@ -582,12 +590,40 @@ namespace PadForge.Common
             // web touchpad, overlay) has a wrapper and a click.
             if (ud.HasTouchpad || ud.IsTouchpad)
             {
-                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 0 X", DisplayName = si.Mapping_TouchpadX1 });
-                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 0 Y", DisplayName = si.Mapping_TouchpadY1 });
-                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 0 Down", DisplayName = si.Mapping_TouchpadContact1 });
-                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 X", DisplayName = si.Mapping_TouchpadX2 });
-                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 Y", DisplayName = si.Mapping_TouchpadY2 });
-                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 Down", DisplayName = si.Mapping_TouchpadContact2 });
+                // One raw-axis block per touchpad surface the device exposes.
+                // Multi-touchpad devices (Steam Controller 2026 / Steam Deck /
+                // original Steam Controller) get "Touchpad 1 Finger M X/Y/Down"
+                // alongside "Touchpad 0 ...". Pad count comes from the live
+                // device snapshot, mirroring AddTouchpadGestureChoices; absent
+                // a wrapper it stays a single pad.
+                int numPads = 1;
+                try
+                {
+                    var tpState = ud.Device?.GetCurrentState();
+                    if (tpState?.Touchpads != null && tpState.Touchpads.Length > 0)
+                        numPads = tpState.Touchpads.Length;
+                }
+                catch { /* defensive: pad-discovery failure -> single pad */ }
+                bool multiPad = numPads > 1;
+
+                for (int p = 0; p < numPads; p++)
+                {
+                    string PadWrap(string label) => multiPad
+                        ? string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, p, label)
+                        : label;
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 X", DisplayName = PadWrap(si.Mapping_TouchpadX1) });
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Y", DisplayName = PadWrap(si.Mapping_TouchpadY1) });
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Down", DisplayName = PadWrap(si.Mapping_TouchpadContact1) });
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 1 X", DisplayName = PadWrap(si.Mapping_TouchpadX2) });
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 1 Y", DisplayName = PadWrap(si.Mapping_TouchpadY2) });
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 1 Down", DisplayName = PadWrap(si.Mapping_TouchpadContact2) });
+                }
+
+                // Touchpad click is a SINGLE SDL button (SDL_GAMEPAD_BUTTON_TOUCHPAD
+                // -> Buttons[16], surfaced as "Touchpad Click" in the button list).
+                // SDL defines it once with no per-pad numbering, so emit exactly one
+                // click descriptor, never "Touchpad 1 Click". A multi-pad device's
+                // second physical click surfaces as its own gamepad button (MISC2).
                 bool isPtpSystemTouchpad = ud.IsTouchpad && ud.Device == null;
                 if (!isPtpSystemTouchpad)
                     list.Add(new InputChoice { Descriptor = "Touchpad 0 Click", DisplayName = si.Mapping_TouchpadClick });

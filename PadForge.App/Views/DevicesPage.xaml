@@ -695,6 +695,30 @@
                             </Canvas>
                         </Border>
 
+                        <!-- Second touchpad preview — shown only for multi-pad devices
+                             (Steam Controller 2026 / Steam Deck / original Steam Controller). -->
+                        <TextBlock Text="{Binding Btn_Touchpad, Source={x:Static strings:Strings.Instance}}"
+                                   FontSize="11" Opacity="0.6" Margin="0,0,0,3"
+                                   Visibility="{Binding HasSecondTouchpadData, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Border x:Name="Touchpad2PreviewBorder"
+                                Visibility="{Binding HasSecondTouchpadData, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Background="#10888888"
+                                CornerRadius="6" Margin="0,0,0,8"
+                                Height="100" ClipToBounds="True">
+                            <Canvas>
+                                <Ellipse x:Name="Pad2Dot0" Width="14" Height="14" Fill="#CCFF6600"
+                                         Visibility="{Binding Pad2Down0, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <Ellipse x:Name="Pad2Dot1" Width="14" Height="14" Fill="#CC0066FF"
+                                         Visibility="{Binding Pad2Down1, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <Ellipse x:Name="Pad2Dot2" Width="14" Height="14" Fill="#CC4CAF50"
+                                         Visibility="{Binding Pad2Down2, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <Ellipse x:Name="Pad2Dot3" Width="14" Height="14" Fill="#CCBA68C8"
+                                         Visibility="{Binding Pad2Down3, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <Ellipse x:Name="Pad2Dot4" Width="14" Height="14" Fill="#CCFFEB3B"
+                                         Visibility="{Binding Pad2Down4, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            </Canvas>
+                        </Border>
+
                     </StackPanel>
                 </ScrollViewer>
             </Border>

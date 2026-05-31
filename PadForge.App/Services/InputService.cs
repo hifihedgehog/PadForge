@@ -3007,8 +3007,11 @@ namespace PadForge.Services
                             if (string.Equals(ps.Mode, "InBoxOnly", System.StringComparison.OrdinalIgnoreCase))
                                 continue;
                         }
+                        // Display pad number is 1-based (matches the in-box
+                        // gesture prefix in MappingDisplayResolver and the
+                        // Devices previews); the Descriptor below stays 0-based.
                         string display = multiPad
-                            ? string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, padIdx, cg.Name)
+                            ? string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, padIdx + 1, cg.Name)
                             : cg.Name;
                         flat.Add(new PadForge.ViewModels.InputChoice
                         {

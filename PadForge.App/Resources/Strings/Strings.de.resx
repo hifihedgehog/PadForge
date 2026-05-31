@@ -1504,7 +1504,6 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Eingaben pro Touchpad. Gesten (Wischen, Tippen, Zoomen, Formen) und kontinuierliche Ausgabemodi (virtueller Stick / Steuerkreuz, Maus) werden zu Mapping-Quellen, die du auf der Mapping-Registerkarte binden kannst.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Gestenerkennung</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Gesten auf diesem Touchpad aktivieren</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Hauptschalter für dieses Touchpad. Wenn aus, feuern keine Gesten-Deskriptoren für dieses Touchpad. Bestehende Finger-, Klick- und Positionszuordnungen funktionieren weiterhin.</value></data>

@@ -48,6 +48,12 @@ namespace PadForge.Engine
         bool HasGyro { get; }
         bool HasAccel { get; }
         bool HasTouchpad { get; }
+        /// <summary>Number of distinct touchpad surfaces the device exposes
+        /// (Steam Controller 2026 / Steam Deck = 2; DualSense / DS4 = 1).
+        /// Default mirrors <see cref="HasTouchpad"/> (0 or 1); the SDL wrapper
+        /// overrides with the real per-device count so multi-pad devices keep
+        /// both surfaces mappable even while offline.</summary>
+        int NumTouchpads => HasTouchpad ? 1 : 0;
         HapticEffectStrategy HapticStrategy { get; }
         IntPtr HapticHandle { get; }
         uint HapticFeatures { get; }

@@ -106,6 +106,13 @@ namespace PadForge.Engine
         /// <summary>Whether the device has a touchpad (DS4/DualSense/Steam Deck).</summary>
         public bool HasTouchpad { get; private set; }
 
+        /// <summary>Number of touchpad surfaces SDL reports for this device
+        /// (Steam Controller 2026 / Steam Deck = 2; DualSense / DS4 = 1).
+        /// Sourced from the per-pad finger-count scratch sized at open time.
+        /// Persisted onto UserDevice so the mapping picker keeps both pads
+        /// even when the device is offline.</summary>
+        public int NumTouchpads => _padFingerCounts?.Length ?? (HasTouchpad ? 1 : 0);
+
         /// <summary>Human-readable device name.</summary>
         public string Name { get; private set; } = string.Empty;
 

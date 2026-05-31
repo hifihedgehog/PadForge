@@ -5534,7 +5534,17 @@
                             <ComboBox ItemsSource="{Binding TouchpadIndexOptions}"
                                       SelectedItem="{Binding SelectedTouchpadIndex, Mode=TwoWay}"
                                       Width="120" VerticalAlignment="Center"
-                                      ScrollViewer.VerticalScrollBarVisibility="Visible"/>
+                                      ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <!-- Pad index is stored 0-based; show it 1-based
+                                             ("1"/"2") to match the previews and picker. The
+                                             adjacent label is already the word "Touchpad", so
+                                             the dropdown shows only the number. -->
+                                        <TextBlock Text="{Binding Converter={StaticResource OneBasedIndexConverter}}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                         </StackPanel>
 
                         <!-- ─── Joystick / D-pad output card ─── -->

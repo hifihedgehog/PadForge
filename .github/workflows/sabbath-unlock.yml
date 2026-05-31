@@ -1,17 +1,30 @@
-# Sabbath emergency unlock.
+# Sabbath unlock.
 #
-# workflow_dispatch only. Use sparingly. The sabbath lock set by
-# sabbath-lock.yml expires automatically after 24 hours, so this is
-# only for the rare case where the lock needs to be released early.
+# Two triggers:
+#   1. Weekly cron every Sunday 23:50 America/New_York. DELETE is
+#      idempotent, so this is a no-op when the lock has already
+#      self-expired via the one_day window set by sabbath-lock.yml.
+#      It exists to handle one-off mid-Sunday locks (e.g. someone
+#      manually firing the PUT outside the normal Sat 23:50 cadence)
+#      that would otherwise leak the lock into Monday morning.
+#   2. workflow_dispatch for manual emergency release any time.
 #
 # Same authentication requirement as sabbath-lock.yml. The repository
 # secret SABBATH_PAT must be a fine-grained Personal Access Token with
 # `Administration: write` for this repository. See the header comment
 # in sabbath-lock.yml for setup steps.
+#
+# If SABBATH_PAT is missing, both this workflow and sabbath-lock.yml
+# fail loudly in the Actions tab. The lock set by interaction-limits
+# always self-expires after 24 hours regardless, so a missed unlock
+# means a few extra hours of restriction, not a permanent state.
 
 name: Sabbath unlock
 
 on:
+  schedule:
+    - cron: "50 23 * * 0"
+      timezone: "America/New_York"
   workflow_dispatch:
 
 permissions: {}

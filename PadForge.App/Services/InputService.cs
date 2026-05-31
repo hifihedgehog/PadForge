@@ -1758,6 +1758,26 @@ namespace PadForge.Services
                     devVm.TouchpadY4 = pad.FingerY[4];
                     devVm.TouchpadDown4 = pad.FingerDown[4];
                 }
+
+                // Second touchpad surface (Steam Controller 2026 / Deck / original
+                // Steam Controller). The preview previously stopped at pad 0; feed
+                // pad 1's fingers so both surfaces render. HasSecondTouchpadData
+                // gates the second preview's visibility.
+                bool hasSecondPad = state.Touchpads.Length > 1 && state.Touchpads[1] != null;
+                devVm.HasSecondTouchpadData = hasSecondPad;
+                if (hasSecondPad)
+                {
+                    var pad2 = state.Touchpads[1];
+                    if (pad2.MaxFingers > 0) { devVm.Pad2X0 = pad2.FingerX[0]; devVm.Pad2Y0 = pad2.FingerY[0]; devVm.Pad2Down0 = pad2.FingerDown[0]; }
+                    if (pad2.MaxFingers > 1) { devVm.Pad2X1 = pad2.FingerX[1]; devVm.Pad2Y1 = pad2.FingerY[1]; devVm.Pad2Down1 = pad2.FingerDown[1]; }
+                    if (pad2.MaxFingers > 2) { devVm.Pad2X2 = pad2.FingerX[2]; devVm.Pad2Y2 = pad2.FingerY[2]; devVm.Pad2Down2 = pad2.FingerDown[2]; }
+                    if (pad2.MaxFingers > 3) { devVm.Pad2X3 = pad2.FingerX[3]; devVm.Pad2Y3 = pad2.FingerY[3]; devVm.Pad2Down3 = pad2.FingerDown[3]; }
+                    if (pad2.MaxFingers > 4) { devVm.Pad2X4 = pad2.FingerX[4]; devVm.Pad2Y4 = pad2.FingerY[4]; devVm.Pad2Down4 = pad2.FingerDown[4]; }
+                }
+            }
+            else
+            {
+                devVm.HasSecondTouchpadData = false;
             }
         }
 

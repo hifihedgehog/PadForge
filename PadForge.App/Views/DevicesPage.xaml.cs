@@ -57,6 +57,24 @@ namespace PadForge.Views
             {
                 UpdateTouchpadDots();
             }
+            else if (e.PropertyName is nameof(ViewModels.DevicesViewModel.Pad2X0)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Y0)
+                              or nameof(ViewModels.DevicesViewModel.Pad2X1)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Y1)
+                              or nameof(ViewModels.DevicesViewModel.Pad2X2)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Y2)
+                              or nameof(ViewModels.DevicesViewModel.Pad2X3)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Y3)
+                              or nameof(ViewModels.DevicesViewModel.Pad2X4)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Y4)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Down0)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Down1)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Down2)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Down3)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Down4))
+            {
+                UpdateTouchpad2Dots();
+            }
         }
 
         private void UpdateTouchpadDots()
@@ -92,6 +110,26 @@ namespace PadForge.Views
                 Canvas.SetLeft(TouchpadDot4, vm.TouchpadX4 * w - 7);
                 Canvas.SetTop(TouchpadDot4, vm.TouchpadY4 * h - 7);
             }
+        }
+
+        // Second touchpad surface (multi-pad devices). Mirrors UpdateTouchpadDots
+        // for the Pad2* finger slots inside Touchpad2PreviewBorder.
+        private void UpdateTouchpad2Dots()
+        {
+            if (DataContext is not ViewModels.DevicesViewModel vm) return;
+            if (Touchpad2PreviewBorder.Visibility != Visibility.Visible) return;
+
+            double w = Touchpad2PreviewBorder.ActualWidth;
+            double h = Touchpad2PreviewBorder.ActualHeight;
+            if (w <= 0 || h <= 0) return;
+
+            Canvas.SetLeft(Pad2Dot0, vm.Pad2X0 * w - 7);
+            Canvas.SetTop(Pad2Dot0, vm.Pad2Y0 * h - 7);
+            Canvas.SetLeft(Pad2Dot1, vm.Pad2X1 * w - 7);
+            Canvas.SetTop(Pad2Dot1, vm.Pad2Y1 * h - 7);
+            if (Pad2Dot2 != null) { Canvas.SetLeft(Pad2Dot2, vm.Pad2X2 * w - 7); Canvas.SetTop(Pad2Dot2, vm.Pad2Y2 * h - 7); }
+            if (Pad2Dot3 != null) { Canvas.SetLeft(Pad2Dot3, vm.Pad2X3 * w - 7); Canvas.SetTop(Pad2Dot3, vm.Pad2Y3 * h - 7); }
+            if (Pad2Dot4 != null) { Canvas.SetLeft(Pad2Dot4, vm.Pad2X4 * w - 7); Canvas.SetTop(Pad2Dot4, vm.Pad2Y4 * h - 7); }
         }
 
         private void RemoveDevice_Click(object sender, RoutedEventArgs e)

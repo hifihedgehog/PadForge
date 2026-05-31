@@ -1,5 +1,8 @@
-blank_issues_enabled: true
+blank_issues_enabled: false
 contact_links:
-  - name: Discussions
+  - name: Got a question, not a bug? Ask in Discussions
+    url: https://github.com/hifihedgehog/PadForge/discussions/new?category=q-a
+    about: This issue tracker is not for support questions. Open a Q&A Discussion first. Most reports that look like bugs turn out to be setup-order or configuration questions.
+  - name: General Discussions
     url: https://github.com/hifihedgehog/PadForge/discussions
-    about: Ask questions or start a general discussion
+    about: Browse ongoing threads, share workflows, or join an existing conversation.

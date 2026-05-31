@@ -666,7 +666,7 @@
                         </Border>
 
                         <!-- Touchpad preview -->
-                        <TextBlock Text="{Binding Btn_Touchpad, Source={x:Static strings:Strings.Instance}}"
+                        <TextBlock Text="{Binding TouchpadLabel}"
                                    FontSize="11" Opacity="0.6" Margin="0,0,0,3"
                                    Visibility="{Binding HasTouchpadData, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <Border x:Name="TouchpadPreviewBorder"
@@ -697,7 +697,7 @@
 
                         <!-- Second touchpad preview — shown only for multi-pad devices
                              (Steam Controller 2026 / Steam Deck / original Steam Controller). -->
-                        <TextBlock Text="{Binding Btn_Touchpad, Source={x:Static strings:Strings.Instance}}"
+                        <TextBlock Text="{Binding Touchpad2Label}"
                                    FontSize="11" Opacity="0.6" Margin="0,0,0,3"
                                    Visibility="{Binding HasSecondTouchpadData, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <Border x:Name="Touchpad2PreviewBorder"

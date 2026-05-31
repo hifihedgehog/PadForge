@@ -113,6 +113,11 @@ namespace PadForge.Engine
         /// even when the device is offline.</summary>
         public int NumTouchpads => _padFingerCounts?.Length ?? (HasTouchpad ? 1 : 0);
 
+        /// <summary>Per-pad finger counts from SDL_GetNumGamepadTouchpadFingers,
+        /// captured at open time. Persisted onto UserDevice so the picker offers
+        /// only the fingers each pad actually supports, even when offline.</summary>
+        public int[] TouchpadFingerCounts => _padFingerCounts ?? System.Array.Empty<int>();
+
         /// <summary>Human-readable device name.</summary>
         public string Name { get; private set; } = string.Empty;
 

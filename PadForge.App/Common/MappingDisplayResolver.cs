@@ -596,33 +596,50 @@ namespace PadForge.Common
                 // alongside "Touchpad 0 ...". Pad count comes from the live
                 // device snapshot, mirroring AddTouchpadGestureChoices; absent
                 // a wrapper it stays a single pad.
-                // Pad count: persisted CapTouchpadCount is the offline-safe
-                // source (a powered-off controller has no live wrapper, so it
-                // must not collapse to a single pad and drop the second pad's
-                // choices). The live snapshot, when present, is authoritative
-                // and overrides it. Legacy configs (CapTouchpadCount == 0) fall
-                // back to one pad.
-                int numPads = ud.CapTouchpadCount > 0 ? ud.CapTouchpadCount : 1;
-                try
-                {
-                    var tpState = ud.Device?.GetCurrentState();
-                    if (tpState?.Touchpads != null && tpState.Touchpads.Length > 0)
-                        numPads = tpState.Touchpads.Length;
-                }
-                catch { /* defensive: pad-discovery failure -> persisted/single count */ }
+                // Pad + finger counts come from the live snapshot when the
+                // device is online (authoritative), else from the persisted
+                // Cap* values so a powered-off controller keeps the right shape
+                // instead of collapsing to one pad / two fingers. SDL enumerates
+                // the real per-pad finger count (SDL_GetNumGamepadTouchpadFingers):
+                // the Steam Controller 2026 reports 1 finger per pad, DualSense 2.
+                // Emitting a fixed two-finger block produced a dead "finger 2" on
+                // single-finger pads, so gate each finger on the actual count.
+                CustomInputState tpState = null;
+                try { tpState = ud.Device?.GetCurrentState(); }
+                catch { /* defensive: live read failure -> persisted counts */ }
+
+                int numPads = (tpState?.Touchpads != null && tpState.Touchpads.Length > 0)
+                    ? tpState.Touchpads.Length
+                    : (ud.CapTouchpadCount > 0 ? ud.CapTouchpadCount : 1);
                 bool multiPad = numPads > 1;
+
+                int FingerCount(int p)
+                {
+                    if (tpState?.Touchpads != null && p < tpState.Touchpads.Length && tpState.Touchpads[p] != null)
+                        return tpState.Touchpads[p].MaxFingers;
+                    if (ud.CapTouchpadFingerCounts != null && p < ud.CapTouchpadFingerCounts.Length)
+                        return ud.CapTouchpadFingerCounts[p];
+                    return 2; // legacy fallback for configs predating per-pad finger persistence
+                }
 
                 for (int p = 0; p < numPads; p++)
                 {
+                    int fingers = FingerCount(p);
                     string PadWrap(string label) => multiPad
                         ? string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, p, label)
                         : label;
-                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 X", DisplayName = PadWrap(si.Mapping_TouchpadX1) });
-                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Y", DisplayName = PadWrap(si.Mapping_TouchpadY1) });
-                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Down", DisplayName = PadWrap(si.Mapping_TouchpadContact1) });
-                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 1 X", DisplayName = PadWrap(si.Mapping_TouchpadX2) });
-                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 1 Y", DisplayName = PadWrap(si.Mapping_TouchpadY2) });
-                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 1 Down", DisplayName = PadWrap(si.Mapping_TouchpadContact2) });
+                    if (fingers >= 1)
+                    {
+                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 X", DisplayName = PadWrap(si.Mapping_TouchpadX1) });
+                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Y", DisplayName = PadWrap(si.Mapping_TouchpadY1) });
+                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Down", DisplayName = PadWrap(si.Mapping_TouchpadContact1) });
+                    }
+                    if (fingers >= 2)
+                    {
+                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 1 X", DisplayName = PadWrap(si.Mapping_TouchpadX2) });
+                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 1 Y", DisplayName = PadWrap(si.Mapping_TouchpadY2) });
+                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 1 Down", DisplayName = PadWrap(si.Mapping_TouchpadContact2) });
+                    }
                 }
 
                 // Touchpad click is a SINGLE SDL button (SDL_GAMEPAD_BUTTON_TOUCHPAD

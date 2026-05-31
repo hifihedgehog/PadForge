@@ -1,0 +1,147 @@
+# Bug-report Discussion-link gate.
+#
+# Runs on every issue open/edit/reopen. Acts only on issues that carry the
+# `bug` label. Never acts on issues whose author is OWNER, COLLABORATOR,
+# or MEMBER.
+#
+# Parses the issue body for a Discussion URL of the shape:
+#   https://github.com/hifihedgehog/PadForge/discussions/<digits>
+# optionally with a #discussioncomment-<digits> suffix.
+#
+# - If no URL is present: close as `not planned`, post a redirect comment,
+#   add the `needs-discussion` label.
+# - If a URL is present: GraphQL-fetch the Discussion to confirm it exists.
+#   If it does not exist in this repo, close with a different comment.
+#   If it does, exit cleanly.
+#
+# GITHUB_TOKEN with `issues: write` covers comment + close. `discussions:
+# read` covers the GraphQL existence check. No PAT required.
+#
+# Form-schema validations only support `required: Boolean`. URL-shape
+# checking has to happen server-side, which is what this workflow does.
+
+name: Issue Discussion gate
+
+on:
+  issues:
+    types: [opened, edited, reopened]
+
+permissions:
+  contents: read
+  issues: write
+  discussions: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    if: ${{ contains(github.event.issue.labels.*.name, 'bug') }}
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+      ISSUE_AUTHOR_ASSOCIATION: ${{ github.event.issue.author_association }}
+      ISSUE_BODY: ${{ github.event.issue.body }}
+      REPO: ${{ github.repository }}
+    steps:
+      - name: Skip if issue author is a project member
+        id: skip
+        run: |
+          set -euo pipefail
+          case "$ISSUE_AUTHOR_ASSOCIATION" in
+            OWNER|COLLABORATOR|MEMBER)
+              echo "Author association is $ISSUE_AUTHOR_ASSOCIATION. Skipping gate."
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "skip=false" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
+
+      - name: Ensure needs-discussion label exists
+        if: ${{ steps.skip.outputs.skip == 'false' }}
+        run: |
+          set -euo pipefail
+          gh label create needs-discussion \
+            --repo "$REPO" \
+            --color "B60205" \
+            --description "Bug report filed without a linked Discussion thread." \
+            --force
+
+      - name: Extract Discussion URL from body
+        if: ${{ steps.skip.outputs.skip == 'false' }}
+        id: extract
+        run: |
+          set -euo pipefail
+          BODY_FILE="$(mktemp)"
+          printf '%s' "${ISSUE_BODY:-}" > "$BODY_FILE"
+          MATCH=$(grep -Eo 'https://github\.com/hifihedgehog/PadForge/discussions/[0-9]+(#discussioncomment-[0-9]+)?' "$BODY_FILE" | head -n1 || true)
+          if [ -z "$MATCH" ]; then
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            echo "number=" >> "$GITHUB_OUTPUT"
+          else
+            NUM=$(printf '%s' "$MATCH" | grep -Eo 'discussions/[0-9]+' | grep -Eo '[0-9]+')
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            echo "number=$NUM" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Close with no-link comment
+        if: ${{ steps.skip.outputs.skip == 'false' && steps.extract.outputs.found == 'false' }}
+        run: |
+          set -euo pipefail
+          gh issue edit "$ISSUE_NUMBER" --repo "$REPO" --add-label "needs-discussion"
+          COMMENT_FILE="$(mktemp)"
+          cat > "$COMMENT_FILE" <<'EOF'
+          Thanks for filing.
+
+          This bug report does not include a link to a Discussion thread. The PadForge issue tracker accepts bug reports only after the question has been raised in [Discussions](https://github.com/hifihedgehog/PadForge/discussions) and either went unanswered or was confirmed as a bug.
+
+          Most reports that look like bugs at first turn out to be setup-order or configuration issues. The Discussion step catches those without filling the tracker.
+
+          Next steps:
+
+          1. Open a thread under [Q&A](https://github.com/hifihedgehog/PadForge/discussions/new?category=q-a).
+          2. If the thread confirms a real bug, file a new report and paste the Discussion URL into the "Discussion link" field.
+
+          Closing for now.
+          EOF
+          gh issue close "$ISSUE_NUMBER" --repo "$REPO" --reason "not planned" --comment "$(cat "$COMMENT_FILE")"
+
+      - name: Verify Discussion exists
+        if: ${{ steps.skip.outputs.skip == 'false' && steps.extract.outputs.found == 'true' }}
+        id: verify
+        env:
+          DISCUSSION_NUMBER: ${{ steps.extract.outputs.number }}
+        run: |
+          set -euo pipefail
+          OWNER=$(printf '%s' "$REPO" | cut -d/ -f1)
+          NAME=$(printf '%s' "$REPO" | cut -d/ -f2)
+          QUERY='query($owner:String!,$name:String!,$num:Int!){repository(owner:$owner,name:$name){discussion(number:$num){id number}}}'
+          RESP=$(gh api graphql \
+            -f query="$QUERY" \
+            -F owner="$OWNER" \
+            -F name="$NAME" \
+            -F num="$DISCUSSION_NUMBER" \
+            2>/dev/null || true)
+          if printf '%s' "$RESP" | grep -q '"number"'; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Close with bad-link comment
+        if: ${{ steps.skip.outputs.skip == 'false' && steps.extract.outputs.found == 'true' && steps.verify.outputs.exists == 'false' }}
+        env:
+          DISCUSSION_NUMBER: ${{ steps.extract.outputs.number }}
+        run: |
+          set -euo pipefail
+          gh issue edit "$ISSUE_NUMBER" --repo "$REPO" --add-label "needs-discussion"
+          COMMENT_FILE="$(mktemp)"
+          cat > "$COMMENT_FILE" <<EOF
+          Thanks for filing.
+
+          The Discussion link in this report points to discussion #${DISCUSSION_NUMBER}, which does not exist in this repository. The link must point to a thread at https://github.com/hifihedgehog/PadForge/discussions/.
+
+          Open or locate the right Discussion, then file a new report with the correct URL.
+
+          Closing for now.
+          EOF
+          gh issue close "$ISSUE_NUMBER" --repo "$REPO" --reason "not planned" --comment "$(cat "$COMMENT_FILE")"

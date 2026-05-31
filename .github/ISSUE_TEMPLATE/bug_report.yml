@@ -1,8 +1,29 @@
 name: Bug Report
-description: Report a bug or unexpected behavior in PadForge
+description: Report a verified bug or unexpected behavior in PadForge
 title: "[Bug] "
 labels: ["bug"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Before You Start
+
+        Most "it does not work" reports turn out to be setup-order or configuration questions, not bugs. The PadForge issue tracker is for behavior that has already been raised in Discussions and either went unanswered or was confirmed as a bug.
+
+        If you are not certain this is a bug, open a [Q&A Discussion](https://github.com/hifihedgehog/PadForge/discussions/new?category=q-a) first. Bug reports filed without a prior Discussion link will be closed and redirected automatically.
+
+        Please use this form only after a Discussion thread confirmed the behavior is a bug, or your question went unanswered after a reasonable wait.
+
+  - type: input
+    id: discussion_link
+    attributes:
+      label: Discussion link
+      description: |
+        Link to the Discussion thread where this was raised as a question. The URL must point to a thread at `https://github.com/hifihedgehog/PadForge/discussions/N`. Reports without a valid link are closed automatically.
+      placeholder: "https://github.com/hifihedgehog/PadForge/discussions/123"
+    validations:
+      required: true
+
   - type: textarea
     id: description
     attributes:
@@ -70,3 +91,18 @@ body:
     attributes:
       label: Additional Context
       description: Screenshots, logs, or anything else that might help
+
+  - type: checkboxes
+    id: validations
+    attributes:
+      label: Pre-submission checklist
+      description: All four boxes must be checked before submitting.
+      options:
+        - label: I searched [existing issues](https://github.com/hifihedgehog/PadForge/issues?q=is%3Aissue) and [Discussions](https://github.com/hifihedgehog/PadForge/discussions) for the same problem.
+          required: true
+        - label: I opened a Q&A Discussion first, and the question was not resolved as a setup issue. The Discussion link is in the field above.
+          required: true
+        - label: I am running the latest PadForge release and can reproduce on a clean PadForge.xml.
+          required: true
+        - label: This is a verified bug, not a usage question.
+          required: true

@@ -1,9 +1,12 @@
 # Sabbath lock.
 #
 # Sets repository interactions to `collaborators_only` every Saturday at
-# 23:50 America/New_York. The lock expires automatically 24 hours later
-# (covers approximately all of Sunday ET; last ~10 minutes of Sunday are
-# unlocked, which is acceptable). No Sunday-end unlock cron is needed.
+# 23:59 America/New_York. The lock self-expires 24 hours later (Sun
+# 23:59 ET) via the interaction-limits API's one_day window. The
+# companion sabbath-unlock.yml cron at Mon 00:01 ET acts as a safety
+# belt: it DELETEs the lock if for any reason it is still active past
+# midnight ET. DELETE is idempotent, so the normal weekly path runs
+# unlock-as-no-op.
 #
 # Owner and collaborators are exempt. Outside contributors are
 # temporarily restricted from opening issues, opening pull requests, and
@@ -26,8 +29,10 @@
 #   5. Store the token as repository secret SABBATH_PAT under
 #      Settings -> Secrets and variables -> Actions.
 #
-# Cron is set to minute :50 (not :00) to avoid the start-of-hour
-# scheduling-delay window documented by GitHub Actions.
+# Cron minute :59 chosen per the user's requested lock-at-23:59-ET.
+# Scheduled GitHub Actions can run several minutes late under load;
+# the lock may actually start a few minutes past midnight ET. In the
+# worst case the first few minutes of Sunday are unlocked.
 #
 # Manual re-lock is available via the Actions tab (workflow_dispatch).
 
@@ -35,7 +40,7 @@ name: Sabbath lock
 
 on:
   schedule:
-    - cron: "50 23 * * 6"
+    - cron: "59 23 * * 6"
       timezone: "America/New_York"
   workflow_dispatch:
 

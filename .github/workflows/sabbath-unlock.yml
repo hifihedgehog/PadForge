@@ -1,12 +1,13 @@
 # Sabbath unlock.
 #
 # Two triggers:
-#   1. Weekly cron every Sunday 23:50 America/New_York. DELETE is
-#      idempotent, so this is a no-op when the lock has already
-#      self-expired via the one_day window set by sabbath-lock.yml.
-#      It exists to handle one-off mid-Sunday locks (e.g. someone
-#      manually firing the PUT outside the normal Sat 23:50 cadence)
-#      that would otherwise leak the lock into Monday morning.
+#   1. Weekly cron every Monday 00:01 America/New_York. The lock set
+#      by sabbath-lock.yml on Sat 23:59 ET has its own 24-hour
+#      self-expiry that fires at Sun 23:59 ET, so this cron is
+#      normally a no-op DELETE on an already-expired lock. It exists
+#      to release any one-off mid-week lock (e.g. someone manually
+#      PUTting interaction-limits outside the normal Sat 23:59
+#      cadence) that would otherwise leak into Monday daytime.
 #   2. workflow_dispatch for manual emergency release any time.
 #
 # Same authentication requirement as sabbath-lock.yml. The repository
@@ -23,7 +24,7 @@ name: Sabbath unlock
 
 on:
   schedule:
-    - cron: "50 23 * * 0"
+    - cron: "1 0 * * 1"
       timezone: "America/New_York"
   workflow_dispatch:
 

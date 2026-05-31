@@ -596,14 +596,20 @@ namespace PadForge.Common
                 // alongside "Touchpad 0 ...". Pad count comes from the live
                 // device snapshot, mirroring AddTouchpadGestureChoices; absent
                 // a wrapper it stays a single pad.
-                int numPads = 1;
+                // Pad count: persisted CapTouchpadCount is the offline-safe
+                // source (a powered-off controller has no live wrapper, so it
+                // must not collapse to a single pad and drop the second pad's
+                // choices). The live snapshot, when present, is authoritative
+                // and overrides it. Legacy configs (CapTouchpadCount == 0) fall
+                // back to one pad.
+                int numPads = ud.CapTouchpadCount > 0 ? ud.CapTouchpadCount : 1;
                 try
                 {
                     var tpState = ud.Device?.GetCurrentState();
                     if (tpState?.Touchpads != null && tpState.Touchpads.Length > 0)
                         numPads = tpState.Touchpads.Length;
                 }
-                catch { /* defensive: pad-discovery failure -> single pad */ }
+                catch { /* defensive: pad-discovery failure -> persisted/single count */ }
                 bool multiPad = numPads > 1;
 
                 for (int p = 0; p < numPads; p++)
@@ -700,11 +706,15 @@ namespace PadForge.Common
             // PtpMaxFingers (5) per the HID PTP spec, so the fallback
             // must reflect that or 3/4/5-finger gestures never surface
             // in the picker.
-            int numPads = 1;
+            // Persisted CapTouchpadCount keeps both pads' gesture descriptors
+            // available when the device is offline (no live wrapper); the live
+            // snapshot overrides with authoritative pad + finger counts.
+            int numPads = ud.CapTouchpadCount > 0 ? ud.CapTouchpadCount : 1;
             int fallbackFingers = ud.IsTouchpad
                 ? PadForge.Engine.PrecisionTouchpadReader.PtpMaxFingers
                 : 2;
-            int[] perPadFingers = new[] { fallbackFingers };
+            int[] perPadFingers = new int[numPads];
+            for (int i = 0; i < numPads; i++) perPadFingers[i] = fallbackFingers;
             try
             {
                 var state = ud.Device?.GetCurrentState();

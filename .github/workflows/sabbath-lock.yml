@@ -1,0 +1,63 @@
+# Sabbath lock.
+#
+# Sets repository interactions to `collaborators_only` every Saturday at
+# 23:50 America/New_York. The lock expires automatically 24 hours later
+# (covers approximately all of Sunday ET; last ~10 minutes of Sunday are
+# unlocked, which is acceptable). No Sunday-end unlock cron is needed.
+#
+# Owner and collaborators are exempt. Outside contributors are
+# temporarily restricted from opening issues, opening pull requests, and
+# commenting. Discussions are not covered by the interaction-limits API
+# and remain open.
+#
+# Authentication
+# --------------
+# This workflow CANNOT use GITHUB_TOKEN. The interaction-limits endpoint
+# requires the `Administration: write` repository permission, which is
+# not in the set of scopes that the workflow `permissions:` block can
+# grant to GITHUB_TOKEN.
+#
+# Setup steps for the owner:
+#   1. Create a fine-grained Personal Access Token at
+#      https://github.com/settings/personal-access-tokens/new
+#   2. Resource owner: hifihedgehog. Repository access: only this repo.
+#   3. Permissions: Administration -> Read and write.
+#   4. Set a long expiry (PATs cannot be perpetual; rotate yearly).
+#   5. Store the token as repository secret SABBATH_PAT under
+#      Settings -> Secrets and variables -> Actions.
+#
+# Cron is set to minute :50 (not :00) to avoid the start-of-hour
+# scheduling-delay window documented by GitHub Actions.
+#
+# Manual re-lock is available via the Actions tab (workflow_dispatch).
+
+name: Sabbath lock
+
+on:
+  schedule:
+    - cron: "50 23 * * 6"
+      timezone: "America/New_York"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  lock:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set interaction limit to collaborators_only for one day
+        env:
+          PAT: ${{ secrets.SABBATH_PAT }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          if [ -z "${PAT:-}" ]; then
+            echo "SABBATH_PAT secret is not set. See header comment in this workflow file." >&2
+            exit 1
+          fi
+          curl -fsSL -X PUT \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $PAT" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${REPO}/interaction-limits" \
+            -d '{"limit":"collaborators_only","expiry":"one_day"}'

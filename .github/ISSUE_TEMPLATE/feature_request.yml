@@ -3,6 +3,13 @@ description: Suggest a new feature or improvement for PadForge
 title: "[Feature Request] "
 labels: ["enhancement"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Before You Start
+
+        For early-stage ideas or open-ended brainstorming, start a thread in [Discussions](https://github.com/hifihedgehog/PadForge/discussions) instead. This form is for proposals that are concrete enough to act on.
+
   - type: textarea
     id: description
     attributes:
@@ -33,3 +40,11 @@ body:
     attributes:
       label: Additional Context
       description: Screenshots, mockups, links to related tools, or anything else
+
+  - type: checkboxes
+    id: validations
+    attributes:
+      label: Pre-submission checklist
+      options:
+        - label: I searched [existing issues](https://github.com/hifihedgehog/PadForge/issues?q=is%3Aissue) and [Discussions](https://github.com/hifihedgehog/PadForge/discussions) for the same or a similar request.
+          required: true

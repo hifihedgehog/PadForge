@@ -1093,7 +1093,6 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Basafsnijding herstellen</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Linkermotor herstellen</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Rechtermotor herstellen</value></data>
-  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>Touchpad 1 X</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Gyro Pitch</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roll</value></data>
@@ -1192,12 +1191,10 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Doorgifte-afstemming resetten</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheidsvermenigvuldiger van de gyroscoop per bron. 1,0 = standaard van de engine (500°/s → volledige uitslag). Waarden boven 1,0 zijn gevoeliger. Daaronder minder.</value></data>
-  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>
-  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Touchpad 2 X</value></data>
-  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Touchpad 2 Y</value></data>
-  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>Touchpad 1 aanraking</value></data>
-  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>Touchpad 2 aanraking</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Touchpad-klik</value></data>
+  <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} X</value></data>
+  <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} Y</value></data>
+  <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} aanraking</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Beweging Gyro</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>Beweging Versnellingsmeter</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>

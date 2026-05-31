@@ -1001,12 +1001,16 @@ namespace PadForge.ViewModels
             // Touchpad (PlayStation only)
             if (isPlayStation)
             {
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadX1, "TouchpadX1", MappingCategory.Touchpad));
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadY1, "TouchpadY1", MappingCategory.Touchpad));
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadX2, "TouchpadX2", MappingCategory.Touchpad));
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadY2, "TouchpadY2", MappingCategory.Touchpad));
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadContact1, "TouchpadContact1", MappingCategory.Touchpad));
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadContact2, "TouchpadContact2", MappingCategory.Touchpad));
+                // The virtual DualSense / DS4 exposes one touchpad with two
+                // fingers. Labels use the explicit "Touchpad {pad} Finger
+                // {finger}" format (pad 1, fingers 1-2) so the output targets
+                // read the same way as the physical-device picker.
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerX_Format,     1, 1), "TouchpadX1", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerY_Format,     1, 1), "TouchpadY1", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerX_Format,     1, 2), "TouchpadX2", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerY_Format,     1, 2), "TouchpadY2", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerTouch_Format, 1, 1), "TouchpadContact1", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerTouch_Format, 1, 2), "TouchpadContact2", MappingCategory.Touchpad));
                 Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadClick, "TouchpadClick", MappingCategory.Buttons));
 
                 // Motion passthrough — the virtual DualSense / DS4

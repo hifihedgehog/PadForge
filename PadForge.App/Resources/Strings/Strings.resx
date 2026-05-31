@@ -959,13 +959,10 @@
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>No device mapped</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
-  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>Touchpad 1 X</value></data>
-  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>
-  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Touchpad 2 X</value></data>
-  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Touchpad 2 Y</value></data>
-  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>Touchpad 1 Touch</value></data>
-  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>Touchpad 2 Touch</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Touchpad Click</value></data>
+  <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} X</value></data>
+  <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Y</value></data>
+  <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Touch</value></data>
 
   <!-- ═══ Touchpad Gesture Mapping Labels ═══ -->
   <data name="Mapping_TouchpadGesture_SwipeUp" xml:space="preserve"><value>Swipe Up</value></data>

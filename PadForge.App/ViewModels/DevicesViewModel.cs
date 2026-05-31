@@ -168,15 +168,15 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _hasSecondTouchpadData, value)) OnPropertyChanged(nameof(TouchpadLabel)); }
         }
 
-        /// <summary>Label for the first touchpad preview. Numbered ("Touchpad 0")
-        /// only on multi-pad devices, matching the mapping picker's 0-based pad
+        /// <summary>Label for the first touchpad preview. Numbered ("Touchpad 1")
+        /// only on multi-pad devices, matching the mapping picker's 1-based pad
         /// numbering so the user can tell the two surfaces apart. Single-pad
         /// devices keep the plain "Touchpad".</summary>
         public string TouchpadLabel => HasSecondTouchpadData
-            ? $"{PadForge.Resources.Strings.Strings.Instance.Btn_Touchpad} 0"
+            ? $"{PadForge.Resources.Strings.Strings.Instance.Btn_Touchpad} 1"
             : PadForge.Resources.Strings.Strings.Instance.Btn_Touchpad;
-        /// <summary>Label for the second touchpad preview ("Touchpad 1").</summary>
-        public string Touchpad2Label => $"{PadForge.Resources.Strings.Strings.Instance.Btn_Touchpad} 1";
+        /// <summary>Label for the second touchpad preview ("Touchpad 2").</summary>
+        public string Touchpad2Label => $"{PadForge.Resources.Strings.Strings.Instance.Btn_Touchpad} 2";
         private double _pad2X0, _pad2Y0, _pad2X1, _pad2Y1, _pad2X2, _pad2Y2,
                        _pad2X3, _pad2Y3, _pad2X4, _pad2Y4;
         private bool _pad2Down0, _pad2Down1, _pad2Down2, _pad2Down3, _pad2Down4;

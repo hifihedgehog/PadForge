@@ -1073,7 +1073,6 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Bassfrequenz-Grenze zurücksetzen</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Linken Motor zurücksetzen</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Rechten Motor zurücksetzen</value></data>
-  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>Touchpad 1 X</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Gyro Nicken</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Gieren</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Rollen</value></data>
@@ -1172,12 +1171,10 @@
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optionale Bedingungen, wann das Gyro aktiv ist. Stick-Auslenkung und eine Aktivierungs-Taste können das Gyro jeweils freigeben. Eine oder beide sind konfigurierbar. Sind beide gesetzt, müssen beide aktiv sein, damit das Gyro feuert.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Empfindlichkeit</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Empfindlichkeitsfaktor pro Quelle für das Gyroskop. 1,0 = Engine-Standard (500°/s → volle Auslenkung). Werte über 1,0 sind empfindlicher, Werte unter 1,0 weniger empfindlich.</value></data>
-  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>
-  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Touchpad 2 X</value></data>
-  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Touchpad 2 Y</value></data>
-  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>Touchpad 1 Berührung</value></data>
-  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>Touchpad 2 Berührung</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Touchpad-Klick</value></data>
+  <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} X</value></data>
+  <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Y</value></data>
+  <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Berührung</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Bewegung Gyro</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>Bewegung Beschleunigungssensor</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>

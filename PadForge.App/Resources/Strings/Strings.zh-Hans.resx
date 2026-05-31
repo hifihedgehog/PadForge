@@ -1073,7 +1073,6 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>重置低音截止</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>重置左马达</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>重置右马达</value></data>
-  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>触控板 1 X</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>陀螺仪 俯仰</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>陀螺仪 偏航</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>陀螺仪 翻滚</value></data>
@@ -1172,12 +1171,10 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>重置透传调校</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>灵敏度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>每个源的陀螺仪灵敏度倍数。1.0 = 引擎默认值（500°/s → 最大偏转）。大于 1.0 更灵敏。小于 1.0 不太灵敏。</value></data>
-  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>触控板 1 Y</value></data>
-  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>触控板 2 X</value></data>
-  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>触控板 2 Y</value></data>
-  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>触控板 1 触摸</value></data>
-  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>触控板 2 触摸</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>触控板点击</value></data>
+  <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} X</value></data>
+  <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} Y</value></data>
+  <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} 触摸</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>运动 陀螺仪</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>运动 加速度计</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>触控板</value></data>

@@ -119,6 +119,13 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public int CapTouchpadCount { get; set; }
 
+        /// <summary>Per-touchpad finger (simultaneous-contact) count, as SDL
+        /// enumerates it. Index aligns with the touchpad index. Persisted so the
+        /// mapping picker offers only the fingers each pad actually supports even
+        /// when the device is offline. Null/empty on configs predating this field
+        /// — callers fall back to the legacy two-finger assumption.</summary>
+        public int[] CapTouchpadFingerCounts { get; set; }
+
         /// <summary>Whether the device exposes per-trigger ("impulse") rumble
         /// motors (Xbox One / Elite / Series). Driven by
         /// <c>SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN</c>.</summary>
@@ -364,6 +371,7 @@ namespace PadForge.Engine.Data
             HasAccel = wrapper.HasAccel;
             HasTouchpad = wrapper.HasTouchpad;
             CapTouchpadCount = wrapper.NumTouchpads;
+            CapTouchpadFingerCounts = wrapper.TouchpadFingerCounts;
             HasRumbleTriggers = wrapper.HasRumbleTriggers;
 
             VendorId = wrapper.VendorId;

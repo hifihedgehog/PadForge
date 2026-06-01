@@ -34,7 +34,7 @@ permissions:
 jobs:
   gate:
     runs-on: ubuntu-latest
-    if: ${{ contains(github.event.issue.labels.*.name, 'bug') }}
+    if: ${{ contains(github.event.issue.labels.*.name, 'bug') && !contains(github.event.issue.labels.*.name, 'gate-bypass') }}
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       ISSUE_NUMBER: ${{ github.event.issue.number }}

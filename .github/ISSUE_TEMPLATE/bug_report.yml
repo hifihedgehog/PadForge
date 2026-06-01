@@ -96,7 +96,7 @@ body:
     id: validations
     attributes:
       label: Pre-submission checklist
-      description: All four boxes must be checked before submitting.
+      description: All five boxes must be checked before submitting.
       options:
         - label: I searched [existing issues](https://github.com/hifihedgehog/PadForge/issues?q=is%3Aissue) and [Discussions](https://github.com/hifihedgehog/PadForge/discussions) for the same problem.
           required: true
@@ -105,4 +105,6 @@ body:
         - label: I am running the latest PadForge release and can reproduce on a clean PadForge.xml.
           required: true
         - label: This is a verified bug, not a usage question.
+          required: true
+        - label: I am not requesting support for a pirated or otherwise illegitimately obtained game.
           required: true

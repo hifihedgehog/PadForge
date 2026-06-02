@@ -298,12 +298,23 @@ namespace PadForge.Common.Input
             // require ud.Device != null so we know the controller is
             // currently connected.
             bool isXboxImpulse = XboxControllerIdentity.IsImpulseTriggerDevice(ud.VendorId, ud.ProdId);
-            if (!isXboxImpulse)
+            // Native vendor FFB (Logitech / Fanatec wheels + Fanatec pedals) is
+            // written via a custom HID output report (RawHidOutput), bypassing
+            // SDL. These devices don't necessarily advertise standard HID
+            // rumble/haptic and are intercepted BEFORE the SDL path, so they skip
+            // the HasRumble/HasHaptic gate. Dispatched below by ud.DevicePath, so
+            // ud.Device may be null. Strictly VID/PID-gated — non-vendor devices
+            // fall through to the unchanged scalar/haptic path.
+            bool isLogitechWheel = LogitechRawHidWriter.IsLogitechWheel(ud.VendorId, ud.ProdId);
+            bool isFanatecWheel  = FanatecRawHidWriter.IsFanatecWheel(ud.VendorId, ud.ProdId);
+            bool isFanatecPedal  = FanatecRawHidWriter.IsFanatecPedal(ud.VendorId, ud.ProdId);
+            bool isVendorFfb = isLogitechWheel || isFanatecWheel || isFanatecPedal;
+            if (!isXboxImpulse && !isVendorFfb)
             {
                 if (ud.Device == null || (!ud.Device.HasRumble && !ud.Device.HasHaptic))
                     return;
             }
-            else if (ud.Device == null)
+            else if (isXboxImpulse && ud.Device == null)
             {
                 return;
             }
@@ -467,6 +478,37 @@ namespace PadForge.Common.Input
                 {
                     XboxImpulseHidWriter.Write(
                         ud, combinedL, combinedR, combinedLT, combinedRT);
+                }
+                return;
+            }
+
+            // Native vendor FFB dispatch. Wheels: project the directional force
+            // onto the steering axis (shared ForceFeedbackState helper — same math
+            // as the SDL single-axis haptic path) and send a constant force.
+            // Fanatec pedals: map the combined L/R motors to the pedal rumble
+            // motors. ud.DevicePath is the openable HID interface path.
+            if (isVendorFfb)
+            {
+                int overallGain = int.TryParse(firstPadSetting?.ForceOverall, out int g)
+                    ? System.Math.Clamp(g, 0, 100) : 100;
+                if (isLogitechWheel || isFanatecWheel)
+                {
+                    short level = ForceFeedbackState.ComputeWheelSteeringLevel(_combinedVibration, overallGain);
+                    if (isLogitechWheel)
+                    {
+                        if (level == 0) LogitechRawHidWriter.WriteStopEffect(ud.DevicePath, 0);
+                        else            LogitechRawHidWriter.WriteConstantForce(ud.DevicePath, 0, level);
+                    }
+                    else
+                    {
+                        FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, level);
+                    }
+                }
+                else // Fanatec pedal
+                {
+                    byte brake    = (byte)(combinedL >> 8); // XInput left  -> brake
+                    byte throttle = (byte)(combinedR >> 8); // XInput right -> throttle
+                    FanatecRawHidWriter.WritePedalRumble(ud.DevicePath, throttle, brake);
                 }
                 return;
             }

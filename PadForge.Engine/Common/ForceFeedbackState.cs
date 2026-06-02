@@ -359,6 +359,26 @@ namespace PadForge.Engine
         // ─────────────────────────────────────────────
 
         /// <summary>
+        /// Signed 16-bit steering-axis force level for a single-axis FFB wheel,
+        /// from a directional <see cref="Vibration"/>: applies device + overall
+        /// gain and projects the polar direction onto the X (steering) axis.
+        /// Mirrors the single-axis branch of <see cref="SetDirectionalHapticForces"/>
+        /// (constant.level) so the native vendor HID writers (Logitech / Fanatec)
+        /// produce the same force the SDL haptic path would. Returns 0 when there
+        /// is no directional data. Keep in sync with the projection in
+        /// SetDirectionalHapticForces.
+        /// </summary>
+        public static short ComputeWheelSteeringLevel(Vibration v, int overallGain)
+        {
+            if (v == null || !v.HasDirectionalData) return 0;
+            double gainScale = (v.DeviceGain / 255.0) * (Math.Clamp(overallGain, 0, 100) / 100.0);
+            double scaledMag = Math.Clamp(v.SignedMagnitude * gainScale, -10000, 10000);
+            double angleRad = (v.Direction / 32767.0) * 2.0 * Math.PI;
+            double projected = Math.Clamp(scaledMag * Math.Sin(angleRad), -10000, 10000);
+            return (short)(projected * 32767 / 10000);
+        }
+
+        /// <summary>
         /// Sends a directional constant or periodic force to an SDL haptic device.
         /// For joysticks (2+ axes): uses polar direction for true 2D force.
         /// For wheels (1 axis): projects the polar direction onto the steering axis.

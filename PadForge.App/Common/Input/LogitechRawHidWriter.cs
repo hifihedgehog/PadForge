@@ -154,6 +154,77 @@ namespace PadForge.Common.Input
             return RawHidOutput.Write(devicePath, BuildReport(cmd));
         }
 
+        // ── Condition effects: spring (0x0b) / damper (0x0c) / friction (0x0e) ──
+        // Byte layout + scaling from lg4ff_update_slot. Coefficients/saturation/
+        // deadband arrive in DirectInput units (coeff/offset ±10000, sat/deadband
+        // 0..10000); converted to the wheel's HID logical range then scaled per
+        // the driver's SCALE_COEFF / SCALE_VALUE_U16 macros. Coefficient feel is
+        // hardware-tuned, but the wire encoding is verified.
+        private const uint EffSpring = 0x0b, EffDamper = 0x0c, EffFriction = 0x0e;
+
+        private static int ClampU16(int x) => x < 0 ? 0 : (x > 0xffff ? 0xffff : x);
+        private static int ScaleU16(int x, int bits) => ClampU16(x) >> (16 - bits);
+        private static int ScaleCoeff(int x, int bits) => ScaleU16(System.Math.Abs(x) * 2, bits);
+        // DInput ±10000 (or 0..10000) -> HID logical ±0x7fff (0..0x7fff), with gain.
+        private static int ToHid(int dinput, int gainPct) =>
+            (int)((long)dinput * gainPct / 100 * 0x7fff / 10000);
+
+        /// <summary>Spring/damper/friction on a slot. coeffPos/coeffNeg and offset
+        /// are DInput ±10000; deadband/satPos/satNeg are 0..10000. <paramref name="ffbType"/>
+        /// is a PadForge FfbEffectTypes value (Spring=8, Damper=9, Inertia=10,
+        /// Friction=11); it selects the Logitech effect command.</summary>
+        public static bool WriteCondition(string devicePath, int slot, uint ffbType,
+            int coeffPos, int coeffNeg, int offset, int deadband, int satPos, int satNeg, int gainPct)
+        {
+            if (string.IsNullOrEmpty(devicePath)) return false;
+            string key = devicePath + "#" + slot;
+            int op = (_loaded.TryGetValue(key, out bool ld) && ld) ? 0xc : 0x1;
+
+            int k1 = ToHid(coeffPos, gainPct);
+            int k2 = ToHid(coeffNeg, gainPct);
+            int clip = ToHid(System.Math.Max(satPos, satNeg) == 0 ? 10000 : System.Math.Max(satPos, satNeg), 100);
+            int s1 = k1 < 0 ? 1 : 0, s2 = k2 < 0 ? 1 : 0;
+
+            byte[] cmd = new byte[7];
+            cmd[0] = (byte)((0x10 << slot) | op);
+            if (ffbType == 8) // FfbEffectTypes.Spring
+            {
+                // Deadband edges around center, mapped to HID then SCALE_U16(,11).
+                int center = ToHid(offset, 100), half = ToHid(deadband, 100);
+                int d1 = ScaleU16(((center - half) + 0x8000) & 0xffff, 11);
+                int d2 = ScaleU16(((center + half) + 0x8000) & 0xffff, 11);
+                int ak1 = System.Math.Abs(k1), ak2 = System.Math.Abs(k2);
+                if (ak1 < 2048) d1 = 0; else ak1 -= 2048;
+                if (ak2 < 2048) d2 = 2047; else ak2 -= 2048;
+                cmd[1] = (byte)EffSpring;
+                cmd[2] = (byte)(d1 >> 3);
+                cmd[3] = (byte)(d2 >> 3);
+                cmd[4] = (byte)((ScaleCoeff(ak2, 4) << 4) + ScaleCoeff(ak1, 4));
+                cmd[5] = (byte)(((d2 & 7) << 5) + ((d1 & 7) << 1) + (s2 << 4) + s1);
+                cmd[6] = (byte)ScaleU16(clip, 8);
+            }
+            else if (ffbType == 11) // FfbEffectTypes.Friction
+            {
+                cmd[1] = (byte)EffFriction;
+                cmd[2] = (byte)ScaleCoeff(k1, 8);
+                cmd[3] = (byte)ScaleCoeff(k2, 8);
+                cmd[4] = (byte)ScaleU16(clip, 8);
+                cmd[5] = (byte)((s2 << 4) + s1);
+            }
+            else // damper / inertia
+            {
+                cmd[1] = (byte)EffDamper;
+                cmd[2] = (byte)ScaleCoeff(k1, 4);
+                cmd[3] = (byte)s1;
+                cmd[4] = (byte)ScaleCoeff(k2, 4);
+                cmd[5] = (byte)s2;
+                cmd[6] = (byte)ScaleU16(clip, 8);
+            }
+            bool ok = RawHidOutput.Write(devicePath, BuildReport(cmd));
+            if (ok) _loaded[key] = true;
+            return ok;
+        }
+
         // Frames the 7-byte command into a Windows HID output report: byte[0] =
         // report ID (0 for these wheels), command bytes at offset 1. See the
         // class-level HARDWARE VERIFICATION note re: report length.

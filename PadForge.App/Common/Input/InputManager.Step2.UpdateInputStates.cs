@@ -503,8 +503,17 @@ namespace PadForge.Common.Input
                     short level = ForceFeedbackState.ComputeWheelSteeringLevel(_combinedVibration, overallGain);
                     if (isLogitechWheel)
                     {
-                        if (level == 0) LogitechRawHidWriter.WriteStopEffect(ud.DevicePath, 0);
-                        else            LogitechRawHidWriter.WriteConstantForce(ud.DevicePath, 0, level);
+                        var cv = _combinedVibration;
+                        if (cv.HasConditionData && cv.ConditionAxisCount > 0 && cv.ConditionAxes != null)
+                        {
+                            // Spring / damper / friction (game-driven condition effect).
+                            var ca = cv.ConditionAxes[0]; // axis 0 = steering
+                            LogitechRawHidWriter.WriteCondition(ud.DevicePath, 0, cv.EffectType,
+                                ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
+                                (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, overallGain);
+                        }
+                        else if (level == 0) LogitechRawHidWriter.WriteStopEffect(ud.DevicePath, 0);
+                        else LogitechRawHidWriter.WriteConstantForce(ud.DevicePath, 0, level);
                     }
                     else if (isFanatecWheel)
                     {

@@ -132,6 +132,69 @@ namespace PadForge.Common.Input
             return new byte[] { HeaderId, 0x89, 0x00 };
         }
 
+        // ── Condition effects: spring / damper / friction ──
+        // Upload packet (header 0x64) from t300rs_upload_condition. Spring uses
+        // type 0x06 + sat-max 0x6aa6; damper/friction/inertia type 0x07 + 0x7ffc.
+        // Coefficients/deadband/saturation in DInput units (coeff/offset ±10000,
+        // deadband/sat 0..10000), converted to the wheel's HID range. Feel is
+        // hardware-tuned; wire format verified from hid-tmff2.
+        private static readonly byte[] ConditionValues = { 0xfe, 0xff, 0xfe, 0xff, 0xfe, 0xff, 0xfe, 0xff };
+
+        private static int ToHid(int dinput, int gainPct) =>
+            (int)((long)dinput * gainPct / 100 * 0x7fff / 10000);
+        private static int Clamp16(int x) => x < -0x7fff ? -0x7fff : (x > 0x7fff ? 0x7fff : x);
+
+        /// <summary>Spring/damper/friction. coeffPos/coeffNeg and offset are DInput
+        /// ±10000; deadband/satPos/satNeg 0..10000. <paramref name="ffbType"/> is a
+        /// PadForge FfbEffectTypes value (8=Spring else damper/friction/inertia).</summary>
+        public static bool WriteCondition(string devicePath, uint ffbType,
+            int coeffPos, int coeffNeg, int offset, int deadband, int satPos, int satNeg, int gainPct)
+        {
+            if (string.IsNullOrEmpty(devicePath)) return false;
+            if (coeffPos == 0 && coeffNeg == 0) return WriteStop(devicePath);
+
+            bool isSpring = ffbType == 8;
+            int maxSat = isSpring ? 0x6aa6 : 0x7ffc;
+            byte type = (byte)(isSpring ? 0x06 : 0x07);
+
+            int rCoeff = ToHid(coeffPos, gainPct);
+            int lCoeff = ToHid(coeffNeg, gainPct);
+            int centerHid = ToHid(offset, 100), halfHid = ToHid(deadband, 100) / 2;
+            int rBand = Clamp16(centerHid + halfHid);
+            int lBand = Clamp16(centerHid - halfHid);
+            int rSat = satPos == 0 ? maxSat : (int)((long)satPos * 0xffff / 10000) * maxSat / 0xffff;
+            int lSat = satNeg == 0 ? maxSat : (int)((long)satNeg * 0xffff / 10000) * maxSat / 0xffff;
+
+            byte[] payload = BuildConditionUpload((short)rCoeff, (short)lCoeff, (short)rBand, (short)lBand,
+                (ushort)rSat, (ushort)lSat, (ushort)maxSat, type);
+
+            bool armed = _armed.TryGetValue(devicePath, out bool v) && v;
+            if (!Send(devicePath, payload)) return false;
+            if (!armed)
+            {
+                if (!Send(devicePath, BuildPlay())) return false;
+                _armed[devicePath] = true;
+            }
+            return true;
+        }
+
+        private static byte[] BuildConditionUpload(short rCoeff, short lCoeff, short rBand, short lBand,
+            ushort rSat, ushort lSat, ushort maxSat, byte type)
+        {
+            // header(2) + 6×i16(12) + hardcoded(8) + 2×u16(4) + type(1) + timing(7) = 34
+            var p = new byte[34];
+            int i = 0;
+            p[i++] = HeaderId; p[i++] = 0x64;
+            void W16(int x) { p[i++] = (byte)(x & 0xff); p[i++] = (byte)((x >> 8) & 0xff); }
+            W16(rCoeff); W16(lCoeff); W16(rBand); W16(lBand); W16(rSat); W16(lSat);
+            Array.Copy(ConditionValues, 0, p, i, ConditionValues.Length); i += ConditionValues.Length;
+            W16(maxSat); W16(maxSat);
+            p[i++] = type;
+            // timing: 0x4f, duration=0xffff (infinite), offset=0, end 0xffff
+            p[i++] = 0x4f; W16(0xffff); W16(0x0000); W16(0xffff);
+            return p;
+        }
+
         // Report: [0x60][payload][zero-pad to ReportPayloadLen].
         private static bool Send(string devicePath, byte[] payload)
         {

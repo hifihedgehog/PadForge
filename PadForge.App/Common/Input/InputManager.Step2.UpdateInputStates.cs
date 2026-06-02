@@ -500,28 +500,36 @@ namespace PadForge.Common.Input
                 }
                 else // a wheel — Logitech / Fanatec / Thrustmaster
                 {
-                    short level = ForceFeedbackState.ComputeWheelSteeringLevel(_combinedVibration, overallGain);
+                    var cv = _combinedVibration;
+                    // Spring / damper / friction (game-driven condition effect) when
+                    // present, else a constant force from the projected steering level.
+                    bool hasCond = cv.HasConditionData && cv.ConditionAxisCount > 0 && cv.ConditionAxes != null;
+                    var ca = hasCond ? cv.ConditionAxes[0] : default; // axis 0 = steering
+                    short level = ForceFeedbackState.ComputeWheelSteeringLevel(cv, overallGain);
                     if (isLogitechWheel)
                     {
-                        var cv = _combinedVibration;
-                        if (cv.HasConditionData && cv.ConditionAxisCount > 0 && cv.ConditionAxes != null)
-                        {
-                            // Spring / damper / friction (game-driven condition effect).
-                            var ca = cv.ConditionAxes[0]; // axis 0 = steering
+                        if (hasCond)
                             LogitechRawHidWriter.WriteCondition(ud.DevicePath, 0, cv.EffectType,
                                 ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
                                 (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, overallGain);
-                        }
                         else if (level == 0) LogitechRawHidWriter.WriteStopEffect(ud.DevicePath, 0);
                         else LogitechRawHidWriter.WriteConstantForce(ud.DevicePath, 0, level);
                     }
                     else if (isFanatecWheel)
                     {
-                        FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, level);
+                        if (hasCond)
+                            FanatecRawHidWriter.WriteWheelCondition(ud.DevicePath, cv.EffectType,
+                                ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
+                                (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, overallGain);
+                        else FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, level);
                     }
                     else // Thrustmaster wheel
                     {
-                        ThrustmasterRawHidWriter.WriteConstantForce(ud.DevicePath, level);
+                        if (hasCond)
+                            ThrustmasterRawHidWriter.WriteCondition(ud.DevicePath, cv.EffectType,
+                                ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
+                                (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, overallGain);
+                        else ThrustmasterRawHidWriter.WriteConstantForce(ud.DevicePath, level);
                     }
                 }
                 return;

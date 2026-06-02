@@ -180,6 +180,42 @@ namespace PadForge.Common.Input
             return RawHidOutput.Write(devicePath, BuildWheelReport(cmd));
         }
 
+        /// <summary>Sets the wheel RPM / rev LEDs. <paramref name="ledMask9"/> bit 0
+        /// = first LED .. bit 8 = ninth (LEDS = 9). Replicates ftec_set_leds: the
+        /// wheelbase strip takes the low 8 bits direct (<c>f8 13</c>), the rim strip
+        /// takes a reshuffled 9-bit value where the first LED is the highest bit
+        /// (<c>f8 09 08 [hi] [lo]</c>). Sends both so base- and rim-LED wheels light.
+        ///
+        /// <para>HARDWARE VERIFICATION (real device): the f8 13 / f8 09 path is
+        /// verified against hid-fanatecff, but which Fanatec models carry which LED
+        /// strip varies; confirm on hardware. Logitech is the bench-verified LED
+        /// device.</para></summary>
+        public static bool WriteRpmLeds(string devicePath, int ledMask9)
+        {
+            if (string.IsNullOrEmpty(devicePath)) return false;
+            const int leds = 9;
+
+            // Wheelbase strip: low 8 bits direct.
+            byte[] baseCmd = new byte[7];
+            baseCmd[0] = 0xf8;
+            baseCmd[1] = 0x13;
+            baseCmd[2] = (byte)(ledMask9 & 0xff);
+            bool ok = RawHidOutput.Write(devicePath, BuildWheelReport(baseCmd));
+
+            // Rim strip: reshuffle so the first LED is the highest bit.
+            int reshuffled = 0;
+            for (int i = 0; i < leds; i++)
+                if (((ledMask9 >> i) & 1) != 0) reshuffled |= 1 << (leds - i - 1);
+            byte[] rim = new byte[7];
+            rim[0] = 0xf8;
+            rim[1] = 0x09;
+            rim[2] = 0x08;
+            rim[3] = (byte)((reshuffled >> 8) & 0xff);
+            rim[4] = (byte)(reshuffled & 0xff);
+            ok &= RawHidOutput.Write(devicePath, BuildWheelReport(rim));
+            return ok;
+        }
+
         // Wheel FFB report: report ID 0 (driver leaves id unset) + 7 command
         // bytes at offset 1. See HARDWARE VERIFICATION note re: report ID/length.
         private static byte[] BuildWheelReport(byte[] cmd7)

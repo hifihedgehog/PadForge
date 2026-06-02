@@ -1,4 +1,5 @@
 using System;
+using PadForge.Common.Telemetry;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 
@@ -555,6 +556,39 @@ namespace PadForge.Common.Input
                         }
                         _appliedWheelSettings[ud.DevicePath] = (desRange, desAc);
                     }
+
+                    // RPM / shift LEDs from the running game's telemetry (Logitech
+                    // 5-LED rev strip, Fanatec 9-LED). Demand-driven: requesting
+                    // telemetry starts the hub; it stops itself when no wheel asks.
+                    // Re-sent only when the bitmask changes — the redline blink
+                    // flips the mask, so it animates without per-tick HID churn.
+                    // No telemetry (game closed / not racing) resolves to mask 0,
+                    // so the strip clears instead of freezing on the last frame.
+                    if (firstPadSetting.WheelRpmLeds == "1" && (isLogitechWheel || isFanatecWheel))
+                    {
+                        TelemetryHub.RequestActive();
+                        int mask = 0;
+                        if (TelemetryHub.TryGetCurrent(out var tel))
+                        {
+                            bool blinkOn = (Environment.TickCount / 60) % 2 == 0;
+                            mask = isLogitechWheel
+                                ? RpmLedMap.Logitech(tel.RpmFraction, blinkOn)
+                                : RpmLedMap.Fanatec(tel.RpmFraction, blinkOn);
+                        }
+                        if (!_appliedLeds.TryGetValue(ud.DevicePath, out int prevMask) || prevMask != mask)
+                        {
+                            if (isLogitechWheel) LogitechRawHidWriter.WriteRpmLeds(ud.DevicePath, (byte)mask);
+                            else FanatecRawHidWriter.WriteRpmLeds(ud.DevicePath, mask);
+                            _appliedLeds[ud.DevicePath] = mask;
+                        }
+                    }
+                    else if (_appliedLeds.TryGetValue(ud.DevicePath, out int litMask) && litMask != 0)
+                    {
+                        // Feature turned off — clear the strip once.
+                        if (isLogitechWheel) LogitechRawHidWriter.WriteRpmLeds(ud.DevicePath, 0);
+                        else if (isFanatecWheel) FanatecRawHidWriter.WriteRpmLeds(ud.DevicePath, 0);
+                        _appliedLeds[ud.DevicePath] = 0;
+                    }
                 }
                 return;
             }
@@ -567,6 +601,10 @@ namespace PadForge.Common.Input
         // Per-device last-applied wheel rotation range + auto-center, so those
         // one-shot settings are only re-sent to the wheel when they change.
         private readonly System.Collections.Generic.Dictionary<string, (int range, int ac)> _appliedWheelSettings = new();
+
+        // Per-device last-applied RPM LED bitmask, so the strip is only re-sent
+        // when it changes (steady RPM = no write; blink/step = write on change).
+        private readonly System.Collections.Generic.Dictionary<string, int> _appliedLeds = new();
 
         // Per-slot scratch buffer reused across iterations of the
         // ApplyForceFeedback per-slot loop — the evaluator only writes

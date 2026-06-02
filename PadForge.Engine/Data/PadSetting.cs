@@ -257,6 +257,12 @@ namespace PadForge.Engine.Data
         /// wheel FFB only (Logitech/Thrustmaster). Default 0.</summary>
         [XmlElement] public string AutoCenterStrength { get; set; } = "0";
 
+        /// <summary>Drive the wheel's RPM / shift LEDs from the running racing
+        /// game's telemetry ("0" = off, "1" = on). Logitech / Fanatec only. The
+        /// telemetry source (Forza Data Out, Assetto Corsa shared memory) is
+        /// auto-detected. Default off.</summary>
+        [XmlElement] public string WheelRpmLeds { get; set; } = "0";
+
         /// <summary>
         /// Whether to swap left and right rumble motors.
         /// "0" = no swap, "1" = swap.
@@ -1083,6 +1089,7 @@ namespace PadForge.Engine.Data
             sb.Append(ForceOverall); sb.Append('|');
             sb.Append(RotationRange); sb.Append('|');
             sb.Append(AutoCenterStrength); sb.Append('|');
+            sb.Append(WheelRpmLeds); sb.Append('|');
             sb.Append(ForceSwapMotor); sb.Append('|');
             sb.Append(LeftMotorStrength); sb.Append('|');
             sb.Append(RightMotorStrength); sb.Append('|');
@@ -1467,7 +1474,7 @@ namespace PadForge.Engine.Data
             // Force feedback
             nameof(ForceType), nameof(ForceOverall), nameof(ForceSwapMotor),
             nameof(LeftMotorStrength), nameof(RightMotorStrength),
-            nameof(RotationRange), nameof(AutoCenterStrength),
+            nameof(RotationRange), nameof(AutoCenterStrength), nameof(WheelRpmLeds),
             // Impulse trigger motors (Xbox One+)
             nameof(ImpulseOverallGain),
             nameof(ImpulseLeftStrength), nameof(ImpulseRightStrength),

@@ -1623,4 +1623,5 @@
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>Nenhuma amostra válida capturada. Tente desenhar o gesto novamente.</value></data>
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Faixa de Rotação</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Força de Autocentralização</value></data>
+  <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>LEDs de Rotação</value></data>
 </root>

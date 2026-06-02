@@ -1623,4 +1623,5 @@
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>Kein gültiges Sample erfasst. Versuche die Geste erneut zu zeichnen.</value></data>
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Lenkbereich</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Selbstzentrierung</value></data>
+  <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>Schalt-LEDs</value></data>
 </root>

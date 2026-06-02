@@ -1623,4 +1623,5 @@
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>유효한 샘플이 캡처되지 않았습니다. 제스처를 다시 그려보세요.</value></data>
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>회전 범위</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>자동 센터링 강도</value></data>
+  <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>RPM 시프트 LED</value></data>
 </root>

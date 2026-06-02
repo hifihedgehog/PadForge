@@ -1685,6 +1685,11 @@ namespace PadForge.ViewModels
         /// when MappedDevices syncs.</summary>
         public bool IsWheelAssigned { get => _isWheelAssigned; set => SetProperty(ref _isWheelAssigned, value); }
 
+        private bool _wheelRpmLeds;
+        /// <summary>Drive the wheel's RPM / shift LEDs from game telemetry (Logitech /
+        /// Fanatec). Persisted in PadSetting.WheelRpmLeds; consumed by Step 2.</summary>
+        public bool WheelRpmLeds { get => _wheelRpmLeds; set => SetProperty(ref _wheelRpmLeds, value); }
+
         private ICommand _resetForceAllCommand;
         public ICommand ResetForceAllCommand => _resetForceAllCommand ??= new RelayCommand(() =>
         {

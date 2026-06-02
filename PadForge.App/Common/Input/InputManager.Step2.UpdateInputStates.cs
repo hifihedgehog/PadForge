@@ -531,6 +531,30 @@ namespace PadForge.Common.Input
                                 (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, overallGain);
                         else ThrustmasterRawHidWriter.WriteConstantForce(ud.DevicePath, level);
                     }
+
+                    // Wheel settings (rotation range + auto-center) — one-shot,
+                    // re-sent only when the persisted value changes.
+                    int desRange = int.TryParse(firstPadSetting.RotationRange, out int rg) ? System.Math.Clamp(rg, 40, 1080) : 900;
+                    int desAc = int.TryParse(firstPadSetting.AutoCenterStrength, out int acp) ? System.Math.Clamp(acp, 0, 100) : 0;
+                    if (!_appliedWheelSettings.TryGetValue(ud.DevicePath, out var prevWs) || prevWs.range != desRange || prevWs.ac != desAc)
+                    {
+                        int acMag = desAc * 0xffff / 100; // 0..100% -> 0..0xffff
+                        if (isLogitechWheel)
+                        {
+                            LogitechRawHidWriter.WriteRange(ud.DevicePath, desRange);
+                            LogitechRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);
+                        }
+                        else if (isFanatecWheel)
+                        {
+                            FanatecRawHidWriter.WriteRange(ud.DevicePath, desRange); // Fanatec auto-center is via its spring
+                        }
+                        else
+                        {
+                            ThrustmasterRawHidWriter.WriteRange(ud.DevicePath, desRange);
+                            ThrustmasterRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);
+                        }
+                        _appliedWheelSettings[ud.DevicePath] = (desRange, desAc);
+                    }
                 }
                 return;
             }
@@ -539,6 +563,10 @@ namespace PadForge.Common.Input
         }
 
         private Vibration _combinedVibration;
+
+        // Per-device last-applied wheel rotation range + auto-center, so those
+        // one-shot settings are only re-sent to the wheel when they change.
+        private readonly System.Collections.Generic.Dictionary<string, (int range, int ac)> _appliedWheelSettings = new();
 
         // Per-slot scratch buffer reused across iterations of the
         // ApplyForceFeedback per-slot loop — the evaluator only writes

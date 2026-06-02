@@ -1641,4 +1641,6 @@
   <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>Aantal vingers gewijzigd. Opnames gewist.</value></data>
   <data name="Recorder_Error_NoEngine" xml:space="preserve"><value>Engine draait niet. Start de engine voordat je opneemt.</value></data>
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>Geen geldige opname vastgelegd. Probeer het gebaar opnieuw te tekenen.</value></data>
+  <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rotatiebereik</value></data>
+  <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Automatisch centreren</value></data>
 </root>

@@ -1621,4 +1621,6 @@
   <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>A quantidade de dedos mudou. Amostras descartadas.</value></data>
   <data name="Recorder_Error_NoEngine" xml:space="preserve"><value>Motor não está em execução. Inicie o motor antes de gravar.</value></data>
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>Nenhuma amostra válida capturada. Tente desenhar o gesto novamente.</value></data>
+  <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Faixa de Rotação</value></data>
+  <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Força de Autocentralização</value></data>
 </root>

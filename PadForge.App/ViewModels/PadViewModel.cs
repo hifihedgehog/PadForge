@@ -1669,6 +1669,22 @@ namespace PadForge.ViewModels
         private bool _swapMotors;
         public bool SwapMotors { get => _swapMotors; set => SetProperty(ref _swapMotors, value); }
 
+        private int _wheelRotationRange = 900;
+        /// <summary>Native-FFB wheel hardware rotation range (40–1080°). Persisted
+        /// in PadSetting.RotationRange; applied via the vendor HID writer in Step 2.</summary>
+        public int WheelRotationRange { get => _wheelRotationRange; set => SetProperty(ref _wheelRotationRange, Math.Clamp(value, 40, 1080)); }
+
+        private int _wheelAutoCenter;
+        /// <summary>Native-FFB wheel auto-center strength (0–100%; 0 = off).
+        /// Persisted in PadSetting.AutoCenterStrength.</summary>
+        public int WheelAutoCenter { get => _wheelAutoCenter; set => SetProperty(ref _wheelAutoCenter, Math.Clamp(value, 0, 100)); }
+
+        private bool _isWheelAssigned;
+        /// <summary>True when a native-FFB wheel (Logitech/Fanatec/Thrustmaster) is
+        /// mapped to this slot — gates the FFB-tab wheel controls. Set by InputService
+        /// when MappedDevices syncs.</summary>
+        public bool IsWheelAssigned { get => _isWheelAssigned; set => SetProperty(ref _isWheelAssigned, value); }
+
         private ICommand _resetForceAllCommand;
         public ICommand ResetForceAllCommand => _resetForceAllCommand ??= new RelayCommand(() =>
         {

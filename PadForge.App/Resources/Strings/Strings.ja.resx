@@ -1621,4 +1621,6 @@
   <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>指の本数が変わりました。サンプルをクリアしました。</value></data>
   <data name="Recorder_Error_NoEngine" xml:space="preserve"><value>エンジンが動作していません。記録前にエンジンを起動してください。</value></data>
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>有効なサンプルが取得できませんでした。もう一度ジェスチャーを描いてみてください。</value></data>
+  <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>回転範囲</value></data>
+  <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>オートセンター強度</value></data>
 </root>

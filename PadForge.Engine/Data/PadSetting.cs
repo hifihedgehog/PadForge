@@ -248,6 +248,15 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlElement] public string ForceOverall { get; set; } = "100";
 
+        /// <summary>Wheel hardware rotation range in degrees (40–1080). Native
+        /// wheel FFB only (Logitech/Fanatec/Thrustmaster), applied via the vendor
+        /// HID writer. Default 900.</summary>
+        [XmlElement] public string RotationRange { get; set; } = "900";
+
+        /// <summary>Wheel auto-center spring strength (0–100%; 0 = off). Native
+        /// wheel FFB only (Logitech/Thrustmaster). Default 0.</summary>
+        [XmlElement] public string AutoCenterStrength { get; set; } = "0";
+
         /// <summary>
         /// Whether to swap left and right rumble motors.
         /// "0" = no swap, "1" = swap.
@@ -1072,6 +1081,8 @@ namespace PadForge.Engine.Data
             // Force feedback
             sb.Append(ForceType); sb.Append('|');
             sb.Append(ForceOverall); sb.Append('|');
+            sb.Append(RotationRange); sb.Append('|');
+            sb.Append(AutoCenterStrength); sb.Append('|');
             sb.Append(ForceSwapMotor); sb.Append('|');
             sb.Append(LeftMotorStrength); sb.Append('|');
             sb.Append(RightMotorStrength); sb.Append('|');
@@ -1456,6 +1467,7 @@ namespace PadForge.Engine.Data
             // Force feedback
             nameof(ForceType), nameof(ForceOverall), nameof(ForceSwapMotor),
             nameof(LeftMotorStrength), nameof(RightMotorStrength),
+            nameof(RotationRange), nameof(AutoCenterStrength),
             // Impulse trigger motors (Xbox One+)
             nameof(ImpulseOverallGain),
             nameof(ImpulseLeftStrength), nameof(ImpulseRightStrength),

@@ -1206,8 +1206,15 @@ namespace PadForge.Views
             ExtendedProductStringBox.Text = !string.IsNullOrEmpty(persistedProductString)
                 ? persistedProductString
                 : profileProductString;
-            ExtendedVidBox.Text = profile != null ? $"0x{profile.VendorId:X4}" : string.Empty;
-            ExtendedPidBox.Text = profile != null ? $"0x{profile.ProductId:X4}" : string.Empty;
+            // Show the user's override when set (non-zero); otherwise display the
+            // active profile's identity. Editing persists the override via
+            // ExtendedOverride_Changed; 0 means "use the profile's value."
+            int vidOverride = vm.ExtendedConfig?.VendorId ?? 0;
+            int pidOverride = vm.ExtendedConfig?.ProductId ?? 0;
+            ExtendedVidBox.Text = vidOverride > 0 ? $"0x{vidOverride:X4}"
+                : (profile != null ? $"0x{profile.VendorId:X4}" : string.Empty);
+            ExtendedPidBox.Text = pidOverride > 0 ? $"0x{pidOverride:X4}"
+                : (profile != null ? $"0x{profile.ProductId:X4}" : string.Empty);
             ExtendedOemOverrideChk.IsChecked = vm.ExtendedConfig?.OemNameOverride == true;
             ExtendedCustomizeChk.IsChecked = vm.ExtendedConfig?.Customize == true;
 
@@ -1244,15 +1251,32 @@ namespace PadForge.Views
 
         private void ExtendedOverride_Changed(object sender, RoutedEventArgs e)
         {
-            // Persist the user-edited Product String to the slot's
-            // ExtendedConfig. When OEM Name Override is active, Step 5 uses
-            // this value as the label for HMOemNameOverride.Set at VC-create
-            // time. VID/PID are profile-defined and not user-editable — those
-            // textboxes are display-only for the active profile.
+            // Persist the user-edited override fields to the slot's ExtendedConfig.
+            // ProductString feeds HMOemNameOverride when OEM Name Override is active;
+            // VID/PID feed HMProfileBuilder.Vid/.Pid at VC-create time (Customize-
+            // gated). A VID/PID of 0 (empty or malformed entry) means "use the
+            // active profile's value."
             if (_syncingExtendedConfig) return;
             if (DataContext is not PadViewModel vm || vm.ExtendedConfig == null) return;
             if (sender == ExtendedProductStringBox)
                 vm.ExtendedConfig.ProductString = ExtendedProductStringBox.Text ?? string.Empty;
+            else if (sender == ExtendedVidBox)
+                vm.ExtendedConfig.VendorId = ParseHexId(ExtendedVidBox.Text);
+            else if (sender == ExtendedPidBox)
+                vm.ExtendedConfig.ProductId = ParseHexId(ExtendedPidBox.Text);
+        }
+
+        /// <summary>Parses a "0xVVVV" / "VVVV" hex VID/PID entry to 0..0xFFFF.
+        /// Returns 0 ("use the active profile's value") for empty or malformed input.</summary>
+        private static int ParseHexId(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) return 0;
+            string t = text.Trim();
+            if (t.StartsWith("0x", System.StringComparison.OrdinalIgnoreCase))
+                t = t.Substring(2);
+            return int.TryParse(t, System.Globalization.NumberStyles.HexNumber,
+                System.Globalization.CultureInfo.InvariantCulture, out int v)
+                && v > 0 && v <= 0xFFFF ? v : 0;
         }
 
         private void ExtendedOverride_KeyDown(object sender, KeyEventArgs e)

@@ -123,6 +123,30 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _productString, value ?? string.Empty);
         }
 
+        private int _vendorId;
+        /// <summary>
+        /// User VID override. 0 means "use the active profile's VID" (the box
+        /// then displays the profile value). Customize-gated like the other
+        /// override fields; applied at profile-build time via
+        /// <c>HMProfileBuilder.Vid</c> so the live VC actually reports it.
+        /// </summary>
+        public int VendorId
+        {
+            get => _vendorId;
+            set => SetProperty(ref _vendorId, value);
+        }
+
+        private int _productId;
+        /// <summary>
+        /// User PID override. 0 means "use the active profile's PID". Customize-
+        /// gated; applied via <c>HMProfileBuilder.Pid</c>.
+        /// </summary>
+        public int ProductId
+        {
+            get => _productId;
+            set => SetProperty(ref _productId, value);
+        }
+
         /// <summary>Total Extended axes = ThumbstickCount * 2 + TriggerCount (max 8).</summary>
         public int TotalAxes => Math.Min(ThumbstickCount * 2 + TriggerCount, MaxAxes);
 
@@ -174,6 +198,9 @@ namespace PadForge.ViewModels
         [XmlAttribute] public int ButtonCount { get; set; } = 11;
         [XmlAttribute] public bool OemNameOverride { get; set; }
         [XmlAttribute] public string ProductString { get; set; } = string.Empty;
+        // 0 = use the active profile's VID/PID (no override).
+        [XmlAttribute] public int VendorId { get; set; }
+        [XmlAttribute] public int ProductId { get; set; }
         [XmlAttribute] public bool Customize { get; set; }
         // Default true so v3.0.0/v3.0.1/v3.0.2 PadForge.xml files (which never
         // wrote this attribute) deserialize with FFB enabled.

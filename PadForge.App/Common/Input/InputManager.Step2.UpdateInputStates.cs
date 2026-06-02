@@ -308,7 +308,8 @@ namespace PadForge.Common.Input
             bool isLogitechWheel = LogitechRawHidWriter.IsLogitechWheel(ud.VendorId, ud.ProdId);
             bool isFanatecWheel  = FanatecRawHidWriter.IsFanatecWheel(ud.VendorId, ud.ProdId);
             bool isFanatecPedal  = FanatecRawHidWriter.IsFanatecPedal(ud.VendorId, ud.ProdId);
-            bool isVendorFfb = isLogitechWheel || isFanatecWheel || isFanatecPedal;
+            bool isThrustmasterWheel = ThrustmasterRawHidWriter.IsThrustmasterWheel(ud.VendorId, ud.ProdId);
+            bool isVendorFfb = isLogitechWheel || isFanatecWheel || isFanatecPedal || isThrustmasterWheel;
             if (!isXboxImpulse && !isVendorFfb)
             {
                 if (ud.Device == null || (!ud.Device.HasRumble && !ud.Device.HasHaptic))
@@ -491,7 +492,13 @@ namespace PadForge.Common.Input
             {
                 int overallGain = int.TryParse(firstPadSetting?.ForceOverall, out int g)
                     ? System.Math.Clamp(g, 0, 100) : 100;
-                if (isLogitechWheel || isFanatecWheel)
+                if (isFanatecPedal)
+                {
+                    byte brake    = (byte)(combinedL >> 8); // XInput left  -> brake
+                    byte throttle = (byte)(combinedR >> 8); // XInput right -> throttle
+                    FanatecRawHidWriter.WritePedalRumble(ud.DevicePath, throttle, brake);
+                }
+                else // a wheel — Logitech / Fanatec / Thrustmaster
                 {
                     short level = ForceFeedbackState.ComputeWheelSteeringLevel(_combinedVibration, overallGain);
                     if (isLogitechWheel)
@@ -499,16 +506,14 @@ namespace PadForge.Common.Input
                         if (level == 0) LogitechRawHidWriter.WriteStopEffect(ud.DevicePath, 0);
                         else            LogitechRawHidWriter.WriteConstantForce(ud.DevicePath, 0, level);
                     }
-                    else
+                    else if (isFanatecWheel)
                     {
                         FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, level);
                     }
-                }
-                else // Fanatec pedal
-                {
-                    byte brake    = (byte)(combinedL >> 8); // XInput left  -> brake
-                    byte throttle = (byte)(combinedR >> 8); // XInput right -> throttle
-                    FanatecRawHidWriter.WritePedalRumble(ud.DevicePath, throttle, brake);
+                    else // Thrustmaster wheel
+                    {
+                        ThrustmasterRawHidWriter.WriteConstantForce(ud.DevicePath, level);
+                    }
                 }
                 return;
             }

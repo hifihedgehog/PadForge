@@ -225,6 +225,20 @@ namespace PadForge.Common.Input
             return ok;
         }
 
+        /// <summary>Sets the 5 RPM / shift LEDs on the wheel face.
+        /// <paramref name="ledMask"/> bit 0 = first (leftmost) LED .. bit 4 = fifth.
+        /// Command <c>f8 12 [mask]</c> (new-lg4ff <c>lg4ff_set_leds</c>). Driving
+        /// these from game telemetry is the reason native mode matters for LEDs.</summary>
+        public static bool WriteRpmLeds(string devicePath, byte ledMask)
+        {
+            if (string.IsNullOrEmpty(devicePath)) return false;
+            byte[] cmd = new byte[7];
+            cmd[0] = 0xf8;
+            cmd[1] = 0x12;
+            cmd[2] = (byte)(ledMask & 0x1f);
+            return RawHidOutput.Write(devicePath, BuildReport(cmd));
+        }
+
         // Frames the 7-byte command into a Windows HID output report: byte[0] =
         // report ID (0 for these wheels), command bytes at offset 1. See the
         // class-level HARDWARE VERIFICATION note re: report length.

@@ -1623,4 +1623,5 @@
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>Aucun échantillon valide capturé. Essaie de redessiner le geste.</value></data>
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Plage de rotation</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Auto-centrage</value></data>
+  <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>LED de régime</value></data>
 </root>

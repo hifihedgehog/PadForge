@@ -1623,4 +1623,5 @@
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>有効なサンプルが取得できませんでした。もう一度ジェスチャーを描いてみてください。</value></data>
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>回転範囲</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>オートセンター強度</value></data>
+  <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>RPMシフトLED</value></data>
 </root>

@@ -1643,4 +1643,5 @@
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>Geen geldige opname vastgelegd. Probeer het gebaar opnieuw te tekenen.</value></data>
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rotatiebereik</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Automatisch centreren</value></data>
+  <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>Schakel-leds</value></data>
 </root>

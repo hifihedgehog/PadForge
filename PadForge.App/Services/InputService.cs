@@ -2311,6 +2311,7 @@ namespace PadForge.Services
             ps.ForceOverall = padVm.ForceOverallGain.ToString();
             ps.RotationRange = padVm.WheelRotationRange.ToString();
             ps.AutoCenterStrength = padVm.WheelAutoCenter.ToString();
+            ps.WheelRpmLeds = padVm.WheelRpmLeds ? "1" : "0";
             ps.LeftMotorStrength = padVm.LeftMotorStrength.ToString();
             ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
             ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
@@ -2570,6 +2571,7 @@ namespace PadForge.Services
             padVm.ForceOverallGain = TryParseInt(ps.ForceOverall, 100);
             padVm.WheelRotationRange = TryParseInt(ps.RotationRange, 900);
             padVm.WheelAutoCenter = TryParseInt(ps.AutoCenterStrength, 0);
+            padVm.WheelRpmLeds = ps.WheelRpmLeds == "1";
             padVm.LeftMotorStrength = TryParseInt(ps.LeftMotorStrength, 100);
             padVm.RightMotorStrength = TryParseInt(ps.RightMotorStrength, 100);
             padVm.SwapMotors = ps.ForceSwapMotor == "1" ||

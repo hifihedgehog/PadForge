@@ -1645,4 +1645,5 @@
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>Nessun campione valido acquisito. Prova a disegnare di nuovo il gesto.</value></data>
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Intervallo di rotazione</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Autocentratura</value></data>
+  <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>LED di regime</value></data>
 </root>

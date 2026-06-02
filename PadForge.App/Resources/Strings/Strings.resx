@@ -1685,4 +1685,6 @@
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>When checked, the activator button still drives any row that uses it as a source. One press both changes layer AND fires the button's own mapping. When unchecked (default), the activator press is consumed by the layer change only.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>When checked, targets this layer doesn't explicitly map fall through to the Base layer. When unchecked (default), the layer replaces Base entirely and unmapped targets stay off.</value></data>
 
+  <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rotation Range</value></data>
+  <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Auto-Center Strength</value></data>
 </root>

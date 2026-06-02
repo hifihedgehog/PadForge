@@ -1621,4 +1621,6 @@
   <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>手指数发生变化，样本已清空。</value></data>
   <data name="Recorder_Error_NoEngine" xml:space="preserve"><value>引擎未运行，请先启动引擎再录制。</value></data>
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>未采集到有效样本。请重新绘制手势。</value></data>
+  <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>旋转范围</value></data>
+  <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>自动回中强度</value></data>
 </root>

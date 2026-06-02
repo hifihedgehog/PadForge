@@ -3533,6 +3533,25 @@
                             <Button Command="{Binding ResetOverallGainCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetOverallGain, Source={x:Static strings:Strings.Instance}}"/>
                         </StackPanel>
 
+                        <!-- Wheel settings — only for native-FFB wheels (Logitech / Fanatec / Thrustmaster) -->
+                        <StackPanel Visibility="{Binding IsWheelAssigned, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Text="{Binding Pad_Wheel_RotationRange, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <Slider Value="{Binding WheelRotationRange, Mode=TwoWay}" Minimum="40" Maximum="1080"
+                                        Style="{StaticResource DzSlider}"/>
+                                <TextBox Text="{Binding WheelRotationRange, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         Style="{StaticResource DzValueEdit}"/>
+                                <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Text="{Binding Pad_Wheel_Autocenter, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <Slider Value="{Binding WheelAutoCenter, Mode=TwoWay}" Style="{StaticResource DzSlider}"/>
+                                <TextBox Text="{Binding WheelAutoCenter, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         Style="{StaticResource DzValueEdit}"/>
+                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                            </StackPanel>
+                        </StackPanel>
+
                         <!-- Left motor -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <TextBlock Text="{Binding Pad_LeftMotorLabel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>

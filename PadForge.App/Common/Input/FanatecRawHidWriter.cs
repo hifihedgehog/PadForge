@@ -167,6 +167,19 @@ namespace PadForge.Common.Input
             return RawHidOutput.Write(devicePath, BuildWheelReport(cmd));
         }
 
+        /// <summary>Sets the wheel's hardware rotation range in degrees
+        /// (ftec_set_range: <c>f8 81 lo hi</c>, degrees direct, 40..1080).</summary>
+        public static bool WriteRange(string devicePath, int degrees)
+        {
+            if (string.IsNullOrEmpty(devicePath)) return false;
+            if (degrees < 40) degrees = 40; else if (degrees > 1080) degrees = 1080;
+            byte[] cmd = new byte[7];
+            cmd[0] = 0xf8; cmd[1] = 0x81;
+            cmd[2] = (byte)(degrees & 0xff);
+            cmd[3] = (byte)((degrees >> 8) & 0xff);
+            return RawHidOutput.Write(devicePath, BuildWheelReport(cmd));
+        }
+
         // Wheel FFB report: report ID 0 (driver leaves id unset) + 7 command
         // bytes at offset 1. See HARDWARE VERIFICATION note re: report ID/length.
         private static byte[] BuildWheelReport(byte[] cmd7)

@@ -607,6 +607,8 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ExtendedCustomizeTooltip => Get("Pad_ExtendedCustomizeTooltip");
     public string Pad_ExtendedResetDefaultsTooltip => Get("Pad_ExtendedResetDefaultsTooltip");
     public string Pad_ExtendedProductString => Get("Pad_ExtendedProductString");
+    public string Pad_Wheel_RotationRange => Get("Pad_Wheel_RotationRange");
+    public string Pad_Wheel_Autocenter => Get("Pad_Wheel_Autocenter");
     public string Pad_ExtendedProductStringTooltip => Get("Pad_ExtendedProductStringTooltip");
     public string Pad_ExtendedOemOverride => Get("Pad_ExtendedOemOverride");
     public string Pad_ExtendedOemOverrideTooltip => Get("Pad_ExtendedOemOverrideTooltip");

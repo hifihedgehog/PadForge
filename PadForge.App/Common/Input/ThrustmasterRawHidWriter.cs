@@ -132,6 +132,27 @@ namespace PadForge.Common.Input
             return new byte[] { HeaderId, 0x89, 0x00 };
         }
 
+        /// <summary>Sets the wheel's rotation range in degrees (t300rs_set_range:
+        /// scaled by 0x3c, <c>08 11 lo hi</c>, 40..1080).</summary>
+        public static bool WriteRange(string devicePath, int degrees)
+        {
+            if (string.IsNullOrEmpty(devicePath)) return false;
+            if (degrees < 40) degrees = 40; else if (degrees > 1080) degrees = 1080;
+            int scaled = degrees * 0x3c;
+            return Send(devicePath, new byte[] { 0x08, 0x11, (byte)(scaled & 0xff), (byte)((scaled >> 8) & 0xff) });
+        }
+
+        /// <summary>Sets autocenter strength (0..0xffff; 0 = off). Enable packet
+        /// (<c>08 04 01 00</c>) then strength (<c>08 03 lo hi</c>), per
+        /// t300rs_set_autocenter.</summary>
+        public static bool WriteAutocenter(string devicePath, int strength)
+        {
+            if (string.IsNullOrEmpty(devicePath)) return false;
+            if (strength < 0) strength = 0; else if (strength > 0xffff) strength = 0xffff;
+            if (!Send(devicePath, new byte[] { 0x08, 0x04, 0x01, 0x00 })) return false;
+            return Send(devicePath, new byte[] { 0x08, 0x03, (byte)(strength & 0xff), (byte)((strength >> 8) & 0xff) });
+        }
+
         // ── Condition effects: spring / damper / friction ──
         // Upload packet (header 0x64) from t300rs_upload_condition. Spring uses
         // type 0x06 + sat-max 0x6aa6; damper/friction/inertia type 0x07 + 0x7ffc.

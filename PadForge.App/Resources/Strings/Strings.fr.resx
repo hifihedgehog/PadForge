@@ -1621,4 +1621,6 @@
   <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>Nombre de doigts modifié. Échantillons effacés.</value></data>
   <data name="Recorder_Error_NoEngine" xml:space="preserve"><value>Moteur non démarré. Démarre le moteur avant d'enregistrer.</value></data>
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>Aucun échantillon valide capturé. Essaie de redessiner le geste.</value></data>
+  <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Plage de rotation</value></data>
+  <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Auto-centrage</value></data>
 </root>

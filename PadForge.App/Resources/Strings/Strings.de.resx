@@ -1621,4 +1621,6 @@
   <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>Fingeranzahl geändert. Samples zurückgesetzt.</value></data>
   <data name="Recorder_Error_NoEngine" xml:space="preserve"><value>Engine läuft nicht. Starte die Engine vor der Aufnahme.</value></data>
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>Kein gültiges Sample erfasst. Versuche die Geste erneut zu zeichnen.</value></data>
+  <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Lenkbereich</value></data>
+  <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Selbstzentrierung</value></data>
 </root>

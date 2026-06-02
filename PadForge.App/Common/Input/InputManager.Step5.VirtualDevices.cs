@@ -188,6 +188,12 @@ namespace PadForge.Common.Input
         /// </summary>
         internal string[] SlotOemOverrideLabel { get; } = new string[MaxPads];
 
+        /// <summary>Per-slot VID/PID override (0 = use the active profile's value).
+        /// Set by SyncExtendedConfigToSlot only when Customize is on; applied at
+        /// VC-build time via HMProfileBuilder.Vid/.Pid in CreateHMaestroController.</summary>
+        internal int[] SlotExtendedVendorId { get; } = new int[MaxPads];
+        internal int[] SlotExtendedProductId { get; } = new int[MaxPads];
+
         /// <summary>
         /// Ref count of active OEM-name claims per (VID, PID) tuple. Multiple
         /// Extended slots can target the same profile; HMOemNameOverride is
@@ -249,6 +255,12 @@ namespace PadForge.Common.Input
         /// descriptor with or without the PID block to match.
         /// </summary>
         private readonly bool[] _extendedAppliedFfbEnabled = new bool[MaxPads];
+
+        /// <summary>Applied VID/PID snapshot per slot. Mismatch vs the desired
+        /// SlotExtendedVendorId/ProductId triggers destroy + recreate so
+        /// HIDMaestro regenerates the descriptor with the new identity.</summary>
+        private readonly int[] _extendedAppliedVendorId = new int[MaxPads];
+        private readonly int[] _extendedAppliedProductId = new int[MaxPads];
 
         /// <summary>
         /// Per-slot last-applied OEM override label, compared against the
@@ -626,6 +638,8 @@ namespace PadForge.Common.Input
                     string desiredPs = SlotOemOverrideLabel[padIndex] ?? string.Empty;
                     var desiredLayout = SlotCustomLayouts[padIndex];
                     bool desiredFfb = SlotExtendedFfbEnabled[padIndex];
+                    int desiredVid = SlotExtendedVendorId[padIndex];
+                    int desiredPid = SlotExtendedProductId[padIndex];
                     bool psChanged = !string.Equals(
                         desiredPs,
                         _extendedAppliedProductString[padIndex] ?? string.Empty,
@@ -637,8 +651,11 @@ namespace PadForge.Common.Input
                         desiredLayout.Povs != appliedLayout.Povs ||
                         desiredLayout.Buttons != appliedLayout.Buttons;
                     bool ffbChanged = desiredFfb != _extendedAppliedFfbEnabled[padIndex];
+                    bool vidPidChanged =
+                        desiredVid != _extendedAppliedVendorId[padIndex]
+                        || desiredPid != _extendedAppliedProductId[padIndex];
 
-                    if (psChanged || layoutChanged || ffbChanged)
+                    if (psChanged || layoutChanged || ffbChanged || vidPidChanged)
                     {
                         if (IsSlotActive(padIndex)) BeginInitializing(padIndex);
                         else _slotInitializing[padIndex] = false;
@@ -1493,7 +1510,16 @@ namespace PadForge.Common.Input
                 bool forceFeedbackEnabled = SlotExtendedFfbEnabled[padIndex];
                 bool ffbOverrides = true;
 
-                if (productStringOverrides || layoutOverrides || ffbOverrides)
+                // VID/PID override (0 = use the profile's value). Counts as an
+                // override only when non-zero AND different from the base profile,
+                // so re-displaying the profile's own VID/PID doesn't force a rebuild.
+                int userVid = SlotExtendedVendorId[padIndex];
+                int userPid = SlotExtendedProductId[padIndex];
+                bool vidPidOverrides =
+                    (userVid > 0 && userVid != baseProfile.VendorId)
+                    || (userPid > 0 && userPid != baseProfile.ProductId);
+
+                if (productStringOverrides || layoutOverrides || ffbOverrides || vidPidOverrides)
                 {
                     try
                     {
@@ -1501,6 +1527,11 @@ namespace PadForge.Common.Input
 
                         if (productStringOverrides)
                             builder.ProductString(userProductString);
+
+                        if (userVid > 0)
+                            builder.Vid((ushort)userVid);
+                        if (userPid > 0)
+                            builder.Pid((ushort)userPid);
 
                         if (layoutOverrides || ffbOverrides)
                         {
@@ -1553,6 +1584,8 @@ namespace PadForge.Common.Input
             _extendedAppliedProductString[padIndex] = SlotOemOverrideLabel[padIndex] ?? string.Empty;
             _extendedAppliedLayout[padIndex] = SlotCustomLayouts[padIndex];
             _extendedAppliedFfbEnabled[padIndex] = SlotExtendedFfbEnabled[padIndex];
+            _extendedAppliedVendorId[padIndex] = SlotExtendedVendorId[padIndex];
+            _extendedAppliedProductId[padIndex] = SlotExtendedProductId[padIndex];
 
             return new HMaestroVirtualController(_hmaestroContext, effectiveProfile, type);
         }
@@ -1707,6 +1740,8 @@ namespace PadForge.Common.Input
             var stateExtendedAppliedProductString = new string[n];
             var stateExtendedAppliedLayout = new CustomControllerLayout[n];
             var stateExtendedAppliedFfbEnabled = new bool[n];
+            var stateExtendedAppliedVendorId = new int[n];
+            var stateExtendedAppliedProductId = new int[n];
             var stateOemOverrideClaimedVidPid = new uint[n];
             var stateLastAppliedOemLabel = new string[n];
             var destroyOldPads = new List<int>();
@@ -1743,6 +1778,8 @@ namespace PadForge.Common.Input
                     stateExtendedAppliedProductString[V] = _extendedAppliedProductString[oldPad];
                     stateExtendedAppliedLayout[V] = _extendedAppliedLayout[oldPad];
                     stateExtendedAppliedFfbEnabled[V] = _extendedAppliedFfbEnabled[oldPad];
+                    stateExtendedAppliedVendorId[V] = _extendedAppliedVendorId[oldPad];
+                    stateExtendedAppliedProductId[V] = _extendedAppliedProductId[oldPad];
                     stateOemOverrideClaimedVidPid[V] = _oemOverrideClaimedVidPid[oldPad];
                     stateLastAppliedOemLabel[V] = _lastAppliedOemLabel[oldPad];
                 }
@@ -1774,6 +1811,8 @@ namespace PadForge.Common.Input
                 _extendedAppliedProductString[oldPad] = null;
                 _extendedAppliedLayout[oldPad] = default;
                 _extendedAppliedFfbEnabled[oldPad] = false;
+                _extendedAppliedVendorId[oldPad] = 0;
+                _extendedAppliedProductId[oldPad] = 0;
                 _oemOverrideClaimedVidPid[oldPad] = 0;
                 _lastAppliedOemLabel[oldPad] = null;
             }
@@ -1794,6 +1833,8 @@ namespace PadForge.Common.Input
                 _extendedAppliedProductString[newPad] = stateExtendedAppliedProductString[V];
                 _extendedAppliedLayout[newPad] = stateExtendedAppliedLayout[V];
                 _extendedAppliedFfbEnabled[newPad] = stateExtendedAppliedFfbEnabled[V];
+                _extendedAppliedVendorId[newPad] = stateExtendedAppliedVendorId[V];
+                _extendedAppliedProductId[newPad] = stateExtendedAppliedProductId[V];
                 _oemOverrideClaimedVidPid[newPad] = stateOemOverrideClaimedVidPid[V];
                 _lastAppliedOemLabel[newPad] = stateLastAppliedOemLabel[V];
 
@@ -1925,6 +1966,8 @@ namespace PadForge.Common.Input
             _extendedAppliedProductString[padIndex] = null;
             _extendedAppliedLayout[padIndex] = default;
             _extendedAppliedFfbEnabled[padIndex] = false;
+            _extendedAppliedVendorId[padIndex] = 0;
+            _extendedAppliedProductId[padIndex] = 0;
 
             if (asyncDispose)
             {

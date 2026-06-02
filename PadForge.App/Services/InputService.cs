@@ -2235,6 +2235,10 @@ namespace PadForge.Services
             // so HIDMaestro regenerates the descriptor with or without the
             // PID block to match.
             _inputManager.SlotExtendedFfbEnabled[slotIndex] = customize ? cfg.ForceFeedbackEnabled : true;
+            // VID/PID override — Customize-gated like the OEM/FFB fields. 0 means
+            // "use the active profile's value" (the build path falls back to it).
+            _inputManager.SlotExtendedVendorId[slotIndex] = customize ? cfg.VendorId : 0;
+            _inputManager.SlotExtendedProductId[slotIndex] = customize ? cfg.ProductId : 0;
         }
 
         /// <summary>
@@ -6928,6 +6932,8 @@ namespace PadForge.Services
                     ButtonCount = cfg.ButtonCount,
                     OemNameOverride = cfg.OemNameOverride,
                     ProductString = cfg.ProductString,
+                    VendorId = cfg.VendorId,
+                    ProductId = cfg.ProductId,
                     Customize = cfg.Customize,
                     ForceFeedbackEnabled = cfg.ForceFeedbackEnabled
                 });
@@ -7483,6 +7489,8 @@ namespace PadForge.Services
                         cfg.ButtonCount = cfgData.ButtonCount;
                         cfg.OemNameOverride = cfgData.OemNameOverride;
                         cfg.ProductString = cfgData.ProductString ?? string.Empty;
+                        cfg.VendorId = cfgData.VendorId;
+                        cfg.ProductId = cfgData.ProductId;
                         cfg.Customize = cfgData.Customize;
                         cfg.ForceFeedbackEnabled = cfgData.ForceFeedbackEnabled;
                     }

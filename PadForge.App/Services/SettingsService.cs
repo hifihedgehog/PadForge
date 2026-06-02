@@ -1179,6 +1179,8 @@ namespace PadForge.Services
                     d.ButtonCount = s.ButtonCount;
                     d.OemNameOverride = s.OemNameOverride;
                     d.ProductString = s.ProductString ?? string.Empty;
+                    d.VendorId = s.VendorId;
+                    d.ProductId = s.ProductId;
                     d.Customize = s.Customize;
                     d.ForceFeedbackEnabled = s.ForceFeedbackEnabled;
                 }
@@ -1330,6 +1332,8 @@ namespace PadForge.Services
                 ButtonCount = cfg.ButtonCount,
                 OemNameOverride = cfg.OemNameOverride,
                 ProductString = cfg.ProductString,
+                VendorId = cfg.VendorId,
+                ProductId = cfg.ProductId,
                 Customize = cfg.Customize,
                 ForceFeedbackEnabled = cfg.ForceFeedbackEnabled,
             };
@@ -1354,6 +1358,8 @@ namespace PadForge.Services
             d.ButtonCount = cfg.ButtonCount;
             d.OemNameOverride = cfg.OemNameOverride;
             d.ProductString = cfg.ProductString ?? string.Empty;
+            d.VendorId = cfg.VendorId;
+            d.ProductId = cfg.ProductId;
             d.Customize = cfg.Customize;
             d.ForceFeedbackEnabled = cfg.ForceFeedbackEnabled;
         }
@@ -1420,6 +1426,8 @@ namespace PadForge.Services
                     cfg.ButtonCount = cfgData.ButtonCount;
                     cfg.OemNameOverride = cfgData.OemNameOverride;
                     cfg.ProductString = cfgData.ProductString ?? string.Empty;
+                    cfg.VendorId = cfgData.VendorId;
+                    cfg.ProductId = cfgData.ProductId;
                     cfg.Customize = cfgData.Customize;
                     cfg.ForceFeedbackEnabled = cfgData.ForceFeedbackEnabled;
                 }
@@ -2428,6 +2436,8 @@ namespace PadForge.Services
                     ButtonCount = cfg.ButtonCount,
                     OemNameOverride = cfg.OemNameOverride,
                     ProductString = cfg.ProductString,
+                    VendorId = cfg.VendorId,
+                    ProductId = cfg.ProductId,
                     Customize = cfg.Customize,
                     ForceFeedbackEnabled = cfg.ForceFeedbackEnabled
                 });
@@ -2562,6 +2572,8 @@ namespace PadForge.Services
                     ButtonCount = cfg.ButtonCount,
                     OemNameOverride = cfg.OemNameOverride,
                     ProductString = cfg.ProductString,
+                    VendorId = cfg.VendorId,
+                    ProductId = cfg.ProductId,
                     Customize = cfg.Customize,
                     ForceFeedbackEnabled = cfg.ForceFeedbackEnabled
                 });

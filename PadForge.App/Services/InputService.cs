@@ -5602,7 +5602,6 @@ namespace PadForge.Services
                     // Build list of all mapped devices for this slot.
                     var deviceInfos = new List<PadViewModel.MappedDeviceInfo>();
                     bool anyOnline = false;
-                    bool anyWheel = false;
 
                     foreach (var us in slotSettings)
                     {
@@ -5610,11 +5609,6 @@ namespace PadForge.Services
                         string name = LocalizedDeviceName(ud) ?? "Unknown device";
                         bool online = ud?.IsOnline ?? false;
                         if (online) anyOnline = true;
-                        if (ud != null && (
-                                Common.Input.LogitechRawHidWriter.IsLogitechWheel(ud.VendorId, ud.ProdId)
-                             || Common.Input.FanatecRawHidWriter.IsFanatecWheel(ud.VendorId, ud.ProdId)
-                             || Common.Input.ThrustmasterRawHidWriter.IsThrustmasterWheel(ud.VendorId, ud.ProdId)))
-                            anyWheel = true;
 
                         deviceInfos.Add(new PadViewModel.MappedDeviceInfo
                         {
@@ -5623,10 +5617,6 @@ namespace PadForge.Services
                             IsOnline = online
                         });
                     }
-
-                    // Native-FFB wheel assigned → the FFB tab shows rotation-range
-                    // + auto-center controls (vendor HID writers expose those).
-                    padVm.IsWheelAssigned = anyWheel;
 
                     // Sort alphabetically by name before syncing.
                     deviceInfos.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));

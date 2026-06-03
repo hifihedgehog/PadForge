@@ -1624,4 +1624,6 @@
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Lenkbereich</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Selbstzentrierung</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>Schalt-LEDs</value></data>
+  <data name="Pad_Wheel" xml:space="preserve"><value>Lenkrad</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Lenkbereich, Selbstzentrierung und Schaltanzeige für Force-Feedback-Lenkräder.</value></data>
 </root>

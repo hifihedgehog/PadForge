@@ -1646,4 +1646,6 @@
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Intervallo di rotazione</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Autocentratura</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>LED di regime</value></data>
+  <data name="Pad_Wheel" xml:space="preserve"><value>Volante</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Angolo di sterzo, autocentratura e luci di cambio per volanti con force feedback.</value></data>
 </root>

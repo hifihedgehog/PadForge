@@ -1624,4 +1624,6 @@
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rango de rotación</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Autocentrado</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>LED de cambio</value></data>
+  <data name="Pad_Wheel" xml:space="preserve"><value>Volante</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Rango de dirección, autocentrado y luces de cambio para volantes con force feedback.</value></data>
 </root>

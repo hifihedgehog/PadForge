@@ -1644,4 +1644,6 @@
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rotatiebereik</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Automatisch centreren</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>Schakel-leds</value></data>
+  <data name="Pad_Wheel" xml:space="preserve"><value>Stuur</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Stuurbereik, automatisch centreren en schakellampjes voor force-feedbackstuurwielen.</value></data>
 </root>

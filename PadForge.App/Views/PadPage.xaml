@@ -312,6 +312,16 @@
                     <TextBlock Text="{Binding Pad_ForceFeedback, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
 
+                <!-- Wheel tab — native-FFB wheels (Logitech / Fanatec / Thrustmaster) only.
+                     Visibility driven from code-behind (SyncTabVisibility) when the
+                     selected device matches a wheel VID/PID gate. Holds the wheel-only
+                     settings (rotation range, auto-center, RPM shift LEDs) that used to
+                     sit on the Force Feedback tab. -->
+                <RadioButton x:Name="TabWheel" Tag="11" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             Visibility="Collapsed">
+                    <TextBlock Text="{Binding Pad_Wheel, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
+                </RadioButton>
+
                 <!-- Impulse Triggers tab — Xbox One / Elite / Series only.
                      Visibility driven from code-behind via SyncTabVisibility
                      which checks the assigned device's HasRumbleTriggers
@@ -3533,28 +3543,6 @@
                             <Button Command="{Binding ResetOverallGainCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetOverallGain, Source={x:Static strings:Strings.Instance}}"/>
                         </StackPanel>
 
-                        <!-- Wheel settings — only for native-FFB wheels (Logitech / Fanatec / Thrustmaster) -->
-                        <StackPanel Visibility="{Binding IsWheelAssigned, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                <TextBlock Text="{Binding Pad_Wheel_RotationRange, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                <Slider Value="{Binding WheelRotationRange, Mode=TwoWay}" Minimum="40" Maximum="1080"
-                                        Style="{StaticResource DzSlider}"/>
-                                <TextBox Text="{Binding WheelRotationRange, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                         Style="{StaticResource DzValueEdit}"/>
-                                <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                <TextBlock Text="{Binding Pad_Wheel_Autocenter, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                <Slider Value="{Binding WheelAutoCenter, Mode=TwoWay}" Style="{StaticResource DzSlider}"/>
-                                <TextBox Text="{Binding WheelAutoCenter, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                         Style="{StaticResource DzValueEdit}"/>
-                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                            </StackPanel>
-                            <CheckBox IsChecked="{Binding WheelRpmLeds, Mode=TwoWay}"
-                                      Content="{Binding Pad_Wheel_RpmLeds, Source={x:Static strings:Strings.Instance}}"
-                                      Margin="0,0,0,8"/>
-                        </StackPanel>
-
                         <!-- Left motor -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <TextBlock Text="{Binding Pad_LeftMotorLabel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -5946,6 +5934,58 @@
                                 <Button Content="{Binding Pad_Touchpad_RecordNew, Source={x:Static strings:Strings.Instance}}"
                                         Command="{Binding RecordTouchpadGestureCommand}"
                                         HorizontalAlignment="Left" Padding="10,4"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ═══ Wheel (Tag 11) — native-FFB wheels only ═══ -->
+            <TabItem>
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="0,16,0,16">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="&#xE877;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding Pad_Wheel, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Pad_Wheel_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
+
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE877;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Wheel, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
+
+                                <!-- Rotation range — wheel hardware steering lock (not a force) -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pad_Wheel_RotationRange, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding WheelRotationRange, Mode=TwoWay}" Minimum="40" Maximum="1080"
+                                            Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding WheelRotationRange, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                </StackPanel>
+
+                                <!-- Auto-center — centering spring force -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pad_Wheel_Autocenter, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding WheelAutoCenter, Mode=TwoWay}" Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding WheelAutoCenter, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                </StackPanel>
+
+                                <!-- RPM shift LEDs — telemetry-driven rev display -->
+                                <CheckBox IsChecked="{Binding WheelRpmLeds, Mode=TwoWay}"
+                                          Content="{Binding Pad_Wheel_RpmLeds, Source={x:Static strings:Strings.Instance}}"
+                                          Margin="0,4,0,0"/>
                             </StackPanel>
                         </Border>
                     </StackPanel>

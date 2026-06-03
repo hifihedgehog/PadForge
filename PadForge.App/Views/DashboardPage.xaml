@@ -427,7 +427,7 @@
                                    Margin="0,0,8,0"/>
                         <ui:NumberBox Value="{Binding DsuMotionServerPort, Mode=TwoWay}"
                                       Minimum="1024" Maximum="65535"
-                                      SpinButtonPlacementMode="Inline" Width="160"/>
+                                      SpinButtonPlacementMode="Inline" Width="200"/>
                         <Button Command="{Binding ResetDsuPortCommand}"
                                 Padding="4,2" VerticalAlignment="Center" Margin="4,0,0,0"
                                 ToolTip="Reset">
@@ -464,7 +464,7 @@
                                    Margin="0,0,8,0"/>
                         <ui:NumberBox Value="{Binding WebControllerPort, Mode=TwoWay}"
                                       Minimum="1024" Maximum="65535"
-                                      SpinButtonPlacementMode="Inline" Width="160"/>
+                                      SpinButtonPlacementMode="Inline" Width="200"/>
                         <Button Command="{Binding ResetWebPortCommand}"
                                 Padding="4,2" VerticalAlignment="Center" Margin="4,0,0,0"
                                 ToolTip="Reset">

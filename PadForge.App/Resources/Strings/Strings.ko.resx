@@ -1624,4 +1624,6 @@
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>회전 범위</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>자동 센터링 강도</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>RPM 시프트 LED</value></data>
+  <data name="Pad_Wheel" xml:space="preserve"><value>휠</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>포스 피드백 휠의 조향 범위, 자동 센터링, 시프트 라이트.</value></data>
 </root>

@@ -1679,12 +1679,6 @@ namespace PadForge.ViewModels
         /// Persisted in PadSetting.AutoCenterStrength.</summary>
         public int WheelAutoCenter { get => _wheelAutoCenter; set => SetProperty(ref _wheelAutoCenter, Math.Clamp(value, 0, 100)); }
 
-        private bool _isWheelAssigned;
-        /// <summary>True when a native-FFB wheel (Logitech/Fanatec/Thrustmaster) is
-        /// mapped to this slot — gates the FFB-tab wheel controls. Set by InputService
-        /// when MappedDevices syncs.</summary>
-        public bool IsWheelAssigned { get => _isWheelAssigned; set => SetProperty(ref _isWheelAssigned, value); }
-
         private bool _wheelRpmLeds;
         /// <summary>Drive the wheel's RPM / shift LEDs from game telemetry (Logitech /
         /// Fanatec). Persisted in PadSetting.WheelRpmLeds; consumed by Step 2.</summary>

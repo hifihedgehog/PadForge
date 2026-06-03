@@ -1688,4 +1688,6 @@
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rotation Range</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Auto-Center Strength</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>RPM Shift LEDs</value></data>
+  <data name="Pad_Wheel" xml:space="preserve"><value>Wheel</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Steering range, auto-centering, and shift lights for force-feedback wheels.</value></data>
 </root>

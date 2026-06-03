@@ -275,6 +275,7 @@ namespace PadForge.Views
             bool hasGyro = false;
             bool hasImpulseTriggers = false;
             bool hasTouchpad = false;
+            bool hasWheel = false;
             int numTouchpads = 0;
             if (DataContext is PadViewModel vmProfile
                 && vmProfile.SelectedMappedDevice != null
@@ -299,6 +300,12 @@ namespace PadForge.Views
                         hasGyro = ud.HasGyro;
                         hasImpulseTriggers = ud.HasRumbleTriggers;
                         hasTouchpad = ud.HasTouchpad;
+                        // Native-FFB wheel → the Wheel tab (rotation range, auto-center,
+                        // RPM LEDs). Same VID/PID gates the wheel HID writers use.
+                        hasWheel =
+                            PadForge.Common.Input.LogitechRawHidWriter.IsLogitechWheel(ud.VendorId, ud.ProdId)
+                         || PadForge.Common.Input.FanatecRawHidWriter.IsFanatecWheel(ud.VendorId, ud.ProdId)
+                         || PadForge.Common.Input.ThrustmasterRawHidWriter.IsThrustmasterWheel(ud.VendorId, ud.ProdId);
                         // Pad count drives the Touchpad tab's per-pad
                         // pivot. Most devices = 1; Steam Controller 2026
                         // = 2 (Triton); original Steam Controller = 3.
@@ -339,6 +346,8 @@ namespace PadForge.Views
                 TabImpulseTriggers.Visibility = hasImpulseTriggers ? Visibility.Visible : Visibility.Collapsed;
             if (TabTouchpad != null)
                 TabTouchpad.Visibility = hasTouchpad ? Visibility.Visible : Visibility.Collapsed;
+            if (TabWheel != null)
+                TabWheel.Visibility = hasWheel ? Visibility.Visible : Visibility.Collapsed;
             if (IndicatorLedsCard != null)
                 IndicatorLedsCard.Visibility = hasIndicatorLeds ? Visibility.Visible : Visibility.Collapsed;
 
@@ -360,7 +369,8 @@ namespace PadForge.Views
 
             // SelectedConfigTab tag values: 0 Controller, 1 Macros, 2 Mappings,
             // 3 Sticks, 4 Triggers, 5 Force Feedback, 6 Adaptive Triggers,
-            // 7 Lighting, 8 Gyro, 9 Impulse Triggers. Macros, Mappings, and
+            // 7 Lighting, 8 Gyro, 9 Impulse Triggers, 10 Touchpad, 11 Wheel.
+            // Macros, Mappings, and
             // Force Feedback are visible for every VC type. MIDI hides
             // Sticks and Triggers; K+M hides Triggers only. Adaptive
             // Triggers, Lighting, Gyro, and Impulse Triggers are gated on
@@ -381,6 +391,8 @@ namespace PadForge.Views
                 else if (vm.SelectedConfigTab == 9 && !hasImpulseTriggers)
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 10 && !hasTouchpad)
+                    vm.SelectedConfigTab = 0;
+                else if (vm.SelectedConfigTab == 11 && !hasWheel)
                     vm.SelectedConfigTab = 0;
             }
         }

@@ -1624,4 +1624,6 @@
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>回転範囲</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>オートセンター強度</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>RPMシフトLED</value></data>
+  <data name="Pad_Wheel" xml:space="preserve"><value>ステアリング</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>フォースフィードバック対応ステアリングの回転範囲、オートセンター、シフトランプ。</value></data>
 </root>

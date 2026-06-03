@@ -610,6 +610,8 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Wheel_RotationRange => Get("Pad_Wheel_RotationRange");
     public string Pad_Wheel_Autocenter => Get("Pad_Wheel_Autocenter");
     public string Pad_Wheel_RpmLeds => Get("Pad_Wheel_RpmLeds");
+    public string Pad_Wheel => Get("Pad_Wheel");
+    public string Pad_Wheel_Subtitle => Get("Pad_Wheel_Subtitle");
     public string Pad_ExtendedProductStringTooltip => Get("Pad_ExtendedProductStringTooltip");
     public string Pad_ExtendedOemOverride => Get("Pad_ExtendedOemOverride");
     public string Pad_ExtendedOemOverrideTooltip => Get("Pad_ExtendedOemOverrideTooltip");

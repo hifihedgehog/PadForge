@@ -10,11 +10,19 @@ namespace PadForge.Common.Telemetry
     /// (no padding), so the offsets are plain field sums.
     ///
     /// <para>Offsets computed from dallongo/rFactorSharedMemoryMap
-    /// (rfSharedStruct.hpp, pack(1)), 2026-06-02: engineRPM(f32)@188,
-    /// engineMaxRPM(f32)@228.</para>
+    /// (rfSharedStruct.hpp, pack(1)) and corroborated by Spacefreak18/simapi
+    /// (rfdata.h, same struct), 2026-06-02: engineRPM(f32)@188, engineMaxRPM(f32)@228.</para>
     ///
-    /// <para>PREREQUISITE: the rFactor shared-memory plugin must be installed in
-    /// the game's Plugins folder. No plugin = no map = the source stays idle.</para>
+    /// <para>FRAGMENTED LANDSCAPE: multiple rF1 plugins publish the same
+    /// <c>$rFactorShared$</c> map with DIFFERENT layouts (CrewChief's variant drops
+    /// the version[8] header and adds a vehicleName[64] field, shifting engineRPM
+    /// to 244). These offsets are for the dallongo/simapi family. To avoid lighting
+    /// LEDs from a wrong-layout plugin's garbage, the read is gated on a sane RPM
+    /// range — a mismatched layout fails the gate and the source stays silent
+    /// rather than wrong.</para>
+    ///
+    /// <para>PREREQUISITE: a dallongo-family rFactor shared-memory plugin installed
+    /// in the game's Plugins folder. No plugin = no map = the source stays idle.</para>
     /// </summary>
     internal sealed class RFactor1TelemetrySource : ITelemetrySource
     {
@@ -61,7 +69,10 @@ namespace PadForge.Common.Telemetry
             {
                 float rpm = _acc.ReadSingle(OffEngineRpm);
                 float max = _acc.ReadSingle(OffEngineMaxRpm);
-                if (max <= 0f || float.IsNaN(max) || float.IsNaN(rpm)) return false;
+                // Sane-range gate: rejects a wrong-layout plugin's garbage so it
+                // degrades to no-LEDs instead of wrong-LEDs (see class remarks).
+                if (float.IsNaN(max) || float.IsNaN(rpm)) return false;
+                if (max < 1000f || max > 25000f || rpm < 0f || rpm > 25000f) return false;
 
                 // rF1 exposes no frame counter; treat a frozen RPM as stale (paused /
                 // game closed but map left mapped). A real engine always jitters.

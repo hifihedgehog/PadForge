@@ -18,11 +18,14 @@ namespace PadForge.Common.Telemetry
         private static ITelemetrySource[] _sources;
         private static Thread _poll;
         private static volatile bool _running;
-        private static int _lastRequestTick;
+        private static volatile int _lastRequestTick;
         private static int _forzaPort = DefaultForzaPort;
 
+        // Guards the published snapshot. Separate from _lock so a consumer read
+        // never blocks behind source creation/teardown in Start()/Stop().
+        private static readonly object _snapLock = new();
         private static GameTelemetrySnapshot _current;
-        private static volatile bool _hasCurrent;
+        private static bool _hasCurrent;
 
         /// <summary>Forza Data Out listen port. Takes effect on the next start.</summary>
         public static void SetForzaPort(int port)
@@ -41,9 +44,12 @@ namespace PadForge.Common.Telemetry
         /// <summary>Latest in-session snapshot, if any source is producing data.</summary>
         public static bool TryGetCurrent(out GameTelemetrySnapshot snap)
         {
-            if (_hasCurrent) { snap = _current; return true; }
-            snap = default;
-            return false;
+            lock (_snapLock)
+            {
+                if (_hasCurrent) { snap = _current; return true; }
+                snap = default;
+                return false;
+            }
         }
 
         // All registered sources, polled in array order — the first with a fresh
@@ -105,8 +111,11 @@ namespace PadForge.Common.Telemetry
                         catch { /* a flaky source must not take down the hub */ }
                     }
                 }
-                _current = best;
-                _hasCurrent = have;
+                lock (_snapLock)
+                {
+                    _current = best;
+                    _hasCurrent = have;
+                }
 
                 Thread.Sleep(16); // ~60 Hz
             }
@@ -117,7 +126,7 @@ namespace PadForge.Common.Telemetry
             lock (_lock)
             {
                 _running = false;
-                _hasCurrent = false;
+                lock (_snapLock) { _hasCurrent = false; }
                 var sources = _sources;
                 if (sources != null)
                     foreach (var s in sources) { try { s.Dispose(); } catch { } }

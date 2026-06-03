@@ -69,7 +69,7 @@
                                    Margin="0,0,8,0"/>
                         <ui:NumberBox Value="{Binding PollingRateMs, Mode=TwoWay}"
                                       Minimum="1" Maximum="16"
-                                      SpinButtonPlacementMode="Inline" Width="120"/>
+                                      SpinButtonPlacementMode="Inline" Width="200"/>
                         <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0"
                                    Opacity="0.6"/>
                     </StackPanel>
@@ -78,7 +78,7 @@
                                    Margin="0,0,8,0"/>
                         <ui:NumberBox Value="{Binding HmInactivityDestroyTimeoutSeconds, Mode=TwoWay}"
                                       Minimum="0" Maximum="3600"
-                                      SpinButtonPlacementMode="Inline" Width="120"
+                                      SpinButtonPlacementMode="Inline" Width="200"
                                       ToolTip="{Binding Settings_HmInactivityTimeoutTooltip, Source={x:Static strings:Strings.Instance}}"/>
                         <TextBlock Text="{Binding Settings_SecondsZeroNever, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0"
                                    Opacity="0.6"/>

@@ -558,27 +558,29 @@ namespace PadForge.Common.Input
                     }
 
                     // RPM / shift LEDs from the running game's telemetry (Logitech
-                    // 5-LED rev strip, Fanatec 9-LED). Demand-driven: requesting
-                    // telemetry starts the hub; it stops itself when no wheel asks.
-                    // Re-sent only when the bitmask changes — the redline blink
-                    // flips the mask, so it animates without per-tick HID churn.
-                    // No telemetry (game closed / not racing) resolves to mask 0,
-                    // so the strip clears instead of freezing on the last frame.
-                    if (firstPadSetting.WheelRpmLeds == "1" && (isLogitechWheel || isFanatecWheel))
+                    // 5-LED, Fanatec 9-LED rim, Thrustmaster 15-LED rim). Demand-
+                    // driven: requesting telemetry starts the hub; it stops itself
+                    // when no wheel asks. Re-sent only when the bitmask changes — the
+                    // redline blink flips the mask, so it animates without per-tick
+                    // HID churn. No telemetry (game closed / not racing) resolves to
+                    // mask 0, so the strip clears instead of freezing on last frame.
+                    if (firstPadSetting.WheelRpmLeds == "1" && (isLogitechWheel || isFanatecWheel || isThrustmasterWheel))
                     {
                         TelemetryHub.RequestActive();
                         int mask = 0;
                         if (TelemetryHub.TryGetCurrent(out var tel))
                         {
                             bool blinkOn = (Environment.TickCount / 60) % 2 == 0;
-                            mask = isLogitechWheel
-                                ? RpmLedMap.Logitech(tel.RpmFraction, blinkOn)
-                                : RpmLedMap.Fanatec(tel.RpmFraction, blinkOn);
+                            float frac = tel.RpmFraction;
+                            if (isLogitechWheel) mask = RpmLedMap.Logitech(frac, blinkOn);
+                            else if (isFanatecWheel) mask = RpmLedMap.Fanatec(frac, blinkOn);
+                            else mask = RpmLedMap.Thrustmaster(frac, blinkOn);
                         }
                         if (!_appliedLeds.TryGetValue(ud.DevicePath, out int prevMask) || prevMask != mask)
                         {
                             if (isLogitechWheel) LogitechRawHidWriter.WriteRpmLeds(ud.DevicePath, (byte)mask);
-                            else FanatecRawHidWriter.WriteRpmLeds(ud.DevicePath, mask);
+                            else if (isFanatecWheel) FanatecRawHidWriter.WriteRpmLeds(ud.DevicePath, mask);
+                            else ThrustmasterRawHidWriter.WriteRpmLeds(ud.DevicePath, mask);
                             _appliedLeds[ud.DevicePath] = mask;
                         }
                     }
@@ -587,6 +589,7 @@ namespace PadForge.Common.Input
                         // Feature turned off — clear the strip once.
                         if (isLogitechWheel) LogitechRawHidWriter.WriteRpmLeds(ud.DevicePath, 0);
                         else if (isFanatecWheel) FanatecRawHidWriter.WriteRpmLeds(ud.DevicePath, 0);
+                        else if (isThrustmasterWheel) ThrustmasterRawHidWriter.WriteRpmLeds(ud.DevicePath, 0);
                         _appliedLeds[ud.DevicePath] = 0;
                     }
                 }

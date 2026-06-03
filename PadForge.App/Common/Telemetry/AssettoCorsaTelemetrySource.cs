@@ -26,7 +26,10 @@ namespace PadForge.Common.Telemetry
         private MemoryMappedViewAccessor _physAcc, _statAcc;
         private int _maxRpm;
         private int _staticCountdown;
-        private int _nextOpenTick;  // Environment.TickCount before which open is skipped
+        private int _nextOpenTick;   // Environment.TickCount before which open is skipped
+        private int _lastPacketId;   // physics PacketId (@0); advances each physics tick
+        private int _lastAdvanceTick; // Environment.TickCount of the last PacketId change
+        private bool _havePacket;
 
         // Faithful prefix of SPageFileStatic up to MaxRpm (Pack = 4, Unicode
         // strings). Marshaling the head lets the runtime account for the string
@@ -89,6 +92,25 @@ namespace PadForge.Common.Telemetry
                 else _staticCountdown--;
 
                 if (_maxRpm <= 0) return false;
+
+                // Freshness gate. The physics page persists with frozen values in
+                // menus / pause / replay / after the session ends, so a nonzero RPM
+                // could otherwise stick on the strip. PacketId (@0) advances every
+                // physics tick; if it hasn't changed for ~1s the data is stale and
+                // we report idle so the LEDs clear (mirrors Forza's stale timeout).
+                int packetId = _physAcc.ReadInt32(0);
+                int now = Environment.TickCount;
+                if (!_havePacket || packetId != _lastPacketId)
+                {
+                    _lastPacketId = packetId;
+                    _lastAdvanceTick = now;
+                    _havePacket = true;
+                }
+                else if (unchecked(now - _lastAdvanceTick) > 1000)
+                {
+                    return false;
+                }
+
                 int rpms = _physAcc.ReadInt32(RpmsOffset);
                 if (rpms < 0) rpms = 0;
                 snap = new GameTelemetrySnapshot { Rpm = rpms, MaxRpm = _maxRpm, IdleRpm = 0f, Source = Name };
@@ -124,6 +146,7 @@ namespace PadForge.Common.Telemetry
             try { _statMmf?.Dispose(); } catch { }
             _physAcc = null; _statAcc = null; _physMmf = null; _statMmf = null;
             _maxRpm = 0;
+            _havePacket = false;
         }
 
         public void Stop() => Close();

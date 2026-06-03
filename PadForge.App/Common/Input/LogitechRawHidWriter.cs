@@ -44,6 +44,7 @@ namespace PadForge.Common.Input
                 case 0xC262: // G920 (Xbox / PC)
                 case 0xC267: // G923 (PS / PC)
                 case 0xC266: // G923 (Xbox / PC)
+                case 0xC29B: // G27 (native mode) — same lg4ff protocol + 5-LED strip
                     return true;
                 default:
                     return false;
@@ -226,9 +227,10 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Sets the 5 RPM / shift LEDs on the wheel face.
-        /// <paramref name="ledMask"/> bit 0 = first (leftmost) LED .. bit 4 = fifth.
-        /// Command <c>f8 12 [mask]</c> (new-lg4ff <c>lg4ff_set_leds</c>). Driving
-        /// these from game telemetry is the reason native mode matters for LEDs.</summary>
+        /// <paramref name="ledMask"/> bit 0 = first (lowest-RPM) LED .. bit 4 = fifth,
+        /// matching the kernel's RPM1..RPM5 fill order. Command <c>f8 12 [mask]</c>
+        /// (new-lg4ff <c>lg4ff_set_leds</c>, cross-checked vs mainline Linux +
+        /// oversteer). Driving these from telemetry is why native mode matters.</summary>
         public static bool WriteRpmLeds(string devicePath, byte ledMask)
         {
             if (string.IsNullOrEmpty(devicePath)) return false;

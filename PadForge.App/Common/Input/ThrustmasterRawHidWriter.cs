@@ -153,6 +153,25 @@ namespace PadForge.Common.Input
             return Send(devicePath, new byte[] { 0x08, 0x03, (byte)(strength & 0xff), (byte)((strength >> 8) & 0xff) });
         }
 
+        /// <summary>Sets the rim's RPM / rev LEDs. <paramref name="ledMask15"/> is a
+        /// 15-bit mask, bit 0 = first LED. The LED strip lives on the rim, not the
+        /// base, so the command goes to the base and is relayed to whatever rim is
+        /// attached (harmless on a rim without LEDs). Payload after the 0x60 report
+        /// ID = <c>00 41 02 [low] [high]</c> (LEDs 0-7 low, 8-14 high).
+        ///
+        /// <para>Protocol verified against wKoja/thrustmaster-led-linux,
+        /// prodigal.knight's SimHub Thrustmaster LED plugin, and mplutka/tm-bt-led
+        /// (three independent reverse-engineered sources, 2026-06-02). Rims with rev
+        /// LEDs: Ferrari 488 Challenge, SF1000 Formula, T248. Brightness defaults to
+        /// the wheel's own setting; not driven here. HARDWARE-VERIFY on a real rim.</para></summary>
+        public static bool WriteRpmLeds(string devicePath, int ledMask15)
+        {
+            if (string.IsNullOrEmpty(devicePath)) return false;
+            int mask = ledMask15 & 0x7fff;
+            byte[] payload = { 0x00, 0x41, 0x02, (byte)(mask & 0xff), (byte)((mask >> 8) & 0xff) };
+            return Send(devicePath, payload);
+        }
+
         // ── Condition effects: spring / damper / friction ──
         // Upload packet (header 0x64) from t300rs_upload_condition. Spring uses
         // type 0x06 + sat-max 0x6aa6; damper/friction/inertia type 0x07 + 0x7ffc.

@@ -4,8 +4,9 @@ namespace PadForge.Common.Telemetry
     /// Maps a 0..1 RPM fraction to a shift-light LED bitmask. LEDs begin filling
     /// at <see cref="Start"/> of redline and are all lit by <see cref="Full"/>;
     /// above <see cref="Redline"/> the whole strip blinks as a shift-now cue.
-    /// Bit 0 is the first (leftmost) LED. Each wheel family has a different LED
-    /// count, so the count is a parameter.
+    /// Bit 0 is the first (lowest-RPM) LED, matching the kernel drivers' RPM1
+    /// naming; physical left/right orientation is the rim's, not asserted here.
+    /// Each wheel family has a different LED count, so the count is a parameter.
     /// </summary>
     internal static class RpmLedMap
     {
@@ -15,6 +16,7 @@ namespace PadForge.Common.Telemetry
 
         public const int LogitechLeds = 5;   // G25..G923 rev strip
         public const int FanatecLeds = 9;    // ftecff LEDS = 9 (rim strip)
+        public const int ThrustmasterLeds = 15; // TM rim rev strip (Ferrari/SF1000/T248)
 
         /// <summary>Logitech 5-LED bitmask (f8 12 payload). Bit 0 = first LED.</summary>
         public static byte Logitech(float frac, bool blinkOn)
@@ -29,6 +31,13 @@ namespace PadForge.Common.Telemetry
         {
             if (frac >= Redline) return blinkOn ? 0x1FF : 0x000;
             return (1 << Count(frac, FanatecLeds)) - 1;
+        }
+
+        /// <summary>Thrustmaster 15-LED rim bitmask (bit 0 = first LED).</summary>
+        public static int Thrustmaster(float frac, bool blinkOn)
+        {
+            if (frac >= Redline) return blinkOn ? 0x7FFF : 0x0000;
+            return (1 << Count(frac, ThrustmasterLeds)) - 1;
         }
 
         private static int Count(float frac, int total)

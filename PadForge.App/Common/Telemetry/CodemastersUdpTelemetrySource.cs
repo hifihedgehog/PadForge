@@ -16,9 +16,11 @@ namespace PadForge.Common.Telemetry
     ///   <c>CarStatusData.m_maxRPM</c> (u16) in packet id 7 at <c>29 + player*55 +
     ///   17</c> (idle at +19). The two values arrive in separate packets, so both
     ///   are cached.</item>
-    ///   <item><b>DiRT Rally / DiRT Rally 2.0</b> — classic flat-float datagram,
-    ///   exactly 264 bytes (<c>extradata=3</c>): rpm float @148, max @252, idle @256
-    ///   (each ×10 for absolute RPM; the ×10 cancels in the fraction).</item>
+    ///   <item><b>DiRT Rally 2.0 / DiRT Rally / DiRT 4 / GRID</b> — the classic
+    ///   Codemasters flat-float datagram, exactly 264 bytes (<c>extradata=3</c>):
+    ///   rpm float @148, max @252, idle @256 (each ×10 for absolute RPM; the ×10
+    ///   cancels in the fraction). These titles share the byte layout, so one path
+    ///   covers them all when each is configured to <c>extradata=3</c>.</item>
     /// </list>
     /// Offsets verified against the EA F1 24 UDP spec + accepted parsers and the
     /// Codemasters EGO/D-BOX format (2026-06-02). F1 22 (format 2022) has a
@@ -102,7 +104,7 @@ namespace PadForge.Common.Telemetry
             float idle = BitConverter.ToSingle(b, 256) * 10f;
             if (max <= 0f || float.IsNaN(max) || float.IsNaN(rpm)) return;
             _rpm = rpm; _maxRpm = max; _idleRpm = idle;
-            _label = "DiRT Rally 2.0 UDP";
+            _label = "DiRT/GRID UDP";
             _lastTick = Environment.TickCount;
         }
 

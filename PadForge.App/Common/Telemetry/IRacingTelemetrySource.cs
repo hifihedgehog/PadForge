@@ -75,16 +75,19 @@ namespace PadForge.Common.Telemetry
                 // Most-recent data buffer = highest tickCount.
                 int nbuf = _acc.ReadInt32(H_NumBuf);
                 if (nbuf <= 0 || nbuf > 8) return false;
-                int bestTick = int.MinValue, bestOff = 0;
+                int bestTick = int.MinValue, bestBuf = 0, bestOff = 0;
                 for (int i = 0; i < nbuf; i++)
                 {
                     int t = _acc.ReadInt32(VarBufBase + i * VarBufStride);
-                    if (t > bestTick) { bestTick = t; bestOff = _acc.ReadInt32(VarBufBase + i * VarBufStride + 4); }
+                    if (t > bestTick) { bestTick = t; bestBuf = i; bestOff = _acc.ReadInt32(VarBufBase + i * VarBufStride + 4); }
                 }
 
                 float rpm = _acc.ReadSingle(bestOff + _rpmVarOffset);
+                // Tear guard (pyirsdk pattern): if the buffer was recycled mid-read
+                // its tickCount changed — discard this frame, the next poll is fine.
+                if (_acc.ReadInt32(VarBufBase + bestBuf * VarBufStride) != bestTick) return false;
+                if (float.IsNaN(rpm) || rpm < 0f || rpm > 30000f) return false;
                 ParseSessionRpms();
-                if (rpm < 0f) rpm = 0f;
                 snap = new GameTelemetrySnapshot
                 {
                     Rpm = rpm,

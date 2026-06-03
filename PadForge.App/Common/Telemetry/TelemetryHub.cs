@@ -15,8 +15,7 @@ namespace PadForge.Common.Telemetry
         public const int DefaultForzaPort = 5300;
 
         private static readonly object _lock = new();
-        private static ForzaUdpTelemetrySource _forza;
-        private static AssettoCorsaTelemetrySource _ac;
+        private static ITelemetrySource[] _sources;
         private static Thread _poll;
         private static volatile bool _running;
         private static int _lastRequestTick;
@@ -47,15 +46,28 @@ namespace PadForge.Common.Telemetry
             return false;
         }
 
+        // All registered sources, polled in array order — the first with a fresh
+        // in-session snapshot wins. Only one racing title runs at a time in
+        // practice, so order is mostly a tie-breaker. Add a new game by dropping
+        // its ITelemetrySource into this array.
+        private static ITelemetrySource[] BuildSources() => new ITelemetrySource[]
+        {
+            new ForzaUdpTelemetrySource(_forzaPort),     // UDP 5300
+            new AssettoCorsaTelemetrySource(),           // acpmf shared memory (AC / ACC)
+            new IRacingTelemetrySource(),                // irsdk shared memory
+            new RFactor2TelemetrySource(),               // rF2/LMU shared memory (plugin)
+            new RaceRoomTelemetrySource(),               // R3E shared memory
+            new ScsTruckTelemetrySource(),               // ETS2/ATS shared memory (plugin)
+            new CodemastersUdpTelemetrySource(),         // UDP 20777: F1 23/24 + DiRT Rally
+        };
+
         private static void Start()
         {
             lock (_lock)
             {
                 if (_running) return;
-                _forza = new ForzaUdpTelemetrySource(_forzaPort);
-                _ac = new AssettoCorsaTelemetrySource();
-                _forza.Start();
-                _ac.Start();
+                _sources = BuildSources();
+                foreach (var s in _sources) { try { s.Start(); } catch { } }
                 _running = true;
                 _poll = new Thread(Loop) { IsBackground = true, Name = "TelemetryHub" };
                 _poll.Start();
@@ -74,14 +86,21 @@ namespace PadForge.Common.Telemetry
 
                 GameTelemetrySnapshot best = default;
                 bool have = false;
-                // Forza first (active racing titles rarely overlap); AC/ACC next.
-                if (_forza != null && _forza.TryGetSnapshot(out var f) && f.MaxRpm > 0f)
+                var sources = _sources;
+                if (sources != null)
                 {
-                    best = f; have = true;
-                }
-                else if (_ac != null && _ac.TryGetSnapshot(out var a) && a.MaxRpm > 0f)
-                {
-                    best = a; have = true;
+                    foreach (var s in sources)
+                    {
+                        try
+                        {
+                            if (s.TryGetSnapshot(out var snap) && snap.MaxRpm > 0f)
+                            {
+                                best = snap; have = true;
+                                break;
+                            }
+                        }
+                        catch { /* a flaky source must not take down the hub */ }
+                    }
                 }
                 _current = best;
                 _hasCurrent = have;
@@ -96,10 +115,10 @@ namespace PadForge.Common.Telemetry
             {
                 _running = false;
                 _hasCurrent = false;
-                try { _forza?.Dispose(); } catch { }
-                try { _ac?.Dispose(); } catch { }
-                _forza = null;
-                _ac = null;
+                var sources = _sources;
+                if (sources != null)
+                    foreach (var s in sources) { try { s.Dispose(); } catch { } }
+                _sources = null;
             }
         }
     }

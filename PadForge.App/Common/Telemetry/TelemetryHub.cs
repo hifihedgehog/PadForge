@@ -58,7 +58,10 @@ namespace PadForge.Common.Telemetry
             new RFactor2TelemetrySource(),               // rF2/LMU shared memory (plugin)
             new RaceRoomTelemetrySource(),               // R3E shared memory
             new ScsTruckTelemetrySource(),               // ETS2/ATS shared memory (plugin)
-            new CodemastersUdpTelemetrySource(),         // UDP 20777: F1 23/24 + DiRT Rally
+            new MadnessTelemetrySource(),                // AMS2 / Project CARS 2-3 shared memory
+            new RFactor1TelemetrySource(),               // rFactor 1 / AMS1 / GSCE shared memory (plugin)
+            new CodemastersUdpTelemetrySource(),         // UDP 20777: F1 23/24 + DiRT/GRID
+            new OutGaugeTelemetrySource(),               // UDP 4444: BeamNG + Live for Speed
         };
 
         private static void Start()

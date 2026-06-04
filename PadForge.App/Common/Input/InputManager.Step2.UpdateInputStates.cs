@@ -540,21 +540,26 @@ namespace PadForge.Common.Input
                     if (!_appliedWheelSettings.TryGetValue(ud.DevicePath, out var prevWs) || prevWs.range != desRange || prevWs.ac != desAc)
                     {
                         int acMag = desAc * 0xffff / 100; // 0..100% -> 0..0xffff
+                        bool applied;
                         if (isLogitechWheel)
                         {
-                            LogitechRawHidWriter.WriteRange(ud.DevicePath, desRange);
-                            LogitechRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);
+                            applied  = LogitechRawHidWriter.WriteRange(ud.DevicePath, desRange);
+                            applied &= LogitechRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);
                         }
                         else if (isFanatecWheel)
                         {
-                            FanatecRawHidWriter.WriteRange(ud.DevicePath, desRange); // Fanatec auto-center is via its spring
+                            applied = FanatecRawHidWriter.WriteRange(ud.DevicePath, desRange); // Fanatec auto-center is via its spring
                         }
                         else
                         {
-                            ThrustmasterRawHidWriter.WriteRange(ud.DevicePath, desRange);
-                            ThrustmasterRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);
+                            applied  = ThrustmasterRawHidWriter.WriteRange(ud.DevicePath, desRange);
+                            applied &= ThrustmasterRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);
                         }
-                        _appliedWheelSettings[ud.DevicePath] = (desRange, desAc);
+                        // Cache only once the wheel actually accepted the settings.
+                        // Latching on a failed write (device not ready on the first
+                        // dispatch frame) would never re-send the auto-center disable,
+                        // leaving the wheel at its firmware-default centering spring.
+                        if (applied) _appliedWheelSettings[ud.DevicePath] = (desRange, desAc);
                     }
 
                     // RPM / shift LEDs from the running game's telemetry (Logitech

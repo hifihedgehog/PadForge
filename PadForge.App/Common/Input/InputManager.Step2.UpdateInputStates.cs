@@ -512,7 +512,8 @@ namespace PadForge.Common.Input
                         if (hasCond)
                             LogitechRawHidWriter.WriteCondition(ud.DevicePath, 0, cv.EffectType,
                                 ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
-                                (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, overallGain);
+                                (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, overallGain,
+                                LogitechRawHidWriter.HasFrictionCap(ud.ProdId));
                         else if (level == 0) LogitechRawHidWriter.WriteStopEffect(ud.DevicePath, 0);
                         else LogitechRawHidWriter.WriteConstantForce(ud.DevicePath, 0, level);
                     }
@@ -522,7 +523,7 @@ namespace PadForge.Common.Input
                             FanatecRawHidWriter.WriteWheelCondition(ud.DevicePath, cv.EffectType,
                                 ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
                                 (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, overallGain);
-                        else FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, level);
+                        else FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, level, ud.ProdId);
                     }
                     else // Thrustmaster wheel
                     {

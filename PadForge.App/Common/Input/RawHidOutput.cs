@@ -78,9 +78,11 @@ namespace PadForge.Common.Input
                 need = QueryOutputLen(handle);
                 if (need > 0) _outLen[devicePath] = need;
             }
-            if (need <= 0 || need == buf.Length) return buf;
+            // Pad up only, never truncate - mirrors hidapi hid_write (windows/hid.c):
+            // a buffer already >= the device report length is sent as-is.
+            if (need <= 0 || need <= buf.Length) return buf;
             byte[] sized = new byte[need];
-            Array.Copy(buf, 0, sized, 0, Math.Min(buf.Length, need));
+            Array.Copy(buf, 0, sized, 0, buf.Length);
             return sized;
         }
 

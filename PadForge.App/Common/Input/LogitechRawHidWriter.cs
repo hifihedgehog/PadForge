@@ -52,6 +52,13 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Wheels with a real friction effect (lg4ff LG4FF_CAP_FRICTION).
+        /// Wheels without it cast friction to damper, matching lg4ff_play_effect
+        /// (hid-lg4ff.c:1107-1110); their device-table caps field is 0 (G29/G920/G923).
+        /// Among PadForge's supported wheels only the G27 (0xC29B) qualifies; the
+        /// legacy DFP/G25/DFGT also have it but are not in <see cref="IsLogitechWheel"/>.</summary>
+        public static bool HasFrictionCap(ushort pid) => pid == 0xC29B;
+
         // ─────────────────────────────────────────────
         //  Protocol — values from new-lg4ff/hid-lg4ff.c
         // ─────────────────────────────────────────────
@@ -176,15 +183,20 @@ namespace PadForge.Common.Input
         /// is a PadForge FfbEffectTypes value (Spring=8, Damper=9, Inertia=10,
         /// Friction=11); it selects the Logitech effect command.</summary>
         public static bool WriteCondition(string devicePath, int slot, uint ffbType,
-            int coeffPos, int coeffNeg, int offset, int deadband, int satPos, int satNeg, int gainPct)
+            int coeffPos, int coeffNeg, int offset, int deadband, int satPos, int satNeg, int gainPct,
+            bool capFriction)
         {
             if (string.IsNullOrEmpty(devicePath)) return false;
             string key = devicePath + "#" + slot;
             int op = (_loaded.TryGetValue(key, out bool ld) && ld) ? 0xc : 0x1;
 
-            int k1 = ToHid(coeffPos, gainPct);
-            int k2 = ToHid(coeffNeg, gainPct);
-            int clip = ToHid(System.Math.Max(satPos, satNeg) == 0 ? 10000 : System.Math.Max(satPos, satNeg), 100);
+            // lg4ff: k1 = left_coeff = negative, k2 = right_coeff = positive,
+            // clip = right_saturation = positive (calculate_spring/resistance +
+            // the DInput condition mapping right=positive, hid-ftec.c:571-575).
+            // The caller passes (coeffPos, coeffNeg, ..., satPos, satNeg).
+            int k1 = ToHid(coeffNeg, gainPct);
+            int k2 = ToHid(coeffPos, gainPct);
+            int clip = ClampU16((int)((long)(satPos == 0 ? 10000 : satPos) * 0xffff / 10000)); // 0..0xffff: SCALE_VALUE_U16(clip,8) -> 0xff at full (hid-lg4ff.c:590/600/608)
             int s1 = k1 < 0 ? 1 : 0, s2 = k2 < 0 ? 1 : 0;
 
             byte[] cmd = new byte[7];
@@ -205,7 +217,7 @@ namespace PadForge.Common.Input
                 cmd[5] = (byte)(((d2 & 7) << 5) + ((d1 & 7) << 1) + (s2 << 4) + s1);
                 cmd[6] = (byte)ScaleU16(clip, 8);
             }
-            else if (ffbType == 11) // FfbEffectTypes.Friction
+            else if (ffbType == 11 && capFriction) // FfbEffectTypes.Friction; non-cap wheels fall through to damper (lg4ff_play_effect cast)
             {
                 cmd[1] = (byte)EffFriction;
                 cmd[2] = (byte)ScaleCoeff(k1, 8);

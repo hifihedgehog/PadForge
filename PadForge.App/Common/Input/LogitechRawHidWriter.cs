@@ -44,7 +44,7 @@ namespace PadForge.Common.Input
                 case 0xC260: // G29 (PS4)
                 case 0xC262: // G920 (Xbox / PC)
                 case 0xC267: // G923 (PS / PC)
-                case 0xC266: // G923 (Xbox / PC)
+                case 0xC266: // G923 (PS / PC) - lg4ff variant; the Xbox G923 is 0xC26E (HID++, not this protocol)
                 case 0xC29B: // G27 (native mode) — same lg4ff protocol + 5-LED strip
                     return true;
                 default:
@@ -154,7 +154,7 @@ namespace PadForge.Common.Input
         {
             if (string.IsNullOrEmpty(devicePath)) return false;
             if (degrees < 40) degrees = 40;
-            else if (degrees > 1080) degrees = 1080;
+            else if (degrees > 900) degrees = 900; // every lg4ff Logitech wheel maxes at 900 deg (hid-lg4ff.c device table); lg4ff rejects higher
             byte[] cmd = new byte[7];
             cmd[0] = 0xf8;
             cmd[1] = 0x81;

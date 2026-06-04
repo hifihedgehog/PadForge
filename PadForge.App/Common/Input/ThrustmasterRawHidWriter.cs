@@ -202,7 +202,11 @@ namespace PadForge.Common.Input
 
             int rCoeff = ToHid(coeffPos, gainPct);
             int lCoeff = ToHid(coeffNeg, gainPct);
-            int centerHid = ToHid(offset, 100), halfHid = ToHid(deadband, 100) / 2;
+            // halfHid = deadband_u16/2 in HID units. ToHid maps DInput 0..10000 to
+            // 0..0x7fff, which ALREADY equals the driver's deadband_u16/2 (the Linux
+            // ff deadband is 0..0xffff, so /2 lands at 0x7fff full scale). No extra
+            // /2 - that halved the dead zone (t300rs_calculate_deadband, hid-tmt300rs.c:430-437).
+            int centerHid = ToHid(offset, 100), halfHid = ToHid(deadband, 100);
             int rBand = Clamp16(centerHid + halfHid);
             int lBand = Clamp16(centerHid - halfHid);
             int rSat = satPos == 0 ? maxSat : (int)((long)satPos * 0xffff / 10000) * maxSat / 0xffff;

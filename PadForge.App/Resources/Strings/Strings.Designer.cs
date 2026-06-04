@@ -612,6 +612,10 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Wheel_RpmLeds => Get("Pad_Wheel_RpmLeds");
     public string Pad_Wheel => Get("Pad_Wheel");
     public string Pad_Wheel_Subtitle => Get("Pad_Wheel_Subtitle");
+    public string Pad_ResetWheel => Get("Pad_ResetWheel");
+    public string Pad_ResetRotationRange => Get("Pad_ResetRotationRange");
+    public string Pad_ResetAutocenter => Get("Pad_ResetAutocenter");
+    public string Pad_ResetRpmLeds => Get("Pad_ResetRpmLeds");
     public string Pad_ExtendedProductStringTooltip => Get("Pad_ExtendedProductStringTooltip");
     public string Pad_ExtendedOemOverride => Get("Pad_ExtendedOemOverride");
     public string Pad_ExtendedOemOverrideTooltip => Get("Pad_ExtendedOemOverrideTooltip");

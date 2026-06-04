@@ -1684,6 +1684,27 @@ namespace PadForge.ViewModels
         /// Fanatec). Persisted in PadSetting.WheelRpmLeds; consumed by Step 2.</summary>
         public bool WheelRpmLeds { get => _wheelRpmLeds; set => SetProperty(ref _wheelRpmLeds, value); }
 
+        private RelayCommand _resetWheelRotationRangeCommand;
+        public RelayCommand ResetWheelRotationRangeCommand =>
+            _resetWheelRotationRangeCommand ??= new RelayCommand(() => WheelRotationRange = 900);
+
+        private RelayCommand _resetWheelAutoCenterCommand;
+        public RelayCommand ResetWheelAutoCenterCommand =>
+            _resetWheelAutoCenterCommand ??= new RelayCommand(() => WheelAutoCenter = 0);
+
+        private RelayCommand _resetWheelRpmLedsCommand;
+        public RelayCommand ResetWheelRpmLedsCommand =>
+            _resetWheelRpmLedsCommand ??= new RelayCommand(() => WheelRpmLeds = false);
+
+        private RelayCommand _resetWheelAllCommand;
+        public RelayCommand ResetWheelAllCommand =>
+            _resetWheelAllCommand ??= new RelayCommand(() =>
+            {
+                WheelRotationRange = 900;
+                WheelAutoCenter = 0;
+                WheelRpmLeds = false;
+            });
+
         private ICommand _resetForceAllCommand;
         public ICommand ResetForceAllCommand => _resetForceAllCommand ??= new RelayCommand(() =>
         {

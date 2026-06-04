@@ -1625,5 +1625,9 @@
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>オートセンター強度</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>RPMシフトLED</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>ステアリング</value></data>
+  <data name="Pad_ResetWheel" xml:space="preserve"><value>ステアリングをリセット</value></data>
+  <data name="Pad_ResetRotationRange" xml:space="preserve"><value>回転範囲をリセット</value></data>
+  <data name="Pad_ResetAutocenter" xml:space="preserve"><value>オートセンター強度をリセット</value></data>
+  <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPMシフトLEDをリセット</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>フォースフィードバック対応ステアリングの回転範囲、オートセンター、シフトランプ。</value></data>
 </root>

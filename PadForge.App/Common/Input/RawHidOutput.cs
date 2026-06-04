@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 
 namespace PadForge.Common.Input
@@ -30,6 +31,14 @@ namespace PadForge.Common.Input
 
             if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE) return false;
 
+            // Windows HID requires the write buffer to be exactly the collection's
+            // OutputReportByteLength. The per-vendor writers build the logical
+            // report (report-ID byte + command bytes); pad/clamp it to the device's
+            // actual length here. Without this, a wheel whose output reports are
+            // longer than the command rejects every write with ERROR_INVALID_PARAMETER
+            // (e.g. the G29 joystick collection wants 17 bytes; the lg4ff command is 8).
+            byte[] outBuf = ResizeForDevice(devicePath, handle, buf);
+
             try
             {
                 IntPtr ev = CreateEventW(IntPtr.Zero, true, false, null);
@@ -37,7 +46,7 @@ namespace PadForge.Common.Input
                 try
                 {
                     var ol = new OVERLAPPED { hEvent = ev };
-                    bool ok = WriteFile(handle, buf, (uint)buf.Length, IntPtr.Zero, ref ol);
+                    bool ok = WriteFile(handle, outBuf, (uint)outBuf.Length, IntPtr.Zero, ref ol);
                     if (!ok)
                     {
                         int err = Marshal.GetLastWin32Error();
@@ -53,6 +62,37 @@ namespace PadForge.Common.Input
                 finally { CloseHandle(ev); }
             }
             finally { CloseHandle(handle); }
+        }
+
+        // Cached per-device OutputReportByteLength so the caps lookup runs once per
+        // path rather than on every FFB frame.
+        private static readonly ConcurrentDictionary<string, int> _outLen = new();
+
+        // Returns buf sized to the device's OutputReportByteLength (zero-padded, or
+        // clamped if the command is somehow longer). Falls back to buf unchanged
+        // when the caps query is unavailable.
+        private static byte[] ResizeForDevice(string devicePath, IntPtr handle, byte[] buf)
+        {
+            if (!_outLen.TryGetValue(devicePath, out int need))
+            {
+                need = QueryOutputLen(handle);
+                if (need > 0) _outLen[devicePath] = need;
+            }
+            if (need <= 0 || need == buf.Length) return buf;
+            byte[] sized = new byte[need];
+            Array.Copy(buf, 0, sized, 0, Math.Min(buf.Length, need));
+            return sized;
+        }
+
+        private static int QueryOutputLen(IntPtr handle)
+        {
+            if (!HidD_GetPreparsedData(handle, out IntPtr pp) || pp == IntPtr.Zero) return 0;
+            try
+            {
+                if (HidP_GetCaps(pp, out HIDP_CAPS caps) < 0) return 0;
+                return caps.OutputReportByteLength;
+            }
+            finally { HidD_FreePreparsedData(pp); }
         }
 
         private const uint GENERIC_WRITE        = 0x40000000u;
@@ -101,5 +141,36 @@ namespace PadForge.Common.Input
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool CloseHandle(IntPtr hObject);
+
+        [DllImport("hid.dll")]
+        private static extern bool HidD_GetPreparsedData(IntPtr hidDeviceObject, out IntPtr preparsedData);
+
+        [DllImport("hid.dll")]
+        private static extern bool HidD_FreePreparsedData(IntPtr preparsedData);
+
+        [DllImport("hid.dll")]
+        private static extern int HidP_GetCaps(IntPtr preparsedData, out HIDP_CAPS capabilities);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct HIDP_CAPS
+        {
+            public ushort Usage;
+            public ushort UsagePage;
+            public ushort InputReportByteLength;
+            public ushort OutputReportByteLength;
+            public ushort FeatureReportByteLength;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 17)]
+            public ushort[] Reserved;
+            public ushort NumberLinkCollectionNodes;
+            public ushort NumberInputButtonCaps;
+            public ushort NumberInputValueCaps;
+            public ushort NumberInputDataIndices;
+            public ushort NumberOutputButtonCaps;
+            public ushort NumberOutputValueCaps;
+            public ushort NumberOutputDataIndices;
+            public ushort NumberFeatureButtonCaps;
+            public ushort NumberFeatureValueCaps;
+            public ushort NumberFeatureDataIndices;
+        }
     }
 }

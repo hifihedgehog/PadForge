@@ -22,10 +22,11 @@ namespace PadForge.Common.Input
     /// range. Older G25/G27/Driving Force/MOMO devices use the same shape and
     /// light up by adding PIDs to <see cref="IsLogitechWheel"/>.</para>
     ///
-    /// <para>HARDWARE VERIFICATION (Thursday): the Windows output report framing
-    /// here assumes report ID 0 with the 7 command bytes at offset 1 (8-byte
-    /// report). If the wheel's <c>OutputReportByteLength</c> differs, adjust
-    /// <see cref="BuildReport"/> — that's the one device-specific unknown.</para>
+    /// <para>The per-vendor command is 8 logical bytes (report ID 0 + 7 command
+    /// bytes). <see cref="RawHidOutput"/> pads each write to the device's actual
+    /// <c>OutputReportByteLength</c> before sending, so wheels whose joystick
+    /// collection uses longer output reports (the G29 wants 17) accept the
+    /// command instead of rejecting it with ERROR_INVALID_PARAMETER.</para>
     /// </summary>
     internal static class LogitechRawHidWriter
     {
@@ -241,9 +242,9 @@ namespace PadForge.Common.Input
             return RawHidOutput.Write(devicePath, BuildReport(cmd));
         }
 
-        // Frames the 7-byte command into a Windows HID output report: byte[0] =
-        // report ID (0 for these wheels), command bytes at offset 1. See the
-        // class-level HARDWARE VERIFICATION note re: report length.
+        // Frames the 7-byte command into the logical HID output report: byte[0] =
+        // report ID (0 for these wheels), command bytes at offset 1. RawHidOutput
+        // zero-pads this to the device's OutputReportByteLength before WriteFile.
         private static byte[] BuildReport(byte[] cmd7)
         {
             byte[] report = new byte[8];

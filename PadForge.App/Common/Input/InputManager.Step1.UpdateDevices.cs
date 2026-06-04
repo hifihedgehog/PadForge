@@ -540,6 +540,19 @@ namespace PadForge.Common.Input
                 catch { /* best effort */ }
             }
 
+            // Clear native-wheel per-device state so a same-path replug re-applies the
+            // rotation range + auto-center disable (the wheel firmware power-cycles to its
+            // default centering spring on unplug) and the FFB state machines re-arm instead
+            // of refreshing/updating a slot the firmware reset to empty.
+            if (!string.IsNullOrEmpty(ud.DevicePath))
+            {
+                _appliedWheelSettings.Remove(ud.DevicePath);
+                _appliedLeds.Remove(ud.DevicePath);
+                LogitechRawHidWriter.ResetDevice(ud.DevicePath);
+                ThrustmasterRawHidWriter.ResetDevice(ud.DevicePath);
+                RawHidOutput.ResetDevice(ud.DevicePath);
+            }
+
             ud.ClearRuntimeState();
         }
 

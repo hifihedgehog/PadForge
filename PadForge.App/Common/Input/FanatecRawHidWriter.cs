@@ -61,6 +61,24 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Bases with the FTEC_HIGHRES quirk (16-bit constant force) from
+        /// the hid-fanatecff device table (hid-ftec.c:1135-1150). The other supported
+        /// bases (ClubSport V2/V2.5, CSR Elite, Porsche 911) use 8-bit force.</summary>
+        public static bool IsFanatecHighRes(ushort pid)
+        {
+            switch (pid)
+            {
+                case 0x0E03: // CSL Elite Wheel Base
+                case 0x0005: // CSL Elite Wheel Base PS4
+                case 0x0020: // CSL DD / DD Pro / ClubSport DD
+                case 0x0006: // Podium DD1
+                case 0x0007: // Podium DD2
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         // TRANSLATE_FORCE(x, 8) = (clamp_s16(x) + 0x8000) >> 8 — same as Logitech;
         // 0x80 neutral, sign carries direction (single steering axis).
         private static byte TranslateForce(int levelS16)
@@ -95,7 +113,7 @@ namespace PadForge.Common.Input
         /// the signed steering-axis force (-0x8000..0x7fff); 0 disables the slot.
         /// Command: <c>[slot&lt;&lt;4|1] 08 [TRANSLATE_FORCE] …</c>, disable
         /// flips byte[0] to <c>(slot&lt;&lt;4|3)</c>.</summary>
-        public static bool WriteWheelConstantForce(string devicePath, int levelS16)
+        public static bool WriteWheelConstantForce(string devicePath, int levelS16, ushort pid)
         {
             const int slot = 0;
             byte[] cmd = new byte[7];
@@ -107,7 +125,22 @@ namespace PadForge.Common.Input
             else
             {
                 cmd[0] = (byte)((slot << 4) | 0x1); // select + enable
-                cmd[2] = TranslateForce(levelS16);
+                if (IsFanatecHighRes(pid))
+                {
+                    // High-res bases take 16-bit force: TRANSLATE_FORCE(level,16) =
+                    // clamp_s16(level) + 0x8000, low byte cmd[2] / high byte cmd[3],
+                    // marker cmd[6] = 0x01 (hid-ftecff.c:723-727). 8-bit alone would
+                    // quantize the force to 256 steps on these direct-drive bases.
+                    int clamped = levelS16 < -0x8000 ? -0x8000 : (levelS16 > 0x7fff ? 0x7fff : levelS16);
+                    int d1 = clamped + 0x8000;
+                    cmd[2] = (byte)(d1 & 0xff);
+                    cmd[3] = (byte)((d1 >> 8) & 0xff);
+                    cmd[6] = 0x01;
+                }
+                else
+                {
+                    cmd[2] = TranslateForce(levelS16); // TRANSLATE_FORCE(level, 8)
+                }
             }
             return RawHidOutput.Write(devicePath, BuildWheelReport(cmd));
         }
@@ -118,7 +151,9 @@ namespace PadForge.Common.Input
         // byte[0] = (slot<<4)|1 enable / |3 disable, byte[1] = slot cmd. Stateless.
         // Coefficient feel is hardware-tuned; wire format is verified.
         private const byte SpringSlot = 1, SpringCmd = 0x0b;
-        private const byte DamperSlot = 2, DamperCmd = 0x0c;
+        // Damper/inertia/friction share command 0x0c but live in distinct slots
+        // (hid-ftecff.c:1023-1036: slots[2]=damper, [3]=inertia, [4]=friction).
+        private const byte DamperSlot = 2, InertiaSlot = 3, FrictionSlot = 4, DamperCmd = 0x0c;
 
         private static int ClampU16(int x) => x < 0 ? 0 : (x > 0xffff ? 0xffff : x);
         private static int ScaleU16(int x, int bits) => ClampU16(x) >> (16 - bits);
@@ -134,17 +169,24 @@ namespace PadForge.Common.Input
         {
             if (string.IsNullOrEmpty(devicePath)) return false;
             bool isSpring = ffbType == 8;
-            int slot = isSpring ? SpringSlot : DamperSlot;
+            // Route each condition type to its own slot (cmd[0] high nibble = slot id);
+            // inertia=3, friction=4 share the damper command 0x0c (hid-ftecff.c:1023-1036).
+            int slot = ffbType == 8 ? SpringSlot : ffbType == 10 ? InertiaSlot : ffbType == 11 ? FrictionSlot : DamperSlot;
             byte slotCmd = isSpring ? SpringCmd : DamperCmd;
 
-            int k1 = ToHid(coeffPos, gainPct);
-            int k2 = ToHid(coeffNeg, gainPct);
-            int clip = ScaleU16(ToHid(System.Math.Max(satPos, satNeg) == 0 ? 10000 : System.Math.Max(satPos, satNeg), 100), 8);
+            // hid-ftecff: k1 = left_coeff = negative, k2 = right_coeff = positive,
+            // clip = right_saturation = positive (calculate_spring/resistance +
+            // hid-ftec.c:571-575). Caller passes (coeffPos, coeffNeg, ..., satPos, satNeg).
+            int k1 = ToHid(coeffNeg, gainPct);
+            int k2 = ToHid(coeffPos, gainPct);
+            int clip = ScaleU16(ClampU16((int)((long)(satPos == 0 ? 10000 : satPos) * 0xffff / 10000)), 8); // SCALE_VALUE_U16(right_sat,8) -> 0xff at full
             bool disable = coeffPos == 0 && coeffNeg == 0;
 
             byte[] cmd = new byte[7];
             cmd[0] = (byte)((slot << 4) | (disable ? 0x3 : 0x1));
             cmd[1] = slotCmd;
+            if (disable && !isSpring)
+                cmd[6] = 0xff; // ftecff resets damper/inertia/friction cmd[6]=0xff on disable (hid-ftecff.c:701-706)
             if (!disable)
             {
                 if (isSpring)

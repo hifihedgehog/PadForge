@@ -12,7 +12,8 @@ namespace PadForge.Common.Input
     ///
     /// <para>Wire protocol verified against <c>Kimplul/hid-tmff2</c>
     /// (<c>src/tmt300rs/hid-tmt300rs.c</c>) 2026-06-01: report ID 0x60; header
-    /// = {effect.id + 1, code}; little-endian fields. Upload code 0x6a + level +
+    /// = {0x00 zero1, effect.id + 1, code} (t300rs_packet_header is 3 bytes, zero1
+    /// is a leading data byte); little-endian fields. Upload code 0x6a + level +
     /// envelope + timing; play code 0x89 + 0x41 + count; update code 0x6a +
     /// magnitude + envelope + 0x00 0x45 + duration/offset; stop code 0x89.
     /// Level = sin-projected steering force halved to the wheel's [-16383..]
@@ -92,21 +93,23 @@ namespace PadForge.Common.Input
         {
             return new byte[]
             {
-                HeaderId, 0x6a,
+                0x00, HeaderId, 0x6a,          // header: zero1, id (effect.id+1), code
                 (byte)(level & 0xff), (byte)((level >> 8) & 0xff),
                 0, 0, 0, 0, 0, 0, 0, 0,        // envelope (attack/fade len+level), none
                 0x00,                          // zero separator
-                0x4f,                          // timing start marker
+                0x4f,                          // timing start marker (t300rs_packet_timing, 10 bytes)
                 0xff, 0xff,                    // duration = 0xffff (infinite)
+                0x00, 0x00,                    // zero1[2] gap
                 0x00, 0x00,                    // offset = 0
-                0xff, 0xff,                    // timing end marker
+                0x00,                          // zero2 gap
+                0xff, 0xff,                    // end marker
             };
         }
 
         // Play: header{id,0x89} + 0x41 + count(LE16)=0 (infinite).
         private static byte[] BuildPlay()
         {
-            return new byte[] { HeaderId, 0x89, 0x41, 0x00, 0x00 };
+            return new byte[] { 0x00, HeaderId, 0x89, 0x41, 0x00, 0x00 };
         }
 
         // Update: header{id,0x6a} + magnitude(LE16) + envelope(8=0) +
@@ -116,7 +119,7 @@ namespace PadForge.Common.Input
         {
             return new byte[]
             {
-                HeaderId, 0x6a,
+                0x00, HeaderId, 0x6a,          // header: zero1, id, code
                 (byte)(level & 0xff), (byte)((level >> 8) & 0xff),
                 0, 0, 0, 0, 0, 0, 0, 0,        // envelope, none
                 0x00,                          // effect_type = constant
@@ -129,7 +132,7 @@ namespace PadForge.Common.Input
         // Stop: header{id,0x89} + value(0).
         private static byte[] BuildStop()
         {
-            return new byte[] { HeaderId, 0x89, 0x00 };
+            return new byte[] { 0x00, HeaderId, 0x89, 0x00 };
         }
 
         /// <summary>Sets the wheel's rotation range in degrees (t300rs_set_range:
@@ -221,17 +224,17 @@ namespace PadForge.Common.Input
         private static byte[] BuildConditionUpload(short rCoeff, short lCoeff, short rBand, short lBand,
             ushort rSat, ushort lSat, ushort maxSat, byte type)
         {
-            // header(2) + 6×i16(12) + hardcoded(8) + 2×u16(4) + type(1) + timing(7) = 34
-            var p = new byte[34];
+            // header(3) + 6×i16(12) + hardcoded(8) + 2×u16(4) + type(1) + timing(10) = 38
+            var p = new byte[38];
             int i = 0;
-            p[i++] = HeaderId; p[i++] = 0x64;
+            p[i++] = 0x00; p[i++] = HeaderId; p[i++] = 0x64; // header: zero1, id, code
             void W16(int x) { p[i++] = (byte)(x & 0xff); p[i++] = (byte)((x >> 8) & 0xff); }
             W16(rCoeff); W16(lCoeff); W16(rBand); W16(lBand); W16(rSat); W16(lSat);
             Array.Copy(ConditionValues, 0, p, i, ConditionValues.Length); i += ConditionValues.Length;
             W16(maxSat); W16(maxSat);
             p[i++] = type;
-            // timing: 0x4f, duration=0xffff (infinite), offset=0, end 0xffff
-            p[i++] = 0x4f; W16(0xffff); W16(0x0000); W16(0xffff);
+            // timing (10): start 0x4f, duration=0xffff, zero1[2], offset=0, zero2, end 0xffff
+            p[i++] = 0x4f; W16(0xffff); p[i++] = 0x00; p[i++] = 0x00; W16(0x0000); p[i++] = 0x00; W16(0xffff);
             return p;
         }
 

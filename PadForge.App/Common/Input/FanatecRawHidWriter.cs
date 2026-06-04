@@ -214,12 +214,18 @@ namespace PadForge.Common.Input
         public static bool WriteRange(string devicePath, int degrees)
         {
             if (string.IsNullOrEmpty(devicePath)) return false;
-            if (degrees < 40) degrees = 40; else if (degrees > 1080) degrees = 1080;
-            byte[] cmd = new byte[7];
-            cmd[0] = 0xf8; cmd[1] = 0x81;
-            cmd[2] = (byte)(degrees & 0xff);
-            cmd[3] = (byte)((degrees >> 8) & 0xff);
-            return RawHidOutput.Write(devicePath, BuildWheelReport(cmd));
+            if (degrees < 90) degrees = 90; else if (degrees > 1080) degrees = 1080; // min_range=90 (hid-ftec.c:862); per-base max (900/1080/2520) not yet PID-gated
+            // ftec_set_range sends THREE reports in order (hid-ftecff.c:207-235): the
+            // f5 coarse-limit (which also disables the firmware centering spring), the
+            // f8 09 01 06 01 setup, then f8 81 lo hi. Sending only f8 81 left the
+            // Fanatec firmware auto-center engaged (the same class as the G29 bug).
+            byte[] coarse = { 0xf5, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+            byte[] setup  = { 0xf8, 0x09, 0x01, 0x06, 0x01, 0x00, 0x00 };
+            byte[] rng    = { 0xf8, 0x81, (byte)(degrees & 0xff), (byte)((degrees >> 8) & 0xff), 0x00, 0x00, 0x00 };
+            bool ok = RawHidOutput.Write(devicePath, BuildWheelReport(coarse));
+            ok &= RawHidOutput.Write(devicePath, BuildWheelReport(setup));
+            ok &= RawHidOutput.Write(devicePath, BuildWheelReport(rng));
+            return ok;
         }
 
         /// <summary>Sets the wheel RPM / rev LEDs. <paramref name="ledMask9"/> bit 0

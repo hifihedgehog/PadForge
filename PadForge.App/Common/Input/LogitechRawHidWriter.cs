@@ -82,6 +82,18 @@ namespace PadForge.Common.Input
         // teardown race.
         private static readonly ConcurrentDictionary<string, bool> _loaded = new();
 
+        /// <summary>Clears the per-slot download/refresh state for a device. Called on
+        /// unplug/reassign so the next effect re-downloads (op 0x1) instead of refreshing
+        /// (op 0xc) a slot the power-cycled firmware reset to empty.</summary>
+        public static void ResetDevice(string devicePath)
+        {
+            if (string.IsNullOrEmpty(devicePath)) return;
+            string prefix = devicePath + "#";
+            foreach (var key in _loaded.Keys)
+                if (key.StartsWith(prefix, StringComparison.Ordinal))
+                    _loaded.TryRemove(key, out _);
+        }
+
         /// <summary>Constant force on a slot. <paramref name="levelS16"/> is the
         /// signed steering-axis force (-0x8000..0x7fff); 0 centers. Returns false
         /// on write failure or unrecognized path.</summary>

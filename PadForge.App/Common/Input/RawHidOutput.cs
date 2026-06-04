@@ -68,6 +68,14 @@ namespace PadForge.Common.Input
         // path rather than on every FFB frame.
         private static readonly ConcurrentDictionary<string, int> _outLen = new();
 
+        /// <summary>Forgets the cached output-report length for a device. Called on
+        /// unplug so a different device later on the same path re-queries its
+        /// OutputReportByteLength instead of reusing a stale one.</summary>
+        public static void ResetDevice(string devicePath)
+        {
+            if (!string.IsNullOrEmpty(devicePath)) _outLen.TryRemove(devicePath, out _);
+        }
+
         // Returns buf sized to the device's OutputReportByteLength (zero-padded, or
         // clamped if the command is somehow longer). Falls back to buf unchanged
         // when the caps query is unavailable.

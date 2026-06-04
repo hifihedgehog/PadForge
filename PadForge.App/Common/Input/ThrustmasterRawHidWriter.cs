@@ -53,6 +53,14 @@ namespace PadForge.Common.Input
         // started on this device. Updates only modify magnitude once armed.
         private static readonly ConcurrentDictionary<string, bool> _armed = new();
 
+        /// <summary>Clears the upload/play armed state for a device. Called on
+        /// unplug/reassign so the next force re-uploads + re-plays instead of sending an
+        /// update to a slot the power-cycled firmware no longer holds.</summary>
+        public static void ResetDevice(string devicePath)
+        {
+            if (!string.IsNullOrEmpty(devicePath)) _armed.TryRemove(devicePath, out _);
+        }
+
         /// <summary>Constant force from the shared signed steering level
         /// (-0x8000..0x7fff). Halved to the Thrustmaster range. 0 stops the
         /// effect. Uploads + plays on first arm, then updates magnitude.</summary>

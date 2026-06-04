@@ -1654,12 +1654,13 @@ namespace PadForge.Common.Input
                 if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
                         slotIndex, "KbmMouseY", out short msyValue))
                 {
-                    raw.MouseDeltaY = msyValue;
-                    // MappingSet path: the user encodes direction explicitly via
-                    // per-source Invert. The Y-axis convention auto-negation
-                    // below (legacy single-analog-axis case) does NOT apply —
-                    // users who want SDL-Y-down → KBM-Y-up should set Invert on
-                    // their analog source.
+                    // KbmMouseY convention is positive = UP (the VC negates it to
+                    // screen-Y, which is positive = down). The MappingSet evaluator
+                    // returns SDL convention (positive = down), so negate to default
+                    // physical-up → cursor-up — matching the legacy single-descriptor
+                    // path below and the gamepad ThumbLY path. A per-source Invert
+                    // still flips direction from there.
+                    raw.MouseDeltaY = NegateAxis(msyValue);
                 }
                 else if (!string.IsNullOrEmpty(posDesc) || !string.IsNullOrEmpty(negDesc))
                 {
@@ -1703,8 +1704,10 @@ namespace PadForge.Common.Input
                 if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
                         slotIndex, "KbmScroll", out short scrollValue))
                 {
-                    // MappingSet path: user sets Invert per-source explicitly.
-                    raw.ScrollDelta = scrollValue;
+                    // KbmScroll convention is positive = UP; the MappingSet evaluator
+                    // returns SDL positive = down, so negate to default physical-up →
+                    // scroll-up (same fix as MouseDeltaY). Per-source Invert overrides.
+                    raw.ScrollDelta = NegateAxis(scrollValue);
                 }
                 else if (!string.IsNullOrEmpty(posDesc) || !string.IsNullOrEmpty(negDesc))
                 {

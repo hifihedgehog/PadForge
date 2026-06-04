@@ -1647,5 +1647,9 @@
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Autocentratura</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>LED di regime</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Volante</value></data>
+  <data name="Pad_ResetWheel" xml:space="preserve"><value>Ripristina volante</value></data>
+  <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Ripristina intervallo di rotazione</value></data>
+  <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Ripristina autocentratura</value></data>
+  <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Ripristina LED di regime</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Angolo di sterzo, autocentratura e luci di cambio per volanti con force feedback.</value></data>
 </root>

@@ -1625,5 +1625,9 @@
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>自动回中强度</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>转速换挡灯</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>方向盘</value></data>
+  <data name="Pad_ResetWheel" xml:space="preserve"><value>重置方向盘</value></data>
+  <data name="Pad_ResetRotationRange" xml:space="preserve"><value>重置旋转范围</value></data>
+  <data name="Pad_ResetAutocenter" xml:space="preserve"><value>重置自动回中强度</value></data>
+  <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>重置转速换挡灯</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>力反馈方向盘的转向范围、自动回中和换挡灯。</value></data>
 </root>

@@ -1625,5 +1625,9 @@
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Auto-centrage</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>LED de régime</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Volant</value></data>
+  <data name="Pad_ResetWheel" xml:space="preserve"><value>Réinitialiser le volant</value></data>
+  <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Réinitialiser la plage de rotation</value></data>
+  <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Réinitialiser l'auto-centrage</value></data>
+  <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Réinitialiser les LED de régime</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Plage de braquage, auto-centrage et témoins de passage pour volants à retour de force.</value></data>
 </root>

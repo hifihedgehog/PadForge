@@ -5971,6 +5971,9 @@
                                     </Viewbox>
                                     <TextBlock Text="{Binding Pad_Wheel, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding ResetWheelAllCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetWheel, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <!-- Rotation range — wheel hardware steering lock (not a force) -->
@@ -5981,6 +5984,7 @@
                                     <TextBox Text="{Binding WheelRotationRange, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Style="{StaticResource DzValueEdit}"/>
                                     <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                    <Button Command="{Binding ResetWheelRotationRangeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetRotationRange, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <!-- Auto-center — centering spring force -->
@@ -5990,12 +5994,16 @@
                                     <TextBox Text="{Binding WheelAutoCenter, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Style="{StaticResource DzValueEdit}"/>
                                     <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                    <Button Command="{Binding ResetWheelAutoCenterCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAutocenter, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <!-- RPM shift LEDs — telemetry-driven rev display -->
-                                <CheckBox IsChecked="{Binding WheelRpmLeds, Mode=TwoWay}"
-                                          Content="{Binding Pad_Wheel_RpmLeds, Source={x:Static strings:Strings.Instance}}"
-                                          Margin="0,4,0,0"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                    <CheckBox IsChecked="{Binding WheelRpmLeds, Mode=TwoWay}"
+                                              Content="{Binding Pad_Wheel_RpmLeds, Source={x:Static strings:Strings.Instance}}"
+                                              VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetWheelRpmLedsCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetRpmLeds, Source={x:Static strings:Strings.Instance}}" Margin="8,0,0,0"/>
+                                </StackPanel>
                             </StackPanel>
                         </Border>
                     </StackPanel>

@@ -1645,5 +1645,9 @@
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Automatisch centreren</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>Schakel-leds</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Stuur</value></data>
+  <data name="Pad_ResetWheel" xml:space="preserve"><value>Stuur resetten</value></data>
+  <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Rotatiebereik resetten</value></data>
+  <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Automatisch centreren resetten</value></data>
+  <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Schakel-leds resetten</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Stuurbereik, automatisch centreren en schakellampjes voor force-feedbackstuurwielen.</value></data>
 </root>

@@ -1625,5 +1625,9 @@
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Força de Autocentralização</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>LEDs de Rotação</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Volante</value></data>
+  <data name="Pad_ResetWheel" xml:space="preserve"><value>Redefinir Volante</value></data>
+  <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Redefinir Faixa de Rotação</value></data>
+  <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Redefinir Força de Autocentralização</value></data>
+  <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Redefinir LEDs de Rotação</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Faixa de esterçamento, autocentralização e luzes de troca para volantes com force feedback.</value></data>
 </root>

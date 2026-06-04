@@ -5945,8 +5945,13 @@
                 <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Margin="0,16,0,16">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="&#xE877;" FontFamily="Segoe MDL2 Assets" FontSize="20"
-                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <Viewbox Width="22" Height="22" VerticalAlignment="Center" Margin="0,0,10,0">
+                                <Canvas Width="24" Height="24">
+                                    <Path Stroke="{DynamicResource TextFillColorPrimaryBrush}" StrokeThickness="1.7"
+                                          StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                          Data="M2,12 A10,10 0 1 1 22,12 A10,10 0 1 1 2,12 Z M9.4,12 A2.6,2.6 0 1 1 14.6,12 A2.6,2.6 0 1 1 9.4,12 Z M9.4,12 L2.2,12 M14.6,12 L21.8,12 M12,14.6 L12,21.8"/>
+                                </Canvas>
+                            </Viewbox>
                             <TextBlock Text="{Binding Pad_Wheel, Source={x:Static strings:Strings.Instance}}"
                                        Style="{StaticResource TitleTextBlockStyle}"/>
                         </StackPanel>
@@ -5957,8 +5962,13 @@
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="&#xE877;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <Viewbox Width="18" Height="18" VerticalAlignment="Center" Margin="0,0,8,0">
+                                        <Canvas Width="24" Height="24">
+                                            <Path Stroke="{DynamicResource TextFillColorPrimaryBrush}" StrokeThickness="1.8"
+                                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                                  Data="M2,12 A10,10 0 1 1 22,12 A10,10 0 1 1 2,12 Z M9.4,12 A2.6,2.6 0 1 1 14.6,12 A2.6,2.6 0 1 1 9.4,12 Z M9.4,12 L2.2,12 M14.6,12 L21.8,12 M12,14.6 L12,21.8"/>
+                                        </Canvas>
+                                    </Viewbox>
                                     <TextBlock Text="{Binding Pad_Wheel, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>
                                 </StackPanel>

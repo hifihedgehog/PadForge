@@ -20,10 +20,9 @@ namespace PadForge.Common.Input
     /// range. Bytes are unprotectable hardware facts; original C#, no GPL source
     /// translation; uses the shared <see cref="RawHidOutput"/> write path.</para>
     ///
-    /// <para>HARDWARE VERIFICATION (real device): <see cref="ReportPayloadLen"/>
-    /// is the T300RS output-report data length (driver buffer_length, ~63);
-    /// confirm against the device's <c>OutputReportByteLength</c>. Report ID 0x60
-    /// is from the descriptor.</para>
+    /// <para>Each report is report ID 0x60 + payload; <see cref="RawHidOutput"/>
+    /// pads it to the device's <c>OutputReportByteLength</c> (64 for the PS3/PC
+    /// T300RS, 32 for the PS4 variant 0xB66D). Report ID 0x60 is from the descriptor.</para>
     /// </summary>
     internal static class ThrustmasterRawHidWriter
     {
@@ -48,7 +47,6 @@ namespace PadForge.Common.Input
         }
 
         private const byte ReportId = 0x60;
-        private const int  ReportPayloadLen = 63;   // T300RS FFB report data length
         private const byte HeaderId = 0x01;          // effect.id 0 -> header id (+1)
 
         // Per-device armed state: has the constant-force effect been uploaded +
@@ -136,11 +134,14 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Sets the wheel's rotation range in degrees (t300rs_set_range:
-        /// scaled by 0x3c, <c>08 11 lo hi</c>, 40..1080).</summary>
-        public static bool WriteRange(string devicePath, int degrees)
+        /// scaled by 0x3c, <c>08 11 lo hi</c>). Clamped per model.</summary>
+        public static bool WriteRange(string devicePath, int degrees, ushort pid)
         {
             if (string.IsNullOrEmpty(devicePath)) return false;
-            if (degrees < 40) degrees = 40; else if (degrees > 1080) degrees = 1080;
+            // T300RS 40..1080; T248/TX 140..900; TS-XW/TS-PC 140..1080 (hid-tmff2 per-model set_range).
+            int min = (pid == 0xB66E || pid == 0xB66F || pid == 0xB66D) ? 40 : 140;
+            int max = (pid == 0xB696 || pid == 0xB669) ? 900 : 1080;
+            if (degrees < min) degrees = min; else if (degrees > max) degrees = max;
             int scaled = degrees * 0x3c;
             return Send(devicePath, new byte[] { 0x08, 0x11, (byte)(scaled & 0xff), (byte)((scaled >> 8) & 0xff) });
         }
@@ -242,13 +243,15 @@ namespace PadForge.Common.Input
             return p;
         }
 
-        // Report: [0x60][payload][zero-pad to ReportPayloadLen].
+        // Report: [0x60][payload]. RawHidOutput pads up to the device's actual
+        // OutputReportByteLength (64 for the PS3/PC T300RS, 32 for the PS4 variant
+        // 0xB66D per hid-tmff2 T300RS_PS4_BUFFER_LENGTH), so the report is
+        // device-correct without a hardcoded length that breaks the 31-byte PS4 wheel.
         private static bool Send(string devicePath, byte[] payload)
         {
-            byte[] report = new byte[1 + ReportPayloadLen];
+            byte[] report = new byte[1 + payload.Length];
             report[0] = ReportId;
-            int n = Math.Min(payload.Length, ReportPayloadLen);
-            Array.Copy(payload, 0, report, 1, n);
+            Array.Copy(payload, 0, report, 1, payload.Length);
             return RawHidOutput.Write(devicePath, report);
         }
     }

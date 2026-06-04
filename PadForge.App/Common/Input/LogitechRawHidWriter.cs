@@ -42,7 +42,10 @@ namespace PadForge.Common.Input
             {
                 case 0xC24F: // G29 (PS3 / PC)
                 case 0xC260: // G29 (PS4)
-                case 0xC262: // G920 (Xbox / PC)
+                // 0xC262 (G920) intentionally absent: it uses HID++ 2.0 FFB, not this
+                // classic lg4ff 7-byte protocol (lg4ff README; 0xC262 is not in the
+                // lg4ff device table). Sending f8/fe/slot commands does nothing on it,
+                // so it falls back to the SDL haptic path (Windows Logitech driver).
                 case 0xC267: // G923 (PS / PC)
                 case 0xC266: // G923 (PS / PC) - lg4ff variant; the Xbox G923 is 0xC26E (HID++, not this protocol)
                 case 0xC29B: // G27 (native mode) — same lg4ff protocol + 5-LED strip
@@ -196,7 +199,7 @@ namespace PadForge.Common.Input
             // The caller passes (coeffPos, coeffNeg, ..., satPos, satNeg).
             int k1 = ToHid(coeffNeg, gainPct);
             int k2 = ToHid(coeffPos, gainPct);
-            int clip = ClampU16((int)((long)(satPos == 0 ? 10000 : satPos) * 0xffff / 10000)); // 0..0xffff: SCALE_VALUE_U16(clip,8) -> 0xff at full (hid-lg4ff.c:590/600/608)
+            int clip = ClampU16((int)((long)(satPos == 0 ? 10000 : satPos) * gainPct / 100 * 0xffff / 10000)); // 0..0xffff, gain-scaled like lg4ff (clip *= gain); SCALE_VALUE_U16(clip,8) -> 0xff at full
             int s1 = k1 < 0 ? 1 : 0, s2 = k2 < 0 ? 1 : 0;
 
             byte[] cmd = new byte[7];

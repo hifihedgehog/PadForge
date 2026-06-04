@@ -179,7 +179,7 @@ namespace PadForge.Common.Input
             // hid-ftec.c:571-575). Caller passes (coeffPos, coeffNeg, ..., satPos, satNeg).
             int k1 = ToHid(coeffNeg, gainPct);
             int k2 = ToHid(coeffPos, gainPct);
-            int clip = ScaleU16(ClampU16((int)((long)(satPos == 0 ? 10000 : satPos) * 0xffff / 10000)), 8); // SCALE_VALUE_U16(right_sat,8) -> 0xff at full
+            int clip = ScaleU16(ClampU16((int)((long)(satPos == 0 ? 10000 : satPos) * gainPct / 100 * 0xffff / 10000)), 8); // gain-scaled SCALE_VALUE_U16(right_sat,8)
             bool disable = coeffPos == 0 && coeffNeg == 0;
 
             byte[] cmd = new byte[7];
@@ -209,12 +209,27 @@ namespace PadForge.Common.Input
             return RawHidOutput.Write(devicePath, BuildWheelReport(cmd));
         }
 
-        /// <summary>Sets the wheel's hardware rotation range in degrees
-        /// (ftec_set_range: <c>f8 81 lo hi</c>, degrees direct, 40..1080).</summary>
-        public static bool WriteRange(string devicePath, int degrees)
+        // Per-base max rotation from the hid-ftec.c device table (the driver's 'auto'
+        // values 1090/2530 stand for the real 1080/2520 hardware maxima): direct-drive
+        // bases 2520, belt ClubSport/CSR/Porsche 900, CSL Elite 1080 (and default).
+        private static int MaxRange(ushort pid)
+        {
+            switch (pid)
+            {
+                case 0x0020: case 0x0006: case 0x0007: return 2520; // CSL DD / Podium DD1 / DD2
+                case 0x0001: case 0x0004: case 0x0011: case 0x0197: return 900; // ClubSport V2/V2.5, CSR Elite, Porsche 911
+                default: return 1080; // CSL Elite 0x0E03 / CSL Elite PS4 0x0005 / others
+            }
+        }
+
+        /// <summary>Sets the wheel's hardware rotation range in degrees, clamped to the
+        /// device max (ftec_set_range: f5 coarse-limit + f8 09 01 06 01 + f8 81 lo hi).</summary>
+        public static bool WriteRange(string devicePath, int degrees, ushort pid)
         {
             if (string.IsNullOrEmpty(devicePath)) return false;
-            if (degrees < 90) degrees = 90; else if (degrees > 1080) degrees = 1080; // min_range=90 (hid-ftec.c:862); per-base max (900/1080/2520) not yet PID-gated
+            if (degrees < 90) degrees = 90; // min_range = 90 (hid-ftec.c:862)
+            int max = MaxRange(pid);
+            if (degrees > max) degrees = max;
             // ftec_set_range sends THREE reports in order (hid-ftecff.c:207-235): the
             // f5 coarse-limit (which also disables the firmware centering spring), the
             // f8 09 01 06 01 setup, then f8 81 lo hi. Sending only f8 81 left the

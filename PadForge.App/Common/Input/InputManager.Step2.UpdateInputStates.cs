@@ -507,12 +507,15 @@ namespace PadForge.Common.Input
                     bool hasCond = cv.HasConditionData && cv.ConditionAxisCount > 0 && cv.ConditionAxes != null;
                     var ca = hasCond ? cv.ConditionAxes[0] : default; // axis 0 = steering
                     short level = ForceFeedbackState.ComputeWheelSteeringLevel(cv, overallGain);
+                    // Condition coefficients + clip scale by device gain too, matching the
+                    // constant-force helper (ComputeWheelSteeringLevel) and the SDL path.
+                    int condGain = overallGain * cv.DeviceGain / 255;
                     if (isLogitechWheel)
                     {
                         if (hasCond)
                             LogitechRawHidWriter.WriteCondition(ud.DevicePath, 0, cv.EffectType,
                                 ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
-                                (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, overallGain,
+                                (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain,
                                 LogitechRawHidWriter.HasFrictionCap(ud.ProdId));
                         else if (level == 0) LogitechRawHidWriter.WriteStopEffect(ud.DevicePath, 0);
                         else LogitechRawHidWriter.WriteConstantForce(ud.DevicePath, 0, level);
@@ -522,7 +525,7 @@ namespace PadForge.Common.Input
                         if (hasCond)
                             FanatecRawHidWriter.WriteWheelCondition(ud.DevicePath, cv.EffectType,
                                 ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
-                                (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, overallGain);
+                                (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain);
                         else FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, level, ud.ProdId);
                     }
                     else // Thrustmaster wheel
@@ -530,13 +533,13 @@ namespace PadForge.Common.Input
                         if (hasCond)
                             ThrustmasterRawHidWriter.WriteCondition(ud.DevicePath, cv.EffectType,
                                 ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
-                                (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, overallGain);
+                                (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain);
                         else ThrustmasterRawHidWriter.WriteConstantForce(ud.DevicePath, level);
                     }
 
                     // Wheel settings (rotation range + auto-center) — one-shot,
                     // re-sent only when the persisted value changes.
-                    int desRange = int.TryParse(firstPadSetting.RotationRange, out int rg) ? System.Math.Clamp(rg, 40, 1080) : 900;
+                    int desRange = int.TryParse(firstPadSetting.RotationRange, out int rg) ? System.Math.Clamp(rg, 40, 2520) : 900; // per-wheel max enforced in each writer's WriteRange
                     int desAc = int.TryParse(firstPadSetting.AutoCenterStrength, out int acp) ? System.Math.Clamp(acp, 0, 100) : 0;
                     if (!_appliedWheelSettings.TryGetValue(ud.DevicePath, out var prevWs) || prevWs.range != desRange || prevWs.ac != desAc)
                     {
@@ -549,11 +552,11 @@ namespace PadForge.Common.Input
                         }
                         else if (isFanatecWheel)
                         {
-                            applied = FanatecRawHidWriter.WriteRange(ud.DevicePath, desRange); // Fanatec auto-center is via its spring
+                            applied = FanatecRawHidWriter.WriteRange(ud.DevicePath, desRange, ud.ProdId); // f5 in the range sequence disables the firmware centering spring
                         }
                         else
                         {
-                            applied  = ThrustmasterRawHidWriter.WriteRange(ud.DevicePath, desRange);
+                            applied  = ThrustmasterRawHidWriter.WriteRange(ud.DevicePath, desRange, ud.ProdId);
                             applied &= ThrustmasterRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);
                         }
                         // Cache only once the wheel actually accepted the settings.

@@ -378,9 +378,9 @@ namespace PadForge.Engine
             return (short)(projected * 32767 / 10000);
         }
 
-        /// <summary>Translates XInput-style rumble (two motor magnitudes, no
-        /// direction) into a steering-axis vibration for native-FFB wheels, which
-        /// have no rumble motor. Mirrors the Sine haptic strategy joysticks get in
+        /// <summary>Translates rumble (the main and impulse-trigger motors, from any
+        /// virtual controller, Xbox or Sony) into a steering-axis vibration for
+        /// native-FFB wheels, which have no rumble motor. Mirrors the Sine haptic strategy joysticks get in
         /// <see cref="SetHapticForces"/>: magnitude from the dominant motor, a low
         /// frequency for the heavy motor and a higher one for the light motor. The
         /// returned constant-force level oscillates over time so the wheel buzzes
@@ -388,12 +388,16 @@ namespace PadForge.Engine
         public static short ComputeWheelRumbleLevel(Vibration v, int overallGain)
         {
             if (v == null) return 0;
-            int left = v.LeftMotorSpeed, right = v.RightMotorSpeed;
-            if (left <= 0 && right <= 0) return 0;
+            // Include the impulse-trigger motors: Xbox racing FFB routes engine and
+            // road feel through them. Left motor + left trigger are the heavy /
+            // low-frequency channels, right motor + right trigger the light / high.
+            int heavy = Math.Max(v.LeftMotorSpeed, v.LeftTriggerMotorSpeed);
+            int light = Math.Max(v.RightMotorSpeed, v.RightTriggerMotorSpeed);
+            if (heavy <= 0 && light <= 0) return 0;
             double gainScale = (v.DeviceGain / 255.0) * (Math.Clamp(overallGain, 0, 100) / 100.0);
-            int mag = (int)(Math.Min(Math.Max(left, right) >> 1, 32767) * gainScale);
+            int mag = (int)(Math.Min(Math.Max(heavy, light) >> 1, 32767) * gainScale);
             if (mag <= 0) return 0;
-            int periodMs = left >= right ? 120 : 40; // heavy motor -> low freq, light -> high (matches SetHapticForces)
+            int periodMs = heavy >= light ? 120 : 40; // heavy channel -> low freq, light -> high (matches SetHapticForces)
             double phase = (Environment.TickCount % periodMs) / (double)periodMs;
             return (short)Math.Clamp(mag * Math.Sin(phase * 2.0 * Math.PI), -32767, 32767);
         }

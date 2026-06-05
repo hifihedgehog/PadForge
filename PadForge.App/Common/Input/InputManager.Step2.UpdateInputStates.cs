@@ -510,6 +510,12 @@ namespace PadForge.Common.Input
                     // Condition coefficients + clip scale by device gain too, matching the
                     // constant-force helper (ComputeWheelSteeringLevel) and the SDL path.
                     int condGain = overallGain * cv.DeviceGain / 255;
+                    // XInput/Xbox targets send rumble (two motor magnitudes, no
+                    // direction). A wheel has no rumble motor, so translate rumble into
+                    // an oscillating constant force on the steering axis (a buzz),
+                    // mirroring the Sine haptic strategy joysticks get in SetHapticForces.
+                    // Real directional FFB takes precedence; rumble fills in otherwise.
+                    short wheelForce = level != 0 ? level : ForceFeedbackState.ComputeWheelRumbleLevel(cv, overallGain);
                     if (isLogitechWheel)
                     {
                         if (hasCond)
@@ -517,8 +523,8 @@ namespace PadForge.Common.Input
                                 ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
                                 (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain,
                                 LogitechRawHidWriter.HasFrictionCap(ud.ProdId));
-                        else if (level == 0) LogitechRawHidWriter.WriteStopEffect(ud.DevicePath, 0);
-                        else LogitechRawHidWriter.WriteConstantForce(ud.DevicePath, 0, level);
+                        else if (wheelForce == 0) LogitechRawHidWriter.WriteStopEffect(ud.DevicePath, 0);
+                        else LogitechRawHidWriter.WriteConstantForce(ud.DevicePath, 0, wheelForce);
                     }
                     else if (isFanatecWheel)
                     {
@@ -526,7 +532,7 @@ namespace PadForge.Common.Input
                             FanatecRawHidWriter.WriteWheelCondition(ud.DevicePath, cv.EffectType,
                                 ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
                                 (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain);
-                        else FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, level, ud.ProdId);
+                        else FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, wheelForce, ud.ProdId);
                     }
                     else // Thrustmaster wheel
                     {
@@ -534,7 +540,7 @@ namespace PadForge.Common.Input
                             ThrustmasterRawHidWriter.WriteCondition(ud.DevicePath, cv.EffectType,
                                 ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
                                 (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain);
-                        else ThrustmasterRawHidWriter.WriteConstantForce(ud.DevicePath, level);
+                        else ThrustmasterRawHidWriter.WriteConstantForce(ud.DevicePath, wheelForce);
                     }
 
                     // Wheel settings (rotation range + auto-center) — one-shot,

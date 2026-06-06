@@ -391,6 +391,10 @@ namespace PadForge.Services
             // ScaleTriggerRumbleForDevice (per-device strength + audio-
             // trigger mix + ImpulseSwapTriggers), and return the high
             // byte of each ushort.
+            UserEffectsDispatcher.SteeringAtResistanceProvider = padIndex =>
+                (_inputManager != null && padIndex >= 0 && padIndex < InputManager.MaxPads)
+                    ? _inputManager.SteeringAtResistance[padIndex] : 0f;
+
             UserEffectsDispatcher.SlotImpulseTriggerForDeviceProvider = (padIndex, deviceGuid) =>
             {
                 if (_inputManager == null) return ((byte)0, (byte)0);
@@ -1016,6 +1020,7 @@ namespace PadForge.Services
                 UserEffectsDispatcher.SlotRumbleForDeviceProvider = null;
                 UserEffectsDispatcher.SlotRawRumbleProvider = null;
                 UserEffectsDispatcher.SlotImpulseTriggerForDeviceProvider = null;
+                UserEffectsDispatcher.SteeringAtResistanceProvider = null;
                 UserEffectsDispatcher.TestRumbleTargetGuidProvider = null;
                 UserEffectsDispatcher.SlotBatteryPercentProvider = null;
                 UserEffectsDispatcher.SlotPerDeviceConfigsProvider = null;

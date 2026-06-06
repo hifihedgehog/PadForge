@@ -163,6 +163,11 @@ namespace PadForge.Common.Input
         /// </summary>
         public static Func<int, Guid, (byte right, byte left)> SlotImpulseTriggerForDeviceProvider { get; set; }
 
+        /// <summary>Per-slot steering at-lock AT-resistance (0..1) provider (#94,
+        /// channel 4), wired to <c>InputManager.SteeringAtResistance[slot]</c>. 0 when
+        /// the toggle is off or no steering source is approaching lock.</summary>
+        public static Func<int, float> SteeringAtResistanceProvider { get; set; }
+
         // Animated-lightbar polling cadence — 30Hz is enough to feel
         // responsive without flooding the BT HID write path. WriteFile
         // open+close is ~1ms per call; 30Hz = 30ms budget.
@@ -1184,6 +1189,21 @@ namespace PadForge.Common.Input
                             devOverrides.RightTriggerEffect = Ds5EffectSynthesizer.BuildAtVibrationOverrideBlock(impR);
                         if (leftLingerActive && devOverrides.LeftTriggerEffect == null)
                             devOverrides.LeftTriggerEffect = Ds5EffectSynthesizer.BuildAtVibrationOverrideBlock(impL);
+
+                        // Steering at-lock AT resistance (#94, channel 4): ramp trigger
+                        // resistance with how close a steering source is to lock. Gated to
+                        // triggers the user hasn't configured (mode Off) with no override
+                        // already set this frame, so it never fights a user AT effect or the
+                        // impulse-AT buzz above. Already DS5- and test-target-scoped here.
+                        float steerRes = SteeringAtResistanceProvider?.Invoke(_padIndex) ?? 0f;
+                        if (steerRes > 0f)
+                        {
+                            byte force = (byte)Math.Clamp((int)(steerRes * 255f), 0, 255);
+                            if (devCfg.RightTriggerMode == AdaptiveTriggerMode.Off && devOverrides.RightTriggerEffect == null)
+                                devOverrides.RightTriggerEffect = Ds5EffectSynthesizer.BuildAtResistanceOverrideBlock(force);
+                            if (devCfg.LeftTriggerMode == AdaptiveTriggerMode.Off && devOverrides.LeftTriggerEffect == null)
+                                devOverrides.LeftTriggerEffect = Ds5EffectSynthesizer.BuildAtResistanceOverrideBlock(force);
+                        }
                     }
 
                     // Per-device peak scaling (each device has own

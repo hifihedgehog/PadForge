@@ -770,6 +770,19 @@ namespace PadForge.Common.Input
             return block;
         }
 
+        /// <summary>Builds a HID Resistance (Feedback) override block — constant
+        /// resistance from the start of the trigger pull, scaled by
+        /// <paramref name="force"/> (0..255). Used by the steering at-lock
+        /// AT-resistance ramp (#94): force tracks how close the wheel is to lock.</summary>
+        public static byte[] BuildAtResistanceOverrideBlock(byte force)
+        {
+            var block = new byte[11];
+            block[0] = HidModeResistance;  // 0x01 — [start_pos, force]
+            block[1] = 0;                  // start position 0 — resist across the full pull
+            block[2] = force;
+            return block;
+        }
+
         private static void EncodeTrigger(
             AdaptiveTriggerMode mode,
             byte startPosition,

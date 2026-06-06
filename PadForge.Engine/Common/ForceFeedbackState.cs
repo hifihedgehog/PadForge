@@ -58,6 +58,10 @@ namespace PadForge.Engine
         private bool _cachedHasCondition;
         private bool _cachedHasDirectional;
 
+        // Software auto-center spring (generic SDL wheels) change detection
+        private bool _autoCenterActive;
+        private short _autoCenterCoeff;
+
         // ─────────────────────────────────────────────
         //  Public state
         // ─────────────────────────────────────────────
@@ -169,6 +173,8 @@ namespace PadForge.Engine
             _cachedPeriod = 0;
             _cachedHasDirectional = false;
             _cachedHasCondition = false;
+            _autoCenterActive = false;
+            _autoCenterCoeff = 0;
             LeftMotorSpeed = 0;
             RightMotorSpeed = 0;
             LeftTriggerMotorSpeed = 0;
@@ -273,6 +279,10 @@ namespace PadForge.Engine
                     // Also update scalar cache to stay in sync.
                     _cachedLeftMotorSpeed = v.LeftMotorSpeed;
                     _cachedRightMotorSpeed = v.RightMotorSpeed;
+                    // The game's effect now owns the shared haptic slot, so the
+                    // auto-center spring (if any) is gone; force a re-apply the
+                    // next idle frame instead of trusting the change-gate.
+                    _autoCenterActive = false;
                 }
 
                 LeftMotorSpeed = v.LeftMotorSpeed;
@@ -293,6 +303,22 @@ namespace PadForge.Engine
                 _cachedSignedMag = 0;
                 _cachedDirection = 0;
                 _cachedPeriod = 0;
+            }
+
+            // ── Path 1b: Software auto-center spring (generic FFB wheels) ──
+            // Non-vendor wheels routed through SDL get no firmware centering. When
+            // the game isn't sending its own FFB this frame and the Auto Centering
+            // Strength slider is set, hold a steering-axis spring centered at 0 so
+            // the wheel returns to center. Vendor wheels (Logitech / Fanatec /
+            // Thrustmaster) own centering in their native writers and never reach
+            // SetDeviceForces. Centering takes precedence over scalar rumble here —
+            // a wheel has no rumble motor, and a held spring is its expected idle.
+            if (TryApplyAutoCenterSpring(device, ps))
+            {
+                LeftMotorSpeed = 0;
+                RightMotorSpeed = 0;
+                IsActive = true;
+                return;
             }
 
             // Scalar values are already audio-mixed and gain/swap-scaled by
@@ -373,9 +399,32 @@ namespace PadForge.Engine
             if (v == null || !v.HasDirectionalData) return 0;
             double gainScale = (v.DeviceGain / 255.0) * (Math.Clamp(overallGain, 0, 100) / 100.0);
             double scaledMag = Math.Clamp(v.SignedMagnitude * gainScale, -10000, 10000);
+            // Periodic effects (square/sine/triangle/sawtooth) oscillate over time; sample
+            // the waveform at the current phase so a native wheel vibrates instead of
+            // holding the peak. Constant/ramp keep the steady magnitude.
+            scaledMag *= PeriodicWaveform(v.EffectType, v.Period);
             double angleRad = (v.Direction / 32767.0) * 2.0 * Math.PI;
             double projected = Math.Clamp(scaledMag * Math.Sin(angleRad), -10000, 10000);
             return (short)(projected * 32767 / 10000);
+        }
+
+        /// <summary>Instantaneous -1..+1 multiplier for a periodic effect type at the
+        /// current time, so a native wheel reproduces the waveform by sampling it each
+        /// frame. Returns 1.0 for constant/ramp or a missing period (steady magnitude).</summary>
+        private static double PeriodicWaveform(uint effectType, uint periodMs)
+        {
+            if (periodMs == 0 || effectType < FfbEffectTypes.Square || effectType > FfbEffectTypes.SawDown)
+                return 1.0;
+            double phase = (Environment.TickCount % (long)periodMs) / (double)periodMs; // 0..1
+            return effectType switch
+            {
+                FfbEffectTypes.Square   => phase < 0.5 ? 1.0 : -1.0,
+                FfbEffectTypes.Sine     => Math.Sin(phase * 2.0 * Math.PI),
+                FfbEffectTypes.Triangle => 4.0 * Math.Abs(phase - 0.5) - 1.0,  // +1 at 0, -1 at 0.5
+                FfbEffectTypes.SawUp    => 2.0 * phase - 1.0,                  // -1 -> +1
+                FfbEffectTypes.SawDown  => 1.0 - 2.0 * phase,                  // +1 -> -1
+                _ => 1.0,
+            };
         }
 
         /// <summary>Translates rumble (the main and impulse-trigger motors, from any
@@ -561,6 +610,61 @@ namespace PadForge.Engine
             }
 
             return ApplyHapticEffect(device, ref effect);
+        }
+
+        /// <summary>
+        /// Holds a software centering spring on a generic FFB wheel routed through
+        /// SDL, driven by the Wheel-tab Auto Centering Strength slider. Mirrors what
+        /// Logitech / Fanatec / Thrustmaster get from their native writers, for wheels
+        /// that aren't one of those vendors. Single-axis haptic gates this to wheels —
+        /// gamepads report two or more haptic axes (or no spring support), so it never
+        /// fires for them. Returns false (leaving the rumble path to run) when the
+        /// device isn't a spring-capable single-axis wheel or the slider is at 0.
+        /// </summary>
+        private bool TryApplyAutoCenterSpring(ISdlInputDevice device, PadSetting ps)
+        {
+            if (device == null || !device.HasHaptic || device.NumHapticAxes > 1)
+                return false;
+            if ((device.HapticFeatures & SDL_HAPTIC_SPRING) == 0)
+                return false;
+
+            int strength = Math.Clamp(TryParseInt(ps.AutoCenterStrength, 0), 0, 100);
+            if (strength <= 0)
+            {
+                // Slider at 0: tear down a spring we were holding so the wheel goes
+                // slack instead of staying sprung from a prior frame's value.
+                if (_autoCenterActive)
+                {
+                    StopAndDestroyHapticEffect(device);
+                    _autoCenterActive = false;
+                }
+                return false;
+            }
+
+            short coeff = (short)(strength * 32767 / 100); // 0..100% -> 0..32767
+            if (_autoCenterActive && coeff == _autoCenterCoeff)
+                return true; // unchanged — the spring is already holding, no HID write
+
+            var effect = new SDL_HapticEffect();
+            effect.condition.type = (ushort)SDL_HAPTIC_SPRING;
+            effect.condition.direction.type = SDL_HAPTIC_STEERING_AXIS;
+            effect.condition.length = SDL_HAPTIC_INFINITY;
+            // Symmetric spring centered at 0 on the steering axis: the wheel pulls
+            // back toward center with force proportional to displacement.
+            effect.condition.right_coeff0 = coeff;
+            effect.condition.left_coeff0 = coeff;
+            effect.condition.right_sat0 = 0xffff;
+            effect.condition.left_sat0 = 0xffff;
+            effect.condition.center0 = 0;
+            effect.condition.deadband0 = 0;
+
+            bool ok = ApplyHapticEffect(device, ref effect);
+            if (ok)
+            {
+                _autoCenterActive = true;
+                _autoCenterCoeff = coeff;
+            }
+            return ok;
         }
 
         // ─────────────────────────────────────────────

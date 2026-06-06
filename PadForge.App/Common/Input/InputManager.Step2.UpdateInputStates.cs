@@ -563,7 +563,7 @@ namespace PadForge.Common.Input
                         bool applied;
                         if (isLogitechWheel)
                         {
-                            applied  = LogitechRawHidWriter.WriteRange(ud.DevicePath, desRange);
+                            applied  = LogitechRawHidWriter.WriteRange(ud.DevicePath, desRange, ud.ProdId);
                             applied &= LogitechRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);
                         }
                         else if (isFanatecWheel)

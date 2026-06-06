@@ -3069,6 +3069,7 @@
                                                          Style="{StaticResource DzDigitEdit}"/>
                                                 <Button Command="{Binding ResetCenterOffsetYCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetCenterOffsetY, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
+                                            <Separator Margin="0,8,0,8"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_DeadZoneShape, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <ComboBox AutomationProperties.AutomationId="DeadZoneShapeCombo"
@@ -3136,6 +3137,7 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <Button Command="{Binding ResetLinearCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLinear, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
+                                            <Separator Margin="0,8,0,8"/>
                                             <TextBlock Text="{Binding Pad_SensitivityCurves, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,4,0,4"
                                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}" FontSize="11"/>
                                             <TextBlock Text="{Binding Pad_SensitivityCurveHint, Source={x:Static strings:Strings.Instance}}"
@@ -3160,6 +3162,7 @@
                                                           Tag="{Binding}"/>
                                                 <Button Command="{Binding ResetSensitivityYCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetSensitivityY, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
+                                            <Separator Margin="0,8,0,8"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_MinRangeXLeft, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding MaxRangeXNeg, Mode=TwoWay}"
@@ -3369,13 +3372,14 @@
                                         </StackPanel>
                                     </Grid>
 
-                                    <!-- ═══ Steering (winding / 2D angle-to-axis / motion lean) #94 — a section in the stick card, headed like the sensitivity-curve block ═══ -->
-                                    <StackPanel Margin="0,4,0,0">
-                                            <TextBlock Text="{Binding Pad_Steering_Header, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,4,0,4"
-                                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}" FontSize="11"/>
+                                    <!-- ═══ Steering (winding / 2D angle-to-axis / motion lean) #94 — divider-separated section like the rest of the card ═══ -->
+                                    <Separator Margin="0,16,0,8"/>
+                                    <StackPanel>
+                                            <TextBlock Text="{Binding Pad_Steering_Header, Source={x:Static strings:Strings.Instance}}"
+                                                       Style="{StaticResource CardTitle}"/>
                                             <TextBlock Text="{Binding Pad_Steering_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                       FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
+                                                       TextWrapping="Wrap" Margin="0,0,0,8"/>
 
                                             <!-- Mode -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
@@ -3580,6 +3584,7 @@
                                                 <Button Command="{Binding ResetAntiDeadZoneCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAntiDeadZone, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
 
+                                            <Separator Margin="0,8,0,8"/>
                                             <TextBlock Text="{Binding Pad_SensitivityCurve, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,4,0,4"
                                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}" FontSize="11"/>
                                             <TextBlock Text="{Binding Pad_SensitivityCurveHintShort, Source={x:Static strings:Strings.Instance}}"

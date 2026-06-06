@@ -3383,23 +3383,9 @@ namespace PadForge.Services
                     foreach (var s in srcRow.Sources)
                     {
                         if (s == null) continue;
-                        targetRow.Sources.Add(new Engine.Data.MappingSource
-                        {
-                            Kind = s.Kind ?? "Direct",
-                            DeviceGuid = targetGuid,
-                            Descriptor = s.Descriptor ?? "",
-                            Invert = s.Invert,
-                            HalfAxis = s.HalfAxis,
-                            Bidirectional = s.Bidirectional,
-                            DeadZone = s.DeadZone,
-                            ParamUp = s.ParamUp ?? "",
-                            ParamDown = s.ParamDown ?? "",
-                            ParamRate = s.ParamRate,
-                            ParamSticky = s.ParamSticky,
-                            ParamMin = s.ParamMin,
-                            ParamMax = s.ParamMax,
-                            ParamModifier = s.ParamModifier ?? "",
-                        });
+                        var clonedSrc = s.Clone();
+                        clonedSrc.DeviceGuid = targetGuid;   // Clone() carries every Param* field
+                        targetRow.Sources.Add(clonedSrc);
                     }
                 }
             }
@@ -3436,23 +3422,7 @@ namespace PadForge.Services
                         foreach (var s in r.Sources)
                         {
                             if (s == null) continue;
-                            rc.Sources.Add(new Engine.Data.MappingSource
-                            {
-                                Kind = s.Kind ?? "Direct",
-                                DeviceGuid = s.DeviceGuid ?? "",
-                                Descriptor = s.Descriptor ?? "",
-                                Invert = s.Invert,
-                                HalfAxis = s.HalfAxis,
-                                Bidirectional = s.Bidirectional,
-                                DeadZone = s.DeadZone,
-                                ParamUp = s.ParamUp ?? "",
-                                ParamDown = s.ParamDown ?? "",
-                                ParamRate = s.ParamRate,
-                                ParamSticky = s.ParamSticky,
-                                ParamMin = s.ParamMin,
-                                ParamMax = s.ParamMax,
-                                ParamModifier = s.ParamModifier ?? "",
-                            });
+                            rc.Sources.Add(s.Clone());   // Clone() carries every Param* field
                         }
                     }
                     copy.Rows.Add(rc);
@@ -3533,23 +3503,7 @@ namespace PadForge.Services
                     foreach (var s in row.Sources)
                     {
                         if (s == null) continue;
-                        clonedSources.Add(new Engine.Data.MappingSource
-                        {
-                            Kind = s.Kind ?? "Direct",
-                            DeviceGuid = s.DeviceGuid ?? "",
-                            Descriptor = s.Descriptor ?? "",
-                            Invert = s.Invert,
-                            HalfAxis = s.HalfAxis,
-                            Bidirectional = s.Bidirectional,
-                            DeadZone = s.DeadZone,
-                            ParamUp = s.ParamUp ?? "",
-                            ParamDown = s.ParamDown ?? "",
-                            ParamRate = s.ParamRate,
-                            ParamSticky = s.ParamSticky,
-                            ParamMin = s.ParamMin,
-                            ParamMax = s.ParamMax,
-                            ParamModifier = s.ParamModifier ?? "",
-                        });
+                        clonedSources.Add(s.Clone());   // Clone() carries every Param* field
                     }
                 }
                 result.Add(new Engine.Data.MappingRow
@@ -3596,23 +3550,9 @@ namespace PadForge.Services
                         if (s == null) continue;
                         var retargeted = RetargetDeviceGuidForSlot(s.DeviceGuid, padIndex);
                         if (retargeted == null) continue;
-                        rc.Sources.Add(new Engine.Data.MappingSource
-                        {
-                            Kind = s.Kind ?? "Direct",
-                            DeviceGuid = retargeted,
-                            Descriptor = s.Descriptor ?? "",
-                            Invert = s.Invert,
-                            HalfAxis = s.HalfAxis,
-                            Bidirectional = s.Bidirectional,
-                            DeadZone = s.DeadZone,
-                            ParamUp = s.ParamUp ?? "",
-                            ParamDown = s.ParamDown ?? "",
-                            ParamRate = s.ParamRate,
-                            ParamSticky = s.ParamSticky,
-                            ParamMin = s.ParamMin,
-                            ParamMax = s.ParamMax,
-                            ParamModifier = s.ParamModifier ?? "",
-                        });
+                        var clonedSrc = s.Clone();
+                        clonedSrc.DeviceGuid = retargeted;   // Clone() carries every Param* field
+                        rc.Sources.Add(clonedSrc);
                     }
                 }
                 copy.Rows.Add(rc);
@@ -3751,23 +3691,9 @@ namespace PadForge.Services
                             if (s == null) continue;
                             var retargeted = RetargetDeviceGuidForSlot(s.DeviceGuid, targetSlot);
                             if (retargeted == null) continue;
-                            rc.Sources.Add(new Engine.Data.MappingSource
-                            {
-                                Kind = s.Kind ?? "Direct",
-                                DeviceGuid = retargeted,
-                                Descriptor = s.Descriptor ?? "",
-                                Invert = s.Invert,
-                                HalfAxis = s.HalfAxis,
-                                Bidirectional = s.Bidirectional,
-                                DeadZone = s.DeadZone,
-                                ParamUp = s.ParamUp ?? "",
-                                ParamDown = s.ParamDown ?? "",
-                                ParamRate = s.ParamRate,
-                                ParamSticky = s.ParamSticky,
-                                ParamMin = s.ParamMin,
-                                ParamMax = s.ParamMax,
-                                ParamModifier = s.ParamModifier ?? "",
-                            });
+                            var clonedSrc = s.Clone();
+                            clonedSrc.DeviceGuid = retargeted;   // Clone() carries every Param* field
+                            rc.Sources.Add(clonedSrc);
                         }
                     }
                     copy.Rows.Add(rc);

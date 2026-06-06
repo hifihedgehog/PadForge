@@ -147,5 +147,12 @@ namespace PadForge.Engine.Data
         [XmlAttribute] public double ParamMotionInnerDz  { get; set; } = 15;
         [XmlAttribute] public double ParamMotionOuterDz  { get; set; } = 135;
         [XmlAttribute] public string ParamControllerOrientation { get; set; } = "Forward";
+
+        /// <summary>Full-field copy. Every field is a string / value type (strings are
+        /// immutable), so a memberwise clone is a complete deep copy. Use this at clone
+        /// sites instead of hand-listing fields, so a new Param* can't silently drop on
+        /// profile switch / slot reassign (the bug that dropped the steering params and,
+        /// before that, GyroSensitivity / NoInherit).</summary>
+        public MappingSource Clone() => (MappingSource)MemberwiseClone();
     }
 }

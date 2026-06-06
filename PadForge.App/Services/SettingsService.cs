@@ -696,8 +696,73 @@ namespace PadForge.Services
                     {
                         if (extra != null) row.Sources.Add(extra.ToDomain());
                     }
+
+                    // Steering source kind (#94): if this stick-axis target is the output
+                    // of a steering mode set on its Sticks-tab card, stamp the Kind +
+                    // tunables onto the primary source so the engine dispatches the
+                    // steering math. Persists on MappingSource (survives clones via Clone()).
+                    ApplySteeringKindToRow(row, mapping.TargetSettingName, padVm);
                 }
             }
+        }
+
+        // Maps a stick-axis target to the StickConfigItem steering mode and, when this
+        // row is that mode's output channel, stamps Kind + Param* onto Sources[0]. The
+        // steering source always reads the stick's X axis (Descriptor) and Y axis
+        // (ParamYDescriptor); the row's target picks the virtual channel.
+        private static void ApplySteeringKindToRow(MappingRow row, string target, PadViewModel padVm)
+        {
+            if (row?.Sources == null || row.Sources.Count == 0 || padVm == null) return;
+            int stickIdx; bool isYTarget;
+            switch (target)
+            {
+                case "LeftThumbAxisX":  stickIdx = 0; isYTarget = false; break;
+                case "LeftThumbAxisY":  stickIdx = 0; isYTarget = true;  break;
+                case "RightThumbAxisX": stickIdx = 1; isYTarget = false; break;
+                case "RightThumbAxisY": stickIdx = 1; isYTarget = true;  break;
+                default: return;
+            }
+            var stick = padVm.StickConfigs?.FirstOrDefault(s => s.Index == stickIdx);
+            if (stick == null || !stick.IsSteeringActive) return;
+
+            string kind = stick.SteeringKind;
+            // AngleToAxisY outputs to the Y channel; every other mode to X.
+            bool wantY = kind == "AngleToAxisY";
+            if (wantY != isYTarget) return;
+
+            string xName = stickIdx == 0 ? "LeftThumbAxisX" : "RightThumbAxisX";
+            string yName = stickIdx == 0 ? "LeftThumbAxisY" : "RightThumbAxisY";
+            string xDesc = StripSourcePrefix(padVm.Mappings?.FirstOrDefault(m => m.TargetSettingName == xName)?.SourceDescriptor);
+            string yDesc = StripSourcePrefix(padVm.Mappings?.FirstOrDefault(m => m.TargetSettingName == yName)?.SourceDescriptor);
+
+            var src = row.Sources[0];
+            src.Kind = kind;
+            // Motion-lean reads gravity, not the stick, so descriptors are only the
+            // 2D-stick inputs for winding / angle-to-axis.
+            if (kind != "MotionLeanX")
+            {
+                src.Descriptor = xDesc;
+                src.ParamYDescriptor = yDesc;
+            }
+            src.ParamWindRangeDeg = stick.WindRangeDeg;
+            src.ParamWindPower = stick.WindPower;
+            src.ParamWindUnwindRate = stick.WindUnwindRate;
+            src.ParamAngleInnerDz = stick.AngleInnerDz;
+            src.ParamAngleOuterDz = stick.AngleOuterDz;
+            src.ParamMotionInnerDz = stick.MotionInnerDz;
+            src.ParamMotionOuterDz = stick.MotionOuterDz;
+            src.ParamControllerOrientation = stick.ControllerOrientation;
+        }
+
+        // Strips a leading I / H / IH inversion prefix off a source descriptor, matching
+        // the primary-source cleaning above; steering reads the bare axis.
+        private static string StripSourcePrefix(string d)
+        {
+            if (string.IsNullOrEmpty(d)) return "";
+            if (d.StartsWith("IH", StringComparison.OrdinalIgnoreCase)) return d.Substring(2);
+            if (d.StartsWith("I", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1])) return d.Substring(1);
+            if (d.StartsWith("H", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1])) return d.Substring(1);
+            return d;
         }
 
         /// <summary>
@@ -1876,6 +1941,24 @@ namespace PadForge.Services
                     trig.SensitivityCurve = ps.GetExtendedMapping($"ExtendedTrigger{g}Curve") ?? "0,0;1,1";
                 }
 
+                // Per-stick steering mode + tunables (#94), every stick index, so the
+                // Sticks-tab card reflects the saved mode. The engine itself reads Kind
+                // off the MappingSet rows (stamped on save).
+                foreach (var stick in padVm.StickConfigs)
+                {
+                    int g = stick.Index;
+                    if (g < 0) continue;
+                    stick.SetSteeringKind(ps.GetExtendedMapping($"Stick{g}SteerKind"));
+                    stick.WindRangeDeg = TryParseDouble(ps.GetExtendedMapping($"Stick{g}SteerWindRange"), 900);
+                    stick.WindPower = TryParseDouble(ps.GetExtendedMapping($"Stick{g}SteerWindPower"), 1);
+                    stick.WindUnwindRate = TryParseDouble(ps.GetExtendedMapping($"Stick{g}SteerWindUnwind"), 1800);
+                    stick.AngleInnerDz = TryParseDouble(ps.GetExtendedMapping($"Stick{g}SteerAngleInner"), 0);
+                    stick.AngleOuterDz = TryParseDouble(ps.GetExtendedMapping($"Stick{g}SteerAngleOuter"), 10);
+                    stick.MotionInnerDz = TryParseDouble(ps.GetExtendedMapping($"Stick{g}SteerMotionInner"), 15);
+                    stick.MotionOuterDz = TryParseDouble(ps.GetExtendedMapping($"Stick{g}SteerMotionOuter"), 135);
+                    stick.SetControllerOrientation(ps.GetExtendedMapping($"Stick{g}SteerOrient"));
+                }
+
                 // Mappings are per-slot (live in SlotMappingSets), NOT per-device.
                 // Read from the authoritative MappingSet rather than the legacy
                 // per-device PadSetting fields. The legacy fields are stale
@@ -2944,6 +3027,25 @@ namespace PadForge.Services
                         ps.SetExtendedMapping($"ExtendedStick{g}MrXN", stick.MaxRangeXNeg.ToString(ic));
                         ps.SetExtendedMapping($"ExtendedStick{g}MrYN", stick.MaxRangeYNeg.ToString(ic));
                     }
+                    // Per-stick steering mode + tunables (#94), every stick index. The
+                    // engine reads Kind off the MappingSet rows (stamped in
+                    // SaveViewModelToMappingSet), but the settings persist here too so
+                    // the Sticks-tab card can reload them.
+                    foreach (var stick in padVm.StickConfigs)
+                    {
+                        int g = stick.Index;
+                        if (g < 0) continue;
+                        ps.SetExtendedMapping($"Stick{g}SteerKind", stick.SteeringKind);
+                        ps.SetExtendedMapping($"Stick{g}SteerWindRange", stick.WindRangeDeg.ToString(ic));
+                        ps.SetExtendedMapping($"Stick{g}SteerWindPower", stick.WindPower.ToString(ic));
+                        ps.SetExtendedMapping($"Stick{g}SteerWindUnwind", stick.WindUnwindRate.ToString(ic));
+                        ps.SetExtendedMapping($"Stick{g}SteerAngleInner", stick.AngleInnerDz.ToString(ic));
+                        ps.SetExtendedMapping($"Stick{g}SteerAngleOuter", stick.AngleOuterDz.ToString(ic));
+                        ps.SetExtendedMapping($"Stick{g}SteerMotionInner", stick.MotionInnerDz.ToString(ic));
+                        ps.SetExtendedMapping($"Stick{g}SteerMotionOuter", stick.MotionOuterDz.ToString(ic));
+                        ps.SetExtendedMapping($"Stick{g}SteerOrient", stick.ControllerOrientation);
+                    }
+
                     foreach (var trig in padVm.TriggerConfigs)
                     {
                         if (trig.Index < 2) continue;

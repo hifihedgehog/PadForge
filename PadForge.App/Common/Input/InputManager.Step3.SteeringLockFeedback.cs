@@ -25,6 +25,19 @@ namespace PadForge.Common.Input
         /// trigger resistance as a steering source approaches lock. 0 = inactive.</summary>
         public readonly float[] SteeringAtResistance = new float[MaxPads];
 
+        /// <summary>Current steering trigger-vibration pulse strength (0..1) for the slot,
+        /// from the channel-2 lock-feedback override. Read by the DualSense dispatcher to
+        /// drive a momentary trigger-haptic block. 0 when no pulse is active.</summary>
+        public float GetSteeringTrigVib(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= MaxPads) return 0f;
+            var ovr = SteeringTrigVibOverrides[slotIndex];
+            if (ovr == null || !ovr.IsActive) return 0f;
+            ovr.ComputeMotors(out ushort l, out ushort r);
+            ushort v = l >= r ? l : r;
+            return v / 65535f;
+        }
+
         /// <summary>Fires the steering at-lock feedback channels for one device's
         /// frame. Rumble + impulse pulse on lock entry; the lightbar pulses to the
         /// configured color and fades on exit; a continuous AT-resistance value
@@ -73,10 +86,16 @@ namespace PadForge.Common.Input
                     if (!deviceAllowed) continue;
                     if (edge == SourceKindRuntime.LockEdge.Enter)
                     {
-                        // Channels 1 + 2: a single rumble / impulse-trigger pulse. The
-                        // impulse motors come along via the MacroRumbleOverride merge.
-                        if (rumble || trigVib)
+                        // Channel 1: grip-motor rumble pulse.
+                        if (rumble)
                             MacroRumbleOverrides[slotIndex]?.FireReactive(80, 80, pulseMs, 30);
+                        // Channel 2: trigger-actuator pulse. MacroRumbleOverride only drives
+                        // the grip motors, so this needs its own override whose scalar is
+                        // routed to the triggers (DualSense trigger haptics via the
+                        // dispatcher); firing the grip override here would just duplicate
+                        // channel 1 and never reach the trigger actuators.
+                        if (trigVib)
+                            SteeringTrigVibOverrides[slotIndex]?.FireReactive(80, 80, pulseMs, 30);
                         // Channel 3: lightbar pulse to the lock color.
                         if (lightbar)
                             FireSteeringLightbar(slotIndex, ps, pulseMs, fadeMs);

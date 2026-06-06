@@ -395,6 +395,10 @@ namespace PadForge.Services
                 (_inputManager != null && padIndex >= 0 && padIndex < InputManager.MaxPads)
                     ? _inputManager.SteeringAtResistance[padIndex] : 0f;
 
+            UserEffectsDispatcher.SteeringTriggerVibProvider = padIndex =>
+                (_inputManager != null && padIndex >= 0 && padIndex < InputManager.MaxPads)
+                    ? _inputManager.GetSteeringTrigVib(padIndex) : 0f;
+
             UserEffectsDispatcher.SlotImpulseTriggerForDeviceProvider = (padIndex, deviceGuid) =>
             {
                 if (_inputManager == null) return ((byte)0, (byte)0);
@@ -1021,6 +1025,7 @@ namespace PadForge.Services
                 UserEffectsDispatcher.SlotRawRumbleProvider = null;
                 UserEffectsDispatcher.SlotImpulseTriggerForDeviceProvider = null;
                 UserEffectsDispatcher.SteeringAtResistanceProvider = null;
+                UserEffectsDispatcher.SteeringTriggerVibProvider = null;
                 UserEffectsDispatcher.TestRumbleTargetGuidProvider = null;
                 UserEffectsDispatcher.SlotBatteryPercentProvider = null;
                 UserEffectsDispatcher.SlotPerDeviceConfigsProvider = null;

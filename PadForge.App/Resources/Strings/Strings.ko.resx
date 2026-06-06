@@ -1625,7 +1625,7 @@
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>자동 센터링 강도</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>RPM 시프트 LED</value></data>
   <data name="Pad_Steering_Header" xml:space="preserve"><value>조향</value></data>
-  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>끄기로 두면 스틱이 일반 모드로 작동합니다. 다른 모드는 스티어링 휠처럼 조향합니다.</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>끄기로 두면 스틱이 일반 스틱으로 동작합니다. 다른 모드는 스티어링 휠처럼 동작합니다.</value></data>
   <data name="Pad_Steering_Mode" xml:space="preserve"><value>조향 모드</value></data>
   <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>끄기</value></data>
   <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>감기</value></data>

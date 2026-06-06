@@ -1625,7 +1625,7 @@
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Autocentrado</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>LED de cambio</value></data>
   <data name="Pad_Steering_Header" xml:space="preserve"><value>Dirección</value></data>
-  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Desactivado deja la palanca normal. Los demás modos la hacen dirigir como un volante.</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Desactivado deja la palanca normal. Los demás modos la hacen actuar como un volante.</value></data>
   <data name="Pad_Steering_Mode" xml:space="preserve"><value>Modo de dirección</value></data>
   <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>Desactivado</value></data>
   <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>Enrollado</value></data>

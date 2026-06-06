@@ -1645,7 +1645,7 @@
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Automatisch centreren</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>Schakel-leds</value></data>
   <data name="Pad_Steering_Header" xml:space="preserve"><value>Sturen</value></data>
-  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Uit houdt deze stick normaal. De andere modi laten hem sturen als een stuurwiel.</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Uit houdt deze stick normaal. De andere modi laten hem zich als een stuurwiel gedragen.</value></data>
   <data name="Pad_Steering_Mode" xml:space="preserve"><value>Stuurmodus</value></data>
   <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>Uit</value></data>
   <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>Draaien</value></data>

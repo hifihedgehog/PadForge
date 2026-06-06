@@ -5,12 +5,16 @@
 # reasons (off-topic, too heated, spam) since the form response is not
 # appropriate for those.
 #
-# Idempotent: checks for an existing form-response comment from the
-# github-actions bot before posting. Re-locking a thread will not
-# produce a duplicate comment.
+# Idempotent: checks for an existing form-response comment (matched by
+# body text) before posting. Re-locking a thread will not produce a
+# duplicate comment regardless of which actor authored the prior post.
 #
-# GITHUB_TOKEN with `issues: write` covers commenting on locked threads
-# (collaborator and bot tokens can comment past a lock).
+# Auth: uses the ISSUE_BOT_TOKEN secret rather than GITHUB_TOKEN.
+# GITHUB_TOKEN acts as github-actions[bot] which is not a repo
+# collaborator and so cannot comment on locked threads (GitHub returns
+# "Unable to create comment because issue is locked"). ISSUE_BOT_TOKEN
+# is a fine-grained PAT or OAuth token from the repo owner / a
+# collaborator account, which can comment past a lock.
 
 name: Issue lock form response
 
@@ -29,7 +33,7 @@ jobs:
     permissions:
       issues: write
     env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.ISSUE_BOT_TOKEN }}
       ISSUE_NUMBER: ${{ github.event.issue.number }}
       REPO: ${{ github.repository }}
     steps:
@@ -37,8 +41,12 @@ jobs:
         id: idempotent
         run: |
           set -euo pipefail
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "ISSUE_BOT_TOKEN secret is not set. See header comment in this workflow file." >&2
+            exit 1
+          fi
           EXISTING=$(gh api "repos/${REPO}/issues/${ISSUE_NUMBER}/comments" \
-            --jq '.[] | select(.user.login == "github-actions[bot]") | select(.body | contains("Comments on locked threads do not surface in triage")) | .id' \
+            --jq '.[] | select(.body | contains("Comments on locked threads do not surface in triage")) | .id' \
             | head -n1)
           if [ -n "$EXISTING" ]; then
             echo "Form response already posted (comment $EXISTING). Skipping."

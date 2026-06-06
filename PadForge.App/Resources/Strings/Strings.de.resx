@@ -1653,6 +1653,18 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Innere Neigungs-Deadzone zurücksetzen</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Äußere Neigungs-Deadzone zurücksetzen</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Controller-Ausrichtung zurücksetzen</value></data>
+  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Anschlag-Feedback</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Lässt das Lenkrad am Vollanschlag wie gegen eine Wand wirken. Standardmäßig alles aus.</value></data>
+  <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Vibrationspuls am Anschlag</value></data>
+  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Impulse-Trigger-Puls am Anschlag</value></data>
+  <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Lightbar-Puls am Anschlag</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Adaptive-Trigger-Widerstand nahe Anschlag</value></data>
+  <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>Pulslänge</value></data>
+  <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Lightbar-Farbe</value></data>
+  <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Lightbar-Ausblenden</value></data>
+  <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>Pulslänge zurücksetzen</value></data>
+  <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>Lightbar-Farbe zurücksetzen</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Lightbar-Ausblenden zurücksetzen</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Lenkrad</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Lenkrad zurücksetzen</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Lenkbereich zurücksetzen</value></data>

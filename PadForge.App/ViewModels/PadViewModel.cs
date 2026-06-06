@@ -1957,6 +1957,29 @@ namespace PadForge.ViewModels
         private bool _constantForceEnabled;
         public bool ConstantForceEnabled { get => _constantForceEnabled; set => SetProperty(ref _constantForceEnabled, value); }
 
+        // ── Steering at-lock feedback (#94), per slot ──
+        private bool _steeringLockRumbleEnabled;
+        public bool SteeringLockRumbleEnabled { get => _steeringLockRumbleEnabled; set => SetProperty(ref _steeringLockRumbleEnabled, value); }
+        private bool _steeringLockTriggerVibEnabled;
+        public bool SteeringLockTriggerVibEnabled { get => _steeringLockTriggerVibEnabled; set => SetProperty(ref _steeringLockTriggerVibEnabled, value); }
+        private bool _steeringLockLightbarEnabled;
+        public bool SteeringLockLightbarEnabled { get => _steeringLockLightbarEnabled; set => SetProperty(ref _steeringLockLightbarEnabled, value); }
+        private bool _steeringLockAtResistanceEnabled;
+        public bool SteeringLockATResistanceEnabled { get => _steeringLockAtResistanceEnabled; set => SetProperty(ref _steeringLockAtResistanceEnabled, value); }
+        private double _steeringLockPulseMs = 80;
+        public double SteeringLockPulseMs { get => _steeringLockPulseMs; set => SetProperty(ref _steeringLockPulseMs, Math.Clamp(value, 0, 2000)); }
+        private string _steeringLockLightbarColor = "#FF0000";
+        public string SteeringLockLightbarColor { get => _steeringLockLightbarColor; set => SetProperty(ref _steeringLockLightbarColor, string.IsNullOrWhiteSpace(value) ? "#FF0000" : value); }
+        private double _steeringLockLightbarFadeMs = 250;
+        public double SteeringLockLightbarFadeMs { get => _steeringLockLightbarFadeMs; set => SetProperty(ref _steeringLockLightbarFadeMs, Math.Clamp(value, 0, 5000)); }
+
+        private ICommand _resetSteeringLockColorCommand;
+        public ICommand ResetSteeringLockColorCommand => _resetSteeringLockColorCommand ??= new RelayCommand(() => SteeringLockLightbarColor = "#FF0000");
+        private ICommand _resetSteeringLockPulseCommand;
+        public ICommand ResetSteeringLockPulseCommand => _resetSteeringLockPulseCommand ??= new RelayCommand(() => SteeringLockPulseMs = 80);
+        private ICommand _resetSteeringLockFadeCommand;
+        public ICommand ResetSteeringLockFadeCommand => _resetSteeringLockFadeCommand ??= new RelayCommand(() => SteeringLockLightbarFadeMs = 250);
+
         private double _constantForceX;
         public double ConstantForceX { get => _constantForceX; set => SetProperty(ref _constantForceX, Math.Clamp(value, -1.0, 1.0)); }
 

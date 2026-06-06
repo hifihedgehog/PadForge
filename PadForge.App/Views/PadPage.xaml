@@ -3467,6 +3467,42 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+
+                    <!-- ═══ Steering at-lock feedback (#94) — per slot, all opt-in ═══ -->
+                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Pad_Steering_LockFeedback, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource CardTitle}"/>
+                            <TextBlock Text="{Binding Pad_Steering_LockFeedback_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,8"/>
+                            <CheckBox IsChecked="{Binding SteeringLockRumbleEnabled, Mode=TwoWay}" Margin="0,0,0,4"
+                                      Content="{Binding Pad_Steering_Lock_Rumble, Source={x:Static strings:Strings.Instance}}"/>
+                            <CheckBox IsChecked="{Binding SteeringLockTriggerVibEnabled, Mode=TwoWay}" Margin="0,0,0,4"
+                                      Content="{Binding Pad_Steering_Lock_TriggerVib, Source={x:Static strings:Strings.Instance}}"/>
+                            <CheckBox IsChecked="{Binding SteeringLockLightbarEnabled, Mode=TwoWay}" Margin="0,0,0,4"
+                                      Content="{Binding Pad_Steering_Lock_Lightbar, Source={x:Static strings:Strings.Instance}}"/>
+                            <CheckBox IsChecked="{Binding SteeringLockATResistanceEnabled, Mode=TwoWay}" Margin="0,0,0,8"
+                                      Content="{Binding Pad_Steering_Lock_ATResistance, Source={x:Static strings:Strings.Instance}}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Text="{Binding Pad_Steering_Lock_PulseMs, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <Slider Value="{Binding SteeringLockPulseMs, Mode=TwoWay}" Minimum="0" Maximum="2000" Style="{StaticResource DzSlider}"/>
+                                <TextBox Text="{Binding SteeringLockPulseMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                <Button Command="{Binding ResetSteeringLockPulseCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_PulseMs, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Text="{Binding Pad_Steering_Lock_LightbarColor, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <TextBox Text="{Binding SteeringLockLightbarColor, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}" Width="90"/>
+                                <Button Command="{Binding ResetSteeringLockColorCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_LightbarColor, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                <TextBlock Text="{Binding Pad_Steering_Lock_LightbarFadeMs, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <Slider Value="{Binding SteeringLockLightbarFadeMs, Mode=TwoWay}" Minimum="0" Maximum="5000" Style="{StaticResource DzSlider}"/>
+                                <TextBox Text="{Binding SteeringLockLightbarFadeMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                <Button Command="{Binding ResetSteeringLockFadeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_LightbarFadeMs, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

@@ -1653,6 +1653,18 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Réinitialiser la zone morte intérieure d'inclinaison</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Réinitialiser la zone morte extérieure d'inclinaison</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Réinitialiser l'orientation de la manette</value></data>
+  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Retour en butée</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Donne l'impression que le volant heurte un mur en butée de braquage. Tout est désactivé par défaut.</value></data>
+  <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pulsation de vibration en butée</value></data>
+  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Pulsation des gâchettes Impulse en butée</value></data>
+  <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Pulsation de la barre lumineuse en butée</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Résistance des gâchettes adaptatives à l'approche de la butée</value></data>
+  <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>Durée de la pulsation</value></data>
+  <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Couleur de la barre lumineuse</value></data>
+  <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Fondu de la barre lumineuse</value></data>
+  <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>Réinitialiser la durée de la pulsation</value></data>
+  <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>Réinitialiser la couleur de la barre lumineuse</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Réinitialiser le fondu de la barre lumineuse</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Volant</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Réinitialiser le volant</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Réinitialiser la plage de rotation</value></data>

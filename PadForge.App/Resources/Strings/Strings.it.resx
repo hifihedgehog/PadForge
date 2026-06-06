@@ -1675,6 +1675,18 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Ripristina zona morta interna inclinazione</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Ripristina zona morta esterna inclinazione</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Ripristina orientamento controller</value></data>
+  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback al fine corsa</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Fa sentire il volante come se avesse colpito un muro al fine corsa. Tutto disattivato per impostazione predefinita.</value></data>
+  <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Impulso di vibrazione al fine corsa</value></data>
+  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Impulso dei grilletti Impulse al fine corsa</value></data>
+  <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Impulso della barra luminosa al fine corsa</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Resistenza dei grilletti adattivi in prossimità del fine corsa</value></data>
+  <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>Durata dell'impulso</value></data>
+  <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Colore barra luminosa</value></data>
+  <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Dissolvenza barra luminosa</value></data>
+  <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>Ripristina durata dell'impulso</value></data>
+  <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>Ripristina colore barra luminosa</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Ripristina dissolvenza barra luminosa</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Volante</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Ripristina volante</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Ripristina intervallo di rotazione</value></data>

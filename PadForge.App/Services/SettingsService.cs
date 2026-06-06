@@ -1866,6 +1866,15 @@ namespace PadForge.Services
                 padVm.ConstantForceX = TryParseDouble(ps.ConstantForceX, 0.0);
                 padVm.ConstantForceY = TryParseDouble(ps.ConstantForceY, 0.0);
 
+                // Steering at-lock feedback (#94).
+                padVm.SteeringLockRumbleEnabled = ps.SteeringLockRumbleEnabled == "1";
+                padVm.SteeringLockTriggerVibEnabled = ps.SteeringLockTriggerVibEnabled == "1";
+                padVm.SteeringLockLightbarEnabled = ps.SteeringLockLightbarEnabled == "1";
+                padVm.SteeringLockATResistanceEnabled = ps.SteeringLockATResistanceEnabled == "1";
+                padVm.SteeringLockPulseMs = TryParseDouble(ps.SteeringLockPulseMs, 80);
+                padVm.SteeringLockLightbarColor = string.IsNullOrWhiteSpace(ps.SteeringLockLightbarColor) ? "#FF0000" : ps.SteeringLockLightbarColor;
+                padVm.SteeringLockLightbarFadeMs = TryParseDouble(ps.SteeringLockLightbarFadeMs, 250);
+
                 // Load deadzone settings (independent X/Y).
                 padVm.LeftDeadZoneShape = (int)InputManager.ParseDeadZoneShape(ps.LeftThumbDeadZoneShape);
                 padVm.LeftDeadZoneX = TryParseDouble(ps.LeftThumbDeadZoneX, 0);
@@ -2966,6 +2975,15 @@ namespace PadForge.Services
                     ps.ConstantForceEnabled = padVm.ConstantForceEnabled ? "1" : "0";
                     ps.ConstantForceX = padVm.ConstantForceX.ToString("F4", ic);
                     ps.ConstantForceY = padVm.ConstantForceY.ToString("F4", ic);
+
+                    // Steering at-lock feedback (#94).
+                    ps.SteeringLockRumbleEnabled = padVm.SteeringLockRumbleEnabled ? "1" : "0";
+                    ps.SteeringLockTriggerVibEnabled = padVm.SteeringLockTriggerVibEnabled ? "1" : "0";
+                    ps.SteeringLockLightbarEnabled = padVm.SteeringLockLightbarEnabled ? "1" : "0";
+                    ps.SteeringLockATResistanceEnabled = padVm.SteeringLockATResistanceEnabled ? "1" : "0";
+                    ps.SteeringLockPulseMs = ((int)padVm.SteeringLockPulseMs).ToString(ic);
+                    ps.SteeringLockLightbarColor = padVm.SteeringLockLightbarColor ?? "#FF0000";
+                    ps.SteeringLockLightbarFadeMs = ((int)padVm.SteeringLockLightbarFadeMs).ToString(ic);
 
                     // Write deadzone settings (independent X/Y).
                     ps.LeftThumbDeadZoneShape = padVm.LeftDeadZoneShape.ToString();

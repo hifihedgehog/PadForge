@@ -1673,6 +1673,18 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Binnenste kanteldeadzone resetten</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Buitenste kanteldeadzone resetten</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Controllerstand resetten</value></data>
+  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback bij stuuraanslag</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Laat het stuurwiel aanvoelen alsof het bij volledige stuuraanslag tegen een muur loopt. Alles staat standaard uit.</value></data>
+  <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Trilpuls bij stuuraanslag</value></data>
+  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Impulse-triggerpuls bij stuuraanslag</value></data>
+  <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Lightbar-puls bij stuuraanslag</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Adaptieve-triggerweerstand nabij stuuraanslag</value></data>
+  <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>Pulslengte</value></data>
+  <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Lightbar-kleur</value></data>
+  <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Lightbar-vervaging</value></data>
+  <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>Pulslengte resetten</value></data>
+  <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>Lightbar-kleur resetten</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Lightbar-vervaging resetten</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Stuur</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Stuur resetten</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Rotatiebereik resetten</value></data>

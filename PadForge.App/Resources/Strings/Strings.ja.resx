@@ -1653,6 +1653,18 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>リーン内側デッドゾーンをリセット</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>リーン外側デッドゾーンをリセット</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>コントローラーの向きをリセット</value></data>
+  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ロックフィードバック</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>フルロック時にホイールが壁にぶつかったような感触にします。すべて既定でオフです。</value></data>
+  <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>ロック時にランブルパルス</value></data>
+  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>ロック時にインパルストリガーパルス</value></data>
+  <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>ロック時にライトバーパルス</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>ロック付近でアダプティブトリガー抵抗</value></data>
+  <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>パルス長</value></data>
+  <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>ライトバーの色</value></data>
+  <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>ライトバーフェード</value></data>
+  <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>パルス長をリセット</value></data>
+  <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>ライトバーの色をリセット</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>ライトバーフェードをリセット</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>ステアリング</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>ステアリングをリセット</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>回転範囲をリセット</value></data>

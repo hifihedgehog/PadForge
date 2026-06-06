@@ -1625,7 +1625,7 @@
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Força de Autocentralização</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>LEDs de Rotação</value></data>
   <data name="Pad_Steering_Header" xml:space="preserve"><value>Esterçamento</value></data>
-  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Desativado mantém o analógico normal. Os outros modos o fazem esterçar como um volante.</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Desativado mantém o analógico normal. Os outros modos o fazem agir como um volante.</value></data>
   <data name="Pad_Steering_Mode" xml:space="preserve"><value>Modo de Esterçamento</value></data>
   <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>Desativado</value></data>
   <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>Enrolamento</value></data>

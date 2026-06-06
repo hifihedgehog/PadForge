@@ -1647,9 +1647,9 @@
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Autocentratura</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>LED di regime</value></data>
   <data name="Pad_Steering_Header" xml:space="preserve"><value>Sterzo</value></data>
-  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Usa questo stick o l'inclinazione del controller per sterzare come un volante.</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Disattivato lascia lo stick normale. Le altre modalità lo fanno sterzare come un volante.</value></data>
   <data name="Pad_Steering_Mode" xml:space="preserve"><value>Modalità sterzo</value></data>
-  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>Lineare</value></data>
+  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>Disattivato</value></data>
   <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>Avvolgimento</value></data>
   <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>Angolo su asse (X)</value></data>
   <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>Angolo su asse (Y)</value></data>

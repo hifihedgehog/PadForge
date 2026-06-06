@@ -3369,9 +3369,9 @@
                                         </StackPanel>
                                     </Grid>
 
-                                    <!-- ═══ Steering (winding / 2D angle-to-axis / motion lean) #94 ═══ -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
-                                        <StackPanel>
+                                    <!-- ═══ Steering (winding / 2D angle-to-axis / motion lean) #94 — a section in the stick card, not a nested card ═══ -->
+                                    <Separator Margin="0,16,0,8"/>
+                                    <StackPanel>
                                             <TextBlock Text="{Binding Pad_Steering_Header, Source={x:Static strings:Strings.Instance}}"
                                                        Style="{StaticResource CardTitle}"/>
                                             <TextBlock Text="{Binding Pad_Steering_Subtitle, Source={x:Static strings:Strings.Instance}}"
@@ -3460,7 +3460,6 @@
                                                 </StackPanel>
                                             </StackPanel>
                                         </StackPanel>
-                                    </Border>
 
                                 </StackPanel>
                                 </Border>

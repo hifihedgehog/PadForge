@@ -1625,9 +1625,9 @@
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>自动回中强度</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>转速换挡灯</value></data>
   <data name="Pad_Steering_Header" xml:space="preserve"><value>转向</value></data>
-  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>使用此摇杆或手柄倾斜像方向盘一样转向。</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>关闭时摇杆保持正常。其他模式让它像方向盘一样转向。</value></data>
   <data name="Pad_Steering_Mode" xml:space="preserve"><value>转向模式</value></data>
-  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>线性</value></data>
+  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>关闭</value></data>
   <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>卷绕</value></data>
   <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>角度映射到轴 (X)</value></data>
   <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>角度映射到轴 (Y)</value></data>

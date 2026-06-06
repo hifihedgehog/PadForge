@@ -2428,6 +2428,13 @@ namespace PadForge.ViewModels
             nameof(StickConfigItem.MaxRangeX), nameof(StickConfigItem.MaxRangeY),
             nameof(StickConfigItem.MaxRangeXNeg), nameof(StickConfigItem.MaxRangeYNeg),
             nameof(StickConfigItem.CenterOffsetX), nameof(StickConfigItem.CenterOffsetY),
+            // Steering (#94) — without these, changing the steering mode / tunables
+            // never marks the profile dirty, so the selection is dropped on save.
+            nameof(StickConfigItem.SteeringModeIndex),
+            nameof(StickConfigItem.WindRangeDeg), nameof(StickConfigItem.WindPower), nameof(StickConfigItem.WindUnwindRate),
+            nameof(StickConfigItem.AngleInnerDz), nameof(StickConfigItem.AngleOuterDz),
+            nameof(StickConfigItem.MotionInnerDz), nameof(StickConfigItem.MotionOuterDz),
+            nameof(StickConfigItem.ControllerOrientationIndex),
         };
 
         private static readonly System.Collections.Generic.HashSet<string> TriggerConfigPropertyNames = new()

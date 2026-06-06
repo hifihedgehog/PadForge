@@ -1689,7 +1689,7 @@
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Auto Centering Strength</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>RPM Shift LEDs</value></data>
   <data name="Pad_Steering_Header" xml:space="preserve"><value>Steering</value></data>
-  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Map this stick or controller tilt to a steering wheel.</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Use this stick or controller tilt to steer like a wheel.</value></data>
   <data name="Pad_Steering_Mode" xml:space="preserve"><value>Steering Mode</value></data>
   <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>Linear</value></data>
   <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>Winding</value></data>

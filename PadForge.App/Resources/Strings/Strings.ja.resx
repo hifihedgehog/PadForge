@@ -1625,7 +1625,7 @@
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>オートセンター強度</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>RPMシフトLED</value></data>
   <data name="Pad_Steering_Header" xml:space="preserve"><value>ステアリング</value></data>
-  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>このスティックまたはコントローラーの傾きをステアリングにマッピングします。</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>このスティックまたはコントローラーの傾きを使って、ハンドルのように操作します。</value></data>
   <data name="Pad_Steering_Mode" xml:space="preserve"><value>ステアリングモード</value></data>
   <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>リニア</value></data>
   <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>巻き取り</value></data>

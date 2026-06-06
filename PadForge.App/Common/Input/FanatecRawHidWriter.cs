@@ -162,11 +162,14 @@ namespace PadForge.Common.Input
             (int)((long)dinput * gainPct / 100 * 0x7fff / 10000);
 
         /// <summary>Software centering spring for the Wheel-tab auto-center slider.
-        /// Fanatec wheels have no firmware autocenter command, and ftec_set_range's
-        /// leading f5 disables the stock centering spring, so centering is a slot-1
-        /// spring effect (cmd 0x0b) - the same plumbing game-driven springs use.
-        /// Symmetric, centered at 0, no deadband. <paramref name="magnitude"/> is
-        /// 0..0xffff (the Logitech/Thrustmaster autocenter scale); 0 disables the slot.</summary>
+        /// Fanatec wheels expose no firmware autocenter command (hid-ftecff.c registers
+        /// only upload/playback/destroy, and FF_AUTOCENTER is absent from the effects
+        /// list), and calling ftec_set_range disables the stock centering spring
+        /// (hid-ftecff.c:1216 "Set range so that centering spring gets disabled"; its
+        /// leading f5 is the coarse-limit command). So centering is a slot-1 spring
+        /// effect (cmd 0x0b, hid-ftecff.c:1024,1030) - the same plumbing game-driven
+        /// springs use. Symmetric, centered at 0, no deadband. <paramref name="magnitude"/>
+        /// is 0..0xffff (the Logitech/Thrustmaster autocenter scale); 0 disables the slot.</summary>
         public static bool WriteAutocenter(string devicePath, int magnitude)
         {
             if (string.IsNullOrEmpty(devicePath)) return false;

@@ -276,6 +276,7 @@ namespace PadForge.Views
             bool hasImpulseTriggers = false;
             bool hasTouchpad = false;
             bool hasWheel = false;
+            bool hasGenericWheel = false;
             int numTouchpads = 0;
             if (DataContext is PadViewModel vmProfile
                 && vmProfile.SelectedMappedDevice != null
@@ -306,6 +307,17 @@ namespace PadForge.Views
                             PadForge.Common.Input.LogitechRawHidWriter.IsLogitechWheel(ud.VendorId, ud.ProdId)
                          || PadForge.Common.Input.FanatecRawHidWriter.IsFanatecWheel(ud.VendorId, ud.ProdId)
                          || PadForge.Common.Input.ThrustmasterRawHidWriter.IsThrustmasterWheel(ud.VendorId, ud.ProdId);
+                        // Generic (non-vendor) FFB wheel routed through SDL: no native range
+                        // or RPM-LED support, but a single-axis spring-capable haptic still
+                        // self-centers from the Auto Centering slider (TryApplyAutoCenterSpring).
+                        // Show the Wheel tab with only the auto-center row in that case.
+                        hasGenericWheel =
+                            !hasWheel
+                         && ud.CapType == InputDeviceType.Driving
+                         && ud.Device != null
+                         && ud.Device.HasHaptic
+                         && ud.Device.NumHapticAxes <= 1
+                         && (ud.Device.HapticFeatures & SDL3.SDL.SDL_HAPTIC_SPRING) != 0;
                         // Pad count drives the Touchpad tab's per-pad
                         // pivot. Most devices = 1; Steam Controller 2026
                         // = 2 (Triton); original Steam Controller = 3.
@@ -347,7 +359,13 @@ namespace PadForge.Views
             if (TabTouchpad != null)
                 TabTouchpad.Visibility = hasTouchpad ? Visibility.Visible : Visibility.Collapsed;
             if (TabWheel != null)
-                TabWheel.Visibility = hasWheel ? Visibility.Visible : Visibility.Collapsed;
+                TabWheel.Visibility = (hasWheel || hasGenericWheel) ? Visibility.Visible : Visibility.Collapsed;
+            // Rotation range + RPM LEDs are vendor-HID-only; hide them for a generic
+            // SDL wheel that only supports the software auto-center spring.
+            if (WheelRangeRow != null)
+                WheelRangeRow.Visibility = hasWheel ? Visibility.Visible : Visibility.Collapsed;
+            if (WheelRpmRow != null)
+                WheelRpmRow.Visibility = hasWheel ? Visibility.Visible : Visibility.Collapsed;
             if (IndicatorLedsCard != null)
                 IndicatorLedsCard.Visibility = hasIndicatorLeds ? Visibility.Visible : Visibility.Collapsed;
 

@@ -5976,8 +5976,10 @@
                                             ToolTip="{Binding Pad_ResetWheel, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <!-- Rotation range — wheel hardware steering lock (not a force) -->
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <!-- Rotation range — wheel hardware steering lock (not a force).
+                                     Native HID command (vendor wheels only); hidden for generic
+                                     SDL wheels, which expose no set-range API. -->
+                                <StackPanel x:Name="WheelRangeRow" Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_Wheel_RotationRange, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <Slider Value="{Binding WheelRotationRange, Mode=TwoWay}" Minimum="40" Maximum="2520"
                                             Style="{StaticResource DzSlider}"/>
@@ -5997,8 +5999,10 @@
                                     <Button Command="{Binding ResetWheelAutoCenterCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAutocenter, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <!-- RPM shift LEDs — telemetry-driven rev display -->
-                                <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                <!-- RPM shift LEDs — telemetry-driven rev display.
+                                     Native HID command (vendor wheels only); hidden for generic
+                                     SDL wheels, which have no addressable rev strip. -->
+                                <StackPanel x:Name="WheelRpmRow" Orientation="Horizontal" Margin="0,4,0,0">
                                     <CheckBox IsChecked="{Binding WheelRpmLeds, Mode=TwoWay}"
                                               Content="{Binding Pad_Wheel_RpmLeds, Source={x:Static strings:Strings.Instance}}"
                                               VerticalAlignment="Center"/>

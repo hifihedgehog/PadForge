@@ -52,7 +52,8 @@ namespace PadForge.Common.Input
                 case 0xC299: // G25 (set_range_g25, friction, 900 deg)
                 case 0xC29A: // Driving Force GT (set_range_g25, friction, 900 deg)
                 case 0xC298: // Driving Force Pro (coarse+fine range, friction, 900 deg)
-                case 0xC295: // MOMO Racing (fixed 270 deg, no range command)
+                case 0xCA03: // MOMO Racing (MOMO_WHEEL2, fixed 270 deg, no range command)
+                case 0xC295: // MOMO Force (MOMO_WHEEL, fixed 270 deg, no range command)
                 case 0xC294: // Driving Force (fixed 270 deg, no range command)
                 case 0xC293: // WingMan Formula Force GP (fixed 180 deg, no range command)
                     return true;
@@ -63,10 +64,15 @@ namespace PadForge.Common.Input
 
         /// <summary>Wheels with a real friction effect (lg4ff LG4FF_CAP_FRICTION).
         /// Wheels without it cast friction to damper, matching lg4ff_play_effect
-        /// (hid-lg4ff.c:1107-1110); their device-table caps field is 0 (G29/G920/G923).
-        /// Among PadForge's supported wheels only the G27 (0xC29B) qualifies; the
-        /// legacy DFP/G25/DFGT also have it but are not in <see cref="IsLogitechWheel"/>.</summary>
+        /// (hid-lg4ff.c:1107-1110). Per the lg4ff device table only G27/G25/DFGT/DFP
+        /// carry the cap; every other lg4ff wheel (G29/G920/G923, MOMO, Driving Force,
+        /// WingMan) has caps field 0.</summary>
         public static bool HasFrictionCap(ushort pid) => pid is 0xC29B or 0xC299 or 0xC29A or 0xC298; // G27 / G25 / DFGT / DFP (lg4ff LG4FF_CAP_FRICTION)
+
+        /// <summary>MOMO Force (0xC295) / MOMO Racing (0xCA03) keep the full autocenter
+        /// expand_a; every other lg4ff wheel halves it. Mirrors the per-product branch in
+        /// lg4ff_set_autocenter_default (hid-lg4ff.c:1322-1330).</summary>
+        public static bool IsMomo(ushort pid) => pid is 0xC295 or 0xCA03;
 
         // ─────────────────────────────────────────────
         //  Protocol — values from new-lg4ff/hid-lg4ff.c
@@ -170,12 +176,12 @@ namespace PadForge.Common.Input
         }
 
         // Per-wheel max rotation (lg4ff device table): G25/DFGT/DFP/G27/G29/G923 = 900,
-        // MOMO Racing / Driving Force = 270, WingMan Formula Force GP = 180.
+        // MOMO Force / MOMO Racing / Driving Force = 270, WingMan Formula Force GP = 180.
         private static int MaxRange(ushort pid) => pid switch
         {
-            0xC293 => 180,            // WingMan Formula Force GP
-            0xC294 or 0xC295 => 270,  // Driving Force / MOMO Racing
-            _ => 900,                 // G25 / DFGT / DFP / G27 / G29 / G923
+            0xC293 => 180,                      // WingMan Formula Force GP
+            0xC294 or 0xC295 or 0xCA03 => 270,  // Driving Force / MOMO Force / MOMO Racing
+            _ => 900,                           // G25 / DFGT / DFP / G27 / G29 / G923
         };
 
         /// <summary>Sets the wheel's hardware rotation range in degrees, clamped to the
@@ -189,7 +195,7 @@ namespace PadForge.Common.Input
             int max = MaxRange(pid);
             if (degrees > max) degrees = max;
 
-            if (pid == 0xC293 || pid == 0xC294 || pid == 0xC295) return true; // fixed range, no command
+            if (pid == 0xC293 || pid == 0xC294 || pid == 0xC295 || pid == 0xCA03) return true; // fixed range, no command
             if (pid == 0xC298) return WriteRangeDfp(devicePath, degrees);     // Driving Force Pro
 
             byte[] cmd = new byte[7]; // G25 / DFGT / G27 / G29 / G923

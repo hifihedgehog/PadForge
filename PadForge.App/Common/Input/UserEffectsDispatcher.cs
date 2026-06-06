@@ -168,6 +168,11 @@ namespace PadForge.Common.Input
         /// the toggle is off or no steering source is approaching lock.</summary>
         public static Func<int, float> SteeringAtResistanceProvider { get; set; }
 
+        /// <summary>Per-slot steering at-lock trigger-vibration pulse (0..1) provider (#94,
+        /// channel 2), wired to <c>InputManager.GetSteeringTrigVib(slot)</c>. A momentary
+        /// hold+fade pulse fired on lock entry; 0 otherwise.</summary>
+        public static Func<int, float> SteeringTriggerVibProvider { get; set; }
+
         // Animated-lightbar polling cadence — 30Hz is enough to feel
         // responsive without flooding the BT HID write path. WriteFile
         // open+close is ~1ms per call; 30Hz = 30ms budget.
@@ -1195,6 +1200,21 @@ namespace PadForge.Common.Input
                         // triggers the user hasn't configured (mode Off) with no override
                         // already set this frame, so it never fights a user AT effect or the
                         // impulse-AT buzz above. Already DS5- and test-target-scoped here.
+                        // Channel 2 (trigger-vibration pulse) runs before channel 4 so the
+                        // momentary at-lock buzz wins the trigger-effect slot during its
+                        // hold+fade window; channel 4's continuous resistance resumes once
+                        // the pulse decays to 0. Both gate on the trigger being unconfigured
+                        // (mode Off) with no override already set this frame.
+                        float steerVib = SteeringTriggerVibProvider?.Invoke(_padIndex) ?? 0f;
+                        if (steerVib > 0f)
+                        {
+                            byte strength = (byte)Math.Clamp((int)(steerVib * 255f), 0, 255);
+                            if (devCfg.RightTriggerMode == AdaptiveTriggerMode.Off && devOverrides.RightTriggerEffect == null)
+                                devOverrides.RightTriggerEffect = Ds5EffectSynthesizer.BuildAtVibrationOverrideBlock(strength);
+                            if (devCfg.LeftTriggerMode == AdaptiveTriggerMode.Off && devOverrides.LeftTriggerEffect == null)
+                                devOverrides.LeftTriggerEffect = Ds5EffectSynthesizer.BuildAtVibrationOverrideBlock(strength);
+                        }
+
                         float steerRes = SteeringAtResistanceProvider?.Invoke(_padIndex) ?? 0f;
                         if (steerRes > 0f)
                         {

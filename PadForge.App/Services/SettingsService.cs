@@ -697,11 +697,39 @@ namespace PadForge.Services
                         if (extra != null) row.Sources.Add(extra.ToDomain());
                     }
 
-                    // Steering source kind (#94): if this stick-axis target is the output
-                    // of a steering mode set on its Sticks-tab card, stamp the Kind +
-                    // tunables onto the primary source so the engine dispatches the
-                    // steering math. Persists on MappingSource (survives clones via Clone()).
-                    ApplySteeringKindToRow(row, mapping.TargetSettingName, padVm);
+                    // Steering source kind (#94): steering is a per-stick GLOBAL, not a
+                    // per-layer mapping, so it has to live on the Base row that normal
+                    // (no-shift) play evaluates. Only stamp here when authoring Base; the
+                    // reconciliation pass below keeps the Base row in sync when the user is
+                    // authoring a shift layer. Persists on MappingSource (survives clones
+                    // via Clone()).
+                    if (string.Equals(activeMask, "Base", StringComparison.Ordinal))
+                        ApplySteeringKindToRow(row, mapping.TargetSettingName, padVm);
+                }
+
+                // Steering Kind reconciliation on the Base layer (#94). The per-mapping
+                // loop above only rebuilds the active layer's rows, but steering Kind must
+                // track the StickConfigItem state on the Base row regardless of which layer
+                // is being authored. When authoring a shift layer, re-stamp the Base
+                // steering rows when steering is on, and clear a stale Kind when it's off —
+                // otherwise turning steering off from a shift layer leaves the Base row
+                // stuck in a steering mode forever.
+                if (!string.Equals(activeMask, "Base", StringComparison.Ordinal))
+                {
+                    foreach (var target in SteeringChannelTargets)
+                    {
+                        MappingRow baseRow = null;
+                        foreach (var r in ms.Rows)
+                        {
+                            if (r != null
+                                && string.Equals(r.LayerMask ?? "Base", "Base", StringComparison.Ordinal)
+                                && string.Equals(r.Target, target, StringComparison.Ordinal))
+                            { baseRow = r; break; }
+                        }
+                        if (baseRow?.Sources == null || baseRow.Sources.Count == 0) continue;
+                        if (!ApplySteeringKindToRow(baseRow, target, padVm))
+                            RevertSteeringOnRow(baseRow, target, padVm);
+                    }
                 }
             }
         }
@@ -710,9 +738,9 @@ namespace PadForge.Services
         // row is that mode's output channel, stamps Kind + Param* onto Sources[0]. The
         // steering source always reads the stick's X axis (Descriptor) and Y axis
         // (ParamYDescriptor); the row's target picks the virtual channel.
-        private static void ApplySteeringKindToRow(MappingRow row, string target, PadViewModel padVm)
+        private static bool ApplySteeringKindToRow(MappingRow row, string target, PadViewModel padVm)
         {
-            if (row?.Sources == null || row.Sources.Count == 0 || padVm == null) return;
+            if (row?.Sources == null || row.Sources.Count == 0 || padVm == null) return false;
             int stickIdx; bool isYTarget;
             switch (target)
             {
@@ -720,15 +748,15 @@ namespace PadForge.Services
                 case "LeftThumbAxisY":  stickIdx = 0; isYTarget = true;  break;
                 case "RightThumbAxisX": stickIdx = 1; isYTarget = false; break;
                 case "RightThumbAxisY": stickIdx = 1; isYTarget = true;  break;
-                default: return;
+                default: return false;
             }
             var stick = padVm.StickConfigs?.FirstOrDefault(s => s.Index == stickIdx);
-            if (stick == null || !stick.IsSteeringActive) return;
+            if (stick == null || !stick.IsSteeringActive) return false;
 
             string kind = stick.SteeringKind;
             // AngleToAxisY outputs to the Y channel; every other mode to X.
             bool wantY = kind == "AngleToAxisY";
-            if (wantY != isYTarget) return;
+            if (wantY != isYTarget) return false;
 
             string xName = stickIdx == 0 ? "LeftThumbAxisX" : "RightThumbAxisX";
             string yName = stickIdx == 0 ? "LeftThumbAxisY" : "RightThumbAxisY";
@@ -752,6 +780,35 @@ namespace PadForge.Services
             src.ParamMotionInnerDz = stick.MotionInnerDz;
             src.ParamMotionOuterDz = stick.MotionOuterDz;
             src.ParamControllerOrientation = stick.ControllerOrientation;
+            return true;
+        }
+
+        // The four stick-axis targets a steering mode can output to. Steering Kind is a
+        // per-stick global, so it always reconciles against the Base rows for these.
+        private static readonly string[] SteeringChannelTargets =
+            { "LeftThumbAxisX", "LeftThumbAxisY", "RightThumbAxisX", "RightThumbAxisY" };
+
+        private static bool IsSteeringKind(string k)
+            => k == "WindingStick" || k == "AngleToAxisX" || k == "AngleToAxisY" || k == "MotionLeanX";
+
+        // Reverts a Base steering row to a plain Direct stick-axis mapping. Used when
+        // steering is turned off while a shift layer is active, so the per-mapping rebuild
+        // never touched the Base row. Restores the channel's own axis descriptor: a prior
+        // AngleToAxisY stamp drove the Y row off the X axis, so resetting Kind alone would
+        // leave the Y channel reading the X axis.
+        private static void RevertSteeringOnRow(MappingRow row, string target, PadViewModel padVm)
+        {
+            if (row?.Sources == null || row.Sources.Count == 0) return;
+            var src = row.Sources[0];
+            if (src == null || !IsSteeringKind(src.Kind)) return;
+            src.Kind = "Direct";
+            src.Descriptor = StripSourcePrefix(
+                padVm?.Mappings?.FirstOrDefault(m => m.TargetSettingName == target)?.SourceDescriptor);
+            src.ParamYDescriptor = "";
+            src.ParamWindRangeDeg = 0; src.ParamWindPower = 0; src.ParamWindUnwindRate = 0;
+            src.ParamAngleInnerDz = 0; src.ParamAngleOuterDz = 0;
+            src.ParamMotionInnerDz = 0; src.ParamMotionOuterDz = 0;
+            src.ParamControllerOrientation = null;
         }
 
         // Strips a leading I / H / IH inversion prefix off a source descriptor, matching

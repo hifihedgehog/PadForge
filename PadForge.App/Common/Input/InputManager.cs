@@ -291,6 +291,14 @@ namespace PadForge.Common.Input
         public MacroRumbleOverride[] MacroRumbleOverrides { get; }
             = InitMacroRumbleOverrides();
 
+        /// <summary>Per-slot trigger-actuator pulse for the steering at-lock feedback
+        /// (#94, channel 2). Reuses <see cref="MacroRumbleOverride"/> purely as a
+        /// hold+fade timer; its scalar output is routed to the trigger actuators (the
+        /// DualSense trigger haptics via <c>UserEffectsDispatcher</c>) rather than the
+        /// grip motors, so trigger vibration stays distinct from channel 1's rumble.</summary>
+        public MacroRumbleOverride[] SteeringTrigVibOverrides { get; }
+            = InitMacroRumbleOverrides();
+
         private static MacroRumbleOverride[] InitMacroRumbleOverrides()
         {
             var arr = new MacroRumbleOverride[MaxPads];

@@ -199,6 +199,11 @@ namespace PadForge.Common.Input
                 // device rumble pump merges them via max() at write time.
                 if (!hasGameRumble && MacroRumbleOverrides[padIndex].IsActive)
                     hasGameRumble = true;
+                // A steering at-lock trigger-vibration pulse (#94 ch.2) likewise needs the
+                // dispatcher's timer alive so the momentary block reaches the trigger
+                // actuators when nothing else is driving the slot.
+                if (!hasGameRumble && SteeringTrigVibOverrides[padIndex].IsActive)
+                    hasGameRumble = true;
 
                 bool hasAudioRumbleEnabled = false;
                 if (settingsForPoke != null)

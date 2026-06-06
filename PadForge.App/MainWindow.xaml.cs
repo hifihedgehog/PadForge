@@ -846,7 +846,15 @@ namespace PadForge
                         nameof(PadViewModel.GyroAimEngageButton) or nameof(PadViewModel.GyroAimEngageDeviceGuid) or
                         nameof(PadViewModel.GyroAimEngageMode) or
                         nameof(PadViewModel.GyroInvertPitch) or nameof(PadViewModel.GyroInvertYawRoll) or
-                        nameof(PadViewModel.GyroApplyTuningToPassthrough))
+                        nameof(PadViewModel.GyroApplyTuningToPassthrough) or
+                        // Steering at-lock feedback (#94) — per-slot toggles + tunables.
+                        nameof(PadViewModel.SteeringLockRumbleEnabled) or
+                        nameof(PadViewModel.SteeringLockTriggerVibEnabled) or
+                        nameof(PadViewModel.SteeringLockLightbarEnabled) or
+                        nameof(PadViewModel.SteeringLockATResistanceEnabled) or
+                        nameof(PadViewModel.SteeringLockPulseMs) or
+                        nameof(PadViewModel.SteeringLockLightbarColor) or
+                        nameof(PadViewModel.SteeringLockLightbarFadeMs))
                     {
                         _settingsService.MarkDirty();
                     }

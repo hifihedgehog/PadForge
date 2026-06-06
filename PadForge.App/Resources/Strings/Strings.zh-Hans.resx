@@ -1624,6 +1624,35 @@
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>旋转范围</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>自动回中强度</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>转速换挡灯</value></data>
+  <data name="Pad_Steering_Header" xml:space="preserve"><value>转向</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>将此摇杆或手柄倾斜映射为方向盘转向。</value></data>
+  <data name="Pad_Steering_Mode" xml:space="preserve"><value>转向模式</value></data>
+  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>线性</value></data>
+  <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>卷绕</value></data>
+  <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>角度映射到轴 (X)</value></data>
+  <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>角度映射到轴 (Y)</value></data>
+  <data name="Pad_Steering_Mode_MotionLean" xml:space="preserve"><value>体感倾斜</value></data>
+  <data name="Pad_Steering_WindRange" xml:space="preserve"><value>卷绕范围</value></data>
+  <data name="Pad_Steering_WindPower" xml:space="preserve"><value>卷绕强度</value></data>
+  <data name="Pad_Steering_WindUnwindRate" xml:space="preserve"><value>回绕速率</value></data>
+  <data name="Pad_Steering_AngleInnerDz" xml:space="preserve"><value>角度内死区</value></data>
+  <data name="Pad_Steering_AngleOuterDz" xml:space="preserve"><value>角度外死区</value></data>
+  <data name="Pad_Steering_MotionInnerDz" xml:space="preserve"><value>倾斜内死区</value></data>
+  <data name="Pad_Steering_MotionOuterDz" xml:space="preserve"><value>倾斜外死区</value></data>
+  <data name="Pad_Steering_Orientation" xml:space="preserve"><value>手柄朝向</value></data>
+  <data name="Pad_Steering_Orient_Forward" xml:space="preserve"><value>向前</value></data>
+  <data name="Pad_Steering_Orient_Left" xml:space="preserve"><value>向左</value></data>
+  <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>向右</value></data>
+  <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>向后</value></data>
+  <data name="Pad_Steering_Reset_Mode" xml:space="preserve"><value>重置转向模式</value></data>
+  <data name="Pad_Steering_Reset_WindRange" xml:space="preserve"><value>重置卷绕范围</value></data>
+  <data name="Pad_Steering_Reset_WindPower" xml:space="preserve"><value>重置卷绕强度</value></data>
+  <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>重置回绕速率</value></data>
+  <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>重置角度内死区</value></data>
+  <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>重置角度外死区</value></data>
+  <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>重置倾斜内死区</value></data>
+  <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>重置倾斜外死区</value></data>
+  <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>重置手柄朝向</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>方向盘</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>重置方向盘</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>重置旋转范围</value></data>

@@ -3369,6 +3369,99 @@
                                         </StackPanel>
                                     </Grid>
 
+                                    <!-- ═══ Steering (winding / 2D angle-to-axis / motion lean) #94 ═══ -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Pad_Steering_Header, Source={x:Static strings:Strings.Instance}}"
+                                                       Style="{StaticResource CardTitle}"/>
+                                            <TextBlock Text="{Binding Pad_Steering_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       TextWrapping="Wrap" Margin="0,0,0,8"/>
+
+                                            <!-- Mode -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="{Binding Pad_Steering_Mode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                <ComboBox SelectedIndex="{Binding SteeringModeIndex, Mode=TwoWay}" Width="200" VerticalAlignment="Center">
+                                                    <ComboBoxItem Content="{Binding Pad_Steering_Mode_Linear, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Steering_Mode_Winding, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Steering_Mode_AngleX, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Steering_Mode_AngleY, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Steering_Mode_MotionLean, Source={x:Static strings:Strings.Instance}}"/>
+                                                </ComboBox>
+                                                <Button Command="{Binding ResetSteeringModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_Mode, Source={x:Static strings:Strings.Instance}}"/>
+                                            </StackPanel>
+
+                                            <!-- Winding parameters -->
+                                            <StackPanel Visibility="{Binding IsWindingMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Steering_WindRange, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                    <Slider Value="{Binding WindRangeDeg, Mode=TwoWay}" Minimum="90" Maximum="2520" Style="{StaticResource DzSlider}"/>
+                                                    <TextBox Text="{Binding WindRangeDeg, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                                    <Button Command="{Binding ResetWindRangeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_WindRange, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Steering_WindPower, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                    <Slider Value="{Binding WindPower, Mode=TwoWay}" Minimum="0" Maximum="4" Style="{StaticResource DzSlider}"/>
+                                                    <TextBox Text="{Binding WindPower, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <Button Command="{Binding ResetWindPowerCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_WindPower, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Steering_WindUnwindRate, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                    <Slider Value="{Binding WindUnwindRate, Mode=TwoWay}" Minimum="0" Maximum="10000" Style="{StaticResource DzSlider}"/>
+                                                    <TextBox Text="{Binding WindUnwindRate, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <Button Command="{Binding ResetWindUnwindRateCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_WindUnwindRate, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+
+                                            <!-- Angle-to-axis parameters -->
+                                            <StackPanel Visibility="{Binding IsAngleMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Steering_AngleInnerDz, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                    <Slider Value="{Binding AngleInnerDz, Mode=TwoWay}" Minimum="0" Maximum="89" Style="{StaticResource DzSlider}"/>
+                                                    <TextBox Text="{Binding AngleInnerDz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                                    <Button Command="{Binding ResetAngleInnerDzCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_AngleInnerDz, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Steering_AngleOuterDz, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                    <Slider Value="{Binding AngleOuterDz, Mode=TwoWay}" Minimum="0" Maximum="89" Style="{StaticResource DzSlider}"/>
+                                                    <TextBox Text="{Binding AngleOuterDz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                                    <Button Command="{Binding ResetAngleOuterDzCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_AngleOuterDz, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+
+                                            <!-- Motion-lean parameters -->
+                                            <StackPanel Visibility="{Binding IsMotionLeanMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Steering_MotionInnerDz, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                    <Slider Value="{Binding MotionInnerDz, Mode=TwoWay}" Minimum="0" Maximum="179" Style="{StaticResource DzSlider}"/>
+                                                    <TextBox Text="{Binding MotionInnerDz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                                    <Button Command="{Binding ResetMotionInnerDzCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_MotionInnerDz, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Steering_MotionOuterDz, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                    <Slider Value="{Binding MotionOuterDz, Mode=TwoWay}" Minimum="0" Maximum="179" Style="{StaticResource DzSlider}"/>
+                                                    <TextBox Text="{Binding MotionOuterDz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                                    <Button Command="{Binding ResetMotionOuterDzCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_MotionOuterDz, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Steering_Orientation, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                    <ComboBox SelectedIndex="{Binding ControllerOrientationIndex, Mode=TwoWay}" Width="200" VerticalAlignment="Center">
+                                                        <ComboBoxItem Content="{Binding Pad_Steering_Orient_Forward, Source={x:Static strings:Strings.Instance}}"/>
+                                                        <ComboBoxItem Content="{Binding Pad_Steering_Orient_Left, Source={x:Static strings:Strings.Instance}}"/>
+                                                        <ComboBoxItem Content="{Binding Pad_Steering_Orient_Right, Source={x:Static strings:Strings.Instance}}"/>
+                                                        <ComboBoxItem Content="{Binding Pad_Steering_Orient_Backward, Source={x:Static strings:Strings.Instance}}"/>
+                                                    </ComboBox>
+                                                    <Button Command="{Binding ResetControllerOrientationCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_Orientation, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+
                                 </StackPanel>
                                 </Border>
                             </DataTemplate>

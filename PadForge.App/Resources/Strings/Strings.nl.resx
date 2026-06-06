@@ -1644,6 +1644,35 @@
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rotatiebereik</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Automatisch centreren</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>Schakel-leds</value></data>
+  <data name="Pad_Steering_Header" xml:space="preserve"><value>Sturen</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Wijs deze stick of het kantelen van de controller toe aan een stuurwiel.</value></data>
+  <data name="Pad_Steering_Mode" xml:space="preserve"><value>Stuurmodus</value></data>
+  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>Lineair</value></data>
+  <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>Draaien</value></data>
+  <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>Hoek naar as (X)</value></data>
+  <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>Hoek naar as (Y)</value></data>
+  <data name="Pad_Steering_Mode_MotionLean" xml:space="preserve"><value>Kantelbeweging</value></data>
+  <data name="Pad_Steering_WindRange" xml:space="preserve"><value>Draaibereik</value></data>
+  <data name="Pad_Steering_WindPower" xml:space="preserve"><value>Draaikracht</value></data>
+  <data name="Pad_Steering_WindUnwindRate" xml:space="preserve"><value>Terugdraaisnelheid</value></data>
+  <data name="Pad_Steering_AngleInnerDz" xml:space="preserve"><value>Binnenste hoekdeadzone</value></data>
+  <data name="Pad_Steering_AngleOuterDz" xml:space="preserve"><value>Buitenste hoekdeadzone</value></data>
+  <data name="Pad_Steering_MotionInnerDz" xml:space="preserve"><value>Binnenste kanteldeadzone</value></data>
+  <data name="Pad_Steering_MotionOuterDz" xml:space="preserve"><value>Buitenste kanteldeadzone</value></data>
+  <data name="Pad_Steering_Orientation" xml:space="preserve"><value>Controllerstand</value></data>
+  <data name="Pad_Steering_Orient_Forward" xml:space="preserve"><value>Vooruit</value></data>
+  <data name="Pad_Steering_Orient_Left" xml:space="preserve"><value>Links</value></data>
+  <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>Rechts</value></data>
+  <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>Achteruit</value></data>
+  <data name="Pad_Steering_Reset_Mode" xml:space="preserve"><value>Stuurmodus resetten</value></data>
+  <data name="Pad_Steering_Reset_WindRange" xml:space="preserve"><value>Draaibereik resetten</value></data>
+  <data name="Pad_Steering_Reset_WindPower" xml:space="preserve"><value>Draaikracht resetten</value></data>
+  <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Terugdraaisnelheid resetten</value></data>
+  <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Binnenste hoekdeadzone resetten</value></data>
+  <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Buitenste hoekdeadzone resetten</value></data>
+  <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Binnenste kanteldeadzone resetten</value></data>
+  <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Buitenste kanteldeadzone resetten</value></data>
+  <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Controllerstand resetten</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Stuur</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Stuur resetten</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Rotatiebereik resetten</value></data>

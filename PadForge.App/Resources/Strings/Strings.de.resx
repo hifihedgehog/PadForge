@@ -1624,6 +1624,35 @@
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Lenkbereich</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Selbstzentrierung</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>Schalt-LEDs</value></data>
+  <data name="Pad_Steering_Header" xml:space="preserve"><value>Lenkung</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Ordnet diesen Stick oder die Controller-Neigung einem Lenkrad zu.</value></data>
+  <data name="Pad_Steering_Mode" xml:space="preserve"><value>Lenkmodus</value></data>
+  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>Linear</value></data>
+  <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>Aufwickeln</value></data>
+  <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>Winkel zu Achse (X)</value></data>
+  <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>Winkel zu Achse (Y)</value></data>
+  <data name="Pad_Steering_Mode_MotionLean" xml:space="preserve"><value>Bewegungsneigung</value></data>
+  <data name="Pad_Steering_WindRange" xml:space="preserve"><value>Aufwickelbereich</value></data>
+  <data name="Pad_Steering_WindPower" xml:space="preserve"><value>Aufwickelstärke</value></data>
+  <data name="Pad_Steering_WindUnwindRate" xml:space="preserve"><value>Abwickelrate</value></data>
+  <data name="Pad_Steering_AngleInnerDz" xml:space="preserve"><value>Innere Winkel-Deadzone</value></data>
+  <data name="Pad_Steering_AngleOuterDz" xml:space="preserve"><value>Äußere Winkel-Deadzone</value></data>
+  <data name="Pad_Steering_MotionInnerDz" xml:space="preserve"><value>Innere Neigungs-Deadzone</value></data>
+  <data name="Pad_Steering_MotionOuterDz" xml:space="preserve"><value>Äußere Neigungs-Deadzone</value></data>
+  <data name="Pad_Steering_Orientation" xml:space="preserve"><value>Controller-Ausrichtung</value></data>
+  <data name="Pad_Steering_Orient_Forward" xml:space="preserve"><value>Vorwärts</value></data>
+  <data name="Pad_Steering_Orient_Left" xml:space="preserve"><value>Links</value></data>
+  <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>Rechts</value></data>
+  <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>Rückwärts</value></data>
+  <data name="Pad_Steering_Reset_Mode" xml:space="preserve"><value>Lenkmodus zurücksetzen</value></data>
+  <data name="Pad_Steering_Reset_WindRange" xml:space="preserve"><value>Aufwickelbereich zurücksetzen</value></data>
+  <data name="Pad_Steering_Reset_WindPower" xml:space="preserve"><value>Aufwickelstärke zurücksetzen</value></data>
+  <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Abwickelrate zurücksetzen</value></data>
+  <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Innere Winkel-Deadzone zurücksetzen</value></data>
+  <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Äußere Winkel-Deadzone zurücksetzen</value></data>
+  <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Innere Neigungs-Deadzone zurücksetzen</value></data>
+  <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Äußere Neigungs-Deadzone zurücksetzen</value></data>
+  <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Controller-Ausrichtung zurücksetzen</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Lenkrad</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Lenkrad zurücksetzen</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Lenkbereich zurücksetzen</value></data>

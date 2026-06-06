@@ -263,6 +263,24 @@ namespace PadForge.Engine.Data
         /// auto-detected. Default off.</summary>
         [XmlElement] public string WheelRpmLeds { get; set; } = "0";
 
+        // ─── Steering at-lock feedback (v3.4 #94) ───
+        // Per-slot, opt-in haptic feedback when a steering source (winding / 2D
+        // angle-to-axis / motion-lean) saturates at full lock. All off by default.
+        /// <summary>Rumble pulse on steering lock entry. "0"/"1".</summary>
+        [XmlElement] public string SteeringLockRumbleEnabled       { get; set; } = "0";
+        /// <summary>Impulse-trigger pulse on steering lock entry. "0"/"1".</summary>
+        [XmlElement] public string SteeringLockTriggerVibEnabled   { get; set; } = "0";
+        /// <summary>Lightbar pulse on steering lock entry (DualSense / DS4). "0"/"1".</summary>
+        [XmlElement] public string SteeringLockLightbarEnabled     { get; set; } = "0";
+        /// <summary>Adaptive-trigger resistance ramp toward lock (DualSense). "0"/"1".</summary>
+        [XmlElement] public string SteeringLockATResistanceEnabled { get; set; } = "0";
+        /// <summary>Lock-entry rumble / trigger pulse length in ms.</summary>
+        [XmlElement] public string SteeringLockPulseMs             { get; set; } = "80";
+        /// <summary>Lock lightbar pulse color (hex #RRGGBB).</summary>
+        [XmlElement] public string SteeringLockLightbarColor       { get; set; } = "#FF0000";
+        /// <summary>Lock lightbar fade-back length in ms on exit.</summary>
+        [XmlElement] public string SteeringLockLightbarFadeMs      { get; set; } = "250";
+
         /// <summary>
         /// Whether to swap left and right rumble motors.
         /// "0" = no swap, "1" = swap.
@@ -1090,6 +1108,13 @@ namespace PadForge.Engine.Data
             sb.Append(RotationRange); sb.Append('|');
             sb.Append(AutoCenterStrength); sb.Append('|');
             sb.Append(WheelRpmLeds); sb.Append('|');
+            sb.Append(SteeringLockRumbleEnabled); sb.Append('|');
+            sb.Append(SteeringLockTriggerVibEnabled); sb.Append('|');
+            sb.Append(SteeringLockLightbarEnabled); sb.Append('|');
+            sb.Append(SteeringLockATResistanceEnabled); sb.Append('|');
+            sb.Append(SteeringLockPulseMs); sb.Append('|');
+            sb.Append(SteeringLockLightbarColor); sb.Append('|');
+            sb.Append(SteeringLockLightbarFadeMs); sb.Append('|');
             sb.Append(ForceSwapMotor); sb.Append('|');
             sb.Append(LeftMotorStrength); sb.Append('|');
             sb.Append(RightMotorStrength); sb.Append('|');
@@ -1475,6 +1500,10 @@ namespace PadForge.Engine.Data
             nameof(ForceType), nameof(ForceOverall), nameof(ForceSwapMotor),
             nameof(LeftMotorStrength), nameof(RightMotorStrength),
             nameof(RotationRange), nameof(AutoCenterStrength), nameof(WheelRpmLeds),
+            // Steering at-lock feedback (#94)
+            nameof(SteeringLockRumbleEnabled), nameof(SteeringLockTriggerVibEnabled),
+            nameof(SteeringLockLightbarEnabled), nameof(SteeringLockATResistanceEnabled),
+            nameof(SteeringLockPulseMs), nameof(SteeringLockLightbarColor), nameof(SteeringLockLightbarFadeMs),
             // Impulse trigger motors (Xbox One+)
             nameof(ImpulseOverallGain),
             nameof(ImpulseLeftStrength), nameof(ImpulseRightStrength),

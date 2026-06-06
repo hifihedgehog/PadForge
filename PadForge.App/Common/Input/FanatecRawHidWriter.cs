@@ -161,6 +161,20 @@ namespace PadForge.Common.Input
         private static int ToHid(int dinput, int gainPct) =>
             (int)((long)dinput * gainPct / 100 * 0x7fff / 10000);
 
+        /// <summary>Software centering spring for the Wheel-tab auto-center slider.
+        /// Fanatec wheels have no firmware autocenter command, and ftec_set_range's
+        /// leading f5 disables the stock centering spring, so centering is a slot-1
+        /// spring effect (cmd 0x0b) - the same plumbing game-driven springs use.
+        /// Symmetric, centered at 0, no deadband. <paramref name="magnitude"/> is
+        /// 0..0xffff (the Logitech/Thrustmaster autocenter scale); 0 disables the slot.</summary>
+        public static bool WriteAutocenter(string devicePath, int magnitude)
+        {
+            if (string.IsNullOrEmpty(devicePath)) return false;
+            int coeff = (int)((long)ClampU16(magnitude) * 10000 / 0xffff); // 0..0xffff -> DInput 0..10000
+            // coeff 0 -> WriteWheelCondition disables slot 1; coeff > 0 -> centering spring.
+            return WriteWheelCondition(devicePath, 8 /* Spring */, coeff, coeff, 0, 0, 10000, 10000, 100);
+        }
+
         /// <summary>Spring/damper/friction. coeffPos/coeffNeg and offset are DInput
         /// ±10000; deadband/satPos/satNeg 0..10000. <paramref name="ffbType"/> is a
         /// PadForge FfbEffectTypes value (8=Spring, 9=Damper, 10=Inertia, 11=Friction).</summary>

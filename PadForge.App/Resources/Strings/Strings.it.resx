@@ -1646,6 +1646,35 @@
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Intervallo di rotazione</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Autocentratura</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>LED di regime</value></data>
+  <data name="Pad_Steering_Header" xml:space="preserve"><value>Sterzo</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Mappa questo stick o l'inclinazione del controller su un volante.</value></data>
+  <data name="Pad_Steering_Mode" xml:space="preserve"><value>Modalità sterzo</value></data>
+  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>Lineare</value></data>
+  <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>Avvolgimento</value></data>
+  <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>Angolo su asse (X)</value></data>
+  <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>Angolo su asse (Y)</value></data>
+  <data name="Pad_Steering_Mode_MotionLean" xml:space="preserve"><value>Inclinazione movimento</value></data>
+  <data name="Pad_Steering_WindRange" xml:space="preserve"><value>Intervallo di avvolgimento</value></data>
+  <data name="Pad_Steering_WindPower" xml:space="preserve"><value>Potenza di avvolgimento</value></data>
+  <data name="Pad_Steering_WindUnwindRate" xml:space="preserve"><value>Velocità di svolgimento</value></data>
+  <data name="Pad_Steering_AngleInnerDz" xml:space="preserve"><value>Zona morta interna angolo</value></data>
+  <data name="Pad_Steering_AngleOuterDz" xml:space="preserve"><value>Zona morta esterna angolo</value></data>
+  <data name="Pad_Steering_MotionInnerDz" xml:space="preserve"><value>Zona morta interna inclinazione</value></data>
+  <data name="Pad_Steering_MotionOuterDz" xml:space="preserve"><value>Zona morta esterna inclinazione</value></data>
+  <data name="Pad_Steering_Orientation" xml:space="preserve"><value>Orientamento controller</value></data>
+  <data name="Pad_Steering_Orient_Forward" xml:space="preserve"><value>Avanti</value></data>
+  <data name="Pad_Steering_Orient_Left" xml:space="preserve"><value>Sinistra</value></data>
+  <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>Destra</value></data>
+  <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>Indietro</value></data>
+  <data name="Pad_Steering_Reset_Mode" xml:space="preserve"><value>Ripristina modalità sterzo</value></data>
+  <data name="Pad_Steering_Reset_WindRange" xml:space="preserve"><value>Ripristina intervallo di avvolgimento</value></data>
+  <data name="Pad_Steering_Reset_WindPower" xml:space="preserve"><value>Ripristina potenza di avvolgimento</value></data>
+  <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Ripristina velocità di svolgimento</value></data>
+  <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Ripristina zona morta interna angolo</value></data>
+  <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Ripristina zona morta esterna angolo</value></data>
+  <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Ripristina zona morta interna inclinazione</value></data>
+  <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Ripristina zona morta esterna inclinazione</value></data>
+  <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Ripristina orientamento controller</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Volante</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Ripristina volante</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Ripristina intervallo di rotazione</value></data>

@@ -1624,6 +1624,35 @@
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Faixa de Rotação</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Força de Autocentralização</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>LEDs de Rotação</value></data>
+  <data name="Pad_Steering_Header" xml:space="preserve"><value>Esterçamento</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Mapeie este analógico ou a inclinação do controle para um volante.</value></data>
+  <data name="Pad_Steering_Mode" xml:space="preserve"><value>Modo de Esterçamento</value></data>
+  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>Linear</value></data>
+  <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>Enrolamento</value></data>
+  <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>Ângulo para Eixo (X)</value></data>
+  <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>Ângulo para Eixo (Y)</value></data>
+  <data name="Pad_Steering_Mode_MotionLean" xml:space="preserve"><value>Inclinação por Movimento</value></data>
+  <data name="Pad_Steering_WindRange" xml:space="preserve"><value>Faixa de Enrolamento</value></data>
+  <data name="Pad_Steering_WindPower" xml:space="preserve"><value>Força de Enrolamento</value></data>
+  <data name="Pad_Steering_WindUnwindRate" xml:space="preserve"><value>Taxa de Desenrolamento</value></data>
+  <data name="Pad_Steering_AngleInnerDz" xml:space="preserve"><value>Zona Morta Interna do Ângulo</value></data>
+  <data name="Pad_Steering_AngleOuterDz" xml:space="preserve"><value>Zona Morta Externa do Ângulo</value></data>
+  <data name="Pad_Steering_MotionInnerDz" xml:space="preserve"><value>Zona Morta Interna da Inclinação</value></data>
+  <data name="Pad_Steering_MotionOuterDz" xml:space="preserve"><value>Zona Morta Externa da Inclinação</value></data>
+  <data name="Pad_Steering_Orientation" xml:space="preserve"><value>Orientação do Controle</value></data>
+  <data name="Pad_Steering_Orient_Forward" xml:space="preserve"><value>Frente</value></data>
+  <data name="Pad_Steering_Orient_Left" xml:space="preserve"><value>Esquerda</value></data>
+  <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>Direita</value></data>
+  <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>Trás</value></data>
+  <data name="Pad_Steering_Reset_Mode" xml:space="preserve"><value>Redefinir Modo de Esterçamento</value></data>
+  <data name="Pad_Steering_Reset_WindRange" xml:space="preserve"><value>Redefinir Faixa de Enrolamento</value></data>
+  <data name="Pad_Steering_Reset_WindPower" xml:space="preserve"><value>Redefinir Força de Enrolamento</value></data>
+  <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Redefinir Taxa de Desenrolamento</value></data>
+  <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Redefinir Zona Morta Interna do Ângulo</value></data>
+  <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Redefinir Zona Morta Externa do Ângulo</value></data>
+  <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Redefinir Zona Morta Interna da Inclinação</value></data>
+  <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Redefinir Zona Morta Externa da Inclinação</value></data>
+  <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Redefinir Orientação do Controle</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Volante</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Redefinir Volante</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Redefinir Faixa de Rotação</value></data>

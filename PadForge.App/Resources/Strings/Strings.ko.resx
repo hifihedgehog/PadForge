@@ -1624,6 +1624,35 @@
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>회전 범위</value></data>
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>자동 센터링 강도</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>RPM 시프트 LED</value></data>
+  <data name="Pad_Steering_Header" xml:space="preserve"><value>조향</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>이 스틱이나 컨트롤러 기울기를 스티어링 휠에 매핑합니다.</value></data>
+  <data name="Pad_Steering_Mode" xml:space="preserve"><value>조향 모드</value></data>
+  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>선형</value></data>
+  <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>감기</value></data>
+  <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>각도→축 (X)</value></data>
+  <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>각도→축 (Y)</value></data>
+  <data name="Pad_Steering_Mode_MotionLean" xml:space="preserve"><value>모션 기울이기</value></data>
+  <data name="Pad_Steering_WindRange" xml:space="preserve"><value>감기 범위</value></data>
+  <data name="Pad_Steering_WindPower" xml:space="preserve"><value>감기 강도</value></data>
+  <data name="Pad_Steering_WindUnwindRate" xml:space="preserve"><value>풀림 속도</value></data>
+  <data name="Pad_Steering_AngleInnerDz" xml:space="preserve"><value>각도 내부 데드존</value></data>
+  <data name="Pad_Steering_AngleOuterDz" xml:space="preserve"><value>각도 외부 데드존</value></data>
+  <data name="Pad_Steering_MotionInnerDz" xml:space="preserve"><value>기울이기 내부 데드존</value></data>
+  <data name="Pad_Steering_MotionOuterDz" xml:space="preserve"><value>기울이기 외부 데드존</value></data>
+  <data name="Pad_Steering_Orientation" xml:space="preserve"><value>컨트롤러 방향</value></data>
+  <data name="Pad_Steering_Orient_Forward" xml:space="preserve"><value>전방</value></data>
+  <data name="Pad_Steering_Orient_Left" xml:space="preserve"><value>왼쪽</value></data>
+  <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>오른쪽</value></data>
+  <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>후방</value></data>
+  <data name="Pad_Steering_Reset_Mode" xml:space="preserve"><value>조향 모드 재설정</value></data>
+  <data name="Pad_Steering_Reset_WindRange" xml:space="preserve"><value>감기 범위 재설정</value></data>
+  <data name="Pad_Steering_Reset_WindPower" xml:space="preserve"><value>감기 강도 재설정</value></data>
+  <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>풀림 속도 재설정</value></data>
+  <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>각도 내부 데드존 재설정</value></data>
+  <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>각도 외부 데드존 재설정</value></data>
+  <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>기울이기 내부 데드존 재설정</value></data>
+  <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>기울이기 외부 데드존 재설정</value></data>
+  <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>컨트롤러 방향 재설정</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>휠</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>휠 재설정</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>회전 범위 재설정</value></data>

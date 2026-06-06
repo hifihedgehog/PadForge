@@ -1656,9 +1656,9 @@
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback de Batente</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Faz o volante parecer que bateu em uma parede no esterçamento máximo. Tudo desativado por padrão.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pulso de vibração no batente</value></data>
-  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Pulso de gatilho Impulse no batente</value></data>
+  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibração do gatilho no batente</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Pulso da barra de luz no batente</value></data>
-  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Resistência do gatilho adaptativo perto do batente</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Resistência do gatilho perto do batente</value></data>
   <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>Duração do Pulso</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Cor da Barra de Luz</value></data>
   <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Esmaecimento da Barra de Luz</value></data>

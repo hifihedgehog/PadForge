@@ -1656,9 +1656,9 @@
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ロックフィードバック</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>フルロック時にホイールが壁にぶつかったような感触にします。すべて既定でオフです。</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>ロック時にランブルパルス</value></data>
-  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>ロック時にインパルストリガーパルス</value></data>
+  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>ロック時にトリガー振動</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>ロック時にライトバーパルス</value></data>
-  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>ロック付近でアダプティブトリガー抵抗</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>ロック付近でトリガー抵抗</value></data>
   <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>パルス長</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>ライトバーの色</value></data>
   <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>ライトバーフェード</value></data>

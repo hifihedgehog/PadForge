@@ -1720,9 +1720,9 @@
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Lock Feedback</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Make the wheel feel like it hit a wall at full lock. All off by default.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Rumble pulse on lock</value></data>
-  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Impulse-trigger pulse on lock</value></data>
+  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Trigger vibration on lock</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Lightbar pulse on lock</value></data>
-  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Adaptive-trigger resistance near lock</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Trigger resistance near lock</value></data>
   <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>Pulse Length</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Lightbar Color</value></data>
   <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Lightbar Fade</value></data>

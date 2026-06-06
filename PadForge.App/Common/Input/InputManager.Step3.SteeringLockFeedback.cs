@@ -26,8 +26,9 @@ namespace PadForge.Common.Input
         public readonly float[] SteeringAtResistance = new float[MaxPads];
 
         /// <summary>Current steering trigger-vibration pulse strength (0..1) for the slot,
-        /// from the channel-2 lock-feedback override. Read by the DualSense dispatcher to
-        /// drive a momentary trigger-haptic block. 0 when no pulse is active.</summary>
+        /// from the channel-2 lock-feedback override. Read by both the Xbox impulse-trigger
+        /// combine in ApplyForceFeedback and the DualSense AT-vibration block in the
+        /// dispatcher. 0 when no pulse is active.</summary>
         public float GetSteeringTrigVib(int slotIndex)
         {
             if (slotIndex < 0 || slotIndex >= MaxPads) return 0f;
@@ -91,9 +92,10 @@ namespace PadForge.Common.Input
                             MacroRumbleOverrides[slotIndex]?.FireReactive(80, 80, pulseMs, 30);
                         // Channel 2: trigger-actuator pulse. MacroRumbleOverride only drives
                         // the grip motors, so this needs its own override whose scalar is
-                        // routed to the triggers (DualSense trigger haptics via the
-                        // dispatcher); firing the grip override here would just duplicate
-                        // channel 1 and never reach the trigger actuators.
+                        // routed to the triggers: Xbox impulse triggers in ApplyForceFeedback
+                        // and DualSense trigger haptics via the dispatcher. Firing the grip
+                        // override here would just duplicate channel 1 and never reach the
+                        // trigger actuators.
                         if (trigVib)
                             SteeringTrigVibOverrides[slotIndex]?.FireReactive(80, 80, pulseMs, 30);
                         // Channel 3: lightbar pulse to the lock color.

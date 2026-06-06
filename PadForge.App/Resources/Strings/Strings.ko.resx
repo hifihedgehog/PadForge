@@ -1656,9 +1656,9 @@
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>끝점 피드백</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>완전히 꺾었을 때 휠이 벽에 부딪힌 것처럼 느껴지게 합니다. 모두 기본적으로 꺼져 있습니다.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>끝점에서 진동 펄스</value></data>
-  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>끝점에서 임펄스 트리거 펄스</value></data>
+  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>끝점에서 트리거 진동</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>끝점에서 라이트바 펄스</value></data>
-  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>끝점 부근 어댑티브 트리거 저항</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>끝점 부근 트리거 저항</value></data>
   <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>펄스 길이</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>라이트바 색상</value></data>
   <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>라이트바 페이드</value></data>

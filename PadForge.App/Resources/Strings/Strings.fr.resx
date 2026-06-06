@@ -1625,9 +1625,9 @@
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Auto-centrage</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>LED de régime</value></data>
   <data name="Pad_Steering_Header" xml:space="preserve"><value>Direction</value></data>
-  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Utilisez ce stick ou l'inclinaison de la manette pour diriger comme un volant.</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Désactivé garde ce stick normal. Les autres modes le font diriger comme un volant.</value></data>
   <data name="Pad_Steering_Mode" xml:space="preserve"><value>Mode de direction</value></data>
-  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>Linéaire</value></data>
+  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>Désactivé</value></data>
   <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>Enroulement</value></data>
   <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>Angle vers axe (X)</value></data>
   <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>Angle vers axe (Y)</value></data>

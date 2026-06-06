@@ -1625,9 +1625,9 @@
   <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Selbstzentrierung</value></data>
   <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>Schalt-LEDs</value></data>
   <data name="Pad_Steering_Header" xml:space="preserve"><value>Lenkung</value></data>
-  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Lenke mit diesem Stick oder der Controller-Neigung wie mit einem Lenkrad.</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Aus belässt diesen Stick normal. Die anderen Modi lassen ihn wie ein Lenkrad lenken.</value></data>
   <data name="Pad_Steering_Mode" xml:space="preserve"><value>Lenkmodus</value></data>
-  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>Linear</value></data>
+  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>Aus</value></data>
   <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>Aufwickeln</value></data>
   <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>Winkel zu Achse (X)</value></data>
   <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>Winkel zu Achse (Y)</value></data>

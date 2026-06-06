@@ -155,10 +155,18 @@ namespace PadForge.Engine.Common.Mapping
 
             // Accrue the signed angular travel since last frame, scaled by deflection.
             // atan2 is scale-invariant, so the deadzone-scaled stick gives the true angle.
+            // PadForge stick Y is SDL down-positive, but the JSM winding math this is
+            // ported from (JoyShock.cpp:1250) assumes up-positive Y, so negate Y to match
+            // its frame. The X channel has no write-side flip (only the Y axis targets
+            // negate in WriteBipolarAxisTarget), so winding must emit the correct sign
+            // here. Without the negation, winding runs backwards: a clockwise turn drives
+            // the stick left when a wheel turns right. (Angle-to-axis modes don't get this
+            // treatment: AngleToAxisX uses Abs(y), and AngleToAxisY's down-positive Y
+            // cancels against the Y-target write negation, so both are already correct.)
             if (len > 0 && ws.LastX != 0 && ws.LastY != 0)
             {
-                double cur = Math.Atan2(-x, y);
-                double last = Math.Atan2(-ws.LastX, ws.LastY);
+                double cur = Math.Atan2(-x, -y);
+                double last = Math.Atan2(-ws.LastX, -ws.LastY);
                 double delta = ((cur - last) + Math.PI) % (2.0 * Math.PI);
                 if (delta < 0) delta += 2.0 * Math.PI;
                 delta -= Math.PI;                                   // wrap to (-PI, PI]

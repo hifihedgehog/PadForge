@@ -2466,6 +2466,41 @@ namespace PadForge.ViewModels
                 SyncTriggerItemFromVm(item);
         }
 
+        /// <summary>Loads each stick's steering mode + tunables from the active assigned
+        /// device's stored values during a device swap, with the dirty callback suppressed
+        /// (mirrors the guarded deadzone sync). Steering is per assigned device, so this
+        /// runs on every SelectedMappedDevice change. <paramref name="get"/> resolves a
+        /// steering extended-mapping key (e.g. "Stick0SteerKind") for the active device.
+        /// Steering has no flat VM mirror property, so it loads straight onto the items.</summary>
+        public void LoadSteeringConfigItemsForActiveDevice(System.Func<string, string> get)
+        {
+            if (get == null) return;
+            bool prev = _syncingConfigItems;
+            _syncingConfigItems = true;
+            try
+            {
+                foreach (var stick in StickConfigs)
+                {
+                    int g = stick.Index;
+                    if (g < 0) continue;
+                    stick.SetSteeringKind(get($"Stick{g}SteerKind"));
+                    stick.WindRangeDeg = ParseSteerDouble(get($"Stick{g}SteerWindRange"), 900);
+                    stick.WindPower = ParseSteerDouble(get($"Stick{g}SteerWindPower"), 1);
+                    stick.WindUnwindRate = ParseSteerDouble(get($"Stick{g}SteerWindUnwind"), 1800);
+                    stick.AngleInnerDz = ParseSteerDouble(get($"Stick{g}SteerAngleInner"), 0);
+                    stick.AngleOuterDz = ParseSteerDouble(get($"Stick{g}SteerAngleOuter"), 10);
+                    stick.MotionInnerDz = ParseSteerDouble(get($"Stick{g}SteerMotionInner"), 15);
+                    stick.MotionOuterDz = ParseSteerDouble(get($"Stick{g}SteerMotionOuter"), 135);
+                    stick.SetControllerOrientation(get($"Stick{g}SteerOrient"));
+                }
+            }
+            finally { _syncingConfigItems = prev; }
+        }
+
+        private static double ParseSteerDouble(string s, double dflt)
+            => double.TryParse(s, System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
+
         // Persisted stick-config property names. PropertyChanged on any other
         // property (LiveX/LiveY/RawX/RawY/LiveInputX/LiveInputY/IsCalibrating
         // and computed display siblings) is a per-frame UI update, not a

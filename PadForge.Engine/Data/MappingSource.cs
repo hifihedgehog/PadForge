@@ -113,5 +113,39 @@ namespace PadForge.Engine.Data
         /// per-source semantics without a schema migration.
         /// </summary>
         [XmlAttribute] public bool NoInherit { get; set; } = false;
+
+        // ─── Steering source kinds (v3.4 #94) ───
+        // The steering modes are 2D: they read a whole physical stick, not one
+        // axis. The row's X axis is in <see cref="Descriptor"/>; the paired Y axis
+        // is here. Math sourced from JoyShockMapper src/JoyShock.cpp:1179-1323 and
+        // src/main.cpp:887-987 (Electronicks fork bb69784) — read then written
+        // original, the geometry only.
+
+        /// <summary>Steering source companion axis. <see cref="Descriptor"/> reads
+        /// the stick's X axis; this reads its Y axis (e.g. "Axis 1"). Only used by
+        /// the steering kinds (WindingStick / AngleToAxisX / AngleToAxisY).</summary>
+        [XmlAttribute] public string ParamYDescriptor { get; set; } = "";
+
+        /// <summary>Radial inner deadzone (0..1) applied to the 2D stick before the
+        /// steering math, since the MappingSet raw-axis read applies none. Below it
+        /// the stick reads as centered (no wind accrues, no angle output).</summary>
+        [XmlAttribute] public double ParamStickDeadzone { get; set; } = 0.15;
+
+        // Winding (Kind = "WindingStick"). JSM WIND_STICK_RANGE / WIND_STICK_POWER /
+        // UNWIND_RATE (post-d10b51a values).
+        [XmlAttribute] public double ParamWindRangeDeg   { get; set; } = 900;
+        [XmlAttribute] public double ParamWindPower      { get; set; } = 1;
+        [XmlAttribute] public double ParamWindUnwindRate { get; set; } = 1800;
+
+        // Angle-to-Axis (Kind = "AngleToAxisX" | "AngleToAxisY"). JSM
+        // ANGLE_TO_AXIS_DEADZONE_INNER / _OUTER (degrees from the on-axis / max).
+        [XmlAttribute] public double ParamAngleInnerDz   { get; set; } = 0;
+        [XmlAttribute] public double ParamAngleOuterDz   { get; set; } = 10;
+
+        // Motion-Lean (Kind = "MotionLeanX"). JSM MOTION_DEADZONE_INNER / _OUTER
+        // (degrees of tilt) and CONTROLLER_ORIENTATION (Forward/Left/Right/Backward).
+        [XmlAttribute] public double ParamMotionInnerDz  { get; set; } = 15;
+        [XmlAttribute] public double ParamMotionOuterDz  { get; set; } = 135;
+        [XmlAttribute] public string ParamControllerOrientation { get; set; } = "Forward";
     }
 }

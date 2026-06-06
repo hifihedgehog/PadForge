@@ -1,0 +1,68 @@
+# Post the standard form response when an issue is locked as resolved.
+#
+# Triggers on issues.locked events. Acts only when the lock reason is
+# 'resolved' (the standard close-and-lock pattern). Skips other lock
+# reasons (off-topic, too heated, spam) since the form response is not
+# appropriate for those.
+#
+# Idempotent: checks for an existing form-response comment from the
+# github-actions bot before posting. Re-locking a thread will not
+# produce a duplicate comment.
+#
+# GITHUB_TOKEN with `issues: write` covers commenting on locked threads
+# (collaborator and bot tokens can comment past a lock).
+
+name: Issue lock form response
+
+on:
+  issues:
+    types: [locked]
+
+permissions:
+  issues: read
+  contents: read
+
+jobs:
+  post-form-response:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.issue.active_lock_reason == 'resolved' }}
+    permissions:
+      issues: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+      REPO: ${{ github.repository }}
+    steps:
+      - name: Skip if form response already posted
+        id: idempotent
+        run: |
+          set -euo pipefail
+          EXISTING=$(gh api "repos/${REPO}/issues/${ISSUE_NUMBER}/comments" \
+            --jq '.[] | select(.user.login == "github-actions[bot]") | select(.body | contains("Comments on locked threads do not surface in triage")) | .id' \
+            | head -n1)
+          if [ -n "$EXISTING" ]; then
+            echo "Form response already posted (comment $EXISTING). Skipping."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Post standard form response
+        if: ${{ steps.idempotent.outputs.skip == 'false' }}
+        run: |
+          set -euo pipefail
+          COMMENT_FILE="$(mktemp)"
+          cat > "$COMMENT_FILE" <<'EOF'
+          This issue is closed and locked. If you hit what looks like the same problem on a current release, please file a **fresh issue** rather than commenting here. Comments on locked threads do not surface in triage, and the original diagnosis may not apply to a recurrence even if the symptoms look similar.
+
+          Quick checklist before filing:
+
+          - Confirm you are on the latest release.
+          - Reproduce in a clean folder (no leftover `PadForge.xml`).
+          - Capture `crash.log` if one exists next to `PadForge.exe`.
+          - Note your Windows build (`winver`) and your controller's exact model.
+          - Mention this issue number for context if it seems related, but do not assume the prior fix applies.
+
+          Thanks for using PadForge.
+          EOF
+          gh issue comment "$ISSUE_NUMBER" --repo "$REPO" --body-file "$COMMENT_FILE"

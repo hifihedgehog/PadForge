@@ -1656,9 +1656,9 @@
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Anschlag-Feedback</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Lässt das Lenkrad am Vollanschlag wie gegen eine Wand wirken. Standardmäßig alles aus.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Vibrationspuls am Anschlag</value></data>
-  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Impulse-Trigger-Puls am Anschlag</value></data>
+  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Trigger-Vibration am Anschlag</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Lightbar-Puls am Anschlag</value></data>
-  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Adaptive-Trigger-Widerstand nahe Anschlag</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Trigger-Widerstand nahe Anschlag</value></data>
   <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>Pulslänge</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Lightbar-Farbe</value></data>
   <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Lightbar-Ausblenden</value></data>

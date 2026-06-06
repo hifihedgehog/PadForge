@@ -1656,9 +1656,9 @@
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>转向极限反馈</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>让方向盘在转到极限时感觉像撞上一堵墙。默认全部关闭。</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>到达极限时震动脉冲</value></data>
-  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>到达极限时冲击扳机脉冲</value></data>
+  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>到达极限时扳机振动</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>到达极限时灯条脉冲</value></data>
-  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>接近极限时自适应扳机阻力</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>接近极限时扳机阻力</value></data>
   <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>脉冲时长</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>灯条颜色</value></data>
   <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>灯条淡出</value></data>

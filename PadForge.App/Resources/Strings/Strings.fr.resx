@@ -1656,9 +1656,9 @@
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Retour en butée</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Donne l'impression que le volant heurte un mur en butée de braquage. Tout est désactivé par défaut.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pulsation de vibration en butée</value></data>
-  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Pulsation des gâchettes Impulse en butée</value></data>
+  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibration des gâchettes en butée</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Pulsation de la barre lumineuse en butée</value></data>
-  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Résistance des gâchettes adaptatives à l'approche de la butée</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Résistance des gâchettes à l'approche de la butée</value></data>
   <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>Durée de la pulsation</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Couleur de la barre lumineuse</value></data>
   <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Fondu de la barre lumineuse</value></data>

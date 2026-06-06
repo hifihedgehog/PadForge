@@ -433,6 +433,21 @@ namespace PadForge.Common.Input
                 if (scaledLT > combinedLT) combinedLT = scaledLT;
                 if (scaledRT > combinedRT) combinedRT = scaledRT;
 
+                // Steering at-lock trigger-vibration pulse (#94 ch.2) for Xbox-style
+                // impulse triggers. DualSense routes this through the AT-vibration block in
+                // UserEffectsDispatcher (which returns early for Sony pads above); this is
+                // the impulse-trigger equivalent, layered onto the slot's trigger output
+                // via max(). Injected raw (the pulse already carries its own strength) so
+                // the cue is felt at a consistent level rather than scaled by the
+                // per-device impulse gain meant for game rumble.
+                float steerTrigVib = GetSteeringTrigVib(padIndex);
+                if (steerTrigVib > 0f)
+                {
+                    ushort stv = (ushort)System.Math.Clamp((int)System.Math.Round(steerTrigVib * 65535f), 0, 65535);
+                    if (stv > combinedLT) combinedLT = stv;
+                    if (stv > combinedRT) combinedRT = stv;
+                }
+
                 if (directionalSource == null
                     && (effective.HasDirectionalData || effective.HasConditionData))
                     directionalSource = effective;

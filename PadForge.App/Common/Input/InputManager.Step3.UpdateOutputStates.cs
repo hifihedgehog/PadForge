@@ -97,6 +97,11 @@ namespace PadForge.Common.Input
                     }
                     us.RawMappedState = rawMapped;
 
+                    // Steering at-lock haptic feedback (#94). The MappingSet eval above
+                    // updated this frame's lock state; fire the opt-in channels now.
+                    if (ms != null && ms.Rows != null && ms.Rows.Count > 0)
+                        ApplySteeringLockFeedback(ms, slotIndex, ps, ud);
+
                     // All non-gamepad output paths route per-target descriptor
                     // reads through the per-VC MappingSet when a Base-layer row
                     // exists (multi-source, combine-mode, Custom-formula aware).

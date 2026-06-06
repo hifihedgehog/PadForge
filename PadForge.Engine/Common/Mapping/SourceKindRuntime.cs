@@ -31,7 +31,7 @@ namespace PadForge.Engine.Common.Mapping
         public enum LockEdge : byte { None, Enter, Exit }
         private enum LockSide : byte { None, Left, Right }
         private struct WindingState { public double AngleDeg; public double LastX, LastY; }
-        private struct LockState { public LockSide Side; public LockEdge PendingEdge; public bool PendingLeft; }
+        private struct LockState { public LockSide Side; public LockEdge PendingEdge; public bool PendingLeft; public double LastAbs; }
 
         // Signed winding accumulator per row (deg, NOT clamped — overshoot is intentional).
         private readonly Dictionary<(int slot, string target, int srcIdx), WindingState> _windingState = new();
@@ -276,11 +276,22 @@ namespace PadForge.Engine.Common.Mapping
                          : output <= -1.0 + LockEpsilon ? LockSide.Left
                          : LockSide.None;
             _lockState.TryGetValue(key, out var ls);
-            if (cur == ls.Side) return;
-            if (ls.Side == LockSide.None) { ls.PendingEdge = LockEdge.Enter; ls.PendingLeft = cur == LockSide.Left; }
-            else if (cur == LockSide.None) { ls.PendingEdge = LockEdge.Exit; }
-            ls.Side = cur;
+            ls.LastAbs = Math.Abs(output);                         // for the AT-resistance ramp
+            if (cur != ls.Side)
+            {
+                if (ls.Side == LockSide.None) { ls.PendingEdge = LockEdge.Enter; ls.PendingLeft = cur == LockSide.Left; }
+                else if (cur == LockSide.None) { ls.PendingEdge = LockEdge.Exit; }
+                ls.Side = cur;
+            }
             _lockState[key] = ls;
+        }
+
+        /// <summary>The current saturation magnitude (0..1) of this row's steering
+        /// output — how close to lock — for the continuous AT-resistance ramp.</summary>
+        public double GetLockApproach(int slotIndex, string target, int sourceIndex)
+        {
+            var key = (slotIndex, target ?? "", sourceIndex);
+            return _lockState.TryGetValue(key, out var ls) ? ls.LastAbs : 0;
         }
 
         private static double Clamp01(double v) => v < 0 ? 0 : (v > 1 ? 1 : v);

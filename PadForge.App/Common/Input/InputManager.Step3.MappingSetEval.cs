@@ -29,6 +29,11 @@ namespace PadForge.Common.Input
                 _slotSourceKindRuntime[i]?.Clear();
         }
 
+        /// <summary>The per-slot source-kind runtime, for the steering lock-feedback
+        /// pass (reads the at-lock edge / approach the steering ticks recorded).</summary>
+        internal static SourceKindRuntime GetSlotSourceKindRuntime(int slot)
+            => (slot >= 0 && slot < _slotSourceKindRuntime.Length) ? _slotSourceKindRuntime[slot] : null;
+
         // Frame delta tracked per slot. Set by ApplyMappingSetToGamepad
         // each frame from the engine's polling-loop timestamp.
         private static readonly double[] _lastEvalTime = new double[MaxPads];

@@ -81,6 +81,33 @@ namespace PadForge.Engine.Common.Mapping
                     var inner = CloneAsDirect(src, invertOverride: src.Invert ^ modifier);
                     return SourceCoercion.EvaluateForBipolarAxisTarget(state, inner, slotIndex, relativeTouchpad);
                 }
+                // Steering kinds (v3.4 #94): read a whole 2D stick (X = Descriptor,
+                // Y = ParamYDescriptor) or gravity, and project to one virtual-stick
+                // channel. The row's target picks the channel; the Kind picks the math.
+                case "WindingStick":
+                {
+                    if (runtime == null) return 0f;
+                    double v = runtime.TickWindingStick(slotIndex, target, sourceIndex, src, state, frameDeltaSeconds);
+                    return src.Invert ? -(float)v : (float)v;
+                }
+                case "AngleToAxisX":
+                {
+                    if (runtime == null) return 0f;
+                    double v = runtime.TickAngleToAxis(slotIndex, target, sourceIndex, src, state, isX: true);
+                    return src.Invert ? -(float)v : (float)v;
+                }
+                case "AngleToAxisY":
+                {
+                    if (runtime == null) return 0f;
+                    double v = runtime.TickAngleToAxis(slotIndex, target, sourceIndex, src, state, isX: false);
+                    return src.Invert ? -(float)v : (float)v;
+                }
+                case "MotionLeanX":
+                {
+                    if (runtime == null) return 0f;
+                    double v = runtime.TickMotionLean(slotIndex, target, sourceIndex, src, state, src.DeviceGuid);
+                    return src.Invert ? -(float)v : (float)v;
+                }
                 default:
                     // Gyro → virtual stick is rate-direct, same as gyro →
                     // mouse / scroll: instantaneous angular rate (post-tuning)

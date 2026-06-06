@@ -396,17 +396,37 @@ namespace PadForge.Engine
         /// </summary>
         public static short ComputeWheelSteeringLevel(Vibration v, int overallGain)
         {
+            // Sampled steering level: the projected peak modulated by the periodic
+            // waveform at this instant, so wheels that render periodics in host
+            // software (Logitech / Fanatec, which have no firmware periodic generator
+            // and software-render via an hrtimer in lg4ff / ftecff) reproduce the
+            // effect as an oscillating constant force. Constant / ramp keep the peak.
+            short peak = ComputeWheelSteeringPeak(v, overallGain);
+            if (peak == 0) return 0;
+            double level = peak * PeriodicWaveform(v.EffectType, v.Period);
+            return (short)Math.Clamp(level, -32767, 32767);
+        }
+
+        /// <summary>The steering-axis peak of a directional effect — the gain-scaled
+        /// magnitude projected onto the wheel axis, WITHOUT periodic-waveform sampling.
+        /// Thrustmaster uploads this as the amplitude of a firmware periodic effect (the
+        /// T300 runs the waveform onboard, higher fidelity than host sampling), so this
+        /// stays the steady peak; <see cref="ComputeWheelSteeringLevel"/> samples the
+        /// waveform for wheels that have no firmware periodic generator.</summary>
+        public static short ComputeWheelSteeringPeak(Vibration v, int overallGain)
+        {
             if (v == null || !v.HasDirectionalData) return 0;
             double gainScale = (v.DeviceGain / 255.0) * (Math.Clamp(overallGain, 0, 100) / 100.0);
             double scaledMag = Math.Clamp(v.SignedMagnitude * gainScale, -10000, 10000);
-            // Periodic effects (square/sine/triangle/sawtooth) oscillate over time; sample
-            // the waveform at the current phase so a native wheel vibrates instead of
-            // holding the peak. Constant/ramp keep the steady magnitude.
-            scaledMag *= PeriodicWaveform(v.EffectType, v.Period);
             double angleRad = (v.Direction / 32767.0) * 2.0 * Math.PI;
             double projected = Math.Clamp(scaledMag * Math.Sin(angleRad), -10000, 10000);
             return (short)(projected * 32767 / 10000);
         }
+
+        /// <summary>True for the periodic effect types (square/sine/triangle/sawtooth)
+        /// that a firmware periodic generator can run, vs constant/ramp/condition.</summary>
+        public static bool IsPeriodicEffect(uint effectType) =>
+            effectType >= FfbEffectTypes.Square && effectType <= FfbEffectTypes.SawDown;
 
         /// <summary>Instantaneous -1..+1 multiplier for a periodic effect type at the
         /// current time, so a native wheel reproduces the waveform by sampling it each

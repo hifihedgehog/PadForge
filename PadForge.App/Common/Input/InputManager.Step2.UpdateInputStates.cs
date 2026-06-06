@@ -552,6 +552,12 @@ namespace PadForge.Common.Input
                             ThrustmasterRawHidWriter.WriteCondition(ud.DevicePath, cv.EffectType,
                                 ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
                                 (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain);
+                        else if (cv.HasDirectionalData && cv.Period > 0 && ForceFeedbackState.IsPeriodicEffect(cv.EffectType))
+                            // T300 firmware runs the waveform onboard (higher fidelity than
+                            // host sampling). Pass the un-sampled steering peak as the amplitude
+                            // — not the sampled level, which crosses zero mid-waveform.
+                            ThrustmasterRawHidWriter.WritePeriodic(ud.DevicePath, cv.EffectType,
+                                ForceFeedbackState.ComputeWheelSteeringPeak(cv, overallGain), (int)cv.Period);
                         else ThrustmasterRawHidWriter.WriteConstantForce(ud.DevicePath, wheelForce);
                     }
 

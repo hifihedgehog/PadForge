@@ -1653,8 +1653,8 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>기울이기 내부 데드존 재설정</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>기울이기 외부 데드존 재설정</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>컨트롤러 방향 재설정</value></data>
-  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>끝점 피드백</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>완전히 꺾었을 때 휠이 벽에 부딪힌 것처럼 느껴지게 합니다. 모두 기본적으로 꺼져 있습니다.</value></data>
+  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>조향 끝점 피드백</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>조향 모드로 설정한 스틱을 끝까지 완전히 꺾으면 신호(진동, 트리거, 라이트바)를 주어 한계를 느끼게 합니다. 모두 기본적으로 꺼져 있습니다.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>끝점에서 진동 펄스</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>끝점에서 트리거 진동</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>끝점에서 라이트바 펄스</value></data>

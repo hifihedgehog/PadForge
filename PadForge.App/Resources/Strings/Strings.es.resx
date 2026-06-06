@@ -1653,8 +1653,8 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Restablecer zona muerta interior de inclinación</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Restablecer zona muerta exterior de inclinación</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Restablecer orientación del mando</value></data>
-  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Respuesta de tope</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Haz que el volante se sienta como si chocara contra una pared al llegar al tope completo. Todo desactivado de forma predeterminada.</value></data>
+  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Respuesta al tope del volante</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Cuando un stick configurado en modo de dirección se gira al máximo hasta el tope, se emite una señal (vibración, gatillo o barra de luz) para que sientas el límite. Todo desactivado de forma predeterminada.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pulso de vibración al llegar al tope</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibración del gatillo al llegar al tope</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Pulso de barra de luz al llegar al tope</value></data>

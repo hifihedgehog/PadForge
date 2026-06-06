@@ -1653,8 +1653,8 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>リーン内側デッドゾーンをリセット</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>リーン外側デッドゾーンをリセット</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>コントローラーの向きをリセット</value></data>
-  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ロックフィードバック</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>フルロック時にホイールが壁にぶつかったような感触にします。すべて既定でオフです。</value></data>
+  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ステアリングロックフィードバック</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ステアリングモードに設定したスティックをフルロックまで操作しきると、合図（振動、トリガー、ライトバー）を発生させて操舵限界を体感できます。すべて既定でオフです。</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>ロック時にランブルパルス</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>ロック時にトリガー振動</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>ロック時にライトバーパルス</value></data>

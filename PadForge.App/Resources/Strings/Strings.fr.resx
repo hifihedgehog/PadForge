@@ -1653,8 +1653,8 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Réinitialiser la zone morte intérieure d'inclinaison</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Réinitialiser la zone morte extérieure d'inclinaison</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Réinitialiser l'orientation de la manette</value></data>
-  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Retour en butée</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Donne l'impression que le volant heurte un mur en butée de braquage. Tout est désactivé par défaut.</value></data>
+  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Retour en butée de braquage</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quand un stick configuré en mode direction est tourné à fond jusqu'en butée de braquage, déclenche un signal (vibration, gâchette ou barre lumineuse) pour vous faire sentir la limite. Tout est désactivé par défaut.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pulsation de vibration en butée</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibration des gâchettes en butée</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Pulsation de la barre lumineuse en butée</value></data>

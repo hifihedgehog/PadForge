@@ -1674,7 +1674,7 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Buitenste kanteldeadzone resetten</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Controllerstand resetten</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback bij stuuraanslag</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Laat het stuurwiel aanvoelen alsof het bij volledige stuuraanslag tegen een muur loopt. Alles staat standaard uit.</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Wanneer een stick die op een stuurmodus is ingesteld helemaal tot de volledige stuuraanslag wordt gedraaid, krijg je een signaal (rumble, trigger of lichtbalk) zodat je de limiet voelt. Alles staat standaard uit.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Trilpuls bij stuuraanslag</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Triggervibratie bij stuuraanslag</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Lightbar-puls bij stuuraanslag</value></data>

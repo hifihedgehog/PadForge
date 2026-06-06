@@ -1974,13 +1974,28 @@ namespace PadForge.ViewModels
             get => _steeringLockLightbarColor;
             set
             {
-                if (SetProperty(ref _steeringLockLightbarColor, string.IsNullOrWhiteSpace(value) ? "#FF0000" : value))
+                if (SetProperty(ref _steeringLockLightbarColor, NormalizeSteeringLockColor(value)))
                 {
                     OnPropertyChanged(nameof(SteeringLockColorR));
                     OnPropertyChanged(nameof(SteeringLockColorG));
                     OnPropertyChanged(nameof(SteeringLockColorB));
                 }
             }
+        }
+
+        // Canonicalize hex-field input (accepts with/without '#', any case) to "#RRGGBB".
+        // Anything unparseable falls back to red, so the picker, sliders, swatch, and hex
+        // field stay in sync no matter what the user types.
+        private static string NormalizeSteeringLockColor(string value)
+        {
+            string s = (value ?? "").Trim();
+            if (s.StartsWith("#", StringComparison.Ordinal)) s = s.Substring(1);
+            if (s.Length == 6
+                && byte.TryParse(s.Substring(0, 2), System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out byte r)
+                && byte.TryParse(s.Substring(2, 2), System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out byte g)
+                && byte.TryParse(s.Substring(4, 2), System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out byte b))
+                return FormatSteeringLockColor(r, g, b);
+            return "#FF0000";
         }
 
         // Lightbar pulse colour exposed as R/G/B bytes for the shared ColorPickerControl,

@@ -1675,8 +1675,8 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Ripristina zona morta interna inclinazione</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Ripristina zona morta esterna inclinazione</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Ripristina orientamento controller</value></data>
-  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback al fine corsa</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Fa sentire il volante come se avesse colpito un muro al fine corsa. Tutto disattivato per impostazione predefinita.</value></data>
+  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback sterzo a fine corsa</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quando una levetta impostata su una modalità di sterzo viene portata fino al fine corsa, riproduce un segnale (vibrazione, grilletto o barra luminosa) per farti percepire il limite. Tutto disattivato per impostazione predefinita.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Impulso di vibrazione al fine corsa</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibrazione dei grilletti al fine corsa</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Impulso della barra luminosa al fine corsa</value></data>

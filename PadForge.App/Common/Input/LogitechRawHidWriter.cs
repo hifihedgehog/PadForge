@@ -49,6 +49,12 @@ namespace PadForge.Common.Input
                 case 0xC267: // G923 (PS / PC)
                 case 0xC266: // G923 (PS / PC) - lg4ff variant; the Xbox G923 is 0xC26E (HID++, not this protocol)
                 case 0xC29B: // G27 (native mode) — same lg4ff protocol + 5-LED strip
+                case 0xC299: // G25 (set_range_g25, friction, 900 deg)
+                case 0xC29A: // Driving Force GT (set_range_g25, friction, 900 deg)
+                case 0xC298: // Driving Force Pro (coarse+fine range, friction, 900 deg)
+                case 0xC295: // MOMO Racing (fixed 270 deg, no range command)
+                case 0xC294: // Driving Force (fixed 270 deg, no range command)
+                case 0xC293: // WingMan Formula Force GP (fixed 180 deg, no range command)
                     return true;
                 default:
                     return false;
@@ -60,7 +66,7 @@ namespace PadForge.Common.Input
         /// (hid-lg4ff.c:1107-1110); their device-table caps field is 0 (G29/G920/G923).
         /// Among PadForge's supported wheels only the G27 (0xC29B) qualifies; the
         /// legacy DFP/G25/DFGT also have it but are not in <see cref="IsLogitechWheel"/>.</summary>
-        public static bool HasFrictionCap(ushort pid) => pid == 0xC29B;
+        public static bool HasFrictionCap(ushort pid) => pid is 0xC29B or 0xC299 or 0xC29A or 0xC298; // G27 / G25 / DFGT / DFP (lg4ff LG4FF_CAP_FRICTION)
 
         // ─────────────────────────────────────────────
         //  Protocol — values from new-lg4ff/hid-lg4ff.c
@@ -163,19 +169,63 @@ namespace PadForge.Common.Input
             return RawHidOutput.Write(devicePath, BuildReport(activate));
         }
 
-        /// <summary>Sets the wheel's hardware rotation range in degrees
-        /// (G25/G27/DFGT/G29/G920/G923 format: <c>f8 81 lo hi</c>).</summary>
-        public static bool WriteRange(string devicePath, int degrees)
+        // Per-wheel max rotation (lg4ff device table): G25/DFGT/DFP/G27/G29/G923 = 900,
+        // MOMO Racing / Driving Force = 270, WingMan Formula Force GP = 180.
+        private static int MaxRange(ushort pid) => pid switch
+        {
+            0xC293 => 180,            // WingMan Formula Force GP
+            0xC294 or 0xC295 => 270,  // Driving Force / MOMO Racing
+            _ => 900,                 // G25 / DFGT / DFP / G27 / G29 / G923
+        };
+
+        /// <summary>Sets the wheel's hardware rotation range in degrees, clamped to the
+        /// per-wheel max. G25/DFGT/G27/G29/G923 use <c>f8 81 lo hi</c> (lg4ff_set_range_g25);
+        /// the Driving Force Pro uses a coarse+fine command (lg4ff_set_range_dfp); MOMO /
+        /// Driving Force / WingMan have a fixed range and no range command.</summary>
+        public static bool WriteRange(string devicePath, int degrees, ushort pid)
         {
             if (string.IsNullOrEmpty(devicePath)) return false;
             if (degrees < 40) degrees = 40;
-            else if (degrees > 900) degrees = 900; // every lg4ff Logitech wheel maxes at 900 deg (hid-lg4ff.c device table); lg4ff rejects higher
-            byte[] cmd = new byte[7];
+            int max = MaxRange(pid);
+            if (degrees > max) degrees = max;
+
+            if (pid == 0xC293 || pid == 0xC294 || pid == 0xC295) return true; // fixed range, no command
+            if (pid == 0xC298) return WriteRangeDfp(devicePath, degrees);     // Driving Force Pro
+
+            byte[] cmd = new byte[7]; // G25 / DFGT / G27 / G29 / G923
             cmd[0] = 0xf8;
             cmd[1] = 0x81;
             cmd[2] = (byte)(degrees & 0xff);
             cmd[3] = (byte)((degrees >> 8) & 0xff);
             return RawHidOutput.Write(devicePath, BuildReport(cmd));
+        }
+
+        // Driving Force Pro range (lg4ff_set_range_dfp, hid-lg4ff.c:1401): a coarse limit
+        // (f8 00 -> 03 for >200 deg, else 02) then a fine limit (81 0b ...) unless the
+        // requested range is exactly 200 or 900.
+        private static bool WriteRangeDfp(string devicePath, int degrees)
+        {
+            byte[] coarse = new byte[7];
+            coarse[0] = 0xf8;
+            int fullRange;
+            if (degrees > 200) { coarse[1] = 0x03; fullRange = 900; }
+            else { coarse[1] = 0x02; fullRange = 200; }
+            bool ok = RawHidOutput.Write(devicePath, BuildReport(coarse));
+
+            byte[] fine = new byte[7];
+            fine[0] = 0x81;
+            fine[1] = 0x0b;
+            if (degrees == 200 || degrees == 900)
+                return ok & RawHidOutput.Write(devicePath, BuildReport(fine));
+
+            int startLeft = ((fullRange - degrees + 1) * 2047) / fullRange;
+            int startRight = 0xfff - startLeft;
+            fine[2] = (byte)(startLeft >> 4);
+            fine[3] = (byte)(startRight >> 4);
+            fine[4] = 0xff;
+            fine[5] = (byte)(((startRight & 0xe) << 4) | (startLeft & 0xe));
+            fine[6] = 0xff;
+            return ok & RawHidOutput.Write(devicePath, BuildReport(fine));
         }
 
         // ── Condition effects: spring (0x0b) / damper (0x0c) / friction (0x0e) ──

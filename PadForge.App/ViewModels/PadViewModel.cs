@@ -1969,7 +1969,44 @@ namespace PadForge.ViewModels
         private double _steeringLockPulseMs = 80;
         public double SteeringLockPulseMs { get => _steeringLockPulseMs; set => SetProperty(ref _steeringLockPulseMs, Math.Clamp(value, 0, 2000)); }
         private string _steeringLockLightbarColor = "#FF0000";
-        public string SteeringLockLightbarColor { get => _steeringLockLightbarColor; set => SetProperty(ref _steeringLockLightbarColor, string.IsNullOrWhiteSpace(value) ? "#FF0000" : value); }
+        public string SteeringLockLightbarColor
+        {
+            get => _steeringLockLightbarColor;
+            set
+            {
+                if (SetProperty(ref _steeringLockLightbarColor, string.IsNullOrWhiteSpace(value) ? "#FF0000" : value))
+                {
+                    OnPropertyChanged(nameof(SteeringLockColorR));
+                    OnPropertyChanged(nameof(SteeringLockColorG));
+                    OnPropertyChanged(nameof(SteeringLockColorB));
+                }
+            }
+        }
+
+        // Lightbar pulse colour exposed as R/G/B bytes for the shared ColorPickerControl,
+        // backed by the persisted hex string above (the engine reads the hex form). Keeps
+        // this colour setting consistent with every other lightbar colour in the app
+        // instead of a raw hex text box. Writes funnel back through the hex setter, so the
+        // existing dirty/save wiring on SteeringLockLightbarColor still fires.
+        public byte SteeringLockColorR { get => ParseSteeringLockColor().r; set { var c = ParseSteeringLockColor(); SteeringLockLightbarColor = FormatSteeringLockColor(value, c.g, c.b); } }
+        public byte SteeringLockColorG { get => ParseSteeringLockColor().g; set { var c = ParseSteeringLockColor(); SteeringLockLightbarColor = FormatSteeringLockColor(c.r, value, c.b); } }
+        public byte SteeringLockColorB { get => ParseSteeringLockColor().b; set { var c = ParseSteeringLockColor(); SteeringLockLightbarColor = FormatSteeringLockColor(c.r, c.g, value); } }
+
+        private (byte r, byte g, byte b) ParseSteeringLockColor()
+        {
+            string s = (_steeringLockLightbarColor ?? "#FF0000").Trim();
+            if (s.StartsWith("#", StringComparison.Ordinal)) s = s.Substring(1);
+            if (s.Length == 6
+                && byte.TryParse(s.Substring(0, 2), System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out byte r)
+                && byte.TryParse(s.Substring(2, 2), System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out byte g)
+                && byte.TryParse(s.Substring(4, 2), System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out byte b))
+                return (r, g, b);
+            return (0xFF, 0x00, 0x00);
+        }
+
+        private static string FormatSteeringLockColor(byte r, byte g, byte b)
+            => string.Format(System.Globalization.CultureInfo.InvariantCulture, "#{0:X2}{1:X2}{2:X2}", r, g, b);
+
         private double _steeringLockLightbarFadeMs = 250;
         public double SteeringLockLightbarFadeMs { get => _steeringLockLightbarFadeMs; set => SetProperty(ref _steeringLockLightbarFadeMs, Math.Clamp(value, 0, 5000)); }
 

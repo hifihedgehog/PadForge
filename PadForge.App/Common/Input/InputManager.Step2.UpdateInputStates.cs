@@ -516,6 +516,12 @@ namespace PadForge.Common.Input
                     // mirroring the Sine haptic strategy joysticks get in SetHapticForces.
                     // Real directional FFB takes precedence; rumble fills in otherwise.
                     short wheelForce = level != 0 ? level : ForceFeedbackState.ComputeWheelRumbleLevel(cv, overallGain);
+                    // Auto-center strength (Wheel-tab slider). Fanatec has no firmware
+                    // autocenter and ftec_set_range's f5 disables its stock spring, so
+                    // Fanatec centering is a per-frame software spring (slot 1); Logitech
+                    // and Thrustmaster use their firmware spring in the one-shot below.
+                    int desAc = int.TryParse(firstPadSetting.AutoCenterStrength, out int acp) ? System.Math.Clamp(acp, 0, 100) : 0;
+                    int acMag = desAc * 0xffff / 100; // 0..100% -> 0..0xffff
                     if (isLogitechWheel)
                     {
                         if (hasCond)
@@ -532,7 +538,13 @@ namespace PadForge.Common.Input
                             FanatecRawHidWriter.WriteWheelCondition(ud.DevicePath, cv.EffectType,
                                 ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
                                 (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain);
-                        else FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, wheelForce, ud.ProdId);
+                        else
+                        {
+                            FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, wheelForce, ud.ProdId);
+                            // Re-assert the software centering spring each frame so it
+                            // survives a game-driven condition overwriting slot 1.
+                            if (acMag > 0) FanatecRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);
+                        }
                     }
                     else // Thrustmaster wheel
                     {
@@ -546,10 +558,8 @@ namespace PadForge.Common.Input
                     // Wheel settings (rotation range + auto-center) — one-shot,
                     // re-sent only when the persisted value changes.
                     int desRange = int.TryParse(firstPadSetting.RotationRange, out int rg) ? System.Math.Clamp(rg, 40, 2520) : 900; // per-wheel max enforced in each writer's WriteRange
-                    int desAc = int.TryParse(firstPadSetting.AutoCenterStrength, out int acp) ? System.Math.Clamp(acp, 0, 100) : 0;
                     if (!_appliedWheelSettings.TryGetValue(ud.DevicePath, out var prevWs) || prevWs.range != desRange || prevWs.ac != desAc)
                     {
-                        int acMag = desAc * 0xffff / 100; // 0..100% -> 0..0xffff
                         bool applied;
                         if (isLogitechWheel)
                         {
@@ -558,7 +568,8 @@ namespace PadForge.Common.Input
                         }
                         else if (isFanatecWheel)
                         {
-                            applied = FanatecRawHidWriter.WriteRange(ud.DevicePath, desRange, ud.ProdId); // f5 in the range sequence disables the firmware centering spring
+                            applied  = FanatecRawHidWriter.WriteRange(ud.DevicePath, desRange, ud.ProdId); // f5 in the range sequence disables the firmware centering spring
+                            applied &= FanatecRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);          // software centering spring replaces it (slot 1); disables at 0
                         }
                         else
                         {

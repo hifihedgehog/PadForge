@@ -1653,8 +1653,8 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Redefinir Zona Morta Interna da Inclinação</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Redefinir Zona Morta Externa da Inclinação</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Redefinir Orientação do Controle</value></data>
-  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback de Batente</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Faz o volante parecer que bateu em uma parede no esterçamento máximo. Tudo desativado por padrão.</value></data>
+  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback de Batente do Volante</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quando um analógico configurado como volante é girado até o esterçamento máximo, emite um sinal (vibração, gatilho ou barra de luz) para você sentir o limite. Tudo desativado por padrão.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pulso de vibração no batente</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibração do gatilho no batente</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Pulso da barra de luz no batente</value></data>

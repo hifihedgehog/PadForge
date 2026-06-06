@@ -1717,8 +1717,8 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Reset Lean Inner Deadzone</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Reset Lean Outer Deadzone</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Reset Controller Orientation</value></data>
-  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Lock Feedback</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Make the wheel feel like it hit a wall at full lock. All off by default.</value></data>
+  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Steering Lock Feedback</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>When a stick set to a steering mode is turned all the way to full lock, play a cue (rumble, trigger, or lightbar) so you feel the limit. All off by default.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Rumble pulse on lock</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Trigger vibration on lock</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Lightbar pulse on lock</value></data>

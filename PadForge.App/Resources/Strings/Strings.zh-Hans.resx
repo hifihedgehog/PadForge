@@ -1654,7 +1654,7 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>重置倾斜外死区</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>重置手柄朝向</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>转向极限反馈</value></data>
-  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>让方向盘在转到极限时感觉像撞上一堵墙。默认全部关闭。</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>当设为转向模式的摇杆转到极限时，发出提示（震动、扳机或灯条），让你感受到极限。默认全部关闭。</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>到达极限时震动脉冲</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>到达极限时扳机振动</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>到达极限时灯条脉冲</value></data>

@@ -3494,14 +3494,29 @@
                             <TextBlock Text="{Binding Pad_Steering_LockFeedback_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                        TextWrapping="Wrap" Margin="0,0,0,8"/>
-                            <CheckBox x:Name="LockRumbleChk" IsChecked="{Binding SteeringLockRumbleEnabled, Mode=TwoWay}" Margin="0,0,0,4"
-                                      Content="{Binding Pad_Steering_Lock_Rumble, Source={x:Static strings:Strings.Instance}}"/>
-                            <CheckBox x:Name="LockTriggerVibChk" IsChecked="{Binding SteeringLockTriggerVibEnabled, Mode=TwoWay}" Margin="0,0,0,4"
-                                      Content="{Binding Pad_Steering_Lock_TriggerVib, Source={x:Static strings:Strings.Instance}}"/>
-                            <CheckBox x:Name="LockLightbarChk" IsChecked="{Binding SteeringLockLightbarEnabled, Mode=TwoWay}" Margin="0,0,0,4"
-                                      Content="{Binding Pad_Steering_Lock_Lightbar, Source={x:Static strings:Strings.Instance}}"/>
-                            <CheckBox x:Name="LockResistanceChk" IsChecked="{Binding SteeringLockATResistanceEnabled, Mode=TwoWay}" Margin="0,0,0,8"
-                                      Content="{Binding Pad_Steering_Lock_ATResistance, Source={x:Static strings:Strings.Instance}}"/>
+                            <!-- Each channel is a checkbox + its own reset (off), so every row
+                                 in the card has a reset like the sliders below. Visibility is
+                                 gated per row by SyncTabVisibility to the device's capability. -->
+                            <StackPanel x:Name="LockRumbleRow" Orientation="Horizontal" Margin="0,0,0,4">
+                                <CheckBox IsChecked="{Binding SteeringLockRumbleEnabled, Mode=TwoWay}" VerticalAlignment="Center"
+                                          Content="{Binding Pad_Steering_Lock_Rumble, Source={x:Static strings:Strings.Instance}}"/>
+                                <Button Command="{Binding ResetSteeringLockRumbleCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_Rumble, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                            <StackPanel x:Name="LockTriggerVibRow" Orientation="Horizontal" Margin="0,0,0,4">
+                                <CheckBox IsChecked="{Binding SteeringLockTriggerVibEnabled, Mode=TwoWay}" VerticalAlignment="Center"
+                                          Content="{Binding Pad_Steering_Lock_TriggerVib, Source={x:Static strings:Strings.Instance}}"/>
+                                <Button Command="{Binding ResetSteeringLockTriggerVibCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_TriggerVib, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                            <StackPanel x:Name="LockLightbarRow" Orientation="Horizontal" Margin="0,0,0,4">
+                                <CheckBox IsChecked="{Binding SteeringLockLightbarEnabled, Mode=TwoWay}" VerticalAlignment="Center"
+                                          Content="{Binding Pad_Steering_Lock_Lightbar, Source={x:Static strings:Strings.Instance}}"/>
+                                <Button Command="{Binding ResetSteeringLockLightbarCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_Lightbar, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                            <StackPanel x:Name="LockResistanceRow" Orientation="Horizontal" Margin="0,0,0,8">
+                                <CheckBox IsChecked="{Binding SteeringLockATResistanceEnabled, Mode=TwoWay}" VerticalAlignment="Center"
+                                          Content="{Binding Pad_Steering_Lock_ATResistance, Source={x:Static strings:Strings.Instance}}"/>
+                                <Button Command="{Binding ResetSteeringLockResistanceCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_ATResistance, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
                             <!-- Pulse length — applies to the rumble / trigger / lightbar PULSE channels. -->
                             <StackPanel x:Name="LockPulseSection">
                                 <Separator Margin="0,8,0,8"/>

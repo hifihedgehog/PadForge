@@ -1672,4 +1672,8 @@
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPMシフトLEDをリセット</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>フォースフィードバック対応ステアリングの回転範囲、オートセンター、シフトランプ。</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>ステアリングロックフィードバックをリセット</value></data>
+  <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>ロック時にランブルパルスをリセット</value></data>
+  <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>ロック時にトリガー振動をリセット</value></data>
+  <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>ロック時にライトバーパルスをリセット</value></data>
+  <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>ロック付近でトリガー抵抗をリセット</value></data>
 </root>

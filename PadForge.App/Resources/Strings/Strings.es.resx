@@ -1672,4 +1672,8 @@
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Restablecer LED de cambio</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Rango de dirección, autocentrado y luces de cambio para volantes con force feedback.</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Restablecer respuesta al tope del volante</value></data>
+  <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Restablecer pulso de vibración al llegar al tope</value></data>
+  <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Restablecer vibración del gatillo al llegar al tope</value></data>
+  <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Restablecer pulso de barra de luz al llegar al tope</value></data>
+  <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Restablecer resistencia del gatillo cerca del tope</value></data>
 </root>

@@ -1719,10 +1719,10 @@
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Reset Controller Orientation</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Steering Lock Feedback</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>When a stick set to a steering mode is turned all the way to full lock, play a cue (rumble, trigger, or lightbar) so you feel the limit. All off by default.</value></data>
-  <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Rumble pulse on lock</value></data>
-  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Trigger vibration on lock</value></data>
-  <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Lightbar pulse on lock</value></data>
-  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Trigger resistance near lock</value></data>
+  <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Rumble Pulse on Lock</value></data>
+  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Trigger Vibration on Lock</value></data>
+  <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Lightbar Pulse on Lock</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Trigger Resistance near Lock</value></data>
   <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>Pulse Length</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Lightbar Color</value></data>
   <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Lightbar Fade</value></data>
@@ -1736,4 +1736,8 @@
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Reset RPM Shift LEDs</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Steering range, auto centering, and shift lights for force feedback wheels.</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Reset Steering Lock Feedback</value></data>
+  <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Reset Rumble Pulse on Lock</value></data>
+  <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Reset Trigger Vibration on Lock</value></data>
+  <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Reset Lightbar Pulse on Lock</value></data>
+  <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Reset Trigger Resistance near Lock</value></data>
 </root>

@@ -1672,4 +1672,8 @@
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Redefinir LEDs de Rotação</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Faixa de esterçamento, autocentralização e luzes de troca para volantes com force feedback.</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Redefinir Feedback de Batente do Volante</value></data>
+  <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Redefinir Pulso de vibração no batente</value></data>
+  <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Redefinir Vibração do gatilho no batente</value></data>
+  <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Redefinir Pulso da barra de luz no batente</value></data>
+  <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Redefinir Resistência do gatilho perto do batente</value></data>
 </root>

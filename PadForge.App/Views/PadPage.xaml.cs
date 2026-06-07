@@ -385,14 +385,14 @@ namespace PadForge.Views
             bool anyLockChannel = hasRumble || hasTriggerVib || hasLightbar || hasAdaptiveTriggers;
             if (LockFeedbackCard != null)
                 LockFeedbackCard.Visibility = anyLockChannel ? Visibility.Visible : Visibility.Collapsed;
-            if (LockRumbleChk != null)
-                LockRumbleChk.Visibility = hasRumble ? Visibility.Visible : Visibility.Collapsed;
-            if (LockTriggerVibChk != null)
-                LockTriggerVibChk.Visibility = hasTriggerVib ? Visibility.Visible : Visibility.Collapsed;
-            if (LockLightbarChk != null)
-                LockLightbarChk.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
-            if (LockResistanceChk != null)
-                LockResistanceChk.Visibility = hasAdaptiveTriggers ? Visibility.Visible : Visibility.Collapsed;
+            if (LockRumbleRow != null)
+                LockRumbleRow.Visibility = hasRumble ? Visibility.Visible : Visibility.Collapsed;
+            if (LockTriggerVibRow != null)
+                LockTriggerVibRow.Visibility = hasTriggerVib ? Visibility.Visible : Visibility.Collapsed;
+            if (LockLightbarRow != null)
+                LockLightbarRow.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
+            if (LockResistanceRow != null)
+                LockResistanceRow.Visibility = hasAdaptiveTriggers ? Visibility.Visible : Visibility.Collapsed;
             // Pulse length drives the rumble/trigger/lightbar pulse channels (not resistance).
             if (LockPulseSection != null)
                 LockPulseSection.Visibility = (hasRumble || hasTriggerVib || hasLightbar) ? Visibility.Visible : Visibility.Collapsed;

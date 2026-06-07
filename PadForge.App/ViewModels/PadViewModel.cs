@@ -105,6 +105,11 @@ namespace PadForge.ViewModels
         /// </summary>
         public Action ConfigItemDirtyCallback { get; set; }
 
+        /// <summary>Wired by MainWindow to re-stamp the engine's per-slot MappingSets
+        /// immediately on a steering-mode change (including Reset all -> Direct), so the
+        /// stick stops/starts steering at once instead of after the 2s autosave.</summary>
+        public Action SteeringModeChangedCallback { get; set; }
+
         private int _slotNumber;
         /// <summary>One-based sequential number among active slots, for display.</summary>
         public int SlotNumber
@@ -2038,6 +2043,21 @@ namespace PadForge.ViewModels
         private ICommand _resetSteeringLockFadeCommand;
         public ICommand ResetSteeringLockFadeCommand => _resetSteeringLockFadeCommand ??= new RelayCommand(() => SteeringLockLightbarFadeMs = 250);
 
+        // Reset all steering-lock-feedback settings to defaults (every channel off, pulse
+        // 80ms, fade 250ms, colour #FF0000). Each setter fires PropertyChanged, which the
+        // MainWindow handler turns into MarkDirty, so the reset persists like a manual edit.
+        private ICommand _resetSteeringLockAllCommand;
+        public ICommand ResetSteeringLockAllCommand => _resetSteeringLockAllCommand ??= new RelayCommand(() =>
+        {
+            SteeringLockRumbleEnabled = false;
+            SteeringLockTriggerVibEnabled = false;
+            SteeringLockLightbarEnabled = false;
+            SteeringLockATResistanceEnabled = false;
+            SteeringLockPulseMs = 80;
+            SteeringLockLightbarFadeMs = 250;
+            SteeringLockLightbarColor = "#FF0000";
+        });
+
         private double _constantForceX;
         public double ConstantForceX { get => _constantForceX; set => SetProperty(ref _constantForceX, Math.Clamp(value, -1.0, 1.0)); }
 
@@ -2602,6 +2622,12 @@ namespace PadForge.ViewModels
                     if (isConfigProp) ConfigItemDirtyCallback?.Invoke();
                     break;
             }
+
+            // A steering-mode switch (including Reset all setting it back to Direct) must
+            // re-stamp the engine's MappingSet now, not on the 2s autosave, or the stick
+            // keeps steering after the reset / mode change.
+            if (e.PropertyName == nameof(StickConfigItem.SteeringModeIndex))
+                SteeringModeChangedCallback?.Invoke();
         }
 
         private void OnTriggerConfigPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

@@ -654,6 +654,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Steering_Reset_PulseMs => Get("Pad_Steering_Reset_PulseMs");
     public string Pad_Steering_Reset_LightbarColor => Get("Pad_Steering_Reset_LightbarColor");
     public string Pad_Steering_Reset_LightbarFadeMs => Get("Pad_Steering_Reset_LightbarFadeMs");
+    public string Pad_Steering_Reset_LockFeedback => Get("Pad_Steering_Reset_LockFeedback");
     public string Pad_ResetWheel => Get("Pad_ResetWheel");
     public string Pad_ResetRotationRange => Get("Pad_ResetRotationRange");
     public string Pad_ResetAutocenter => Get("Pad_ResetAutocenter");

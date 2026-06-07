@@ -1671,4 +1671,5 @@
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Restablecer autocentrado</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Restablecer LED de cambio</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Rango de dirección, autocentrado y luces de cambio para volantes con force feedback.</value></data>
+  <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Restablecer respuesta al tope del volante</value></data>
 </root>

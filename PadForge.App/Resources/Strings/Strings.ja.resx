@@ -1671,4 +1671,5 @@
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>オートセンター強度をリセット</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPMシフトLEDをリセット</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>フォースフィードバック対応ステアリングの回転範囲、オートセンター、シフトランプ。</value></data>
+  <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>ステアリングロックフィードバックをリセット</value></data>
 </root>

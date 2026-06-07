@@ -2383,34 +2383,6 @@ namespace PadForge.Services
             ps.ConstantForceX = padVm.ConstantForceX.ToString("F4", ic);
             ps.ConstantForceY = padVm.ConstantForceY.ToString("F4", ic);
 
-            // Steering at-lock feedback (#94) — per assigned device. Mirror the disk-save
-            // mapping (SettingsService) so the dropdown swap and the 30Hz live sync flush
-            // each device's own values; the engine reads these per device.
-            ps.SteeringLockRumbleEnabled = padVm.SteeringLockRumbleEnabled ? "1" : "0";
-            ps.SteeringLockTriggerVibEnabled = padVm.SteeringLockTriggerVibEnabled ? "1" : "0";
-            ps.SteeringLockLightbarEnabled = padVm.SteeringLockLightbarEnabled ? "1" : "0";
-            ps.SteeringLockATResistanceEnabled = padVm.SteeringLockATResistanceEnabled ? "1" : "0";
-            ps.SteeringLockPulseMs = ((int)padVm.SteeringLockPulseMs).ToString(ic);
-            ps.SteeringLockLightbarColor = padVm.SteeringLockLightbarColor ?? "#FF0000";
-            ps.SteeringLockLightbarFadeMs = ((int)padVm.SteeringLockLightbarFadeMs).ToString(ic);
-
-            // Per-stick steering mode + tunables (#94) — per assigned device, so each
-            // device's wheel config rides the dropdown swap like the deadzone family.
-            foreach (var stick in padVm.StickConfigs)
-            {
-                int g = stick.Index;
-                if (g < 0) continue;
-                ps.SetExtendedMapping($"Stick{g}SteerKind", stick.SteeringKind);
-                ps.SetExtendedMapping($"Stick{g}SteerWindRange", stick.WindRangeDeg.ToString(ic));
-                ps.SetExtendedMapping($"Stick{g}SteerWindPower", stick.WindPower.ToString(ic));
-                ps.SetExtendedMapping($"Stick{g}SteerWindUnwind", stick.WindUnwindRate.ToString(ic));
-                ps.SetExtendedMapping($"Stick{g}SteerAngleInner", stick.AngleInnerDz.ToString(ic));
-                ps.SetExtendedMapping($"Stick{g}SteerAngleOuter", stick.AngleOuterDz.ToString(ic));
-                ps.SetExtendedMapping($"Stick{g}SteerMotionInner", stick.MotionInnerDz.ToString(ic));
-                ps.SetExtendedMapping($"Stick{g}SteerMotionOuter", stick.MotionOuterDz.ToString(ic));
-                ps.SetExtendedMapping($"Stick{g}SteerOrient", stick.ControllerOrientation);
-            }
-
             // Mapping descriptors: clear + rewrite only when explicitly requested.
             // The 30Hz SyncViewModelToPadSettings path passes syncMappings=false
             // because ClearMappingDescriptors() creates a race window — the polling
@@ -2670,16 +2642,6 @@ namespace PadForge.Services
             padVm.ConstantForceX = TryParseDouble(ps.ConstantForceX, 0.0);
             padVm.ConstantForceY = TryParseDouble(ps.ConstantForceY, 0.0);
 
-            // Steering at-lock feedback (#94) — per assigned device; reload the selected
-            // device's values on dropdown swap (mirrors the disk-load defaults).
-            padVm.SteeringLockRumbleEnabled = ps.SteeringLockRumbleEnabled == "1";
-            padVm.SteeringLockTriggerVibEnabled = ps.SteeringLockTriggerVibEnabled == "1";
-            padVm.SteeringLockLightbarEnabled = ps.SteeringLockLightbarEnabled == "1";
-            padVm.SteeringLockATResistanceEnabled = ps.SteeringLockATResistanceEnabled == "1";
-            padVm.SteeringLockPulseMs = TryParseDouble(ps.SteeringLockPulseMs, 80);
-            padVm.SteeringLockLightbarColor = string.IsNullOrWhiteSpace(ps.SteeringLockLightbarColor) ? "#FF0000" : ps.SteeringLockLightbarColor;
-            padVm.SteeringLockLightbarFadeMs = TryParseDouble(ps.SteeringLockLightbarFadeMs, 250);
-
             // Touchpad-gestures tab — per-(device, pad) settings live
             // under PadSetting.TouchpadSettings as a typed sub-tree
             // (TouchpadSettingsEntry[]). Reading them into the VM
@@ -2690,11 +2652,6 @@ namespace PadForge.Services
 
             // Sync dynamic stick/trigger config items.
             padVm.SyncAllConfigItemsFromVm();
-
-            // Per-stick steering mode + tunables (#94) — per assigned device. Loaded after
-            // SyncAllConfigItemsFromVm (which doesn't cover steering) and guarded so a
-            // dropdown swap reflects the selected device's wheel config without marking dirty.
-            padVm.LoadSteeringConfigItemsForActiveDevice(key => ps.GetExtendedMapping(key));
 
             // Per-device tuning load is done; mapping descriptors are
             // per-VC and intentionally NOT refreshed here. The Mappings

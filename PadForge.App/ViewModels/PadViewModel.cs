@@ -2025,8 +2025,14 @@ namespace PadForge.ViewModels
         private double _steeringLockLightbarFadeMs = 250;
         public double SteeringLockLightbarFadeMs { get => _steeringLockLightbarFadeMs; set => SetProperty(ref _steeringLockLightbarFadeMs, Math.Clamp(value, 0, 5000)); }
 
-        private ICommand _resetSteeringLockColorCommand;
-        public ICommand ResetSteeringLockColorCommand => _resetSteeringLockColorCommand ??= new RelayCommand(() => SteeringLockLightbarColor = "#FF0000");
+        // Per-channel colour resets (match the other lightbar pickers); each resets its
+        // channel to the #FF0000 default component, funneling through the hex setter.
+        private ICommand _resetSteeringLockColorRCommand;
+        public ICommand ResetSteeringLockColorRCommand => _resetSteeringLockColorRCommand ??= new RelayCommand(() => SteeringLockColorR = 0xFF);
+        private ICommand _resetSteeringLockColorGCommand;
+        public ICommand ResetSteeringLockColorGCommand => _resetSteeringLockColorGCommand ??= new RelayCommand(() => SteeringLockColorG = 0x00);
+        private ICommand _resetSteeringLockColorBCommand;
+        public ICommand ResetSteeringLockColorBCommand => _resetSteeringLockColorBCommand ??= new RelayCommand(() => SteeringLockColorB = 0x00);
         private ICommand _resetSteeringLockPulseCommand;
         public ICommand ResetSteeringLockPulseCommand => _resetSteeringLockPulseCommand ??= new RelayCommand(() => SteeringLockPulseMs = 80);
         private ICommand _resetSteeringLockFadeCommand;

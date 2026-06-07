@@ -274,6 +274,7 @@ namespace PadForge.Views
             bool hasForceFeedback = false;
             bool hasGyro = false;
             bool hasImpulseTriggers = false;
+            bool hasRumble = false;
             bool hasTouchpad = false;
             bool hasWheel = false;
             bool hasGenericWheel = false;
@@ -343,6 +344,12 @@ namespace PadForge.Views
                             // are DualSense-family only — DS4 has neither.
                             hasIndicatorLeds = isDualSense || isDualSenseEdge;
                         }
+                        // Grip-motor rumble: modern Xbox (impulse-trigger devices), the
+                        // Sony lightbar family (DualSense / Edge / DS4 all rumble), and any
+                        // generic SDL gamepad reporting rumble (covers Xbox 360 etc.).
+                        hasRumble = hasImpulseTriggers
+                                 || hasLightbar
+                                 || (ud.Device != null && ud.Device.HasRumble);
                         break;
                     }
                 }
@@ -368,6 +375,29 @@ namespace PadForge.Views
                 WheelRpmRow.Visibility = hasWheel ? Visibility.Visible : Visibility.Collapsed;
             if (IndicatorLedsCard != null)
                 IndicatorLedsCard.Visibility = hasIndicatorLeds ? Visibility.Visible : Visibility.Collapsed;
+
+            // Steering Lock Feedback channels — expose each only on a device that can
+            // do it. Trigger vibration = Xbox impulse triggers OR DualSense trigger
+            // haptics; resistance = DualSense adaptive triggers only; lightbar pulse =
+            // DualSense/DS4 lightbar; rumble pulse = grip-motor rumble. Hide the whole
+            // card when the selected device can't do any of them.
+            bool hasTriggerVib = hasImpulseTriggers || hasAdaptiveTriggers;
+            bool anyLockChannel = hasRumble || hasTriggerVib || hasLightbar || hasAdaptiveTriggers;
+            if (LockFeedbackCard != null)
+                LockFeedbackCard.Visibility = anyLockChannel ? Visibility.Visible : Visibility.Collapsed;
+            if (LockRumbleChk != null)
+                LockRumbleChk.Visibility = hasRumble ? Visibility.Visible : Visibility.Collapsed;
+            if (LockTriggerVibChk != null)
+                LockTriggerVibChk.Visibility = hasTriggerVib ? Visibility.Visible : Visibility.Collapsed;
+            if (LockLightbarChk != null)
+                LockLightbarChk.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
+            if (LockResistanceChk != null)
+                LockResistanceChk.Visibility = hasAdaptiveTriggers ? Visibility.Visible : Visibility.Collapsed;
+            // Pulse length drives the rumble/trigger/lightbar pulse channels (not resistance).
+            if (LockPulseSection != null)
+                LockPulseSection.Visibility = (hasRumble || hasTriggerVib || hasLightbar) ? Visibility.Visible : Visibility.Collapsed;
+            if (LockLightbarSection != null)
+                LockLightbarSection.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
 
             // Sync the per-pad pivot to the active device. PadViewModel
             // recomputes MaxTouchpadIndex / SelectedTouchpadIndex and

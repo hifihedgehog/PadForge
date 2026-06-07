@@ -1367,13 +1367,48 @@ namespace PadForge.Engine.Data
             TouchpadX1 = TouchpadY1 = TouchpadX2 = TouchpadY2 = "";
             TouchpadContact1 = TouchpadContact2 = TouchpadClick = "";
 
-            // Extended/MIDI/KBM mapping dictionaries and arrays.
-            ExtendedMappingEntries = null;
-            _extendedMappingDict = null;
+            // Extended mapping dict: clear only the input-routing descriptors and PRESERVE
+            // per-device tuning that shares this dict (steering Stick{g}Steer*, Extended
+            // stick/trigger deadzone/range/curve). Nulling the whole dict here destroyed a
+            // device's steering on every save that ran the descriptor-bleed cleanup (a
+            // device-switch flush): the steering keys vanished and read back as Direct on the
+            // next load. Stick deadzone/range live in named properties, which is why only
+            // steering (and Extended tuning) hit this.
+            if (_extendedMappingDict != null
+                || (ExtendedMappingEntries != null && ExtendedMappingEntries.Length > 0))
+            {
+                EnsureExtendedDict();
+                var preserved = new Dictionary<string, string>(StringComparer.Ordinal);
+                foreach (var kvp in _extendedMappingDict)
+                    if (IsPerDeviceTuningKey(kvp.Key))
+                        preserved[kvp.Key] = kvp.Value;
+                _extendedMappingDict = preserved;
+            }
+            ExtendedMappingEntries = null; // re-flushed from the dict on save
+
+            // MIDI/KBM mapping dictionaries and arrays (no tuning shares these).
             MidiMappingEntries = null;
             _midiMappingDict = null;
             KbmMappingEntries = null;
             _kbmMappingDict = null;
+        }
+
+        /// <summary>True for Extended-dict keys that are per-device TUNING (steering mode +
+        /// tunables, Extended stick/trigger deadzone/range/curve) rather than input-routing
+        /// descriptors. These survive <see cref="ClearMappingDescriptors"/> so a descriptor
+        /// rewrite can't wipe a device's tuning.</summary>
+        private static bool IsPerDeviceTuningKey(string k)
+        {
+            if (string.IsNullOrEmpty(k)) return false;
+            if (k.StartsWith("Stick", StringComparison.Ordinal) && k.Contains("Steer", StringComparison.Ordinal))
+                return true;
+            if (k.StartsWith("ExtendedStick", StringComparison.Ordinal))
+                return true;
+            if (k.StartsWith("ExtendedTrigger", StringComparison.Ordinal)
+                && (k.EndsWith("Dz", StringComparison.Ordinal) || k.EndsWith("Adz", StringComparison.Ordinal)
+                    || k.EndsWith("Mr", StringComparison.Ordinal) || k.EndsWith("Curve", StringComparison.Ordinal)))
+                return true;
+            return false;
         }
 
         /// <summary>

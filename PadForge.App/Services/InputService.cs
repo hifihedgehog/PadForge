@@ -3889,6 +3889,13 @@ namespace PadForge.Services
                         hmVc.AttachPlayStationConfig(anchor);
                 }
             }
+
+            // Steering is per assigned device: each source reads the selected device's live
+            // StickConfigs or another device's PadSetting. Re-stamp the in-memory MappingSet
+            // so the engine reflects the per-device steering immediately on selection
+            // (covers startup's first selection and every dropdown switch) without waiting
+            // for the next save.
+            _settingsService?.PushUiExtraSourcesIntoSlotMappingSets();
         }
 
         /// <summary>

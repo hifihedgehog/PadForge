@@ -2325,6 +2325,9 @@ namespace PadForge.ViewModels
                 item.PropertyChanged += OnStickConfigPropertyChanged;
                 StickConfigs.Add(item);
             }
+            // Steering isn't in SyncStickItemFromVm, so the fresh items default to mode-off.
+            // Re-load the selected device's steering into them (host wires this).
+            SteeringReloadCallback?.Invoke();
         }
 
         /// <summary>
@@ -2471,6 +2474,46 @@ namespace PadForge.ViewModels
             foreach (var item in TriggerConfigs)
                 SyncTriggerItemFromVm(item);
         }
+
+        /// <summary>Invoked at the end of <see cref="RebuildStickConfigs"/> so the host can
+        /// re-load the selected assigned device's steering into the freshly-rebuilt items
+        /// (rebuild resets steering to defaults and SyncStickItemFromVm doesn't cover it).</summary>
+        public System.Action SteeringReloadCallback { get; set; }
+
+        /// <summary>Loads each stick's steering mode + tunables from the SELECTED assigned
+        /// device's stored values, with the dirty callback suppressed (mirrors the guarded
+        /// deadzone sync). Steering is per assigned device, so this runs on every device
+        /// select and after a rebuild. <paramref name="get"/> resolves a steering key
+        /// (e.g. "Stick0SteerKind") for the selected device. Steering has no flat VM mirror
+        /// property, so it loads straight onto the items.</summary>
+        public void LoadSteeringConfigItems(System.Func<string, string> get)
+        {
+            if (get == null) return;
+            bool prev = _syncingConfigItems;
+            _syncingConfigItems = true;
+            try
+            {
+                foreach (var stick in StickConfigs)
+                {
+                    int g = stick.Index;
+                    if (g < 0) continue;
+                    stick.SetSteeringKind(get($"Stick{g}SteerKind"));
+                    stick.WindRangeDeg = ParseSteerDouble(get($"Stick{g}SteerWindRange"), 900);
+                    stick.WindPower = ParseSteerDouble(get($"Stick{g}SteerWindPower"), 1);
+                    stick.WindUnwindRate = ParseSteerDouble(get($"Stick{g}SteerWindUnwind"), 1800);
+                    stick.AngleInnerDz = ParseSteerDouble(get($"Stick{g}SteerAngleInner"), 0);
+                    stick.AngleOuterDz = ParseSteerDouble(get($"Stick{g}SteerAngleOuter"), 10);
+                    stick.MotionInnerDz = ParseSteerDouble(get($"Stick{g}SteerMotionInner"), 15);
+                    stick.MotionOuterDz = ParseSteerDouble(get($"Stick{g}SteerMotionOuter"), 135);
+                    stick.SetControllerOrientation(get($"Stick{g}SteerOrient"));
+                }
+            }
+            finally { _syncingConfigItems = prev; }
+        }
+
+        private static double ParseSteerDouble(string s, double dflt)
+            => double.TryParse(s, System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
 
         // Persisted stick-config property names. PropertyChanged on any other
         // property (LiveX/LiveY/RawX/RawY/LiveInputX/LiveInputY/IsCalibrating

@@ -704,7 +704,7 @@ namespace PadForge.Services
                     // authoring a shift layer. Persists on MappingSource (survives clones
                     // via Clone()).
                     if (string.Equals(activeMask, "Base", StringComparison.Ordinal))
-                        ApplySteeringKindToRow(row, mapping.TargetSettingName, padVm);
+                        ApplySteeringKindToRow(row, mapping.TargetSettingName, padVm, slot);
                 }
 
                 // Steering Kind reconciliation on the Base layer (#94). The per-mapping
@@ -727,83 +727,141 @@ namespace PadForge.Services
                             { baseRow = r; break; }
                         }
                         if (baseRow?.Sources == null || baseRow.Sources.Count == 0) continue;
-                        if (!ApplySteeringKindToRow(baseRow, target, padVm))
-                            RevertSteeringOnRow(baseRow, target, padVm);
+                        // Per-source stamp handles revert of non-steered sources internally.
+                        ApplySteeringKindToRow(baseRow, target, padVm, slot);
                     }
                 }
             }
         }
 
-        // Maps a stick-axis target to the StickConfigItem steering mode and, when this
-        // row is that mode's output channel, stamps Kind + Param* onto Sources[0]. The
-        // steering source always reads the stick's X axis (Descriptor) and Y axis
-        // (ParamYDescriptor); the row's target picks the virtual channel.
-        private static bool ApplySteeringKindToRow(MappingRow row, string target, PadViewModel padVm)
+        // Stamps per-assigned-device steering onto EVERY source in a stick-axis row. Each
+        // source's steering mode + tunables come from ITS OWN device's PadSetting, and it
+        // reads that device's OWN stick axes (so two devices on one slot each get their own
+        // wheel with the right axes). A source whose device isn't steering on this channel
+        // is reverted to a plain Direct mapping on its own axis. Returns true if any source
+        // on the row received a steering kind.
+        private static bool ApplySteeringKindToRow(MappingRow row, string target, PadViewModel padVm, int slot)
         {
             if (row?.Sources == null || row.Sources.Count == 0 || padVm == null) return false;
-            int stickIdx; bool isYTarget;
+            int stickIdx; bool rowIsY;
             switch (target)
             {
-                case "LeftThumbAxisX":  stickIdx = 0; isYTarget = false; break;
-                case "LeftThumbAxisY":  stickIdx = 0; isYTarget = true;  break;
-                case "RightThumbAxisX": stickIdx = 1; isYTarget = false; break;
-                case "RightThumbAxisY": stickIdx = 1; isYTarget = true;  break;
+                case "LeftThumbAxisX":  stickIdx = 0; rowIsY = false; break;
+                case "LeftThumbAxisY":  stickIdx = 0; rowIsY = true;  break;
+                case "RightThumbAxisX": stickIdx = 1; rowIsY = false; break;
+                case "RightThumbAxisY": stickIdx = 1; rowIsY = true;  break;
                 default: return false;
             }
-            var stick = padVm.StickConfigs?.FirstOrDefault(s => s.Index == stickIdx);
-            if (stick == null || !stick.IsSteeringActive) return false;
+            string xTarget = stickIdx == 0 ? "LeftThumbAxisX" : "RightThumbAxisX";
+            string yTarget = stickIdx == 0 ? "LeftThumbAxisY" : "RightThumbAxisY";
+            bool any = false;
 
-            string kind = stick.SteeringKind;
-            // AngleToAxisY outputs to the Y channel; every other mode to X.
-            bool wantY = kind == "AngleToAxisY";
-            if (wantY != isYTarget) return false;
-
-            string xName = stickIdx == 0 ? "LeftThumbAxisX" : "RightThumbAxisX";
-            string yName = stickIdx == 0 ? "LeftThumbAxisY" : "RightThumbAxisY";
-            string xDesc = StripSourcePrefix(padVm.Mappings?.FirstOrDefault(m => m.TargetSettingName == xName)?.SourceDescriptor);
-            string yDesc = StripSourcePrefix(padVm.Mappings?.FirstOrDefault(m => m.TargetSettingName == yName)?.SourceDescriptor);
-
-            var src = row.Sources[0];
-            src.Kind = kind;
-            // Motion-lean reads gravity, not the stick, so descriptors are only the
-            // 2D-stick inputs for winding / angle-to-axis.
-            if (kind != "MotionLeanX")
+            foreach (var src in row.Sources)
             {
-                src.Descriptor = xDesc;
-                src.ParamYDescriptor = yDesc;
+                if (src == null) continue;
+                var cfg = ReadDeviceSteering(slot, src.DeviceGuid, stickIdx, padVm);
+                // AngleToAxisY outputs to the Y channel; every other mode to X. Only stamp
+                // this source when its device's mode targets THIS row's channel.
+                bool wantY = string.Equals(cfg.Kind, "AngleToAxisY", StringComparison.Ordinal);
+                if (cfg.Active && wantY == rowIsY)
+                {
+                    src.Kind = cfg.Kind;
+                    // Motion-lean reads gravity (by DeviceGuid), not stick axes. The 2D
+                    // modes read the DEVICE's own X axis (Descriptor) + Y axis
+                    // (ParamYDescriptor) — independent of which row we're stamping, so
+                    // AngleToAxisY on the Y row still gets X from the X target.
+                    if (!string.Equals(cfg.Kind, "MotionLeanX", StringComparison.Ordinal))
+                    {
+                        src.Descriptor = GetDeviceAxisDescriptor(padVm, xTarget, src.DeviceGuid);
+                        src.ParamYDescriptor = GetDeviceAxisDescriptor(padVm, yTarget, src.DeviceGuid);
+                    }
+                    src.ParamWindRangeDeg = cfg.WindRange;
+                    src.ParamWindPower = cfg.WindPower;
+                    src.ParamWindUnwindRate = cfg.WindUnwind;
+                    src.ParamAngleInnerDz = cfg.AngleInner;
+                    src.ParamAngleOuterDz = cfg.AngleOuter;
+                    src.ParamMotionInnerDz = cfg.MotionInner;
+                    src.ParamMotionOuterDz = cfg.MotionOuter;
+                    src.ParamControllerOrientation = cfg.Orient;
+                    any = true;
+                }
+                else
+                {
+                    RevertSourceToDirect(src, target, padVm);
+                }
             }
-            src.ParamWindRangeDeg = stick.WindRangeDeg;
-            src.ParamWindPower = stick.WindPower;
-            src.ParamWindUnwindRate = stick.WindUnwindRate;
-            src.ParamAngleInnerDz = stick.AngleInnerDz;
-            src.ParamAngleOuterDz = stick.AngleOuterDz;
-            src.ParamMotionInnerDz = stick.MotionInnerDz;
-            src.ParamMotionOuterDz = stick.MotionOuterDz;
-            src.ParamControllerOrientation = stick.ControllerOrientation;
-            return true;
+            return any;
         }
 
-        // The four stick-axis targets a steering mode can output to. Steering Kind is a
-        // per-stick global, so it always reconciles against the Base rows for these.
+        // The four stick-axis targets a steering mode can output to.
         private static readonly string[] SteeringChannelTargets =
             { "LeftThumbAxisX", "LeftThumbAxisY", "RightThumbAxisX", "RightThumbAxisY" };
 
         private static bool IsSteeringKind(string k)
             => k == "WindingStick" || k == "AngleToAxisX" || k == "AngleToAxisY" || k == "MotionLeanX";
 
-        // Reverts a Base steering row to a plain Direct stick-axis mapping. Used when
-        // steering is turned off while a shift layer is active, so the per-mapping rebuild
-        // never touched the Base row. Restores the channel's own axis descriptor: a prior
-        // AngleToAxisY stamp drove the Y row off the X axis, so resetting Kind alone would
-        // leave the Y channel reading the X axis.
-        private static void RevertSteeringOnRow(MappingRow row, string target, PadViewModel padVm)
+        // Reads one device's per-stick steering config from its own PadSetting (per
+        // slot+device), applying the same defaults the UI load path uses. A guid-less
+        // source falls back to the live UI config for the selected stick.
+        private static (bool Active, string Kind, double WindRange, double WindPower, double WindUnwind,
+            double AngleInner, double AngleOuter, double MotionInner, double MotionOuter, string Orient)
+            ReadDeviceSteering(int slot, string deviceGuid, int stickIdx, PadViewModel padVm)
         {
-            if (row?.Sources == null || row.Sources.Count == 0) return;
-            var src = row.Sources[0];
+            // The SELECTED device's latest steering lives in the live StickConfigs (the UI),
+            // which can be newer than its PadSetting; read it there so the stamp never lags a
+            // save. A guid-less source also uses the UI. Other devices read their own stored
+            // PadSetting so each keeps its own wheel.
+            Guid sel = padVm.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+            bool useUi = string.IsNullOrEmpty(deviceGuid)
+                || (sel != Guid.Empty && Guid.TryParse(deviceGuid, out var dg) && dg == sel);
+            if (useUi)
+            {
+                var s = padVm.StickConfigs?.FirstOrDefault(x => x.Index == stickIdx);
+                if (s == null) return (false, "Direct", 900, 1, 1800, 0, 10, 15, 135, "Forward");
+                return (s.IsSteeringActive, s.SteeringKind, s.WindRangeDeg, s.WindPower, s.WindUnwindRate,
+                    s.AngleInnerDz, s.AngleOuterDz, s.MotionInnerDz, s.MotionOuterDz, s.ControllerOrientation);
+            }
+            PadSetting ps = Guid.TryParse(deviceGuid, out var g)
+                ? SettingsManager.FindSettingByInstanceGuidAndSlot(g, slot)?.GetPadSetting()
+                : null;
+            if (ps == null) return (false, "Direct", 900, 1, 1800, 0, 10, 15, 135, "Forward");
+            string kind = ps.GetExtendedMapping($"Stick{stickIdx}SteerKind");
+            if (string.IsNullOrEmpty(kind)) kind = "Direct";
+            double D(string key, double dflt)
+                => double.TryParse(ps.GetExtendedMapping(key), System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
+            string orient = ps.GetExtendedMapping($"Stick{stickIdx}SteerOrient");
+            return (kind != "Direct", kind,
+                D($"Stick{stickIdx}SteerWindRange", 900),
+                D($"Stick{stickIdx}SteerWindPower", 1),
+                D($"Stick{stickIdx}SteerWindUnwind", 1800),
+                D($"Stick{stickIdx}SteerAngleInner", 0),
+                D($"Stick{stickIdx}SteerAngleOuter", 10),
+                D($"Stick{stickIdx}SteerMotionInner", 15),
+                D($"Stick{stickIdx}SteerMotionOuter", 135),
+                string.IsNullOrEmpty(orient) ? "Forward" : orient);
+        }
+
+        // The bare stick-axis descriptor a given device reads for <paramref name="target"/>
+        // (e.g. "Axis 2"), from the UI mappings' primary source or the matching ExtraSource.
+        // Empty when the device has no source on that target.
+        private static string GetDeviceAxisDescriptor(PadViewModel padVm, string target, string deviceGuid)
+        {
+            var m = padVm?.Mappings?.FirstOrDefault(x => x.TargetSettingName == target);
+            if (m == null) return "";
+            if (string.Equals(m.PrimarySourceDeviceGuid ?? "", deviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
+                return StripSourcePrefix(m.SourceDescriptor);
+            var extra = m.ExtraSources?.FirstOrDefault(e =>
+                string.Equals(e.DeviceGuid ?? "", deviceGuid ?? "", StringComparison.OrdinalIgnoreCase));
+            return extra != null ? StripSourcePrefix(extra.Descriptor) : "";
+        }
+
+        // Reverts one source to a plain Direct mapping reading its row's own device axis.
+        private static void RevertSourceToDirect(Engine.Data.MappingSource src, string target, PadViewModel padVm)
+        {
             if (src == null || !IsSteeringKind(src.Kind)) return;
             src.Kind = "Direct";
-            src.Descriptor = StripSourcePrefix(
-                padVm?.Mappings?.FirstOrDefault(m => m.TargetSettingName == target)?.SourceDescriptor);
+            src.Descriptor = GetDeviceAxisDescriptor(padVm, target, src.DeviceGuid);
             src.ParamYDescriptor = "";
             src.ParamWindRangeDeg = 0; src.ParamWindPower = 0; src.ParamWindUnwindRate = 0;
             src.ParamAngleInnerDz = 0; src.ParamAngleOuterDz = 0;
@@ -2007,23 +2065,12 @@ namespace PadForge.Services
                     trig.SensitivityCurve = ps.GetExtendedMapping($"ExtendedTrigger{g}Curve") ?? "0,0;1,1";
                 }
 
-                // Per-stick steering mode + tunables (#94), every stick index, so the
-                // Sticks-tab card reflects the saved mode. The engine itself reads Kind
-                // off the MappingSet rows (stamped on save).
-                foreach (var stick in padVm.StickConfigs)
-                {
-                    int g = stick.Index;
-                    if (g < 0) continue;
-                    stick.SetSteeringKind(ps.GetExtendedMapping($"Stick{g}SteerKind"));
-                    stick.WindRangeDeg = TryParseDouble(ps.GetExtendedMapping($"Stick{g}SteerWindRange"), 900);
-                    stick.WindPower = TryParseDouble(ps.GetExtendedMapping($"Stick{g}SteerWindPower"), 1);
-                    stick.WindUnwindRate = TryParseDouble(ps.GetExtendedMapping($"Stick{g}SteerWindUnwind"), 1800);
-                    stick.AngleInnerDz = TryParseDouble(ps.GetExtendedMapping($"Stick{g}SteerAngleInner"), 0);
-                    stick.AngleOuterDz = TryParseDouble(ps.GetExtendedMapping($"Stick{g}SteerAngleOuter"), 10);
-                    stick.MotionInnerDz = TryParseDouble(ps.GetExtendedMapping($"Stick{g}SteerMotionInner"), 15);
-                    stick.MotionOuterDz = TryParseDouble(ps.GetExtendedMapping($"Stick{g}SteerMotionOuter"), 135);
-                    stick.SetControllerOrientation(ps.GetExtendedMapping($"Stick{g}SteerOrient"));
-                }
+                // Steering is per assigned device (#94): the Sticks-tab card loads the
+                // SELECTED device's steering via InputService.LoadPadSettingToViewModel on
+                // device select, not the first device here. The engine reads each source's
+                // own device steering off the MappingSet (stamped per source in
+                // ApplySteeringKindToRow), so nothing per-device is loaded into the shared
+                // StickConfigs at profile-load time.
 
                 // Mappings are per-slot (live in SlotMappingSets), NOT per-device.
                 // Read from the authoritative MappingSet rather than the legacy

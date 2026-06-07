@@ -1693,4 +1693,5 @@
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Ripristina autocentratura</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Ripristina LED di regime</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Angolo di sterzo, autocentratura e luci di cambio per volanti con force feedback.</value></data>
+  <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Ripristina feedback sterzo a fine corsa</value></data>
 </root>

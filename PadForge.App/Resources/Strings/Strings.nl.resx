@@ -1691,4 +1691,5 @@
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Automatisch centreren resetten</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Schakel-leds resetten</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Stuurbereik, automatisch centreren en schakellampjes voor force-feedbackstuurwielen.</value></data>
+  <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Feedback bij stuuraanslag resetten</value></data>
 </root>

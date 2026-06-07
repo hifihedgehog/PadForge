@@ -863,6 +863,10 @@ namespace PadForge
                 // Extended custom stick/trigger config changes (indices 2+) trigger autosave.
                 pad.ConfigItemDirtyCallback = () => _settingsService.MarkDirty();
 
+                // Steering-mode change (incl. Reset all) re-stamps the engine MappingSets now
+                // so the stick stops/starts steering immediately, not on the 2s autosave.
+                pad.SteeringModeChangedCallback = () => _settingsService.PushUiExtraSourcesIntoSlotMappingSets();
+
                 // ExtendedConfig property changes (preset, counts) trigger autosave.
                 pad.ExtendedConfig.PropertyChanged += (s, e) => _settingsService.MarkDirty();
 

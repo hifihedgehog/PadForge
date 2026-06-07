@@ -3476,10 +3476,20 @@
                     <Border x:Name="LockFeedbackCard" Style="{StaticResource CardBorder}" Margin="0,0,0,16">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
-                                <TextBlock Text="&#xE877;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <!-- Steering wheel flanked by vibration waves: the wheel hits its
+                                     lock and you feel the cue. -->
+                                <Viewbox Width="18" Height="18" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Stroke="{DynamicResource TextFillColorPrimaryBrush}" StrokeThickness="1.7"
+                                              StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                                              Data="M5,12 A7,7 0 1 1 19,12 A7,7 0 1 1 5,12 Z M10.1,12 A1.9,1.9 0 1 1 13.9,12 A1.9,1.9 0 1 1 10.1,12 Z M10.1,12 L5,12 M13.9,12 L19,12 M12,13.9 L12,19 M3.7,9.8 A2.9,2.9 0 0 0 3.7,14.2 M2,8.5 A4.6,4.6 0 0 0 2,15.5 M20.3,9.8 A2.9,2.9 0 0 1 20.3,14.2 M22,8.5 A4.6,4.6 0 0 1 22,15.5"/>
+                                    </Canvas>
+                                </Viewbox>
                                 <TextBlock Text="{Binding Pad_Steering_LockFeedback, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardTitle}"/>
+                                <Button Command="{Binding ResetSteeringLockAllCommand}" Style="{StaticResource ResetAllButton}"
+                                        Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                        ToolTip="{Binding Pad_Steering_Reset_LockFeedback, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
                             <TextBlock Text="{Binding Pad_Steering_LockFeedback_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"

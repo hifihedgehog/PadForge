@@ -1671,4 +1671,5 @@
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Selbstzentrierung zurücksetzen</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Schalt-LEDs zurücksetzen</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Lenkbereich, Selbstzentrierung und Schaltanzeige für Force-Feedback-Lenkräder.</value></data>
+  <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Lenkanschlag-Feedback zurücksetzen</value></data>
 </root>

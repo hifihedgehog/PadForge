@@ -1672,4 +1672,8 @@
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>重置转速换挡灯</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>力反馈方向盘的转向范围、自动回中和换挡灯。</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>重置转向极限反馈</value></data>
+  <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>重置到达极限时震动脉冲</value></data>
+  <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>重置到达极限时扳机振动</value></data>
+  <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>重置到达极限时灯条脉冲</value></data>
+  <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>重置接近极限时扳机阻力</value></data>
 </root>

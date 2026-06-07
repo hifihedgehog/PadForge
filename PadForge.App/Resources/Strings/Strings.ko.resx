@@ -1672,4 +1672,8 @@
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPM 시프트 LED 재설정</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>포스 피드백 휠의 조향 범위, 자동 센터링, 시프트 라이트.</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>조향 끝점 피드백 재설정</value></data>
+  <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>끝점에서 진동 펄스 재설정</value></data>
+  <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>끝점에서 트리거 진동 재설정</value></data>
+  <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>끝점에서 라이트바 펄스 재설정</value></data>
+  <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>끝점 부근 트리거 저항 재설정</value></data>
 </root>

@@ -1672,4 +1672,8 @@
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Réinitialiser les LED de régime</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Plage de braquage, auto-centrage et témoins de passage pour volants à retour de force.</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Réinitialiser le retour en butée de braquage</value></data>
+  <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Réinitialiser pulsation de vibration en butée</value></data>
+  <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Réinitialiser vibration des gâchettes en butée</value></data>
+  <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Réinitialiser pulsation de la barre lumineuse en butée</value></data>
+  <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Réinitialiser résistance des gâchettes à l'approche de la butée</value></data>
 </root>

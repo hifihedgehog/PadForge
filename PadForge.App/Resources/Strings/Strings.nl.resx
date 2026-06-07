@@ -1692,4 +1692,8 @@
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Schakel-leds resetten</value></data>
   <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Stuurbereik, automatisch centreren en schakellampjes voor force-feedbackstuurwielen.</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Feedback bij stuuraanslag resetten</value></data>
+  <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Trilpuls bij stuuraanslag resetten</value></data>
+  <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Triggervibratie bij stuuraanslag resetten</value></data>
+  <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Lightbar-puls bij stuuraanslag resetten</value></data>
+  <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Triggerweerstand nabij stuuraanslag resetten</value></data>
 </root>

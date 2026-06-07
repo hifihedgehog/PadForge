@@ -2043,6 +2043,17 @@ namespace PadForge.ViewModels
         private ICommand _resetSteeringLockFadeCommand;
         public ICommand ResetSteeringLockFadeCommand => _resetSteeringLockFadeCommand ??= new RelayCommand(() => SteeringLockLightbarFadeMs = 250);
 
+        // Per-channel resets (each channel defaults to off), matching the per-row reset
+        // buttons on the sliders so every setting in the card has its own reset.
+        private ICommand _resetSteeringLockRumbleCommand;
+        public ICommand ResetSteeringLockRumbleCommand => _resetSteeringLockRumbleCommand ??= new RelayCommand(() => SteeringLockRumbleEnabled = false);
+        private ICommand _resetSteeringLockTriggerVibCommand;
+        public ICommand ResetSteeringLockTriggerVibCommand => _resetSteeringLockTriggerVibCommand ??= new RelayCommand(() => SteeringLockTriggerVibEnabled = false);
+        private ICommand _resetSteeringLockLightbarCommand;
+        public ICommand ResetSteeringLockLightbarCommand => _resetSteeringLockLightbarCommand ??= new RelayCommand(() => SteeringLockLightbarEnabled = false);
+        private ICommand _resetSteeringLockResistanceCommand;
+        public ICommand ResetSteeringLockResistanceCommand => _resetSteeringLockResistanceCommand ??= new RelayCommand(() => SteeringLockATResistanceEnabled = false);
+
         // Reset all steering-lock-feedback settings to defaults (every channel off, pulse
         // 80ms, fade 250ms, colour #FF0000). Each setter fires PropertyChanged, which the
         // MainWindow handler turns into MarkDirty, so the reset persists like a manual edit.

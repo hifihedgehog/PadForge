@@ -3470,8 +3470,10 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <!-- ═══ Steering at-lock feedback (#94) — per slot, all opt-in ═══ -->
-                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,16">
+                    <!-- ═══ Steering at-lock feedback (#94) — per device, all opt-in.
+                         Channels are shown only when the SELECTED assigned device can
+                         do them (SyncTabVisibility gates each by capability). ═══ -->
+                    <Border x:Name="LockFeedbackCard" Style="{StaticResource CardBorder}" Margin="0,0,0,16">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
                                 <TextBlock Text="&#xE877;" FontFamily="Segoe MDL2 Assets" FontSize="16"
@@ -3482,21 +3484,26 @@
                             <TextBlock Text="{Binding Pad_Steering_LockFeedback_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                        TextWrapping="Wrap" Margin="0,0,0,8"/>
-                            <CheckBox IsChecked="{Binding SteeringLockRumbleEnabled, Mode=TwoWay}" Margin="0,0,0,4"
+                            <CheckBox x:Name="LockRumbleChk" IsChecked="{Binding SteeringLockRumbleEnabled, Mode=TwoWay}" Margin="0,0,0,4"
                                       Content="{Binding Pad_Steering_Lock_Rumble, Source={x:Static strings:Strings.Instance}}"/>
-                            <CheckBox IsChecked="{Binding SteeringLockTriggerVibEnabled, Mode=TwoWay}" Margin="0,0,0,4"
+                            <CheckBox x:Name="LockTriggerVibChk" IsChecked="{Binding SteeringLockTriggerVibEnabled, Mode=TwoWay}" Margin="0,0,0,4"
                                       Content="{Binding Pad_Steering_Lock_TriggerVib, Source={x:Static strings:Strings.Instance}}"/>
-                            <CheckBox IsChecked="{Binding SteeringLockLightbarEnabled, Mode=TwoWay}" Margin="0,0,0,4"
+                            <CheckBox x:Name="LockLightbarChk" IsChecked="{Binding SteeringLockLightbarEnabled, Mode=TwoWay}" Margin="0,0,0,4"
                                       Content="{Binding Pad_Steering_Lock_Lightbar, Source={x:Static strings:Strings.Instance}}"/>
-                            <CheckBox IsChecked="{Binding SteeringLockATResistanceEnabled, Mode=TwoWay}" Margin="0,0,0,8"
+                            <CheckBox x:Name="LockResistanceChk" IsChecked="{Binding SteeringLockATResistanceEnabled, Mode=TwoWay}" Margin="0,0,0,8"
                                       Content="{Binding Pad_Steering_Lock_ATResistance, Source={x:Static strings:Strings.Instance}}"/>
-                            <Separator Margin="0,8,0,8"/>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                                <TextBlock Text="{Binding Pad_Steering_Lock_PulseMs, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                <Slider Value="{Binding SteeringLockPulseMs, Mode=TwoWay}" Minimum="0" Maximum="2000" Style="{StaticResource DzSlider}"/>
-                                <TextBox Text="{Binding SteeringLockPulseMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                <Button Command="{Binding ResetSteeringLockPulseCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_PulseMs, Source={x:Static strings:Strings.Instance}}"/>
+                            <!-- Pulse length — applies to the rumble / trigger / lightbar PULSE channels. -->
+                            <StackPanel x:Name="LockPulseSection">
+                                <Separator Margin="0,8,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                    <TextBlock Text="{Binding Pad_Steering_Lock_PulseMs, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding SteeringLockPulseMs, Mode=TwoWay}" Minimum="0" Maximum="2000" Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding SteeringLockPulseMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                    <Button Command="{Binding ResetSteeringLockPulseCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_PulseMs, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                             </StackPanel>
+                            <!-- Lightbar colour + fade — only meaningful on a device with a lightbar. -->
+                            <StackPanel x:Name="LockLightbarSection">
                             <Separator Margin="0,8,0,8"/>
                             <!-- Lightbar pulse colour — full picker in a bounding box (matches every other
                                  colour picker): HSV box, swatch, hex field, RGB sliders + fields with per-channel resets -->
@@ -3557,6 +3564,7 @@
                                 <Slider Value="{Binding SteeringLockLightbarFadeMs, Mode=TwoWay}" Minimum="0" Maximum="5000" Style="{StaticResource DzSlider}"/>
                                 <TextBox Text="{Binding SteeringLockLightbarFadeMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
                                 <Button Command="{Binding ResetSteeringLockFadeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_LightbarFadeMs, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
                             </StackPanel>
                         </StackPanel>
                     </Border>

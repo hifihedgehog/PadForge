@@ -286,15 +286,22 @@ namespace PadForge.Services
             _inputManager.HmVcInactivityDestroyed += OnHmVcInactivityDestroyed;
             _inputManager.HmVcWentNonActive += OnHmVcWentNonActive;
 
-            // Expose per-slot button bitmaps to the user-effects dispatcher
-            // so InputReactive lightbar can detect button rising edges.
-            // Bound to the manager via a captured field so .NET keeps the
-            // delegate alive for the manager's lifetime.
+            // Expose per-slot button activity to the user-effects dispatcher so the
+            // InputReactive lightbar can detect rising edges. The 16-bit Gamepad.Buttons
+            // mask is full (DPAD..Y), so two presses that live outside it would otherwise
+            // never flash: the Share / Create button (its own bool field, where a Mic /
+            // Misc1 mapping lands) and the touchpad click. Fold both into the wider uint
+            // mask on spare bits. Bound to the manager via a captured field so .NET keeps
+            // the delegate alive for the manager's lifetime.
             UserEffectsDispatcher.SlotButtonsProvider = padIndex =>
             {
-                if (_inputManager == null) return (ushort)0;
-                if (padIndex < 0 || padIndex >= InputManager.MaxPads) return (ushort)0;
-                return _inputManager.CombinedOutputStates[padIndex].Buttons;
+                if (_inputManager == null) return 0u;
+                if (padIndex < 0 || padIndex >= InputManager.MaxPads) return 0u;
+                var gp = _inputManager.CombinedOutputStates[padIndex];
+                uint mask = gp.Buttons;
+                if (gp.Share) mask |= 0x10000u;                                  // Share / Create / Mic
+                if (_inputManager.CombinedTouchpadStates[padIndex].Click) mask |= 0x20000u; // touchpad click
+                return mask;
             };
 
             // ══════════════════════════════════════════════════════════════

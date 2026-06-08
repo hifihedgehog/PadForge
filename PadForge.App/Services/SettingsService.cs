@@ -716,7 +716,8 @@ namespace PadForge.Services
                 // stuck in a steering mode forever.
                 if (!string.Equals(activeMask, "Base", StringComparison.Ordinal))
                 {
-                    foreach (var target in SteeringChannelTargets)
+                    foreach (var stick in padVm.GetSteerableSticks())
+                    foreach (var target in new[] { stick.XTarget, stick.YTarget })
                     {
                         MappingRow baseRow = null;
                         foreach (var r in ms.Rows)
@@ -743,17 +744,10 @@ namespace PadForge.Services
         private static bool ApplySteeringKindToRow(MappingRow row, string target, PadViewModel padVm, int slot)
         {
             if (row?.Sources == null || row.Sources.Count == 0 || padVm == null) return false;
-            int stickIdx; bool rowIsY;
-            switch (target)
-            {
-                case "LeftThumbAxisX":  stickIdx = 0; rowIsY = false; break;
-                case "LeftThumbAxisY":  stickIdx = 0; rowIsY = true;  break;
-                case "RightThumbAxisX": stickIdx = 1; rowIsY = false; break;
-                case "RightThumbAxisY": stickIdx = 1; rowIsY = true;  break;
-                default: return false;
-            }
-            string xTarget = stickIdx == 0 ? "LeftThumbAxisX" : "RightThumbAxisX";
-            string yTarget = stickIdx == 0 ? "LeftThumbAxisY" : "RightThumbAxisY";
+            // Resolve this row's target to a stick index + its X/Y axis targets, covering both
+            // the standard gamepad pair and an Extended custom layout's numbered sticks.
+            if (!ResolveSteerTarget(padVm, target, out int stickIdx, out bool rowIsY, out string xTarget, out string yTarget))
+                return false;
             bool any = false;
 
             foreach (var src in row.Sources)
@@ -765,7 +759,7 @@ namespace PadForge.Services
                 // Steering Mode with MotionLeanX, reusing this whole stamp (including the
                 // off-axis neutralization below) — so tilt-to-steer needs no separate path.
                 var ms = ReadDeviceMotionSteering(slot, src.DeviceGuid, padVm);
-                if (ms.Enabled && MotionSteerTargetStickIdx(ms.Target) == stickIdx)
+                if (ms.Enabled && MotionSteerTargetStickIdx(padVm, ms.Target) == stickIdx)
                     cfg = (true, "MotionLeanX", cfg.WindRange, cfg.WindPower, cfg.WindUnwind,
                         cfg.AngleInner, cfg.AngleOuter, ms.Inner, ms.Outer, ms.Orient);
                 // AngleToAxisY outputs to the Y channel; every other mode to X. Only stamp
@@ -820,10 +814,6 @@ namespace PadForge.Services
             return any;
         }
 
-        // The four stick-axis targets a steering mode can output to.
-        private static readonly string[] SteeringChannelTargets =
-            { "LeftThumbAxisX", "LeftThumbAxisY", "RightThumbAxisX", "RightThumbAxisY" };
-
         private static bool IsSteeringKind(string k)
             => k == "WindingStick" || k == "AngleToAxisX" || k == "AngleToAxisY" || k == "MotionLeanX";
 
@@ -845,8 +835,10 @@ namespace PadForge.Services
             {
                 var s = padVm.StickConfigs?.FirstOrDefault(x => x.Index == stickIdx);
                 if (s == null) return (false, "Direct", 900, 1, 1800, 0, 10, 15, 135, "Forward");
+                // Motion fields are constants now — per-stick Motion Lean moved to Motion
+                // Steering, which supplies its own inner/outer/orient via the cfg override.
                 return (s.IsSteeringActive, s.SteeringKind, s.WindRangeDeg, s.WindPower, s.WindUnwindRate,
-                    s.AngleInnerDz, s.AngleOuterDz, s.MotionInnerDz, s.MotionOuterDz, s.ControllerOrientation);
+                    s.AngleInnerDz, s.AngleOuterDz, 15, 135, "Forward");
             }
             PadSetting ps = Guid.TryParse(deviceGuid, out var g)
                 ? SettingsManager.FindSettingByInstanceGuidAndSlot(g, slot)?.GetPadSetting()
@@ -860,27 +852,42 @@ namespace PadForge.Services
             double D(string key, double dflt)
                 => double.TryParse(ps.GetExtendedMapping(key), System.Globalization.NumberStyles.Float,
                     System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
-            string orient = ps.GetExtendedMapping($"Stick{stickIdx}SteerOrient");
             return (kind != "Direct", kind,
                 D($"Stick{stickIdx}SteerWindRange", 900),
                 D($"Stick{stickIdx}SteerWindPower", 1),
                 D($"Stick{stickIdx}SteerWindUnwind", 1800),
                 D($"Stick{stickIdx}SteerAngleInner", 0),
                 D($"Stick{stickIdx}SteerAngleOuter", 10),
-                D($"Stick{stickIdx}SteerMotionInner", 15),
-                D($"Stick{stickIdx}SteerMotionOuter", 135),
-                string.IsNullOrEmpty(orient) ? "Forward" : orient);
+                15, 135, "Forward");
         }
 
-        // Maps a Motion Steering target string to a stick index (0 = Left, 1 = Right),
-        // or -1 when it doesn't name a supported stick X axis. Extended-controller stick
-        // axes will slot in here when the steering dispatch grows to cover them.
-        private static int MotionSteerTargetStickIdx(string target) => target switch
+        // Resolves a stick-axis target (standard Left/Right or Extended ExtendedAxis{n}) to a
+        // stick index + whether it's the Y axis, plus that stick's X/Y targets. One code path
+        // for both layouts, driven by the slot's actual sticks (PadViewModel.GetSteerableSticks).
+        private static bool ResolveSteerTarget(PadViewModel padVm, string target,
+            out int stickIdx, out bool rowIsY, out string xTarget, out string yTarget)
         {
-            "LeftThumbAxisX"  => 0,
-            "RightThumbAxisX" => 1,
-            _ => -1,
-        };
+            stickIdx = -1; rowIsY = false; xTarget = ""; yTarget = "";
+            if (string.IsNullOrEmpty(target)) return false;
+            var sticks = padVm.GetSteerableSticks();
+            for (int g = 0; g < sticks.Count; g++)
+            {
+                if (string.Equals(sticks[g].XTarget, target, StringComparison.Ordinal))
+                { stickIdx = g; rowIsY = false; xTarget = sticks[g].XTarget; yTarget = sticks[g].YTarget; return true; }
+                if (string.Equals(sticks[g].YTarget, target, StringComparison.Ordinal))
+                { stickIdx = g; rowIsY = true;  xTarget = sticks[g].XTarget; yTarget = sticks[g].YTarget; return true; }
+            }
+            return false;
+        }
+
+        // The stick index a Motion Steering target (its X axis) maps to, or -1.
+        private static int MotionSteerTargetStickIdx(PadViewModel padVm, string target)
+        {
+            var sticks = padVm.GetSteerableSticks();
+            for (int g = 0; g < sticks.Count; g++)
+                if (string.Equals(sticks[g].XTarget, target, StringComparison.Ordinal)) return g;
+            return -1;
+        }
 
         // Reads one device's Motion Steering config (per slot+device). Mirrors
         // ReadDeviceSteering: the SELECTED device reads the live UI (newer than its
@@ -3248,9 +3255,6 @@ namespace PadForge.Services
                         ps.SetExtendedMapping($"Stick{g}SteerWindUnwind", stick.WindUnwindRate.ToString(ic));
                         ps.SetExtendedMapping($"Stick{g}SteerAngleInner", stick.AngleInnerDz.ToString(ic));
                         ps.SetExtendedMapping($"Stick{g}SteerAngleOuter", stick.AngleOuterDz.ToString(ic));
-                        ps.SetExtendedMapping($"Stick{g}SteerMotionInner", stick.MotionInnerDz.ToString(ic));
-                        ps.SetExtendedMapping($"Stick{g}SteerMotionOuter", stick.MotionOuterDz.ToString(ic));
-                        ps.SetExtendedMapping($"Stick{g}SteerOrient", stick.ControllerOrientation);
                     }
 
                     foreach (var trig in padVm.TriggerConfigs)

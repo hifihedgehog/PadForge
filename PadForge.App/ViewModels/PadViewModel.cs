@@ -1316,21 +1316,54 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _motionSteerEnabled, value);
         }
 
-        // Target stick X axis. Stored as the canonical target string so it
-        // round-trips and can grow to the extended-controller stick axes later
-        // without shifting saved indices. Index 0 = Left Stick X, 1 = Right Stick X.
-        private static readonly string[] MotionSteerTargets = { "LeftThumbAxisX", "RightThumbAxisX" };
-        private int _motionSteerTargetIndex;
-        public int MotionSteerTargetIndex
+        // Target stick X axis, stored as the canonical target string so it round-trips
+        // and works for both a standard gamepad (LeftThumbAxisX / RightThumbAxisX) and an
+        // Extended custom layout (ExtendedAxis{n}). The dropdown options come from
+        // GetSteerableSticks(), which enumerates whatever sticks the slot's output exposes.
+        private string _motionSteerTarget = "LeftThumbAxisX";
+        public string MotionSteerTarget
         {
-            get => _motionSteerTargetIndex;
-            set { if (SetProperty(ref _motionSteerTargetIndex, Math.Clamp(value, 0, MotionSteerTargets.Length - 1))) OnPropertyChanged(nameof(MotionSteerTarget)); }
+            get => _motionSteerTarget;
+            set => SetProperty(ref _motionSteerTarget, string.IsNullOrEmpty(value) ? "LeftThumbAxisX" : value);
         }
-        public string MotionSteerTarget => MotionSteerTargets[Math.Clamp(_motionSteerTargetIndex, 0, MotionSteerTargets.Length - 1)];
-        public void SetMotionSteerTarget(string target)
+        public void SetMotionSteerTarget(string target) => MotionSteerTarget = string.IsNullOrEmpty(target) ? "LeftThumbAxisX" : target;
+
+        /// <summary>The stick X axes this slot's output exposes, as (label, X target, Y target).
+        /// Steering (Motion Steering and the per-stick modes) resolves its target against this
+        /// one list, so a standard gamepad (Left/Right) and an Extended custom layout (one entry
+        /// per thumbstick, using the same interleaved axis layout the rest of the Extended
+        /// pipeline uses) go through the same code.</summary>
+        public IReadOnlyList<(string Label, string XTarget, string YTarget)> GetSteerableSticks()
         {
-            int i = System.Array.IndexOf(MotionSteerTargets, target ?? "");
-            MotionSteerTargetIndex = i >= 0 ? i : 0;
+            var list = new List<(string, string, string)>();
+            if (OutputType == VirtualControllerType.Extended)
+            {
+                ExtendedConfig.ComputeAxisLayout(out var sx, out var sy, out _);
+                for (int g = 0; g < sx.Length && g < sy.Length; g++)
+                {
+                    string label = (g < StickConfigs.Count ? StickConfigs[g].Title : null)
+                        ?? string.Format(Strings.Instance.Extended_Stick_Format, g + 1);
+                    list.Add((label, $"ExtendedAxis{sx[g]}", $"ExtendedAxis{sy[g]}"));
+                }
+            }
+            else
+            {
+                list.Add((Strings.Instance.Btn_LeftStickX,  "LeftThumbAxisX",  "LeftThumbAxisY"));
+                list.Add((Strings.Instance.Btn_RightStickX, "RightThumbAxisX", "RightThumbAxisY"));
+            }
+            return list;
+        }
+
+        /// <summary>Motion Steering target dropdown options (display label + stored X-axis target).
+        /// Recomputed on layout change; the card re-reads it via OnPropertyChanged in RebuildStickConfigs.</summary>
+        public IReadOnlyList<GyroLabeledOption> MotionSteerTargetOptions
+        {
+            get
+            {
+                var opts = new List<GyroLabeledOption>();
+                foreach (var s in GetSteerableSticks()) { var lbl = s.Label; var val = s.XTarget; opts.Add(new GyroLabeledOption(() => lbl, val)); }
+                return opts;
+            }
         }
 
         private double _motionSteerInnerDz = 15;
@@ -1356,13 +1389,13 @@ namespace PadForge.ViewModels
             _resetMotionSteerInnerCommand, _resetMotionSteerOuterCommand,
             _resetMotionSteerOrientCommand, _resetMotionSteerAllCommand;
         public RelayCommand ResetMotionSteerEnabledCommand => _resetMotionSteerEnabledCommand ??= new RelayCommand(() => MotionSteerEnabled = false);
-        public RelayCommand ResetMotionSteerTargetCommand => _resetMotionSteerTargetCommand ??= new RelayCommand(() => MotionSteerTargetIndex = 0);
+        public RelayCommand ResetMotionSteerTargetCommand => _resetMotionSteerTargetCommand ??= new RelayCommand(() => MotionSteerTarget = "LeftThumbAxisX");
         public RelayCommand ResetMotionSteerInnerCommand => _resetMotionSteerInnerCommand ??= new RelayCommand(() => MotionSteerInnerDz = 15);
         public RelayCommand ResetMotionSteerOuterCommand => _resetMotionSteerOuterCommand ??= new RelayCommand(() => MotionSteerOuterDz = 135);
         public RelayCommand ResetMotionSteerOrientCommand => _resetMotionSteerOrientCommand ??= new RelayCommand(() => MotionSteerOrientIndex = 0);
         public RelayCommand ResetMotionSteerAllCommand => _resetMotionSteerAllCommand ??= new RelayCommand(() =>
         {
-            MotionSteerEnabled = false; MotionSteerTargetIndex = 0;
+            MotionSteerEnabled = false; MotionSteerTarget = "LeftThumbAxisX";
             MotionSteerInnerDz = 15; MotionSteerOuterDz = 135; MotionSteerOrientIndex = 0;
         });
 
@@ -2563,6 +2596,8 @@ namespace PadForge.ViewModels
             // Steering isn't in SyncStickItemFromVm, so the fresh items default to mode-off.
             // Re-load the selected device's steering into them (host wires this).
             SteeringReloadCallback?.Invoke();
+            // The Motion Steering target list depends on this slot's sticks.
+            OnPropertyChanged(nameof(MotionSteerTargetOptions));
         }
 
         /// <summary>
@@ -2738,9 +2773,7 @@ namespace PadForge.ViewModels
                     stick.WindUnwindRate = ParseSteerDouble(get($"Stick{g}SteerWindUnwind"), 1800);
                     stick.AngleInnerDz = ParseSteerDouble(get($"Stick{g}SteerAngleInner"), 0);
                     stick.AngleOuterDz = ParseSteerDouble(get($"Stick{g}SteerAngleOuter"), 10);
-                    stick.MotionInnerDz = ParseSteerDouble(get($"Stick{g}SteerMotionInner"), 15);
-                    stick.MotionOuterDz = ParseSteerDouble(get($"Stick{g}SteerMotionOuter"), 135);
-                    stick.SetControllerOrientation(get($"Stick{g}SteerOrient"));
+                    // Motion-lean tuning moved to Motion Steering (loaded separately).
                 }
             }
             finally { _syncingConfigItems = prev; }
@@ -2769,8 +2802,6 @@ namespace PadForge.ViewModels
             nameof(StickConfigItem.SteeringModeIndex),
             nameof(StickConfigItem.WindRangeDeg), nameof(StickConfigItem.WindPower), nameof(StickConfigItem.WindUnwindRate),
             nameof(StickConfigItem.AngleInnerDz), nameof(StickConfigItem.AngleOuterDz),
-            nameof(StickConfigItem.MotionInnerDz), nameof(StickConfigItem.MotionOuterDz),
-            nameof(StickConfigItem.ControllerOrientationIndex),
         };
 
         private static readonly System.Collections.Generic.HashSet<string> TriggerConfigPropertyNames = new()

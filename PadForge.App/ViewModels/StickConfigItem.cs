@@ -416,24 +416,9 @@ namespace PadForge.ViewModels
         private double _angleOuterDz = 10;
         public double AngleOuterDz { get => _angleOuterDz; set => SetProperty(ref _angleOuterDz, Math.Clamp(value, 0, 89)); }
 
-        private double _motionInnerDz = 15;
-        public double MotionInnerDz { get => _motionInnerDz; set => SetProperty(ref _motionInnerDz, Math.Clamp(value, 0, 179)); }
-        private double _motionOuterDz = 135;
-        public double MotionOuterDz { get => _motionOuterDz; set => SetProperty(ref _motionOuterDz, Math.Clamp(value, 0, 179)); }
-
-        private static readonly string[] OrientationValues = { "Forward", "Left", "Right", "Backward" };
-        private int _controllerOrientationIndex; // 0 = Forward
-        public int ControllerOrientationIndex
-        {
-            get => _controllerOrientationIndex;
-            set { if (SetProperty(ref _controllerOrientationIndex, Math.Clamp(value, 0, 3))) OnPropertyChanged(nameof(ControllerOrientation)); }
-        }
-        public string ControllerOrientation => OrientationValues[Math.Clamp(_controllerOrientationIndex, 0, 3)];
-        public void SetControllerOrientation(string o)
-        {
-            int i = Array.IndexOf(OrientationValues, o ?? "Forward");
-            ControllerOrientationIndex = i >= 0 ? i : 0;
-        }
+        // Motion-lean deadzones + controller orientation moved to PadViewModel's
+        // Motion Steering (gyro tab); the per-stick steering modes here are Winding
+        // and Angle only, which use the Wind*/Angle* params above.
 
         private ICommand _resetSteeringModeCommand;
         public ICommand ResetSteeringModeCommand => _resetSteeringModeCommand ??= new RelayCommand(() => SteeringModeIndex = 0);
@@ -444,10 +429,6 @@ namespace PadForge.ViewModels
         private ICommand _resetAngleInnerDzCommand, _resetAngleOuterDzCommand;
         public ICommand ResetAngleInnerDzCommand => _resetAngleInnerDzCommand ??= new RelayCommand(() => AngleInnerDz = 0);
         public ICommand ResetAngleOuterDzCommand => _resetAngleOuterDzCommand ??= new RelayCommand(() => AngleOuterDz = 10);
-        private ICommand _resetMotionInnerDzCommand, _resetMotionOuterDzCommand, _resetControllerOrientationCommand;
-        public ICommand ResetMotionInnerDzCommand => _resetMotionInnerDzCommand ??= new RelayCommand(() => MotionInnerDz = 15);
-        public ICommand ResetMotionOuterDzCommand => _resetMotionOuterDzCommand ??= new RelayCommand(() => MotionOuterDz = 135);
-        public ICommand ResetControllerOrientationCommand => _resetControllerOrientationCommand ??= new RelayCommand(() => ControllerOrientationIndex = 0);
 
         // ── Reset commands ──
 
@@ -465,7 +446,6 @@ namespace PadForge.ViewModels
             SteeringModeIndex = 0;
             WindRangeDeg = 900; WindPower = 1; WindUnwindRate = 1800;
             AngleInnerDz = 0; AngleOuterDz = 10;
-            MotionInnerDz = 15; MotionOuterDz = 135; ControllerOrientationIndex = 0;
         });
 
         private ICommand _resetDeadZoneShapeCommand;

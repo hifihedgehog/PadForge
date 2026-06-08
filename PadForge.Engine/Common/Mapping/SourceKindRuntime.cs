@@ -232,7 +232,14 @@ namespace PadForge.Engine.Common.Mapping
             if (src == null) return 0;
             var key = (slotIndex, target ?? "", sourceIndex);
             var grav = SourceCoercion.GravityProvider?.Invoke(deviceGuid ?? "") ?? (0f, 0f, -1f);
-            double gx = grav.gx, gy = grav.gy, gz = grav.gz;
+            // The provider returns the raw accelerometer = the reaction force, which reads
+            // +1g UP at rest. The JSM-derived lean math below expects the gravity-DOWN vector
+            // (JoyShockMapper negates accel into gravity, so its grav.y is -1g at rest and its
+            // "grav.y > 0 -> 180 - angle" fold only fires when the pad is actually upside down).
+            // Negate to that same convention; otherwise the fold fires at rest and pins the
+            // output to full lock, flipping sign with the tiny side component — the observed
+            // hard left/right jump with no proportional middle. (JSM main.cpp:393, 916-948.)
+            double gx = -grav.gx, gy = -grav.gy, gz = -grav.gz;
             double gLen = Math.Sqrt(gx * gx + gy * gy + gz * gz);
             if (gLen <= 0) { UpdateLock(key, 0); return 0; }
 

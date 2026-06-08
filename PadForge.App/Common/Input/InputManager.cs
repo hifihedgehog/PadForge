@@ -134,6 +134,13 @@ namespace PadForge.Common.Input
         /// </summary>
         public TouchpadState[] CombinedTouchpadStates { get; } = new TouchpadState[MaxPads];
 
+        /// <summary>Per-slot raw physical touchpad-click flag (any assigned device's
+        /// SDL_GAMEPAD_BUTTON_TOUCHPAD = InputState.Buttons[16]), OR'd across devices each
+        /// frame in Step 3 regardless of virtual-controller type or click mapping. The
+        /// InputReactive lightbar reads this so a touchpad press flashes even on a
+        /// non-PlayStation virtual (where TouchpadOutputState is never computed).</summary>
+        public bool[] SlotRawTouchpadClick { get; } = new bool[MaxPads];
+
         /// <summary>Per-(slot, device, touchpad-pad-index) gesture
         /// recognizer state. Slot-keyed so two slots sharing one
         /// physical touchpad each keep their own context and settings —

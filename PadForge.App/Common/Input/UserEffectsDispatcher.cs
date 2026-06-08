@@ -102,7 +102,7 @@ namespace PadForge.Common.Input
         /// <c>InputManager.CombinedOutputStates[i].Buttons</c>. Used by
         /// <see cref="LightbarMode.InputReactive"/> to detect rising edges
         /// and enqueue a fading pulse.</summary>
-        public static Func<int, ushort> SlotButtonsProvider { get; set; }
+        public static Func<int, uint> SlotButtonsProvider { get; set; }
 
         /// <summary>Static provider for the current rumble state of a
         /// given (slot, physical device) pair, returned as 8-bit
@@ -205,7 +205,7 @@ namespace PadForge.Common.Input
         private uint _randomColor;
         private bool _audioOnsetActive;
         private long _pulseStartMs;
-        private ushort _lastButtons;
+        private uint _lastButtons;
         private readonly Random _rng = new Random();
 
         private sealed class DeviceState
@@ -893,8 +893,8 @@ namespace PadForge.Common.Input
             // Slot-level button-press detection — one rising-edge event
             // per tick fans out to every per-device pulse below.
             var provider = SlotButtonsProvider;
-            ushort buttons = provider != null ? provider(_padIndex) : (ushort)0;
-            ushort newlyPressed = (ushort)(buttons & ~_lastButtons);
+            uint buttons = provider != null ? provider(_padIndex) : 0u;
+            uint newlyPressed = buttons & ~_lastButtons;
             _lastButtons = buttons;
             if (newlyPressed == 0) return;
 

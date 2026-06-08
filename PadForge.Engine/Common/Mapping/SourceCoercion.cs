@@ -513,10 +513,10 @@ namespace PadForge.Engine.Common.Mapping
         }
 
         /// <summary>True for "Gyro Pitch" / "Gyro Yaw" / "Gyro Roll"
-        /// descriptors. Public so SourceEvaluator can decide between
-        /// rate-direct coercion (mouse / scroll targets) and rate-
-        /// additive integration (virtual stick targets) without
-        /// re-parsing.</summary>
+        /// descriptors. Public so SourceEvaluator can special-case gyro:
+        /// both stick and mouse targets are rate-direct, and the stick
+        /// (absolute-axis) path flips the sign so the stick deflects toward
+        /// the twist. Saves SourceEvaluator re-parsing the descriptor.</summary>
         public static bool IsGyroDescriptor(string descriptor)
             => !string.IsNullOrEmpty(descriptor)
             && descriptor.StartsWith("Gyro ", StringComparison.Ordinal);

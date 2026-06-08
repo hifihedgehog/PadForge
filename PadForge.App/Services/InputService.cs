@@ -300,7 +300,7 @@ namespace PadForge.Services
                 var gp = _inputManager.CombinedOutputStates[padIndex];
                 uint mask = gp.Buttons;
                 if (gp.Share) mask |= 0x10000u;                                  // Share / Create / Mic
-                if (_inputManager.CombinedTouchpadStates[padIndex].Click) mask |= 0x20000u; // touchpad click
+                if (_inputManager.SlotRawTouchpadClick[padIndex]) mask |= 0x20000u; // raw touchpad click
                 return mask;
             };
 

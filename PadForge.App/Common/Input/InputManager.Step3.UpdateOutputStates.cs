@@ -42,6 +42,9 @@ namespace PadForge.Common.Input
             // same frame skip rows already written.
             BeginFrameMultiSourceTracking();
 
+            // Clear the per-slot raw touchpad-click flags; they're re-OR'd per device below.
+            System.Array.Clear(SlotRawTouchpadClick, 0, SlotRawTouchpadClick.Length);
+
             // Snapshot settings into pre-allocated buffer (no LINQ allocation).
             int snapshotCount;
             lock (SettingsManager.UserSettings.SyncRoot)
@@ -96,6 +99,18 @@ namespace PadForge.Common.Input
                         us.OutputState = MapInputToGamepad(ud.InputState, ps, out rawMapped);
                     }
                     us.RawMappedState = rawMapped;
+
+                    // Raw physical touchpad click (SDL_GAMEPAD_BUTTON_TOUCHPAD = Buttons[16]),
+                    // OR'd into the per-slot flag for the InputReactive lightbar so the press
+                    // flashes regardless of virtual-controller type or click mapping. Done here
+                    // (not via TouchpadOutputState) because that's only computed for PlayStation
+                    // slots and reflects the click's mapping, not the physical press.
+                    if (slotIndex >= 0 && slotIndex < MaxPads)
+                    {
+                        var rawButtons = ud.InputState.Buttons;
+                        if (rawButtons != null && rawButtons.Length > 16 && rawButtons[16])
+                            SlotRawTouchpadClick[slotIndex] = true;
+                    }
 
                     // Steering at-lock haptic feedback (#94). The MappingSet eval above
                     // updated this frame's lock state; fire the opt-in channels now.

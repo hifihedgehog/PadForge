@@ -1740,4 +1740,5 @@
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Reset Trigger Vibration on Lock</value></data>
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Reset Lightbar Pulse on Lock</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Reset Trigger Resistance near Lock</value></data>
+  <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Add colors to step through, one per lock.</value></data>
 </root>

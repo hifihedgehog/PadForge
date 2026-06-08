@@ -1676,4 +1676,5 @@
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Restablecer vibración del gatillo al llegar al tope</value></data>
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Restablecer pulso de barra de luz al llegar al tope</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Restablecer resistencia del gatillo cerca del tope</value></data>
+  <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Agrega colores para recorrer, uno por cada tope.</value></data>
 </root>

@@ -1676,4 +1676,5 @@
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>重置到达极限时扳机振动</value></data>
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>重置到达极限时灯条脉冲</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>重置接近极限时扳机阻力</value></data>
+  <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>添加要逐个循环的颜色，每次锁定切换一个。</value></data>
 </root>

@@ -276,8 +276,16 @@ namespace PadForge.Engine.Data
         [XmlElement] public string SteeringLockATResistanceEnabled { get; set; } = "0";
         /// <summary>Lock-entry rumble / trigger pulse length in ms.</summary>
         [XmlElement] public string SteeringLockPulseMs             { get; set; } = "80";
-        /// <summary>Lock lightbar pulse color (hex #RRGGBB).</summary>
+        /// <summary>Lock lightbar pulse color (hex #RRGGBB), used when the color
+        /// source is Fixed.</summary>
         [XmlElement] public string SteeringLockLightbarColor       { get; set; } = "#FF0000";
+        /// <summary>Lock lightbar color source: "Fixed" (the color above), "RandomHue"
+        /// (a fresh random hue each lock), or "PaletteStep" (advance through the dedicated
+        /// steering palette below). Mirrors the macro lightbar's color modes.</summary>
+        [XmlElement] public string SteeringLockLightbarColorSource { get; set; } = "Fixed";
+        /// <summary>Dedicated palette for the PaletteStep color source — CSV of "RRGGBB"
+        /// hex triplets. Used only by the steering lock, never shared with another section.</summary>
+        [XmlElement] public string SteeringLockLightbarPaletteCsv  { get; set; } = "";
         /// <summary>Lock lightbar fade-back length in ms on exit.</summary>
         [XmlElement] public string SteeringLockLightbarFadeMs      { get; set; } = "250";
 
@@ -1114,6 +1122,8 @@ namespace PadForge.Engine.Data
             sb.Append(SteeringLockATResistanceEnabled); sb.Append('|');
             sb.Append(SteeringLockPulseMs); sb.Append('|');
             sb.Append(SteeringLockLightbarColor); sb.Append('|');
+            sb.Append(SteeringLockLightbarColorSource); sb.Append('|');
+            sb.Append(SteeringLockLightbarPaletteCsv); sb.Append('|');
             sb.Append(SteeringLockLightbarFadeMs); sb.Append('|');
             sb.Append(ForceSwapMotor); sb.Append('|');
             sb.Append(LeftMotorStrength); sb.Append('|');
@@ -1539,6 +1549,7 @@ namespace PadForge.Engine.Data
             nameof(SteeringLockRumbleEnabled), nameof(SteeringLockTriggerVibEnabled),
             nameof(SteeringLockLightbarEnabled), nameof(SteeringLockATResistanceEnabled),
             nameof(SteeringLockPulseMs), nameof(SteeringLockLightbarColor), nameof(SteeringLockLightbarFadeMs),
+            nameof(SteeringLockLightbarColorSource), nameof(SteeringLockLightbarPaletteCsv),
             // Impulse trigger motors (Xbox One+)
             nameof(ImpulseOverallGain),
             nameof(ImpulseLeftStrength), nameof(ImpulseRightStrength),

@@ -1676,4 +1676,5 @@
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>ロック時にトリガー振動をリセット</value></data>
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>ロック時にライトバーパルスをリセット</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>ロック付近でトリガー抵抗をリセット</value></data>
+  <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>ロックごとに1色ずつ切り替える色を追加します。</value></data>
 </root>

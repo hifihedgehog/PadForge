@@ -2030,6 +2030,139 @@ namespace PadForge.ViewModels
         private double _steeringLockLightbarFadeMs = 250;
         public double SteeringLockLightbarFadeMs { get => _steeringLockLightbarFadeMs; set => SetProperty(ref _steeringLockLightbarFadeMs, Math.Clamp(value, 0, 5000)); }
 
+        // ── Steering-lock lightbar color source + dedicated palette (#94) ──
+        // Mirrors the macro lightbar's three modes (Fixed base color / RandomHue / PaletteStep).
+        // The palette is dedicated to the steering lock — never shared with the Lighting tab or
+        // a macro. Per device, so it swaps with SelectedMappedDevice: the CSV setter rebuilds the
+        // bound collection on every swap.
+        private MacroLightbarColorSource _steeringLockLightbarColorSource = MacroLightbarColorSource.Fixed;
+        public MacroLightbarColorSource SteeringLockLightbarColorSource
+        {
+            get => _steeringLockLightbarColorSource;
+            set
+            {
+                if (SetProperty(ref _steeringLockLightbarColorSource, value))
+                {
+                    OnPropertyChanged(nameof(IsSteeringLockLightbarFixedColorVisible));
+                    OnPropertyChanged(nameof(IsSteeringLockLightbarPaletteVisible));
+                }
+            }
+        }
+
+        /// <summary>Show the fixed-color picker only for the Fixed source.</summary>
+        public bool IsSteeringLockLightbarFixedColorVisible => _steeringLockLightbarColorSource == MacroLightbarColorSource.Fixed;
+        /// <summary>Show the dedicated palette editor only for the PaletteStep source.</summary>
+        public bool IsSteeringLockLightbarPaletteVisible => _steeringLockLightbarColorSource == MacroLightbarColorSource.PaletteStep;
+
+        private string _steeringLockLightbarPaletteCsv = string.Empty;
+        public string SteeringLockLightbarPaletteCsv
+        {
+            get => _steeringLockLightbarPaletteCsv;
+            set
+            {
+                string v = value ?? string.Empty;
+                if (_steeringLockLightbarPaletteCsv == v) return;
+                _steeringLockLightbarPaletteCsv = v;
+                RebuildSteeringLockPaletteFromCsv();   // keep the bound collection in step (device swap)
+                OnPropertyChanged();
+            }
+        }
+
+        private System.Collections.ObjectModel.ObservableCollection<LightbarPaletteEntry> _steeringLockLightbarPalette;
+        private bool _syncingSteeringLockPalette;
+
+        /// <summary>Editable view of the steering-lock palette, bound by the card's ItemsControl.
+        /// Edits write back to <see cref="SteeringLockLightbarPaletteCsv"/>.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public System.Collections.ObjectModel.ObservableCollection<LightbarPaletteEntry> SteeringLockLightbarPalette
+        {
+            get
+            {
+                if (_steeringLockLightbarPalette == null)
+                {
+                    _steeringLockLightbarPalette = new System.Collections.ObjectModel.ObservableCollection<LightbarPaletteEntry>();
+                    _steeringLockLightbarPalette.CollectionChanged += (_, e) =>
+                    {
+                        if (e.NewItems != null)
+                            foreach (LightbarPaletteEntry n in e.NewItems) n.PropertyChanged += OnSteeringLockPaletteEntryChanged;
+                        if (e.OldItems != null)
+                            foreach (LightbarPaletteEntry o in e.OldItems) o.PropertyChanged -= OnSteeringLockPaletteEntryChanged;
+                        SyncSteeringLockPaletteCsv();   // no-op while the guard is set (populate)
+                    };
+                    PopulateSteeringLockPalette(_steeringLockLightbarPaletteCsv);
+                }
+                return _steeringLockLightbarPalette;
+            }
+        }
+
+        // (Re)fills the bound collection from a CSV. Manually unsubscribes before the Clear
+        // (a Reset raises no OldItems), then lets CollectionChanged re-subscribe each Add.
+        // Guarded so neither the clear nor the adds write back over the CSV being loaded.
+        private void PopulateSteeringLockPalette(string csv)
+        {
+            _syncingSteeringLockPalette = true;
+            try
+            {
+                foreach (var e in _steeringLockLightbarPalette) e.PropertyChanged -= OnSteeringLockPaletteEntryChanged;
+                _steeringLockLightbarPalette.Clear();
+                foreach (var (r, g, b) in ParseLightbarPaletteCsv(csv))
+                    _steeringLockLightbarPalette.Add(new LightbarPaletteEntry { R = r, G = g, B = b });
+            }
+            finally { _syncingSteeringLockPalette = false; }
+        }
+
+        private void RebuildSteeringLockPaletteFromCsv()
+        {
+            if (_steeringLockLightbarPalette == null) return; // not materialized; getter builds it
+            PopulateSteeringLockPalette(_steeringLockLightbarPaletteCsv);
+            OnPropertyChanged(nameof(SteeringLockLightbarPalette));
+        }
+
+        private void OnSteeringLockPaletteEntryChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is nameof(LightbarPaletteEntry.R) or nameof(LightbarPaletteEntry.G) or nameof(LightbarPaletteEntry.B))
+                SyncSteeringLockPaletteCsv();
+        }
+
+        private void SyncSteeringLockPaletteCsv()
+        {
+            if (_syncingSteeringLockPalette || _steeringLockLightbarPalette == null) return;
+            var sb = new System.Text.StringBuilder();
+            for (int i = 0; i < _steeringLockLightbarPalette.Count; i++)
+            {
+                if (i > 0) sb.Append(',');
+                var e = _steeringLockLightbarPalette[i];
+                sb.Append($"{e.R:X2}{e.G:X2}{e.B:X2}");
+            }
+            string csv = sb.ToString();
+            if (_steeringLockLightbarPaletteCsv != csv)
+            {
+                _steeringLockLightbarPaletteCsv = csv;   // direct write; the collection is already current
+                OnPropertyChanged(nameof(SteeringLockLightbarPaletteCsv));
+            }
+        }
+
+        private static System.Collections.Generic.IEnumerable<(byte r, byte g, byte b)> ParseLightbarPaletteCsv(string csv)
+        {
+            if (string.IsNullOrWhiteSpace(csv)) yield break;
+            foreach (var raw in csv.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+            {
+                if (raw.Length != 6) continue;
+                if (byte.TryParse(raw.AsSpan(0, 2), System.Globalization.NumberStyles.HexNumber, null, out var r)
+                 && byte.TryParse(raw.AsSpan(2, 2), System.Globalization.NumberStyles.HexNumber, null, out var g)
+                 && byte.TryParse(raw.AsSpan(4, 2), System.Globalization.NumberStyles.HexNumber, null, out var b))
+                    yield return (r, g, b);
+            }
+        }
+
+        private ICommand _addSteeringLockPaletteColorCommand;
+        public ICommand AddSteeringLockPaletteColorCommand => _addSteeringLockPaletteColorCommand ??= new RelayCommand(() =>
+            SteeringLockLightbarPalette.Add(new LightbarPaletteEntry { R = 0xFF, G = 0xFF, B = 0xFF }));
+
+        private ICommand _removeSteeringLockPaletteColorCommand;
+        public ICommand RemoveSteeringLockPaletteColorCommand => _removeSteeringLockPaletteColorCommand ??= new RelayCommand<LightbarPaletteEntry>(entry =>
+        { if (entry != null) SteeringLockLightbarPalette.Remove(entry); });
+
         // Per-channel colour resets (match the other lightbar pickers); each resets its
         // channel to the #FF0000 default component, funneling through the hex setter.
         private ICommand _resetSteeringLockColorRCommand;
@@ -2067,6 +2200,8 @@ namespace PadForge.ViewModels
             SteeringLockPulseMs = 80;
             SteeringLockLightbarFadeMs = 250;
             SteeringLockLightbarColor = "#FF0000";
+            SteeringLockLightbarColorSource = MacroLightbarColorSource.Fixed;
+            SteeringLockLightbarPaletteCsv = string.Empty;
         });
 
         private double _constantForceX;

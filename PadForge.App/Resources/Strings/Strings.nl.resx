@@ -1696,4 +1696,5 @@
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Triggervibratie bij stuuraanslag resetten</value></data>
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Lightbar-puls bij stuuraanslag resetten</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Triggerweerstand nabij stuuraanslag resetten</value></data>
+  <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Voeg kleuren toe om te doorlopen, één per stuuraanslag.</value></data>
 </root>

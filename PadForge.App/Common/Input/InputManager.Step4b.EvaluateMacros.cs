@@ -1043,49 +1043,23 @@ namespace PadForge.Common.Input
             if (slotIndex < 0 || slotIndex >= MaxPads) return;
 
             // Resolve the color ONCE for the whole slot so every device
-            // gets the same flash. PaletteStep with empty per-macro
-            // palette falls back to the slot's first device's palette
-            // (deterministic; any device's palette would do — the macro
-            // is slot-level by design and the user controls the
-            // per-macro palette explicitly).
+            // gets the same flash. Sticky always uses Fixed; Reactive resolves
+            // by the color source (PaletteStep falls back to the slot's palette
+            // when the per-macro palette is empty).
             byte r, g, b;
-            if (action.LightbarHoldMode == MacroLightbarHoldMode.Sticky
-                || action.LightbarColorSource == MacroLightbarColorSource.Fixed)
+            if (action.LightbarHoldMode == MacroLightbarHoldMode.Sticky)
             {
                 r = action.LightbarR;
                 g = action.LightbarG;
                 b = action.LightbarB;
             }
-            else if (action.LightbarColorSource == MacroLightbarColorSource.RandomHue)
+            else
             {
-                int h = _macroLightbarRng.Next(0, 360);
-                HsvToRgb(h, 1.0, 1.0, out r, out g, out b);
-            }
-            else // PaletteStep
-            {
-                var palette = ParseMacroPaletteCsv(action.LightbarPaletteCsv);
-                if (palette.Length == 0)
-                {
-                    foreach (var devCfg in EnumerateSlotPlayStationConfigs(slotIndex))
-                    {
-                        palette = devCfg.SnapshotLightbarPalette();
-                        if (palette.Length > 0) break;
-                    }
-                }
-                if (palette.Length > 0)
-                {
-                    int idx = (action.LightbarCycleIndex % palette.Length + palette.Length) % palette.Length;
-                    var entry = palette[idx];
-                    r = entry.R; g = entry.G; b = entry.B;
-                    action.LightbarCycleIndex = idx + 1;
-                }
-                else
-                {
-                    // Empty palette across the slot — treat as off so the
-                    // user gets feedback that their selection isn't
-                    // producing a visible result.
-                    r = 0; g = 0; b = 0;
-                }
+                int ci = action.LightbarCycleIndex;
+                (r, g, b) = ResolveOverrideLightbarColor(slotIndex, action.LightbarColorSource,
+                    action.LightbarR, action.LightbarG, action.LightbarB, action.LightbarPaletteCsv,
+                    ref ci, slotPaletteFallback: true);
+                action.LightbarCycleIndex = ci;
             }
 
             DateTime now = DateTime.UtcNow;
@@ -1121,6 +1095,46 @@ namespace PadForge.Common.Input
                 psCfg.MacroOverrideHoldEndUtc = holdEnd;
                 psCfg.MacroOverrideExpiresAtUtc = expiresAt;
             }
+        }
+
+        /// <summary>Resolves the RGB for an override lightbar fire from a color source,
+        /// shared by the macro lightbar action and the steering-lock lightbar cue. Fixed →
+        /// the given RGB; RandomHue → a fresh random hue; PaletteStep → the next entry of
+        /// <paramref name="paletteCsv"/>, advancing <paramref name="cycleIndex"/>. When the
+        /// palette is empty: macros (<paramref name="slotPaletteFallback"/> = true) fall back
+        /// to the slot's Lighting-tab palette; a dedicated palette (steering) does not — it
+        /// resolves to off so the empty selection is visibly inert.</summary>
+        private (byte r, byte g, byte b) ResolveOverrideLightbarColor(
+            int slotIndex, MacroLightbarColorSource source,
+            byte fr, byte fg, byte fb, string paletteCsv, ref int cycleIndex, bool slotPaletteFallback)
+        {
+            if (source == MacroLightbarColorSource.RandomHue)
+            {
+                int h = _macroLightbarRng.Next(0, 360);
+                HsvToRgb(h, 1.0, 1.0, out byte rr, out byte gg, out byte bb);
+                return (rr, gg, bb);
+            }
+            if (source == MacroLightbarColorSource.PaletteStep)
+            {
+                var palette = ParseMacroPaletteCsv(paletteCsv);
+                if (palette.Length == 0 && slotPaletteFallback)
+                {
+                    foreach (var devCfg in EnumerateSlotPlayStationConfigs(slotIndex))
+                    {
+                        palette = devCfg.SnapshotLightbarPalette();
+                        if (palette.Length > 0) break;
+                    }
+                }
+                if (palette.Length > 0)
+                {
+                    int idx = (cycleIndex % palette.Length + palette.Length) % palette.Length;
+                    var entry = palette[idx];
+                    cycleIndex = idx + 1;
+                    return (entry.R, entry.G, entry.B);
+                }
+                return (0, 0, 0);
+            }
+            return (fr, fg, fb); // Fixed
         }
 
         /// <summary>Pushes a Rumble action's override into the slot's

@@ -1676,4 +1676,5 @@
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Trigger-Vibration am Anschlag zurücksetzen</value></data>
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Lightbar-Puls am Anschlag zurücksetzen</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Trigger-Widerstand nahe Anschlag zurücksetzen</value></data>
+  <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Farben hinzufügen, die pro Anschlag nacheinander durchlaufen werden.</value></data>
 </root>

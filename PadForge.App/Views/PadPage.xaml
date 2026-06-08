@@ -3524,6 +3524,7 @@
                                     <TextBlock Text="{Binding Pad_Steering_Lock_PulseMs, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <Slider Value="{Binding SteeringLockPulseMs, Mode=TwoWay}" Minimum="0" Maximum="2000" Style="{StaticResource DzSlider}"/>
                                     <TextBox Text="{Binding SteeringLockPulseMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="ms" Style="{StaticResource DzPercent}"/>
                                     <Button Command="{Binding ResetSteeringLockPulseCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_PulseMs, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
@@ -3588,6 +3589,7 @@
                                 <TextBlock Text="{Binding Pad_Steering_Lock_LightbarFadeMs, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                 <Slider Value="{Binding SteeringLockLightbarFadeMs, Mode=TwoWay}" Minimum="0" Maximum="5000" Style="{StaticResource DzSlider}"/>
                                 <TextBox Text="{Binding SteeringLockLightbarFadeMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                <TextBlock Text="ms" Style="{StaticResource DzPercent}"/>
                                 <Button Command="{Binding ResetSteeringLockFadeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_LightbarFadeMs, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
                             </StackPanel>

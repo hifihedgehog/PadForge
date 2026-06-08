@@ -1676,4 +1676,5 @@
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>끝점에서 트리거 진동 재설정</value></data>
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>끝점에서 라이트바 펄스 재설정</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>끝점 부근 트리거 저항 재설정</value></data>
+  <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>끝점마다 하나씩 전환할 색을 추가하세요.</value></data>
 </root>

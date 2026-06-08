@@ -25,6 +25,10 @@ namespace PadForge.Common.Input
         /// trigger resistance as a steering source approaches lock. 0 = inactive.</summary>
         public readonly float[] SteeringAtResistance = new float[MaxPads];
 
+        /// <summary>Per-slot PaletteStep cursor for the steering-lock lightbar's dedicated
+        /// palette, advancing one entry per lock entry. Not persisted — restarts at 0.</summary>
+        private readonly int[] _steeringLightbarCycleIndex = new int[MaxPads];
+
         /// <summary>Current steering trigger-vibration pulse strength (0..1) for the slot,
         /// from the channel-2 lock-feedback override. Read by both the Xbox impulse-trigger
         /// combine in ApplyForceFeedback and the DualSense AT-vibration block in the
@@ -116,8 +120,18 @@ namespace PadForge.Common.Input
         // same reactive macro-override channel the macro system uses.
         private void FireSteeringLightbar(int slotIndex, PadSetting ps, int holdMs, int fadeMs)
         {
-            if (!TryParseHexColor(ps.SteeringLockLightbarColor, out byte r, out byte g, out byte b))
-            { r = 0xFF; g = 0; b = 0; }
+            // Base / Fixed color.
+            if (!TryParseHexColor(ps.SteeringLockLightbarColor, out byte fr, out byte fg, out byte fb))
+            { fr = 0xFF; fg = 0; fb = 0; }
+            // Resolve by the steering lock's own color source. Its palette is dedicated to the
+            // steering lock (slotPaletteFallback: false), so PaletteStep with an empty palette
+            // resolves to off — it never borrows another section's colors.
+            var source = ParseSteeringColorSource(ps.SteeringLockLightbarColorSource);
+            int cycle = _steeringLightbarCycleIndex[slotIndex];
+            var (r, g, b) = ResolveOverrideLightbarColor(slotIndex, source, fr, fg, fb,
+                ps.SteeringLockLightbarPaletteCsv, ref cycle, slotPaletteFallback: false);
+            _steeringLightbarCycleIndex[slotIndex] = cycle;
+
             DateTime now = DateTime.UtcNow;
             DateTime holdEnd = now.AddMilliseconds(holdMs);
             DateTime expires = holdEnd.AddMilliseconds(fadeMs);
@@ -141,6 +155,9 @@ namespace PadForge.Common.Input
 
         private static int ParsePositiveInt(string s, int dflt)
             => int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out int v) && v >= 0 ? v : dflt;
+
+        private static MacroLightbarColorSource ParseSteeringColorSource(string s)
+            => Enum.TryParse<MacroLightbarColorSource>(s, out var v) ? v : MacroLightbarColorSource.Fixed;
 
         private static bool TryParseHexColor(string hex, out byte r, out byte g, out byte b)
         {

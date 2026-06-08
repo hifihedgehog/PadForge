@@ -659,6 +659,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Steering_Reset_TriggerVib => Get("Pad_Steering_Reset_TriggerVib");
     public string Pad_Steering_Reset_Lightbar => Get("Pad_Steering_Reset_Lightbar");
     public string Pad_Steering_Reset_ATResistance => Get("Pad_Steering_Reset_ATResistance");
+    public string Pad_Steering_Lock_PaletteEmpty => Get("Pad_Steering_Lock_PaletteEmpty");
     public string Pad_ResetWheel => Get("Pad_ResetWheel");
     public string Pad_ResetRotationRange => Get("Pad_ResetRotationRange");
     public string Pad_ResetAutocenter => Get("Pad_ResetAutocenter");

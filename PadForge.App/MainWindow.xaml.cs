@@ -854,6 +854,8 @@ namespace PadForge
                         nameof(PadViewModel.SteeringLockATResistanceEnabled) or
                         nameof(PadViewModel.SteeringLockPulseMs) or
                         nameof(PadViewModel.SteeringLockLightbarColor) or
+                        nameof(PadViewModel.SteeringLockLightbarColorSource) or
+                        nameof(PadViewModel.SteeringLockLightbarPaletteCsv) or
                         nameof(PadViewModel.SteeringLockLightbarFadeMs))
                     {
                         _settingsService.MarkDirty();

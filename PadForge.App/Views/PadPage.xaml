@@ -3531,8 +3531,20 @@
                             <!-- Lightbar colour + fade — only meaningful on a device with a lightbar. -->
                             <StackPanel x:Name="LockLightbarSection">
                             <Separator Margin="0,8,0,8"/>
-                            <!-- Lightbar pulse colour — full picker in a bounding box (matches every other
-                                 colour picker): HSV box, swatch, hex field, RGB sliders + fields with per-channel resets -->
+                            <!-- Color source: Base color (Fixed) / Random Hue / Palette Step — the three
+                                 macro lightbar modes, with a palette dedicated to the steering lock. -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Text="{Binding Macro_LightbarColorSource_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <ComboBox SelectedValue="{Binding SteeringLockLightbarColorSource, Mode=TwoWay}" SelectedValuePath="Tag" Width="200" VerticalAlignment="Center">
+                                    <ComboBoxItem Content="{Binding Macro_LightbarColorSource_Fixed, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroLightbarColorSource.Fixed}"/>
+                                    <ComboBoxItem Content="{Binding Macro_LightbarColorSource_RandomHue, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroLightbarColorSource.RandomHue}"/>
+                                    <ComboBoxItem Content="{Binding Macro_LightbarColorSource_PaletteStep, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroLightbarColorSource.PaletteStep}"/>
+                                </ComboBox>
+                            </StackPanel>
+                            <!-- Fixed base color — full picker in a bounding box (matches every other
+                                 colour picker): HSV box, swatch, hex field, RGB sliders + per-channel resets.
+                                 Shown only for the Fixed source. -->
+                            <StackPanel Visibility="{Binding IsSteeringLockLightbarFixedColorVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <TextBlock Text="{Binding Pad_Steering_Lock_LightbarColor, Source={x:Static strings:Strings.Instance}}" Margin="0,0,0,4"/>
                             <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,8"
                                     HorizontalAlignment="Left"
@@ -3585,6 +3597,38 @@
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
+                            </StackPanel>
+                            <!-- Dedicated palette — shown only for the Palette Step source. Its own colors,
+                                 stepped through one per lock entry, used only by the steering lock. -->
+                            <StackPanel Margin="0,0,0,8"
+                                        Visibility="{Binding IsSteeringLockLightbarPaletteVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Text="{Binding Macro_LightbarPalette_Label, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                <TextBlock Text="{Binding Pad_Steering_Lock_PaletteEmpty, Source={x:Static strings:Strings.Instance}}"
+                                           FontSize="11" TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,4"/>
+                                <ItemsControl ItemsSource="{Binding SteeringLockLightbarPalette}" Margin="0,0,0,4">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate><WrapPanel Orientation="Horizontal"/></ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type vm:LightbarPaletteEntry}">
+                                            <Border BorderThickness="1" CornerRadius="4" Padding="6" Margin="0,0,6,6"
+                                                    BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                                <StackPanel>
+                                                    <Button Command="{Binding DataContext.RemoveSteeringLockPaletteColorCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}" HorizontalAlignment="Right" Margin="0,0,0,4" Padding="4,0" MinWidth="20"
+                                                            ToolTip="{Binding Pad_Lighting_RemoveColor, Source={x:Static strings:Strings.Instance}}">
+                                                        <TextBlock Text="&#xE738;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                                                    </Button>
+                                                    <views:ColorPickerControl HorizontalAlignment="Left"
+                                                        Red="{Binding R, Mode=TwoWay}" Green="{Binding G, Mode=TwoWay}" Blue="{Binding B, Mode=TwoWay}"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <Button Content="{Binding Pad_Lighting_AddColor, Source={x:Static strings:Strings.Instance}}"
+                                        Command="{Binding AddSteeringLockPaletteColorCommand}" HorizontalAlignment="Left" Padding="8,2"/>
+                            </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                                 <TextBlock Text="{Binding Pad_Steering_Lock_LightbarFadeMs, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                 <Slider Value="{Binding SteeringLockLightbarFadeMs, Mode=TwoWay}" Minimum="0" Maximum="5000" Style="{StaticResource DzSlider}"/>

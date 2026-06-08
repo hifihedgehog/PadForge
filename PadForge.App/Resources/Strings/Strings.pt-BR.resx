@@ -1676,4 +1676,5 @@
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Redefinir Vibração do gatilho no batente</value></data>
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Redefinir Pulso da barra de luz no batente</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Redefinir Resistência do gatilho perto do batente</value></data>
+  <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Adicione cores para percorrer, uma por batente.</value></data>
 </root>

@@ -1676,4 +1676,5 @@
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Réinitialiser vibration des gâchettes en butée</value></data>
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Réinitialiser pulsation de la barre lumineuse en butée</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Réinitialiser résistance des gâchettes à l'approche de la butée</value></data>
+  <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Ajoutez des couleurs à parcourir, une par butée.</value></data>
 </root>

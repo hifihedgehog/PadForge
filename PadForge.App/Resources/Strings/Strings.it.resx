@@ -1699,4 +1699,5 @@
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Ripristina impulso della barra luminosa al fine corsa</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Ripristina resistenza dei grilletti in prossimità del fine corsa</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Aggiungi colori da scorrere, uno per ogni fine corsa.</value></data>
+  <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Ripristina mantenimento barra luminosa</value></data>
 </root>

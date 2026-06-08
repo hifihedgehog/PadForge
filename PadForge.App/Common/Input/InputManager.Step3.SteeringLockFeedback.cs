@@ -69,8 +69,9 @@ namespace PadForge.Common.Input
             Guid testTarget = TestRumbleTargetGuid[slotIndex];
             bool deviceAllowed = testTarget == Guid.Empty || (ud != null && ud.InstanceGuid == testTarget);
 
-            int pulseMs = ParsePositiveInt(ps.SteeringLockPulseMs, 80);
-            int fadeMs  = ParsePositiveInt(ps.SteeringLockLightbarFadeMs, 250);
+            int pulseMs        = ParsePositiveInt(ps.SteeringLockPulseMs, 80);          // rumble / trigger pulse
+            int lightbarHoldMs = ParsePositiveInt(ps.SteeringLockLightbarHoldMs, 80);   // lightbar hold (its own)
+            int fadeMs         = ParsePositiveInt(ps.SteeringLockLightbarFadeMs, 250);  // lightbar decay
 
             float maxApproach = 0f;
             foreach (var row in ms.Rows)
@@ -102,9 +103,9 @@ namespace PadForge.Common.Input
                         // trigger actuators.
                         if (trigVib)
                             SteeringTrigVibOverrides[slotIndex]?.FireReactive(80, 80, pulseMs, 30);
-                        // Channel 3: lightbar pulse to the lock color.
+                        // Channel 3: lightbar pulse to the lock color (its own hold + decay).
                         if (lightbar)
-                            FireSteeringLightbar(slotIndex, ps, pulseMs, fadeMs);
+                            FireSteeringLightbar(slotIndex, ps, lightbarHoldMs, fadeMs);
                     }
                     // Exit edge: the reactive rumble / lightbar overrides expire on
                     // their own hold+fade windows, so nothing to do here.

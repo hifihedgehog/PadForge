@@ -1728,7 +1728,7 @@
   <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Lightbar Fade</value></data>
   <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>Reset Pulse Length</value></data>
   <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>Reset Lightbar Color</value></data>
-  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Reset Lightbar Fade</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Reset Lightbar Decay</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Wheel</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Reset Wheel</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Reset Rotation Range</value></data>
@@ -1741,4 +1741,5 @@
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Reset Lightbar Pulse on Lock</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Reset Trigger Resistance near Lock</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Add colors to step through, one per lock.</value></data>
+  <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Reset Lightbar Hold</value></data>
 </root>

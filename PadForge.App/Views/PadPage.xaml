@@ -3517,7 +3517,8 @@
                                           Content="{Binding Pad_Steering_Lock_ATResistance, Source={x:Static strings:Strings.Instance}}"/>
                                 <Button Command="{Binding ResetSteeringLockResistanceCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_ATResistance, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
-                            <!-- Pulse length — applies to the rumble / trigger / lightbar PULSE channels. -->
+                            <!-- Pulse length — the rumble / trigger pulse duration. The lightbar has its
+                                 own Hold + Decay below, so this no longer covers it. -->
                             <StackPanel x:Name="LockPulseSection">
                                 <Separator Margin="0,8,0,8"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
@@ -3604,23 +3605,63 @@
                                         Visibility="{Binding IsSteeringLockLightbarPaletteVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <TextBlock Text="{Binding Macro_LightbarPalette_Label, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"/>
                                 <TextBlock Text="{Binding Pad_Steering_Lock_PaletteEmpty, Source={x:Static strings:Strings.Instance}}"
-                                           FontSize="11" TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,4"/>
+                                           TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
                                 <ItemsControl ItemsSource="{Binding SteeringLockLightbarPalette}" Margin="0,0,0,4">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate><WrapPanel Orientation="Horizontal"/></ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate DataType="{x:Type vm:LightbarPaletteEntry}">
-                                            <Border BorderThickness="1" CornerRadius="4" Padding="6" Margin="0,0,6,6"
+                                            <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,8,8"
                                                     BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
                                                 <StackPanel>
                                                     <Button Command="{Binding DataContext.RemoveSteeringLockPaletteColorCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                            CommandParameter="{Binding}" HorizontalAlignment="Right" Margin="0,0,0,4" Padding="4,0" MinWidth="20"
+                                                            CommandParameter="{Binding}" HorizontalAlignment="Right" Margin="0,0,0,6" Padding="6,2"
                                                             ToolTip="{Binding Pad_Lighting_RemoveColor, Source={x:Static strings:Strings.Instance}}">
-                                                        <TextBlock Text="&#xE738;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                                                        <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
                                                     </Button>
-                                                    <views:ColorPickerControl HorizontalAlignment="Left"
+                                                    <!-- Full picker, same gamut as every other color selector:
+                                                         HSV box, swatch, hex field, RGB sliders + value fields. -->
+                                                    <views:ColorPickerControl Margin="0,0,0,12" HorizontalAlignment="Left"
                                                         Red="{Binding R, Mode=TwoWay}" Green="{Binding G, Mode=TwoWay}" Blue="{Binding B, Mode=TwoWay}"/>
+                                                    <Grid Margin="0,0,0,10">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="64"/>
+                                                            <ColumnDefinition Width="60"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Border Grid.Column="0" Width="48" Height="36" CornerRadius="4" HorizontalAlignment="Left"
+                                                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                            <Border.Background>
+                                                                <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                                    <Binding Path="R"/>
+                                                                    <Binding Path="G"/>
+                                                                    <Binding Path="B"/>
+                                                                </MultiBinding>
+                                                            </Border.Background>
+                                                        </Border>
+                                                        <TextBlock Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
+                                                                   VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                                        <TextBox Grid.Column="2" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                                 FontFamily="Consolas" Padding="6,4"
+                                                                 Text="{Binding Hex, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                                 ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                    </Grid>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                        <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                                        <Slider Value="{Binding R, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                                        <TextBox Text="{Binding R, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                                    </StackPanel>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                        <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                                        <Slider Value="{Binding G, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                                        <TextBox Text="{Binding G, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                                    </StackPanel>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                                        <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                        <Slider Value="{Binding B, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                                        <TextBox Text="{Binding B, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                                    </StackPanel>
                                                 </StackPanel>
                                             </Border>
                                         </DataTemplate>
@@ -3629,8 +3670,17 @@
                                 <Button Content="{Binding Pad_Lighting_AddColor, Source={x:Static strings:Strings.Instance}}"
                                         Command="{Binding AddSteeringLockPaletteColorCommand}" HorizontalAlignment="Left" Padding="8,2"/>
                             </StackPanel>
+                            <!-- Hold + Decay — the reactive pulse on lock: hold the color at full for
+                                 Hold ms, then fade back over Decay ms (matches the macro lightbar). -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="{Binding Macro_LightbarHold_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <Slider Value="{Binding SteeringLockLightbarHoldMs, Mode=TwoWay}" Minimum="0" Maximum="2000" Style="{StaticResource DzSlider}"/>
+                                <TextBox Text="{Binding SteeringLockLightbarHoldMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                <TextBlock Text="ms" Style="{StaticResource DzPercent}"/>
+                                <Button Command="{Binding ResetSteeringLockLightbarHoldCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_LightbarHold, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                                <TextBlock Text="{Binding Pad_Steering_Lock_LightbarFadeMs, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <TextBlock Text="{Binding Macro_LightbarDecay_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                 <Slider Value="{Binding SteeringLockLightbarFadeMs, Mode=TwoWay}" Minimum="0" Maximum="5000" Style="{StaticResource DzSlider}"/>
                                 <TextBox Text="{Binding SteeringLockLightbarFadeMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
                                 <TextBlock Text="ms" Style="{StaticResource DzPercent}"/>

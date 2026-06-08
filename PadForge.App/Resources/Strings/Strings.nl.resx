@@ -1684,7 +1684,7 @@
   <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Lightbar-vervaging</value></data>
   <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>Pulslengte resetten</value></data>
   <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>Lightbar-kleur resetten</value></data>
-  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Lightbar-vervaging resetten</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Lightbar-uitdoving resetten</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Stuur</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Stuur resetten</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Rotatiebereik resetten</value></data>
@@ -1697,4 +1697,5 @@
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Lightbar-puls bij stuuraanslag resetten</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Triggerweerstand nabij stuuraanslag resetten</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Voeg kleuren toe om te doorlopen, één per stuuraanslag.</value></data>
+  <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Lightbar-vasthouden resetten</value></data>
 </root>

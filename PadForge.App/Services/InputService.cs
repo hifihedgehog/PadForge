@@ -2404,6 +2404,7 @@ namespace PadForge.Services
             ps.SteeringLockLightbarColor = padVm.SteeringLockLightbarColor ?? "#FF0000";
             ps.SteeringLockLightbarColorSource = padVm.SteeringLockLightbarColorSource.ToString();
             ps.SteeringLockLightbarPaletteCsv = padVm.SteeringLockLightbarPaletteCsv ?? "";
+            ps.SteeringLockLightbarHoldMs = ((int)padVm.SteeringLockLightbarHoldMs).ToString(ic);
             ps.SteeringLockLightbarFadeMs = ((int)padVm.SteeringLockLightbarFadeMs).ToString(ic);
 
             // Per-stick steering mode + tunables (#94) — per assigned device. ONLY on a full
@@ -2700,6 +2701,7 @@ namespace PadForge.Services
                 Enum.TryParse<ViewModels.MacroLightbarColorSource>(ps.SteeringLockLightbarColorSource, out var slcs)
                     ? slcs : ViewModels.MacroLightbarColorSource.Fixed;
             padVm.SteeringLockLightbarPaletteCsv = ps.SteeringLockLightbarPaletteCsv ?? "";
+            padVm.SteeringLockLightbarHoldMs = TryParseDouble(ps.SteeringLockLightbarHoldMs, 80);
             padVm.SteeringLockLightbarFadeMs = TryParseDouble(ps.SteeringLockLightbarFadeMs, 250);
 
             // Touchpad-gestures tab — per-(device, pad) settings live

@@ -1664,7 +1664,7 @@
   <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>ライトバーフェード</value></data>
   <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>パルス長をリセット</value></data>
   <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>ライトバーの色をリセット</value></data>
-  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>ライトバーフェードをリセット</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>ライトバーの減衰をリセット</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>ステアリング</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>ステアリングをリセット</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>回転範囲をリセット</value></data>
@@ -1677,4 +1677,5 @@
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>ロック時にライトバーパルスをリセット</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>ロック付近でトリガー抵抗をリセット</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>ロックごとに1色ずつ切り替える色を追加します。</value></data>
+  <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>ライトバーの保持をリセット</value></data>
 </root>

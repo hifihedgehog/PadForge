@@ -2027,6 +2027,9 @@ namespace PadForge.ViewModels
         private static string FormatSteeringLockColor(byte r, byte g, byte b)
             => string.Format(System.Globalization.CultureInfo.InvariantCulture, "#{0:X2}{1:X2}{2:X2}", r, g, b);
 
+        private double _steeringLockLightbarHoldMs = 80;
+        public double SteeringLockLightbarHoldMs { get => _steeringLockLightbarHoldMs; set => SetProperty(ref _steeringLockLightbarHoldMs, Math.Clamp(value, 0, 2000)); }
+
         private double _steeringLockLightbarFadeMs = 250;
         public double SteeringLockLightbarFadeMs { get => _steeringLockLightbarFadeMs; set => SetProperty(ref _steeringLockLightbarFadeMs, Math.Clamp(value, 0, 5000)); }
 
@@ -2173,6 +2176,8 @@ namespace PadForge.ViewModels
         public ICommand ResetSteeringLockColorBCommand => _resetSteeringLockColorBCommand ??= new RelayCommand(() => SteeringLockColorB = 0x00);
         private ICommand _resetSteeringLockPulseCommand;
         public ICommand ResetSteeringLockPulseCommand => _resetSteeringLockPulseCommand ??= new RelayCommand(() => SteeringLockPulseMs = 80);
+        private ICommand _resetSteeringLockLightbarHoldCommand;
+        public ICommand ResetSteeringLockLightbarHoldCommand => _resetSteeringLockLightbarHoldCommand ??= new RelayCommand(() => SteeringLockLightbarHoldMs = 80);
         private ICommand _resetSteeringLockFadeCommand;
         public ICommand ResetSteeringLockFadeCommand => _resetSteeringLockFadeCommand ??= new RelayCommand(() => SteeringLockLightbarFadeMs = 250);
 
@@ -2198,6 +2203,7 @@ namespace PadForge.ViewModels
             SteeringLockLightbarEnabled = false;
             SteeringLockATResistanceEnabled = false;
             SteeringLockPulseMs = 80;
+            SteeringLockLightbarHoldMs = 80;
             SteeringLockLightbarFadeMs = 250;
             SteeringLockLightbarColor = "#FF0000";
             SteeringLockLightbarColorSource = MacroLightbarColorSource.Fixed;

@@ -787,7 +787,26 @@ namespace PadForge.Services
                 }
                 else
                 {
-                    RevertSourceToDirect(src, target, padVm);
+                    // Not the steering output for this source's device: restore its own axis
+                    // as a plain Direct mapping. Re-derived from the base layer EVERY stamp
+                    // (un-guarded), so this also un-does a prior neutralization once steering
+                    // turns off — the reconciliation pass reuses persisted rows, so a guarded
+                    // revert would leave a neutralized off-axis stuck empty.
+                    src.Kind = "Direct";
+                    src.Descriptor = GetDeviceAxisDescriptor(padVm, target, src.DeviceGuid);
+                    src.ParamYDescriptor = "";
+                    src.ParamWindRangeDeg = 0; src.ParamWindPower = 0; src.ParamWindUnwindRate = 0;
+                    src.ParamAngleInnerDz = 0; src.ParamAngleOuterDz = 0;
+                    src.ParamMotionInnerDz = 0; src.ParamMotionOuterDz = 0;
+                    src.ParamControllerOrientation = null;
+                    // Off-axis of an ACTIVE single-axis steering mode (winding / angle /
+                    // motion-lean each drive ONE channel): the gesture owns the whole stick,
+                    // so neutralize this axis to centered rather than let it trace the
+                    // gesture's other half. Matches JSM, which emits setStick(value, 0). An
+                    // empty descriptor reads 0; reversible because the line above re-derives
+                    // the real axis on the first stamp after steering turns off.
+                    if (cfg.Active)
+                        src.Descriptor = "";
                 }
             }
             return any;
@@ -854,19 +873,6 @@ namespace PadForge.Services
             var extra = m.ExtraSources?.FirstOrDefault(e =>
                 string.Equals(e.DeviceGuid ?? "", deviceGuid ?? "", StringComparison.OrdinalIgnoreCase));
             return extra != null ? StripSourcePrefix(extra.Descriptor) : "";
-        }
-
-        // Reverts one source to a plain Direct mapping reading its row's own device axis.
-        private static void RevertSourceToDirect(Engine.Data.MappingSource src, string target, PadViewModel padVm)
-        {
-            if (src == null || !IsSteeringKind(src.Kind)) return;
-            src.Kind = "Direct";
-            src.Descriptor = GetDeviceAxisDescriptor(padVm, target, src.DeviceGuid);
-            src.ParamYDescriptor = "";
-            src.ParamWindRangeDeg = 0; src.ParamWindPower = 0; src.ParamWindUnwindRate = 0;
-            src.ParamAngleInnerDz = 0; src.ParamAngleOuterDz = 0;
-            src.ParamMotionInnerDz = 0; src.ParamMotionOuterDz = 0;
-            src.ParamControllerOrientation = null;
         }
 
         // Strips a leading I / H / IH inversion prefix off a source descriptor, matching

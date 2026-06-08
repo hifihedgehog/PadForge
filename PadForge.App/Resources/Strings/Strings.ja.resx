@@ -671,7 +671,7 @@
   <data name="Macro_FixedCount" xml:space="preserve"><value>指定回数</value></data>
   <data name="Macro_UntilRelease" xml:space="preserve"><value>離すまで</value></data>
   <data name="Macro_Count" xml:space="preserve"><value>回数</value></data>
-  <data name="Macro_DelayMs" xml:space="preserve"><value>遅延 (ms)</value></data>
+  <data name="Macro_DelayMs" xml:space="preserve"><value>遅延</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>感度</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>新規マクロ</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>トリガーを記録</value></data>
@@ -1314,7 +1314,7 @@
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>インプットリアクティブ — パレットを巡回</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>インプットリアクティブ — 押下ごとに単色</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>明るさ</value></data>
-  <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期 (ms)</value></data>
+  <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>パレット</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>カラー 1</value></data>
   <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>カラー 2</value></data>
@@ -1324,8 +1324,8 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>カラーを追加</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>パレットをリセット</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>現在のパレットを既定の 4 色 (赤、緑、青、黄) に置き換えます。</value></data>
-  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>パルス保持 (ms)</value></data>
-  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>パルス減衰 (ms)</value></data>
+  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>パルス保持</value></data>
+  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>パルス減衰</value></data>
   <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>左トリガーをリセット</value></data>
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>右トリガーをリセット</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>強度をリセット</value></data>
@@ -1394,7 +1394,7 @@
   <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>レイヤー名の変更</value></data>
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>継承しない</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>オンにすると、このレイヤーのターゲットはベース行にフォールスルーせず、オフのままになります。</value></data>
-  <data name="Pad_Shift_Delay" xml:space="preserve"><value>遅延(ms)</value></data>
+  <data name="Pad_Shift_Delay" xml:space="preserve"><value>遅延</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>レイヤーの変更が発火する前に、アクティベーターがアクティブな状態を維持する必要があるミリ秒。</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>レイヤーへジャンプ</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>コードの2番目の入力</value></data>
@@ -1512,22 +1512,22 @@
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>カスタムのみ</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>両方</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>ライブの指の軌跡を、どちらのジェスチャーカタログと照合するかを指定します。既定は「両方」です。</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>クールダウン (ms)</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>クールダウン</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>ジェスチャー発火後、このタッチパッドで指定ミリ秒間は新しいジェスチャーを無視します。素早い往復動作による多重発火を防ぎます。</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>組み込みジェスチャー</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4 方向スワイプ (上 / 下 / 左 / 右)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8 方向スワイプ (斜め方向を追加)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>スワイプ距離 (0..1)</value></data>
-  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>スワイプ時間ウィンドウ (ms)</value></data>
+  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>スワイプ時間ウィンドウ</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>放射ゾーン (ウェポンホイール式)</value></data>
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>指を置いた位置から外側に向かってスワイプし、扇形のセクターに入ります。ゾーン 0 は上方向にアンカーされ、ゾーンは時計回りに増えます。ピッカーの各エントリにはカッコ内に上方向からの角度が度数で表示されます。(0°) が上、(90°) が右、(180°) が下、(270°) が左です。一度に保持されるゾーンは 1 つだけで、別のゾーンに入ると前のゾーンが解放されるため、1 回のスワイプで複数のゾーンを循環できます。</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>ゾーン数</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>中心デッドゾーン (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>タップ / ダブルタップ / トリプルタップ</value></data>
-  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>タップ時間ウィンドウ (ms)</value></data>
-  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>マルチタップ間隔 (ms)</value></data>
+  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>タップ時間ウィンドウ</value></data>
+  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>マルチタップ間隔</value></data>
   <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>ロングプレス</value></data>
-  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>ロングプレス時間 (ms)</value></data>
+  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>ロングプレス時間</value></data>
   <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>2 本指スワイプ</value></data>
   <data name="Pad_Touchpad_PinchSpread" xml:space="preserve"><value>ピンチイン / ピンチアウト</value></data>
   <data name="Pad_Touchpad_Rotate" xml:space="preserve"><value>回転</value></data>

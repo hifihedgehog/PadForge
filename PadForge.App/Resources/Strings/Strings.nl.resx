@@ -671,7 +671,7 @@
   <data name="Macro_FixedCount" xml:space="preserve"><value>Vast aantal</value></data>
   <data name="Macro_UntilRelease" xml:space="preserve"><value>Tot loslaten</value></data>
   <data name="Macro_Count" xml:space="preserve"><value>Aantal</value></data>
-  <data name="Macro_DelayMs" xml:space="preserve"><value>Vertraging (ms)</value></data>
+  <data name="Macro_DelayMs" xml:space="preserve"><value>Vertraging</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Nieuwe macro</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Trigger opnemen</value></data>
@@ -1334,7 +1334,7 @@
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Invoerreactief — door palet bladeren</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Invoerreactief — één kleur per druk</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Helderheid</value></data>
-  <data name="Pad_Lighting_Period" xml:space="preserve"><value>Periode (ms)</value></data>
+  <data name="Pad_Lighting_Period" xml:space="preserve"><value>Periode</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palet</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Kleur 1</value></data>
   <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>Kleur 2</value></data>
@@ -1344,8 +1344,8 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Kleur toevoegen</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Palet herstellen</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Vervang het huidige palet door de vier standaardkleuren (rood, groen, blauw, geel).</value></data>
-  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Pulsbehoud (ms)</value></data>
-  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulsverval (ms)</value></data>
+  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Pulsbehoud</value></data>
+  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulsverval</value></data>
   <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>Linker trigger herstellen</value></data>
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>Rechter trigger herstellen</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>Sterkte herstellen</value></data>
@@ -1414,7 +1414,7 @@
   <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>Laag hernoemen</value></data>
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Niet overerven</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Indien aangevinkt blijft het doel van deze laag UIT in plaats van terug te vallen op de Basisregel.</value></data>
-  <data name="Pad_Shift_Delay" xml:space="preserve"><value>Vertraging (ms)</value></data>
+  <data name="Pad_Shift_Delay" xml:space="preserve"><value>Vertraging</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Milliseconden dat de activator actief moet blijven voordat de laagwijziging plaatsvindt.</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Spring naar laag</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Tweede akkoord-invoer</value></data>
@@ -1532,22 +1532,22 @@
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>Alleen aangepaste</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Beide</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>Welke gebarencatalogus de engine vergelijkt met de actuele vingerpaden. &quot;Beide&quot; is standaard.</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Afkoeling (ms)</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Afkoeling</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Nadat een gebaar is uitgevoerd, negeert deze touchpad nieuwe gebaren gedurende dit aantal milliseconden. Voorkomt dubbele afvuringen door snelle heen-en-weer-bewegingen.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Ingebouwde gebaren</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4-richtingsvegen (omhoog / omlaag / links / rechts)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8-richtingsvegen (voegt diagonalen toe)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Veegafstand (0..1)</value></data>
-  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Tijdsvenster voor veeg (ms)</value></data>
+  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Tijdsvenster voor veeg</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Radiale zones (wapenwiel-stijl)</value></data>
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Veeg vanaf het neerzetpunt van je vinger naar buiten in een sector. Zone 0 is bovenaan verankerd en zones lopen met de klok mee op. Elke vermelding in de kiezer toont de richting tussen haakjes als graden ten opzichte van boven: (0°) is boven, (90°) is rechts, (180°) is onder, (270°) is links. Er is steeds maar één zone actief. In een andere vegen laat de vorige los, zodat je in één veegbeweging door de zones kunt bladeren.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Aantal zones</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Middendeadzone (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tik / Dubbele tik / Drievoudige tik</value></data>
-  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>Tijdsvenster voor tik (ms)</value></data>
-  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>Tussenpoze multi-tik (ms)</value></data>
+  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>Tijdsvenster voor tik</value></data>
+  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>Tussenpoze multi-tik</value></data>
   <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>Lang indrukken</value></data>
-  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>Duur lang indrukken (ms)</value></data>
+  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>Duur lang indrukken</value></data>
   <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>Tweevingervegen</value></data>
   <data name="Pad_Touchpad_PinchSpread" xml:space="preserve"><value>Knijpen / Spreiden</value></data>
   <data name="Pad_Touchpad_Rotate" xml:space="preserve"><value>Draaien</value></data>

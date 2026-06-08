@@ -1815,6 +1815,7 @@
                                            Margin="12,0,8,0"/>
                                 <TextBox Text="{Binding RepeatDelayMs, Mode=TwoWay}"
                                          Width="60"/>
+                                <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                             </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
@@ -4374,6 +4375,7 @@
                                             Minimum="250" Maximum="10000" TickFrequency="250"/>
                                     <TextBox Text="{Binding PlayStationConfig.LightbarPeriodMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                     <Button Command="{Binding PlayStationConfig.ResetLightbarPeriodCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarPeriod, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
@@ -4937,6 +4939,7 @@
                                                 Minimum="0" Maximum="5000" TickFrequency="50"/>
                                         <TextBox Text="{Binding PlayStationConfig.LightbarInputHoldMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                  Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                         <Button Command="{Binding PlayStationConfig.ResetLightbarInputHoldCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarInputHold, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
@@ -4946,6 +4949,7 @@
                                                 Minimum="0" Maximum="5000" TickFrequency="50"/>
                                         <TextBox Text="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                  Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                         <Button Command="{Binding PlayStationConfig.ResetLightbarInputDecayCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarInputDecay, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
                                 </StackPanel>
@@ -6049,6 +6053,7 @@
                                     <TextBox Text="{Binding TouchpadCooldownMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"
                                              ToolTip="{Binding Pad_Touchpad_CooldownMs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                     <Button Command="{Binding ResetTouchpadCooldownMsCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadCooldownMs, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -6093,6 +6098,7 @@
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadSwipeTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                     <Button Command="{Binding ResetTouchpadSwipeTimeWindowMsCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadSwipeTimeWindow, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -6134,6 +6140,7 @@
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadTapTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                     <Button Command="{Binding ResetTouchpadTapTimeWindowMsCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadTapTimeWindow, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -6142,6 +6149,7 @@
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadMultiTapGapMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                     <Button Command="{Binding ResetTouchpadMultiTapGapMsCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadMultiTapGap, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -6157,6 +6165,7 @@
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadLongPressTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                     <Button Command="{Binding ResetTouchpadLongPressTimeWindowMsCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadLongPressTimeWindow, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>

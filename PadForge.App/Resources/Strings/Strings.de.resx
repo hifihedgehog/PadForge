@@ -1664,7 +1664,7 @@
   <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Lightbar-Ausblenden</value></data>
   <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>Pulslänge zurücksetzen</value></data>
   <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>Lightbar-Farbe zurücksetzen</value></data>
-  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Lightbar-Ausblenden zurücksetzen</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Lightbar-Abklingen zurücksetzen</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Lenkrad</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Lenkrad zurücksetzen</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Lenkbereich zurücksetzen</value></data>
@@ -1677,4 +1677,5 @@
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Lightbar-Puls am Anschlag zurücksetzen</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Trigger-Widerstand nahe Anschlag zurücksetzen</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Farben hinzufügen, die pro Anschlag nacheinander durchlaufen werden.</value></data>
+  <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Lightbar-Haltedauer zurücksetzen</value></data>
 </root>

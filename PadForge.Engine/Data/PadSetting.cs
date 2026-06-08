@@ -286,7 +286,11 @@ namespace PadForge.Engine.Data
         /// <summary>Dedicated palette for the PaletteStep color source — CSV of "RRGGBB"
         /// hex triplets. Used only by the steering lock, never shared with another section.</summary>
         [XmlElement] public string SteeringLockLightbarPaletteCsv  { get; set; } = "";
-        /// <summary>Lock lightbar fade-back length in ms on exit.</summary>
+        /// <summary>Lock lightbar hold length in ms — how long the color holds at full before
+        /// the decay fade begins (the lightbar's own hold, separate from the rumble/trigger
+        /// pulse length).</summary>
+        [XmlElement] public string SteeringLockLightbarHoldMs      { get; set; } = "80";
+        /// <summary>Lock lightbar decay (fade-back) length in ms after the hold.</summary>
         [XmlElement] public string SteeringLockLightbarFadeMs      { get; set; } = "250";
 
         /// <summary>
@@ -1124,6 +1128,7 @@ namespace PadForge.Engine.Data
             sb.Append(SteeringLockLightbarColor); sb.Append('|');
             sb.Append(SteeringLockLightbarColorSource); sb.Append('|');
             sb.Append(SteeringLockLightbarPaletteCsv); sb.Append('|');
+            sb.Append(SteeringLockLightbarHoldMs); sb.Append('|');
             sb.Append(SteeringLockLightbarFadeMs); sb.Append('|');
             sb.Append(ForceSwapMotor); sb.Append('|');
             sb.Append(LeftMotorStrength); sb.Append('|');
@@ -1550,6 +1555,7 @@ namespace PadForge.Engine.Data
             nameof(SteeringLockLightbarEnabled), nameof(SteeringLockATResistanceEnabled),
             nameof(SteeringLockPulseMs), nameof(SteeringLockLightbarColor), nameof(SteeringLockLightbarFadeMs),
             nameof(SteeringLockLightbarColorSource), nameof(SteeringLockLightbarPaletteCsv),
+            nameof(SteeringLockLightbarHoldMs),
             // Impulse trigger motors (Xbox One+)
             nameof(ImpulseOverallGain),
             nameof(ImpulseLeftStrength), nameof(ImpulseRightStrength),

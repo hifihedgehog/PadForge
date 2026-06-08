@@ -1664,7 +1664,7 @@
   <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Desvanecimiento de barra de luz</value></data>
   <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>Restablecer duración del pulso</value></data>
   <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>Restablecer color de barra de luz</value></data>
-  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Restablecer desvanecimiento de barra de luz</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Restablecer atenuación de barra de luz</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Volante</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Restablecer volante</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Restablecer rango de rotación</value></data>
@@ -1677,4 +1677,5 @@
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Restablecer pulso de barra de luz al llegar al tope</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Restablecer resistencia del gatillo cerca del tope</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Agrega colores para recorrer, uno por cada tope.</value></data>
+  <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Restablecer retención de barra de luz</value></data>
 </root>

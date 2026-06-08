@@ -1664,7 +1664,7 @@
   <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Esmaecimento da Barra de Luz</value></data>
   <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>Redefinir Duração do Pulso</value></data>
   <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>Redefinir Cor da Barra de Luz</value></data>
-  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Redefinir Esmaecimento da Barra de Luz</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Redefinir esmaecimento da barra de luz</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Volante</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Redefinir Volante</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Redefinir Faixa de Rotação</value></data>
@@ -1677,4 +1677,5 @@
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Redefinir Pulso da barra de luz no batente</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Redefinir Resistência do gatilho perto do batente</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Adicione cores para percorrer, uma por batente.</value></data>
+  <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Redefinir retenção da barra de luz</value></data>
 </root>

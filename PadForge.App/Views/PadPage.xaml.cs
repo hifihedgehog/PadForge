@@ -393,9 +393,10 @@ namespace PadForge.Views
                 LockLightbarRow.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
             if (LockResistanceRow != null)
                 LockResistanceRow.Visibility = hasAdaptiveTriggers ? Visibility.Visible : Visibility.Collapsed;
-            // Pulse length drives the rumble/trigger/lightbar pulse channels (not resistance).
+            // Pulse length drives the rumble/trigger pulse channels (the lightbar has its
+            // own Hold + Decay; resistance is continuous, no pulse).
             if (LockPulseSection != null)
-                LockPulseSection.Visibility = (hasRumble || hasTriggerVib || hasLightbar) ? Visibility.Visible : Visibility.Collapsed;
+                LockPulseSection.Visibility = (hasRumble || hasTriggerVib) ? Visibility.Visible : Visibility.Collapsed;
             if (LockLightbarSection != null)
                 LockLightbarSection.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
 

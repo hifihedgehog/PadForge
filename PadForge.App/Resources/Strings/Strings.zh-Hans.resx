@@ -1664,7 +1664,7 @@
   <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>灯条淡出</value></data>
   <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>重置脉冲时长</value></data>
   <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>重置灯条颜色</value></data>
-  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>重置灯条淡出</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>重置灯条衰减</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>方向盘</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>重置方向盘</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>重置旋转范围</value></data>
@@ -1677,4 +1677,5 @@
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>重置到达极限时灯条脉冲</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>重置接近极限时扳机阻力</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>添加要逐个循环的颜色，每次锁定切换一个。</value></data>
+  <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>重置灯条保持</value></data>
 </root>

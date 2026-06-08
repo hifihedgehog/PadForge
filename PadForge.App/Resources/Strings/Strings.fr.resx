@@ -1664,7 +1664,7 @@
   <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Fondu de la barre lumineuse</value></data>
   <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>Réinitialiser la durée de la pulsation</value></data>
   <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>Réinitialiser la couleur de la barre lumineuse</value></data>
-  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Réinitialiser le fondu de la barre lumineuse</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Réinitialiser l'atténuation de la barre lumineuse</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Volant</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Réinitialiser le volant</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Réinitialiser la plage de rotation</value></data>
@@ -1677,4 +1677,5 @@
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Réinitialiser pulsation de la barre lumineuse en butée</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Réinitialiser résistance des gâchettes à l'approche de la butée</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Ajoutez des couleurs à parcourir, une par butée.</value></data>
+  <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Réinitialiser le maintien de la barre lumineuse</value></data>
 </root>

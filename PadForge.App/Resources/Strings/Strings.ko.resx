@@ -1664,7 +1664,7 @@
   <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>라이트바 페이드</value></data>
   <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>펄스 길이 재설정</value></data>
   <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>라이트바 색상 재설정</value></data>
-  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>라이트바 페이드 재설정</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>라이트바 감쇠 재설정</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>휠</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>휠 재설정</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>회전 범위 재설정</value></data>
@@ -1677,4 +1677,5 @@
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>끝점에서 라이트바 펄스 재설정</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>끝점 부근 트리거 저항 재설정</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>끝점마다 하나씩 전환할 색을 추가하세요.</value></data>
+  <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>라이트바 유지 재설정</value></data>
 </root>

@@ -543,7 +543,7 @@
   <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Reset Input Reactive</value></data>
   <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Per-press flash color</value></data>
 
-  <data name="Pad_Lighting_Period" xml:space="preserve"><value>Period (ms)</value></data>
+  <data name="Pad_Lighting_Period" xml:space="preserve"><value>Period</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Brightness</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palette</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Color 1</value></data>
@@ -554,8 +554,8 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Add color</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Reset palette</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Replace the current palette with the four default colors (red, green, blue, yellow).</value></data>
-  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Pulse Hold (ms)</value></data>
-  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulse Decay (ms)</value></data>
+  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Pulse Hold</value></data>
+  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulse Decay</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_Custom" xml:space="preserve"><value>Custom</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>
@@ -857,7 +857,7 @@
   <data name="Macro_FixedCount" xml:space="preserve"><value>Fixed Count</value></data>
   <data name="Macro_UntilRelease" xml:space="preserve"><value>Until Release</value></data>
   <data name="Macro_Count" xml:space="preserve"><value>Count</value></data>
-  <data name="Macro_DelayMs" xml:space="preserve"><value>Delay (ms)</value></data>
+  <data name="Macro_DelayMs" xml:space="preserve"><value>Delay</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>New Macro</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Record Trigger</value></data>
@@ -1028,22 +1028,22 @@
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>Custom Only</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Both</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>Which gesture catalog the engine evaluates against the live finger paths. "Both" is the default.</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Cooldown (ms)</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Cooldown</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>After a gesture fires, ignore new gestures on this touchpad for this many milliseconds. Prevents bounce-fires from rapid back-and-forth motion.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>In-Box Gestures</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4-Way Swipes (Up / Down / Left / Right)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8-Way Swipes (Adds Diagonals)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Swipe Distance (0..1)</value></data>
-  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Swipe Time Window (ms)</value></data>
+  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Swipe Time Window</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Radial Zones (Weapon-Wheel Style)</value></data>
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Slide outward from your finger's landing point into a wedge. Zone 0 anchors at the top and zones increase clockwise. Each zone's entry in the picker shows its direction in parentheses as degrees from the top: (0°) is up, (90°) is right, (180°) is down, (270°) is left. Only one zone is held at a time. Sliding into another releases the previous one, so you can cycle through zones in a single swipe.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Zone Count</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Center Deadzone (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tap / Double Tap / Triple Tap</value></data>
-  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>Tap Time Window (ms)</value></data>
-  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>Multi-Tap Gap (ms)</value></data>
+  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>Tap Time Window</value></data>
+  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>Multi-Tap Gap</value></data>
   <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>Long Press</value></data>
-  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>Long-Press Duration (ms)</value></data>
+  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>Long-Press Duration</value></data>
   <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>Two-Finger Swipes</value></data>
   <data name="Pad_Touchpad_PinchSpread" xml:space="preserve"><value>Pinch / Spread</value></data>
   <data name="Pad_Touchpad_Rotate" xml:space="preserve"><value>Rotate</value></data>
@@ -1662,7 +1662,7 @@
   <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>Rename layer</value></data>
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Do not inherit</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>When checked, this layer's target stays OFF instead of falling through to the Base row.</value></data>
-  <data name="Pad_Shift_Delay" xml:space="preserve"><value>Delay (ms)</value></data>
+  <data name="Pad_Shift_Delay" xml:space="preserve"><value>Delay</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Milliseconds the activator must stay engaged before the layer change fires.</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Jump To Layer</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Second Chord Input</value></data>

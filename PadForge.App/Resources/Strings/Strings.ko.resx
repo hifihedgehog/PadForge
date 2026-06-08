@@ -671,7 +671,7 @@
   <data name="Macro_FixedCount" xml:space="preserve"><value>고정 횟수</value></data>
   <data name="Macro_UntilRelease" xml:space="preserve"><value>놓을 때까지</value></data>
   <data name="Macro_Count" xml:space="preserve"><value>횟수</value></data>
-  <data name="Macro_DelayMs" xml:space="preserve"><value>지연 (ms)</value></data>
+  <data name="Macro_DelayMs" xml:space="preserve"><value>지연</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>감도</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>새 매크로</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>트리거 기록</value></data>
@@ -1314,7 +1314,7 @@
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>입력 반응 — 팔레트 순회</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>입력 반응 — 누름마다 단일 색상</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>밝기</value></data>
-  <data name="Pad_Lighting_Period" xml:space="preserve"><value>주기 (ms)</value></data>
+  <data name="Pad_Lighting_Period" xml:space="preserve"><value>주기</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>팔레트</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>색상 1</value></data>
   <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>색상 2</value></data>
@@ -1324,8 +1324,8 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>색상 추가</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>팔레트 초기화</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>현재 팔레트를 기본 네 가지 색상(빨강, 초록, 파랑, 노랑)으로 교체합니다.</value></data>
-  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>펄스 유지 (ms)</value></data>
-  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>펄스 감쇠 (ms)</value></data>
+  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>펄스 유지</value></data>
+  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>펄스 감쇠</value></data>
   <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>왼쪽 트리거 초기화</value></data>
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>오른쪽 트리거 초기화</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>강도 초기화</value></data>
@@ -1394,7 +1394,7 @@
   <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>레이어 이름 바꾸기</value></data>
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>상속 안 함</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>체크하면 이 레이어의 대상이 기본 행으로 폴스루되지 않고 꺼진 상태로 유지됩니다.</value></data>
-  <data name="Pad_Shift_Delay" xml:space="preserve"><value>지연(ms)</value></data>
+  <data name="Pad_Shift_Delay" xml:space="preserve"><value>지연</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>레이어 변경이 발생하기 전에 활성화가 유지되어야 하는 밀리초.</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>레이어로 점프</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>코드의 두 번째 입력</value></data>
@@ -1512,22 +1512,22 @@
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>사용자 지정만</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>둘 다</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>엔진이 라이브 손가락 경로에 대해 평가할 제스처 카탈로그입니다. 기본값은 "둘 다"입니다.</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>쿨다운(ms)</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>쿨다운</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>제스처가 발생한 후 이 밀리초 동안 이 터치패드의 새 제스처를 무시합니다. 빠른 왕복 동작으로 인한 바운스 발생을 방지합니다.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>내장 제스처</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4방향 스와이프(위 / 아래 / 왼쪽 / 오른쪽)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8방향 스와이프(대각선 추가)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>스와이프 거리(0..1)</value></data>
-  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>스와이프 시간 창(ms)</value></data>
+  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>스와이프 시간 창</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>방사형 영역(웨폰 휠 방식)</value></data>
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>손가락이 닿은 지점에서 바깥쪽으로 부채꼴 영역으로 슬라이드하세요. 0번 영역은 위쪽에 고정되어 있고 영역은 시계 방향으로 증가합니다. 픽커의 각 항목은 괄호 안에 위쪽 기준 각도(도 단위)로 방향을 표시합니다: (0°)는 위, (90°)는 오른쪽, (180°)는 아래, (270°)는 왼쪽입니다. 한 번에 하나의 영역만 유지되며, 다른 영역으로 슬라이드하면 이전 영역이 해제되므로 한 번의 스와이프로 여러 영역을 순환할 수 있습니다.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>영역 수</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>중앙 데드존(0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>탭 / 더블 탭 / 트리플 탭</value></data>
-  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>탭 시간 창(ms)</value></data>
-  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>다중 탭 간격(ms)</value></data>
+  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>탭 시간 창</value></data>
+  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>다중 탭 간격</value></data>
   <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>길게 누르기</value></data>
-  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>길게 누르기 지속 시간(ms)</value></data>
+  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>길게 누르기 지속 시간</value></data>
   <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>두 손가락 스와이프</value></data>
   <data name="Pad_Touchpad_PinchSpread" xml:space="preserve"><value>핀치 / 펼치기</value></data>
   <data name="Pad_Touchpad_Rotate" xml:space="preserve"><value>회전</value></data>

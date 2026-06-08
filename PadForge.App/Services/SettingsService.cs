@@ -801,13 +801,14 @@ namespace PadForge.Services
                     src.ParamAngleInnerDz = 0; src.ParamAngleOuterDz = 0;
                     src.ParamMotionInnerDz = 0; src.ParamMotionOuterDz = 0;
                     src.ParamControllerOrientation = null;
-                    // Off-axis of an ACTIVE single-axis steering mode (winding / angle /
-                    // motion-lean each drive ONE channel): the gesture owns the whole stick,
-                    // so neutralize this axis to centered rather than let it trace the
-                    // gesture's other half. Matches JSM, which emits setStick(value, 0). An
-                    // empty descriptor reads 0; reversible because the line above re-derives
-                    // the real axis on the first stamp after steering turns off.
-                    if (cfg.Active)
+                    // Off-axis of an active STICK-READING steering mode (winding / angle):
+                    // that gesture moves the whole physical stick, so its other half would
+                    // bleed into this axis — neutralize it to centered. Matches JSM's
+                    // setStick(value, 0). MotionLean is EXCLUDED: it reads the accelerometer,
+                    // not the stick, so the stick (and anything mapped to this axis, e.g. a
+                    // button → Y) stays free and must NOT be wiped. An empty descriptor reads
+                    // 0; reversible because the line above re-derives the real axis next stamp.
+                    if (cfg.Active && !string.Equals(cfg.Kind, "MotionLeanX", StringComparison.Ordinal))
                         src.Descriptor = "";
                 }
             }

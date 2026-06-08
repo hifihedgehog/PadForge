@@ -2431,9 +2431,6 @@ namespace PadForge.Services
                     ps.SetExtendedMapping($"Stick{g}SteerWindUnwind", stick.WindUnwindRate.ToString(ic));
                     ps.SetExtendedMapping($"Stick{g}SteerAngleInner", stick.AngleInnerDz.ToString(ic));
                     ps.SetExtendedMapping($"Stick{g}SteerAngleOuter", stick.AngleOuterDz.ToString(ic));
-                    ps.SetExtendedMapping($"Stick{g}SteerMotionInner", stick.MotionInnerDz.ToString(ic));
-                    ps.SetExtendedMapping($"Stick{g}SteerMotionOuter", stick.MotionOuterDz.ToString(ic));
-                    ps.SetExtendedMapping($"Stick{g}SteerOrient", stick.ControllerOrientation);
                 }
             }
 

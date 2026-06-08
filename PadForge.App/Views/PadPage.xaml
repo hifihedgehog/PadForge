@@ -5227,10 +5227,9 @@
                                 <StackPanel Visibility="{Binding MotionSteerEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <TextBlock Text="{Binding Pad_MotionSteer_Target, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                        <ComboBox SelectedIndex="{Binding MotionSteerTargetIndex, Mode=TwoWay}" Width="200" VerticalAlignment="Center">
-                                            <ComboBoxItem Content="{Binding Btn_LeftStickX, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding Btn_RightStickX, Source={x:Static strings:Strings.Instance}}"/>
-                                        </ComboBox>
+                                        <ComboBox ItemsSource="{Binding MotionSteerTargetOptions}" DisplayMemberPath="Display"
+                                                  SelectedValuePath="Value" SelectedValue="{Binding MotionSteerTarget, Mode=TwoWay}"
+                                                  Width="200" VerticalAlignment="Center"/>
                                         <Button Command="{Binding ResetMotionSteerTargetCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_MotionSteer_Reset_Target, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">

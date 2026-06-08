@@ -38,6 +38,14 @@ namespace PadForge.Engine.Common.Mapping
         // At-lock edge tracking per row, drives the haptic feedback layer.
         private readonly Dictionary<(int slot, string target, int srcIdx), LockState> _lockState = new();
 
+        // Per-device captured neutral orientation (down-convention unit vector) for
+        // MotionLean. The resting grip is a few degrees off true level, so without
+        // this the centre reads non-zero and the off-axis tilt bleeds into steering.
+        // Faithful to JSM's neutralQuat (main.cpp:421-435, 891): captured once when
+        // the steering source first sees real gravity for a device, held until profile
+        // switch (Clear). Keyed by device GUID — the resting pose is physical, not per-slot.
+        private readonly Dictionary<string, (double x, double y, double z)> _motionNeutral = new();
+
         // Saturation band for the lock state machine — avoids float-edge thrash at ±1.
         private const double LockEpsilon = 1e-3;
 
@@ -48,6 +56,7 @@ namespace PadForge.Engine.Common.Mapping
             _incrementalAccum.Clear();
             _windingState.Clear();
             _lockState.Clear();
+            _motionNeutral.Clear();
         }
 
         /// <summary>Drops all steering state for a slot. Called on profile switch.</summary>
@@ -243,6 +252,23 @@ namespace PadForge.Engine.Common.Mapping
             double gLen = Math.Sqrt(gx * gx + gy * gy + gz * gz);
             if (gLen <= 0) { UpdateLock(key, 0); return 0; }
 
+            // Neutral-orientation realignment (JSM main.cpp:421-435, 891). Capture the
+            // resting grip the first time real gravity arrives for this device, then rotate
+            // every later sample so that grip reads as flat (0,-1,0). This zeroes the
+            // few-degree resting offset and stops the off-axis tilt from leaking into the
+            // steering channel. The unit-length fallback sentinel (no accel yet) carries a
+            // gLen near 1; real gravity is ~9.8 m/s², so gate capture above that to avoid
+            // latching a neutral from "no data". Re-captured on profile switch via Clear().
+            string gid = deviceGuid ?? "";
+            if (gLen > 4.0 && !_motionNeutral.ContainsKey(gid))
+                _motionNeutral[gid] = (gx / gLen, gy / gLen, gz / gLen);
+            if (_motionNeutral.TryGetValue(gid, out var n))
+            {
+                (gx, gy, gz) = RealignToDown(gx, gy, gz, n.x, n.y, n.z);
+                gLen = Math.Sqrt(gx * gx + gy * gy + gz * gz);
+                if (gLen <= 0) { UpdateLock(key, 0); return 0; }
+            }
+
             double side = (src.ParamControllerOrientation ?? "Forward") switch
             {
                 "Left"     => gz,
@@ -310,6 +336,32 @@ namespace PadForge.Engine.Common.Mapping
         }
 
         private static double Clamp01(double v) => v < 0 ? 0 : (v > 1 ? 1 : v);
+
+        // Rotates gravity (vx,vy,vz) by the rotation that maps the captured neutral
+        // direction (nx,ny,nz, unit) onto canonical down (0,-1,0). At rest the sample
+        // equals the neutral, so it rotates to exactly (0,-1,0) — zero lean. A lean of
+        // angle phi away from neutral lands phi away from down, so the downstream math
+        // measures lean relative to the grip rather than to absolute level. This is the
+        // numerically-exact form of JSM's neutralQuat.Inverse() application (main.cpp:891).
+        private static (double x, double y, double z) RealignToDown(
+            double vx, double vy, double vz, double nx, double ny, double nz)
+        {
+            // a = neutral (unit), b = (0,-1,0). axis k = a×b = (nz, 0, -nx); cos = a·b = -ny.
+            double cos = -ny;
+            double kx = nz, ky = 0.0, kz = -nx;
+            double sin = Math.Sqrt(kx * kx + ky * ky + kz * kz);   // |a×b| = sin(theta)
+            if (sin < 1e-6)                                        // a parallel to b
+                return cos >= 0 ? (vx, vy, vz) : (vx, -vy, vz);    // aligned, or flipped upside down
+            kx /= sin; ky /= sin; kz /= sin;
+            // Rodrigues: vrot = v*cos + (k×v)*sin + k*(k·v)*(1-cos)
+            double kv = kx * vx + ky * vy + kz * vz;
+            double cxx = ky * vz - kz * vy;
+            double cxy = kz * vx - kx * vz;
+            double cxz = kx * vy - ky * vx;
+            return (vx * cos + cxx * sin + kx * kv * (1 - cos),
+                    vy * cos + cxy * sin + ky * kv * (1 - cos),
+                    vz * cos + cxz * sin + kz * kv * (1 - cos));
+        }
 
         // Deadzone-processed 2D stick read: raw normalized X/Y, radial inner deadzone,
         // direction preserved, magnitude rescaled to [0, 1]. Inside the deadzone the

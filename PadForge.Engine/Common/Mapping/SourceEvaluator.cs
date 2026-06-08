@@ -151,48 +151,36 @@ namespace PadForge.Engine.Common.Mapping
         /// AFTER <see cref="SourceCoercion.EvaluateForBipolarAxisTarget"/>.
         ///
         /// <para>The bipolar coercion returns each source in its OWN natural frame,
-        /// which is not always the frame the destination axis expects. Two confirmed
-        /// mismatches live here. Both were verified against the JoyShockMapper
-        /// reference AND by on-device testing — DO NOT collapse, widen, or "simplify"
-        /// either branch without re-testing on hardware. Getting a sign wrong here is
-        /// a silent, ship-breaking regression: the control still moves, just the wrong
-        /// way, and nothing downstream flags it.</para>
+        /// which is not always the frame the destination axis expects. This helper
+        /// owns exactly ONE correction. DO NOT widen it without re-testing on
+        /// hardware: a sign wrong here is a silent, ship-breaking regression — the
+        /// control still moves, just the wrong way, and nothing downstream flags it.</para>
         ///
-        /// <list type="number">
-        /// <item><b>Gyro yaw / roll / horizontal → stick.</b> The gyro reports a
-        ///   right-hand-rule angular RATE; a leftward twist lands on +X. A stick is a
-        ///   position, so it must deflect TOWARD the twist (twist left → stick left).
-        ///   Flip. <b>Pitch is excluded</b> — nose-up already reads as stick-down,
-        ///   matching a flight stick's pull-back and JSM's
-        ///   <c>processGyroStick</c>, which emits <c>setStick(gyroStickX, -gyroStickY)</c>
-        ///   (JoyShock.cpp). Flipping pitch would invert that and is wrong.</item>
-        /// <item><b>Touchpad finger Y → stick Y.</b> The absolute touchpad reader keeps
-        ///   SDL's "raw_y = 0 at the TOP" convention (correct for touchpad→touchpad
-        ///   passthrough, commit 02b4315), so finger-at-top reads −1. A stick expects
-        ///   up = +1, so a touchpad mapped as a joystick reads upside-down on Y. Flip,
-        ///   but ONLY for the stick Y targets — the passthrough targets
-        ///   (<c>TouchpadY1/2</c>) and the KBM mouse path keep SDL / aim conventions
-        ///   and must NOT be flipped. X is already correct (finger-left → stick-left).</item>
-        /// </list>
+        /// <para><b>Gyro horizontal family (yaw / roll / horizontal, NOT pitch) → stick X.</b>
+        /// The gyro reports a right-hand-rule angular RATE; a leftward twist lands on
+        /// +X. A stick is a position, so it must deflect TOWARD the twist (twist left →
+        /// stick left). Flip.</para>
         ///
-        /// Anything not matched here passes through unchanged.
+        /// <para><b>Why X only, and why nothing else.</b>
+        /// <c>InputManager.WriteBipolarAxisTarget</c> already encodes the engine's
+        /// stick sign convention: it negates Y for EVERY source (the SDL "+Y down → -axis"
+        /// rule, <c>gp.ThumbLY = -value</c>) and leaves X alone. So a correction belongs
+        /// here only where that downstream step does nothing — the X axis. Flipping a Y
+        /// target here would double-negate it. That is exactly what an earlier touchpad
+        /// branch did (finger-up drove the stick DOWN); it was removed. Everything else is
+        /// already correct downstream: gyro pitch rides the Y negate to nose-up → stick-down
+        /// (the flight-stick pull-back, JSM <c>processGyroStick</c> emits
+        /// <c>setStick(gyroStickX, -gyroStickY)</c>); touchpad finger-Y rides it to
+        /// finger-up → stick-up; KBM mouse / scroll keep their own aim convention. None of
+        /// them may be flipped here.</para>
         /// </summary>
         private static bool ShouldFlipForAxisFrame(MappingSource src, string target)
         {
-            if (src == null || string.IsNullOrEmpty(target)) return false;
+            if (src == null) return false;
+            if (target != "LeftThumbAxisX" && target != "RightThumbAxisX") return false;
             string desc = src.Descriptor ?? "";
-
-            // (1) Gyro → absolute stick / extended axis, horizontal family only.
-            if (!IsRelativeMotionTarget(target) && SourceCoercion.IsGyroDescriptor(desc))
-                return !desc.Trim().Equals("Gyro Pitch", StringComparison.OrdinalIgnoreCase);
-
-            // (2) Touchpad finger Y → stick Y axis (not passthrough TouchpadY*, not mouse).
-            if ((target == "LeftThumbAxisY" || target == "RightThumbAxisY")
-                && desc.StartsWith("Touchpad ", StringComparison.Ordinal)
-                && desc.TrimEnd().EndsWith(" Y", StringComparison.Ordinal))
-                return true;
-
-            return false;
+            return SourceCoercion.IsGyroDescriptor(desc)
+                && !desc.Trim().Equals("Gyro Pitch", StringComparison.OrdinalIgnoreCase);
         }
 
         public static float EvaluateForTriggerTarget(

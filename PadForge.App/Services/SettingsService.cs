@@ -1760,6 +1760,19 @@ namespace PadForge.Services
                         cfg.ReplaceLightbarPalette(cfgData.LightbarPalette
                             .Select(e => new ViewModels.LightbarPaletteEntry(e.R, e.G, e.B)));
                     }
+                    // InputReactive = Cycle now has its own palette. Pre-split saves don't carry
+                    // it (null), so seed it from the shared LightbarPalette to preserve existing
+                    // setups; once present it round-trips independently.
+                    if (cfgData.LightbarInputReactivePalette != null && cfgData.LightbarInputReactivePalette.Length > 0)
+                    {
+                        cfg.ReplaceLightbarInputReactivePalette(cfgData.LightbarInputReactivePalette
+                            .Select(e => new ViewModels.LightbarPaletteEntry(e.R, e.G, e.B)));
+                    }
+                    else if (cfgData.LightbarPalette != null && cfgData.LightbarPalette.Length > 0)
+                    {
+                        cfg.ReplaceLightbarInputReactivePalette(cfgData.LightbarPalette
+                            .Select(e => new ViewModels.LightbarPaletteEntry(e.R, e.G, e.B)));
+                    }
                     cfg.LightbarInputHoldMs = cfgData.LightbarInputHoldMs;
                     cfg.LightbarInputDecayMs = cfgData.LightbarInputDecayMs;
                     cfg.InputReactiveR = cfgData.InputReactiveR;
@@ -2864,6 +2877,9 @@ namespace PadForge.Services
                 LightbarBatteryHighG = cfg.LightbarBatteryHighG,
                 LightbarBatteryHighB = cfg.LightbarBatteryHighB,
                 LightbarPalette = cfg.LightbarPalette
+                    .Select(e => new ViewModels.LightbarPaletteEntryData { R = e.R, G = e.G, B = e.B })
+                    .ToArray(),
+                LightbarInputReactivePalette = cfg.LightbarInputReactivePalette
                     .Select(e => new ViewModels.LightbarPaletteEntryData { R = e.R, G = e.G, B = e.B })
                     .ToArray(),
                 LightbarInputHoldMs = cfg.LightbarInputHoldMs,

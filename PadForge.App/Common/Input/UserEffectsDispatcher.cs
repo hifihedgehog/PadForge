@@ -942,7 +942,8 @@ namespace PadForge.Common.Input
                     }
                     else if (wantPaletteRoll)
                     {
-                        var palette = devCfg.SnapshotLightbarPalette();
+                        // InputReactive Cycle steps its OWN palette, not the ColorCycle one.
+                        var palette = devCfg.SnapshotLightbarInputReactivePalette();
                         int n = palette.Length;
                         if (n > 0)
                         {

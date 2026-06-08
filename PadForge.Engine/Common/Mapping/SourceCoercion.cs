@@ -1455,15 +1455,14 @@ namespace PadForge.Engine.Common.Mapping
         /// bottom/right = 1); this reader maps that to [-1..+1] directly
         /// so a DualSense touchpad → DualSense virtual touchpad
         /// passthrough preserves SDL's convention end-to-end. No Y flip
-        /// here — the relative reader has its own Y flip for the KBM
-        /// mouse convention, which does not apply to absolute-position
-        /// outputs. NOTE: "no Y flip" is correct for the PASSTHROUGH
-        /// target only. A touchpad mapped to a STICK Y axis needs Y
-        /// inverted (touchpad top is raw_y=0 → −1, but a stick expects
-        /// up = +1); that flip lives in
-        /// <see cref="SourceEvaluator.ShouldFlipForAxisFrame"/>, keyed on
-        /// the stick target name, NOT here — flipping here would invert
-        /// the passthrough too. Pressure (axisOffset == 2) is unipolar, kept as
+        /// here, and none belongs here: the per-target Y sign is applied
+        /// downstream, per consumer. The stick path negates Y in
+        /// <c>InputManager.WriteBipolarAxisTarget</c> (finger-up →
+        /// stick-up); the touchpad→touchpad passthrough keeps SDL's top=0
+        /// as-is; the KBM mouse / scroll path negates in Step 3 plus the
+        /// virtual controller. A Y flip added here would corrupt ALL of
+        /// them at once — keep this a faithful [0..1] → [-1..+1] pass.
+        /// Pressure (axisOffset == 2) is unipolar, kept as
         /// [0..1] without recentering — pressure isn't a signed axis.
         /// Returns 0 when the finger is not in contact (the caller's
         /// gating wrapper usually filters us out first, but this is

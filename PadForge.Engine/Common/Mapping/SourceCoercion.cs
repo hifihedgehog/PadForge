@@ -1416,15 +1416,16 @@ namespace PadForge.Engine.Common.Mapping
             float delta = raw - prev.PrevValue;
             _touchpadDeltas[key] = new TouchpadAxisDelta { PrevValue = raw, Seeded = true };
 
-            // Y axis: SDL touchpad raw_y=0 at top, raw_y=1 at bottom.
-            // A finger moving down has positive delta. KBM mouse Y
-            // convention (per KeyboardMouseVirtualController line 101)
-            // is positive = cursor UP. Without this flip, finger-down →
-            // bipolar positive → MouseDeltaY positive → cursor UP, which
-            // inverts the user's motion. Flip the delta so finger-down
-            // matches cursor-down.
-            if (axisOffset == 1)
-                delta = -delta;
+            // Y sign: return the RAW delta in SDL convention (raw_y=0 at top,
+            // so finger-DOWN → positive delta). DO NOT flip Y here. The KbmMouseY
+            // and KbmScroll paths in Step 3 already NegateAxis the evaluator's
+            // output — they explicitly document the contract "the evaluator
+            // returns SDL convention (positive = down)" (InputManager.Step3.
+            // UpdateOutputStates) — and the KBM virtual controller negates once
+            // more into screen-Y. A stick → KbmMouseY source rides exactly those
+            // two negations. An extra flip here made the touchpad path negate a
+            // third time, so finger-up drove the cursor DOWN. X needs no negate
+            // at any layer and is already correct.
 
             // Per-(slot, pad) mouse tuning: sensitivity multiplier per
             // axis plus optional invert. Slot-keyed so two slots sharing

@@ -1456,7 +1456,13 @@ namespace PadForge.Engine.Common.Mapping
         /// passthrough preserves SDL's convention end-to-end. No Y flip
         /// here — the relative reader has its own Y flip for the KBM
         /// mouse convention, which does not apply to absolute-position
-        /// outputs. Pressure (axisOffset == 2) is unipolar, kept as
+        /// outputs. NOTE: "no Y flip" is correct for the PASSTHROUGH
+        /// target only. A touchpad mapped to a STICK Y axis needs Y
+        /// inverted (touchpad top is raw_y=0 → −1, but a stick expects
+        /// up = +1); that flip lives in
+        /// <see cref="SourceEvaluator.ShouldFlipForAxisFrame"/>, keyed on
+        /// the stick target name, NOT here — flipping here would invert
+        /// the passthrough too. Pressure (axisOffset == 2) is unipolar, kept as
         /// [0..1] without recentering — pressure isn't a signed axis.
         /// Returns 0 when the finger is not in contact (the caller's
         /// gating wrapper usually filters us out first, but this is

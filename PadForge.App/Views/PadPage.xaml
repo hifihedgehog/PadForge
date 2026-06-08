@@ -3616,9 +3616,9 @@
                                                     BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
                                                 <StackPanel>
                                                     <Button Command="{Binding DataContext.RemoveSteeringLockPaletteColorCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                            CommandParameter="{Binding}" HorizontalAlignment="Right" Margin="0,0,0,6" Padding="6,2"
+                                                            CommandParameter="{Binding}" HorizontalAlignment="Right" Margin="0,0,0,4" Padding="4,0" MinWidth="24"
                                                             ToolTip="{Binding Pad_Lighting_RemoveColor, Source={x:Static strings:Strings.Instance}}">
-                                                        <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
+                                                        <TextBlock Text="&#xE738;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
                                                     </Button>
                                                     <!-- Full picker, same gamut as every other color selector:
                                                          HSV box, swatch, hex field, RGB sliders + value fields. -->
@@ -3667,8 +3667,12 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
-                                <Button Content="{Binding Pad_Lighting_AddColor, Source={x:Static strings:Strings.Instance}}"
-                                        Command="{Binding AddSteeringLockPaletteColorCommand}" HorizontalAlignment="Left" Padding="8,2"/>
+                                <Button Command="{Binding AddSteeringLockPaletteColorCommand}" HorizontalAlignment="Left" Padding="10,4">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Pad_Lighting_AddColor, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
                             <!-- Hold + Decay — the reactive pulse on lock: hold the color at full for
                                  Hold ms, then fade back over Decay ms (matches the macro lightbar). -->
@@ -4955,7 +4959,9 @@
                                 <StackPanel Visibility="{Binding PlayStationConfig.ShowPaletteForOverlay, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Pad_Lighting_PaletteHeader, Source={x:Static strings:Strings.Instance}}"
                                                FontWeight="SemiBold" Margin="0,0,0,6"/>
-                                    <ItemsControl ItemsSource="{Binding PlayStationConfig.LightbarPalette}" Margin="0,0,0,8">
+                                    <!-- Bound to the InputReactive Cycle's OWN palette, separate from the
+                                         ColorCycle palette above — editing one no longer touches the other. -->
+                                    <ItemsControl ItemsSource="{Binding PlayStationConfig.LightbarInputReactivePalette}" Margin="0,0,0,8">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel Orientation="Horizontal"/>
@@ -4966,7 +4972,7 @@
                                                 <Border BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,8,8"
                                                         BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
                                                     <StackPanel>
-                                                        <Button Command="{Binding DataContext.PlayStationConfig.RemovePaletteColorCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        <Button Command="{Binding DataContext.PlayStationConfig.RemoveInputReactivePaletteColorCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                                 CommandParameter="{Binding}"
                                                                 HorizontalAlignment="Right" Margin="0,0,0,4"
                                                                 Padding="4,0" MinWidth="24"
@@ -5018,14 +5024,14 @@
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <Button Command="{Binding PlayStationConfig.AddPaletteColorCommand}"
+                                        <Button Command="{Binding PlayStationConfig.AddInputReactivePaletteColorCommand}"
                                                 Padding="10,4">
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                 <TextBlock Text="{Binding Pad_Lighting_AddColor, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </Button>
-                                        <Button Command="{Binding PlayStationConfig.ResetPaletteCommand}"
+                                        <Button Command="{Binding PlayStationConfig.ResetInputReactivePaletteCommand}"
                                                 Margin="8,0,0,0" Padding="10,4"
                                                 ToolTip="{Binding Pad_Lighting_ResetPaletteTooltip, Source={x:Static strings:Strings.Instance}}">
                                             <StackPanel Orientation="Horizontal">

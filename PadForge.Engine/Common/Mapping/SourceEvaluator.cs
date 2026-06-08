@@ -109,6 +109,7 @@ namespace PadForge.Engine.Common.Mapping
                     return src.Invert ? -(float)v : (float)v;
                 }
                 default:
+                {
                     // Gyro → virtual stick is rate-direct, same as gyro →
                     // mouse / scroll: instantaneous angular rate (post-tuning)
                     // maps to stick deflection magnitude. Stop tilting and
@@ -120,7 +121,18 @@ namespace PadForge.Engine.Common.Mapping
                     // "hold the controller tilted to keep turning" — the
                     // opposite of how gyro is supposed to feel (JSM
                     // MOUSE_JOYSTICK, Steam Input gyro→stick, Splatoon).
-                    return SourceCoercion.EvaluateForBipolarAxisTarget(state, src, slotIndex, relativeTouchpad);
+                    float v = SourceCoercion.EvaluateForBipolarAxisTarget(state, src, slotIndex, relativeTouchpad);
+                    // The gyro angular-rate sign lands a leftward twist on +X
+                    // (stick right). A stick is a position, not a velocity, so
+                    // the user expects it to deflect TOWARD the twist (twist
+                    // left → stick left). Flip the gyro contribution for
+                    // absolute stick / extended axes. Relative targets (KBM
+                    // mouse / scroll) keep the aim-velocity sign — already
+                    // correct — and the motion passthrough is a separate chain.
+                    if (!IsRelativeMotionTarget(target) && SourceCoercion.IsGyroDescriptor(src.Descriptor))
+                        v = -v;
+                    return v;
+                }
             }
         }
 

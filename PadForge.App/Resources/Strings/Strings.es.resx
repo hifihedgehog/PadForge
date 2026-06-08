@@ -1653,6 +1653,13 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Restablecer zona muerta interior de inclinación</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Restablecer zona muerta exterior de inclinación</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Restablecer orientación del mando</value></data>
+  <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Dirección por movimiento</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Inclina el mando como un volante para dirigir el eje que elijas. El joystick físico no se ve afectado.</value></data>
+  <data name="Pad_MotionSteer_Enable" xml:space="preserve"><value>Activar dirección por movimiento</value></data>
+  <data name="Pad_MotionSteer_Target" xml:space="preserve"><value>Dirige</value></data>
+  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Restablecer toda la dirección por movimiento</value></data>
+  <data name="Pad_MotionSteer_Reset_Enable" xml:space="preserve"><value>Restablecer dirección por movimiento</value></data>
+  <data name="Pad_MotionSteer_Reset_Target" xml:space="preserve"><value>Restablecer destino de dirección</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Respuesta al tope del volante</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Cuando un stick configurado en modo de dirección se gira al máximo hasta el tope, se emite una señal (vibración, gatillo o barra de luz) para que sientas el límite. Todo desactivado de forma predeterminada.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pulso de vibración al llegar al tope</value></data>

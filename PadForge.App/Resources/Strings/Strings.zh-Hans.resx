@@ -1653,6 +1653,13 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>重置倾斜内死区</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>重置倾斜外死区</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>重置手柄朝向</value></data>
+  <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>体感转向</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>像方向盘一样倾斜手柄来转向所选轴。实体摇杆不受影响。</value></data>
+  <data name="Pad_MotionSteer_Enable" xml:space="preserve"><value>启用体感转向</value></data>
+  <data name="Pad_MotionSteer_Target" xml:space="preserve"><value>转向轴</value></data>
+  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>重置所有体感转向设置</value></data>
+  <data name="Pad_MotionSteer_Reset_Enable" xml:space="preserve"><value>重置体感转向</value></data>
+  <data name="Pad_MotionSteer_Reset_Target" xml:space="preserve"><value>重置转向轴</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>转向极限反馈</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>当设为转向模式的摇杆转到极限时，发出提示（震动、扳机或灯条），让你感受到极限。默认全部关闭。</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>到达极限时震动脉冲</value></data>

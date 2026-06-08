@@ -760,6 +760,14 @@ namespace PadForge.Services
             {
                 if (src == null) continue;
                 var cfg = ReadDeviceSteering(slot, src.DeviceGuid, stickIdx, padVm);
+                // Motion Steering (gyro tab) is a per-device motion feature that drives a
+                // chosen stick X axis. When it targets THIS stick it overrides the per-stick
+                // Steering Mode with MotionLeanX, reusing this whole stamp (including the
+                // off-axis neutralization below) — so tilt-to-steer needs no separate path.
+                var ms = ReadDeviceMotionSteering(slot, src.DeviceGuid, padVm);
+                if (ms.Enabled && MotionSteerTargetStickIdx(ms.Target) == stickIdx)
+                    cfg = (true, "MotionLeanX", cfg.WindRange, cfg.WindPower, cfg.WindUnwind,
+                        cfg.AngleInner, cfg.AngleOuter, ms.Inner, ms.Outer, ms.Orient);
                 // AngleToAxisY outputs to the Y channel; every other mode to X. Only stamp
                 // this source when its device's mode targets THIS row's channel.
                 bool wantY = string.Equals(cfg.Kind, "AngleToAxisY", StringComparison.Ordinal);
@@ -845,7 +853,10 @@ namespace PadForge.Services
                 : null;
             if (ps == null) return (false, "Direct", 900, 1, 1800, 0, 10, 15, 135, "Forward");
             string kind = ps.GetExtendedMapping($"Stick{stickIdx}SteerKind");
-            if (string.IsNullOrEmpty(kind)) kind = "Direct";
+            // MotionLeanX is no longer a per-stick mode — it's driven by Motion Steering
+            // (gyro tab) via its own override. Treat a stored per-stick MotionLeanX as
+            // Direct so an old profile doesn't ghost-lean while the new card sits idle.
+            if (string.IsNullOrEmpty(kind) || kind == "MotionLeanX") kind = "Direct";
             double D(string key, double dflt)
                 => double.TryParse(ps.GetExtendedMapping(key), System.Globalization.NumberStyles.Float,
                     System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
@@ -858,6 +869,44 @@ namespace PadForge.Services
                 D($"Stick{stickIdx}SteerAngleOuter", 10),
                 D($"Stick{stickIdx}SteerMotionInner", 15),
                 D($"Stick{stickIdx}SteerMotionOuter", 135),
+                string.IsNullOrEmpty(orient) ? "Forward" : orient);
+        }
+
+        // Maps a Motion Steering target string to a stick index (0 = Left, 1 = Right),
+        // or -1 when it doesn't name a supported stick X axis. Extended-controller stick
+        // axes will slot in here when the steering dispatch grows to cover them.
+        private static int MotionSteerTargetStickIdx(string target) => target switch
+        {
+            "LeftThumbAxisX"  => 0,
+            "RightThumbAxisX" => 1,
+            _ => -1,
+        };
+
+        // Reads one device's Motion Steering config (per slot+device). Mirrors
+        // ReadDeviceSteering: the SELECTED device reads the live UI (newer than its
+        // PadSetting), every other device reads its own stored PadSetting so each keeps
+        // its own tilt-steer setup. A guid-less source uses the UI.
+        private static (bool Enabled, string Target, double Inner, double Outer, string Orient)
+            ReadDeviceMotionSteering(int slot, string deviceGuid, PadViewModel padVm)
+        {
+            Guid sel = padVm.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+            bool useUi = string.IsNullOrEmpty(deviceGuid)
+                || (sel != Guid.Empty && Guid.TryParse(deviceGuid, out var dg) && dg == sel);
+            if (useUi)
+                return (padVm.MotionSteerEnabled, padVm.MotionSteerTarget,
+                    padVm.MotionSteerInnerDz, padVm.MotionSteerOuterDz, padVm.MotionSteerOrient);
+            PadSetting ps = Guid.TryParse(deviceGuid, out var g)
+                ? SettingsManager.FindSettingByInstanceGuidAndSlot(g, slot)?.GetPadSetting()
+                : null;
+            if (ps == null) return (false, "LeftThumbAxisX", 15, 135, "Forward");
+            double D(string key, double dflt)
+                => double.TryParse(ps.GetExtendedMapping(key), System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
+            string target = ps.GetExtendedMapping("MotionSteerTarget");
+            string orient = ps.GetExtendedMapping("MotionSteerOrient");
+            return (ps.GetExtendedMapping("MotionSteerEnabled") == "1",
+                string.IsNullOrEmpty(target) ? "LeftThumbAxisX" : target,
+                D("MotionSteerInner", 15), D("MotionSteerOuter", 135),
                 string.IsNullOrEmpty(orient) ? "Forward" : orient);
         }
 
@@ -1988,6 +2037,13 @@ namespace PadForge.Services
                 padVm.GyroInvertYawRoll = ps.GyroInvertYawRoll == "1";
                 padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough == "1";
 
+                // Load Motion Steering (per-(device, slot)) — relocated tilt-to-steer.
+                padVm.MotionSteerEnabled = ps.GetExtendedMapping("MotionSteerEnabled") == "1";
+                padVm.SetMotionSteerTarget(ps.GetExtendedMapping("MotionSteerTarget"));
+                padVm.MotionSteerInnerDz = TryParseDouble(ps.GetExtendedMapping("MotionSteerInner"), 15);
+                padVm.MotionSteerOuterDz = TryParseDouble(ps.GetExtendedMapping("MotionSteerOuter"), 135);
+                padVm.SetMotionSteerOrient(ps.GetExtendedMapping("MotionSteerOrient"));
+
                 // Load audio bass rumble settings.
                 padVm.AudioRumbleEnabled = ps.AudioRumbleEnabled == "1";
                 padVm.AudioRumbleSensitivity = TryParseDouble(ps.AudioRumbleSensitivity, 4.0);
@@ -3089,6 +3145,13 @@ namespace PadForge.Services
                     ps.GyroInvertPitch = padVm.GyroInvertPitch ? "1" : "0";
                     ps.GyroInvertYawRoll = padVm.GyroInvertYawRoll ? "1" : "0";
                     ps.GyroApplyTuningToPassthrough = padVm.GyroApplyTuningToPassthrough ? "1" : "0";
+
+                    // Write Motion Steering (per-(device, slot)).
+                    ps.SetExtendedMapping("MotionSteerEnabled", padVm.MotionSteerEnabled ? "1" : "0");
+                    ps.SetExtendedMapping("MotionSteerTarget", padVm.MotionSteerTarget);
+                    ps.SetExtendedMapping("MotionSteerInner", padVm.MotionSteerInnerDz.ToString(ic));
+                    ps.SetExtendedMapping("MotionSteerOuter", padVm.MotionSteerOuterDz.ToString(ic));
+                    ps.SetExtendedMapping("MotionSteerOrient", padVm.MotionSteerOrient);
 
                     // Write audio bass rumble settings.
                     ps.AudioRumbleEnabled = padVm.AudioRumbleEnabled ? "1" : "0";

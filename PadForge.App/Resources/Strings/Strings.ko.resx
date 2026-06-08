@@ -1653,6 +1653,13 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>기울이기 내부 데드존 재설정</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>기울이기 외부 데드존 재설정</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>컨트롤러 방향 재설정</value></data>
+  <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>모션 조향</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>컨트롤러를 핸들처럼 기울여 선택한 축을 조향합니다. 실제 스틱은 영향을 받지 않습니다.</value></data>
+  <data name="Pad_MotionSteer_Enable" xml:space="preserve"><value>모션 조향 사용</value></data>
+  <data name="Pad_MotionSteer_Target" xml:space="preserve"><value>조향 대상</value></data>
+  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>모든 모션 조향 설정 초기화</value></data>
+  <data name="Pad_MotionSteer_Reset_Enable" xml:space="preserve"><value>모션 조향 초기화</value></data>
+  <data name="Pad_MotionSteer_Reset_Target" xml:space="preserve"><value>조향 대상 초기화</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>조향 끝점 피드백</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>조향 모드로 설정한 스틱을 끝까지 완전히 꺾으면 신호(진동, 트리거, 라이트바)를 주어 한계를 느끼게 합니다. 모두 기본적으로 꺼져 있습니다.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>끝점에서 진동 펄스</value></data>

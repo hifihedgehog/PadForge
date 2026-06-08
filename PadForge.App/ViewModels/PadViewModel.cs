@@ -1303,6 +1303,69 @@ namespace PadForge.ViewModels
             new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Space_World,  "World"),
         };
 
+        // ── Motion Steering (v3.4 #94) — relocated out of the per-stick Steering
+        // Mode dropdown. Tilt-to-steer reads the accelerometer, not the stick, so
+        // it belongs with the motion settings and targets a stick axis explicitly
+        // instead of silently overriding one. Per (slot, device). The stamp reuses
+        // the per-stick steering path by overriding the target stick's effective
+        // kind with MotionLeanX, so no separate dispatch is needed. ──
+        private bool _motionSteerEnabled;
+        public bool MotionSteerEnabled
+        {
+            get => _motionSteerEnabled;
+            set => SetProperty(ref _motionSteerEnabled, value);
+        }
+
+        // Target stick X axis. Stored as the canonical target string so it
+        // round-trips and can grow to the extended-controller stick axes later
+        // without shifting saved indices. Index 0 = Left Stick X, 1 = Right Stick X.
+        private static readonly string[] MotionSteerTargets = { "LeftThumbAxisX", "RightThumbAxisX" };
+        private int _motionSteerTargetIndex;
+        public int MotionSteerTargetIndex
+        {
+            get => _motionSteerTargetIndex;
+            set { if (SetProperty(ref _motionSteerTargetIndex, Math.Clamp(value, 0, MotionSteerTargets.Length - 1))) OnPropertyChanged(nameof(MotionSteerTarget)); }
+        }
+        public string MotionSteerTarget => MotionSteerTargets[Math.Clamp(_motionSteerTargetIndex, 0, MotionSteerTargets.Length - 1)];
+        public void SetMotionSteerTarget(string target)
+        {
+            int i = System.Array.IndexOf(MotionSteerTargets, target ?? "");
+            MotionSteerTargetIndex = i >= 0 ? i : 0;
+        }
+
+        private double _motionSteerInnerDz = 15;
+        public double MotionSteerInnerDz { get => _motionSteerInnerDz; set => SetProperty(ref _motionSteerInnerDz, Math.Clamp(value, 0, 179)); }
+        private double _motionSteerOuterDz = 135;
+        public double MotionSteerOuterDz { get => _motionSteerOuterDz; set => SetProperty(ref _motionSteerOuterDz, Math.Clamp(value, 0, 179)); }
+
+        private static readonly string[] MotionSteerOrientValues = { "Forward", "Left", "Right", "Backward" };
+        private int _motionSteerOrientIndex;
+        public int MotionSteerOrientIndex
+        {
+            get => _motionSteerOrientIndex;
+            set { if (SetProperty(ref _motionSteerOrientIndex, Math.Clamp(value, 0, 3))) OnPropertyChanged(nameof(MotionSteerOrient)); }
+        }
+        public string MotionSteerOrient => MotionSteerOrientValues[Math.Clamp(_motionSteerOrientIndex, 0, 3)];
+        public void SetMotionSteerOrient(string o)
+        {
+            int i = System.Array.IndexOf(MotionSteerOrientValues, o ?? "Forward");
+            MotionSteerOrientIndex = i >= 0 ? i : 0;
+        }
+
+        private RelayCommand _resetMotionSteerEnabledCommand, _resetMotionSteerTargetCommand,
+            _resetMotionSteerInnerCommand, _resetMotionSteerOuterCommand,
+            _resetMotionSteerOrientCommand, _resetMotionSteerAllCommand;
+        public RelayCommand ResetMotionSteerEnabledCommand => _resetMotionSteerEnabledCommand ??= new RelayCommand(() => MotionSteerEnabled = false);
+        public RelayCommand ResetMotionSteerTargetCommand => _resetMotionSteerTargetCommand ??= new RelayCommand(() => MotionSteerTargetIndex = 0);
+        public RelayCommand ResetMotionSteerInnerCommand => _resetMotionSteerInnerCommand ??= new RelayCommand(() => MotionSteerInnerDz = 15);
+        public RelayCommand ResetMotionSteerOuterCommand => _resetMotionSteerOuterCommand ??= new RelayCommand(() => MotionSteerOuterDz = 135);
+        public RelayCommand ResetMotionSteerOrientCommand => _resetMotionSteerOrientCommand ??= new RelayCommand(() => MotionSteerOrientIndex = 0);
+        public RelayCommand ResetMotionSteerAllCommand => _resetMotionSteerAllCommand ??= new RelayCommand(() =>
+        {
+            MotionSteerEnabled = false; MotionSteerTargetIndex = 0;
+            MotionSteerInnerDz = 15; MotionSteerOuterDz = 135; MotionSteerOrientIndex = 0;
+        });
+
         private double _gyroPlayerSpaceYawRelaxFactor = 1.41;
         public double GyroPlayerSpaceYawRelaxFactor
         {

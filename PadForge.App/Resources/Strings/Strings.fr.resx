@@ -1653,6 +1653,13 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Réinitialiser la zone morte intérieure d'inclinaison</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Réinitialiser la zone morte extérieure d'inclinaison</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Réinitialiser l'orientation de la manette</value></data>
+  <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Direction par mouvement</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Inclinez la manette comme un volant pour diriger l'axe choisi. Le stick physique n'est pas affecté.</value></data>
+  <data name="Pad_MotionSteer_Enable" xml:space="preserve"><value>Activer la direction par mouvement</value></data>
+  <data name="Pad_MotionSteer_Target" xml:space="preserve"><value>Dirige</value></data>
+  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Réinitialiser tous les réglages de direction par mouvement</value></data>
+  <data name="Pad_MotionSteer_Reset_Enable" xml:space="preserve"><value>Réinitialiser la direction par mouvement</value></data>
+  <data name="Pad_MotionSteer_Reset_Target" xml:space="preserve"><value>Réinitialiser la cible de direction</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Retour en butée de braquage</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quand un stick configuré en mode direction est tourné à fond jusqu'en butée de braquage, déclenche un signal (vibration, gâchette ou barre lumineuse) pour vous faire sentir la limite. Tout est désactivé par défaut.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pulsation de vibration en butée</value></data>

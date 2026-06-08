@@ -366,8 +366,12 @@ namespace PadForge.ViewModels
         // Per-stick steering source kind + tunables. SteeringKind is the
         // MappingSource.Kind the engine dispatches on; the params feed the matching
         // Param* fields on the stick's MappingSet rows at build time.
+        // Motion Lean is no longer a per-stick mode — it moved to the gyro tab's
+        // Motion Steering card (it reads the accelerometer, not the stick). The
+        // engine MotionLeanX kind still exists; Motion Steering stamps it onto the
+        // chosen target. A stored "MotionLeanX" here falls back to Linear via IndexOf.
         private static readonly string[] SteeringModeKinds =
-            { "Direct", "WindingStick", "AngleToAxisX", "AngleToAxisY", "MotionLeanX" };
+            { "Direct", "WindingStick", "AngleToAxisX", "AngleToAxisY" };
 
         private int _steeringModeIndex; // 0 = Linear (Direct)
         public int SteeringModeIndex
@@ -381,7 +385,6 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsSteeringActive));
                     OnPropertyChanged(nameof(IsWindingMode));
                     OnPropertyChanged(nameof(IsAngleMode));
-                    OnPropertyChanged(nameof(IsMotionLeanMode));
                 }
             }
         }
@@ -400,7 +403,6 @@ namespace PadForge.ViewModels
         public bool IsSteeringActive => _steeringModeIndex != 0;
         public bool IsWindingMode => _steeringModeIndex == 1;
         public bool IsAngleMode => _steeringModeIndex == 2 || _steeringModeIndex == 3;
-        public bool IsMotionLeanMode => _steeringModeIndex == 4;
 
         private double _windRangeDeg = 900;
         public double WindRangeDeg { get => _windRangeDeg; set => SetProperty(ref _windRangeDeg, Math.Clamp(value, 90, 2520)); }

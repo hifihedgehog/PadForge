@@ -1653,6 +1653,13 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Innere Neigungs-Deadzone zurücksetzen</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Äußere Neigungs-Deadzone zurücksetzen</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Controller-Ausrichtung zurücksetzen</value></data>
+  <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Bewegungslenkung</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Neige den Controller wie ein Lenkrad, um die gewählte Achse zu steuern. Der Stick selbst bleibt unberührt.</value></data>
+  <data name="Pad_MotionSteer_Enable" xml:space="preserve"><value>Bewegungslenkung aktivieren</value></data>
+  <data name="Pad_MotionSteer_Target" xml:space="preserve"><value>Steuert</value></data>
+  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Alle Bewegungslenkung-Einstellungen zurücksetzen</value></data>
+  <data name="Pad_MotionSteer_Reset_Enable" xml:space="preserve"><value>Bewegungslenkung zurücksetzen</value></data>
+  <data name="Pad_MotionSteer_Reset_Target" xml:space="preserve"><value>Lenkziel zurücksetzen</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Lenkanschlag-Feedback</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Wenn ein auf Lenkung eingestellter Stick bis zum Vollanschlag gedreht wird, wird ein Signal (Vibration, Trigger oder Lightbar) ausgelöst, damit du den Anschlag spürst. Standardmäßig alles aus.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Vibrationspuls am Anschlag</value></data>

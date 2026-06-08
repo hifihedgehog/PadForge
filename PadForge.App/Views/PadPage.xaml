@@ -3390,7 +3390,6 @@
                                                     <ComboBoxItem Content="{Binding Pad_Steering_Mode_Winding, Source={x:Static strings:Strings.Instance}}"/>
                                                     <ComboBoxItem Content="{Binding Pad_Steering_Mode_AngleX, Source={x:Static strings:Strings.Instance}}"/>
                                                     <ComboBoxItem Content="{Binding Pad_Steering_Mode_AngleY, Source={x:Static strings:Strings.Instance}}"/>
-                                                    <ComboBoxItem Content="{Binding Pad_Steering_Mode_MotionLean, Source={x:Static strings:Strings.Instance}}"/>
                                                 </ComboBox>
                                                 <Button Command="{Binding ResetSteeringModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_Mode, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
@@ -3436,33 +3435,6 @@
                                                 </StackPanel>
                                             </StackPanel>
 
-                                            <!-- Motion-lean parameters -->
-                                            <StackPanel Visibility="{Binding IsMotionLeanMode, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                    <TextBlock Text="{Binding Pad_Steering_MotionInnerDz, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                                    <Slider Value="{Binding MotionInnerDz, Mode=TwoWay}" Minimum="0" Maximum="179" Style="{StaticResource DzSlider}"/>
-                                                    <TextBox Text="{Binding MotionInnerDz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                                    <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
-                                                    <Button Command="{Binding ResetMotionInnerDzCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_MotionInnerDz, Source={x:Static strings:Strings.Instance}}"/>
-                                                </StackPanel>
-                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                    <TextBlock Text="{Binding Pad_Steering_MotionOuterDz, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                                    <Slider Value="{Binding MotionOuterDz, Mode=TwoWay}" Minimum="0" Maximum="179" Style="{StaticResource DzSlider}"/>
-                                                    <TextBox Text="{Binding MotionOuterDz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                                    <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
-                                                    <Button Command="{Binding ResetMotionOuterDzCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_MotionOuterDz, Source={x:Static strings:Strings.Instance}}"/>
-                                                </StackPanel>
-                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                    <TextBlock Text="{Binding Pad_Steering_Orientation, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                                    <ComboBox SelectedIndex="{Binding ControllerOrientationIndex, Mode=TwoWay}" Width="200" VerticalAlignment="Center">
-                                                        <ComboBoxItem Content="{Binding Pad_Steering_Orient_Forward, Source={x:Static strings:Strings.Instance}}"/>
-                                                        <ComboBoxItem Content="{Binding Pad_Steering_Orient_Left, Source={x:Static strings:Strings.Instance}}"/>
-                                                        <ComboBoxItem Content="{Binding Pad_Steering_Orient_Right, Source={x:Static strings:Strings.Instance}}"/>
-                                                        <ComboBoxItem Content="{Binding Pad_Steering_Orient_Backward, Source={x:Static strings:Strings.Instance}}"/>
-                                                    </ComboBox>
-                                                    <Button Command="{Binding ResetControllerOrientationCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_Orientation, Source={x:Static strings:Strings.Instance}}"/>
-                                                </StackPanel>
-                                            </StackPanel>
                                         </StackPanel>
 
                                 </StackPanel>
@@ -5218,6 +5190,73 @@
                                               ToolTip="{Binding Pad_Gyro_ApplyToPassthrough_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Command="{Binding ResetGyroApplyToPassthroughCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetGyroApplyToPassthrough, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- ─── Motion Steering card (#94) — relocated tilt-to-steer ───
+                             Reads the accelerometer (controller tilt), not a stick, and
+                             drives the chosen stick X axis. Lives here with the motion
+                             settings instead of the per-stick Steering Mode dropdown. -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                                    <Viewbox Width="18" Height="18" VerticalAlignment="Center" Margin="0,0,8,0">
+                                        <Canvas Width="24" Height="24">
+                                            <Path Stroke="{DynamicResource TextFillColorPrimaryBrush}" StrokeThickness="1.7"
+                                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                                                  Data="M5,12 A7,7 0 1 1 19,12 A7,7 0 1 1 5,12 Z M10.1,12 A1.9,1.9 0 1 1 13.9,12 A1.9,1.9 0 1 1 10.1,12 Z M10.1,12 L5,12 M13.9,12 L19,12 M12,13.9 L12,19"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                    <TextBlock Text="{Binding Pad_MotionSteer_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding ResetMotionSteerAllCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_MotionSteer_Reset_All, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_MotionSteer_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <CheckBox IsChecked="{Binding MotionSteerEnabled, Mode=TwoWay}" VerticalAlignment="Center"
+                                              Content="{Binding Pad_MotionSteer_Enable, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Command="{Binding ResetMotionSteerEnabledCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_MotionSteer_Reset_Enable, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <!-- Target stick X axis + the lean tuning, shown only while enabled. -->
+                                <StackPanel Visibility="{Binding MotionSteerEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_MotionSteer_Target, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <ComboBox SelectedIndex="{Binding MotionSteerTargetIndex, Mode=TwoWay}" Width="200" VerticalAlignment="Center">
+                                            <ComboBoxItem Content="{Binding Btn_LeftStickX, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Btn_RightStickX, Source={x:Static strings:Strings.Instance}}"/>
+                                        </ComboBox>
+                                        <Button Command="{Binding ResetMotionSteerTargetCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_MotionSteer_Reset_Target, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Steering_MotionInnerDz, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding MotionSteerInnerDz, Mode=TwoWay}" Minimum="0" Maximum="179" Style="{StaticResource DzSlider}"/>
+                                        <TextBox Text="{Binding MotionSteerInnerDz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                        <Button Command="{Binding ResetMotionSteerInnerCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_MotionInnerDz, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Steering_MotionOuterDz, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding MotionSteerOuterDz, Mode=TwoWay}" Minimum="0" Maximum="179" Style="{StaticResource DzSlider}"/>
+                                        <TextBox Text="{Binding MotionSteerOuterDz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                        <Button Command="{Binding ResetMotionSteerOuterCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_MotionOuterDz, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Steering_Orientation, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <ComboBox SelectedIndex="{Binding MotionSteerOrientIndex, Mode=TwoWay}" Width="200" VerticalAlignment="Center">
+                                            <ComboBoxItem Content="{Binding Pad_Steering_Orient_Forward, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Steering_Orient_Left, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Steering_Orient_Right, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Steering_Orient_Backward, Source={x:Static strings:Strings.Instance}}"/>
+                                        </ComboBox>
+                                        <Button Command="{Binding ResetMotionSteerOrientCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_Orientation, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

@@ -1653,6 +1653,13 @@
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>リーン内側デッドゾーンをリセット</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>リーン外側デッドゾーンをリセット</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>コントローラーの向きをリセット</value></data>
+  <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>モーションステアリング</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>コントローラーをハンドルのように傾けて、選んだ軸を操作します。スティック自体は影響を受けません。</value></data>
+  <data name="Pad_MotionSteer_Enable" xml:space="preserve"><value>モーションステアリングを有効にする</value></data>
+  <data name="Pad_MotionSteer_Target" xml:space="preserve"><value>操作対象</value></data>
+  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>モーションステアリングの設定をすべてリセット</value></data>
+  <data name="Pad_MotionSteer_Reset_Enable" xml:space="preserve"><value>モーションステアリングをリセット</value></data>
+  <data name="Pad_MotionSteer_Reset_Target" xml:space="preserve"><value>操作対象をリセット</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ステアリングロックフィードバック</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ステアリングモードに設定したスティックをフルロックまで操作しきると、合図（振動、トリガー、ライトバー）を発生させて操舵限界を体感できます。すべて既定でオフです。</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>ロック時にランブルパルス</value></data>

@@ -1044,7 +1044,28 @@ namespace PadForge.Common.Input
                         _slotInitializing[padIndex] = false;
                     }
 
-                    if (vc != null && _slotInactiveCounter[padIndex] == 0)
+                    // One neutral submit on the active->inactive transition
+                    // (counter hits exactly 1 on the first inactive poll; Pass 1
+                    // incremented it earlier this same call). Without it the
+                    // virtual controller wire holds whatever report was last
+                    // submitted — a pedal or key held at unplug stays held
+                    // in-game until the HM inactivity teardown (default 60s,
+                    // indefinitely when disabled). Step 4 already recomputed
+                    // Combined* this poll from the frozen per-device states, so
+                    // neutralize them here exactly like Step 4's empty-slot path
+                    // (Clear keeps arrays allocated; every Submit* path
+                    // null-guards regardless), then fall through to the normal
+                    // submit block once.
+                    if (vc != null && _slotInactiveCounter[padIndex] == 1)
+                    {
+                        CombinedOutputStates[padIndex].Clear();
+                        CombinedExtendedRawStates[padIndex].Clear();
+                        CombinedMidiRawStates[padIndex].Clear();
+                        CombinedKbmRawStates[padIndex].Clear();
+                        CombinedTouchpadStates[padIndex] = default;
+                    }
+
+                    if (vc != null && _slotInactiveCounter[padIndex] <= 1)
                     {
                         // MIDI slots use SubmitMidiRawState for dynamic CC/note output.
                         // KBM slots use SubmitKbmState for keyboard/mouse output.

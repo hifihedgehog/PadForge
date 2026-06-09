@@ -1433,6 +1433,10 @@ namespace PadForge
                 // touchpad rows on Sony, etc.) populate as MappingSet rows
                 // without waiting for a save+reload.
                 SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view — see OnSidebarTypeXbox / PadViewModel.MappingsViewLoaded.
+                // RefreshDeviceList below can re-select the slot's device and fire the
+                // mapping-persisting save; the flag keeps it from writing the pre-change view.
+                _viewModel.Pads[args.SlotIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
                 _inputService.RefreshDeviceList();
                 _viewModel.Devices.RefreshSlotButtons();
@@ -2492,6 +2496,12 @@ namespace PadForge
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Xbox;
                 _inputService.MoveSlotToGroupTail(padIndex);
                 SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view: the rebuild above re-auto-mapped
+                // the slot, but the OutputType setter's RebuildMappings reloaded the
+                // ViewModel from the pre-change MappingSet. Same guard as the device-
+                // assignment path (see PadViewModel.MappingsViewLoaded); cleared on
+                // the next RefreshMappingsCore.
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
             }
         }
@@ -2506,6 +2516,8 @@ namespace PadForge
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.PlayStation;
                 _inputService.MoveSlotToGroupTail(padIndex);
                 SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view — see OnSidebarTypeXbox / PadViewModel.MappingsViewLoaded.
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
             }
         }
@@ -2520,6 +2532,8 @@ namespace PadForge
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Extended;
                 _inputService.MoveSlotToGroupTail(padIndex);
                 SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view — see OnSidebarTypeXbox / PadViewModel.MappingsViewLoaded.
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
             }
         }
@@ -2534,6 +2548,8 @@ namespace PadForge
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.KeyboardMouse;
                 _inputService.MoveSlotToGroupTail(padIndex);
                 SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view — see OnSidebarTypeXbox / PadViewModel.MappingsViewLoaded.
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
             }
         }
@@ -2549,6 +2565,8 @@ namespace PadForge
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Midi;
                 _inputService.MoveSlotToGroupTail(padIndex);
                 SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view — see OnSidebarTypeXbox / PadViewModel.MappingsViewLoaded.
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
             }
         }

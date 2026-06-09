@@ -548,6 +548,7 @@ namespace PadForge.Common.Input
             {
                 _appliedWheelSettings.Remove(ud.DevicePath);
                 _appliedLeds.Remove(ud.DevicePath);
+                _appliedWheelFfb.Remove(ud.DevicePath);
                 LogitechRawHidWriter.ResetDevice(ud.DevicePath);
                 ThrustmasterRawHidWriter.ResetDevice(ud.DevicePath);
                 RawHidOutput.ResetDevice(ud.DevicePath);

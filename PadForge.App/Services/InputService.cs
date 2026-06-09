@@ -5575,8 +5575,12 @@ namespace PadForge.Services
             var devs = SettingsManager.UserDevices?.Items;
             if (devs == null) return;
             (UserDevice ud, PadSetting ps)[] candidates;
-            lock (settings.SyncRoot)
+            // Canonical lock order is UserDevices -> UserSettings (see
+            // MappingSetEval's snapshot doc); Settings-first here was one half
+            // of an ABBA pair against the disconnect path's Devices-first
+            // nesting on the websocket thread.
             lock (SettingsManager.UserDevices.SyncRoot)
+            lock (settings.SyncRoot)
             {
                 var found = new List<(UserDevice, PadSetting)>();
                 for (int i = 0; i < settings.Items.Count; i++)

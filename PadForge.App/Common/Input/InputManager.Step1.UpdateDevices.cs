@@ -344,7 +344,25 @@ namespace PadForge.Common.Input
                 UserDevice ud = FindOnlineDeviceBySdlInstanceId(sdlId);
                 if (ud == null)
                 {
-                    // UserDevice itself is gone — no handle to preserve.
+                    // Not found ONLINE. Two cases:
+                    //  - Step 2 already flipped the device offline (its
+                    //    GetCurrentState returned null when SDL reported the
+                    //    handle detached). The UserDevice still holds the dead
+                    //    SDL handle and none of the disconnect cleanup has run.
+                    //    Without this, MarkDeviceOffline became unreachable for
+                    //    real SDL unplugs the moment the detached-read guard
+                    //    shipped: the handle leaked, the wheel-replug writer
+                    //    resets never ran, and the per-slot output
+                    //    neutralization never happened. Finish the disconnect
+                    //    here — detachment is permanent for a handle, so no
+                    //    debounce applies.
+                    //  - The UserDevice itself is gone — nothing to clean.
+                    var offlineUd = FindDeviceBySdlInstanceIdAnyState(sdlId);
+                    if (offlineUd != null && offlineUd.Device != null)
+                    {
+                        MarkDeviceOffline(offlineUd);
+                        changed = true;
+                    }
                     disconnectedIds.Add(sdlId);
                     _sdlDisconnectCandidateSince.Remove(sdlId);
                     continue;
@@ -434,6 +452,30 @@ namespace PadForge.Common.Input
                 {
                     var d = devices[i];
                     if (d.IsOnline && d.Device != null && d.Device.SdlInstanceId == sdlInstanceId)
+                        return d;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Like <see cref="FindOnlineDeviceBySdlInstanceId"/> but without the
+        /// IsOnline filter. Used by the disconnect sweep to finish cleanup for
+        /// a device Step 2 already flipped offline (detached-handle read): the
+        /// UserDevice still holds the dead SDL wrapper that MarkDeviceOffline
+        /// must dispose.
+        /// </summary>
+        private UserDevice FindDeviceBySdlInstanceIdAnyState(uint sdlInstanceId)
+        {
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices == null) return null;
+
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                for (int i = 0; i < devices.Count; i++)
+                {
+                    var d = devices[i];
+                    if (d.Device != null && d.Device.SdlInstanceId == sdlInstanceId)
                         return d;
                 }
                 return null;
@@ -829,6 +871,14 @@ namespace PadForge.Common.Input
             var devices = SettingsManager.UserDevices;
             if (devices == null) return;
 
+            // Resolve under the devices lock, but mark offline OUTSIDE it.
+            // MarkDeviceOffline takes the UserSettings lock to neutralize the
+            // device's per-slot outputs; holding UserDevices while acquiring
+            // UserSettings here (a ThreadPool websocket-disconnect thread)
+            // would form an ABBA pair with the UI-thread sites that nest the
+            // same locks Settings-first. The lock only guards the scan; the
+            // marking itself needs no collection lock.
+            UserDevice target = null;
             lock (devices.SyncRoot)
             {
                 for (int i = 0; i < devices.Items.Count; i++)
@@ -836,11 +886,14 @@ namespace PadForge.Common.Input
                     var d = devices.Items[i];
                     if (d.IsOnline && d.InstanceGuid == instanceGuid)
                     {
-                        MarkDeviceOffline(d);
+                        target = d;
                         break;
                     }
                 }
             }
+
+            if (target != null)
+                MarkDeviceOffline(target);
 
             DevicesUpdated?.Invoke(this, EventArgs.Empty);
         }

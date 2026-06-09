@@ -789,27 +789,12 @@ namespace PadForge.Services
                 }
                 else
                 {
-                    // Not the steering output for this source's device: restore its own axis
-                    // as a plain Direct mapping. Re-derived from the base layer EVERY stamp
-                    // (un-guarded), so this also un-does a prior neutralization once steering
-                    // turns off — the reconciliation pass reuses persisted rows, so a guarded
-                    // revert would leave a neutralized off-axis stuck empty.
-                    src.Kind = "Direct";
-                    src.Descriptor = GetDeviceAxisDescriptor(padVm, target, src.DeviceGuid);
-                    src.ParamYDescriptor = "";
-                    src.ParamWindRangeDeg = 0; src.ParamWindPower = 0; src.ParamWindUnwindRate = 0;
-                    src.ParamAngleInnerDz = 0; src.ParamAngleOuterDz = 0;
-                    src.ParamMotionInnerDz = 0; src.ParamMotionOuterDz = 0;
-                    src.ParamControllerOrientation = null;
-                    // Off-axis of an active STICK-READING steering mode (winding / angle):
-                    // that gesture moves the whole physical stick, so its other half would
-                    // bleed into this axis — neutralize it to centered. Matches JSM's
-                    // setStick(value, 0). MotionLean is EXCLUDED: it reads the accelerometer,
-                    // not the stick, so the stick (and anything mapped to this axis, e.g. a
-                    // button → Y) stays free and must NOT be wiped. An empty descriptor reads
-                    // 0; reversible because the line above re-derives the real axis next stamp.
-                    if (cfg.Active && !string.Equals(cfg.Kind, "MotionLeanX", StringComparison.Ordinal))
-                        src.Descriptor = "";
+                    // Not the steering output for this source's device. Revert it to a plain
+                    // Direct read of its own axis — but ONLY if it's currently a steering kind.
+                    // A normal mapping the user put on this axis (a button, a two-button
+                    // neg-pair, an axis) is left untouched: rewriting every source's descriptor
+                    // here clobbered neg-pairs down to the primary and broke button→axis maps.
+                    RevertSourceToDirect(src, target, padVm);
                 }
             }
             return any;
@@ -930,6 +915,21 @@ namespace PadForge.Services
             var extra = m.ExtraSources?.FirstOrDefault(e =>
                 string.Equals(e.DeviceGuid ?? "", deviceGuid ?? "", StringComparison.OrdinalIgnoreCase));
             return extra != null ? StripSourcePrefix(extra.Descriptor) : "";
+        }
+
+        // Reverts ONE source to a plain Direct read of its row's own device axis — but only
+        // if it's currently a steering kind. A normal Direct mapping (button, neg-pair, axis)
+        // is left untouched so this stamp never rewrites the user's own axis mappings.
+        private static void RevertSourceToDirect(Engine.Data.MappingSource src, string target, PadViewModel padVm)
+        {
+            if (src == null || !IsSteeringKind(src.Kind)) return;
+            src.Kind = "Direct";
+            src.Descriptor = GetDeviceAxisDescriptor(padVm, target, src.DeviceGuid);
+            src.ParamYDescriptor = "";
+            src.ParamWindRangeDeg = 0; src.ParamWindPower = 0; src.ParamWindUnwindRate = 0;
+            src.ParamAngleInnerDz = 0; src.ParamAngleOuterDz = 0;
+            src.ParamMotionInnerDz = 0; src.ParamMotionOuterDz = 0;
+            src.ParamControllerOrientation = null;
         }
 
         // Strips a leading I / H / IH inversion prefix off a source descriptor, matching

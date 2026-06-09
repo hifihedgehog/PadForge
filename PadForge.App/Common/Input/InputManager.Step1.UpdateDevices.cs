@@ -555,6 +555,30 @@ namespace PadForge.Common.Input
             }
 
             ud.ClearRuntimeState();
+
+            // Neutralize the device's per-slot mapped outputs. Step 3 skips
+            // offline devices and "keeps the last OutputState" (a guard against
+            // transient read glitches), so whatever was stamped on the final
+            // frames before this confirmed disconnect would otherwise persist
+            // for as long as the slot stays active: a detached pedal's
+            // recentered read (inverted trigger -> ~32767 = 50% engaged), or a
+            // button/pedal the user was holding at unplug. Step 4 copies
+            // OutputState into the slot's combined output and the per-device
+            // Triggers/Sticks preview reads RawMappedState, so both must go
+            // neutral (Gamepad default: triggers released, sticks centered).
+            var allSettings = SettingsManager.UserSettings;
+            if (allSettings != null)
+            {
+                lock (allSettings.SyncRoot)
+                {
+                    foreach (var us in allSettings.Items)
+                    {
+                        if (us == null || us.InstanceGuid != ud.InstanceGuid) continue;
+                        us.OutputState = default;
+                        us.RawMappedState = default;
+                    }
+                }
+            }
         }
 
         // ─────────────────────────────────────────────

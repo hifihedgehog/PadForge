@@ -1244,7 +1244,7 @@ namespace PadForge.Services
                             // for a per-device input preview. Reading
                             // ud.InputState directly shows each physical
                             // device's actual stick/trigger position.
-                            padVm.UpdateDeviceState(BuildPerDeviceSticksFromInputState(selected.InstanceGuid));
+                            padVm.UpdateDeviceState(BuildPerDeviceSticksFromInputState(selected.InstanceGuid, us));
                         }
                     }
                     else if (_inputManager.SlotExtendedIsCustom[i])
@@ -8112,33 +8112,51 @@ namespace PadForge.Services
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>Builds a <see cref="Gamepad"/> from the physical
-        /// device's raw <see cref="UserDevice.InputState"/> axes, used
-        /// by the per-device Sticks/Triggers tab preview. Bypasses the
-        /// post-MappingSet intermediate so each physical device shows
-        /// its own stick/trigger position in a multi-device slot.
-        /// Layout per <see cref="SdlDeviceWrapper.GetGamepadState"/>:
-        /// Axis[0]=LX, [1]=LY, [2]=LT, [3]=RX, [4]=RY, [5]=RT
-        /// (unsigned 0..65535).</summary>
-        private Gamepad BuildPerDeviceSticksFromInputState(Guid instanceGuid)
+        /// <summary>Builds a <see cref="Gamepad"/> for the per-device
+        /// Sticks/Triggers tab preview. Triggers come from the engine's
+        /// per-device <see cref="UserSetting.RawMappedState"/> (descriptor-
+        /// resolved + inverted, pre-tuning); sticks come from the physical
+        /// device's raw <see cref="UserDevice.InputState"/> axes. Bypasses
+        /// the post-tuning output so each physical device shows its own
+        /// stick/trigger position in a multi-device slot.
+        /// Stick layout per <see cref="SdlDeviceWrapper.GetGamepadState"/>:
+        /// Axis[0]=LX, [1]=LY, [3]=RX, [4]=RY (unsigned 0..65535).</summary>
+        private Gamepad BuildPerDeviceSticksFromInputState(Guid instanceGuid, UserSetting us = null)
         {
             var ud = FindUserDevice(instanceGuid);
             var devState = ud?.InputState;
             Gamepad gp = default;
+
+            // Triggers: read RawMappedState (axis-selected + inverted, PRE-tuning)
+            // so the Triggers-tab preview honors the user's actual LeftTrigger/
+            // RightTrigger descriptors and their Invert flag. A wheel pedal mapped
+            // to "IAxis 3" then rests at released (0), not raw 65535, and the brake
+            // on "IAxis 2" drives the right trigger — the old fixed Axis[2]/Axis[5]
+            // read showed the wrong (un-inverted) pedal and left the other trigger
+            // dead. RawMappedState is pre-tuning, so the UI's ProcessTriggerForPreview
+            // re-applies deadzone/curve without double-processing. For default gamepad
+            // maps (LeftTrigger="Axis 2", RightTrigger="Axis 5") this is value-identical
+            // to the old raw read, so XInput-shaped pads don't change.
+            if (us != null)
+            {
+                gp.LeftTrigger = us.RawMappedState.LeftTrigger;
+                gp.RightTrigger = us.RawMappedState.RightTrigger;
+            }
+
             if (devState?.Axis == null || devState.Axis.Length < 6)
                 return gp;
 
-            // 0..65535 → signed -32768..32767 for stick axes; pass through for triggers.
-            // Y axes are negated: SDL convention is positive-down (screen
-            // coords); Gamepad/XInput convention is positive-up. The
-            // standard SDL→Gamepad path applies the same negation
+            // Sticks: 0..65535 → signed -32768..32767. Y axes are negated: SDL
+            // convention is positive-down (screen coords); Gamepad/XInput convention
+            // is positive-up. The standard SDL→Gamepad path applies the same negation
             // (SdlDeviceWrapper -> MapToThumbAxisWithNeg via PadSetting).
+            // NOTE: this still assumes the XInput stick-axis layout, so a wheel/
+            // joystick with remapped stick axes can mis-preview sticks; triggers
+            // were the reported case and are fixed above.
             gp.ThumbLX = (short)(devState.Axis[0] + short.MinValue);
             gp.ThumbLY = (short)Math.Clamp(-(devState.Axis[1] + short.MinValue), short.MinValue, short.MaxValue);
             gp.ThumbRX = (short)(devState.Axis[3] + short.MinValue);
             gp.ThumbRY = (short)Math.Clamp(-(devState.Axis[4] + short.MinValue), short.MinValue, short.MaxValue);
-            gp.LeftTrigger = (ushort)Math.Clamp(devState.Axis[2], 0, 65535);
-            gp.RightTrigger = (ushort)Math.Clamp(devState.Axis[5], 0, 65535);
             return gp;
         }
     }

@@ -113,11 +113,17 @@ namespace PadForge.Services
             if (udForGuid != null)
                 us.ProductGuid = udForGuid.ProductGuid;
 
-            // If no PadSetting exists, create defaults.
+            // If no PadSetting exists, create defaults. Also re-auto-map when the
+            // existing PadSetting is foreign — descriptors authored for a different
+            // device that shared this slot (a wheel's raw Button 24 / IAxis 3 on a
+            // DualSense). FillEmpty can't heal that: the foreign fields aren't empty,
+            // so only the genuinely empty Share button gets filled.
             var existingPs = us.GetPadSetting();
-            if (existingPs == null)
+            var outputType = _mainVm.Pads[slotIndex].OutputType;
+            if (existingPs == null || IsForeignPadSetting(existingPs, udForGuid, outputType))
             {
-                var outputType = _mainVm.Pads[slotIndex].OutputType;
+                if (existingPs != null)
+                    SettingsService.StripDeviceFromAllSlots(instanceGuid);
                 var ps = SettingsManager.CreateDefaultPadSetting(udForGuid, outputType);
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
@@ -130,8 +136,7 @@ namespace PadForge.Services
                 // Fill empty touchpad mappings when assigning a Touchpad-type
                 // device to a PlayStation slot so the user gets the
                 // auto-map they expect on first assign.
-                FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid,
-                    _mainVm.Pads[slotIndex].OutputType);
+                FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid, outputType);
             }
 
             // Update the row display.
@@ -192,17 +197,18 @@ namespace PadForge.Services
             if (udForGuid != null) us.ProductGuid = udForGuid.ProductGuid;
 
             var existingPs = us.GetPadSetting();
-            if (existingPs == null)
+            var outputType = _mainVm.Pads[slotIndex].OutputType;
+            if (existingPs == null || IsForeignPadSetting(existingPs, udForGuid, outputType))
             {
-                var outputType = _mainVm.Pads[slotIndex].OutputType;
+                if (existingPs != null)
+                    SettingsService.StripDeviceFromAllSlots(instanceGuid);
                 var ps = SettingsManager.CreateDefaultPadSetting(udForGuid, outputType);
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
             }
             else
             {
-                FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid,
-                    _mainVm.Pads[slotIndex].OutputType);
+                FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid, outputType);
             }
 
             row.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
@@ -252,17 +258,18 @@ namespace PadForge.Services
 
                 // Create PadSetting for the new assignment.
                 var existingPs = us.GetPadSetting();
-                if (existingPs == null)
+                var outputType = _mainVm.Pads[slotIndex].OutputType;
+                if (existingPs == null || IsForeignPadSetting(existingPs, udForGuid, outputType))
                 {
-                    var outputType = _mainVm.Pads[slotIndex].OutputType;
+                    if (existingPs != null)
+                        SettingsService.StripDeviceFromAllSlots(instanceGuid);
                     var ps = SettingsManager.CreateDefaultPadSetting(udForGuid, outputType);
                     us.SetPadSetting(ps);
                     us.PadSettingChecksum = ps.PadSettingChecksum;
                 }
                 else
                 {
-                    FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid,
-                        _mainVm.Pads[slotIndex].OutputType);
+                    FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid, outputType);
                 }
 
                 // Auto-enable input hiding defaults for newly assigned devices.
@@ -593,6 +600,93 @@ namespace PadForge.Services
                 prop.SetValue(existingPs, fresh);
             }
             existingPs.UpdateChecksum();
+        }
+
+        /// <summary>
+        /// True when <paramref name="existingPs"/> carries a standard mapping
+        /// descriptor that points at a button / axis / POV index this device
+        /// doesn't physically expose. That means the PadSetting was authored for
+        /// a DIFFERENT device — a Copy From across device kinds, or a mapping
+        /// inherited from another device sharing the slot (e.g. a racing wheel's
+        /// raw <c>Button 24</c> / <c>IAxis 3</c> descriptors landing on a
+        /// DualSense, whose buttons stop at 21). On (re)assign such a PadSetting
+        /// must be re-auto-mapped fresh rather than preserved by the fill-empty
+        /// pass, which only touches empty fields and so leaves the foreign
+        /// descriptors in place (the "assigning my DualSense to a wheel's slot
+        /// only maps the Share button" report).
+        ///
+        /// <para>Only Gamepads have a canonical auto-map, so the check is gated
+        /// to them; wheels / joysticks keep their recorded mapping. Descriptors
+        /// the device's OWN fresh auto-map produces are whitelisted, so a clean
+        /// gamepad mapping is never flagged even when its auto-mapped indices sit
+        /// near the device's reported counts.</para>
+        /// </summary>
+        private static bool IsForeignPadSetting(PadSetting existingPs, UserDevice ud,
+            Engine.VirtualControllerType outputType)
+        {
+            if (existingPs == null || ud == null) return false;
+            if (ud.CapType != InputDeviceType.Gamepad) return false;
+
+            int buttons = ud.RawButtonCount > 0 ? ud.RawButtonCount : ud.CapButtonCount;
+            int axes = ud.CapAxeCount;
+            int povs = ud.CapPovCount;
+            if (buttons <= 0 && axes <= 0 && povs <= 0) return false; // unknown inventory — don't guess
+
+            var fresh = SettingsManager.CreateDefaultPadSetting(ud, outputType);
+            var freshSet = new System.Collections.Generic.HashSet<string>(
+                fresh != null ? fresh.GetAllMappingDescriptors() : new System.Collections.Generic.List<string>(),
+                StringComparer.OrdinalIgnoreCase);
+
+            foreach (var desc in existingPs.GetAllMappingDescriptors())
+            {
+                foreach (var rawPart in desc.Split('|'))
+                {
+                    string part = rawPart.Trim();
+                    if (part.Length == 0 || freshSet.Contains(part)) continue;
+                    if (!TryParseInputRef(part, out char kind, out int idx)) continue;
+                    switch (kind)
+                    {
+                        case 'b': if (buttons > 0 && idx >= buttons) return true; break;
+                        case 'a': if (axes    > 0 && idx >= axes)    return true; break;
+                        case 'p': if (povs    > 0 && idx >= povs)    return true; break;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Parses a single input descriptor (after splitting compound '|' lists)
+        /// into its kind ('b' button, 'a' axis, 'p' POV) and index. Mirrors the
+        /// engine's <c>ParseDescriptor</c> prefix handling: an optional
+        /// invert/half marker (<c>I</c>, <c>H</c>, <c>IH</c>) precedes the type
+        /// word. Slider / motion / touchpad / unknown descriptors return false.
+        /// </summary>
+        private static bool TryParseInputRef(string s, out char kind, out int index)
+        {
+            kind = '\0';
+            index = -1;
+            if (string.IsNullOrEmpty(s)) return false;
+            s = s.Trim();
+
+            if (s.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
+                s = s.Substring(2);
+            else if ((s.StartsWith("I", StringComparison.OrdinalIgnoreCase)
+                      || s.StartsWith("H", StringComparison.OrdinalIgnoreCase))
+                     && s.Length > 1 && !char.IsDigit(s[1]))
+                s = s.Substring(1);
+
+            var parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 2) return false;
+            switch (parts[0].ToLowerInvariant())
+            {
+                case "axis":   kind = 'a'; break;
+                case "button": kind = 'b'; break;
+                case "pov":    kind = 'p'; break;
+                default: return false; // slider / unknown — not index-validated here
+            }
+            return int.TryParse(parts[1], System.Globalization.NumberStyles.Integer,
+                System.Globalization.CultureInfo.InvariantCulture, out index);
         }
 
         // ─────────────────────────────────────────────

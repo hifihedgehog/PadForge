@@ -542,7 +542,23 @@ namespace PadForge.Common.Input
                     // and Thrustmaster use their firmware spring in the one-shot below.
                     int desAc = int.TryParse(firstPadSetting.AutoCenterStrength, out int acp) ? System.Math.Clamp(acp, 0, 100) : 0;
                     int acMag = desAc * 0xffff / 100; // 0..100% -> 0..0xffff
-                    if (isLogitechWheel)
+                    // Skip the HID write when the force/condition is identical to last poll —
+                    // the wheel holds it, so re-sending is pure per-poll churn (the 1000->500 Hz
+                    // drop with a wheel connected). Active FFB changes the signature each tick
+                    // and still writes; only a steady force (idle, held spring) is throttled.
+                    int periodicPeak = (isThrustmasterWheel && !hasCond && cv.HasDirectionalData && cv.Period > 0
+                        && ForceFeedbackState.IsPeriodicEffect(cv.EffectType))
+                        ? ForceFeedbackState.ComputeWheelSteeringPeak(cv, overallGain) : 0;
+                    var ffbSig = new WheelFfbSig(hasCond, cv.HasDirectionalData, wheelForce, periodicPeak, acMag,
+                        (int)cv.EffectType, (int)cv.Period,
+                        hasCond ? (int)ca.PositiveCoefficient : 0, hasCond ? (int)ca.NegativeCoefficient : 0,
+                        hasCond ? (int)ca.Offset : 0, hasCond ? (int)ca.DeadBand : 0,
+                        hasCond ? (int)ca.PositiveSaturation : 0, hasCond ? (int)ca.NegativeSaturation : 0, condGain);
+                    if (_appliedWheelFfb.TryGetValue(ud.DevicePath, out var prevFfb) && prevFfb.Equals(ffbSig))
+                    {
+                        // Unchanged — the wheel already holds this force; skip the HID write.
+                    }
+                    else if (isLogitechWheel)
                     {
                         if (hasCond)
                             LogitechRawHidWriter.WriteCondition(ud.DevicePath, 0, cv.EffectType,
@@ -580,6 +596,7 @@ namespace PadForge.Common.Input
                                 ForceFeedbackState.ComputeWheelSteeringPeak(cv, overallGain), (int)cv.Period);
                         else ThrustmasterRawHidWriter.WriteConstantForce(ud.DevicePath, wheelForce);
                     }
+                    _appliedWheelFfb[ud.DevicePath] = ffbSig;
 
                     // Wheel settings (rotation range + auto-center) — one-shot,
                     // re-sent only when the persisted value changes.
@@ -660,6 +677,27 @@ namespace PadForge.Common.Input
         // Per-device last-applied RPM LED bitmask, so the strip is only re-sent
         // when it changes (steady RPM = no write; blink/step = write on change).
         private readonly System.Collections.Generic.Dictionary<string, int> _appliedLeds = new();
+
+        // Per-device last-applied wheel FFB force/condition. FFB is stateful — the wheel
+        // firmware holds the last force until changed — so re-sending an unchanged force
+        // every poll is a blocking HID write that halves the poll rate while a wheel is
+        // connected (worst at idle: a steady stop/zero force re-sent every tick). Write the
+        // force only when this signature changes.
+        private readonly System.Collections.Generic.Dictionary<string, WheelFfbSig> _appliedWheelFfb = new();
+        private readonly struct WheelFfbSig : System.IEquatable<WheelFfbSig>
+        {
+            public readonly bool HasCond, Dir; public readonly short Force;
+            public readonly int Peak, Ac, Effect, Period, Pc, Nc, Off, Db, Ps, Ns, CondGain;
+            public WheelFfbSig(bool hasCond, bool dir, short force, int peak, int ac, int effect, int period,
+                int pc, int nc, int off, int db, int ps, int ns, int condGain)
+            { HasCond = hasCond; Dir = dir; Force = force; Peak = peak; Ac = ac; Effect = effect; Period = period;
+              Pc = pc; Nc = nc; Off = off; Db = db; Ps = ps; Ns = ns; CondGain = condGain; }
+            public bool Equals(WheelFfbSig o) => HasCond == o.HasCond && Dir == o.Dir && Force == o.Force && Peak == o.Peak
+                && Ac == o.Ac && Effect == o.Effect && Period == o.Period && Pc == o.Pc && Nc == o.Nc && Off == o.Off
+                && Db == o.Db && Ps == o.Ps && Ns == o.Ns && CondGain == o.CondGain;
+            public override bool Equals(object o) => o is WheelFfbSig w && Equals(w);
+            public override int GetHashCode() => System.HashCode.Combine(Force, Effect, Period, Pc, Nc, Off, CondGain, Ac);
+        }
 
         // Per-slot scratch buffer reused across iterations of the
         // ApplyForceFeedback per-slot loop — the evaluator only writes

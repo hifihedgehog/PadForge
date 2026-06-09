@@ -528,6 +528,19 @@ namespace PadForge
             // Refresh PadPage dropdowns and Devices-page slot buttons after assignment changes.
             _deviceService.DeviceAssignmentChanged += (s, e) =>
             {
+                // Assigning a device auto-maps it and rebuilds the slot's
+                // MappingSet, leaving every pad's Mappings ViewModel momentarily
+                // behind. RefreshDeviceList below re-selects the slot's device,
+                // which fires OnSelectedDeviceChanged → SaveViewModelToPadSetting
+                // BEFORE RefreshMappingsToViewModel reloads the ViewModel. Mark
+                // the mapping views stale up front so that save skips its
+                // destructive clear+rewrite instead of wiping the fresh auto-map
+                // (the DualSense-to-an-occupied-slot "only the Share button maps"
+                // bug; see PadViewModel.MappingsViewLoaded). RefreshMappingsToViewModel
+                // clears the flag again once the ViewModel is current.
+                foreach (var p in _viewModel.Pads)
+                    p.MappingsViewLoaded = false;
+
                 _inputService.RefreshDeviceList();
                 _viewModel.Devices.RefreshSlotButtons();
 

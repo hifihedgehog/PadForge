@@ -2454,7 +2454,20 @@ namespace PadForge.Services
             // and explicitly clear the same target on every OTHER
             // device in the slot so any historical bleed heals over
             // saves.
-            if (syncMappings)
+            // GUARD: only run the destructive mapping clear+rewrite when the
+            // Mappings ViewModel actually mirrors the slot's current MappingSet.
+            // RefreshMappingsCore sets MappingsViewLoaded; a device assignment
+            // clears it (MainWindow's DeviceAssignmentChanged handler) for the
+            // window between auto-mapping the new device and reloading the
+            // ViewModel. During that window OnSelectedDeviceChanged can fire this
+            // save with a STALE (typically empty) padVm.Mappings — clearing every
+            // slot device's descriptors and rewriting from it would erase the
+            // freshly auto-mapped pad (the trace caught a DualSense dropping from
+            // 21 descriptors to 0). The MappingSet is authoritative and already
+            // holds the auto-map, so skipping the push loses nothing; the next
+            // save, after RefreshMappingsToViewModel, persists the mappings.
+            // Per-device tuning (saved above this block) is unaffected.
+            if (syncMappings && padVm.MappingsViewLoaded)
             {
                 // Snapshot every assigned device for this slot so the
                 // bleed-cleanup pass can iterate without re-locking.
@@ -2848,6 +2861,11 @@ namespace PadForge.Services
                 }
             }
 
+            // Mappings now mirror the slot's authoritative MappingSet. Clears the
+            // stale flag so SaveViewModelToPadSetting may persist mappings again
+            // (see PadViewModel.MappingsViewLoaded for the mid-assign clobber this
+            // guards against).
+            padVm.MappingsViewLoaded = true;
         }
 
         /// <summary>

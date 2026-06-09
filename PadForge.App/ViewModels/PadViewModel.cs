@@ -794,6 +794,31 @@ namespace PadForge.ViewModels
             new ObservableCollection<MappingItem>();
 
         /// <summary>
+        /// True when <see cref="Mappings"/> currently reflects this slot's
+        /// authoritative MappingSet — i.e. <c>RefreshMappingsCore</c> has run
+        /// since the MappingSet was last rebuilt. False during the window
+        /// between a MappingSet rebuild (e.g. a device assignment auto-mapping
+        /// a new pad) and the ViewModel reload that follows it.
+        ///
+        /// <para><b>Why this exists.</b> <c>SaveViewModelToPadSetting</c>
+        /// (syncMappings) persists the per-VC mappings by CLEARING every slot
+        /// device's PadSetting descriptors and rewriting them from
+        /// <see cref="Mappings"/>. That is only lossless when <see cref="Mappings"/>
+        /// is current. During an assignment the dropdown auto-selects the
+        /// just-assigned device, which fires <c>OnSelectedDeviceChanged</c> →
+        /// <c>SaveViewModelToPadSetting</c> a few milliseconds BEFORE
+        /// <c>RefreshMappingsToViewModel</c> reloads <see cref="Mappings"/> from
+        /// the freshly auto-mapped MappingSet. With a stale (empty)
+        /// <see cref="Mappings"/>, the clear+rewrite wiped the new device's
+        /// entire auto-map — the trace showed a DualSense going from 21 mapped
+        /// descriptors to 0 in 2 ms ("assigning my DualSense to the wheel's slot
+        /// only maps the Share button"). When this flag is false, the save skips
+        /// the mapping clobber (the MappingSet is authoritative and already
+        /// current); per-device tuning still saves.</para>
+        /// </summary>
+        public bool MappingsViewLoaded { get; set; }
+
+        /// <summary>
         /// Raised after RebuildMappings completes so listeners (e.g. InputService) can
         /// reload mapping descriptors from the active PadSetting into the new MappingItems.
         /// </summary>

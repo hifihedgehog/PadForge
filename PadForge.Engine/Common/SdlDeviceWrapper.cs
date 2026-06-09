@@ -433,6 +433,18 @@ namespace PadForge.Engine
             if (Joystick == IntPtr.Zero)
                 return null;
 
+            // A physically detached handle still "reads" — SDL returns signed 0
+            // for every axis, which the unsigned conversion turns into 32768
+            // (center). For a wheel pedal mapped as an inverted trigger that
+            // center becomes 65535-32768 = 32767 (~50% engaged) during the
+            // disconnect-debounce window, and Step 3 stamps it into the slot
+            // output. Detachment is permanent for this handle (a replug gets a
+            // new SDL instance), so refuse the read; Step 2 treats null as a
+            // failed read and marks the device offline, keeping the last GOOD
+            // input state.
+            if (!SDL_JoystickConnected(Joystick))
+                return null;
+
             // When the device is opened as a Gamepad, use the gamepad API to read
             // through SDL's built-in mapping layer (gamecontrollerdb). This remaps
             // DualSense, DualShock, Switch Pro, etc. to the standardized Xbox layout

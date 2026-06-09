@@ -67,6 +67,7 @@ namespace PadForge.Common.Input
                     if (ud == null)
                     {
                         us.OutputState = default;
+                        us.RawMappedState = default; // preview must not freeze on a removed device
                         continue;
                     }
                     // Device exists but input temporarily unavailable — keep

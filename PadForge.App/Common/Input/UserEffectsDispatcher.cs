@@ -1369,14 +1369,19 @@ namespace PadForge.Common.Input
                         // in the same output report the lightbar rides
                         // (dualsensectl-verified: valid_flag0 0x20 speaker-volume
                         // enable + 0x80 audio-control enable; audio_flags path
-                        // 3<<4 = internal speaker; volume effective to 0x64).
+                        // 3<<4 = internal speaker). The firmware's volume byte
+                        // is near-mute below 64: Sony's scePad maps its 0..8
+                        // gain slider to 64..136 (duaLib scePadSetVolumeGain,
+                        // gain*9 + 64), so the 0-100% master volume spans that
+                        // same range. This byte is the single owner of master
+                        // volume; sample amplitudes stay full-scale.
                         // When routing switches away, restore the headphone
                         // path once so the speaker doesn't stay latched.
                         if (isDs5)
                         {
                             if (AudioPassthroughService.WantsSpeakerPath(ud.InstanceGuid))
                             {
-                                byte spkVol = (byte)(SoundMacroService.GetSlotVolume(_padIndex) * 0x64 / 100);
+                                byte spkVol = (byte)(64 + SoundMacroService.GetSlotVolume(_padIndex) * 72 / 100);
                                 fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0xA0);
                                 fields["speakerVolume"] = spkVol;
                                 fields["audioControlFlags"] = (byte)(3 << 4);

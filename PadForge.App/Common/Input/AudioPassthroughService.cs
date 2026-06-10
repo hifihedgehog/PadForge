@@ -827,6 +827,16 @@ namespace PadForge.Common.Input
         private const int BtSampleRate = 3000;
         private const int BtSampleSize = 64;       // sample bytes per report
         private const int BtReportSize = 142;      // report 0x32 wire size
+
+        /// <summary>Makeup gain on the BT sample path. The firmware's BT
+        /// audio pipeline plays notably quieter than the USB DAC path at the
+        /// same speaker volume + pre-gain; the reference compensates the
+        /// same way (DSY-v2's HapticsIntensity multiplies the BT samples,
+        /// UI range 0..5, hard clamp — audioPassthrough.cpp
+        /// HapticTimerThread). Peaks clip; on a 3 kHz 8-bit stream through
+        /// the small speaker that trade reads as loudness, not distortion.</summary>
+        private const float BtMakeupGain = 2.5f;
+
         private static byte _btCounter;
 
         private static void EnsureThreads_NoLock()
@@ -916,7 +926,7 @@ namespace PadForge.Common.Input
                             float acc = 0f;
                             for (int k = 0; k < stride; k++)
                                 acc += pull[(frame + k) * 2 + ch];
-                            float v = Math.Clamp(acc / stride, -1f, 1f);
+                            float v = Math.Clamp((acc / stride) * BtMakeupGain, -1f, 1f);
                             report[13 + i] = unchecked((byte)(sbyte)(v * 127f));
                         }
                         uint crc = Crc32(report, BtReportSize - 4);

@@ -55,6 +55,7 @@ namespace PadForge.Common.Input
             public string DeviceId = "";    // "" = system default render endpoint
             public IWavePlayer Player;
             public MixingSampleProvider Mixer;
+            public bool IsControllerEndpoint; // DualSense/DS4 USB audio device
         }
         private static readonly SlotOutput[] _outputs = new SlotOutput[MaxPads];
         private static readonly int[] _masterVolume = CreateFilled(100);
@@ -64,6 +65,47 @@ namespace PadForge.Common.Input
             var a = new int[MaxPads];
             for (int i = 0; i < a.Length; i++) a[i] = v;
             return a;
+        }
+
+        // Set when the slot's endpoint is the physical controller's own USB
+        // audio device; consumed by the DS5 effect dispatcher, which owns the
+        // pad's output report. The DualSense routes its USB stereo to the
+        // headphone path by default and keeps the internal speaker silent —
+        // playing through the speaker requires the output report to select
+        // the speaker path and set a speaker volume (verified against
+        // dualsensectl: valid_flag0 bits 0x20|0x80, audio_flags path 3<<4,
+        // speaker volume effective 0x3D-0x64).
+        private static readonly bool[] _speakerRoute = new bool[MaxPads];
+        private static readonly bool[] _speakerRouteCleared = new bool[MaxPads];
+
+        /// <summary>True when the slot's sounds target the physical
+        /// controller's own audio endpoint, so the DS5 dispatcher should
+        /// assert the speaker output path + volume in the output report.</summary>
+        public static bool WantsControllerSpeaker(int slot)
+            => (uint)slot < MaxPads && _speakerRoute[slot];
+
+        /// <summary>Speaker volume byte for the output report. The firmware's
+        /// effective range tops out at 0x64; map the slot master volume onto
+        /// 0..0x64 linearly.</summary>
+        public static byte SpeakerVolumeByte(int slot)
+        {
+            int v = (uint)slot < MaxPads ? _masterVolume[slot] : 100;
+            return (byte)(v * 0x64 / 100);
+        }
+
+        /// <summary>One-shot: true exactly once after the slot's routing
+        /// switches away from the controller endpoint, so the dispatcher can
+        /// restore the default headphone path instead of leaving the speaker
+        /// path latched in firmware.</summary>
+        public static bool TryConsumeSpeakerRouteCleared(int slot)
+        {
+            if ((uint)slot >= MaxPads) return false;
+            lock (_lock)
+            {
+                if (!_speakerRouteCleared[slot]) return false;
+                _speakerRouteCleared[slot] = false;
+                return true;
+            }
         }
 
         // ── Active sounds, keyed by owning (slot, macro) for targeted stops ──
@@ -118,13 +160,35 @@ namespace PadForge.Common.Input
         {
             if ((uint)slot >= MaxPads) return;
             deviceId ??= "";
+
+            // Resolve the endpoint's friendly name OUTSIDE the lock (COM
+            // enumeration). "Wireless Controller" is the Sony USB product
+            // string (not localized), so it identifies a DualSense / DS4
+            // audio endpoint across Windows display languages.
+            bool isController = false;
+            if (!string.IsNullOrEmpty(deviceId))
+            {
+                try
+                {
+                    using var en = new MMDeviceEnumerator();
+                    using var dev = en.GetDevice(deviceId);
+                    isController = (dev.FriendlyName ?? "")
+                        .IndexOf("Wireless Controller", StringComparison.OrdinalIgnoreCase) >= 0;
+                }
+                catch { }
+            }
+
             lock (_lock)
             {
                 var o = _outputs[slot];
                 if (o != null && string.Equals(o.DeviceId, deviceId, StringComparison.Ordinal))
                     return;
+                bool wasController = _speakerRoute[slot];
                 TeardownSlotOutput_NoLock(slot);
-                _outputs[slot] = new SlotOutput { DeviceId = deviceId };
+                _outputs[slot] = new SlotOutput { DeviceId = deviceId, IsControllerEndpoint = isController };
+                _speakerRoute[slot] = isController;
+                if (wasController && !isController)
+                    _speakerRouteCleared[slot] = true; // dispatcher restores headphone path once
             }
         }
 
@@ -329,24 +393,19 @@ namespace PadForge.Common.Input
                         ReadFully = true, // keep the stream open; ended inputs auto-remove
                     };
 
-                    // Submit at the endpoint's NATIVE channel count. A physical
-                    // DualSense / DS4 USB audio device is 4-channel: channels
-                    // 0/1 drive the headphone jack and 2/3 drive the built-in
-                    // speaker. Stereo submitted to a 4-channel endpoint lands
-                    // on the front pair only (Windows does not speaker-fill by
-                    // default), so the controller speaker stays silent — fan
-                    // the stereo mix into every adjacent pair instead. Plain
-                    // stereo endpoints pass through untouched; >4-channel
-                    // surround endpoints get front-left/right only (blasting
-                    // game sounds into center/LFE would be wrong).
-                    int devChannels = 2;
-                    try { devChannels = device.AudioClient.MixFormat.Channels; } catch { }
-                    ISampleProvider feed = devChannels switch
-                    {
-                        4 => new ChannelFanOutProvider(mixer, 4, duplicatePairs: true),
-                        2 => mixer,
-                        _ => new ChannelFanOutProvider(mixer, devChannels, duplicatePairs: false),
-                    };
+                    // Feed plain stereo. On a DualSense the extra USB
+                    // channels are the HAPTIC ACTUATORS, not the speaker —
+                    // duplicating program audio into them buzzes the motors.
+                    // The speaker is reached through the firmware's output
+                    // path (the DS5 dispatcher asserts it in the output
+                    // report when this slot routes to the controller); that
+                    // path taps the program channels, so for controller
+                    // endpoints the stereo is mono-summed onto both channels
+                    // — the speaker path hears the full mix no matter which
+                    // channel the firmware taps.
+                    ISampleProvider feed = o.IsControllerEndpoint
+                        ? new MonoSumProvider(mixer)
+                        : mixer;
 
                     var player = new WasapiOut(device, AudioClientShareMode.Shared, true, 60);
                     player.Init(feed);
@@ -434,51 +493,31 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Expands the stereo mix to an N-channel stream. With
-        /// <c>duplicatePairs</c> (the 4-channel controller case) every
-        /// adjacent channel pair carries the stereo image — headphone jack
-        /// AND built-in speaker both play. Without it, channels beyond the
-        /// front pair are silent (surround endpoints).</summary>
-        private sealed class ChannelFanOutProvider : ISampleProvider
+        /// <summary>Mono-sums the stereo mix onto both channels. Used for
+        /// controller endpoints so the firmware speaker path (which taps one
+        /// program channel) carries the full mix.</summary>
+        private sealed class MonoSumProvider : ISampleProvider
         {
             private readonly ISampleProvider _stereo;
-            private readonly int _outChannels;
-            private readonly bool _duplicatePairs;
-            private float[] _stereoBuf = new float[4096];
 
-            public ChannelFanOutProvider(ISampleProvider stereo, int outChannels, bool duplicatePairs)
+            public MonoSumProvider(ISampleProvider stereo)
             {
                 _stereo = stereo;
-                _outChannels = Math.Max(outChannels, 2);
-                _duplicatePairs = duplicatePairs;
-                WaveFormat = WaveFormat.CreateIeeeFloatWaveFormat(MixSampleRate, _outChannels);
+                WaveFormat = stereo.WaveFormat;
             }
 
             public WaveFormat WaveFormat { get; }
 
             public int Read(float[] buffer, int offset, int count)
             {
-                int frames = count / _outChannels;
-                int stereoNeeded = frames * 2;
-                if (_stereoBuf.Length < stereoNeeded)
-                    _stereoBuf = new float[stereoNeeded];
-                int stereoRead = _stereo.Read(_stereoBuf, 0, stereoNeeded);
-                int framesRead = stereoRead / 2;
-                for (int f = 0; f < framesRead; f++)
+                int read = _stereo.Read(buffer, offset, count);
+                for (int f = 0; f + 1 < read; f += 2)
                 {
-                    float l = _stereoBuf[f * 2];
-                    float r = _stereoBuf[f * 2 + 1];
-                    int o = offset + f * _outChannels;
-                    for (int c = 0; c < _outChannels; c++)
-                    {
-                        bool isLeft = (c & 1) == 0;
-                        bool inFrontPair = c < 2;
-                        buffer[o + c] = (_duplicatePairs || inFrontPair)
-                            ? (isLeft ? l : r)
-                            : 0f;
-                    }
+                    float m = (buffer[offset + f] + buffer[offset + f + 1]) * 0.5f;
+                    buffer[offset + f] = m;
+                    buffer[offset + f + 1] = m;
                 }
-                return framesRead * _outChannels;
+                return read;
             }
         }
 

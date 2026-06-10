@@ -614,6 +614,16 @@ namespace PadForge.Common.Input
                 inst.DispatchSnapshot();
         }
 
+        /// <summary>Audio-tab routing or volume changed for the slot — push a
+        /// dispatch immediately so the speaker output path / volume bytes land
+        /// now instead of riding the next lightbar/battery dispatch (which can
+        /// be seconds away on an idle slot).</summary>
+        public static void NotifySoundRoutingChanged(int padIndex)
+        {
+            if (_instances.TryGetValue(padIndex, out var inst) && inst != null)
+                inst.DispatchSnapshot();
+        }
+
         private void UpdateAnimTimer()
         {
             // Timer wants to run when:
@@ -1348,6 +1358,33 @@ namespace PadForge.Common.Input
                                 devCfg, devPeak, nowMs,
                                 _randomColor, devPulseColor, devPulseIntensity,
                                 rR, rL, assertRumbleEnable, devOverrides, pctByte);
+
+                        // Macro-sound speaker routing (issue #83). The DualSense
+                        // firmware sends its USB program audio to the headphone
+                        // path by default and keeps the internal speaker silent.
+                        // While this slot's Audio tab targets the controller's
+                        // own endpoint, assert the speaker output path + volume
+                        // in the same output report the lightbar rides
+                        // (dualsensectl-verified: valid_flag0 0x20 speaker-volume
+                        // enable + 0x80 audio-control enable; audio_flags path
+                        // 3<<4 = internal speaker; volume effective to 0x64).
+                        // When routing switches away, restore the headphone
+                        // path once so the speaker doesn't stay latched.
+                        if (isDs5)
+                        {
+                            if (SoundMacroService.WantsControllerSpeaker(_padIndex))
+                            {
+                                fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0xA0);
+                                fields["speakerVolume"] = SoundMacroService.SpeakerVolumeByte(_padIndex);
+                                fields["audioControlFlags"] = (byte)(3 << 4);
+                            }
+                            else if (SoundMacroService.TryConsumeSpeakerRouteCleared(_padIndex))
+                            {
+                                fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0x80);
+                                fields["audioControlFlags"] = (byte)0;
+                            }
+                        }
+
                         SonyEffectWriter.Write(path, profile, fields);
                     }
                     catch

@@ -6447,10 +6447,6 @@
                                     <ComboBox ItemsSource="{Binding SoundOutputDevices}" DisplayMemberPath="Display"
                                               SelectedValuePath="Value" SelectedValue="{Binding SoundOutputDeviceId, Mode=TwoWay}"
                                               Width="320" VerticalAlignment="Center"/>
-                                    <Button Content="&#xE72C;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
-                                            Command="{Binding RefreshSoundDevicesCommand}" Padding="6,3" Margin="6,0,0,0"
-                                            VerticalAlignment="Center"
-                                            ToolTip="{Binding Pad_Audio_RefreshDevices, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Command="{Binding ResetSoundDeviceCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_Audio_Reset_Device, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>

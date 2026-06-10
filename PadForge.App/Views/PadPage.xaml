@@ -5201,7 +5201,9 @@
                              gyro input. This card never targets or overrides an axis. -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                                <!-- Header-to-subtitle spacing matches the sibling Gyro Aim
+                                     Engage card (header 0,0,0,4 + subtitle 0,0,0,8). -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                     <Viewbox Width="18" Height="18" VerticalAlignment="Center" Margin="0,0,8,0">
                                         <Canvas Width="24" Height="24">
                                             <Path Stroke="{DynamicResource TextFillColorPrimaryBrush}" StrokeThickness="1.7"

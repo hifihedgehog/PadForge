@@ -662,15 +662,22 @@ namespace PadForge.Common.Input
                         // packet 0x12: 64 audio sample bytes
                         report[11] = 0x12 | 0x80;
                         report[12] = BtSampleSize;
+                        const int stride = Rate / BtSampleRate; // 16:1
                         for (int i = 0; i < BtSampleSize; i++)
                         {
                             // i alternates L/R like the reference's interleaved
-                            // u8 buffer; decimate by striding the 48 kHz pull.
-                            // Full scale: master volume lives in the firmware
-                            // speaker volume byte, not the samples.
-                            int frame = (i / 2) * (Rate / BtSampleRate);
+                            // u8 buffer. Box-average each 16-frame window: the
+                            // reference's 3 kHz capture goes through miniaudio's
+                            // resampler, and bare stride-picking aliases all
+                            // content above 1.5 kHz into noise. Full scale:
+                            // master volume lives in the firmware speaker
+                            // volume byte, not the samples.
+                            int frame = (i / 2) * stride;
                             int ch = i & 1;
-                            float v = Math.Clamp(pull[frame * 2 + ch], -1f, 1f);
+                            float acc = 0f;
+                            for (int k = 0; k < stride; k++)
+                                acc += pull[(frame + k) * 2 + ch];
+                            float v = Math.Clamp(acc / stride, -1f, 1f);
                             report[13 + i] = unchecked((byte)(sbyte)(v * 127f));
                         }
                         uint crc = Crc32(report, BtReportSize - 4);

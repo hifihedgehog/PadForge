@@ -125,7 +125,42 @@ namespace PadForge.Common.Input
                 return false;
             }
 
+            ApplyAudioControl2(packet, fields);
+
             return WriteRaw(devicePath, packet);
+        }
+
+        /// <summary>The DS5 audio_flags2 byte (speaker pre-gain in bits 0-2,
+        /// gated by valid_flag1 bit 7) isn't declared by the HM profiles, so
+        /// the encoder can't place it; poke it post-encode. Offsets per
+        /// dualsensectl's packed output struct (common+37): USB report 0x02
+        /// byte 38, BT report 0x31 byte 40 — after which the BT CRC32 footer
+        /// (over {0xA2} + bytes [0..73], LE at [74..77]) must be redone.</summary>
+        private static void ApplyAudioControl2(byte[] packet, IReadOnlyDictionary<string, object> fields)
+        {
+            if (!fields.TryGetValue("audioControl2", out var raw) || raw is not byte value) return;
+
+            if (packet[0] == 0x02 && packet.Length >= 48)
+            {
+                packet[38] = value;
+            }
+            else if (packet[0] == 0x31 && packet.Length >= 78)
+            {
+                packet[40] = value;
+                uint crc = 0xFFFFFFFFu;
+                crc ^= 0xA2;
+                for (int b = 0; b < 8; b++) crc = (crc >> 1) ^ (0xEDB88320u & (uint)(-(crc & 1)));
+                for (int i = 0; i <= 73; i++)
+                {
+                    crc ^= packet[i];
+                    for (int b = 0; b < 8; b++) crc = (crc >> 1) ^ (0xEDB88320u & (uint)(-(crc & 1)));
+                }
+                crc = ~crc;
+                packet[74] = (byte)(crc & 0xFF);
+                packet[75] = (byte)((crc >> 8) & 0xFF);
+                packet[76] = (byte)((crc >> 16) & 0xFF);
+                packet[77] = (byte)((crc >> 24) & 0xFF);
+            }
         }
 
         private static bool WriteRaw(string devicePath, byte[] buf)

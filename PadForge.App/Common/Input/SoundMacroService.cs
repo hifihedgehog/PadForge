@@ -185,7 +185,7 @@ namespace PadForge.Common.Input
                     {
                         Type = SignalGeneratorType.Sin,
                         Frequency = 880,
-                        Gain = 0.4,
+                        Gain = 1.0, // full scale — the Test button demos max loudness
                     };
                     return new OffsetSampleProvider(gen) { Take = TimeSpan.FromMilliseconds(200) };
                 });

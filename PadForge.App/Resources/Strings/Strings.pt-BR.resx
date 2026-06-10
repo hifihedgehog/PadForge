@@ -1682,4 +1682,38 @@
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Redefinir Resistência do gatilho perto do batente</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Adicione cores para percorrer, uma por batente.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Redefinir retenção da barra de luz</value></data>
+  <data name="Pad_Audio" xml:space="preserve"><value>Áudio</value></data>
+  <data name="Pad_Audio_Header" xml:space="preserve"><value>Áudio</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Reproduza sons das suas macros: choques de espadas, pings de radar, cliques de recarga ou um patinho de borracha. Cada controle direciona seus sons ao próprio dispositivo de saída, incluindo o alto-falante de um DualSense via USB.</value></data>
+  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Saída de som</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Onde este controle reproduz os sons de macro. Escolha um DualSense USB ("Wireless Controller") para tocar pelo alto-falante do controle.</value></data>
+  <data name="Pad_Audio_Device_Label" xml:space="preserve"><value>Dispositivo de saída</value></data>
+  <data name="Pad_Audio_DefaultDevice" xml:space="preserve"><value>Padrão do sistema</value></data>
+  <data name="Pad_Audio_DisconnectedDevice_Format" xml:space="preserve"><value>Dispositivo desconectado ({0})</value></data>
+  <data name="Pad_Audio_RefreshDevices" xml:space="preserve"><value>Atualizar a lista de dispositivos</value></data>
+  <data name="Pad_Audio_Reset_Device" xml:space="preserve"><value>Restaurar o dispositivo padrão</value></data>
+  <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Volume geral</value></data>
+  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Restaurar o volume geral para 100%</value></data>
+  <data name="Pad_Audio_Test" xml:space="preserve"><value>Testar</value></data>
+  <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>Tocar um bipe curto no dispositivo selecionado</value></data>
+  <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Parar todos os sons</value></data>
+  <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Parar todos os sons de macro deste controle</value></data>
+  <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Macros de som</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Os sons são reproduzidos por macros: um gatilho (pressionar, soltar, segurar ou fórmula) mais uma ação "Reproduzir som". Crie aqui ou na aba Macros — atrasos, repetições e alternadores funcionam.</value></data>
+  <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Nova macro de som</value></data>
+  <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Nenhuma macro de som ainda. Crie uma e escolha o arquivo de som e o gatilho.</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Abrir esta macro na aba Macros</value></data>
+  <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Macro de som {0}</value></data>
+  <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Reproduzir som</value></data>
+  <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Reproduzir um arquivo de som (.wav, .mp3, .m4a, .aac, .wma, .flac) no dispositivo de saída deste controle</value></data>
+  <data name="MacroAction_Type_SoundStop" xml:space="preserve"><value>Parar sons</value></data>
+  <data name="MacroAction_SoundStop_Tooltip" xml:space="preserve"><value>Para todos os sons de macro deste controle. Combine com um "Reproduzir som" em loop para encerrá-lo por outra macro.</value></data>
+  <data name="MacroAction_PlaySound_Format" xml:space="preserve"><value>Reproduzir {0} ({1}%)</value></data>
+  <data name="MacroAction_PlaySoundLoop_Format" xml:space="preserve"><value>Loop {0} ({1}%)</value></data>
+  <data name="Macro_Sound_File_Label" xml:space="preserve"><value>Arquivo de som</value></data>
+  <data name="Macro_Sound_Browse" xml:space="preserve"><value>Procurar…</value></data>
+  <data name="Macro_Sound_Preview" xml:space="preserve"><value>Prévia</value></data>
+  <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
+  <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loop até parar</value></data>
+  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Repete o som até uma ação "Parar sons" rodar — ou, em macros de segurar/soltar, até o gatilho ser solto</value></data>
 </root>

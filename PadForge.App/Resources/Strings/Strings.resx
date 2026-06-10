@@ -1746,4 +1746,38 @@
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Reset Trigger Resistance near Lock</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Add colors to step through, one per lock.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Reset Lightbar Hold</value></data>
+  <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
+  <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Play sounds from your macros: sword clashes, radar pings, reload clicks, or a rubber ducky. Each pad routes its sounds to its own output device, including a USB DualSense speaker.</value></data>
+  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sound Output</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Where this pad plays its macro sounds. Pick a USB DualSense ("Wireless Controller") to play from the controller speaker.</value></data>
+  <data name="Pad_Audio_Device_Label" xml:space="preserve"><value>Output device</value></data>
+  <data name="Pad_Audio_DefaultDevice" xml:space="preserve"><value>System default</value></data>
+  <data name="Pad_Audio_DisconnectedDevice_Format" xml:space="preserve"><value>Disconnected device ({0})</value></data>
+  <data name="Pad_Audio_RefreshDevices" xml:space="preserve"><value>Refresh the device list</value></data>
+  <data name="Pad_Audio_Reset_Device" xml:space="preserve"><value>Reset to the system default device</value></data>
+  <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Master volume</value></data>
+  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Reset master volume to 100%</value></data>
+  <data name="Pad_Audio_Test" xml:space="preserve"><value>Test</value></data>
+  <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>Play a short beep on the selected output device</value></data>
+  <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Stop all sounds</value></data>
+  <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Stop every macro sound on this pad</value></data>
+  <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Sound Macros</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Sounds are played by macros: a trigger (button press, release, hold, or formula) plus a Play Sound action. Build them here or on the Macros tab — delays, repeats, and toggles all work.</value></data>
+  <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>New sound macro</value></data>
+  <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>No sound macros yet. Create one and pick a sound file and a trigger.</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Open this macro on the Macros tab</value></data>
+  <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Sound Macro {0}</value></data>
+  <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Play Sound</value></data>
+  <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Play a sound file (.wav, .mp3, .m4a, .aac, .wma, .flac) on this pad’s output device</value></data>
+  <data name="MacroAction_Type_SoundStop" xml:space="preserve"><value>Stop Sounds</value></data>
+  <data name="MacroAction_SoundStop_Tooltip" xml:space="preserve"><value>Stops every macro sound on this pad. Pair with a looping Play Sound to end it from another macro.</value></data>
+  <data name="MacroAction_PlaySound_Format" xml:space="preserve"><value>Play {0} ({1}%)</value></data>
+  <data name="MacroAction_PlaySoundLoop_Format" xml:space="preserve"><value>Loop {0} ({1}%)</value></data>
+  <data name="Macro_Sound_File_Label" xml:space="preserve"><value>Sound file</value></data>
+  <data name="Macro_Sound_Browse" xml:space="preserve"><value>Browse…</value></data>
+  <data name="Macro_Sound_Preview" xml:space="preserve"><value>Preview</value></data>
+  <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
+  <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loop until stopped</value></data>
+  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Repeat the sound until a Stop Sounds action runs — or, for While Held / Until Released macros, until the trigger is released</value></data>
 </root>

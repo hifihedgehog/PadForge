@@ -147,6 +147,13 @@ namespace PadForge.Common.Input
             private readonly IntPtr[] _ol = new IntPtr[Slots];
             private int _next;
 
+            // TrySend runs on the BT thread, Dispose on the worker: a send
+            // already past the sink's Tx null-check could otherwise touch
+            // freed events / native OVERLAPPED memory. Uncontended in normal
+            // operation, so the cost at ~94 Hz is nanoseconds.
+            private readonly object _gate = new();
+            private bool _disposed;
+
             public BtWritePool(int reportSize)
             {
                 for (int i = 0; i < Slots; i++)
@@ -164,43 +171,52 @@ namespace PadForge.Common.Input
             public bool TrySend(IntPtr handle, byte[] report, out bool hardFail)
             {
                 hardFail = false;
-                int s = _next;
-                if (NativeMethods.WaitForSingleObject(_ev[s], 0) != 0)
-                    return false; // oldest write still in flight — saturated
-
-                Buffer.BlockCopy(report, 0, _buf[s], 0, _buf[s].Length);
-                NativeMethods.ResetEvent(_ev[s]);
-                for (int o = 0; o < OverlappedSize - 8; o += 8)
-                    Marshal.WriteInt64(_ol[s], o, 0);
-                Marshal.WriteIntPtr(_ol[s], 24, _ev[s]);
-
-                if (!NativeMethods.WriteFileRaw(handle, _pin[s].AddrOfPinnedObject(),
-                        (uint)_buf[s].Length, IntPtr.Zero, _ol[s]))
+                lock (_gate)
                 {
-                    if (Marshal.GetLastWin32Error() != 997 /*ERROR_IO_PENDING*/)
+                    if (_disposed) { hardFail = true; return false; }
+                    int s = _next;
+                    if (NativeMethods.WaitForSingleObject(_ev[s], 0) != 0)
+                        return false; // oldest write still in flight — saturated
+
+                    Buffer.BlockCopy(report, 0, _buf[s], 0, _buf[s].Length);
+                    NativeMethods.ResetEvent(_ev[s]);
+                    for (int o = 0; o < OverlappedSize - 8; o += 8)
+                        Marshal.WriteInt64(_ol[s], o, 0);
+                    Marshal.WriteIntPtr(_ol[s], 24, _ev[s]);
+
+                    if (!NativeMethods.WriteFileRaw(handle, _pin[s].AddrOfPinnedObject(),
+                            (uint)_buf[s].Length, IntPtr.Zero, _ol[s]))
                     {
-                        NativeMethods.SetEvent(_ev[s]); // slot stays free
-                        hardFail = true;
-                        return false;
+                        if (Marshal.GetLastWin32Error() != 997 /*ERROR_IO_PENDING*/)
+                        {
+                            NativeMethods.SetEvent(_ev[s]); // slot stays free
+                            hardFail = true;
+                            return false;
+                        }
                     }
+                    _next = (s + 1) % Slots;
+                    return true;
                 }
-                _next = (s + 1) % Slots;
-                return true;
             }
 
             /// <summary>Caller must CancelIo the handle first.</summary>
             public void Dispose()
             {
-                for (int i = 0; i < Slots; i++)
+                lock (_gate)
                 {
-                    if (_ev[i] != IntPtr.Zero)
+                    if (_disposed) return;
+                    _disposed = true;
+                    for (int i = 0; i < Slots; i++)
                     {
-                        NativeMethods.WaitForSingleObject(_ev[i], 100);
-                        NativeMethods.CloseHandle(_ev[i]);
-                        _ev[i] = IntPtr.Zero;
+                        if (_ev[i] != IntPtr.Zero)
+                        {
+                            NativeMethods.WaitForSingleObject(_ev[i], 100);
+                            NativeMethods.CloseHandle(_ev[i]);
+                            _ev[i] = IntPtr.Zero;
+                        }
+                        if (_ol[i] != IntPtr.Zero) { Marshal.FreeHGlobal(_ol[i]); _ol[i] = IntPtr.Zero; }
+                        if (_pin[i].IsAllocated) _pin[i].Free();
                     }
-                    if (_ol[i] != IntPtr.Zero) { Marshal.FreeHGlobal(_ol[i]); _ol[i] = IntPtr.Zero; }
-                    if (_pin[i].IsAllocated) _pin[i].Free();
                 }
             }
         }

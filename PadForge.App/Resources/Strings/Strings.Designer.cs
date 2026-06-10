@@ -1282,11 +1282,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_Subtitle => Get("Pad_Audio_Subtitle");
     public string Pad_Audio_Output_Header => Get("Pad_Audio_Output_Header");
     public string Pad_Audio_Output_Desc => Get("Pad_Audio_Output_Desc");
-    public string Pad_Audio_Device_Label => Get("Pad_Audio_Device_Label");
-    public string Pad_Audio_DefaultDevice => Get("Pad_Audio_DefaultDevice");
-    public string Pad_Audio_DisconnectedDevice_Format => Get("Pad_Audio_DisconnectedDevice_Format");
-    public string Pad_Audio_RefreshDevices => Get("Pad_Audio_RefreshDevices");
-    public string Pad_Audio_Reset_Device => Get("Pad_Audio_Reset_Device");
     public string Pad_Audio_MasterVolume => Get("Pad_Audio_MasterVolume");
     public string Pad_Audio_Reset_MasterVolume => Get("Pad_Audio_Reset_MasterVolume");
     public string Pad_Audio_Test => Get("Pad_Audio_Test");

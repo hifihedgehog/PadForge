@@ -395,6 +395,13 @@ namespace PadForge.Common.Input
                     continue;
                 }
 
+                bool isBt = (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
+                bool isDs4 = Ds4Pids.Contains((ushort)ud.ProdId);
+                // The 0x32 raw audio stream is DualSense-only (SAxense); DS4 BT
+                // audio is SBC-coded over different reports and unimplemented.
+                // No sink → macro sounds fall back to the system default output.
+                if (isBt && isDs4) continue;
+
                 if (!_sinks.TryGetValue(guid, out var sink))
                 {
                     sink = new Sink
@@ -402,8 +409,8 @@ namespace PadForge.Common.Input
                         DeviceGuid = guid,
                         Slot = slot,
                         HidPath = ud.DevicePath,
-                        IsBt = (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0,
-                        IsDs4 = Ds4Pids.Contains((ushort)ud.ProdId),
+                        IsBt = isBt,
+                        IsDs4 = isDs4,
                         MacroMixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(Rate, 2)) { ReadFully = true },
                     };
                     sink.Source = new SinkSource(sink);
@@ -636,6 +643,7 @@ namespace PadForge.Common.Input
                     lock (_lock)
                         btSinks = _sinks.Values.Where(s => s.IsBt && s.BtHandle != new IntPtr(-1)).ToList();
 
+                    _btCounter++; // once per tick, shared by all pads (reference g_ii)
                     foreach (var s in btSinks)
                     {
                         s.Source.Read(pull, 0, pull.Length);
@@ -650,7 +658,7 @@ namespace PadForge.Common.Input
                         report[3] = 7;
                         report[4] = 0xFE;
                         report[9] = 0xFF;
-                        report[10] = ++_btCounter;   // rolling counter (g_ii)
+                        report[10] = _btCounter;     // rolling counter (g_ii)
                         // packet 0x12: 64 audio sample bytes
                         report[11] = 0x12 | 0x80;
                         report[12] = BtSampleSize;
@@ -694,11 +702,14 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Standard reflected CRC32 over the first <paramref name="length"/>
-        /// bytes — mirrors the reference's crc32 (no seed prefix).</summary>
+        /// <summary>Reflected CRC32 over the first <paramref name="length"/> bytes,
+        /// pre-seeded with the 0xA2 BT output-report prefix: the firmware checks
+        /// CRC32({0xA2} + report bytes), like every Sony BT output report. The init
+        /// constant is the CRC state after hashing 0xA2 — the reference's
+        /// `crc = ~0xEADA2D49; // 0xA2 seed` (audioPassthrough.cpp).</summary>
         private static uint Crc32(byte[] data, int length)
         {
-            uint crc = 0xFFFFFFFF;
+            uint crc = 0x1525D2B6; // == ~0xEADA2D49
             for (int i = 0; i < length; i++)
             {
                 crc ^= data[i];

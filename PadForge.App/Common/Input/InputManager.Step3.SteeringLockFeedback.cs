@@ -80,7 +80,12 @@ namespace PadForge.Common.Input
                 for (int si = 0; si < row.Sources.Count; si++)
                 {
                     var src = row.Sources[si];
-                    if (src == null || !IsSteeringKind(src.Kind)) continue;
+                    // Steering Kinds (winding / angle) plus the descriptor-driven
+                    // "Motion Lean" input, which steers with Kind=Direct — its
+                    // lock state lives in the same SourceKindRuntime machine.
+                    if (src == null
+                        || !(IsSteeringKind(src.Kind) || SourceCoercion.IsMotionLeanDescriptor(src.Descriptor)))
+                        continue;
 
                     if (atRes)
                     {

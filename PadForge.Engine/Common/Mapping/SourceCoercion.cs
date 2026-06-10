@@ -521,6 +521,20 @@ namespace PadForge.Engine.Common.Mapping
             => !string.IsNullOrEmpty(descriptor)
             && descriptor.StartsWith("Gyro ", StringComparison.Ordinal);
 
+        /// <summary>The gravity-lean input descriptor. A first-class picker
+        /// entry (like "Gyro Roll"): mapping it to an axis target drives that
+        /// axis from controller tilt via <c>SourceKindRuntime.TickMotionLean</c>.
+        /// SourceEvaluator routes a Direct source carrying this descriptor into
+        /// the same math as Kind="MotionLeanX"; per-source ParamMotionInnerDz /
+        /// ParamMotionOuterDz / ParamControllerOrientation tune it (defaults
+        /// 15 / 135 / Forward — the JSM motion-deadzone defaults).</summary>
+        public const string MotionLeanDescriptor = "Motion Lean";
+
+        /// <summary>True when the descriptor is <see cref="MotionLeanDescriptor"/>.</summary>
+        public static bool IsMotionLeanDescriptor(string descriptor)
+            => !string.IsNullOrEmpty(descriptor)
+            && string.Equals(descriptor.Trim(), MotionLeanDescriptor, StringComparison.OrdinalIgnoreCase);
+
         /// <summary>Public form of <see cref="ReadCalibratedGyroRate"/>:
         /// returns the bias-subtracted gyro rate (rad/s) for the source's
         /// descriptor on the given state, or 0 for non-gyro descriptors /

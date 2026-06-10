@@ -193,6 +193,7 @@ namespace PadForge.Common
                 string sub = s.Substring(7).Trim();
                 if (sub.Equals("Gyro",  System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_MotionGyro;
                 if (sub.Equals("Accel", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_MotionAccel;
+                if (sub.Equals("Lean",  System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_MotionLean;
                 return null;
             }
 
@@ -682,6 +683,14 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = "Motion Gyro",  DisplayName = si.Mapping_MotionGyro });
             if (ud.HasAccel)
                 list.Add(new InputChoice { Descriptor = "Motion Accel", DisplayName = si.Mapping_MotionAccel });
+
+            // Gravity-lean input: tilt the controller like a wheel and the lean
+            // angle drives whatever axis the user maps it to. A normal input
+            // descriptor — it does NOT override the target's other sources.
+            // Tuning (tilt deadzones / grip orientation) lives on the Gyro
+            // tab's Motion Steering card, per assigned device.
+            if (ud.HasAccel)
+                list.Add(new InputChoice { Descriptor = "Motion Lean", DisplayName = si.Mapping_MotionLean });
 
             // Touchpad gesture descriptors come LAST in the per-device
             // section so they appear after raw hardware (touchpad axes,

@@ -64,7 +64,16 @@ namespace PadForge.Engine.Common.Mapping
             // it uses for touchpad descriptors.
             bool relativeTouchpad = IsRelativeMotionTarget(target);
 
-            switch (src.Kind ?? "Direct")
+            // "Motion Lean" is a first-class INPUT descriptor (picked from the
+            // input dropdown like "Gyro Roll"), not a steering mode stamped onto
+            // a target. A plain Direct source carrying it routes into the same
+            // lean math as Kind="MotionLeanX"; the row's target is whatever axis
+            // the user mapped it to, and nothing overrides the stick's own input.
+            string kind = src.Kind ?? "Direct";
+            if (kind == "Direct" && SourceCoercion.IsMotionLeanDescriptor(src.Descriptor))
+                kind = "MotionLeanX";
+
+            switch (kind)
             {
                 case "Incremental":
                 {

@@ -366,10 +366,11 @@ namespace PadForge.ViewModels
         // Per-stick steering source kind + tunables. SteeringKind is the
         // MappingSource.Kind the engine dispatches on; the params feed the matching
         // Param* fields on the stick's MappingSet rows at build time.
-        // Motion Lean is no longer a per-stick mode — it moved to the gyro tab's
-        // Motion Steering card (it reads the accelerometer, not the stick). The
-        // engine MotionLeanX kind still exists; Motion Steering stamps it onto the
-        // chosen target. A stored "MotionLeanX" here falls back to Linear via IndexOf.
+        // Motion Lean is no longer a per-stick mode — it's the "Motion Lean" INPUT
+        // descriptor (picked from the input dropdown like any gyro input; tuning
+        // lives on the gyro tab's Motion Steering card). The engine MotionLeanX
+        // kind still backs that descriptor's evaluation. A stored "MotionLeanX"
+        // here falls back to Linear via IndexOf.
         private static readonly string[] SteeringModeKinds =
             { "Direct", "WindingStick", "AngleToAxisX", "AngleToAxisY" };
 

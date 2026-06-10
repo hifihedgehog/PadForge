@@ -1153,6 +1153,7 @@
 
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Motion Gyro</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>Motion Accelerometer</value></data>
+  <data name="Mapping_MotionLean" xml:space="preserve"><value>Motion Lean</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Gyro Pitch</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roll</value></data>
@@ -1718,12 +1719,8 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Reset Lean Outer Deadzone</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Reset Controller Orientation</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Motion Steering</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Tilt the controller like a wheel to steer the axis you choose. The physical stick is left alone.</value></data>
-  <data name="Pad_MotionSteer_Enable" xml:space="preserve"><value>Enable Motion Steering</value></data>
-  <data name="Pad_MotionSteer_Target" xml:space="preserve"><value>Steers</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Settings for the Motion Lean input: tilt the controller like a wheel. Map "Motion Lean" to a stick axis from the input dropdown in Mappings.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Reset all Motion Steering settings</value></data>
-  <data name="Pad_MotionSteer_Reset_Enable" xml:space="preserve"><value>Reset Motion Steering</value></data>
-  <data name="Pad_MotionSteer_Reset_Target" xml:space="preserve"><value>Reset Steering Target</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Steering Lock Feedback</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>When a stick set to a steering mode is turned all the way to full lock, play a cue (rumble, trigger, or lightbar) so you feel the limit. All off by default.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Rumble Pulse on Lock</value></data>

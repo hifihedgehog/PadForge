@@ -1328,33 +1328,19 @@ namespace PadForge.ViewModels
             new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Space_World,  "World"),
         };
 
-        // ── Motion Steering (v3.4 #94) — relocated out of the per-stick Steering
-        // Mode dropdown. Tilt-to-steer reads the accelerometer, not the stick, so
-        // it belongs with the motion settings and targets a stick axis explicitly
-        // instead of silently overriding one. Per (slot, device). The stamp reuses
-        // the per-stick steering path by overriding the target stick's effective
-        // kind with MotionLeanX, so no separate dispatch is needed. ──
-        private bool _motionSteerEnabled;
-        public bool MotionSteerEnabled
-        {
-            get => _motionSteerEnabled;
-            set => SetProperty(ref _motionSteerEnabled, value);
-        }
-
-        // Target stick X axis, stored as the canonical target string so it round-trips
-        // and works for both a standard gamepad (LeftThumbAxisX / RightThumbAxisX) and an
-        // Extended custom layout (ExtendedAxis{n}). The dropdown options come from
-        // GetSteerableSticks(), which enumerates whatever sticks the slot's output exposes.
-        private string _motionSteerTarget = "LeftThumbAxisX";
-        public string MotionSteerTarget
-        {
-            get => _motionSteerTarget;
-            set => SetProperty(ref _motionSteerTarget, string.IsNullOrEmpty(value) ? "LeftThumbAxisX" : value);
-        }
-        public void SetMotionSteerTarget(string target) => MotionSteerTarget = string.IsNullOrEmpty(target) ? "LeftThumbAxisX" : target;
+        // ── Motion Steering (v3.4 #94) — SETTINGS for the "Motion Lean" input.
+        // Motion Lean is a first-class input descriptor: the user maps it to an
+        // axis from the input dropdown in Mappings, like any gyro input. This
+        // card never targets or overrides an axis — the earlier design (an
+        // Enable + "Steers" target that stamped MotionLeanX over the chosen
+        // stick axis's existing source) replaced one input with another, which
+        // no other PadForge feature does, and was removed for exactly that
+        // reason. What remains is per-(slot, device) tuning: tilt deadzones and
+        // grip orientation, pushed onto the device's Motion Lean sources at
+        // save time (SettingsService.ApplyMotionLeanParamsToRow). ──
 
         /// <summary>The stick X axes this slot's output exposes, as (label, X target, Y target).
-        /// Steering (Motion Steering and the per-stick modes) resolves its target against this
+        /// Per-stick steering (Winding / Angle) resolves its target against this
         /// one list, so a standard gamepad (Left/Right) and an Extended custom layout (one entry
         /// per thumbstick, using the same interleaved axis layout the rest of the Extended
         /// pipeline uses) go through the same code.</summary>
@@ -1379,18 +1365,6 @@ namespace PadForge.ViewModels
             return list;
         }
 
-        /// <summary>Motion Steering target dropdown options (display label + stored X-axis target).
-        /// Recomputed on layout change; the card re-reads it via OnPropertyChanged in RebuildStickConfigs.</summary>
-        public IReadOnlyList<GyroLabeledOption> MotionSteerTargetOptions
-        {
-            get
-            {
-                var opts = new List<GyroLabeledOption>();
-                foreach (var s in GetSteerableSticks()) { var lbl = s.Label; var val = s.XTarget; opts.Add(new GyroLabeledOption(() => lbl, val)); }
-                return opts;
-            }
-        }
-
         private double _motionSteerInnerDz = 15;
         public double MotionSteerInnerDz { get => _motionSteerInnerDz; set => SetProperty(ref _motionSteerInnerDz, Math.Clamp(value, 0, 179)); }
         private double _motionSteerOuterDz = 135;
@@ -1410,17 +1384,13 @@ namespace PadForge.ViewModels
             MotionSteerOrientIndex = i >= 0 ? i : 0;
         }
 
-        private RelayCommand _resetMotionSteerEnabledCommand, _resetMotionSteerTargetCommand,
-            _resetMotionSteerInnerCommand, _resetMotionSteerOuterCommand,
+        private RelayCommand _resetMotionSteerInnerCommand, _resetMotionSteerOuterCommand,
             _resetMotionSteerOrientCommand, _resetMotionSteerAllCommand;
-        public RelayCommand ResetMotionSteerEnabledCommand => _resetMotionSteerEnabledCommand ??= new RelayCommand(() => MotionSteerEnabled = false);
-        public RelayCommand ResetMotionSteerTargetCommand => _resetMotionSteerTargetCommand ??= new RelayCommand(() => MotionSteerTarget = "LeftThumbAxisX");
         public RelayCommand ResetMotionSteerInnerCommand => _resetMotionSteerInnerCommand ??= new RelayCommand(() => MotionSteerInnerDz = 15);
         public RelayCommand ResetMotionSteerOuterCommand => _resetMotionSteerOuterCommand ??= new RelayCommand(() => MotionSteerOuterDz = 135);
         public RelayCommand ResetMotionSteerOrientCommand => _resetMotionSteerOrientCommand ??= new RelayCommand(() => MotionSteerOrientIndex = 0);
         public RelayCommand ResetMotionSteerAllCommand => _resetMotionSteerAllCommand ??= new RelayCommand(() =>
         {
-            MotionSteerEnabled = false; MotionSteerTarget = "LeftThumbAxisX";
             MotionSteerInnerDz = 15; MotionSteerOuterDz = 135; MotionSteerOrientIndex = 0;
         });
 
@@ -2621,8 +2591,6 @@ namespace PadForge.ViewModels
             // Steering isn't in SyncStickItemFromVm, so the fresh items default to mode-off.
             // Re-load the selected device's steering into them (host wires this).
             SteeringReloadCallback?.Invoke();
-            // The Motion Steering target list depends on this slot's sticks.
-            OnPropertyChanged(nameof(MotionSteerTargetOptions));
         }
 
         /// <summary>

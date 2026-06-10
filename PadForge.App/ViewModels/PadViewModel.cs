@@ -2972,7 +2972,13 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _soundOutputDeviceId, value ?? ""))
+                {
                     PadForge.Common.Input.SoundMacroService.SetSlotDevice(PadIndex, _soundOutputDeviceId);
+                    // Speaker output path rides the DS5 output report; push a
+                    // dispatch so the routing lands now, not on the next
+                    // lightbar/battery event.
+                    PadForge.Common.Input.UserEffectsDispatcher.NotifySoundRoutingChanged(PadIndex);
+                }
             }
         }
 
@@ -2986,7 +2992,10 @@ namespace PadForge.ViewModels
             {
                 int v = Math.Clamp(value, 0, 100);
                 if (SetProperty(ref _soundMasterVolume, v))
+                {
                     PadForge.Common.Input.SoundMacroService.SetSlotVolume(PadIndex, v);
+                    PadForge.Common.Input.UserEffectsDispatcher.NotifySoundRoutingChanged(PadIndex);
+                }
             }
         }
 
@@ -3027,10 +3036,6 @@ namespace PadForge.ViewModels
             Macros.Where(m => m.Actions.Any(a => a.Type == MacroActionType.PlaySound)).ToList();
 
         public bool HasNoSoundMacros => SoundMacros.Count == 0;
-
-        private RelayCommand _refreshSoundDevicesCommand;
-        public RelayCommand RefreshSoundDevicesCommand =>
-            _refreshSoundDevicesCommand ??= new RelayCommand(RefreshSoundOutputDevices);
 
         private RelayCommand _soundTestCommand;
         public RelayCommand SoundTestCommand =>

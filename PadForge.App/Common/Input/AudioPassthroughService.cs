@@ -92,6 +92,16 @@ namespace PadForge.Common.Input
             /// <summary>Macro + optional loopback mirror.</summary>
             public SinkSource Source;
 
+            /// <summary>Last tick the source produced a non-silent sample
+            /// (written by <see cref="SinkSource.Read"/>); the BT stream
+            /// pauses after 2 s of silence so an idle pad's radio rests.</summary>
+            public long LastAudibleTicks;
+
+            /// <summary>Set by the BT stream thread on a failed write; the
+            /// worker detaches and rebuilds/tears down. Streaming threads
+            /// never do transport I/O themselves.</summary>
+            public volatile bool TransportFailed;
+
             // USB
             public IWavePlayer Player;
 
@@ -102,7 +112,8 @@ namespace PadForge.Common.Input
 
         private static readonly Dictionary<Guid, Sink> _sinks = new();
         private static Thread _btThread;
-        private static Thread _validateThread;
+        private static Thread _workerThread;
+        private static readonly AutoResetEvent _workSignal = new(false);
         private static volatile bool _running;
 
         // Speaker-path bookkeeping for the DS5 dispatcher.
@@ -121,13 +132,27 @@ namespace PadForge.Common.Input
         private static bool AnyPassthroughOn_NoLock()
             => _sinks.Values.Any(s => s.PassthroughOn);
 
-        private static void EnsureCapture_NoLock()
+        /// <summary>Worker-only. Brief locks around state; all COM and
+        /// capture start/stop happens unlocked so no other thread ever
+        /// waits on device I/O.</summary>
+        private static void ReconcileCaptureOnWorker()
         {
-            if (!AnyPassthroughOn_NoLock())
+            bool want;
+            string haveId;
+            bool haveCapture;
+            lock (_lock)
             {
-                StopCapture_NoLock();
+                want = _running && AnyPassthroughOn_NoLock();
+                haveId = _captureDeviceId;
+                haveCapture = _capture != null;
+            }
+
+            if (!want)
+            {
+                StopCaptureOnWorker();
                 return;
             }
+
             // Restart when the default render device changed (DSY-v2
             // re-validates every 5 s rather than registering callbacks).
             string defaultId = "";
@@ -139,10 +164,10 @@ namespace PadForge.Common.Input
             }
             catch { }
 
-            if (_capture != null && string.Equals(defaultId, _captureDeviceId, StringComparison.Ordinal))
+            if (haveCapture && string.Equals(defaultId, haveId, StringComparison.Ordinal))
                 return;
 
-            StopCapture_NoLock();
+            StopCaptureOnWorker();
             try
             {
                 var cap = new WasapiLoopbackCapture(); // default render endpoint
@@ -182,26 +207,44 @@ namespace PadForge.Common.Input
                         pos -= srcFrames;
                     }
                 };
-                cap.RecordingStopped += (s, e) => { /* validation thread restarts */ };
+                cap.RecordingStopped += (s, e) => { /* worker restarts on its next pass */ };
                 cap.StartRecording();
-                _capture = cap;
-                _captureDeviceId = defaultId;
+                bool committed = false;
+                lock (_lock)
+                {
+                    if (_running)
+                    {
+                        _capture = cap;
+                        _captureDeviceId = defaultId;
+                        committed = true;
+                    }
+                }
+                if (!committed)
+                {
+                    try { cap.StopRecording(); } catch { }
+                    try { cap.Dispose(); } catch { }
+                    return;
+                }
                 Diag($"[CAPTURE] started on default endpoint (rate={srcRate} ch={srcCh} float={isFloat})");
             }
             catch (Exception ex)
             {
                 Diag($"[CAPTURE-FAIL] {ex.GetType().Name}: {ex.Message}");
-                _capture = null;
             }
         }
 
-        private static void StopCapture_NoLock()
+        private static void StopCaptureOnWorker()
         {
-            if (_capture == null) return;
-            try { _capture.StopRecording(); } catch { }
-            try { _capture.Dispose(); } catch { }
-            _capture = null;
-            _captureDeviceId = "";
+            WasapiLoopbackCapture old;
+            lock (_lock)
+            {
+                old = _capture;
+                _capture = null;
+                _captureDeviceId = "";
+            }
+            if (old == null) return;
+            try { old.StopRecording(); } catch { }
+            try { old.Dispose(); } catch { }
         }
 
         /// <summary>Per-sink source: the sink's own macro mixer plus (when
@@ -240,6 +283,17 @@ namespace PadForge.Common.Input
                             buffer[offset + f * 2 + 1] += _ring[idx + 1];
                         }
                         _cursor += canRead;
+                    }
+                }
+
+                // Activity stamp for the BT idle gate: any non-silent sample
+                // keeps the stream sending; 2 s of silence pauses it.
+                for (int i = 0; i < count; i++)
+                {
+                    if (buffer[offset + i] > 1e-4f || buffer[offset + i] < -1e-4f)
+                    {
+                        _sink.LastAudibleTicks = Environment.TickCount64;
+                        break;
                     }
                 }
                 return count;
@@ -287,19 +341,39 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>The macro mixers a slot's sounds should play into — one
-        /// per active controller sink on that slot. Empty list = no sinks;
-        /// the caller (SoundMacroService) falls back to the system default
-        /// output. Activates the slot's sinks on first use.</summary>
-        public static List<MixingSampleProvider> GetSlotSinkMixers(int slot)
+        /// per active controller sink on that slot. Pure state read: all
+        /// transport I/O happens on the worker thread, never on the caller
+        /// (engine / UI). <paramref name="pendingActivation"/> is true when
+        /// the slot has eligible speaker pads whose sinks aren't live yet —
+        /// the caller should drop the sound (not leak it to the PC speakers);
+        /// the worker is signalled and the next trigger lands on the pad.</summary>
+        public static List<MixingSampleProvider> GetSlotSinkMixers(int slot, out bool pendingActivation)
         {
+            bool anyEligible = false;
+            foreach (var (_, ud) in EnumerateAssignedSonyPads(slot))
+            {
+                bool isBt = (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
+                bool isDs4 = Ds4Pids.Contains((ushort)ud.ProdId);
+                if (isBt && isDs4) continue; // no BT transport for DS4
+                anyEligible = true;
+                break;
+            }
+
+            List<MixingSampleProvider> live;
             lock (_lock)
             {
-                EnsureSlotSinks_NoLock(slot);
-                return _sinks.Values
+                EnsureThreads_NoLock();
+                // Sticky: this slot's macros want controller routing; the
+                // worker builds (and keeps) its sinks from now on.
+                _macroDemand.Add(slot);
+                live = _sinks.Values
                     .Where(s => s.Slot == slot && SinkAlive(s))
                     .Select(s => s.MacroMixer)
                     .ToList();
             }
+            pendingActivation = anyEligible && live.Count == 0;
+            if (pendingActivation) _workSignal.Set();
+            return live;
         }
 
         /// <summary>True while the device has an active sink — the DS5
@@ -318,54 +392,42 @@ namespace PadForge.Common.Input
                 return _speakerPathCleared.Remove(deviceGuid);
         }
 
-        /// <summary>Re-evaluates which sinks should exist. Call on device
-        /// assignment changes and on passthrough toggle changes; the
-        /// validation thread also calls it every 5 s (DSY-v2's Validate
-        /// cadence) to ride out hot-plugs and default-device changes.</summary>
+        /// <summary>Requests a sink reconcile and returns immediately. Call
+        /// on device assignment changes and passthrough toggle changes —
+        /// safe from the UI thread: the worker does all device I/O. The
+        /// worker also self-wakes every 5 s (DSY-v2's Validate cadence) to
+        /// ride out hot-plugs and default-device changes.</summary>
         public static void Reconcile()
         {
-            lock (_lock)
-            {
-                EnsureThreads_NoLock();
-                for (int slot = 0; slot < MaxPads; slot++)
-                    ReconcileSlot_NoLock(slot, createForPassthroughOnly: true);
-                // Tear down sinks whose device left / went offline / lost both roles.
-                foreach (var kv in _sinks.ToList())
-                {
-                    var s = kv.Value;
-                    var ud = FindOnlineSonyDevice(s.DeviceGuid);
-                    bool stillAssigned = ud != null && IsAssignedToSlot(s.DeviceGuid, s.Slot);
-                    bool passthrough = ReadPassthroughFlag(s.Slot, s.DeviceGuid);
-                    bool macroActive = s.MacroMixer != null && s.MacroMixer.MixerInputs.Any();
-                    if (!stillAssigned || (!passthrough && !macroActive && !SinkAlive(s)))
-                    {
-                        if (!stillAssigned)
-                        {
-                            TeardownSink_NoLock(s);
-                            _sinks.Remove(kv.Key);
-                        }
-                        else
-                        {
-                            s.PassthroughOn = passthrough;
-                        }
-                        continue;
-                    }
-                    s.PassthroughOn = passthrough;
-                }
-                EnsureCapture_NoLock();
-                NotifyMacroRouting_NoLock();
-            }
+            lock (_lock) EnsureThreads_NoLock();
+            _workSignal.Set();
         }
 
-        /// <summary>Engine shutdown.</summary>
+        /// <summary>Engine shutdown. Detaches all state under the lock, then
+        /// disposes the transports outside it; the streaming threads observe
+        /// <see cref="_running"/> and exit. Restartable: the next
+        /// Reconcile / GetSlotSinkMixers call brings the threads back.</summary>
         public static void Shutdown()
         {
+            List<Sink> drop;
+            WasapiLoopbackCapture cap;
             lock (_lock)
             {
                 _running = false;
-                foreach (var s in _sinks.Values) TeardownSink_NoLock(s);
+                drop = _sinks.Values.ToList();
                 _sinks.Clear();
-                StopCapture_NoLock();
+                foreach (var s in drop)
+                    if (SinkAlive(s)) _speakerPathCleared.Add(s.DeviceGuid);
+                cap = _capture;
+                _capture = null;
+                _captureDeviceId = "";
+            }
+            _workSignal.Set();
+            foreach (var s in drop) DisposeTransport(s);
+            if (cap != null)
+            {
+                try { cap.StopRecording(); } catch { }
+                try { cap.Dispose(); } catch { }
             }
         }
 
@@ -375,71 +437,167 @@ namespace PadForge.Common.Input
 
         private static bool SinkAlive(Sink s) => s.Player != null || s.BtHandle != new IntPtr(-1);
 
-        private static void EnsureSlotSinks_NoLock(int slot)
-        {
-            EnsureThreads_NoLock();
-            ReconcileSlot_NoLock(slot, createForPassthroughOnly: false);
-        }
+        // Slots whose macro sounds have requested controller routing; sticky
+        // so sinks persist across reconnects like the mirror toggle does.
+        private static readonly HashSet<int> _macroDemand = new();
 
-        private static void ReconcileSlot_NoLock(int slot, bool createForPassthroughOnly)
+        /// <summary>Worker-only reconcile pass. The phases keep all device
+        /// I/O outside <see cref="_lock"/> — a BT CreateFile on a sleeping
+        /// pad can block for seconds, and with the old in-lock layout that
+        /// froze the UI (Reconcile ran on the UI thread), the engine (macro
+        /// placement) and the effects dispatcher (per-report
+        /// WantsSpeakerPath) all at once.</summary>
+        private static void ReconcileOnWorker()
         {
-            foreach (var (guid, ud) in EnumerateAssignedSonyPads(slot))
+            // Phase 1 — desired state, no locks (SettingsManager and the
+            // config provider take their own locks; never nest them under
+            // ours).
+            var desired = new List<(int Slot, Guid Guid, string Path, bool IsBt, bool IsDs4, bool PtOn)>();
+            for (int slot = 0; slot < MaxPads; slot++)
             {
-                bool passthrough = ReadPassthroughFlag(slot, guid);
-                if (createForPassthroughOnly && !passthrough)
+                bool demand;
+                lock (_lock) demand = _macroDemand.Contains(slot);
+                foreach (var (guid, ud) in EnumerateAssignedSonyPads(slot))
                 {
-                    // Macro-only sinks are created lazily on first sound
-                    // (GetSlotSinkMixers) so idle slots don't hold devices.
-                    if (_sinks.TryGetValue(guid, out var existing0))
-                        existing0.PassthroughOn = false;
-                    continue;
+                    bool isBt = (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool isDs4 = Ds4Pids.Contains((ushort)ud.ProdId);
+                    // The 0x32 raw audio stream is DualSense-only (SAxense);
+                    // DS4 BT audio is SBC-coded over different reports and
+                    // unimplemented.
+                    if (isBt && isDs4) continue;
+                    bool ptOn = ReadPassthroughFlag(slot, guid);
+                    // A sink exists while the device's mirror toggle is on or
+                    // the slot's macros have asked for controller routing.
+                    // Pads using neither get no transport and no firmware
+                    // speaker-path assertion.
+                    if (!ptOn && !demand) continue;
+                    desired.Add((slot, guid, ud.DevicePath, isBt, isDs4, ptOn));
                 }
-
-                bool isBt = (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
-                bool isDs4 = Ds4Pids.Contains((ushort)ud.ProdId);
-                // The 0x32 raw audio stream is DualSense-only (SAxense); DS4 BT
-                // audio is SBC-coded over different reports and unimplemented.
-                // No sink → macro sounds fall back to the system default output.
-                if (isBt && isDs4) continue;
-
-                if (!_sinks.TryGetValue(guid, out var sink))
-                {
-                    sink = new Sink
-                    {
-                        DeviceGuid = guid,
-                        Slot = slot,
-                        HidPath = ud.DevicePath,
-                        IsBt = isBt,
-                        IsDs4 = isDs4,
-                        MacroMixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(Rate, 2)) { ReadFully = true },
-                    };
-                    sink.Source = new SinkSource(sink);
-                    _sinks[guid] = sink;
-                }
-                sink.Slot = slot;
-                sink.PassthroughOn = passthrough;
-                StartSink_NoLock(sink);
             }
-            EnsureCapture_NoLock();
-            NotifyMacroRouting_NoLock();
+
+            // Phase 2 — state sync under the lock; no I/O.
+            var toDispose = new List<Sink>();
+            var toBuild = new List<Sink>();
+            lock (_lock)
+            {
+                if (!_running) return;
+                var wanted = new HashSet<Guid>();
+                foreach (var d in desired)
+                {
+                    wanted.Add(d.Guid);
+                    if (!_sinks.TryGetValue(d.Guid, out var sink))
+                    {
+                        sink = new Sink
+                        {
+                            DeviceGuid = d.Guid,
+                            IsBt = d.IsBt,
+                            IsDs4 = d.IsDs4,
+                            MacroMixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(Rate, 2)) { ReadFully = true },
+                        };
+                        sink.Source = new SinkSource(sink);
+                        _sinks[d.Guid] = sink;
+                    }
+                    sink.Slot = d.Slot;
+                    sink.HidPath = d.Path;
+                    sink.PassthroughOn = d.PtOn;
+                    if (sink.TransportFailed)
+                    {
+                        toDispose.Add(DetachTransport_NoLock(sink));
+                        sink.TransportFailed = false;
+                    }
+                    if (!SinkAlive(sink)) toBuild.Add(sink);
+                }
+                foreach (var kv in _sinks.ToList())
+                {
+                    if (wanted.Contains(kv.Key)) continue;
+                    toDispose.Add(DetachTransport_NoLock(kv.Value));
+                    _sinks.Remove(kv.Key);
+                }
+            }
+
+            // Phase 3 — device I/O, unlocked.
+            foreach (var s in toDispose) DisposeTransport(s);
+            foreach (var s in toBuild) BuildTransportOnWorker(s);
+
+            // Phase 4 — loopback capture (own brief locks).
+            ReconcileCaptureOnWorker();
+
+            // Phase 5 — macro-routing notify, outside _lock: it takes
+            // SoundMacroService's lock and can tear down a WasapiOut.
+            var routed = new bool[MaxPads];
+            lock (_lock)
+            {
+                foreach (var s in _sinks.Values)
+                    if (SinkAlive(s) && (uint)s.Slot < MaxPads) routed[s.Slot] = true;
+            }
+            for (int slot = 0; slot < MaxPads; slot++)
+                SoundMacroService.SetSlotControllerRouted(slot, routed[slot]);
         }
 
-        private static void StartSink_NoLock(Sink s)
+        /// <summary>Move a sink's transport onto a carrier so it can be
+        /// disposed outside the lock; flags the headphone-path restore.</summary>
+        private static Sink DetachTransport_NoLock(Sink s)
         {
-            if (SinkAlive(s)) return;
+            if (SinkAlive(s)) _speakerPathCleared.Add(s.DeviceGuid);
+            var carrier = new Sink
+            {
+                DeviceGuid = s.DeviceGuid,
+                Player = s.Player,
+                BtHandle = s.BtHandle,
+                BtEvent = s.BtEvent,
+            };
+            s.Player = null;
+            s.BtHandle = new IntPtr(-1);
+            s.BtEvent = IntPtr.Zero;
+            return carrier;
+        }
+
+        private static void DisposeTransport(Sink s)
+        {
+            try { s.Player?.Stop(); } catch { }
+            try { s.Player?.Dispose(); } catch { }
+            s.Player = null;
+            if (s.BtHandle != new IntPtr(-1))
+            {
+                NativeMethods.CloseHandle(s.BtHandle);
+                s.BtHandle = new IntPtr(-1);
+            }
+            if (s.BtEvent != IntPtr.Zero)
+            {
+                NativeMethods.CloseHandle(s.BtEvent);
+                s.BtEvent = IntPtr.Zero;
+            }
+        }
+
+        /// <summary>Worker-only: open the transport with no locks held, then
+        /// commit under the lock only if the sink is still the wanted one.
+        /// A losing build (device unassigned mid-open) is disposed as an
+        /// orphan.</summary>
+        private static void BuildTransportOnWorker(Sink s)
+        {
             if (s.IsBt)
             {
                 // Persistent raw HID handle for the 94 Hz audio frame stream.
-                s.BtHandle = NativeMethods.OpenHid(s.HidPath);
-                if (s.BtHandle != new IntPtr(-1))
-                {
-                    s.BtEvent = NativeMethods.CreateEventW(IntPtr.Zero, true, false, null);
-                    Diag($"[SINK] BT stream open slot={s.Slot} dev={s.DeviceGuid.ToString().Substring(0, 8)}");
-                }
-                else
+                IntPtr h = NativeMethods.OpenHid(s.HidPath);
+                if (h == new IntPtr(-1))
                 {
                     Diag($"[SINK-FAIL] BT open failed slot={s.Slot} path={s.HidPath}");
+                    return;
                 }
+                IntPtr ev = NativeMethods.CreateEventW(IntPtr.Zero, true, false, null);
+                lock (_lock)
+                {
+                    if (_running && _sinks.TryGetValue(s.DeviceGuid, out var cur)
+                        && ReferenceEquals(cur, s) && !SinkAlive(s))
+                    {
+                        s.BtHandle = h;
+                        s.BtEvent = ev;
+                        Diag($"[SINK] BT stream open slot={s.Slot} dev={s.DeviceGuid.ToString().Substring(0, 8)}");
+                        return;
+                    }
+                }
+                NativeMethods.CloseHandle(h);
+                if (ev != IntPtr.Zero) NativeMethods.CloseHandle(ev);
                 return;
             }
 
@@ -475,44 +633,28 @@ namespace PadForge.Common.Input
                     var player = new WasapiOut(match, AudioClientShareMode.Shared, true, 60);
                     player.Init(feed);
                     player.Play();
-                    s.Player = player;
+                    bool committed = false;
+                    lock (_lock)
+                    {
+                        if (_running && _sinks.TryGetValue(s.DeviceGuid, out var cur)
+                            && ReferenceEquals(cur, s) && !SinkAlive(s))
+                        {
+                            s.Player = player;
+                            committed = true;
+                        }
+                    }
+                    if (!committed)
+                    {
+                        try { player.Stop(); } catch { }
+                        try { player.Dispose(); } catch { }
+                        return;
+                    }
                     Diag($"[SINK] USB open slot={s.Slot} endpoint='{match.FriendlyName}' ch={channels}");
                 }
             }
             catch (Exception ex)
             {
                 Diag($"[SINK-FAIL] USB {ex.GetType().Name}: {ex.Message}");
-                s.Player = null;
-            }
-        }
-
-        private static void TeardownSink_NoLock(Sink s)
-        {
-            bool wasAlive = SinkAlive(s);
-            try { s.Player?.Stop(); } catch { }
-            try { s.Player?.Dispose(); } catch { }
-            s.Player = null;
-            if (s.BtHandle != new IntPtr(-1))
-            {
-                NativeMethods.CloseHandle(s.BtHandle);
-                s.BtHandle = new IntPtr(-1);
-            }
-            if (s.BtEvent != IntPtr.Zero)
-            {
-                NativeMethods.CloseHandle(s.BtEvent);
-                s.BtEvent = IntPtr.Zero;
-            }
-            if (wasAlive) _speakerPathCleared.Add(s.DeviceGuid);
-        }
-
-        private static void NotifyMacroRouting_NoLock()
-        {
-            // Tell SoundMacroService which slots are controller-routed so it
-            // tears down / restores its system-default fallback output.
-            for (int slot = 0; slot < MaxPads; slot++)
-            {
-                bool routed = _sinks.Values.Any(s => s.Slot == slot && SinkAlive(s));
-                SoundMacroService.SetSlotControllerRouted(slot, routed);
             }
         }
 
@@ -610,16 +752,23 @@ namespace PadForge.Common.Input
             _running = true;
             _btThread = new Thread(BtThreadMain) { IsBackground = true, Name = "PadForge.BtAudio", Priority = ThreadPriority.Highest };
             _btThread.Start();
-            _validateThread = new Thread(ValidateThreadMain) { IsBackground = true, Name = "PadForge.AudioValidate" };
-            _validateThread.Start();
+            _workerThread = new Thread(WorkerThreadMain) { IsBackground = true, Name = "PadForge.AudioWorker" };
+            _workerThread.Start();
         }
 
-        private static void ValidateThreadMain()
+        /// <summary>The single owner of all sink / capture device I/O. Wakes
+        /// on <see cref="_workSignal"/> (Reconcile requests) and every 5 s
+        /// regardless (DSY-v2's Validate cadence) to ride out hot-plugs and
+        /// default-device changes. The thread-identity check lets a
+        /// Shutdown → restart cycle replace the thread without two workers
+        /// ever running at once.</summary>
+        private static void WorkerThreadMain()
         {
-            while (_running)
+            var me = Thread.CurrentThread;
+            while (_running && ReferenceEquals(_workerThread, me))
             {
-                Thread.Sleep(5000);
-                try { Reconcile(); } catch { }
+                try { ReconcileOnWorker(); } catch { }
+                _workSignal.WaitOne(5000);
             }
         }
 
@@ -636,17 +785,24 @@ namespace PadForge.Common.Input
                 var report = new byte[BtReportSize];
                 long periodTicks = (long)(10.6667 * TimeSpan.TicksPerMillisecond);
                 long next = DateTime.UtcNow.Ticks + periodTicks;
+                var me = Thread.CurrentThread;
 
-                while (_running)
+                while (_running && ReferenceEquals(_btThread, me))
                 {
                     List<Sink> btSinks;
                     lock (_lock)
-                        btSinks = _sinks.Values.Where(s => s.IsBt && s.BtHandle != new IntPtr(-1)).ToList();
+                        btSinks = _sinks.Values.Where(s => s.IsBt && !s.TransportFailed && s.BtHandle != new IntPtr(-1)).ToList();
 
                     _btCounter++; // once per tick, shared by all pads (reference g_ii)
                     foreach (var s in btSinks)
                     {
+                        // Always pull (keeps the ring cursor at the live edge
+                        // and the activity stamp fresh) but pause sends after
+                        // 2 s of silence so an idle pad's radio can rest; the
+                        // next audible sample resumes within one frame.
                         s.Source.Read(pull, 0, pull.Length);
+                        if (Environment.TickCount64 - s.LastAudibleTicks > 2000)
+                            continue;
 
                         // Build report 0x32 exactly per the reference
                         // (initHapticReport + HapticTimerThread):
@@ -688,11 +844,11 @@ namespace PadForge.Common.Input
 
                         if (!NativeMethods.WriteHid(s.BtHandle, s.BtEvent, report))
                         {
-                            lock (_lock)
-                            {
-                                Diag($"[BT-WRITE-FAIL] slot={s.Slot}; closing stream");
-                                TeardownSink_NoLock(s);
-                            }
+                            // No transport I/O here — mark and let the worker
+                            // detach/rebuild on its thread.
+                            Diag($"[BT-WRITE-FAIL] slot={s.Slot}; deferring to worker");
+                            s.TransportFailed = true;
+                            _workSignal.Set();
                         }
                     }
 

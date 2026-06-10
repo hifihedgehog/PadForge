@@ -1066,22 +1066,25 @@ namespace PadForge.Common.Input
                         statWindowStart = wakeNow;
                     }
 
-                    // One tick per cadence on an absolute schedule; a stall
-                    // (>120 ms behind) re-snaps rather than rapid-firing —
-                    // the firmware would drop back-to-back reports anyway.
+                    // One tick per cadence on an absolute schedule. Lateness
+                    // is never repaid: a missed slot is skipped (schedule
+                    // re-snaps), because catch-up frames are back-to-back
+                    // deliveries — the exact burst the firmware drops — and
+                    // each one also drains 512 ring frames with no real time
+                    // passing. The pad conceals a missing frame gracefully.
                     long nowTicks = DateTime.UtcNow.Ticks;
                     double waitMs = (next - nowTicks) / (double)TimeSpan.TicksPerMillisecond;
                     if (waitMs > 0)
                     {
                         if (hrTimer != IntPtr.Zero) NativeMethods.HighResWait(hrTimer, waitMs);
                         else Thread.Sleep((int)Math.Max(1, waitMs));
+                        next += cadTicks;
                     }
-                    else if (waitMs < -120)
+                    else
                     {
-                        next = nowTicks;
+                        next = nowTicks + cadTicks;
                         statResyncs++;
                     }
-                    next += cadTicks;
                 }
             }
             finally

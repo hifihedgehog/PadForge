@@ -124,6 +124,15 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
+    <!-- Divider-separated SECTION title inside a card (e.g. the per-stick
+         Steering / Sensitivity Curves sections). Card headers get their 8px
+         title-to-description gap from the header StackPanel's margin; a bare
+         section title has no wrapping panel, so the margin lives on the
+         style — same rhythm, no number to copy from a neighbor. -->
+    <Style x:Key="CardSectionTitle" TargetType="TextBlock" BasedOn="{StaticResource CardTitle}">
+        <Setter Property="Margin" Value="0,0,0,8"/>
+    </Style>
+
     <!-- The ONE formatting style for description text under a card title.
          Margin lives here so new cards inherit the canonical title-to-
          description rhythm without copying numbers from a neighbor. -->

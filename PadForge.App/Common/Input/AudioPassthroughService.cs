@@ -284,6 +284,11 @@ namespace PadForge.Common.Input
             private readonly Sink _sink;
             private long _cursor = -1;
 
+            /// <summary>Frames the cursor trails the live edge after the last
+            /// read, or -1 when the mirror is off. The BT thread reads this to
+            /// rate-match its send cadence to the capture clock.</summary>
+            public int LoopbackLagFrames = -1;
+
             public SinkSource(Sink sink) { _sink = sink; }
 
             public WaveFormat WaveFormat { get; } = WaveFormat.CreateIeeeFloatWaveFormat(Rate, 2);
@@ -298,17 +303,18 @@ namespace PadForge.Common.Input
                 {
                     // Full scale: master volume lives in the firmware speaker
                     // volume byte (UserEffectsDispatcher), not the samples.
-                    // Latency clamp: if this sink's cursor falls more than
-                    // ~50 ms behind the live edge (pacing drift, stalls),
-                    // jump to a ~20 ms cushion behind live rather than ever
-                    // playing stale audio.
-                    const int MaxLagFrames = 2400;  // 50 ms @ 48 kHz
-                    const int CushionFrames = 960;  // 20 ms
+                    // The cursor's distance behind the live edge is steered to
+                    // a small steady cushion by the BT thread's adaptive
+                    // pacing, NOT by jumping here. A hard jump drops audio, so
+                    // this only resyncs on a genuine stall (cursor invalid, or
+                    // ran past the live edge, or fell a quarter-second behind).
+                    const int CatastropheLag = 12000; // 250 ms @ 48 kHz
+                    const int ResyncCushion = 2160;    // 45 ms (== BtTargetLag)
                     lock (_ring)
                     {
                         long avail = _ringWrite;
-                        if (_cursor < 0 || _cursor > avail || avail - _cursor > MaxLagFrames)
-                            _cursor = Math.Max(0, avail - CushionFrames);
+                        if (_cursor < 0 || _cursor > avail || avail - _cursor > CatastropheLag)
+                            _cursor = Math.Max(0, avail - ResyncCushion);
                         int frames = count / 2;
                         int canRead = (int)Math.Min(frames, avail - _cursor);
                         for (int f = 0; f < canRead; f++)
@@ -318,8 +324,10 @@ namespace PadForge.Common.Input
                             buffer[offset + f * 2 + 1] += _ring[idx + 1];
                         }
                         _cursor += canRead;
+                        LoopbackLagFrames = (int)(avail - _cursor);
                     }
                 }
+                else LoopbackLagFrames = -1;
 
                 // Activity stamp for the BT idle gate: any non-silent sample
                 // keeps the stream sending; 2 s of silence pauses it.
@@ -885,14 +893,20 @@ namespace PadForge.Common.Input
                 var pull = new float[BtFrameSamples * 2];
                 var opus = new byte[BtOpusBytes + 16];
                 var report = new byte[BtReportSize];
-                // Exactly one 10 ms frame per 10 ms of wall time: each frame
-                // carries 480 samples of 48 kHz audio, so any other cadence
-                // drifts against the capture clock. (The old 10.667 ms
-                // haptics cadence under-consumed 6%, backlogging the mirror
-                // up to the ring's half-second capacity — the source of the
-                // 0.5-1 s PC-to-pad delay — and forced the pad's decoder
-                // into gap concealment.)
-                long periodTicks = 10 * TimeSpan.TicksPerMillisecond;
+                // Each report carries one 10 ms Opus frame (480 samples of
+                // 48 kHz). A fixed wall-clock cadence drifts against the
+                // capture clock: Thread.Sleep overshoots, so we'd consume the
+                // mirror ring slightly slower than it fills, the backlog grows
+                // until a hard resync drops audio (periodic cutout), or shrinks
+                // until it underruns (also a cutout). Instead, steer the send
+                // period with a slow feedback loop that holds the mirror's lag
+                // at BtTargetLag — a few tenths of a millisecond of period
+                // adjustment, inaudible, no dropped frames. Pure 10 ms only
+                // when no mirror is active (macro sounds are pull-generated
+                // on demand, no producer clock to track).
+                const double BasePeriodMs = 10.0;
+                const int BtTargetLag = 2160;        // 45 ms cushion @ 48 kHz
+                long periodTicks = (long)(BasePeriodMs * TimeSpan.TicksPerMillisecond);
                 long next = DateTime.UtcNow.Ticks + periodTicks;
                 var me = Thread.CurrentThread;
 
@@ -902,6 +916,7 @@ namespace PadForge.Common.Input
                     lock (_lock)
                         btSinks = _sinks.Values.Where(s => s.IsBt && !s.TransportFailed && s.BtHandle != new IntPtr(-1)).ToList();
 
+                    int steerLag = -1;
                     foreach (var s in btSinks)
                     {
                         // Always pull (keeps the ring cursor at the live edge
@@ -910,6 +925,8 @@ namespace PadForge.Common.Input
                         // CPU rest; the next audible sample resumes within a
                         // frame (one cold-start frame from the encoder).
                         s.Source.Read(pull, 0, pull.Length);
+                        if (s.Source.LoopbackLagFrames >= 0 && steerLag < 0)
+                            steerLag = s.Source.LoopbackLagFrames; // first mirror sink drives pacing
                         if (Environment.TickCount64 - s.LastAudibleTicks > 2000)
                             continue;
 
@@ -951,10 +968,23 @@ namespace PadForge.Common.Input
                         }
                     }
 
+                    // Feedback: hold the mirror lag at BtTargetLag. A positive
+                    // error (backlog) shortens the period to drain it; a
+                    // negative error (near underrun) lengthens it. Gain
+                    // 0.01 ms per ms-of-error, clamped to ±0.5 ms (≤5 % cadence
+                    // shift — transient, re-clocked frame by frame by the pad,
+                    // so no audible pitch change). No steer when the mirror is
+                    // off.
+                    double periodMs = BasePeriodMs;
+                    if (steerLag >= 0)
+                    {
+                        double errMs = (steerLag - BtTargetLag) / 48.0;
+                        periodMs = BasePeriodMs - Math.Clamp(0.01 * errMs, -0.5, 0.5);
+                    }
                     long now = DateTime.UtcNow.Ticks;
+                    next += (long)(periodMs * TimeSpan.TicksPerMillisecond);
                     int sleepMs = (int)Math.Max(0, (next - now) / TimeSpan.TicksPerMillisecond);
                     if (sleepMs > 0) Thread.Sleep(sleepMs);
-                    next += periodTicks;
                     if (now > next + 10 * periodTicks) next = now + periodTicks; // resync after stall
                 }
             }

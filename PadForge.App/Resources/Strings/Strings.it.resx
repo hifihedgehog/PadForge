@@ -1706,9 +1706,9 @@
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Ripristina mantenimento barra luminosa</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Riproduci suoni dalle tue macro: scontri di spade, ping del radar, clic di ricarica o una paperella di gomma. Ogni pad instrada i suoni al proprio dispositivo di uscita, incluso l’altoparlante di un DualSense via USB.</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>I suoni delle macro e l’audio duplicato escono dall’altoparlante integrato del controller selezionato, via USB o Bluetooth. Scegli il dispositivo nel menu sopra: tutto qui lo segue.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Uscita audio</value></data>
-  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Dove questo pad riproduce i suoni delle macro. Scegli un DualSense USB ("Wireless Controller") per riprodurre dall’altoparlante del controller.</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>I suoni raggiungono automaticamente il controller selezionato. Via USB l’endpoint audio del pad è associato per contenitore hardware; via Bluetooth l’audio viaggia in frame HID Sony.</value></data>
   <data name="Pad_Audio_Device_Label" xml:space="preserve"><value>Dispositivo di uscita</value></data>
   <data name="Pad_Audio_DefaultDevice" xml:space="preserve"><value>Predefinito di sistema</value></data>
   <data name="Pad_Audio_DisconnectedDevice_Format" xml:space="preserve"><value>Dispositivo disconnesso ({0})</value></data>
@@ -1738,4 +1738,7 @@
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loop fino allo stop</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Ripete il suono finché non parte un’azione "Ferma i suoni" — o, per le macro tieni/rilascia, finché il trigger non viene rilasciato</value></data>
+  <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Duplica l’audio di sistema sull’altoparlante del controller</value></data>
+  <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copia in parallelo ciò che riproduce l’uscita predefinita di sistema sull’altoparlante integrato di questo controller. Funziona via USB e Bluetooth.</value></data>
+  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Il dispositivo selezionato non ha un altoparlante integrato. I suoni macro di questo pad escono sull’uscita predefinita.</value></data>
 </root>

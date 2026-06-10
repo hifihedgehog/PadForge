@@ -6442,14 +6442,17 @@
                                 </StackPanel>
                                 <TextBlock Text="{Binding Pad_Audio_Output_Desc, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"/>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="{Binding Pad_Audio_Device_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <ComboBox ItemsSource="{Binding SoundOutputDevices}" DisplayMemberPath="Display"
-                                              SelectedValuePath="Value" SelectedValue="{Binding SoundOutputDeviceId, Mode=TwoWay}"
-                                              Width="320" VerticalAlignment="Center"/>
-                                    <Button Command="{Binding ResetSoundDeviceCommand}" Style="{StaticResource ResetButton}"
-                                            ToolTip="{Binding Pad_Audio_Reset_Device, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
+                                <!-- Per assigned device, by convention: this toggle (and the
+                                     speaker routing of macro sounds) follows the device selected
+                                     in the assigned-devices dropdown. No output picker. -->
+                                <CheckBox IsChecked="{Binding PlayStationConfig.AudioPassthroughEnabled, Mode=TwoWay}"
+                                          Content="{Binding Pad_Audio_Mirror, Source={x:Static strings:Strings.Instance}}"
+                                          ToolTip="{Binding Pad_Audio_Mirror_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                          Margin="0,0,0,8"
+                                          Visibility="{Binding SelectedDeviceHasSpeaker, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <TextBlock Text="{Binding Pad_Audio_NoSpeaker, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"
+                                           Visibility="{Binding SelectedDeviceHasNoSpeaker, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_Audio_MasterVolume, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <Slider Value="{Binding SoundMasterVolume, Mode=TwoWay}" Minimum="0" Maximum="100" Style="{StaticResource DzSlider}"/>

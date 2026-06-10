@@ -1684,9 +1684,9 @@
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Réinitialiser le maintien de la barre lumineuse</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Jouez des sons depuis vos macros : chocs d’épées, pings radar, clics de rechargement ou un canard en plastique. Chaque manette envoie ses sons vers son propre périphérique de sortie, y compris le haut-parleur d’une DualSense en USB.</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Les sons de macro et l’audio dupliqué jouent par le haut-parleur intégré de la manette sélectionnée, en USB ou Bluetooth. Choisissez le périphérique dans la liste au-dessus — tout ici le suit.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sortie audio</value></data>
-  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Où cette manette joue ses sons de macro. Choisissez une DualSense USB ("Wireless Controller") pour jouer par le haut-parleur de la manette.</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Les sons sont dirigés automatiquement vers la manette sélectionnée. En USB, le point de sortie audio est associé par conteneur matériel ; en Bluetooth, l’audio est transmis en trames HID Sony.</value></data>
   <data name="Pad_Audio_Device_Label" xml:space="preserve"><value>Périphérique de sortie</value></data>
   <data name="Pad_Audio_DefaultDevice" xml:space="preserve"><value>Par défaut du système</value></data>
   <data name="Pad_Audio_DisconnectedDevice_Format" xml:space="preserve"><value>Périphérique déconnecté ({0})</value></data>
@@ -1716,4 +1716,7 @@
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Boucler jusqu’à l’arrêt</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Répéter le son jusqu’à une action "Arrêter les sons" — ou, pour les macros maintien/relâchement, jusqu’au relâchement du déclencheur</value></data>
+  <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Dupliquer l’audio système sur le haut-parleur de la manette</value></data>
+  <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copie en parallèle ce que joue la sortie par défaut du système sur le haut-parleur intégré de cette manette. Fonctionne en USB et en Bluetooth.</value></data>
+  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Le périphérique sélectionné n’a pas de haut-parleur intégré. Les sons de macro de cette manette jouent sur la sortie par défaut.</value></data>
 </root>

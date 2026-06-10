@@ -559,6 +559,8 @@ namespace PadForge.ViewModels
                     if (old != null) old.PropertyChanged -= OnSelectedDevicePropertyChanged;
                     if (value != null) value.PropertyChanged += OnSelectedDevicePropertyChanged;
                     OnPropertyChanged(nameof(HasSelectedDevice));
+                    OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
+                    OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
                     // Swap the Lighting tab's bound config to the new
                     // device's per-device entry. UI bindings that resolve
                     // PlayStationConfig.* re-evaluate against the new
@@ -2961,36 +2963,23 @@ namespace PadForge.ViewModels
         //  Audio tab (issue #83) — per-slot sound output for macro sounds
         // ═══════════════════════════════════════════════
 
-        private string _soundOutputDeviceId = "";
-        private bool _refreshingSoundDevices;
-        /// <summary>Render-endpoint ID this pad's macro sounds play through.
-        /// Empty = system default. Picking the controller's own endpoint
-        /// ("Wireless Controller") plays from the controller speaker — the
-        /// DS5 dispatcher asserts the firmware speaker path for it.</summary>
-        public string SoundOutputDeviceId
+        /// <summary>True when the SELECTED assigned device has a built-in
+        /// speaker (DualSense / Edge / DualShock 4). The Audio tab is per
+        /// assigned device by convention — this gates the mirror toggle and
+        /// the routing notes.</summary>
+        public bool SelectedDeviceHasSpeaker
         {
-            get => _soundOutputDeviceId;
-            set
+            get
             {
-                // GUARD: while RefreshSoundOutputDevices is rebuilding the
-                // ItemsSource, the ComboBox momentarily can't resolve its
-                // SelectedValue and the TwoWay binding writes NULL back —
-                // which would silently reset the user's saved device to
-                // "system default" on every tab entry (the same WPF hazard
-                // the Aim Engage picker documents). Ignore writes during the
-                // rebuild; the post-rebuild OnPropertyChanged re-resolves the
-                // ComboBox from the preserved value.
-                if (_refreshingSoundDevices) return;
-                if (SetProperty(ref _soundOutputDeviceId, value ?? ""))
-                {
-                    PadForge.Common.Input.SoundMacroService.SetSlotDevice(PadIndex, _soundOutputDeviceId);
-                    // Speaker output path rides the DS5 output report; push a
-                    // dispatch so the routing lands now, not on the next
-                    // lightbar/battery event.
-                    PadForge.Common.Input.UserEffectsDispatcher.NotifySoundRoutingChanged(PadIndex);
-                }
+                var sel = SelectedMappedDevice;
+                if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
+                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
+                if (ud == null || ud.VendorId != 0x054C) return false;
+                return ud.ProdId is 0x0CE6 or 0x0DF2 or 0x05C4 or 0x09CC or 0x0BA0;
             }
         }
+
+        public bool SelectedDeviceHasNoSpeaker => !SelectedDeviceHasSpeaker;
 
         private int _soundMasterVolume = 100;
         /// <summary>Per-pad master volume for macro sounds (0-100),
@@ -3006,52 +2995,6 @@ namespace PadForge.ViewModels
                     PadForge.Common.Input.SoundMacroService.SetSlotVolume(PadIndex, v);
                     PadForge.Common.Input.UserEffectsDispatcher.NotifySoundRoutingChanged(PadIndex);
                 }
-            }
-        }
-
-        /// <summary>Output device options for the Audio tab picker
-        /// (Display = friendly name, Value = endpoint ID, "" = default).</summary>
-        public ObservableCollection<GyroLabeledOption> SoundOutputDevices { get; } = new();
-
-        /// <summary>Re-enumerates active render endpoints. The current
-        /// selection is preserved even when its device is unplugged (a
-        /// "(disconnected)" entry keeps the TwoWay ComboBox binding from
-        /// nulling the saved ID).</summary>
-        public void RefreshSoundOutputDevices()
-        {
-            var devices = PadForge.Common.Input.SoundMacroService.GetOutputDevices();
-            _refreshingSoundDevices = true;
-            try
-            {
-                RefreshSoundOutputDevicesCore(devices);
-            }
-            finally
-            {
-                _refreshingSoundDevices = false;
-            }
-            // Re-resolve the ComboBox selection from the preserved value now
-            // that the rebuilt list is in place.
-            OnPropertyChanged(nameof(SoundOutputDeviceId));
-        }
-
-        private void RefreshSoundOutputDevicesCore(System.Collections.Generic.List<(string Id, string Name)> devices)
-        {
-            SoundOutputDevices.Clear();
-            SoundOutputDevices.Add(new GyroLabeledOption(
-                () => Strings.Instance.Pad_Audio_DefaultDevice, ""));
-            bool currentPresent = string.IsNullOrEmpty(_soundOutputDeviceId);
-            foreach (var (id, name) in devices)
-            {
-                string n = name, i = id;
-                SoundOutputDevices.Add(new GyroLabeledOption(() => n, i));
-                if (string.Equals(i, _soundOutputDeviceId, StringComparison.Ordinal))
-                    currentPresent = true;
-            }
-            if (!currentPresent)
-            {
-                string staleId = _soundOutputDeviceId;
-                SoundOutputDevices.Add(new GyroLabeledOption(
-                    () => string.Format(Strings.Instance.Pad_Audio_DisconnectedDevice_Format, staleId), staleId));
             }
         }
 
@@ -3072,11 +3015,9 @@ namespace PadForge.ViewModels
             _soundStopAllCommand ??= new RelayCommand(
                 () => PadForge.Common.Input.SoundMacroService.StopSlot(PadIndex));
 
-        private RelayCommand _resetSoundMasterVolumeCommand, _resetSoundDeviceCommand;
+        private RelayCommand _resetSoundMasterVolumeCommand;
         public RelayCommand ResetSoundMasterVolumeCommand =>
             _resetSoundMasterVolumeCommand ??= new RelayCommand(() => SoundMasterVolume = 100);
-        public RelayCommand ResetSoundDeviceCommand =>
-            _resetSoundDeviceCommand ??= new RelayCommand(() => SoundOutputDeviceId = "");
 
         private RelayCommand _addSoundMacroCommand;
         /// <summary>Creates a macro pre-loaded with a Play Sound action and
@@ -3139,12 +3080,12 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _selectedConfigTab, value) && value == AudioTabIndex)
                 {
-                    // Entering the Audio tab: re-enumerate render endpoints
-                    // (devices plug/unplug freely) and re-derive the
-                    // sound-macro list from the live Macros collection.
-                    RefreshSoundOutputDevices();
+                    // Entering the Audio tab: re-derive the sound-macro list
+                    // and the selected device's speaker capability.
                     OnPropertyChanged(nameof(SoundMacros));
                     OnPropertyChanged(nameof(HasNoSoundMacros));
+                    OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
+                    OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
                 }
             }
         }

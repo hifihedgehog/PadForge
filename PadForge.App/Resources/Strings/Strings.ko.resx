@@ -1684,9 +1684,9 @@
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>라이트바 유지 재설정</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>오디오</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>오디오</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>매크로에서 사운드를 재생하세요: 검 부딪힘, 레이더 핑, 재장전 소리, 고무 오리까지. 패드마다 출력 장치를 지정할 수 있으며 USB DualSense 스피커도 지원합니다.</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>매크로 사운드와 미러링된 시스템 오디오는 선택한 컨트롤러의 내장 스피커로 USB 또는 Bluetooth를 통해 재생됩니다. 위 드롭다운에서 장치를 선택하세요.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>사운드 출력</value></data>
-  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>이 패드의 매크로 사운드 출력 위치입니다. USB DualSense("Wireless Controller")를 선택하면 컨트롤러 스피커로 재생됩니다.</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>사운드는 선택한 컨트롤러로 자동 라우팅됩니다. USB에서는 하드웨어 컨테이너로 패드의 오디오 엔드포인트를 찾고, Bluetooth에서는 소니 HID 프레임으로 오디오를 전송합니다.</value></data>
   <data name="Pad_Audio_Device_Label" xml:space="preserve"><value>출력 장치</value></data>
   <data name="Pad_Audio_DefaultDevice" xml:space="preserve"><value>시스템 기본값</value></data>
   <data name="Pad_Audio_DisconnectedDevice_Format" xml:space="preserve"><value>연결 해제된 장치 ({0})</value></data>
@@ -1716,4 +1716,7 @@
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>볼륨</value></data>
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>중지할 때까지 루프</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>"사운드 중지" 동작이 실행될 때까지 반복합니다. 유지/뎆 매크로에서는 트리거를 놓으면 중지됩니다</value></data>
+  <data name="Pad_Audio_Mirror" xml:space="preserve"><value>시스템 오디오를 컨트롤러 스피커로 미러링</value></data>
+  <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>시스템 기본 출력에서 재생 중인 소리를 이 컨트롤러의 내장 스피커로도 동시에 출력합니다. USB와 Bluetooth 모두 지원합니다.</value></data>
+  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>선택한 장치에는 내장 스피커가 없습니다. 이 패드의 매크로 사운드는 시스템 기본 출력으로 재생됩니다.</value></data>
 </root>

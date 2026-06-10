@@ -1704,9 +1704,9 @@
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Lightbar-vasthouden resetten</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Speel geluiden af vanuit je macro’s: zwaardgekletter, radarpings, herlaadklikken of een badeendje. Elke pad stuurt zijn geluiden naar zijn eigen uitvoerapparaat, inclusief de speaker van een USB-DualSense.</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macrogeluiden en gespiegelde systeemaudio spelen via de ingebouwde speaker van de geselecteerde controller, via USB of Bluetooth. Kies het apparaat in de lijst hierboven — alles hier volgt het.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Geluidsuitvoer</value></data>
-  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Waar deze pad zijn macrogeluiden afspeelt. Kies een USB-DualSense ("Wireless Controller") om via de controllerspeaker af te spelen.</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Geluiden gaan automatisch naar de geselecteerde controller. Via USB wordt het audio-eindpunt van de pad gematcht op hardwarecontainer; via Bluetooth wordt de audio in Sony-HID-frames gestreamd.</value></data>
   <data name="Pad_Audio_Device_Label" xml:space="preserve"><value>Uitvoerapparaat</value></data>
   <data name="Pad_Audio_DefaultDevice" xml:space="preserve"><value>Systeemstandaard</value></data>
   <data name="Pad_Audio_DisconnectedDevice_Format" xml:space="preserve"><value>Losgekoppeld apparaat ({0})</value></data>
@@ -1736,4 +1736,7 @@
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loopen tot stop</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Herhaal het geluid tot een "Geluiden stoppen"-actie draait — of, bij vasthouden/loslaten-macro’s, tot de trigger wordt losgelaten</value></data>
+  <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Systeemaudio spiegelen naar de controllerspeaker</value></data>
+  <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Speelt alles wat de standaarduitvoer afspeelt parallel af op de ingebouwde speaker van deze controller. Werkt via USB en Bluetooth.</value></data>
+  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Het geselecteerde apparaat heeft geen ingebouwde speaker. Macrogeluiden van deze pad spelen op de standaarduitvoer.</value></data>
 </root>

@@ -204,6 +204,19 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _lightbarEnabled, value);
         }
 
+        private bool _audioPassthroughEnabled;
+        /// <summary>Issue #83 — mirror the system default audio output to
+        /// this pad's built-in speaker (USB Audio Class endpoint matched by
+        /// Container ID, or the Bluetooth HID audio stream). Per assigned
+        /// device, off by default. Macro sounds play through the speaker
+        /// regardless of this toggle; this mirrors EVERYTHING the system
+        /// default device plays, in parallel.</summary>
+        public bool AudioPassthroughEnabled
+        {
+            get => _audioPassthroughEnabled;
+            set => SetProperty(ref _audioPassthroughEnabled, value);
+        }
+
         // ────────────────────────────────────────────────
         //  Lightbar — macro-driven override (#63)
         // ────────────────────────────────────────────────
@@ -1481,6 +1494,7 @@ namespace PadForge.ViewModels
         [XmlAttribute] public byte LightbarGreen { get; set; }
         [XmlAttribute] public byte LightbarBlue { get; set; } = 0xFF;
         [XmlAttribute] public bool LightbarEnabled { get; set; }
+        [XmlAttribute] public bool AudioPassthroughEnabled { get; set; }
         [XmlAttribute] public MicLedMode MicLedMode { get; set; } = MicLedMode.Off;
         [XmlAttribute] public string MicLedFollowDeviceId { get; set; } = string.Empty;
         [XmlAttribute] public PlayerLedMode PlayerLedMode { get; set; } = PlayerLedMode.Off;

@@ -729,6 +729,9 @@ namespace PadForge.Common.Input
                     {
                         s.BtHandle = h;
                         s.Tx = tx;
+                        // Pre-create the encoder so the stream's first frame
+                        // doesn't pay ~15 ms of Concentus construction.
+                        s.OpusEncoder ??= CreateBtOpusEncoder();
                         Diag($"[SINK] BT stream open slot={s.Slot} dev={s.DeviceGuid.ToString().Substring(0, 8)}");
                         return;
                     }
@@ -970,6 +973,7 @@ namespace PadForge.Common.Input
         {
             NativeMethods.timeBeginPeriod(1);
             IntPtr hrTimer = NativeMethods.CreateHighResTimer();
+            Diag($"[BT] pacing timer: {(hrTimer != IntPtr.Zero ? "high-res waitable" : "Thread.Sleep fallback")}");
             try
             {
                 // Each report carries one 10 ms Opus frame (480 samples of
@@ -1258,7 +1262,11 @@ namespace PadForge.Common.Input
             // Win11 power throttling for background processes). Same primitive
             // the reference haptic timer threads use.
             private const uint CREATE_WAITABLE_TIMER_HIGH_RESOLUTION = 0x2;
-            private const uint TIMER_ALL_ACCESS = 0x1F0003;
+            // TIMER_MODIFY_STATE | SYNCHRONIZE — TIMER_ALL_ACCESS gets
+            // rejected together with the high-resolution flag on some builds
+            // (the field telemetry showed the fallback Sleep quantum, meaning
+            // creation was failing).
+            private const uint TIMER_ACCESS = 0x0002 | 0x00100000;
             [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
             private static extern IntPtr CreateWaitableTimerExW(IntPtr attrs, string name, uint flags, uint access);
             [DllImport("kernel32.dll", SetLastError = true)]
@@ -1267,7 +1275,12 @@ namespace PadForge.Common.Input
             /// <summary>A high-resolution timer, or IntPtr.Zero if unavailable
             /// (caller falls back to Thread.Sleep).</summary>
             public static IntPtr CreateHighResTimer()
-                => CreateWaitableTimerExW(IntPtr.Zero, null, CREATE_WAITABLE_TIMER_HIGH_RESOLUTION, TIMER_ALL_ACCESS);
+            {
+                IntPtr t = CreateWaitableTimerExW(IntPtr.Zero, null, CREATE_WAITABLE_TIMER_HIGH_RESOLUTION, TIMER_ACCESS);
+                if (t == IntPtr.Zero) // pre-1803 or flag rejected: plain timer beats the Sleep quantum
+                    t = CreateWaitableTimerExW(IntPtr.Zero, null, 0, TIMER_ACCESS);
+                return t;
+            }
 
             /// <summary>Wait <paramref name="ms"/> with sub-ms accuracy.</summary>
             public static void HighResWait(IntPtr timer, double ms)

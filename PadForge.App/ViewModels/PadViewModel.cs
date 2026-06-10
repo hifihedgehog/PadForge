@@ -2962,15 +2962,25 @@ namespace PadForge.ViewModels
         // ═══════════════════════════════════════════════
 
         private string _soundOutputDeviceId = "";
+        private bool _refreshingSoundDevices;
         /// <summary>Render-endpoint ID this pad's macro sounds play through.
-        /// Empty = system default. A USB DualSense exposes its speaker as a
-        /// normal endpoint ("Wireless Controller"), so picking it gives
-        /// from-the-controller audio with no driver work.</summary>
+        /// Empty = system default. Picking the controller's own endpoint
+        /// ("Wireless Controller") plays from the controller speaker — the
+        /// DS5 dispatcher asserts the firmware speaker path for it.</summary>
         public string SoundOutputDeviceId
         {
             get => _soundOutputDeviceId;
             set
             {
+                // GUARD: while RefreshSoundOutputDevices is rebuilding the
+                // ItemsSource, the ComboBox momentarily can't resolve its
+                // SelectedValue and the TwoWay binding writes NULL back —
+                // which would silently reset the user's saved device to
+                // "system default" on every tab entry (the same WPF hazard
+                // the Aim Engage picker documents). Ignore writes during the
+                // rebuild; the post-rebuild OnPropertyChanged re-resolves the
+                // ComboBox from the preserved value.
+                if (_refreshingSoundDevices) return;
                 if (SetProperty(ref _soundOutputDeviceId, value ?? ""))
                 {
                     PadForge.Common.Input.SoundMacroService.SetSlotDevice(PadIndex, _soundOutputDeviceId);
@@ -3010,6 +3020,22 @@ namespace PadForge.ViewModels
         public void RefreshSoundOutputDevices()
         {
             var devices = PadForge.Common.Input.SoundMacroService.GetOutputDevices();
+            _refreshingSoundDevices = true;
+            try
+            {
+                RefreshSoundOutputDevicesCore(devices);
+            }
+            finally
+            {
+                _refreshingSoundDevices = false;
+            }
+            // Re-resolve the ComboBox selection from the preserved value now
+            // that the rebuilt list is in place.
+            OnPropertyChanged(nameof(SoundOutputDeviceId));
+        }
+
+        private void RefreshSoundOutputDevicesCore(System.Collections.Generic.List<(string Id, string Name)> devices)
+        {
             SoundOutputDevices.Clear();
             SoundOutputDevices.Add(new GyroLabeledOption(
                 () => Strings.Instance.Pad_Audio_DefaultDevice, ""));
@@ -3027,7 +3053,6 @@ namespace PadForge.ViewModels
                 SoundOutputDevices.Add(new GyroLabeledOption(
                     () => string.Format(Strings.Instance.Pad_Audio_DisconnectedDevice_Format, staleId), staleId));
             }
-            OnPropertyChanged(nameof(SoundOutputDeviceId));
         }
 
         /// <summary>This pad's macros that play a sound — the Audio tab's

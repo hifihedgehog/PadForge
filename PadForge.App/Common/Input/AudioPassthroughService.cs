@@ -117,6 +117,13 @@ namespace PadForge.Common.Input
             /// (created and used only on the BT thread).</summary>
             public IOpusEncoder OpusEncoder;
 
+            // BT stream clock (BT thread only): frames owed are computed
+            // from wall time so a late wake bursts the deficit instead of
+            // leaving a hole in the pad's jitter buffer.
+            public bool BtStreaming;
+            public long BtStreamT0;
+            public long BtFramesSent;
+
             // USB
             public IWavePlayer Player;
 
@@ -600,7 +607,8 @@ namespace PadForge.Common.Input
             s.Player = null;
             s.BtHandle = new IntPtr(-1);
             s.BtEvent = IntPtr.Zero;
-            s.OpusEncoder = null; // rebuilt sinks start with a fresh encoder
+            s.OpusEncoder = null;   // rebuilt sinks start with a fresh encoder
+            s.BtStreaming = false;  // and a fresh stream clock
             return carrier;
         }
 
@@ -886,28 +894,26 @@ namespace PadForge.Common.Input
             NativeMethods.timeBeginPeriod(1);
             try
             {
-                // One report per 10 ms Opus frame: pull 480 stereo float
-                // frames from the sink's 48 kHz source, encode at hard CBR
-                // (every frame exactly 200 bytes), wrap in report 0x35 per
-                // the awalol HeadsetPlayMusic recipe.
+                // Each report carries one 10 ms Opus frame (480 samples of
+                // 48 kHz). Frames owed are computed from wall time per sink:
+                // a late wake (Sleep overshoot, a stalled HID write, capture
+                // burst) sends the whole deficit as a back-to-back burst, so
+                // the pad's jitter buffer is refilled instead of running dry —
+                // one-off late frames were the audible dropouts. The stream
+                // starts PrimeFrames ahead, giving the pad a standing cushion
+                // (the PS5's own doubled packets prove the firmware buffers
+                // multi-frame deliveries). Capture-clock drift is corrected in
+                // whole-frame nudges: backlog above target consumes one extra
+                // frame (sent as real audio, no artifact), near-underrun skips
+                // one (the pad plays from its cushion).
                 var pull = new float[BtFrameSamples * 2];
                 var opus = new byte[BtOpusBytes + 16];
                 var report = new byte[BtReportSize];
-                // Each report carries one 10 ms Opus frame (480 samples of
-                // 48 kHz). A fixed wall-clock cadence drifts against the
-                // capture clock: Thread.Sleep overshoots, so we'd consume the
-                // mirror ring slightly slower than it fills, the backlog grows
-                // until a hard resync drops audio (periodic cutout), or shrinks
-                // until it underruns (also a cutout). Instead, steer the send
-                // period with a slow feedback loop that holds the mirror's lag
-                // at BtTargetLag — a few tenths of a millisecond of period
-                // adjustment, inaudible, no dropped frames. Pure 10 ms only
-                // when no mirror is active (macro sounds are pull-generated
-                // on demand, no producer clock to track).
-                const double BasePeriodMs = 10.0;
-                const int BtTargetLag = 2160;        // 45 ms cushion @ 48 kHz
-                long periodTicks = (long)(BasePeriodMs * TimeSpan.TicksPerMillisecond);
-                long next = DateTime.UtcNow.Ticks + periodTicks;
+                const long FrameTicks = 10 * TimeSpan.TicksPerMillisecond;
+                const int PrimeFrames = 3;            // 30 ms pad-side cushion
+                const int MaxBurst = 6;
+                const int BtTargetLag = 2160;         // 45 ms ring cushion @ 48 kHz
+                const int LagDeadband = 720;          // ±15 ms before nudging
                 var me = Thread.CurrentThread;
 
                 while (_running && ReferenceEquals(_btThread, me))
@@ -916,82 +922,106 @@ namespace PadForge.Common.Input
                     lock (_lock)
                         btSinks = _sinks.Values.Where(s => s.IsBt && !s.TransportFailed && s.BtHandle != new IntPtr(-1)).ToList();
 
-                    int steerLag = -1;
                     foreach (var s in btSinks)
                     {
-                        // Always pull (keeps the ring cursor at the live edge
-                        // and the activity stamp fresh) but pause encode+send
-                        // after 2 s of silence so an idle pad's radio and our
-                        // CPU rest; the next audible sample resumes within a
-                        // frame (one cold-start frame from the encoder).
-                        s.Source.Read(pull, 0, pull.Length);
-                        if (s.Source.LoopbackLagFrames >= 0 && steerLag < 0)
-                            steerLag = s.Source.LoopbackLagFrames; // first mirror sink drives pacing
-                        if (Environment.TickCount64 - s.LastAudibleTicks > 2000)
-                            continue;
-
-                        s.OpusEncoder ??= CreateBtOpusEncoder();
-                        int n;
-                        try { n = s.OpusEncoder.Encode(pull.AsSpan(), BtFrameSamples, opus.AsSpan(), BtOpusBytes); }
-                        catch { s.OpusEncoder = null; continue; }
-
-                        Array.Clear(report, 0, report.Length);
-                        report[0] = 0x35;
-                        report[1] = (byte)((_btSeq & 0x0F) << 4);
-                        _btSeq = (_btSeq + 1) & 0x0F;
-                        // packet 0x11: session header (SAxense default — no
-                        // handshake needed)
-                        report[2] = 0x11 | 0x80;
-                        report[3] = 7;
-                        report[4] = 0xFE;
-                        report[9] = 0xFF;
-                        report[10] = _btPktCounter++;
-                        // packet 0x13: speaker audio lane (0x16 = headset
-                        // jack), one Opus frame filling the slot
-                        report[11] = 0x13 | 0x80;
-                        report[12] = (byte)BtOpusBytes;
-                        Array.Copy(opus, 0, report, 13, Math.Min(n, BtOpusBytes));
-                        uint crc = Crc32(report, BtReportSize - 4);
-                        report[BtReportSize - 4] = (byte)(crc & 0xFF);
-                        report[BtReportSize - 3] = (byte)((crc >> 8) & 0xFF);
-                        report[BtReportSize - 2] = (byte)((crc >> 16) & 0xFF);
-                        report[BtReportSize - 1] = (byte)(crc >> 24);
-
-                        if (!NativeMethods.WriteHid(s.BtHandle, s.BtEvent, report))
+                        // Idle gate: after 2 s of silence stop the stream so
+                        // the pad's radio and our CPU rest. One probe read per
+                        // wake keeps the ring cursor near live and the
+                        // activity stamp fresh while idle.
+                        if (!s.BtStreaming)
                         {
-                            // No transport I/O here — mark and let the worker
-                            // detach/rebuild on its 5 s cadence. (Signalling
-                            // immediately caused a 94 Hz fail->reopen loop
-                            // while a pad was mid-disconnect.)
-                            Diag($"[BT-WRITE-FAIL] slot={s.Slot}; deferring to worker");
-                            s.TransportFailed = true;
+                            s.Source.Read(pull, 0, pull.Length);
+                            if (Environment.TickCount64 - s.LastAudibleTicks > 2000)
+                                continue;
+                            s.BtStreaming = true;
+                            s.BtStreamT0 = DateTime.UtcNow.Ticks;
+                            s.BtFramesSent = 0;
+                            SendBtFrame(s, pull, opus, report); // the probe read = first frame
+                            continue;
+                        }
+
+                        if (Environment.TickCount64 - s.LastAudibleTicks > 2000)
+                        {
+                            s.BtStreaming = false;
+                            continue;
+                        }
+
+                        long owed = (DateTime.UtcNow.Ticks - s.BtStreamT0) / FrameTicks
+                                    + PrimeFrames - s.BtFramesSent;
+
+                        if (owed > 12)
+                        {
+                            // Real stall (suspend, long preemption): drop the
+                            // deficit and re-prime instead of flooding the pad
+                            // into a permanent latency balloon.
+                            s.BtStreamT0 = DateTime.UtcNow.Ticks;
+                            s.BtFramesSent = 0;
+                            owed = PrimeFrames;
+                        }
+
+                        // Whole-frame drift nudge against the capture clock.
+                        int lag = s.Source.LoopbackLagFrames;
+                        if (lag >= 0)
+                        {
+                            if (lag > BtTargetLag + LagDeadband) owed += 1;
+                            else if (lag < BtTargetLag - LagDeadband && owed > 0) owed -= 1;
+                        }
+
+                        for (long i = Math.Min(owed, MaxBurst); i > 0 && !s.TransportFailed; i--)
+                        {
+                            s.Source.Read(pull, 0, pull.Length);
+                            SendBtFrame(s, pull, opus, report);
                         }
                     }
 
-                    // Feedback: hold the mirror lag at BtTargetLag. A positive
-                    // error (backlog) shortens the period to drain it; a
-                    // negative error (near underrun) lengthens it. Gain
-                    // 0.01 ms per ms-of-error, clamped to ±0.5 ms (≤5 % cadence
-                    // shift — transient, re-clocked frame by frame by the pad,
-                    // so no audible pitch change). No steer when the mirror is
-                    // off.
-                    double periodMs = BasePeriodMs;
-                    if (steerLag >= 0)
-                    {
-                        double errMs = (steerLag - BtTargetLag) / 48.0;
-                        periodMs = BasePeriodMs - Math.Clamp(0.01 * errMs, -0.5, 0.5);
-                    }
-                    long now = DateTime.UtcNow.Ticks;
-                    next += (long)(periodMs * TimeSpan.TicksPerMillisecond);
-                    int sleepMs = (int)Math.Max(0, (next - now) / TimeSpan.TicksPerMillisecond);
-                    if (sleepMs > 0) Thread.Sleep(sleepMs);
-                    if (now > next + 10 * periodTicks) next = now + periodTicks; // resync after stall
+                    Thread.Sleep(5); // fine-grained wake keeps bursts small
                 }
             }
             finally
             {
                 NativeMethods.timeEndPeriod(1);
             }
+        }
+
+        /// <summary>Encode one 10 ms frame from <paramref name="pull"/> and
+        /// send it as a 0x35 report on the sink's 0x13 speaker lane.</summary>
+        private static void SendBtFrame(Sink s, float[] pull, byte[] opus, byte[] report)
+        {
+            s.OpusEncoder ??= CreateBtOpusEncoder();
+            int n;
+            try { n = s.OpusEncoder.Encode(pull.AsSpan(), BtFrameSamples, opus.AsSpan(), BtOpusBytes); }
+            catch { s.OpusEncoder = null; return; }
+
+            Array.Clear(report, 0, report.Length);
+            report[0] = 0x35;
+            report[1] = (byte)((_btSeq & 0x0F) << 4);
+            _btSeq = (_btSeq + 1) & 0x0F;
+            // packet 0x11: session header (SAxense default — no handshake)
+            report[2] = 0x11 | 0x80;
+            report[3] = 7;
+            report[4] = 0xFE;
+            report[9] = 0xFF;
+            report[10] = _btPktCounter++;
+            // packet 0x13: speaker audio lane (0x16 = headset jack), one
+            // Opus frame filling the slot
+            report[11] = 0x13 | 0x80;
+            report[12] = (byte)BtOpusBytes;
+            Array.Copy(opus, 0, report, 13, Math.Min(n, BtOpusBytes));
+            uint crc = Crc32(report, BtReportSize - 4);
+            report[BtReportSize - 4] = (byte)(crc & 0xFF);
+            report[BtReportSize - 3] = (byte)((crc >> 8) & 0xFF);
+            report[BtReportSize - 2] = (byte)((crc >> 16) & 0xFF);
+            report[BtReportSize - 1] = (byte)(crc >> 24);
+
+            if (!NativeMethods.WriteHid(s.BtHandle, s.BtEvent, report))
+            {
+                // No transport I/O here — mark and let the worker
+                // detach/rebuild on its 5 s cadence.
+                Diag($"[BT-WRITE-FAIL] slot={s.Slot}; deferring to worker");
+                s.TransportFailed = true;
+                return;
+            }
+            s.BtFramesSent++;
         }
 
         /// <summary>48 kHz stereo, 10 ms frames, hard CBR at 160 kbps so

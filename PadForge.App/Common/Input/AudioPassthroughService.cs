@@ -910,18 +910,33 @@ namespace PadForge.Common.Input
                 var opus = new byte[BtOpusBytes + 16];
                 var report = new byte[BtReportSize];
                 const long FrameTicks = 10 * TimeSpan.TicksPerMillisecond;
-                const int PrimeFrames = 3;            // 30 ms pad-side cushion
-                const int MaxBurst = 6;
+                const int PrimeFrames = 6;            // 60 ms pad-side cushion (BT stalls 50-200 ms under WiFi coexistence)
+                const int MaxBurst = 8;
                 const int BtTargetLag = 2160;         // 45 ms ring cushion @ 48 kHz
                 const int LagDeadband = 720;          // ±15 ms before nudging
                 var me = Thread.CurrentThread;
 
+                // Stream telemetry, one diag line per ~5 s while streaming:
+                // worst wake gap, worst single write, biggest burst, lag
+                // span, re-primes, idle-gate transitions. Temporary, for
+                // dropout hunting.
+                long statWakeMax = 0, statWriteMax = 0, statBurstMax = 0;
+                int statLagMin = int.MaxValue, statLagMax = int.MinValue;
+                int statReprimes = 0, statGateFlips = 0;
+                long statWindowStart = Environment.TickCount64;
+                long lastWake = Environment.TickCount64;
+
                 while (_running && ReferenceEquals(_btThread, me))
                 {
+                    long wakeNow = Environment.TickCount64;
+                    statWakeMax = Math.Max(statWakeMax, wakeNow - lastWake);
+                    lastWake = wakeNow;
+
                     List<Sink> btSinks;
                     lock (_lock)
                         btSinks = _sinks.Values.Where(s => s.IsBt && !s.TransportFailed && s.BtHandle != new IntPtr(-1)).ToList();
 
+                    bool anyStreaming = false;
                     foreach (var s in btSinks)
                     {
                         // Idle gate: after 2 s of silence stop the stream so
@@ -936,20 +951,23 @@ namespace PadForge.Common.Input
                             s.BtStreaming = true;
                             s.BtStreamT0 = DateTime.UtcNow.Ticks;
                             s.BtFramesSent = 0;
+                            statGateFlips++;
                             SendBtFrame(s, pull, opus, report); // the probe read = first frame
                             continue;
                         }
+                        anyStreaming = true;
 
                         if (Environment.TickCount64 - s.LastAudibleTicks > 2000)
                         {
                             s.BtStreaming = false;
+                            statGateFlips++;
                             continue;
                         }
 
                         long owed = (DateTime.UtcNow.Ticks - s.BtStreamT0) / FrameTicks
                                     + PrimeFrames - s.BtFramesSent;
 
-                        if (owed > 12)
+                        if (owed > PrimeFrames + 8)
                         {
                             // Real stall (suspend, long preemption): drop the
                             // deficit and re-prime instead of flooding the pad
@@ -957,21 +975,39 @@ namespace PadForge.Common.Input
                             s.BtStreamT0 = DateTime.UtcNow.Ticks;
                             s.BtFramesSent = 0;
                             owed = PrimeFrames;
+                            statReprimes++;
                         }
 
                         // Whole-frame drift nudge against the capture clock.
                         int lag = s.Source.LoopbackLagFrames;
                         if (lag >= 0)
                         {
+                            statLagMin = Math.Min(statLagMin, lag);
+                            statLagMax = Math.Max(statLagMax, lag);
                             if (lag > BtTargetLag + LagDeadband) owed += 1;
                             else if (lag < BtTargetLag - LagDeadband && owed > 0) owed -= 1;
                         }
 
-                        for (long i = Math.Min(owed, MaxBurst); i > 0 && !s.TransportFailed; i--)
+                        long burst = Math.Min(owed, MaxBurst);
+                        statBurstMax = Math.Max(statBurstMax, burst);
+                        for (long i = burst; i > 0 && !s.TransportFailed; i--)
                         {
                             s.Source.Read(pull, 0, pull.Length);
+                            long w0 = Environment.TickCount64;
                             SendBtFrame(s, pull, opus, report);
+                            statWriteMax = Math.Max(statWriteMax, Environment.TickCount64 - w0);
                         }
+                    }
+
+                    if (anyStreaming && wakeNow - statWindowStart >= 5000)
+                    {
+                        Diag($"[BT-STAT] wakeMax={statWakeMax}ms writeMax={statWriteMax}ms burstMax={statBurstMax} " +
+                             $"lag={(statLagMin == int.MaxValue ? -1 : statLagMin / 48)}..{(statLagMax == int.MinValue ? -1 : statLagMax / 48)}ms " +
+                             $"reprimes={statReprimes} gateFlips={statGateFlips}");
+                        statWakeMax = statWriteMax = statBurstMax = 0;
+                        statLagMin = int.MaxValue; statLagMax = int.MinValue;
+                        statReprimes = statGateFlips = 0;
+                        statWindowStart = wakeNow;
                     }
 
                     Thread.Sleep(5); // fine-grained wake keeps bursts small

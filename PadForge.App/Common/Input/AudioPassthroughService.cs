@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using Concentus;
+using Concentus.Enums;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
@@ -28,12 +30,16 @@ namespace PadForge.Common.Input
     /// (DualSense haptic actuators) zeroed.
     /// (<c>PlaybackDualsenseDataCallback</c> / <c>PlaybackDualshock4DataCallback</c>,
     /// <c>FindDeviceByContainerIdWindows</c>.)</item>
-    /// <item><b>Bluetooth</b> — no Windows endpoint exists; audio is sent in
-    /// Sony BT HID frames: report 0x32 (142 bytes) carrying a 0x11 config
-    /// packet and a 0x12 packet with 64 unsigned-8 samples at 3 kHz, CRC32
-    /// tail, one report every ~10.67 ms.
-    /// (<c>initHapticReport</c> / <c>HapticTimerThread</c>, upstream credit
-    /// egormanga/SAxense.)</item>
+    /// <item><b>Bluetooth</b> — no Windows endpoint exists; audio is sent to
+    /// the firmware's speaker stream in Sony BT HID frames: report 0x35
+    /// (334 bytes) carrying a 0x11 session header packet and a 0x13 packet
+    /// (0x16 would be the headset jack) whose payload is one Opus frame —
+    /// 48 kHz stereo, 10 ms, hard CBR 160 kbps so every frame is exactly
+    /// 200 bytes — CRC32 tail, one report every ~10.67 ms. Research credit:
+    /// egormanga's SAxense (transport/packet grammar,
+    /// https://apps.sdore.me/SAxense), u/Idkiamaguy645 (combined notes +
+    /// testing), and awalol's dualsense-bt-haptics HeadsetPlayMusic tool
+    /// (the speaker recipe).</item>
     /// </list>
     ///
     /// <para>The DS5 dispatcher asserts the firmware speaker output path +
@@ -106,6 +112,10 @@ namespace PadForge.Common.Input
             /// worker detaches and rebuilds/tears down. Streaming threads
             /// never do transport I/O themselves.</summary>
             public volatile bool TransportFailed;
+
+            /// <summary>Per-sink Opus encoder for the BT speaker stream
+            /// (created and used only on the BT thread).</summary>
+            public IOpusEncoder OpusEncoder;
 
             // USB
             public IWavePlayer Player;
@@ -576,6 +586,7 @@ namespace PadForge.Common.Input
             s.Player = null;
             s.BtHandle = new IntPtr(-1);
             s.BtEvent = IntPtr.Zero;
+            s.OpusEncoder = null; // rebuilt sinks start with a fresh encoder
             return carrier;
         }
 
@@ -824,20 +835,11 @@ namespace PadForge.Common.Input
         //  BT audio frame stream (DSY-v2 HapticTimerThread port)
         // ─────────────────────────────────────────────
 
-        private const int BtSampleRate = 3000;
-        private const int BtSampleSize = 64;       // sample bytes per report
-        private const int BtReportSize = 142;      // report 0x32 wire size
-
-        /// <summary>Makeup gain on the BT sample path. The firmware's BT
-        /// audio pipeline plays notably quieter than the USB DAC path at the
-        /// same speaker volume + pre-gain; the reference compensates the
-        /// same way (DSY-v2's HapticsIntensity multiplies the BT samples,
-        /// UI range 0..5, hard clamp — audioPassthrough.cpp
-        /// HapticTimerThread). Peaks clip; on a 3 kHz 8-bit stream through
-        /// the small speaker that trade reads as loudness, not distortion.</summary>
-        private const float BtMakeupGain = 2.5f;
-
-        private static byte _btCounter;
+        private const int BtFrameSamples = 480;    // 10 ms @ 48 kHz, per channel
+        private const int BtOpusBytes = 200;       // hard-CBR frame size (160 kbps)
+        private const int BtReportSize = 334;      // report 0x35 wire size
+        private static byte _btPktCounter;         // 0x11 header rolling counter
+        private static int _btSeq;                 // report seq tag (byte 1 high nibble)
 
         private static void EnsureThreads_NoLock()
         {
@@ -870,11 +872,12 @@ namespace PadForge.Common.Input
             NativeMethods.timeBeginPeriod(1);
             try
             {
-                // One report carries BtSampleSize bytes = 32 stereo u8 frames
-                // at 3 kHz ≈ 10.67 ms; pull the matching 48 kHz window
-                // (512 frames) from each BT sink's source and decimate 16:1.
-                const int frames48k = (BtSampleSize / 2) * (Rate / BtSampleRate);
-                var pull = new float[frames48k * 2];
+                // One report per 10 ms Opus frame: pull 480 stereo float
+                // frames from the sink's 48 kHz source, encode at hard CBR
+                // (every frame exactly 200 bytes), wrap in report 0x35 per
+                // the awalol HeadsetPlayMusic recipe.
+                var pull = new float[BtFrameSamples * 2];
+                var opus = new byte[BtOpusBytes + 16];
                 var report = new byte[BtReportSize];
                 long periodTicks = (long)(10.6667 * TimeSpan.TicksPerMillisecond);
                 long next = DateTime.UtcNow.Ticks + periodTicks;
@@ -886,49 +889,38 @@ namespace PadForge.Common.Input
                     lock (_lock)
                         btSinks = _sinks.Values.Where(s => s.IsBt && !s.TransportFailed && s.BtHandle != new IntPtr(-1)).ToList();
 
-                    _btCounter++; // once per tick, shared by all pads (reference g_ii)
                     foreach (var s in btSinks)
                     {
                         // Always pull (keeps the ring cursor at the live edge
-                        // and the activity stamp fresh) but pause sends after
-                        // 2 s of silence so an idle pad's radio can rest; the
-                        // next audible sample resumes within one frame.
+                        // and the activity stamp fresh) but pause encode+send
+                        // after 2 s of silence so an idle pad's radio and our
+                        // CPU rest; the next audible sample resumes within a
+                        // frame (one cold-start frame from the encoder).
                         s.Source.Read(pull, 0, pull.Length);
                         if (Environment.TickCount64 - s.LastAudibleTicks > 2000)
                             continue;
 
-                        // Build report 0x32 exactly per the reference
-                        // (initHapticReport + HapticTimerThread):
+                        s.OpusEncoder ??= CreateBtOpusEncoder();
+                        int n;
+                        try { n = s.OpusEncoder.Encode(pull.AsSpan(), BtFrameSamples, opus.AsSpan(), BtOpusBytes); }
+                        catch { s.OpusEncoder = null; continue; }
+
                         Array.Clear(report, 0, report.Length);
-                        report[0] = 0x32;
-                        // [1] tag/seq stays 0 (reference never sets it)
-                        // packet 0x11: config header
+                        report[0] = 0x35;
+                        report[1] = (byte)((_btSeq & 0x0F) << 4);
+                        _btSeq = (_btSeq + 1) & 0x0F;
+                        // packet 0x11: session header (SAxense default — no
+                        // handshake needed)
                         report[2] = 0x11 | 0x80;
                         report[3] = 7;
                         report[4] = 0xFE;
                         report[9] = 0xFF;
-                        report[10] = _btCounter;     // rolling counter (g_ii)
-                        // packet 0x12: 64 audio sample bytes
-                        report[11] = 0x12 | 0x80;
-                        report[12] = BtSampleSize;
-                        const int stride = Rate / BtSampleRate; // 16:1
-                        for (int i = 0; i < BtSampleSize; i++)
-                        {
-                            // i alternates L/R like the reference's interleaved
-                            // u8 buffer. Box-average each 16-frame window: the
-                            // reference's 3 kHz capture goes through miniaudio's
-                            // resampler, and bare stride-picking aliases all
-                            // content above 1.5 kHz into noise. Full scale:
-                            // master volume lives in the firmware speaker
-                            // volume byte, not the samples.
-                            int frame = (i / 2) * stride;
-                            int ch = i & 1;
-                            float acc = 0f;
-                            for (int k = 0; k < stride; k++)
-                                acc += pull[(frame + k) * 2 + ch];
-                            float v = Math.Clamp((acc / stride) * BtMakeupGain, -1f, 1f);
-                            report[13 + i] = unchecked((byte)(sbyte)(v * 127f));
-                        }
+                        report[10] = _btPktCounter++;
+                        // packet 0x13: speaker audio lane (0x16 = headset
+                        // jack), one Opus frame filling the slot
+                        report[11] = 0x13 | 0x80;
+                        report[12] = (byte)BtOpusBytes;
+                        Array.Copy(opus, 0, report, 13, Math.Min(n, BtOpusBytes));
                         uint crc = Crc32(report, BtReportSize - 4);
                         report[BtReportSize - 4] = (byte)(crc & 0xFF);
                         report[BtReportSize - 3] = (byte)((crc >> 8) & 0xFF);
@@ -957,6 +949,17 @@ namespace PadForge.Common.Input
             {
                 NativeMethods.timeEndPeriod(1);
             }
+        }
+
+        /// <summary>48 kHz stereo, 10 ms frames, hard CBR at 160 kbps so
+        /// every frame is exactly <see cref="BtOpusBytes"/> bytes — the
+        /// firmware expects the frame to fill the 0x13 packet slot.</summary>
+        private static IOpusEncoder CreateBtOpusEncoder()
+        {
+            var enc = OpusCodecFactory.CreateEncoder(Rate, 2, OpusApplication.OPUS_APPLICATION_AUDIO);
+            enc.Bitrate = BtOpusBytes * 8 * 100;
+            enc.UseVBR = false;
+            return enc;
         }
 
         /// <summary>Reflected CRC32 over the first <paramref name="length"/> bytes,

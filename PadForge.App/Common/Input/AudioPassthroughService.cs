@@ -129,7 +129,84 @@ namespace PadForge.Common.Input
 
             // BT
             public IntPtr BtHandle = new IntPtr(-1);
-            public IntPtr BtEvent = IntPtr.Zero;
+            /// <summary>Fire-and-forget overlapped write pool (created with
+            /// the transport on the worker; used on the BT thread).</summary>
+            public BtWritePool Tx;
+        }
+
+        /// <summary>Non-blocking overlapped HID writes. Each send queues into
+        /// the kernel's HID IRP queue and returns immediately — the field
+        /// telemetry showed single blocking writes taking a full 16 ms under
+        /// link backpressure, stalling the stream loop and starving the ring.
+        /// The kernel queue is the jitter buffer; we never wait on the radio.
+        /// Eight slots ≈ 80 ms in flight; when all are busy the link is
+        /// saturated and the frame is skipped (the stall clamp re-primes).</summary>
+        internal sealed class BtWritePool : IDisposable
+        {
+            private const int Slots = 8;
+            private const int OverlappedSize = 32; // x64 OVERLAPPED
+            private readonly byte[][] _buf = new byte[Slots][];
+            private readonly GCHandle[] _pin = new GCHandle[Slots];
+            private readonly IntPtr[] _ev = new IntPtr[Slots];
+            private readonly IntPtr[] _ol = new IntPtr[Slots];
+            private int _next;
+
+            public BtWritePool(int reportSize)
+            {
+                for (int i = 0; i < Slots; i++)
+                {
+                    _buf[i] = new byte[reportSize];
+                    _pin[i] = GCHandle.Alloc(_buf[i], GCHandleType.Pinned);
+                    _ev[i] = NativeMethods.CreateEventW(IntPtr.Zero, true, true, null); // signaled = free
+                    _ol[i] = Marshal.AllocHGlobal(OverlappedSize);
+                }
+            }
+
+            /// <summary>Queues one report. Returns false with
+            /// <paramref name="hardFail"/> false when the pool is saturated
+            /// (skip the frame), true on an I/O error (tear down).</summary>
+            public bool TrySend(IntPtr handle, byte[] report, out bool hardFail)
+            {
+                hardFail = false;
+                int s = _next;
+                if (NativeMethods.WaitForSingleObject(_ev[s], 0) != 0)
+                    return false; // oldest write still in flight — saturated
+
+                Buffer.BlockCopy(report, 0, _buf[s], 0, _buf[s].Length);
+                NativeMethods.ResetEvent(_ev[s]);
+                for (int o = 0; o < OverlappedSize - 8; o += 8)
+                    Marshal.WriteInt64(_ol[s], o, 0);
+                Marshal.WriteIntPtr(_ol[s], 24, _ev[s]);
+
+                if (!NativeMethods.WriteFileRaw(handle, _pin[s].AddrOfPinnedObject(),
+                        (uint)_buf[s].Length, IntPtr.Zero, _ol[s]))
+                {
+                    if (Marshal.GetLastWin32Error() != 997 /*ERROR_IO_PENDING*/)
+                    {
+                        NativeMethods.SetEvent(_ev[s]); // slot stays free
+                        hardFail = true;
+                        return false;
+                    }
+                }
+                _next = (s + 1) % Slots;
+                return true;
+            }
+
+            /// <summary>Caller must CancelIo the handle first.</summary>
+            public void Dispose()
+            {
+                for (int i = 0; i < Slots; i++)
+                {
+                    if (_ev[i] != IntPtr.Zero)
+                    {
+                        NativeMethods.WaitForSingleObject(_ev[i], 100);
+                        NativeMethods.CloseHandle(_ev[i]);
+                        _ev[i] = IntPtr.Zero;
+                    }
+                    if (_ol[i] != IntPtr.Zero) { Marshal.FreeHGlobal(_ol[i]); _ol[i] = IntPtr.Zero; }
+                    if (_pin[i].IsAllocated) _pin[i].Free();
+                }
+            }
         }
 
         private static readonly Dictionary<Guid, Sink> _sinks = new();
@@ -602,11 +679,11 @@ namespace PadForge.Common.Input
                 DeviceGuid = s.DeviceGuid,
                 Player = s.Player,
                 BtHandle = s.BtHandle,
-                BtEvent = s.BtEvent,
+                Tx = s.Tx,
             };
             s.Player = null;
             s.BtHandle = new IntPtr(-1);
-            s.BtEvent = IntPtr.Zero;
+            s.Tx = null;
             s.OpusEncoder = null;   // rebuilt sinks start with a fresh encoder
             s.BtStreaming = false;  // and a fresh stream clock
             return carrier;
@@ -619,13 +696,13 @@ namespace PadForge.Common.Input
             s.Player = null;
             if (s.BtHandle != new IntPtr(-1))
             {
+                // In-flight overlapped writes must be cancelled and their
+                // pool drained before the handle and buffers go away.
+                NativeMethods.CancelIo(s.BtHandle);
+                s.Tx?.Dispose();
+                s.Tx = null;
                 NativeMethods.CloseHandle(s.BtHandle);
                 s.BtHandle = new IntPtr(-1);
-            }
-            if (s.BtEvent != IntPtr.Zero)
-            {
-                NativeMethods.CloseHandle(s.BtEvent);
-                s.BtEvent = IntPtr.Zero;
             }
         }
 
@@ -637,27 +714,27 @@ namespace PadForge.Common.Input
         {
             if (s.IsBt)
             {
-                // Persistent raw HID handle for the 94 Hz audio frame stream.
+                // Persistent raw HID handle for the ~100 Hz audio frame stream.
                 IntPtr h = NativeMethods.OpenHid(s.HidPath);
                 if (h == new IntPtr(-1))
                 {
                     Diag($"[SINK-FAIL] BT open failed slot={s.Slot} path={s.HidPath}");
                     return;
                 }
-                IntPtr ev = NativeMethods.CreateEventW(IntPtr.Zero, true, false, null);
+                var tx = new BtWritePool(BtReportSize);
                 lock (_lock)
                 {
                     if (_running && _sinks.TryGetValue(s.DeviceGuid, out var cur)
                         && ReferenceEquals(cur, s) && !SinkAlive(s))
                     {
                         s.BtHandle = h;
-                        s.BtEvent = ev;
+                        s.Tx = tx;
                         Diag($"[SINK] BT stream open slot={s.Slot} dev={s.DeviceGuid.ToString().Substring(0, 8)}");
                         return;
                     }
                 }
                 NativeMethods.CloseHandle(h);
-                if (ev != IntPtr.Zero) NativeMethods.CloseHandle(ev);
+                tx.Dispose();
                 return;
             }
 
@@ -1056,12 +1133,20 @@ namespace PadForge.Common.Input
             report[BtReportSize - 2] = (byte)((crc >> 16) & 0xFF);
             report[BtReportSize - 1] = (byte)(crc >> 24);
 
-            if (!NativeMethods.WriteHid(s.BtHandle, s.BtEvent, report))
+            bool hardFail = true; // no pool == hard failure
+            bool sent = s.Tx != null && s.Tx.TrySend(s.BtHandle, report, out hardFail);
+            if (!sent)
             {
-                // No transport I/O here — mark and let the worker
-                // detach/rebuild on its 5 s cadence.
-                Diag($"[BT-WRITE-FAIL] slot={s.Slot}; deferring to worker");
-                s.TransportFailed = true;
+                if (hardFail)
+                {
+                    // I/O error — mark and let the worker detach/rebuild on
+                    // its 5 s cadence.
+                    Diag($"[BT-WRITE-FAIL] slot={s.Slot}; deferring to worker");
+                    s.TransportFailed = true;
+                }
+                // else: pool saturated (link backpressure) — skip the frame;
+                // owed catch-up resends and the stall clamp re-primes if the
+                // saturation persists.
                 return;
             }
             s.BtFramesSent++;
@@ -1162,6 +1247,11 @@ namespace PadForge.Common.Input
 
             [DllImport("winmm.dll")] public static extern uint timeBeginPeriod(uint ms);
             [DllImport("winmm.dll")] public static extern uint timeEndPeriod(uint ms);
+            [DllImport("kernel32.dll", SetLastError = true)] public static extern bool ResetEvent(IntPtr h);
+            [DllImport("kernel32.dll", SetLastError = true)] public static extern bool SetEvent(IntPtr h);
+            [DllImport("kernel32.dll", SetLastError = true)] public static extern bool CancelIo(IntPtr h);
+            [DllImport("kernel32.dll", SetLastError = true, EntryPoint = "WriteFile")]
+            public static extern bool WriteFileRaw(IntPtr h, IntPtr buf, uint n, IntPtr written, IntPtr overlapped);
 
             // High-resolution waitable timer — true sub-ms waits regardless
             // of the scheduler quantum (timeBeginPeriod is ignored under
@@ -1193,20 +1283,8 @@ namespace PadForge.Common.Input
             [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
             private static extern IntPtr CreateFileW(string path, uint access, uint share, IntPtr sec, uint disp, uint flags, IntPtr template);
 
-            [StructLayout(LayoutKind.Sequential)]
-            private struct OVERLAPPED
-            {
-                public IntPtr Internal, InternalHigh;
-                public uint OffsetLow, OffsetHigh;
-                public IntPtr hEvent;
-            }
-
-            [DllImport("kernel32.dll", SetLastError = true)]
-            private static extern bool WriteFile(IntPtr h, byte[] buf, uint len, out uint written, ref OVERLAPPED o);
-            [DllImport("kernel32.dll", SetLastError = true)]
-            private static extern bool GetOverlappedResult(IntPtr h, ref OVERLAPPED o, out uint written, bool wait);
             [DllImport("kernel32.dll")]
-            private static extern uint WaitForSingleObject(IntPtr h, uint ms);
+            public static extern uint WaitForSingleObject(IntPtr h, uint ms);
 
             public static IntPtr OpenHid(string path)
             {
@@ -1214,19 +1292,6 @@ namespace PadForge.Common.Input
                     0x40000000u | 0x80000000u,        // GENERIC_WRITE | GENERIC_READ
                     0x1u | 0x2u,                      // share read/write
                     IntPtr.Zero, 3u /*OPEN_EXISTING*/, 0x40000000u /*FILE_FLAG_OVERLAPPED*/, IntPtr.Zero);
-            }
-
-            public static bool WriteHid(IntPtr h, IntPtr ev, byte[] report)
-            {
-                var o = new OVERLAPPED { hEvent = ev };
-                if (!WriteFile(h, report, (uint)report.Length, out _, ref o))
-                {
-                    int err = Marshal.GetLastWin32Error();
-                    if (err != 997 /*ERROR_IO_PENDING*/) return false;
-                    if (WaitForSingleObject(ev, 100) != 0) return false;
-                    if (!GetOverlappedResult(h, ref o, out _, false)) return false;
-                }
-                return true;
             }
 
             // ── Container ID from a HID device interface path (duaLib port) ──

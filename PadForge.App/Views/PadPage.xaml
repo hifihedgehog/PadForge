@@ -3013,7 +3013,7 @@
                             <DataTemplate DataType="{x:Type vm:StickConfigItem}">
                                 <Border Style="{StaticResource CardBorder}">
                                 <StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <viewControls:LabeledShapeIcon Shape="Stick" Label="{Binding IconLabel}"
                                                                        Width="18" Height="18"
                                                                        VerticalAlignment="Center" Margin="0,0,8,0"/>
@@ -3379,8 +3379,7 @@
                                             <TextBlock Text="{Binding Pad_Steering_Header, Source={x:Static strings:Strings.Instance}}"
                                                        Style="{StaticResource CardTitle}"/>
                                             <TextBlock Text="{Binding Pad_Steering_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                       TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                                       Style="{StaticResource CardDescription}"/>
 
                                             <!-- Mode -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
@@ -3448,7 +3447,7 @@
                          do them (SyncTabVisibility gates each by capability). ═══ -->
                     <Border x:Name="LockFeedbackCard" Style="{StaticResource CardBorder}" Margin="0,0,0,16">
                         <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                 <!-- Steering wheel flanked by vibration waves: the wheel hits its
                                      lock and you feel the cue. -->
                                 <Viewbox Width="18" Height="18" VerticalAlignment="Center" Margin="0,0,8,0">
@@ -3465,8 +3464,7 @@
                                         ToolTip="{Binding Pad_Steering_Reset_LockFeedback, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
                             <TextBlock Text="{Binding Pad_Steering_LockFeedback_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                       TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                       Style="{StaticResource CardDescription}"/>
                             <!-- Each channel is a checkbox + its own reset (off), so every row
                                  in the card has a reset like the sliders below. Visibility is
                                  gated per row by SyncTabVisibility to the device's capability. -->
@@ -3688,7 +3686,7 @@
                             <DataTemplate DataType="{x:Type vm:TriggerConfigItem}">
                                 <Border Style="{StaticResource CardBorder}">
                                 <StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <viewControls:LabeledShapeIcon
                                             Shape="{Binding IconRightSide, Converter={StaticResource BoolToTriggerShapeKindConverter}}"
                                             Label="{Binding IconLabel}"
@@ -3815,7 +3813,7 @@
                         <!-- Force Feedback / Rumble / Haptics section -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <TextBlock Text="&#xE877;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                        VerticalAlignment="Center" Margin="0,0,8,0"/>
                             <TextBlock Text="{Binding Pad_ForceFeedbackRumble, Source={x:Static strings:Strings.Instance}}"
@@ -3891,7 +3889,7 @@
                         <!-- ── Constant Force section ── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xF0AD;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_ConstantForce_Header, Source={x:Static strings:Strings.Instance}}"
@@ -3983,7 +3981,7 @@
                         <!-- ── Audio Bass Rumble section ── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <TextBlock Text="&#xE767;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                        VerticalAlignment="Center" Margin="0,0,8,0"/>
                             <TextBlock Text="{Binding Settings_AudioRumble, Source={x:Static strings:Strings.Instance}}"
@@ -4083,7 +4081,7 @@
                         <!-- Left Trigger -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <viewControls:LabeledShapeIcon Shape="TriggerLeft" Label="L2"
                                                                    Width="18" Height="18"
                                                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
@@ -4173,7 +4171,7 @@
                         <!-- Right Trigger -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <viewControls:LabeledShapeIcon Shape="TriggerRight" Label="R2"
                                                                    Width="18" Height="18"
                                                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
@@ -4286,7 +4284,7 @@
                              palette belong to InputReactive. -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE790;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Lighting_BaseColor, Source={x:Static strings:Strings.Instance}}"
@@ -5068,7 +5066,7 @@
                              on DS4 slots via SyncTabVisibility. -->
                         <Border x:Name="IndicatorLedsCard" Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xEF31;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Lighting_IndicatorLeds, Source={x:Static strings:Strings.Instance}}"
@@ -5078,7 +5076,7 @@
                                             ToolTip="{Binding Pad_ResetIndicatorLeds, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Pad_Lighting_IndicatorLeds_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                                           Style="{StaticResource CardDescription}" Margin="0,0,0,8"/>
+                                           Style="{StaticResource CardDescription}"/>
 
                                 <!-- Shared brightness — physically writes byte 42
                                      ledBrightness, which the DS5 firmware uses
@@ -5174,7 +5172,7 @@
                              every other adjacent-card gap on the Pad page. -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE72A;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Gyro_Passthrough_Header, Source={x:Static strings:Strings.Instance}}"
@@ -5201,9 +5199,7 @@
                              gyro input. This card never targets or overrides an axis. -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <!-- Header-to-subtitle spacing matches the sibling Gyro Aim
-                                     Engage card (header 0,0,0,4 + subtitle 0,0,0,8). -->
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <Viewbox Width="18" Height="18" VerticalAlignment="Center" Margin="0,0,8,0">
                                         <Canvas Width="24" Height="24">
                                             <Path Stroke="{DynamicResource TextFillColorPrimaryBrush}" StrokeThickness="1.7"
@@ -5218,8 +5214,7 @@
                                             ToolTip="{Binding Pad_MotionSteer_Reset_All, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Pad_MotionSteer_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                           Style="{StaticResource CardDescription}"/>
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <TextBlock Text="{Binding Pad_Steering_MotionInnerDz, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -5252,7 +5247,7 @@
                         <!-- ─── Calibration card ─── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xF272;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Gyro_Calibration_Header, Source={x:Static strings:Strings.Instance}}"
@@ -5307,7 +5302,7 @@
                         <!-- ─── Sensitivity card ─── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE9E9;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Gyro_Sensitivity_Header, Source={x:Static strings:Strings.Instance}}"
@@ -5418,7 +5413,7 @@
                         <!-- ─── Response shaping card ─── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xF1CB;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Gyro_Response_Header, Source={x:Static strings:Strings.Instance}}"
@@ -5524,7 +5519,7 @@
                         <!-- ─── Engage card ─── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Gyro_Engage_Header, Source={x:Static strings:Strings.Instance}}"
@@ -5534,8 +5529,7 @@
                                             ToolTip="{Binding Pad_Gyro_ResetEngage_All_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Pad_Gyro_Engage_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           TextWrapping="Wrap" Margin="0,0,0,8" FontSize="11"/>
+                                           Style="{StaticResource CardDescription}"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Settings_GyroEasyAimThreshold, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Center"
@@ -5664,7 +5658,7 @@
 
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <Viewbox Width="18" Height="18" Stretch="Uniform"
                                              VerticalAlignment="Center" Margin="0,0,8,0">
                                         <Grid Width="512" Height="512">
@@ -5754,7 +5748,7 @@
                         <!-- ── Constant Trigger Force section ── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xF0AD;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_ConstantTriggerForce_Header, Source={x:Static strings:Strings.Instance}}"
@@ -5797,7 +5791,7 @@
                         <!-- ── Audio Bass Trigger Rumble section ── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE767;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_AudioTriggerRumble_Header, Source={x:Static strings:Strings.Instance}}"
@@ -5913,7 +5907,7 @@
                         <!-- ─── Joystick / D-pad output card ─── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <!-- Segoe Fluent Icons F108 (LeftStick) silhouette with
                                          the "L" letter omitted. Path data extracted from
                                          the live font glyph; lives in ControllerIcons.xaml
@@ -5933,8 +5927,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadStick, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Pad_Touchpad_Stick_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                           Style="{StaticResource CardDescription}"/>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <CheckBox Content="{Binding Pad_Touchpad_StickEnabled, Source={x:Static strings:Strings.Instance}}"
@@ -5989,7 +5982,7 @@
                         <!-- ─── Mouse Output card ─── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE962;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Touchpad_Mouse_Header, Source={x:Static strings:Strings.Instance}}"
@@ -5999,8 +5992,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadMouse, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Pad_Touchpad_Mouse_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                           Style="{StaticResource CardDescription}"/>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_Touchpad_MouseSensitivityX, Source={x:Static strings:Strings.Instance}}"
@@ -6042,7 +6034,7 @@
                         <!-- ─── Gesture Detection card ─── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xED10;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Touchpad_Detection_Header, Source={x:Static strings:Strings.Instance}}"
@@ -6090,7 +6082,7 @@
                         <!-- ─── In-box gestures card ─── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xF12B;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Touchpad_InBox_Header, Source={x:Static strings:Strings.Instance}}"
@@ -6253,7 +6245,7 @@
                         <!-- ─── Custom gestures card ─── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xF4A5;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Touchpad_Custom_Header, Source={x:Static strings:Strings.Instance}}"
@@ -6261,8 +6253,7 @@
                                 </StackPanel>
 
                                 <TextBlock Text="{Binding Pad_Touchpad_Custom_Empty, Source={x:Static strings:Strings.Instance}}"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           TextWrapping="Wrap" Margin="0,0,0,8"
+                                           Style="{StaticResource CardDescription}"
                                            Visibility="{Binding HasNoCustomTouchpadGestures, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                 <ItemsControl ItemsSource="{Binding CustomTouchpadGestures}" Margin="0,0,0,8">
@@ -6319,7 +6310,7 @@
 
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <Viewbox Width="18" Height="18" VerticalAlignment="Center" Margin="0,0,8,0">
                                         <Canvas Width="24" Height="24">
                                             <Path Stroke="{DynamicResource TextFillColorPrimaryBrush}" StrokeThickness="1.8"

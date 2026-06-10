@@ -768,7 +768,7 @@ namespace PadForge.Services
             // exists (matches the engine-side fallback so a fresh
             // assignment gets sensible behavior without the user
             // opening the Touchpad tab).
-            // Issue #83 — per-(slot, device) passthrough flags for the
+            // Issue #83 — per-slot per-device passthrough flags for the
             // controller-audio service, sourced from the same per-device
             // PlayStation configs the lighting dispatcher uses.
             PadForge.Common.Input.AudioPassthroughService.PassthroughConfigProvider = slotIndex =>
@@ -779,6 +779,15 @@ namespace PadForge.Services
                     .Select(kv => (kv.Key, kv.Value.AudioPassthroughEnabled))
                     .ToList();
             };
+
+            // A persisted mirror toggle must resume on launch — the service
+            // otherwise only starts when poked (toggle change, assignment
+            // change, or a macro's sink lookup). One signal is enough: the
+            // worker self-heals device timing on its 5 s cadence. Skipped
+            // when no device has the toggle on, so the audio threads stay
+            // off for users who never use controller audio.
+            if (_mainVm.Pads.Any(p => p.PerDevicePlayStationConfigs.Any(kv => kv.Value.AudioPassthroughEnabled)))
+                PadForge.Common.Input.AudioPassthroughService.Reconcile();
 
             _inputManager.TouchpadGestureSettingsProvider = (slotIndex, deviceGuid, padIdx) =>
             {

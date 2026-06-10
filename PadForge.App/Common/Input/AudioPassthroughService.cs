@@ -298,11 +298,17 @@ namespace PadForge.Common.Input
                 {
                     // Full scale: master volume lives in the firmware speaker
                     // volume byte (UserEffectsDispatcher), not the samples.
+                    // Latency clamp: if this sink's cursor falls more than
+                    // ~50 ms behind the live edge (pacing drift, stalls),
+                    // jump to a ~20 ms cushion behind live rather than ever
+                    // playing stale audio.
+                    const int MaxLagFrames = 2400;  // 50 ms @ 48 kHz
+                    const int CushionFrames = 960;  // 20 ms
                     lock (_ring)
                     {
                         long avail = _ringWrite;
-                        if (_cursor < 0 || _cursor > avail || avail - _cursor > RingFrames)
-                            _cursor = Math.Max(0, avail - count / 2); // (re)sync near live edge
+                        if (_cursor < 0 || _cursor > avail || avail - _cursor > MaxLagFrames)
+                            _cursor = Math.Max(0, avail - CushionFrames);
                         int frames = count / 2;
                         int canRead = (int)Math.Min(frames, avail - _cursor);
                         for (int f = 0; f < canRead; f++)
@@ -879,7 +885,14 @@ namespace PadForge.Common.Input
                 var pull = new float[BtFrameSamples * 2];
                 var opus = new byte[BtOpusBytes + 16];
                 var report = new byte[BtReportSize];
-                long periodTicks = (long)(10.6667 * TimeSpan.TicksPerMillisecond);
+                // Exactly one 10 ms frame per 10 ms of wall time: each frame
+                // carries 480 samples of 48 kHz audio, so any other cadence
+                // drifts against the capture clock. (The old 10.667 ms
+                // haptics cadence under-consumed 6%, backlogging the mirror
+                // up to the ring's half-second capacity — the source of the
+                // 0.5-1 s PC-to-pad delay — and forced the pad's decoder
+                // into gap concealment.)
+                long periodTicks = 10 * TimeSpan.TicksPerMillisecond;
                 long next = DateTime.UtcNow.Ticks + periodTicks;
                 var me = Thread.CurrentThread;
 

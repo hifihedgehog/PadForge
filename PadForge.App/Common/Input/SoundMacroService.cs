@@ -253,16 +253,19 @@ namespace PadForge.Common.Input
             try
             {
                 // Controller sinks first (per assigned device, by convention);
-                // fall back to the system default output when the slot has no
-                // speaker-capable pad. Sink lookup activates lazily.
-                var targets = AudioPassthroughService.GetSlotSinkMixers(slot);
+                // fall back to the system default output only when the slot
+                // has no speaker-capable pad at all. pendingActivation means
+                // the worker is still opening the pad's transport — drop the
+                // sound rather than leak it to the PC speakers; the next
+                // trigger lands on the pad.
+                var targets = AudioPassthroughService.GetSlotSinkMixers(slot, out bool pendingActivation);
 
                 lock (_lock)
                 {
                     bool onController = targets.Count > 0;
                     if (!onController)
                     {
-                        if (_controllerRouted[slot]) return; // sinks mid-rebuild; drop rather than misroute
+                        if (pendingActivation || _controllerRouted[slot]) return;
                         var o = EnsureDefaultOutput_NoLock(slot);
                         if (o?.Mixer == null) return;
                         targets = new List<MixingSampleProvider> { o.Mixer };

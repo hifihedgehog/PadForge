@@ -74,6 +74,7 @@ namespace PadForge.Common.Input
             public bool Loop;
             public object MacroKey;
             public string FilePath;              // loop idempotence key
+            public bool OnController;            // sinks own loudness via the firmware volume byte
         }
         private static readonly List<ActiveSound>[] _active = CreateLists();
 
@@ -88,10 +89,11 @@ namespace PadForge.Common.Input
         //  Per-slot configuration
         // ─────────────────────────────────────────────
 
-        /// <summary>Per-slot master volume (0-100), multiplied with each
-        /// action's own volume; live sounds retune immediately. Also read by
-        /// the passthrough service (loopback mirror gain) and the DS5
-        /// dispatcher (firmware speaker volume byte).</summary>
+        /// <summary>Per-slot master volume (0-100). On the PC fallback output
+        /// it scales the sample amplitude; on controller sinks loudness is the
+        /// firmware speaker volume byte (the DS5 dispatcher reads
+        /// <see cref="GetSlotVolume"/> per output report), so live sounds
+        /// retune immediately on both paths.</summary>
         public static void SetSlotVolume(int slot, int volumePct)
         {
             if ((uint)slot >= MaxPads) return;
@@ -99,9 +101,12 @@ namespace PadForge.Common.Input
             lock (_lock)
             {
                 _masterVolume[slot] = v;
+                // Controller-routed sounds get master volume from the firmware
+                // speaker volume byte (live, per output report); only the PC
+                // fallback applies it in the sample domain.
                 foreach (var a in _active[slot])
                     foreach (var p in a.Placements)
-                        p.Volume.Volume = a.ActionVolume * (v / 100f);
+                        p.Volume.Volume = a.ActionVolume * (a.OnController ? 1f : v / 100f);
             }
         }
 
@@ -254,7 +259,8 @@ namespace PadForge.Common.Input
 
                 lock (_lock)
                 {
-                    if (targets.Count == 0)
+                    bool onController = targets.Count > 0;
+                    if (!onController)
                     {
                         if (_controllerRouted[slot]) return; // sinks mid-rebuild; drop rather than misroute
                         var o = EnsureDefaultOutput_NoLock(slot);
@@ -268,13 +274,17 @@ namespace PadForge.Common.Input
                         Loop = loop,
                         MacroKey = macroKey,
                         FilePath = filePath,
+                        OnController = onController,
                     };
                     foreach (var mixer in targets)
                     {
                         var input = makeInput();
                         var vol = new VolumeSampleProvider(input)
                         {
-                            Volume = actionVolume * (_masterVolume[slot] / 100f),
+                            // Controller sinks play full-scale samples; the
+                            // firmware speaker volume byte carries the master
+                            // volume there. The PC fallback has no such byte.
+                            Volume = actionVolume * (onController ? 1f : _masterVolume[slot] / 100f),
                         };
                         entry.Placements.Add((mixer, vol, vol));
                         mixer.AddMixerInput((ISampleProvider)vol);

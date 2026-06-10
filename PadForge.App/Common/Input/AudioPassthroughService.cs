@@ -224,8 +224,8 @@ namespace PadForge.Common.Input
 
                 if (_sink.PassthroughOn)
                 {
-                    int vol = SoundMacroService.GetSlotVolume(_sink.Slot);
-                    float gain = vol / 100f;
+                    // Full scale: master volume lives in the firmware speaker
+                    // volume byte (UserEffectsDispatcher), not the samples.
                     lock (_ring)
                     {
                         long avail = _ringWrite;
@@ -236,8 +236,8 @@ namespace PadForge.Common.Input
                         for (int f = 0; f < canRead; f++)
                         {
                             long idx = ((_cursor + f) % RingFrames) * 2;
-                            buffer[offset + f * 2] += _ring[idx] * gain;
-                            buffer[offset + f * 2 + 1] += _ring[idx + 1] * gain;
+                            buffer[offset + f * 2] += _ring[idx];
+                            buffer[offset + f * 2 + 1] += _ring[idx + 1];
                         }
                         _cursor += canRead;
                     }
@@ -662,15 +662,15 @@ namespace PadForge.Common.Input
                         // packet 0x12: 64 audio sample bytes
                         report[11] = 0x12 | 0x80;
                         report[12] = BtSampleSize;
-                        int vol = SoundMacroService.GetSlotVolume(s.Slot);
-                        float gain = vol / 100f;
                         for (int i = 0; i < BtSampleSize; i++)
                         {
                             // i alternates L/R like the reference's interleaved
                             // u8 buffer; decimate by striding the 48 kHz pull.
+                            // Full scale: master volume lives in the firmware
+                            // speaker volume byte, not the samples.
                             int frame = (i / 2) * (Rate / BtSampleRate);
                             int ch = i & 1;
-                            float v = Math.Clamp(pull[frame * 2 + ch] * gain, -1f, 1f);
+                            float v = Math.Clamp(pull[frame * 2 + ch], -1f, 1f);
                             report[13 + i] = unchecked((byte)(sbyte)(v * 127f));
                         }
                         uint crc = Crc32(report, BtReportSize - 4);

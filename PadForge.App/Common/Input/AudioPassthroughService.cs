@@ -117,12 +117,8 @@ namespace PadForge.Common.Input
             /// (created and used only on the BT thread).</summary>
             public IOpusEncoder OpusEncoder;
 
-            // BT stream clock (BT thread only): frames owed are computed
-            // from wall time so a late wake bursts the deficit instead of
-            // leaving a hole in the pad's jitter buffer.
+            /// <summary>BT idle-gate state (BT thread only).</summary>
             public bool BtStreaming;
-            public long BtStreamT0;
-            public long BtFramesSent;
 
             // USB
             public IWavePlayer Player;
@@ -937,7 +933,8 @@ namespace PadForge.Common.Input
         //  BT audio frame stream (DSY-v2 HapticTimerThread port)
         // ─────────────────────────────────────────────
 
-        private const int BtFrameSamples = 480;    // 10 ms @ 48 kHz, per channel
+        private const int BtFrameSamples = 480;    // Opus frame samples per channel
+        private const int BtPullFrames = 512;      // input frames consumed per ~10.667 ms tick (512 × 93.75 = 48 kHz)
         private const int BtOpusBytes = 200;       // hard-CBR frame size (160 kbps)
         private const int BtReportSize = 334;      // report 0x35 wire size
         private static byte _btPktCounter;         // 0x11 header rolling counter
@@ -976,35 +973,33 @@ namespace PadForge.Common.Input
             Diag($"[BT] pacing timer: {(hrTimer != IntPtr.Zero ? "high-res waitable" : "Thread.Sleep fallback")}");
             try
             {
-                // Each report carries one 10 ms Opus frame (480 samples of
-                // 48 kHz). Frames owed are computed from wall time per sink:
-                // a late wake (Sleep overshoot, a stalled HID write, capture
-                // burst) sends the whole deficit as a back-to-back burst, so
-                // the pad's jitter buffer is refilled instead of running dry —
-                // one-off late frames were the audible dropouts. The stream
-                // starts PrimeFrames ahead, giving the pad a standing cushion
-                // (the PS5's own doubled packets prove the firmware buffers
-                // multi-frame deliveries). Capture-clock drift is corrected in
-                // whole-frame nudges: backlog above target consumes one extra
-                // frame (sent as real audio, no artifact), near-underrun skips
-                // one (the pad plays from its cushion).
-                var pull = new float[BtFrameSamples * 2];
+                // The firmware contract, established by A/B/C music experiment
+                // on hardware (issue #83): exactly ONE report per ~10.667 ms
+                // tick, never bursts — faster delivery or back-to-back
+                // catch-up frames overflow the pad's shallow receive buffer
+                // and it drops audio (the cutouts/garble). Each frame is a
+                // 480-sample Opus frame, but real time advances 512 samples
+                // per tick, so every tick consumes 512 input frames and
+                // time-compresses them 512→480 (16:15): the source is
+                // consumed at exactly 48 kHz and the pitch is exact. (Plain
+                // 480-per-tick — the awalol baseline — underfeeds 6 % and
+                // plays audibly flat; strict 10.000 ms delivery cuts out.)
+                var pull = new float[(BtPullFrames + 8) * 2];
+                var frame = new float[BtFrameSamples * 2];
                 var opus = new byte[BtOpusBytes + 16];
                 var report = new byte[BtReportSize];
-                const long FrameTicks = 10 * TimeSpan.TicksPerMillisecond;
-                const int PrimeFrames = 6;            // 60 ms pad-side cushion (BT stalls 50-200 ms under WiFi coexistence)
-                const int MaxBurst = 8;
+                const double CadenceMs = 10.0 + 2.0 / 3.0;
                 const int BtTargetLag = 2160;         // 45 ms ring cushion @ 48 kHz
-                const int LagDeadband = 720;          // ±15 ms before nudging
+                const int LagDeadband = 720;          // ±15 ms before trimming
+                long cadTicks = (long)(CadenceMs * TimeSpan.TicksPerMillisecond);
+                long next = DateTime.UtcNow.Ticks + cadTicks;
                 var me = Thread.CurrentThread;
 
-                // Stream telemetry, one diag line per ~5 s while streaming:
-                // worst wake gap, worst single write, biggest burst, lag
-                // span, re-primes, idle-gate transitions. Temporary, for
-                // dropout hunting.
-                long statWakeMax = 0, statWriteMax = 0, statBurstMax = 0;
+                // Temporary telemetry while the stream proves itself: one
+                // line per ~5 s of active streaming.
+                long statWakeMax = 0;
                 int statLagMin = int.MaxValue, statLagMax = int.MinValue;
-                int statReprimes = 0, statGateFlips = 0;
+                int statGateFlips = 0, statResyncs = 0;
                 long statWindowStart = Environment.TickCount64;
                 long lastWake = Environment.TickCount64;
 
@@ -1021,83 +1016,72 @@ namespace PadForge.Common.Input
                     bool anyStreaming = false;
                     foreach (var s in btSinks)
                     {
-                        // Idle gate: after 2 s of silence stop the stream so
-                        // the pad's radio and our CPU rest. One probe read per
-                        // wake keeps the ring cursor near live and the
-                        // activity stamp fresh while idle.
-                        if (!s.BtStreaming)
-                        {
-                            s.Source.Read(pull, 0, pull.Length);
-                            if (Environment.TickCount64 - s.LastAudibleTicks > 2000)
-                                continue;
-                            s.BtStreaming = true;
-                            s.BtStreamT0 = DateTime.UtcNow.Ticks;
-                            s.BtFramesSent = 0;
-                            statGateFlips++;
-                            SendBtFrame(s, pull, opus, report); // the probe read = first frame
-                            continue;
-                        }
-                        anyStreaming = true;
-
-                        if (Environment.TickCount64 - s.LastAudibleTicks > 2000)
-                        {
-                            s.BtStreaming = false;
-                            statGateFlips++;
-                            continue;
-                        }
-
-                        long owed = (DateTime.UtcNow.Ticks - s.BtStreamT0) / FrameTicks
-                                    + PrimeFrames - s.BtFramesSent;
-
-                        if (owed > PrimeFrames + 8)
-                        {
-                            // Real stall (suspend, long preemption): drop the
-                            // deficit and re-prime instead of flooding the pad
-                            // into a permanent latency balloon.
-                            s.BtStreamT0 = DateTime.UtcNow.Ticks;
-                            s.BtFramesSent = 0;
-                            owed = PrimeFrames;
-                            statReprimes++;
-                        }
-
-                        // Whole-frame drift nudge against the capture clock.
+                        // Mirror drift trim: the ring is steered to its target
+                        // cushion by consuming a few samples more or fewer per
+                        // tick (±0.8 % momentary rate trim through the same
+                        // 16:15 compressor — inaudible), never by extra or
+                        // skipped reports.
+                        int inFrames = BtPullFrames;
                         int lag = s.Source.LoopbackLagFrames;
                         if (lag >= 0)
                         {
                             statLagMin = Math.Min(statLagMin, lag);
                             statLagMax = Math.Max(statLagMax, lag);
-                            if (lag > BtTargetLag + LagDeadband) owed += 1;
-                            else if (lag < BtTargetLag - LagDeadband && owed > 0) owed -= 1;
+                            if (lag > BtTargetLag + LagDeadband) inFrames += 4;
+                            else if (lag < BtTargetLag - LagDeadband) inFrames -= 4;
                         }
 
-                        long burst = Math.Min(owed, MaxBurst);
-                        statBurstMax = Math.Max(statBurstMax, burst);
-                        for (long i = burst; i > 0 && !s.TransportFailed; i--)
+                        s.Source.Read(pull, 0, inFrames * 2);
+
+                        // Idle gate: after 2 s of silence stop sending so the
+                        // pad's radio and our CPU rest; the read above keeps
+                        // the ring cursor live and the activity stamp fresh.
+                        bool audible = Environment.TickCount64 - s.LastAudibleTicks <= 2000;
+                        if (audible != s.BtStreaming) { s.BtStreaming = audible; statGateFlips++; }
+                        if (!audible) continue;
+                        anyStreaming = true;
+
+                        // 512→480 linear time-compression (pitch-exact).
+                        double step = inFrames / (double)BtFrameSamples;
+                        for (int o = 0; o < BtFrameSamples; o++)
                         {
-                            s.Source.Read(pull, 0, pull.Length);
-                            long w0 = Environment.TickCount64;
-                            SendBtFrame(s, pull, opus, report);
-                            statWriteMax = Math.Max(statWriteMax, Environment.TickCount64 - w0);
+                            double pos = o * step;
+                            int i0 = (int)pos;
+                            double t = pos - i0;
+                            int i1 = Math.Min(i0 + 1, inFrames - 1);
+                            frame[o * 2] = (float)(pull[i0 * 2] * (1 - t) + pull[i1 * 2] * t);
+                            frame[o * 2 + 1] = (float)(pull[i0 * 2 + 1] * (1 - t) + pull[i1 * 2 + 1] * t);
                         }
+                        SendBtFrame(s, frame, opus, report);
                     }
 
                     if (anyStreaming && wakeNow - statWindowStart >= 5000)
                     {
-                        Diag($"[BT-STAT] wakeMax={statWakeMax}ms writeMax={statWriteMax}ms burstMax={statBurstMax} " +
+                        Diag($"[BT-STAT] wakeMax={statWakeMax}ms " +
                              $"lag={(statLagMin == int.MaxValue ? -1 : statLagMin / 48)}..{(statLagMax == int.MinValue ? -1 : statLagMax / 48)}ms " +
-                             $"reprimes={statReprimes} gateFlips={statGateFlips}");
-                        statWakeMax = statWriteMax = statBurstMax = 0;
+                             $"resyncs={statResyncs} gateFlips={statGateFlips}");
+                        statWakeMax = 0;
                         statLagMin = int.MaxValue; statLagMax = int.MinValue;
-                        statReprimes = statGateFlips = 0;
+                        statGateFlips = 0; statResyncs = 0;
                         statWindowStart = wakeNow;
                     }
 
-                    // ~3 ms tick via the high-res timer (real sub-ms wait, not
-                    // the 16 ms scheduler quantum Thread.Sleep gives here), so
-                    // each wake owes well under one frame and the feed to the
-                    // pad stays smooth.
-                    if (hrTimer != IntPtr.Zero) NativeMethods.HighResWait(hrTimer, 3.0);
-                    else Thread.Sleep(3);
+                    // One tick per cadence on an absolute schedule; a stall
+                    // (>120 ms behind) re-snaps rather than rapid-firing —
+                    // the firmware would drop back-to-back reports anyway.
+                    long nowTicks = DateTime.UtcNow.Ticks;
+                    double waitMs = (next - nowTicks) / (double)TimeSpan.TicksPerMillisecond;
+                    if (waitMs > 0)
+                    {
+                        if (hrTimer != IntPtr.Zero) NativeMethods.HighResWait(hrTimer, waitMs);
+                        else Thread.Sleep((int)Math.Max(1, waitMs));
+                    }
+                    else if (waitMs < -120)
+                    {
+                        next = nowTicks;
+                        statResyncs++;
+                    }
+                    next += cadTicks;
                 }
             }
             finally
@@ -1148,12 +1132,11 @@ namespace PadForge.Common.Input
                     Diag($"[BT-WRITE-FAIL] slot={s.Slot}; deferring to worker");
                     s.TransportFailed = true;
                 }
-                // else: pool saturated (link backpressure) — skip the frame;
-                // owed catch-up resends and the stall clamp re-primes if the
-                // saturation persists.
+                // else: pool saturated (link backpressure) — drop this frame;
+                // the pad conceals one missing frame far better than it
+                // handles a catch-up burst.
                 return;
             }
-            s.BtFramesSent++;
         }
 
         /// <summary>48 kHz stereo, 10 ms frames, hard CBR at 160 kbps so

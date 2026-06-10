@@ -1684,9 +1684,9 @@
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>ライトバーの保持をリセット</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>オーディオ</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>オーディオ</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>マクロからサウンドを再生：剣の衝突、レーダーピング、リロード音、ゴムのアヒルも。パッドごとに出力デバイスを選べ、USB接続のDualSenseスピーカーにも出力できます。</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>マクロサウンドとミラーされたシステム音声は、選択中のコントローラーの内蔵スピーカーからUSBまたはBluetooth経由で再生されます。上のドロップダウンでデバイスを選択してください。</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>サウンド出力</value></data>
-  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>このパッドのマクロサウンドの出力先。USBのDualSense（"Wireless Controller"）を選ぶとコントローラーのスピーカーから再生されます。</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>サウンドは選択中のコントローラーへ自動的にルーティングされます。USBではハードウェアコンテナでパッドのオーディオ端点を照合し、BluetoothではソニーHIDフレームで音声を送信します。</value></data>
   <data name="Pad_Audio_Device_Label" xml:space="preserve"><value>出力デバイス</value></data>
   <data name="Pad_Audio_DefaultDevice" xml:space="preserve"><value>システム既定</value></data>
   <data name="Pad_Audio_DisconnectedDevice_Format" xml:space="preserve"><value>切断されたデバイス ({0})</value></data>
@@ -1716,4 +1716,7 @@
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>音量</value></data>
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>停止までループ</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>「サウンド停止」アクションが実行されるまで繰り返します。長押し／離すまでマクロではトリガーを離すと停止します</value></data>
+  <data name="Pad_Audio_Mirror" xml:space="preserve"><value>システム音声をコントローラーのスピーカーへミラー</value></data>
+  <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>システム既定の出力で再生中の音声を、このコントローラーの内蔵スピーカーにも並行して出力します。USBとBluetoothの両方で動作します。</value></data>
+  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>選択中のデバイスには内蔵スピーカーがありません。このパッドのマクロサウンドはシステム既定の出力で再生されます。</value></data>
 </root>

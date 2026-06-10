@@ -768,6 +768,18 @@ namespace PadForge.Services
             // exists (matches the engine-side fallback so a fresh
             // assignment gets sensible behavior without the user
             // opening the Touchpad tab).
+            // Issue #83 — per-(slot, device) passthrough flags for the
+            // controller-audio service, sourced from the same per-device
+            // PlayStation configs the lighting dispatcher uses.
+            PadForge.Common.Input.AudioPassthroughService.PassthroughConfigProvider = slotIndex =>
+            {
+                if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count)
+                    return System.Linq.Enumerable.Empty<(Guid, bool)>();
+                return _mainVm.Pads[slotIndex].PerDevicePlayStationConfigs
+                    .Select(kv => (kv.Key, kv.Value.AudioPassthroughEnabled))
+                    .ToList();
+            };
+
             _inputManager.TouchpadGestureSettingsProvider = (slotIndex, deviceGuid, padIdx) =>
             {
                 var settings = SettingsManager.UserSettings;

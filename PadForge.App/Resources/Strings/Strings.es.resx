@@ -1684,9 +1684,9 @@
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Restablecer retención de barra de luz</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Reproduce sonidos desde tus macros: choques de espadas, pings de radar, clics de recarga o un patito de goma. Cada mando dirige sus sonidos a su propio dispositivo de salida, incluido el altavoz de un DualSense por USB.</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Los sonidos de macro y el audio duplicado se reproducen por el altavoz integrado del mando seleccionado, por USB o Bluetooth. Elige el dispositivo en el desplegable de arriba: todo lo de aquí lo sigue.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Salida de sonido</value></data>
-  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Dónde reproduce este mando sus sonidos de macro. Elige un DualSense por USB ("Wireless Controller") para reproducir por el altavoz del mando.</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Los sonidos se dirigen automáticamente al mando seleccionado. Por USB, el punto de audio del mando se asocia por contenedor de hardware; por Bluetooth, el audio se transmite en tramas HID de Sony.</value></data>
   <data name="Pad_Audio_Device_Label" xml:space="preserve"><value>Dispositivo de salida</value></data>
   <data name="Pad_Audio_DefaultDevice" xml:space="preserve"><value>Predeterminado del sistema</value></data>
   <data name="Pad_Audio_DisconnectedDevice_Format" xml:space="preserve"><value>Dispositivo desconectado ({0})</value></data>
@@ -1716,4 +1716,7 @@
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volumen</value></data>
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Bucle hasta detener</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Repetir el sonido hasta que se ejecute una acción "Detener sonidos" — o, en macros de mantener/soltar, hasta soltar el disparador</value></data>
+  <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Duplicar el audio del sistema al altavoz del mando</value></data>
+  <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copia en paralelo lo que reproduce la salida predeterminada del sistema al altavoz integrado de este mando. Funciona por USB y Bluetooth.</value></data>
+  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>El dispositivo seleccionado no tiene altavoz integrado. Los sonidos de macro de este mando se reproducen en la salida predeterminada.</value></data>
 </root>

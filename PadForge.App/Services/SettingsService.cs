@@ -1277,12 +1277,7 @@ namespace PadForge.Services
                 }
             }
 
-            // Audio tab (issue #83): per-slot sound output device + master volume.
-            if (appSettings.SlotSoundDeviceIds != null)
-            {
-                for (int i = 0; i < _mainVm.Pads.Count && i < appSettings.SlotSoundDeviceIds.Length; i++)
-                    _mainVm.Pads[i].SoundOutputDeviceId = appSettings.SlotSoundDeviceIds[i] ?? "";
-            }
+            // Audio tab (issue #83): per-slot macro-sound master volume.
             if (appSettings.SlotSoundVolumes != null)
             {
                 for (int i = 0; i < _mainVm.Pads.Count && i < appSettings.SlotSoundVolumes.Length; i++)
@@ -1787,6 +1782,7 @@ namespace PadForge.Services
                     cfg.LightbarGreen = cfgData.LightbarGreen;
                     cfg.LightbarBlue = cfgData.LightbarBlue;
                     cfg.LightbarEnabled = cfgData.LightbarEnabled;
+                    cfg.AudioPassthroughEnabled = cfgData.AudioPassthroughEnabled;
                     // Migrate legacy MicLightOn to the new MicLedMode if
                     // the new field hasn't been set explicitly.
                     if (cfgData.MicLedMode != ViewModels.MicLedMode.Off)
@@ -2809,7 +2805,6 @@ namespace PadForge.Services
                 GlobalMacros = SettingsManager.GlobalMacros,
                 SlotControllerTypes = isDefault ? slotTypes : defaultSnap.SlotControllerTypes,
                 SlotProfileIds = isDefault ? slotProfileIds : defaultSnap.SlotProfileIds,
-                SlotSoundDeviceIds = _mainVm.Pads.Select(p => p.SoundOutputDeviceId ?? "").ToArray(),
                 SlotSoundVolumes = _mainVm.Pads.Select(p => p.SoundMasterVolume).ToArray(),
                 SlotCreated = isDefault
                     ? (bool[])SettingsManager.SlotCreated.Clone()
@@ -2945,6 +2940,7 @@ namespace PadForge.Services
                 LightbarGreen = cfg.LightbarGreen,
                 LightbarBlue = cfg.LightbarBlue,
                 LightbarEnabled = cfg.LightbarEnabled,
+                AudioPassthroughEnabled = cfg.AudioPassthroughEnabled,
                 MicLedMode = cfg.MicLedMode,
                 MicLedFollowDeviceId = cfg.MicLedFollowDeviceId ?? string.Empty,
                 MicLightOn = cfg.MicLightOn,
@@ -3824,12 +3820,6 @@ namespace PadForge.Services
         [XmlArray("SlotControllerTypes")]
         [XmlArrayItem("Type")]
         public int[] SlotControllerTypes { get; set; }
-
-        /// <summary>Per-slot render-endpoint ID for macro sounds (issue #83).
-        /// Empty/null entry = system default device.</summary>
-        [XmlArray("SlotSoundDeviceIds")]
-        [XmlArrayItem("Id")]
-        public string[] SlotSoundDeviceIds { get; set; }
 
         /// <summary>Per-slot master volume for macro sounds (0-100).</summary>
         [XmlArray("SlotSoundVolumes")]

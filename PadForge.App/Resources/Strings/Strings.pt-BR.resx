@@ -1684,9 +1684,9 @@
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Redefinir retenção da barra de luz</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Áudio</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Áudio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Reproduza sons das suas macros: choques de espadas, pings de radar, cliques de recarga ou um patinho de borracha. Cada controle direciona seus sons ao próprio dispositivo de saída, incluindo o alto-falante de um DualSense via USB.</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Os sons de macro e o áudio espelhado tocam pelo alto-falante integrado do controle selecionado, por USB ou Bluetooth. Escolha o dispositivo na lista acima — tudo aqui o acompanha.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Saída de som</value></data>
-  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Onde este controle reproduz os sons de macro. Escolha um DualSense USB ("Wireless Controller") para tocar pelo alto-falante do controle.</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Os sons são roteados automaticamente para o controle selecionado. Por USB, o endpoint de áudio do controle é associado por contêiner de hardware; por Bluetooth, o áudio é transmitido em quadros HID da Sony.</value></data>
   <data name="Pad_Audio_Device_Label" xml:space="preserve"><value>Dispositivo de saída</value></data>
   <data name="Pad_Audio_DefaultDevice" xml:space="preserve"><value>Padrão do sistema</value></data>
   <data name="Pad_Audio_DisconnectedDevice_Format" xml:space="preserve"><value>Dispositivo desconectado ({0})</value></data>
@@ -1716,4 +1716,7 @@
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loop até parar</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Repete o som até uma ação "Parar sons" rodar — ou, em macros de segurar/soltar, até o gatilho ser solto</value></data>
+  <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Espelhar o áudio do sistema no alto-falante do controle</value></data>
+  <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copia em paralelo o que a saída padrão do sistema reproduz para o alto-falante integrado deste controle. Funciona por USB e Bluetooth.</value></data>
+  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>O dispositivo selecionado não tem alto-falante integrado. Os sons de macro deste controle tocam na saída padrão.</value></data>
 </root>

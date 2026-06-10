@@ -1748,9 +1748,9 @@
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Reset Lightbar Hold</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Play sounds from your macros: sword clashes, radar pings, reload clicks, or a rubber ducky. Each pad routes its sounds to its own output device, including a USB DualSense speaker.</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macro sounds and mirrored system audio play through the selected controller’s built-in speaker, over USB or Bluetooth. Pick the device in the dropdown above — every setting here follows it.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sound Output</value></data>
-  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Where this pad plays its macro sounds. Pick a USB DualSense ("Wireless Controller") to play from the controller speaker.</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Sounds route to the selected controller automatically. Over USB the pad’s own audio endpoint is matched by hardware container; over Bluetooth the audio is streamed in Sony HID frames.</value></data>
   <data name="Pad_Audio_Device_Label" xml:space="preserve"><value>Output device</value></data>
   <data name="Pad_Audio_DefaultDevice" xml:space="preserve"><value>System default</value></data>
   <data name="Pad_Audio_DisconnectedDevice_Format" xml:space="preserve"><value>Disconnected device ({0})</value></data>
@@ -1780,4 +1780,7 @@
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loop until stopped</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Repeat the sound until a Stop Sounds action runs — or, for While Held / Until Released macros, until the trigger is released</value></data>
+  <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Mirror system audio to the controller speaker</value></data>
+  <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copies whatever the system default output plays to this controller’s built-in speaker, in parallel. Works over USB and Bluetooth.</value></data>
+  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>The selected device has no built-in speaker. Macro sounds for this pad play on the system default output.</value></data>
 </root>

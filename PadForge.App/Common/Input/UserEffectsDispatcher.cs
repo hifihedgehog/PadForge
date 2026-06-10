@@ -572,6 +572,8 @@ namespace PadForge.Common.Input
                 || e.PropertyName == nameof(PlayStationSlotConfig.InputReactiveMode)
                 || e.PropertyName == nameof(PlayStationSlotConfig.MacroOverrideExpiresAtUtc))
                 UpdateAnimTimer();
+            if (e.PropertyName == nameof(PlayStationSlotConfig.AudioPassthroughEnabled))
+                AudioPassthroughService.Reconcile(); // start/stop the mirror sink now
             DispatchSnapshot();
         }
 
@@ -1372,13 +1374,14 @@ namespace PadForge.Common.Input
                         // path once so the speaker doesn't stay latched.
                         if (isDs5)
                         {
-                            if (SoundMacroService.WantsControllerSpeaker(_padIndex))
+                            if (AudioPassthroughService.WantsSpeakerPath(ud.InstanceGuid))
                             {
+                                byte spkVol = (byte)(SoundMacroService.GetSlotVolume(_padIndex) * 0x64 / 100);
                                 fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0xA0);
-                                fields["speakerVolume"] = SoundMacroService.SpeakerVolumeByte(_padIndex);
+                                fields["speakerVolume"] = spkVol;
                                 fields["audioControlFlags"] = (byte)(3 << 4);
                             }
-                            else if (SoundMacroService.TryConsumeSpeakerRouteCleared(_padIndex))
+                            else if (AudioPassthroughService.TryConsumeSpeakerPathCleared(ud.InstanceGuid))
                             {
                                 fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0x80);
                                 fields["audioControlFlags"] = (byte)0;

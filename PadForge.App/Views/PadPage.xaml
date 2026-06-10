@@ -5194,10 +5194,11 @@
                             </StackPanel>
                         </Border>
 
-                        <!-- ─── Motion Steering card (#94) — relocated tilt-to-steer ───
-                             Reads the accelerometer (controller tilt), not a stick, and
-                             drives the chosen stick X axis. Lives here with the motion
-                             settings instead of the per-stick Steering Mode dropdown. -->
+                        <!-- ─── Motion Steering card (#94) — settings for the "Motion Lean"
+                             INPUT (tilt deadzones + grip orientation, per assigned device).
+                             Motion Lean itself is a normal input descriptor: the user maps
+                             it to an axis from the input dropdown in Mappings, like any
+                             gyro input. This card never targets or overrides an axis. -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
@@ -5217,21 +5218,7 @@
                                 <TextBlock Text="{Binding Pad_MotionSteer_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            TextWrapping="Wrap" Margin="0,0,0,8"/>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <CheckBox IsChecked="{Binding MotionSteerEnabled, Mode=TwoWay}" VerticalAlignment="Center"
-                                              Content="{Binding Pad_MotionSteer_Enable, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Button Command="{Binding ResetMotionSteerEnabledCommand}" Style="{StaticResource ResetButton}"
-                                            ToolTip="{Binding Pad_MotionSteer_Reset_Enable, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                                <!-- Target stick X axis + the lean tuning, shown only while enabled. -->
-                                <StackPanel Visibility="{Binding MotionSteerEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <TextBlock Text="{Binding Pad_MotionSteer_Target, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                        <ComboBox ItemsSource="{Binding MotionSteerTargetOptions}" DisplayMemberPath="Display"
-                                                  SelectedValuePath="Value" SelectedValue="{Binding MotionSteerTarget, Mode=TwoWay}"
-                                                  Width="200" VerticalAlignment="Center"/>
-                                        <Button Command="{Binding ResetMotionSteerTargetCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_MotionSteer_Reset_Target, Source={x:Static strings:Strings.Instance}}"/>
-                                    </StackPanel>
+                                <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <TextBlock Text="{Binding Pad_Steering_MotionInnerDz, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <Slider Value="{Binding MotionSteerInnerDz, Mode=TwoWay}" Minimum="0" Maximum="179" Style="{StaticResource DzSlider}"/>

@@ -705,6 +705,10 @@ namespace PadForge.Services
                     // via Clone()).
                     if (string.Equals(activeMask, "Base", StringComparison.Ordinal))
                         ApplySteeringKindToRow(row, mapping.TargetSettingName, padVm, slot);
+
+                    // Motion Lean tuning rides every layer's rows (the descriptor is a
+                    // normal input, not a Base-only steering mode).
+                    ApplyMotionLeanParamsToRow(row, padVm, slot);
                 }
 
                 // Steering Kind reconciliation on the Base layer (#94). The per-mapping
@@ -754,14 +758,13 @@ namespace PadForge.Services
             {
                 if (src == null) continue;
                 var cfg = ReadDeviceSteering(slot, src.DeviceGuid, stickIdx, padVm);
-                // Motion Steering (gyro tab) is a per-device motion feature that drives a
-                // chosen stick X axis. When it targets THIS stick it overrides the per-stick
-                // Steering Mode with MotionLeanX, reusing this whole stamp (including the
-                // off-axis neutralization below) — so tilt-to-steer needs no separate path.
-                var ms = ReadDeviceMotionSteering(slot, src.DeviceGuid, padVm);
-                if (ms.Enabled && MotionSteerTargetStickIdx(padVm, ms.Target) == stickIdx)
-                    cfg = (true, "MotionLeanX", cfg.WindRange, cfg.WindPower, cfg.WindUnwind,
-                        cfg.AngleInner, cfg.AngleOuter, ms.Inner, ms.Outer, ms.Orient);
+                // Motion Lean is NOT stamped here. It's a first-class input descriptor
+                // ("Motion Lean" in the picker) the user maps to an axis like any gyro
+                // input; its sources keep Kind=Direct, so the revert guard below leaves
+                // them alone, and ApplyMotionLeanParamsToRow pushes the gyro-tab card's
+                // tuning onto them. The old design (gyro-tab Enable + target dropdown
+                // overriding the chosen stick axis's source with MotionLeanX) replaced
+                // one input with another — removed.
                 // AngleToAxisY outputs to the Y channel; every other mode to X. Only stamp
                 // this source when its device's mode targets THIS row's channel.
                 bool wantY = string.Equals(cfg.Kind, "AngleToAxisY", StringComparison.Ordinal);
@@ -866,41 +869,45 @@ namespace PadForge.Services
             return false;
         }
 
-        // The stick index a Motion Steering target (its X axis) maps to, or -1.
-        private static int MotionSteerTargetStickIdx(PadViewModel padVm, string target)
+        // Pushes the Motion Steering card's per-device tuning (tilt deadzones + grip
+        // orientation) onto every "Motion Lean" source in a row. Motion Lean is a
+        // first-class input descriptor — the user maps it to an axis from the picker
+        // — so this NEVER changes a source's Kind, Descriptor, or target; it only
+        // refreshes the lean parameters the evaluator reads (ParamMotion* on the
+        // source). Mirrors ReadDeviceSteering's per-device resolution: the SELECTED
+        // device reads the live UI (newer than its PadSetting), every other device
+        // reads its own stored PadSetting so each keeps its own tilt tuning.
+        private static void ApplyMotionLeanParamsToRow(MappingRow row, PadViewModel padVm, int slot)
         {
-            var sticks = padVm.GetSteerableSticks();
-            for (int g = 0; g < sticks.Count; g++)
-                if (string.Equals(sticks[g].XTarget, target, StringComparison.Ordinal)) return g;
-            return -1;
-        }
+            if (row?.Sources == null || padVm == null) return;
+            foreach (var src in row.Sources)
+            {
+                if (src == null || !Engine.Common.Mapping.SourceCoercion.IsMotionLeanDescriptor(src.Descriptor))
+                    continue;
 
-        // Reads one device's Motion Steering config (per slot+device). Mirrors
-        // ReadDeviceSteering: the SELECTED device reads the live UI (newer than its
-        // PadSetting), every other device reads its own stored PadSetting so each keeps
-        // its own tilt-steer setup. A guid-less source uses the UI.
-        private static (bool Enabled, string Target, double Inner, double Outer, string Orient)
-            ReadDeviceMotionSteering(int slot, string deviceGuid, PadViewModel padVm)
-        {
-            Guid sel = padVm.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
-            bool useUi = string.IsNullOrEmpty(deviceGuid)
-                || (sel != Guid.Empty && Guid.TryParse(deviceGuid, out var dg) && dg == sel);
-            if (useUi)
-                return (padVm.MotionSteerEnabled, padVm.MotionSteerTarget,
-                    padVm.MotionSteerInnerDz, padVm.MotionSteerOuterDz, padVm.MotionSteerOrient);
-            PadSetting ps = Guid.TryParse(deviceGuid, out var g)
-                ? SettingsManager.FindSettingByInstanceGuidAndSlot(g, slot)?.GetPadSetting()
-                : null;
-            if (ps == null) return (false, "LeftThumbAxisX", 15, 135, "Forward");
-            double D(string key, double dflt)
-                => double.TryParse(ps.GetExtendedMapping(key), System.Globalization.NumberStyles.Float,
-                    System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
-            string target = ps.GetExtendedMapping("MotionSteerTarget");
-            string orient = ps.GetExtendedMapping("MotionSteerOrient");
-            return (ps.GetExtendedMapping("MotionSteerEnabled") == "1",
-                string.IsNullOrEmpty(target) ? "LeftThumbAxisX" : target,
-                D("MotionSteerInner", 15), D("MotionSteerOuter", 135),
-                string.IsNullOrEmpty(orient) ? "Forward" : orient);
+                Guid sel = padVm.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+                bool useUi = string.IsNullOrEmpty(src.DeviceGuid)
+                    || (sel != Guid.Empty && Guid.TryParse(src.DeviceGuid, out var dg) && dg == sel);
+                if (useUi)
+                {
+                    src.ParamMotionInnerDz = padVm.MotionSteerInnerDz;
+                    src.ParamMotionOuterDz = padVm.MotionSteerOuterDz;
+                    src.ParamControllerOrientation = padVm.MotionSteerOrient;
+                    continue;
+                }
+
+                PadSetting ps = Guid.TryParse(src.DeviceGuid, out var g)
+                    ? SettingsManager.FindSettingByInstanceGuidAndSlot(g, slot)?.GetPadSetting()
+                    : null;
+                if (ps == null) continue; // keep the source's existing params
+                double D(string key, double dflt)
+                    => double.TryParse(ps.GetExtendedMapping(key), System.Globalization.NumberStyles.Float,
+                        System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
+                string orient = ps.GetExtendedMapping("MotionSteerOrient");
+                src.ParamMotionInnerDz = D("MotionSteerInner", 15);
+                src.ParamMotionOuterDz = D("MotionSteerOuter", 135);
+                src.ParamControllerOrientation = string.IsNullOrEmpty(orient) ? "Forward" : orient;
+            }
         }
 
         // The bare stick-axis descriptor a given device reads for <paramref name="target"/>
@@ -2045,9 +2052,10 @@ namespace PadForge.Services
                 padVm.GyroInvertYawRoll = ps.GyroInvertYawRoll == "1";
                 padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough == "1";
 
-                // Load Motion Steering (per-(device, slot)) — relocated tilt-to-steer.
-                padVm.MotionSteerEnabled = ps.GetExtendedMapping("MotionSteerEnabled") == "1";
-                padVm.SetMotionSteerTarget(ps.GetExtendedMapping("MotionSteerTarget"));
+                // Load Motion Steering tuning (per-(device, slot)) — settings for the
+                // "Motion Lean" input descriptor. The old Enabled/Target keys are gone
+                // (the input is mapped from the picker, never stamped onto a target);
+                // stale keys in old profiles are simply never read.
                 padVm.MotionSteerInnerDz = TryParseDouble(ps.GetExtendedMapping("MotionSteerInner"), 15);
                 padVm.MotionSteerOuterDz = TryParseDouble(ps.GetExtendedMapping("MotionSteerOuter"), 135);
                 padVm.SetMotionSteerOrient(ps.GetExtendedMapping("MotionSteerOrient"));
@@ -3154,9 +3162,9 @@ namespace PadForge.Services
                     ps.GyroInvertYawRoll = padVm.GyroInvertYawRoll ? "1" : "0";
                     ps.GyroApplyTuningToPassthrough = padVm.GyroApplyTuningToPassthrough ? "1" : "0";
 
-                    // Write Motion Steering (per-(device, slot)).
-                    ps.SetExtendedMapping("MotionSteerEnabled", padVm.MotionSteerEnabled ? "1" : "0");
-                    ps.SetExtendedMapping("MotionSteerTarget", padVm.MotionSteerTarget);
+                    // Write Motion Steering tuning (per-(device, slot)) — settings for
+                    // the "Motion Lean" input descriptor. No Enabled/Target keys: the
+                    // input is mapped from the picker, never stamped onto a target.
                     ps.SetExtendedMapping("MotionSteerInner", padVm.MotionSteerInnerDz.ToString(ic));
                     ps.SetExtendedMapping("MotionSteerOuter", padVm.MotionSteerOuterDz.ToString(ic));
                     ps.SetExtendedMapping("MotionSteerOrient", padVm.MotionSteerOrient);

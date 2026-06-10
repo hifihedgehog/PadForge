@@ -644,11 +644,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Steering_Reset_Orientation => Get("Pad_Steering_Reset_Orientation");
     public string Pad_MotionSteer_Header => Get("Pad_MotionSteer_Header");
     public string Pad_MotionSteer_Subtitle => Get("Pad_MotionSteer_Subtitle");
-    public string Pad_MotionSteer_Enable => Get("Pad_MotionSteer_Enable");
-    public string Pad_MotionSteer_Target => Get("Pad_MotionSteer_Target");
     public string Pad_MotionSteer_Reset_All => Get("Pad_MotionSteer_Reset_All");
-    public string Pad_MotionSteer_Reset_Enable => Get("Pad_MotionSteer_Reset_Enable");
-    public string Pad_MotionSteer_Reset_Target => Get("Pad_MotionSteer_Reset_Target");
     public string Pad_Steering_LockFeedback => Get("Pad_Steering_LockFeedback");
     public string Pad_Steering_LockFeedback_Subtitle => Get("Pad_Steering_LockFeedback_Subtitle");
     public string Pad_Steering_Lock_Rumble => Get("Pad_Steering_Lock_Rumble");
@@ -1280,6 +1276,7 @@ public class Strings : INotifyPropertyChanged
     public string Recorder_Error_BadSample => Get("Recorder_Error_BadSample");
     public string Mapping_MotionGyro => Get("Mapping_MotionGyro");
     public string Mapping_MotionAccel => Get("Mapping_MotionAccel");
+    public string Mapping_MotionLean => Get("Mapping_MotionLean");
     public string Mapping_GyroPitch => Get("Mapping_GyroPitch");
     public string Mapping_GyroYaw => Get("Mapping_GyroYaw");
     public string Mapping_GyroRoll => Get("Mapping_GyroRoll");

@@ -1177,6 +1177,7 @@
   <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>터치패드 {0} 손가락 {1} 터치</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>모션 자이로</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>모션 가속도 센서</value></data>
+  <data name="Mapping_MotionLean" xml:space="preserve"><value>모션 기울임</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>터치패드</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>숫자 키패드 *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>숫자 키패드 +</value></data>
@@ -1654,12 +1655,8 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>기울이기 외부 데드존 재설정</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>컨트롤러 방향 재설정</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>모션 조향</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>컨트롤러를 핸들처럼 기울여 선택한 축을 조향합니다. 실제 스틱은 영향을 받지 않습니다.</value></data>
-  <data name="Pad_MotionSteer_Enable" xml:space="preserve"><value>모션 조향 사용</value></data>
-  <data name="Pad_MotionSteer_Target" xml:space="preserve"><value>조향 대상</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>"모션 기울임" 입력 설정: 컨트롤러를 핸들처럼 기울이세요. 매핑의 입력 드롭다운에서 "모션 기울임"을 스틱 축에 할당하세요.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>모든 모션 조향 설정 초기화</value></data>
-  <data name="Pad_MotionSteer_Reset_Enable" xml:space="preserve"><value>모션 조향 초기화</value></data>
-  <data name="Pad_MotionSteer_Reset_Target" xml:space="preserve"><value>조향 대상 초기화</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>조향 끝점 피드백</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>조향 모드로 설정한 스틱을 끝까지 완전히 꺾으면 신호(진동, 트리거, 라이트바)를 주어 한계를 느끼게 합니다. 모두 기본적으로 꺼져 있습니다.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>끝점에서 진동 펄스</value></data>

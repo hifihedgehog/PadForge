@@ -1177,6 +1177,7 @@
   <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>Touchpad {0} Dedo {1} Toque</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Movimento Giroscópio</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>Movimento Acelerômetro</value></data>
+  <data name="Mapping_MotionLean" xml:space="preserve"><value>Inclinação de movimento</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>Teclado numérico *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>Teclado numérico +</value></data>
@@ -1654,12 +1655,8 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Redefinir Zona Morta Externa da Inclinação</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Redefinir Orientação do Controle</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Direção por Movimento</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Incline o controle como um volante para dirigir o eixo escolhido. O analógico físico não é afetado.</value></data>
-  <data name="Pad_MotionSteer_Enable" xml:space="preserve"><value>Ativar Direção por Movimento</value></data>
-  <data name="Pad_MotionSteer_Target" xml:space="preserve"><value>Dirige</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Configurações da entrada "Inclinação de movimento": incline o controle como um volante. Atribua "Inclinação de movimento" a um eixo do analógico na lista de entradas em Mapeamentos.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Redefinir todas as configurações de Direção por Movimento</value></data>
-  <data name="Pad_MotionSteer_Reset_Enable" xml:space="preserve"><value>Redefinir Direção por Movimento</value></data>
-  <data name="Pad_MotionSteer_Reset_Target" xml:space="preserve"><value>Redefinir Destino da Direção</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback de Batente do Volante</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quando um analógico configurado como volante é girado até o esterçamento máximo, emite um sinal (vibração, gatilho ou barra de luz) para você sentir o limite. Tudo desativado por padrão.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pulso de vibração no batente</value></data>

@@ -1197,6 +1197,7 @@
   <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} aanraking</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Beweging Gyro</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>Beweging Versnellingsmeter</value></data>
+  <data name="Mapping_MotionLean" xml:space="preserve"><value>Bewegingshelling</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>Numeriek toetsenbord *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>Numeriek toetsenbord +</value></data>
@@ -1674,12 +1675,8 @@
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Buitenste kanteldeadzone resetten</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Controllerstand resetten</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Bewegingsbesturing</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Kantel de controller als een stuur om de gekozen as te besturen. De fysieke stick blijft ongemoeid.</value></data>
-  <data name="Pad_MotionSteer_Enable" xml:space="preserve"><value>Bewegingsbesturing inschakelen</value></data>
-  <data name="Pad_MotionSteer_Target" xml:space="preserve"><value>Bestuurt</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Instellingen voor de invoer "Bewegingshelling": kantel de controller als een stuur. Wijs "Bewegingshelling" toe aan een stick-as via de invoerlijst in Toewijzingen.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Alle bewegingsbesturing-instellingen herstellen</value></data>
-  <data name="Pad_MotionSteer_Reset_Enable" xml:space="preserve"><value>Bewegingsbesturing herstellen</value></data>
-  <data name="Pad_MotionSteer_Reset_Target" xml:space="preserve"><value>Stuurdoel herstellen</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback bij stuuraanslag</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Wanneer een stick die op een stuurmodus is ingesteld helemaal tot de volledige stuuraanslag wordt gedraaid, krijg je een signaal (rumble, trigger of lichtbalk) zodat je de limiet voelt. Alles staat standaard uit.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Trilpuls bij stuuraanslag</value></data>

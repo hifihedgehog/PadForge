@@ -1417,6 +1417,13 @@ namespace PadForge.Engine.Data
             if (string.IsNullOrEmpty(k)) return false;
             if (k.StartsWith("Stick", StringComparison.Ordinal) && k.Contains("Steer", StringComparison.Ordinal))
                 return true;
+            // Motion Lean input tuning (gyro tab's Motion Steering card):
+            // MotionSteerInner / MotionSteerOuter / MotionSteerOrient. Per-device
+            // tuning, not an input-routing descriptor — without this, the
+            // descriptor-bleed cleanup reset a non-selected device's tilt setup
+            // to defaults on every device-switch save.
+            if (k.StartsWith("MotionSteer", StringComparison.Ordinal))
+                return true;
             if (k.StartsWith("ExtendedStick", StringComparison.Ordinal))
                 return true;
             if (k.StartsWith("ExtendedTrigger", StringComparison.Ordinal)

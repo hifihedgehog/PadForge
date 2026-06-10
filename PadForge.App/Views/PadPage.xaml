@@ -3140,7 +3140,7 @@
                                             </StackPanel>
                                             <Separator Margin="0,8,0,8"/>
                                             <TextBlock Text="{Binding Pad_SensitivityCurves, Source={x:Static strings:Strings.Instance}}"
-                                                       Style="{StaticResource CardTitle}"/>
+                                                       Style="{StaticResource CardSectionTitle}"/>
                                             <TextBlock Text="{Binding Pad_SensitivityCurveHint, Source={x:Static strings:Strings.Instance}}"
                                                        Style="{StaticResource CardDescription}"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
@@ -3376,7 +3376,7 @@
                                     <Separator Margin="0,16,0,8"/>
                                     <StackPanel>
                                             <TextBlock Text="{Binding Pad_Steering_Header, Source={x:Static strings:Strings.Instance}}"
-                                                       Style="{StaticResource CardTitle}"/>
+                                                       Style="{StaticResource CardSectionTitle}"/>
                                             <TextBlock Text="{Binding Pad_Steering_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                                        Style="{StaticResource CardDescription}"/>
 
@@ -3744,7 +3744,7 @@
 
                                             <Separator Margin="0,8,0,8"/>
                                             <TextBlock Text="{Binding Pad_SensitivityCurve, Source={x:Static strings:Strings.Instance}}"
-                                                       Style="{StaticResource CardTitle}"/>
+                                                       Style="{StaticResource CardSectionTitle}"/>
                                             <TextBlock Text="{Binding Pad_SensitivityCurveHintShort, Source={x:Static strings:Strings.Instance}}"
                                                        Style="{StaticResource CardDescription}"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">

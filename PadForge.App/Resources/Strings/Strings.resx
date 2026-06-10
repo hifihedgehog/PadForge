@@ -1751,11 +1751,6 @@
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macro sounds and mirrored system audio play through the selected controller’s built-in speaker, over USB or Bluetooth. Pick the device in the dropdown above — every setting here follows it.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sound Output</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Sounds route to the selected controller automatically. Over USB the pad’s own audio endpoint is matched by hardware container; over Bluetooth the audio is streamed in Sony HID frames.</value></data>
-  <data name="Pad_Audio_Device_Label" xml:space="preserve"><value>Output device</value></data>
-  <data name="Pad_Audio_DefaultDevice" xml:space="preserve"><value>System default</value></data>
-  <data name="Pad_Audio_DisconnectedDevice_Format" xml:space="preserve"><value>Disconnected device ({0})</value></data>
-  <data name="Pad_Audio_RefreshDevices" xml:space="preserve"><value>Refresh the device list</value></data>
-  <data name="Pad_Audio_Reset_Device" xml:space="preserve"><value>Reset to the system default device</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Master volume</value></data>
   <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Reset master volume to 100%</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>Test</value></data>

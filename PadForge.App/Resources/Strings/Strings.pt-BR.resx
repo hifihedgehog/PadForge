@@ -1687,11 +1687,6 @@
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Os sons de macro e o áudio espelhado tocam pelo alto-falante integrado do controle selecionado, por USB ou Bluetooth. Escolha o dispositivo na lista acima — tudo aqui o acompanha.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Saída de som</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Os sons são roteados automaticamente para o controle selecionado. Por USB, o endpoint de áudio do controle é associado por contêiner de hardware; por Bluetooth, o áudio é transmitido em quadros HID da Sony.</value></data>
-  <data name="Pad_Audio_Device_Label" xml:space="preserve"><value>Dispositivo de saída</value></data>
-  <data name="Pad_Audio_DefaultDevice" xml:space="preserve"><value>Padrão do sistema</value></data>
-  <data name="Pad_Audio_DisconnectedDevice_Format" xml:space="preserve"><value>Dispositivo desconectado ({0})</value></data>
-  <data name="Pad_Audio_RefreshDevices" xml:space="preserve"><value>Atualizar a lista de dispositivos</value></data>
-  <data name="Pad_Audio_Reset_Device" xml:space="preserve"><value>Restaurar o dispositivo padrão</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Volume geral</value></data>
   <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Restaurar o volume geral para 100%</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>Testar</value></data>

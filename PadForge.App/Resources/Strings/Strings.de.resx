@@ -1687,11 +1687,6 @@
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makro-Sounds und gespiegeltes Systemaudio laufen über den eingebauten Lautsprecher des ausgewählten Controllers, per USB oder Bluetooth. Wähle das Gerät im Dropdown darüber — alle Einstellungen hier folgen ihm.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Soundausgabe</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Sounds werden automatisch zum ausgewählten Controller geleitet. Über USB wird das Audio-Endpunkt des Pads per Hardware-Container zugeordnet; über Bluetooth wird das Audio in Sony-HID-Frames gestreamt.</value></data>
-  <data name="Pad_Audio_Device_Label" xml:space="preserve"><value>Ausgabegerät</value></data>
-  <data name="Pad_Audio_DefaultDevice" xml:space="preserve"><value>Systemstandard</value></data>
-  <data name="Pad_Audio_DisconnectedDevice_Format" xml:space="preserve"><value>Getrenntes Gerät ({0})</value></data>
-  <data name="Pad_Audio_RefreshDevices" xml:space="preserve"><value>Geräteliste aktualisieren</value></data>
-  <data name="Pad_Audio_Reset_Device" xml:space="preserve"><value>Auf Systemstandard zurücksetzen</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Gesamtlautstärke</value></data>
   <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Gesamtlautstärke auf 100% zurücksetzen</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>Test</value></data>

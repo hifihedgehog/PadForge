@@ -1709,11 +1709,6 @@
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>I suoni delle macro e l’audio duplicato escono dall’altoparlante integrato del controller selezionato, via USB o Bluetooth. Scegli il dispositivo nel menu sopra: tutto qui lo segue.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Uscita audio</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>I suoni raggiungono automaticamente il controller selezionato. Via USB l’endpoint audio del pad è associato per contenitore hardware; via Bluetooth l’audio viaggia in frame HID Sony.</value></data>
-  <data name="Pad_Audio_Device_Label" xml:space="preserve"><value>Dispositivo di uscita</value></data>
-  <data name="Pad_Audio_DefaultDevice" xml:space="preserve"><value>Predefinito di sistema</value></data>
-  <data name="Pad_Audio_DisconnectedDevice_Format" xml:space="preserve"><value>Dispositivo disconnesso ({0})</value></data>
-  <data name="Pad_Audio_RefreshDevices" xml:space="preserve"><value>Aggiorna l’elenco dei dispositivi</value></data>
-  <data name="Pad_Audio_Reset_Device" xml:space="preserve"><value>Ripristina il dispositivo predefinito</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Volume generale</value></data>
   <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Ripristina il volume generale al 100%</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>Prova</value></data>

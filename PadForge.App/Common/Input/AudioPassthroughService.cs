@@ -611,14 +611,29 @@ namespace PadForge.Common.Input
                     return;
                 }
                 using var en = new MMDeviceEnumerator();
-                MMDevice match = null;
-                foreach (var dev in en.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active))
+                MMDevice match = FindActiveEndpointByContainer(en, container);
+                if (match == null)
                 {
-                    try
+                    // The pad's endpoint often exists but sits disabled in
+                    // Windows sound settings (a common DualSense setup, done
+                    // to keep games off the pad's audio device). Audio was
+                    // explicitly routed at this pad, so enable the endpoint
+                    // (IPolicyConfig::SetEndpointVisibility — one-way, never
+                    // auto-disabled back) and retry.
+                    string disabledId = null;
+                    foreach (var dev in en.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Disabled))
                     {
-                        if (GetEndpointContainerId(dev) == container) { match = dev; break; }
+                        using (dev)
+                        {
+                            if (GetEndpointContainerId(dev) == container) { disabledId = dev.ID; break; }
+                        }
                     }
-                    finally { if (!ReferenceEquals(match, dev)) dev.Dispose(); }
+                    if (disabledId != null && NativeMethods.TryEnableEndpoint(disabledId))
+                    {
+                        Diag($"[SINK] enabled disabled endpoint {disabledId} (slot={s.Slot})");
+                        Thread.Sleep(250); // endpoint activation isn't instant
+                        match = FindActiveEndpointByContainer(en, container);
+                    }
                 }
                 if (match == null)
                 {
@@ -712,6 +727,20 @@ namespace PadForge.Common.Input
             }
             catch { }
             return false;
+        }
+
+        private static MMDevice FindActiveEndpointByContainer(MMDeviceEnumerator en, Guid container)
+        {
+            MMDevice match = null;
+            foreach (var dev in en.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active))
+            {
+                try
+                {
+                    if (GetEndpointContainerId(dev) == container) { match = dev; break; }
+                }
+                finally { if (!ReferenceEquals(match, dev)) dev.Dispose(); }
+            }
+            return match;
         }
 
         private static Guid GetEndpointContainerId(MMDevice dev)
@@ -845,10 +874,11 @@ namespace PadForge.Common.Input
                         if (!NativeMethods.WriteHid(s.BtHandle, s.BtEvent, report))
                         {
                             // No transport I/O here — mark and let the worker
-                            // detach/rebuild on its thread.
+                            // detach/rebuild on its 5 s cadence. (Signalling
+                            // immediately caused a 94 Hz fail->reopen loop
+                            // while a pad was mid-disconnect.)
                             Diag($"[BT-WRITE-FAIL] slot={s.Slot}; deferring to worker");
                             s.TransportFailed = true;
-                            _workSignal.Set();
                         }
                     }
 
@@ -888,6 +918,46 @@ namespace PadForge.Common.Input
 
         private static class NativeMethods
         {
+            // ── IPolicyConfig (undocumented mmsys policy store; the same
+            //    interface SoundSwitch / AudioEndPointLibrary use). Only
+            //    SetEndpointVisibility is called; the earlier methods are
+            //    slot placeholders — vtable ORDER is the contract
+            //    (AudioEndPointLibrary PolicyConfig.h, IPolicyConfig
+            //    {f8679f50-850a-41cf-9c72-430f290290c8}). ──
+            [ComImport, Guid("f8679f50-850a-41cf-9c72-430f290290c8"),
+             InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+            private interface IPolicyConfig
+            {
+                int GetMixFormat(IntPtr a, IntPtr b);
+                int GetDeviceFormat(IntPtr a, int b, IntPtr c);
+                int ResetDeviceFormat(IntPtr a);
+                int SetDeviceFormat(IntPtr a, IntPtr b, IntPtr c);
+                int GetProcessingPeriod(IntPtr a, int b, IntPtr c, IntPtr d);
+                int SetProcessingPeriod(IntPtr a, IntPtr b);
+                int GetShareMode(IntPtr a, IntPtr b);
+                int SetShareMode(IntPtr a, IntPtr b);
+                int GetPropertyValue(IntPtr a, IntPtr b, IntPtr c);
+                int SetPropertyValue(IntPtr a, IntPtr b, IntPtr c);
+                int SetDefaultEndpoint([MarshalAs(UnmanagedType.LPWStr)] string deviceId, int role);
+                int SetEndpointVisibility([MarshalAs(UnmanagedType.LPWStr)] string deviceId, int visible);
+            }
+
+            [ComImport, Guid("870af99c-171d-4f9e-af0d-e63df40c2bc9")]
+            private class PolicyConfigClient { }
+
+            /// <summary>Re-enables an endpoint disabled in Windows sound
+            /// settings. Returns true when the policy store accepted it.</summary>
+            public static bool TryEnableEndpoint(string endpointId)
+            {
+                try
+                {
+                    var pc = (IPolicyConfig)new PolicyConfigClient();
+                    try { return pc.SetEndpointVisibility(endpointId, 1) >= 0; }
+                    finally { Marshal.ReleaseComObject(pc); }
+                }
+                catch { return false; }
+            }
+
             [DllImport("winmm.dll")] public static extern uint timeBeginPeriod(uint ms);
             [DllImport("winmm.dll")] public static extern uint timeEndPeriod(uint ms);
             [DllImport("kernel32.dll", SetLastError = true)] public static extern bool CloseHandle(IntPtr h);

@@ -2955,6 +2955,125 @@ namespace PadForge.ViewModels
                 }
             }, () => HasSelectedMacro);
 
+        // ═══════════════════════════════════════════════
+        //  Audio tab (issue #83) — per-slot sound output for macro sounds
+        // ═══════════════════════════════════════════════
+
+        private string _soundOutputDeviceId = "";
+        /// <summary>Render-endpoint ID this pad's macro sounds play through.
+        /// Empty = system default. A USB DualSense exposes its speaker as a
+        /// normal endpoint ("Wireless Controller"), so picking it gives
+        /// from-the-controller audio with no driver work.</summary>
+        public string SoundOutputDeviceId
+        {
+            get => _soundOutputDeviceId;
+            set
+            {
+                if (SetProperty(ref _soundOutputDeviceId, value ?? ""))
+                    PadForge.Common.Input.SoundMacroService.SetSlotDevice(PadIndex, _soundOutputDeviceId);
+            }
+        }
+
+        private int _soundMasterVolume = 100;
+        /// <summary>Per-pad master volume for macro sounds (0-100),
+        /// multiplied with each action's own volume. Live sounds retune.</summary>
+        public int SoundMasterVolume
+        {
+            get => _soundMasterVolume;
+            set
+            {
+                int v = Math.Clamp(value, 0, 100);
+                if (SetProperty(ref _soundMasterVolume, v))
+                    PadForge.Common.Input.SoundMacroService.SetSlotVolume(PadIndex, v);
+            }
+        }
+
+        /// <summary>Output device options for the Audio tab picker
+        /// (Display = friendly name, Value = endpoint ID, "" = default).</summary>
+        public ObservableCollection<GyroLabeledOption> SoundOutputDevices { get; } = new();
+
+        /// <summary>Re-enumerates active render endpoints. The current
+        /// selection is preserved even when its device is unplugged (a
+        /// "(disconnected)" entry keeps the TwoWay ComboBox binding from
+        /// nulling the saved ID).</summary>
+        public void RefreshSoundOutputDevices()
+        {
+            var devices = PadForge.Common.Input.SoundMacroService.GetOutputDevices();
+            SoundOutputDevices.Clear();
+            SoundOutputDevices.Add(new GyroLabeledOption(
+                () => Strings.Instance.Pad_Audio_DefaultDevice, ""));
+            bool currentPresent = string.IsNullOrEmpty(_soundOutputDeviceId);
+            foreach (var (id, name) in devices)
+            {
+                string n = name, i = id;
+                SoundOutputDevices.Add(new GyroLabeledOption(() => n, i));
+                if (string.Equals(i, _soundOutputDeviceId, StringComparison.Ordinal))
+                    currentPresent = true;
+            }
+            if (!currentPresent)
+            {
+                string staleId = _soundOutputDeviceId;
+                SoundOutputDevices.Add(new GyroLabeledOption(
+                    () => string.Format(Strings.Instance.Pad_Audio_DisconnectedDevice_Format, staleId), staleId));
+            }
+            OnPropertyChanged(nameof(SoundOutputDeviceId));
+        }
+
+        /// <summary>This pad's macros that play a sound — the Audio tab's
+        /// quick list. Re-derived on Audio-tab entry.</summary>
+        public System.Collections.Generic.List<MacroItem> SoundMacros =>
+            Macros.Where(m => m.Actions.Any(a => a.Type == MacroActionType.PlaySound)).ToList();
+
+        public bool HasNoSoundMacros => SoundMacros.Count == 0;
+
+        private RelayCommand _refreshSoundDevicesCommand;
+        public RelayCommand RefreshSoundDevicesCommand =>
+            _refreshSoundDevicesCommand ??= new RelayCommand(RefreshSoundOutputDevices);
+
+        private RelayCommand _soundTestCommand;
+        public RelayCommand SoundTestCommand =>
+            _soundTestCommand ??= new RelayCommand(
+                () => PadForge.Common.Input.SoundMacroService.PlayTestBeep(PadIndex));
+
+        private RelayCommand _soundStopAllCommand;
+        public RelayCommand SoundStopAllCommand =>
+            _soundStopAllCommand ??= new RelayCommand(
+                () => PadForge.Common.Input.SoundMacroService.StopSlot(PadIndex));
+
+        private RelayCommand _resetSoundMasterVolumeCommand, _resetSoundDeviceCommand;
+        public RelayCommand ResetSoundMasterVolumeCommand =>
+            _resetSoundMasterVolumeCommand ??= new RelayCommand(() => SoundMasterVolume = 100);
+        public RelayCommand ResetSoundDeviceCommand =>
+            _resetSoundDeviceCommand ??= new RelayCommand(() => SoundOutputDeviceId = "");
+
+        private RelayCommand _addSoundMacroCommand;
+        /// <summary>Creates a macro pre-loaded with a Play Sound action and
+        /// jumps to the Macros tab to finish it (trigger + file) — the
+        /// "best of both worlds" flow: the Audio tab is the hub, the Macros
+        /// tab is the editor.</summary>
+        public RelayCommand AddSoundMacroCommand =>
+            _addSoundMacroCommand ??= new RelayCommand(() =>
+            {
+                var macro = new MacroItem
+                {
+                    PadIndex = PadIndex,
+                    Name = string.Format(Strings.Instance.Pad_Audio_SoundMacroName_Format, Macros.Count + 1),
+                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType)
+                };
+                macro.Actions.Add(new MacroAction { Type = MacroActionType.PlaySound });
+                Macros.Add(macro);
+                SelectedMacro = macro;
+                SelectedConfigTab = 1; // Macros tab
+            });
+
+        /// <summary>Jump to the Macros tab with the clicked sound macro selected.</summary>
+        public void OpenSoundMacro(MacroItem macro)
+        {
+            if (macro == null) return;
+            SelectedMacro = macro;
+            SelectedConfigTab = 1;
+        }
+
         /// <summary>
         /// Syncs macro button display style to all macros when the output
         /// controller type changes.
@@ -2984,8 +3103,22 @@ namespace PadForge.ViewModels
         public int SelectedConfigTab
         {
             get => _selectedConfigTab;
-            set => SetProperty(ref _selectedConfigTab, value);
+            set
+            {
+                if (SetProperty(ref _selectedConfigTab, value) && value == AudioTabIndex)
+                {
+                    // Entering the Audio tab: re-enumerate render endpoints
+                    // (devices plug/unplug freely) and re-derive the
+                    // sound-macro list from the live Macros collection.
+                    RefreshSoundOutputDevices();
+                    OnPropertyChanged(nameof(SoundMacros));
+                    OnPropertyChanged(nameof(HasNoSoundMacros));
+                }
+            }
         }
+
+        /// <summary>Tab-strip index of the Audio tab (issue #83).</summary>
+        public const int AudioTabIndex = 12;
 
         // ═══════════════════════════════════════════════
         //  Commands

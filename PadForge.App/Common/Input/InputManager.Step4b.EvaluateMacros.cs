@@ -445,6 +445,9 @@ namespace PadForge.Common.Input
                 {
                     macro.IsExecuting = false;
                     macro.CurrentActionIndex = 0;
+                    // Looping macro sounds are trigger-bound on this path:
+                    // release stops them (one-shots play out).
+                    SoundMacroService.StopLoopsForMacro(macro.PadIndex, macro);
                 }
 
                 // Execute current action if macro is running.
@@ -943,6 +946,28 @@ namespace PadForge.Common.Input
                     break;
                 }
 
+                case MacroActionType.PlaySound:
+                {
+                    // Single-frame fire like Rumble: hand the file to the
+                    // sound service (non-blocking; uncached files decode on
+                    // the thread pool) and advance. The macro object is the
+                    // loop key so trigger release / SoundStop can stop what
+                    // this macro started; looping starts are idempotent per
+                    // (macro, file) so an Until-Release list restart can't
+                    // stack instances.
+                    SoundMacroService.Play(macro.PadIndex, macro,
+                        action.SoundFilePath, action.SoundVolume, action.SoundLoop);
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.SoundStop:
+                {
+                    SoundMacroService.StopSlot(macro.PadIndex);
+                    AdvanceAction(macro);
+                    break;
+                }
+
                 case MacroActionType.LightbarColorClear:
                 {
                     int slotIndex = macro.PadIndex;
@@ -1380,6 +1405,9 @@ namespace PadForge.Common.Input
                 {
                     macro.IsExecuting = false;
                     macro.CurrentActionIndex = 0;
+                    // Looping macro sounds are trigger-bound on this path:
+                    // release stops them (one-shots play out).
+                    SoundMacroService.StopLoopsForMacro(macro.PadIndex, macro);
                 }
 
                 if (macro.IsExecuting && macro.Actions.Count > 0)
@@ -1632,6 +1660,28 @@ namespace PadForge.Common.Input
                     int slotIndex = macro.PadIndex;
                     if (slotIndex >= 0 && slotIndex < MaxPads)
                         MacroRumbleOverrides[slotIndex].Clear();
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.PlaySound:
+                {
+                    // Single-frame fire like Rumble: hand the file to the
+                    // sound service (non-blocking; uncached files decode on
+                    // the thread pool) and advance. The macro object is the
+                    // loop key so trigger release / SoundStop can stop what
+                    // this macro started; looping starts are idempotent per
+                    // (macro, file) so an Until-Release list restart can't
+                    // stack instances.
+                    SoundMacroService.Play(macro.PadIndex, macro,
+                        action.SoundFilePath, action.SoundVolume, action.SoundLoop);
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.SoundStop:
+                {
+                    SoundMacroService.StopSlot(macro.PadIndex);
                     AdvanceAction(macro);
                     break;
                 }

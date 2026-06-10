@@ -552,6 +552,50 @@ namespace PadForge.Views
         //  selected layer's MappingRows.
         // ─────────────────────────────────────────────
 
+        // ─────────────────────────────────────────────
+        //  Sound macro action handlers (issue #83)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Audio tab hub row: jump to the Macros tab with the
+        /// clicked sound macro selected.</summary>
+        private void SoundMacroRow_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is PadForge.ViewModels.MacroItem macro)
+                _currentPadVm?.OpenSoundMacro(macro);
+        }
+
+        /// <summary>Browse for a sound file on the Play Sound action card.
+        /// The button's DataContext is the MacroAction being edited.</summary>
+        private void BrowseSoundFile_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is not PadForge.ViewModels.MacroAction action)
+                return;
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = PadForge.Resources.Strings.Strings.Instance.Macro_Sound_File_Label,
+                Filter = "Audio files|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac|All files|*.*",
+                CheckFileExists = true,
+            };
+            try
+            {
+                if (!string.IsNullOrEmpty(action.SoundFilePath))
+                    dlg.InitialDirectory = System.IO.Path.GetDirectoryName(action.SoundFilePath);
+            }
+            catch { }
+            if (dlg.ShowDialog() == true)
+                action.SoundFilePath = dlg.FileName;
+        }
+
+        /// <summary>Preview the action's sound through the pad's configured
+        /// output device, at the action's volume (no loop).</summary>
+        private void PreviewSoundFile_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is not PadForge.ViewModels.MacroAction action)
+                return;
+            int slot = _currentPadVm?.PadIndex ?? 0;
+            PadForge.Common.Input.SoundMacroService.Play(slot, null, action.SoundFilePath, action.SoundVolume, loop: false);
+        }
+
         private void AddShiftLayer_Click(object sender, RoutedEventArgs e)
         {
             if (_currentPadVm == null) return;

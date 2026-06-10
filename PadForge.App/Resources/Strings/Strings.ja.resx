@@ -1682,4 +1682,38 @@
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>ロック付近でトリガー抵抗をリセット</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>ロックごとに1色ずつ切り替える色を追加します。</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>ライトバーの保持をリセット</value></data>
+  <data name="Pad_Audio" xml:space="preserve"><value>オーディオ</value></data>
+  <data name="Pad_Audio_Header" xml:space="preserve"><value>オーディオ</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>マクロからサウンドを再生：剣の衝突、レーダーピング、リロード音、ゴムのアヒルも。パッドごとに出力デバイスを選べ、USB接続のDualSenseスピーカーにも出力できます。</value></data>
+  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>サウンド出力</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>このパッドのマクロサウンドの出力先。USBのDualSense（"Wireless Controller"）を選ぶとコントローラーのスピーカーから再生されます。</value></data>
+  <data name="Pad_Audio_Device_Label" xml:space="preserve"><value>出力デバイス</value></data>
+  <data name="Pad_Audio_DefaultDevice" xml:space="preserve"><value>システム既定</value></data>
+  <data name="Pad_Audio_DisconnectedDevice_Format" xml:space="preserve"><value>切断されたデバイス ({0})</value></data>
+  <data name="Pad_Audio_RefreshDevices" xml:space="preserve"><value>デバイス一覧を更新</value></data>
+  <data name="Pad_Audio_Reset_Device" xml:space="preserve"><value>システム既定にリセット</value></data>
+  <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>マスター音量</value></data>
+  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>マスター音量を100%にリセット</value></data>
+  <data name="Pad_Audio_Test" xml:space="preserve"><value>テスト</value></data>
+  <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>選択中のデバイスで短いビープ音を再生</value></data>
+  <data name="Pad_Audio_StopAll" xml:space="preserve"><value>すべてのサウンドを停止</value></data>
+  <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>このパッドのマクロサウンドをすべて停止</value></data>
+  <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>サウンドマクロ</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>サウンドはマクロが再生します：トリガー（押す・離す・長押し・数式）＋「サウンド再生」アクション。ここかマクロタブで作成でき、遅延・繰り返し・トグルも使えます。</value></data>
+  <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>新しいサウンドマクロ</value></data>
+  <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>サウンドマクロはまだありません。作成してサウンドファイルとトリガーを選んでください。</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>このマクロをマクロタブで開く</value></data>
+  <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>サウンドマクロ {0}</value></data>
+  <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>サウンド再生</value></data>
+  <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>サウンドファイル（.wav、.mp3、.m4a、.aac、.wma、.flac）をこのパッドの出力デバイスで再生</value></data>
+  <data name="MacroAction_Type_SoundStop" xml:space="preserve"><value>サウンド停止</value></data>
+  <data name="MacroAction_SoundStop_Tooltip" xml:space="preserve"><value>このパッドのマクロサウンドをすべて停止します。ループ再生と組み合わせて別のマクロから終了できます。</value></data>
+  <data name="MacroAction_PlaySound_Format" xml:space="preserve"><value>{0} を再生 ({1}%)</value></data>
+  <data name="MacroAction_PlaySoundLoop_Format" xml:space="preserve"><value>{0} をループ ({1}%)</value></data>
+  <data name="Macro_Sound_File_Label" xml:space="preserve"><value>サウンドファイル</value></data>
+  <data name="Macro_Sound_Browse" xml:space="preserve"><value>参照…</value></data>
+  <data name="Macro_Sound_Preview" xml:space="preserve"><value>試聴</value></data>
+  <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>音量</value></data>
+  <data name="Macro_Sound_Loop" xml:space="preserve"><value>停止までループ</value></data>
+  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>「サウンド停止」アクションが実行されるまで繰り返します。長押し／離すまでマクロではトリガーを離すと停止します</value></data>
 </root>

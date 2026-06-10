@@ -1277,6 +1277,18 @@ namespace PadForge.Services
                 }
             }
 
+            // Audio tab (issue #83): per-slot sound output device + master volume.
+            if (appSettings.SlotSoundDeviceIds != null)
+            {
+                for (int i = 0; i < _mainVm.Pads.Count && i < appSettings.SlotSoundDeviceIds.Length; i++)
+                    _mainVm.Pads[i].SoundOutputDeviceId = appSettings.SlotSoundDeviceIds[i] ?? "";
+            }
+            if (appSettings.SlotSoundVolumes != null)
+            {
+                for (int i = 0; i < _mainVm.Pads.Count && i < appSettings.SlotSoundVolumes.Length; i++)
+                    _mainVm.Pads[i].SoundMasterVolume = appSettings.SlotSoundVolumes[i];
+            }
+
             // Reconcile per-group order lists with the loaded topology. Pads
             // that the persisted lists reference but that are no longer
             // created (or that have changed types) are dropped; pads that
@@ -2253,7 +2265,10 @@ namespace PadForge.Services
                             LightbarFadeMs = Math.Clamp(ad.LightbarFadeMs, 0, 5000),
                             LightbarPaletteCsv = ad.LightbarPaletteCsv ?? string.Empty,
                             LightbarTargetMode = ad.LightbarTargetMode,
-                            LightbarCycleModesCsv = ad.LightbarCycleModesCsv
+                            LightbarCycleModesCsv = ad.LightbarCycleModesCsv,
+                            SoundFilePath = ad.SoundFilePath ?? string.Empty,
+                            SoundVolume = ad.SoundVolume > 0 ? ad.SoundVolume : 100,
+                            SoundLoop = ad.SoundLoop
                         });
                     }
                 }
@@ -2790,6 +2805,8 @@ namespace PadForge.Services
                 GlobalMacros = SettingsManager.GlobalMacros,
                 SlotControllerTypes = isDefault ? slotTypes : defaultSnap.SlotControllerTypes,
                 SlotProfileIds = isDefault ? slotProfileIds : defaultSnap.SlotProfileIds,
+                SlotSoundDeviceIds = _mainVm.Pads.Select(p => p.SoundOutputDeviceId ?? "").ToArray(),
+                SlotSoundVolumes = _mainVm.Pads.Select(p => p.SoundMasterVolume).ToArray(),
                 SlotCreated = isDefault
                     ? (bool[])SettingsManager.SlotCreated.Clone()
                     : defaultSnap.SlotCreated,
@@ -3079,7 +3096,10 @@ namespace PadForge.Services
                             LightbarFadeMs = a.LightbarFadeMs,
                             LightbarPaletteCsv = a.LightbarPaletteCsv,
                             LightbarTargetMode = a.LightbarTargetMode,
-                            LightbarCycleModesCsv = a.LightbarCycleModesCsv
+                            LightbarCycleModesCsv = a.LightbarCycleModesCsv,
+                            SoundFilePath = string.IsNullOrEmpty(a.SoundFilePath) ? null : a.SoundFilePath,
+                            SoundVolume = a.SoundVolume,
+                            SoundLoop = a.SoundLoop
                         }).ToArray()
                     });
                 }
@@ -3801,6 +3821,17 @@ namespace PadForge.Services
         [XmlArrayItem("Type")]
         public int[] SlotControllerTypes { get; set; }
 
+        /// <summary>Per-slot render-endpoint ID for macro sounds (issue #83).
+        /// Empty/null entry = system default device.</summary>
+        [XmlArray("SlotSoundDeviceIds")]
+        [XmlArrayItem("Id")]
+        public string[] SlotSoundDeviceIds { get; set; }
+
+        /// <summary>Per-slot master volume for macro sounds (0-100).</summary>
+        [XmlArray("SlotSoundVolumes")]
+        [XmlArrayItem("Volume")]
+        public int[] SlotSoundVolumes { get; set; }
+
         /// <summary>
         /// Per-slot HIDMaestro profile slug (e.g. "xbox-360-wired",
         /// "dualsense", "logitech-g920"). Empty string falls back to a
@@ -4203,6 +4234,18 @@ namespace PadForge.Services
         [XmlElement] public ViewModels.LightbarMode LightbarTargetMode { get; set; } = ViewModels.LightbarMode.Static;
         /// <summary>CSV of LightbarMode int values for LightbarModeCycle.</summary>
         [XmlElement] public string LightbarCycleModesCsv { get; set; } = "1,2,3,4,11,12,13";
+
+        /// <summary>Sound file path for PlaySound (issue #83). Null when unset.</summary>
+        [XmlElement]
+        public string SoundFilePath { get; set; }
+
+        /// <summary>Per-action sound volume percentage (1-100). Default 100.</summary>
+        [XmlElement]
+        public int SoundVolume { get; set; } = 100;
+
+        /// <summary>Loop the sound until SoundStop / trigger release.</summary>
+        [XmlElement]
+        public bool SoundLoop { get; set; }
     }
 
     /// <summary>

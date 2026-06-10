@@ -666,6 +666,9 @@ namespace PadForge.Common.Input
 
             _running = false;
 
+            // Macro sounds die with the engine — releases the WASAPI clients.
+            SoundMacroService.StopAll();
+
             if (_pollingThread != null && _pollingThread.IsAlive)
             {
                 _pollingThread.Join(timeout: TimeSpan.FromSeconds(3));

@@ -364,6 +364,13 @@
                              Visibility="Collapsed">
                     <TextBlock Text="{Binding Pad_Touchpad, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
+
+                <!-- Audio tab: macro sound playback (issue #83). Per-slot
+                     output device + master volume, and the sound-macro hub.
+                     Always visible; sounds work on every slot type. -->
+                <RadioButton x:Name="TabAudio" Tag="12" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
+                    <TextBlock Text="{Binding Pad_Audio, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
+                </RadioButton>
             </WrapPanel>
         </Border>
 
@@ -1215,6 +1222,12 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_RumbleStop, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.RumbleStop}"
                                                           ToolTip="{Binding MacroAction_RumbleStop_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_PlaySound, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.PlaySound}"
+                                                          ToolTip="{Binding MacroAction_PlaySound_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_SoundStop, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.SoundStop}"
+                                                          ToolTip="{Binding MacroAction_SoundStop_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding Macro_SetGyroEngaged, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.SetGyroEngaged}"
                                                           ToolTip="{Binding Macro_SetGyroEngaged_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -1533,6 +1546,50 @@
                                             <TextBlock Text="{Binding MacroAction_Type_RumbleStop, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,4"/>
                                             <TextBlock Text="{Binding MacroAction_RumbleStop_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                       FontSize="11" TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Play Sound card (issue #83) — file + volume + loop + preview -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsPlaySoundType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_PlaySound, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,6"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                <TextBlock Text="{Binding Macro_Sound_File_Label, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
+                                                <TextBox Text="{Binding SoundFilePath, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Width="260" VerticalAlignment="Center"
+                                                         ToolTip="{Binding SoundFilePath}"/>
+                                                <Button Content="{Binding Macro_Sound_Browse, Source={x:Static strings:Strings.Instance}}"
+                                                        Click="BrowseSoundFile_Click" Padding="8,2" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                                                <Button Content="{Binding Macro_Sound_Preview, Source={x:Static strings:Strings.Instance}}"
+                                                        Click="PreviewSoundFile_Click" Padding="8,2" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                <TextBlock Text="{Binding Macro_Sound_Volume_Label, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
+                                                <Slider Value="{Binding SoundVolume, Mode=TwoWay}" Minimum="0" Maximum="100"
+                                                        Width="180" VerticalAlignment="Center"/>
+                                                <TextBox Text="{Binding SoundVolume, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Width="44" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                                <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                            </StackPanel>
+                                            <CheckBox IsChecked="{Binding SoundLoop, Mode=TwoWay}"
+                                                      Content="{Binding Macro_Sound_Loop, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Macro_Sound_Loop_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Stop Sounds card (issue #83) -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsSoundStopType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_SoundStop, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                            <TextBlock Text="{Binding MacroAction_SoundStop_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                        FontSize="11" TextWrapping="Wrap"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
@@ -6360,6 +6417,101 @@
                 </ScrollViewer>
             </TabItem>
 
+            <!-- === TAB 12: Audio (slot-level, issue #83) === -->
+            <TabItem>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="4">
+                    <StackPanel MaxWidth="860" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="&#xE767;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20"
+                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding Pad_Audio_Header, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Pad_Audio_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
+
+                        <!-- Sound Output card -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE7F5;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Audio_Output_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Audio_Output_Desc, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pad_Audio_Device_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ComboBox ItemsSource="{Binding SoundOutputDevices}" DisplayMemberPath="Display"
+                                              SelectedValuePath="Value" SelectedValue="{Binding SoundOutputDeviceId, Mode=TwoWay}"
+                                              Width="320" VerticalAlignment="Center"/>
+                                    <Button Content="&#xE72C;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                            Command="{Binding RefreshSoundDevicesCommand}" Padding="6,3" Margin="6,0,0,0"
+                                            VerticalAlignment="Center"
+                                            ToolTip="{Binding Pad_Audio_RefreshDevices, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Command="{Binding ResetSoundDeviceCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_Audio_Reset_Device, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pad_Audio_MasterVolume, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding SoundMasterVolume, Mode=TwoWay}" Minimum="0" Maximum="100" Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding SoundMasterVolume, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                    <Button Command="{Binding ResetSoundMasterVolumeCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_Audio_Reset_MasterVolume, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="{Binding Pad_Audio_Test, Source={x:Static strings:Strings.Instance}}"
+                                            Command="{Binding SoundTestCommand}" Padding="10,4" VerticalAlignment="Center"
+                                            ToolTip="{Binding Pad_Audio_Test_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Audio_StopAll, Source={x:Static strings:Strings.Instance}}"
+                                            Command="{Binding SoundStopAllCommand}" Padding="10,4" Margin="6,0,0,0" VerticalAlignment="Center"
+                                            ToolTip="{Binding Pad_Audio_StopAll_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Sound Macros hub card -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE8D6;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Audio_Macros_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Audio_Macros_Desc, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+                                <Button Content="{Binding Pad_Audio_NewSoundMacro, Source={x:Static strings:Strings.Instance}}"
+                                        Command="{Binding AddSoundMacroCommand}" Padding="10,4" HorizontalAlignment="Left"
+                                        Margin="0,0,0,8"/>
+                                <TextBlock Text="{Binding Pad_Audio_NoSoundMacros, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"
+                                           Visibility="{Binding HasNoSoundMacros, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <ItemsControl ItemsSource="{Binding SoundMacros}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Click="SoundMacroRow_Click" HorizontalAlignment="Stretch"
+                                                    HorizontalContentAlignment="Left" Margin="0,0,0,4" Padding="8,5"
+                                                    ToolTip="{Binding Pad_Audio_OpenMacro_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="&#xE8D6;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                                               FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding SoundFilesSummary}" VerticalAlignment="Center"
+                                                               Margin="10,0,0,0" Opacity="0.6" FontSize="12"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
         </TabControl>
     </Grid>
 </UserControl>

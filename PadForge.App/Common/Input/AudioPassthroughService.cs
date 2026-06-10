@@ -87,6 +87,11 @@ namespace PadForge.Common.Input
             public string HidPath;
             public bool PassthroughOn;
 
+            /// <summary>The pad's PnP container (set when the USB transport
+            /// is built) — used to keep the loopback mirror from capturing
+            /// the pad's own endpoint back into itself.</summary>
+            public Guid Container;
+
             /// <summary>Macro sounds targeted at this sink (48 kHz stereo float).</summary>
             public MixingSampleProvider MacroMixer;
             /// <summary>Macro + optional loopback mirror.</summary>
@@ -156,13 +161,27 @@ namespace PadForge.Common.Input
             // Restart when the default render device changed (DSY-v2
             // re-validates every 5 s rather than registering callbacks).
             string defaultId = "";
+            Guid defaultContainer = Guid.Empty;
             try
             {
                 using var en = new MMDeviceEnumerator();
                 using var dev = en.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
                 defaultId = dev.ID;
+                defaultContainer = GetEndpointContainerId(dev);
             }
             catch { }
+
+            // Never mirror a pad's own endpoint back into itself.
+            bool feedback;
+            lock (_lock)
+                feedback = defaultContainer != Guid.Empty
+                    && _sinks.Values.Any(x => x.Container == defaultContainer);
+            if (feedback)
+            {
+                Diag("[CAPTURE-SKIP] default output is a pad's own endpoint");
+                StopCaptureOnWorker();
+                return;
+            }
 
             if (haveCapture && string.Equals(defaultId, haveId, StringComparison.Ordinal))
                 return;
@@ -302,37 +321,45 @@ namespace PadForge.Common.Input
 
         /// <summary>USB frame shaper per the DSY-v2 playback callbacks:
         /// channel 0 = 0, channel 1 = mono program mix (the firmware's
-        /// speaker tap), channels 2+ (DualSense haptic actuators) = 0.</summary>
-        private sealed class UsbFrameProvider : ISampleProvider
+        /// speaker tap), channels 2+ (DualSense haptic actuators) = 0.
+        /// IWaveProvider carrying the endpoint's own mix format: shared-mode
+        /// WASAPI rejects a non-extensible format beyond stereo
+        /// (E_INVALIDARG — the DS5 endpoint is extensible float 48k 4ch),
+        /// and NAudio's ISampleProvider Init path refuses extensible-float,
+        /// so the float→byte hop happens here.</summary>
+        private sealed class UsbFrameProvider : IWaveProvider
         {
             private readonly ISampleProvider _src;
             private readonly int _outChannels;
-            private float[] _buf = new float[4096];
+            private float[] _pull = new float[4096];
+            private float[] _frames = new float[8192];
 
-            public UsbFrameProvider(ISampleProvider src, int outChannels)
+            public UsbFrameProvider(ISampleProvider src, WaveFormat endpointFormat)
             {
                 _src = src;
-                _outChannels = Math.Max(outChannels, 2);
-                WaveFormat = WaveFormat.CreateIeeeFloatWaveFormat(Rate, _outChannels);
+                WaveFormat = endpointFormat;
+                _outChannels = endpointFormat.Channels;
             }
 
             public WaveFormat WaveFormat { get; }
 
-            public int Read(float[] buffer, int offset, int count)
+            public int Read(byte[] buffer, int offset, int count)
             {
-                int frames = count / _outChannels;
+                int frames = count / (4 * _outChannels);
                 int need = frames * 2;
-                if (_buf.Length < need) _buf = new float[need];
-                _src.Read(_buf, 0, need);
+                if (_pull.Length < need) _pull = new float[need];
+                if (_frames.Length < frames * _outChannels) _frames = new float[frames * _outChannels];
+                _src.Read(_pull, 0, need);
                 for (int f = 0; f < frames; f++)
                 {
-                    float mono = Math.Clamp((_buf[f * 2] + _buf[f * 2 + 1]) * 0.5f, -1f, 1f);
-                    int o = offset + f * _outChannels;
-                    buffer[o] = 0f;
-                    buffer[o + 1] = mono;
-                    for (int c = 2; c < _outChannels; c++) buffer[o + c] = 0f;
+                    float mono = Math.Clamp((_pull[f * 2] + _pull[f * 2 + 1]) * 0.5f, -1f, 1f);
+                    int o = f * _outChannels;
+                    _frames[o] = 0f;
+                    _frames[o + 1] = mono;
+                    for (int c = 2; c < _outChannels; c++) _frames[o + c] = 0f;
                 }
-                return frames * _outChannels;
+                Buffer.BlockCopy(_frames, 0, buffer, offset, frames * _outChannels * 4);
+                return frames * _outChannels * 4;
             }
         }
 
@@ -628,10 +655,25 @@ namespace PadForge.Common.Input
                             if (GetEndpointContainerId(dev) == container) { disabledId = dev.ID; break; }
                         }
                     }
+                    string prevDefault = null;
+                    try { using var dd = en.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia); prevDefault = dd.ID; } catch { }
                     if (disabledId != null && NativeMethods.TryEnableEndpoint(disabledId))
                     {
                         Diag($"[SINK] enabled disabled endpoint {disabledId} (slot={s.Slot})");
                         Thread.Sleep(250); // endpoint activation isn't instant
+                        // Windows can promote a newly enabled endpoint to the
+                        // default output; the user's default shouldn't move
+                        // because PadForge needed the pad's endpoint.
+                        try
+                        {
+                            using var dd = en.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+                            if (prevDefault != null && prevDefault != disabledId && dd.ID == disabledId)
+                            {
+                                NativeMethods.TrySetDefaultEndpoint(prevDefault);
+                                Diag($"[SINK] restored previous default output");
+                            }
+                        }
+                        catch { }
                         match = FindActiveEndpointByContainer(en, container);
                     }
                 }
@@ -642,9 +684,21 @@ namespace PadForge.Common.Input
                 }
                 using (match)
                 {
-                    int channels = 2;
-                    try { channels = match.AudioClient.MixFormat.Channels; } catch { }
-                    var feed = new UsbFrameProvider(s.Source, channels);
+                    s.Container = container;
+                    // Endpoint-native format when it's already 48 kHz float
+                    // (the DS5 is extensible float 48k 4ch — WASAPI needs the
+                    // extensible form with its channel mask beyond stereo);
+                    // otherwise plain stereo float and the engine converts.
+                    WaveFormat mix = null;
+                    try { mix = match.AudioClient.MixFormat; } catch { }
+                    bool nativeOk = mix != null && mix.Channels >= 2
+                        && mix.SampleRate == Rate && mix.BitsPerSample == 32
+                        && (mix.Encoding == WaveFormatEncoding.IeeeFloat
+                            || (mix is WaveFormatExtensible wfe
+                                && wfe.SubFormat == new Guid("00000003-0000-0010-8000-00aa00389b71"))); // KSDATAFORMAT_SUBTYPE_IEEE_FLOAT
+                    var feedFormat = nativeOk ? mix : WaveFormat.CreateIeeeFloatWaveFormat(Rate, 2);
+                    int channels = feedFormat.Channels;
+                    var feed = new UsbFrameProvider(s.Source, feedFormat);
                     var player = new WasapiOut(match, AudioClientShareMode.Shared, true, 60);
                     player.Init(feed);
                     player.Play();
@@ -953,6 +1007,25 @@ namespace PadForge.Common.Input
                 {
                     var pc = (IPolicyConfig)new PolicyConfigClient();
                     try { return pc.SetEndpointVisibility(endpointId, 1) >= 0; }
+                    finally { Marshal.ReleaseComObject(pc); }
+                }
+                catch { return false; }
+            }
+
+            /// <summary>Restores the default render endpoint for all three
+            /// roles (Console / Multimedia / Communications).</summary>
+            public static bool TrySetDefaultEndpoint(string endpointId)
+            {
+                try
+                {
+                    var pc = (IPolicyConfig)new PolicyConfigClient();
+                    try
+                    {
+                        bool ok = true;
+                        for (int role = 0; role <= 2; role++)
+                            ok &= pc.SetDefaultEndpoint(endpointId, role) >= 0;
+                        return ok;
+                    }
                     finally { Marshal.ReleaseComObject(pc); }
                 }
                 catch { return false; }

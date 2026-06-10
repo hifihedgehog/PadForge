@@ -3142,8 +3142,7 @@
                                             <TextBlock Text="{Binding Pad_SensitivityCurves, Source={x:Static strings:Strings.Instance}}"
                                                        Style="{StaticResource CardTitle}"/>
                                             <TextBlock Text="{Binding Pad_SensitivityCurveHint, Source={x:Static strings:Strings.Instance}}"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                       TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                                       Style="{StaticResource CardDescription}"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_SensitivityX, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <ComboBox AutomationProperties.AutomationId="SensitivityXCombo"
@@ -3576,7 +3575,7 @@
                                         Visibility="{Binding IsSteeringLockLightbarPaletteVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <TextBlock Text="{Binding Macro_LightbarPalette_Label, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"/>
                                 <TextBlock Text="{Binding Pad_Steering_Lock_PaletteEmpty, Source={x:Static strings:Strings.Instance}}"
-                                           TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
+                                           Style="{StaticResource CardDescription}"/>
                                 <ItemsControl ItemsSource="{Binding SteeringLockLightbarPalette}" Margin="0,0,0,4">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate><WrapPanel Orientation="Horizontal"/></ItemsPanelTemplate>
@@ -3747,8 +3746,7 @@
                                             <TextBlock Text="{Binding Pad_SensitivityCurve, Source={x:Static strings:Strings.Instance}}"
                                                        Style="{StaticResource CardTitle}"/>
                                             <TextBlock Text="{Binding Pad_SensitivityCurveHintShort, Source={x:Static strings:Strings.Instance}}"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                       TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                                       Style="{StaticResource CardDescription}"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_Preset_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <ComboBox AutomationProperties.AutomationId="TriggerPresetCombo"
@@ -3951,8 +3949,7 @@
                                     <!-- Numeric readout + sliders -->
                                     <StackPanel Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Top">
                                         <TextBlock Text="{Binding Pad_ConstantForce_Position, Source={x:Static strings:Strings.Instance}}"
-                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   TextWrapping="Wrap" Margin="0,0,0,12"/>
+                                                   Style="{StaticResource CardDescription}"/>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                             <TextBlock Text="{Binding Pad_ConstantForce_X, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                             <Slider Value="{Binding ConstantForceX, Mode=TwoWay}"

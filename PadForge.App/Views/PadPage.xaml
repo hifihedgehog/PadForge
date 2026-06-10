@@ -211,7 +211,7 @@
                             </Image.Style>
                         </Image>
                         <!-- MIDI glyph icon (visible only when OutputType == Midi) -->
-                        <TextBlock Text="&#xE8D6;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                        <TextBlock Text="&#xEC4F;" FontFamily="Segoe MDL2 Assets" FontSize="14"
                                    VerticalAlignment="Center" Margin="0,0,4,0">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
@@ -6419,8 +6419,8 @@
 
             <!-- === TAB 12: Audio (slot-level, issue #83) === -->
             <TabItem>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="4">
-                    <StackPanel MaxWidth="860" HorizontalAlignment="Left">
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="0,16,0,16">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <TextBlock Text="&#xE767;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20"
                                        VerticalAlignment="Center" Margin="0,0,10,0"/>
@@ -6477,7 +6477,7 @@
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="&#xE8D6;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
+                                    <TextBlock Text="&#xEC4F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Audio_Macros_Header, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>
@@ -6497,7 +6497,7 @@
                                                     HorizontalContentAlignment="Left" Margin="0,0,0,4" Padding="8,5"
                                                     ToolTip="{Binding Pad_Audio_OpenMacro_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="&#xE8D6;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                                    <TextBlock Text="&#xEC4F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
                                                                FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/>
                                                     <TextBlock Text="{Binding Name}" FontWeight="SemiBold" VerticalAlignment="Center"/>
                                                     <TextBlock Text="{Binding SoundFilesSummary}" VerticalAlignment="Center"

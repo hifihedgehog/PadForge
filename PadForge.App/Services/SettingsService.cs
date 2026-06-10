@@ -2196,6 +2196,10 @@ namespace PadForge.Services
         /// </summary>
         private void LoadMacros(MacroData[] macros)
         {
+            // Macro sounds are keyed to the MacroItem objects being replaced;
+            // a looping sound would have no owner left to stop it.
+            PadForge.Common.Input.SoundMacroService.StopAll();
+
             // Clear existing macros on all pads.
             foreach (var pad in _mainVm.Pads)
                 pad.Macros.Clear();

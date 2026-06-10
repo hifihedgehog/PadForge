@@ -328,8 +328,28 @@ namespace PadForge.Common.Input
                     {
                         ReadFully = true, // keep the stream open; ended inputs auto-remove
                     };
+
+                    // Submit at the endpoint's NATIVE channel count. A physical
+                    // DualSense / DS4 USB audio device is 4-channel: channels
+                    // 0/1 drive the headphone jack and 2/3 drive the built-in
+                    // speaker. Stereo submitted to a 4-channel endpoint lands
+                    // on the front pair only (Windows does not speaker-fill by
+                    // default), so the controller speaker stays silent — fan
+                    // the stereo mix into every adjacent pair instead. Plain
+                    // stereo endpoints pass through untouched; >4-channel
+                    // surround endpoints get front-left/right only (blasting
+                    // game sounds into center/LFE would be wrong).
+                    int devChannels = 2;
+                    try { devChannels = device.AudioClient.MixFormat.Channels; } catch { }
+                    ISampleProvider feed = devChannels switch
+                    {
+                        4 => new ChannelFanOutProvider(mixer, 4, duplicatePairs: true),
+                        2 => mixer,
+                        _ => new ChannelFanOutProvider(mixer, devChannels, duplicatePairs: false),
+                    };
+
                     var player = new WasapiOut(device, AudioClientShareMode.Shared, true, 60);
-                    player.Init(mixer);
+                    player.Init(feed);
                     player.Play();
                     o.Mixer = mixer;
                     o.Player = player;
@@ -411,6 +431,54 @@ namespace PadForge.Common.Input
             catch
             {
                 return null; // unreadable/unsupported file — the action is a no-op
+            }
+        }
+
+        /// <summary>Expands the stereo mix to an N-channel stream. With
+        /// <c>duplicatePairs</c> (the 4-channel controller case) every
+        /// adjacent channel pair carries the stereo image — headphone jack
+        /// AND built-in speaker both play. Without it, channels beyond the
+        /// front pair are silent (surround endpoints).</summary>
+        private sealed class ChannelFanOutProvider : ISampleProvider
+        {
+            private readonly ISampleProvider _stereo;
+            private readonly int _outChannels;
+            private readonly bool _duplicatePairs;
+            private float[] _stereoBuf = new float[4096];
+
+            public ChannelFanOutProvider(ISampleProvider stereo, int outChannels, bool duplicatePairs)
+            {
+                _stereo = stereo;
+                _outChannels = Math.Max(outChannels, 2);
+                _duplicatePairs = duplicatePairs;
+                WaveFormat = WaveFormat.CreateIeeeFloatWaveFormat(MixSampleRate, _outChannels);
+            }
+
+            public WaveFormat WaveFormat { get; }
+
+            public int Read(float[] buffer, int offset, int count)
+            {
+                int frames = count / _outChannels;
+                int stereoNeeded = frames * 2;
+                if (_stereoBuf.Length < stereoNeeded)
+                    _stereoBuf = new float[stereoNeeded];
+                int stereoRead = _stereo.Read(_stereoBuf, 0, stereoNeeded);
+                int framesRead = stereoRead / 2;
+                for (int f = 0; f < framesRead; f++)
+                {
+                    float l = _stereoBuf[f * 2];
+                    float r = _stereoBuf[f * 2 + 1];
+                    int o = offset + f * _outChannels;
+                    for (int c = 0; c < _outChannels; c++)
+                    {
+                        bool isLeft = (c & 1) == 0;
+                        bool inFrontPair = c < 2;
+                        buffer[o + c] = (_duplicatePairs || inFrontPair)
+                            ? (isLeft ? l : r)
+                            : 0f;
+                    }
+                }
+                return framesRead * _outChannels;
             }
         }
 

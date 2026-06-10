@@ -2359,7 +2359,9 @@ namespace PadForge.ViewModels
             ConstantForceY = 0;
             // Macros are bound to the slot, not the physical device, so a
             // slot deletion has to drop them. Otherwise the next VC created
-            // at this pad index inherits the deleted slot's macros.
+            // at this pad index inherits the deleted slot's macros. Their
+            // sounds go with them — a looping sound would be unstoppable.
+            PadForge.Common.Input.SoundMacroService.StopSlot(PadIndex);
             Macros.Clear();
 
             // Per-device Lighting tab configs live in this PadViewModel's

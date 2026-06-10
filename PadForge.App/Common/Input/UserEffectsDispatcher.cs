@@ -1369,27 +1369,42 @@ namespace PadForge.Common.Input
                         // in the same output report the lightbar rides
                         // (dualsensectl-verified: valid_flag0 0x20 speaker-volume
                         // enable + 0x80 audio-control enable; audio_flags path
-                        // 3<<4 = internal speaker). The firmware's volume byte
-                        // is near-mute below 64: Sony's scePad maps its 0..8
-                        // gain slider to 64..136 (duaLib scePadSetVolumeGain,
-                        // gain*9 + 64), so the 0-100% master volume spans that
-                        // same range. This byte is the single owner of master
-                        // volume; sample amplitudes stay full-scale.
+                        // 3<<4 = internal speaker). Loudness is two firmware
+                        // knobs, and this block is their single owner — sample
+                        // amplitudes stay full-scale:
+                        //   - speakerVolume: effective range is 0x3D..0x64
+                        //     (dualsensectl: "the PS5 use 0x3d-0x64; trying
+                        //     over 0x64 doesnt change"), so the 0-100% master
+                        //     volume spans exactly that window (0 mutes).
+                        //   - speaker pre-gain: audio_flags2 bits 0-2 with
+                        //     valid_flag1 bit 7 (AUDIO_CONTROL2_ENABLE); value
+                        //     3 per dualsensectl's reference snippet. Without
+                        //     it the speaker tops out well below what the PS5
+                        //     drives it to. Encoded by SonyEffectWriter's
+                        //     audioControl2 poke (the HM profile doesn't
+                        //     declare the byte).
                         // When routing switches away, restore the headphone
                         // path once so the speaker doesn't stay latched.
                         if (isDs5)
                         {
                             if (AudioPassthroughService.WantsSpeakerPath(ud.InstanceGuid))
                             {
-                                byte spkVol = (byte)(64 + SoundMacroService.GetSlotVolume(_padIndex) * 72 / 100);
+                                int master = SoundMacroService.GetSlotVolume(_padIndex);
+                                byte spkVol = master <= 0
+                                    ? (byte)0
+                                    : (byte)(0x3D + master * (0x64 - 0x3D) / 100);
                                 fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0xA0);
+                                fields["validFlag1"] = (byte)((byte)fields["validFlag1"] | 0x80);
                                 fields["speakerVolume"] = spkVol;
                                 fields["audioControlFlags"] = (byte)(3 << 4);
+                                fields["audioControl2"] = (byte)3;
                             }
                             else if (AudioPassthroughService.TryConsumeSpeakerPathCleared(ud.InstanceGuid))
                             {
                                 fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0x80);
+                                fields["validFlag1"] = (byte)((byte)fields["validFlag1"] | 0x80);
                                 fields["audioControlFlags"] = (byte)0;
+                                fields["audioControl2"] = (byte)0;
                             }
                         }
 

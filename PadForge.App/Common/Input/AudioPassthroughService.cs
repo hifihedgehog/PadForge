@@ -892,6 +892,7 @@ namespace PadForge.Common.Input
         private static void BtThreadMain()
         {
             NativeMethods.timeBeginPeriod(1);
+            IntPtr hrTimer = NativeMethods.CreateHighResTimer();
             try
             {
                 // Each report carries one 10 ms Opus frame (480 samples of
@@ -1010,11 +1011,17 @@ namespace PadForge.Common.Input
                         statWindowStart = wakeNow;
                     }
 
-                    Thread.Sleep(5); // fine-grained wake keeps bursts small
+                    // ~3 ms tick via the high-res timer (real sub-ms wait, not
+                    // the 16 ms scheduler quantum Thread.Sleep gives here), so
+                    // each wake owes well under one frame and the feed to the
+                    // pad stays smooth.
+                    if (hrTimer != IntPtr.Zero) NativeMethods.HighResWait(hrTimer, 3.0);
+                    else Thread.Sleep(3);
                 }
             }
             finally
             {
+                if (hrTimer != IntPtr.Zero) NativeMethods.CloseHandle(hrTimer);
                 NativeMethods.timeEndPeriod(1);
             }
         }
@@ -1155,6 +1162,30 @@ namespace PadForge.Common.Input
 
             [DllImport("winmm.dll")] public static extern uint timeBeginPeriod(uint ms);
             [DllImport("winmm.dll")] public static extern uint timeEndPeriod(uint ms);
+
+            // High-resolution waitable timer — true sub-ms waits regardless
+            // of the scheduler quantum (timeBeginPeriod is ignored under
+            // Win11 power throttling for background processes). Same primitive
+            // the reference haptic timer threads use.
+            private const uint CREATE_WAITABLE_TIMER_HIGH_RESOLUTION = 0x2;
+            private const uint TIMER_ALL_ACCESS = 0x1F0003;
+            [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+            private static extern IntPtr CreateWaitableTimerExW(IntPtr attrs, string name, uint flags, uint access);
+            [DllImport("kernel32.dll", SetLastError = true)]
+            private static extern bool SetWaitableTimer(IntPtr h, ref long dueTime, int period, IntPtr cb, IntPtr arg, bool resume);
+
+            /// <summary>A high-resolution timer, or IntPtr.Zero if unavailable
+            /// (caller falls back to Thread.Sleep).</summary>
+            public static IntPtr CreateHighResTimer()
+                => CreateWaitableTimerExW(IntPtr.Zero, null, CREATE_WAITABLE_TIMER_HIGH_RESOLUTION, TIMER_ALL_ACCESS);
+
+            /// <summary>Wait <paramref name="ms"/> with sub-ms accuracy.</summary>
+            public static void HighResWait(IntPtr timer, double ms)
+            {
+                long due = -(long)(ms * 10000.0); // negative = relative, 100 ns units
+                if (SetWaitableTimer(timer, ref due, 0, IntPtr.Zero, IntPtr.Zero, false))
+                    WaitForSingleObject(timer, 100);
+            }
             [DllImport("kernel32.dll", SetLastError = true)] public static extern bool CloseHandle(IntPtr h);
             [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
             public static extern IntPtr CreateEventW(IntPtr attrs, bool manualReset, bool initial, string name);

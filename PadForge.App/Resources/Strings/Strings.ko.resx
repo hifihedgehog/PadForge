@@ -1731,4 +1731,6 @@
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>한 손가락 도형에서 포인트 클라우드 매처와 함께 동작하는 각도 마진 점수 방식. GestureSign의 PointPatternAnalyzer에서 가져옴. BSD 3-Clause.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>미러, 미러 소스, 마스터 볼륨을 기본값으로 재설정</value></data>
+  <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai(daidr)의 브라우저 DualSense 테스트 도구. Sony 기능 보고서 CRC 프레이밍과 PadForge가 가상 패드에서 실제 패드로 전달하는 펌웨어 테스트 명령의 참조. MIT.</value></data>
 </root>

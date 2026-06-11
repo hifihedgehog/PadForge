@@ -1731,4 +1731,6 @@
   <data name="Pad_Audio_Test" xml:space="preserve"><value>测试</value></data>
   <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>在所选输出设备上播放短促提示音</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>将镜像、镜像来源和主音量重置为默认值</value></data>
+  <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai（daidr）开发的浏览器版 DualSense 测试套件。Sony 功能报告 CRC 帧格式以及 PadForge 从虚拟手柄转发到实体手柄的固件测试命令的参考。MIT。</value></data>
 </root>

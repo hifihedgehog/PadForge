@@ -1731,4 +1731,6 @@
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>Puntuación por margen angular que funciona junto al comparador de nube de puntos en formas de un dedo. Adaptado del PointPatternAnalyzer de GestureSign. BSD 3-Clause.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Restablecer el espejo, la fuente del espejo y el volumen maestro a sus valores predeterminados</value></data>
+  <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Suite de pruebas de DualSense en el navegador por Xuezhou Dai (daidr): referencia para el framing CRC de los informes de característica de Sony y los comandos de prueba del firmware que PadForge reenvía del mando virtual al físico. MIT.</value></data>
 </root>

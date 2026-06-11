@@ -342,6 +342,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 | [SAxense](https://apps.sdore.me/SAxense) | DualSense Bluetooth audio research by [egormanga](https://github.com/egormanga/SAxense): the packet transport the controller speaker stream rides on | MPL-2.0 |
 | [dualsense-bt-haptics](https://github.com/awalol/dualsense-bt-haptics) | Bluetooth speaker recipe by awalol: Opus framing and packet layout (HeadsetPlayMusic) | MIT |
 | [DualSenseY-v2](https://github.com/WujekFoliarz/DualSenseY-v2) | Reference implementation for USB controller audio passthrough and adaptive trigger effects, by WujekFoliarz | none published |
+| [dualsense-tester](https://github.com/daidr/dualsense-tester) | Browser DualSense test suite by Xuezhou Dai ([ds.daidr.me](https://ds.daidr.me/)): reference for the Sony feature-report CRC framing and firmware test commands PadForge forwards from virtual to physical pads | MIT |
 
 Special thanks to [TechAntohere](https://github.com/TechAntohere) (u/Idkiamaguy645) for sharing his DualSense Bluetooth findings and testing, and for pointing PadForge to the working speaker recipe.
 
@@ -373,5 +374,6 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **Concentus** is licensed under the BSD 3-Clause License (the Opus license). By Logan Stromberg, with copyrights held by Skype Limited, Xiph.Org Foundation, and other Opus contributors.
 - **DualSense Bluetooth speaker audio** builds on research by egormanga ([SAxense](https://apps.sdore.me/SAxense), MPL-2.0), awalol ([dualsense-bt-haptics](https://github.com/awalol/dualsense-bt-haptics), MIT), and [TechAntohere](https://github.com/TechAntohere). PadForge's implementation is original C#.
 - **DualSenseY-v2** by WujekFoliarz served as the behavioral reference for USB controller audio passthrough. It publishes no license. PadForge's implementation is original C#.
+- **dualsense-tester** is licensed under the MIT License. Copyright (c) 2023 Xuezhou Dai (daidr). Reference for the Sony Bluetooth feature-report CRC framing and vendor test commands. PadForge's implementation is original C#.
 
 See [LICENSE](LICENSE) for the full license text.

@@ -664,6 +664,26 @@ namespace PadForge.Common.Input
 
             _controller.OutputReceived += (ctrl, pkt) =>
             {
+                // Sony vendor test commands (SetFeature 0x80: deviceId,
+                // actionId, params — the report dualsense-tester /
+                // ds.daidr.me drives the firmware 1 kHz sine generator,
+                // speaker/headphone routing, and calibration actions
+                // through). Forward to the assigned physical DualSense so
+                // the test works through the virtual pad. Report 0x80 only:
+                // PID FFB feature writes (0x11 Create New Effect) ride the
+                // same HidFeature source and belong to the decoder below.
+                // GetFeature (0x81 response) round-trips are NOT forwarded —
+                // the driver serves feature reads synchronously and has no
+                // deferred-response path; fire-and-forget commands like the
+                // sine test don't need one.
+                if (_ds5Dispatcher != null
+                    && pkt.Source == HMOutputSource.HidFeature
+                    && pkt.ReportId == 0x80)
+                {
+                    _ds5Dispatcher.EnqueueFeature(pkt.ReportId, pkt.Data.Span);
+                    return;
+                }
+
                 int idx = FeedbackPadIndex;
                 if (idx < 0 || idx >= vibrationStates.Length) return;
 

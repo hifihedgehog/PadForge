@@ -65,6 +65,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="{Binding About_DotNet10, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"/>
@@ -147,6 +148,11 @@
                     <TextBlock Grid.Row="16" Text="{Binding About_DualSenseY, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
                     <TextBlock Grid.Row="16" Grid.Column="1"
                                Text="{Binding About_DualSenseYDesc, Source={x:Static strings:Strings.Instance}}"
+                               Opacity="0.7" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="17" Text="{Binding About_DsTester, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="17" Grid.Column="1"
+                               Text="{Binding About_DsTesterDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0" TextWrapping="Wrap"/>
                 </Grid>
             </Border>

@@ -349,6 +349,8 @@ public class Strings : INotifyPropertyChanged
     public string About_DsBtHapticsDesc => Get("About_DsBtHapticsDesc");
     public string About_DualSenseY => Get("About_DualSenseY");
     public string About_DualSenseYDesc => Get("About_DualSenseYDesc");
+    public string About_DsTester => Get("About_DsTester");
+    public string About_DsTesterDesc => Get("About_DsTesterDesc");
     public string About_License => Get("About_License");
     public string About_LicenseText => Get("About_LicenseText");
     public string DeviceType_Gamepad => Get("DeviceType_Gamepad");

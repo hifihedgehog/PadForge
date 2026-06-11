@@ -1731,4 +1731,6 @@
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>Winkelmargen-Bewertung, die bei Einfinger-Formen neben dem Punktwolken-Matcher läuft. Übernommen aus GestureSigns PointPatternAnalyzer. BSD 3-Clause.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Spiegelung, Spiegelquelle und Gesamtlautstärke auf Standard zurücksetzen</value></data>
+  <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Browser-Testsuite für den DualSense von Xuezhou Dai (daidr): Referenz für das Sony-Feature-Report-CRC-Framing und die Firmware-Testbefehle, die PadForge vom virtuellen zum physischen Pad weiterleitet. MIT.</value></data>
 </root>

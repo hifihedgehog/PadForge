@@ -64,16 +64,93 @@ namespace PadForge.Common.Input
             finally { CloseHandle(handle); }
         }
 
+        /// <summary>Sends a feature report (caller includes the leading
+        /// report-ID byte). The buffer is zero-padded to the collection's
+        /// FeatureReportByteLength — HidD_SetFeature rejects other sizes the
+        /// same way WriteFile rejects wrong OutputReportByteLength. When
+        /// <paramref name="stampSonyBtCrc"/> is set, the last four bytes of
+        /// the sized buffer receive the Sony BT feature-report CRC32 (seed
+        /// byte 0x53 + report bytes, little-endian) — per dualsense-tester's
+        /// crc32.util.ts fillFeatureReportChecksum.</summary>
+        public static bool SetFeature(string devicePath, byte[] buf, bool stampSonyBtCrc)
+        {
+            if (string.IsNullOrEmpty(devicePath) || buf == null || buf.Length == 0)
+                return false;
+
+            IntPtr handle = CreateFileW(
+                devicePath,
+                GENERIC_READ | GENERIC_WRITE,
+                FILE_SHARE_READ | FILE_SHARE_WRITE,
+                IntPtr.Zero,
+                OPEN_EXISTING,
+                FILE_FLAG_OVERLAPPED,
+                IntPtr.Zero);
+
+            if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE) return false;
+
+            try
+            {
+                int need = QueryFeatureLen(devicePath, handle);
+                byte[] outBuf = buf;
+                if (need > buf.Length)
+                {
+                    outBuf = new byte[need];
+                    Array.Copy(buf, 0, outBuf, 0, buf.Length);
+                }
+
+                if (stampSonyBtCrc && outBuf.Length >= 5)
+                {
+                    uint crc = 0xFFFFFFFFu;
+                    crc = Crc32Step(crc, 0x53);
+                    for (int i = 0; i < outBuf.Length - 4; i++)
+                        crc = Crc32Step(crc, outBuf[i]);
+                    crc = ~crc;
+                    outBuf[outBuf.Length - 4] = (byte)crc;
+                    outBuf[outBuf.Length - 3] = (byte)(crc >> 8);
+                    outBuf[outBuf.Length - 2] = (byte)(crc >> 16);
+                    outBuf[outBuf.Length - 1] = (byte)(crc >> 24);
+                }
+
+                return HidD_SetFeature(handle, outBuf, (uint)outBuf.Length);
+            }
+            finally { CloseHandle(handle); }
+        }
+
+        private static uint Crc32Step(uint crc, byte b)
+        {
+            crc ^= b;
+            for (int k = 0; k < 8; k++)
+                crc = (crc >> 1) ^ (0xEDB88320u & (uint)(-(crc & 1)));
+            return crc;
+        }
+
         // Cached per-device OutputReportByteLength so the caps lookup runs once per
         // path rather than on every FFB frame.
         private static readonly ConcurrentDictionary<string, int> _outLen = new();
+        private static readonly ConcurrentDictionary<string, int> _featLen = new();
 
-        /// <summary>Forgets the cached output-report length for a device. Called on
+        /// <summary>Forgets the cached report lengths for a device. Called on
         /// unplug so a different device later on the same path re-queries its
-        /// OutputReportByteLength instead of reusing a stale one.</summary>
+        /// caps instead of reusing stale ones.</summary>
         public static void ResetDevice(string devicePath)
         {
-            if (!string.IsNullOrEmpty(devicePath)) _outLen.TryRemove(devicePath, out _);
+            if (string.IsNullOrEmpty(devicePath)) return;
+            _outLen.TryRemove(devicePath, out _);
+            _featLen.TryRemove(devicePath, out _);
+        }
+
+        private static int QueryFeatureLen(string devicePath, IntPtr handle)
+        {
+            if (_featLen.TryGetValue(devicePath, out int n)) return n;
+            if (!HidD_GetPreparsedData(handle, out IntPtr pp) || pp == IntPtr.Zero) return 0;
+            try
+            {
+                if (HidP_GetCaps(pp, out HIDP_CAPS caps) < 0) return 0;
+                if (caps.FeatureReportByteLength > 0)
+                    _featLen[devicePath] = caps.FeatureReportByteLength;
+                return caps.FeatureReportByteLength;
+            }
+            finally { HidD_FreePreparsedData(pp); }
         }
 
         // Returns buf sized to the device's OutputReportByteLength (zero-padded, or
@@ -151,6 +228,9 @@ namespace PadForge.Common.Input
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool CloseHandle(IntPtr hObject);
+
+        [DllImport("hid.dll")]
+        private static extern bool HidD_SetFeature(IntPtr hidDeviceObject, byte[] reportBuffer, uint reportBufferLength);
 
         [DllImport("hid.dll")]
         private static extern bool HidD_GetPreparsedData(IntPtr hidDeviceObject, out IntPtr preparsedData);

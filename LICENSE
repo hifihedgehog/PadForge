@@ -120,6 +120,13 @@ DualSenseY-v2
   passthrough and adaptive trigger effects. No license published.
   PadForge's implementation is original C#.
 
+dualsense-tester
+  https://github.com/daidr/dualsense-tester (https://ds.daidr.me/)
+  Copyright (c) 2023 Xuezhou Dai (daidr)
+  Reference for the Sony Bluetooth feature-report CRC framing and the
+  vendor test commands PadForge forwards from virtual to physical pads.
+  Licensed under MIT License
+
 Special Thanks
   TechAntohere (https://github.com/TechAntohere, u/Idkiamaguy645)
   Shared his DualSense Bluetooth findings and testing, and pointed

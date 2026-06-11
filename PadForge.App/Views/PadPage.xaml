@@ -1574,7 +1574,7 @@
                                                 <Slider Value="{Binding SoundVolume, Mode=TwoWay}" Minimum="0" Maximum="100"
                                                         Width="180" VerticalAlignment="Center"/>
                                                 <TextBox Text="{Binding SoundVolume, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                         Width="44" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                                         Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
                                             </StackPanel>
                                             <CheckBox IsChecked="{Binding SoundLoop, Mode=TwoWay}"

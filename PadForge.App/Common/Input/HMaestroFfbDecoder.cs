@@ -223,6 +223,10 @@ namespace PadForge.Common.Input
                         case HMaestroFfbDescriptor.OutputReportId.DeviceControl:    DecodeDeviceControl(data); break;
                         case HMaestroFfbDescriptor.OutputReportId.DeviceGain:       DecodeDeviceGain(data); break;
                     }
+
+                    // TEMP diag (#125 stuck-rumble hunt): raw dump of every
+                    // PID report the game sends. Removed once resolved.
+                    Diag($"out rid=0x{reportId:X2} [{Convert.ToHexString(data)}]");
                 }
             }
             catch
@@ -364,7 +368,34 @@ namespace PadForge.Common.Input
                     _stateFlags &= ~PidStateFlags.EffectPlaying;
                     _controller?.PublishPidState(_lastEbi, _stateFlags);
                 }
+
+                // TEMP diag (#125): once per second, the computed motor
+                // output and every effect's state — splits "decoder never
+                // zeroes" from "decoder zeroes but the physical pad latches
+                // downstream". Removed once resolved.
+                if (Environment.TickCount64 - _diagLastTicks > 1000)
+                {
+                    _diagLastTicks = Environment.TickCount64;
+                    var sb = new System.Text.StringBuilder();
+                    sb.Append($"apply L={vib.LeftMotorSpeed} R={vib.RightMotorSpeed} gain={_deviceGain} effects:");
+                    foreach (var kv in _effects)
+                        sb.Append($" [{kv.Key}:type={kv.Value.Type:X} mag={kv.Value.Magnitude} dur={kv.Value.Duration} loop={kv.Value.LoopCount} run={kv.Value.Running}]");
+                    Diag(sb.ToString());
+                }
             }
+        }
+
+        // TEMP diag plumbing (#125).
+        private long _diagLastTicks;
+        private static void Diag(string msg)
+        {
+            try
+            {
+                System.IO.File.AppendAllText(
+                    System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge_ffb_diag.log"),
+                    $"{DateTime.Now:HH:mm:ss.fff} {msg}{Environment.NewLine}");
+            }
+            catch { }
         }
 
         // ── Per-report decoders ─────────────────────────────────────────────

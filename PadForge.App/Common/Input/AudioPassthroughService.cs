@@ -58,19 +58,6 @@ namespace PadForge.Common.Input
 
         private static readonly object _lock = new();
 
-        // TEMP diagnostics for first-hardware bring-up; remove once the
-        // user confirms speaker output on USB and BT.
-        private static void Diag(string msg)
-        {
-            try
-            {
-                System.IO.File.AppendAllText(
-                    System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge_audio_diag.log"),
-                    $"{DateTime.Now:HH:mm:ss.fff} {msg}{Environment.NewLine}");
-            }
-            catch { }
-        }
-
         // ─────────────────────────────────────────────
         //  App wiring
         // ─────────────────────────────────────────────
@@ -328,7 +315,6 @@ namespace PadForge.Common.Input
                     _captures.TryGetValue(id, out var entry);
                     if (entry != null && entry.Container != Guid.Empty && entry.Container == s.Container)
                     {
-                        if (s.Capture != null) Diag($"[CAPTURE-SKIP] slot={s.Slot}: source is the pad's own endpoint");
                         entry = null;
                     }
                     s.Capture = entry;
@@ -344,7 +330,6 @@ namespace PadForge.Common.Input
                 using var dev = en.GetDevice(endpointId);
                 if (dev.State != DeviceState.Active)
                 {
-                    Diag($"[CAPTURE-FAIL] endpoint not active: {endpointId}");
                     return null;
                 }
                 var entry = new CaptureEntry
@@ -392,12 +377,10 @@ namespace PadForge.Common.Input
                 cap.RecordingStopped += (s, e) => entry.Dead = true; // worker recreates
                 cap.StartRecording();
                 entry.Cap = cap;
-                Diag($"[CAPTURE] started on '{dev.FriendlyName}' (rate={srcRate} ch={srcCh} float={isFloat})");
                 return entry;
             }
-            catch (Exception ex)
+            catch
             {
-                Diag($"[CAPTURE-FAIL] {ex.GetType().Name}: {ex.Message}");
                 return null;
             }
         }
@@ -766,7 +749,6 @@ namespace PadForge.Common.Input
                 IntPtr h = NativeMethods.OpenHid(s.HidPath);
                 if (h == new IntPtr(-1))
                 {
-                    Diag($"[SINK-FAIL] BT open failed slot={s.Slot} path={s.HidPath}");
                     return;
                 }
                 var tx = new BtWritePool(BtReportSize);
@@ -780,7 +762,6 @@ namespace PadForge.Common.Input
                         // Pre-create the encoder so the stream's first frame
                         // doesn't pay ~15 ms of Concentus construction.
                         s.OpusEncoder ??= CreateBtOpusEncoder();
-                        Diag($"[SINK] BT stream open slot={s.Slot} dev={s.DeviceGuid.ToString().Substring(0, 8)}");
                         return;
                     }
                 }
@@ -795,7 +776,6 @@ namespace PadForge.Common.Input
                 Guid container = NativeMethods.GetContainerIdForDevicePath(s.HidPath);
                 if (container == Guid.Empty)
                 {
-                    Diag($"[SINK-FAIL] no container id for {s.HidPath}");
                     return;
                 }
                 using var en = new MMDeviceEnumerator();
@@ -820,7 +800,6 @@ namespace PadForge.Common.Input
                     try { using var dd = en.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia); prevDefault = dd.ID; } catch { }
                     if (disabledId != null && NativeMethods.TryEnableEndpoint(disabledId))
                     {
-                        Diag($"[SINK] enabled disabled endpoint {disabledId} (slot={s.Slot})");
                         Thread.Sleep(250); // endpoint activation isn't instant
                         // Windows can promote a newly enabled endpoint to the
                         // default output; the user's default shouldn't move
@@ -831,7 +810,6 @@ namespace PadForge.Common.Input
                             if (prevDefault != null && prevDefault != disabledId && dd.ID == disabledId)
                             {
                                 NativeMethods.TrySetDefaultEndpoint(prevDefault);
-                                Diag($"[SINK] restored previous default output");
                             }
                         }
                         catch { }
@@ -840,7 +818,6 @@ namespace PadForge.Common.Input
                 }
                 if (match == null)
                 {
-                    Diag($"[SINK-FAIL] no UAC endpoint matches container {container} (slot={s.Slot})");
                     return;
                 }
                 using (match)
@@ -879,12 +856,12 @@ namespace PadForge.Common.Input
                         try { player.Dispose(); } catch { }
                         return;
                     }
-                    Diag($"[SINK] USB open slot={s.Slot} endpoint='{match.FriendlyName}' ch={channels}");
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Diag($"[SINK-FAIL] USB {ex.GetType().Name}: {ex.Message}");
+                // Best-effort: a failed USB sink build retries on the
+                // worker's next 5 s pass.
             }
         }
 
@@ -1022,7 +999,6 @@ namespace PadForge.Common.Input
         {
             NativeMethods.timeBeginPeriod(1);
             IntPtr hrTimer = NativeMethods.CreateHighResTimer();
-            Diag($"[BT] pacing timer: {(hrTimer != IntPtr.Zero ? "high-res waitable" : "Thread.Sleep fallback")}");
             try
             {
                 // The firmware contract, established by A/B/C music experiment
@@ -1047,25 +1023,12 @@ namespace PadForge.Common.Input
                 long next = DateTime.UtcNow.Ticks + cadTicks;
                 var me = Thread.CurrentThread;
 
-                // Temporary telemetry while the stream proves itself: one
-                // line per ~5 s of active streaming.
-                long statWakeMax = 0;
-                int statLagMin = int.MaxValue, statLagMax = int.MinValue;
-                int statGateFlips = 0, statResyncs = 0;
-                long statWindowStart = Environment.TickCount64;
-                long lastWake = Environment.TickCount64;
-
                 while (_running && ReferenceEquals(_btThread, me))
                 {
-                    long wakeNow = Environment.TickCount64;
-                    statWakeMax = Math.Max(statWakeMax, wakeNow - lastWake);
-                    lastWake = wakeNow;
-
                     List<Sink> btSinks;
                     lock (_lock)
                         btSinks = _sinks.Values.Where(s => s.IsBt && !s.TransportFailed && s.BtHandle != new IntPtr(-1)).ToList();
 
-                    bool anyStreaming = false;
                     foreach (var s in btSinks)
                     {
                         // Mirror drift trim: the ring is steered to its target
@@ -1077,8 +1040,6 @@ namespace PadForge.Common.Input
                         int lag = s.Source.LoopbackLagFrames;
                         if (lag >= 0)
                         {
-                            statLagMin = Math.Min(statLagMin, lag);
-                            statLagMax = Math.Max(statLagMax, lag);
                             if (lag > BtTargetLag + LagDeadband) inFrames += 4;
                             else if (lag < BtTargetLag - LagDeadband) inFrames -= 4;
                         }
@@ -1089,9 +1050,8 @@ namespace PadForge.Common.Input
                         // pad's radio and our CPU rest; the read above keeps
                         // the ring cursor live and the activity stamp fresh.
                         bool audible = Environment.TickCount64 - s.LastAudibleTicks <= 2000;
-                        if (audible != s.BtStreaming) { s.BtStreaming = audible; statGateFlips++; }
+                        s.BtStreaming = audible;
                         if (!audible) continue;
-                        anyStreaming = true;
 
                         // 512→480 linear time-compression (pitch-exact).
                         double step = inFrames / (double)BtFrameSamples;
@@ -1105,17 +1065,6 @@ namespace PadForge.Common.Input
                             frame[o * 2 + 1] = (float)(pull[i0 * 2 + 1] * (1 - t) + pull[i1 * 2 + 1] * t);
                         }
                         SendBtFrame(s, frame, opus, report);
-                    }
-
-                    if (anyStreaming && wakeNow - statWindowStart >= 5000)
-                    {
-                        Diag($"[BT-STAT] wakeMax={statWakeMax}ms " +
-                             $"lag={(statLagMin == int.MaxValue ? -1 : statLagMin / 48)}..{(statLagMax == int.MinValue ? -1 : statLagMax / 48)}ms " +
-                             $"resyncs={statResyncs} gateFlips={statGateFlips}");
-                        statWakeMax = 0;
-                        statLagMin = int.MaxValue; statLagMax = int.MinValue;
-                        statGateFlips = 0; statResyncs = 0;
-                        statWindowStart = wakeNow;
                     }
 
                     // One tick per cadence on an absolute schedule. Lateness
@@ -1135,7 +1084,6 @@ namespace PadForge.Common.Input
                     else
                     {
                         next = nowTicks + cadTicks;
-                        statResyncs++;
                     }
                 }
             }
@@ -1184,7 +1132,6 @@ namespace PadForge.Common.Input
                 {
                     // I/O error — mark and let the worker detach/rebuild on
                     // its 5 s cadence.
-                    Diag($"[BT-WRITE-FAIL] slot={s.Slot}; deferring to worker");
                     s.TransportFailed = true;
                 }
                 // else: pool saturated (link backpressure) — drop this frame;

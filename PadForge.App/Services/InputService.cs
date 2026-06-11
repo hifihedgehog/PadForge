@@ -1223,6 +1223,37 @@ namespace PadForge.Services
                 if (_inputManager.SlotExtendedIsCustom[i])
                     padVm.UpdateFromExtendedRawState(_inputManager.CombinedExtendedRawStates[i]);
 
+                // TEMP diag for the dead-extended-output regression hunt:
+                // logs the gate flags, layout counts, per-device output and
+                // combined output every ~5 s per extended slot. Removed once
+                // the broken link is identified.
+                if (padVm.OutputType == VirtualControllerType.Extended
+                    && SettingsManager.SlotCreated[i]
+                    && Environment.TickCount64 - _extDiagLastTicks > 5000)
+                {
+                    _extDiagLastTicks = Environment.TickCount64;
+                    try
+                    {
+                        var cl = _inputManager.SlotCustomLayouts[i];
+                        var comb = _inputManager.CombinedExtendedRawStates[i];
+                        var selDev = padVm.SelectedMappedDevice;
+                        var usd = selDev != null && selDev.InstanceGuid != Guid.Empty
+                            ? SettingsManager.FindSettingByInstanceGuidAndSlot(selDev.InstanceGuid, i) : null;
+                        string Ax(PadForge.Engine.ExtendedRawState s) =>
+                            s.Axes == null ? "null" : string.Join(",", s.Axes);
+                        string Bt(PadForge.Engine.ExtendedRawState s) =>
+                            s.Buttons == null ? "null" : string.Join(",", s.Buttons.Select(w => w.ToString("X")));
+                        System.IO.File.AppendAllText(
+                            System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge_ext_diag.log"),
+                            $"{DateTime.Now:HH:mm:ss.fff} slot={i} type={_inputManager.SlotControllerTypes[i]} " +
+                            $"custom={_inputManager.SlotExtendedIsCustom[i]} " +
+                            $"layout=A{cl.Axes}/B{cl.Buttons}/P{cl.Povs} " +
+                            $"comb.Axes=[{Ax(comb)}] comb.Btn=[{Bt(comb)}] " +
+                            $"dev={(usd == null ? "none" : $"Axes=[{Ax(usd.ExtendedRawOutputState)}] Btn=[{Bt(usd.ExtendedRawOutputState)}]")}\r\n");
+                    }
+                    catch { }
+                }
+
                 // For MIDI slots, push the combined MidiRawState.
                 if (_inputManager.SlotControllerTypes[i] == VirtualControllerType.Midi)
                     padVm.UpdateFromMidiRawState(_inputManager.CombinedMidiRawStates[i]);
@@ -2160,6 +2191,7 @@ namespace PadForge.Services
         /// Called at 30Hz on the UI thread. String reference writes are atomic in .NET.
         /// </summary>
         private bool _lastAudioRumbleAnyEnabled;
+        private long _extDiagLastTicks; // TEMP: extended-output regression diag throttle
 
         private void SyncViewModelToPadSettings()
         {

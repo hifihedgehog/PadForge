@@ -572,8 +572,9 @@ namespace PadForge.Common.Input
                 || e.PropertyName == nameof(PlayStationSlotConfig.InputReactiveMode)
                 || e.PropertyName == nameof(PlayStationSlotConfig.MacroOverrideExpiresAtUtc))
                 UpdateAnimTimer();
-            if (e.PropertyName == nameof(PlayStationSlotConfig.AudioPassthroughEnabled))
-                AudioPassthroughService.Reconcile(); // start/stop the mirror sink now
+            if (e.PropertyName == nameof(PlayStationSlotConfig.AudioPassthroughEnabled)
+                || e.PropertyName == nameof(PlayStationSlotConfig.AudioMirrorSourceId))
+                AudioPassthroughService.Reconcile(); // start/stop/repoint the mirror now
             DispatchSnapshot();
         }
 

@@ -1687,6 +1687,10 @@
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>マクロサウンドとミラーされたシステム音声は、選択中のコントローラーの内蔵スピーカーからUSBまたはBluetooth経由で再生されます。上のドロップダウンでデバイスを選択してください。</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>サウンド出力</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>サウンドは選択中のコントローラーへ自動的にルーティングされます。USBではハードウェアコンテナでパッドのオーディオ端点を照合し、BluetoothではソニーHIDフレームで音声を送信します。</value></data>
+  <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>ミラーソース</value></data>
+  <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>コントローラーのスピーカーにミラーリングする再生デバイスを選択します。特定のサウンドを別の再生デバイスに出力するゲームは、このデバイスを対象にできます。</value></data>
+  <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>システム既定</value></data>
+  <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>（利用できないデバイス）</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>マスター音量</value></data>
   <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>マスター音量を100%にリセット</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>テスト</value></data>

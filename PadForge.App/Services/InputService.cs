@@ -774,9 +774,9 @@ namespace PadForge.Services
             PadForge.Common.Input.AudioPassthroughService.PassthroughConfigProvider = slotIndex =>
             {
                 if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count)
-                    return System.Linq.Enumerable.Empty<(Guid, bool)>();
+                    return System.Linq.Enumerable.Empty<(Guid, bool, string)>();
                 return _mainVm.Pads[slotIndex].PerDevicePlayStationConfigs
-                    .Select(kv => (kv.Key, kv.Value.AudioPassthroughEnabled))
+                    .Select(kv => (kv.Key, kv.Value.AudioPassthroughEnabled, kv.Value.AudioMirrorSourceId))
                     .ToList();
             };
 

@@ -75,10 +75,11 @@ namespace PadForge.Common.Input
         //  App wiring
         // ─────────────────────────────────────────────
 
-        /// <summary>Per-slot per-device passthrough flags, wired by
+        /// <summary>Per-slot per-device passthrough config, wired by
         /// InputService against the live PlayStationSlotConfig dictionaries:
-        /// returns (deviceGuid, passthroughEnabled) for a slot.</summary>
-        public static Func<int, IEnumerable<(Guid Device, bool PassthroughOn)>> PassthroughConfigProvider { get; set; }
+        /// returns (deviceGuid, passthroughEnabled, mirrorSourceEndpointId)
+        /// for a slot. An empty source means the system default device.</summary>
+        public static Func<int, IEnumerable<(Guid Device, bool PassthroughOn, string MirrorSource)>> PassthroughConfigProvider { get; set; }
 
         // ─────────────────────────────────────────────
         //  Sink model
@@ -92,6 +93,14 @@ namespace PadForge.Common.Input
             public bool IsDs4;
             public string HidPath;
             public bool PassthroughOn;
+
+            /// <summary>Endpoint ID this sink's mirror captures; "" = the
+            /// system default device (re-resolved every worker pass).</summary>
+            public string MirrorSourceId = "";
+
+            /// <summary>The resolved capture feeding this sink's mirror, or
+            /// null (mirror off / source unavailable / own endpoint).</summary>
+            public CaptureEntry Capture;
 
             /// <summary>The pad's PnP container (set when the USB transport
             /// is built) — used to keep the loopback mirror from capturing
@@ -231,71 +240,119 @@ namespace PadForge.Common.Input
         private static readonly HashSet<Guid> _speakerPathCleared = new();
 
         // ─────────────────────────────────────────────
-        //  Loopback capture (shared ring, per-sink cursors)
+        //  Loopback captures (one per mirror source, per-sink cursors)
         // ─────────────────────────────────────────────
 
         private const int RingFrames = Rate / 2; // 0.5 s of 48k stereo
-        private static readonly float[] _ring = new float[RingFrames * 2];
-        private static long _ringWrite; // total frames written (monotonic)
-        private static WasapiLoopbackCapture _capture;
-        private static string _captureDeviceId = "";
 
-        private static bool AnyPassthroughOn_NoLock()
-            => _sinks.Values.Any(s => s.PassthroughOn);
-
-        /// <summary>Worker-only. Brief locks around state; all COM and
-        /// capture start/stop happens unlocked so no other thread ever
-        /// waits on device I/O.</summary>
-        private static void ReconcileCaptureOnWorker()
+        /// <summary>One running loopback capture and its ring. A sink's
+        /// mirror source resolves to one of these; several pads can share
+        /// one. The ring array doubles as its own lock object.</summary>
+        internal sealed class CaptureEntry
         {
-            bool want;
-            string haveId;
-            bool haveCapture;
+            public string EndpointId;
+            public Guid Container;
+            public WasapiLoopbackCapture Cap;
+            public volatile bool Dead;   // RecordingStopped fired; worker recreates
+            public readonly float[] Ring = new float[RingFrames * 2];
+            public long Write;           // total frames written (monotonic), under lock(Ring)
+        }
+
+        private static readonly Dictionary<string, CaptureEntry> _captures = new(StringComparer.Ordinal);
+
+        /// <summary>Worker-only. Maintains one capture per distinct mirror
+        /// source among passthrough-enabled sinks. A sink's MirrorSourceId of
+        /// "" means "the system default device", re-resolved every pass so a
+        /// default change follows automatically (DSY-v2's validate cadence).
+        /// Brief locks around state; all COM and capture start/stop happens
+        /// unlocked so no other thread ever waits on device I/O.</summary>
+        private static void ReconcileCapturesOnWorker()
+        {
+            List<Sink> mirrors;
             lock (_lock)
-            {
-                want = _running && AnyPassthroughOn_NoLock();
-                haveId = _captureDeviceId;
-                haveCapture = _capture != null;
-            }
+                mirrors = _running ? _sinks.Values.Where(s => s.PassthroughOn).ToList() : new List<Sink>();
 
-            if (!want)
-            {
-                StopCaptureOnWorker();
-                return;
-            }
-
-            // Restart when the default render device changed (DSY-v2
-            // re-validates every 5 s rather than registering callbacks).
             string defaultId = "";
-            Guid defaultContainer = Guid.Empty;
             try
             {
-                using var en = new MMDeviceEnumerator();
-                using var dev = en.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
-                defaultId = dev.ID;
-                defaultContainer = GetEndpointContainerId(dev);
+                using var en0 = new MMDeviceEnumerator();
+                using var dd = en0.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+                defaultId = dd.ID;
             }
             catch { }
 
-            // Never mirror a pad's own endpoint back into itself.
-            bool feedback;
-            lock (_lock)
-                feedback = defaultContainer != Guid.Empty
-                    && _sinks.Values.Any(x => x.Container == defaultContainer);
-            if (feedback)
+            var wantedIds = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var s in mirrors)
             {
-                Diag("[CAPTURE-SKIP] default output is a pad's own endpoint");
-                StopCaptureOnWorker();
-                return;
+                string id = string.IsNullOrEmpty(s.MirrorSourceId) ? defaultId : s.MirrorSourceId;
+                if (!string.IsNullOrEmpty(id)) wantedIds.Add(id);
             }
 
-            if (haveCapture && string.Equals(defaultId, haveId, StringComparison.Ordinal))
-                return;
+            // Detach unwanted / dead captures under the lock, dispose outside.
+            var drop = new List<CaptureEntry>();
+            lock (_lock)
+            {
+                foreach (var kv in _captures.ToList())
+                {
+                    if (wantedIds.Contains(kv.Key) && !kv.Value.Dead) continue;
+                    drop.Add(kv.Value);
+                    _captures.Remove(kv.Key);
+                }
+            }
+            foreach (var e in drop) StopCaptureEntry(e);
 
-            StopCaptureOnWorker();
+            // Start missing captures (COM + StartRecording, unlocked).
+            foreach (var id in wantedIds)
+            {
+                bool have;
+                lock (_lock) have = _captures.ContainsKey(id);
+                if (have) continue;
+                var entry = StartCaptureEntry(id);
+                if (entry == null) continue;
+                bool committed = false;
+                lock (_lock)
+                {
+                    if (_running && !_captures.ContainsKey(id)) { _captures[id] = entry; committed = true; }
+                }
+                if (!committed) StopCaptureEntry(entry);
+            }
+
+            // Point each mirror sink at its entry — except a pad's own
+            // endpoint, which must never feed back into itself.
+            lock (_lock)
+            {
+                foreach (var s in _sinks.Values)
+                {
+                    if (!s.PassthroughOn) { s.Capture = null; continue; }
+                    string id = string.IsNullOrEmpty(s.MirrorSourceId) ? defaultId : s.MirrorSourceId;
+                    _captures.TryGetValue(id, out var entry);
+                    if (entry != null && entry.Container != Guid.Empty && entry.Container == s.Container)
+                    {
+                        if (s.Capture != null) Diag($"[CAPTURE-SKIP] slot={s.Slot}: source is the pad's own endpoint");
+                        entry = null;
+                    }
+                    s.Capture = entry;
+                }
+            }
+        }
+
+        private static CaptureEntry StartCaptureEntry(string endpointId)
+        {
             try
             {
-                var cap = new WasapiLoopbackCapture(); // default render endpoint
+                using var en = new MMDeviceEnumerator();
+                using var dev = en.GetDevice(endpointId);
+                if (dev.State != DeviceState.Active)
+                {
+                    Diag($"[CAPTURE-FAIL] endpoint not active: {endpointId}");
+                    return null;
+                }
+                var entry = new CaptureEntry
+                {
+                    EndpointId = endpointId,
+                    Container = GetEndpointContainerId(dev),
+                };
+                var cap = new WasapiLoopbackCapture(dev);
                 int srcRate = cap.WaveFormat.SampleRate;
                 int srcCh = cap.WaveFormat.Channels;
                 int bytesPerSample = cap.WaveFormat.BitsPerSample / 8;
@@ -308,7 +365,7 @@ namespace PadForge.Common.Input
                     // Convert to 48 kHz stereo float and append to the ring.
                     int srcFrames = e.BytesRecorded / (bytesPerSample * srcCh);
                     if (srcFrames <= 0) return;
-                    lock (_ring)
+                    lock (entry.Ring)
                     {
                         for (; pos < srcFrames; pos += step)
                         {
@@ -324,52 +381,32 @@ namespace PadForge.Common.Input
                                 l = BitConverter.ToInt16(e.Buffer, (f * srcCh + 0) * 2) / 32768f;
                                 r = srcCh > 1 ? BitConverter.ToInt16(e.Buffer, (f * srcCh + 1) * 2) / 32768f : l;
                             }
-                            long idx = (_ringWrite % RingFrames) * 2;
-                            _ring[idx] = l;
-                            _ring[idx + 1] = r;
-                            _ringWrite++;
+                            long idx = (entry.Write % RingFrames) * 2;
+                            entry.Ring[idx] = l;
+                            entry.Ring[idx + 1] = r;
+                            entry.Write++;
                         }
                         pos -= srcFrames;
                     }
                 };
-                cap.RecordingStopped += (s, e) => { /* worker restarts on its next pass */ };
+                cap.RecordingStopped += (s, e) => entry.Dead = true; // worker recreates
                 cap.StartRecording();
-                bool committed = false;
-                lock (_lock)
-                {
-                    if (_running)
-                    {
-                        _capture = cap;
-                        _captureDeviceId = defaultId;
-                        committed = true;
-                    }
-                }
-                if (!committed)
-                {
-                    try { cap.StopRecording(); } catch { }
-                    try { cap.Dispose(); } catch { }
-                    return;
-                }
-                Diag($"[CAPTURE] started on default endpoint (rate={srcRate} ch={srcCh} float={isFloat})");
+                entry.Cap = cap;
+                Diag($"[CAPTURE] started on '{dev.FriendlyName}' (rate={srcRate} ch={srcCh} float={isFloat})");
+                return entry;
             }
             catch (Exception ex)
             {
                 Diag($"[CAPTURE-FAIL] {ex.GetType().Name}: {ex.Message}");
+                return null;
             }
         }
 
-        private static void StopCaptureOnWorker()
+        private static void StopCaptureEntry(CaptureEntry e)
         {
-            WasapiLoopbackCapture old;
-            lock (_lock)
-            {
-                old = _capture;
-                _capture = null;
-                _captureDeviceId = "";
-            }
-            if (old == null) return;
-            try { old.StopRecording(); } catch { }
-            try { old.Dispose(); } catch { }
+            try { e.Cap?.StopRecording(); } catch { }
+            try { e.Cap?.Dispose(); } catch { }
+            e.Cap = null;
         }
 
         /// <summary>Per-sink source: the sink's own macro mixer plus (when
@@ -379,6 +416,7 @@ namespace PadForge.Common.Input
         {
             private readonly Sink _sink;
             private long _cursor = -1;
+            private CaptureEntry _lastCap; // cursor resets when the source swaps
 
             /// <summary>Frames the cursor trails the live edge after the last
             /// read, or -1 when the mirror is off. The BT thread reads this to
@@ -395,7 +433,8 @@ namespace PadForge.Common.Input
                 int read = _sink.MacroMixer.Read(buffer, offset, count);
                 for (int i = read; i < count; i++) buffer[offset + i] = 0f;
 
-                if (_sink.PassthroughOn)
+                var cap = _sink.Capture;
+                if (_sink.PassthroughOn && cap != null)
                 {
                     // Full scale: master volume lives in the firmware speaker
                     // volume byte (UserEffectsDispatcher), not the samples.
@@ -406,9 +445,10 @@ namespace PadForge.Common.Input
                     // ran past the live edge, or fell a quarter-second behind).
                     const int CatastropheLag = 12000; // 250 ms @ 48 kHz
                     const int ResyncCushion = 2160;    // 45 ms (== BtTargetLag)
-                    lock (_ring)
+                    lock (cap.Ring)
                     {
-                        long avail = _ringWrite;
+                        long avail = cap.Write;
+                        if (!ReferenceEquals(cap, _lastCap)) { _cursor = -1; _lastCap = cap; }
                         if (_cursor < 0 || _cursor > avail || avail - _cursor > CatastropheLag)
                             _cursor = Math.Max(0, avail - ResyncCushion);
                         int frames = count / 2;
@@ -416,8 +456,8 @@ namespace PadForge.Common.Input
                         for (int f = 0; f < canRead; f++)
                         {
                             long idx = ((_cursor + f) % RingFrames) * 2;
-                            buffer[offset + f * 2] += _ring[idx];
-                            buffer[offset + f * 2 + 1] += _ring[idx + 1];
+                            buffer[offset + f * 2] += cap.Ring[idx];
+                            buffer[offset + f * 2 + 1] += cap.Ring[idx + 1];
                         }
                         _cursor += canRead;
                         LoopbackLagFrames = (int)(avail - _cursor);
@@ -557,7 +597,7 @@ namespace PadForge.Common.Input
         public static void Shutdown()
         {
             List<Sink> drop;
-            WasapiLoopbackCapture cap;
+            List<CaptureEntry> caps;
             lock (_lock)
             {
                 _running = false;
@@ -565,17 +605,12 @@ namespace PadForge.Common.Input
                 _sinks.Clear();
                 foreach (var s in drop)
                     if (SinkAlive(s)) _speakerPathCleared.Add(s.DeviceGuid);
-                cap = _capture;
-                _capture = null;
-                _captureDeviceId = "";
+                caps = _captures.Values.ToList();
+                _captures.Clear();
             }
             _workSignal.Set();
             foreach (var s in drop) DisposeTransport(s);
-            if (cap != null)
-            {
-                try { cap.StopRecording(); } catch { }
-                try { cap.Dispose(); } catch { }
-            }
+            foreach (var c in caps) StopCaptureEntry(c);
         }
 
         // ─────────────────────────────────────────────
@@ -599,7 +634,7 @@ namespace PadForge.Common.Input
             // Phase 1 — desired state, no locks (SettingsManager and the
             // config provider take their own locks; never nest them under
             // ours).
-            var desired = new List<(int Slot, Guid Guid, string Path, bool IsBt, bool IsDs4, bool PtOn)>();
+            var desired = new List<(int Slot, Guid Guid, string Path, bool IsBt, bool IsDs4, bool PtOn, string MirrorSrc)>();
             for (int slot = 0; slot < MaxPads; slot++)
             {
                 bool demand;
@@ -612,13 +647,13 @@ namespace PadForge.Common.Input
                     // DS4 BT audio is SBC-coded over different reports and
                     // unimplemented.
                     if (isBt && isDs4) continue;
-                    bool ptOn = ReadPassthroughFlag(slot, guid);
+                    var (ptOn, mirrorSrc) = ReadPassthroughConfig(slot, guid);
                     // A sink exists while the device's mirror toggle is on or
                     // the slot's macros have asked for controller routing.
                     // Pads using neither get no transport and no firmware
                     // speaker-path assertion.
                     if (!ptOn && !demand) continue;
-                    desired.Add((slot, guid, ud.DevicePath, isBt, isDs4, ptOn));
+                    desired.Add((slot, guid, ud.DevicePath, isBt, isDs4, ptOn, mirrorSrc));
                 }
             }
 
@@ -647,6 +682,7 @@ namespace PadForge.Common.Input
                     sink.Slot = d.Slot;
                     sink.HidPath = d.Path;
                     sink.PassthroughOn = d.PtOn;
+                    sink.MirrorSourceId = d.MirrorSrc ?? "";
                     if (sink.TransportFailed)
                     {
                         toDispose.Add(DetachTransport_NoLock(sink));
@@ -666,8 +702,8 @@ namespace PadForge.Common.Input
             foreach (var s in toDispose) DisposeTransport(s);
             foreach (var s in toBuild) BuildTransportOnWorker(s);
 
-            // Phase 4 — loopback capture (own brief locks).
-            ReconcileCaptureOnWorker();
+            // Phase 4 — loopback captures (own brief locks).
+            ReconcileCapturesOnWorker();
 
             // Phase 5 — macro-routing notify, outside _lock: it takes
             // SoundMacroService's lock and can tear down a WasapiOut.
@@ -895,17 +931,17 @@ namespace PadForge.Common.Input
             return false;
         }
 
-        private static bool ReadPassthroughFlag(int slot, Guid device)
+        private static (bool On, string MirrorSource) ReadPassthroughConfig(int slot, Guid device)
         {
             try
             {
                 var provider = PassthroughConfigProvider;
-                if (provider == null) return false;
-                foreach (var (dev, on) in provider(slot) ?? Enumerable.Empty<(Guid, bool)>())
-                    if (dev == device) return on;
+                if (provider == null) return (false, "");
+                foreach (var (dev, on, src) in provider(slot) ?? Enumerable.Empty<(Guid, bool, string)>())
+                    if (dev == device) return (on, src ?? "");
             }
             catch { }
-            return false;
+            return (false, "");
         }
 
         private static MMDevice FindActiveEndpointByContainer(MMDeviceEnumerator en, Guid container)

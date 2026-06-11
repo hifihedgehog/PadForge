@@ -1687,6 +1687,10 @@
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Los sonidos de macro y el audio duplicado se reproducen por el altavoz integrado del mando seleccionado, por USB o Bluetooth. Elige el dispositivo en el desplegable de arriba: todo lo de aquí lo sigue.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Salida de sonido</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Los sonidos se dirigen automáticamente al mando seleccionado. Por USB, el punto de audio del mando se asocia por contenedor de hardware; por Bluetooth, el audio se transmite en tramas HID de Sony.</value></data>
+  <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Fuente de duplicado</value></data>
+  <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Qué dispositivo de reproducción se duplica al altavoz del mando. Los juegos que envían sonidos específicos a un dispositivo de reproducción aparte pueden usar este.</value></data>
+  <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Predeterminado del sistema</value></data>
+  <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(dispositivo no disponible)</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Volumen general</value></data>
   <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Restablecer el volumen general al 100%</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>Probar</value></data>

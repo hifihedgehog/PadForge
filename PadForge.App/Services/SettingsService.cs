@@ -1783,6 +1783,7 @@ namespace PadForge.Services
                     cfg.LightbarBlue = cfgData.LightbarBlue;
                     cfg.LightbarEnabled = cfgData.LightbarEnabled;
                     cfg.AudioPassthroughEnabled = cfgData.AudioPassthroughEnabled;
+                    cfg.AudioMirrorSourceId = cfgData.AudioMirrorSourceId ?? string.Empty;
                     // Migrate legacy MicLightOn to the new MicLedMode if
                     // the new field hasn't been set explicitly.
                     if (cfgData.MicLedMode != ViewModels.MicLedMode.Off)
@@ -2941,6 +2942,7 @@ namespace PadForge.Services
                 LightbarBlue = cfg.LightbarBlue,
                 LightbarEnabled = cfg.LightbarEnabled,
                 AudioPassthroughEnabled = cfg.AudioPassthroughEnabled,
+                AudioMirrorSourceId = cfg.AudioMirrorSourceId ?? string.Empty,
                 MicLedMode = cfg.MicLedMode,
                 MicLedFollowDeviceId = cfg.MicLedFollowDeviceId ?? string.Empty,
                 MicLightOn = cfg.MicLightOn,

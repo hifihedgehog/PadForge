@@ -561,6 +561,10 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(HasSelectedDevice));
                     OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
+                    // The mirror source is per device; re-point the combo at
+                    // the newly selected device's value.
+                    if (SelectedConfigTab == AudioTabIndex) RefreshMirrorSources();
+                    else OnPropertyChanged(nameof(SelectedMirrorSourceId));
                     // Swap the Lighting tab's bound config to the new
                     // device's per-device entry. UI bindings that resolve
                     // PlayStationConfig.* re-evaluate against the new
@@ -2981,6 +2985,66 @@ namespace PadForge.ViewModels
 
         public bool SelectedDeviceHasNoSpeaker => !SelectedDeviceHasSpeaker;
 
+        /// <summary>A render endpoint the mirror can capture; Id "" = the
+        /// system default device.</summary>
+        public sealed class MirrorSourceOption
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
+        }
+
+        public System.Collections.ObjectModel.ObservableCollection<MirrorSourceOption> MirrorSourceOptions { get; } = new();
+
+        private bool _refreshingMirrorSources;
+
+        /// <summary>Repopulates <see cref="MirrorSourceOptions"/> from the
+        /// active render endpoints. Guarded: rebuilding the ItemsSource makes
+        /// WPF write a transient null through SelectedValue (the Aim Engage
+        /// picker documents the same hazard), so config writes are suppressed
+        /// while the list is swapped.</summary>
+        public void RefreshMirrorSources()
+        {
+            _refreshingMirrorSources = true;
+            try
+            {
+                string current = PlayStationConfig?.AudioMirrorSourceId ?? string.Empty;
+                MirrorSourceOptions.Clear();
+                MirrorSourceOptions.Add(new MirrorSourceOption { Id = string.Empty, Name = Strings.Instance.Pad_Audio_SystemDefault });
+                try
+                {
+                    using var en = new NAudio.CoreAudioApi.MMDeviceEnumerator();
+                    foreach (var dev in en.EnumerateAudioEndPoints(
+                        NAudio.CoreAudioApi.DataFlow.Render, NAudio.CoreAudioApi.DeviceState.Active))
+                    {
+                        using (dev)
+                            MirrorSourceOptions.Add(new MirrorSourceOption { Id = dev.ID, Name = dev.FriendlyName });
+                    }
+                }
+                catch { }
+                if (!string.IsNullOrEmpty(current)
+                    && !MirrorSourceOptions.Any(o => o.Id == current))
+                    MirrorSourceOptions.Add(new MirrorSourceOption { Id = current, Name = Strings.Instance.Pad_Audio_SourceUnavailable });
+                OnPropertyChanged(nameof(SelectedMirrorSourceId));
+            }
+            finally { _refreshingMirrorSources = false; }
+        }
+
+        /// <summary>ComboBox-facing proxy over
+        /// PlayStationConfig.AudioMirrorSourceId that ignores the transient
+        /// null write-back during ItemsSource rebuilds.</summary>
+        public string SelectedMirrorSourceId
+        {
+            get => PlayStationConfig?.AudioMirrorSourceId ?? string.Empty;
+            set
+            {
+                if (_refreshingMirrorSources || value == null) return;
+                if (PlayStationConfig == null) return;
+                if (PlayStationConfig.AudioMirrorSourceId == value) return;
+                PlayStationConfig.AudioMirrorSourceId = value;
+                OnPropertyChanged(nameof(SelectedMirrorSourceId));
+            }
+        }
+
         private int _soundMasterVolume = 100;
         /// <summary>Per-pad master volume for macro sounds (0-100),
         /// multiplied with each action's own volume. Live sounds retune.</summary>
@@ -3080,12 +3144,14 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _selectedConfigTab, value) && value == AudioTabIndex)
                 {
-                    // Entering the Audio tab: re-derive the sound-macro list
-                    // and the selected device's speaker capability.
+                    // Entering the Audio tab: re-derive the sound-macro list,
+                    // the selected device's speaker capability, and the
+                    // mirror-source endpoint list.
                     OnPropertyChanged(nameof(SoundMacros));
                     OnPropertyChanged(nameof(HasNoSoundMacros));
                     OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
+                    RefreshMirrorSources();
                 }
             }
         }

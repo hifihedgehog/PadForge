@@ -1228,6 +1228,14 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>Drop-in vervanging voor XInput. Filtert PadForge's eigen virtuele controllers uit zijn eigen weergave.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly-iconenpakket</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Stick- en trigger-iconen afgeleid van "Xbox Series Button Icons and Controls" door Zacksly (CC BY 3.0)</value></data>
+  <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Pure C# Opus-encoder die DualSense-speakeraudio via Bluetooth aandrijft. Door Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>DualSense Bluetooth-audio-onderzoek door egormanga: het pakkettransport waarop de speakerstream van de controller is gebouwd. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Bluetooth-speakerrecept door awalol: Opus-framing en pakketindeling. Dank ook aan TechAntohere voor gedeelde bevindingen en tests. MIT.</value></data>
+  <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
+  <data name="About_DualSenseYDesc" xml:space="preserve"><value>Referentie-implementatie voor USB-controller-audiopassthrough. Door WujekFoliarz.</value></data>
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptieve triggers</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptieve triggers</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configureer trigger-effecten op de toegewezen fysieke DualSense. Game-gestuurde trigger-effecten worden automatisch doorgestuurd. De instellingen hier voegen een door de gebruiker geconfigureerde laag toe die actief is wanneer geen spel schrijft.</value></data>

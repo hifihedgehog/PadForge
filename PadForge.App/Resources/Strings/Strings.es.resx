@@ -1208,6 +1208,14 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>Reemplazo directo de XInput. Filtra los controles virtuales propios de PadForge de su propia vista.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Pack de iconos Zacksly</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Iconos de palancas y gatillos derivados de "Xbox Series Button Icons and Controls" de Zacksly (CC BY 3.0)</value></data>
+  <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Codificador Opus en C# puro que impulsa el audio del altavoz del DualSense por Bluetooth. Por Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>Investigación del audio Bluetooth del DualSense por egormanga: el transporte de paquetes en el que se basa el stream del altavoz. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Receta del altavoz por Bluetooth por awalol: framing Opus y disposición de paquetes. Gracias también a TechAntohere por sus hallazgos y pruebas. MIT.</value></data>
+  <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
+  <data name="About_DualSenseYDesc" xml:space="preserve"><value>Implementación de referencia para el passthrough de audio USB del mando. Por WujekFoliarz.</value></data>
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Gatillos adaptativos</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Gatillos adaptativos</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configura los efectos de los gatillos en el DualSense físico asignado. Los efectos generados por el juego se reenvían automáticamente. Los ajustes de aquí añaden una capa configurada por el usuario que actúa cuando ningún juego está escribiendo.</value></data>

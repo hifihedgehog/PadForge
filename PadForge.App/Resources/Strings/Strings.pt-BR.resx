@@ -1208,6 +1208,14 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>Substituto direto do XInput. Filtra os próprios controles virtuais do PadForge da sua própria visão</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Pacote de ícones Zacksly</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Ícones de analógicos e gatilhos derivados de "Xbox Series Button Icons and Controls" por Zacksly (CC BY 3.0)</value></data>
+  <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Codificador Opus em C# puro que move o áudio do alto-falante do DualSense por Bluetooth. Por Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>Pesquisa do áudio Bluetooth do DualSense por egormanga: o transporte de pacotes em que o stream do alto-falante se baseia. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Receita do alto-falante por Bluetooth por awalol: framing Opus e layout dos pacotes. Obrigado também a TechAntohere pelas descobertas compartilhadas e pelos testes. MIT.</value></data>
+  <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
+  <data name="About_DualSenseYDesc" xml:space="preserve"><value>Implementação de referência para o passthrough de áudio USB do controle. Por WujekFoliarz.</value></data>
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Gatilhos Adaptativos</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Gatilhos Adaptativos</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configura os efeitos de gatilho no DualSense físico atribuído. Os efeitos gerados pelo jogo são encaminhados automaticamente. As configurações aqui adicionam uma camada configurada pelo usuário que atua quando nenhum jogo está escrevendo.</value></data>

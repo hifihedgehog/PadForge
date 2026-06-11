@@ -1207,6 +1207,14 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput 的 API 兼容替代实现。将 PadForge 自身创建的虚拟控制器从其自身视图中过滤掉</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly 图标包</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>摇杆和扳机图标改编自 Zacksly 的"Xbox Series Button Icons and Controls"(CC BY 3.0)</value></data>
+  <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>纯 C# 的 Opus 编码器，驱动 DualSense 扬声器通过蓝牙播放音频。作者 Logan Stromberg。BSD 3-Clause。</value></data>
+  <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga 的 DualSense 蓝牙音频研究：手柄扬声器流所依赖的数据包传输。apps.sdore.me/SAxense。MPL-2.0。</value></data>
+  <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalol 的蓝牙扬声器方案：Opus 帧格式与数据包布局。也感谢 TechAntohere 分享研究成果并协助测试。MIT。</value></data>
+  <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
+  <data name="About_DualSenseYDesc" xml:space="preserve"><value>USB 手柄音频直通的参考实现。作者 WujekFoliarz。</value></data>
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>自适应扳机</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>自适应扳机</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>配置已分配的物理 DualSense 上的扳机效果。由游戏驱动的扳机效果会自动转发。此处的设置在没有游戏写入时叠加用户自定义层。</value></data>

@@ -1208,6 +1208,14 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput のドロップイン置換版。PadForge 自身の仮想コントローラーを自身のビューから除外します</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zackslyアイコンパック</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>「Xbox Series Button Icons and Controls」(Zacksly、CC BY 3.0) を基にしたスティックおよびトリガーのアイコン</value></data>
+  <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Bluetooth経由のDualSenseスピーカー音声を支える純C#製Opusエンコーダー。Logan Stromberg作。BSD 3-Clause。</value></data>
+  <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormangaによるDualSense Bluetooth音声の研究。コントローラースピーカーのストリームが利用するパケットトランスポート。apps.sdore.me/SAxense。MPL-2.0。</value></data>
+  <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalolによるBluetoothスピーカーのレシピ。Opusフレーミングとパケットレイアウト。知見の共有とテストを提供したTechAntohereにも感謝。MIT。</value></data>
+  <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
+  <data name="About_DualSenseYDesc" xml:space="preserve"><value>USBコントローラー音声パススルーの参照実装。WujekFoliarz作。</value></data>
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>アダプティブトリガー</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>アダプティブトリガー</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>割り当てられた物理 DualSense のトリガーエフェクトを設定します。ゲーム由来のトリガーエフェクトは自動的に転送されます。ここでの設定は、ゲームが書き込んでいないときに動作するユーザー設定レイヤーを追加します。</value></data>

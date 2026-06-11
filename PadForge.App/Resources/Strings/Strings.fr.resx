@@ -1208,6 +1208,14 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>Remplacement direct de XInput. Filtre les contrôleurs virtuels propres de PadForge de sa propre vue.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Pack d'icônes Zacksly</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Icônes de sticks et de gâchettes dérivées de « Xbox Series Button Icons and Controls » par Zacksly (CC BY 3.0)</value></data>
+  <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Encodeur Opus en C# pur qui alimente l'audio du haut-parleur DualSense en Bluetooth. Par Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>Recherche sur l'audio Bluetooth de la DualSense par egormanga : le transport de paquets sur lequel repose le flux du haut-parleur. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Recette du haut-parleur en Bluetooth par awalol : framing Opus et structure des paquets. Merci aussi à TechAntohere pour ses découvertes et ses tests. MIT.</value></data>
+  <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
+  <data name="About_DualSenseYDesc" xml:space="preserve"><value>Implémentation de référence pour le passthrough audio USB de la manette. Par WujekFoliarz.</value></data>
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Gâchettes adaptatives</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Gâchettes adaptatives</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configure les effets des gâchettes sur la DualSense physique assignée. Les effets pilotés par le jeu sont transmis automatiquement. Les réglages ici ajoutent une couche utilisateur qui s'applique quand aucun jeu n'écrit.</value></data>

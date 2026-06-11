@@ -1208,6 +1208,14 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>Drop-in-XInput-Ersatz. Filtert die eigenen virtuellen Controller von PadForge aus dessen eigener Sicht heraus.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly-Icon-Pack</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Stick- und Trigger-Symbole abgeleitet aus „Xbox Series Button Icons and Controls" von Zacksly (CC BY 3.0)</value></data>
+  <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Reiner C#-Opus-Encoder für DualSense-Lautsprecher-Audio über Bluetooth. Von Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>DualSense-Bluetooth-Audio-Forschung von egormanga: der Pakettransport, auf dem der Lautsprecher-Stream des Controllers aufbaut. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Bluetooth-Lautsprecher-Rezept von awalol: Opus-Framing und Paketlayout. Dank auch an TechAntohere für geteilte Erkenntnisse und Tests. MIT.</value></data>
+  <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
+  <data name="About_DualSenseYDesc" xml:space="preserve"><value>Referenzimplementierung für USB-Controller-Audio-Passthrough. Von WujekFoliarz.</value></data>
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptive Trigger</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptive Trigger</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfiguriert die Trigger-Effekte am zugewiesenen physischen DualSense. Spielgesteuerte Trigger-Effekte werden automatisch weitergeleitet. Die hier gewählten Einstellungen bilden eine zusätzliche Schicht, die greift, wenn kein Spiel schreibt.</value></data>

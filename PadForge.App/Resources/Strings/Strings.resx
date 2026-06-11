@@ -315,6 +315,14 @@
   <data name="About_Testimony" xml:space="preserve"><value>Testimony</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>"And we talk of Christ, we rejoice in Christ, we preach of Christ, we prophesy of Christ, and we write according to our prophecies, that our children may know to what source they may look for a remission of their sins." — 2 Nephi 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>Glory, honor, and praise to the Lord Jesus Christ, the source of all truth, forever and ever.</value></data>
+  <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Pure C# Opus encoder that drives DualSense speaker audio over Bluetooth. By Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>DualSense Bluetooth audio research by egormanga: the packet transport the controller speaker stream rides on. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Bluetooth speaker recipe by awalol: Opus framing and packet layout. Thanks also to TechAntohere for shared findings and testing. MIT.</value></data>
+  <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
+  <data name="About_DualSenseYDesc" xml:space="preserve"><value>Reference implementation for USB controller audio passthrough. By WujekFoliarz.</value></data>
 
   <!-- ═══ Device Types ═══ -->
   <data name="DeviceType_Gamepad" xml:space="preserve"><value>Gamepad</value></data>

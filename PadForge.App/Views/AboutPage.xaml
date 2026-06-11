@@ -61,6 +61,10 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="{Binding About_DotNet10, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"/>
@@ -123,6 +127,26 @@
                     <TextBlock Grid.Row="12" Text="{Binding About_GestureSign, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
                     <TextBlock Grid.Row="12" Grid.Column="1"
                                Text="{Binding About_GestureSignDesc, Source={x:Static strings:Strings.Instance}}"
+                               Opacity="0.7" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="13" Text="{Binding About_Concentus, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="13" Grid.Column="1"
+                               Text="{Binding About_ConcentusDesc, Source={x:Static strings:Strings.Instance}}"
+                               Opacity="0.7" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="14" Text="{Binding About_SAxense, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="14" Grid.Column="1"
+                               Text="{Binding About_SAxenseDesc, Source={x:Static strings:Strings.Instance}}"
+                               Opacity="0.7" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="15" Text="{Binding About_DsBtHaptics, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="15" Grid.Column="1"
+                               Text="{Binding About_DsBtHapticsDesc, Source={x:Static strings:Strings.Instance}}"
+                               Opacity="0.7" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="16" Text="{Binding About_DualSenseY, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="16" Grid.Column="1"
+                               Text="{Binding About_DualSenseYDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0" TextWrapping="Wrap"/>
                 </Grid>
             </Border>

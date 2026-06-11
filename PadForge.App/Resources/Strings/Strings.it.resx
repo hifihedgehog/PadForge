@@ -1228,6 +1228,14 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>Sostituto drop-in di XInput. Filtra i controller virtuali di PadForge dalla sua stessa vista.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Pack icone Zacksly</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Icone di levette e grilletti derivate da "Xbox Series Button Icons and Controls" di Zacksly (CC BY 3.0)</value></data>
+  <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Encoder Opus in C# puro che alimenta l'audio dell'altoparlante DualSense via Bluetooth. Di Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>Ricerca sull'audio Bluetooth del DualSense di egormanga: il trasporto dei pacchetti su cui si basa lo stream dell'altoparlante. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Ricetta dell'altoparlante via Bluetooth di awalol: framing Opus e layout dei pacchetti. Grazie anche a TechAntohere per i risultati condivisi e i test. MIT.</value></data>
+  <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
+  <data name="About_DualSenseYDesc" xml:space="preserve"><value>Implementazione di riferimento per il passthrough audio USB del controller. Di WujekFoliarz.</value></data>
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Grilletti adattivi</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Grilletti adattivi</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configura gli effetti dei grilletti sul DualSense fisico assegnato. Gli effetti generati dal gioco vengono inoltrati automaticamente. Le impostazioni qui aggiungono un livello configurato dall'utente che si attiva quando nessun gioco sta scrivendo.</value></data>

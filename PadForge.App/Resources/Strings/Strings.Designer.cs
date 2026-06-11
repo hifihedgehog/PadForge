@@ -340,6 +340,14 @@ public class Strings : INotifyPropertyChanged
     public string About_QDollarDesc => Get("About_QDollarDesc");
     public string About_GestureSign => Get("About_GestureSign");
     public string About_GestureSignDesc => Get("About_GestureSignDesc");
+    public string About_Concentus => Get("About_Concentus");
+    public string About_ConcentusDesc => Get("About_ConcentusDesc");
+    public string About_SAxense => Get("About_SAxense");
+    public string About_SAxenseDesc => Get("About_SAxenseDesc");
+    public string About_DsBtHaptics => Get("About_DsBtHaptics");
+    public string About_DsBtHapticsDesc => Get("About_DsBtHapticsDesc");
+    public string About_DualSenseY => Get("About_DualSenseY");
+    public string About_DualSenseYDesc => Get("About_DualSenseYDesc");
     public string About_License => Get("About_License");
     public string About_LicenseText => Get("About_LicenseText");
     public string DeviceType_Gamepad => Get("DeviceType_Gamepad");

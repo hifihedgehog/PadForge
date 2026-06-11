@@ -425,12 +425,17 @@ namespace PadForge.Common.Input
         }
 
         // Apply any EBI=0 buffered parameters into the supplied effect.
-        // Keeps Magnitude/Period/condition data when the source field is set;
-        // doesn't clobber an existing magnitude with zero.
+        // Keeps Magnitude/Period/condition data when the source field was
+        // explicitly written; an unset magnitude never clobbers a real one,
+        // but an EXPLICIT zero (a stop-by-update) must apply.
         private void DrainPendingInto(EffectState es)
         {
             if (_pending == null || es == null) return;
-            if (_pending.Magnitude != 0) es.Magnitude = _pending.Magnitude;
+            if (_pending.MagnitudeSet)
+            {
+                es.Magnitude = _pending.Magnitude;
+                es.MagnitudeSet = true;
+            }
             if (_pending.Period != 0) es.Period = _pending.Period;
             if (_pending.ConditionAxisCount > 0)
             {
@@ -496,6 +501,7 @@ namespace PadForge.Common.Input
 
             var es = GetOrCreateForUpdate(ebi);
             es.Magnitude = canonicalMag;
+            es.MagnitudeSet = true;
             es.Period = period;
         }
 
@@ -513,6 +519,7 @@ namespace PadForge.Common.Input
 
             var es = GetOrCreateForUpdate(ebi);
             es.Magnitude = canonicalMag;
+            es.MagnitudeSet = true;
         }
 
         // Set Ramp Force: [EBI][Start:2 signed][End:2 signed]. Same scaling
@@ -531,6 +538,7 @@ namespace PadForge.Common.Input
 
             var es = GetOrCreateForUpdate(ebi);
             es.Magnitude = peak;
+            es.MagnitudeSet = true;
         }
 
         // Set Condition Report (0x13). Bit layout pinned to HIDMaestro
@@ -589,6 +597,7 @@ namespace PadForge.Common.Input
             if (axisIdx + 1 > es.ConditionAxisCount)
                 es.ConditionAxisCount = axisIdx + 1;
             es.Magnitude = Math.Max(Math.Abs(posCoeff), Math.Abs(negCoeff));
+            es.MagnitudeSet = true;
         }
 
         // Effect Operation: [EBI][Operation 1=Start, 2=StartSolo, 3=Stop][LoopCount]
@@ -940,6 +949,14 @@ namespace PadForge.Common.Input
             public int Magnitude;        // signed for constant (-10000..+10000), abs for others
             public byte Gain = 255;
             public ushort Duration;      // ms; 0 / 0xFFFF = infinite (PID null)
+            /// <summary>Magnitude was explicitly written (including zero).
+            /// Lets the EBI-0 pending drain apply a magnitude-0 update —
+            /// old DirectInput games stop a playing infinite effect by
+            /// updating its magnitude to 0 through SetParameters, which
+            /// pid.dll routes via EBI 0 + restart. Without this bit the
+            /// drain can't tell "set to 0" from "never written" and the
+            /// stop is silently discarded (discussion #125).</summary>
+            public bool MagnitudeSet;
             public bool Running;
             public long StartTicks;      // Environment.TickCount64 at Effect Operation Start
             public byte LoopCount = 1;   // from Effect Operation; 0xFF = infinite repeat

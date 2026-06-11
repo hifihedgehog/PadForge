@@ -65,6 +65,16 @@ namespace PadForge.Common.Input
         private HMAxis _axLeftStickX, _axLeftStickY;
         private HMAxis _axRightStickX, _axRightStickY;
         private HMAxis _axLeftTrigger, _axRightTrigger;
+        // The trigger rows' wire-field keys when they differ from the
+        // canonical positions above (X360: canonical Z/Rz, fields Vx/Vy).
+        // HM's lanes disagree across SDK generations about which position
+        // they read triggers from — v1.3.9-1.3.16 HID lane: field key;
+        // v1.3.17 HID lane: canonical-first with field fallback; v1.3.17
+        // GIP/XUSB lane (XInput / WGI consumers): field key only. Mirror
+        // every trigger write to both positions so all lanes of whichever
+        // SDK is bundled read live values instead of the 0.5 extras seed
+        // (which pinned XInput/WGI triggers at 50%, discussion #130).
+        private HMAxis _axLeftTriggerField, _axRightTriggerField;
 
         // Per-call axes scratch dict, allocated once and reused across
         // every SubmitGamepadState / SubmitExtendedRawState frame to
@@ -131,6 +141,17 @@ namespace PadForge.Common.Input
             _axLeftTrigger  = ResolveAxisByRole("leftTrigger",  HMAxis.Z);
             _axRightTrigger = ResolveAxisByRole("rightTrigger", HMAxis.Rz);
 
+            // Mirror targets: the trigger rows' own wire-field keys, None
+            // when they coincide with the canonical position (Sony, where
+            // the axisMap already lands the role on the wire field).
+            var profTriggers = _profile.Triggers;
+            _axLeftTriggerField  = (profTriggers != null && profTriggers.Count > 0)
+                ? profTriggers[0].Axis : HMAxis.None;
+            _axRightTriggerField = (profTriggers != null && profTriggers.Count > 1)
+                ? profTriggers[1].Axis : HMAxis.None;
+            if (_axLeftTriggerField  == _axLeftTrigger)  _axLeftTriggerField  = HMAxis.None;
+            if (_axRightTriggerField == _axRightTrigger) _axRightTriggerField = HMAxis.None;
+
             // Seed the hot-path scratch dict so HM's encoder receives
             // sensible rest values for every declared axis. Sticks center
             // at 0.5, triggers release at 0. Any HMAxis from
@@ -142,7 +163,8 @@ namespace PadForge.Common.Input
             {
                 foreach (var hmAxis in availableAxes)
                 {
-                    float rest = (hmAxis == _axLeftTrigger || hmAxis == _axRightTrigger) ? 0f : 0.5f;
+                    float rest = (hmAxis == _axLeftTrigger || hmAxis == _axRightTrigger
+                               || hmAxis == _axLeftTriggerField || hmAxis == _axRightTriggerField) ? 0f : 0.5f;
                     _axesScratch[hmAxis] = rest;
                 }
             }
@@ -329,6 +351,8 @@ namespace PadForge.Common.Input
             if (_axRightStickY != HMAxis.None) _axesScratch[_axRightStickY] = (32768f - gp.ThumbRY)  / 65535f;
             if (_axLeftTrigger  != HMAxis.None) _axesScratch[_axLeftTrigger]  = gp.LeftTrigger  / 65535f;
             if (_axRightTrigger != HMAxis.None) _axesScratch[_axRightTrigger] = gp.RightTrigger / 65535f;
+            if (_axLeftTriggerField  != HMAxis.None) _axesScratch[_axLeftTriggerField]  = gp.LeftTrigger  / 65535f;
+            if (_axRightTriggerField != HMAxis.None) _axesScratch[_axRightTriggerField] = gp.RightTrigger / 65535f;
 
             var state = new HMGamepadState
             {
@@ -406,6 +430,8 @@ namespace PadForge.Common.Input
             if (_axRightStickY != HMAxis.None) _axesScratch[_axRightStickY] = (32768f - gp.ThumbRY)  / 65535f;
             if (_axLeftTrigger  != HMAxis.None) _axesScratch[_axLeftTrigger]  = gp.LeftTrigger  / 65535f;
             if (_axRightTrigger != HMAxis.None) _axesScratch[_axRightTrigger] = gp.RightTrigger / 65535f;
+            if (_axLeftTriggerField  != HMAxis.None) _axesScratch[_axLeftTriggerField]  = gp.LeftTrigger  / 65535f;
+            if (_axRightTriggerField != HMAxis.None) _axesScratch[_axRightTriggerField] = gp.RightTrigger / 65535f;
 
             var state = new HMGamepadState
             {

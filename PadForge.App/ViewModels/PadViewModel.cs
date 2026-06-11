@@ -3008,8 +3008,10 @@ namespace PadForge.ViewModels
             try
             {
                 string current = PlayStationConfig?.AudioMirrorSourceId ?? string.Empty;
-                MirrorSourceOptions.Clear();
-                MirrorSourceOptions.Add(new MirrorSourceOption { Id = string.Empty, Name = Strings.Instance.Pad_Audio_SystemDefault });
+                var desired = new System.Collections.Generic.List<MirrorSourceOption>
+                {
+                    new MirrorSourceOption { Id = string.Empty, Name = Strings.Instance.Pad_Audio_SystemDefault },
+                };
                 try
                 {
                     using var en = new NAudio.CoreAudioApi.MMDeviceEnumerator();
@@ -3017,13 +3019,32 @@ namespace PadForge.ViewModels
                         NAudio.CoreAudioApi.DataFlow.Render, NAudio.CoreAudioApi.DeviceState.Active))
                     {
                         using (dev)
-                            MirrorSourceOptions.Add(new MirrorSourceOption { Id = dev.ID, Name = dev.FriendlyName });
+                            desired.Add(new MirrorSourceOption { Id = dev.ID, Name = dev.FriendlyName });
                     }
                 }
                 catch { }
                 if (!string.IsNullOrEmpty(current)
-                    && !MirrorSourceOptions.Any(o => o.Id == current))
-                    MirrorSourceOptions.Add(new MirrorSourceOption { Id = current, Name = Strings.Instance.Pad_Audio_SourceUnavailable });
+                    && !desired.Any(o => o.Id == current))
+                    desired.Add(new MirrorSourceOption { Id = current, Name = Strings.Instance.Pad_Audio_SourceUnavailable });
+
+                // Diff-sync in place — never Clear(). Rebuilding the list
+                // removes the ComboBox's selected item instance, and WPF
+                // clears the selection even when the rebuilt list carries
+                // the same Id; opening and closing the dropdown (which
+                // refreshes via DropDownOpened) blanked the field. Items
+                // whose Id survives keep their instance, so the selection
+                // rides through untouched.
+                for (int i = 0; i < desired.Count; i++)
+                {
+                    int j = -1;
+                    for (int k = i; k < MirrorSourceOptions.Count; k++)
+                        if (MirrorSourceOptions[k].Id == desired[i].Id) { j = k; break; }
+                    if (j < 0) MirrorSourceOptions.Insert(i, desired[i]);
+                    else if (j != i) MirrorSourceOptions.Move(j, i);
+                }
+                while (MirrorSourceOptions.Count > desired.Count)
+                    MirrorSourceOptions.RemoveAt(MirrorSourceOptions.Count - 1);
+
                 OnPropertyChanged(nameof(SelectedMirrorSourceId));
             }
             finally { _refreshingMirrorSources = false; }

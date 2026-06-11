@@ -6460,9 +6460,14 @@
                                             Visibility="{Binding SelectedDeviceHasSpeaker, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Pad_Audio_MirrorSource_Label, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                    <ComboBox ItemsSource="{Binding MirrorSourceOptions}"
+                                    <!-- SelectedValuePath/DisplayMemberPath MUST precede the
+                                         ItemsSource/SelectedValue bindings: XAML applies
+                                         attributes in order, and a SelectedValue that attaches
+                                         before SelectedValuePath is set fails to resolve and
+                                         never retries — the closed box renders blank. -->
+                                    <ComboBox SelectedValuePath="Id" DisplayMemberPath="Name"
+                                              ItemsSource="{Binding MirrorSourceOptions}"
                                               SelectedValue="{Binding SelectedMirrorSourceId, Mode=TwoWay}"
-                                              SelectedValuePath="Id" DisplayMemberPath="Name"
                                               MinWidth="260" MaxWidth="380"
                                               DropDownOpened="MirrorSource_DropDownOpened"
                                               IsEnabled="{Binding PlayStationConfig.AudioPassthroughEnabled}"

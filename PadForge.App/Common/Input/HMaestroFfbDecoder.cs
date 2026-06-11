@@ -249,10 +249,28 @@ namespace PadForge.Common.Input
 
             lock (_lock)
             {
+                bool anyExpired = false;
                 foreach (var kv in _effects)
                 {
                     var es = kv.Value;
                     if (!es.Running) continue;
+
+                    // PID duration expiry. dinput does NOT send Effect
+                    // Operation Stop for duration-bounded effects — the
+                    // device ends them itself, and without this every finite
+                    // effect latched into endless rumble (discussion #125,
+                    // Jedi Outcast). Duration 0 / 0xFFFF is the PID null
+                    // (infinite); LoopCount 0xFF repeats forever.
+                    if (es.Duration != 0 && es.Duration != 0xFFFF && es.LoopCount != 0xFF)
+                    {
+                        long totalMs = (long)es.Duration * Math.Max((byte)1, es.LoopCount);
+                        if (Environment.TickCount64 - es.StartTicks >= totalMs)
+                        {
+                            es.Running = false;
+                            anyExpired = true;
+                            continue;
+                        }
+                    }
 
                     double absMag = Math.Abs(es.Magnitude);
                     if (absMag == 0) continue;
@@ -339,6 +357,12 @@ namespace PadForge.Common.Input
                 {
                     vib.HasConditionData = false;
                     vib.ConditionAxisCount = 0;
+                }
+
+                if (anyExpired && !AnyEffectRunningLocked())
+                {
+                    _stateFlags &= ~PidStateFlags.EffectPlaying;
+                    _controller?.PublishPidState(_lastEbi, _stateFlags);
                 }
             }
         }
@@ -594,6 +618,11 @@ namespace PadForge.Common.Input
                 // about-to-start effect.
                 DrainPendingInto(es);
                 es.Running = true;
+                // Duration expiry clock: a re-Start restarts the effect from
+                // zero per PID semantics. LoopCount rides byte 2 of Effect
+                // Operation (0xFF = infinite repeat).
+                es.StartTicks = Environment.TickCount64;
+                es.LoopCount = d.Length >= 3 ? d[2] : (byte)1;
                 _lastEbi = ebi;
                 _stateFlags |= PidStateFlags.EffectPlaying;
                 _controller?.PublishPidState(_lastEbi, _stateFlags);
@@ -910,8 +939,10 @@ namespace PadForge.Common.Input
             public uint Type;
             public int Magnitude;        // signed for constant (-10000..+10000), abs for others
             public byte Gain = 255;
-            public ushort Duration;
+            public ushort Duration;      // ms; 0 / 0xFFFF = infinite (PID null)
             public bool Running;
+            public long StartTicks;      // Environment.TickCount64 at Effect Operation Start
+            public byte LoopCount = 1;   // from Effect Operation; 0xFF = infinite repeat
             public ushort Direction;     // HID logical 0..32767 → 0..360°
             public uint Period;
             public ConditionAxis[] ConditionAxes = new ConditionAxis[2];

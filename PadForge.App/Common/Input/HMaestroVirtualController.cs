@@ -24,6 +24,7 @@ namespace PadForge.Common.Input
         private readonly VirtualControllerType _type;
         private HMController _controller;
         private HMaestroFfbDecoder _ffbDecoder;
+        private Vibration[] _fbVibrationStates; // for the per-tick FFB re-evaluation
         private DualSensePassthroughDispatcher _ds5Dispatcher;
         private UserEffectsDispatcher _userEffectsDispatcher;
         private bool _disposed;
@@ -272,9 +273,24 @@ namespace PadForge.Common.Input
             _controller.SubmitRawReport(report);
         }
 
+        /// <summary>Re-evaluates PID effect state on the engine clock. The
+        /// HM packet callback applies the decoder only when the game sends a
+        /// report, but effect durations expire on the DEVICE clock — without
+        /// this per-tick pass, the last computed vibration latches on the
+        /// physical pad as soon as a game goes quiet. Called from every
+        /// per-tick Submit path; no-op for non-PID profiles.</summary>
+        public void TickFfb()
+        {
+            var vibs = _fbVibrationStates;
+            int idx = FeedbackPadIndex;
+            if (_ffbDecoder == null || vibs == null || idx < 0 || idx >= vibs.Length) return;
+            _ffbDecoder.Apply(vibs[idx]);
+        }
+
         public void SubmitGamepadState(Gamepad gp)
         {
             if (_controller == null) return;
+            TickFfb();
 
             // No dedup and no rate limit here — Step 5 already honors the
             // user-configured polling interval (default 1kHz). HIDMaestro is
@@ -362,6 +378,7 @@ namespace PadForge.Common.Input
             bool batteryCharging)
         {
             if (_controller == null) return;
+            TickFfb();
 
             // Tracking-ID synthesis. Bump each finger's ID on rising edge of
             // its down state; keep stable while held; ID stays at last value
@@ -457,6 +474,7 @@ namespace PadForge.Common.Input
         public void SubmitExtendedRawState(ExtendedRawState raw, int sticks, int triggers)
         {
             if (_controller == null) return;
+            TickFfb();
 
             short Ax(int i) => (raw.Axes != null && i >= 0 && i < raw.Axes.Length) ? raw.Axes[i] : (short)0;
 
@@ -567,6 +585,15 @@ namespace PadForge.Common.Input
         public void RegisterFeedbackCallback(int padIndex, Vibration[] vibrationStates)
         {
             FeedbackPadIndex = padIndex;
+            // Keep the registration for the per-tick FFB re-evaluation —
+            // the packet callback below only runs when the game SENDS
+            // something, but PID effect durations expire on the device
+            // clock. Without a periodic Apply, the last computed vibration
+            // latches on the physical pad the moment a game goes quiet
+            // (discussion #125: Jedi Outcast's stuck rumble — the field log
+            // showed Apply timestamps exactly matching packet arrivals and
+            // nothing after the final packet).
+            _fbVibrationStates = vibrationStates;
             if (_controller == null) return;
 
             // Virtual DualSense slots get a per-VC pass-through dispatcher

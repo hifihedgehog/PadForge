@@ -3058,6 +3058,10 @@ namespace PadForge.ViewModels
                 {
                     PadForge.Common.Input.SoundMacroService.SetSlotVolume(PadIndex, v);
                     PadForge.Common.Input.UserEffectsDispatcher.NotifySoundRoutingChanged(PadIndex);
+                    // Persisted in AppSettings.SlotSoundVolumes; without the
+                    // dirty mark a volume-only change skips the close-time
+                    // save (OnClosing gates on IsDirty).
+                    ConfigItemDirtyCallback?.Invoke();
                 }
             }
         }

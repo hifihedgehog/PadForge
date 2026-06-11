@@ -1726,4 +1726,9 @@
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>시스템 오디오를 컨트롤러 스피커로 미러링</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>시스템 기본 출력에서 재생 중인 소리를 이 컨트롤러의 내장 스피커로도 동시에 출력합니다. USB와 Bluetooth 모두 지원합니다.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>선택한 장치에는 내장 스피커가 없습니다. 이 패드의 매크로 사운드는 시스템 기본 출력으로 재생됩니다.</value></data>
+  <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>터치패드 도형 템플릿 매처(원 / 사각형 / 삼각형 / Z / 체크 표시 및 직접 기록한 제스처). Magrofuoco, Vatavu, Anthony, Wobbrock의 JavaScript 레퍼런스를 C#으로 재구현. BSD 3-Clause.</value></data>
+  <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>한 손가락 도형에서 포인트 클라우드 매처와 함께 동작하는 각도 마진 점수 방식. GestureSign의 PointPatternAnalyzer에서 가져옴. BSD 3-Clause.</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>미러, 미러 소스, 마스터 볼륨을 기본값으로 재설정</value></data>
 </root>

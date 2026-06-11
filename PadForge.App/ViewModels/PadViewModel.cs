@@ -3087,6 +3087,21 @@ namespace PadForge.ViewModels
         public RelayCommand ResetSoundMasterVolumeCommand =>
             _resetSoundMasterVolumeCommand ??= new RelayCommand(() => SoundMasterVolume = 100);
 
+        private RelayCommand _resetSoundOutputAllCommand;
+        /// <summary>Resets the Sound Output card for the selected device:
+        /// mirror off, mirror source back to system default, master volume
+        /// to 100%.</summary>
+        public RelayCommand ResetSoundOutputAllCommand =>
+            _resetSoundOutputAllCommand ??= new RelayCommand(() =>
+            {
+                SoundMasterVolume = 100;
+                if (PlayStationConfig != null)
+                {
+                    PlayStationConfig.AudioPassthroughEnabled = false;
+                    SelectedMirrorSourceId = string.Empty;
+                }
+            });
+
         private RelayCommand _addSoundMacroCommand;
         /// <summary>Creates a macro pre-loaded with a Play Sound action and
         /// jumps to the Macros tab to finish it (trigger + file) — the

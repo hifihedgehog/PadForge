@@ -340,6 +340,7 @@ public class Strings : INotifyPropertyChanged
     public string About_QDollarDesc => Get("About_QDollarDesc");
     public string About_GestureSign => Get("About_GestureSign");
     public string About_GestureSignDesc => Get("About_GestureSignDesc");
+    public string Pad_Audio_Reset_All => Get("Pad_Audio_Reset_All");
     public string About_Concentus => Get("About_Concentus");
     public string About_ConcentusDesc => Get("About_ConcentusDesc");
     public string About_SAxense => Get("About_SAxense");

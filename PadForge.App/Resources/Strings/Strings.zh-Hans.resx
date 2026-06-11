@@ -1663,11 +1663,7 @@
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>重置手柄朝向</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>体感转向</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>像方向盘一样倾斜手柄来转向所选轴。实体摇杆不受影响。</value></data>
-  <data name="Pad_MotionSteer_Enable" xml:space="preserve"><value>启用体感转向</value></data>
-  <data name="Pad_MotionSteer_Target" xml:space="preserve"><value>转向轴</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>重置所有体感转向设置</value></data>
-  <data name="Pad_MotionSteer_Reset_Enable" xml:space="preserve"><value>重置体感转向</value></data>
-  <data name="Pad_MotionSteer_Reset_Target" xml:space="preserve"><value>重置转向轴</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>转向极限反馈</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>当设为转向模式的摇杆转到极限时，发出提示（震动、扳机或灯条），让你感受到极限。默认全部关闭。</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>到达极限时震动脉冲</value></data>
@@ -1693,4 +1689,46 @@
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>重置接近极限时扳机阻力</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>添加要逐个循环的颜色，每次锁定切换一个。</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>重置灯条保持</value></data>
+  <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>触摸板形状模板匹配器（圆形 / 方形 / 三角形 / Z / 对勾，以及自定义录制的手势）。基于 Magrofuoco、Vatavu、Anthony 和 Wobbrock 的 JavaScript 参考实现以 C# 重新推导。BSD 3-Clause。</value></data>
+  <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>角度容差评分方式，在单指形状上与点云匹配器并行运行。改编自 GestureSign 的 PointPatternAnalyzer。BSD 3-Clause。</value></data>
+  <data name="MacroAction_PlaySoundLoop_Format" xml:space="preserve"><value>循环播放 {0}（{1}%）</value></data>
+  <data name="MacroAction_PlaySound_Format" xml:space="preserve"><value>播放 {0}（{1}%）</value></data>
+  <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>在此手柄的输出设备上播放声音文件（.wav、.mp3、.m4a、.aac、.wma、.flac）</value></data>
+  <data name="MacroAction_SoundStop_Tooltip" xml:space="preserve"><value>停止此手柄上的所有宏声音。与循环的“播放声音”搭配，可从另一个宏中结束它。</value></data>
+  <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>播放声音</value></data>
+  <data name="MacroAction_Type_SoundStop" xml:space="preserve"><value>停止声音</value></data>
+  <data name="Macro_Sound_Browse" xml:space="preserve"><value>浏览…</value></data>
+  <data name="Macro_Sound_File_Label" xml:space="preserve"><value>声音文件</value></data>
+  <data name="Macro_Sound_Loop" xml:space="preserve"><value>循环直到停止</value></data>
+  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>重复播放该声音，直到“停止声音”动作运行。对于按住期间 / 松开时结束的宏，则播放到触发被松开为止</value></data>
+  <data name="Macro_Sound_Preview" xml:space="preserve"><value>试听</value></data>
+  <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>音量</value></data>
+  <data name="Mapping_MotionLean" xml:space="preserve"><value>体感倾斜</value></data>
+  <data name="Pad_Audio" xml:space="preserve"><value>音频</value></data>
+  <data name="Pad_Audio_Header" xml:space="preserve"><value>音频</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>声音由宏播放：一个触发（按键按下、松开、按住或公式）加一个“播放声音”动作。可在此处或“宏”选项卡中创建，延迟、重复和开关均可用。</value></data>
+  <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>声音宏</value></data>
+  <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>主音量</value></data>
+  <data name="Pad_Audio_Mirror" xml:space="preserve"><value>将系统音频镜像到手柄扬声器</value></data>
+  <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>镜像来源</value></data>
+  <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>选择镜像到手柄扬声器的播放设备。将特定声音发送到单独播放设备的游戏可以指向该设备。</value></data>
+  <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>将系统默认输出播放的内容并行复制到此手柄的内置扬声器。USB 和蓝牙均可用。</value></data>
+  <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>新建声音宏</value></data>
+  <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>还没有声音宏。创建一个并选择声音文件和触发条件。</value></data>
+  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>所选设备没有内置扬声器。此手柄的宏声音将在系统默认输出上播放。</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>在“宏”选项卡中打开此宏</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>声音会自动路由到所选手柄。USB 下按硬件容器匹配手柄自身的音频端点；蓝牙下音频以 Sony HID 帧流式发送。</value></data>
+  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>声音输出</value></data>
+  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>将主音量重置为 100%</value></data>
+  <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>声音宏 {0}</value></data>
+  <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>（设备不可用）</value></data>
+  <data name="Pad_Audio_StopAll" xml:space="preserve"><value>停止所有声音</value></data>
+  <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>停止此手柄上的所有宏声音</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>宏声音和镜像的系统音频通过所选手柄的内置扬声器播放，支持 USB 和蓝牙。请在上方下拉框中选择设备，此处的所有设置都跟随该设备。</value></data>
+  <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>系统默认</value></data>
+  <data name="Pad_Audio_Test" xml:space="preserve"><value>测试</value></data>
+  <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>在所选输出设备上播放短促提示音</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>将镜像、镜像来源和主音量重置为默认值</value></data>
 </root>

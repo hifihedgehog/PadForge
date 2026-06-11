@@ -1746,4 +1746,9 @@
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Systeemaudio spiegelen naar de controllerspeaker</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Speelt alles wat de standaarduitvoer afspeelt parallel af op de ingebouwde speaker van deze controller. Werkt via USB en Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Het geselecteerde apparaat heeft geen ingebouwde speaker. Macrogeluiden van deze pad spelen op de standaarduitvoer.</value></data>
+  <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>Vormsjabloon-matcher voor het touchpad (cirkel / vierkant / driehoek / Z / vinkje en zelf opgenomen gebaren). C#-herafleiding van de JavaScript-referentie van Magrofuoco, Vatavu, Anthony en Wobbrock. BSD 3-Clause.</value></data>
+  <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>Hoekmarge-score die naast de puntenwolk-matcher draait op vormen met één vinger. Overgenomen uit GestureSigns PointPatternAnalyzer. BSD 3-Clause.</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Spiegeling, spiegelbron en hoofdvolume terugzetten naar standaardwaarden</value></data>
 </root>

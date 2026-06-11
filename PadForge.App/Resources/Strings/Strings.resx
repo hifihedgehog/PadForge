@@ -1790,4 +1790,5 @@
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Mirror system audio to the controller speaker</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copies whatever the system default output plays to this controller’s built-in speaker, in parallel. Works over USB and Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>The selected device has no built-in speaker. Macro sounds for this pad play on the system default output.</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Reset mirror, mirror source, and master volume to defaults</value></data>
 </root>

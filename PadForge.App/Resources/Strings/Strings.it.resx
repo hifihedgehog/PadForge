@@ -1748,4 +1748,9 @@
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Duplica l’audio di sistema sull’altoparlante del controller</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copia in parallelo ciò che riproduce l’uscita predefinita di sistema sull’altoparlante integrato di questo controller. Funziona via USB e Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Il dispositivo selezionato non ha un altoparlante integrato. I suoni macro di questo pad escono sull’uscita predefinita.</value></data>
+  <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>Riconoscitore di sagome per il touchpad (cerchio / quadrato / triangolo / Z / spunta e gesti registrati personalizzati). Rielaborazione in C# del riferimento JavaScript di Magrofuoco, Vatavu, Anthony e Wobbrock. BSD 3-Clause.</value></data>
+  <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>Punteggio a margine angolare che affianca il riconoscitore a nuvola di punti sulle forme a un dito. Adattato dal PointPatternAnalyzer di GestureSign. BSD 3-Clause.</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Ripristina mirror, sorgente del mirror e volume principale ai valori predefiniti</value></data>
 </root>

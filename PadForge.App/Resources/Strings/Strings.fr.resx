@@ -1726,4 +1726,9 @@
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Dupliquer l’audio système sur le haut-parleur de la manette</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copie en parallèle ce que joue la sortie par défaut du système sur le haut-parleur intégré de cette manette. Fonctionne en USB et en Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Le périphérique sélectionné n’a pas de haut-parleur intégré. Les sons de macro de cette manette jouent sur la sortie par défaut.</value></data>
+  <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>Comparateur de gabarits de formes pour le pavé tactile (cercle / carré / triangle / Z / coche et gestes enregistrés personnalisés). Redérivation en C# de la référence JavaScript de Magrofuoco, Vatavu, Anthony et Wobbrock. BSD 3-Clause.</value></data>
+  <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>Notation par marge angulaire qui fonctionne aux côtés du comparateur de nuage de points sur les formes à un doigt. Adapté du PointPatternAnalyzer de GestureSign. BSD 3-Clause.</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Réinitialiser le miroir, la source du miroir et le volume principal aux valeurs par défaut</value></data>
 </root>

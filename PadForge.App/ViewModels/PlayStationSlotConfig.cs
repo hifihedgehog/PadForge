@@ -217,6 +217,18 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _audioPassthroughEnabled, value);
         }
 
+        private string _audioMirrorSourceId = string.Empty;
+        /// <summary>Which render endpoint the mirror captures (MMDevice ID).
+        /// Empty = the system default device, re-resolved live. Lets games
+        /// that output specific sounds to a separate playback device (e.g.
+        /// Death Stranding's controller-speaker audio) target an endpoint
+        /// that PadForge then forwards to the pad over USB or Bluetooth.</summary>
+        public string AudioMirrorSourceId
+        {
+            get => _audioMirrorSourceId;
+            set => SetProperty(ref _audioMirrorSourceId, value ?? string.Empty);
+        }
+
         // ────────────────────────────────────────────────
         //  Lightbar — macro-driven override (#63)
         // ────────────────────────────────────────────────
@@ -1495,6 +1507,7 @@ namespace PadForge.ViewModels
         [XmlAttribute] public byte LightbarBlue { get; set; } = 0xFF;
         [XmlAttribute] public bool LightbarEnabled { get; set; }
         [XmlAttribute] public bool AudioPassthroughEnabled { get; set; }
+        [XmlAttribute] public string AudioMirrorSourceId { get; set; } = string.Empty;
         [XmlAttribute] public MicLedMode MicLedMode { get; set; } = MicLedMode.Off;
         [XmlAttribute] public string MicLedFollowDeviceId { get; set; } = string.Empty;
         [XmlAttribute] public PlayerLedMode PlayerLedMode { get; set; } = PlayerLedMode.Off;

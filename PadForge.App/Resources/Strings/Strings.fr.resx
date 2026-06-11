@@ -1687,6 +1687,10 @@
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Les sons de macro et l’audio dupliqué jouent par le haut-parleur intégré de la manette sélectionnée, en USB ou Bluetooth. Choisissez le périphérique dans la liste au-dessus — tout ici le suit.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sortie audio</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Les sons sont dirigés automatiquement vers la manette sélectionnée. En USB, le point de sortie audio est associé par conteneur matériel ; en Bluetooth, l’audio est transmis en trames HID Sony.</value></data>
+  <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Source du miroir</value></data>
+  <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Périphérique de lecture à refléter vers le haut-parleur de la manette. Les jeux qui envoient certains sons vers un périphérique de lecture distinct peuvent cibler celui-ci.</value></data>
+  <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Par défaut du système</value></data>
+  <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(périphérique indisponible)</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Volume général</value></data>
   <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Rétablir le volume général à 100%</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>Tester</value></data>

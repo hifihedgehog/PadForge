@@ -1751,6 +1751,10 @@
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macro sounds and mirrored system audio play through the selected controller’s built-in speaker, over USB or Bluetooth. Pick the device in the dropdown above — every setting here follows it.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sound Output</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Sounds route to the selected controller automatically. Over USB the pad’s own audio endpoint is matched by hardware container; over Bluetooth the audio is streamed in Sony HID frames.</value></data>
+  <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Mirror source</value></data>
+  <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Which playback device to mirror to the controller speaker. Games that send specific sounds to a separate playback device can target this one.</value></data>
+  <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>System default</value></data>
+  <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(unavailable device)</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Master volume</value></data>
   <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Reset master volume to 100%</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>Test</value></data>

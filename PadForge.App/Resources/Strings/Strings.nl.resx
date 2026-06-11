@@ -1707,6 +1707,10 @@
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macrogeluiden en gespiegelde systeemaudio spelen via de ingebouwde speaker van de geselecteerde controller, via USB of Bluetooth. Kies het apparaat in de lijst hierboven — alles hier volgt het.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Geluidsuitvoer</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Geluiden gaan automatisch naar de geselecteerde controller. Via USB wordt het audio-eindpunt van de pad gematcht op hardwarecontainer; via Bluetooth wordt de audio in Sony-HID-frames gestreamd.</value></data>
+  <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Spiegelbron</value></data>
+  <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Welk afspeelapparaat naar de luidspreker van de controller wordt gespiegeld. Games die bepaalde geluiden naar een apart afspeelapparaat sturen, kunnen dit apparaat gebruiken.</value></data>
+  <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Systeemstandaard</value></data>
+  <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(apparaat niet beschikbaar)</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Hoofdvolume</value></data>
   <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Hoofdvolume terug naar 100%</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>Test</value></data>

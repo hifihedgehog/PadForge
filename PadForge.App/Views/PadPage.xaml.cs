@@ -564,6 +564,11 @@ namespace PadForge.Views
                 _currentPadVm?.OpenSoundMacro(macro);
         }
 
+        /// <summary>Re-enumerate render endpoints right before the mirror
+        /// source dropdown opens, so hot-plugged devices show up.</summary>
+        private void MirrorSource_DropDownOpened(object sender, EventArgs e)
+            => _currentPadVm?.RefreshMirrorSources();
+
         /// <summary>Browse for a sound file on the Play Sound action card.
         /// The button's DataContext is the MacroAction being edited.</summary>
         private void BrowseSoundFile_Click(object sender, RoutedEventArgs e)

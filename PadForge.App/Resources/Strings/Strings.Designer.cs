@@ -1282,6 +1282,10 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_Subtitle => Get("Pad_Audio_Subtitle");
     public string Pad_Audio_Output_Header => Get("Pad_Audio_Output_Header");
     public string Pad_Audio_Output_Desc => Get("Pad_Audio_Output_Desc");
+    public string Pad_Audio_MirrorSource_Label => Get("Pad_Audio_MirrorSource_Label");
+    public string Pad_Audio_MirrorSource_Tooltip => Get("Pad_Audio_MirrorSource_Tooltip");
+    public string Pad_Audio_SystemDefault => Get("Pad_Audio_SystemDefault");
+    public string Pad_Audio_SourceUnavailable => Get("Pad_Audio_SourceUnavailable");
     public string Pad_Audio_MasterVolume => Get("Pad_Audio_MasterVolume");
     public string Pad_Audio_Reset_MasterVolume => Get("Pad_Audio_Reset_MasterVolume");
     public string Pad_Audio_Test => Get("Pad_Audio_Test");

@@ -199,6 +199,38 @@ namespace PadForge.Views
         }
 
         /// <summary>
+        /// Handles edits to the MIDI Input section (issue #128): pushes the
+        /// pending textbox binding through, then notifies so the live MIDI
+        /// connection and capability surface get reconfigured.
+        /// </summary>
+        private void MidiInputConfig_Changed(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox tb)
+                tb.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            NotifyMidiInputConfig();
+        }
+
+        private void MidiInputConfig_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter) return;
+            if (sender is TextBox tb)
+                tb.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            NotifyMidiInputConfig();
+        }
+
+        private void NotifyMidiInputConfig()
+        {
+            var vm = DataContext as ViewModels.DevicesViewModel;
+            var dev = vm?.SelectedDevice;
+            if (dev == null || !dev.ShowMidiSection) return;
+
+            // The window settings change how many axes/buttons exist —
+            // rebuild the raw state preview.
+            vm.LastRawStateDeviceGuid = Guid.Empty;
+            vm.NotifyMidiConfigChanged(dev.InstanceGuid);
+        }
+
+        /// <summary>
         /// Shows a WPF UI Flyout with a warning and Proceed/Cancel buttons.
         /// Re-checks the toggle and notifies only if the user clicks Proceed.
         /// </summary>

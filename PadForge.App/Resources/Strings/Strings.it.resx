@@ -1773,4 +1773,13 @@
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>Nessun pacchetto audio aggiunto.</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Scegli i file audio per il pacchetto</value></data>
   <data name="DeviceType_Midi" xml:space="preserve"><value>Controller MIDI</value></data>
+  <data name="Devices_MidiInput" xml:space="preserve"><value>Ingresso MIDI</value></data>
+  <data name="Devices_MidiInputDesc" xml:space="preserve"><value>Quali messaggi MIDI questo dispositivo espone per la mappatura. Le note diventano pulsanti. Ogni CC diventa un asse più pulsanti + e − per gli encoder senza fine.</value></data>
+  <data name="Devices_MidiChannelTooltip" xml:space="preserve"><value>Canale MIDI da ascoltare (1-16). 0 = tutti i canali.</value></data>
+  <data name="Devices_MidiCcCountTooltip" xml:space="preserve"><value>Quanti CC diventano assi.</value></data>
+  <data name="Devices_MidiStartCcTooltip" xml:space="preserve"><value>Primo numero CC della finestra (0-127).</value></data>
+  <data name="Devices_MidiNoteCountTooltip" xml:space="preserve"><value>Quante note diventano pulsanti.</value></data>
+  <data name="Devices_MidiStartNoteTooltip" xml:space="preserve"><value>Primo numero di nota (0-127, 60 = Do centrale).</value></data>
+  <data name="Devices_MidiPitchBend" xml:space="preserve"><value>Asse pitch bend</value></data>
+  <data name="Devices_MidiPitchBendTooltip" xml:space="preserve"><value>Aggiunge un asse di pitch bend dopo gli assi CC.</value></data>
 </root>

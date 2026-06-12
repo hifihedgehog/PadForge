@@ -1751,4 +1751,13 @@
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>サウンドパッケージはありません。</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>パッケージに入れるサウンドファイルを選択</value></data>
   <data name="DeviceType_Midi" xml:space="preserve"><value>MIDIコントローラー</value></data>
+  <data name="Devices_MidiInput" xml:space="preserve"><value>MIDI入力</value></data>
+  <data name="Devices_MidiInputDesc" xml:space="preserve"><value>このデバイスがマッピングに公開する MIDI メッセージです。ノートはボタンになります。各 CC は軸になり、エンドレスエンコーダー用の + / − ボタンも付きます。</value></data>
+  <data name="Devices_MidiChannelTooltip" xml:space="preserve"><value>受信する MIDI チャンネル（1-16）。0 = 全チャンネル。</value></data>
+  <data name="Devices_MidiCcCountTooltip" xml:space="preserve"><value>軸にする CC の数。</value></data>
+  <data name="Devices_MidiStartCcTooltip" xml:space="preserve"><value>ウィンドウの最初の CC 番号（0-127）。</value></data>
+  <data name="Devices_MidiNoteCountTooltip" xml:space="preserve"><value>ボタンにするノートの数。</value></data>
+  <data name="Devices_MidiStartNoteTooltip" xml:space="preserve"><value>最初のノート番号（0-127、60 = 中央のド）。</value></data>
+  <data name="Devices_MidiPitchBend" xml:space="preserve"><value>ピッチベンド軸</value></data>
+  <data name="Devices_MidiPitchBendTooltip" xml:space="preserve"><value>CC 軸の後にピッチベンド軸を追加します。</value></data>
 </root>

@@ -12,19 +12,25 @@ namespace PadForge.Common.Input
     /// pipeline as a standard <see cref="ISdlInputDevice"/> — the symmetric
     /// counterpart of <see cref="MidiVirtualController"/> (issue #128).
     ///
-    /// Layout of the published <see cref="CustomInputState"/>:
-    ///   Axis[0]              — pitch bend (32768 centered at rest)
-    ///   Axis[1 + w]          — windowed CC w, absolute value (0-65535)
-    ///   Buttons[0..127]      — notes (NoteOn pressed / NoteOff released;
-    ///                          MIDI 1.0 NoteOn with velocity 0 releases)
-    ///   Buttons[128 + 2w]    — "CC +" pulse for windowed CC w (relative
-    ///   Buttons[128 + 2w +1] — "CC −" pulse        encoder detents)
+    /// The exposed surface mirrors the MIDI output config philosophy:
+    /// explicit windows, nothing else. Per device (persisted on
+    /// <see cref="UserDevice"/>, editable on the Devices page):
+    ///   Channel    — 1-16 listens to one channel, 0 = all (omni)
+    ///   Start CC / CC Count     — which CCs become axes
+    ///   Start Note / Note Count — which notes become buttons
+    ///   Pitch Bend — optional extra axis after the CC axes
+    ///
+    /// Published <see cref="CustomInputState"/> layout:
+    ///   Axis[0 .. CcCount-1]   — windowed CCs, absolute value (0-65535)
+    ///   Axis[CcCount]          — pitch bend, only when enabled
+    ///   Buttons[0 .. NoteCount-1]          — windowed notes
+    ///   Buttons[NoteCount + 2w], [.. + 1]  — "CC n +" / "CC n −" pulse
+    ///                                        buttons per windowed CC
     ///
     /// Every windowed CC drives BOTH its absolute axis and its relative
     /// pulse buttons. Absolute faders and knobs map the axis; endless
     /// encoders (which send two's-complement deltas around 0x40) map the
-    /// pulse buttons. The unused surface stays unmapped and idle, so no
-    /// per-CC mode configuration is needed.
+    /// pulse buttons. The unused surface stays unmapped and idle.
     ///
     /// State is written by the WinRT message callback and read by the
     /// polling thread, with the same clone-under-lock discipline as
@@ -32,16 +38,6 @@ namespace PadForge.Common.Input
     /// </summary>
     internal sealed class MidiInputDevice : ISdlInputDevice
     {
-        /// <summary>First CC carried in the continuous window.</summary>
-        public const int CcWindowStart = 1;
-
-        /// <summary>CCs in the window: Axis[1..23] after the pitch-bend
-        /// axis. CustomInputState.MaxAxis caps the device at 24 axes.</summary>
-        public const int CcWindowCount = CustomInputState.MaxAxis - 1;
-
-        private const int NoteCount = 128;
-        private const int PulseBase = NoteCount;
-
         // Encoder pulse shaping. A detent presses its pulse button for
         // PulseOnMs then releases for PulseGapMs before the next queued
         // detent fires — long enough for a game polling at 60 Hz to see
@@ -55,17 +51,23 @@ namespace PadForge.Common.Input
 
         private readonly object _stateLock = new();
         private CustomInputState _state;
-        private readonly int[] _pulsePending = new int[CcWindowCount * 2];
-        private readonly byte[] _pulsePhase = new byte[CcWindowCount * 2]; // 0 idle, 1 on, 2 gap
-        private readonly long[] _pulsePhaseUntil = new long[CcWindowCount * 2];
+        private int[] _pulsePending = Array.Empty<int>();
+        private byte[] _pulsePhase = Array.Empty<byte>();  // 0 idle, 1 on, 2 gap
+        private long[] _pulsePhaseUntil = Array.Empty<long>();
         private volatile bool _attached;
 
         private readonly string _endpointId;
         private MidiEndpointConnection _connection;
 
-        /// <summary>MIDI channel filter: -1 = omni (default), 0-15 listens
-        /// to one channel only.</summary>
-        public int ChannelFilter { get; set; } = -1;
+        // Window settings — see ApplySettings for clamping rules. All
+        // reads in the message callback happen under _stateLock so a
+        // reconfiguration never tears mid-message.
+        private int _channelFilter;   // -1 omni, 0-15 single channel
+        private int _startCc = 1;
+        private int _ccCount = 6;
+        private int _startNote = 60;
+        private int _noteCount = 11;
+        private bool _pitchBend;
 
         public MidiInputDevice(string endpointId, string name)
         {
@@ -75,10 +77,44 @@ namespace PadForge.Common.Input
             InstanceGuid = Md5Guid("pfmidi-in:" + endpointId);
             ProductGuid = Md5Guid("pfmidi-in-product:" + name);
             SdlInstanceId = unchecked((uint)endpointId.GetHashCode());
+            ApplySettings(1, 1, 6, 60, 11, false);
+        }
 
-            var state = new CustomInputState();
-            state.Axis[0] = 32768; // pitch bend rests centered
-            _state = state;
+        /// <summary>
+        /// Applies the per-device window settings and resets the published
+        /// state. Mirrors the MIDI output config vocabulary: counts are
+        /// clamped so windows stay inside MIDI's 0-127 ranges and the CC
+        /// axes (+ optional pitch bend) fit the engine's axis budget.
+        /// </summary>
+        /// <param name="channel">1-16 single channel, 0 = all (omni).</param>
+        public void ApplySettings(int channel, int startCc, int ccCount,
+            int startNote, int noteCount, bool pitchBend)
+        {
+            lock (_stateLock)
+            {
+                _channelFilter = channel >= 1 && channel <= 16 ? channel - 1 : -1;
+                _pitchBend = pitchBend;
+
+                int axisBudget = CustomInputState.MaxAxis - (pitchBend ? 1 : 0);
+                _startCc = Math.Clamp(startCc, 0, 127);
+                _ccCount = Math.Clamp(ccCount, 0, Math.Min(axisBudget, 128 - _startCc));
+
+                _startNote = Math.Clamp(startNote, 0, 127);
+                _noteCount = Math.Clamp(noteCount, 0, 128 - _startNote);
+
+                // Buttons: notes + 2 pulse buttons per windowed CC.
+                if (_noteCount + _ccCount * 2 > CustomInputState.MaxButtons)
+                    _noteCount = CustomInputState.MaxButtons - _ccCount * 2;
+
+                _pulsePending = new int[_ccCount * 2];
+                _pulsePhase = new byte[_ccCount * 2];
+                _pulsePhaseUntil = new long[_ccCount * 2];
+
+                var state = new CustomInputState();
+                if (_pitchBend)
+                    state.Axis[_ccCount] = 32768; // pitch bend rests centered
+                _state = state;
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -87,8 +123,8 @@ namespace PadForge.Common.Input
 
         public uint SdlInstanceId { get; }
         public string Name { get; }
-        public int NumAxes => 1 + CcWindowCount;
-        public int NumButtons => PulseBase + CcWindowCount * 2;
+        public int NumAxes { get { lock (_stateLock) return _ccCount + (_pitchBend ? 1 : 0); } }
+        public int NumButtons { get { lock (_stateLock) return _noteCount + _ccCount * 2; } }
         public int RawButtonCount => NumButtons;
         public int NumHats => 0;
         public int[] SupportedButtonIndices
@@ -186,15 +222,14 @@ namespace PadForge.Common.Input
                     // MIDI 1.0 channel voice (32-bit UMP).
                     int opcode = (int)((w0 >> 20) & 0xF);
                     int channel = (int)((w0 >> 16) & 0xF);
-                    if (ChannelFilter >= 0 && channel != ChannelFilter) return;
                     int data1 = (int)((w0 >> 8) & 0x7F);
                     int data2 = (int)(w0 & 0x7F);
                     switch (opcode)
                     {
-                        case 0x9: NoteEdge(data1, data2 != 0); break; // velocity 0 = NoteOff
-                        case 0x8: NoteEdge(data1, false); break;
-                        case 0xB: ControlChange(data1, data2 * 65535 / 127, data2 - 64); break;
-                        case 0xE: SetPitchBend(((data2 << 7) | data1) * 65535 / 16383); break;
+                        case 0x9: NoteEdge(channel, data1, data2 != 0); break; // velocity 0 = NoteOff
+                        case 0x8: NoteEdge(channel, data1, false); break;
+                        case 0xB: ControlChange(channel, data1, data2 * 65535 / 127, data2 - 64); break;
+                        case 0xE: SetPitchBend(channel, ((data2 << 7) | data1) * 65535 / 16383); break;
                     }
                 }
                 else if (mt == 0x4)
@@ -206,18 +241,17 @@ namespace PadForge.Common.Input
                     uint word1 = m64.Word1;
                     int opcode = (int)((word0 >> 20) & 0xF);
                     int channel = (int)((word0 >> 16) & 0xF);
-                    if (ChannelFilter >= 0 && channel != ChannelFilter) return;
                     int index = (int)((word0 >> 8) & 0x7F);
                     switch (opcode)
                     {
                         // MIDI 2.0 NoteOn velocity 0 is a valid note-on (no
                         // NoteOff aliasing in the 2.0 protocol).
-                        case 0x9: NoteEdge(index, true); break;
-                        case 0x8: NoteEdge(index, false); break;
+                        case 0x9: NoteEdge(channel, index, true); break;
+                        case 0x8: NoteEdge(channel, index, false); break;
                         // Relative-encoder detection stays MIDI 1.0 only —
                         // 2.0-native controllers report absolute 32-bit data.
-                        case 0xB: ControlChange(index, (int)(word1 >> 16), 0); break;
-                        case 0xE: SetPitchBend((int)(word1 >> 16)); break;
+                        case 0xB: ControlChange(channel, index, (int)(word1 >> 16), 0); break;
+                        case 0xE: SetPitchBend(channel, (int)(word1 >> 16)); break;
                     }
                 }
             }
@@ -228,25 +262,28 @@ namespace PadForge.Common.Input
             }
         }
 
-        private void NoteEdge(int note, bool down)
+        private void NoteEdge(int channel, int note, bool down)
         {
-            if (note < 0 || note >= NoteCount) return;
             lock (_stateLock)
             {
+                if (_channelFilter >= 0 && channel != _channelFilter) return;
+                int n = note - _startNote;
+                if (n < 0 || n >= _noteCount) return;
                 var s = _state.Clone();
-                s.Buttons[note] = down;
+                s.Buttons[n] = down;
                 _state = s;
             }
         }
 
-        private void ControlChange(int cc, int scaled, int relativeDelta)
+        private void ControlChange(int channel, int cc, int scaled, int relativeDelta)
         {
-            int w = cc - CcWindowStart;
-            if (w < 0 || w >= CcWindowCount) return;
             lock (_stateLock)
             {
+                if (_channelFilter >= 0 && channel != _channelFilter) return;
+                int w = cc - _startCc;
+                if (w < 0 || w >= _ccCount) return;
                 var s = _state.Clone();
-                s.Axis[1 + w] = Math.Clamp(scaled, 0, 65535);
+                s.Axis[w] = Math.Clamp(scaled, 0, 65535);
                 _state = s;
 
                 // Two's-complement relative interpretation: 0x41 = +1,
@@ -260,12 +297,14 @@ namespace PadForge.Common.Input
             }
         }
 
-        private void SetPitchBend(int scaled)
+        private void SetPitchBend(int channel, int scaled)
         {
             lock (_stateLock)
             {
+                if (_channelFilter >= 0 && channel != _channelFilter) return;
+                if (!_pitchBend) return;
                 var s = _state.Clone();
-                s.Axis[0] = Math.Clamp(scaled, 0, 65535);
+                s.Axis[_ccCount] = Math.Clamp(scaled, 0, 65535);
                 _state = s;
             }
         }
@@ -289,13 +328,13 @@ namespace PadForge.Common.Input
                             {
                                 _pulsePhase[i] = 1;
                                 _pulsePhaseUntil[i] = now + PulseOnMs;
-                                s.Buttons[PulseBase + i] = true;
+                                s.Buttons[_noteCount + i] = true;
                             }
                             break;
                         case 1: // pressed
                             if (now < _pulsePhaseUntil[i])
                             {
-                                s.Buttons[PulseBase + i] = true;
+                                s.Buttons[_noteCount + i] = true;
                             }
                             else
                             {
@@ -320,18 +359,28 @@ namespace PadForge.Common.Input
 
         public DeviceObjectItem[] GetDeviceObjects()
         {
-            var items = new List<DeviceObjectItem>(NumAxes + NumButtons);
+            int ccCount, startCc, noteCount, startNote;
+            bool pitchBend;
+            lock (_stateLock)
+            {
+                ccCount = _ccCount; startCc = _startCc;
+                noteCount = _noteCount; startNote = _startNote;
+                pitchBend = _pitchBend;
+            }
+
+            int numAxes = ccCount + (pitchBend ? 1 : 0);
+            var items = new List<DeviceObjectItem>(numAxes + noteCount + ccCount * 2);
             var standardAxisGuids = new[]
             {
                 ObjectGuid.XAxis, ObjectGuid.YAxis, ObjectGuid.ZAxis,
                 ObjectGuid.RxAxis, ObjectGuid.RyAxis, ObjectGuid.RzAxis
             };
 
-            for (int i = 0; i < NumAxes; i++)
+            for (int i = 0; i < numAxes; i++)
             {
-                string name = i == 0
-                    ? "Pitch Bend"
-                    : CcDisplayName(CcWindowStart + (i - 1));
+                string name = i < ccCount
+                    ? CcDisplayName(startCc + i)
+                    : "Pitch Bend";
                 items.Add(new DeviceObjectItem
                 {
                     InputIndex = i,
@@ -342,36 +391,37 @@ namespace PadForge.Common.Input
                 });
             }
 
-            for (int n = 0; n < NoteCount; n++)
+            for (int n = 0; n < noteCount; n++)
             {
+                int note = startNote + n;
                 items.Add(new DeviceObjectItem
                 {
                     InputIndex = n,
                     ObjectTypeGuid = ObjectGuid.Button,
-                    Name = $"Note {n} ({NoteDisplayName(n)})",
+                    Name = $"Note {note} ({NoteDisplayName(note)})",
                     ObjectType = DeviceObjectTypeFlags.PushButton,
-                    Offset = (NumAxes + n) * 4,
+                    Offset = (numAxes + n) * 4,
                 });
             }
 
-            for (int w = 0; w < CcWindowCount; w++)
+            for (int w = 0; w < ccCount; w++)
             {
-                int cc = CcWindowStart + w;
+                int cc = startCc + w;
                 items.Add(new DeviceObjectItem
                 {
-                    InputIndex = PulseBase + 2 * w,
+                    InputIndex = noteCount + 2 * w,
                     ObjectTypeGuid = ObjectGuid.Button,
                     Name = $"CC {cc} +",
                     ObjectType = DeviceObjectTypeFlags.PushButton,
-                    Offset = (NumAxes + PulseBase + 2 * w) * 4,
+                    Offset = (numAxes + noteCount + 2 * w) * 4,
                 });
                 items.Add(new DeviceObjectItem
                 {
-                    InputIndex = PulseBase + 2 * w + 1,
+                    InputIndex = noteCount + 2 * w + 1,
                     ObjectTypeGuid = ObjectGuid.Button,
                     Name = $"CC {cc} −",
                     ObjectType = DeviceObjectTypeFlags.PushButton,
-                    Offset = (NumAxes + PulseBase + 2 * w + 1) * 4,
+                    Offset = (numAxes + noteCount + 2 * w + 1) * 4,
                 });
             }
 

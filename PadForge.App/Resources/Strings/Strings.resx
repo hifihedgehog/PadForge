@@ -1811,4 +1811,13 @@
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>No sound packages added.</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Choose sound files for the package</value></data>
   <data name="DeviceType_Midi" xml:space="preserve"><value>MIDI Controller</value></data>
+  <data name="Devices_MidiInput" xml:space="preserve"><value>MIDI Input</value></data>
+  <data name="Devices_MidiInputDesc" xml:space="preserve"><value>Which MIDI messages this device exposes for mapping. Notes become buttons. Each CC becomes an axis plus + and − buttons for endless encoders.</value></data>
+  <data name="Devices_MidiChannelTooltip" xml:space="preserve"><value>MIDI channel to listen on (1-16). 0 = all channels.</value></data>
+  <data name="Devices_MidiCcCountTooltip" xml:space="preserve"><value>How many CCs become axes.</value></data>
+  <data name="Devices_MidiStartCcTooltip" xml:space="preserve"><value>First CC number of the window (0-127).</value></data>
+  <data name="Devices_MidiNoteCountTooltip" xml:space="preserve"><value>How many notes become buttons.</value></data>
+  <data name="Devices_MidiStartNoteTooltip" xml:space="preserve"><value>First note number (0-127, 60 = Middle C).</value></data>
+  <data name="Devices_MidiPitchBend" xml:space="preserve"><value>Pitch bend axis</value></data>
+  <data name="Devices_MidiPitchBendTooltip" xml:space="preserve"><value>Adds a pitch bend axis after the CC axes.</value></data>
 </root>

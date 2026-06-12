@@ -1735,4 +1735,10 @@
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai(daidr)의 브라우저 DualSense 테스트 도구. Sony 기능 보고서 CRC 프레이밍과 PadForge가 가상 패드에서 실제 패드로 전달하는 펌웨어 테스트 명령의 참조. MIT.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefarius의 DualShock 4 Bluetooth 오디오 레퍼런스. PadForge DS4 스피커 스트림의 보고서 프레이밍. SBC 인코더는 Bluetooth A2DP 규격에 따른 독자적인 C# 구현입니다. 프로토콜 문서는 khallmark의 ds4mac에서. MIT.</value></data>
+  <data name="Profiles_Export" xml:space="preserve"><value>내보내기…</value></data>
+  <data name="Profiles_Import" xml:space="preserve"><value>가져오기…</value></data>
+  <data name="Status_ProfileExported_Format" xml:space="preserve"><value>프로필 "{0}"을(를) 내보냈습니다.</value></data>
+  <data name="Status_ProfileImported_Format" xml:space="preserve"><value>프로필 "{0}"을(를) 가져왔습니다(사운드 패키지 {1}개 등록).</value></data>
+  <data name="Status_ProfileImportFailed" xml:space="preserve"><value>읽을 수 있는 PadForge 프로필 파일이 아닙니다.</value></data>
+  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>{0}에서 사운드 선택</value></data>
 </root>

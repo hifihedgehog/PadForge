@@ -631,6 +631,13 @@ namespace PadForge.ViewModels
         /// <summary>Raised when the user requests loading the selected profile into the editor.</summary>
         public event EventHandler LoadProfileRequested;
 
+        /// <summary>Raised when the user requests exporting the selected
+        /// profile to a shareable .pfprofile file (issue #83 follow-up).</summary>
+        public event EventHandler ExportProfileRequested;
+
+        /// <summary>Raised when the user requests importing a .pfprofile file.</summary>
+        public event EventHandler ImportProfileRequested;
+
         private RelayCommand _newProfileCommand;
 
         /// <summary>Command to create a new empty profile.</summary>
@@ -652,6 +659,21 @@ namespace PadForge.ViewModels
             _deleteProfileCommand ??= new RelayCommand(
                 () => DeleteProfileRequested?.Invoke(this, EventArgs.Empty),
                 () => _selectedProfile != null && !_selectedProfile.IsDefault);
+
+        private RelayCommand _exportProfileCommand;
+
+        /// <summary>Command to export the selected profile as a .pfprofile.</summary>
+        public RelayCommand ExportProfileCommand =>
+            _exportProfileCommand ??= new RelayCommand(
+                () => ExportProfileRequested?.Invoke(this, EventArgs.Empty),
+                () => _selectedProfile != null && !_selectedProfile.IsDefault);
+
+        private RelayCommand _importProfileCommand;
+
+        /// <summary>Command to import a .pfprofile.</summary>
+        public RelayCommand ImportProfileCommand =>
+            _importProfileCommand ??= new RelayCommand(
+                () => ImportProfileRequested?.Invoke(this, EventArgs.Empty));
 
         private RelayCommand _editProfileCommand;
 

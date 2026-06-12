@@ -1735,4 +1735,10 @@
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai（daidr）によるブラウザー版DualSenseテストスイート。SonyフィーチャーレポートのCRCフレーミングと、PadForgeが仮想パッドから物理パッドへ転送するファームウェアテストコマンドのリファレンス。MIT。</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefariusによるDualShock 4 Bluetooth音声リファレンス。PadForgeのDS4スピーカーストリームのレポートフレーミング。SBCエンコーダーはBluetooth A2DP仕様に基づく独自のC#実装。プロトコル文書はkhallmarkのds4macより。MIT。</value></data>
+  <data name="Profiles_Export" xml:space="preserve"><value>エクスポート…</value></data>
+  <data name="Profiles_Import" xml:space="preserve"><value>インポート…</value></data>
+  <data name="Status_ProfileExported_Format" xml:space="preserve"><value>プロファイル「{0}」をエクスポートしました。</value></data>
+  <data name="Status_ProfileImported_Format" xml:space="preserve"><value>プロファイル「{0}」をインポートしました（サウンドパッケージ {1} 件を登録）。</value></data>
+  <data name="Status_ProfileImportFailed" xml:space="preserve"><value>このファイルは読み取り可能なPadForgeプロファイルではありません。</value></data>
+  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>{0} からサウンドを選択</value></data>
 </root>

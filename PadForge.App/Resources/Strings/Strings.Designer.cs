@@ -349,6 +349,12 @@ public class Strings : INotifyPropertyChanged
     public string About_DsBtHapticsDesc => Get("About_DsBtHapticsDesc");
     public string About_DualSenseY => Get("About_DualSenseY");
     public string About_DualSenseYDesc => Get("About_DualSenseYDesc");
+    public string Profiles_Export => Get("Profiles_Export");
+    public string Profiles_Import => Get("Profiles_Import");
+    public string Status_ProfileExported_Format => Get("Status_ProfileExported_Format");
+    public string Status_ProfileImported_Format => Get("Status_ProfileImported_Format");
+    public string Status_ProfileImportFailed => Get("Status_ProfileImportFailed");
+    public string Macro_Sound_PickFromPackage_Format => Get("Macro_Sound_PickFromPackage_Format");
     public string About_DsTester => Get("About_DsTester");
     public string About_DsTesterDesc => Get("About_DsTesterDesc");
     public string About_Ds4Audio => Get("About_Ds4Audio");

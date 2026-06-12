@@ -198,6 +198,12 @@
                         <Button Content="{Binding Profiles_Load, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding LoadProfileCommand}"
                                 Margin="0,0,8,0"/>
+                        <Button Content="{Binding Profiles_Export, Source={x:Static strings:Strings.Instance}}"
+                                Command="{Binding ExportProfileCommand}"
+                                Margin="0,0,8,0"/>
+                        <Button Content="{Binding Profiles_Import, Source={x:Static strings:Strings.Instance}}"
+                                Command="{Binding ImportProfileCommand}"
+                                Margin="0,0,8,0"/>
                         <Button Content="{Binding Common_Delete, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding DeleteProfileCommand}"/>
                     </StackPanel>

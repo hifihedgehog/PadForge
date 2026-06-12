@@ -1755,4 +1755,10 @@
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Browser-testsuite voor de DualSense door Xuezhou Dai (daidr): referentie voor de Sony feature-report-CRC-framing en de firmware-testopdrachten die PadForge van de virtuele naar de fysieke pad doorstuurt. MIT.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="About_Ds4AudioDesc" xml:space="preserve"><value>DualShock 4 Bluetooth-audioreferentie door nefarius: rapport-framing voor PadForges DS4-speakerstream. De SBC-encoder is een originele C#-implementatie volgens de Bluetooth A2DP-specificatie. Met protocoldocumentatie uit khallmarks ds4mac. MIT.</value></data>
+  <data name="Profiles_Export" xml:space="preserve"><value>Exporteren…</value></data>
+  <data name="Profiles_Import" xml:space="preserve"><value>Importeren…</value></data>
+  <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Profiel "{0}" geëxporteerd.</value></data>
+  <data name="Status_ProfileImported_Format" xml:space="preserve"><value>Profiel "{0}" geïmporteerd ({1} geluidspakket(ten) geregistreerd).</value></data>
+  <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Het bestand is geen leesbaar PadForge-profiel.</value></data>
+  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Kies een geluid uit {0}</value></data>
 </root>

@@ -623,49 +623,13 @@ namespace PadForge.Views
             action.SoundFilePath = dlg.FileName;
         }
 
-        /// <summary>Minimal modal list picker (package sound selection).
-        /// Returns the chosen item or null.</summary>
+        /// <summary>Modal list picker (package sound selection). Returns
+        /// the chosen item or null. FluentWindow chrome, same as the other
+        /// dialogs.</summary>
         private string PromptPickFromList(string title, System.Collections.Generic.List<string> items)
         {
-            var list = new ListBox { ItemsSource = items, SelectedIndex = 0, Margin = new Thickness(12) };
-            var ok = new Button
-            {
-                Content = PadForge.Resources.Strings.Strings.Instance.Common_OK,
-                IsDefault = true,
-                MinWidth = 80,
-                Margin = new Thickness(0, 0, 8, 12),
-            };
-            var cancel = new Button
-            {
-                Content = PadForge.Resources.Strings.Strings.Instance.Common_Cancel,
-                IsCancel = true,
-                MinWidth = 80,
-                Margin = new Thickness(0, 0, 12, 12),
-            };
-            var buttons = new StackPanel
-            {
-                Orientation = Orientation.Horizontal,
-                HorizontalAlignment = HorizontalAlignment.Right,
-            };
-            buttons.Children.Add(ok);
-            buttons.Children.Add(cancel);
-            var panel = new DockPanel();
-            DockPanel.SetDock(buttons, Dock.Bottom);
-            panel.Children.Add(buttons);
-            panel.Children.Add(list);
-            var win = new Window
-            {
-                Title = title,
-                Content = panel,
-                Width = 420,
-                Height = 360,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                Owner = Window.GetWindow(this),
-                ResizeMode = ResizeMode.NoResize,
-            };
-            ok.Click += (_, _) => { win.DialogResult = true; };
-            list.MouseDoubleClick += (_, _) => { if (list.SelectedItem != null) win.DialogResult = true; };
-            return win.ShowDialog() == true ? list.SelectedItem as string : null;
+            var dlg = new PickSoundDialog(title, items) { Owner = Window.GetWindow(this) };
+            return dlg.ShowDialog() == true ? dlg.SelectedSound : null;
         }
 
         // ─────────────────────────────────────────────

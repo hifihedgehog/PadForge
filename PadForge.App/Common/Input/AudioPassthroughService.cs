@@ -109,16 +109,17 @@ namespace PadForge.Common.Input
             /// never do transport I/O themselves.</summary>
             public volatile bool TransportFailed;
 
-            /// <summary>Per-sink Opus encoder for the BT speaker stream
+            // ── DualSense BT lane (Opus over report 0x35) — BT thread only.
+            /// <summary>Per-sink Opus encoder for the DS5 BT speaker stream
             /// (created and used only on the BT thread).</summary>
-            public IOpusEncoder OpusEncoder;
+            public IOpusEncoder Ds5OpusEncoder;
 
             /// <summary>BT idle-gate state (BT thread only).</summary>
             public bool BtStreaming;
 
             // ── DualShock 4 BT lane (SBC over report 0x17) — BT thread only.
             /// <summary>Clean-room SBC encoder (32 kHz JS/SNR/bitpool 48).</summary>
-            public Ds4SbcEncoder SbcEncoder;
+            public Ds4SbcEncoder Ds4Sbc;
             /// <summary>Resampled 32 kHz s16 interleaved samples awaiting a
             /// full 256-sample encode block.</summary>
             public short[] Ds4Pending;
@@ -126,14 +127,18 @@ namespace PadForge.Common.Input
             /// <summary>48→32 kHz linear-resampler phase carry, in input
             /// samples, persisted across ticks so the 3:2 ratio stays exact.</summary>
             public double Ds4ResamplePhase;
+            /// <summary>Last input sample pair of the previous tick — the
+            /// left interpolation endpoint for output positions that land in
+            /// the tick-boundary gap, so the resampler is continuous across
+            /// ticks (libsamplerate's stream API gives the reference
+            /// implementation this for free).</summary>
+            public float Ds4CarryL, Ds4CarryR;
             /// <summary>Encoded 109-byte SBC frames awaiting a 4-frame 0x17
             /// report.</summary>
             public System.Collections.Generic.Queue<byte[]> Ds4Frames;
             /// <summary>16-bit frame counter at report bytes [3..4]; advances
             /// by frames-per-report (DS4AudioStreamer HidAudioRouterWorker).</summary>
             public ushort Ds4FrameCounter;
-            /// <summary>One-shot: report 0x11 volume enable sent at build.</summary>
-            public bool Ds4VolumeSent;
 
             // USB
             public IWavePlayer Player;
@@ -739,13 +744,12 @@ namespace PadForge.Common.Input
             s.Player = null;
             s.BtHandle = new IntPtr(-1);
             s.Tx = null;
-            s.OpusEncoder = null;   // rebuilt sinks start with a fresh encoder
+            s.Ds5OpusEncoder = null;   // rebuilt sinks start with a fresh encoder
             s.BtStreaming = false;  // and a fresh stream clock
-            s.SbcEncoder = null;
+            s.Ds4Sbc = null;
             s.Ds4Frames = null;
             s.Ds4PendingCount = 0;
             s.Ds4ResamplePhase = 0;
-            s.Ds4VolumeSent = false;
             return carrier;
         }
 
@@ -780,7 +784,7 @@ namespace PadForge.Common.Input
                 {
                     return;
                 }
-                var tx = new BtWritePool(s.IsDs4 ? Ds4BtReportSize : BtReportSize);
+                var tx = new BtWritePool(s.IsDs4 ? Ds4BtReportSize : Ds5BtReportSize);
 
                 // DS4: enable the firmware audio path before streaming — one
                 // report 0x11 with ONLY the volume-enable bits set (0x10
@@ -805,7 +809,6 @@ namespace PadForge.Common.Input
                     vol[Ds4ControlReportSize - 2] = (byte)(vcrc >> 16);
                     vol[Ds4ControlReportSize - 1] = (byte)(vcrc >> 24);
                     WriteOneShot(h, vol);
-                    s.Ds4VolumeSent = true;
                 }
 
                 lock (_lock)
@@ -817,7 +820,7 @@ namespace PadForge.Common.Input
                         s.Tx = tx;
                         if (s.IsDs4)
                         {
-                            s.SbcEncoder ??= new Ds4SbcEncoder();
+                            s.Ds4Sbc ??= new Ds4SbcEncoder();
                             s.Ds4Pending ??= new short[Ds4SbcEncoder.PcmSamplesPerFrame * 4];
                             s.Ds4Frames ??= new System.Collections.Generic.Queue<byte[]>();
                         }
@@ -825,7 +828,7 @@ namespace PadForge.Common.Input
                         {
                             // Pre-create the encoder so the stream's first frame
                             // doesn't pay ~15 ms of Concentus construction.
-                            s.OpusEncoder ??= CreateBtOpusEncoder();
+                            s.Ds5OpusEncoder ??= CreateDs5OpusEncoder();
                         }
                         return;
                     }
@@ -1027,12 +1030,12 @@ namespace PadForge.Common.Input
         //  BT audio frame stream (DSY-v2 HapticTimerThread port)
         // ─────────────────────────────────────────────
 
-        private const int BtFrameSamples = 480;    // Opus frame samples per channel
+        private const int Ds5OpusFrameSamples = 480;    // Opus frame samples per channel
         private const int BtPullFrames = 512;      // input frames consumed per ~10.667 ms tick (512 × 93.75 = 48 kHz)
-        private const int BtOpusBytes = 200;       // hard-CBR frame size (160 kbps)
-        private const int BtReportSize = 334;      // report 0x35 wire size
-        private static byte _btPktCounter;         // 0x11 header rolling counter
-        private static int _btSeq;                 // report seq tag (byte 1 high nibble)
+        private const int Ds5OpusBytes = 200;       // hard-CBR frame size (160 kbps)
+        private const int Ds5BtReportSize = 334;      // report 0x35 wire size
+        private static byte _ds5PktCounter;         // 0x11 header rolling counter
+        private static int _ds5Seq;                 // report seq tag (byte 1 high nibble)
 
         // DualShock 4 BT audio: SBC frames over output report 0x17
         // (462 bytes, 4 frames). Layout per DS4AudioStreamer
@@ -1090,9 +1093,9 @@ namespace PadForge.Common.Input
                 // 480-per-tick — the awalol baseline — underfeeds 6 % and
                 // plays audibly flat; strict 10.000 ms delivery cuts out.)
                 var pull = new float[(BtPullFrames + 8) * 2];
-                var frame = new float[BtFrameSamples * 2];
-                var opus = new byte[BtOpusBytes + 16];
-                var report = new byte[BtReportSize];
+                var frame = new float[Ds5OpusFrameSamples * 2];
+                var opus = new byte[Ds5OpusBytes + 16];
+                var report = new byte[Ds5BtReportSize];
                 const double CadenceMs = 10.0 + 2.0 / 3.0;
                 const int BtTargetLag = 2160;         // 45 ms ring cushion @ 48 kHz
                 const int LagDeadband = 720;          // ±15 ms before trimming
@@ -1132,13 +1135,13 @@ namespace PadForge.Common.Input
 
                         if (s.IsDs4)
                         {
-                            Ds4Tick(s, pull, inFrames);
+                            Ds4BtTick(s, pull, inFrames);
                             continue;
                         }
 
                         // 512→480 linear time-compression (pitch-exact).
-                        double step = inFrames / (double)BtFrameSamples;
-                        for (int o = 0; o < BtFrameSamples; o++)
+                        double step = inFrames / (double)Ds5OpusFrameSamples;
+                        for (int o = 0; o < Ds5OpusFrameSamples; o++)
                         {
                             double pos = o * step;
                             int i0 = (int)pos;
@@ -1147,7 +1150,7 @@ namespace PadForge.Common.Input
                             frame[o * 2] = (float)(pull[i0 * 2] * (1 - t) + pull[i1 * 2] * t);
                             frame[o * 2 + 1] = (float)(pull[i0 * 2 + 1] * (1 - t) + pull[i1 * 2 + 1] * t);
                         }
-                        SendBtFrame(s, frame, opus, report);
+                        SendDs5BtFrame(s, frame, opus, report);
                     }
 
                     // One tick per cadence on an absolute schedule. Lateness
@@ -1179,33 +1182,33 @@ namespace PadForge.Common.Input
 
         /// <summary>Encode one 10 ms frame from <paramref name="pull"/> and
         /// send it as a 0x35 report on the sink's 0x13 speaker lane.</summary>
-        private static void SendBtFrame(Sink s, float[] pull, byte[] opus, byte[] report)
+        private static void SendDs5BtFrame(Sink s, float[] pull, byte[] opus, byte[] report)
         {
-            s.OpusEncoder ??= CreateBtOpusEncoder();
+            s.Ds5OpusEncoder ??= CreateDs5OpusEncoder();
             int n;
-            try { n = s.OpusEncoder.Encode(pull.AsSpan(), BtFrameSamples, opus.AsSpan(), BtOpusBytes); }
-            catch { s.OpusEncoder = null; return; }
+            try { n = s.Ds5OpusEncoder.Encode(pull.AsSpan(), Ds5OpusFrameSamples, opus.AsSpan(), Ds5OpusBytes); }
+            catch { s.Ds5OpusEncoder = null; return; }
 
             Array.Clear(report, 0, report.Length);
             report[0] = 0x35;
-            report[1] = (byte)((_btSeq & 0x0F) << 4);
-            _btSeq = (_btSeq + 1) & 0x0F;
+            report[1] = (byte)((_ds5Seq & 0x0F) << 4);
+            _ds5Seq = (_ds5Seq + 1) & 0x0F;
             // packet 0x11: session header (SAxense default — no handshake)
             report[2] = 0x11 | 0x80;
             report[3] = 7;
             report[4] = 0xFE;
             report[9] = 0xFF;
-            report[10] = _btPktCounter++;
+            report[10] = _ds5PktCounter++;
             // packet 0x13: speaker audio lane (0x16 = headset jack), one
             // Opus frame filling the slot
             report[11] = 0x13 | 0x80;
-            report[12] = (byte)BtOpusBytes;
-            Array.Copy(opus, 0, report, 13, Math.Min(n, BtOpusBytes));
-            uint crc = Crc32(report, BtReportSize - 4);
-            report[BtReportSize - 4] = (byte)(crc & 0xFF);
-            report[BtReportSize - 3] = (byte)((crc >> 8) & 0xFF);
-            report[BtReportSize - 2] = (byte)((crc >> 16) & 0xFF);
-            report[BtReportSize - 1] = (byte)(crc >> 24);
+            report[12] = (byte)Ds5OpusBytes;
+            Array.Copy(opus, 0, report, 13, Math.Min(n, Ds5OpusBytes));
+            uint crc = Crc32(report, Ds5BtReportSize - 4);
+            report[Ds5BtReportSize - 4] = (byte)(crc & 0xFF);
+            report[Ds5BtReportSize - 3] = (byte)((crc >> 8) & 0xFF);
+            report[Ds5BtReportSize - 2] = (byte)((crc >> 16) & 0xFF);
+            report[Ds5BtReportSize - 1] = (byte)(crc >> 24);
 
             bool hardFail = true; // no pool == hard failure
             bool sent = s.Tx != null && s.Tx.TrySend(s.BtHandle, report, out hardFail);
@@ -1233,25 +1236,33 @@ namespace PadForge.Common.Input
         /// same skip-not-burst discipline applies here as the conservative
         /// default until DS4 hardware says otherwise. Steady state: 2.67
         /// frames produced per 10.667 ms tick, one report per ~16 ms.</summary>
-        private static void Ds4Tick(Sink s, float[] pull, int inFrames)
+        private static void Ds4BtTick(Sink s, float[] pull, int inFrames)
         {
-            if (s.SbcEncoder == null || s.Ds4Pending == null || s.Ds4Frames == null) return;
+            if (s.Ds4Sbc == null || s.Ds4Pending == null || s.Ds4Frames == null) return;
 
-            // 48 → 32 kHz with phase carry across ticks.
+            // 48 → 32 kHz, continuous across ticks: the virtual input is
+            // [carry] + pull[0..inFrames-1] with position 0 at the carry
+            // sample, so every output position has a real interpolation
+            // pair and the phase stays in [0, 1.5) — no boundary jitter.
             double pos = s.Ds4ResamplePhase;
-            if (pos < 0) pos = 0;   // carry can land at −1..0 across the tick boundary
             int cap = s.Ds4Pending.Length;
-            while (pos < inFrames - 1 && s.Ds4PendingCount <= cap - 2)
+            while (pos < inFrames && s.Ds4PendingCount <= cap - 2)
             {
                 int i0 = (int)pos;
                 double t = pos - i0;
-                float l = (float)(pull[i0 * 2] * (1 - t) + pull[(i0 + 1) * 2] * t);
-                float r = (float)(pull[i0 * 2 + 1] * (1 - t) + pull[(i0 + 1) * 2 + 1] * t);
+                float l0 = i0 == 0 ? s.Ds4CarryL : pull[(i0 - 1) * 2];
+                float r0 = i0 == 0 ? s.Ds4CarryR : pull[(i0 - 1) * 2 + 1];
+                float l1 = pull[i0 * 2];
+                float r1 = pull[i0 * 2 + 1];
+                float l = (float)(l0 * (1 - t) + l1 * t);
+                float r = (float)(r0 * (1 - t) + r1 * t);
                 s.Ds4Pending[s.Ds4PendingCount++] = (short)Math.Clamp((int)(l * 32767f), short.MinValue, short.MaxValue);
                 s.Ds4Pending[s.Ds4PendingCount++] = (short)Math.Clamp((int)(r * 32767f), short.MinValue, short.MaxValue);
                 pos += Ds4ResampleStep;
             }
-            s.Ds4ResamplePhase = pos - inFrames;
+            s.Ds4ResamplePhase = Math.Max(0, pos - inFrames);
+            s.Ds4CarryL = pull[(inFrames - 1) * 2];
+            s.Ds4CarryR = pull[(inFrames - 1) * 2 + 1];
 
             // Encode every complete 256-sample block (128 per channel = one
             // 4 ms SBC frame).
@@ -1259,7 +1270,7 @@ namespace PadForge.Common.Input
             while (s.Ds4PendingCount - consumed >= Ds4SbcEncoder.PcmSamplesPerFrame)
             {
                 var frame = new byte[Ds4SbcEncoder.FrameBytes];
-                s.SbcEncoder.Encode(
+                s.Ds4Sbc.Encode(
                     s.Ds4Pending.AsSpan(consumed, Ds4SbcEncoder.PcmSamplesPerFrame), frame);
                 consumed += Ds4SbcEncoder.PcmSamplesPerFrame;
                 if (s.Ds4Frames.Count >= Ds4FrameQueueCap)
@@ -1328,12 +1339,12 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>48 kHz stereo, 10 ms frames, hard CBR at 160 kbps so
-        /// every frame is exactly <see cref="BtOpusBytes"/> bytes — the
+        /// every frame is exactly <see cref="Ds5OpusBytes"/> bytes — the
         /// firmware expects the frame to fill the 0x13 packet slot.</summary>
-        private static IOpusEncoder CreateBtOpusEncoder()
+        private static IOpusEncoder CreateDs5OpusEncoder()
         {
             var enc = OpusCodecFactory.CreateEncoder(Rate, 2, OpusApplication.OPUS_APPLICATION_AUDIO);
-            enc.Bitrate = BtOpusBytes * 8 * 100;
+            enc.Bitrate = Ds5OpusBytes * 8 * 100;
             enc.UseVBR = false;
             return enc;
         }

@@ -127,6 +127,20 @@ dualsense-tester
   vendor test commands PadForge forwards from virtual to physical pads.
   Licensed under MIT License
 
+DS4AudioStreamer
+  https://github.com/nefarius/DS4AudioStreamer
+  By nefarius. Reference for the DualShock 4 Bluetooth audio report
+  framing (0x14/0x17 layout, frame counter, volume enables). PadForge's
+  SBC encoder is an original C# implementation from the public
+  Bluetooth A2DP specification and contains no libsbc (GPL) code.
+  Licensed under MIT License
+
+ds4mac
+  https://github.com/khallmark/ds4mac
+  By khallmark. DualShock 4 audio protocol documentation (SBC
+  parameters, packet layouts, Bluetooth-only audio finding).
+  Licensed under MIT License
+
 Special Thanks
   TechAntohere (https://github.com/TechAntohere, u/Idkiamaguy645)
   Shared his DualSense Bluetooth findings and testing, and pointed

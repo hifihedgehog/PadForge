@@ -116,6 +116,25 @@ namespace PadForge.Common.Input
             /// <summary>BT idle-gate state (BT thread only).</summary>
             public bool BtStreaming;
 
+            // ── DualShock 4 BT lane (SBC over report 0x17) — BT thread only.
+            /// <summary>Clean-room SBC encoder (32 kHz JS/SNR/bitpool 48).</summary>
+            public Ds4SbcEncoder SbcEncoder;
+            /// <summary>Resampled 32 kHz s16 interleaved samples awaiting a
+            /// full 256-sample encode block.</summary>
+            public short[] Ds4Pending;
+            public int Ds4PendingCount;
+            /// <summary>48→32 kHz linear-resampler phase carry, in input
+            /// samples, persisted across ticks so the 3:2 ratio stays exact.</summary>
+            public double Ds4ResamplePhase;
+            /// <summary>Encoded 109-byte SBC frames awaiting a 4-frame 0x17
+            /// report.</summary>
+            public System.Collections.Generic.Queue<byte[]> Ds4Frames;
+            /// <summary>16-bit frame counter at report bytes [3..4]; advances
+            /// by frames-per-report (DS4AudioStreamer HidAudioRouterWorker).</summary>
+            public ushort Ds4FrameCounter;
+            /// <summary>One-shot: report 0x11 volume enable sent at build.</summary>
+            public bool Ds4VolumeSent;
+
             // USB
             public IWavePlayer Player;
 
@@ -524,7 +543,9 @@ namespace PadForge.Common.Input
             {
                 bool isBt = (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
                 bool isDs4 = Ds4Pids.Contains((ushort)ud.ProdId);
-                if (isBt && isDs4) continue; // no BT transport for DS4
+                // Wired DS4 has no audio interface (BT-only audio); the USB
+                // wireless adaptor (0x0BA0) does. See ReconcileOnWorker.
+                if (isDs4 && !isBt && (ushort)ud.ProdId != 0x0BA0) continue;
                 anyEligible = true;
                 break;
             }
@@ -626,10 +647,13 @@ namespace PadForge.Common.Input
                 {
                     bool isBt = (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
                     bool isDs4 = Ds4Pids.Contains((ushort)ud.ProdId);
-                    // The 0x32 raw audio stream is DualSense-only (SAxense);
-                    // DS4 BT audio is SBC-coded over different reports and
-                    // unimplemented.
-                    if (isBt && isDs4) continue;
+                    // DS4 audio is BLUETOOTH-ONLY: the wired DS4 exposes no
+                    // USB audio interface at all (ds4mac docs §3.1 — HID
+                    // endpoints only, no UAC descriptors). BT DS4 streams SBC
+                    // over report 0x17. Exception: Sony's USB wireless
+                    // adaptor (PID 0x0BA0) tunnels the radio link and exposes
+                    // real UAC endpoints, so it keeps the USB container path.
+                    if (isDs4 && !isBt && (ushort)ud.ProdId != 0x0BA0) continue;
                     var (ptOn, mirrorSrc) = ReadPassthroughConfig(slot, guid);
                     // A sink exists while the device's mirror toggle is on or
                     // the slot's macros have asked for controller routing.
@@ -717,6 +741,11 @@ namespace PadForge.Common.Input
             s.Tx = null;
             s.OpusEncoder = null;   // rebuilt sinks start with a fresh encoder
             s.BtStreaming = false;  // and a fresh stream clock
+            s.SbcEncoder = null;
+            s.Ds4Frames = null;
+            s.Ds4PendingCount = 0;
+            s.Ds4ResamplePhase = 0;
+            s.Ds4VolumeSent = false;
             return carrier;
         }
 
@@ -751,7 +780,34 @@ namespace PadForge.Common.Input
                 {
                     return;
                 }
-                var tx = new BtWritePool(BtReportSize);
+                var tx = new BtWritePool(s.IsDs4 ? Ds4BtReportSize : BtReportSize);
+
+                // DS4: enable the firmware audio path before streaming — one
+                // report 0x11 with ONLY the volume-enable bits set (0x10
+                // headphone L, 0x20 headphone R, 0x80 speaker — rumble /
+                // lightbar bits stay clear so effect state isn't clobbered).
+                // Layout per DS4AudioStreamer SendControllerDataReport and
+                // DS4Windows DS4Device.cs; CRC32 0xA2-seeded like all Sony
+                // BT output reports.
+                if (s.IsDs4)
+                {
+                    var vol = new byte[Ds4ControlReportSize];
+                    vol[0] = 0x11;
+                    vol[1] = 0xC0;      // EnableCRC | EnableHID
+                    vol[2] = 0xA2;      // audio flags (EnableAudio set)
+                    vol[3] = 0xB0;      // volume enables only
+                    vol[21] = 0x4F;     // headphone L (max 0x4F)
+                    vol[22] = 0x4F;     // headphone R
+                    vol[24] = 0x4F;     // speaker
+                    uint vcrc = Crc32(vol, Ds4ControlReportSize - 4);
+                    vol[Ds4ControlReportSize - 4] = (byte)vcrc;
+                    vol[Ds4ControlReportSize - 3] = (byte)(vcrc >> 8);
+                    vol[Ds4ControlReportSize - 2] = (byte)(vcrc >> 16);
+                    vol[Ds4ControlReportSize - 1] = (byte)(vcrc >> 24);
+                    WriteOneShot(h, vol);
+                    s.Ds4VolumeSent = true;
+                }
+
                 lock (_lock)
                 {
                     if (_running && _sinks.TryGetValue(s.DeviceGuid, out var cur)
@@ -759,9 +815,18 @@ namespace PadForge.Common.Input
                     {
                         s.BtHandle = h;
                         s.Tx = tx;
-                        // Pre-create the encoder so the stream's first frame
-                        // doesn't pay ~15 ms of Concentus construction.
-                        s.OpusEncoder ??= CreateBtOpusEncoder();
+                        if (s.IsDs4)
+                        {
+                            s.SbcEncoder ??= new Ds4SbcEncoder();
+                            s.Ds4Pending ??= new short[Ds4SbcEncoder.PcmSamplesPerFrame * 4];
+                            s.Ds4Frames ??= new System.Collections.Generic.Queue<byte[]>();
+                        }
+                        else
+                        {
+                            // Pre-create the encoder so the stream's first frame
+                            // doesn't pay ~15 ms of Concentus construction.
+                            s.OpusEncoder ??= CreateBtOpusEncoder();
+                        }
                         return;
                     }
                 }
@@ -969,6 +1034,18 @@ namespace PadForge.Common.Input
         private static byte _btPktCounter;         // 0x11 header rolling counter
         private static int _btSeq;                 // report seq tag (byte 1 high nibble)
 
+        // DualShock 4 BT audio: SBC frames over output report 0x17
+        // (462 bytes, 4 frames). Layout per DS4AudioStreamer
+        // HidAudioRouterWorker._worker and ds4mac's audio documentation:
+        // [0]=0x17 [1]=0x40 [2]=0xA2 [3..4]=u16 LE frame counter
+        // [5]=audio target (0x02 speaker / 0x24 headset) [6..]=SBC frames
+        // [458..461]=CRC32 (0xA2-seeded, same as every Sony BT report).
+        private const int Ds4BtReportSize = 462;
+        private const int Ds4ControlReportSize = 78;   // report 0x11
+        private const int Ds4FramesPerReport = 4;
+        private const int Ds4FrameQueueCap = 12;       // 48 ms of audio
+        private const double Ds4ResampleStep = 1.5;    // 48 kHz → 32 kHz
+
         private static void EnsureThreads_NoLock()
         {
             if (_running) return;
@@ -1052,6 +1129,12 @@ namespace PadForge.Common.Input
                         bool audible = Environment.TickCount64 - s.LastAudibleTicks <= 2000;
                         s.BtStreaming = audible;
                         if (!audible) continue;
+
+                        if (s.IsDs4)
+                        {
+                            Ds4Tick(s, pull, inFrames);
+                            continue;
+                        }
 
                         // 512→480 linear time-compression (pitch-exact).
                         double step = inFrames / (double)BtFrameSamples;
@@ -1138,6 +1221,109 @@ namespace PadForge.Common.Input
                 // the pad conceals one missing frame far better than it
                 // handles a catch-up burst.
                 return;
+            }
+        }
+
+        /// <summary>One DS4 tick: resample the tick's 48 kHz pull to 32 kHz
+        /// s16 (persistent-phase linear, exact 3:2 so pitch is exact; the
+        /// drift trim arrives through <paramref name="inFrames"/> like the
+        /// DS5 lane), encode full 256-sample blocks to 109-byte SBC frames,
+        /// and ship at most ONE 4-frame report 0x17 per tick — the DS5
+        /// hardware experiments showed Sony firmware drops bursts, so the
+        /// same skip-not-burst discipline applies here as the conservative
+        /// default until DS4 hardware says otherwise. Steady state: 2.67
+        /// frames produced per 10.667 ms tick, one report per ~16 ms.</summary>
+        private static void Ds4Tick(Sink s, float[] pull, int inFrames)
+        {
+            if (s.SbcEncoder == null || s.Ds4Pending == null || s.Ds4Frames == null) return;
+
+            // 48 → 32 kHz with phase carry across ticks.
+            double pos = s.Ds4ResamplePhase;
+            if (pos < 0) pos = 0;   // carry can land at −1..0 across the tick boundary
+            int cap = s.Ds4Pending.Length;
+            while (pos < inFrames - 1 && s.Ds4PendingCount <= cap - 2)
+            {
+                int i0 = (int)pos;
+                double t = pos - i0;
+                float l = (float)(pull[i0 * 2] * (1 - t) + pull[(i0 + 1) * 2] * t);
+                float r = (float)(pull[i0 * 2 + 1] * (1 - t) + pull[(i0 + 1) * 2 + 1] * t);
+                s.Ds4Pending[s.Ds4PendingCount++] = (short)Math.Clamp((int)(l * 32767f), short.MinValue, short.MaxValue);
+                s.Ds4Pending[s.Ds4PendingCount++] = (short)Math.Clamp((int)(r * 32767f), short.MinValue, short.MaxValue);
+                pos += Ds4ResampleStep;
+            }
+            s.Ds4ResamplePhase = pos - inFrames;
+
+            // Encode every complete 256-sample block (128 per channel = one
+            // 4 ms SBC frame).
+            int consumed = 0;
+            while (s.Ds4PendingCount - consumed >= Ds4SbcEncoder.PcmSamplesPerFrame)
+            {
+                var frame = new byte[Ds4SbcEncoder.FrameBytes];
+                s.SbcEncoder.Encode(
+                    s.Ds4Pending.AsSpan(consumed, Ds4SbcEncoder.PcmSamplesPerFrame), frame);
+                consumed += Ds4SbcEncoder.PcmSamplesPerFrame;
+                if (s.Ds4Frames.Count >= Ds4FrameQueueCap)
+                    s.Ds4Frames.Dequeue();   // bound latency; drop oldest
+                s.Ds4Frames.Enqueue(frame);
+            }
+            if (consumed > 0)
+            {
+                Array.Copy(s.Ds4Pending, consumed, s.Ds4Pending, 0, s.Ds4PendingCount - consumed);
+                s.Ds4PendingCount -= consumed;
+            }
+
+            if (s.Ds4Frames.Count < Ds4FramesPerReport) return;
+
+            // Report 0x17: 4 SBC frames, frame counter += 4, speaker target.
+            var report = new byte[Ds4BtReportSize];
+            report[0] = 0x17;
+            report[1] = 0x40;
+            report[2] = 0xA2;
+            report[3] = (byte)(s.Ds4FrameCounter & 0xFF);
+            report[4] = (byte)(s.Ds4FrameCounter >> 8);
+            report[5] = 0x02;   // internal speaker (0x24 = headset jack)
+            int o2 = 6;
+            for (int i = 0; i < Ds4FramesPerReport; i++)
+            {
+                var f = s.Ds4Frames.Dequeue();
+                Array.Copy(f, 0, report, o2, f.Length);
+                o2 += f.Length;
+            }
+            s.Ds4FrameCounter += Ds4FramesPerReport;
+            uint crc = Crc32(report, Ds4BtReportSize - 4);
+            report[Ds4BtReportSize - 4] = (byte)crc;
+            report[Ds4BtReportSize - 3] = (byte)(crc >> 8);
+            report[Ds4BtReportSize - 2] = (byte)(crc >> 16);
+            report[Ds4BtReportSize - 1] = (byte)(crc >> 24);
+
+            bool hardFail = true;
+            bool sent = s.Tx != null && s.Tx.TrySend(s.BtHandle, report, out hardFail);
+            if (!sent && hardFail) s.TransportFailed = true;
+        }
+
+        /// <summary>Single synchronous overlapped write for one-shot control
+        /// reports (the streaming pool's buffers are sized for audio reports
+        /// and must not pad a short control report).</summary>
+        private static bool WriteOneShot(IntPtr h, byte[] report)
+        {
+            var pin = System.Runtime.InteropServices.GCHandle.Alloc(report, System.Runtime.InteropServices.GCHandleType.Pinned);
+            IntPtr ev = NativeMethods.CreateEventW(IntPtr.Zero, true, false, null);
+            IntPtr ol = System.Runtime.InteropServices.Marshal.AllocHGlobal(32);
+            try
+            {
+                for (int i = 0; i < 32; i += 8) System.Runtime.InteropServices.Marshal.WriteInt64(ol, i, 0);
+                System.Runtime.InteropServices.Marshal.WriteIntPtr(ol, 24, ev); // OVERLAPPED.hEvent (x64)
+                bool ok = NativeMethods.WriteFileRaw(h, pin.AddrOfPinnedObject(), (uint)report.Length, IntPtr.Zero, ol);
+                if (!ok && System.Runtime.InteropServices.Marshal.GetLastWin32Error() == 997 /* ERROR_IO_PENDING */)
+                    ok = NativeMethods.WaitForSingleObject(ev, 1000) == 0;
+                if (!ok) NativeMethods.CancelIo(h);
+                return ok;
+            }
+            finally
+            {
+                System.Runtime.InteropServices.Marshal.FreeHGlobal(ol);
+                NativeMethods.CloseHandle(ev);
+                pin.Free();
             }
         }
 

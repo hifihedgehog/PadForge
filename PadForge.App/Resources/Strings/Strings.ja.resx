@@ -1733,4 +1733,6 @@
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>ミラー、ミラーソース、マスター音量を既定値に戻す</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai（daidr）によるブラウザー版DualSenseテストスイート。SonyフィーチャーレポートのCRCフレーミングと、PadForgeが仮想パッドから物理パッドへ転送するファームウェアテストコマンドのリファレンス。MIT。</value></data>
+  <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefariusによるDualShock 4 Bluetooth音声リファレンス。PadForgeのDS4スピーカーストリームのレポートフレーミング。SBCエンコーダーはBluetooth A2DP仕様に基づく独自のC#実装。プロトコル文書はkhallmarkのds4macより。MIT。</value></data>
 </root>

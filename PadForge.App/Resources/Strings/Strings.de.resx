@@ -1733,4 +1733,6 @@
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Spiegelung, Spiegelquelle und Gesamtlautstärke auf Standard zurücksetzen</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Browser-Testsuite für den DualSense von Xuezhou Dai (daidr): Referenz für das Sony-Feature-Report-CRC-Framing und die Firmware-Testbefehle, die PadForge vom virtuellen zum physischen Pad weiterleitet. MIT.</value></data>
+  <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>DualShock-4-Bluetooth-Audio-Referenz von nefarius: Report-Framing für PadForges DS4-Lautsprecher-Stream. Der SBC-Encoder ist eine eigenständige C#-Implementierung nach der Bluetooth-A2DP-Spezifikation. Mit Protokolldokumentation aus khallmarks ds4mac. MIT.</value></data>
 </root>

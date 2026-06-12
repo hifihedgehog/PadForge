@@ -2979,7 +2979,14 @@ namespace PadForge.ViewModels
                 if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
                 var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
                 if (ud == null || ud.VendorId != 0x054C) return false;
-                return ud.ProdId is 0x0CE6 or 0x0DF2 or 0x05C4 or 0x09CC or 0x0BA0;
+                // DS5 family: audio on both transports. DS4: audio is
+                // Bluetooth-only (wired DS4 exposes no USB audio interface);
+                // Sony's USB wireless adaptor (0x0BA0) tunnels the radio link
+                // and provides real USB audio endpoints.
+                if (ud.ProdId is 0x0CE6 or 0x0DF2 or 0x0BA0) return true;
+                if (ud.ProdId is 0x05C4 or 0x09CC)
+                    return (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
+                return false;
             }
         }
 

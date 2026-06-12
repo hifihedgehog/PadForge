@@ -33,19 +33,34 @@ namespace PadForge.Common
         public static List<string> Export(ProfileData profile, string destPath)
         {
             var bundled = new List<string>();
-            using var fs = File.Create(destPath);
-            using var zip = new ZipArchive(fs, ZipArchiveMode.Create);
 
-            var entry = zip.CreateEntry(ProfileEntry);
-            using (var s = entry.Open())
-                Serializer.Serialize(s, profile);
-
-            foreach (string pkg in ReferencedPackages(profile))
+            // Build in a temp file and move into place, so a mid-export
+            // failure (e.g. a locked package file) never leaves a truncated
+            // .pfprofile at the destination.
+            string tmpPath = destPath + ".tmp";
+            try
             {
-                string file = SoundPackageManager.ResolvePackageFile(pkg);
-                if (file == null || !File.Exists(file)) continue;
-                zip.CreateEntryFromFile(file, PackagesPrefix + Path.GetFileName(file), CompressionLevel.Optimal);
-                bundled.Add(pkg);
+                using (var fs = File.Create(tmpPath))
+                using (var zip = new ZipArchive(fs, ZipArchiveMode.Create))
+                {
+                    var entry = zip.CreateEntry(ProfileEntry);
+                    using (var s = entry.Open())
+                        Serializer.Serialize(s, profile);
+
+                    foreach (string pkg in ReferencedPackages(profile))
+                    {
+                        string file = SoundPackageManager.ResolvePackageFile(pkg);
+                        if (file == null || !File.Exists(file)) continue;
+                        zip.CreateEntryFromFile(file, PackagesPrefix + Path.GetFileName(file), CompressionLevel.Optimal);
+                        bundled.Add(pkg);
+                    }
+                }
+                File.Move(tmpPath, destPath, overwrite: true);
+            }
+            catch
+            {
+                try { File.Delete(tmpPath); } catch { }
+                throw;
             }
             return bundled;
         }
@@ -74,7 +89,17 @@ namespace PadForge.Common
                              x.FullName.StartsWith(PackagesPrefix, StringComparison.OrdinalIgnoreCase)
                              && x.Name.EndsWith(SoundPackageManager.FileExtension, StringComparison.OrdinalIgnoreCase)))
                 {
-                    string target = Path.Combine(appDir, e.Name);
+                    // Entry names come from the archive: strip every path
+                    // component (both separator styles) and bound the result
+                    // to the app directory, so a crafted archive can't write
+                    // outside it (ZipSlip).
+                    string slashed = e.Name.Replace('\\', '/');
+                    string fileName = slashed.Substring(slashed.LastIndexOf('/') + 1);
+                    if (string.IsNullOrWhiteSpace(fileName)) continue;
+                    string target = Path.GetFullPath(Path.Combine(appDir, fileName));
+                    if (!target.StartsWith(Path.GetFullPath(appDir), StringComparison.OrdinalIgnoreCase))
+                        continue;
+
                     if (File.Exists(target) && new FileInfo(target).Length == e.Length)
                     {
                         // Same name + size: assume the same package and reuse.
@@ -83,7 +108,7 @@ namespace PadForge.Common
                     {
                         if (File.Exists(target))
                         {
-                            string stem = Path.GetFileNameWithoutExtension(e.Name);
+                            string stem = Path.GetFileNameWithoutExtension(fileName);
                             int n = 2;
                             do
                             {
@@ -92,14 +117,41 @@ namespace PadForge.Common
                         }
                         e.ExtractToFile(target);
                     }
-                    string name = SoundPackageManager.Register(target);
-                    if (name != null) registeredPackages.Add(name);
+
+                    string name = SoundPackageManager.Register(target, out string probedName);
+                    if (name == null) continue;
+                    registeredPackages.Add(name);
+
+                    // A name collision on this machine dedup-renamed the
+                    // package; the profile's macro refs still carry the
+                    // package's own name. Rewrite them to the registered
+                    // name so the sounds resolve to the bundled package.
+                    if (!string.Equals(name, probedName, StringComparison.OrdinalIgnoreCase))
+                        RewritePackageRefs(profile, probedName, name);
                 }
                 return profile;
             }
             catch
             {
                 return null;
+            }
+        }
+
+        /// <summary>Rewrites every macro sound ref pointing at
+        /// <paramref name="fromPackage"/> to <paramref name="toPackage"/>.</summary>
+        private static void RewritePackageRefs(ProfileData profile, string fromPackage, string toPackage)
+        {
+            if (profile.Macros == null) return;
+            foreach (var m in profile.Macros)
+            {
+                if (m?.Actions == null) continue;
+                foreach (var a in m.Actions)
+                {
+                    if (a == null) continue;
+                    if (SoundPackageManager.TryParseRef(a.SoundFilePath, out string pkg, out string entry)
+                        && string.Equals(pkg, fromPackage, StringComparison.OrdinalIgnoreCase))
+                        a.SoundFilePath = SoundPackageManager.MakeRef(toPackage, entry);
+                }
             }
         }
 

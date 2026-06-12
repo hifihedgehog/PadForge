@@ -698,14 +698,6 @@ namespace PadForge.ViewModels
                         LoadProfileRequested?.Invoke(this, EventArgs.Empty);
                 },
                 () => _selectedProfile != null);
-
-        /// <summary>Refreshes the can-execute state of profile commands.</summary>
-        public void RefreshProfileCommands()
-        {
-            _deleteProfileCommand?.NotifyCanExecuteChanged();
-            _editProfileCommand?.NotifyCanExecuteChanged();
-            _loadProfileCommand?.NotifyCanExecuteChanged();
-        }
     }
 
     /// <summary>

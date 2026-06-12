@@ -217,22 +217,46 @@ namespace PadForge.Common
         // ─────────────────────────────────────────────
 
         /// <summary>Builds a package file from loose sound files. Entry
-        /// names are the source file names.</summary>
+        /// names are the source file names (same-named files from
+        /// different folders get a " (2)" suffix).</summary>
         public static bool ExportPackage(string destFilePath, string displayName, IEnumerable<string> soundFiles)
         {
+            // Build in a temp file and move into place, so a mid-write
+            // failure (e.g. a locked source file) never leaves a truncated
+            // package at the destination.
+            string tmpPath = destFilePath + ".tmp";
             try
             {
-                using var fs = File.Create(destFilePath);
-                using var zip = new ZipArchive(fs, ZipArchiveMode.Create);
-                var manifest = zip.CreateEntry("manifest.json");
-                using (var w = new StreamWriter(manifest.Open()))
-                    w.Write("{\"name\":\"" + (displayName ?? "").Replace("\\", "\\\\").Replace("\"", "\\\"")
-                            + "\",\"generator\":\"PadForge\"}");
-                foreach (var f in soundFiles.Where(File.Exists))
-                    zip.CreateEntryFromFile(f, System.IO.Path.GetFileName(f), CompressionLevel.Optimal);
+                using (var fs = File.Create(tmpPath))
+                using (var zip = new ZipArchive(fs, ZipArchiveMode.Create))
+                {
+                    var manifest = zip.CreateEntry("manifest.json");
+                    using (var w = new StreamWriter(manifest.Open()))
+                        w.Write("{\"name\":\"" + (displayName ?? "").Replace("\\", "\\\\").Replace("\"", "\\\"")
+                                + "\",\"generator\":\"PadForge\"}");
+
+                    // ZipArchive happily writes duplicate entry names and the
+                    // readers resolve first-match, so dedup here.
+                    var used = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                    foreach (var f in soundFiles.Where(File.Exists))
+                    {
+                        string entryName = System.IO.Path.GetFileName(f);
+                        string stem = System.IO.Path.GetFileNameWithoutExtension(entryName);
+                        string ext = System.IO.Path.GetExtension(entryName);
+                        int n = 2;
+                        while (!used.Add(entryName))
+                            entryName = $"{stem} ({n++}){ext}";
+                        zip.CreateEntryFromFile(f, entryName, CompressionLevel.Optimal);
+                    }
+                }
+                File.Move(tmpPath, destFilePath, overwrite: true);
                 return true;
             }
-            catch { return false; }
+            catch
+            {
+                try { File.Delete(tmpPath); } catch { }
+                return false;
+            }
         }
 
         /// <summary>Display name from manifest.json when present, else the

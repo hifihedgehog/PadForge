@@ -72,6 +72,10 @@ namespace PadForge.Views
             SyncMidiConfigBar();
             SyncLightbarHexBox();
             SyncAudioHexBoxes();
+            // Loaded can fire again without a paired Unloaded when the
+            // element re-enters the tree — unsubscribe first so handlers
+            // never stack.
+            PadForge.Common.SoundPackageManager.RegistryChanged -= OnSoundPackageRegistryChanged;
             PadForge.Common.SoundPackageManager.RegistryChanged += OnSoundPackageRegistryChanged;
             RefreshSoundPackages();
         }

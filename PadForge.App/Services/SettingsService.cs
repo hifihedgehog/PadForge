@@ -323,6 +323,21 @@ namespace PadForge.Services
             }
             catch (Exception ex)
             {
+                // The file exists but couldn't be read. A later save would
+                // overwrite it with defaults, so preserve the original first.
+                try
+                {
+                    string bad = filePath + ".unreadable-" + DateTime.Now.ToString("yyyyMMdd-HHmmss");
+                    if (!File.Exists(bad))
+                        File.Copy(filePath, bad);
+                }
+                catch { /* preservation is best-effort */ }
+
+                // The app continues with defaults; seed the Profiles list
+                // (built-in Default entry) the same way a fresh install does.
+                if (_mainVm.Settings.ProfileItems.Count == 0)
+                    LoadProfiles(null, null);
+
                 _mainVm.StatusText = string.Format(Strings.Instance.Status_ErrorLoadingSettings_Format, ex.Message);
             }
         }
@@ -3727,10 +3742,6 @@ namespace PadForge.Services
     //  Serialization data classes
     // ─────────────────────────────────────────────────────────────────
 
-    /// <summary>
-    /// Root element for the PadForge settings XML file.
-    /// </summary>
-    [XmlRoot("PadForgeSettings")]
     /// <summary>One registered sound package (issue #83 follow-up).</summary>
     public class SoundPackageData
     {
@@ -3742,6 +3753,10 @@ namespace PadForge.Services
         public string Path { get; set; }
     }
 
+    /// <summary>
+    /// Root element for the PadForge settings XML file.
+    /// </summary>
+    [XmlRoot("PadForgeSettings")]
     public class SettingsFileData
     {
         [XmlArray("Devices")]

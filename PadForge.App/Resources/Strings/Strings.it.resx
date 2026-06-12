@@ -1755,4 +1755,6 @@
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Ripristina mirror, sorgente del mirror e volume principale ai valori predefiniti</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Suite di test DualSense nel browser di Xuezhou Dai (daidr): riferimento per il framing CRC dei feature report Sony e i comandi di test del firmware che PadForge inoltra dal pad virtuale a quello fisico. MIT.</value></data>
+  <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>Riferimento audio Bluetooth del DualShock 4 di nefarius: framing dei report per lo stream dell'altoparlante DS4 di PadForge. L'encoder SBC è un'implementazione C# originale dalla specifica Bluetooth A2DP. Con documentazione del protocollo dal ds4mac di khallmark. MIT.</value></data>
 </root>

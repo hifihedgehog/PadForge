@@ -1733,4 +1733,6 @@
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>将镜像、镜像来源和主音量重置为默认值</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai（daidr）开发的浏览器版 DualSense 测试套件。Sony 功能报告 CRC 帧格式以及 PadForge 从虚拟手柄转发到实体手柄的固件测试命令的参考。MIT。</value></data>
+  <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefarius 的 DualShock 4 蓝牙音频参考：PadForge DS4 扬声器流的报告帧格式。SBC 编码器是依据蓝牙 A2DP 规范的原创 C# 实现。协议文档来自 khallmark 的 ds4mac。MIT。</value></data>
 </root>

@@ -455,7 +455,7 @@ namespace PadForge.Common.Input
                     // this only resyncs on a genuine stall (cursor invalid, or
                     // ran past the live edge, or fell a quarter-second behind).
                     const int CatastropheLag = 12000; // 250 ms @ 48 kHz
-                    const int ResyncCushion = 2160;    // 45 ms (== BtTargetLag)
+                    const int ResyncCushion = 960;     // 20 ms (== BtTargetLag)
                     lock (cap.Ring)
                     {
                         long avail = cap.Write;
@@ -909,7 +909,10 @@ namespace PadForge.Common.Input
                     var feedFormat = nativeOk ? mix : WaveFormat.CreateIeeeFloatWaveFormat(Rate, 2);
                     int channels = feedFormat.Channels;
                     var feed = new UsbFrameProvider(s.Source, feedFormat);
-                    var player = new WasapiOut(match, AudioClientShareMode.Shared, true, 60);
+                    // 30 ms event-driven buffer — on USB this buffer sits in
+                    // BOTH the macro and mirror paths, so halving it from 60
+                    // tightens everything the pad plays.
+                    var player = new WasapiOut(match, AudioClientShareMode.Shared, true, 30);
                     player.Init(feed);
                     player.Play();
                     bool committed = false;
@@ -1115,8 +1118,14 @@ namespace PadForge.Common.Input
                 var opus = new byte[Ds5OpusBytes + 16];
                 var report = new byte[Ds5BtReportSize];
                 const double CadenceMs = 10.0 + 2.0 / 3.0;
-                const int BtTargetLag = 2160;         // 45 ms ring cushion @ 48 kHz
-                const int LagDeadband = 720;          // ±15 ms before trimming
+                // 20 ms cushion: just enough to absorb WASAPI loopback's
+                // ~10 ms bursty delivery, bringing the mirror within ~15 ms
+                // of the macro path (owner request 2026-06-12). The original
+                // 45 ms was chosen mid-dropout-war, before the async write
+                // pool / high-res timer / skip-not-burst fixes removed the
+                // sender-side jitter it was also covering for.
+                const int BtTargetLag = 960;          // 20 ms ring cushion @ 48 kHz
+                const int LagDeadband = 240;          // ±5 ms before trimming
                 long cadTicks = (long)(CadenceMs * TimeSpan.TicksPerMillisecond);
                 long next = DateTime.UtcNow.Ticks + cadTicks;
                 var me = Thread.CurrentThread;

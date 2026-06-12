@@ -1031,15 +1031,22 @@ namespace PadForge.Common.Input
         }
 
         // ─────────────────────────────────────────────
-        //  BT audio frame stream (DSY-v2 HapticTimerThread port)
+        //  BT audio frame streams — one shared 10.667 ms tick drives two
+        //  per-device lanes: DualSense (Opus over report 0x35) and
+        //  DualShock 4 (SBC over reports 0x17/0x14). Constants are
+        //  prefixed by lane; plain Bt* names are shared infrastructure.
         // ─────────────────────────────────────────────
 
-        private const int Ds5OpusFrameSamples = 480;    // Opus frame samples per channel
-        private const int BtPullFrames = 512;      // input frames consumed per ~10.667 ms tick (512 × 93.75 = 48 kHz)
-        private const int Ds5OpusBytes = 200;       // hard-CBR frame size (160 kbps)
-        private const int Ds5BtReportSize = 334;      // report 0x35 wire size
-        private static byte _ds5PktCounter;         // 0x11 header rolling counter
-        private static int _ds5Seq;                 // report seq tag (byte 1 high nibble)
+        // Shared tick: input frames consumed per ~10.667 ms (512 × 93.75 = 48 kHz).
+        private const int BtPullFrames = 512;
+
+        // DualSense: one Opus frame per tick in a report 0x35, hard CBR so
+        // every frame fills the 0x13 speaker-lane slot exactly.
+        private const int Ds5OpusFrameSamples = 480;   // Opus frame samples per channel
+        private const int Ds5OpusBytes = 200;          // hard-CBR frame size (160 kbps)
+        private const int Ds5BtReportSize = 334;       // report 0x35 wire size
+        private static byte _ds5PktCounter;            // 0x11 header rolling counter
+        private static int _ds5Seq;                    // report seq tag (byte 1 high nibble)
 
         // DualShock 4 BT audio: SBC frames over output report 0x17
         // (462 bytes, 4 frames). Layout per DS4AudioStreamer
@@ -1087,17 +1094,22 @@ namespace PadForge.Common.Input
             IntPtr hrTimer = NativeMethods.CreateHighResTimer();
             try
             {
-                // The firmware contract, established by A/B/C music experiment
-                // on hardware (issue #83): exactly ONE report per ~10.667 ms
-                // tick, never bursts — faster delivery or back-to-back
-                // catch-up frames overflow the pad's shallow receive buffer
-                // and it drops audio (the cutouts/garble). Each frame is a
-                // 480-sample Opus frame, but real time advances 512 samples
-                // per tick, so every tick consumes 512 input frames and
-                // time-compresses them 512→480 (16:15): the source is
-                // consumed at exactly 48 kHz and the pitch is exact. (Plain
-                // 480-per-tick — the awalol baseline — underfeeds 6 % and
-                // plays audibly flat; strict 10.000 ms delivery cuts out.)
+                // The DUALSENSE firmware contract, established by A/B/C music
+                // experiment on hardware (issue #83): exactly ONE report per
+                // ~10.667 ms tick, never bursts — faster delivery or
+                // back-to-back catch-up frames overflow the pad's shallow
+                // receive buffer and it drops audio (the cutouts/garble).
+                // Each frame is a 480-sample Opus frame, but real time
+                // advances 512 samples per tick, so every tick consumes 512
+                // input frames and time-compresses them 512→480 (16:15): the
+                // source is consumed at exactly 48 kHz and the pitch is
+                // exact. (Plain 480-per-tick — the awalol baseline —
+                // underfeeds 6 % and plays audibly flat; strict 10.000 ms
+                // delivery cuts out.)
+                //
+                // The DUALSHOCK 4 lane shares only the tick: its cadence is
+                // availability-driven with bursts allowed (see Ds4BtTick) —
+                // the DS5 one-report-per-tick rule is NOT a DS4 fact.
                 var pull = new float[(BtPullFrames + 8) * 2];
                 var frame = new float[Ds5OpusFrameSamples * 2];
                 var opus = new byte[Ds5OpusBytes + 16];

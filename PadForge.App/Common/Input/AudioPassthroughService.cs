@@ -198,14 +198,18 @@ namespace PadForge.Common.Input
                     if (NativeMethods.WaitForSingleObject(_ev[s], 0) != 0)
                         return false; // oldest write still in flight — saturated
 
-                    Buffer.BlockCopy(report, 0, _buf[s], 0, _buf[s].Length);
+                    // Write exactly the report's length — the DS4 lane sends
+                    // both 462-byte 0x17 and 270-byte 0x14 reports through a
+                    // pool sized for the larger one.
+                    int len = Math.Min(report.Length, _buf[s].Length);
+                    Buffer.BlockCopy(report, 0, _buf[s], 0, len);
                     NativeMethods.ResetEvent(_ev[s]);
                     for (int o = 0; o < OverlappedSize - 8; o += 8)
                         Marshal.WriteInt64(_ol[s], o, 0);
                     Marshal.WriteIntPtr(_ol[s], 24, _ev[s]);
 
                     if (!NativeMethods.WriteFileRaw(handle, _pin[s].AddrOfPinnedObject(),
-                            (uint)_buf[s].Length, IntPtr.Zero, _ol[s]))
+                            (uint)len, IntPtr.Zero, _ol[s]))
                     {
                         if (Marshal.GetLastWin32Error() != 997 /*ERROR_IO_PENDING*/)
                         {
@@ -1043,9 +1047,11 @@ namespace PadForge.Common.Input
         // [0]=0x17 [1]=0x40 [2]=0xA2 [3..4]=u16 LE frame counter
         // [5]=audio target (0x02 speaker / 0x24 headset) [6..]=SBC frames
         // [458..461]=CRC32 (0xA2-seeded, same as every Sony BT report).
-        private const int Ds4BtReportSize = 462;
+        private const int Ds4BtReportSize = 462;       // report 0x17, 4 SBC frames
+        private const int Ds4SmallReportSize = 270;    // report 0x14, 2 SBC frames
         private const int Ds4ControlReportSize = 78;   // report 0x11
         private const int Ds4FramesPerReport = 4;
+        private const int Ds4MinBufferedFrames = 4;    // wake threshold (ds4mac §12.6)
         private const int Ds4FrameQueueCap = 12;       // 48 ms of audio
         private const double Ds4ResampleStep = 1.5;    // 48 kHz → 32 kHz
 
@@ -1283,33 +1289,47 @@ namespace PadForge.Common.Input
                 s.Ds4PendingCount -= consumed;
             }
 
-            if (s.Ds4Frames.Count < Ds4FramesPerReport) return;
-
-            // Report 0x17: 4 SBC frames, frame counter += 4, speaker target.
-            var report = new byte[Ds4BtReportSize];
-            report[0] = 0x17;
-            report[1] = 0x40;
-            report[2] = 0xA2;
-            report[3] = (byte)(s.Ds4FrameCounter & 0xFF);
-            report[4] = (byte)(s.Ds4FrameCounter >> 8);
-            report[5] = 0x02;   // internal speaker (0x24 = headset jack)
-            int o2 = 6;
-            for (int i = 0; i < Ds4FramesPerReport; i++)
+            // Reference cadence (DS4AudioStreamer HidAudioRouterWorker._worker,
+            // corroborated by ds4mac §12.6-12.7): wake at ≥ 4 buffered frames,
+            // then drain while ≥ 2 remain — 4-frame 0x17 preferred, 2-frame
+            // 0x14 fallback. Post-stall bursts are the reference's proven
+            // recovery; the DS4 codec resynchronizes via the frame counter.
+            // (The DS5's one-report-per-tick contract is a DS5 finding and
+            // deliberately NOT projected here.)
+            if (s.Ds4Frames.Count < Ds4MinBufferedFrames) return;
+            while (s.Ds4Frames.Count >= 2)
             {
-                var f = s.Ds4Frames.Dequeue();
-                Array.Copy(f, 0, report, o2, f.Length);
-                o2 += f.Length;
-            }
-            s.Ds4FrameCounter += Ds4FramesPerReport;
-            uint crc = Crc32(report, Ds4BtReportSize - 4);
-            report[Ds4BtReportSize - 4] = (byte)crc;
-            report[Ds4BtReportSize - 3] = (byte)(crc >> 8);
-            report[Ds4BtReportSize - 2] = (byte)(crc >> 16);
-            report[Ds4BtReportSize - 1] = (byte)(crc >> 24);
+                int frames = s.Ds4Frames.Count >= Ds4FramesPerReport ? Ds4FramesPerReport : 2;
+                int size = frames == Ds4FramesPerReport ? Ds4BtReportSize : Ds4SmallReportSize;
+                var report = new byte[size];
+                report[0] = frames == Ds4FramesPerReport ? (byte)0x17 : (byte)0x14;
+                report[1] = 0x40;
+                report[2] = 0xA2;
+                report[3] = (byte)(s.Ds4FrameCounter & 0xFF);
+                report[4] = (byte)(s.Ds4FrameCounter >> 8);
+                report[5] = 0x02;   // internal speaker (0x24 = headset jack)
+                int o2 = 6;
+                for (int i = 0; i < frames; i++)
+                {
+                    var f = s.Ds4Frames.Dequeue();
+                    Array.Copy(f, 0, report, o2, f.Length);
+                    o2 += f.Length;
+                }
+                s.Ds4FrameCounter += (ushort)frames;
+                uint crc = Crc32(report, size - 4);
+                report[size - 4] = (byte)crc;
+                report[size - 3] = (byte)(crc >> 8);
+                report[size - 2] = (byte)(crc >> 16);
+                report[size - 1] = (byte)(crc >> 24);
 
-            bool hardFail = true;
-            bool sent = s.Tx != null && s.Tx.TrySend(s.BtHandle, report, out hardFail);
-            if (!sent && hardFail) s.TransportFailed = true;
+                bool hardFail = true;   // no pool == hard failure
+                bool sent = s.Tx != null && s.Tx.TrySend(s.BtHandle, report, out hardFail);
+                if (!sent)
+                {
+                    if (hardFail) s.TransportFailed = true;
+                    break;   // pool saturated: leave frames queued for next tick
+                }
+            }
         }
 
         /// <summary>Single synchronous overlapped write for one-shot control

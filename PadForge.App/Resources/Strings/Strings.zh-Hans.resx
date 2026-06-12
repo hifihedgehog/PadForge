@@ -1750,4 +1750,5 @@
   <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>从列表中移除所选声音包。文件本身不会被删除。</value></data>
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>尚未添加声音包。</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>选择要放入声音包的声音文件</value></data>
+  <data name="DeviceType_Midi" xml:space="preserve"><value>MIDI 控制器</value></data>
 </root>

@@ -5511,6 +5511,7 @@ namespace PadForge.Services
                 InputDeviceType.Mouse => "Mouse",
                 InputDeviceType.Keyboard => "Keyboard",
                 InputDeviceType.Touchpad => "Touchpad",
+                InputDeviceType.Midi => "Midi",
                 _ => "Device"
             };
 
@@ -5523,6 +5524,12 @@ namespace PadForge.Services
         /// Populates the MappedDevices collection with ALL devices assigned to each slot.
         /// Called after the device list changes or after a device is assigned to a slot.
         /// </summary>
+        /// <summary>
+        /// Tears down all MIDI input connections and suppresses their
+        /// re-enumeration. Called before uninstalling Windows MIDI Services.
+        /// </summary>
+        public void ShutdownMidiInputs() => _inputManager?.ShutdownMidiInputs();
+
         /// <summary>
         /// Forces a full re-sync of the device list UI from the current
         /// SettingsManager.UserDevices state. Called by the Refresh button.

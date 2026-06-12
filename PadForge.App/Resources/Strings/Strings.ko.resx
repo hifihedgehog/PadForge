@@ -1750,4 +1750,5 @@
   <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>선택한 패키지를 목록에서 제거합니다. 파일 자체는 삭제되지 않습니다.</value></data>
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>추가된 사운드 패키지가 없습니다.</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>패키지에 넣을 사운드 파일 선택</value></data>
+  <data name="DeviceType_Midi" xml:space="preserve"><value>MIDI 컨트롤러</value></data>
 </root>

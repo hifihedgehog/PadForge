@@ -315,6 +315,9 @@ namespace PadForge.Common.Input
                 changed = true;
             }
 
+            // --- Phase 1e: MIDI input endpoints (issue #128) ---
+            changed |= UpdateMidiInputDevices();
+
             // --- Phase 2: Detect disconnected SDL devices (debounced) ---
             //
             // Signals that indicate the device might be gone:
@@ -737,6 +740,141 @@ namespace PadForge.Common.Input
                 finally
                 {
                     wrapper?.Dispose();
+                }
+            }
+
+            return changed;
+        }
+
+        // MIDI input endpoints (Phase 1e, issue #128). The WinRT device
+        // query runs on a background task; the polling thread consumes the
+        // latest cached snapshot, mirroring the Raw Input keyboard/mouse
+        // enumeration above.
+        private readonly Dictionary<string, MidiInputDevice> _openedMidiInputs =
+            new Dictionary<string, MidiInputDevice>(StringComparer.OrdinalIgnoreCase);
+        private readonly object _midiInputsLock = new object();
+        private volatile List<(string Id, string Name)> _cachedMidiEndpoints;
+        private volatile bool _midiEnumRunning;
+        private volatile bool _midiInputsSuppressed;
+
+        /// <summary>
+        /// Tears down every open MIDI input connection and the shared input
+        /// session, and suppresses Phase 1e until app restart. Called before
+        /// uninstalling Windows MIDI Services so no in-process runtime
+        /// objects are alive during the uninstall.
+        /// </summary>
+        public void ShutdownMidiInputs()
+        {
+            _midiInputsSuppressed = true;
+            _cachedMidiEndpoints = null;
+            lock (_midiInputsLock)
+            {
+                foreach (var kvp in _openedMidiInputs)
+                {
+                    var ud = FindOnlineDeviceByInstanceGuid(kvp.Value.InstanceGuid);
+                    if (ud != null)
+                    {
+                        ud.IsOnline = false;
+                        ud.Device = null;
+                    }
+                    kvp.Value.Dispose();
+                }
+                _openedMidiInputs.Clear();
+            }
+            MidiInputRuntime.Shutdown();
+        }
+
+        /// <summary>
+        /// Phase 1e: registers MIDI input endpoints as input devices and
+        /// marks vanished ones offline. PadForge's own MIDI virtual
+        /// controller endpoints are deliberately included — assigning one
+        /// as an input to another slot is the no-hardware loopback path.
+        /// </summary>
+        private bool UpdateMidiInputDevices()
+        {
+            if (_midiInputsSuppressed)
+                return false;
+
+            if (!_midiEnumRunning)
+            {
+                _midiEnumRunning = true;
+                Task.Run(() =>
+                {
+                    try { _cachedMidiEndpoints = MidiInputRuntime.EnumerateEndpoints(); }
+                    catch { }
+                    finally { _midiEnumRunning = false; }
+                });
+            }
+
+            var endpoints = _cachedMidiEndpoints;
+            if (endpoints == null)
+                return false;
+
+            bool changed = false;
+            var current = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            // The lock guards against ShutdownMidiInputs (UI thread, MIDI
+            // services uninstall) racing this polling-thread sweep.
+            lock (_midiInputsLock)
+            {
+                foreach (var (id, name) in endpoints)
+                {
+                    current.Add(id);
+
+                    if (_openedMidiInputs.TryGetValue(id, out var existing))
+                    {
+                        // If the user removed this device from the Devices page,
+                        // the connection is still tracked but the UserDevice is
+                        // gone. Reset tracking so it gets recreated. (Same
+                        // pattern as the PTP phase above.)
+                        if (FindOnlineDeviceByInstanceGuid(existing.InstanceGuid) != null)
+                            continue;
+                        existing.Dispose();
+                        _openedMidiInputs.Remove(id);
+                    }
+
+                    try
+                    {
+                        var dev = new MidiInputDevice(id, name);
+                        if (!dev.Open())
+                        {
+                            dev.Dispose();
+                            continue;
+                        }
+
+                        UserDevice ud = FindOrCreateUserDevice(dev.InstanceGuid, dev.ProductGuid);
+                        ud.LoadFromExternalDevice(dev);
+                        ud.IsOnline = true;
+                        _openedMidiInputs[id] = dev;
+                        changed = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        RaiseError($"Error opening MIDI endpoint '{name}'", ex);
+                    }
+                }
+
+                // Endpoints that vanished since the last snapshot.
+                List<string> gone = null;
+                foreach (var kvp in _openedMidiInputs)
+                    if (!current.Contains(kvp.Key))
+                        (gone ??= new List<string>()).Add(kvp.Key);
+
+                if (gone != null)
+                {
+                    foreach (var id in gone)
+                    {
+                        var dev = _openedMidiInputs[id];
+                        var ud = FindOnlineDeviceByInstanceGuid(dev.InstanceGuid);
+                        if (ud != null)
+                        {
+                            ud.IsOnline = false;
+                            ud.Device = null;
+                        }
+                        dev.Dispose();
+                        _openedMidiInputs.Remove(id);
+                        changed = true;
+                    }
                 }
             }
 

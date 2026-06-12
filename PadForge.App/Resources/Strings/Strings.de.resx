@@ -1750,4 +1750,5 @@
   <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>Das ausgewählte Paket aus der Liste entfernen. Die Datei wird nicht gelöscht.</value></data>
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>Keine Soundpakete hinzugefügt.</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Sounddateien für das Paket auswählen</value></data>
+  <data name="DeviceType_Midi" xml:space="preserve"><value>MIDI-Controller</value></data>
 </root>

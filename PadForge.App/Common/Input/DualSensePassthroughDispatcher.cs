@@ -196,12 +196,17 @@ namespace PadForge.Common.Input
                 // Sony vendor audio test (deviceId 6 = AUDIO, actionId 2 =
                 // WAVEOUT_CTRL, param0 = on/off): while the firmware
                 // waveout runs, the tester owns the pad's audio plane —
-                // see AudioPassthroughService.SetVendorAudioTest.
+                // see AudioPassthroughService.SetVendorAudioTest. The
+                // routing byte is sticky, so the effects dispatcher must
+                // rewrite it NOW (restore on start, re-assert on end);
+                // its timer only runs for lightbar animation, hence the
+                // explicit dispatch nudge.
                 if (effect.Length >= 3 && effect.Buffer[0] == 6 && effect.Buffer[1] == 2)
                 {
                     bool testOn = effect.Buffer[2] != 0;
                     foreach (var t in targets)
                         AudioPassthroughService.SetVendorAudioTest(t.DeviceGuid, testOn);
+                    UserEffectsDispatcher.NotifySoundRoutingChanged(_padIndex);
                 }
 
                 byte[] report = new byte[effect.Length + 1];

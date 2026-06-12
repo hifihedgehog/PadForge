@@ -597,6 +597,7 @@ namespace PadForge.ViewModels
                     _deleteProfileCommand?.NotifyCanExecuteChanged();
                     _editProfileCommand?.NotifyCanExecuteChanged();
                     _loadProfileCommand?.NotifyCanExecuteChanged();
+                    _exportProfileCommand?.NotifyCanExecuteChanged();
                 }
             }
         }
@@ -662,11 +663,12 @@ namespace PadForge.ViewModels
 
         private RelayCommand _exportProfileCommand;
 
-        /// <summary>Command to export the selected profile as a .pfprofile.</summary>
+        /// <summary>Command to export the selected profile as a .pfprofile.
+        /// The Default entry exports a snapshot of the current settings.</summary>
         public RelayCommand ExportProfileCommand =>
             _exportProfileCommand ??= new RelayCommand(
                 () => ExportProfileRequested?.Invoke(this, EventArgs.Empty),
-                () => _selectedProfile != null && !_selectedProfile.IsDefault);
+                () => _selectedProfile != null);
 
         private RelayCommand _importProfileCommand;
 

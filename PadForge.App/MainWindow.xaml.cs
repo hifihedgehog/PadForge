@@ -3981,8 +3981,21 @@ namespace PadForge
         {
             var selected = _viewModel.Settings.SelectedProfile;
             if (selected == null) return;
-            var profile = SettingsManager.Profiles.Find(p => p.Id == selected.Id);
-            if (profile == null) return;
+
+            // The Default entry isn't a stored ProfileData row — export a
+            // snapshot of the current settings instead.
+            ProfileData profile;
+            if (selected.IsDefault)
+            {
+                profile = _inputService.SnapshotCurrentProfile();
+                if (profile == null) return;
+                profile.Name = selected.Name;
+            }
+            else
+            {
+                profile = SettingsManager.Profiles.Find(p => p.Id == selected.Id);
+                if (profile == null) return;
+            }
 
             var dlg = new Microsoft.Win32.SaveFileDialog
             {

@@ -1741,4 +1741,13 @@
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>프로필 "{0}"을(를) 가져왔습니다(사운드 패키지 {1}개 등록).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>읽을 수 있는 PadForge 프로필 파일이 아닙니다.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>{0}에서 사운드 선택</value></data>
+  <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>사운드 패키지</value></data>
+  <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>사운드 패키지는 확장자가 .pfsounds인 하나의 ZIP 파일에 담긴 사운드 모음입니다. 여기에 추가하면 모든 사운드 매크로에서 그 안의 사운드를 선택할 수 있습니다. PadForge는 파일에서 직접 읽으며 압축을 풀지 않습니다. 패키지를 PadForge.exe 옆에 두면 폴더째 이동할 수 있습니다.</value></data>
+  <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>패키지 추가…</value></data>
+  <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>기존 .pfsounds 파일을 목록에 추가합니다.</value></data>
+  <data name="Pad_Audio_Packages_Create" xml:space="preserve"><value>패키지 만들기…</value></data>
+  <data name="Pad_Audio_Packages_Create_Tooltip" xml:space="preserve"><value>사운드 파일을 선택해 새 .pfsounds 패키지로 저장합니다.</value></data>
+  <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>선택한 패키지를 목록에서 제거합니다. 파일 자체는 삭제되지 않습니다.</value></data>
+  <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>추가된 사운드 패키지가 없습니다.</value></data>
+  <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>패키지에 넣을 사운드 파일 선택</value></data>
 </root>

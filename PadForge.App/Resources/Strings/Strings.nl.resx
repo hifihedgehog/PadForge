@@ -1761,4 +1761,13 @@
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>Profiel "{0}" geïmporteerd ({1} geluidspakket(ten) geregistreerd).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Het bestand is geen leesbaar PadForge-profiel.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Kies een geluid uit {0}</value></data>
+  <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Geluidspakketten</value></data>
+  <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Een geluidspakket is één ZIP-bestand met geluiden, met de extensie .pfsounds. Voeg er hier een toe en kies de geluiden vervolgens in elke geluidsmacro. PadForge leest rechtstreeks uit het bestand en pakt het nooit uit. Bewaar pakketten naast PadForge.exe zodat alles draagbaar blijft.</value></data>
+  <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Pakket toevoegen…</value></data>
+  <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Een bestaand .pfsounds-bestand aan de lijst toevoegen.</value></data>
+  <data name="Pad_Audio_Packages_Create" xml:space="preserve"><value>Pakket maken…</value></data>
+  <data name="Pad_Audio_Packages_Create_Tooltip" xml:space="preserve"><value>Geluidsbestanden kiezen en opslaan als nieuw .pfsounds-pakket.</value></data>
+  <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>Het geselecteerde pakket uit de lijst verwijderen. Het bestand wordt niet verwijderd.</value></data>
+  <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>Geen geluidspakketten toegevoegd.</value></data>
+  <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Kies de geluidsbestanden voor het pakket</value></data>
 </root>

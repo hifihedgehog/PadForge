@@ -60,6 +60,7 @@ namespace PadForge.Views
         {
             InitializeComponent();
             Loaded += PadPage_Loaded;
+            Unloaded += PadPage_Unloaded;
             DataContextChanged += OnDataContextChanged;
         }
 
@@ -71,6 +72,13 @@ namespace PadForge.Views
             SyncMidiConfigBar();
             SyncLightbarHexBox();
             SyncAudioHexBoxes();
+            PadForge.Common.SoundPackageManager.RegistryChanged += OnSoundPackageRegistryChanged;
+            RefreshSoundPackages();
+        }
+
+        private void PadPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            PadForge.Common.SoundPackageManager.RegistryChanged -= OnSoundPackageRegistryChanged;
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -658,6 +666,69 @@ namespace PadForge.Views
             ok.Click += (_, _) => { win.DialogResult = true; };
             list.MouseDoubleClick += (_, _) => { if (list.SelectedItem != null) win.DialogResult = true; };
             return win.ShowDialog() == true ? list.SelectedItem as string : null;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Sound Packages card
+        // ─────────────────────────────────────────────
+
+        private void OnSoundPackageRegistryChanged(object sender, EventArgs e)
+        {
+            // The registry can change from non-UI code paths (profile import).
+            Dispatcher.BeginInvoke(new Action(RefreshSoundPackages));
+        }
+
+        private void RefreshSoundPackages()
+        {
+            var packages = PadForge.Common.SoundPackageManager.Packages;
+            SoundPackagesList.ItemsSource = packages;
+            SoundPackagesEmptyText.Visibility = packages.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void PackageAdd_Click(object sender, RoutedEventArgs e)
+        {
+            string ext = PadForge.Common.SoundPackageManager.FileExtension;
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = PadForge.Resources.Strings.Strings.Instance.Pad_Audio_Packages_Add,
+                Filter = $"PadForge sound packages (*{ext})|*{ext}|All files|*.*",
+                Multiselect = true,
+                CheckFileExists = true,
+            };
+            if (dlg.ShowDialog() != true) return;
+            foreach (string file in dlg.FileNames)
+                PadForge.Common.SoundPackageManager.Register(file);
+        }
+
+        private void PackageCreate_Click(object sender, RoutedEventArgs e)
+        {
+            var pick = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = PadForge.Resources.Strings.Strings.Instance.Pad_Audio_Packages_PickSounds,
+                Filter = "Audio files|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|All files|*.*",
+                Multiselect = true,
+                CheckFileExists = true,
+            };
+            if (pick.ShowDialog() != true || pick.FileNames.Length == 0) return;
+
+            string ext = PadForge.Common.SoundPackageManager.FileExtension;
+            var save = new Microsoft.Win32.SaveFileDialog
+            {
+                Title = PadForge.Resources.Strings.Strings.Instance.Pad_Audio_Packages_Create,
+                FileName = "Sounds" + ext,
+                Filter = $"PadForge sound packages (*{ext})|*{ext}",
+            };
+            if (save.ShowDialog() != true) return;
+
+            string displayName = System.IO.Path.GetFileNameWithoutExtension(save.FileName);
+            if (PadForge.Common.SoundPackageManager.ExportPackage(save.FileName, displayName, pick.FileNames))
+                PadForge.Common.SoundPackageManager.Register(save.FileName);
+        }
+
+        private void PackageRemove_Click(object sender, RoutedEventArgs e)
+        {
+            if (SoundPackagesList.SelectedItem is PadForge.Common.SoundPackageManager.PackageRef pkg)
+                PadForge.Common.SoundPackageManager.Unregister(pkg.Name);
         }
 
         /// <summary>Preview the action's sound through the pad's configured

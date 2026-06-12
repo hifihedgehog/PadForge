@@ -6531,6 +6531,47 @@
                                 </ItemsControl>
                             </StackPanel>
                         </Border>
+
+                        <!-- Sound Packages card -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE8B7;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Audio_Packages_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Audio_Packages_Desc, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <Button Content="{Binding Pad_Audio_Packages_Add, Source={x:Static strings:Strings.Instance}}"
+                                            Click="PackageAdd_Click" Padding="10,4"
+                                            ToolTip="{Binding Pad_Audio_Packages_Add_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Audio_Packages_Create, Source={x:Static strings:Strings.Instance}}"
+                                            Click="PackageCreate_Click" Padding="10,4" Margin="6,0,0,0"
+                                            ToolTip="{Binding Pad_Audio_Packages_Create_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"
+                                            Click="PackageRemove_Click" Padding="10,4" Margin="6,0,0,0"
+                                            ToolTip="{Binding Pad_Audio_Packages_Remove_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock x:Name="SoundPackagesEmptyText"
+                                           Text="{Binding Pad_Audio_Packages_Empty, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+                                <ListBox x:Name="SoundPackagesList" MaxHeight="170">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Margin="0,2">
+                                                <TextBlock Text="&#xE8D6;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                                           FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding Path}" VerticalAlignment="Center"
+                                                           Margin="10,0,0,0" Opacity="0.6" FontSize="12"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

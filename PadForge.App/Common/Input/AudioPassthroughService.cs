@@ -589,13 +589,31 @@ namespace PadForge.Common.Input
 
         /// <summary>Marks a forwarded vendor audio test active/inactive on
         /// a physical pad. Expires after 60 s on its own in case the
-        /// test's off command never arrives (closed browser tab).</summary>
+        /// test's off command never arrives (closed browser tab).
+        ///
+        /// Suspending the asserts is NOT enough: the routing byte is
+        /// sticky in firmware. Our mirror holds output_path_select = 3
+        /// (X_X_R — headphone muted, speaker taps the shared bus's R
+        /// channel, per InputPlumber's SetState struct docs), and the
+        /// firmware waveout injects into that same bus, so a headphone
+        /// test audibly bled from the speaker until the routing was
+        /// actively restored. Queue the existing speaker-path-clear
+        /// one-shot (audioControlFlags = 0 → output_path L_R_X) so the
+        /// effects dispatcher rewrites the routing before the tone
+        /// starts; the test-end re-assert brings the mirror back.</summary>
         public static void SetVendorAudioTest(Guid deviceGuid, bool active)
         {
             lock (_lock)
             {
-                if (active) _vendorAudioTests[deviceGuid] = Environment.TickCount64 + 60_000;
-                else _vendorAudioTests.Remove(deviceGuid);
+                if (active)
+                {
+                    _vendorAudioTests[deviceGuid] = Environment.TickCount64 + 60_000;
+                    _speakerPathCleared.Add(deviceGuid);
+                }
+                else
+                {
+                    _vendorAudioTests.Remove(deviceGuid);
+                }
             }
         }
 

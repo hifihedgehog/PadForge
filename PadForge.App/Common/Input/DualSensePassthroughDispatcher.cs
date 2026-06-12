@@ -231,13 +231,16 @@ namespace PadForge.Common.Input
                         if (testOn && _maskedAudioStash.TryGetValue(t.DeviceGuid, out var stash))
                         {
                             var replay = new byte[StandardPayloadSize];
-                            replay[0] = stash[0];   // valid_flag0 audio bits
-                            replay[1] = stash[1];   // valid_flag1 audio_flags2 bit
-                            replay[4] = stash[2];   // headphone volume
-                            replay[5] = stash[3];   // speaker volume
-                            replay[6] = stash[4];   // mic volume
-                            replay[7] = stash[5];   // audio_flags
-                            replay[37] = stash[6];  // audio_flags2
+                            lock (stash)
+                            {
+                                replay[0] = stash[0];   // valid_flag0 audio bits (union)
+                                replay[1] = stash[1];   // valid_flag1 audio_flags2 bit
+                                replay[4] = stash[2];   // headphone volume
+                                replay[5] = stash[3];   // speaker volume
+                                replay[6] = stash[4];   // mic volume
+                                replay[7] = stash[5];   // audio_flags
+                                replay[37] = stash[6];  // audio_flags2
+                            }
                             try { SDL_SendGamepadEffect(t.GamepadHandle, replay, 0, StandardPayloadSize); }
                             catch { }
                         }
@@ -291,15 +294,28 @@ namespace PadForge.Common.Input
                     // intended audio state.
                     if (hasAudioBits)
                     {
-                        var stash = new byte[7];
-                        stash[0] = (byte)(effect.Buffer[0] & 0xF0);
-                        stash[1] = (byte)(effect.Buffer[1] & 0x80);
-                        stash[2] = effect.Buffer[4];
-                        stash[3] = effect.Buffer[5];
-                        stash[4] = effect.Buffer[6];
-                        stash[5] = effect.Buffer[7];
-                        stash[6] = effect.Length > 37 ? effect.Buffer[37] : (byte)0;
-                        _maskedAudioStash[target.DeviceGuid] = stash;
+                        // ACCUMULATE, don't overwrite: the reference tester
+                        // splits one volume update into two packets (vf0 =
+                        // 0xA0 carrying the speaker volume, then vf0 = 0x90
+                        // carrying the headphone volume). Overwriting kept
+                        // only the last packet's valid bits, so the replay
+                        // shipped spkVol=0 WITHOUT its valid bit and the
+                        // firmware ignored the mute — the cold-start bleed.
+                        // Each field updates only when its valid bit is set;
+                        // the replay carries the union.
+                        var stash = _maskedAudioStash.GetOrAdd(target.DeviceGuid, _ => new byte[7]);
+                        lock (stash)
+                        {
+                            byte vf0 = (byte)(effect.Buffer[0] & 0xF0);
+                            byte vf1 = (byte)(effect.Buffer[1] & 0x80);
+                            stash[0] |= vf0;
+                            stash[1] |= vf1;
+                            if ((vf0 & 0x10) != 0) stash[2] = effect.Buffer[4]; // headphone vol
+                            if ((vf0 & 0x20) != 0) stash[3] = effect.Buffer[5]; // speaker vol
+                            if ((vf0 & 0x40) != 0) stash[4] = effect.Buffer[6]; // mic vol
+                            if ((vf0 & 0x80) != 0) stash[5] = effect.Buffer[7]; // audio_flags
+                            if (vf1 != 0 && effect.Length > 37) stash[6] = effect.Buffer[37]; // audio_flags2
+                        }
                     }
 
                     if (sanitized == null)

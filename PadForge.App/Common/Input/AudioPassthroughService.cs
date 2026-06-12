@@ -971,18 +971,6 @@ namespace PadForge.Common.Input
             return ud;
         }
 
-        private static bool IsAssignedToSlot(Guid guid, int slot)
-        {
-            var settings = SettingsManager.UserSettings;
-            if (settings == null) return false;
-            lock (settings.SyncRoot)
-            {
-                foreach (var us in settings.Items)
-                    if (us != null && us.InstanceGuid == guid && us.MapTo == slot) return true;
-            }
-            return false;
-        }
-
         private static (bool On, string MirrorSource) ReadPassthroughConfig(int slot, Guid device)
         {
             try
@@ -1138,46 +1126,60 @@ namespace PadForge.Common.Input
 
                     foreach (var s in btSinks)
                     {
-                        // Mirror drift trim: the ring is steered to its target
-                        // cushion by consuming a few samples more or fewer per
-                        // tick (±0.8 % momentary rate trim through the same
-                        // 16:15 compressor — inaudible), never by extra or
-                        // skipped reports.
-                        int inFrames = BtPullFrames;
-                        int lag = s.Source.LoopbackLagFrames;
-                        if (lag >= 0)
+                        // Last-resort guard (same role as the DS5 passthrough
+                        // dispatcher's DispatchLoopAsync catch): the sink list
+                        // is a lock-free snapshot, so the worker can detach a
+                        // sink (nulling Tx / Ds4Frames / encoders under _lock)
+                        // mid-tick. Without this catch, that race throws on
+                        // the BT thread and kills ALL BT audio until restart.
+                        // One sink's bad tick now just flags it for rebuild.
+                        try
                         {
-                            if (lag > BtTargetLag + LagDeadband) inFrames += 4;
-                            else if (lag < BtTargetLag - LagDeadband) inFrames -= 4;
+                            // Mirror drift trim: the ring is steered to its target
+                            // cushion by consuming a few samples more or fewer per
+                            // tick (±0.8 % momentary rate trim through the same
+                            // 16:15 compressor — inaudible), never by extra or
+                            // skipped reports.
+                            int inFrames = BtPullFrames;
+                            int lag = s.Source.LoopbackLagFrames;
+                            if (lag >= 0)
+                            {
+                                if (lag > BtTargetLag + LagDeadband) inFrames += 4;
+                                else if (lag < BtTargetLag - LagDeadband) inFrames -= 4;
+                            }
+
+                            s.Source.Read(pull, 0, inFrames * 2);
+
+                            // Idle gate: after 2 s of silence stop sending so the
+                            // pad's radio and our CPU rest; the read above keeps
+                            // the ring cursor live and the activity stamp fresh.
+                            bool audible = Environment.TickCount64 - s.LastAudibleTicks <= 2000;
+                            s.BtStreaming = audible;
+                            if (!audible) continue;
+
+                            if (s.IsDs4)
+                            {
+                                Ds4BtTick(s, pull, inFrames);
+                                continue;
+                            }
+
+                            // 512→480 linear time-compression (pitch-exact).
+                            double step = inFrames / (double)Ds5OpusFrameSamples;
+                            for (int o = 0; o < Ds5OpusFrameSamples; o++)
+                            {
+                                double pos = o * step;
+                                int i0 = (int)pos;
+                                double t = pos - i0;
+                                int i1 = Math.Min(i0 + 1, inFrames - 1);
+                                frame[o * 2] = (float)(pull[i0 * 2] * (1 - t) + pull[i1 * 2] * t);
+                                frame[o * 2 + 1] = (float)(pull[i0 * 2 + 1] * (1 - t) + pull[i1 * 2 + 1] * t);
+                            }
+                            SendDs5BtFrame(s, frame, opus, report);
                         }
-
-                        s.Source.Read(pull, 0, inFrames * 2);
-
-                        // Idle gate: after 2 s of silence stop sending so the
-                        // pad's radio and our CPU rest; the read above keeps
-                        // the ring cursor live and the activity stamp fresh.
-                        bool audible = Environment.TickCount64 - s.LastAudibleTicks <= 2000;
-                        s.BtStreaming = audible;
-                        if (!audible) continue;
-
-                        if (s.IsDs4)
+                        catch
                         {
-                            Ds4BtTick(s, pull, inFrames);
-                            continue;
+                            s.TransportFailed = true;
                         }
-
-                        // 512→480 linear time-compression (pitch-exact).
-                        double step = inFrames / (double)Ds5OpusFrameSamples;
-                        for (int o = 0; o < Ds5OpusFrameSamples; o++)
-                        {
-                            double pos = o * step;
-                            int i0 = (int)pos;
-                            double t = pos - i0;
-                            int i1 = Math.Min(i0 + 1, inFrames - 1);
-                            frame[o * 2] = (float)(pull[i0 * 2] * (1 - t) + pull[i1 * 2] * t);
-                            frame[o * 2 + 1] = (float)(pull[i0 * 2 + 1] * (1 - t) + pull[i1 * 2 + 1] * t);
-                        }
-                        SendDs5BtFrame(s, frame, opus, report);
                     }
 
                     // One tick per cadence on an absolute schedule. Lateness

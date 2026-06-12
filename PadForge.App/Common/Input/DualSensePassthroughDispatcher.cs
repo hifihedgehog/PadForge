@@ -193,17 +193,25 @@ namespace PadForge.Common.Input
             // device path; BT targets get the 0x53-seeded feature CRC.
             if (effect.IsFeature)
             {
-                // Sony vendor audio test (deviceId 6 = AUDIO, actionId 2 =
-                // WAVEOUT_CTRL, param0 = on/off): while the firmware
-                // waveout runs, the tester owns the pad's audio plane —
-                // see AudioPassthroughService.SetVendorAudioTest. The
-                // routing byte is sticky, so the effects dispatcher must
-                // rewrite it NOW (restore on start, re-assert on end);
-                // its timer only runs for lightbar animation, hence the
-                // explicit dispatch nudge.
-                if (effect.Length >= 3 && effect.Buffer[0] == 6 && effect.Buffer[1] == 2)
+                // Sony vendor audio test (deviceId 6 = AUDIO): while the
+                // firmware waveout runs, the tester owns the pad's audio
+                // plane — see AudioPassthroughService.SetVendorAudioTest.
+                // The routing byte is sticky, so the effects dispatcher
+                // must rewrite it NOW (restore on start, re-assert on
+                // end); its timer only runs for lightbar animation, hence
+                // the explicit dispatch nudge.
+                //
+                // Activity STARTS on either the route-config command
+                // (action 4, BUILTIN_MIC_CALIB_DATA_VERIFY — the reference
+                // tester sends it ~20 ms before the tone, which gives the
+                // routing restore a head start over the waveout onset) or
+                // a WAVEOUT_CTRL on (action 2, param != 0). It ENDS only
+                // on WAVEOUT_CTRL off (action 2, param == 0) — or the
+                // 60 s expiry for abandoned tests.
+                if (effect.Length >= 3 && effect.Buffer[0] == 6
+                    && (effect.Buffer[1] == 2 || effect.Buffer[1] == 4))
                 {
-                    bool testOn = effect.Buffer[2] != 0;
+                    bool testOn = effect.Buffer[1] == 4 || effect.Buffer[2] != 0;
                     foreach (var t in targets)
                         AudioPassthroughService.SetVendorAudioTest(t.DeviceGuid, testOn);
                     UserEffectsDispatcher.NotifySoundRoutingChanged(_padIndex);

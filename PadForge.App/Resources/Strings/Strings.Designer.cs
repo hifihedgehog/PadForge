@@ -370,6 +370,7 @@ public class Strings : INotifyPropertyChanged
     public string DeviceType_Mouse => Get("DeviceType_Mouse");
     public string DeviceType_Keyboard => Get("DeviceType_Keyboard");
     public string DeviceType_Touchpad => Get("DeviceType_Touchpad");
+    public string DeviceType_Midi => Get("DeviceType_Midi");
     public string DeviceType_Device => Get("DeviceType_Device");
     public string Devices_AllKeyboardsMerged => Get("Devices_AllKeyboardsMerged");
     public string Devices_AllMiceMerged => Get("Devices_AllMiceMerged");

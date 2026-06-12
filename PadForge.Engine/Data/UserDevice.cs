@@ -427,6 +427,18 @@ namespace PadForge.Engine.Data
         }
 
         /// <summary>
+        /// Populates the device identity and capabilities from any externally
+        /// managed <see cref="ISdlInputDevice"/> implementation the App layer
+        /// registers (MIDI input endpoints and other non-SDL sources).
+        /// </summary>
+        public void LoadFromExternalDevice(ISdlInputDevice wrapper)
+        {
+            if (wrapper == null)
+                throw new ArgumentNullException(nameof(wrapper));
+            LoadFromDevice(wrapper);
+        }
+
+        /// <summary>
         /// Populates the device identity and capabilities from a <see cref="TouchpadOverlayDevice"/>.
         /// </summary>
         public void LoadFromOverlayDevice(TouchpadOverlayDevice wrapper)

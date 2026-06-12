@@ -516,9 +516,12 @@ namespace PadForge
             };
             _viewModel.Settings.UninstallMidiServicesRequested += async (s, e) =>
             {
-                // The uninstall guard prevents this when MIDI slots are active, so the
-                // SDK runtime won't be loaded in-process. Safe to wait for the uninstaller.
-                // Abandon the initializer just in case (e.g. IsAvailable was called elsewhere).
+                // The uninstall guard prevents this when MIDI slots are active, but
+                // MIDI *input* enumeration (issue #128) loads the SDK runtime whenever
+                // services are installed — tear those connections down first.
+                _inputService?.ShutdownMidiInputs();
+                // Abandon the initializer rather than disposing it — Dispose() calls
+                // into the runtime, which crashes if the service is being removed.
                 Common.Input.MidiVirtualController.Shutdown(skipDispose: true);
                 await RunDriverOperationAsync(
                     Strings.Instance.Status_UninstallingMidi, DriverInstaller.UninstallMidiServices, RefreshMidiServicesStatus);
@@ -1739,6 +1742,7 @@ namespace PadForge
             {
                 _recorderService?.Dispose();
                 _inputService?.Dispose();
+                Common.Input.MidiInputRuntime.Shutdown();
                 Common.Input.MidiVirtualController.Shutdown();
             });
 

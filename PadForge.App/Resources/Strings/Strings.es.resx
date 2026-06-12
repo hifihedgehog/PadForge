@@ -1751,4 +1751,13 @@
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>No hay paquetes de sonido añadidos.</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Elija los archivos de sonido para el paquete</value></data>
   <data name="DeviceType_Midi" xml:space="preserve"><value>Controlador MIDI</value></data>
+  <data name="Devices_MidiInput" xml:space="preserve"><value>Entrada MIDI</value></data>
+  <data name="Devices_MidiInputDesc" xml:space="preserve"><value>Qué mensajes MIDI expone este dispositivo para asignar. Las notas se vuelven botones. Cada CC se vuelve un eje más botones + y − para codificadores sin fin.</value></data>
+  <data name="Devices_MidiChannelTooltip" xml:space="preserve"><value>Canal MIDI a escuchar (1-16). 0 = todos los canales.</value></data>
+  <data name="Devices_MidiCcCountTooltip" xml:space="preserve"><value>Cuántos CC se vuelven ejes.</value></data>
+  <data name="Devices_MidiStartCcTooltip" xml:space="preserve"><value>Primer número de CC de la ventana (0-127).</value></data>
+  <data name="Devices_MidiNoteCountTooltip" xml:space="preserve"><value>Cuántas notas se vuelven botones.</value></data>
+  <data name="Devices_MidiStartNoteTooltip" xml:space="preserve"><value>Primer número de nota (0-127, 60 = Do central).</value></data>
+  <data name="Devices_MidiPitchBend" xml:space="preserve"><value>Eje de pitch bend</value></data>
+  <data name="Devices_MidiPitchBendTooltip" xml:space="preserve"><value>Añade un eje de pitch bend después de los ejes CC.</value></data>
 </root>

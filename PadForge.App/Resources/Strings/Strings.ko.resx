@@ -1751,4 +1751,13 @@
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>추가된 사운드 패키지가 없습니다.</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>패키지에 넣을 사운드 파일 선택</value></data>
   <data name="DeviceType_Midi" xml:space="preserve"><value>MIDI 컨트롤러</value></data>
+  <data name="Devices_MidiInput" xml:space="preserve"><value>MIDI 입력</value></data>
+  <data name="Devices_MidiInputDesc" xml:space="preserve"><value>이 장치가 매핑에 노출하는 MIDI 메시지입니다. 노트는 버튼이 됩니다. 각 CC는 축이 되며 무한 인코더용 + / − 버튼도 함께 제공됩니다.</value></data>
+  <data name="Devices_MidiChannelTooltip" xml:space="preserve"><value>수신할 MIDI 채널(1-16). 0 = 모든 채널.</value></data>
+  <data name="Devices_MidiCcCountTooltip" xml:space="preserve"><value>축이 될 CC 수.</value></data>
+  <data name="Devices_MidiStartCcTooltip" xml:space="preserve"><value>창의 첫 CC 번호(0-127).</value></data>
+  <data name="Devices_MidiNoteCountTooltip" xml:space="preserve"><value>버튼이 될 노트 수.</value></data>
+  <data name="Devices_MidiStartNoteTooltip" xml:space="preserve"><value>첫 노트 번호(0-127, 60 = 가운데 도).</value></data>
+  <data name="Devices_MidiPitchBend" xml:space="preserve"><value>피치 벤드 축</value></data>
+  <data name="Devices_MidiPitchBendTooltip" xml:space="preserve"><value>CC 축 뒤에 피치 벤드 축을 추가합니다.</value></data>
 </root>

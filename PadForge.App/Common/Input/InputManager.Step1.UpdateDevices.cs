@@ -758,6 +758,32 @@ namespace PadForge.Common.Input
         private volatile bool _midiInputsSuppressed;
 
         /// <summary>
+        /// Re-applies a MIDI input device's persisted window settings to its
+        /// live connection and refreshes the UserDevice capability surface.
+        /// Called by the Devices page when the user edits the MIDI Input
+        /// section. Returns true when the device was found and updated.
+        /// </summary>
+        public bool ReconfigureMidiInput(Guid instanceGuid)
+        {
+            lock (_midiInputsLock)
+            {
+                foreach (var kvp in _openedMidiInputs)
+                {
+                    var dev = kvp.Value;
+                    if (dev.InstanceGuid != instanceGuid) continue;
+                    var ud = FindOnlineDeviceByInstanceGuid(instanceGuid);
+                    if (ud == null) return false;
+                    dev.ApplySettings(ud.MidiChannel, ud.MidiStartCc, ud.MidiCcCount,
+                        ud.MidiStartNote, ud.MidiNoteCount, ud.MidiPitchBend);
+                    ud.LoadFromExternalDevice(dev);
+                    DevicesUpdated?.Invoke(this, EventArgs.Empty);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Tears down every open MIDI input connection and the shared input
         /// session, and suppresses Phase 1e until app restart. Called before
         /// uninstalling Windows MIDI Services so no in-process runtime
@@ -842,7 +868,12 @@ namespace PadForge.Common.Input
                             continue;
                         }
 
+                        // The persisted per-device window settings (channel,
+                        // CC window, note window, pitch bend) shape the
+                        // exposed surface BEFORE capabilities are read.
                         UserDevice ud = FindOrCreateUserDevice(dev.InstanceGuid, dev.ProductGuid);
+                        dev.ApplySettings(ud.MidiChannel, ud.MidiStartCc, ud.MidiCcCount,
+                            ud.MidiStartNote, ud.MidiNoteCount, ud.MidiPitchBend);
                         ud.LoadFromExternalDevice(dev);
                         ud.IsOnline = true;
                         _openedMidiInputs[id] = dev;

@@ -175,6 +175,30 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public bool ForceRawJoystickMode { get; set; }
 
+        /// <summary>MIDI input devices: channel to listen on, 1-16; 0 = all channels (omni).</summary>
+        [XmlElement]
+        public int MidiChannel { get; set; } = 1;
+
+        /// <summary>MIDI input devices: first CC number of the axis window (0-127).</summary>
+        [XmlElement]
+        public int MidiStartCc { get; set; } = 1;
+
+        /// <summary>MIDI input devices: how many CCs become axes.</summary>
+        [XmlElement]
+        public int MidiCcCount { get; set; } = 6;
+
+        /// <summary>MIDI input devices: first note number of the button window (0-127).</summary>
+        [XmlElement]
+        public int MidiStartNote { get; set; } = 60;
+
+        /// <summary>MIDI input devices: how many notes become buttons.</summary>
+        [XmlElement]
+        public int MidiNoteCount { get; set; } = 11;
+
+        /// <summary>MIDI input devices: expose a pitch-bend axis after the CC axes.</summary>
+        [XmlElement]
+        public bool MidiPitchBend { get; set; }
+
         /// <summary>
         /// Cached HID device instance IDs resolved via SetupAPI for HidHide blacklisting.
         /// Persisted so devices can be pre-emptively blacklisted at startup even if powered off.

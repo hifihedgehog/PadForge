@@ -291,6 +291,59 @@
                             <Separator Margin="0,2,0,8"/>
                         </StackPanel>
 
+                        <!-- ─── MIDI Input (MIDI devices only, issue #128) ─── -->
+                        <StackPanel Visibility="{Binding SelectedDevice.ShowMidiSection, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="{Binding Devices_MidiInput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
+                                       FontSize="13" Margin="0,0,0,6"/>
+                            <TextBlock Text="{Binding Devices_MidiInputDesc, Source={x:Static strings:Strings.Instance}}"
+                                       FontSize="11" Opacity="0.7" TextWrapping="Wrap" Margin="0,0,0,8"/>
+
+                            <WrapPanel Margin="0,0,0,4">
+                                <TextBlock Text="{Binding Pad_MidiChannel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,4" FontSize="12"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           ToolTip="{Binding Devices_MidiChannelTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBox Width="44" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0,12,4"
+                                         Text="{Binding SelectedDevice.MidiChannel, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         LostFocus="MidiInputConfig_Changed" KeyDown="MidiInputConfig_KeyDown"/>
+
+                                <TextBlock Text="{Binding Pad_MidiCCCount, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,4" FontSize="12"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           ToolTip="{Binding Devices_MidiCcCountTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBox Width="44" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0,12,4"
+                                         Text="{Binding SelectedDevice.MidiCcCount, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         LostFocus="MidiInputConfig_Changed" KeyDown="MidiInputConfig_KeyDown"/>
+
+                                <TextBlock Text="{Binding Pad_MidiStartCC, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,4" FontSize="12"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           ToolTip="{Binding Devices_MidiStartCcTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBox Width="44" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0,12,4"
+                                         Text="{Binding SelectedDevice.MidiStartCc, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         LostFocus="MidiInputConfig_Changed" KeyDown="MidiInputConfig_KeyDown"/>
+
+                                <TextBlock Text="{Binding Pad_MidiNoteCount, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,4" FontSize="12"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           ToolTip="{Binding Devices_MidiNoteCountTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBox Width="44" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0,12,4"
+                                         Text="{Binding SelectedDevice.MidiNoteCount, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         LostFocus="MidiInputConfig_Changed" KeyDown="MidiInputConfig_KeyDown"/>
+
+                                <TextBlock Text="{Binding Pad_MidiStartNote, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,4" FontSize="12"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           ToolTip="{Binding Devices_MidiStartNoteTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBox Width="44" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0,12,4"
+                                         Text="{Binding SelectedDevice.MidiStartNote, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         LostFocus="MidiInputConfig_Changed" KeyDown="MidiInputConfig_KeyDown"/>
+                            </WrapPanel>
+
+                            <CheckBox Content="{Binding Devices_MidiPitchBend, Source={x:Static strings:Strings.Instance}}"
+                                      IsChecked="{Binding SelectedDevice.MidiPitchBend, Mode=TwoWay}"
+                                      Checked="MidiInputConfig_Changed" Unchecked="MidiInputConfig_Changed"
+                                      ToolTip="{Binding Devices_MidiPitchBendTooltip, Source={x:Static strings:Strings.Instance}}"
+                                      Margin="0,0,0,4"/>
+
+                            <Separator Margin="0,2,0,8"/>
+                        </StackPanel>
+
                         <!-- ─── Input Hiding ─── -->
                         <TextBlock Text="{Binding Devices_InputHiding, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
                                    FontSize="13" Margin="0,0,0,6"

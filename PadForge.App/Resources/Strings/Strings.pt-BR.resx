@@ -1751,4 +1751,13 @@
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>Nenhum pacote de som adicionado.</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Escolha os arquivos de som para o pacote</value></data>
   <data name="DeviceType_Midi" xml:space="preserve"><value>Controlador MIDI</value></data>
+  <data name="Devices_MidiInput" xml:space="preserve"><value>Entrada MIDI</value></data>
+  <data name="Devices_MidiInputDesc" xml:space="preserve"><value>Quais mensagens MIDI este dispositivo expõe para mapeamento. Notas viram botões. Cada CC vira um eixo mais botões + e − para encoders sem fim.</value></data>
+  <data name="Devices_MidiChannelTooltip" xml:space="preserve"><value>Canal MIDI a escutar (1-16). 0 = todos os canais.</value></data>
+  <data name="Devices_MidiCcCountTooltip" xml:space="preserve"><value>Quantos CCs viram eixos.</value></data>
+  <data name="Devices_MidiStartCcTooltip" xml:space="preserve"><value>Primeiro número de CC da janela (0-127).</value></data>
+  <data name="Devices_MidiNoteCountTooltip" xml:space="preserve"><value>Quantas notas viram botões.</value></data>
+  <data name="Devices_MidiStartNoteTooltip" xml:space="preserve"><value>Primeiro número de nota (0-127, 60 = Dó central).</value></data>
+  <data name="Devices_MidiPitchBend" xml:space="preserve"><value>Eixo de pitch bend</value></data>
+  <data name="Devices_MidiPitchBendTooltip" xml:space="preserve"><value>Adiciona um eixo de pitch bend após os eixos CC.</value></data>
 </root>

@@ -371,6 +371,15 @@ public class Strings : INotifyPropertyChanged
     public string DeviceType_Keyboard => Get("DeviceType_Keyboard");
     public string DeviceType_Touchpad => Get("DeviceType_Touchpad");
     public string DeviceType_Midi => Get("DeviceType_Midi");
+    public string Devices_MidiInput => Get("Devices_MidiInput");
+    public string Devices_MidiInputDesc => Get("Devices_MidiInputDesc");
+    public string Devices_MidiChannelTooltip => Get("Devices_MidiChannelTooltip");
+    public string Devices_MidiCcCountTooltip => Get("Devices_MidiCcCountTooltip");
+    public string Devices_MidiStartCcTooltip => Get("Devices_MidiStartCcTooltip");
+    public string Devices_MidiNoteCountTooltip => Get("Devices_MidiNoteCountTooltip");
+    public string Devices_MidiStartNoteTooltip => Get("Devices_MidiStartNoteTooltip");
+    public string Devices_MidiPitchBend => Get("Devices_MidiPitchBend");
+    public string Devices_MidiPitchBendTooltip => Get("Devices_MidiPitchBendTooltip");
     public string DeviceType_Device => Get("DeviceType_Device");
     public string Devices_AllKeyboardsMerged => Get("Devices_AllKeyboardsMerged");
     public string Devices_AllMiceMerged => Get("Devices_AllMiceMerged");

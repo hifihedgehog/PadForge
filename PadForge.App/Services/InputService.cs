@@ -5499,6 +5499,14 @@ namespace PadForge.Services
             row.ForceRawJoystickMode = ud.ForceRawJoystickMode;
             row.IsHidHideAvailable = _mainVm.Settings.IsHidHideInstalled;
 
+            // MIDI input window settings (issue #128).
+            row.MidiChannel = ud.MidiChannel;
+            row.MidiStartCc = ud.MidiStartCc;
+            row.MidiCcCount = ud.MidiCcCount;
+            row.MidiStartNote = ud.MidiStartNote;
+            row.MidiNoteCount = ud.MidiNoteCount;
+            row.MidiPitchBend = ud.MidiPitchBend;
+
             // Set internal device type key (DeviceType display is computed from this).
             row.DeviceTypeKey = ud.CapType switch
             {
@@ -5529,6 +5537,19 @@ namespace PadForge.Services
         /// re-enumeration. Called before uninstalling Windows MIDI Services.
         /// </summary>
         public void ShutdownMidiInputs() => _inputManager?.ShutdownMidiInputs();
+
+        /// <summary>
+        /// Re-applies a MIDI input device's persisted window settings to its
+        /// live connection, then refreshes the device list and the mapping
+        /// dropdowns so the new surface is immediately pickable.
+        /// </summary>
+        public void ReconfigureMidiInput(Guid instanceGuid)
+        {
+            if (_inputManager?.ReconfigureMidiInput(instanceGuid) != true)
+                return;
+            RefreshDeviceList();
+            RefreshMappingDropdowns();
+        }
 
         /// <summary>
         /// Forces a full re-sync of the device list UI from the current

@@ -402,6 +402,18 @@ namespace PadForge.ViewModels
             DeviceHidingChanged?.Invoke(this, instanceGuid);
         }
 
+        /// <summary>Raised when a MIDI input device's window settings change
+        /// (issue #128). Arg = instance GUID.</summary>
+        public event EventHandler<Guid> MidiConfigChanged;
+
+        /// <summary>
+        /// Notifies that a MIDI input device's window settings were edited.
+        /// </summary>
+        public void NotifyMidiConfigChanged(Guid instanceGuid)
+        {
+            MidiConfigChanged?.Invoke(this, instanceGuid);
+        }
+
         // ─────────────────────────────────────────────
         //  Dynamic slot buttons
         // ─────────────────────────────────────────────

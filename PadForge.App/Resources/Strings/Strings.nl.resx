@@ -1771,4 +1771,13 @@
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>Geen geluidspakketten toegevoegd.</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Kies de geluidsbestanden voor het pakket</value></data>
   <data name="DeviceType_Midi" xml:space="preserve"><value>MIDI-controller</value></data>
+  <data name="Devices_MidiInput" xml:space="preserve"><value>MIDI-invoer</value></data>
+  <data name="Devices_MidiInputDesc" xml:space="preserve"><value>Welke MIDI-berichten dit apparaat beschikbaar stelt voor toewijzing. Noten worden knoppen. Elke CC wordt een as plus + en − knoppen voor eindeloze encoders.</value></data>
+  <data name="Devices_MidiChannelTooltip" xml:space="preserve"><value>MIDI-kanaal om naar te luisteren (1-16). 0 = alle kanalen.</value></data>
+  <data name="Devices_MidiCcCountTooltip" xml:space="preserve"><value>Hoeveel CC's assen worden.</value></data>
+  <data name="Devices_MidiStartCcTooltip" xml:space="preserve"><value>Eerste CC-nummer van het venster (0-127).</value></data>
+  <data name="Devices_MidiNoteCountTooltip" xml:space="preserve"><value>Hoeveel noten knoppen worden.</value></data>
+  <data name="Devices_MidiStartNoteTooltip" xml:space="preserve"><value>Eerste nootnummer (0-127, 60 = centrale C).</value></data>
+  <data name="Devices_MidiPitchBend" xml:space="preserve"><value>Pitchbend-as</value></data>
+  <data name="Devices_MidiPitchBendTooltip" xml:space="preserve"><value>Voegt een pitchbend-as toe na de CC-assen.</value></data>
 </root>

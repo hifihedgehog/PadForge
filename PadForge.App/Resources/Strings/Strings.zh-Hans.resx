@@ -1751,4 +1751,13 @@
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>尚未添加声音包。</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>选择要放入声音包的声音文件</value></data>
   <data name="DeviceType_Midi" xml:space="preserve"><value>MIDI 控制器</value></data>
+  <data name="Devices_MidiInput" xml:space="preserve"><value>MIDI 输入</value></data>
+  <data name="Devices_MidiInputDesc" xml:space="preserve"><value>此设备为映射提供哪些 MIDI 消息。音符变成按钮。每个 CC 变成一个轴，并附带用于无限旋钮的 + / − 按钮。</value></data>
+  <data name="Devices_MidiChannelTooltip" xml:space="preserve"><value>要监听的 MIDI 通道（1-16）。0 = 全部通道。</value></data>
+  <data name="Devices_MidiCcCountTooltip" xml:space="preserve"><value>变成轴的 CC 数量。</value></data>
+  <data name="Devices_MidiStartCcTooltip" xml:space="preserve"><value>窗口的第一个 CC 编号（0-127）。</value></data>
+  <data name="Devices_MidiNoteCountTooltip" xml:space="preserve"><value>变成按钮的音符数量。</value></data>
+  <data name="Devices_MidiStartNoteTooltip" xml:space="preserve"><value>第一个音符编号（0-127，60 = 中央 C）。</value></data>
+  <data name="Devices_MidiPitchBend" xml:space="preserve"><value>弯音轴</value></data>
+  <data name="Devices_MidiPitchBendTooltip" xml:space="preserve"><value>在 CC 轴之后添加一个弯音轴。</value></data>
 </root>

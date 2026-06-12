@@ -193,6 +193,17 @@ namespace PadForge.Common.Input
             // device path; BT targets get the 0x53-seeded feature CRC.
             if (effect.IsFeature)
             {
+                // Sony vendor audio test (deviceId 6 = AUDIO, actionId 2 =
+                // WAVEOUT_CTRL, param0 = on/off): while the firmware
+                // waveout runs, the tester owns the pad's audio plane —
+                // see AudioPassthroughService.SetVendorAudioTest.
+                if (effect.Length >= 3 && effect.Buffer[0] == 6 && effect.Buffer[1] == 2)
+                {
+                    bool testOn = effect.Buffer[2] != 0;
+                    foreach (var t in targets)
+                        AudioPassthroughService.SetVendorAudioTest(t.DeviceGuid, testOn);
+                }
+
                 byte[] report = new byte[effect.Length + 1];
                 report[0] = effect.ReportId;
                 Array.Copy(effect.Buffer, 0, report, 1, effect.Length);

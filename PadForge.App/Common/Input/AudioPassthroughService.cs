@@ -576,12 +576,44 @@ namespace PadForge.Common.Input
             return live;
         }
 
+        // Physical pads with a forwarded Sony vendor audio test (firmware
+        // waveout) in flight, with an auto-expiry tick. While a test runs
+        // the TESTER owns the pad's audio plane: WantsSpeakerPath reports
+        // false — which suspends both the effects dispatcher's speaker-path
+        // asserts and the passthrough dispatcher's audio-control masking —
+        // and the BT mirror stream pauses so the Opus frames don't fight
+        // the firmware tone. Without this, a headphone waveout test bled
+        // through the speaker because the mirror kept the speaker path and
+        // volume asserted and masked the tester's own volume writes.
+        private static readonly Dictionary<Guid, long> _vendorAudioTests = new();
+
+        /// <summary>Marks a forwarded vendor audio test active/inactive on
+        /// a physical pad. Expires after 60 s on its own in case the
+        /// test's off command never arrives (closed browser tab).</summary>
+        public static void SetVendorAudioTest(Guid deviceGuid, bool active)
+        {
+            lock (_lock)
+            {
+                if (active) _vendorAudioTests[deviceGuid] = Environment.TickCount64 + 60_000;
+                else _vendorAudioTests.Remove(deviceGuid);
+            }
+        }
+
+        private static bool VendorAudioTestActive_NoLock(Guid guid)
+        {
+            if (!_vendorAudioTests.TryGetValue(guid, out long exp)) return false;
+            if (Environment.TickCount64 >= exp) { _vendorAudioTests.Remove(guid); return false; }
+            return true;
+        }
+
         /// <summary>True while the device has an active sink — the DS5
-        /// dispatcher asserts the firmware speaker output path + volume.</summary>
+        /// dispatcher asserts the firmware speaker output path + volume.
+        /// False while a forwarded vendor audio test owns the pad.</summary>
         public static bool WantsSpeakerPath(Guid deviceGuid)
         {
             lock (_lock)
-                return _sinks.TryGetValue(deviceGuid, out var s) && SinkAlive(s);
+                return _sinks.TryGetValue(deviceGuid, out var s) && SinkAlive(s)
+                    && !VendorAudioTestActive_NoLock(deviceGuid);
         }
 
         /// <summary>One-shot per device after its sink is torn down, so the
@@ -1122,7 +1154,8 @@ namespace PadForge.Common.Input
                 {
                     List<Sink> btSinks;
                     lock (_lock)
-                        btSinks = _sinks.Values.Where(s => s.IsBt && !s.TransportFailed && s.BtHandle != new IntPtr(-1)).ToList();
+                        btSinks = _sinks.Values.Where(s => s.IsBt && !s.TransportFailed && s.BtHandle != new IntPtr(-1)
+                                                        && !VendorAudioTestActive_NoLock(s.DeviceGuid)).ToList();
 
                     foreach (var s in btSinks)
                     {

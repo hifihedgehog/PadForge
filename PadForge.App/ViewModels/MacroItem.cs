@@ -2366,11 +2366,14 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>File name only, for compact display on the action row
-        /// and the Audio tab's sound-macro list.</summary>
+        /// and the Audio tab's sound-macro list. Package references render
+        /// as "entry — package".</summary>
         public string SoundFileName
         {
             get
             {
+                if (PadForge.Common.SoundPackageManager.IsPackageRef(_soundFilePath))
+                    return PadForge.Common.SoundPackageManager.DisplayName(_soundFilePath);
                 try { return string.IsNullOrEmpty(_soundFilePath) ? string.Empty : System.IO.Path.GetFileName(_soundFilePath); }
                 catch { return _soundFilePath; }
             }

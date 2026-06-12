@@ -413,6 +413,8 @@ namespace PadForge
             _viewModel.Settings.NewProfileRequested += OnNewProfile;
             _viewModel.Settings.SaveAsProfileRequested += OnSaveAsProfile;
             _viewModel.Settings.DeleteProfileRequested += OnDeleteProfile;
+            _viewModel.Settings.ExportProfileRequested += OnExportProfile;
+            _viewModel.Settings.ImportProfileRequested += OnImportProfile;
             _viewModel.Settings.EditProfileRequested += OnEditProfile;
             _viewModel.Settings.LoadProfileRequested += OnLoadProfile;
             _viewModel.Settings.RevertToDefaultRequested += OnRevertToDefault;
@@ -3971,6 +3973,74 @@ namespace PadForge
                 _viewModel.Settings.ActiveProfileInfo = Strings.Instance.Common_Default;
             _settingsService.MarkDirty();
             _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileDeleted_Format, selected.Name);
+        }
+
+        /// <summary>Exports the selected profile (with its referenced
+        /// sound packages bundled) to a shareable .pfprofile file.</summary>
+        private void OnExportProfile(object sender, EventArgs e)
+        {
+            var selected = _viewModel.Settings.SelectedProfile;
+            if (selected == null) return;
+            var profile = SettingsManager.Profiles.Find(p => p.Id == selected.Id);
+            if (profile == null) return;
+
+            var dlg = new Microsoft.Win32.SaveFileDialog
+            {
+                Title = Strings.Instance.Profiles_Export,
+                FileName = profile.Name + PadForge.Common.ProfileTransfer.FileExtension,
+                Filter = $"PadForge profile (*{PadForge.Common.ProfileTransfer.FileExtension})|*{PadForge.Common.ProfileTransfer.FileExtension}",
+            };
+            if (dlg.ShowDialog() != true) return;
+            try
+            {
+                PadForge.Common.ProfileTransfer.Export(profile, dlg.FileName);
+                _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileExported_Format, profile.Name);
+            }
+            catch (Exception ex)
+            {
+                _viewModel.StatusText = ex.Message;
+            }
+        }
+
+        /// <summary>Imports a .pfprofile: bundled sound packages land next
+        /// to the exe and register; the profile joins the registry (name
+        /// deduped). The user activates it via the existing Load button.</summary>
+        private void OnImportProfile(object sender, EventArgs e)
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = Strings.Instance.Profiles_Import,
+                Filter = $"PadForge profile (*{PadForge.Common.ProfileTransfer.FileExtension})|*{PadForge.Common.ProfileTransfer.FileExtension}|All files|*.*",
+                CheckFileExists = true,
+            };
+            if (dlg.ShowDialog() != true) return;
+
+            var profile = PadForge.Common.ProfileTransfer.Import(dlg.FileName, out var packages);
+            if (profile == null)
+            {
+                _viewModel.StatusText = Strings.Instance.Status_ProfileImportFailed;
+                return;
+            }
+
+            // Dedup the display name against existing profiles.
+            string baseName = string.IsNullOrWhiteSpace(profile.Name) ? "Imported profile" : profile.Name.Trim();
+            string name = baseName;
+            int n = 2;
+            while (SettingsManager.Profiles.Any(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase)))
+                name = $"{baseName} ({n++})";
+            profile.Name = name;
+
+            SettingsManager.Profiles.Add(profile);
+            var listItem = new ViewModels.ProfileListItem
+            {
+                Id = profile.Id,
+                Name = profile.Name,
+                Executables = InputService.FormatExePaths(profile.ExecutableNames ?? string.Empty),
+            };
+            SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes);
+            _viewModel.Settings.ProfileItems.Add(listItem);
+            _settingsService.MarkDirty();
+            _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileImported_Format, profile.Name, packages.Count);
         }
 
         private void OnEditProfile(object sender, EventArgs e)

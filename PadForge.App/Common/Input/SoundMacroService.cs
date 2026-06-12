@@ -354,10 +354,24 @@ namespace PadForge.Common.Input
         {
             try
             {
-                if (!File.Exists(filePath)) return null;
+                // Sound-package reference (pfsound://Package/entry): bytes
+                // come straight out of the registered package zip — no
+                // extraction, no temp files. Plain paths use the file
+                // route unchanged. The cache key is the reference string
+                // either way.
+                MemoryStream packageStream = null;
+                if (SoundPackageManager.IsPackageRef(filePath))
+                {
+                    byte[] bytes = SoundPackageManager.TryReadSound(filePath);
+                    if (bytes == null) return null;
+                    packageStream = new MemoryStream(bytes, writable: false);
+                }
+                else if (!File.Exists(filePath)) return null;
 
                 // Media Foundation decodes wav/mp3/m4a/aac/wma/flac on Win10+.
-                using var reader = new MediaFoundationReader(filePath);
+                using var reader = packageStream != null
+                    ? (WaveStream)new StreamMediaFoundationReader(packageStream)
+                    : new MediaFoundationReader(filePath);
                 ISampleProvider sp = reader.ToSampleProvider();
                 if (sp.WaveFormat.Channels == 1)
                     sp = new MonoToStereoSampleProvider(sp);

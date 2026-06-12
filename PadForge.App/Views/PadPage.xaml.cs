@@ -578,17 +578,73 @@ namespace PadForge.Views
             var dlg = new Microsoft.Win32.OpenFileDialog
             {
                 Title = PadForge.Resources.Strings.Strings.Instance.Macro_Sound_File_Label,
-                Filter = "Audio files|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac|All files|*.*",
+                Filter = "Audio files and sound packages|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds"
+                       + "|Sound packages (*.pfsounds)|*.pfsounds|All files|*.*",
                 CheckFileExists = true,
             };
             try
             {
-                if (!string.IsNullOrEmpty(action.SoundFilePath))
+                if (!string.IsNullOrEmpty(action.SoundFilePath)
+                    && !PadForge.Common.SoundPackageManager.IsPackageRef(action.SoundFilePath))
                     dlg.InitialDirectory = System.IO.Path.GetDirectoryName(action.SoundFilePath);
             }
             catch { }
-            if (dlg.ShowDialog() == true)
-                action.SoundFilePath = dlg.FileName;
+            if (dlg.ShowDialog() != true) return;
+
+            // Picking a .pfsounds package registers it and offers its
+            // sounds; the action then stores pfsound://Package/entry so a
+            // shared profile resolves on any machine that carries the
+            // package file (registered automatically on import).
+            if (dlg.FileName.EndsWith(PadForge.Common.SoundPackageManager.FileExtension,
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                string pkg = PadForge.Common.SoundPackageManager.Register(dlg.FileName);
+                if (pkg == null) return;
+                var sounds = PadForge.Common.SoundPackageManager.ListSounds(pkg);
+                if (sounds.Count == 0) return;
+                string entry = sounds.Count == 1
+                    ? sounds[0]
+                    : PromptPickFromList(
+                        string.Format(PadForge.Resources.Strings.Strings.Instance.Macro_Sound_PickFromPackage_Format, pkg),
+                        sounds);
+                if (entry != null)
+                    action.SoundFilePath = PadForge.Common.SoundPackageManager.MakeRef(pkg, entry);
+                return;
+            }
+
+            action.SoundFilePath = dlg.FileName;
+        }
+
+        /// <summary>Minimal modal list picker (package sound selection).
+        /// Returns the chosen item or null.</summary>
+        private string PromptPickFromList(string title, System.Collections.Generic.List<string> items)
+        {
+            var list = new ListBox { ItemsSource = items, SelectedIndex = 0, Margin = new Thickness(12) };
+            var ok = new Button
+            {
+                Content = PadForge.Resources.Strings.Strings.Instance.Common_OK,
+                IsDefault = true,
+                MinWidth = 80,
+                Margin = new Thickness(0, 0, 12, 12),
+                HorizontalAlignment = HorizontalAlignment.Right,
+            };
+            var panel = new DockPanel();
+            DockPanel.SetDock(ok, Dock.Bottom);
+            panel.Children.Add(ok);
+            panel.Children.Add(list);
+            var win = new Window
+            {
+                Title = title,
+                Content = panel,
+                Width = 420,
+                Height = 360,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Owner = Window.GetWindow(this),
+                ResizeMode = ResizeMode.NoResize,
+            };
+            ok.Click += (_, _) => { win.DialogResult = true; };
+            list.MouseDoubleClick += (_, _) => { if (list.SelectedItem != null) win.DialogResult = true; };
+            return win.ShowDialog() == true ? list.SelectedItem as string : null;
         }
 
         /// <summary>Preview the action's sound through the pad's configured

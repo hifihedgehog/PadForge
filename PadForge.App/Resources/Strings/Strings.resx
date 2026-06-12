@@ -1795,4 +1795,10 @@
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Browser DualSense test suite by Xuezhou Dai (daidr): reference for the Sony feature-report CRC framing and firmware test commands PadForge forwards from virtual to physical pads. MIT.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="About_Ds4AudioDesc" xml:space="preserve"><value>DualShock 4 Bluetooth audio reference by nefarius: report framing for PadForge's DS4 speaker stream. The SBC encoder is an original C# implementation from the Bluetooth A2DP specification. With protocol documentation from khallmark's ds4mac. MIT.</value></data>
+  <data name="Profiles_Export" xml:space="preserve"><value>Export…</value></data>
+  <data name="Profiles_Import" xml:space="preserve"><value>Import…</value></data>
+  <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Profile "{0}" exported.</value></data>
+  <data name="Status_ProfileImported_Format" xml:space="preserve"><value>Profile "{0}" imported ({1} sound package(s) registered).</value></data>
+  <data name="Status_ProfileImportFailed" xml:space="preserve"><value>The file is not a readable PadForge profile.</value></data>
+  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Choose a sound from {0}</value></data>
 </root>

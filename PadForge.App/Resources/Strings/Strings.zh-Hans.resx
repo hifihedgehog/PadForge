@@ -1735,4 +1735,10 @@
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai（daidr）开发的浏览器版 DualSense 测试套件。Sony 功能报告 CRC 帧格式以及 PadForge 从虚拟手柄转发到实体手柄的固件测试命令的参考。MIT。</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefarius 的 DualShock 4 蓝牙音频参考：PadForge DS4 扬声器流的报告帧格式。SBC 编码器是依据蓝牙 A2DP 规范的原创 C# 实现。协议文档来自 khallmark 的 ds4mac。MIT。</value></data>
+  <data name="Profiles_Export" xml:space="preserve"><value>导出…</value></data>
+  <data name="Profiles_Import" xml:space="preserve"><value>导入…</value></data>
+  <data name="Status_ProfileExported_Format" xml:space="preserve"><value>已导出配置文件“{0}”。</value></data>
+  <data name="Status_ProfileImported_Format" xml:space="preserve"><value>已导入配置文件“{0}”（注册了 {1} 个声音包）。</value></data>
+  <data name="Status_ProfileImportFailed" xml:space="preserve"><value>该文件不是可读取的 PadForge 配置文件。</value></data>
+  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>从 {0} 中选择声音</value></data>
 </root>

@@ -1191,6 +1191,8 @@ namespace PadForge.Services
         private void LoadAppSettings(AppSettingsData appSettings)
         {
             var vm = _mainVm.Settings;
+            PadForge.Common.SoundPackageManager.LoadRegistry(
+                appSettings.SoundPackages?.Select(p => (p.Name, p.Path)));
             vm.AutoStartEngine = appSettings.AutoStartEngine;
             vm.MinimizeToTray = appSettings.MinimizeToTray;
             vm.StartMinimized = appSettings.StartMinimized;
@@ -2710,6 +2712,9 @@ namespace PadForge.Services
         private AppSettingsData BuildAppSettings()
         {
             var vm = _mainVm.Settings;
+            var soundPackages = PadForge.Common.SoundPackageManager.SaveRegistry()
+                .Select(p => new SoundPackageData { Name = p.Name, Path = p.Path })
+                .ToArray();
             // Sync the ViewModel toggle to the static state.
             SettingsManager.EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching;
 
@@ -2792,6 +2797,7 @@ namespace PadForge.Services
 
             return new AppSettingsData
             {
+                SoundPackages = soundPackages,
                 AutoStartEngine = vm.AutoStartEngine,
                 MinimizeToTray = vm.MinimizeToTray,
                 StartMinimized = vm.StartMinimized,
@@ -3725,6 +3731,17 @@ namespace PadForge.Services
     /// Root element for the PadForge settings XML file.
     /// </summary>
     [XmlRoot("PadForgeSettings")]
+    /// <summary>One registered sound package (issue #83 follow-up).</summary>
+    public class SoundPackageData
+    {
+        [XmlAttribute]
+        public string Name { get; set; }
+
+        /// <summary>Exe-relative when under the application directory.</summary>
+        [XmlAttribute]
+        public string Path { get; set; }
+    }
+
     public class SettingsFileData
     {
         [XmlArray("Devices")]
@@ -3772,6 +3789,13 @@ namespace PadForge.Services
     /// </summary>
     public class AppSettingsData
     {
+        /// <summary>Registered sound packages (issue #83 follow-up):
+        /// Name + stored path (exe-relative when the package sits in the
+        /// application directory, for portable kits).</summary>
+        [XmlArray("SoundPackages")]
+        [XmlArrayItem("Package")]
+        public SoundPackageData[] SoundPackages { get; set; }
+
         [XmlElement]
         public bool AutoStartEngine { get; set; } = true;
 

@@ -78,17 +78,35 @@ namespace PadForge.Common
         /// <summary>Registers a package file. Returns the registered name
         /// (deduped against existing names) or null when the file isn't a
         /// readable package with at least one audio entry.</summary>
-        public static string Register(string filePath)
-        {
-            string name = ProbePackageName(filePath);
-            if (name == null) return null;
+        public static string Register(string filePath) => Register(filePath, out _);
 
+        /// <summary>Registers a package file and also reports the package's
+        /// own (probed) name, which can differ from the registered name when
+        /// a name collision forced a dedup suffix. Callers holding
+        /// references built against the probed name rewrite them to the
+        /// returned name.</summary>
+        public static string Register(string filePath, out string probedName)
+        {
+            probedName = ProbePackageName(filePath);
+            if (probedName == null) return null;
+
+            string name = probedName;
             string stored = MakeStoredPath(filePath);
             lock (_lock)
             {
-                // Re-registering the same file refreshes its entry.
+                // Re-registering the same file refreshes its entry. The
+                // refreshed name still dedups against OTHER entries —
+                // otherwise a re-register could hand two packages the same
+                // display name and make name lookups ambiguous.
                 var existing = _packages.FirstOrDefault(p =>
                     string.Equals(ResolvePath(p.Path), System.IO.Path.GetFullPath(filePath), StringComparison.OrdinalIgnoreCase));
+                string final = name;
+                int n = 2;
+                while (_packages.Any(p => !ReferenceEquals(p, existing)
+                        && string.Equals(p.Name, final, StringComparison.OrdinalIgnoreCase)))
+                    final = $"{name} ({n++})";
+                name = final;
+
                 if (existing != null)
                 {
                     existing.Name = name;
@@ -96,12 +114,6 @@ namespace PadForge.Common
                 }
                 else
                 {
-                    // Dedup display name.
-                    string final = name;
-                    int n = 2;
-                    while (_packages.Any(p => string.Equals(p.Name, final, StringComparison.OrdinalIgnoreCase)))
-                        final = $"{name} ({n++})";
-                    name = final;
                     _packages.Add(new PackageRef { Name = name, Path = stored });
                 }
             }
@@ -238,9 +250,21 @@ namespace PadForge.Common
                 {
                     using var r = new StreamReader(man.Open());
                     string json = r.ReadToEnd();
-                    var m = System.Text.RegularExpressions.Regex.Match(json, "\"name\"\\s*:\\s*\"([^\"]+)\"");
-                    if (m.Success && !string.IsNullOrWhiteSpace(m.Groups[1].Value))
-                        return m.Groups[1].Value.Trim();
+                    try
+                    {
+                        using var doc = System.Text.Json.JsonDocument.Parse(json);
+                        if (doc.RootElement.TryGetProperty("name", out var nameProp)
+                            && nameProp.ValueKind == System.Text.Json.JsonValueKind.String)
+                        {
+                            // Slashes would break the pfsound://Package/entry
+                            // ref grammar (the first '/' is the delimiter).
+                            string n = nameProp.GetString()
+                                .Replace("/", " ").Replace("\\", " ").Trim();
+                            if (!string.IsNullOrWhiteSpace(n))
+                                return n;
+                        }
+                    }
+                    catch (System.Text.Json.JsonException) { /* malformed manifest — fall back to file name */ }
                 }
                 return System.IO.Path.GetFileNameWithoutExtension(filePath);
             }

@@ -625,12 +625,25 @@ namespace PadForge.Views
                 Content = PadForge.Resources.Strings.Strings.Instance.Common_OK,
                 IsDefault = true,
                 MinWidth = 80,
+                Margin = new Thickness(0, 0, 8, 12),
+            };
+            var cancel = new Button
+            {
+                Content = PadForge.Resources.Strings.Strings.Instance.Common_Cancel,
+                IsCancel = true,
+                MinWidth = 80,
                 Margin = new Thickness(0, 0, 12, 12),
+            };
+            var buttons = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
                 HorizontalAlignment = HorizontalAlignment.Right,
             };
+            buttons.Children.Add(ok);
+            buttons.Children.Add(cancel);
             var panel = new DockPanel();
-            DockPanel.SetDock(ok, Dock.Bottom);
-            panel.Children.Add(ok);
+            DockPanel.SetDock(buttons, Dock.Bottom);
+            panel.Children.Add(buttons);
             panel.Children.Add(list);
             var win = new Window
             {

@@ -90,25 +90,35 @@ namespace PadForge.Common.Input
 
             try
             {
+                // Sony BT firmware checks the CRC32 at the LOGICAL report's
+                // last four bytes — i.e. at the end of the report as the
+                // descriptor declares it, BEFORE any padding to the
+                // collection's FeatureReportByteLength. dualsense-tester's
+                // fillFeatureReportChecksum proves the offset: it stamps at
+                // reportData[len-4] of the descriptor-sized buffer and lets
+                // the HID stack pad afterwards. Stamping after padding put
+                // the CRC in the pad bytes whenever caps exceed the report
+                // size, and the pad silently dropped every forwarded
+                // command (the wired-virtual ds.daidr.me symptom).
+                if (stampSonyBtCrc && buf.Length >= 5)
+                {
+                    uint crc = 0xFFFFFFFFu;
+                    crc = Crc32Step(crc, 0x53);
+                    for (int i = 0; i < buf.Length - 4; i++)
+                        crc = Crc32Step(crc, buf[i]);
+                    crc = ~crc;
+                    buf[buf.Length - 4] = (byte)crc;
+                    buf[buf.Length - 3] = (byte)(crc >> 8);
+                    buf[buf.Length - 2] = (byte)(crc >> 16);
+                    buf[buf.Length - 1] = (byte)(crc >> 24);
+                }
+
                 int need = QueryFeatureLen(devicePath, handle);
                 byte[] outBuf = buf;
                 if (need > buf.Length)
                 {
                     outBuf = new byte[need];
                     Array.Copy(buf, 0, outBuf, 0, buf.Length);
-                }
-
-                if (stampSonyBtCrc && outBuf.Length >= 5)
-                {
-                    uint crc = 0xFFFFFFFFu;
-                    crc = Crc32Step(crc, 0x53);
-                    for (int i = 0; i < outBuf.Length - 4; i++)
-                        crc = Crc32Step(crc, outBuf[i]);
-                    crc = ~crc;
-                    outBuf[outBuf.Length - 4] = (byte)crc;
-                    outBuf[outBuf.Length - 3] = (byte)(crc >> 8);
-                    outBuf[outBuf.Length - 2] = (byte)(crc >> 16);
-                    outBuf[outBuf.Length - 1] = (byte)(crc >> 24);
                 }
 
                 return HidD_SetFeature(handle, outBuf, (uint)outBuf.Length);

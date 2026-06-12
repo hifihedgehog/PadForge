@@ -774,13 +774,32 @@ namespace PadForge.Common.Input
             // Phase 5 — macro-routing notify, outside _lock: it takes
             // SoundMacroService's lock and can tear down a WasapiOut.
             var routed = new bool[MaxPads];
+            var expiredTestSlots = new List<int>();
             lock (_lock)
             {
                 foreach (var s in _sinks.Values)
                     if (SinkAlive(s) && (uint)s.Slot < MaxPads) routed[s.Slot] = true;
+
+                // Vendor-audio-test expiry sweep: an abandoned test (tab
+                // closed mid-tone) leaves the pad's mirror routing in the
+                // restored headphone state with nothing re-dispatching the
+                // assert — WantsSpeakerPath flips back silently but the
+                // effects dispatcher only writes on events. Drop expired
+                // entries here and nudge their slots below, outside the
+                // lock.
+                long now = Environment.TickCount64;
+                foreach (var kv in _vendorAudioTests.ToList())
+                {
+                    if (now < kv.Value) continue;
+                    _vendorAudioTests.Remove(kv.Key);
+                    if (_sinks.TryGetValue(kv.Key, out var sink) && (uint)sink.Slot < MaxPads)
+                        expiredTestSlots.Add(sink.Slot);
+                }
             }
             for (int slot = 0; slot < MaxPads; slot++)
                 SoundMacroService.SetSlotControllerRouted(slot, routed[slot]);
+            foreach (int slot in expiredTestSlots.Distinct())
+                UserEffectsDispatcher.NotifySoundRoutingChanged(slot);
         }
 
         /// <summary>Move a sink's transport onto a carrier so it can be

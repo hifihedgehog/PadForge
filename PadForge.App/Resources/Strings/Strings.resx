@@ -1801,4 +1801,13 @@
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>Profile "{0}" imported ({1} sound package(s) registered).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>The file is not a readable PadForge profile.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Choose a sound from {0}</value></data>
+  <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Sound Packages</value></data>
+  <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>A sound package is one zip file of sounds with the .pfsounds extension. Add one here, then pick its sounds in any sound macro. PadForge reads straight from the file and never unpacks it. Keep packages next to PadForge.exe to stay portable.</value></data>
+  <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Add package…</value></data>
+  <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Add an existing .pfsounds file to the list.</value></data>
+  <data name="Pad_Audio_Packages_Create" xml:space="preserve"><value>Create package…</value></data>
+  <data name="Pad_Audio_Packages_Create_Tooltip" xml:space="preserve"><value>Pick sound files and save them as a new .pfsounds package.</value></data>
+  <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>Remove the selected package from the list. The file is not deleted.</value></data>
+  <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>No sound packages added.</value></data>
+  <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Choose sound files for the package</value></data>
 </root>

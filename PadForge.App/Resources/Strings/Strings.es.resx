@@ -1741,4 +1741,13 @@
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>Perfil "{0}" importado ({1} paquete(s) de sonido registrados).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>El archivo no es un perfil de PadForge legible.</value></data>
   <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Elegir un sonido de {0}</value></data>
+  <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Paquetes de sonido</value></data>
+  <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Un paquete de sonido es un único archivo ZIP de sonidos con la extensión .pfsounds. Añada uno aquí y luego elija sus sonidos en cualquier macro de sonido. PadForge lee directamente del archivo y nunca lo descomprime. Mantenga los paquetes junto a PadForge.exe para que todo siga siendo portátil.</value></data>
+  <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Añadir paquete…</value></data>
+  <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Añadir un archivo .pfsounds existente a la lista.</value></data>
+  <data name="Pad_Audio_Packages_Create" xml:space="preserve"><value>Crear paquete…</value></data>
+  <data name="Pad_Audio_Packages_Create_Tooltip" xml:space="preserve"><value>Elegir archivos de sonido y guardarlos como un nuevo paquete .pfsounds.</value></data>
+  <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>Quitar el paquete seleccionado de la lista. El archivo no se elimina.</value></data>
+  <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>No hay paquetes de sonido añadidos.</value></data>
+  <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Elija los archivos de sonido para el paquete</value></data>
 </root>

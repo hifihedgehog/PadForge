@@ -35,10 +35,11 @@ namespace PadForge.Common
 
         public sealed class PackageRef
         {
-            public string Name;
+            // Properties (not fields) so WPF bindings can read them.
+            public string Name { get; set; }
             /// <summary>Stored path — relative to the exe directory when
             /// the package lives under it, absolute otherwise.</summary>
-            public string Path;
+            public string Path { get; set; }
         }
 
         private static readonly object _lock = new();

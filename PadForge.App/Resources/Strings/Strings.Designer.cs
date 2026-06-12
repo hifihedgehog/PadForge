@@ -1308,6 +1308,15 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_MasterVolume => Get("Pad_Audio_MasterVolume");
     public string Pad_Audio_Reset_MasterVolume => Get("Pad_Audio_Reset_MasterVolume");
     public string Pad_Audio_Test => Get("Pad_Audio_Test");
+    public string Pad_Audio_Packages_Header => Get("Pad_Audio_Packages_Header");
+    public string Pad_Audio_Packages_Desc => Get("Pad_Audio_Packages_Desc");
+    public string Pad_Audio_Packages_Add => Get("Pad_Audio_Packages_Add");
+    public string Pad_Audio_Packages_Add_Tooltip => Get("Pad_Audio_Packages_Add_Tooltip");
+    public string Pad_Audio_Packages_Create => Get("Pad_Audio_Packages_Create");
+    public string Pad_Audio_Packages_Create_Tooltip => Get("Pad_Audio_Packages_Create_Tooltip");
+    public string Pad_Audio_Packages_Remove_Tooltip => Get("Pad_Audio_Packages_Remove_Tooltip");
+    public string Pad_Audio_Packages_Empty => Get("Pad_Audio_Packages_Empty");
+    public string Pad_Audio_Packages_PickSounds => Get("Pad_Audio_Packages_PickSounds");
     public string Pad_Audio_Test_Tooltip => Get("Pad_Audio_Test_Tooltip");
     public string Pad_Audio_StopAll => Get("Pad_Audio_StopAll");
     public string Pad_Audio_StopAll_Tooltip => Get("Pad_Audio_StopAll_Tooltip");

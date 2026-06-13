@@ -29,9 +29,32 @@ namespace PadForge.Common.Input
         private const ushort MidiVendorId = 0x4D49;  // "MI"
         private const ushort MidiProductId = 0x4D44; // "MD"
 
+        // Relative-encoder pulse shaping. An endless encoder in two's-
+        // complement mode sends a CC value of 0x40 ± delta per detent
+        // (0x41 = +1, 0x3F = −1). Values within ±RelativeMax of center are
+        // read as relative deltas and turned into momentary "+"/"−" button
+        // pulses (one per detent); values further out are treated as an
+        // absolute fader and never pulse. Each pulse presses for PulseOnMs,
+        // releases for PulseGapMs, then the next queued detent fires — long
+        // enough for a 60 Hz poll to catch every step.
+        private const int RelativeCenter = 0x40; // 64
+        private const int RelativeMax = 16;
+        // 24 ms pressed guarantees overlap with at least one frame of a 60 Hz
+        // (16.7 ms) game poll; 12 ms gap caps throughput at ~28 detents/sec.
+        private const int PulseOnMs = 24;
+        private const int PulseGapMs = 12;
+        private const int MaxPendingPulses = 64;
+
         private readonly object _stateLock = new();
         private CustomInputState _state;
         private volatile bool _attached;
+
+        // Pulse machine state (per CC, ×2 for up/down: index 2*cc = up,
+        // 2*cc+1 = down). Lives on the device, not the snapshot, since the
+        // timing persists across polls. Guarded by _stateLock.
+        private readonly int[] _pulsePending = new int[MidiInputState.CcCount * 2];
+        private readonly byte[] _pulsePhase = new byte[MidiInputState.CcCount * 2]; // 0 idle, 1 on, 2 gap
+        private readonly long[] _pulsePhaseUntil = new long[MidiInputState.CcCount * 2];
 
         private readonly string _endpointId;
         private MidiEndpointConnection _connection;
@@ -208,11 +231,22 @@ namespace PadForge.Common.Input
         private void SetCc(int cc, int value7)
         {
             if (cc < 0 || cc >= MidiInputState.CcCount) return;
+            int v = Math.Clamp(value7, 0, 127);
             lock (_stateLock)
             {
                 var s = _state.Clone();
-                s.Midi.Cc[cc] = (byte)Math.Clamp(value7, 0, 127);
+                s.Midi.Cc[cc] = (byte)v;
                 _state = s;
+
+                // Relative-encoder reading: a value near 0x40 is a signed
+                // detent delta (0x41 = +1, 0x3F = −1). Queue one pulse per
+                // detent on the up/down lane. Values outside the relative
+                // band are an absolute fader and never pulse.
+                int delta = v - RelativeCenter;
+                if (delta > 0 && delta <= RelativeMax)
+                    _pulsePending[2 * cc] = Math.Min(MaxPendingPulses, _pulsePending[2 * cc] + delta);
+                else if (delta < 0 && -delta <= RelativeMax)
+                    _pulsePending[2 * cc + 1] = Math.Min(MaxPendingPulses, _pulsePending[2 * cc + 1] - delta);
             }
         }
 
@@ -228,7 +262,45 @@ namespace PadForge.Common.Input
 
         public CustomInputState GetCurrentState(bool forceRaw = false)
         {
-            lock (_stateLock) return _state.Clone();
+            lock (_stateLock)
+            {
+                // Advance the encoder pulse machine and stamp the momentary
+                // CcUp/CcDown button states into the snapshot.
+                long now = Environment.TickCount64;
+                var s = _state.Clone();
+                for (int i = 0; i < _pulsePending.Length; i++)
+                {
+                    bool pressed = false;
+                    switch (_pulsePhase[i])
+                    {
+                        case 0: // idle
+                            if (_pulsePending[i] > 0)
+                            {
+                                _pulsePhase[i] = 1;
+                                _pulsePhaseUntil[i] = now + PulseOnMs;
+                                pressed = true;
+                            }
+                            break;
+                        case 1: // pressed
+                            if (now < _pulsePhaseUntil[i]) pressed = true;
+                            else
+                            {
+                                _pulsePhase[i] = 2;
+                                _pulsePhaseUntil[i] = now + PulseGapMs;
+                                _pulsePending[i]--;
+                            }
+                            break;
+                        case 2: // release gap
+                            if (now >= _pulsePhaseUntil[i]) _pulsePhase[i] = 0;
+                            break;
+                    }
+                    int cc = i >> 1;
+                    if ((i & 1) == 0) s.Midi.CcUp[cc] = pressed;
+                    else s.Midi.CcDown[cc] = pressed;
+                }
+                _state = s;
+                return s.Clone();
+            }
         }
 
         private static Guid Md5Guid(string identifier)

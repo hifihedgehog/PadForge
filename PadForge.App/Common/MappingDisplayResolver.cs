@@ -479,7 +479,11 @@ namespace PadForge.Common
                 string display = MidiCcNames.TryGetValue(c, out string nm)
                     ? string.Format(si.Mapping_MidiCcNamed_Format, c, nm)
                     : string.Format(si.Mapping_MidiCc_Format, c);
+                // Absolute value (fader/knob), then the two relative-encoder
+                // pulse buttons (endless rotary → up/down).
                 list.Add(new InputChoice { Descriptor = $"Midi CC {c}", DisplayName = display });
+                list.Add(new InputChoice { Descriptor = $"Midi CC {c} Up", DisplayName = string.Format(si.Mapping_MidiCcUp_Format, c) });
+                list.Add(new InputChoice { Descriptor = $"Midi CC {c} Down", DisplayName = string.Format(si.Mapping_MidiCcDown_Format, c) });
             }
             list.Add(new InputChoice { Descriptor = "Midi Pitch Bend", DisplayName = si.Mapping_MidiPitchBend });
         }

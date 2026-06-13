@@ -560,12 +560,13 @@
                         </Viewbox>
 
                         <!-- MIDI: same piano + CC visual as the Pad page MIDI
-                             preview, full 0-127 range (issue #128). BindInput
-                             is wired in code-behind on selection. -->
-                        <local:MidiPreviewView x:Name="MidiInputPreview" Margin="0,0,0,8" Height="420"
-                                               HorizontalAlignment="Left">
-                            <local:MidiPreviewView.Style>
-                                <Style TargetType="local:MidiPreviewView">
+                             preview, full 0-127 range (issue #128). Notes and
+                             CCs are separate previews so their section titles
+                             are normal-size headers OUTSIDE the scaling Viewbox.
+                             BindInput is wired in code-behind on selection. -->
+                        <StackPanel Margin="0,0,0,8">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsMidiDevice}" Value="True">
@@ -573,8 +574,18 @@
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </local:MidiPreviewView.Style>
-                        </local:MidiPreviewView>
+                            </StackPanel.Style>
+
+                            <TextBlock Text="{Binding Preview_NoteOutputs, Source={x:Static strings:Strings.Instance}}"
+                                       FontSize="11" Opacity="0.6" Margin="0,0,0,3"/>
+                            <local:MidiPreviewView x:Name="MidiNotesPreview" Height="230" Margin="0,0,0,12"
+                                                   HorizontalAlignment="Stretch"/>
+
+                            <TextBlock Text="{Binding Preview_CCOutputs, Source={x:Static strings:Strings.Instance}}"
+                                       FontSize="11" Opacity="0.6" Margin="0,0,0,3"/>
+                            <local:MidiPreviewView x:Name="MidiCcPreview" Height="230"
+                                                   HorizontalAlignment="Stretch"/>
+                        </StackPanel>
 
                         <!-- POV Hats: compass indicators -->
                         <TextBlock Text="{Binding Devices_DPadPOV, Source={x:Static strings:Strings.Instance}}" FontSize="11" Opacity="0.6"

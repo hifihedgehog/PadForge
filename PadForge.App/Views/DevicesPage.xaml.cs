@@ -43,9 +43,15 @@ namespace PadForge.Views
             {
                 var vm = DataContext as ViewModels.DevicesViewModel;
                 if (vm != null && vm.IsMidiDevice)
-                    MidiInputPreview.BindInput(() => vm.LiveMidi);
+                {
+                    MidiNotesPreview.BindInput(() => vm.LiveMidi, Views.MidiPreviewView.InputSection.Notes);
+                    MidiCcPreview.BindInput(() => vm.LiveMidi, Views.MidiPreviewView.InputSection.Ccs);
+                }
                 else
-                    MidiInputPreview.UnbindInput();
+                {
+                    MidiNotesPreview.UnbindInput();
+                    MidiCcPreview.UnbindInput();
+                }
                 return;
             }
 

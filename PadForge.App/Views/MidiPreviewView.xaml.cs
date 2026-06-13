@@ -27,7 +27,14 @@ namespace PadForge.Views
         // no MidiConfig window, no click-to-record — the full 0-127 namespace
         // is laid out wrapped into octave rows and driven from a live
         // MidiInputState supplied by the caller each render frame.
+        /// <summary>Which slice of the MIDI namespace an input-mode preview
+        /// renders. Split so the Devices page can place normal-size section
+        /// headers OUTSIDE the Viewbox (an in-canvas label would scale down
+        /// with the keys and become unreadable).</summary>
+        public enum InputSection { Notes, Ccs }
+
         private bool _inputMode;
+        private InputSection _inputSection;
         private Func<MidiInputState> _inputSource;
 
         private bool _dirty;
@@ -125,12 +132,15 @@ namespace PadForge.Views
         }
 
         /// <summary>Drives the preview from a live MIDI INPUT state (full
-        /// 0-127 namespace, wrapped). <paramref name="source"/> is polled
-        /// each render frame and may return null until the first message.</summary>
-        public void BindInput(Func<MidiInputState> source)
+        /// 0-127 namespace, wrapped). Renders one <paramref name="section"/>
+        /// (notes or CCs) with no in-canvas title. <paramref name="source"/>
+        /// is polled each render frame and may return null until the first
+        /// message.</summary>
+        public void BindInput(Func<MidiInputState> source, InputSection section)
         {
             Unbind();
             _inputMode = true;
+            _inputSection = section;
             _inputSource = source;
             CompositionTarget.Rendering -= OnRendering;
             CompositionTarget.Rendering += OnRendering;
@@ -254,47 +264,46 @@ namespace PadForge.Views
             double topY = LayoutPadding;
             double maxRight = 0;
 
-            // ── CC sliders (all 128, wrapped) ──
-            var ccLabel = CreateLabel(Strings.Instance.Preview_CCOutputs, LayoutPadding, topY);
-            MidiCanvas.Children.Add(ccLabel);
-            topY += LabelHeight + 4;
-
-            double ccRowH = CcBarHeight + LabelHeight + 8;
-            for (int cc = 0; cc < 128; cc++)
+            // No in-canvas section title — the Devices page draws a normal-
+            // size header outside the Viewbox so it stays readable.
+            if (_inputSection == InputSection.Ccs)
             {
-                int row = cc / CcPerRow, col = cc % CcPerRow;
-                double cx = LayoutPadding + col * (CcBarWidth + 6);
-                double cy = topY + row * ccRowH;
-                _ccWidgets.Add(CreateCcSlider(cc, cc, cx, cy, inputMode: true));
-                maxRight = Math.Max(maxRight, cx + CcBarWidth);
+                // ── CC sliders (all 128, wrapped) ──
+                double ccRowH = CcBarHeight + LabelHeight + 8;
+                for (int cc = 0; cc < 128; cc++)
+                {
+                    int row = cc / CcPerRow, col = cc % CcPerRow;
+                    double cx = LayoutPadding + col * (CcBarWidth + 6);
+                    double cy = topY + row * ccRowH;
+                    _ccWidgets.Add(CreateCcSlider(cc, cc, cx, cy, inputMode: true));
+                    maxRight = Math.Max(maxRight, cx + CcBarWidth);
+                }
+                int ccRows = (128 + CcPerRow - 1) / CcPerRow;
+                topY += ccRows * ccRowH;
             }
-            int ccRows = (128 + CcPerRow - 1) / CcPerRow;
-            topY += ccRows * ccRowH + SectionGap;
-
-            // ── Piano keyboard (all 11 octaves, wrapped by octave) ──
-            var pianoLabel = CreateLabel(Strings.Instance.Preview_NoteOutputs, LayoutPadding, topY);
-            MidiCanvas.Children.Add(pianoLabel);
-            topY += LabelHeight + 4;
-
-            double octaveWidth = 7 * WhiteKeyWidth;
-            double pianoRowH = WhiteKeyHeight + LabelHeight + 8;
-            int totalOctaves = (127 / 12) + 1; // 11 (octaves 0..10)
-            for (int oct = 0; oct < totalOctaves; oct++)
+            else
             {
-                int row = oct / OctavesPerRow, colOct = oct % OctavesPerRow;
-                double rowX = LayoutPadding + colOct * octaveWidth;
-                double rowY = topY + row * pianoRowH;
+                // ── Piano keyboard (all 11 octaves, wrapped by octave) ──
+                double octaveWidth = 7 * WhiteKeyWidth;
+                double pianoRowH = WhiteKeyHeight + LabelHeight + 8;
+                int totalOctaves = (127 / 12) + 1; // 11 (octaves 0..10)
+                for (int oct = 0; oct < totalOctaves; oct++)
+                {
+                    int row = oct / OctavesPerRow, colOct = oct % OctavesPerRow;
+                    double rowX = LayoutPadding + colOct * octaveWidth;
+                    double rowY = topY + row * pianoRowH;
 
-                int first = oct * 12;
-                int last = Math.Min(first + 11, 127);
-                var octNotes = new int[last - first + 1];
-                for (int n = first; n <= last; n++) octNotes[n - first] = n;
+                    int first = oct * 12;
+                    int last = Math.Min(first + 11, 127);
+                    var octNotes = new int[last - first + 1];
+                    for (int n = first; n <= last; n++) octNotes[n - first] = n;
 
-                BuildPianoKeys(octNotes, rowX, rowY, inputMode: true);
-                maxRight = Math.Max(maxRight, rowX + octaveWidth);
+                    BuildPianoKeys(octNotes, rowX, rowY, inputMode: true);
+                    maxRight = Math.Max(maxRight, rowX + octaveWidth);
+                }
+                int pianoRows = (totalOctaves + OctavesPerRow - 1) / OctavesPerRow;
+                topY += pianoRows * pianoRowH;
             }
-            int pianoRows = (totalOctaves + OctavesPerRow - 1) / OctavesPerRow;
-            topY += pianoRows * pianoRowH;
 
             MidiCanvas.Width = maxRight + LayoutPadding;
             MidiCanvas.Height = topY + LayoutPadding;

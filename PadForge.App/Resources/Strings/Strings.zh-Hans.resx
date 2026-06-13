@@ -1755,6 +1755,4 @@
   <data name="Mapping_MidiCc_Format" xml:space="preserve"><value>CC {0}</value></data>
   <data name="Mapping_MidiCcNamed_Format" xml:space="preserve"><value>CC {0} ({1})</value></data>
   <data name="Mapping_MidiPitchBend" xml:space="preserve"><value>弯音</value></data>
-  <data name="Devices_MidiNotes" xml:space="preserve"><value>音符</value></data>
-  <data name="Devices_MidiControllers" xml:space="preserve"><value>控制器 (CC)</value></data>
 </root>

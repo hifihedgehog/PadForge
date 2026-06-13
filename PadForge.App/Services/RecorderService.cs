@@ -54,6 +54,11 @@ namespace PadForge.Services
         /// baseline for the recorder to accept a bend as the bound input.</summary>
         private const int MidiPitchThreshold = 6000;
 
+        /// <summary>A CC value within this distance of center (0x40) is read
+        /// as a relative encoder (pulse buttons), not an absolute fader.
+        /// Matches MidiInputDevice.RelativeMax.</summary>
+        private const int MidiRelativeBand = 16;
+
         // ─────────────────────────────────────────────
         //  State
         // ─────────────────────────────────────────────
@@ -519,6 +524,25 @@ namespace PadForge.Services
                             }
                         }
                         if (noteFired) return;
+
+                        // Relative-encoder pulses (button-class): a turning
+                        // encoder fires a momentary CcUp/CcDown while its value
+                        // hovers near center. Gated near-center so a fader
+                        // sweeping past center isn't misread as an encoder.
+                        for (int i = 0; i < current.Midi.CcUp.Length; i++)
+                        {
+                            if (Math.Abs(current.Midi.Cc[i] - 0x40) > MidiRelativeBand) continue;
+                            if (current.Midi.CcUp[i] && !baseline.Midi.CcUp[i])
+                            {
+                                CompleteRecordingWithDescriptor($"Midi CC {i} Up", dg);
+                                return;
+                            }
+                            if (current.Midi.CcDown[i] && !baseline.Midi.CcDown[i])
+                            {
+                                CompleteRecordingWithDescriptor($"Midi CC {i} Down", dg);
+                                return;
+                            }
+                        }
                     }
                 }
 
@@ -541,6 +565,11 @@ namespace PadForge.Services
                     int bestCc = -1, bestCcDelta = MidiCcThreshold;
                     for (int i = 0; i < current.Midi.Cc.Length; i++)
                     {
+                        // Skip values in the relative band — those are encoders,
+                        // bound as pulse buttons above, not absolute faders. A
+                        // first-detent jump to ~0x41 would otherwise read as a
+                        // big axis move from a 0 baseline.
+                        if (Math.Abs(current.Midi.Cc[i] - 0x40) <= MidiRelativeBand) continue;
                         int d = Math.Abs(current.Midi.Cc[i] - baseline.Midi.Cc[i]);
                         if (d > bestCcDelta) { bestCcDelta = d; bestCc = i; }
                     }

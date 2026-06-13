@@ -374,6 +374,8 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_MidiNote_Format => Get("Mapping_MidiNote_Format");
     public string Mapping_MidiCc_Format => Get("Mapping_MidiCc_Format");
     public string Mapping_MidiCcNamed_Format => Get("Mapping_MidiCcNamed_Format");
+    public string Mapping_MidiCcUp_Format => Get("Mapping_MidiCcUp_Format");
+    public string Mapping_MidiCcDown_Format => Get("Mapping_MidiCcDown_Format");
     public string Mapping_MidiPitchBend => Get("Mapping_MidiPitchBend");
     public string DeviceType_Device => Get("DeviceType_Device");
     public string Devices_AllKeyboardsMerged => Get("Devices_AllKeyboardsMerged");

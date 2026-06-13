@@ -388,7 +388,8 @@ namespace PadForge.Engine.Common.Mapping
             && descriptor.StartsWith("Midi ", StringComparison.Ordinal);
 
         /// <summary>Parses a MIDI descriptor into a kind and index.
-        /// kind: 'N' note, 'C' cc, 'P' pitch bend (index unused).
+        /// kind: 'N' note, 'C' cc absolute, 'U' cc encoder-up pulse,
+        /// 'D' cc encoder-down pulse, 'P' pitch bend (index unused).
         /// Returns false for anything that isn't a MIDI descriptor.</summary>
         private static bool TryParseMidi(string descriptor, out char kind, out int index)
         {
@@ -403,7 +404,16 @@ namespace PadForge.Engine.Common.Mapping
             { kind = 'N'; return index >= 0 && index < MidiInputState.NoteCount; }
             if (parts[1].Equals("CC", StringComparison.Ordinal) && parts.Length >= 3
                 && int.TryParse(parts[2], out index))
-            { kind = 'C'; return index >= 0 && index < MidiInputState.CcCount; }
+            {
+                // "Midi CC N" absolute, "Midi CC N Up"/"Down" encoder pulses.
+                kind = 'C';
+                if (parts.Length >= 4)
+                {
+                    if (parts[3].Equals("Up", StringComparison.Ordinal)) kind = 'U';
+                    else if (parts[3].Equals("Down", StringComparison.Ordinal)) kind = 'D';
+                }
+                return index >= 0 && index < MidiInputState.CcCount;
+            }
             if (parts[1].Equals("Pitch", StringComparison.Ordinal))
             { kind = 'P'; index = 0; return true; }
             return false;
@@ -1021,6 +1031,8 @@ namespace PadForge.Engine.Common.Mapping
                     case 'C':
                         int cdz = src.DeadZone > 0 ? src.DeadZone : 50;
                         return state.Midi.Cc[mi] > (int)(127 * cdz / 100.0);
+                    case 'U': return state.Midi.CcUp[mi];   // encoder CW pulse
+                    case 'D': return state.Midi.CcDown[mi]; // encoder CCW pulse
                     case 'P':
                         int pdelta = state.Midi.PitchBend - MidiInputState.PitchBendCenter;
                         if (pdelta < 0) pdelta = -pdelta;
@@ -1147,6 +1159,8 @@ namespace PadForge.Engine.Common.Mapping
                     // CC 0..127 → unipolar 0..1, then mapped to bipolar
                     // [-1..+1] the same way a slider source is.
                     case 'C': return state.Midi.Cc[mi] / 127f * 2f - 1f;
+                    case 'U': return state.Midi.CcUp[mi] ? 1f : 0f;   // pulse as 0/1
+                    case 'D': return state.Midi.CcDown[mi] ? 1f : 0f;
                     case 'P': return Math.Max(-1f, Math.Min(1f,
                         (state.Midi.PitchBend - MidiInputState.PitchBendCenter) / 32767f));
                 }
@@ -1240,6 +1254,8 @@ namespace PadForge.Engine.Common.Mapping
                     // CC 0..127 → unipolar 0..1 (a fader/expression pedal
                     // driving a trigger).
                     case 'C': return state.Midi.Cc[mi] / 127f;
+                    case 'U': return state.Midi.CcUp[mi] ? 1f : 0f;
+                    case 'D': return state.Midi.CcDown[mi] ? 1f : 0f;
                     case 'P': return Math.Abs(state.Midi.PitchBend - MidiInputState.PitchBendCenter) / 32767f;
                 }
                 return 0f;

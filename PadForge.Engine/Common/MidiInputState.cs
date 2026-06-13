@@ -13,9 +13,11 @@ namespace PadForge.Engine
     /// sub-state cost model (zero allocation when the capability is absent).
     ///
     /// Mapping descriptors that resolve against this state:
-    ///   "Midi Note N"   — note N held (N = 0..127)
-    ///   "Midi CC N"     — controller N value (N = 0..127)
-    ///   "Midi Pitch Bend" — pitch bend
+    ///   "Midi Note N"      — note N held (N = 0..127)
+    ///   "Midi CC N"        — controller N value, absolute (N = 0..127)
+    ///   "Midi CC N Up"     — relative-encoder clockwise pulse (momentary)
+    ///   "Midi CC N Down"   — relative-encoder counter-clockwise pulse
+    ///   "Midi Pitch Bend"  — pitch bend
     /// </summary>
     public sealed class MidiInputState
     {
@@ -34,6 +36,15 @@ namespace PadForge.Engine
         /// <summary>Controller values, 0–127. Indexed by CC number.</summary>
         public byte[] Cc;
 
+        /// <summary>Momentary "encoder turned clockwise" pulse per CC. An
+        /// endless rotary encoder in relative (two's-complement) mode pulses
+        /// this for one short window per detent; the device shapes the pulse
+        /// so a 60 Hz poll catches each step. Indexed by CC number.</summary>
+        public bool[] CcUp;
+
+        /// <summary>Momentary "encoder turned counter-clockwise" pulse per CC.</summary>
+        public bool[] CcDown;
+
         /// <summary>Pitch bend, scaled 0–65535 (center = <see cref="PitchBendCenter"/>).</summary>
         public int PitchBend;
 
@@ -41,6 +52,8 @@ namespace PadForge.Engine
         {
             Notes = new bool[NoteCount];
             Cc = new byte[CcCount];
+            CcUp = new bool[CcCount];
+            CcDown = new bool[CcCount];
             PitchBend = PitchBendCenter;
         }
 
@@ -49,6 +62,8 @@ namespace PadForge.Engine
             var clone = new MidiInputState();
             Array.Copy(Notes, clone.Notes, NoteCount);
             Array.Copy(Cc, clone.Cc, CcCount);
+            Array.Copy(CcUp, clone.CcUp, CcCount);
+            Array.Copy(CcDown, clone.CcDown, CcCount);
             clone.PitchBend = PitchBend;
             return clone;
         }

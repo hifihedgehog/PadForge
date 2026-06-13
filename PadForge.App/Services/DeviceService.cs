@@ -53,7 +53,6 @@ namespace PadForge.Services
             _mainVm.Devices.HideDeviceRequested += OnHideDevice;
             _mainVm.Devices.RemoveDeviceRequested += OnRemoveDevice;
             _mainVm.Devices.DeviceHidingChanged += OnDeviceHidingChanged;
-            _mainVm.Devices.MidiConfigChanged += OnMidiConfigChanged;
         }
 
         /// <summary>
@@ -66,7 +65,6 @@ namespace PadForge.Services
             _mainVm.Devices.HideDeviceRequested -= OnHideDevice;
             _mainVm.Devices.RemoveDeviceRequested -= OnRemoveDevice;
             _mainVm.Devices.DeviceHidingChanged -= OnDeviceHidingChanged;
-            _mainVm.Devices.MidiConfigChanged -= OnMidiConfigChanged;
         }
 
         // ─────────────────────────────────────────────
@@ -392,52 +390,6 @@ namespace PadForge.Services
 
             _settingsService.MarkDirty();
             DeviceHidingStateChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// Raised after a MIDI input device's window settings were persisted.
-        /// MainWindow routes this to InputService to reconfigure the live
-        /// connection and refresh the capability surface. Arg = instance GUID.
-        /// </summary>
-        public event EventHandler<Guid> MidiInputConfigChanged;
-
-        /// <summary>
-        /// Handles a MIDI Input section edit from the Devices page. Clamps to
-        /// the same rules MidiInputDevice.ApplySettings enforces, writes the
-        /// clamped values back to the row so the UI shows what took effect,
-        /// persists to the UserDevice, and notifies listeners.
-        /// </summary>
-        private void OnMidiConfigChanged(object sender, Guid instanceGuid)
-        {
-            var row = _mainVm.Devices.FindByGuid(instanceGuid);
-            if (row == null) return;
-
-            var ud = SettingsManager.FindDeviceByInstanceGuid(instanceGuid);
-            if (ud == null) return;
-
-            int channel = Math.Clamp(row.MidiChannel, 0, 16);
-            bool pitchBend = row.MidiPitchBend;
-            int axisBudget = CustomInputState.MaxAxis - (pitchBend ? 1 : 0);
-            int startCc = Math.Clamp(row.MidiStartCc, 0, 127);
-            int ccCount = Math.Clamp(row.MidiCcCount, 0, Math.Min(axisBudget, 128 - startCc));
-            int startNote = Math.Clamp(row.MidiStartNote, 0, 127);
-            int noteCount = Math.Clamp(row.MidiNoteCount, 0, 128 - startNote);
-
-            row.MidiChannel = channel;
-            row.MidiStartCc = startCc;
-            row.MidiCcCount = ccCount;
-            row.MidiStartNote = startNote;
-            row.MidiNoteCount = noteCount;
-
-            ud.MidiChannel = channel;
-            ud.MidiStartCc = startCc;
-            ud.MidiCcCount = ccCount;
-            ud.MidiStartNote = startNote;
-            ud.MidiNoteCount = noteCount;
-            ud.MidiPitchBend = pitchBend;
-
-            _settingsService.MarkDirty();
-            MidiInputConfigChanged?.Invoke(this, instanceGuid);
         }
 
         // ─────────────────────────────────────────────

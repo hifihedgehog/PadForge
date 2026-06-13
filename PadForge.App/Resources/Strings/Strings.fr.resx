@@ -1751,13 +1751,10 @@
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>Aucun paquet de sons ajouté.</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Choisissez les fichiers audio du paquet</value></data>
   <data name="DeviceType_Midi" xml:space="preserve"><value>Contrôleur MIDI</value></data>
-  <data name="Devices_MidiInput" xml:space="preserve"><value>Entrée MIDI</value></data>
-  <data name="Devices_MidiInputDesc" xml:space="preserve"><value>Quels messages MIDI cet appareil expose pour le mappage. Les notes deviennent des boutons. Chaque CC devient un axe plus des boutons + et − pour les encodeurs sans fin.</value></data>
-  <data name="Devices_MidiChannelTooltip" xml:space="preserve"><value>Canal MIDI à écouter (1-16). 0 = tous les canaux.</value></data>
-  <data name="Devices_MidiCcCountTooltip" xml:space="preserve"><value>Combien de CC deviennent des axes.</value></data>
-  <data name="Devices_MidiStartCcTooltip" xml:space="preserve"><value>Premier numéro de CC de la fenêtre (0-127).</value></data>
-  <data name="Devices_MidiNoteCountTooltip" xml:space="preserve"><value>Combien de notes deviennent des boutons.</value></data>
-  <data name="Devices_MidiStartNoteTooltip" xml:space="preserve"><value>Premier numéro de note (0-127, 60 = do central).</value></data>
-  <data name="Devices_MidiPitchBend" xml:space="preserve"><value>Axe de pitch bend</value></data>
-  <data name="Devices_MidiPitchBendTooltip" xml:space="preserve"><value>Ajoute un axe de pitch bend après les axes CC.</value></data>
+  <data name="Mapping_MidiNote_Format" xml:space="preserve"><value>Note {0} ({1})</value></data>
+  <data name="Mapping_MidiCc_Format" xml:space="preserve"><value>CC {0}</value></data>
+  <data name="Mapping_MidiCcNamed_Format" xml:space="preserve"><value>CC {0} ({1})</value></data>
+  <data name="Mapping_MidiPitchBend" xml:space="preserve"><value>Pitch Bend</value></data>
+  <data name="Devices_MidiNotes" xml:space="preserve"><value>Notes</value></data>
+  <data name="Devices_MidiControllers" xml:space="preserve"><value>Contrôleurs (CC)</value></data>
 </root>

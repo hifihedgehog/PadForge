@@ -90,6 +90,13 @@ namespace PadForge.Engine
         /// </summary>
         public TouchpadInputState[] Touchpads;
 
+        /// <summary>
+        /// Full MIDI input namespace (all 128 notes + 128 CCs + pitch bend),
+        /// channel-merged. Null when the device is not a MIDI input. Same
+        /// lazily-allocated, nullable cost model as <see cref="Touchpads"/>.
+        /// </summary>
+        public MidiInputState Midi;
+
         /// <summary>Battery percentage from SDL3 (0..100, or -1 if unknown).
         /// Refreshed periodically by SdlDeviceWrapper, not every frame.</summary>
         public int BatteryPercent;
@@ -140,6 +147,7 @@ namespace PadForge.Engine
                 for (int i = 0; i < Touchpads.Length; i++)
                     clone.Touchpads[i] = Touchpads[i]?.Clone();
             }
+            clone.Midi = Midi?.Clone();
             clone.BatteryPercent = BatteryPercent;
             clone.BatteryCharging = BatteryCharging;
             return clone;

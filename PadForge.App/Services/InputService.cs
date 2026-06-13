@@ -1644,8 +1644,9 @@ namespace PadForge.Services
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
                 bool isMouse = ud.CapType == InputDeviceType.Mouse;
                 bool isTouchpad = ud.CapType == InputDeviceType.Touchpad;
+                bool isMidi = ud.CapType == InputDeviceType.Midi;
                 int[] btnIndices = ResolveButtonIndices(ud);
-                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad);
+                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad, isMidi);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad;
@@ -1682,8 +1683,9 @@ namespace PadForge.Services
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
                 bool isMouse = ud.CapType == InputDeviceType.Mouse;
                 bool isTouchpad2 = ud.CapType == InputDeviceType.Touchpad;
+                bool isMidi2 = ud.CapType == InputDeviceType.Midi;
                 int[] btnIndices = ResolveButtonIndices(ud);
-                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad2);
+                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad2, isMidi2);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad2;
@@ -1735,6 +1737,19 @@ namespace PadForge.Services
                     int idx = item.Index;
                     item.IsPressed = idx >= 0 && idx < state.Buttons.Length && state.Buttons[idx];
                 }
+            }
+
+            // MIDI preview: push the full namespace into the piano + CC
+            // displays (issue #128). state.Midi is null until the first
+            // message arrives, so guard it.
+            if (devVm.IsMidiDevice && state.Midi != null)
+            {
+                var midi = state.Midi;
+                for (int i = 0; i < devVm.MidiNotes.Count && i < midi.Notes.Length; i++)
+                    devVm.MidiNotes[i].IsOn = midi.Notes[i];
+                for (int i = 0; i < devVm.MidiCcs.Count && i < midi.Cc.Length; i++)
+                    devVm.MidiCcs[i].Value = midi.Cc[i];
+                devVm.MidiPitchBend = (midi.PitchBend - MidiInputState.PitchBendCenter) / 32767.0;
             }
 
             // Update POV hat values in-place.
@@ -5499,14 +5514,6 @@ namespace PadForge.Services
             row.ForceRawJoystickMode = ud.ForceRawJoystickMode;
             row.IsHidHideAvailable = _mainVm.Settings.IsHidHideInstalled;
 
-            // MIDI input window settings (issue #128).
-            row.MidiChannel = ud.MidiChannel;
-            row.MidiStartCc = ud.MidiStartCc;
-            row.MidiCcCount = ud.MidiCcCount;
-            row.MidiStartNote = ud.MidiStartNote;
-            row.MidiNoteCount = ud.MidiNoteCount;
-            row.MidiPitchBend = ud.MidiPitchBend;
-
             // Set internal device type key (DeviceType display is computed from this).
             row.DeviceTypeKey = ud.CapType switch
             {
@@ -5537,19 +5544,6 @@ namespace PadForge.Services
         /// re-enumeration. Called before uninstalling Windows MIDI Services.
         /// </summary>
         public void ShutdownMidiInputs() => _inputManager?.ShutdownMidiInputs();
-
-        /// <summary>
-        /// Re-applies a MIDI input device's persisted window settings to its
-        /// live connection, then refreshes the device list and the mapping
-        /// dropdowns so the new surface is immediately pickable.
-        /// </summary>
-        public void ReconfigureMidiInput(Guid instanceGuid)
-        {
-            if (_inputManager?.ReconfigureMidiInput(instanceGuid) != true)
-                return;
-            RefreshDeviceList();
-            RefreshMappingDropdowns();
-        }
 
         /// <summary>
         /// Forces a full re-sync of the device list UI from the current

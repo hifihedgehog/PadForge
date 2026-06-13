@@ -122,6 +122,29 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isTouchpadDevice, value);
         }
 
+        private bool _isMidiDevice;
+        /// <summary>Whether the currently selected device is a MIDI input
+        /// device (drives the piano + CC preview, issue #128).</summary>
+        public bool IsMidiDevice
+        {
+            get => _isMidiDevice;
+            set => SetProperty(ref _isMidiDevice, value);
+        }
+
+        /// <summary>Piano-key items for the MIDI preview (all 128 notes).</summary>
+        public ObservableCollection<MidiNoteKeyItem> MidiNotes { get; } = new();
+
+        /// <summary>Controller items for the MIDI preview (all 128 CCs).</summary>
+        public ObservableCollection<MidiCcItem> MidiCcs { get; } = new();
+
+        private double _midiPitchBend;
+        /// <summary>Pitch bend, normalized to -1..+1 (0 at rest).</summary>
+        public double MidiPitchBend
+        {
+            get => _midiPitchBend;
+            set => SetProperty(ref _midiPitchBend, value);
+        }
+
         private bool _hasTouchpadData;
         /// <summary>Whether the selected device has touchpad data to display.</summary>
         public bool HasTouchpadData
@@ -259,10 +282,10 @@ namespace PadForge.ViewModels
         /// are stored verbatim and used by the InputService update loop
         /// to read the matching <c>state.Buttons[Index]</c>.
         /// </summary>
-        internal void RebuildRawStateCollections(int axisCount, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false)
+        internal void RebuildRawStateCollections(int axisCount, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false)
         {
             RawAxes.Clear();
-            if (!isMouse)
+            if (!isMouse && !isMidi)
             {
                 for (int i = 0; i < axisCount; i++)
                     RawAxes.Add(new AxisDisplayItem { Index = i, Name = string.Format(Strings.Instance.Devices_Axis_Format, i) });
@@ -273,6 +296,20 @@ namespace PadForge.ViewModels
             IsKeyboardDevice = isKeyboard;
             IsMouseDevice = isMouse;
             IsTouchpadDevice = isTouchpad;
+
+            IsMidiDevice = isMidi;
+            if (MidiNotes.Count == 0 && isMidi)
+            {
+                for (int n = 0; n < PadForge.Engine.MidiInputState.NoteCount; n++)
+                    MidiNotes.Add(MidiNoteKeyItem.Build(n));
+                for (int c = 0; c < PadForge.Engine.MidiInputState.CcCount; c++)
+                    MidiCcs.Add(MidiCcItem.Build(c));
+            }
+            if (isMidi)
+            {
+                SelectedButtonTotal = 0;
+                return;
+            }
 
             int buttonCount = buttonIndices?.Count ?? 0;
 
@@ -308,6 +345,7 @@ namespace PadForge.ViewModels
             IsKeyboardDevice = false;
             IsMouseDevice = false;
             IsTouchpadDevice = false;
+            IsMidiDevice = false;
             HasRawData = false;
             HasGyroData = false;
             HasAccelData = false;
@@ -400,18 +438,6 @@ namespace PadForge.ViewModels
         public void NotifyDeviceHidingChanged(Guid instanceGuid)
         {
             DeviceHidingChanged?.Invoke(this, instanceGuid);
-        }
-
-        /// <summary>Raised when a MIDI input device's window settings change
-        /// (issue #128). Arg = instance GUID.</summary>
-        public event EventHandler<Guid> MidiConfigChanged;
-
-        /// <summary>
-        /// Notifies that a MIDI input device's window settings were edited.
-        /// </summary>
-        public void NotifyMidiConfigChanged(Guid instanceGuid)
-        {
-            MidiConfigChanged?.Invoke(this, instanceGuid);
         }
 
         // ─────────────────────────────────────────────

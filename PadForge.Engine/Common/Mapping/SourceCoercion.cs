@@ -41,6 +41,10 @@ namespace PadForge.Engine.Common.Mapping
                              // existence binds the device's sensor stream to
                              // the slot's motion channel; per-axis values are
                              // not coerced through this enum's scalar path.
+            Midi,            // "Midi Note N" / "Midi CC N" / "Midi Pitch Bend"
+                             // — read from CustomInputState.Midi (the full
+                             // MIDI namespace sub-state), never the gamepad
+                             // axis/button arrays.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -360,6 +364,8 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.Motion;
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
                 return SourceType.Gyro;
+            if (s.StartsWith("Midi ", StringComparison.Ordinal))
+                return SourceType.Midi;
 
             string[] parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2) return SourceType.Unmapped;
@@ -372,6 +378,35 @@ namespace PadForge.Engine.Common.Mapping
                 "pov"    => SourceType.PovDirection,
                 _        => SourceType.Unmapped,
             };
+        }
+
+        /// <summary>True for any MIDI-input descriptor
+        /// (<c>"Midi Note N"</c> / <c>"Midi CC N"</c> /
+        /// <c>"Midi Pitch Bend"</c>).</summary>
+        public static bool IsMidiDescriptor(string descriptor)
+            => !string.IsNullOrEmpty(descriptor)
+            && descriptor.StartsWith("Midi ", StringComparison.Ordinal);
+
+        /// <summary>Parses a MIDI descriptor into a kind and index.
+        /// kind: 'N' note, 'C' cc, 'P' pitch bend (index unused).
+        /// Returns false for anything that isn't a MIDI descriptor.</summary>
+        private static bool TryParseMidi(string descriptor, out char kind, out int index)
+        {
+            kind = '\0';
+            index = -1;
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            var parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 2 || !parts[0].Equals("Midi", StringComparison.Ordinal))
+                return false;
+            if (parts[1].Equals("Note", StringComparison.Ordinal) && parts.Length >= 3
+                && int.TryParse(parts[2], out index))
+            { kind = 'N'; return index >= 0 && index < MidiInputState.NoteCount; }
+            if (parts[1].Equals("CC", StringComparison.Ordinal) && parts.Length >= 3
+                && int.TryParse(parts[2], out index))
+            { kind = 'C'; return index >= 0 && index < MidiInputState.CcCount; }
+            if (parts[1].Equals("Pitch", StringComparison.Ordinal))
+            { kind = 'P'; index = 0; return true; }
+            return false;
         }
 
         /// <summary>True for the bundled motion-source descriptors
@@ -974,6 +1009,26 @@ namespace PadForge.Engine.Common.Mapping
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
                 return ReadTouchpadBool(state, s);
 
+            if (s.StartsWith("Midi ", StringComparison.Ordinal))
+            {
+                if (state.Midi == null || !TryParseMidi(s, out char mk, out int mi)) return false;
+                switch (mk)
+                {
+                    case 'N': return state.Midi.Notes[mi];
+                    // CC as a button: pressed past the source deadzone
+                    // (default half-scale). Covers sustain pedals and
+                    // encoder/pad CC buttons.
+                    case 'C':
+                        int cdz = src.DeadZone > 0 ? src.DeadZone : 50;
+                        return state.Midi.Cc[mi] > (int)(127 * cdz / 100.0);
+                    case 'P':
+                        int pdelta = state.Midi.PitchBend - MidiInputState.PitchBendCenter;
+                        if (pdelta < 0) pdelta = -pdelta;
+                        return pdelta > 32767 / 2;
+                }
+                return false;
+            }
+
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
             {
                 float tunedRate = ReadTunedGyroRate(state, src, slotIndex, out int gyroAxis, out _);
@@ -1083,6 +1138,21 @@ namespace PadForge.Engine.Common.Mapping
                 return ReadTouchpadBool(state, s) ? 1f : 0f;
             }
 
+            if (s.StartsWith("Midi ", StringComparison.Ordinal))
+            {
+                if (state.Midi == null || !TryParseMidi(s, out char mk, out int mi)) return 0f;
+                switch (mk)
+                {
+                    case 'N': return state.Midi.Notes[mi] ? 1f : 0f;
+                    // CC 0..127 → unipolar 0..1, then mapped to bipolar
+                    // [-1..+1] the same way a slider source is.
+                    case 'C': return state.Midi.Cc[mi] / 127f * 2f - 1f;
+                    case 'P': return Math.Max(-1f, Math.Min(1f,
+                        (state.Midi.PitchBend - MidiInputState.PitchBendCenter) / 32767f));
+                }
+                return 0f;
+            }
+
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
             {
                 float tunedRate = ReadTunedGyroRate(state, src, slotIndex, out int gyroAxis, out var tuning);
@@ -1159,6 +1229,20 @@ namespace PadForge.Engine.Common.Mapping
                 // position; no bipolar centering).
                 if (TryReadTouchpadAxisRaw(state, s, out float unipolar)) return unipolar;
                 return ReadTouchpadBool(state, s) ? 1f : 0f;
+            }
+
+            if (s.StartsWith("Midi ", StringComparison.Ordinal))
+            {
+                if (state.Midi == null || !TryParseMidi(s, out char mk, out int mi)) return 0f;
+                switch (mk)
+                {
+                    case 'N': return state.Midi.Notes[mi] ? 1f : 0f;
+                    // CC 0..127 → unipolar 0..1 (a fader/expression pedal
+                    // driving a trigger).
+                    case 'C': return state.Midi.Cc[mi] / 127f;
+                    case 'P': return Math.Abs(state.Midi.PitchBend - MidiInputState.PitchBendCenter) / 32767f;
+                }
+                return 0f;
             }
 
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))

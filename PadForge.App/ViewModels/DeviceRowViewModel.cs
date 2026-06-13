@@ -203,7 +203,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsGamepad));
                     OnPropertyChanged(nameof(ShowInputModeSection));
                     OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
-                    OnPropertyChanged(nameof(ShowMidiSection));
+                    OnPropertyChanged(nameof(IsMidiDevice));
                 }
             }
         }
@@ -367,60 +367,9 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isHidHideAvailable, value);
         }
 
-        // ─────────────────────────────────────────────
-        //  MIDI input window settings (issue #128)
-        // ─────────────────────────────────────────────
-
-        /// <summary>True when the MIDI Input config section should render.</summary>
-        public bool ShowMidiSection => DeviceTypeKey == "Midi";
-
-        private int _midiChannel = 1;
-        /// <summary>MIDI channel filter: 1-16, 0 = all channels (omni).</summary>
-        public int MidiChannel
-        {
-            get => _midiChannel;
-            set => SetProperty(ref _midiChannel, value);
-        }
-
-        private int _midiStartCc = 1;
-        /// <summary>First CC number of the axis window.</summary>
-        public int MidiStartCc
-        {
-            get => _midiStartCc;
-            set => SetProperty(ref _midiStartCc, value);
-        }
-
-        private int _midiCcCount = 6;
-        /// <summary>How many CCs become axes.</summary>
-        public int MidiCcCount
-        {
-            get => _midiCcCount;
-            set => SetProperty(ref _midiCcCount, value);
-        }
-
-        private int _midiStartNote = 60;
-        /// <summary>First note number of the button window.</summary>
-        public int MidiStartNote
-        {
-            get => _midiStartNote;
-            set => SetProperty(ref _midiStartNote, value);
-        }
-
-        private int _midiNoteCount = 11;
-        /// <summary>How many notes become buttons.</summary>
-        public int MidiNoteCount
-        {
-            get => _midiNoteCount;
-            set => SetProperty(ref _midiNoteCount, value);
-        }
-
-        private bool _midiPitchBend;
-        /// <summary>Expose a pitch-bend axis after the CC axes.</summary>
-        public bool MidiPitchBend
-        {
-            get => _midiPitchBend;
-            set => SetProperty(ref _midiPitchBend, value);
-        }
+        /// <summary>True for MIDI input devices — drives the live piano /
+        /// CC preview on the Devices page (issue #128).</summary>
+        public bool IsMidiDevice => DeviceTypeKey == "Midi";
 
         /// <summary>Whether to show the "Consume mapped inputs" toggle (keyboards and mice only).</summary>
         public bool ShowConsumeToggle => DeviceTypeKey == "Keyboard" || DeviceTypeKey == "Mouse";

@@ -1739,18 +1739,11 @@ namespace PadForge.Services
                 }
             }
 
-            // MIDI preview: push the full namespace into the piano + CC
-            // displays (issue #128). state.Midi is null until the first
-            // message arrives, so guard it.
-            if (devVm.IsMidiDevice && state.Midi != null)
-            {
-                var midi = state.Midi;
-                for (int i = 0; i < devVm.MidiNotes.Count && i < midi.Notes.Length; i++)
-                    devVm.MidiNotes[i].IsOn = midi.Notes[i];
-                for (int i = 0; i < devVm.MidiCcs.Count && i < midi.Cc.Length; i++)
-                    devVm.MidiCcs[i].Value = midi.Cc[i];
-                devVm.MidiPitchBend = (midi.PitchBend - MidiInputState.PitchBendCenter) / 32767.0;
-            }
+            // MIDI preview: hand the live state to the MidiPreviewView, which
+            // polls it each render frame (issue #128). Null until the first
+            // message arrives.
+            if (devVm.IsMidiDevice)
+                devVm.LiveMidi = state.Midi;
 
             // Update POV hat values in-place.
             for (int i = 0; i < devVm.RawPovs.Count; i++)

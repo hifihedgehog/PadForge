@@ -375,8 +375,6 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_MidiCc_Format => Get("Mapping_MidiCc_Format");
     public string Mapping_MidiCcNamed_Format => Get("Mapping_MidiCcNamed_Format");
     public string Mapping_MidiPitchBend => Get("Mapping_MidiPitchBend");
-    public string Devices_MidiNotes => Get("Devices_MidiNotes");
-    public string Devices_MidiControllers => Get("Devices_MidiControllers");
     public string DeviceType_Device => Get("DeviceType_Device");
     public string Devices_AllKeyboardsMerged => Get("Devices_AllKeyboardsMerged");
     public string Devices_AllMiceMerged => Get("Devices_AllMiceMerged");

@@ -39,6 +39,16 @@ namespace PadForge.Views
 
         private void OnVmPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == nameof(ViewModels.DevicesViewModel.IsMidiDevice))
+            {
+                var vm = DataContext as ViewModels.DevicesViewModel;
+                if (vm != null && vm.IsMidiDevice)
+                    MidiInputPreview.BindInput(() => vm.LiveMidi);
+                else
+                    MidiInputPreview.UnbindInput();
+                return;
+            }
+
             if (e.PropertyName is nameof(ViewModels.DevicesViewModel.TouchpadX0)
                               or nameof(ViewModels.DevicesViewModel.TouchpadY0)
                               or nameof(ViewModels.DevicesViewModel.TouchpadX1)

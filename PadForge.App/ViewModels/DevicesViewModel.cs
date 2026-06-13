@@ -124,26 +124,17 @@ namespace PadForge.ViewModels
 
         private bool _isMidiDevice;
         /// <summary>Whether the currently selected device is a MIDI input
-        /// device (drives the piano + CC preview, issue #128).</summary>
+        /// device (drives the MidiPreviewView piano + CC preview, issue #128).</summary>
         public bool IsMidiDevice
         {
             get => _isMidiDevice;
             set => SetProperty(ref _isMidiDevice, value);
         }
 
-        /// <summary>Piano-key items for the MIDI preview (all 128 notes).</summary>
-        public ObservableCollection<MidiNoteKeyItem> MidiNotes { get; } = new();
-
-        /// <summary>Controller items for the MIDI preview (all 128 CCs).</summary>
-        public ObservableCollection<MidiCcItem> MidiCcs { get; } = new();
-
-        private double _midiPitchBend;
-        /// <summary>Pitch bend, normalized to -1..+1 (0 at rest).</summary>
-        public double MidiPitchBend
-        {
-            get => _midiPitchBend;
-            set => SetProperty(ref _midiPitchBend, value);
-        }
+        /// <summary>Live MIDI input state of the selected MIDI device, set
+        /// each poll tick by InputService. MidiPreviewView (input mode)
+        /// polls this every render frame. Null until the first message.</summary>
+        public PadForge.Engine.MidiInputState LiveMidi { get; set; }
 
         private bool _hasTouchpadData;
         /// <summary>Whether the selected device has touchpad data to display.</summary>
@@ -298,15 +289,10 @@ namespace PadForge.ViewModels
             IsTouchpadDevice = isTouchpad;
 
             IsMidiDevice = isMidi;
-            if (MidiNotes.Count == 0 && isMidi)
-            {
-                for (int n = 0; n < PadForge.Engine.MidiInputState.NoteCount; n++)
-                    MidiNotes.Add(MidiNoteKeyItem.Build(n));
-                for (int c = 0; c < PadForge.Engine.MidiInputState.CcCount; c++)
-                    MidiCcs.Add(MidiCcItem.Build(c));
-            }
             if (isMidi)
             {
+                // The MidiPreviewView (input mode) renders the piano + CCs
+                // directly from LiveMidi; no per-key VM collections.
                 SelectedButtonTotal = 0;
                 return;
             }
@@ -346,6 +332,7 @@ namespace PadForge.ViewModels
             IsMouseDevice = false;
             IsTouchpadDevice = false;
             IsMidiDevice = false;
+            LiveMidi = null;
             HasRawData = false;
             HasGyroData = false;
             HasAccelData = false;

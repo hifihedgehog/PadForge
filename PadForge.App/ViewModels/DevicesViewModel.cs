@@ -292,7 +292,10 @@ namespace PadForge.ViewModels
             if (isMidi)
             {
                 // The MidiPreviewView (input mode) renders the piano + CCs
-                // directly from LiveMidi; no per-key VM collections.
+                // directly from LiveMidi; no per-key VM collections. Clear
+                // the generic lists so a previously-selected gamepad's axes /
+                // buttons / POV hats don't leak into the MIDI view.
+                RawPovs.Clear();
                 SelectedButtonTotal = 0;
                 return;
             }

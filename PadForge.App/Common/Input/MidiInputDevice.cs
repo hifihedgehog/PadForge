@@ -114,6 +114,10 @@ namespace PadForge.Common.Input
                 if (!_connection.Open())
                 {
                     _connection.MessageReceived -= OnMessageReceived;
+                    // CreateEndpointConnection already registered this
+                    // connection in the session; undo that on the failure
+                    // path too (the success path does it in Dispose).
+                    MidiInputRuntime.Disconnect(_connection);
                     _connection = null;
                     return false;
                 }

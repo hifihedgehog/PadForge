@@ -817,6 +817,14 @@ namespace PadForge.Common.Input
             // services uninstall) racing this polling-thread sweep.
             lock (_midiInputsLock)
             {
+                // Re-check under the lock: ShutdownMidiInputs may have set
+                // the flag (and disposed the session) between the unlocked
+                // check above and acquiring the lock. Without this, a stale
+                // endpoint snapshot would dev.Open() and lazily recreate the
+                // MidiSession that uninstall is about to remove.
+                if (_midiInputsSuppressed)
+                    return false;
+
                 foreach (var (id, name) in endpoints)
                 {
                     current.Add(id);

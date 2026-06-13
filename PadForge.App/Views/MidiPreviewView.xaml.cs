@@ -595,6 +595,12 @@ namespace PadForge.Views
             // by actual note / CC number against the full 0-127 arrays.
             if (_inputMode)
             {
+                // Skip the ~256-widget repaint when the Devices page is
+                // collapsed — the control stays bound (it's a persistent
+                // singleton), so without this the loop would run every frame
+                // against a hidden canvas.
+                if (!IsVisible) return;
+
                 var midi = _inputSource?.Invoke();
                 foreach (var w in _ccWidgets)
                 {

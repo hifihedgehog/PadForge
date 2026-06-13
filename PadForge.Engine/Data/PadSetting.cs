@@ -1043,6 +1043,7 @@ namespace PadForge.Engine.Data
             sb.Append(ButtonGuide); sb.Append('|');
             sb.Append(LeftThumbButton); sb.Append('|');
             sb.Append(RightThumbButton); sb.Append('|');
+            sb.Append(ButtonShare); sb.Append('|');
 
             // D-Pad
             sb.Append(DPad); sb.Append('|');
@@ -1249,6 +1250,22 @@ namespace PadForge.Engine.Data
                 }
             }
 
+            // Per-mapping bidirectional flags (parallel to the deadzone dict).
+            // Without these in the checksum, two devices identical except for a
+            // per-mapping Bidirectional flag collide on SaveToFile's dedup and
+            // the dropped device inherits the survivor's flag.
+            EnsureMappingBidirectionalDict();
+            if (_mappingBidirectionalDict.Count > 0)
+            {
+                sb.Append("MBD:");
+                var mbdKeys = new List<string>(_mappingBidirectionalDict.Keys);
+                mbdKeys.Sort(StringComparer.Ordinal);
+                foreach (var key in mbdKeys)
+                {
+                    sb.Append(key); sb.Append('='); sb.Append(_mappingBidirectionalDict[key]); sb.Append('|');
+                }
+            }
+
             // Per-(device, pad) touchpad gesture-detection settings.
             // Same shape as the gyro fix above — without these in the
             // checksum, two devices with otherwise-identical mappings
@@ -1331,6 +1348,7 @@ namespace PadForge.Engine.Data
             !string.IsNullOrEmpty(ButtonGuide) ||
             !string.IsNullOrEmpty(LeftThumbButton) ||
             !string.IsNullOrEmpty(RightThumbButton) ||
+            !string.IsNullOrEmpty(ButtonShare) ||
             !string.IsNullOrEmpty(DPad) ||
             !string.IsNullOrEmpty(DPadUp) ||
             !string.IsNullOrEmpty(DPadDown) ||
@@ -1373,6 +1391,7 @@ namespace PadForge.Engine.Data
             LeftShoulder = RightShoulder = "";
             ButtonBack = ButtonStart = ButtonGuide = "";
             LeftThumbButton = RightThumbButton = "";
+            ButtonShare = "";
             DPad = DPadUp = DPadDown = DPadLeft = DPadRight = "";
             LeftTrigger = RightTrigger = "";
             LeftThumbAxisX = LeftThumbAxisY = "";
@@ -1447,6 +1466,7 @@ namespace PadForge.Engine.Data
             Add(LeftShoulder); Add(RightShoulder);
             Add(ButtonBack); Add(ButtonStart); Add(ButtonGuide);
             Add(LeftThumbButton); Add(RightThumbButton);
+            Add(ButtonShare);
 
             // D-Pad
             Add(DPad); Add(DPadUp); Add(DPadDown); Add(DPadLeft); Add(DPadRight);

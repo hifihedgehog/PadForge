@@ -422,7 +422,7 @@
                      SelectionMode="Multiple">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <CheckBox Content="{Binding LayerName}"
+                        <CheckBox Content="{Binding DisplayName}"
                                   IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Mode=TwoWay}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

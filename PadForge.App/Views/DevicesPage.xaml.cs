@@ -280,6 +280,15 @@ namespace PadForge.Views
             }
             flyout.IsOpen = true;
 
+            // Remove the flyout from the panel once it closes — otherwise
+            // every re-toggle on a mouse/keyboard leaks a closed Flyout plus
+            // its captured handler closures into the singleton page's panel.
+            void RemoveFromPanel()
+            {
+                if (target.Parent is System.Windows.Controls.Panel p && p.Children.Contains(flyout))
+                    p.Children.Remove(flyout);
+            }
+
             proceedBtn.Click += (s, ev) =>
             {
                 flyout.IsOpen = false;
@@ -294,9 +303,10 @@ namespace PadForge.Views
                     cb.Checked += HidingToggle_Changed;
                 }
                 vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
+                RemoveFromPanel();
             };
 
-            cancelBtn.Click += (s, ev) => flyout.IsOpen = false;
+            cancelBtn.Click += (s, ev) => { flyout.IsOpen = false; RemoveFromPanel(); };
         }
 
         private void SubmitMapping_Click(object sender, RoutedEventArgs e)

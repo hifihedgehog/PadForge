@@ -213,7 +213,12 @@ namespace PadForge.Common.Input
             public uint PulseColor;
             public int PalettePulseIndex;
         }
-        private readonly Dictionary<Guid, DeviceState> _deviceStates = new();
+        // ConcurrentDictionary: GetOrCreateDeviceState inserts from the
+        // animation-timer thread (DrainInputPulses) while DispatchSnapshot
+        // reads it from the polling thread (battery-percent change); a plain
+        // Dictionary resizing during that read is undefined behavior, and two
+        // overlapping (non-serialized) timer callbacks could double-insert.
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, DeviceState> _deviceStates = new();
 
         // Per-device flag remembering whether PadForge's last dispatched
         // packet carried non-zero rumble. Drives the validFlag0 bit-0
@@ -457,14 +462,7 @@ namespace PadForge.Common.Input
         }
 
         private DeviceState GetOrCreateDeviceState(Guid deviceGuid)
-        {
-            if (!_deviceStates.TryGetValue(deviceGuid, out var state))
-            {
-                state = new DeviceState();
-                _deviceStates[deviceGuid] = state;
-            }
-            return state;
-        }
+            => _deviceStates.GetOrAdd(deviceGuid, _ => new DeviceState());
 
         /// <summary>Static provider returning every per-device
         /// <see cref="PlayStationSlotConfig"/> on a slot. The dispatcher's

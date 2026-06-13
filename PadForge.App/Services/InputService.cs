@@ -993,14 +993,14 @@ namespace PadForge.Services
                 _mainVm.Settings.PropertyChanged -= OnSettingsPropertyChanged;
                 _mainVm.Dashboard.PropertyChanged -= OnDashboardPropertyChanged;
                 _mainVm.Dashboard.ResetTouchpadOverlayPositionRequested -= OnResetTouchpadOverlayPosition;
-                _mainVm.Devices.PropertyChanged -= OnDevicesVmPropertyChanged;
 
-                foreach (var padVm in _mainVm.Pads)
-                {
-                    padVm.SelectedDeviceChanged -= OnSelectedDeviceChanged;
-                    padVm.MappingsRebuilt -= OnMappingsRebuilt;
-                    padVm.LayerActivated -= OnLayerActivated;
-                }
+                // NOTE: do NOT unsubscribe the constructor-only handlers here
+                // (Devices.PropertyChanged, and per-pad SelectedDeviceChanged /
+                // MappingsRebuilt / LayerActivated). Start() never re-adds them,
+                // so tearing them down on an engine Stop permanently breaks
+                // device-selection / mapping-rebuild / layer-switch until the
+                // app restarts. They are bound to app-lifetime VMs, not the
+                // engine, so they correctly persist across Stop/Start.
 
                 // Close overlay windows (not just hide — prevents shutdown hang).
                 if (_touchpadOverlay != null)

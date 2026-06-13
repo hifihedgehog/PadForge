@@ -935,7 +935,15 @@ namespace PadForge.Engine
 
         private static void MessagePumpThread()
         {
-            _wndProcDelegate = WndProc;
+            // Assign the WndProc delegate exactly ONCE and keep it rooted for
+            // the process lifetime. The window class "PadForgeRawInput" is
+            // process-global and is never unregistered (Stop only destroys the
+            // window), so its lpfnWndProc permanently points at THIS delegate's
+            // thunk. Reassigning on a later Start() (engine Stop→Start) would
+            // drop the only managed root to the original delegate; once GC
+            // collected it, the next WM_INPUT into the reused class would call
+            // a freed thunk → access violation. `??=` keeps the original alive.
+            _wndProcDelegate ??= WndProc;
             IntPtr hInstance = GetModuleHandleW(null);
             string className = "PadForgeRawInput";
             IntPtr classNamePtr = Marshal.StringToHGlobalUni(className);

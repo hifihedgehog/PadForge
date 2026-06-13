@@ -672,18 +672,22 @@ namespace PadForge.Common.Input
 
         // Per-device last-applied wheel rotation range + auto-center, so those
         // one-shot settings are only re-sent to the wheel when they change.
-        private readonly System.Collections.Generic.Dictionary<string, (int range, int ac)> _appliedWheelSettings = new();
+        // ConcurrentDictionary: the polling thread writes these every tick a
+        // wheel is assigned, while MarkDeviceOffline removes entries from a
+        // ThreadPool thread (web/overlay disconnect); a plain Dictionary
+        // resizing on the poll thread during that removal is undefined behavior.
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, (int range, int ac)> _appliedWheelSettings = new();
 
         // Per-device last-applied RPM LED bitmask, so the strip is only re-sent
         // when it changes (steady RPM = no write; blink/step = write on change).
-        private readonly System.Collections.Generic.Dictionary<string, int> _appliedLeds = new();
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, int> _appliedLeds = new();
 
         // Per-device last-applied wheel FFB force/condition. FFB is stateful — the wheel
         // firmware holds the last force until changed — so re-sending an unchanged force
         // every poll is a blocking HID write that halves the poll rate while a wheel is
         // connected (worst at idle: a steady stop/zero force re-sent every tick). Write the
         // force only when this signature changes.
-        private readonly System.Collections.Generic.Dictionary<string, WheelFfbSig> _appliedWheelFfb = new();
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, WheelFfbSig> _appliedWheelFfb = new();
         private readonly struct WheelFfbSig : System.IEquatable<WheelFfbSig>
         {
             public readonly bool HasCond, Dir; public readonly short Force;

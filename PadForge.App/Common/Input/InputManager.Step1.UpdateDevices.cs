@@ -591,9 +591,9 @@ namespace PadForge.Common.Input
             // of refreshing/updating a slot the firmware reset to empty.
             if (!string.IsNullOrEmpty(ud.DevicePath))
             {
-                _appliedWheelSettings.Remove(ud.DevicePath);
-                _appliedLeds.Remove(ud.DevicePath);
-                _appliedWheelFfb.Remove(ud.DevicePath);
+                _appliedWheelSettings.TryRemove(ud.DevicePath, out _);
+                _appliedLeds.TryRemove(ud.DevicePath, out _);
+                _appliedWheelFfb.TryRemove(ud.DevicePath, out _);
                 LogitechRawHidWriter.ResetDevice(ud.DevicePath);
                 ThrustmasterRawHidWriter.ResetDevice(ud.DevicePath);
                 RawHidOutput.ResetDevice(ud.DevicePath);

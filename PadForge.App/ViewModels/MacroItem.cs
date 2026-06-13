@@ -662,6 +662,10 @@ namespace PadForge.ViewModels
                         if (entry != null) _triggerInputEntries.Add(entry);
                     }
                 }
+                // Wire the loaded entries so post-load per-entry edits (Invert /
+                // HalfAxis / Bidirectional / DeadZone) bubble up and autosave —
+                // the XML-load path previously left them unwired.
+                WireTriggerInputEntries();
                 OnPropertyChanged(nameof(TriggerInputs));
                 OnPropertyChanged(nameof(UsesRawTrigger));
                 OnPropertyChanged(nameof(UsesPovTrigger));

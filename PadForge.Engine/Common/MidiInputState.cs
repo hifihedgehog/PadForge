@@ -1,0 +1,56 @@
+using System;
+
+namespace PadForge.Engine
+{
+    /// <summary>
+    /// Full MIDI input namespace for one MIDI input device, channel-merged
+    /// (omni): a note or CC carries the same meaning regardless of the
+    /// channel it arrived on. Sized to the MIDI spec, not to the gamepad
+    /// axis/button arrays — every one of the 128 notes and 128 CCs is
+    /// always available, so a MIDI device needs no per-device window
+    /// configuration. Null on <see cref="CustomInputState"/> for any
+    /// non-MIDI device, mirroring the <see cref="TouchpadInputState"/>
+    /// sub-state cost model (zero allocation when the capability is absent).
+    ///
+    /// Mapping descriptors that resolve against this state:
+    ///   "Midi Note N"   — note N held (N = 0..127)
+    ///   "Midi CC N"     — controller N value (N = 0..127)
+    ///   "Midi Pitch Bend" — pitch bend
+    /// </summary>
+    public sealed class MidiInputState
+    {
+        /// <summary>Number of MIDI notes (0..127).</summary>
+        public const int NoteCount = 128;
+
+        /// <summary>Number of MIDI continuous controllers (0..127).</summary>
+        public const int CcCount = 128;
+
+        /// <summary>Pitch-bend value at rest (14-bit center, scaled to 0–65535).</summary>
+        public const int PitchBendCenter = 32768;
+
+        /// <summary>True while the note is held. Indexed by note number.</summary>
+        public bool[] Notes;
+
+        /// <summary>Controller values, 0–127. Indexed by CC number.</summary>
+        public byte[] Cc;
+
+        /// <summary>Pitch bend, scaled 0–65535 (center = <see cref="PitchBendCenter"/>).</summary>
+        public int PitchBend;
+
+        public MidiInputState()
+        {
+            Notes = new bool[NoteCount];
+            Cc = new byte[CcCount];
+            PitchBend = PitchBendCenter;
+        }
+
+        public MidiInputState Clone()
+        {
+            var clone = new MidiInputState();
+            Array.Copy(Notes, clone.Notes, NoteCount);
+            Array.Copy(Cc, clone.Cc, CcCount);
+            clone.PitchBend = PitchBend;
+            return clone;
+        }
+    }
+}

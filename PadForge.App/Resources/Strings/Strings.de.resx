@@ -1751,13 +1751,10 @@
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>Keine Soundpakete hinzugefügt.</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Sounddateien für das Paket auswählen</value></data>
   <data name="DeviceType_Midi" xml:space="preserve"><value>MIDI-Controller</value></data>
-  <data name="Devices_MidiInput" xml:space="preserve"><value>MIDI-Eingang</value></data>
-  <data name="Devices_MidiInputDesc" xml:space="preserve"><value>Welche MIDI-Nachrichten dieses Gerät zum Zuordnen bereitstellt. Noten werden Tasten. Jeder CC wird eine Achse plus +/−-Tasten für Endlos-Drehregler.</value></data>
-  <data name="Devices_MidiChannelTooltip" xml:space="preserve"><value>MIDI-Kanal zum Mithören (1-16). 0 = alle Kanäle.</value></data>
-  <data name="Devices_MidiCcCountTooltip" xml:space="preserve"><value>Wie viele CCs Achsen werden.</value></data>
-  <data name="Devices_MidiStartCcTooltip" xml:space="preserve"><value>Erste CC-Nummer des Fensters (0-127).</value></data>
-  <data name="Devices_MidiNoteCountTooltip" xml:space="preserve"><value>Wie viele Noten Tasten werden.</value></data>
-  <data name="Devices_MidiStartNoteTooltip" xml:space="preserve"><value>Erste Notennummer (0-127, 60 = mittleres C).</value></data>
-  <data name="Devices_MidiPitchBend" xml:space="preserve"><value>Pitch-Bend-Achse</value></data>
-  <data name="Devices_MidiPitchBendTooltip" xml:space="preserve"><value>Fügt nach den CC-Achsen eine Pitch-Bend-Achse hinzu.</value></data>
+  <data name="Mapping_MidiNote_Format" xml:space="preserve"><value>Note {0} ({1})</value></data>
+  <data name="Mapping_MidiCc_Format" xml:space="preserve"><value>CC {0}</value></data>
+  <data name="Mapping_MidiCcNamed_Format" xml:space="preserve"><value>CC {0} ({1})</value></data>
+  <data name="Mapping_MidiPitchBend" xml:space="preserve"><value>Pitch Bend</value></data>
+  <data name="Devices_MidiNotes" xml:space="preserve"><value>Noten</value></data>
+  <data name="Devices_MidiControllers" xml:space="preserve"><value>Controller (CC)</value></data>
 </root>

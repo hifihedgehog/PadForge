@@ -449,6 +449,41 @@ namespace PadForge.Common
         /// dropdown entries. Null = no gating, shows everything the
         /// device's hardware could support (the legacy behavior).</para>
         /// </summary>
+        private static readonly string[] MidiNoteLetters =
+            { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
+
+        private static readonly System.Collections.Generic.Dictionary<int, string> MidiCcNames = new()
+        {
+            [1] = "Mod Wheel", [2] = "Breath", [4] = "Foot Pedal",
+            [5] = "Portamento Time", [7] = "Volume", [8] = "Balance",
+            [10] = "Pan", [11] = "Expression", [64] = "Sustain",
+            [65] = "Portamento", [66] = "Sostenuto", [67] = "Soft Pedal",
+            [71] = "Resonance", [74] = "Brightness", [91] = "Reverb", [93] = "Chorus",
+        };
+
+        /// <summary>Emits the full MIDI namespace as input choices: notes as
+        /// buttons ("Midi Note N"), CCs ("Midi CC N"), and pitch bend.</summary>
+        private static void AddMidiChoices(System.Collections.Generic.List<InputChoice> list, Strings si)
+        {
+            for (int n = 0; n < PadForge.Engine.MidiInputState.NoteCount; n++)
+            {
+                string noteName = $"{MidiNoteLetters[n % 12]}{n / 12 - 1}";
+                list.Add(new InputChoice
+                {
+                    Descriptor = $"Midi Note {n}",
+                    DisplayName = string.Format(si.Mapping_MidiNote_Format, n, noteName),
+                });
+            }
+            for (int c = 0; c < PadForge.Engine.MidiInputState.CcCount; c++)
+            {
+                string display = MidiCcNames.TryGetValue(c, out string nm)
+                    ? string.Format(si.Mapping_MidiCcNamed_Format, c, nm)
+                    : string.Format(si.Mapping_MidiCc_Format, c);
+                list.Add(new InputChoice { Descriptor = $"Midi CC {c}", DisplayName = display });
+            }
+            list.Add(new InputChoice { Descriptor = "Midi Pitch Bend", DisplayName = si.Mapping_MidiPitchBend });
+        }
+
         internal static InputChoice[] BuildInputChoices(UserDevice ud,
             System.Func<int, PadForge.Engine.Touchpad.TouchpadGestureSettings> touchpadSettingsForPad = null)
         {
@@ -458,6 +493,16 @@ namespace PadForge.Common
                 return list.ToArray();
 
             var si = Strings.Instance;
+
+            // MIDI input devices expose the whole MIDI namespace, listed
+            // here (no DeviceObjects, no config): all 128 notes, all 128
+            // CCs, and pitch bend. The descriptors resolve through the
+            // "Midi ..." family in SourceCoercion against CustomInputState.Midi.
+            if (ud.CapType == PadForge.Engine.InputDeviceType.Midi)
+            {
+                AddMidiChoices(list, si);
+                return list.ToArray();
+            }
 
             if (ud.DeviceObjects != null && ud.DeviceObjects.Length > 0)
             {

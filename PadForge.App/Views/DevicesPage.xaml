@@ -291,59 +291,6 @@
                             <Separator Margin="0,2,0,8"/>
                         </StackPanel>
 
-                        <!-- ─── MIDI Input (MIDI devices only, issue #128) ─── -->
-                        <StackPanel Visibility="{Binding SelectedDevice.ShowMidiSection, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <TextBlock Text="{Binding Devices_MidiInput, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
-                                       FontSize="13" Margin="0,0,0,6"/>
-                            <TextBlock Text="{Binding Devices_MidiInputDesc, Source={x:Static strings:Strings.Instance}}"
-                                       FontSize="11" Opacity="0.7" TextWrapping="Wrap" Margin="0,0,0,8"/>
-
-                            <WrapPanel Margin="0,0,0,4">
-                                <TextBlock Text="{Binding Pad_MidiChannel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,4" FontSize="12"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           ToolTip="{Binding Devices_MidiChannelTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                <TextBox Width="44" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0,12,4"
-                                         Text="{Binding SelectedDevice.MidiChannel, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                         LostFocus="MidiInputConfig_Changed" KeyDown="MidiInputConfig_KeyDown"/>
-
-                                <TextBlock Text="{Binding Pad_MidiCCCount, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,4" FontSize="12"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           ToolTip="{Binding Devices_MidiCcCountTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                <TextBox Width="44" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0,12,4"
-                                         Text="{Binding SelectedDevice.MidiCcCount, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                         LostFocus="MidiInputConfig_Changed" KeyDown="MidiInputConfig_KeyDown"/>
-
-                                <TextBlock Text="{Binding Pad_MidiStartCC, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,4" FontSize="12"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           ToolTip="{Binding Devices_MidiStartCcTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                <TextBox Width="44" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0,12,4"
-                                         Text="{Binding SelectedDevice.MidiStartCc, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                         LostFocus="MidiInputConfig_Changed" KeyDown="MidiInputConfig_KeyDown"/>
-
-                                <TextBlock Text="{Binding Pad_MidiNoteCount, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,4" FontSize="12"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           ToolTip="{Binding Devices_MidiNoteCountTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                <TextBox Width="44" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0,12,4"
-                                         Text="{Binding SelectedDevice.MidiNoteCount, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                         LostFocus="MidiInputConfig_Changed" KeyDown="MidiInputConfig_KeyDown"/>
-
-                                <TextBlock Text="{Binding Pad_MidiStartNote, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,4" FontSize="12"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           ToolTip="{Binding Devices_MidiStartNoteTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                <TextBox Width="44" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0,12,4"
-                                         Text="{Binding SelectedDevice.MidiStartNote, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                         LostFocus="MidiInputConfig_Changed" KeyDown="MidiInputConfig_KeyDown"/>
-                            </WrapPanel>
-
-                            <CheckBox Content="{Binding Devices_MidiPitchBend, Source={x:Static strings:Strings.Instance}}"
-                                      IsChecked="{Binding SelectedDevice.MidiPitchBend, Mode=TwoWay}"
-                                      Checked="MidiInputConfig_Changed" Unchecked="MidiInputConfig_Changed"
-                                      ToolTip="{Binding Devices_MidiPitchBendTooltip, Source={x:Static strings:Strings.Instance}}"
-                                      Margin="0,0,0,4"/>
-
-                            <Separator Margin="0,2,0,8"/>
-                        </StackPanel>
-
                         <!-- ─── Input Hiding ─── -->
                         <TextBlock Text="{Binding Devices_InputHiding, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
                                    FontSize="13" Margin="0,0,0,6"
@@ -409,6 +356,9 @@
                                         <DataTrigger Binding="{Binding IsTouchpadDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsMidiDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
@@ -425,6 +375,9 @@
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsTouchpadDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsMidiDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -467,6 +420,9 @@
                                         <DataTrigger Binding="{Binding IsMouseDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsMidiDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
@@ -479,6 +435,9 @@
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsMouseDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsMidiDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -599,6 +558,105 @@
                             </Viewbox.Style>
                             <local:MousePreviewControl/>
                         </Viewbox>
+
+                        <!-- MIDI: live piano (wrapped, all 128 notes) + CC display -->
+                        <StackPanel Margin="0,0,0,8">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMidiDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+
+                            <!-- Notes -->
+                            <TextBlock Text="{Binding Devices_MidiNotes, Source={x:Static strings:Strings.Instance}}"
+                                       FontSize="11" Opacity="0.6" Margin="0,0,0,3"/>
+                            <ItemsControl ItemsSource="{Binding MidiNotes}" Margin="0,0,0,8">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Width="15" Height="38" CornerRadius="0,0,2,2" Margin="0"
+                                                BorderBrush="{DynamicResource SolidBackgroundFillColorBaseBrush}" BorderThickness="1"
+                                                ToolTip="{Binding Label}">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <!-- White key default -->
+                                                    <Setter Property="Background" Value="#E8E8E8"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsBlackKey}" Value="True">
+                                                            <Setter Property="Background" Value="#202020"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsOn}" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource SystemAccentColorSecondaryBrush}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <TextBlock Text="{Binding OctaveMarker}" FontSize="7"
+                                                       Foreground="#808080"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                                                       Margin="0,0,0,1"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <!-- Pitch bend -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Text="{Binding Mapping_MidiPitchBend, Source={x:Static strings:Strings.Instance}}"
+                                           FontSize="11" Opacity="0.6" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <Slider Minimum="-1" Maximum="1" Value="{Binding MidiPitchBend, Mode=OneWay}"
+                                        Width="160" IsEnabled="False" VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Controllers (CC) -->
+                            <TextBlock Text="{Binding Devices_MidiControllers, Source={x:Static strings:Strings.Instance}}"
+                                       FontSize="11" Opacity="0.6" Margin="0,0,0,3"/>
+                            <ItemsControl ItemsSource="{Binding MidiCcs}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Width="40" Height="34" Margin="0,0,3,3" CornerRadius="3"
+                                                Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                                ToolTip="{Binding Label}">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Opacity" Value="0.45"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                            <Setter Property="Opacity" Value="1"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <ProgressBar Grid.Row="0" Minimum="0" Maximum="1"
+                                                             Value="{Binding Normalized, Mode=OneWay}"
+                                                             Margin="3,3,3,1" Height="6" VerticalAlignment="Top"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Label}" FontSize="8"
+                                                           HorizontalAlignment="Center" Opacity="0.8" Margin="0,0,0,2"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
 
                         <!-- POV Hats: compass indicators -->
                         <TextBlock Text="{Binding Devices_DPadPOV, Source={x:Static strings:Strings.Instance}}" FontSize="11" Opacity="0.6"

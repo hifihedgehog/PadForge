@@ -597,11 +597,6 @@ namespace PadForge
                 _viewModel.Settings.RefreshDriverGuards();
             };
 
-            // Reconfigure the live MIDI input connection when its window
-            // settings change on the Devices page (issue #128).
-            _deviceService.MidiInputConfigChanged += (s, guid) =>
-                _inputService.ReconfigureMidiInput(guid);
-
             // After assigning a device to a slot, navigate to that controller page.
             _deviceService.NavigateToSlotRequested += (s, slotIndex) => NavigateToSlot(slotIndex);
 

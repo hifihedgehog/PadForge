@@ -65,6 +65,16 @@ namespace PadForge.Views
         private static Brush KeyBorderBrush => IsDarkTheme ? _kbD : _kbL;
         private static readonly Brush HoverBrush = F(0x40,0xA0,0xE0);
         private static readonly Brush FlashBrush = F(0xFF,0xA5,0x00);
+        // Relative-encoder pulse flash (input mode): the whole CC bar lights
+        // green on an up detent, orange on a down detent (issue #128).
+        private static readonly Brush CcUpPulseBrush = F(0x33,0xC0,0x55);
+        private static readonly Brush CcDownPulseBrush = F(0xE0,0x88,0x2A);
+
+        // Pulse latch (input mode): a detent's button pulse is only ~24 ms,
+        // too brief to see, so the preview holds the flash this long.
+        private const long PulseLatchMs = 180;
+        private readonly long[] _ccUpLitUntil = new long[MidiInputState.CcCount];
+        private readonly long[] _ccDownLitUntil = new long[MidiInputState.CcCount];
 
         // Layout constants
         private const double WhiteKeyWidth = 28;
@@ -263,6 +273,10 @@ namespace PadForge.Views
         {
             double topY = LayoutPadding;
             double maxRight = 0;
+
+            // Drop any stale encoder-pulse flashes from a previous binding.
+            Array.Clear(_ccUpLitUntil, 0, _ccUpLitUntil.Length);
+            Array.Clear(_ccDownLitUntil, 0, _ccDownLitUntil.Length);
 
             // No in-canvas section title — the Devices page draws a normal-
             // size header outside the Viewbox so it stays readable.
@@ -602,13 +616,40 @@ namespace PadForge.Views
                 if (!IsVisible) return;
 
                 var midi = _inputSource?.Invoke();
+                long now = Environment.TickCount64;
                 foreach (var w in _ccWidgets)
                 {
-                    double value = (midi?.Cc != null && w.CcNumber < midi.Cc.Length)
-                        ? midi.Cc[w.CcNumber] / 127.0 : 0;
+                    int cc = w.CcNumber;
+                    double value = (midi?.Cc != null && cc < midi.Cc.Length)
+                        ? midi.Cc[cc] / 127.0 : 0;
                     double fillH = Math.Clamp(value, 0, 1) * (CcBarHeight - 4);
                     w.Fill.Height = fillH;
                     Canvas.SetTop(w.Fill, w.Y + CcBarHeight - 2 - fillH);
+
+                    // Relative-encoder pulses: latch the flash so a ~24 ms
+                    // detent stays visible, then tint the WHOLE bar (an
+                    // encoder's value sits near center, so a half-fill is
+                    // meaningless — flood the cell). Green = clockwise,
+                    // orange = counter-clockwise.
+                    if (midi?.CcUp != null && cc < midi.CcUp.Length && midi.CcUp[cc])
+                        { _ccUpLitUntil[cc] = now + PulseLatchMs; _ccDownLitUntil[cc] = 0; }
+                    if (midi?.CcDown != null && cc < midi.CcDown.Length && midi.CcDown[cc])
+                        { _ccDownLitUntil[cc] = now + PulseLatchMs; _ccUpLitUntil[cc] = 0; }
+                    if (now < _ccUpLitUntil[cc])
+                    {
+                        w.Background.Fill = CcUpPulseBrush;
+                        w.Fill.Fill = CcUpPulseBrush;
+                    }
+                    else if (now < _ccDownLitUntil[cc])
+                    {
+                        w.Background.Fill = CcDownPulseBrush;
+                        w.Fill.Fill = CcDownPulseBrush;
+                    }
+                    else
+                    {
+                        w.Background.Fill = BgBrush;
+                        w.Fill.Fill = AccentBrush;
+                    }
                 }
                 foreach (var w in _keyWidgets)
                 {

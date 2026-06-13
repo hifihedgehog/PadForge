@@ -379,7 +379,11 @@ namespace PadForge.Services
                 finally
                 {
                     cts.Dispose();
-                    session?.SendGate.Dispose();
+                    // Don't dispose SendGate: a rumble send may still hold it,
+                    // and Release() on a disposed SemaphoreSlim throws into the
+                    // fire-and-forget send. The gate never touches
+                    // AvailableWaitHandle, so it holds no unmanaged handle and
+                    // the GC reclaims it with nothing to leak.
                 }
             }
             catch (Exception ex)

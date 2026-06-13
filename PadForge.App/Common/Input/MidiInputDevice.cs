@@ -29,21 +29,31 @@ namespace PadForge.Common.Input
         private const ushort MidiVendorId = 0x4D49;  // "MI"
         private const ushort MidiProductId = 0x4D44; // "MD"
 
-        // Relative-encoder pulse shaping. An endless encoder in two's-
-        // complement mode sends a CC value of 0x40 ± delta per detent
-        // (0x41 = +1, 0x3F = −1). Values within ±RelativeMax of center are
-        // read as relative deltas and turned into momentary "+"/"−" button
-        // pulses (one per detent); values further out are treated as an
-        // absolute fader and never pulse. Each pulse presses for PulseOnMs,
-        // releases for PulseGapMs, then the next queued detent fires — long
-        // enough for a 60 Hz poll to catch every step.
+        // Relative-encoder pulse shaping. An endless encoder in BINARY-OFFSET
+        // relative mode (a.k.a. "Relative 2") sends a CC value of 0x40 ± delta
+        // per detent (0x41 = +1, 0x3F = −1, center 0x40). Values within
+        // ±RelativeMax of center are read as relative deltas and turned into
+        // momentary "+"/"−" button pulses (one per detent); values further out
+        // are treated as an absolute fader and never pulse. Each pulse presses
+        // for PulseOnMs, releases for PulseGapMs, then the next queued detent
+        // fires — long enough for a 60 Hz poll to catch every step.
+        //
+        // Only binary-offset is decoded. Two's-complement ("Relative 1" /
+        // Mackie: 0x01 = +1, 0x7F = −1) and signed-bit ("Relative 3") modes
+        // are NOT handled — an encoder in those modes reads as absolute
+        // jumps. Most controllers default to binary-offset or are switchable.
         private const int RelativeCenter = 0x40; // 64
         private const int RelativeMax = 16;
         // 24 ms pressed guarantees overlap with at least one frame of a 60 Hz
         // (16.7 ms) game poll; 12 ms gap caps throughput at ~28 detents/sec.
         private const int PulseOnMs = 24;
         private const int PulseGapMs = 12;
-        private const int MaxPendingPulses = 64;
+        // Shallow queue: one detent = one ~36 ms press, so a button can emit
+        // at most ~28/sec. A faster spin would otherwise pile up pulses that
+        // keep firing for seconds after the encoder physically stops. Cap the
+        // backlog so any post-spin tail is at most 4 × 36 ms ≈ 144 ms; excess
+        // detents in a too-fast spin are dropped rather than lagged.
+        private const int MaxPendingPulses = 4;
 
         private readonly object _stateLock = new();
         private CustomInputState _state;

@@ -37,9 +37,9 @@ namespace PadForge.Engine
         public byte[] Cc;
 
         /// <summary>Momentary "encoder turned clockwise" pulse per CC. An
-        /// endless rotary encoder in relative (two's-complement) mode pulses
-        /// this for one short window per detent; the device shapes the pulse
-        /// so a 60 Hz poll catches each step. Indexed by CC number.</summary>
+        /// endless rotary encoder in binary-offset relative mode (0x41 = +1)
+        /// pulses this for one short window per detent; the device shapes the
+        /// pulse so a 60 Hz poll catches each step. Indexed by CC number.</summary>
         public bool[] CcUp;
 
         /// <summary>Momentary "encoder turned counter-clockwise" pulse per CC.</summary>

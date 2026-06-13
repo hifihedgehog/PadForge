@@ -5,7 +5,11 @@ namespace PadForge.Engine
     /// <summary>
     /// API-agnostic snapshot of a device's complete input state at a single point in time.
     /// All values use unsigned conventions:
-    ///   Axes/Sliders: 0–65535  (center = 32767)
+    ///   Stick axes:   0–65535  (center = 32768; the producer emits (ushort)(raw - short.MinValue),
+    ///                 so a centered raw 0 yields 32768 — see SdlDeviceWrapper. Any receiver doing
+    ///                 neutral/deadzone math must use 32768, not the 32767 arithmetic midpoint.)
+    ///   Trigger axes: 0–65535  (0-based: 0 = released, 65535 = full; not centered)
+    ///   Sliders:      0–65535
     ///   POVs:         centidegrees 0–35900, or -1 for centered
     ///   Buttons:      true = pressed, false = released
     ///

@@ -24,6 +24,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Pure-managed crypto (MIT) for the Remote Link pairing/transport: X25519
+         key agreement, Ed25519 static-key auth, ChaCha20-Poly1305 AEAD. The
+         in-box System.Security.Cryptography.ChaCha20Poly1305 is gated to Windows
+         11 (build 22000+); this managed implementation runs on the app's Win10
+         1809 floor, so it carries no OS gate and keeps the cipher suite pinned. -->
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <!-- Shared AssemblyVersion + AssemblyFileVersion — single source of truth
          across PadForge.App and PadForge.Engine. -->
     <Compile Include="..\SharedVersion.cs" Link="Properties\SharedVersion.cs" />

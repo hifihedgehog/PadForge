@@ -3811,6 +3811,21 @@ namespace PadForge.Services
         [XmlArrayItem("Package")]
         public SoundPackageData[] SoundPackages { get; set; }
 
+        // ── Remote Link (issue #138) — global (per-machine), not per-profile ──
+        /// <summary>This instance's static identity private key, DPAPI-protected
+        /// (base64). Empty until the first Remote Link use mints one.</summary>
+        [XmlElement]
+        public string RemoteLinkIdentityPrivate { get; set; } = "";
+
+        /// <summary>This instance's static identity public key (base64). Not secret.</summary>
+        [XmlElement]
+        public string RemoteLinkIdentityPublic { get; set; } = "";
+
+        /// <summary>Trusted paired peers. Old files lack this element and load as null.</summary>
+        [XmlArray("RemoteLinkPeers")]
+        [XmlArrayItem("Peer")]
+        public PadForge.Engine.RemoteLink.PeerTrust[] RemoteLinkPeers { get; set; }
+
         [XmlElement]
         public bool AutoStartEngine { get; set; } = true;
 

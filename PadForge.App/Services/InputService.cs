@@ -1451,7 +1451,12 @@ namespace PadForge.Services
                 }
             }
 
-            _inputManager.IsIdle = !anyActive;
+            // Stay at full poll rate while a paired peer is connected: this PC may be
+            // sharing its physical devices, and idling to ~20 Hz would sample that
+            // shared input choppily on the consumer even with no local slot active (#138).
+            bool remoteSharing = _linkServer != null && _linkServer.IsRunning && _linkServer.HasConnections;
+
+            _inputManager.IsIdle = !anyActive && !remoteSharing;
         }
 
         // ─────────────────────────────────────────────
@@ -4706,6 +4711,10 @@ namespace PadForge.Services
                 // Map this device's "peer://" path to its owner so every output
                 // chokepoint can ship its config-baked output back (issue #138).
                 RemoteLinkOutputRouter.Register(device.DevicePath, device.Info.PeerFingerprintHex, device.LinkSlot);
+                // A remote pad connects AFTER the startup audio-reconcile check, so its
+                // speaker-passthrough config is never seen. Kick the audio service now so
+                // the worker starts and evaluates this peer:// pad as a ship target (#138).
+                PadForge.Common.Input.AudioPassthroughService.Reconcile();
                 // Persist a freshly granted peer + refresh the manager list (the grant
                 // happened inside the handshake, just before this fires).
                 _dispatcher.BeginInvoke(() =>

@@ -48,6 +48,11 @@ namespace PadForge.Engine.RemoteLink
         public event Action<RemotePeerDevice> DeviceDisconnected;
         public event Action<string> StatusChanged;
 
+        /// <summary>Supplies the local devices to expose to a peer. Used by inbound
+        /// (responder) connections so both sides share their controllers, not just the
+        /// one that initiated. The outbound path passes its list to ConnectAsync.</summary>
+        public Func<IReadOnlyList<RemotePeerDeviceInfo>> ExposeProvider { get; set; }
+
         public LinkServer(PeerIdentity identity, PeerTrustStore trust, Func<PendingPairing, PairingApproval> approve,
             byte[] capabilities = null, Func<string> nowUtcProvider = null)
         {
@@ -214,9 +219,11 @@ namespace PadForge.Engine.RemoteLink
                 using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(HandshakeTimeoutSeconds));
                 using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct, timeout.Token);
                 var channel = new TcpControlChannel(client.GetStream());
-                var result = await LinkConnection.RunResponderAsync(channel, _identity, _trust, Array.Empty<RemotePeerDeviceInfo>(), _caps, _approve, _nowUtc(), linked.Token).ConfigureAwait(false);
+                // Expose our own devices to the peer too, so sharing is bidirectional.
+                var expose = ExposeProvider?.Invoke() ?? (IReadOnlyList<RemotePeerDeviceInfo>)Array.Empty<RemotePeerDeviceInfo>();
+                var result = await LinkConnection.RunResponderAsync(channel, _identity, _trust, expose, _caps, _approve, _nowUtc(), linked.Token).ConfigureAwait(false);
                 // The peer's UDP endpoint is learned from the first inbound datagram.
-                Register(result, client, peerUdpEndpoint: null, exposeLocal: Array.Empty<RemotePeerDeviceInfo>());
+                Register(result, client, peerUdpEndpoint: null, exposeLocal: expose);
             }
             catch (Exception ex)
             {
@@ -293,11 +300,11 @@ namespace PadForge.Engine.RemoteLink
 
                 if (type == LinkMessageType.Input)
                 {
-                    var dev = c.RemoteDevices.FirstOrDefault();
-                    // Pass the send timestamp so the device can drop a reordered older
-                    // frame (the replay window accepts in-window reorders; absolute
-                    // state must still apply newest-wins).
-                    dev?.ApplyFramePayload(payload, ts);
+                    // Route by slot id to the matching device (the peer streams each of
+                    // its devices on its own slot). Pass the send timestamp for
+                    // newest-wins (the replay window accepts in-window reorders).
+                    if (slot < c.RemoteDevices.Length)
+                        c.RemoteDevices[slot].ApplyFramePayload(payload, ts);
                 }
                 else if (type == LinkMessageType.Haptic)
                 {

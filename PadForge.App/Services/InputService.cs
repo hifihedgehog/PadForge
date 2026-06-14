@@ -4685,6 +4685,8 @@ namespace PadForge.Services
             }
 
             _linkServer = new LinkServer(identity, trust, ApprovePairing);
+            // Expose this PC's devices to inbound peers too (bidirectional sharing).
+            _linkServer.ExposeProvider = () => BuildExposedDevices();
             _linkServer.StatusChanged += s => _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = s);
             _linkServer.DeviceConnected += device =>
             {
@@ -4837,45 +4839,59 @@ namespace PadForge.Services
             await server.ConnectAsync(host, port, expose);
         }
 
-        /// <summary>Build the descriptor for the first online gamepad to share (M1 = one device),
-        /// and remember its live source for the stream timer.</summary>
+        /// <summary>Build descriptors for every online physical controller this PC
+        /// shares, and remember their live sources for the stream timer. The slot id
+        /// is the list index, matching the order the peer rebuilds the devices in.</summary>
         private IReadOnlyList<RemotePeerDeviceInfo> BuildExposedDevices()
         {
             var list = new List<RemotePeerDeviceInfo>();
-            lock (_remoteLinkExposedLock) _remoteLinkExposed.Clear();
+            var sources = new List<(RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)>();
 
             var devices = SettingsManager.UserDevices;
-            if (devices == null) return list;
-            lock (devices.SyncRoot)
+            if (devices != null)
             {
-                foreach (var ud in devices.Items)
+                lock (devices.SyncRoot)
                 {
-                    var dev = ud?.Device;
-                    if (ud == null || dev == null || !ud.IsOnline) continue;
-                    if (dev.GetInputDeviceType() != InputDeviceType.Gamepad) continue;
-
-                    var info = new RemotePeerDeviceInfo
+                    foreach (var ud in devices.Items)
                     {
-                        PeerLocalDeviceId = ud.InstanceGuid.ToString("N"),
-                        Name = dev.Name,
-                        VendorId = dev.VendorId,
-                        ProductId = dev.ProductId,
-                        NumAxes = dev.NumAxes,
-                        NumButtons = dev.NumButtons,
-                        NumHats = dev.NumHats,
-                        HasRumble = dev.HasRumble,
-                        HasRumbleTriggers = dev.HasRumbleTriggers,
-                        HasGyro = dev.HasGyro,
-                        HasAccel = dev.HasAccel,
-                        HasTouchpad = dev.HasTouchpad,
-                        InputDeviceType = dev.GetInputDeviceType(),
-                    };
-                    list.Add(info);
-                    lock (_remoteLinkExposedLock) _remoteLinkExposed.Add((info, dev, 0));
-                    break; // M1: share one device
+                        var dev = ud?.Device;
+                        if (ud == null || dev == null || !ud.IsOnline) continue;
+                        if (!IsShareableDevice(dev)) continue;
+                        if (list.Count >= 250) break; // slot id is a byte
+
+                        byte slot = (byte)list.Count;
+                        var info = new RemotePeerDeviceInfo
+                        {
+                            PeerLocalDeviceId = ud.InstanceGuid.ToString("N"),
+                            Name = dev.Name,
+                            VendorId = dev.VendorId,
+                            ProductId = dev.ProductId,
+                            NumAxes = dev.NumAxes,
+                            NumButtons = dev.NumButtons,
+                            NumHats = dev.NumHats,
+                            HasRumble = dev.HasRumble,
+                            HasRumbleTriggers = dev.HasRumbleTriggers,
+                            HasGyro = dev.HasGyro,
+                            HasAccel = dev.HasAccel,
+                            HasTouchpad = dev.HasTouchpad,
+                            InputDeviceType = dev.GetInputDeviceType(),
+                        };
+                        list.Add(info);
+                        sources.Add((info, dev, slot));
+                    }
                 }
             }
+            lock (_remoteLinkExposedLock) { _remoteLinkExposed.Clear(); _remoteLinkExposed.AddRange(sources); }
             return list;
+        }
+
+        /// <summary>Share every device the user sees in Devices — gamepads, joysticks,
+        /// wheels, keyboards, mice, MIDI, web, overlay. The ONE exclusion is a device
+        /// that is itself a remote peer's (peer://): re-sharing it would loop / relay.</summary>
+        private static bool IsShareableDevice(ISdlInputDevice dev)
+        {
+            string path = dev.DevicePath ?? "";
+            return !path.StartsWith("peer://", StringComparison.Ordinal);
         }
 
         private int _streamTickGuard;

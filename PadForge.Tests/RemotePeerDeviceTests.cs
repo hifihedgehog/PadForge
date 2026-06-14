@@ -44,6 +44,25 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void NewestWins_DropsReorderedOlderFrame()
+        {
+            var dev = new RemotePeerDevice(GamepadInfo());
+            var f1 = EncodeGamepad(s => s.Buttons[0] = true);
+            var f2 = EncodeGamepad(s => s.Buttons[1] = true);
+
+            Assert.True(dev.ApplyFramePayload(f2, 200));  // newer
+            Assert.True(dev.GetCurrentState().Buttons[1]);
+
+            Assert.False(dev.ApplyFramePayload(f1, 100)); // reordered older -> dropped
+            var s = dev.GetCurrentState();
+            Assert.True(s.Buttons[1]);                    // still the newer state
+            Assert.False(s.Buttons[0]);
+
+            Assert.True(dev.ApplyFramePayload(f1, 300));  // a genuinely newer frame applies
+            Assert.True(dev.GetCurrentState().Buttons[0]);
+        }
+
+        [Fact]
         public void MalformedFrame_DroppedAndLastGoodHeld()
         {
             var dev = new RemotePeerDevice(GamepadInfo());

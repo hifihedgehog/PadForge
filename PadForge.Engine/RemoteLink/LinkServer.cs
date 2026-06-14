@@ -35,6 +35,14 @@ namespace PadForge.Engine.RemoteLink
         private Socket _udp;
         private CancellationTokenSource _cts;
         private int _port;
+        private Timer _reaper;
+        private int _pendingHandshakes;
+
+        // Covers the human approval too; a slowloris (stalled handshake) still times
+        // out, and the concurrency cap bounds how many can pend (and pop dialogs) at once.
+        private const int HandshakeTimeoutSeconds = 180;
+        private const int MaxPendingHandshakes = 8;
+        private static readonly long IdleDropTicks = System.Diagnostics.Stopwatch.Frequency * 15; // 15s of no datagrams
 
         public event Action<RemotePeerDevice> DeviceConnected;
         public event Action<RemotePeerDevice> DeviceDisconnected;
@@ -73,8 +81,13 @@ namespace PadForge.Engine.RemoteLink
             _udp.Bind(new IPEndPoint(IPAddress.Any, port));
 
             IsRunning = true;
+            // Start the loops inline so the accept/receive registrations happen
+            // synchronously here (deferring to Task.Run made them late under load).
+            // ConfigureAwait(false) on their awaits keeps the continuations — and the
+            // approval callback — off the UI thread, so there is no deadlock.
             _ = AcceptLoopAsync(_cts.Token);
             _ = UdpLoopAsync(_cts.Token);
+            _reaper = new Timer(_ => { try { ReapDeadConnections(); } catch { } }, null, 5000, 5000);
             StatusChanged?.Invoke($"Listening on {port}");
         }
 
@@ -83,6 +96,7 @@ namespace PadForge.Engine.RemoteLink
             if (!IsRunning) return;
             IsRunning = false;
             try { _cts.Cancel(); } catch { }
+            _reaper?.Dispose(); _reaper = null;
             LinkPeerConnection[] conns;
             lock (_lock) { conns = _connections.ToArray(); _connections.Clear(); }
             foreach (var c in conns) DropConnection(c);
@@ -92,29 +106,48 @@ namespace PadForge.Engine.RemoteLink
             StatusChanged?.Invoke("Stopped");
         }
 
+        private void ReapDeadConnections()
+        {
+            long now = System.Diagnostics.Stopwatch.GetTimestamp();
+            LinkPeerConnection[] dead;
+            lock (_lock)
+            {
+                dead = _connections.Where(c => now - System.Threading.Interlocked.Read(ref c.LastActivityTicks) > IdleDropTicks).ToArray();
+                foreach (var c in dead) _connections.Remove(c);
+            }
+            foreach (var c in dead) { DropConnection(c); StatusChanged?.Invoke($"Peer {Short(c.PeerFingerprintHex)} timed out"); }
+        }
+
         /// <summary>Initiate an outbound pairing/reconnect to a peer, optionally exposing local devices.</summary>
         public async Task<bool> ConnectAsync(string host, int port, IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, CancellationToken ct = default)
         {
+            // IPv4 to match the IPv4 UDP data socket (the DsuMotionServer model);
+            // a default dual-stack TcpClient yields IPv4-mapped-IPv6 endpoints the
+            // IPv4 UDP socket can't SendTo.
+            var client = new TcpClient(AddressFamily.InterNetwork);
+            bool registered = false;
             try
             {
-                using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct, _cts?.Token ?? CancellationToken.None);
-                // IPv4 to match the IPv4 UDP data socket (the DsuMotionServer model);
-                // a default dual-stack TcpClient yields IPv4-mapped-IPv6 endpoints the
-                // IPv4 UDP socket can't SendTo.
-                var client = new TcpClient(AddressFamily.InterNetwork);
-                await client.ConnectAsync(host, port, linked.Token);
+                using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(HandshakeTimeoutSeconds));
+                using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct, _cts?.Token ?? CancellationToken.None, timeout.Token);
+                await client.ConnectAsync(host, port, linked.Token).ConfigureAwait(false);
                 var channel = new TcpControlChannel(client.GetStream());
-                var result = await LinkConnection.RunInitiatorAsync(channel, _identity, _trust, exposeLocal, _caps, _approve, _nowUtc(), linked.Token);
+                var result = await LinkConnection.RunInitiatorAsync(channel, _identity, _trust, exposeLocal, _caps, _approve, _nowUtc(), linked.Token).ConfigureAwait(false);
 
                 var peerIp = ((IPEndPoint)client.Client.RemoteEndPoint).Address;
                 if (peerIp.IsIPv4MappedToIPv6) peerIp = peerIp.MapToIPv4();
                 Register(result, client, new IPEndPoint(peerIp, port), exposeLocal);
+                registered = true;
                 return true;
             }
             catch (Exception ex)
             {
                 StatusChanged?.Invoke($"Connect failed: {ex.Message}");
                 return false;
+            }
+            finally
+            {
+                if (!registered) { try { client.Dispose(); } catch { } }
             }
         }
 
@@ -158,8 +191,18 @@ namespace PadForge.Engine.RemoteLink
             while (!ct.IsCancellationRequested)
             {
                 TcpClient client;
-                try { client = await _tcp.AcceptTcpClientAsync(ct); }
-                catch { break; }
+                try { client = await _tcp.AcceptTcpClientAsync(ct).ConfigureAwait(false); }
+                catch (OperationCanceledException) { break; }
+                catch (ObjectDisposedException) { break; }
+                catch (SocketException) { continue; } // transient — keep listening, don't kill the loop
+
+                // Bound concurrent in-flight handshakes (slowloris + dialog-spam DoS).
+                if (System.Threading.Interlocked.Increment(ref _pendingHandshakes) > MaxPendingHandshakes)
+                {
+                    System.Threading.Interlocked.Decrement(ref _pendingHandshakes);
+                    try { client.Dispose(); } catch { }
+                    continue;
+                }
                 _ = HandleResponderAsync(client, ct);
             }
         }
@@ -168,8 +211,10 @@ namespace PadForge.Engine.RemoteLink
         {
             try
             {
+                using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(HandshakeTimeoutSeconds));
+                using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct, timeout.Token);
                 var channel = new TcpControlChannel(client.GetStream());
-                var result = await LinkConnection.RunResponderAsync(channel, _identity, _trust, Array.Empty<RemotePeerDeviceInfo>(), _caps, _approve, _nowUtc(), ct);
+                var result = await LinkConnection.RunResponderAsync(channel, _identity, _trust, Array.Empty<RemotePeerDeviceInfo>(), _caps, _approve, _nowUtc(), linked.Token).ConfigureAwait(false);
                 // The peer's UDP endpoint is learned from the first inbound datagram.
                 Register(result, client, peerUdpEndpoint: null, exposeLocal: Array.Empty<RemotePeerDeviceInfo>());
             }
@@ -178,10 +223,21 @@ namespace PadForge.Engine.RemoteLink
                 StatusChanged?.Invoke($"Link rejected: {ex.Message}");
                 try { client.Dispose(); } catch { }
             }
+            finally { System.Threading.Interlocked.Decrement(ref _pendingHandshakes); }
         }
 
         private void Register(LinkConnectionResult result, TcpClient client, IPEndPoint peerUdpEndpoint, IReadOnlyList<RemotePeerDeviceInfo> exposeLocal)
         {
+            // Dedup: a reconnecting peer replaces its prior connection instead of
+            // stacking a second one (and leaking the old socket/devices).
+            LinkPeerConnection[] dupes;
+            lock (_lock)
+            {
+                dupes = _connections.Where(c => string.Equals(c.PeerFingerprintHex, result.PeerFingerprintHex, StringComparison.OrdinalIgnoreCase)).ToArray();
+                foreach (var d in dupes) _connections.Remove(d);
+            }
+            foreach (var d in dupes) DropConnection(d);
+
             var conn = new LinkPeerConnection
             {
                 DataSession = new LinkSession(result.DataKey, result.IsInitiator),
@@ -190,6 +246,7 @@ namespace PadForge.Engine.RemoteLink
                 Tcp = client,
                 PeerFingerprintHex = result.PeerFingerprintHex,
                 ExposedLocal = exposeLocal?.ToArray() ?? Array.Empty<RemotePeerDeviceInfo>(),
+                LastActivityTicks = System.Diagnostics.Stopwatch.GetTimestamp(),
             };
             lock (_lock) _connections.Add(conn);
             foreach (var d in conn.RemoteDevices) DeviceConnected?.Invoke(d);
@@ -226,17 +283,21 @@ namespace PadForge.Engine.RemoteLink
             // opens it. A failed open never advances a replay window.
             foreach (var c in conns)
             {
-                if (!c.DataSession.Open(datagram, out var type, out byte slot, out _, out byte[] payload))
+                if (!c.DataSession.Open(datagram, out var type, out byte slot, out ulong ts, out byte[] payload))
                     continue;
 
                 System.Threading.Interlocked.Increment(ref DiagDatagramsOpened);
+                System.Threading.Interlocked.Exchange(ref c.LastActivityTicks, System.Diagnostics.Stopwatch.GetTimestamp());
                 // Learn the peer's UDP endpoint on first verified datagram (responder side).
                 if (c.PeerUdpEndpoint == null) c.PeerUdpEndpoint = from;
 
                 if (type == LinkMessageType.Input)
                 {
                     var dev = c.RemoteDevices.FirstOrDefault();
-                    dev?.ApplyFramePayload(payload);
+                    // Pass the send timestamp so the device can drop a reordered older
+                    // frame (the replay window accepts in-window reorders; absolute
+                    // state must still apply newest-wins).
+                    dev?.ApplyFramePayload(payload, ts);
                 }
                 else if (type == LinkMessageType.Haptic)
                 {
@@ -269,6 +330,7 @@ namespace PadForge.Engine.RemoteLink
             public TcpClient Tcp;
             public string PeerFingerprintHex;
             public RemotePeerDeviceInfo[] ExposedLocal;
+            public long LastActivityTicks; // QPC; updated on each verified datagram, read by the reaper
         }
     }
 }

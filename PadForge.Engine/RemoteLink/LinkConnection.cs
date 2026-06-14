@@ -135,8 +135,11 @@ namespace PadForge.Engine.RemoteLink
                 throw new LinkConnectionException("Bad or unauthenticated device-list message.");
 
             string peerFpHex = Convert.ToHexString(result.PeerFingerprint);
+            List<RemotePeerDeviceInfo> peerInfos;
+            try { peerInfos = DecodeDeviceList(peerListPayload); }
+            catch { throw new LinkConnectionException("Malformed device-list payload."); }
             var remoteDevices = new List<RemotePeerDevice>();
-            foreach (var info in DecodeDeviceList(peerListPayload))
+            foreach (var info in peerInfos)
             {
                 info.PeerFingerprintHex = peerFpHex; // identity is salted by the authenticated peer key
                 remoteDevices.Add(new RemotePeerDevice(info));

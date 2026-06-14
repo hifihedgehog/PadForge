@@ -159,14 +159,26 @@ namespace PadForge.Engine.RemoteLink
         /// dropped and the last good state is held — the next heartbeat supersedes it.
         /// Returns true when a frame was applied.
         /// </summary>
-        public bool ApplyFramePayload(ReadOnlySpan<byte> payload)
+        private ulong _lastAppliedTs;
+
+        public bool ApplyFramePayload(ReadOnlySpan<byte> payload) => ApplyFrameInternal(payload, 0, checkOrder: false);
+
+        /// <summary>Apply a frame, dropping it if its send timestamp is older than the
+        /// last applied frame's — the anti-replay window accepts in-window reorders, so
+        /// absolute newest-wins is enforced here.</summary>
+        public bool ApplyFramePayload(ReadOnlySpan<byte> payload, ulong timestampUs) => ApplyFrameInternal(payload, timestampUs, checkOrder: true);
+
+        private bool ApplyFrameInternal(ReadOnlySpan<byte> payload, ulong timestampUs, bool checkOrder)
         {
             if (_disposed) return false;
             lock (_stateLock)
             {
+                if (checkOrder && _everReceived && timestampUs != 0 && timestampUs <= _lastAppliedTs)
+                    return false; // reordered older frame — newest already applied
                 if (!CustomInputStateCodec.DecodeInto(payload, _back)) return false;
                 (_currentState, _back) = (_back, _currentState);
                 _lastFrameTicks = _nowTicks();
+                if (timestampUs != 0) _lastAppliedTs = timestampUs;
                 _everReceived = true;
                 return true;
             }

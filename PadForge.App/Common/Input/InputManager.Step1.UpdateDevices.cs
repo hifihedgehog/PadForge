@@ -1044,17 +1044,43 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Snapshot of restricted device GUIDs, or null when none (early-out).</summary>
+        private Guid[] RestrictedSnapshot()
+        {
+            lock (_restrictedLock)
+            {
+                if (_restrictedDevices.Count == 0) return null;
+                var a = new Guid[_restrictedDevices.Count];
+                _restrictedDevices.CopyTo(a);
+                return a;
+            }
+        }
+
+        /// <summary>True if any of these macros is triggered by a restricted device,
+        /// even when it lives on a slot the restricted device isn't mapped to.</summary>
+        internal bool AnyMacroTriggerRestricted(PadForge.ViewModels.MacroItem[] macros)
+        {
+            if (macros == null) return false;
+            var restricted = RestrictedSnapshot();
+            if (restricted == null) return false;
+            foreach (var m in macros)
+            {
+                if (m == null) continue;
+                if (Array.IndexOf(restricted, m.TriggerDeviceGuid) >= 0) return true;
+                var entries = m.GetTriggerInputEntries();
+                if (entries != null)
+                    foreach (var e in entries)
+                        if (Array.IndexOf(restricted, e.DeviceGuid) >= 0) return true;
+            }
+            return false;
+        }
+
         /// <summary>True if any online restricted device is a source for this slot.
         /// Free when no peer is restricted (the common case early-outs).</summary>
         internal bool IsSlotRestricted(int slot)
         {
-            Guid[] restricted;
-            lock (_restrictedLock)
-            {
-                if (_restrictedDevices.Count == 0) return false;
-                restricted = new Guid[_restrictedDevices.Count];
-                _restrictedDevices.CopyTo(restricted);
-            }
+            Guid[] restricted = RestrictedSnapshot();
+            if (restricted == null) return false;
             var settings = SettingsManager.UserSettings;
             if (settings == null) return false;
             lock (settings.SyncRoot)

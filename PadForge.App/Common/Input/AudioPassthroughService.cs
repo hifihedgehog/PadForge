@@ -691,6 +691,9 @@ namespace PadForge.Common.Input
         // any shared pad wants the speaker path; ships 512-frame s16 48 kHz stereo
         // blocks to each remote target. Completely separate from the local-audio Sink
         // machinery, so it can never disturb a locally-rendered speaker.
+        // 256 frames * 2 ch * 2 B = 1024 B per shipped block; sealed (+30 B) it stays
+        // under the 1500 B MTU so the audio datagram is never IP-fragmented.
+        private const int RemoteAudioBlockBytes = 1024;
         private static volatile string[] _remoteShipPaths = Array.Empty<string>();
         private static NAudio.Wave.WasapiLoopbackCapture _loopback;
         private static readonly object _loopbackLock = new();
@@ -759,11 +762,15 @@ namespace PadForge.Common.Input
                     short sr = (short)Math.Clamp((int)((_lbPrevR + (r - _lbPrevR) * t) * 32767f), -32768, 32767);
                     _lbOut.Add((byte)sl); _lbOut.Add((byte)(sl >> 8));
                     _lbOut.Add((byte)sr); _lbOut.Add((byte)(sr >> 8));
-                    if (_lbOut.Count >= 2048)
+                    // Ship 256-frame blocks (1024 B). A 512-frame block sealed with the
+                    // 30 B header+tag is ~2078 B, which fragments above the 1500 B MTU and
+                    // gets dropped on the path (small effect datagrams arrive, audio didn't).
+                    // 1024 B + 30 = ~1054 B stays in one UDP datagram.
+                    if (_lbOut.Count >= RemoteAudioBlockBytes)
                     {
-                        var block = new byte[2048];
-                        _lbOut.CopyTo(0, block, 0, 2048);
-                        _lbOut.RemoveRange(0, 2048);
+                        var block = new byte[RemoteAudioBlockBytes];
+                        _lbOut.CopyTo(0, block, 0, RemoteAudioBlockBytes);
+                        _lbOut.RemoveRange(0, RemoteAudioBlockBytes);
                         foreach (var p in targets) RemoteLinkOutputRouter.ShipAudio(p, block);
                     }
                 }

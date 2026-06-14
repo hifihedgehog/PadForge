@@ -232,11 +232,17 @@ namespace PadForge.Engine.RemoteLink
             LinkPeerConnection[] conns;
             lock (_lock) conns = _connections.ToArray();
             ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
+            // Prefer a matching connection whose endpoint is already learned; a duplicate
+            // (e.g. a half-open responder side) with a null endpoint must not shadow the
+            // live one. Bailing on the first match the way the input push does would drop
+            // every output frame whenever a stale connection sorts first.
+            bool matched = false;
             foreach (var c in conns)
             {
                 if (!string.Equals(c.PeerFingerprintHex, peerFingerprint, StringComparison.OrdinalIgnoreCase)) continue;
+                matched = true;
                 var ep = c.PeerUdpEndpoint;
-                if (ep == null) { DiagLastError = "output: peer endpoint not learned yet"; return; }
+                if (ep == null) continue;
                 try
                 {
                     _udp.SendTo(c.DataSession.Seal(LinkMessageType.Output, slot, ts, payload), ep);
@@ -246,6 +252,7 @@ namespace PadForge.Engine.RemoteLink
                 catch (Exception ex) { DiagLastError = "output: " + ex.Message; }
                 return;
             }
+            if (matched) DiagLastError = "output: peer endpoint not learned yet";
         }
 
         // ── Accept / handshake (responder) ──────────────────────────────────

@@ -4759,6 +4759,7 @@ namespace PadForge.Services
                 RemoteLinkDiag.Log(
                     $"SNAP exposed={exposed} consumed={consumed} routes={RemoteLinkOutputRouter.RouteCount} | " +
                     $"IN sent={s.DiagDatagramsSent} recv={s.DiagDatagramsReceived} opened={s.DiagDatagramsOpened} | " +
+                    $"VC dec={RemoteLinkOutputRouter.VcDecoded} rcv={RemoteLinkOutputRouter.VcReceived} | " +
                     $"OUT cap.sony={RemoteLinkOutputRouter.SonyCaptured} cap.rumble={RemoteLinkOutputRouter.RumbleCaptured} " +
                     $"sent={s.DiagOutputSent} recv={s.DiagOutputReceived} applied={_outputApplied} srcNull={_outputSourceNull} | err='{s.DiagLastError}'");
             }, null, 2000, 2000);

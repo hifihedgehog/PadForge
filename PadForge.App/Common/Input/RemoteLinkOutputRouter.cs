@@ -48,7 +48,20 @@ namespace PadForge.Common.Input
 
         // Diagnostics (#138 M2 reverse-channel bring-up).
         public static long SonyCaptured, RumbleCaptured, Sent;
+        public static long VcDecoded, VcReceived; // VC output handler hits, before any gating
         public static int RouteCount => _routes.Count;
+
+        /// <summary>Diagnostic only: a virtual controller output handler fired on the
+        /// consumer. Tells us whether game feedback reaches the VC at all, and on which
+        /// slot, independent of routes/gating. Rate-limited so it can't flood.</summary>
+        public static void NoteVcOutput(int slot, string kind, string detail)
+        {
+            long n = kind == "decoded"
+                ? System.Threading.Interlocked.Increment(ref VcDecoded)
+                : System.Threading.Interlocked.Increment(ref VcReceived);
+            if (n == 1 || n % 240 == 0)
+                RemoteLinkDiag.Log($"VC {kind} fired slot={slot} {detail} n={n}");
+        }
 
         /// <summary>Replace the route table. Pass an empty/null map to stop forwarding.</summary>
         public static void SetRoutes(Dictionary<int, List<Target>> routes)

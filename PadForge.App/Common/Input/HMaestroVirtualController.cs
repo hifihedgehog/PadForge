@@ -665,11 +665,20 @@ namespace PadForge.Common.Input
                 int idx = FeedbackPadIndex;
                 if (idx < 0 || idx >= vibrationStates.Length) return;
 
-                if (e.Fields.TryGetValue("leftMotor", out var lmObj) && lmObj is byte left
+                bool hasLM = e.Fields.TryGetValue("leftMotor", out var lmObj) && lmObj is byte;
+                bool hasEP = e.Fields.TryGetValue("effectPayload", out var epPeek) && epPeek is byte[] epb && epb.Length > 0;
+                RemoteLinkOutputRouter.NoteVcOutput(idx, "decoded", $"vid={_profile?.VendorId:X4} ds5disp={(_ds5Dispatcher != null)} leftMotor={hasLM} effectPayload={hasEP}");
+
+                if (e.Fields.TryGetValue("leftMotor", out var lmObj2) && lmObj2 is byte left
                  && e.Fields.TryGetValue("rightMotor", out var rmObj) && rmObj is byte right)
                 {
                     vibrationStates[idx].LeftMotorSpeed  = (ushort)(left  * 257);
                     vibrationStates[idx].RightMotorSpeed = (ushort)(right * 257);
+                    // Universal rumble forward for a non-Sony VC. A Sony VC's rumble
+                    // rides the full effect packet below, so don't double-send there.
+                    if (_profile == null || _profile.VendorId != SonyVid)
+                        RemoteLinkOutputRouter.OnLocalRumble(idx,
+                            (ushort)(left * 257), (ushort)(right * 257), 0, 0);
                 }
 
                 if (_ds5Dispatcher != null
@@ -720,6 +729,7 @@ namespace PadForge.Common.Input
 
                 var data = pkt.Data.Span;
                 bool isXbox = HMaestroProfileCatalog.IsXboxProfile(_profile);
+                RemoteLinkOutputRouter.NoteVcOutput(idx, "received", $"src={pkt.Source} len={data.Length} isXbox={isXbox}");
 
                 // XInput vibration packet (IOCTL_XUSB_SET_STATE):
                 // [00, 08, leftHi, rightHi, reserved]. Chromium browser

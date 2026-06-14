@@ -76,6 +76,8 @@ namespace PadForge.Engine.RemoteLink
         public int DiagDatagramsReceived;
         public int DiagDatagramsOpened;
         public int DiagDatagramsSent;
+        public int DiagOutputSent;      // reverse-feedback frames we sealed+sent (#138 M2)
+        public int DiagOutputReceived;  // reverse-feedback frames we opened+surfaced
         public string DiagLastError;
 
         public void Start(int port)
@@ -239,6 +241,7 @@ namespace PadForge.Engine.RemoteLink
                 {
                     _udp.SendTo(c.DataSession.Seal(LinkMessageType.Output, slot, ts, payload), ep);
                     System.Threading.Interlocked.Increment(ref DiagDatagramsSent);
+                    System.Threading.Interlocked.Increment(ref DiagOutputSent);
                 }
                 catch (Exception ex) { DiagLastError = "output: " + ex.Message; }
                 return;
@@ -371,6 +374,7 @@ namespace PadForge.Engine.RemoteLink
                     // Reverse feedback from a consumer of one of OUR shared devices.
                     // Surface it for InputService to map slot -> physical device and
                     // drive the hardware (LinkServer is Engine-side, no UserDevices).
+                    System.Threading.Interlocked.Increment(ref DiagOutputReceived);
                     OutputReceived?.Invoke(c.PeerFingerprintHex, slot, payload);
                 }
                 return;

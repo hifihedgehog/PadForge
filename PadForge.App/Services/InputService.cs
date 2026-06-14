@@ -70,6 +70,10 @@ namespace PadForge.Services
         private System.Threading.Timer _remoteLinkDiagTimer;
         private readonly List<(RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)> _remoteLinkExposed = new();
         private readonly object _remoteLinkExposedLock = new();
+        // Stable link slot per shared device id (#138 live device sync) — a device keeps
+        // its slot while shared, so a device hot-plugged after connect routes by a slot
+        // that never shifts. Freed when the device stops being shared. Under the lock above.
+        private readonly Dictionary<string, byte> _exposedSlots = new();
         private InputHookManager _hookManager;
         private SettingsService _settingsService;
         private bool _disposed;
@@ -4837,6 +4841,11 @@ namespace PadForge.Services
             {
                 var s = _linkServer;
                 if (s == null) return;
+                // Live device sync (#138): re-publish OUR current shareable set to peers so a
+                // controller plugged in after connect appears (and one unplugged disappears)
+                // on the other end. BuildExposedDevices rebuilds the stream snapshot too, so
+                // a new device starts streaming. Cheap; once per 2 s.
+                try { s.PushDeviceList(BuildExposedDevices()); } catch { }
                 // Keep the peer-manager online dots live (connect/disconnect doesn't always
                 // raise a discovery change), on the UI thread.
                 var fps = s.ConnectedFingerprints();
@@ -5030,42 +5039,64 @@ namespace PadForge.Services
             var list = new List<RemotePeerDeviceInfo>();
             var sources = new List<(RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)>();
 
-            var devices = SettingsManager.UserDevices;
-            if (devices != null)
+            // Hold the exposed lock around stable-slot allocation + the snapshot update so
+            // concurrent calls (handshake / periodic push) agree on slots. Lock order is
+            // always exposed-lock -> device SyncRoot (never the reverse), so no deadlock.
+            lock (_remoteLinkExposedLock)
             {
-                lock (devices.SyncRoot)
+                var seenIds = new HashSet<string>();
+                var used = new HashSet<byte>(_exposedSlots.Values);
+                var devices = SettingsManager.UserDevices;
+                if (devices != null)
                 {
-                    foreach (var ud in devices.Items)
+                    lock (devices.SyncRoot)
                     {
-                        var dev = ud?.Device;
-                        if (ud == null || dev == null || !ud.IsOnline) continue;
-                        if (!IsShareableDevice(dev)) continue;
-                        if (list.Count >= 250) break; // slot id is a byte
-
-                        byte slot = (byte)list.Count;
-                        var info = new RemotePeerDeviceInfo
+                        foreach (var ud in devices.Items)
                         {
-                            PeerLocalDeviceId = ud.InstanceGuid.ToString("N"),
-                            Name = dev.Name,
-                            VendorId = dev.VendorId,
-                            ProductId = dev.ProductId,
-                            NumAxes = dev.NumAxes,
-                            NumButtons = dev.NumButtons,
-                            NumHats = dev.NumHats,
-                            HasRumble = dev.HasRumble,
-                            HasRumbleTriggers = dev.HasRumbleTriggers,
-                            HasHaptic = dev.HasHaptic,
-                            HasGyro = dev.HasGyro,
-                            HasAccel = dev.HasAccel,
-                            HasTouchpad = dev.HasTouchpad,
-                            InputDeviceType = dev.GetInputDeviceType(),
-                        };
-                        list.Add(info);
-                        sources.Add((info, dev, slot));
+                            var dev = ud?.Device;
+                            if (ud == null || dev == null || !ud.IsOnline) continue;
+                            if (!IsShareableDevice(dev)) continue;
+                            if (list.Count >= 250) break; // slot id is a byte
+
+                            string id = ud.InstanceGuid.ToString("N");
+                            seenIds.Add(id);
+                            if (!_exposedSlots.TryGetValue(id, out byte slot))
+                            {
+                                slot = 0; while (used.Contains(slot)) slot++; // lowest free slot
+                                _exposedSlots[id] = slot; used.Add(slot);
+                            }
+                            var info = new RemotePeerDeviceInfo
+                            {
+                                Slot = slot,
+                                Online = true,
+                                PeerLocalDeviceId = id,
+                                Name = dev.Name,
+                                VendorId = dev.VendorId,
+                                ProductId = dev.ProductId,
+                                NumAxes = dev.NumAxes,
+                                NumButtons = dev.NumButtons,
+                                NumHats = dev.NumHats,
+                                HasRumble = dev.HasRumble,
+                                HasRumbleTriggers = dev.HasRumbleTriggers,
+                                HasHaptic = dev.HasHaptic,
+                                HasGyro = dev.HasGyro,
+                                HasAccel = dev.HasAccel,
+                                HasTouchpad = dev.HasTouchpad,
+                                InputDeviceType = dev.GetInputDeviceType(),
+                            };
+                            list.Add(info);
+                            sources.Add((info, dev, slot));
+                        }
                     }
                 }
+                // Release slots held by devices that are no longer shared, so they can be
+                // reused — and the consumer drops them on the next sync.
+                foreach (var goneId in _exposedSlots.Keys.Where(k => !seenIds.Contains(k)).ToList())
+                    _exposedSlots.Remove(goneId);
+
+                _remoteLinkExposed.Clear();
+                _remoteLinkExposed.AddRange(sources);
             }
-            lock (_remoteLinkExposedLock) { _remoteLinkExposed.Clear(); _remoteLinkExposed.AddRange(sources); }
             return list;
         }
 

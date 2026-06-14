@@ -44,6 +44,16 @@ namespace PadForge.Engine.RemoteLink
         /// <summary>The peer device's input-device-type constant (see InputDeviceType).</summary>
         public int InputDeviceType { get; set; } = PadForge.Engine.InputDeviceType.Gamepad;
 
+        /// <summary>Whether the device is currently active on the owner (#138 live device
+        /// sync). Carried in the DeviceList message so the consumer shows active/inactive.</summary>
+        public bool Online { get; set; } = true;
+
+        /// <summary>The owner's STABLE link slot for this device (#138 live device sync) —
+        /// assigned once and kept while the device is shared, so a device hot-plugged after
+        /// connect routes input/output by a slot that never shifts. Carried in the device
+        /// list (handshake + periodic sync) so both ends agree on the routing slot.</summary>
+        public byte Slot { get; set; }
+
         /// <summary>The mappable inputs forwarded from the peer device's own
         /// GetDeviceObjects(). When null/empty, a gamepad shape is synthesized.</summary>
         public DeviceObjectItem[] DeviceObjects { get; set; }

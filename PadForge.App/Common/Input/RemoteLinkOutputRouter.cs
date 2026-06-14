@@ -105,6 +105,9 @@ namespace PadForge.Common.Input
         {
             _byPath.Clear();
             _lastSony.Clear(); _lastVib.Clear(); _lastWheel.Clear();
+            // Drop output leases too, or a stale lease would keep the owner's local
+            // output suppressed for up to OutputLeaseMs after Remote Link stops.
+            _outputLease.Clear();
         }
 
         // ── Ship: Sony effect (47/31-byte USB-shape body) ───────────────────

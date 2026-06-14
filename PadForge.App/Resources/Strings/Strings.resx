@@ -1933,4 +1933,22 @@
   <data name="RemoteLink_AutoReconnect" xml:space="preserve">
     <value>Reconnect automatically</value>
   </data>
+  <data name="RemoteLink_StatusListening" xml:space="preserve">
+    <value>Listening on {0}</value>
+  </data>
+  <data name="RemoteLink_StatusStartFailed" xml:space="preserve">
+    <value>Start failed: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerTimedOut" xml:space="preserve">
+    <value>Peer {0} timed out</value>
+  </data>
+  <data name="RemoteLink_StatusConnectFailed" xml:space="preserve">
+    <value>Connect failed: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusLinkRejected" xml:space="preserve">
+    <value>Link rejected: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
+    <value>Peer {0} connected, {1} device(s)</value>
+  </data>
 </root>

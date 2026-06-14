@@ -312,6 +312,12 @@ public class Strings : INotifyPropertyChanged
     public string RemoteLink_StatusWrongPassword => Get("RemoteLink_StatusWrongPassword");
     public string RemoteLink_StatusIdentityUnavailable => Get("RemoteLink_StatusIdentityUnavailable");
     public string RemoteLink_StatusConnecting => Get("RemoteLink_StatusConnecting");
+    public string RemoteLink_StatusListening => Get("RemoteLink_StatusListening");
+    public string RemoteLink_StatusStartFailed => Get("RemoteLink_StatusStartFailed");
+    public string RemoteLink_StatusPeerTimedOut => Get("RemoteLink_StatusPeerTimedOut");
+    public string RemoteLink_StatusConnectFailed => Get("RemoteLink_StatusConnectFailed");
+    public string RemoteLink_StatusLinkRejected => Get("RemoteLink_StatusLinkRejected");
+    public string RemoteLink_StatusPeerConnected => Get("RemoteLink_StatusPeerConnected");
     public string RemoteLink_AutoReconnect => Get("RemoteLink_AutoReconnect");
     public string Dashboard_TouchpadOverlay => Get("Dashboard_TouchpadOverlay");
     public string Dashboard_TouchpadOverlayDescription => Get("Dashboard_TouchpadOverlayDescription");

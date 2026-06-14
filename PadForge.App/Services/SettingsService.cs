@@ -3488,6 +3488,7 @@ namespace PadForge.Services
             _mainVm.Dashboard.EnableWebController = false;
             _mainVm.Dashboard.WebControllerPort = 8080;
             _mainVm.Dashboard.EnableRemoteLink = false;
+            _mainVm.Dashboard.AutoReconnect = true;
             _mainVm.Dashboard.RemoteLinkPort = 27500;
             SettingsManager.EnableAutoProfileSwitching = false;
             SettingsManager.ActiveProfileId = null;

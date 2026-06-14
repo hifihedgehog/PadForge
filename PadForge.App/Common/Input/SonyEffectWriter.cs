@@ -134,7 +134,11 @@ namespace PadForge.Common.Input
             // via SDL_SendGamepadEffect and re-frames for its own transport (USB/BT).
             if (RemoteLinkOutputRouter.IsPeerPath(devicePath))
             {
-                if (packet.Length >= 2 && packet[0] == 0x02)
+                // 0x02 = DualSense USB output report, 0x05 = DualShock 4 USB output report.
+                // A peer:// path is never classified Bluetooth, so these are the only two
+                // ids the consumer encoder produces here — accept both or DS4 output is
+                // silently dropped on the owner (#138 F29).
+                if (packet.Length >= 2 && (packet[0] == 0x02 || packet[0] == 0x05))
                     RemoteLinkOutputRouter.ShipSonyEffect(devicePath, packet.AsSpan(1));
                 return true; // handled remotely; no local write
             }

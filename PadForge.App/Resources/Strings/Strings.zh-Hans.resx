@@ -1850,4 +1850,91 @@
   <data name="RemoteLink_AutoReconnect" xml:space="preserve">
     <value>自动重新连接</value>
   </data>
+  <data name="Dashboard_EnableRemoteLink" xml:space="preserve">
+    <value>启用 Remote Link 服务器</value>
+  </data>
+  <data name="Dashboard_RemoteLink" xml:space="preserve">
+    <value>Remote Link</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve">
+    <value>或通过地址连接（高级）</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve">
+    <value>配对 / 连接</value>
+  </data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
+    <value>通过网络与另一台电脑上已配对的 PadForge 共享控制器。</value>
+  </data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
+    <value>完成一次配对后，受信任的电脑会自动重新连接。已配对的电脑可以控制此电脑的游戏手柄输出，除非加以限制，否则也能控制其键盘、鼠标和宏。</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNearby" xml:space="preserve">
+    <value>附近的电脑</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve">
+    <value>同一网络中已开启 Remote Link 的电脑会自动显示在此处。</value>
+  </data>
+  <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve">
+    <value>配对</value>
+  </data>
+  <data name="RemoteLink_Connect" xml:space="preserve">
+    <value>连接</value>
+  </data>
+  <data name="RemoteLink_Connected" xml:space="preserve">
+    <value>已连接</value>
+  </data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve">
+    <value>除非你将其限制为仅游戏手柄，否则已配对的电脑可以向此电脑发送键盘、鼠标和宏输入。</value>
+  </data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve">
+    <value>将此电脑限制为仅游戏手柄输入</value>
+  </data>
+  <data name="RemoteLink_Identity" xml:space="preserve">
+    <value>身份</value>
+  </data>
+  <data name="RemoteLink_NoPairedPeers" xml:space="preserve">
+    <value>尚未配对任何电脑。</value>
+  </data>
+  <data name="RemoteLink_Pair" xml:space="preserve">
+    <value>配对</value>
+  </data>
+  <data name="RemoteLink_PairedPeers" xml:space="preserve">
+    <value>已配对的电脑</value>
+  </data>
+  <data name="RemoteLink_PairedPeersDescription" xml:space="preserve">
+    <value>你为 Remote Link 配对过的电脑。撤销某台即可阻止其连接，之后它需要重新配对。</value>
+  </data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve">
+    <value>确认两边屏幕上的验证码一致后，再进行配对。</value>
+  </data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve">
+    <value>与远程电脑配对</value>
+  </data>
+  <data name="RemoteLink_Reject" xml:space="preserve">
+    <value>拒绝</value>
+  </data>
+  <data name="RemoteLink_Revoke" xml:space="preserve">
+    <value>撤销</value>
+  </data>
+  <data name="RemoteLink_RevokeAll" xml:space="preserve">
+    <value>全部撤销</value>
+  </data>
+  <data name="RemoteLink_StatusListening" xml:space="preserve">
+    <value>正在监听 {0}</value>
+  </data>
+  <data name="RemoteLink_StatusStartFailed" xml:space="preserve">
+    <value>启动失败：{0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerTimedOut" xml:space="preserve">
+    <value>电脑 {0} 已超时</value>
+  </data>
+  <data name="RemoteLink_StatusConnectFailed" xml:space="preserve">
+    <value>连接失败：{0}</value>
+  </data>
+  <data name="RemoteLink_StatusLinkRejected" xml:space="preserve">
+    <value>连接被拒绝：{0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
+    <value>电脑 {0} 已连接，{1} 个设备</value>
+  </data>
 </root>

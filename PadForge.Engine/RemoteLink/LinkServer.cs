@@ -46,7 +46,22 @@ namespace PadForge.Engine.RemoteLink
 
         public event Action<RemotePeerDevice> DeviceConnected;
         public event Action<RemotePeerDevice> DeviceDisconnected;
-        public event Action<string> StatusChanged;
+        // A status CODE, not English text: the App maps it to a localized string. Engine
+        // can't reach the App's resources, so it must not emit user-facing prose (#138 F35).
+        public event Action<LinkStatus> StatusChanged;
+
+        public enum LinkStatusKind { Listening, Stopped, StartFailed, PeerTimedOut, ConnectFailed, LinkRejected, PeerConnected }
+
+        public readonly struct LinkStatus
+        {
+            public LinkStatusKind Kind { get; }
+            public int Port { get; }
+            public string Peer { get; }       // short fingerprint, for PeerTimedOut / PeerConnected
+            public int DeviceCount { get; }   // for PeerConnected
+            public string Message { get; }    // exception text (already runtime English) for *Failed / Rejected
+            public LinkStatus(LinkStatusKind kind, int port = 0, string peer = null, int deviceCount = 0, string message = null)
+            { Kind = kind; Port = port; Peer = peer; DeviceCount = deviceCount; Message = message; }
+        }
 
         /// <summary>A paired peer sent reverse output (rumble / DualSense effect packet)
         /// for one of THIS PC's shared devices (issue #138 M2). Args: peer fingerprint,
@@ -90,18 +105,34 @@ namespace PadForge.Engine.RemoteLink
         public int DiagAudioReceived;   // speaker PCM blocks we opened+surfaced (#138)
         public string DiagLastError;
 
-        public void Start(int port)
+        public bool Start(int port)
         {
-            if (IsRunning) return;
+            if (IsRunning) return true;
             _port = port;
             _cts = new CancellationTokenSource();
 
-            _tcp = new TcpListener(IPAddress.Any, port);
-            _tcp.Start();
+            try
+            {
+                _tcp = new TcpListener(IPAddress.Any, port);
+                _tcp.Start();
 
-            _udp = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            try { _udp.IOControl(SIO_UDP_CONNRESET, new byte[4], null); } catch { /* non-Windows */ }
-            _udp.Bind(new IPEndPoint(IPAddress.Any, port));
+                _udp = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                try { _udp.IOControl(SIO_UDP_CONNRESET, new byte[4], null); } catch { /* non-Windows */ }
+                _udp.Bind(new IPEndPoint(IPAddress.Any, port));
+            }
+            catch (Exception ex)
+            {
+                // Port already held (stale socket / another process): tear the partial start
+                // down so we don't leak a live listener that re-collides on the next enable,
+                // and report failure so the caller can null us out (#138 F05).
+                try { _tcp?.Stop(); } catch { }
+                try { _udp?.Close(); } catch { }
+                try { _cts?.Dispose(); } catch { }
+                _tcp = null; _udp = null; _cts = null;
+                DiagLastError = "start: " + ex.Message;
+                StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.StartFailed, message: ex.Message));
+                return false;
+            }
 
             IsRunning = true;
             // Start the loops inline so the accept/receive registrations happen
@@ -114,7 +145,8 @@ namespace PadForge.Engine.RemoteLink
             // responder learns the initiator's endpoint even with no input flowing),
             // then reap genuinely dead ones.
             _reaper = new Timer(_ => { try { SendKeepalives(); ReapDeadConnections(); } catch { } }, null, 3000, 3000);
-            StatusChanged?.Invoke($"Listening on {port}");
+            StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.Listening, port: port));
+            return true;
         }
 
         public void Stop()
@@ -129,7 +161,7 @@ namespace PadForge.Engine.RemoteLink
             try { _tcp?.Stop(); } catch { }
             try { _udp?.Close(); } catch { }
             _cts?.Dispose();
-            StatusChanged?.Invoke("Stopped");
+            StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.Stopped));
         }
 
         private void SendKeepalives()
@@ -154,7 +186,7 @@ namespace PadForge.Engine.RemoteLink
                 dead = _connections.Where(c => now - System.Threading.Interlocked.Read(ref c.LastActivityTicks) > IdleDropTicks).ToArray();
                 foreach (var c in dead) _connections.Remove(c);
             }
-            foreach (var c in dead) { DropConnection(c); StatusChanged?.Invoke($"Peer {Short(c.PeerFingerprintHex)} timed out"); }
+            foreach (var c in dead) { DropConnection(c); StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.PeerTimedOut, peer: Short(c.PeerFingerprintHex))); }
         }
 
         /// <summary>Initiate an outbound pairing/reconnect to a peer, optionally exposing local devices.</summary>
@@ -181,7 +213,7 @@ namespace PadForge.Engine.RemoteLink
             }
             catch (Exception ex)
             {
-                StatusChanged?.Invoke($"Connect failed: {ex.Message}");
+                StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.ConnectFailed, message: ex.Message));
                 return false;
             }
             finally
@@ -327,7 +359,7 @@ namespace PadForge.Engine.RemoteLink
             }
             catch (Exception ex)
             {
-                StatusChanged?.Invoke($"Link rejected: {ex.Message}");
+                StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.LinkRejected, message: ex.Message));
                 try { client.Dispose(); } catch { }
             }
             finally { System.Threading.Interlocked.Decrement(ref _pendingHandshakes); }
@@ -365,7 +397,7 @@ namespace PadForge.Engine.RemoteLink
             }
             lock (_lock) _connections.Add(conn);
             foreach (var d in conn.RemoteDevices.Values) DeviceConnected?.Invoke(d);
-            StatusChanged?.Invoke($"Peer {Short(conn.PeerFingerprintHex)} connected, {conn.RemoteDevices.Count} device(s)");
+            StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.PeerConnected, peer: Short(conn.PeerFingerprintHex), deviceCount: conn.RemoteDevices.Count));
         }
 
         // ── UDP receive (data + learn-endpoint) ─────────────────────────────
@@ -446,40 +478,48 @@ namespace PadForge.Engine.RemoteLink
         /// exactly as it does for the handshake set. Runs on the UDP receive thread.</summary>
         private void ReconcileRemoteDevices(LinkPeerConnection c, List<RemotePeerDeviceInfo> infos)
         {
-            var present = new HashSet<byte>();
+            // Reconcile by the device's STABLE id (PeerLocalDeviceId), not its link slot. Keying
+            // by slot fired DeviceConnected for the new slot then DeviceDisconnected for the old
+            // one (same InstanceGuid), netting to "unregistered" and leaving a still-shared
+            // device offline with no output route when a device merely changed slot (#138 F37).
+            var byId = new Dictionary<string, RemotePeerDevice>(StringComparer.Ordinal);
+            foreach (var d in c.RemoteDevices.Values)
+                byId[d.Info.PeerLocalDeviceId ?? ""] = d;
+
+            var next = new System.Collections.Concurrent.ConcurrentDictionary<byte, RemotePeerDevice>();
+            var keptIds = new HashSet<string>(StringComparer.Ordinal);
             foreach (var info in infos)
             {
                 info.PeerFingerprintHex = c.PeerFingerprintHex; // identity salted by the authenticated key
-                present.Add(info.Slot);
-                if (c.RemoteDevices.TryGetValue(info.Slot, out var existing))
+                string id = info.PeerLocalDeviceId ?? "";
+                keptIds.Add(id);
+                if (byId.TryGetValue(id, out var existing))
                 {
-                    if (string.Equals(existing.Info.PeerLocalDeviceId, info.PeerLocalDeviceId, StringComparison.Ordinal))
-                    {
-                        existing.SetConnected(info.Online); // same device — just active/inactive
-                        continue;
-                    }
-                    // Slot now holds a different device: retire the old, add the new.
-                    if (c.RemoteDevices.TryRemove(info.Slot, out var stale))
-                    {
-                        stale.SetConnected(false);
-                        DeviceDisconnected?.Invoke(stale);
-                        stale.Dispose();
-                    }
+                    bool slotChanged = existing.LinkSlot != info.Slot;
+                    existing.LinkSlot = info.Slot;
+                    existing.SetConnected(info.Online); // same device — just active/inactive (+ maybe a new slot)
+                    next[info.Slot] = existing;
+                    // Re-register only when the slot moved, so the slot-stamped output route refreshes.
+                    if (slotChanged) DeviceConnected?.Invoke(existing);
                 }
-                var dev = new RemotePeerDevice(info) { LinkSlot = info.Slot };
-                dev.SetConnected(info.Online);
-                c.RemoteDevices[info.Slot] = dev;
-                DeviceConnected?.Invoke(dev);
+                else
+                {
+                    var dev = new RemotePeerDevice(info) { LinkSlot = info.Slot };
+                    dev.SetConnected(info.Online);
+                    next[info.Slot] = dev;
+                    DeviceConnected?.Invoke(dev);
+                }
             }
-            foreach (var slot in c.RemoteDevices.Keys.ToList())
+
+            var old = c.RemoteDevices;
+            c.RemoteDevices = next;
+            // Retire only the devices whose identity truly vanished from the owner's set.
+            foreach (var d in old.Values)
             {
-                if (present.Contains(slot)) continue;
-                if (c.RemoteDevices.TryRemove(slot, out var gone))
-                {
-                    gone.SetConnected(false);
-                    DeviceDisconnected?.Invoke(gone);
-                    gone.Dispose();
-                }
+                if (keptIds.Contains(d.Info.PeerLocalDeviceId ?? "")) continue;
+                d.SetConnected(false);
+                DeviceDisconnected?.Invoke(d);
+                d.Dispose();
             }
         }
 

@@ -1850,4 +1850,91 @@
   <data name="RemoteLink_AutoReconnect" xml:space="preserve">
     <value>Automatisch wieder verbinden</value>
   </data>
+  <data name="Dashboard_EnableRemoteLink" xml:space="preserve">
+    <value>Remote Link-Server aktivieren</value>
+  </data>
+  <data name="Dashboard_RemoteLink" xml:space="preserve">
+    <value>Remote Link</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve">
+    <value>Oder per Adresse verbinden (erweitert)</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve">
+    <value>Koppeln / Verbinden</value>
+  </data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
+    <value>Teilen Sie Controller mit einem gekoppelten PadForge auf einem anderen PC in Ihrem Netzwerk.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
+    <value>Nach einer einmaligen Kopplung verbindet sich ein vertrauenswürdiger PC automatisch erneut. Ein gekoppelter PC kann die Gamepad-Ausgabe dieses PCs steuern und, sofern Sie es nicht einschränken, auch dessen Tastatur, Maus und Makros.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNearby" xml:space="preserve">
+    <value>PCs in der Nähe</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve">
+    <value>PCs mit aktiviertem Remote Link im selben Netzwerk erscheinen hier automatisch.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve">
+    <value>Koppeln</value>
+  </data>
+  <data name="RemoteLink_Connect" xml:space="preserve">
+    <value>Verbinden</value>
+  </data>
+  <data name="RemoteLink_Connected" xml:space="preserve">
+    <value>Verbunden</value>
+  </data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve">
+    <value>Ein gekoppelter PC kann Tastatur-, Maus- und Makroeingaben an diesen PC senden, sofern Sie ihn nicht auf reine Gamepad-Eingabe beschränken.</value>
+  </data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve">
+    <value>Diesen PC auf reine Gamepad-Eingabe beschränken</value>
+  </data>
+  <data name="RemoteLink_Identity" xml:space="preserve">
+    <value>Identität</value>
+  </data>
+  <data name="RemoteLink_NoPairedPeers" xml:space="preserve">
+    <value>Noch keine gekoppelten PCs.</value>
+  </data>
+  <data name="RemoteLink_Pair" xml:space="preserve">
+    <value>Koppeln</value>
+  </data>
+  <data name="RemoteLink_PairedPeers" xml:space="preserve">
+    <value>Gekoppelte PCs</value>
+  </data>
+  <data name="RemoteLink_PairedPeersDescription" xml:space="preserve">
+    <value>PCs, die Sie für Remote Link gekoppelt haben. Widerrufen Sie einen, damit er sich nicht mehr verbinden kann. Er müsste sich dann erneut koppeln.</value>
+  </data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve">
+    <value>Bestätigen Sie, dass dieser Code auf beiden Bildschirmen übereinstimmt, und koppeln Sie dann.</value>
+  </data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve">
+    <value>Mit Remote-PC koppeln</value>
+  </data>
+  <data name="RemoteLink_Reject" xml:space="preserve">
+    <value>Ablehnen</value>
+  </data>
+  <data name="RemoteLink_Revoke" xml:space="preserve">
+    <value>Widerrufen</value>
+  </data>
+  <data name="RemoteLink_RevokeAll" xml:space="preserve">
+    <value>Alle widerrufen</value>
+  </data>
+  <data name="RemoteLink_StatusListening" xml:space="preserve">
+    <value>Empfangsbereit auf {0}</value>
+  </data>
+  <data name="RemoteLink_StatusStartFailed" xml:space="preserve">
+    <value>Start fehlgeschlagen: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerTimedOut" xml:space="preserve">
+    <value>Zeitüberschreitung bei PC {0}</value>
+  </data>
+  <data name="RemoteLink_StatusConnectFailed" xml:space="preserve">
+    <value>Verbindung fehlgeschlagen: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusLinkRejected" xml:space="preserve">
+    <value>Verbindung abgelehnt: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
+    <value>PC {0} verbunden, {1} Gerät(e)</value>
+  </data>
 </root>

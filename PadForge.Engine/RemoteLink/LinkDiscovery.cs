@@ -102,6 +102,10 @@ namespace PadForge.Engine.RemoteLink
             }
         }
 
+        // Cap the discovered-peer table so a LAN beacon flood (rotating fingerprints) can't
+        // grow it without bound; known peers keep refreshing and are never evicted by the cap (#138 F24).
+        private const int MaxPeers = 256;
+
         private void Announce()
         {
             try { _socket?.SendTo(_beacon, new IPEndPoint(IPAddress.Broadcast, DiscoveryPort)); }
@@ -126,7 +130,7 @@ namespace PadForge.Engine.RemoteLink
 
                 var from = (IPEndPoint)r.RemoteEndPoint;
                 var endpoint = new IPEndPoint(from.Address, linkPort);
-                bool changed;
+                bool changed = false;
                 lock (_lock)
                 {
                     if (_peers.TryGetValue(fpHex, out var existing))
@@ -135,7 +139,7 @@ namespace PadForge.Engine.RemoteLink
                         changed = existing.Name != name || !existing.Endpoint.Equals(endpoint);
                         if (changed) _peers[fpHex] = new DiscoveredPeer { Name = name, Endpoint = endpoint, FingerprintHex = fpHex, LastSeenTicks = _nowTicks() };
                     }
-                    else
+                    else if (_peers.Count < MaxPeers)
                     {
                         _peers[fpHex] = new DiscoveredPeer { Name = name, Endpoint = endpoint, FingerprintHex = fpHex, LastSeenTicks = _nowTicks() };
                         changed = true;

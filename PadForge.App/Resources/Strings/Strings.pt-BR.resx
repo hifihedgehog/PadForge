@@ -1850,4 +1850,91 @@
   <data name="RemoteLink_AutoReconnect" xml:space="preserve">
     <value>Reconectar automaticamente</value>
   </data>
+  <data name="Dashboard_EnableRemoteLink" xml:space="preserve">
+    <value>Ativar servidor do Remote Link</value>
+  </data>
+  <data name="Dashboard_RemoteLink" xml:space="preserve">
+    <value>Remote Link</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve">
+    <value>Ou conecte por endereço (avançado)</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve">
+    <value>Parear / Conectar</value>
+  </data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
+    <value>Compartilhe controles com um PadForge pareado em outro PC pela sua rede.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
+    <value>Após um pareamento único, um PC confiável reconecta automaticamente. Um PC pareado pode controlar a saída de gamepad deste PC e, a menos que você o limite, também o teclado, o mouse e as macros.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNearby" xml:space="preserve">
+    <value>PCs próximos</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve">
+    <value>PCs com o Remote Link ativado, na mesma rede, aparecem aqui automaticamente.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve">
+    <value>Parear</value>
+  </data>
+  <data name="RemoteLink_Connect" xml:space="preserve">
+    <value>Conectar</value>
+  </data>
+  <data name="RemoteLink_Connected" xml:space="preserve">
+    <value>Conectado</value>
+  </data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve">
+    <value>Um PC pareado pode enviar entrada de teclado, mouse e macros para este PC, a menos que você o limite a somente gamepad.</value>
+  </data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve">
+    <value>Limitar este PC a somente entrada de gamepad</value>
+  </data>
+  <data name="RemoteLink_Identity" xml:space="preserve">
+    <value>Identidade</value>
+  </data>
+  <data name="RemoteLink_NoPairedPeers" xml:space="preserve">
+    <value>Nenhum PC pareado ainda.</value>
+  </data>
+  <data name="RemoteLink_Pair" xml:space="preserve">
+    <value>Parear</value>
+  </data>
+  <data name="RemoteLink_PairedPeers" xml:space="preserve">
+    <value>PCs pareados</value>
+  </data>
+  <data name="RemoteLink_PairedPeersDescription" xml:space="preserve">
+    <value>PCs com os quais você pareou para o Remote Link. Revogue um para impedir que ele se conecte. Ele precisaria parear novamente.</value>
+  </data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve">
+    <value>Confirme que este código é igual nas duas telas e clique em Parear.</value>
+  </data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve">
+    <value>Parear com PC remoto</value>
+  </data>
+  <data name="RemoteLink_Reject" xml:space="preserve">
+    <value>Rejeitar</value>
+  </data>
+  <data name="RemoteLink_Revoke" xml:space="preserve">
+    <value>Revogar</value>
+  </data>
+  <data name="RemoteLink_RevokeAll" xml:space="preserve">
+    <value>Revogar todos</value>
+  </data>
+  <data name="RemoteLink_StatusListening" xml:space="preserve">
+    <value>Escutando em {0}</value>
+  </data>
+  <data name="RemoteLink_StatusStartFailed" xml:space="preserve">
+    <value>Falha ao iniciar: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerTimedOut" xml:space="preserve">
+    <value>O PC {0} atingiu o tempo limite</value>
+  </data>
+  <data name="RemoteLink_StatusConnectFailed" xml:space="preserve">
+    <value>Falha ao conectar: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusLinkRejected" xml:space="preserve">
+    <value>Link rejeitado: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
+    <value>PC {0} conectado, {1} dispositivo(s)</value>
+  </data>
 </root>

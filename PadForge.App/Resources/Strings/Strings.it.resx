@@ -1872,4 +1872,91 @@
   <data name="RemoteLink_AutoReconnect" xml:space="preserve">
     <value>Riconnetti automaticamente</value>
   </data>
+  <data name="Dashboard_EnableRemoteLink" xml:space="preserve">
+    <value>Attiva il server Remote Link</value>
+  </data>
+  <data name="Dashboard_RemoteLink" xml:space="preserve">
+    <value>Remote Link</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve">
+    <value>Oppure connetti tramite indirizzo (avanzate)</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve">
+    <value>Abbina / Connetti</value>
+  </data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
+    <value>Condividi i controller con un PadForge abbinato su un altro PC nella tua rete.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
+    <value>Dopo un abbinamento una tantum, un PC attendibile si riconnette automaticamente. Un PC abbinato può controllare l&apos;output del gamepad di questo PC e, se non lo limiti, anche tastiera, mouse e macro.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNearby" xml:space="preserve">
+    <value>PC nelle vicinanze</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve">
+    <value>I PC con Remote Link attivo, sulla stessa rete, compaiono qui automaticamente.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve">
+    <value>Abbina</value>
+  </data>
+  <data name="RemoteLink_Connect" xml:space="preserve">
+    <value>Connetti</value>
+  </data>
+  <data name="RemoteLink_Connected" xml:space="preserve">
+    <value>Connesso</value>
+  </data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve">
+    <value>Un PC abbinato può inviare input da tastiera, mouse e macro a questo PC, a meno che non lo limiti al solo gamepad.</value>
+  </data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve">
+    <value>Limita questo PC al solo input gamepad</value>
+  </data>
+  <data name="RemoteLink_Identity" xml:space="preserve">
+    <value>Identità</value>
+  </data>
+  <data name="RemoteLink_NoPairedPeers" xml:space="preserve">
+    <value>Nessun PC abbinato.</value>
+  </data>
+  <data name="RemoteLink_Pair" xml:space="preserve">
+    <value>Abbina</value>
+  </data>
+  <data name="RemoteLink_PairedPeers" xml:space="preserve">
+    <value>PC abbinati</value>
+  </data>
+  <data name="RemoteLink_PairedPeersDescription" xml:space="preserve">
+    <value>I PC che hai abbinato per Remote Link. Revocane uno per impedirgli di connettersi. Dovrà abbinarsi di nuovo.</value>
+  </data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve">
+    <value>Verifica che questo codice corrisponda su entrambi gli schermi, quindi premi Abbina.</value>
+  </data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve">
+    <value>Abbina a un PC remoto</value>
+  </data>
+  <data name="RemoteLink_Reject" xml:space="preserve">
+    <value>Rifiuta</value>
+  </data>
+  <data name="RemoteLink_Revoke" xml:space="preserve">
+    <value>Revoca</value>
+  </data>
+  <data name="RemoteLink_RevokeAll" xml:space="preserve">
+    <value>Revoca tutti</value>
+  </data>
+  <data name="RemoteLink_StatusListening" xml:space="preserve">
+    <value>In ascolto su {0}</value>
+  </data>
+  <data name="RemoteLink_StatusStartFailed" xml:space="preserve">
+    <value>Avvio non riuscito: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerTimedOut" xml:space="preserve">
+    <value>Timeout del peer {0}</value>
+  </data>
+  <data name="RemoteLink_StatusConnectFailed" xml:space="preserve">
+    <value>Connessione non riuscita: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusLinkRejected" xml:space="preserve">
+    <value>Collegamento rifiutato: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
+    <value>Peer {0} connesso, {1} dispositivi</value>
+  </data>
 </root>

@@ -49,6 +49,42 @@ namespace PadForge.Common.Input
         public static bool IsPeerPath(string devicePath) =>
             !string.IsNullOrEmpty(devicePath) && devicePath.StartsWith("peer://", StringComparison.Ordinal);
 
+        // ── Owner-side output lease (#138 sole-writer guard) ─────────────────────────
+        // A device physically on THIS machine can be both shared out to a peer AND mapped
+        // to a local slot. Output can't merge (no sane blend of two lightbar colors or two
+        // rumble commands), so exactly one source may feed the hardware. The lease
+        // arbitrates with zero new protocol: a relayed output frame IS the claim.
+        // OnRemoteOutputReceived stamps the LOCAL device path here per frame; while the
+        // stamp is fresh the owner's local output chokepoints (SonyEffectWriter / Step2)
+        // skip their writes, so the inbound relay is the sole writer. A fight needs both
+        // sides active at once, but an active remote keeps the stamp fresh — so the remote
+        // wins while active and the local pipeline resumes only after the remote falls
+        // quiet (~OutputLeaseMs), when it isn't writing anyway. The realistic lend case
+        // (device not also mapped locally) has no local writer, so there's no fight at all.
+        // Known edge: a remote that sets a sticky state once (held lightbar) then goes
+        // silent lets the lease lapse — the deduped ship sends it once — and the local
+        // pipeline can repaint it. Closing that needs a map-time explicit lease (new
+        // protocol); demand-expiry is the first cut. Keyed case-insensitively since the
+        // stamp and the check resolve the device path from different sites.
+        private static readonly ConcurrentDictionary<string, long> _outputLease = new(StringComparer.OrdinalIgnoreCase);
+        private const long OutputLeaseMs = 3000;
+
+        /// <summary>Owner: a relayed output frame arrived for this LOCAL shared device —
+        /// a remote game is driving it. Refreshes the sole-writer lease.</summary>
+        public static void ClaimOutput(string localDevicePath)
+        {
+            if (!string.IsNullOrEmpty(localDevicePath))
+                _outputLease[localDevicePath] = Environment.TickCount64;
+        }
+
+        /// <summary>Owner: true while a peer's relay holds the output lease on this LOCAL
+        /// device, so the local output pipeline must skip its write (the relay is the sole
+        /// writer). Always false for an unshared device.</summary>
+        public static bool IsClaimedByPeer(string localDevicePath) =>
+            !string.IsNullOrEmpty(localDevicePath)
+            && _outputLease.TryGetValue(localDevicePath, out var t)
+            && Environment.TickCount64 - t <= OutputLeaseMs;
+
         public static void Register(string devicePath, string fingerprint, byte linkSlot)
         {
             if (string.IsNullOrEmpty(devicePath) || string.IsNullOrEmpty(fingerprint)) return;

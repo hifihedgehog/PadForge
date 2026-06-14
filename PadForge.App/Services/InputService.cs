@@ -5010,6 +5010,10 @@ namespace PadForge.Services
                 if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply: NO source for slot={slot} kind={effect.Kind} n={rn}");
                 return;
             }
+            // Sole-writer guard (#138): this frame means a remote game is driving the
+            // shared device. Refresh the output lease so the owner's LOCAL output pipeline
+            // yields — the apply below is the sole hardware writer (no two-writer stutter).
+            RemoteLinkOutputRouter.ClaimOutput(ud?.DevicePath ?? source.DevicePath);
             try
             {
                 var handle = source.GamepadHandle;

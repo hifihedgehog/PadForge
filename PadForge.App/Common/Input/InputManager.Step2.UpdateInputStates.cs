@@ -500,6 +500,13 @@ namespace PadForge.Common.Input
                 return;
             }
 
+            // Sole-writer guard (#138): this LOCAL device is also shared out and a remote
+            // game is actively driving it (a relayed frame holds the output lease). Skip
+            // the owner's local write so the inbound relay is the sole hardware writer.
+            // One guard covers every class below — Xbox impulse, generic SDL rumble,
+            // vendor FFB, and wheels. Lapses ~3 s after the remote falls quiet.
+            if (RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)) return;
+
             if (isXboxImpulse)
             {
                 // Xbox One+ sole-writer path. PadForge writes the HID

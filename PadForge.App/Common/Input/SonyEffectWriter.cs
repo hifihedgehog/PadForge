@@ -139,6 +139,11 @@ namespace PadForge.Common.Input
                 return true; // handled remotely; no local write
             }
 
+            // Sole-writer guard (#138): a remote game holds the output lease on this LOCAL
+            // shared DualSense/DS4 — skip the local write so the inbound relay is the sole
+            // writer. Report success so the pipeline doesn't treat the skip as a failure.
+            if (RemoteLinkOutputRouter.IsClaimedByPeer(devicePath)) return true;
+
             return WriteRaw(devicePath, packet);
         }
 

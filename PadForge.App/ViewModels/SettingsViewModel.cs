@@ -258,6 +258,9 @@ namespace PadForge.ViewModels
         /// <summary>Raised when the user renames a peer (fingerprint, new name) — persisted.</summary>
         public event Action<string, string> PeerRenameRequested;
 
+        /// <summary>Raised when the user clicks Connect on a paired-but-offline peer (host:port).</summary>
+        public event Action<string> PeerConnectRequested;
+
         private RelayCommand _revokeAllPeersCommand;
         public RelayCommand RevokeAllPeersCommand =>
             _revokeAllPeersCommand ??= new RelayCommand(() => PeerRevokeAllRequested?.Invoke());
@@ -276,7 +279,8 @@ namespace PadForge.ViewModels
                     connectedFingerprints.Any(f => string.Equals(f, p.FingerprintHex, StringComparison.OrdinalIgnoreCase));
                 TrustedPeers.Add(new RemoteLinkTrustedPeer(p.Name, p.FingerprintHex, p.PairedUtc, p.GamepadOnly, online,
                     fp => PeerRevokeRequested?.Invoke(fp),
-                    (fp, name) => PeerRenameRequested?.Invoke(fp, name)));
+                    (fp, name) => PeerRenameRequested?.Invoke(fp, name),
+                    hostPort => PeerConnectRequested?.Invoke(hostPort)));
             }
         }
 
@@ -287,6 +291,15 @@ namespace PadForge.ViewModels
             foreach (var peer in TrustedPeers)
                 peer.IsOnline = connectedFingerprints != null &&
                     connectedFingerprints.Any(f => string.Equals(f, peer.FingerprintHex, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>Update each paired peer's "reachable right now" host:port from LAN
+        /// discovery (in place), so a discovered-but-offline peer shows a Connect button.</summary>
+        public void UpdatePeerReachability(System.Collections.Generic.IReadOnlyDictionary<string, string> fingerprintToHostPort)
+        {
+            foreach (var peer in TrustedPeers)
+                peer.ReachableHostPort =
+                    fingerprintToHostPort != null && fingerprintToHostPort.TryGetValue(peer.FingerprintHex, out var hp) ? hp : null;
         }
 
         /// <summary>Replace the nearby-unpaired list (discovered PCs not in the trust store).</summary>

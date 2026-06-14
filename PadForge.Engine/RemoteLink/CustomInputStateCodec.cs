@@ -232,6 +232,17 @@ namespace PadForge.Engine.RemoteLink
             return state;
         }
 
+        /// <summary>A fresh state at the wire neutral (sticks centered at 32768,
+        /// triggers/sliders 0, POVs centered, nothing pressed). This is what an
+        /// empty frame decodes to, and the right starting point for a receive-side
+        /// buffer — a default-constructed CustomInputState leaves sticks at 0.</summary>
+        public static CustomInputState CreateNeutral()
+        {
+            var state = new CustomInputState();
+            ResetToNeutral(state);
+            return state;
+        }
+
         /// <summary>
         /// Decode into a reusable target (pooling-friendly: no allocation when the
         /// target's MIDI / touchpad shape already matches). Resets the target to

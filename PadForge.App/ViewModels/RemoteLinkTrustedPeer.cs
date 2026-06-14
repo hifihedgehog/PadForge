@@ -12,7 +12,7 @@ namespace PadForge.ViewModels
         private readonly Action<string, string> _onRename;
 
         public RemoteLinkTrustedPeer(string name, string fingerprintHex, string pairedUtc, bool gamepadOnly, bool isOnline,
-            Action<string> onRevoke, Action<string, string> onRename)
+            Action<string> onRevoke, Action<string, string> onRename, Action<string> onConnect)
         {
             _name = string.IsNullOrWhiteSpace(name) ? "Paired PC" : name;
             FingerprintHex = fingerprintHex ?? "";
@@ -21,7 +21,24 @@ namespace PadForge.ViewModels
             _isOnline = isOnline;
             _onRename = onRename;
             RevokeCommand = new RelayCommand(() => onRevoke?.Invoke(FingerprintHex));
+            ConnectCommand = new RelayCommand(() => { if (!string.IsNullOrEmpty(_reachableHostPort)) onConnect?.Invoke(_reachableHostPort); });
         }
+
+        private string _reachableHostPort;
+        /// <summary>Where this peer is reachable right now (host:port from LAN discovery),
+        /// or null when it isn't discovered. Drives the Connect button.</summary>
+        public string ReachableHostPort
+        {
+            get => _reachableHostPort;
+            set { if (SetProperty(ref _reachableHostPort, value)) OnPropertyChanged(nameof(CanConnect)); }
+        }
+
+        /// <summary>Show a Connect button when the peer is on the LAN but not connected.</summary>
+        public bool CanConnect => !string.IsNullOrEmpty(_reachableHostPort) && !_isOnline;
+
+        /// <summary>Reconnect to this already-trusted peer (no SAS prompt — the handshake
+        /// auto-accepts a known key).</summary>
+        public RelayCommand ConnectCommand { get; }
 
         private string _name;
         /// <summary>Friendly name. Setting it (e.g. on TextBox focus-loss) persists the
@@ -40,7 +57,7 @@ namespace PadForge.ViewModels
         public bool IsOnline
         {
             get => _isOnline;
-            set { if (SetProperty(ref _isOnline, value)) OnPropertyChanged(nameof(OnlineText)); }
+            set { if (SetProperty(ref _isOnline, value)) { OnPropertyChanged(nameof(OnlineText)); OnPropertyChanged(nameof(CanConnect)); } }
         }
 
         public string OnlineText => IsOnline ? "Online" : "Offline";

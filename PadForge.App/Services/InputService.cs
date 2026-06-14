@@ -234,6 +234,7 @@ namespace PadForge.Services
             _mainVm.Settings.PeerRevokeRequested += OnPeerRevokeRequested;
             _mainVm.Settings.PeerRevokeAllRequested += OnPeerRevokeAllRequested;
             _mainVm.Settings.PeerRenameRequested += OnPeerRenameRequested;
+            _mainVm.Settings.PeerConnectRequested += OnConnectToPeerRequested;
             _mainVm.Settings.IdentityProtectionModeChangeRequested += OnIdentityProtectionModeChangeRequested;
             // Reflect the persisted identity-protection mode in the dropdown.
             var ipm0 = _settingsService?.RemoteLink?.IdentityProtection ?? PadForge.Engine.RemoteLink.IdentityProtectionMode.Secure;
@@ -4861,19 +4862,24 @@ namespace PadForge.Services
             {
                 _mainVm.Dashboard.NearbyPeers.Clear();
                 var nearbyUnpaired = new System.Collections.Generic.List<ViewModels.RemoteLinkNearbyPeer>();
+                // fingerprint -> host:port for paired peers seen on the LAN, so the paired
+                // list can show a Connect button on a discovered-but-offline peer.
+                var reachable = new System.Collections.Generic.Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
                 foreach (var p in peers)
                 {
                     bool paired = trust?.Peers?.Any(t => string.Equals(t.FingerprintHex, p.FingerprintHex, StringComparison.OrdinalIgnoreCase)) ?? false;
                     bool connected = connectedFps.Any(f => string.Equals(f, p.FingerprintHex, StringComparison.OrdinalIgnoreCase));
                     string hostPort = $"{p.Endpoint.Address}:{p.Endpoint.Port}";
                     _mainVm.Dashboard.NearbyPeers.Add(new ViewModels.RemoteLinkNearbyPeer(p.Name, hostPort, p.FingerprintHex, paired, connected, OnConnectToPeerRequested));
-                    // The Settings peer manager lists only the NOT-yet-paired ones underneath
-                    // the paired list (paired PCs already appear there with their online dot).
-                    if (!paired)
+                    if (paired)
+                        reachable[p.FingerprintHex] = hostPort;
+                    else
+                        // Not yet paired — list it under the paired manager with a Pair button.
                         nearbyUnpaired.Add(new ViewModels.RemoteLinkNearbyPeer(p.Name, hostPort, p.FingerprintHex, false, connected, OnConnectToPeerRequested));
                 }
                 _mainVm.Settings.SetNearbyUnpaired(nearbyUnpaired);
                 _mainVm.Settings.UpdatePeerOnlineStatus(connectedFps);
+                _mainVm.Settings.UpdatePeerReachability(reachable);
             });
         }
 

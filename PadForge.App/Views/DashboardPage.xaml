@@ -564,9 +564,13 @@
                                         <TextBlock Text="{Binding FingerprintDisplay}" FontSize="11"
                                                    FontFamily="Consolas" Opacity="0.6" Margin="2,3,0,0"/>
                                     </StackPanel>
-                                    <Button Grid.Column="2" VerticalAlignment="Center"
-                                            Content="{Binding RemoteLink_Revoke, Source={x:Static strings:Strings.Instance}}"
-                                            Command="{Binding RevokeCommand}"/>
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <ui:Button Content="{Binding Dashboard_RemoteLinkConnectButton, Source={x:Static strings:Strings.Instance}}"
+                                                   Command="{Binding ConnectCommand}" Appearance="Primary" Margin="0,0,8,0"
+                                                   Visibility="{Binding CanConnect, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                        <Button Content="{Binding RemoteLink_Revoke, Source={x:Static strings:Strings.Instance}}"
+                                                Command="{Binding RevokeCommand}"/>
+                                    </StackPanel>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

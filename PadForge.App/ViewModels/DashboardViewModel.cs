@@ -340,6 +340,11 @@ namespace PadForge.ViewModels
                     ConnectToPeerRequested?.Invoke(_remoteLinkConnectHost.Trim());
             });
 
+        /// <summary>PadForge PCs auto-discovered on the local network. The user clicks
+        /// one to pair — no IP typing. InputService rebuilds this from LinkDiscovery.</summary>
+        public System.Collections.ObjectModel.ObservableCollection<RemoteLinkNearbyPeer> NearbyPeers { get; }
+            = new System.Collections.ObjectModel.ObservableCollection<RemoteLinkNearbyPeer>();
+
         // ─────────────────────────────────────────────
         //  Touchpad Overlay
         // ─────────────────────────────────────────────

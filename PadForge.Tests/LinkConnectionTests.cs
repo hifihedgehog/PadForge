@@ -43,7 +43,7 @@ namespace PadForge.Tests
             var idB = PeerIdentity.Generate();
             var trustA = new PeerTrustStore();
             var trustB = new PeerTrustStore();
-            Func<PendingPairing, bool> approve = _ => true;
+            Func<PendingPairing, PairingApproval> approve = _ => true;
 
             // A responder exposes a pad; B initiator consumes.
             var taskA = LinkConnection.RunResponderAsync(chA, idA, trustA, new[] { PadInfo() }, Caps, approve, "2026-06-13T00:00:00Z");
@@ -77,7 +77,7 @@ namespace PadForge.Tests
         public async Task FirstContactRejected_AbortsBothSides()
         {
             var (chA, chB) = MemChannel.Pair();
-            Func<PendingPairing, bool> reject = _ => false;
+            Func<PendingPairing, PairingApproval> reject = _ => false;
 
             var taskA = LinkConnection.RunResponderAsync(chA, PeerIdentity.Generate(), new PeerTrustStore(), new[] { PadInfo() }, Caps, reject, "t");
             var taskB = LinkConnection.RunInitiatorAsync(chB, PeerIdentity.Generate(), new PeerTrustStore(), Array.Empty<RemotePeerDeviceInfo>(), Caps, reject, "t");
@@ -95,7 +95,7 @@ namespace PadForge.Tests
             // Pre-pin each other (a prior pairing), auto-select on.
             var trustA = new PeerTrustStore(new[] { PeerTrust.FromPublicKey(idB.PublicKey, "B", "t", true, false) });
             var trustB = new PeerTrustStore(new[] { PeerTrust.FromPublicKey(idA.PublicKey, "A", "t", true, false) });
-            Func<PendingPairing, bool> mustNotPrompt = _ => throw new Exception("reconnect must not prompt");
+            Func<PendingPairing, PairingApproval> mustNotPrompt = _ => throw new Exception("reconnect must not prompt");
 
             var taskA = LinkConnection.RunResponderAsync(chA, idA, trustA, new[] { PadInfo() }, Caps, mustNotPrompt, "t");
             var taskB = LinkConnection.RunInitiatorAsync(chB, idB, trustB, Array.Empty<RemotePeerDeviceInfo>(), Caps, mustNotPrompt, "t");
@@ -111,7 +111,7 @@ namespace PadForge.Tests
             var (chA, chB) = MemChannel.Pair();
             var idA = PeerIdentity.Generate();
             var idB = PeerIdentity.Generate();
-            Func<PendingPairing, bool> approve = _ => true;
+            Func<PendingPairing, PairingApproval> approve = _ => true;
 
             var taskA = LinkConnection.RunResponderAsync(chA, idA, new PeerTrustStore(), Array.Empty<RemotePeerDeviceInfo>(), Caps, approve, "t");
             var taskB = LinkConnection.RunInitiatorAsync(chB, idB, new PeerTrustStore(), Array.Empty<RemotePeerDeviceInfo>(), Caps, approve, "t");

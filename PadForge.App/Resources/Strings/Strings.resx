@@ -227,8 +227,11 @@
   <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Share controllers with a paired PadForge on another PC over your network.</value></data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>Enable Remote Link server</value></data>
   <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>After a one-time pairing, a trusted PC reconnects automatically. A paired PC can drive this one's gamepad output, and unless you limit it, its keyboard, mouse, and macros too.</value></data>
-  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Connect to a PC (host:port)</value></data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Or connect by address (advanced)</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>Pair / Connect</value></data>
+  <data name="Dashboard_RemoteLinkNearby" xml:space="preserve"><value>Nearby PCs</value></data>
+  <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve"><value>PCs with Remote Link turned on, on the same network, appear here automatically.</value></data>
+  <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>Pair</value></data>
   <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Pair with remote PC</value></data>
   <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Confirm this code matches on both screens, then Pair.</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>Pair</value></data>
@@ -236,6 +239,11 @@
   <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Limit this PC to gamepad input only</value></data>
   <data name="RemoteLink_Identity" xml:space="preserve"><value>Identity</value></data>
   <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>A paired PC can send keyboard, mouse, and macro input to this one unless you limit it to gamepad only.</value></data>
+  <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>Paired PCs</value></data>
+  <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>PCs you have paired with for Remote Link. Revoke one to stop it connecting; it would have to pair again.</value></data>
+  <data name="RemoteLink_NoPairedPeers" xml:space="preserve"><value>No paired PCs yet.</value></data>
+  <data name="RemoteLink_Revoke" xml:space="preserve"><value>Revoke</value></data>
+  <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Revoke all</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Touchpad Overlay</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>On-screen touch surface for PlayStation-compatible touchpad emulation.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Enable touchpad overlay</value></data>

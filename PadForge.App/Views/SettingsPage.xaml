@@ -183,6 +183,41 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ Remote Link — Paired PCs (issue #138) ═══ -->
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="&#xE71B;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding RemoteLink_PairedPeers, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding RemoteLink_PairedPeersDescription, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}"/>
+                    <ItemsControl ItemsSource="{Binding TrustedPeers}" Margin="0,12,0,8">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding FingerprintDisplay}" FontSize="11"
+                                                   FontFamily="Consolas" Opacity="0.6"/>
+                                    </StackPanel>
+                                    <Button Grid.Column="1" VerticalAlignment="Center"
+                                            Content="{Binding RemoteLink_Revoke, Source={x:Static strings:Strings.Instance}}"
+                                            Command="{Binding RevokeCommand}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Button Content="{Binding RemoteLink_RevokeAll, Source={x:Static strings:Strings.Instance}}"
+                            Command="{Binding RevokeAllPeersCommand}" HorizontalAlignment="Left"/>
+                </StackPanel>
+            </Border>
+
             <!-- ═══ HIDMaestro Driver ═══ -->
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
                 <StackPanel>

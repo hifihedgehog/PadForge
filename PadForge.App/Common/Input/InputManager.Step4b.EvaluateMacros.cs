@@ -236,12 +236,20 @@ namespace PadForge.Common.Input
         /// </summary>
         public MacroItem[][] MacroSnapshots { get; } = new MacroItem[MaxPads][];
 
+        // True while evaluating a slot fed by a gamepad-only-restricted peer (issue
+        // #138). The keyboard/mouse/scroll macro emission helpers consult this and
+        // suppress those actions, so a restricted peer can never inject keystrokes.
+        // Single-threaded (the poll loop), so a plain field is safe. Static so the
+        // static SendInput emission helpers can read it.
+        private static bool _currentMacroSlotRestricted;
+
         /// <summary>
         /// Step 4b: Evaluate macros for all pad slots.
         /// Called after CombineOutputStates and before VirtualDevices.
         /// </summary>
         private void EvaluateMacros()
         {
+            _currentMacroSlotRestricted = false; // global macros emit no keystrokes
             EvaluateGlobalMacros();
 
             for (int i = 0; i < MaxPads; i++)
@@ -250,6 +258,7 @@ namespace PadForge.Common.Input
                 if (macros == null || macros.Length == 0)
                     continue;
 
+                _currentMacroSlotRestricted = IsSlotRestricted(i);
                 try
                 {
                     if (SlotExtendedIsCustom[i])
@@ -1990,6 +1999,7 @@ namespace PadForge.Common.Input
 
         private static void SendMouseMoveInput(int dx, int dy)
         {
+            if (_currentMacroSlotRestricted) return; // gamepad-only peer: no mouse
             if (dx == 0 && dy == 0) return;
             var input = new INPUT
             {
@@ -2001,6 +2011,7 @@ namespace PadForge.Common.Input
 
         private static void SendMouseButtonInput(MacroMouseButton button, bool down)
         {
+            if (_currentMacroSlotRestricted) return; // gamepad-only peer: no mouse buttons
             uint flags;
             uint mouseData = 0;
             switch (button)
@@ -2022,6 +2033,7 @@ namespace PadForge.Common.Input
 
         private static void SendMouseScrollInput(int amount)
         {
+            if (_currentMacroSlotRestricted) return; // gamepad-only peer: no scroll
             var input = new INPUT
             {
                 type = INPUT_MOUSE,
@@ -2067,6 +2079,7 @@ namespace PadForge.Common.Input
 
         private static void SendKeyInput(ushort virtualKeyCode, bool keyUp)
         {
+            if (_currentMacroSlotRestricted) return; // gamepad-only peer: no keystrokes
             ushort scanCode = (ushort)MapVirtualKey(virtualKeyCode, MAPVK_VK_TO_VSC);
 
             var input = new INPUT

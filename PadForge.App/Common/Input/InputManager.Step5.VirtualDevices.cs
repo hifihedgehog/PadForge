@@ -1078,7 +1078,10 @@ namespace PadForge.Common.Input
                         if (vc is MidiVirtualController midiVc)
                             midiVc.SubmitMidiRawState(CombinedMidiRawStates[padIndex]);
                         else if (vc is KeyboardMouseVirtualController kbmVc)
-                            kbmVc.SubmitKbmState(CombinedKbmRawStates[padIndex]);
+                            // A gamepad-only-restricted peer feeding this slot must not
+                            // reach the OS via the KBM controller: submit neutral (which
+                            // releases anything held) instead of its mapped state.
+                            kbmVc.SubmitKbmState(IsSlotRestricted(padIndex) ? default : CombinedKbmRawStates[padIndex]);
                         else if (SlotControllerTypes[padIndex] == VirtualControllerType.Extended
                                  && SlotExtendedIsCustom[padIndex]
                                  && vc is HMaestroVirtualController hmExt)

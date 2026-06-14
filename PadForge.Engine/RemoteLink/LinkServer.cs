@@ -87,6 +87,7 @@ namespace PadForge.Engine.RemoteLink
         public int DiagDatagramsSent;
         public int DiagOutputSent;      // reverse-feedback frames we sealed+sent (#138 M2)
         public int DiagOutputReceived;  // reverse-feedback frames we opened+surfaced
+        public int DiagAudioReceived;   // speaker PCM blocks we opened+surfaced (#138)
         public string DiagLastError;
 
         public void Start(int port)
@@ -421,6 +422,7 @@ namespace PadForge.Engine.RemoteLink
                 }
                 else if (type == LinkMessageType.Audio)
                 {
+                    System.Threading.Interlocked.Increment(ref DiagAudioReceived);
                     AudioReceived?.Invoke(c.PeerFingerprintHex, slot, payload);
                 }
                 return;

@@ -4756,7 +4756,8 @@ namespace PadForge.Services
                     $"SNAP exposed={exposed} remoteDevs={RemoteLinkOutputRouter.DeviceCount} | " +
                     $"IN sent={s.DiagDatagramsSent} recv={s.DiagDatagramsReceived} opened={s.DiagDatagramsOpened} | " +
                     $"CAP sony={RemoteLinkOutputRouter.SonyCaptured} vib={RemoteLinkOutputRouter.VibrationCaptured} wheel={RemoteLinkOutputRouter.WheelCaptured} audio={RemoteLinkOutputRouter.AudioCaptured} shipped={RemoteLinkOutputRouter.Sent} | " +
-                    $"OUT recv={s.DiagOutputReceived} applied={_outputApplied} srcNull={_outputSourceNull} | err='{s.DiagLastError}'");
+                    $"OUT recv={s.DiagOutputReceived} applied={_outputApplied} srcNull={_outputSourceNull} | " +
+                    $"AUDIO rx={s.DiagAudioReceived} ring={AudioPassthroughService.RemoteAudioRxBlocks} play={AudioPassthroughService.RemoteAudioRenderedFrames} | err='{s.DiagLastError}'");
             }, null, 2000, 2000);
         }
 

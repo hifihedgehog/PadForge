@@ -30,6 +30,7 @@
          11 (build 22000+); this managed implementation runs on the app's Win10
          1809 floor, so it carries no OS gate and keeps the cipher suite pinned. -->
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="10.0.9" />
   </ItemGroup>
 
   <ItemGroup>

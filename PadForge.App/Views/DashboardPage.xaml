@@ -563,8 +563,10 @@
                                         <ui:TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                     PlaceholderText="{Binding RemoteLink_PeerNamePlaceholder, Source={x:Static strings:Strings.Instance}}" MaxLength="40"
                                                     HorizontalAlignment="Left" MinWidth="240"/>
-                                        <TextBlock Text="{Binding FingerprintDisplay}" FontSize="11"
-                                                   FontFamily="Consolas" Opacity="0.6" Margin="2,3,0,0"/>
+                                        <TextBlock FontSize="11" Opacity="0.6" Margin="2,3,0,0" TextTrimming="CharacterEllipsis">
+                                            <Run Text="{Binding HostName, Mode=OneWay}" FontWeight="SemiBold"/>
+                                            <Run Text="{Binding FingerprintDisplay, Mode=OneWay, StringFormat='  ·  {0}'}" FontFamily="Consolas"/>
+                                        </TextBlock>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                                         <ui:Button Content="{Binding Dashboard_RemoteLinkConnectButton, Source={x:Static strings:Strings.Instance}}"

@@ -11,11 +11,13 @@ namespace PadForge.ViewModels
     public sealed class RemoteLinkTrustedPeer : ObservableObject
     {
         private readonly Action<string, string> _onRename;
+        private readonly string _hostName;
 
-        public RemoteLinkTrustedPeer(string name, string fingerprintHex, string pairedUtc, bool gamepadOnly, bool isOnline,
+        public RemoteLinkTrustedPeer(string name, string hostName, string fingerprintHex, string pairedUtc, bool gamepadOnly, bool isOnline,
             Action<string> onRevoke, Action<string, string> onRename, Action<string> onConnect)
         {
-            _name = string.IsNullOrWhiteSpace(name) ? S.Instance.RemoteLink_DefaultPeerName : name;
+            _hostName = hostName ?? "";
+            _name = !string.IsNullOrWhiteSpace(name) ? name : DefaultName(_hostName);
             FingerprintHex = fingerprintHex ?? "";
             PairedUtc = pairedUtc ?? "";
             GamepadOnly = gamepadOnly;
@@ -49,10 +51,21 @@ namespace PadForge.ViewModels
             get => _name;
             set
             {
-                string v = string.IsNullOrWhiteSpace(value) ? S.Instance.RemoteLink_DefaultPeerName : value.Trim();
+                string v = string.IsNullOrWhiteSpace(value) ? DefaultName(_hostName) : value.Trim();
                 if (SetProperty(ref _name, v)) _onRename?.Invoke(FingerprintHex, v);
             }
         }
+
+        /// <summary>The peer's machine (NetBIOS/host) name, shown next to the friendly name.</summary>
+        public string HostName => _hostName;
+
+        /// <summary>Whether there's a host name to show alongside the friendly name.</summary>
+        public bool HasHostName => !string.IsNullOrWhiteSpace(_hostName);
+
+        // The friendly-name default when the user hasn't set one: the machine name, or a
+        // generic label until discovery learns it.
+        private static string DefaultName(string hostName) =>
+            !string.IsNullOrWhiteSpace(hostName) ? hostName : S.Instance.RemoteLink_DefaultPeerName;
 
         private bool _isOnline;
         public bool IsOnline

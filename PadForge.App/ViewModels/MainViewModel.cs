@@ -117,6 +117,9 @@ namespace PadForge.ViewModels
             Dashboard = new DashboardViewModel();
             Devices = new DevicesViewModel();
             Settings = new SettingsViewModel();
+            // Remote Link's peer/identity state lives on Settings but is shown in the
+            // Dashboard's Remote Link section (issue #138), so expose it there.
+            Dashboard.RemoteLink = Settings;
 
             // Default to Dashboard page.
             _selectedNavTag = "Dashboard";

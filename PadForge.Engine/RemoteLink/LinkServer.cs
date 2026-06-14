@@ -76,6 +76,11 @@ namespace PadForge.Engine.RemoteLink
         public bool IsRunning { get; private set; }
         public int Port => _port;
 
+        /// <summary>True when at least one peer has a live session (someone may be
+        /// consuming our shared devices). Used to keep the poll loop at full rate so
+        /// shared-device input is sampled smoothly, not at the idle ~20 Hz.</summary>
+        public bool HasConnections { get { lock (_lock) return _connections.Count > 0; } }
+
         // Diagnostics (test/telemetry): datagrams the UDP loop saw vs successfully opened.
         public int DiagDatagramsReceived;
         public int DiagDatagramsOpened;

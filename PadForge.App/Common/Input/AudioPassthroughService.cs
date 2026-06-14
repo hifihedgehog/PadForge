@@ -99,6 +99,13 @@ namespace PadForge.Common.Input
             /// <summary>Macro + optional loopback mirror.</summary>
             public SinkSource Source;
 
+            /// <summary>Remote output relay (#138): this sink renders speaker PCM
+            /// arriving over the link from a consumer, not the local loopback+macro
+            /// mix. The transport (BT Opus/SBC or USB) is the real local device; only
+            /// the PCM source is the network ring.</summary>
+            public bool RemoteFed;
+            public RemoteAudioRing Remote;
+
             /// <summary>Last tick the source produced a non-silent sample
             /// (written by <see cref="SinkSource.Read"/>); the BT stream
             /// pauses after 2 s of silence so an idle pad's radio rests.</summary>
@@ -440,6 +447,18 @@ namespace PadForge.Common.Input
 
             public int Read(float[] buffer, int offset, int count)
             {
+                // Remote output relay (#138): a remote-fed sink renders the speaker PCM
+                // the consumer shipped over the link, in place of local loopback+macros.
+                if (_sink.RemoteFed && _sink.Remote != null)
+                {
+                    _sink.Remote.ReadFloat(buffer, offset, count);
+                    LoopbackLagFrames = -1;
+                    for (int i = 0; i < count; i++)
+                        if (buffer[offset + i] > 1e-4f || buffer[offset + i] < -1e-4f)
+                        { _sink.LastAudibleTicks = Environment.TickCount64; break; }
+                    return count;
+                }
+
                 // Macro mixer (ReadFully → zeros when idle).
                 int read = _sink.MacroMixer.Read(buffer, offset, count);
                 for (int i = read; i < count; i++) buffer[offset + i] = 0f;
@@ -661,8 +680,94 @@ namespace PadForge.Common.Input
             _remoteAudioDemand[physicalDeviceGuid] = Environment.TickCount64;
             if (isNew)
             {
+                RemoteLinkDiag.Log($"audio RX first block dev={physicalDeviceGuid:N} len={s16StereoPcm.Length}");
                 lock (_lock) EnsureThreads_NoLock();
                 _workSignal.Set(); // build the transport for this newly-demanded pad
+            }
+        }
+
+        // ── Consumer-side producer: ship the system loopback to remote pads ──
+        // Self-contained WASAPI loopback (the game's audio on THIS PC). Started while
+        // any shared pad wants the speaker path; ships 512-frame s16 48 kHz stereo
+        // blocks to each remote target. Completely separate from the local-audio Sink
+        // machinery, so it can never disturb a locally-rendered speaker.
+        private static volatile string[] _remoteShipPaths = Array.Empty<string>();
+        private static NAudio.Wave.WasapiLoopbackCapture _loopback;
+        private static readonly object _loopbackLock = new();
+        private static double _lbPhase;
+        private static float _lbPrevL, _lbPrevR;
+        private static readonly List<byte> _lbOut = new(8192);
+
+        private static void UpdateRemoteAudioProducer(List<string> paths)
+        {
+            var arr = paths.Count == 0 ? Array.Empty<string>() : paths.Distinct().ToArray();
+            _remoteShipPaths = arr;
+            lock (_loopbackLock)
+            {
+                if (arr.Length > 0 && _loopback == null)
+                {
+                    try
+                    {
+                        _loopback = new NAudio.Wave.WasapiLoopbackCapture(); // default render endpoint
+                        _loopback.DataAvailable += OnLoopbackData;
+                        _lbPhase = 0; _lbPrevL = _lbPrevR = 0; _lbOut.Clear();
+                        _loopback.StartRecording();
+                        RemoteLinkDiag.Log($"audio producer START: {arr.Length} target(s), loopback {_loopback.WaveFormat.SampleRate}Hz {_loopback.WaveFormat.Channels}ch {_loopback.WaveFormat.Encoding}");
+                    }
+                    catch (Exception ex) { _loopback = null; RemoteLinkDiag.Log($"audio producer START failed: {ex.Message}"); }
+                }
+                else if (arr.Length == 0 && _loopback != null)
+                {
+                    try { _loopback.DataAvailable -= OnLoopbackData; _loopback.StopRecording(); _loopback.Dispose(); } catch { }
+                    _loopback = null;
+                }
+            }
+        }
+
+        private static void OnLoopbackData(object sender, NAudio.Wave.WaveInEventArgs e)
+        {
+            var targets = _remoteShipPaths;
+            var fmt = _loopback?.WaveFormat;
+            if (targets.Length == 0 || fmt == null || e.BytesRecorded <= 0) return;
+            int ch = Math.Max(1, fmt.Channels);
+            bool isFloat = fmt.Encoding == NAudio.Wave.WaveFormatEncoding.IeeeFloat;
+            int bps = fmt.BitsPerSample / 8;
+            int frameBytes = bps * ch;
+            if (frameBytes <= 0) return;
+            int frames = e.BytesRecorded / frameBytes;
+            double ratio = 48000.0 / fmt.SampleRate; // outputs per input
+            for (int f = 0; f < frames; f++)
+            {
+                int b = f * frameBytes;
+                float l, r;
+                if (isFloat)
+                {
+                    l = BitConverter.ToSingle(e.Buffer, b);
+                    r = ch >= 2 ? BitConverter.ToSingle(e.Buffer, b + bps) : l;
+                }
+                else // 16-bit PCM
+                {
+                    l = (short)(e.Buffer[b] | (e.Buffer[b + 1] << 8)) / 32768f;
+                    r = ch >= 2 ? (short)(e.Buffer[b + bps] | (e.Buffer[b + bps + 1] << 8)) / 32768f : l;
+                }
+                _lbPhase += ratio;
+                while (_lbPhase >= 1.0)
+                {
+                    _lbPhase -= 1.0;
+                    float t = 1f - (float)_lbPhase;
+                    short sl = (short)Math.Clamp((int)((_lbPrevL + (l - _lbPrevL) * t) * 32767f), -32768, 32767);
+                    short sr = (short)Math.Clamp((int)((_lbPrevR + (r - _lbPrevR) * t) * 32767f), -32768, 32767);
+                    _lbOut.Add((byte)sl); _lbOut.Add((byte)(sl >> 8));
+                    _lbOut.Add((byte)sr); _lbOut.Add((byte)(sr >> 8));
+                    if (_lbOut.Count >= 2048)
+                    {
+                        var block = new byte[2048];
+                        _lbOut.CopyTo(0, block, 0, 2048);
+                        _lbOut.RemoveRange(0, 2048);
+                        foreach (var p in targets) RemoteLinkOutputRouter.ShipAudio(p, block);
+                    }
+                }
+                _lbPrevL = l; _lbPrevR = r;
             }
         }
 
@@ -766,13 +871,24 @@ namespace PadForge.Common.Input
             // Phase 1 — desired state, no locks (SettingsManager and the
             // config provider take their own locks; never nest them under
             // ours).
-            var desired = new List<(int Slot, Guid Guid, string Path, bool IsBt, bool IsDs4, bool PtOn, string MirrorSrc)>();
+            var desired = new List<(int Slot, Guid Guid, string Path, bool IsBt, bool IsDs4, bool PtOn, string MirrorSrc, bool RemoteFed)>();
+            var shipPaths = new List<string>(); // consumer: peer:// pads wanting speaker path
             for (int slot = 0; slot < MaxPads; slot++)
             {
                 bool demand;
                 lock (_lock) demand = _macroDemand.Contains(slot);
                 foreach (var (guid, ud) in EnumerateAssignedSonyPads(slot))
                 {
+                    var (ptOn, mirrorSrc) = ReadPassthroughConfig(slot, guid);
+                    // Remote output relay (#138): a "peer://" pad lives on another PC.
+                    // We can't open a local transport for it — instead we PRODUCE the
+                    // consumer's speaker audio (system loopback) and ship it to the owner,
+                    // who renders it. Record the target and don't build a local sink.
+                    if ((ud.DevicePath ?? "").StartsWith("peer://", StringComparison.Ordinal))
+                    {
+                        if (ptOn) shipPaths.Add(ud.DevicePath);
+                        continue;
+                    }
                     bool isBt = (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
                     bool isDs4 = Ds4Pids.Contains((ushort)ud.ProdId);
                     // DS4 audio is BLUETOOTH-ONLY: the wired DS4 exposes no
@@ -782,15 +898,31 @@ namespace PadForge.Common.Input
                     // adaptor (PID 0x0BA0) tunnels the radio link and exposes
                     // real UAC endpoints, so it keeps the USB container path.
                     if (isDs4 && !isBt && (ushort)ud.ProdId != 0x0BA0) continue;
-                    var (ptOn, mirrorSrc) = ReadPassthroughConfig(slot, guid);
                     // A sink exists while the device's mirror toggle is on or
                     // the slot's macros have asked for controller routing.
                     // Pads using neither get no transport and no firmware
                     // speaker-path assertion.
                     if (!ptOn && !demand) continue;
-                    desired.Add((slot, guid, ud.DevicePath, isBt, isDs4, ptOn, mirrorSrc));
+                    desired.Add((slot, guid, ud.DevicePath, isBt, isDs4, ptOn, mirrorSrc, false));
                 }
             }
+
+            // Owner: a paired peer is streaming speaker audio for one of OUR physical
+            // pads. Build a sink whose PCM source is the network ring; the real device's
+            // BT/USB transport renders it. Demand expires ~2 s after the audio stops.
+            long nowDemand = Environment.TickCount64;
+            foreach (var kv in _remoteAudioDemand)
+            {
+                if (nowDemand - kv.Value > 2000) continue;
+                var ud = SettingsManager.FindDeviceByInstanceGuid(kv.Key);
+                if (ud == null || !ud.IsOnline || string.IsNullOrEmpty(ud.DevicePath)) continue;
+                if ((ud.DevicePath ?? "").StartsWith("peer://", StringComparison.Ordinal)) continue;
+                bool isBt = ud.DevicePath.IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
+                bool isDs4 = Ds4Pids.Contains((ushort)ud.ProdId);
+                if (isDs4 && !isBt && (ushort)ud.ProdId != 0x0BA0) continue;
+                desired.Add((255, kv.Key, ud.DevicePath, isBt, isDs4, false, "", true));
+            }
+            UpdateRemoteAudioProducer(shipPaths);
 
             // Phase 2 — state sync under the lock; no I/O.
             var toDispose = new List<Sink>();
@@ -818,6 +950,8 @@ namespace PadForge.Common.Input
                     sink.HidPath = d.Path;
                     sink.PassthroughOn = d.PtOn;
                     sink.MirrorSourceId = d.MirrorSrc ?? "";
+                    sink.RemoteFed = d.RemoteFed;
+                    if (d.RemoteFed) sink.Remote = _remoteRings.TryGetValue(d.Guid, out var rr) ? rr : null;
                     if (sink.TransportFailed)
                     {
                         toDispose.Add(DetachTransport_NoLock(sink));

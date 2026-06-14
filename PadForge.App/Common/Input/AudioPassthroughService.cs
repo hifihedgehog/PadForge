@@ -455,7 +455,8 @@ namespace PadForge.Common.Input
                     LoopbackLagFrames = -1;
                     for (int i = 0; i < count; i++)
                         if (buffer[offset + i] > 1e-4f || buffer[offset + i] < -1e-4f)
-                        { _sink.LastAudibleTicks = Environment.TickCount64; break; }
+                        { _sink.LastAudibleTicks = Environment.TickCount64;
+                          System.Threading.Interlocked.Add(ref _remoteAudioRenderedFrames, count); break; }
                     return count;
                 }
 
@@ -667,6 +668,14 @@ namespace PadForge.Common.Input
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, RemoteAudioRing> _remoteRings = new();
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, long> _remoteAudioDemand = new();
 
+        // Owner-side diagnostics (#138 audio): blocks the ring received vs. audible
+        // frames the device transport actually pulled. Surfaced in the SNAP line so an
+        // owner log alone shows whether received audio is reaching the pad speaker.
+        private static long _remoteAudioRxBlocks;
+        private static long _remoteAudioRenderedFrames;
+        public static long RemoteAudioRxBlocks => System.Threading.Interlocked.Read(ref _remoteAudioRxBlocks);
+        public static long RemoteAudioRenderedFrames => System.Threading.Interlocked.Read(ref _remoteAudioRenderedFrames);
+
         /// <summary>Owner-side: a paired peer sent a speaker PCM block (s16 48 kHz
         /// stereo, interleaved LE) for a shared pad. Feed it into the device's render
         /// ring and mark demand so the worker builds the real BT/USB transport and the
@@ -674,6 +683,7 @@ namespace PadForge.Common.Input
         public static void FeedRemoteAudio(Guid physicalDeviceGuid, byte[] s16StereoPcm)
         {
             if (s16StereoPcm == null || s16StereoPcm.Length < 4) return;
+            System.Threading.Interlocked.Increment(ref _remoteAudioRxBlocks);
             var ring = _remoteRings.GetOrAdd(physicalDeviceGuid, _ => new RemoteAudioRing());
             ring.WriteS16(s16StereoPcm);
             bool isNew = !_remoteAudioDemand.ContainsKey(physicalDeviceGuid);

@@ -48,6 +48,12 @@ namespace PadForge.Engine.RemoteLink
         public event Action<RemotePeerDevice> DeviceDisconnected;
         public event Action<string> StatusChanged;
 
+        /// <summary>A paired peer sent reverse output (rumble / DualSense effect packet)
+        /// for one of THIS PC's shared devices (issue #138 M2). Args: peer fingerprint,
+        /// the slot id (this PC's exposed-device index), and the raw OutputEffectCodec
+        /// payload. InputService maps the slot to the physical device and drives it.</summary>
+        public event Action<string, byte, byte[]> OutputReceived;
+
         /// <summary>Supplies the local devices to expose to a peer. Used by inbound
         /// (responder) connections so both sides share their controllers, not just the
         /// one that initiated. The outbound path passes its list to ConnectAsync.</summary>
@@ -92,7 +98,10 @@ namespace PadForge.Engine.RemoteLink
             // approval callback — off the UI thread, so there is no deadlock.
             _ = AcceptLoopAsync(_cts.Token);
             _ = UdpLoopAsync(_cts.Token);
-            _reaper = new Timer(_ => { try { ReapDeadConnections(); } catch { } }, null, 5000, 5000);
+            // 3s tick: keepalive (so a quiet-but-live connection isn't reaped, and the
+            // responder learns the initiator's endpoint even with no input flowing),
+            // then reap genuinely dead ones.
+            _reaper = new Timer(_ => { try { SendKeepalives(); ReapDeadConnections(); } catch { } }, null, 3000, 3000);
             StatusChanged?.Invoke($"Listening on {port}");
         }
 
@@ -109,6 +118,19 @@ namespace PadForge.Engine.RemoteLink
             try { _udp?.Close(); } catch { }
             _cts?.Dispose();
             StatusChanged?.Invoke("Stopped");
+        }
+
+        private void SendKeepalives()
+        {
+            LinkPeerConnection[] conns;
+            lock (_lock) conns = _connections.ToArray();
+            foreach (var c in conns)
+            {
+                var ep = c.PeerUdpEndpoint;
+                if (ep == null) continue; // responder hasn't learned the peer's address yet
+                try { _udp.SendTo(c.DataSession.Seal(LinkMessageType.Keepalive, 0, 0, Array.Empty<byte>()), ep); }
+                catch { }
+            }
         }
 
         private void ReapDeadConnections()
@@ -156,6 +178,14 @@ namespace PadForge.Engine.RemoteLink
             }
         }
 
+        /// <summary>Fingerprints of peers with a live session right now (for UI state).</summary>
+        public IReadOnlyList<string> ConnectedFingerprints()
+        {
+            lock (_lock)
+                return _connections.Select(c => c.PeerFingerprintHex)
+                    .Where(f => !string.IsNullOrEmpty(f)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+        }
+
         /// <summary>Sever any live session with a peer (called on revocation). Its
         /// devices go offline and its UDP datagrams stop routing (no session opens them).</summary>
         public void RevokePeer(string fingerprintHex)
@@ -186,6 +216,32 @@ namespace PadForge.Engine.RemoteLink
                     System.Threading.Interlocked.Increment(ref DiagDatagramsSent);
                 }
                 catch (Exception ex) { DiagLastError = "push: " + ex.Message; }
+            }
+        }
+
+        /// <summary>Send one reverse output frame (issue #138 M2) to the peer that OWNS
+        /// the device this output is for. The slot is the device's link slot
+        /// (<see cref="RemotePeerDevice.LinkSlot"/>), and payload is an OutputEffectCodec
+        /// blob. Addressed by the owning peer's fingerprint so multi-peer setups route
+        /// each device's feedback back to the correct owner.</summary>
+        public void PushOutputEffect(string peerFingerprint, byte slot, byte[] payload)
+        {
+            if (string.IsNullOrEmpty(peerFingerprint) || payload == null) return;
+            LinkPeerConnection[] conns;
+            lock (_lock) conns = _connections.ToArray();
+            ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
+            foreach (var c in conns)
+            {
+                if (!string.Equals(c.PeerFingerprintHex, peerFingerprint, StringComparison.OrdinalIgnoreCase)) continue;
+                var ep = c.PeerUdpEndpoint;
+                if (ep == null) { DiagLastError = "output: peer endpoint not learned yet"; return; }
+                try
+                {
+                    _udp.SendTo(c.DataSession.Seal(LinkMessageType.Output, slot, ts, payload), ep);
+                    System.Threading.Interlocked.Increment(ref DiagDatagramsSent);
+                }
+                catch (Exception ex) { DiagLastError = "output: " + ex.Message; }
+                return;
             }
         }
 
@@ -255,6 +311,10 @@ namespace PadForge.Engine.RemoteLink
                 ExposedLocal = exposeLocal?.ToArray() ?? Array.Empty<RemotePeerDeviceInfo>(),
                 LastActivityTicks = System.Diagnostics.Stopwatch.GetTimestamp(),
             };
+            // Stamp each device with its link slot (= its index in the peer's exposed
+            // list), so the reverse output channel can address it symmetrically.
+            for (int i = 0; i < conn.RemoteDevices.Length; i++)
+                conn.RemoteDevices[i].LinkSlot = (byte)i;
             lock (_lock) _connections.Add(conn);
             foreach (var d in conn.RemoteDevices) DeviceConnected?.Invoke(d);
             StatusChanged?.Invoke($"Peer {Short(conn.PeerFingerprintHex)} connected, {conn.RemoteDevices.Length} device(s)");
@@ -306,9 +366,12 @@ namespace PadForge.Engine.RemoteLink
                     if (slot < c.RemoteDevices.Length)
                         c.RemoteDevices[slot].ApplyFramePayload(payload, ts);
                 }
-                else if (type == LinkMessageType.Haptic)
+                else if (type == LinkMessageType.Output)
                 {
-                    // Reserved for the feedback return path (replays onto the local device).
+                    // Reverse feedback from a consumer of one of OUR shared devices.
+                    // Surface it for InputService to map slot -> physical device and
+                    // drive the hardware (LinkServer is Engine-side, no UserDevices).
+                    OutputReceived?.Invoke(c.PeerFingerprintHex, slot, payload);
                 }
                 return;
             }

@@ -78,6 +78,11 @@ namespace PadForge.Engine.RemoteLink
 
         public RemotePeerDeviceInfo Info { get; }
 
+        /// <summary>This device's slot id on the link (its index in the owner's exposed
+        /// list, symmetric across both peers). The reverse output channel stamps this
+        /// slot so the owner maps an inbound effect back to the right physical device.</summary>
+        public byte LinkSlot { get; set; }
+
         /// <summary>Raised when the engine asks this source to rumble; the transport
         /// forwards it back to the peer to drive the physical device.</summary>
         public event Action<ushort, ushort> RumbleRequested;

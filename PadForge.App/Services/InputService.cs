@@ -69,6 +69,10 @@ namespace PadForge.Services
         private System.Threading.Timer _remoteLinkStreamTimer;
         private readonly List<(RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)> _remoteLinkExposed = new();
         private readonly object _remoteLinkExposedLock = new();
+        // Connected peer devices we consume (their guid -> owner fingerprint + link slot),
+        // used to build the reverse-output route table (#138 M2).
+        private readonly Dictionary<Guid, RemoteLinkOutputRouter.Target> _remoteConsumedTargets = new();
+        private readonly object _remoteConsumedLock = new();
         private InputHookManager _hookManager;
         private SettingsService _settingsService;
         private bool _disposed;
@@ -3991,6 +3995,10 @@ namespace PadForge.Services
             // (covers startup's first selection and every dropdown switch) without waiting
             // for the next save.
             _settingsService?.PushUiExtraSourcesIntoSlotMappingSets();
+
+            // Selecting a different device for a slot changes which slot a remote
+            // device feeds; refresh reverse-output routes (#138 M2).
+            if (_linkServer != null) RebuildRemoteOutputRoutes();
         }
 
         /// <summary>
@@ -4013,6 +4021,9 @@ namespace PadForge.Services
                 && padVm.SelectedMappedDevice.InstanceGuid != Guid.Empty
                 ? FindUserDevice(padVm.SelectedMappedDevice.InstanceGuid) : null;
             PopulateAvailableInputs(padVm, ud);
+            // A remap can change which slot a remote device feeds, so its reverse
+            // output must follow (#138 M2). Cheap no-op when no peer is connected.
+            if (_linkServer != null) RebuildRemoteOutputRoutes();
         }
 
         /// <summary>Reloads every MappingItem on the slot when the user
@@ -4688,6 +4699,10 @@ namespace PadForge.Services
             // Expose this PC's devices to inbound peers too (bidirectional sharing).
             _linkServer.ExposeProvider = () => BuildExposedDevices();
             _linkServer.StatusChanged += s => _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = s);
+            // Reverse feedback channel (#138 M2): our game output for a remote device
+            // is shipped to its owner; a peer's output for OUR device drives our hardware.
+            RemoteLinkOutputRouter.Send = (fp, slot, payload) => _linkServer?.PushOutputEffect(fp, slot, payload);
+            _linkServer.OutputReceived += OnRemoteOutputReceived;
             _linkServer.DeviceConnected += device =>
             {
                 // Mark the restriction BEFORE the device goes online, or there is a
@@ -4696,6 +4711,11 @@ namespace PadForge.Services
                     .Any(t => string.Equals(t.FingerprintHex, device.Info.PeerFingerprintHex, StringComparison.OrdinalIgnoreCase) && t.GamepadOnly) ?? false;
                 _inputManager.SetDeviceRestricted(device.InstanceGuid, restricted);
                 _inputManager.RegisterPeerDevice(device);
+                // Remember how to ship this device's game output back to its owner.
+                lock (_remoteConsumedLock)
+                    _remoteConsumedTargets[device.InstanceGuid] =
+                        new RemoteLinkOutputRouter.Target(device.Info.PeerFingerprintHex, device.LinkSlot);
+                RebuildRemoteOutputRoutes();
                 // Persist a freshly granted peer + refresh the manager list (the grant
                 // happened inside the handshake, just before this fires).
                 _dispatcher.BeginInvoke(() =>
@@ -4703,11 +4723,15 @@ namespace PadForge.Services
                     try { _settingsService?.Save(); } catch { }
                     _mainVm.Settings.RefreshTrustedPeers(_settingsService?.RemoteLink?.Trust?.Peers);
                 });
+                OnLinkPeersChanged(); // refresh Nearby PCs so this peer reads "Connected"
             };
             _linkServer.DeviceDisconnected += device =>
             {
                 _inputManager.SetDeviceRestricted(device.InstanceGuid, false);
                 _inputManager.UnregisterExternalDevice(device.InstanceGuid);
+                lock (_remoteConsumedLock) _remoteConsumedTargets.Remove(device.InstanceGuid);
+                RebuildRemoteOutputRoutes();
+                OnLinkPeersChanged();
             };
 
             int port = _mainVm.Dashboard.RemoteLinkPort;
@@ -4730,14 +4754,16 @@ namespace PadForge.Services
             if (disc == null) return;
             var peers = disc.Peers;
             var trust = _settingsService?.RemoteLink?.Trust;
+            var connectedFps = _linkServer?.ConnectedFingerprints() ?? (IReadOnlyList<string>)System.Array.Empty<string>();
             _dispatcher.BeginInvoke(() =>
             {
                 _mainVm.Dashboard.NearbyPeers.Clear();
                 foreach (var p in peers)
                 {
                     bool paired = trust?.Peers?.Any(t => string.Equals(t.FingerprintHex, p.FingerprintHex, StringComparison.OrdinalIgnoreCase)) ?? false;
+                    bool connected = connectedFps.Any(f => string.Equals(f, p.FingerprintHex, StringComparison.OrdinalIgnoreCase));
                     string hostPort = $"{p.Endpoint.Address}:{p.Endpoint.Port}";
-                    _mainVm.Dashboard.NearbyPeers.Add(new ViewModels.RemoteLinkNearbyPeer(p.Name, hostPort, p.FingerprintHex, paired, OnConnectToPeerRequested));
+                    _mainVm.Dashboard.NearbyPeers.Add(new ViewModels.RemoteLinkNearbyPeer(p.Name, hostPort, p.FingerprintHex, paired, connected, OnConnectToPeerRequested));
                 }
             });
         }
@@ -4747,6 +4773,9 @@ namespace PadForge.Services
             _remoteLinkStreamTimer?.Dispose();
             _remoteLinkStreamTimer = null;
             lock (_remoteLinkExposedLock) _remoteLinkExposed.Clear();
+            RemoteLinkOutputRouter.Send = null;
+            RemoteLinkOutputRouter.Clear();
+            lock (_remoteConsumedLock) _remoteConsumedTargets.Clear();
             if (_linkDiscovery != null)
             {
                 _linkDiscovery.PeersChanged -= OnLinkPeersChanged;
@@ -4919,6 +4948,73 @@ namespace PadForge.Services
                 }
             }
             finally { System.Threading.Volatile.Write(ref _streamTickGuard, 0); }
+        }
+
+        /// <summary>Rebuild the consumer-side reverse-output routes (#138 M2): VC pad
+        /// slot -&gt; the remote targets (owner fingerprint + link slot) whose devices are
+        /// mapped to that slot. Called on peer connect/disconnect and on remap, so the
+        /// capture taps in HMaestroVirtualController forward to the right owner.</summary>
+        private void RebuildRemoteOutputRoutes()
+        {
+            Dictionary<Guid, RemoteLinkOutputRouter.Target> targets;
+            lock (_remoteConsumedLock)
+            {
+                if (_remoteConsumedTargets.Count == 0) { RemoteLinkOutputRouter.Clear(); return; }
+                targets = new Dictionary<Guid, RemoteLinkOutputRouter.Target>(_remoteConsumedTargets);
+            }
+            var routes = new Dictionary<int, List<RemoteLinkOutputRouter.Target>>();
+            var settings = SettingsManager.UserSettings;
+            if (settings != null)
+            {
+                lock (settings.SyncRoot)
+                {
+                    foreach (var us in settings.Items)
+                    {
+                        if (us == null || us.MapTo < 0) continue;
+                        if (!targets.TryGetValue(us.InstanceGuid, out var tgt)) continue;
+                        if (!routes.TryGetValue(us.MapTo, out var lst))
+                            routes[us.MapTo] = lst = new List<RemoteLinkOutputRouter.Target>();
+                        lst.Add(tgt);
+                    }
+                }
+            }
+            RemoteLinkOutputRouter.SetRoutes(routes);
+        }
+
+        /// <summary>A paired peer sent reverse feedback for one of THIS PC's shared
+        /// devices (#138 M2). Map the link slot to the physical source and drive the
+        /// hardware directly — no local game / virtual controller is involved. Runs on
+        /// the UDP receive thread (one writer).</summary>
+        private void OnRemoteOutputReceived(string peerFingerprint, byte slot, byte[] payload)
+        {
+            if (!OutputEffectCodec.TryDecode(payload, out var effect)) return;
+            ISdlInputDevice source = null;
+            lock (_remoteLinkExposedLock)
+            {
+                foreach (var e in _remoteLinkExposed)
+                    if (e.slot == slot) { source = e.source; break; }
+            }
+            if (source == null) return;
+            try
+            {
+                switch (effect.Kind)
+                {
+                    case OutputEffectCodec.Kind.SonyEffect:
+                        // Replay the captured DualSense effect packet through SDL, which
+                        // re-frames it for the physical pad's transport (USB 0x02 / BT 0x31).
+                        var handle = source.GamepadHandle;
+                        if (handle != IntPtr.Zero && effect.Effect != null && effect.Effect.Length > 0)
+                            SDL3.SDL.SDL_SendGamepadEffect(handle, effect.Effect, 0, effect.Effect.Length);
+                        break;
+                    case OutputEffectCodec.Kind.Rumble:
+                        source.SetRumble(effect.Left, effect.Right, uint.MaxValue);
+                        var gp = source.GamepadHandle;
+                        if (source.HasRumbleTriggers && gp != IntPtr.Zero)
+                            SDL3.SDL.SDL_RumbleGamepadTriggers(gp, effect.LeftTrigger, effect.RightTrigger, uint.MaxValue);
+                        break;
+                }
+            }
+            catch { /* best-effort: a bad frame must not kill the receive loop */ }
         }
 
         // ─────────────────────────────────────────────

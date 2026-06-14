@@ -268,6 +268,8 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_RemoteLinkNearby => Get("Dashboard_RemoteLinkNearby");
     public string Dashboard_RemoteLinkNoPeers => Get("Dashboard_RemoteLinkNoPeers");
     public string Dashboard_RemoteLinkPairButton => Get("Dashboard_RemoteLinkPairButton");
+    public string RemoteLink_Connect => Get("RemoteLink_Connect");
+    public string RemoteLink_Connected => Get("RemoteLink_Connected");
     public string RemoteLink_PairTitle => Get("RemoteLink_PairTitle");
     public string RemoteLink_PairPrompt => Get("RemoteLink_PairPrompt");
     public string RemoteLink_Pair => Get("RemoteLink_Pair");

@@ -314,11 +314,11 @@ namespace PadForge.ViewModels
 
         /// <summary>Dropdown options, in index order: 0 Secure, 1 password-portable,
         /// 2 open-portable. Plain language — no crypto jargon.</summary>
-        public System.Collections.Generic.IReadOnlyList<string> IdentityProtectionModes { get; } = new[]
+        public System.Collections.Generic.IReadOnlyList<string> IdentityProtectionModes => new[]
         {
-            "Secure — this PC only",
-            "Portable — password protected",
-            "Portable — no password",
+            PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityModeSecure,
+            PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityModePortablePassword,
+            PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityModePortableOpen,
         };
 
         private bool _suppressIdentityModeChange;
@@ -342,9 +342,9 @@ namespace PadForge.ViewModels
         /// <summary>One-line guidance under the dropdown for the selected mode.</summary>
         public string IdentityProtectionHint => _identityProtectionModeIndex switch
         {
-            1 => "Your identity travels on this drive and unlocks with your password on any PC. A lost drive is useless without it.",
-            2 => "Your identity travels on this drive with no prompt. Anyone holding the drive can use it — keep it safe.",
-            _ => "Locked to this PC (works for every Windows account on it). Can't be moved to another machine.",
+            1 => PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityHintPortablePassword,
+            2 => PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityHintPortableOpen,
+            _ => PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityHintSecure,
         };
 
         /// <summary>Raised when the user picks a different protection mode (the new index).</summary>

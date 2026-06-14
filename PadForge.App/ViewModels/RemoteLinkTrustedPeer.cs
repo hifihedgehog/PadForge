@@ -1,6 +1,7 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using S = PadForge.Resources.Strings.Strings;
 
 namespace PadForge.ViewModels
 {
@@ -14,7 +15,7 @@ namespace PadForge.ViewModels
         public RemoteLinkTrustedPeer(string name, string fingerprintHex, string pairedUtc, bool gamepadOnly, bool isOnline,
             Action<string> onRevoke, Action<string, string> onRename, Action<string> onConnect)
         {
-            _name = string.IsNullOrWhiteSpace(name) ? "Paired PC" : name;
+            _name = string.IsNullOrWhiteSpace(name) ? S.Instance.RemoteLink_DefaultPeerName : name;
             FingerprintHex = fingerprintHex ?? "";
             PairedUtc = pairedUtc ?? "";
             GamepadOnly = gamepadOnly;
@@ -48,7 +49,7 @@ namespace PadForge.ViewModels
             get => _name;
             set
             {
-                string v = string.IsNullOrWhiteSpace(value) ? "Paired PC" : value.Trim();
+                string v = string.IsNullOrWhiteSpace(value) ? S.Instance.RemoteLink_DefaultPeerName : value.Trim();
                 if (SetProperty(ref _name, v)) _onRename?.Invoke(FingerprintHex, v);
             }
         }
@@ -60,7 +61,7 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _isOnline, value)) { OnPropertyChanged(nameof(OnlineText)); OnPropertyChanged(nameof(CanConnect)); } }
         }
 
-        public string OnlineText => IsOnline ? "Online" : "Offline";
+        public string OnlineText => IsOnline ? S.Instance.RemoteLink_Online : S.Instance.RemoteLink_Offline;
 
         public string FingerprintHex { get; }
         public string PairedUtc { get; }
@@ -79,7 +80,7 @@ namespace PadForge.ViewModels
                     sb.Append(head[i]);
                 }
                 string fp = sb.ToString();
-                return GamepadOnly ? $"{fp}  ·  gamepad only" : fp;
+                return GamepadOnly ? $"{fp}  ·  {S.Instance.RemoteLink_GamepadOnlySuffix}" : fp;
             }
         }
 

@@ -25,7 +25,8 @@ namespace PadForge.ViewModels
 
         /// <summary>Name with a state suffix.</summary>
         public string DisplayName =>
-            IsConnected ? $"{Name} (connected)" : IsPaired ? $"{Name} (paired)" : Name;
+            IsConnected ? $"{Name} {PadForge.Resources.Strings.Strings.Instance.RemoteLink_PeerConnectedSuffix}"
+            : IsPaired ? $"{Name} {PadForge.Resources.Strings.Strings.Instance.RemoteLink_PeerPairedSuffix}" : Name;
 
         /// <summary>Button text by state: Connected (disabled) / Connect (paired) / Pair (new).</summary>
         public string ButtonLabel =>

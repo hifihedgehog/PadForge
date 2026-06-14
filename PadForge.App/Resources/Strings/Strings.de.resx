@@ -1757,4 +1757,94 @@
   <data name="Mapping_MidiPitchBend" xml:space="preserve"><value>Pitch Bend</value></data>
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
+  <data name="RemoteLink_IdentityTitle" xml:space="preserve">
+    <value>Identitätsschutz</value>
+  </data>
+  <data name="RemoteLink_IdentityDescription" xml:space="preserve">
+    <value>Wie die Kopplungsidentität dieses PCs gespeichert wird. Wählen Sie einen portablen Modus, um Ihre Kopplungen auf einem USB-Stick zwischen Rechnern mitzunehmen.</value>
+  </data>
+  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve">
+    <value>Name dieses PCs</value>
+  </data>
+  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
+    <value>PCs in der Nähe (nicht gekoppelt)</value>
+  </data>
+  <data name="Common_Reset" xml:space="preserve">
+    <value>Zurücksetzen</value>
+  </data>
+  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
+    <value>Remote Link-Passwort</value>
+  </data>
+  <data name="Devices_ButtonNumberTooltip" xml:space="preserve">
+    <value>Taste {0}</value>
+  </data>
+  <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
+    <value>PadForge-Touchpad</value>
+  </data>
+  <data name="RemoteLink_PasswordEmpty" xml:space="preserve">
+    <value>Geben Sie ein Passwort ein.</value>
+  </data>
+  <data name="RemoteLink_PasswordMismatch" xml:space="preserve">
+    <value>Die Passwörter stimmen nicht überein.</value>
+  </data>
+  <data name="RemoteLink_IdentityModeSecure" xml:space="preserve">
+    <value>Sicher — nur dieser PC</value>
+  </data>
+  <data name="RemoteLink_IdentityModePortablePassword" xml:space="preserve">
+    <value>Portabel — passwortgeschützt</value>
+  </data>
+  <data name="RemoteLink_IdentityModePortableOpen" xml:space="preserve">
+    <value>Portabel — ohne Passwort</value>
+  </data>
+  <data name="RemoteLink_IdentityHintPortablePassword" xml:space="preserve">
+    <value>Ihre Identität reist auf diesem Laufwerk mit und wird mit Ihrem Passwort auf jedem PC entsperrt. Ein verlorenes Laufwerk ist ohne das Passwort nutzlos.</value>
+  </data>
+  <data name="RemoteLink_IdentityHintPortableOpen" xml:space="preserve">
+    <value>Ihre Identität reist auf diesem Laufwerk mit, ohne Abfrage. Jeder, der das Laufwerk besitzt, kann sie nutzen — bewahren Sie es sicher auf.</value>
+  </data>
+  <data name="RemoteLink_IdentityHintSecure" xml:space="preserve">
+    <value>An diesen PC gebunden (funktioniert für jedes Windows-Konto darauf). Kann nicht auf einen anderen Rechner übertragen werden.</value>
+  </data>
+  <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
+    <value>Gekoppelter PC</value>
+  </data>
+  <data name="RemoteLink_Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="RemoteLink_Offline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="RemoteLink_GamepadOnlySuffix" xml:space="preserve">
+    <value>nur Gamepad</value>
+  </data>
+  <data name="RemoteLink_PeerConnectedSuffix" xml:space="preserve">
+    <value>(verbunden)</value>
+  </data>
+  <data name="RemoteLink_PeerPairedSuffix" xml:space="preserve">
+    <value>(gekoppelt)</value>
+  </data>
+  <data name="RemoteLink_StatusUnlockBeforeChange" xml:space="preserve">
+    <value>Entsperren Sie die aktuelle Identität, bevor Sie ihren Schutz ändern.</value>
+  </data>
+  <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
+    <value>Legen Sie ein Passwort fest, um Ihre portable Identität zu schützen. Sie geben es ein, um Remote Link auf jedem PC zu entsperren.</value>
+  </data>
+  <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
+    <value>Identitätsschutz aktualisiert.</value>
+  </data>
+  <data name="RemoteLink_PasswordUnlockPrompt" xml:space="preserve">
+    <value>Geben Sie Ihr Remote-Link-Passwort ein, um diese Identität zu entsperren.</value>
+  </data>
+  <data name="RemoteLink_StatusWrongMachine" xml:space="preserve">
+    <value>Die Remote-Link-Identität ist an einen anderen PC gebunden. Wechseln Sie auf dem ursprünglichen PC in einen portablen Modus, um sie zu verschieben.</value>
+  </data>
+  <data name="RemoteLink_StatusWrongPassword" xml:space="preserve">
+    <value>Das Remote-Link-Passwort ist falsch.</value>
+  </data>
+  <data name="RemoteLink_StatusIdentityUnavailable" xml:space="preserve">
+    <value>Die Remote-Link-Identität ist nicht verfügbar.</value>
+  </data>
+  <data name="RemoteLink_StatusConnecting" xml:space="preserve">
+    <value>Verbindung zu {0}:{1}…</value>
+  </data>
 </root>

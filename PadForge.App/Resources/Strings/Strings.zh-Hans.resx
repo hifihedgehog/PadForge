@@ -1757,4 +1757,94 @@
   <data name="Mapping_MidiPitchBend" xml:space="preserve"><value>弯音</value></data>
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
+  <data name="RemoteLink_IdentityTitle" xml:space="preserve">
+    <value>身份保护</value>
+  </data>
+  <data name="RemoteLink_IdentityDescription" xml:space="preserve">
+    <value>此电脑的配对身份的存储方式。选择便携模式即可用 U 盘在不同电脑之间携带配对信息。</value>
+  </data>
+  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve">
+    <value>此电脑的名称</value>
+  </data>
+  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
+    <value>附近的电脑（未配对）</value>
+  </data>
+  <data name="Common_Reset" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
+    <value>Remote Link 密码</value>
+  </data>
+  <data name="Devices_ButtonNumberTooltip" xml:space="preserve">
+    <value>按钮 {0}</value>
+  </data>
+  <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
+    <value>PadForge 触控板</value>
+  </data>
+  <data name="RemoteLink_PasswordEmpty" xml:space="preserve">
+    <value>请输入密码。</value>
+  </data>
+  <data name="RemoteLink_PasswordMismatch" xml:space="preserve">
+    <value>两次输入的密码不一致。</value>
+  </data>
+  <data name="RemoteLink_IdentityModeSecure" xml:space="preserve">
+    <value>安全 — 仅此电脑</value>
+  </data>
+  <data name="RemoteLink_IdentityModePortablePassword" xml:space="preserve">
+    <value>便携 — 密码保护</value>
+  </data>
+  <data name="RemoteLink_IdentityModePortableOpen" xml:space="preserve">
+    <value>便携 — 无密码</value>
+  </data>
+  <data name="RemoteLink_IdentityHintPortablePassword" xml:space="preserve">
+    <value>你的身份信息随此驱动器一同携带，在任何电脑上用密码解锁。即便驱动器丢失，没有密码也无法使用。</value>
+  </data>
+  <data name="RemoteLink_IdentityHintPortableOpen" xml:space="preserve">
+    <value>你的身份信息无需任何确认即随此驱动器携带。持有该驱动器的任何人都能使用 — 请妥善保管。</value>
+  </data>
+  <data name="RemoteLink_IdentityHintSecure" xml:space="preserve">
+    <value>锁定到此电脑（对其上的每个 Windows 账户都有效）。无法移动到其他电脑。</value>
+  </data>
+  <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
+    <value>已配对的电脑</value>
+  </data>
+  <data name="RemoteLink_Online" xml:space="preserve">
+    <value>在线</value>
+  </data>
+  <data name="RemoteLink_Offline" xml:space="preserve">
+    <value>离线</value>
+  </data>
+  <data name="RemoteLink_GamepadOnlySuffix" xml:space="preserve">
+    <value>仅游戏手柄</value>
+  </data>
+  <data name="RemoteLink_PeerConnectedSuffix" xml:space="preserve">
+    <value>(已连接)</value>
+  </data>
+  <data name="RemoteLink_PeerPairedSuffix" xml:space="preserve">
+    <value>（已配对）</value>
+  </data>
+  <data name="RemoteLink_StatusUnlockBeforeChange" xml:space="preserve">
+    <value>更改保护前请先解锁当前身份。</value>
+  </data>
+  <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
+    <value>设置密码以保护您的便携身份。您将在每台电脑上输入它来解锁 Remote Link。</value>
+  </data>
+  <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
+    <value>身份保护已更新。</value>
+  </data>
+  <data name="RemoteLink_PasswordUnlockPrompt" xml:space="preserve">
+    <value>输入您的 Remote Link 密码以解锁此身份。</value>
+  </data>
+  <data name="RemoteLink_StatusWrongMachine" xml:space="preserve">
+    <value>Remote Link 身份已绑定到另一台电脑。请在原电脑上切换到便携模式以移动它。</value>
+  </data>
+  <data name="RemoteLink_StatusWrongPassword" xml:space="preserve">
+    <value>Remote Link 密码不正确。</value>
+  </data>
+  <data name="RemoteLink_StatusIdentityUnavailable" xml:space="preserve">
+    <value>Remote Link 身份不可用。</value>
+  </data>
+  <data name="RemoteLink_StatusConnecting" xml:space="preserve">
+    <value>正在连接到 {0}:{1}…</value>
+  </data>
 </root>

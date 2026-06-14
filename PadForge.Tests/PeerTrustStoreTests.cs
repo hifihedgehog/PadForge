@@ -128,46 +128,119 @@ namespace PadForge.Tests
 
     public class IdentityProtectorTests
     {
-        [Fact]
-        public void Protect_Unprotect_RoundTrips()
-        {
-            var secret = PeerCrypto.RandomBytes(PeerCrypto.KeySize);
-            string blob = IdentityProtector.ProtectToBase64(secret);
-            Assert.NotEqual(System.Convert.ToBase64String(secret), blob); // actually encrypted
+        private static byte[] Key() => PeerCrypto.RandomBytes(PeerCrypto.KeySize);
+        private static string Hex(byte[] b) => System.Convert.ToHexString(b);
 
-            byte[] back = IdentityProtector.UnprotectFromBase64(blob);
-            Assert.Equal(System.Convert.ToHexString(secret), System.Convert.ToHexString(back));
+        [Fact]
+        public void Secure_RoundTrips_OnThisMachine()
+        {
+            var secret = Key();
+            string blob = IdentityProtector.Protect(secret, IdentityProtectionMode.Secure);
+            Assert.NotEqual(System.Convert.ToBase64String(secret), blob); // actually wrapped
+
+            Assert.Equal(IdentityUnprotect.Ok,
+                IdentityProtector.TryUnprotect(blob, null, out var back, out var mode));
+            Assert.Equal(IdentityProtectionMode.Secure, mode);
+            Assert.Equal(Hex(secret), Hex(back));
         }
 
         [Fact]
-        public void Unprotect_MalformedReturnsNull()
+        public void PortablePassword_RoundTrips_AndRejectsWrongOrMissingPassword()
         {
-            Assert.Null(IdentityProtector.UnprotectFromBase64(null));
-            Assert.Null(IdentityProtector.UnprotectFromBase64("not-base64 @@@"));
-            Assert.Null(IdentityProtector.UnprotectFromBase64(System.Convert.ToBase64String(new byte[] { 1, 2, 3 })));
+            var secret = Key();
+            string blob = IdentityProtector.Protect(secret, IdentityProtectionMode.PortablePassword, "hunter2");
+
+            Assert.Equal(IdentityUnprotect.Ok,
+                IdentityProtector.TryUnprotect(blob, "hunter2", out var back, out var mode));
+            Assert.Equal(IdentityProtectionMode.PortablePassword, mode);
+            Assert.Equal(Hex(secret), Hex(back));
+
+            Assert.Equal(IdentityUnprotect.WrongPassword,
+                IdentityProtector.TryUnprotect(blob, "wrong", out var none, out _));
+            Assert.Null(none);
+
+            Assert.Equal(IdentityUnprotect.NeedsPassword,
+                IdentityProtector.TryUnprotect(blob, null, out _, out _));
         }
 
         [Fact]
-        public void LoadOrCreate_MintsWhenAbsentThenLoadsWhatItPersisted()
+        public void PortableOpen_RoundTrips_WithoutPassword()
         {
-            var id1 = IdentityProtector.LoadOrCreate(null, null, out var protPriv, out var pub);
-            Assert.NotNull(protPriv); // a fresh key was minted and needs persisting
+            var secret = Key();
+            string blob = IdentityProtector.Protect(secret, IdentityProtectionMode.PortableOpen);
+            Assert.Equal(IdentityUnprotect.Ok,
+                IdentityProtector.TryUnprotect(blob, null, out var back, out var mode));
+            Assert.Equal(IdentityProtectionMode.PortableOpen, mode);
+            Assert.Equal(Hex(secret), Hex(back));
+        }
+
+        [Fact]
+        public void TryUnprotect_EmptyAndCorrupt()
+        {
+            Assert.Equal(IdentityUnprotect.Empty, IdentityProtector.TryUnprotect(null, null, out _, out _));
+            Assert.Equal(IdentityUnprotect.Empty, IdentityProtector.TryUnprotect("", null, out _, out _));
+            Assert.Equal(IdentityUnprotect.Corrupt, IdentityProtector.TryUnprotect("not-base64 @@@", null, out _, out _));
+            Assert.Equal(IdentityUnprotect.Corrupt,
+                IdentityProtector.TryUnprotect(System.Convert.ToBase64String(new byte[] { 9, 9, 9 }), null, out _, out _));
+        }
+
+        [Fact]
+        public void LoadOrMint_MintsWhenAbsentThenReloadsSameIdentity()
+        {
+            var status = IdentityProtector.LoadOrMint(null, null, null, IdentityProtectionMode.Secure, null,
+                out var id1, out var protPriv, out var pub);
+            Assert.Equal(IdentityUnprotect.Minted, status);
+            Assert.NotNull(protPriv);
             Assert.NotNull(pub);
 
-            // Feeding back the persisted values must reload the SAME identity.
-            var id2 = IdentityProtector.LoadOrCreate(protPriv, pub, out var protPriv2, out var pub2);
+            var status2 = IdentityProtector.LoadOrMint(protPriv, pub, null, IdentityProtectionMode.Secure, null,
+                out var id2, out var protPriv2, out var pub2);
+            Assert.Equal(IdentityUnprotect.Ok, status2);
             Assert.Null(protPriv2); // nothing new to persist
             Assert.Null(pub2);
             Assert.Equal(id1.FingerprintHex, id2.FingerprintHex);
         }
 
         [Fact]
-        public void LoadOrCreate_RegeneratesWhenStoredBlobUnreadable()
+        public void LoadOrMint_RemintsOnGarbageButNeverOverwritesALockedIdentity()
         {
-            var id = IdentityProtector.LoadOrCreate("garbage", "garbage", out var protPriv, out var pub);
-            Assert.NotNull(id);
-            Assert.NotNull(protPriv); // had to mint a new one
-            Assert.NotNull(pub);
+            // Garbage / old format → safe to re-mint (nothing recoverable to destroy).
+            Assert.Equal(IdentityUnprotect.Minted,
+                IdentityProtector.LoadOrMint("garbage", "garbage", null, IdentityProtectionMode.Secure, null,
+                    out var minted, out var p, out var pub));
+            Assert.NotNull(minted); Assert.NotNull(p); Assert.NotNull(pub);
+
+            // A valid password-mode identity opened with NO password must NOT be overwritten.
+            string lockedBlob = IdentityProtector.Protect(Key(), IdentityProtectionMode.PortablePassword, "pw");
+            string anyPub = System.Convert.ToBase64String(Key());
+            Assert.Equal(IdentityUnprotect.NeedsPassword,
+                IdentityProtector.LoadOrMint(lockedBlob, anyPub, null, IdentityProtectionMode.Secure, null,
+                    out var none1, out var persist1, out _));
+            Assert.Null(none1);
+            Assert.Null(persist1); // CRITICAL: no overwrite
+
+            // Wrong password likewise must not overwrite.
+            Assert.Equal(IdentityUnprotect.WrongPassword,
+                IdentityProtector.LoadOrMint(lockedBlob, anyPub, "nope", IdentityProtectionMode.Secure, null,
+                    out var none2, out var persist2, out _));
+            Assert.Null(none2);
+            Assert.Null(persist2); // CRITICAL: no overwrite
+        }
+
+        [Fact]
+        public void ModeSwitch_PreservesIdentity()
+        {
+            // Mint Secure, recover the raw private, re-wrap under password: the fingerprint
+            // (i.e. the identity peers trust) must survive the switch unchanged.
+            IdentityProtector.LoadOrMint(null, null, null, IdentityProtectionMode.Secure, null,
+                out var id, out var securePriv, out var pub);
+            Assert.Equal(IdentityUnprotect.Ok, IdentityProtector.TryUnprotect(securePriv, null, out var raw, out _));
+
+            string pwBlob = IdentityProtector.Protect(raw, IdentityProtectionMode.PortablePassword, "secret");
+            Assert.Equal(IdentityUnprotect.Ok,
+                IdentityProtector.LoadOrMint(pwBlob, pub, "secret", IdentityProtectionMode.PortablePassword, "secret",
+                    out var switched, out _, out _));
+            Assert.Equal(id.FingerprintHex, switched.FingerprintHex);
         }
     }
 }

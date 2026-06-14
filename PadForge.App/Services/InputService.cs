@@ -4810,15 +4810,41 @@ namespace PadForge.Services
         {
             var holder = _settingsService?.RemoteLink;
             if (holder == null) return PeerIdentity.Generate();
-            var id = IdentityProtector.LoadOrCreate(holder.ProtectedPrivateBase64, holder.PublicBase64, out var newPriv, out var newPub);
-            if (newPriv != null)
+
+            // Password for a portable-password identity is collected by the UI and held for
+            // the session; null in Secure / open modes (and until the prompt lands).
+            string password = _remoteLinkSessionPassword;
+            var status = IdentityProtector.LoadOrMint(
+                holder.ProtectedPrivateBase64, holder.PublicBase64, password,
+                holder.IdentityProtection, password,
+                out var identity, out var newPriv, out var newPub);
+
+            if (status == IdentityUnprotect.Minted)
             {
                 holder.ProtectedPrivateBase64 = newPriv;
                 holder.PublicBase64 = newPub;
                 _settingsService.Save();
+                return identity;
             }
-            return id;
+            if (status == IdentityUnprotect.Ok) return identity;
+
+            // Locked: a real identity exists but can't be opened here. NEVER overwrite it —
+            // surface why so the user can fix it (the right machine, or the password), and
+            // leave Remote Link off until then.
+            string msg = status switch
+            {
+                IdentityUnprotect.WrongMachine => "Remote Link identity is secured to another PC. Switch to a portable mode on the original PC to move it.",
+                IdentityUnprotect.NeedsPassword => "Enter your Remote Link password to unlock this identity.",
+                IdentityUnprotect.WrongPassword => "Remote Link password is incorrect.",
+                _ => "Remote Link identity is unavailable.",
+            };
+            _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = msg);
+            return null;
         }
+
+        /// <summary>Portable-password identity unlock for this session (issue #138). Set by
+        /// the UI password prompt; never persisted. Null in Secure / open modes.</summary>
+        private string _remoteLinkSessionPassword;
 
         /// <summary>Show the SAS pairing dialog on the UI thread and block the socket
         /// thread until the user decides. First contact only; trusted peers reconnect

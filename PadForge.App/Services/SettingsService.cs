@@ -98,6 +98,10 @@ namespace PadForge.Services
         {
             public string ProtectedPrivateBase64 { get; set; } = "";
             public string PublicBase64 { get; set; } = "";
+            /// <summary>How the private key above is wrapped at rest. Default machine-bound
+            /// (Secure); the user can switch to a portable mode for thumb-drive use.</summary>
+            public PadForge.Engine.RemoteLink.IdentityProtectionMode IdentityProtection { get; set; }
+                = PadForge.Engine.RemoteLink.IdentityProtectionMode.Secure;
             public PadForge.Engine.RemoteLink.PeerTrustStore Trust { get; set; }
                 = new PadForge.Engine.RemoteLink.PeerTrustStore();
         }
@@ -1238,6 +1242,9 @@ namespace PadForge.Services
                 // and their gamepad-only restriction bypassed.
                 RemoteLink.ProtectedPrivateBase64 = appSettings.RemoteLinkIdentityPrivate ?? "";
                 RemoteLink.PublicBase64 = appSettings.RemoteLinkIdentityPublic ?? "";
+                RemoteLink.IdentityProtection =
+                    Enum.TryParse<PadForge.Engine.RemoteLink.IdentityProtectionMode>(appSettings.RemoteLinkIdentityProtection, out var ipm)
+                        ? ipm : PadForge.Engine.RemoteLink.IdentityProtectionMode.Secure;
                 RemoteLink.Trust.ReplaceAll(appSettings.RemoteLinkPeers);
             }
             catch { }
@@ -2854,6 +2861,7 @@ namespace PadForge.Services
                 // the runtime holder (set on load / updated on pairing + revocation).
                 RemoteLinkIdentityPrivate = RemoteLink?.ProtectedPrivateBase64 ?? "",
                 RemoteLinkIdentityPublic = RemoteLink?.PublicBase64 ?? "",
+                RemoteLinkIdentityProtection = (RemoteLink?.IdentityProtection ?? PadForge.Engine.RemoteLink.IdentityProtectionMode.Secure).ToString(),
                 RemoteLinkPeers = RemoteLink?.Trust?.Peers?.ToArray(),
                 AutoStartEngine = vm.AutoStartEngine,
                 MinimizeToTray = vm.MinimizeToTray,
@@ -3866,6 +3874,11 @@ namespace PadForge.Services
         /// <summary>This instance's static identity public key (base64). Not secret.</summary>
         [XmlElement]
         public string RemoteLinkIdentityPublic { get; set; } = "";
+
+        /// <summary>How the private key is wrapped at rest: Secure (machine-bound, default),
+        /// PortablePassword, or PortableOpen. Drives thumb-drive portability (issue #138).</summary>
+        [XmlElement]
+        public string RemoteLinkIdentityProtection { get; set; } = "Secure";
 
         /// <summary>Trusted paired peers. Old files lack this element and load as null.</summary>
         [XmlArray("RemoteLinkPeers")]

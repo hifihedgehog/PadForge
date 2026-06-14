@@ -4,65 +4,215 @@ using System.Text;
 
 namespace PadForge.Engine.RemoteLink
 {
+    /// <summary>How the instance's static private identity key is protected at rest
+    /// (issue #138). The public key and the trust list are never secret and stay in
+    /// the clear; only the private key is wrapped.</summary>
+    public enum IdentityProtectionMode : byte
+    {
+        /// <summary>DPAPI scoped to the MACHINE (not the account): every Windows user on
+        /// THIS PC can use the identity — so a shared family PC works — but it can't be
+        /// decrypted on another machine. Default. Not portable.</summary>
+        Secure = 1,
+
+        /// <summary>Password-wrapped (PBKDF2-SHA256 + AES-256-GCM): travels on a drive and
+        /// unlocks with the user's password on any machine. A lost drive is useless without
+        /// the password.</summary>
+        PortablePassword = 2,
+
+        /// <summary>Plaintext: travels freely with no prompt. The drive itself is the
+        /// credential — anyone holding it holds the identity.</summary>
+        PortableOpen = 3,
+    }
+
+    /// <summary>Outcome of recovering the stored private key. Only <see cref="Ok"/> and
+    /// <see cref="Minted"/> yield a usable identity; the locked outcomes
+    /// (<see cref="NeedsPassword"/> / <see cref="WrongPassword"/> / <see cref="WrongMachine"/>)
+    /// mean a real identity exists but can't be opened here — the caller must surface that,
+    /// never overwrite, so moving a drive or mistyping a password can't destroy the key.</summary>
+    public enum IdentityUnprotect
+    {
+        Ok,
+        Minted,        // nothing usable was stored; a fresh identity was generated (persist it)
+        Empty,         // nothing stored
+        Corrupt,       // unparseable / not our format (e.g. an old pre-v3 blob, or garbage)
+        NeedsPassword, // password mode but no password supplied
+        WrongPassword, // password mode, supplied password failed authentication
+        WrongMachine,  // Secure mode blob minted under a different machine
+    }
+
     /// <summary>
-    /// DPAPI wrap/unwrap for the instance's static private key at rest (issue #138).
-    /// The key is encrypted to the current Windows user (DataProtectionScope.CurrentUser),
-    /// so a stolen PadForge.xml carries no usable identity off the machine/account.
-    /// Public keys and the trust list are not secret and are stored in the clear.
+    /// Wrap/unwrap the instance's static Ed25519 private key for storage (issue #138).
+    /// The blob is self-describing — a 1-byte version + 1-byte mode prefix — so a moved
+    /// PadForge.xml decodes without any side channel, and the three protection modes
+    /// (machine-bound, password-portable, open-portable) interoperate from one field.
     /// </summary>
     public static class IdentityProtector
     {
-        // Bound into the DPAPI entropy so this blob can't be unwrapped by another
-        // app's CurrentUser-scoped call without also knowing this constant.
+        private const byte Version = 1;
+        private const int Pbkdf2Iterations = 600_000; // OWASP PBKDF2-HMAC-SHA256 floor
+        // Bound into the DPAPI entropy so a LocalMachine blob can't be unwrapped by another
+        // app's LocalMachine-scoped call without also knowing this constant.
         private static readonly byte[] Entropy = Encoding.ASCII.GetBytes("PadForge.RemoteLink.Identity.v1");
 
-        /// <summary>Encrypt the private key for storage; returns base64 of the DPAPI blob.</summary>
-        public static string ProtectToBase64(byte[] privateKey)
+        /// <summary>Wrap the 32-byte private key under <paramref name="mode"/> into a
+        /// self-describing base64 blob.</summary>
+        public static string Protect(byte[] privateKey, IdentityProtectionMode mode, string password = null)
         {
-            if (privateKey == null) throw new ArgumentNullException(nameof(privateKey));
-            byte[] blob = ProtectedData.Protect(privateKey, Entropy, DataProtectionScope.CurrentUser);
-            return Convert.ToBase64String(blob);
+            if (privateKey == null || privateKey.Length != PeerCrypto.KeySize)
+                throw new ArgumentException("Bad private key length.", nameof(privateKey));
+
+            switch (mode)
+            {
+                case IdentityProtectionMode.Secure:
+                    return Pack(mode, ProtectedData.Protect(privateKey, Entropy, DataProtectionScope.LocalMachine));
+
+                case IdentityProtectionMode.PortablePassword:
+                {
+                    if (string.IsNullOrEmpty(password))
+                        throw new ArgumentException("Password required for portable-password mode.", nameof(password));
+                    byte[] salt = PeerCrypto.RandomBytes(16);
+                    byte[] nonce = PeerCrypto.RandomBytes(12);
+                    byte[] key = Rfc2898DeriveBytes.Pbkdf2(Encoding.UTF8.GetBytes(password), salt, Pbkdf2Iterations, HashAlgorithmName.SHA256, 32);
+                    byte[] ct = new byte[PeerCrypto.KeySize];
+                    byte[] tag = new byte[16];
+                    try
+                    {
+                        using var gcm = new AesGcm(key, 16);
+                        gcm.Encrypt(nonce, privateKey, ct, tag);
+                    }
+                    finally { PeerCrypto.Zeroize(key); }
+
+                    byte[] body = new byte[4 + 16 + 12 + 16 + PeerCrypto.KeySize];
+                    BitConverter.GetBytes(Pbkdf2Iterations).CopyTo(body, 0);
+                    salt.CopyTo(body, 4);
+                    nonce.CopyTo(body, 20);
+                    tag.CopyTo(body, 32);
+                    ct.CopyTo(body, 48);
+                    return Pack(mode, body);
+                }
+
+                case IdentityProtectionMode.PortableOpen:
+                    return Pack(mode, (byte[])privateKey.Clone());
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(mode));
+            }
         }
 
-        /// <summary>Decrypt a base64 DPAPI blob back to the private key, or null if the
-        /// blob is malformed or was protected under a different user/entropy.</summary>
-        public static byte[] UnprotectFromBase64(string protectedBase64)
+        /// <summary>Recover the private key from a stored blob. <paramref name="privateKey"/>
+        /// is non-null only on <see cref="IdentityUnprotect.Ok"/>; the caller must zeroize it.</summary>
+        public static IdentityUnprotect TryUnprotect(string blobBase64, string password, out byte[] privateKey, out IdentityProtectionMode mode)
         {
-            if (string.IsNullOrEmpty(protectedBase64)) return null;
+            privateKey = null;
+            mode = IdentityProtectionMode.Secure;
+            if (string.IsNullOrEmpty(blobBase64)) return IdentityUnprotect.Empty;
+
+            byte[] raw;
+            try { raw = Convert.FromBase64String(blobBase64); }
+            catch (FormatException) { return IdentityUnprotect.Corrupt; }
+            if (raw.Length < 2 || raw[0] != Version || raw[1] < 1 || raw[1] > 3) return IdentityUnprotect.Corrupt;
+            mode = (IdentityProtectionMode)raw[1];
+            var body = new ReadOnlySpan<byte>(raw, 2, raw.Length - 2);
+
+            switch (mode)
+            {
+                case IdentityProtectionMode.Secure:
+                {
+                    try
+                    {
+                        byte[] priv = ProtectedData.Unprotect(body.ToArray(), Entropy, DataProtectionScope.LocalMachine);
+                        if (priv == null || priv.Length != PeerCrypto.KeySize) return IdentityUnprotect.Corrupt;
+                        privateKey = priv;
+                        return IdentityUnprotect.Ok;
+                    }
+                    catch (CryptographicException) { return IdentityUnprotect.WrongMachine; }
+                }
+
+                case IdentityProtectionMode.PortablePassword:
+                {
+                    if (body.Length != 4 + 16 + 12 + 16 + PeerCrypto.KeySize) return IdentityUnprotect.Corrupt;
+                    if (string.IsNullOrEmpty(password)) return IdentityUnprotect.NeedsPassword;
+                    int iter = BitConverter.ToInt32(body.Slice(0, 4));
+                    if (iter < 1 || iter > 100_000_000) return IdentityUnprotect.Corrupt;
+                    byte[] salt = body.Slice(4, 16).ToArray();
+                    byte[] nonce = body.Slice(20, 12).ToArray();
+                    byte[] tag = body.Slice(32, 16).ToArray();
+                    byte[] ct = body.Slice(48, PeerCrypto.KeySize).ToArray();
+                    byte[] key = Rfc2898DeriveBytes.Pbkdf2(Encoding.UTF8.GetBytes(password), salt, iter, HashAlgorithmName.SHA256, 32);
+                    byte[] priv = new byte[PeerCrypto.KeySize];
+                    try
+                    {
+                        using var gcm = new AesGcm(key, 16);
+                        gcm.Decrypt(nonce, ct, tag, priv);
+                    }
+                    catch (AuthenticationTagMismatchException) { PeerCrypto.Zeroize(priv); return IdentityUnprotect.WrongPassword; }
+                    finally { PeerCrypto.Zeroize(key); }
+                    privateKey = priv;
+                    return IdentityUnprotect.Ok;
+                }
+
+                case IdentityProtectionMode.PortableOpen:
+                {
+                    if (body.Length != PeerCrypto.KeySize) return IdentityUnprotect.Corrupt;
+                    privateKey = body.ToArray();
+                    return IdentityUnprotect.Ok;
+                }
+
+                default:
+                    return IdentityUnprotect.Corrupt;
+            }
+        }
+
+        /// <summary>Load the stored identity, or mint a fresh one ONLY when nothing usable is
+        /// stored (empty or unparseable/old format). A valid-but-locked identity (wrong
+        /// machine, or a password-mode key with no/incorrect password) is never overwritten —
+        /// it returns the locked status so the caller can prompt or warn. On
+        /// <see cref="IdentityUnprotect.Minted"/> the out blobs must be persisted.</summary>
+        public static IdentityUnprotect LoadOrMint(
+            string protectedPrivateBase64, string publicKeyBase64, string password,
+            IdentityProtectionMode mintMode, string mintPassword,
+            out PeerIdentity identity, out string persistProtectedPrivate, out string persistPublic)
+        {
+            identity = null; persistProtectedPrivate = null; persistPublic = null;
+            var status = TryUnprotect(protectedPrivateBase64, password, out byte[] priv, out _);
             try
             {
-                byte[] blob = Convert.FromBase64String(protectedBase64);
-                return ProtectedData.Unprotect(blob, Entropy, DataProtectionScope.CurrentUser);
+                if (status == IdentityUnprotect.Ok)
+                {
+                    byte[] pub = TryFromBase64(publicKeyBase64);
+                    if (pub != null && pub.Length == PeerCrypto.KeySize)
+                    {
+                        identity = new PeerIdentity(priv, pub);
+                        return IdentityUnprotect.Ok;
+                    }
+                    // Private recovered but the paired public is missing/garbage: nothing
+                    // trustworthy to load, so re-mint (same as Corrupt).
+                    status = IdentityUnprotect.Corrupt;
+                }
+
+                if (status == IdentityUnprotect.Empty || status == IdentityUnprotect.Corrupt)
+                {
+                    identity = PeerIdentity.Generate();
+                    byte[] fresh = identity.ExportPrivateKey();
+                    try { persistProtectedPrivate = Protect(fresh, mintMode, mintPassword); }
+                    finally { PeerCrypto.Zeroize(fresh); }
+                    persistPublic = Convert.ToBase64String(identity.PublicKey);
+                    return IdentityUnprotect.Minted;
+                }
+
+                // NeedsPassword / WrongPassword / WrongMachine: do NOT mint or overwrite.
+                return status;
             }
-            catch (FormatException) { return null; }
-            catch (CryptographicException) { return null; }
+            finally { if (priv != null) PeerCrypto.Zeroize(priv); }
         }
 
-        /// <summary>
-        /// Load the persisted identity from a (protected private key, public key) pair,
-        /// or generate, protect, and hand back a fresh one when none is stored or the
-        /// stored one can't be unwrapped. <paramref name="protectedPrivateBase64"/> is
-        /// updated with the value to persist (non-null only when a new key was minted).
-        /// </summary>
-        public static PeerIdentity LoadOrCreate(string protectedPrivateBase64, string publicKeyBase64, out string toPersistProtectedPrivate, out string toPersistPublic)
+        private static string Pack(IdentityProtectionMode mode, byte[] body)
         {
-            byte[] priv = UnprotectFromBase64(protectedPrivateBase64);
-            byte[] pub = TryFromBase64(publicKeyBase64);
-            if (priv != null && priv.Length == PeerCrypto.KeySize && pub != null && pub.Length == PeerCrypto.KeySize)
-            {
-                toPersistProtectedPrivate = null;
-                toPersistPublic = null;
-                var loaded = new PeerIdentity(priv, pub);
-                PeerCrypto.Zeroize(priv);
-                return loaded;
-            }
-
-            var identity = PeerIdentity.Generate();
-            byte[] freshPriv = identity.ExportPrivateKey();
-            toPersistProtectedPrivate = ProtectToBase64(freshPriv);
-            toPersistPublic = Convert.ToBase64String(identity.PublicKey);
-            PeerCrypto.Zeroize(freshPriv);
-            return identity;
+            byte[] blob = new byte[2 + body.Length];
+            blob[0] = Version;
+            blob[1] = (byte)mode;
+            body.CopyTo(blob, 2);
+            return Convert.ToBase64String(blob);
         }
 
         private static byte[] TryFromBase64(string s)

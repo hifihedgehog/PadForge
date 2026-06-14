@@ -7,6 +7,7 @@ using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Common;
 using PadForge.Engine.Data;
+using PadForge.Engine.RemoteLink;
 using PadForge.Resources.Strings;
 using PadForge.ViewModels;
 
@@ -62,6 +63,11 @@ namespace PadForge.Services
         private readonly List<PadForge.Engine.Touchpad.TouchpadCustomGesture> _activeTouchpadGestures = new();
         private DsuMotionServer _dsuServer;
         private WebControllerServer _webServer;
+        private LinkServer _linkServer;
+        private bool _remoteLinkConnectWired;
+        private System.Threading.Timer _remoteLinkStreamTimer;
+        private readonly List<(RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)> _remoteLinkExposed = new();
+        private readonly object _remoteLinkExposedLock = new();
         private InputHookManager _hookManager;
         private SettingsService _settingsService;
         private bool _disposed;
@@ -910,6 +916,9 @@ namespace PadForge.Services
             // Start web controller server if enabled.
             StartWebServerIfEnabled();
 
+            // Start Remote Link server if enabled (issue #138).
+            StartRemoteLinkIfEnabled();
+
             // Show touchpad overlay if enabled.
             if (_mainVm.Dashboard.EnableTouchpadOverlay)
                 ShowTouchpadOverlay();
@@ -1032,6 +1041,7 @@ namespace PadForge.Services
             }
             StopDsuServer();
             StopWebServer();
+            StopRemoteLink();
             StopAudioBassDetector();
             // Honor the persistent-cloaks setting on shutdown only.
             // Mid-session toggling EnableInputHiding off still decloaks
@@ -4359,6 +4369,21 @@ namespace PadForge.Services
                     StartWebServerIfEnabled();
                 }
             }
+            else if (e.PropertyName == nameof(DashboardViewModel.EnableRemoteLink))
+            {
+                if (_mainVm.Dashboard.EnableRemoteLink)
+                    StartRemoteLinkIfEnabled();
+                else
+                    StopRemoteLink();
+            }
+            else if (e.PropertyName == nameof(DashboardViewModel.RemoteLinkPort))
+            {
+                if (_mainVm.Dashboard.EnableRemoteLink)
+                {
+                    StopRemoteLink();
+                    StartRemoteLinkIfEnabled();
+                }
+            }
             else if (e.PropertyName == nameof(DashboardViewModel.EnableTouchpadOverlay))
             {
                 if (_mainVm.Dashboard.EnableTouchpadOverlay)
@@ -4612,6 +4637,169 @@ namespace PadForge.Services
             _webServer = null;
             _mainVm.Dashboard.WebControllerStatus = Strings.Instance.Common_Stopped;
             _mainVm.Dashboard.WebControllerClientCount = 0;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Remote Link server lifecycle (issue #138)
+        // ─────────────────────────────────────────────
+
+        private void StartRemoteLinkIfEnabled()
+        {
+            if (!_mainVm.Dashboard.EnableRemoteLink || _inputManager == null) return;
+            if (_linkServer != null) return;
+
+            var identity = EnsureRemoteLinkIdentity();
+            if (identity == null) return;
+            var trust = _settingsService?.RemoteLink?.Trust ?? new PeerTrustStore();
+
+            if (!_remoteLinkConnectWired)
+            {
+                _mainVm.Dashboard.ConnectToPeerRequested += OnConnectToPeerRequested;
+                _remoteLinkConnectWired = true;
+            }
+
+            _linkServer = new LinkServer(identity, trust, ApprovePairing);
+            _linkServer.StatusChanged += s => _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = s);
+            _linkServer.DeviceConnected += device => _inputManager.RegisterPeerDevice(device);
+            _linkServer.DeviceDisconnected += device => _inputManager.UnregisterExternalDevice(device.InstanceGuid);
+
+            int port = _mainVm.Dashboard.RemoteLinkPort;
+            if (port < 1024 || port > 65535) port = 27500;
+            _linkServer.Start(port);
+
+            // Stream exposed devices at ~125 Hz off the hot path.
+            _remoteLinkStreamTimer?.Dispose();
+            _remoteLinkStreamTimer = new System.Threading.Timer(RemoteLinkStreamTick, null, 8, 8);
+        }
+
+        private void StopRemoteLink()
+        {
+            _remoteLinkStreamTimer?.Dispose();
+            _remoteLinkStreamTimer = null;
+            lock (_remoteLinkExposedLock) _remoteLinkExposed.Clear();
+            if (_linkServer == null) return;
+            _linkServer.Dispose();
+            _linkServer = null;
+            _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.Common_Stopped;
+        }
+
+        /// <summary>Load the persisted Remote Link identity, minting + saving one on first use.</summary>
+        private PeerIdentity EnsureRemoteLinkIdentity()
+        {
+            var holder = _settingsService?.RemoteLink;
+            if (holder == null) return PeerIdentity.Generate();
+            var id = IdentityProtector.LoadOrCreate(holder.ProtectedPrivateBase64, holder.PublicBase64, out var newPriv, out var newPub);
+            if (newPriv != null)
+            {
+                holder.ProtectedPrivateBase64 = newPriv;
+                holder.PublicBase64 = newPub;
+                _settingsService.Save();
+            }
+            return id;
+        }
+
+        /// <summary>Show the SAS pairing dialog on the UI thread and block the socket
+        /// thread until the user decides. First contact only; trusted peers reconnect
+        /// without prompting.</summary>
+        private bool ApprovePairing(PendingPairing pending)
+        {
+            bool result = false;
+            using var done = new System.Threading.ManualResetEventSlim(false);
+            _dispatcher.BeginInvoke(() =>
+            {
+                try
+                {
+                    var dlg = new Views.RemoteLinkPairDialog(pending.Sas, pending.PeerFingerprintHex);
+                    var owner = System.Windows.Application.Current?.MainWindow;
+                    if (owner != null && owner.IsLoaded) dlg.Owner = owner;
+                    result = dlg.ShowDialog() == true;
+                }
+                catch { result = false; }
+                finally { done.Set(); }
+            });
+            if (!done.Wait(TimeSpan.FromMinutes(2))) return false;
+            // Persist the freshly granted peer (LinkConnection already added it to the trust store).
+            _dispatcher.BeginInvoke(() => { try { _settingsService?.Save(); } catch { } });
+            return result;
+        }
+
+        private async void OnConnectToPeerRequested(string hostPort)
+        {
+            if (_linkServer == null)
+            {
+                _mainVm.Dashboard.EnableRemoteLink = true;
+                StartRemoteLinkIfEnabled();
+            }
+            var server = _linkServer;
+            if (server == null || string.IsNullOrWhiteSpace(hostPort)) return;
+
+            string host = hostPort.Trim();
+            int port = _mainVm.Dashboard.RemoteLinkPort;
+            int colon = host.LastIndexOf(':');
+            if (colon > 0 && int.TryParse(host.Substring(colon + 1), out int p)) { host = host.Substring(0, colon); port = p; }
+
+            var expose = BuildExposedDevices();
+            _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = $"Connecting to {host}:{port}…");
+            await server.ConnectAsync(host, port, expose);
+        }
+
+        /// <summary>Build the descriptor for the first online gamepad to share (M1 = one device),
+        /// and remember its live source for the stream timer.</summary>
+        private IReadOnlyList<RemotePeerDeviceInfo> BuildExposedDevices()
+        {
+            var list = new List<RemotePeerDeviceInfo>();
+            lock (_remoteLinkExposedLock) _remoteLinkExposed.Clear();
+
+            var devices = SettingsManager.UserDevices;
+            if (devices == null) return list;
+            lock (devices.SyncRoot)
+            {
+                foreach (var ud in devices.Items)
+                {
+                    var dev = ud?.Device;
+                    if (ud == null || dev == null || !ud.IsOnline) continue;
+                    if (dev.GetInputDeviceType() != InputDeviceType.Gamepad) continue;
+
+                    var info = new RemotePeerDeviceInfo
+                    {
+                        PeerLocalDeviceId = ud.InstanceGuid.ToString("N"),
+                        Name = dev.Name,
+                        VendorId = dev.VendorId,
+                        ProductId = dev.ProductId,
+                        NumAxes = dev.NumAxes,
+                        NumButtons = dev.NumButtons,
+                        NumHats = dev.NumHats,
+                        HasRumble = dev.HasRumble,
+                        HasRumbleTriggers = dev.HasRumbleTriggers,
+                        HasGyro = dev.HasGyro,
+                        HasAccel = dev.HasAccel,
+                        HasTouchpad = dev.HasTouchpad,
+                        InputDeviceType = dev.GetInputDeviceType(),
+                    };
+                    list.Add(info);
+                    lock (_remoteLinkExposedLock) _remoteLinkExposed.Add((info, dev, 0));
+                    break; // M1: share one device
+                }
+            }
+            return list;
+        }
+
+        private void RemoteLinkStreamTick(object state)
+        {
+            var server = _linkServer;
+            if (server == null) return;
+            (RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)[] exposed;
+            lock (_remoteLinkExposedLock) exposed = _remoteLinkExposed.ToArray();
+            if (exposed.Length == 0) return;
+
+            ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
+            foreach (var e in exposed)
+            {
+                var s = e.source?.GetCurrentState();
+                if (s == null) continue;
+                var caps = new CustomInputStateCodec.Caps(e.source.HasGyro, e.source.HasAccel);
+                server.PushLocalFrame(e.slot, s, caps, ts);
+            }
         }
 
         // ─────────────────────────────────────────────

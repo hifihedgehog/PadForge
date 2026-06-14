@@ -1360,6 +1360,9 @@ namespace PadForge.Services
             _mainVm.Dashboard.EnableWebController = appSettings.EnableWebController;
             _mainVm.Dashboard.WebControllerPort = appSettings.WebControllerPort > 0
                 ? appSettings.WebControllerPort : 8080;
+            _mainVm.Dashboard.EnableRemoteLink = appSettings.EnableRemoteLink;
+            _mainVm.Dashboard.RemoteLinkPort = appSettings.RemoteLinkPort >= 1024 && appSettings.RemoteLinkPort <= 65535
+                ? appSettings.RemoteLinkPort : 27500;
 
             // Load touchpad overlay settings.
             _mainVm.Dashboard.EnableTouchpadOverlay = appSettings.EnableTouchpadOverlay;
@@ -2875,6 +2878,8 @@ namespace PadForge.Services
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
                 WebControllerPort = _mainVm.Dashboard.WebControllerPort,
+                EnableRemoteLink = _mainVm.Dashboard.EnableRemoteLink,
+                RemoteLinkPort = _mainVm.Dashboard.RemoteLinkPort,
                 EnableTouchpadOverlay = _mainVm.Dashboard.EnableTouchpadOverlay,
                 TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity,
                 TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor,
@@ -3470,6 +3475,8 @@ namespace PadForge.Services
             _mainVm.Dashboard.DsuMotionServerPort = 26760;
             _mainVm.Dashboard.EnableWebController = false;
             _mainVm.Dashboard.WebControllerPort = 8080;
+            _mainVm.Dashboard.EnableRemoteLink = false;
+            _mainVm.Dashboard.RemoteLinkPort = 27500;
             SettingsManager.EnableAutoProfileSwitching = false;
             SettingsManager.ActiveProfileId = null;
             SettingsManager.Profiles.Clear();
@@ -3862,6 +3869,13 @@ namespace PadForge.Services
         [XmlArray("RemoteLinkPeers")]
         [XmlArrayItem("Peer")]
         public PadForge.Engine.RemoteLink.PeerTrust[] RemoteLinkPeers { get; set; }
+
+        /// <summary>Whether the Remote Link server listens. Global, not per-profile.</summary>
+        [XmlElement]
+        public bool EnableRemoteLink { get; set; }
+
+        [XmlElement]
+        public int RemoteLinkPort { get; set; } = 27500;
 
         [XmlElement]
         public bool AutoStartEngine { get; set; } = true;

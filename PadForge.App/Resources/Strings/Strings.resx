@@ -223,6 +223,19 @@
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Serve a gamepad UI to browsers on your local network.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Enable web controller server</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>Connect from a phone or tablet browser to use as a gamepad.</value></data>
+  <data name="Dashboard_RemoteLink" xml:space="preserve"><value>Remote Link</value></data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Share controllers with a paired PadForge on another PC over your network.</value></data>
+  <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>Enable Remote Link server</value></data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>After a one-time pairing, a trusted PC reconnects automatically. A paired PC can drive this one's gamepad output, and unless you limit it, its keyboard, mouse, and macros too.</value></data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Connect to a PC (host:port)</value></data>
+  <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>Pair / Connect</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Pair with remote PC</value></data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Confirm this code matches on both screens, then Pair.</value></data>
+  <data name="RemoteLink_Pair" xml:space="preserve"><value>Pair</value></data>
+  <data name="RemoteLink_Reject" xml:space="preserve"><value>Reject</value></data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Limit this PC to gamepad input only</value></data>
+  <data name="RemoteLink_Identity" xml:space="preserve"><value>Identity</value></data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>A paired PC can send keyboard, mouse, and macro input to this one unless you limit it to gamepad only.</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Touchpad Overlay</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>On-screen touch surface for PlayStation-compatible touchpad emulation.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Enable touchpad overlay</value></data>

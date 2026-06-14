@@ -70,10 +70,6 @@ namespace PadForge.Services
         private System.Threading.Timer _remoteLinkDiagTimer;
         private readonly List<(RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)> _remoteLinkExposed = new();
         private readonly object _remoteLinkExposedLock = new();
-        // Connected peer devices we consume (their guid -> owner fingerprint + link slot),
-        // used to build the reverse-output route table (#138 M2).
-        private readonly Dictionary<Guid, RemoteLinkOutputRouter.Target> _remoteConsumedTargets = new();
-        private readonly object _remoteConsumedLock = new();
         private InputHookManager _hookManager;
         private SettingsService _settingsService;
         private bool _disposed;
@@ -3996,10 +3992,6 @@ namespace PadForge.Services
             // (covers startup's first selection and every dropdown switch) without waiting
             // for the next save.
             _settingsService?.PushUiExtraSourcesIntoSlotMappingSets();
-
-            // Selecting a different device for a slot changes which slot a remote
-            // device feeds; refresh reverse-output routes (#138 M2).
-            if (_linkServer != null) RebuildRemoteOutputRoutes();
         }
 
         /// <summary>
@@ -4022,9 +4014,6 @@ namespace PadForge.Services
                 && padVm.SelectedMappedDevice.InstanceGuid != Guid.Empty
                 ? FindUserDevice(padVm.SelectedMappedDevice.InstanceGuid) : null;
             PopulateAvailableInputs(padVm, ud);
-            // A remap can change which slot a remote device feeds, so its reverse
-            // output must follow (#138 M2). Cheap no-op when no peer is connected.
-            if (_linkServer != null) RebuildRemoteOutputRoutes();
         }
 
         /// <summary>Reloads every MappingItem on the slot when the user
@@ -4700,10 +4689,12 @@ namespace PadForge.Services
             // Expose this PC's devices to inbound peers too (bidirectional sharing).
             _linkServer.ExposeProvider = () => BuildExposedDevices();
             _linkServer.StatusChanged += s => _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = s);
-            // Reverse feedback channel (#138 M2): our game output for a remote device
-            // is shipped to its owner; a peer's output for OUR device drives our hardware.
-            RemoteLinkOutputRouter.Send = (fp, slot, payload) => _linkServer?.PushOutputEffect(fp, slot, payload);
+            // Reverse output relay (#138): our game's output for a remote device is
+            // shipped to its owner; a peer's output for OUR device drives our hardware.
+            RemoteLinkOutputRouter.SendOutput = (fp, slot, payload) => _linkServer?.PushOutputEffect(fp, slot, payload);
+            RemoteLinkOutputRouter.SendAudio = (fp, slot, payload) => _linkServer?.PushAudio(fp, slot, payload);
             _linkServer.OutputReceived += OnRemoteOutputReceived;
+            _linkServer.AudioReceived += OnRemoteAudioReceived;
             _linkServer.DeviceConnected += device =>
             {
                 // Mark the restriction BEFORE the device goes online, or there is a
@@ -4712,11 +4703,9 @@ namespace PadForge.Services
                     .Any(t => string.Equals(t.FingerprintHex, device.Info.PeerFingerprintHex, StringComparison.OrdinalIgnoreCase) && t.GamepadOnly) ?? false;
                 _inputManager.SetDeviceRestricted(device.InstanceGuid, restricted);
                 _inputManager.RegisterPeerDevice(device);
-                // Remember how to ship this device's game output back to its owner.
-                lock (_remoteConsumedLock)
-                    _remoteConsumedTargets[device.InstanceGuid] =
-                        new RemoteLinkOutputRouter.Target(device.Info.PeerFingerprintHex, device.LinkSlot);
-                RebuildRemoteOutputRoutes();
+                // Map this device's "peer://" path to its owner so every output
+                // chokepoint can ship its config-baked output back (issue #138).
+                RemoteLinkOutputRouter.Register(device.DevicePath, device.Info.PeerFingerprintHex, device.LinkSlot);
                 // Persist a freshly granted peer + refresh the manager list (the grant
                 // happened inside the handshake, just before this fires).
                 _dispatcher.BeginInvoke(() =>
@@ -4730,8 +4719,7 @@ namespace PadForge.Services
             {
                 _inputManager.SetDeviceRestricted(device.InstanceGuid, false);
                 _inputManager.UnregisterExternalDevice(device.InstanceGuid);
-                lock (_remoteConsumedLock) _remoteConsumedTargets.Remove(device.InstanceGuid);
-                RebuildRemoteOutputRoutes();
+                RemoteLinkOutputRouter.Unregister(device.DevicePath);
                 OnLinkPeersChanged();
             };
 
@@ -4755,13 +4743,11 @@ namespace PadForge.Services
                 var s = _linkServer;
                 if (s == null) return;
                 int exposed; lock (_remoteLinkExposedLock) exposed = _remoteLinkExposed.Count;
-                int consumed; lock (_remoteConsumedLock) consumed = _remoteConsumedTargets.Count;
                 RemoteLinkDiag.Log(
-                    $"SNAP exposed={exposed} consumed={consumed} routes={RemoteLinkOutputRouter.RouteCount} | " +
+                    $"SNAP exposed={exposed} remoteDevs={RemoteLinkOutputRouter.DeviceCount} | " +
                     $"IN sent={s.DiagDatagramsSent} recv={s.DiagDatagramsReceived} opened={s.DiagDatagramsOpened} | " +
-                    $"VC dec={RemoteLinkOutputRouter.VcDecoded} rcv={RemoteLinkOutputRouter.VcReceived} | " +
-                    $"OUT cap.sony={RemoteLinkOutputRouter.SonyCaptured} cap.rumble={RemoteLinkOutputRouter.RumbleCaptured} " +
-                    $"sent={s.DiagOutputSent} recv={s.DiagOutputReceived} applied={_outputApplied} srcNull={_outputSourceNull} | err='{s.DiagLastError}'");
+                    $"CAP sony={RemoteLinkOutputRouter.SonyCaptured} vib={RemoteLinkOutputRouter.VibrationCaptured} wheel={RemoteLinkOutputRouter.WheelCaptured} audio={RemoteLinkOutputRouter.AudioCaptured} shipped={RemoteLinkOutputRouter.Sent} | " +
+                    $"OUT recv={s.DiagOutputReceived} applied={_outputApplied} srcNull={_outputSourceNull} | err='{s.DiagLastError}'");
             }, null, 2000, 2000);
         }
 
@@ -4792,9 +4778,10 @@ namespace PadForge.Services
             _remoteLinkDiagTimer?.Dispose();
             _remoteLinkDiagTimer = null;
             lock (_remoteLinkExposedLock) _remoteLinkExposed.Clear();
-            RemoteLinkOutputRouter.Send = null;
+            RemoteLinkOutputRouter.SendOutput = null;
+            RemoteLinkOutputRouter.SendAudio = null;
             RemoteLinkOutputRouter.Clear();
-            lock (_remoteConsumedLock) _remoteConsumedTargets.Clear();
+            _remoteWheelOneShot.Clear();
             if (_linkDiscovery != null)
             {
                 _linkDiscovery.PeersChanged -= OnLinkPeersChanged;
@@ -4919,6 +4906,7 @@ namespace PadForge.Services
                             NumHats = dev.NumHats,
                             HasRumble = dev.HasRumble,
                             HasRumbleTriggers = dev.HasRumbleTriggers,
+                            HasHaptic = dev.HasHaptic,
                             HasGyro = dev.HasGyro,
                             HasAccel = dev.HasAccel,
                             HasTouchpad = dev.HasTouchpad,
@@ -4973,38 +4961,31 @@ namespace PadForge.Services
         /// slot -&gt; the remote targets (owner fingerprint + link slot) whose devices are
         /// mapped to that slot. Called on peer connect/disconnect and on remap, so the
         /// capture taps in HMaestroVirtualController forward to the right owner.</summary>
-        private void RebuildRemoteOutputRoutes()
+        // Owner-side neutral PadSetting for replaying a relayed Vibration: the consumer
+        // already baked every gain in, so the owner must not re-scale (ForceOverall=100).
+        private static readonly PadSetting _remoteApplyPs = new PadSetting { ForceOverall = "100" };
+        // Owner-side wheel one-shot dedup (range/autocenter/LEDs are in every frame but
+        // change rarely; re-writing them per frame would halve the wheel poll rate).
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, (int range, int ledMask, bool ledValid)> _remoteWheelOneShot = new();
+        private long _outputApplied, _outputRecvSeen, _outputSourceNull;
+
+        /// <summary>Resolve a link slot to the owner's physical source + UserDevice.</summary>
+        private bool ResolveExposed(byte slot, out ISdlInputDevice source, out UserDevice ud)
         {
-            Dictionary<Guid, RemoteLinkOutputRouter.Target> targets;
-            lock (_remoteConsumedLock)
-            {
-                if (_remoteConsumedTargets.Count == 0) { RemoteLinkOutputRouter.Clear(); return; }
-                targets = new Dictionary<Guid, RemoteLinkOutputRouter.Target>(_remoteConsumedTargets);
-            }
-            var routes = new Dictionary<int, List<RemoteLinkOutputRouter.Target>>();
-            var settings = SettingsManager.UserSettings;
-            if (settings != null)
-            {
-                lock (settings.SyncRoot)
-                {
-                    foreach (var us in settings.Items)
-                    {
-                        if (us == null || us.MapTo < 0) continue;
-                        if (!targets.TryGetValue(us.InstanceGuid, out var tgt)) continue;
-                        if (!routes.TryGetValue(us.MapTo, out var lst))
-                            routes[us.MapTo] = lst = new List<RemoteLinkOutputRouter.Target>();
-                        lst.Add(tgt);
-                    }
-                }
-            }
-            RemoteLinkOutputRouter.SetRoutes(routes);
+            source = null; ud = null;
+            lock (_remoteLinkExposedLock)
+                foreach (var e in _remoteLinkExposed)
+                    if (e.slot == slot) { source = e.source; break; }
+            if (source == null) return false;
+            ud = SettingsManager.FindDeviceByInstanceGuid(source.InstanceGuid);
+            return true;
         }
 
-        /// <summary>A paired peer sent reverse feedback for one of THIS PC's shared
-        /// devices (#138 M2). Map the link slot to the physical source and drive the
-        /// hardware directly — no local game / virtual controller is involved. Runs on
-        /// the UDP receive thread (one writer).</summary>
-        private long _outputApplied, _outputRecvSeen, _outputSourceNull;
+        /// <summary>A paired peer sent reverse output for one of THIS PC's shared devices
+        /// (issue #138). Map the link slot to the physical source and drive the hardware
+        /// directly — no local game / virtual controller is involved. The consumer baked
+        /// in all config; the owner only re-encodes for its real device. Runs on the UDP
+        /// receive thread (one writer).</summary>
         private void OnRemoteOutputReceived(string peerFingerprint, byte slot, byte[] payload)
         {
             long rn = System.Threading.Interlocked.Increment(ref _outputRecvSeen);
@@ -5013,18 +4994,10 @@ namespace PadForge.Services
                 if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply: decode FAILED len={payload?.Length} n={rn}");
                 return;
             }
-            ISdlInputDevice source = null;
-            int exposedCount;
-            lock (_remoteLinkExposedLock)
-            {
-                exposedCount = _remoteLinkExposed.Count;
-                foreach (var e in _remoteLinkExposed)
-                    if (e.slot == slot) { source = e.source; break; }
-            }
-            if (source == null)
+            if (!ResolveExposed(slot, out var source, out var ud))
             {
                 System.Threading.Interlocked.Increment(ref _outputSourceNull);
-                if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply: NO source for slot={slot} (exposed={exposedCount}) kind={effect.Kind} n={rn}");
+                if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply: NO source for slot={slot} kind={effect.Kind} n={rn}");
                 return;
             }
             try
@@ -5033,26 +5006,100 @@ namespace PadForge.Services
                 switch (effect.Kind)
                 {
                     case OutputEffectCodec.Kind.SonyEffect:
-                        // Replay the captured DualSense effect packet through SDL, which
-                        // re-frames it for the physical pad's transport (USB 0x02 / BT 0x31).
-                        if (handle != IntPtr.Zero && effect.Effect != null && effect.Effect.Length > 0)
+                        // Replay the DualSense effect body through SDL, which re-frames it
+                        // for the physical pad's transport (USB 0x02 / BT 0x31 + CRC).
+                        if (handle != IntPtr.Zero && effect.SonyBody != null && effect.SonyBody.Length > 0)
                         {
-                            bool ok = SDL3.SDL.SDL_SendGamepadEffect(handle, effect.Effect, 0, effect.Effect.Length);
+                            bool ok = SDL3.SDL.SDL_SendGamepadEffect(handle, effect.SonyBody, 0, effect.SonyBody.Length);
                             System.Threading.Interlocked.Increment(ref _outputApplied);
-                            if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply sony slot={slot} dev='{source.Name}' handle={handle.ToInt64():X} len={effect.Effect.Length} sdlOk={ok} n={rn}");
+                            if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply sony slot={slot} dev='{source.Name}' len={effect.SonyBody.Length} sdlOk={ok} n={rn}");
                         }
-                        else if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply sony slot={slot} dev='{source.Name}' handle=ZERO (cannot send effect) n={rn}");
                         break;
-                    case OutputEffectCodec.Kind.Rumble:
-                        bool rok = source.SetRumble(effect.Left, effect.Right, uint.MaxValue);
+
+                    case OutputEffectCodec.Kind.Vibration:
+                        // Rumble + impulse triggers + directional/condition haptic, replayed
+                        // through the device's real SDL handle per its capabilities.
+                        ud?.ForceFeedbackState?.SetDeviceForces(ud, source, _remoteApplyPs, effect.Vibration);
                         System.Threading.Interlocked.Increment(ref _outputApplied);
-                        if (source.HasRumbleTriggers && handle != IntPtr.Zero)
-                            SDL3.SDL.SDL_RumbleGamepadTriggers(handle, effect.LeftTrigger, effect.RightTrigger, uint.MaxValue);
-                        if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply rumble slot={slot} dev='{source.Name}' ({effect.Left},{effect.Right}) setOk={rok} handle={handle.ToInt64():X} n={rn}");
+                        if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply vib slot={slot} dev='{source.Name}' ({effect.Vibration.LeftMotorSpeed},{effect.Vibration.RightMotorSpeed}) n={rn}");
+                        break;
+
+                    case OutputEffectCodec.Kind.Wheel:
+                        ApplyRemoteWheel(source, in effect.Wheel);
+                        System.Threading.Interlocked.Increment(ref _outputApplied);
+                        if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply wheel slot={slot} dev='{source.Name}' force={effect.Wheel.Force} n={rn}");
                         break;
                 }
             }
             catch (Exception ex) { RemoteLinkDiag.Log($"apply EXCEPTION: {ex.Message}"); }
+        }
+
+        /// <summary>Re-encode a relayed wheel frame with the owner's own per-vendor writer
+        /// (the vendor PID quantization + report sizing + stateful upload/play caches must
+        /// live on the machine that owns the wheel).</summary>
+        private void ApplyRemoteWheel(ISdlInputDevice source, in OutputEffectCodec.WheelFrame w)
+        {
+            string path = source.DevicePath;
+            ushort vid = source.VendorId, pid = source.ProductId;
+            bool isLogi = LogitechRawHidWriter.IsLogitechWheel(vid, pid);
+            bool isFan  = FanatecRawHidWriter.IsFanatecWheel(vid, pid);
+            bool isTm   = ThrustmasterRawHidWriter.IsThrustmasterWheel(vid, pid);
+            if (!isLogi && !isFan && !isTm) return; // generic SDL wheel would ride Vibration
+
+            // Per-frame FFB (force / condition / periodic).
+            if (isLogi)
+            {
+                if (w.HasCond)
+                    LogitechRawHidWriter.WriteCondition(path, 0, w.Effect, w.Pc, w.Nc, w.Off, w.Db, w.Ps, w.Ns, w.CondGain, LogitechRawHidWriter.HasFrictionCap(pid));
+                else if (w.Force == 0) LogitechRawHidWriter.WriteStopEffect(path, 0);
+                else LogitechRawHidWriter.WriteConstantForce(path, 0, w.Force);
+            }
+            else if (isFan)
+            {
+                if (w.HasCond)
+                    FanatecRawHidWriter.WriteWheelCondition(path, w.Effect, w.Pc, w.Nc, w.Off, w.Db, w.Ps, w.Ns, w.CondGain);
+                else
+                {
+                    FanatecRawHidWriter.WriteWheelConstantForce(path, w.Force, pid);
+                    if (w.Ac > 0) FanatecRawHidWriter.WriteAutocenter(path, w.Ac);
+                }
+            }
+            else // Thrustmaster
+            {
+                if (w.HasCond)
+                    ThrustmasterRawHidWriter.WriteCondition(path, w.Effect, w.Pc, w.Nc, w.Off, w.Db, w.Ps, w.Ns, w.CondGain);
+                else if (w.Peak != 0)
+                    ThrustmasterRawHidWriter.WritePeriodic(path, w.Effect, w.Peak, w.Period);
+                else ThrustmasterRawHidWriter.WriteConstantForce(path, w.Force);
+            }
+
+            // Range + auto-center + RPM LEDs — re-send only when changed.
+            var prev = _remoteWheelOneShot.TryGetValue(source.InstanceGuid, out var p) ? p : (-1, -1, false);
+            if (prev.Item1 != w.RangeDeg)
+            {
+                int acMag = w.Ac;
+                if (isLogi) { LogitechRawHidWriter.WriteRange(path, w.RangeDeg, pid); LogitechRawHidWriter.WriteAutocenter(path, acMag, LogitechRawHidWriter.IsMomo(pid)); }
+                else if (isFan) { FanatecRawHidWriter.WriteRange(path, w.RangeDeg, pid); FanatecRawHidWriter.WriteAutocenter(path, acMag); }
+                else { ThrustmasterRawHidWriter.WriteRange(path, w.RangeDeg, pid); ThrustmasterRawHidWriter.WriteAutocenter(path, acMag); }
+            }
+            if (prev.Item2 != w.LedMask || prev.Item3 != w.LedValid)
+            {
+                int mask = w.LedValid ? w.LedMask : 0;
+                if (isLogi) LogitechRawHidWriter.WriteRpmLeds(path, (byte)mask);
+                else if (isFan) FanatecRawHidWriter.WriteRpmLeds(path, mask);
+                else ThrustmasterRawHidWriter.WriteRpmLeds(path, mask);
+            }
+            _remoteWheelOneShot[source.InstanceGuid] = (w.RangeDeg, w.LedMask, w.LedValid);
+        }
+
+        /// <summary>A paired peer sent a speaker PCM block for one of THIS PC's shared
+        /// pads (issue #138). Feed it to the owner's audio passthrough, which renders it
+        /// to the real DualSense/DualShock speaker (BT Opus/SBC or USB UAC).</summary>
+        private void OnRemoteAudioReceived(string peerFingerprint, byte slot, byte[] payload)
+        {
+            if (payload == null || payload.Length < 2) return;
+            if (!ResolveExposed(slot, out var source, out _)) return;
+            AudioPassthroughService.FeedRemoteAudio(source.InstanceGuid, payload);
         }
 
         // ─────────────────────────────────────────────

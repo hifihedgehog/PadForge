@@ -1,29 +1,25 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
+using PadForge.Engine;
+using PadForge.Engine.RemoteLink;
 
 namespace PadForge.Common.Input
 {
     /// <summary>
-    /// Consumer-side forwarder for the Remote Link reverse feedback channel
-    /// (issue #138 M2). When a game on THIS PC produces output (rumble, adaptive
-    /// triggers, lightbar, mic/player LED) for a virtual controller whose input
-    /// source is a remote peer's device, that output has nowhere to go locally —
-    /// the device is not physically here. This router captures the output at the
-    /// virtual-controller boundary and ships it to the device's owner, who drives
-    /// the real hardware.
+    /// Consumer-side hub for the reverse output relay (issue #138). A shared device
+    /// is a <c>RemotePeerDevice</c> with a "peer://" path: the consumer's output
+    /// pipeline computes the full, config-applied output for it and then fails at the
+    /// final hardware write (CreateFileW on "peer://" fails; the SDL handle is Zero).
+    /// Each write chokepoint hands its config-baked payload here instead; this maps
+    /// the device path to its owner and ships a transport-agnostic semantic frame.
+    /// The owner re-encodes it for the real hardware.
     ///
-    /// <para>InputService owns the mapping knowledge and pushes a route table
-    /// (VC pad slot -&gt; the remote targets mapped to it) via <see cref="SetRoutes"/>
-    /// whenever a peer device connects/disconnects or the user remaps. The capture
-    /// taps in <c>HMaestroVirtualController</c>'s output handlers call
-    /// <see cref="OnLocalSonyEffect"/> / <see cref="OnLocalRumble"/> on the
-    /// HIDMaestro decode thread, so the work here is a dictionary lookup plus a
-    /// non-blocking UDP send (no allocation when nothing is shared).</para>
+    /// <para>The mapping is fixed at connect time (peer:// path -&gt; owner fingerprint +
+    /// link slot), so there is no per-frame route lookup beyond a dictionary read, and
+    /// nothing here runs when no device is shared.</para>
     /// </summary>
     internal static class RemoteLinkOutputRouter
     {
-        /// <summary>One forwarding target: the owning peer's fingerprint and the
-        /// device's link slot (its index in the owner's exposed list).</summary>
         public readonly struct Target
         {
             public readonly string Fingerprint;
@@ -31,108 +27,126 @@ namespace PadForge.Common.Input
             public Target(string fingerprint, byte linkSlot) { Fingerprint = fingerprint; LinkSlot = linkSlot; }
         }
 
-        // VC pad slot -> targets. Replaced wholesale by SetRoutes; readers take a
-        // local reference so a concurrent swap is safe without locking.
-        private static volatile Dictionary<int, List<Target>> _routes = new();
-        private static volatile bool _hasRoutes;
+        // peer:// device path -> owner target. Concurrent: registered/cleared on the
+        // socket DeviceConnected/Disconnected thread, read on the polling/effect threads.
+        private static readonly ConcurrentDictionary<string, Target> _byPath = new(StringComparer.Ordinal);
 
-        // Per-slot last forwarded value, so a game that re-sends an identical packet
-        // every frame doesn't flood the link. Alternating square-wave rumble still
-        // forwards (each distinct value differs from the last); only exact repeats drop.
-        private static readonly Dictionary<int, (ushort l, ushort r, ushort lt, ushort rt)> _lastRumble = new();
-        private static readonly Dictionary<int, byte[]> _lastEffect = new();
-        private static readonly object _dedupLock = new();
+        // Exact-repeat dedup per path+channel so a static effect (held lightbar / steady
+        // force) is sent once and a quiet device costs no bandwidth. Square-wave values
+        // still forward (each distinct value differs from the last).
+        private static readonly ConcurrentDictionary<string, byte[]> _lastSony = new(StringComparer.Ordinal);
+        private static readonly ConcurrentDictionary<string, (ushort, ushort, ushort, ushort, int)> _lastVib = new(StringComparer.Ordinal);
+        private static readonly ConcurrentDictionary<string, byte[]> _lastWheel = new(StringComparer.Ordinal);
 
-        /// <summary>Wired by InputService to <c>LinkServer.PushOutputEffect</c>.</summary>
-        public static Action<string, byte, byte[]> Send { get; set; }
+        /// <summary>Wired by InputService to LinkServer.PushOutputEffect / PushAudio.</summary>
+        public static Action<string, byte, byte[]> SendOutput { get; set; }
+        public static Action<string, byte, byte[]> SendAudio { get; set; }
 
-        // Diagnostics (#138 M2 reverse-channel bring-up).
-        public static long SonyCaptured, RumbleCaptured, Sent;
-        public static long VcDecoded, VcReceived; // VC output handler hits, before any gating
-        public static int RouteCount => _routes.Count;
+        // Diagnostics (#138 reverse-channel bring-up).
+        public static long SonyCaptured, VibrationCaptured, WheelCaptured, AudioCaptured, Sent;
+        public static int DeviceCount => _byPath.Count;
 
-        /// <summary>Diagnostic only: a virtual controller output handler fired on the
-        /// consumer. Tells us whether game feedback reaches the VC at all, and on which
-        /// slot, independent of routes/gating. Rate-limited so it can't flood.</summary>
-        public static void NoteVcOutput(int slot, string kind, string detail)
+        public static bool IsPeerPath(string devicePath) =>
+            !string.IsNullOrEmpty(devicePath) && devicePath.StartsWith("peer://", StringComparison.Ordinal);
+
+        public static void Register(string devicePath, string fingerprint, byte linkSlot)
         {
-            long n = kind == "decoded"
-                ? System.Threading.Interlocked.Increment(ref VcDecoded)
-                : System.Threading.Interlocked.Increment(ref VcReceived);
-            if (n == 1 || n % 240 == 0)
-                RemoteLinkDiag.Log($"VC {kind} fired slot={slot} {detail} n={n}");
+            if (string.IsNullOrEmpty(devicePath) || string.IsNullOrEmpty(fingerprint)) return;
+            _byPath[devicePath] = new Target(fingerprint, linkSlot);
+            RemoteLinkDiag.Log($"router register {devicePath} -> {fingerprint.Substring(0, Math.Min(8, fingerprint.Length))} slot={linkSlot} (total {_byPath.Count})");
         }
 
-        /// <summary>Replace the route table. Pass an empty/null map to stop forwarding.</summary>
-        public static void SetRoutes(Dictionary<int, List<Target>> routes)
+        public static void Unregister(string devicePath)
         {
-            _routes = routes ?? new Dictionary<int, List<Target>>();
-            _hasRoutes = _routes.Count > 0;
-            if (!_hasRoutes)
-                lock (_dedupLock) { _lastRumble.Clear(); _lastEffect.Clear(); }
-            var keys = string.Join(",", _routes.Keys);
-            RemoteLinkDiag.Log($"router SetRoutes: {_routes.Count} slot(s) [{keys}]");
+            if (string.IsNullOrEmpty(devicePath)) return;
+            _byPath.TryRemove(devicePath, out _);
+            _lastSony.TryRemove(devicePath, out _);
+            _lastVib.TryRemove(devicePath, out _);
+            _lastWheel.TryRemove(devicePath, out _);
         }
 
-        public static void Clear() => SetRoutes(null);
-
-        /// <summary>Forward a DualSense effect report body (rumble + AT + lightbar +
-        /// mic/player LED) captured for the given VC pad slot.</summary>
-        public static void OnLocalSonyEffect(int padSlot, ReadOnlySpan<byte> effectPayload)
+        public static void Clear()
         {
+            _byPath.Clear();
+            _lastSony.Clear(); _lastVib.Clear(); _lastWheel.Clear();
+        }
+
+        // ── Ship: Sony effect (47/31-byte USB-shape body) ───────────────────
+
+        /// <summary>True when the path is a shared device and the effect was shipped
+        /// (so the caller skips its local write).</summary>
+        public static bool ShipSonyEffect(string devicePath, ReadOnlySpan<byte> effectBody)
+        {
+            if (!_byPath.TryGetValue(devicePath, out var t)) return false;
             long n = System.Threading.Interlocked.Increment(ref SonyCaptured);
-            if (effectPayload.Length == 0) return;
-            var routes = _routes;
-            if (!routes.TryGetValue(padSlot, out var targets) || targets.Count == 0)
-            {
-                if (n == 1 || n % 240 == 0)
-                    RemoteLinkDiag.Log($"capture sony slot={padSlot} but NO route (routes={routes.Count}, hasRoutes={_hasRoutes}) n={n}");
-                return;
-            }
-            var send = Send;
-            if (send == null) { RemoteLinkDiag.Log("capture sony: Send is null"); return; }
-
-            // Drop exact repeats (static lightbar / held AT re-sent every frame).
-            lock (_dedupLock)
-            {
-                if (_lastEffect.TryGetValue(padSlot, out var prev) && prev.AsSpan().SequenceEqual(effectPayload))
-                    return;
-                _lastEffect[padSlot] = effectPayload.ToArray();
-            }
-
-            byte[] blob = Engine.RemoteLink.OutputEffectCodec.EncodeSonyEffect(effectPayload);
-            foreach (var t in targets) { send(t.Fingerprint, t.LinkSlot, blob); System.Threading.Interlocked.Increment(ref Sent); }
-            if (n == 1 || n % 240 == 0)
-                RemoteLinkDiag.Log($"capture sony slot={padSlot} -> sent to {targets.Count} target(s) len={effectPayload.Length} n={n}");
+            if (effectBody.Length == 0) return true;
+            if (_lastSony.TryGetValue(devicePath, out var prev) && prev.AsSpan().SequenceEqual(effectBody))
+                return true;
+            _lastSony[devicePath] = effectBody.ToArray();
+            byte[] blob = OutputEffectCodec.EncodeSonyEffect(effectBody);
+            Dispatch(t, blob);
+            if (n == 1 || n % 240 == 0) RemoteLinkDiag.Log($"ship sony {devicePath} len={effectBody.Length} n={n}");
+            return true;
         }
 
-        /// <summary>Forward the four XInput motor magnitudes captured for the given
-        /// VC pad slot (non-Sony pads).</summary>
-        public static void OnLocalRumble(int padSlot, ushort left, ushort right, ushort leftTrigger, ushort rightTrigger)
+        // ── Ship: full Vibration (rumble + impulse + directional + condition) ─
+
+        public static bool ShipVibration(string devicePath, Vibration v)
         {
-            long n = System.Threading.Interlocked.Increment(ref RumbleCaptured);
-            var routes = _routes;
-            if (!routes.TryGetValue(padSlot, out var targets) || targets.Count == 0)
-            {
-                if (n == 1 || n % 240 == 0)
-                    RemoteLinkDiag.Log($"capture rumble slot={padSlot} but NO route (routes={routes.Count}) n={n}");
-                return;
-            }
-            var send = Send;
-            if (send == null) { RemoteLinkDiag.Log("capture rumble: Send is null"); return; }
+            if (v == null || !_byPath.TryGetValue(devicePath, out var t)) return false;
+            long n = System.Threading.Interlocked.Increment(ref VibrationCaptured);
+            // Cheap dedup on the common scalar case (directional frames always ship).
+            int dirHash = v.HasDirectionalData || v.HasConditionData
+                ? unchecked((int)(v.EffectType * 31 + (uint)v.SignedMagnitude * 7 + v.Direction * 13 + v.Period))
+                : 0;
+            var key = (v.LeftMotorSpeed, v.RightMotorSpeed, v.LeftTriggerMotorSpeed, v.RightTriggerMotorSpeed, dirHash);
+            if (!v.HasDirectionalData && !v.HasConditionData
+                && _lastVib.TryGetValue(devicePath, out var pv) && pv.Equals(key))
+                return true;
+            _lastVib[devicePath] = key;
+            byte[] blob = OutputEffectCodec.EncodeVibration(v);
+            Dispatch(t, blob);
+            if (n == 1 || n % 240 == 0) RemoteLinkDiag.Log($"ship vib {devicePath} ({v.LeftMotorSpeed},{v.RightMotorSpeed},{v.LeftTriggerMotorSpeed},{v.RightTriggerMotorSpeed}) dir={v.HasDirectionalData} cond={v.HasConditionData} n={n}");
+            return true;
+        }
 
-            lock (_dedupLock)
-            {
-                var cur = (left, right, leftTrigger, rightTrigger);
-                if (_lastRumble.TryGetValue(padSlot, out var prev) && prev.Equals(cur))
-                    return;
-                _lastRumble[padSlot] = cur;
-            }
+        // ── Ship: wheel FFB (semantic; owner re-encodes per vendor) ─────────
 
-            byte[] blob = Engine.RemoteLink.OutputEffectCodec.EncodeRumble(left, right, leftTrigger, rightTrigger);
-            foreach (var t in targets) { send(t.Fingerprint, t.LinkSlot, blob); System.Threading.Interlocked.Increment(ref Sent); }
-            if (n == 1 || n % 240 == 0)
-                RemoteLinkDiag.Log($"capture rumble slot={padSlot} -> sent ({left},{right},{leftTrigger},{rightTrigger}) to {targets.Count} n={n}");
+        public static bool ShipWheel(string devicePath,
+            bool hasCond, bool dir, short force, short peak, int ac, uint effect, int period,
+            short pc, short nc, short off, int db, int ps, int ns, int condGain,
+            ushort rangeDeg, ushort ledMask, bool ledValid)
+        {
+            if (!_byPath.TryGetValue(devicePath, out var t)) return false;
+            long n = System.Threading.Interlocked.Increment(ref WheelCaptured);
+            byte[] blob = OutputEffectCodec.EncodeWheel(hasCond, dir, force, peak, ac, effect, period,
+                pc, nc, off, db, ps, ns, condGain, rangeDeg, ledMask, ledValid);
+            if (_lastWheel.TryGetValue(devicePath, out var prev) && prev.AsSpan().SequenceEqual(blob))
+                return true;
+            _lastWheel[devicePath] = blob;
+            Dispatch(t, blob);
+            if (n == 1 || n % 240 == 0) RemoteLinkDiag.Log($"ship wheel {devicePath} force={force} range={rangeDeg} led={ledMask:X} n={n}");
+            return true;
+        }
+
+        // ── Ship: speaker PCM (out of band on the Audio datagram) ───────────
+
+        public static bool ShipAudio(string devicePath, byte[] pcmBlock)
+        {
+            if (pcmBlock == null || !_byPath.TryGetValue(devicePath, out var t)) return false;
+            var send = SendAudio;
+            if (send == null) return false;
+            System.Threading.Interlocked.Increment(ref AudioCaptured);
+            send(t.Fingerprint, t.LinkSlot, pcmBlock);
+            return true;
+        }
+
+        private static void Dispatch(Target t, byte[] blob)
+        {
+            var send = SendOutput;
+            if (send == null) return;
+            send(t.Fingerprint, t.LinkSlot, blob);
+            System.Threading.Interlocked.Increment(ref Sent);
         }
     }
 }

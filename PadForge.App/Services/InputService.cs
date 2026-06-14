@@ -4688,12 +4688,12 @@ namespace PadForge.Services
             _linkServer.StatusChanged += s => _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = s);
             _linkServer.DeviceConnected += device =>
             {
-                _inputManager.RegisterPeerDevice(device);
-                // Apply the peer's gamepad-only restriction (set at pairing) so its
-                // input can never reach a keyboard/mouse SendInput path.
+                // Mark the restriction BEFORE the device goes online, or there is a
+                // window where its frames stream while IsSlotRestricted is still false.
                 bool restricted = _settingsService?.RemoteLink?.Trust?.Peers?
                     .Any(t => string.Equals(t.FingerprintHex, device.Info.PeerFingerprintHex, StringComparison.OrdinalIgnoreCase) && t.GamepadOnly) ?? false;
                 _inputManager.SetDeviceRestricted(device.InstanceGuid, restricted);
+                _inputManager.RegisterPeerDevice(device);
                 // Persist a freshly granted peer + refresh the manager list (the grant
                 // happened inside the handshake, just before this fires).
                 _dispatcher.BeginInvoke(() =>
@@ -4778,25 +4778,43 @@ namespace PadForge.Services
         /// without prompting.</summary>
         private PairingApproval ApprovePairing(PendingPairing pending)
         {
-            bool approved = false;
-            bool gamepadOnly = false;
-            using var done = new System.Threading.ManualResetEventSlim(false);
-            _dispatcher.BeginInvoke(() =>
+            (bool approved, bool gamepadOnly) r;
+            // CRITICAL: if the handshake resumed on the UI thread (an outbound pair
+            // started from a button captures the WPF SynchronizationContext), a
+            // BeginInvoke+Wait would deadlock the UI thread against itself and the
+            // dialog could never show. Show it directly when already on the UI
+            // thread; only marshal+block from a background (socket) thread.
+            if (_dispatcher.CheckAccess())
             {
-                try
+                r = ShowPairDialog(pending);
+            }
+            else
+            {
+                (bool approved, bool gamepadOnly) captured = (false, false);
+                using var done = new System.Threading.ManualResetEventSlim(false);
+                _dispatcher.BeginInvoke(() =>
                 {
-                    var dlg = new Views.RemoteLinkPairDialog(pending.Sas, pending.PeerFingerprintHex);
-                    var owner = System.Windows.Application.Current?.MainWindow;
-                    if (owner != null && owner.IsLoaded) dlg.Owner = owner;
-                    approved = dlg.ShowDialog() == true;
-                    gamepadOnly = dlg.GamepadOnly;
-                }
-                catch { approved = false; }
-                finally { done.Set(); }
-            });
-            if (!done.Wait(TimeSpan.FromMinutes(2))) return false;
+                    try { captured = ShowPairDialog(pending); }
+                    finally { done.Set(); }
+                });
+                if (!done.Wait(TimeSpan.FromMinutes(2))) return false;
+                r = captured;
+            }
             // Persistence happens in DeviceConnected, after the grant lands in the trust store.
-            return new PairingApproval { Approved = approved, GamepadOnly = gamepadOnly };
+            return new PairingApproval { Approved = r.approved, GamepadOnly = r.gamepadOnly };
+        }
+
+        private (bool approved, bool gamepadOnly) ShowPairDialog(PendingPairing pending)
+        {
+            try
+            {
+                var dlg = new Views.RemoteLinkPairDialog(pending.Sas, pending.PeerFingerprintHex);
+                var owner = System.Windows.Application.Current?.MainWindow;
+                if (owner != null && owner.IsLoaded) dlg.Owner = owner;
+                bool ok = dlg.ShowDialog() == true;
+                return (ok, dlg.GamepadOnly);
+            }
+            catch { return (false, false); }
         }
 
         private async void OnConnectToPeerRequested(string hostPort)
@@ -4860,22 +4878,31 @@ namespace PadForge.Services
             return list;
         }
 
+        private int _streamTickGuard;
+
         private void RemoteLinkStreamTick(object state)
         {
-            var server = _linkServer;
-            if (server == null) return;
-            (RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)[] exposed;
-            lock (_remoteLinkExposedLock) exposed = _remoteLinkExposed.ToArray();
-            if (exposed.Length == 0) return;
-
-            ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
-            foreach (var e in exposed)
+            // Non-reentrant: a tick slower than the 8 ms period must not overlap the
+            // next one, or two concurrent Seal calls could race the send counter.
+            if (System.Threading.Interlocked.Exchange(ref _streamTickGuard, 1) == 1) return;
+            try
             {
-                var s = e.source?.GetCurrentState();
-                if (s == null) continue;
-                var caps = new CustomInputStateCodec.Caps(e.source.HasGyro, e.source.HasAccel);
-                server.PushLocalFrame(e.slot, s, caps, ts);
+                var server = _linkServer;
+                if (server == null) return;
+                (RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)[] exposed;
+                lock (_remoteLinkExposedLock) exposed = _remoteLinkExposed.ToArray();
+                if (exposed.Length == 0) return;
+
+                ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
+                foreach (var e in exposed)
+                {
+                    var s = e.source?.GetCurrentState();
+                    if (s == null) continue;
+                    var caps = new CustomInputStateCodec.Caps(e.source.HasGyro, e.source.HasAccel);
+                    server.PushLocalFrame(e.slot, s, caps, ts);
+                }
             }
+            finally { System.Threading.Volatile.Write(ref _streamTickGuard, 0); }
         }
 
         // ─────────────────────────────────────────────

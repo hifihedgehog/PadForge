@@ -1232,14 +1232,15 @@ namespace PadForge.Services
             // on first Remote Link start — so this stays behavior-neutral on load.
             try
             {
-                RemoteLink = new RemoteLinkRuntime
-                {
-                    ProtectedPrivateBase64 = appSettings.RemoteLinkIdentityPrivate ?? "",
-                    PublicBase64 = appSettings.RemoteLinkIdentityPublic ?? "",
-                    Trust = new PadForge.Engine.RemoteLink.PeerTrustStore(appSettings.RemoteLinkPeers),
-                };
+                // Mutate the existing holder + trust store in place (don't swap the
+                // instances) so a running LinkServer's references stay current across
+                // a Reload — else peers paired after a reload would be dropped on save
+                // and their gamepad-only restriction bypassed.
+                RemoteLink.ProtectedPrivateBase64 = appSettings.RemoteLinkIdentityPrivate ?? "";
+                RemoteLink.PublicBase64 = appSettings.RemoteLinkIdentityPublic ?? "";
+                RemoteLink.Trust.ReplaceAll(appSettings.RemoteLinkPeers);
             }
-            catch { RemoteLink = new RemoteLinkRuntime(); }
+            catch { }
             vm.RefreshTrustedPeers(RemoteLink.Trust?.Peers);
             vm.AutoStartEngine = appSettings.AutoStartEngine;
             vm.MinimizeToTray = appSettings.MinimizeToTray;

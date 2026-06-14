@@ -258,7 +258,10 @@ namespace PadForge.Common.Input
                 if (macros == null || macros.Length == 0)
                     continue;
 
-                _currentMacroSlotRestricted = IsSlotRestricted(i);
+                // Restricted if a restricted peer feeds this slot OR triggers any of
+                // its macros (the macro engine resolves triggers by device GUID
+                // independent of slot mapping, so a home-slot-only check left a hole).
+                _currentMacroSlotRestricted = IsSlotRestricted(i) || AnyMacroTriggerRestricted(macros);
                 try
                 {
                     if (SlotExtendedIsCustom[i])

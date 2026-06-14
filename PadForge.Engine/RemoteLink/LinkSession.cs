@@ -38,7 +38,7 @@ namespace PadForge.Engine.RemoteLink
         private readonly byte _epoch;
         private readonly AntiReplayWindow _replay = new();
 
-        private uint _sendCounter;
+        private long _sendCounter; // sealed-count; the wire sequence is (count - 1)
 
         /// <param name="sessionKey">32-byte AEAD key from the handshake key schedule.</param>
         /// <param name="isInitiator">Selects this side's nonce salt so the two directions never collide.</param>
@@ -53,14 +53,19 @@ namespace PadForge.Engine.RemoteLink
             _epoch = (byte)(epoch & 0x0F);
         }
 
-        /// <summary>Number of datagrams sealed so far (the next sequence). The transport
-        /// rekeys before this nears 2^32 — nonce reuse under ChaCha20-Poly1305 is fatal.</summary>
-        public uint SendCounter => _sendCounter;
+        /// <summary>Number of datagrams sealed so far. Seal hard-stops before the
+        /// sequence wraps 2^32 (nonce reuse under ChaCha20-Poly1305 is fatal), forcing
+        /// a fresh handshake rather than silently reusing a nonce.</summary>
+        public uint SendCounter => (uint)System.Threading.Interlocked.Read(ref _sendCounter);
 
-        /// <summary>Seal one payload into a ready-to-send datagram.</summary>
+        /// <summary>Seal one payload into a ready-to-send datagram. Thread-safe: the
+        /// sequence is allocated atomically so concurrent senders never share a nonce.</summary>
         public byte[] Seal(LinkMessageType type, byte slotId, ulong timestampUs, ReadOnlySpan<byte> payload)
         {
-            uint seq = _sendCounter++;
+            long n = System.Threading.Interlocked.Increment(ref _sendCounter);
+            if (n > uint.MaxValue)
+                throw new LinkConnectionException("Send counter exhausted — rekey required to avoid nonce reuse.");
+            uint seq = (uint)(n - 1);
             var datagram = new byte[HeaderSize + payload.Length + PeerCrypto.TagSize];
             WriteHeader(datagram, type, slotId, seq, timestampUs);
 

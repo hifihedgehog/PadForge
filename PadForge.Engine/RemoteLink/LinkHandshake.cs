@@ -84,7 +84,10 @@ namespace PadForge.Engine.RemoteLink
         public byte[] StartCommit()
         {
             Require(_isInitiator && _state == State.Init, "StartCommit out of order.");
-            byte[] commit = Hash(CommitInfo, _ephemeral.PublicKey, _nonce, _capabilities);
+            // Bind our STATIC key into the commitment too, not just the ephemeral:
+            // the static key is otherwise the one SAS input left free after the
+            // commit, which a relay MITM could grind to a colliding short code.
+            byte[] commit = Hash(CommitInfo, _ephemeral.PublicKey, _nonce, _capabilities, _identity.PublicKey);
             _commitMsg = Tlv.Encode(commit);
             _state = State.SentCommit;
             return _commitMsg;
@@ -151,8 +154,9 @@ namespace PadForge.Engine.RemoteLink
             _peerCaps = f[2];
             _peerStaticPub = Key(f[3], "peer static");
 
-            // Commit-before-reveal: the revealed values must match the MSG1 commitment.
-            byte[] recomputed = Hash(CommitInfo, _peerEphemeralPub, _peerNonce, _peerCaps);
+            // Commit-before-reveal: the revealed values must match the MSG1 commitment
+            // (including the initiator's now-revealed static key).
+            byte[] recomputed = Hash(CommitInfo, _peerEphemeralPub, _peerNonce, _peerCaps, _peerStaticPub);
             if (!PeerCrypto.FixedTimeEquals(recomputed, _expectedCommit))
                 throw new HandshakeException("Commit mismatch — initiator changed its contribution.");
 
@@ -216,9 +220,17 @@ namespace PadForge.Engine.RemoteLink
 
         private static byte[] Hash(params byte[][] parts)
         {
+            // Length-prefix each part so field boundaries are unambiguous — raw
+            // concatenation would let an attacker shift bytes between adjacent
+            // unframed inputs (e.g. nonce/caps) without changing the digest.
             using var sha = SHA256.Create();
+            var lenBuf = new byte[4];
             foreach (var p in parts)
+            {
+                BinaryPrimitives.WriteInt32LittleEndian(lenBuf, p.Length);
+                sha.TransformBlock(lenBuf, 0, 4, null, 0);
                 if (p.Length > 0) sha.TransformBlock(p, 0, p.Length, null, 0);
+            }
             sha.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
             return sha.Hash;
         }

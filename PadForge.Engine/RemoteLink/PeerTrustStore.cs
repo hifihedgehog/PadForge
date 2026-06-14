@@ -105,6 +105,19 @@ namespace PadForge.Engine.RemoteLink
             lock (_lock) _peers.Clear();
         }
 
+        /// <summary>Replace all entries in place (a reload), keeping THIS store instance
+        /// so a running LinkServer holding a reference still sees the current trust set.</summary>
+        public void ReplaceAll(IEnumerable<PeerTrust> peers)
+        {
+            lock (_lock)
+            {
+                _peers.Clear();
+                if (peers != null)
+                    foreach (var p in peers)
+                        if (p?.PublicKey != null) _peers.Add(p);
+            }
+        }
+
         /// <summary>Whether a known peer is restricted to gamepad-only output. Unknown
         /// keys default to restricted (fail safe), though an unknown key never reaches
         /// admission in the first place.</summary>

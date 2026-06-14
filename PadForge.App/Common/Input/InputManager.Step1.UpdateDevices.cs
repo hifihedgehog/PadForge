@@ -1009,6 +1009,24 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
+        /// Registers a remote peer's device (issue #138) into the device list.
+        /// Called by LinkServer when a paired peer exposes a device. Same shape as
+        /// RegisterExternalDevice but uses the generic LoadFromExternalDevice, since
+        /// a RemotePeerDevice is just another ISdlInputDevice. Disconnect reuses
+        /// UnregisterExternalDevice(Guid) below.
+        /// </summary>
+        public void RegisterPeerDevice(PadForge.Engine.RemoteLink.RemotePeerDevice device)
+        {
+            if (device == null) return;
+
+            UserDevice ud = FindOrCreateUserDevice(device.InstanceGuid, device.ProductGuid);
+            ud.LoadFromExternalDevice(device);
+            ud.IsOnline = true;
+
+            DevicesUpdated?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
         /// Marks an external device as offline when its connection is lost.
         /// Called by WebControllerServer when a browser client disconnects.
         /// </summary>

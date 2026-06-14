@@ -1,0 +1,64 @@
+<ui:FluentWindow x:Class="PadForge.Views.RemoteLinkPairDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica"
+        Title="{Binding RemoteLink_PairTitle, Source={x:Static strings:Strings.Instance}}"
+        Width="460" SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+
+    <ui:FluentWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ui:ThemesDictionary Theme="Dark"/>
+                <ui:ControlsDictionary/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ui:FluentWindow.Resources>
+
+    <Grid Margin="20,16,20,16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="{Binding RemoteLink_PairPrompt, Source={x:Static strings:Strings.Instance}}"
+                   TextWrapping="Wrap" Margin="0,0,0,16"
+                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+
+        <!-- The SAS digits — compared out of band against the other screen -->
+        <Border Grid.Row="1" CornerRadius="8" Padding="12,16" Margin="0,0,0,16"
+                Background="{DynamicResource ControlFillColorDefaultBrush}">
+            <TextBlock x:Name="SasText" HorizontalAlignment="Center"
+                       FontFamily="Consolas" FontSize="40" FontWeight="SemiBold"/>
+        </Border>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,16">
+            <TextBlock Text="{Binding RemoteLink_Identity, Source={x:Static strings:Strings.Instance}}"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
+            <TextBlock x:Name="IdentityText" FontFamily="Consolas" FontSize="12"
+                       VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <ui:InfoBar Grid.Row="3" Severity="Warning" IsOpen="True" IsClosable="False"
+                    Margin="0,0,0,16"
+                    Message="{Binding RemoteLink_ConsentWarning, Source={x:Static strings:Strings.Instance}}"/>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+            <ui:Button x:Name="PairButton" Appearance="Primary" MinWidth="96" Margin="0,0,8,0"
+                       Content="{Binding RemoteLink_Pair, Source={x:Static strings:Strings.Instance}}"
+                       Click="Pair_Click"/>
+            <Button x:Name="RejectButton" MinWidth="96" IsCancel="True"
+                    Content="{Binding RemoteLink_Reject, Source={x:Static strings:Strings.Instance}}"
+                    Click="Reject_Click"/>
+        </StackPanel>
+    </Grid>
+</ui:FluentWindow>

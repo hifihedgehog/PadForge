@@ -88,6 +88,24 @@ namespace PadForge.Services
         public string SettingsFilePath => _settingsFilePath;
 
         /// <summary>
+        /// Runtime holder for the Remote Link (issue #138) identity + trust list,
+        /// loaded from AppSettings and written back by BuildAppSettings. The static
+        /// identity is minted lazily on first Remote Link use, not on load, so
+        /// loading touches no behavior. Not serialized directly — it mirrors the
+        /// AppSettingsData.RemoteLink* fields.
+        /// </summary>
+        public sealed class RemoteLinkRuntime
+        {
+            public string ProtectedPrivateBase64 { get; set; } = "";
+            public string PublicBase64 { get; set; } = "";
+            public PadForge.Engine.RemoteLink.PeerTrustStore Trust { get; set; }
+                = new PadForge.Engine.RemoteLink.PeerTrustStore();
+        }
+
+        /// <summary>The loaded Remote Link identity + trust list (see <see cref="RemoteLinkRuntime"/>).</summary>
+        public RemoteLinkRuntime RemoteLink { get; private set; } = new RemoteLinkRuntime();
+
+        /// <summary>
         /// Whether settings have been modified since last save.
         /// </summary>
         public bool IsDirty { get; private set; }
@@ -1208,6 +1226,20 @@ namespace PadForge.Services
             var vm = _mainVm.Settings;
             PadForge.Common.SoundPackageManager.LoadRegistry(
                 appSettings.SoundPackages?.Select(p => (p.Name, p.Path)));
+
+            // Remote Link (issue #138): carry the stored identity + trust list into
+            // the runtime holder. No minting here — the identity is created lazily
+            // on first Remote Link start — so this stays behavior-neutral on load.
+            try
+            {
+                RemoteLink = new RemoteLinkRuntime
+                {
+                    ProtectedPrivateBase64 = appSettings.RemoteLinkIdentityPrivate ?? "",
+                    PublicBase64 = appSettings.RemoteLinkIdentityPublic ?? "",
+                    Trust = new PadForge.Engine.RemoteLink.PeerTrustStore(appSettings.RemoteLinkPeers),
+                };
+            }
+            catch { RemoteLink = new RemoteLinkRuntime(); }
             vm.AutoStartEngine = appSettings.AutoStartEngine;
             vm.MinimizeToTray = appSettings.MinimizeToTray;
             vm.StartMinimized = appSettings.StartMinimized;
@@ -2813,6 +2845,11 @@ namespace PadForge.Services
             return new AppSettingsData
             {
                 SoundPackages = soundPackages,
+                // Remote Link (issue #138): persist the identity + trust list from
+                // the runtime holder (set on load / updated on pairing + revocation).
+                RemoteLinkIdentityPrivate = RemoteLink?.ProtectedPrivateBase64 ?? "",
+                RemoteLinkIdentityPublic = RemoteLink?.PublicBase64 ?? "",
+                RemoteLinkPeers = RemoteLink?.Trust?.Peers?.ToArray(),
                 AutoStartEngine = vm.AutoStartEngine,
                 MinimizeToTray = vm.MinimizeToTray,
                 StartMinimized = vm.StartMinimized,

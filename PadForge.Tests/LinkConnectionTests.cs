@@ -48,9 +48,8 @@ namespace PadForge.Tests
             // A responder exposes a pad; B initiator consumes.
             var taskA = LinkConnection.RunResponderAsync(chA, idA, trustA, new[] { PadInfo() }, Caps, approve, "2026-06-13T00:00:00Z");
             var taskB = LinkConnection.RunInitiatorAsync(chB, idB, trustB, Array.Empty<RemotePeerDeviceInfo>(), Caps, approve, "2026-06-13T00:00:00Z");
-            await Task.WhenAll(taskA, taskB);
-            var rA = taskA.Result;
-            var rB = taskB.Result;
+            var rA = await taskA;
+            var rB = await taskB;
 
             // B received A's exposed device, salted by A's authenticated identity.
             Assert.Single(rB.RemoteDevices);
@@ -100,9 +99,10 @@ namespace PadForge.Tests
 
             var taskA = LinkConnection.RunResponderAsync(chA, idA, trustA, new[] { PadInfo() }, Caps, mustNotPrompt, "t");
             var taskB = LinkConnection.RunInitiatorAsync(chB, idB, trustB, Array.Empty<RemotePeerDeviceInfo>(), Caps, mustNotPrompt, "t");
-            await Task.WhenAll(taskA, taskB);
+            await taskA;
+            var rB = await taskB;
 
-            Assert.Single(taskB.Result.RemoteDevices); // established with no SAS prompt
+            Assert.Single(rB.RemoteDevices); // established with no SAS prompt
         }
 
         [Fact]
@@ -115,10 +115,11 @@ namespace PadForge.Tests
 
             var taskA = LinkConnection.RunResponderAsync(chA, idA, new PeerTrustStore(), Array.Empty<RemotePeerDeviceInfo>(), Caps, approve, "t");
             var taskB = LinkConnection.RunInitiatorAsync(chB, idB, new PeerTrustStore(), Array.Empty<RemotePeerDeviceInfo>(), Caps, approve, "t");
-            await Task.WhenAll(taskA, taskB);
+            var rA = await taskA;
+            var rB = await taskB;
 
-            Assert.Equal(idB.FingerprintHex, taskA.Result.PeerFingerprintHex); // A sees B
-            Assert.Equal(idA.FingerprintHex, taskB.Result.PeerFingerprintHex); // B sees A
+            Assert.Equal(idB.FingerprintHex, rA.PeerFingerprintHex); // A sees B
+            Assert.Equal(idA.FingerprintHex, rB.PeerFingerprintHex); // B sees A
         }
     }
 }

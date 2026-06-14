@@ -1,9 +1,33 @@
+using System.IO;
+using System.Xml.Serialization;
 using PadForge.Engine.RemoteLink;
 
 namespace PadForge.Tests
 {
     public class PeerTrustStoreTests
     {
+        [Fact]
+        public void PeerTrust_XmlRoundTrips()
+        {
+            var peers = new[]
+            {
+                PeerTrust.FromPublicKey(Key(1), "Living Room", "2026-06-13T00:00:00Z", reconnect: true, gamepadOnly: false),
+                PeerTrust.FromPublicKey(Key(2), "Office", "2026-06-13T00:00:00Z", reconnect: false, gamepadOnly: true),
+            };
+            var ser = new XmlSerializer(typeof(PeerTrust[]), new XmlRootAttribute("RemoteLinkPeers"));
+            var sw = new StringWriter();
+            ser.Serialize(sw, peers);
+            var back = (PeerTrust[])ser.Deserialize(new StringReader(sw.ToString()));
+
+            Assert.Equal(2, back.Length);
+            Assert.Equal("Living Room", back[0].Name);
+            Assert.True(back[0].ReconnectEnabled);
+            Assert.False(back[0].GamepadOnly);
+            Assert.Equal(peers[0].FingerprintHex, back[0].FingerprintHex);
+            Assert.True(back[1].GamepadOnly);
+            Assert.False(back[1].ReconnectEnabled);
+        }
+
         private static byte[] Key(byte b)
         {
             var k = new byte[PeerCrypto.KeySize];

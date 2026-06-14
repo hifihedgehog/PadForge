@@ -24,6 +24,16 @@ namespace PadForge.Engine.RemoteLink
         public string PeerFingerprintHex { get; init; }
     }
 
+    /// <summary>The human's pairing decision: approve, and whether to restrict the
+    /// peer to gamepad-only output. Implicitly converts from bool so a simple
+    /// auto-approve callback (<c>_ => true</c>) still works.</summary>
+    public sealed class PairingApproval
+    {
+        public bool Approved { get; init; }
+        public bool GamepadOnly { get; init; }
+        public static implicit operator PairingApproval(bool approved) => new() { Approved = approved };
+    }
+
     /// <summary>Result of a completed control handshake: the data key for the UDP
     /// LinkSession, plus the RemotePeerDevices the peer exposed.</summary>
     public sealed class LinkConnectionResult
@@ -57,19 +67,19 @@ namespace PadForge.Engine.RemoteLink
         public static Task<LinkConnectionResult> RunInitiatorAsync(
             ILinkControlChannel channel, PeerIdentity identity, PeerTrustStore trust,
             IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, byte[] capabilities,
-            Func<PendingPairing, bool> approve, string nowUtc, CancellationToken ct = default)
+            Func<PendingPairing, PairingApproval> approve, string nowUtc, CancellationToken ct = default)
             => RunAsync(true, channel, identity, trust, exposeLocal, capabilities, approve, nowUtc, ct);
 
         public static Task<LinkConnectionResult> RunResponderAsync(
             ILinkControlChannel channel, PeerIdentity identity, PeerTrustStore trust,
             IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, byte[] capabilities,
-            Func<PendingPairing, bool> approve, string nowUtc, CancellationToken ct = default)
+            Func<PendingPairing, PairingApproval> approve, string nowUtc, CancellationToken ct = default)
             => RunAsync(false, channel, identity, trust, exposeLocal, capabilities, approve, nowUtc, ct);
 
         private static async Task<LinkConnectionResult> RunAsync(
             bool isInitiator, ILinkControlChannel channel, PeerIdentity identity, PeerTrustStore trust,
             IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, byte[] capabilities,
-            Func<PendingPairing, bool> approve, string nowUtc, CancellationToken ct)
+            Func<PendingPairing, PairingApproval> approve, string nowUtc, CancellationToken ct)
         {
             var hs = new LinkHandshake(identity, capabilities ?? Array.Empty<byte>(), isInitiator);
 
@@ -97,14 +107,14 @@ namespace PadForge.Engine.RemoteLink
             var decision = trust.Decide(result.PeerStaticPublicKey);
             if (decision == TrustDecision.FirstContact)
             {
-                bool granted = approve?.Invoke(new PendingPairing
+                PairingApproval approval = approve?.Invoke(new PendingPairing
                 {
                     Sas = result.Sas,
                     PeerFingerprintHex = Convert.ToHexString(result.PeerFingerprint),
                 }) ?? false;
-                if (!granted)
+                if (!approval.Approved)
                     throw new LinkConnectionException("Pairing rejected by the user.");
-                trust.Grant(result.PeerStaticPublicKey, name: "", pairedUtc: nowUtc, reconnect: true, gamepadOnly: false);
+                trust.Grant(result.PeerStaticPublicKey, name: "", pairedUtc: nowUtc, reconnect: true, gamepadOnly: approval.GamepadOnly);
             }
             // KnownAutoSelect / KnownManual: already pinned, the signature proved possession.
 

@@ -1240,6 +1240,7 @@ namespace PadForge.Services
                 };
             }
             catch { RemoteLink = new RemoteLinkRuntime(); }
+            vm.RefreshTrustedPeers(RemoteLink.Trust?.Peers);
             vm.AutoStartEngine = appSettings.AutoStartEngine;
             vm.MinimizeToTray = appSettings.MinimizeToTray;
             vm.StartMinimized = appSettings.StartMinimized;

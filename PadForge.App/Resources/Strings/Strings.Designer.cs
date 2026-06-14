@@ -265,6 +265,9 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_RemoteLinkFooter => Get("Dashboard_RemoteLinkFooter");
     public string Dashboard_RemoteLinkConnect => Get("Dashboard_RemoteLinkConnect");
     public string Dashboard_RemoteLinkConnectButton => Get("Dashboard_RemoteLinkConnectButton");
+    public string Dashboard_RemoteLinkNearby => Get("Dashboard_RemoteLinkNearby");
+    public string Dashboard_RemoteLinkNoPeers => Get("Dashboard_RemoteLinkNoPeers");
+    public string Dashboard_RemoteLinkPairButton => Get("Dashboard_RemoteLinkPairButton");
     public string RemoteLink_PairTitle => Get("RemoteLink_PairTitle");
     public string RemoteLink_PairPrompt => Get("RemoteLink_PairPrompt");
     public string RemoteLink_Pair => Get("RemoteLink_Pair");
@@ -272,6 +275,11 @@ public class Strings : INotifyPropertyChanged
     public string RemoteLink_GamepadOnly => Get("RemoteLink_GamepadOnly");
     public string RemoteLink_Identity => Get("RemoteLink_Identity");
     public string RemoteLink_ConsentWarning => Get("RemoteLink_ConsentWarning");
+    public string RemoteLink_PairedPeers => Get("RemoteLink_PairedPeers");
+    public string RemoteLink_PairedPeersDescription => Get("RemoteLink_PairedPeersDescription");
+    public string RemoteLink_NoPairedPeers => Get("RemoteLink_NoPairedPeers");
+    public string RemoteLink_Revoke => Get("RemoteLink_Revoke");
+    public string RemoteLink_RevokeAll => Get("RemoteLink_RevokeAll");
     public string Dashboard_TouchpadOverlay => Get("Dashboard_TouchpadOverlay");
     public string Dashboard_TouchpadOverlayDescription => Get("Dashboard_TouchpadOverlayDescription");
     public string Dashboard_EnableTouchpadOverlay => Get("Dashboard_EnableTouchpadOverlay");

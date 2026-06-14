@@ -64,6 +64,7 @@ namespace PadForge.Services
         private DsuMotionServer _dsuServer;
         private WebControllerServer _webServer;
         private LinkServer _linkServer;
+        private LinkDiscovery _linkDiscovery;
         private bool _remoteLinkConnectWired;
         private System.Threading.Timer _remoteLinkStreamTimer;
         private readonly List<(RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)> _remoteLinkExposed = new();
@@ -227,6 +228,31 @@ namespace PadForge.Services
 
             // Subscribe to Devices page selection changes for offline detail display.
             _mainVm.Devices.PropertyChanged += OnDevicesVmPropertyChanged;
+
+            // Remote Link peer-manager revoke actions (issue #138).
+            _mainVm.Settings.PeerRevokeRequested += OnPeerRevokeRequested;
+            _mainVm.Settings.PeerRevokeAllRequested += OnPeerRevokeAllRequested;
+        }
+
+        private void OnPeerRevokeRequested(string fingerprintHex)
+        {
+            var trust = _settingsService?.RemoteLink?.Trust;
+            if (trust == null || string.IsNullOrEmpty(fingerprintHex)) return;
+            var entry = trust.Peers.FirstOrDefault(p => string.Equals(p.FingerprintHex, fingerprintHex, StringComparison.OrdinalIgnoreCase));
+            if (entry?.PublicKey != null) trust.Revoke(entry.PublicKey);
+            _linkServer?.RevokePeer(fingerprintHex);
+            try { _settingsService?.Save(); } catch { }
+            _mainVm.Settings.RefreshTrustedPeers(trust.Peers);
+        }
+
+        private void OnPeerRevokeAllRequested()
+        {
+            var trust = _settingsService?.RemoteLink?.Trust;
+            if (trust == null) return;
+            foreach (var p in trust.Peers.ToList()) _linkServer?.RevokePeer(p.FingerprintHex);
+            trust.RevokeAll();
+            try { _settingsService?.Save(); } catch { }
+            _mainVm.Settings.RefreshTrustedPeers(trust.Peers);
         }
 
         // ─────────────────────────────────────────────
@@ -4660,16 +4686,58 @@ namespace PadForge.Services
 
             _linkServer = new LinkServer(identity, trust, ApprovePairing);
             _linkServer.StatusChanged += s => _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = s);
-            _linkServer.DeviceConnected += device => _inputManager.RegisterPeerDevice(device);
-            _linkServer.DeviceDisconnected += device => _inputManager.UnregisterExternalDevice(device.InstanceGuid);
+            _linkServer.DeviceConnected += device =>
+            {
+                _inputManager.RegisterPeerDevice(device);
+                // Apply the peer's gamepad-only restriction (set at pairing) so its
+                // input can never reach a keyboard/mouse SendInput path.
+                bool restricted = _settingsService?.RemoteLink?.Trust?.Peers?
+                    .Any(t => string.Equals(t.FingerprintHex, device.Info.PeerFingerprintHex, StringComparison.OrdinalIgnoreCase) && t.GamepadOnly) ?? false;
+                _inputManager.SetDeviceRestricted(device.InstanceGuid, restricted);
+                // Persist a freshly granted peer + refresh the manager list (the grant
+                // happened inside the handshake, just before this fires).
+                _dispatcher.BeginInvoke(() =>
+                {
+                    try { _settingsService?.Save(); } catch { }
+                    _mainVm.Settings.RefreshTrustedPeers(_settingsService?.RemoteLink?.Trust?.Peers);
+                });
+            };
+            _linkServer.DeviceDisconnected += device =>
+            {
+                _inputManager.SetDeviceRestricted(device.InstanceGuid, false);
+                _inputManager.UnregisterExternalDevice(device.InstanceGuid);
+            };
 
             int port = _mainVm.Dashboard.RemoteLinkPort;
             if (port < 1024 || port > 65535) port = 27500;
             _linkServer.Start(port);
 
+            // LAN auto-discovery so peers appear by name — no IP typing.
+            _linkDiscovery = new LinkDiscovery();
+            _linkDiscovery.PeersChanged += OnLinkPeersChanged;
+            _linkDiscovery.Start(port, Environment.MachineName, identity.FingerprintHex);
+
             // Stream exposed devices at ~125 Hz off the hot path.
             _remoteLinkStreamTimer?.Dispose();
             _remoteLinkStreamTimer = new System.Threading.Timer(RemoteLinkStreamTick, null, 8, 8);
+        }
+
+        private void OnLinkPeersChanged()
+        {
+            var disc = _linkDiscovery;
+            if (disc == null) return;
+            var peers = disc.Peers;
+            var trust = _settingsService?.RemoteLink?.Trust;
+            _dispatcher.BeginInvoke(() =>
+            {
+                _mainVm.Dashboard.NearbyPeers.Clear();
+                foreach (var p in peers)
+                {
+                    bool paired = trust?.Peers?.Any(t => string.Equals(t.FingerprintHex, p.FingerprintHex, StringComparison.OrdinalIgnoreCase)) ?? false;
+                    string hostPort = $"{p.Endpoint.Address}:{p.Endpoint.Port}";
+                    _mainVm.Dashboard.NearbyPeers.Add(new ViewModels.RemoteLinkNearbyPeer(p.Name, hostPort, p.FingerprintHex, paired, OnConnectToPeerRequested));
+                }
+            });
         }
 
         private void StopRemoteLink()
@@ -4677,6 +4745,13 @@ namespace PadForge.Services
             _remoteLinkStreamTimer?.Dispose();
             _remoteLinkStreamTimer = null;
             lock (_remoteLinkExposedLock) _remoteLinkExposed.Clear();
+            if (_linkDiscovery != null)
+            {
+                _linkDiscovery.PeersChanged -= OnLinkPeersChanged;
+                _linkDiscovery.Dispose();
+                _linkDiscovery = null;
+            }
+            _dispatcher.BeginInvoke(() => _mainVm.Dashboard.NearbyPeers.Clear());
             if (_linkServer == null) return;
             _linkServer.Dispose();
             _linkServer = null;
@@ -4701,9 +4776,10 @@ namespace PadForge.Services
         /// <summary>Show the SAS pairing dialog on the UI thread and block the socket
         /// thread until the user decides. First contact only; trusted peers reconnect
         /// without prompting.</summary>
-        private bool ApprovePairing(PendingPairing pending)
+        private PairingApproval ApprovePairing(PendingPairing pending)
         {
-            bool result = false;
+            bool approved = false;
+            bool gamepadOnly = false;
             using var done = new System.Threading.ManualResetEventSlim(false);
             _dispatcher.BeginInvoke(() =>
             {
@@ -4712,15 +4788,15 @@ namespace PadForge.Services
                     var dlg = new Views.RemoteLinkPairDialog(pending.Sas, pending.PeerFingerprintHex);
                     var owner = System.Windows.Application.Current?.MainWindow;
                     if (owner != null && owner.IsLoaded) dlg.Owner = owner;
-                    result = dlg.ShowDialog() == true;
+                    approved = dlg.ShowDialog() == true;
+                    gamepadOnly = dlg.GamepadOnly;
                 }
-                catch { result = false; }
+                catch { approved = false; }
                 finally { done.Set(); }
             });
             if (!done.Wait(TimeSpan.FromMinutes(2))) return false;
-            // Persist the freshly granted peer (LinkConnection already added it to the trust store).
-            _dispatcher.BeginInvoke(() => { try { _settingsService?.Save(); } catch { } });
-            return result;
+            // Persistence happens in DeviceConnected, after the grant lands in the trust store.
+            return new PairingApproval { Approved = approved, GamepadOnly = gamepadOnly };
         }
 
         private async void OnConnectToPeerRequested(string hostPort)

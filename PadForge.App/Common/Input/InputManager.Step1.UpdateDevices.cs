@@ -1026,6 +1026,46 @@ namespace PadForge.Common.Input
             DevicesUpdated?.Invoke(this, EventArgs.Empty);
         }
 
+        // ── Gamepad-only restriction (issue #138) ───────────────────────────
+        // A peer paired with the "gamepad only" option may drive gamepad output
+        // but never keyboard/mouse/scroll — neither via a KBM virtual controller
+        // nor via a macro. The set holds the InstanceGuids of restricted peer
+        // devices; the SendInput chokepoints consult IsSlotRestricted.
+        private readonly HashSet<Guid> _restrictedDevices = new();
+        private readonly object _restrictedLock = new();
+
+        /// <summary>Mark (or clear) a device as gamepad-only restricted.</summary>
+        public void SetDeviceRestricted(Guid instanceGuid, bool restricted)
+        {
+            lock (_restrictedLock)
+            {
+                if (restricted) _restrictedDevices.Add(instanceGuid);
+                else _restrictedDevices.Remove(instanceGuid);
+            }
+        }
+
+        /// <summary>True if any online restricted device is a source for this slot.
+        /// Free when no peer is restricted (the common case early-outs).</summary>
+        internal bool IsSlotRestricted(int slot)
+        {
+            Guid[] restricted;
+            lock (_restrictedLock)
+            {
+                if (_restrictedDevices.Count == 0) return false;
+                restricted = new Guid[_restrictedDevices.Count];
+                _restrictedDevices.CopyTo(restricted);
+            }
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return false;
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                    if (us.MapTo == slot && Array.IndexOf(restricted, us.InstanceGuid) >= 0)
+                        return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Marks an external device as offline when its connection is lost.
         /// Called by WebControllerServer when a browser client disconnects.

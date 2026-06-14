@@ -240,6 +240,29 @@ namespace PadForge.ViewModels
                 },
                 () => _selectedWhitelistPath != null);
 
+        // ── Remote Link paired peers (issue #138) ──
+
+        /// <summary>Trusted paired PCs, shown in the Settings peer manager.</summary>
+        public ObservableCollection<RemoteLinkTrustedPeer> TrustedPeers { get; } = new();
+
+        /// <summary>Raised when the user revokes one peer (by fingerprint) or all.</summary>
+        public event Action<string> PeerRevokeRequested;
+        public event Action PeerRevokeAllRequested;
+
+        private RelayCommand _revokeAllPeersCommand;
+        public RelayCommand RevokeAllPeersCommand =>
+            _revokeAllPeersCommand ??= new RelayCommand(() => PeerRevokeAllRequested?.Invoke());
+
+        /// <summary>Rebuild the trusted-peer list from the trust store.</summary>
+        public void RefreshTrustedPeers(System.Collections.Generic.IEnumerable<PadForge.Engine.RemoteLink.PeerTrust> peers)
+        {
+            TrustedPeers.Clear();
+            if (peers == null) return;
+            foreach (var p in peers)
+                TrustedPeers.Add(new RemoteLinkTrustedPeer(p.Name, p.FingerprintHex, p.PairedUtc, p.GamepadOnly,
+                    fp => PeerRevokeRequested?.Invoke(fp)));
+        }
+
         /// <summary>Raised when the user requests adding a whitelist path (opens file dialog).</summary>
         public event EventHandler AddWhitelistPathRequested;
 

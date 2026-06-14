@@ -44,7 +44,7 @@ namespace PadForge.Tests
             int pA = FreePort(), pB = FreePort();
             while (pB == pA) pB = FreePort();
 
-            Func<PendingPairing, bool> approve = _ => true;
+            Func<PendingPairing, PairingApproval> approve = _ => true;
             using var host = new LinkServer(PeerIdentity.Generate(), new PeerTrustStore(), approve);     // consumer
             using var holder = new LinkServer(PeerIdentity.Generate(), new PeerTrustStore(), approve);   // device holder
 

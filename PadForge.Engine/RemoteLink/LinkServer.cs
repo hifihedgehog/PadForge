@@ -25,7 +25,7 @@ namespace PadForge.Engine.RemoteLink
 
         private readonly PeerIdentity _identity;
         private readonly PeerTrustStore _trust;
-        private readonly Func<PendingPairing, bool> _approve;
+        private readonly Func<PendingPairing, PairingApproval> _approve;
         private readonly Func<string> _nowUtc;
         private readonly byte[] _caps;
 
@@ -40,12 +40,12 @@ namespace PadForge.Engine.RemoteLink
         public event Action<RemotePeerDevice> DeviceDisconnected;
         public event Action<string> StatusChanged;
 
-        public LinkServer(PeerIdentity identity, PeerTrustStore trust, Func<PendingPairing, bool> approve,
+        public LinkServer(PeerIdentity identity, PeerTrustStore trust, Func<PendingPairing, PairingApproval> approve,
             byte[] capabilities = null, Func<string> nowUtcProvider = null)
         {
             _identity = identity ?? throw new ArgumentNullException(nameof(identity));
             _trust = trust ?? throw new ArgumentNullException(nameof(trust));
-            _approve = approve ?? (_ => false);
+            _approve = approve ?? (_ => (PairingApproval)false);
             _caps = capabilities ?? new byte[] { 1, 0 };
             _nowUtc = nowUtcProvider ?? (() => DateTime.UtcNow.ToString("o"));
         }
@@ -116,6 +116,19 @@ namespace PadForge.Engine.RemoteLink
                 StatusChanged?.Invoke($"Connect failed: {ex.Message}");
                 return false;
             }
+        }
+
+        /// <summary>Sever any live session with a peer (called on revocation). Its
+        /// devices go offline and its UDP datagrams stop routing (no session opens them).</summary>
+        public void RevokePeer(string fingerprintHex)
+        {
+            LinkPeerConnection[] conns;
+            lock (_lock)
+            {
+                conns = _connections.Where(c => string.Equals(c.PeerFingerprintHex, fingerprintHex, StringComparison.OrdinalIgnoreCase)).ToArray();
+                foreach (var c in conns) _connections.Remove(c);
+            }
+            foreach (var c in conns) DropConnection(c);
         }
 
         /// <summary>Seal and send one exposed local device's state to every peer consuming it.</summary>

@@ -508,6 +508,25 @@
                             <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
                         </Button>
                     </StackPanel>
+                    <!-- Auto-discovered PCs on the LAN — click Pair, no IP needed -->
+                    <TextBlock Text="{Binding Dashboard_RemoteLinkNearby, Source={x:Static strings:Strings.Instance}}"
+                               FontWeight="SemiBold" Margin="0,4,0,6"/>
+                    <ItemsControl ItemsSource="{Binding NearbyPeers}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="&#xE977;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" MinWidth="180"/>
+                                    <ui:Button Command="{Binding PairCommand}" Padding="10,2" Margin="8,0,0,0"
+                                               Content="{Binding Dashboard_RemoteLinkPairButton, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Text="{Binding Dashboard_RemoteLinkNoPeers, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="12" Opacity="0.6" TextWrapping="Wrap" Margin="0,0,0,12"/>
+
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="{Binding Dashboard_RemoteLinkConnect, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                    Margin="0,0,8,0"/>

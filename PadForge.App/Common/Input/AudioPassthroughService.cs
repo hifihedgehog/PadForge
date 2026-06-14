@@ -887,6 +887,7 @@ namespace PadForge.Common.Input
                     if ((ud.DevicePath ?? "").StartsWith("peer://", StringComparison.Ordinal))
                     {
                         if (ptOn) shipPaths.Add(ud.DevicePath);
+                        RemoteLinkDiag.Log($"reconcile peer audio pad slot={slot} ptOn={ptOn} pid={ud.ProdId:X4} {ud.DevicePath}");
                         continue;
                     }
                     bool isBt = (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;

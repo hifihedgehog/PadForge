@@ -365,10 +365,12 @@
                     <TextBlock Text="{Binding Pad_Touchpad, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
 
-                <!-- Audio tab: macro sound playback (issue #83). Per-slot
-                     output device + master volume, and the sound-macro hub.
-                     Always visible; sounds work on every slot type. -->
-                <RadioButton x:Name="TabAudio" Tag="12" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
+                <!-- Audio tab: controller speaker output (issue #83) — passthrough,
+                     macro sounds, master volume. Visible only when the selected
+                     mapped device has a speaker: the DualSense family or the
+                     DualShock 4 (Sony VID 0x054C). Hidden for everything else. -->
+                <RadioButton x:Name="TabAudio" Tag="12" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             Visibility="Collapsed">
                     <TextBlock Text="{Binding Pad_Audio, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
             </WrapPanel>

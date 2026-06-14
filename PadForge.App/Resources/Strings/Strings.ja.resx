@@ -1757,4 +1757,94 @@
   <data name="Mapping_MidiPitchBend" xml:space="preserve"><value>ピッチベンド</value></data>
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
+  <data name="RemoteLink_IdentityTitle" xml:space="preserve">
+    <value>アイデンティティ保護</value>
+  </data>
+  <data name="RemoteLink_IdentityDescription" xml:space="preserve">
+    <value>この PC のペアリング ID の保存方法。ポータブル モードを選ぶと、ペアリング情報を USB メモリに入れて別のマシンへ持ち運べます。</value>
+  </data>
+  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve">
+    <value>この PC の名前</value>
+  </data>
+  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
+    <value>近くの PC（未ペアリング）</value>
+  </data>
+  <data name="Common_Reset" xml:space="preserve">
+    <value>リセット</value>
+  </data>
+  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
+    <value>Remote Link のパスワード</value>
+  </data>
+  <data name="Devices_ButtonNumberTooltip" xml:space="preserve">
+    <value>ボタン {0}</value>
+  </data>
+  <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
+    <value>PadForge タッチパッド</value>
+  </data>
+  <data name="RemoteLink_PasswordEmpty" xml:space="preserve">
+    <value>パスワードを入力してください。</value>
+  </data>
+  <data name="RemoteLink_PasswordMismatch" xml:space="preserve">
+    <value>パスワードが一致しません。</value>
+  </data>
+  <data name="RemoteLink_IdentityModeSecure" xml:space="preserve">
+    <value>セキュア — この PC のみ</value>
+  </data>
+  <data name="RemoteLink_IdentityModePortablePassword" xml:space="preserve">
+    <value>ポータブル — パスワード保護あり</value>
+  </data>
+  <data name="RemoteLink_IdentityModePortableOpen" xml:space="preserve">
+    <value>ポータブル — パスワードなし</value>
+  </data>
+  <data name="RemoteLink_IdentityHintPortablePassword" xml:space="preserve">
+    <value>ご自身の ID はこのドライブに入って持ち運ばれ、どの PC でもパスワードで解除されます。ドライブを紛失しても、パスワードがなければ役に立ちません。</value>
+  </data>
+  <data name="RemoteLink_IdentityHintPortableOpen" xml:space="preserve">
+    <value>ご自身の ID は確認なしでこのドライブに入って持ち運ばれます。ドライブを持っている人は誰でも使用できます — 大切に保管してください。</value>
+  </data>
+  <data name="RemoteLink_IdentityHintSecure" xml:space="preserve">
+    <value>この PC に固定されます（PC 上のすべての Windows アカウントで使えます）。別のマシンには移動できません。</value>
+  </data>
+  <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
+    <value>ペアリング済みの PC</value>
+  </data>
+  <data name="RemoteLink_Online" xml:space="preserve">
+    <value>オンライン</value>
+  </data>
+  <data name="RemoteLink_Offline" xml:space="preserve">
+    <value>オフライン</value>
+  </data>
+  <data name="RemoteLink_GamepadOnlySuffix" xml:space="preserve">
+    <value>ゲームパッドのみ</value>
+  </data>
+  <data name="RemoteLink_PeerConnectedSuffix" xml:space="preserve">
+    <value>(接続済み)</value>
+  </data>
+  <data name="RemoteLink_PeerPairedSuffix" xml:space="preserve">
+    <value>（ペアリング済み）</value>
+  </data>
+  <data name="RemoteLink_StatusUnlockBeforeChange" xml:space="preserve">
+    <value>保護を変更する前に、現在のIDのロックを解除してください。</value>
+  </data>
+  <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
+    <value>ポータブルIDを保護するパスワードを設定してください。各PCでRemote Linkのロックを解除する際に入力します。</value>
+  </data>
+  <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
+    <value>IDの保護を更新しました。</value>
+  </data>
+  <data name="RemoteLink_PasswordUnlockPrompt" xml:space="preserve">
+    <value>このIDのロックを解除するには、Remote Linkのパスワードを入力してください。</value>
+  </data>
+  <data name="RemoteLink_StatusWrongMachine" xml:space="preserve">
+    <value>Remote LinkのIDは別のPCに固定されています。移動するには、元のPCでポータブルモードに切り替えてください。</value>
+  </data>
+  <data name="RemoteLink_StatusWrongPassword" xml:space="preserve">
+    <value>Remote Linkのパスワードが正しくありません。</value>
+  </data>
+  <data name="RemoteLink_StatusIdentityUnavailable" xml:space="preserve">
+    <value>Remote LinkのIDは利用できません。</value>
+  </data>
+  <data name="RemoteLink_StatusConnecting" xml:space="preserve">
+    <value>{0}:{1} に接続中…</value>
+  </data>
 </root>

@@ -36,12 +36,12 @@ namespace PadForge.Views
             string pw = PwBox.Password ?? "";
             if (string.IsNullOrEmpty(pw))
             {
-                Show("Enter a password.");
+                Show(PadForge.Resources.Strings.Strings.Instance.RemoteLink_PasswordEmpty);
                 return;
             }
             if (_setMode && pw != (ConfirmBox.Password ?? ""))
             {
-                Show("The passwords don't match.");
+                Show(PadForge.Resources.Strings.Strings.Instance.RemoteLink_PasswordMismatch);
                 return;
             }
             Password = pw;

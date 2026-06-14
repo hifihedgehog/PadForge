@@ -285,14 +285,14 @@ namespace PadForge.Services
             if (identity == null)
             {
                 _mainVm.Settings.SetIdentityProtectionModeSilently(oldIndex);
-                _mainVm.Dashboard.RemoteLinkStatus = "Unlock the current identity before changing its protection.";
+                _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusUnlockBeforeChange;
                 return;
             }
 
             string password = null;
             if (newMode == PadForge.Engine.RemoteLink.IdentityProtectionMode.PortablePassword)
             {
-                var dlg = new Views.RemoteLinkPasswordDialog(true, "Set a password to protect your portable identity. You'll enter it to unlock Remote Link on each PC.")
+                var dlg = new Views.RemoteLinkPasswordDialog(true, Strings.Instance.RemoteLink_PasswordSetPrompt)
                 { Owner = System.Windows.Application.Current?.MainWindow };
                 if (dlg.ShowDialog() != true) { _mainVm.Settings.SetIdentityProtectionModeSilently(oldIndex); return; }
                 password = dlg.Password;
@@ -306,7 +306,7 @@ namespace PadForge.Services
             holder.IdentityProtection = newMode;
             _remoteLinkSessionPassword = newMode == PadForge.Engine.RemoteLink.IdentityProtectionMode.PortablePassword ? password : null;
             try { _settingsService?.Save(); } catch { }
-            _mainVm.Dashboard.RemoteLinkStatus = "Identity protection updated.";
+            _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusIdentityUpdated;
         }
 
         /// <summary>The live identity, loading it if needed. For password mode without a
@@ -324,7 +324,7 @@ namespace PadForge.Services
             if (holder?.IdentityProtection == PadForge.Engine.RemoteLink.IdentityProtectionMode.PortablePassword
                 && _dispatcher.CheckAccess())
             {
-                var dlg = new Views.RemoteLinkPasswordDialog(false, "Enter your Remote Link password to unlock this identity.")
+                var dlg = new Views.RemoteLinkPasswordDialog(false, Strings.Instance.RemoteLink_PasswordUnlockPrompt)
                 { Owner = System.Windows.Application.Current?.MainWindow };
                 if (dlg.ShowDialog() == true)
                 {
@@ -4950,10 +4950,10 @@ namespace PadForge.Services
             // leave Remote Link off until then.
             string msg = status switch
             {
-                IdentityUnprotect.WrongMachine => "Remote Link identity is secured to another PC. Switch to a portable mode on the original PC to move it.",
-                IdentityUnprotect.NeedsPassword => "Enter your Remote Link password to unlock this identity.",
-                IdentityUnprotect.WrongPassword => "Remote Link password is incorrect.",
-                _ => "Remote Link identity is unavailable.",
+                IdentityUnprotect.WrongMachine => Strings.Instance.RemoteLink_StatusWrongMachine,
+                IdentityUnprotect.NeedsPassword => Strings.Instance.RemoteLink_PasswordUnlockPrompt,
+                IdentityUnprotect.WrongPassword => Strings.Instance.RemoteLink_StatusWrongPassword,
+                _ => Strings.Instance.RemoteLink_StatusIdentityUnavailable,
             };
             _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = msg);
             return null;
@@ -5027,7 +5027,7 @@ namespace PadForge.Services
             if (colon > 0 && int.TryParse(host.Substring(colon + 1), out int p)) { host = host.Substring(0, colon); port = p; }
 
             var expose = BuildExposedDevices();
-            _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = $"Connecting to {host}:{port}…");
+            _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = string.Format(Strings.Instance.RemoteLink_StatusConnecting, host, port));
             await server.ConnectAsync(host, port, expose);
         }
 
@@ -6337,7 +6337,7 @@ namespace PadForge.Services
                 if (slotSettings == null || slotSettings.Count == 0)
                 {
                     padVm.MappedDevices.Clear();
-                    padVm.MappedDeviceName = "No device mapped";
+                    padVm.MappedDeviceName = Strings.Instance.Mapping_NoDeviceMapped;
                     padVm.MappedDeviceGuid = Guid.Empty;
                     padVm.IsDeviceOnline = false;
                 }

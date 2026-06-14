@@ -312,6 +312,7 @@ public class Strings : INotifyPropertyChanged
     public string RemoteLink_StatusWrongPassword => Get("RemoteLink_StatusWrongPassword");
     public string RemoteLink_StatusIdentityUnavailable => Get("RemoteLink_StatusIdentityUnavailable");
     public string RemoteLink_StatusConnecting => Get("RemoteLink_StatusConnecting");
+    public string RemoteLink_AutoReconnect => Get("RemoteLink_AutoReconnect");
     public string Dashboard_TouchpadOverlay => Get("Dashboard_TouchpadOverlay");
     public string Dashboard_TouchpadOverlayDescription => Get("Dashboard_TouchpadOverlayDescription");
     public string Dashboard_EnableTouchpadOverlay => Get("Dashboard_EnableTouchpadOverlay");

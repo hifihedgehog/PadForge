@@ -1370,6 +1370,7 @@ namespace PadForge.Services
             _mainVm.Dashboard.WebControllerPort = appSettings.WebControllerPort > 0
                 ? appSettings.WebControllerPort : 8080;
             _mainVm.Dashboard.EnableRemoteLink = appSettings.EnableRemoteLink;
+            _mainVm.Dashboard.AutoReconnect = appSettings.RemoteLinkAutoReconnect;
             _mainVm.Dashboard.RemoteLinkPort = appSettings.RemoteLinkPort >= 1024 && appSettings.RemoteLinkPort <= 65535
                 ? appSettings.RemoteLinkPort : 27500;
 
@@ -2889,6 +2890,7 @@ namespace PadForge.Services
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
                 WebControllerPort = _mainVm.Dashboard.WebControllerPort,
                 EnableRemoteLink = _mainVm.Dashboard.EnableRemoteLink,
+                RemoteLinkAutoReconnect = _mainVm.Dashboard.AutoReconnect,
                 RemoteLinkPort = _mainVm.Dashboard.RemoteLinkPort,
                 EnableTouchpadOverlay = _mainVm.Dashboard.EnableTouchpadOverlay,
                 TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity,
@@ -3888,6 +3890,11 @@ namespace PadForge.Services
         /// <summary>Whether the Remote Link server listens. Global, not per-profile.</summary>
         [XmlElement]
         public bool EnableRemoteLink { get; set; }
+
+        /// <summary>Auto-reconnect: when a paired PC is seen on the LAN, establish the link
+        /// without a click (issue #138). Default on.</summary>
+        [XmlElement]
+        public bool RemoteLinkAutoReconnect { get; set; } = true;
 
         [XmlElement]
         public int RemoteLinkPort { get; set; } = 27500;

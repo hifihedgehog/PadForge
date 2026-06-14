@@ -303,6 +303,16 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _enableRemoteLink, value);
         }
 
+        private bool _autoReconnect = true;
+
+        /// <summary>Auto-reconnect: when a paired PC appears on the LAN, establish the link
+        /// without a click (issue #138). Default on.</summary>
+        public bool AutoReconnect
+        {
+            get => _autoReconnect;
+            set => SetProperty(ref _autoReconnect, value);
+        }
+
         private int _remoteLinkPort = 27500;
 
         /// <summary>TCP control + UDP data port for the Remote Link server.</summary>

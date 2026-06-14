@@ -1847,4 +1847,7 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>{0}:{1}에 연결 중…</value>
   </data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve">
+    <value>자동으로 다시 연결</value>
+  </data>
 </root>

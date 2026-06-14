@@ -46,6 +46,10 @@ namespace PadForge.Common.Input
         /// <summary>Wired by InputService to <c>LinkServer.PushOutputEffect</c>.</summary>
         public static Action<string, byte, byte[]> Send { get; set; }
 
+        // Diagnostics (#138 M2 reverse-channel bring-up).
+        public static long SonyCaptured, RumbleCaptured, Sent;
+        public static int RouteCount => _routes.Count;
+
         /// <summary>Replace the route table. Pass an empty/null map to stop forwarding.</summary>
         public static void SetRoutes(Dictionary<int, List<Target>> routes)
         {
@@ -53,6 +57,8 @@ namespace PadForge.Common.Input
             _hasRoutes = _routes.Count > 0;
             if (!_hasRoutes)
                 lock (_dedupLock) { _lastRumble.Clear(); _lastEffect.Clear(); }
+            var keys = string.Join(",", _routes.Keys);
+            RemoteLinkDiag.Log($"router SetRoutes: {_routes.Count} slot(s) [{keys}]");
         }
 
         public static void Clear() => SetRoutes(null);
@@ -61,11 +67,17 @@ namespace PadForge.Common.Input
         /// mic/player LED) captured for the given VC pad slot.</summary>
         public static void OnLocalSonyEffect(int padSlot, ReadOnlySpan<byte> effectPayload)
         {
-            if (!_hasRoutes || effectPayload.Length == 0) return;
+            long n = System.Threading.Interlocked.Increment(ref SonyCaptured);
+            if (effectPayload.Length == 0) return;
             var routes = _routes;
-            if (!routes.TryGetValue(padSlot, out var targets) || targets.Count == 0) return;
+            if (!routes.TryGetValue(padSlot, out var targets) || targets.Count == 0)
+            {
+                if (n == 1 || n % 240 == 0)
+                    RemoteLinkDiag.Log($"capture sony slot={padSlot} but NO route (routes={routes.Count}, hasRoutes={_hasRoutes}) n={n}");
+                return;
+            }
             var send = Send;
-            if (send == null) return;
+            if (send == null) { RemoteLinkDiag.Log("capture sony: Send is null"); return; }
 
             // Drop exact repeats (static lightbar / held AT re-sent every frame).
             lock (_dedupLock)
@@ -76,18 +88,25 @@ namespace PadForge.Common.Input
             }
 
             byte[] blob = Engine.RemoteLink.OutputEffectCodec.EncodeSonyEffect(effectPayload);
-            foreach (var t in targets) send(t.Fingerprint, t.LinkSlot, blob);
+            foreach (var t in targets) { send(t.Fingerprint, t.LinkSlot, blob); System.Threading.Interlocked.Increment(ref Sent); }
+            if (n == 1 || n % 240 == 0)
+                RemoteLinkDiag.Log($"capture sony slot={padSlot} -> sent to {targets.Count} target(s) len={effectPayload.Length} n={n}");
         }
 
         /// <summary>Forward the four XInput motor magnitudes captured for the given
         /// VC pad slot (non-Sony pads).</summary>
         public static void OnLocalRumble(int padSlot, ushort left, ushort right, ushort leftTrigger, ushort rightTrigger)
         {
-            if (!_hasRoutes) return;
+            long n = System.Threading.Interlocked.Increment(ref RumbleCaptured);
             var routes = _routes;
-            if (!routes.TryGetValue(padSlot, out var targets) || targets.Count == 0) return;
+            if (!routes.TryGetValue(padSlot, out var targets) || targets.Count == 0)
+            {
+                if (n == 1 || n % 240 == 0)
+                    RemoteLinkDiag.Log($"capture rumble slot={padSlot} but NO route (routes={routes.Count}) n={n}");
+                return;
+            }
             var send = Send;
-            if (send == null) return;
+            if (send == null) { RemoteLinkDiag.Log("capture rumble: Send is null"); return; }
 
             lock (_dedupLock)
             {
@@ -98,7 +117,9 @@ namespace PadForge.Common.Input
             }
 
             byte[] blob = Engine.RemoteLink.OutputEffectCodec.EncodeRumble(left, right, leftTrigger, rightTrigger);
-            foreach (var t in targets) send(t.Fingerprint, t.LinkSlot, blob);
+            foreach (var t in targets) { send(t.Fingerprint, t.LinkSlot, blob); System.Threading.Interlocked.Increment(ref Sent); }
+            if (n == 1 || n % 240 == 0)
+                RemoteLinkDiag.Log($"capture rumble slot={padSlot} -> sent ({left},{right},{leftTrigger},{rightTrigger}) to {targets.Count} n={n}");
         }
     }
 }

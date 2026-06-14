@@ -67,6 +67,7 @@ namespace PadForge.Services
         private LinkDiscovery _linkDiscovery;
         private bool _remoteLinkConnectWired;
         private System.Threading.Timer _remoteLinkStreamTimer;
+        private System.Threading.Timer _remoteLinkDiagTimer;
         private readonly List<(RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)> _remoteLinkExposed = new();
         private readonly object _remoteLinkExposedLock = new();
         // Connected peer devices we consume (their guid -> owner fingerprint + link slot),
@@ -4746,6 +4747,21 @@ namespace PadForge.Services
             // Stream exposed devices at ~125 Hz off the hot path.
             _remoteLinkStreamTimer?.Dispose();
             _remoteLinkStreamTimer = new System.Threading.Timer(RemoteLinkStreamTick, null, 8, 8);
+
+            // #138 M2 bring-up: snapshot both directions every 2s to %TEMP%\padforge-remotelink.log.
+            _remoteLinkDiagTimer?.Dispose();
+            _remoteLinkDiagTimer = new System.Threading.Timer(_ =>
+            {
+                var s = _linkServer;
+                if (s == null) return;
+                int exposed; lock (_remoteLinkExposedLock) exposed = _remoteLinkExposed.Count;
+                int consumed; lock (_remoteConsumedLock) consumed = _remoteConsumedTargets.Count;
+                RemoteLinkDiag.Log(
+                    $"SNAP exposed={exposed} consumed={consumed} routes={RemoteLinkOutputRouter.RouteCount} | " +
+                    $"IN sent={s.DiagDatagramsSent} recv={s.DiagDatagramsReceived} opened={s.DiagDatagramsOpened} | " +
+                    $"OUT cap.sony={RemoteLinkOutputRouter.SonyCaptured} cap.rumble={RemoteLinkOutputRouter.RumbleCaptured} " +
+                    $"sent={s.DiagOutputSent} recv={s.DiagOutputReceived} applied={_outputApplied} srcNull={_outputSourceNull} | err='{s.DiagLastError}'");
+            }, null, 2000, 2000);
         }
 
         private void OnLinkPeersChanged()
@@ -4772,6 +4788,8 @@ namespace PadForge.Services
         {
             _remoteLinkStreamTimer?.Dispose();
             _remoteLinkStreamTimer = null;
+            _remoteLinkDiagTimer?.Dispose();
+            _remoteLinkDiagTimer = null;
             lock (_remoteLinkExposedLock) _remoteLinkExposed.Clear();
             RemoteLinkOutputRouter.Send = null;
             RemoteLinkOutputRouter.Clear();
@@ -4985,36 +5003,55 @@ namespace PadForge.Services
         /// devices (#138 M2). Map the link slot to the physical source and drive the
         /// hardware directly — no local game / virtual controller is involved. Runs on
         /// the UDP receive thread (one writer).</summary>
+        private long _outputApplied, _outputRecvSeen, _outputSourceNull;
         private void OnRemoteOutputReceived(string peerFingerprint, byte slot, byte[] payload)
         {
-            if (!OutputEffectCodec.TryDecode(payload, out var effect)) return;
+            long rn = System.Threading.Interlocked.Increment(ref _outputRecvSeen);
+            if (!OutputEffectCodec.TryDecode(payload, out var effect))
+            {
+                if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply: decode FAILED len={payload?.Length} n={rn}");
+                return;
+            }
             ISdlInputDevice source = null;
+            int exposedCount;
             lock (_remoteLinkExposedLock)
             {
+                exposedCount = _remoteLinkExposed.Count;
                 foreach (var e in _remoteLinkExposed)
                     if (e.slot == slot) { source = e.source; break; }
             }
-            if (source == null) return;
+            if (source == null)
+            {
+                System.Threading.Interlocked.Increment(ref _outputSourceNull);
+                if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply: NO source for slot={slot} (exposed={exposedCount}) kind={effect.Kind} n={rn}");
+                return;
+            }
             try
             {
+                var handle = source.GamepadHandle;
                 switch (effect.Kind)
                 {
                     case OutputEffectCodec.Kind.SonyEffect:
                         // Replay the captured DualSense effect packet through SDL, which
                         // re-frames it for the physical pad's transport (USB 0x02 / BT 0x31).
-                        var handle = source.GamepadHandle;
                         if (handle != IntPtr.Zero && effect.Effect != null && effect.Effect.Length > 0)
-                            SDL3.SDL.SDL_SendGamepadEffect(handle, effect.Effect, 0, effect.Effect.Length);
+                        {
+                            bool ok = SDL3.SDL.SDL_SendGamepadEffect(handle, effect.Effect, 0, effect.Effect.Length);
+                            System.Threading.Interlocked.Increment(ref _outputApplied);
+                            if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply sony slot={slot} dev='{source.Name}' handle={handle.ToInt64():X} len={effect.Effect.Length} sdlOk={ok} n={rn}");
+                        }
+                        else if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply sony slot={slot} dev='{source.Name}' handle=ZERO (cannot send effect) n={rn}");
                         break;
                     case OutputEffectCodec.Kind.Rumble:
-                        source.SetRumble(effect.Left, effect.Right, uint.MaxValue);
-                        var gp = source.GamepadHandle;
-                        if (source.HasRumbleTriggers && gp != IntPtr.Zero)
-                            SDL3.SDL.SDL_RumbleGamepadTriggers(gp, effect.LeftTrigger, effect.RightTrigger, uint.MaxValue);
+                        bool rok = source.SetRumble(effect.Left, effect.Right, uint.MaxValue);
+                        System.Threading.Interlocked.Increment(ref _outputApplied);
+                        if (source.HasRumbleTriggers && handle != IntPtr.Zero)
+                            SDL3.SDL.SDL_RumbleGamepadTriggers(handle, effect.LeftTrigger, effect.RightTrigger, uint.MaxValue);
+                        if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply rumble slot={slot} dev='{source.Name}' ({effect.Left},{effect.Right}) setOk={rok} handle={handle.ToInt64():X} n={rn}");
                         break;
                 }
             }
-            catch { /* best-effort: a bad frame must not kill the receive loop */ }
+            catch (Exception ex) { RemoteLinkDiag.Log($"apply EXCEPTION: {ex.Message}"); }
         }
 
         // ─────────────────────────────────────────────

@@ -289,6 +289,11 @@ namespace PadForge.ViewModels
         //  Remote Link (issue #138)
         // ─────────────────────────────────────────────
 
+        /// <summary>The Settings view model, which holds the Remote Link peer manager +
+        /// identity-protection state. Set once at startup so the Dashboard's Remote Link
+        /// section can show paired peers, identity mode, and nearby PCs in one place.</summary>
+        public SettingsViewModel RemoteLink { get; set; }
+
         private bool _enableRemoteLink;
 
         /// <summary>Whether the Remote Link server is listening for paired peers.</summary>

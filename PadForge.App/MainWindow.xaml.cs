@@ -283,9 +283,6 @@ namespace PadForge
             // Set child DataContexts.
             DashboardPageView.DataContext = _viewModel.Dashboard;
             DevicesPageView.DataContext = _viewModel.Devices;
-            // The Remote Link page binds both the Dashboard's connection state and the
-            // Settings peer/identity state, so its context is the whole view model.
-            RemoteLinkPageView.DataContext = _viewModel;
             SettingsPageView.DataContext = _viewModel.Settings;
             ProfilesPageView.DataContext = _viewModel.Settings;
 
@@ -1765,7 +1762,7 @@ namespace PadForge
 
 
         /// <summary>Static nav items whose Content must be refreshed on culture change.</summary>
-        private NavigationViewItem _navDashboard, _navProfiles, _navDevices, _navRemoteLink;
+        private NavigationViewItem _navDashboard, _navProfiles, _navDevices;
 
         /// <summary>Index in NavView.MenuItems where the first controller entry goes (after Dashboard, Profiles, Devices).</summary>
         private const int ControllerInsertIndex = 3;
@@ -1819,15 +1816,6 @@ namespace PadForge
                 Icon = new FontIcon { FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"), Glyph = "\uE772" }
             };
             NavView.MenuItems.Add(_navDevices);
-
-            // Remote Link \u2014 its own home so peer management isn't buried (issue #138).
-            _navRemoteLink = new NavigationViewItem
-            {
-                Content = "Remote Link",
-                Tag = "RemoteLink",
-                Icon = new FontIcon { FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"), Glyph = "\uE71B" }
-            };
-            NavView.MenuItems.Add(_navRemoteLink);
 
             // Controller entries (initially none — populated dynamically).
             RebuildControllerSection();
@@ -3892,7 +3880,6 @@ namespace PadForge
             // Swap visible page.
             DashboardPageView.Visibility = tag == "Dashboard" ? Visibility.Visible : Visibility.Collapsed;
             DevicesPageView.Visibility = tag == "Devices" ? Visibility.Visible : Visibility.Collapsed;
-            RemoteLinkPageView.Visibility = tag == "RemoteLink" ? Visibility.Visible : Visibility.Collapsed;
             ProfilesPageView.Visibility = tag == "Profiles" ? Visibility.Visible : Visibility.Collapsed;
             SettingsPageView.Visibility = tag == "Settings" ? Visibility.Visible : Visibility.Collapsed;
             AboutPageView.Visibility = tag == "About" ? Visibility.Visible : Visibility.Collapsed;

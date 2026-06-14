@@ -121,6 +121,7 @@
                     <views:DashboardPage x:Name="DashboardPageView" Visibility="Visible"/>
                     <views:PadPage x:Name="PadPageView" Visibility="Collapsed"/>
                     <views:DevicesPage x:Name="DevicesPageView" Visibility="Collapsed"/>
+                    <views:RemoteLinkPage x:Name="RemoteLinkPageView" Visibility="Collapsed"/>
                     <views:SettingsPage x:Name="SettingsPageView" Visibility="Collapsed"/>
                     <views:ProfilesPage x:Name="ProfilesPageView" Visibility="Collapsed"/>
                     <views:AboutPage x:Name="AboutPageView" Visibility="Collapsed"/>

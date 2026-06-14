@@ -183,6 +183,24 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ Remote Link — Identity protection (issue #138) ═══ -->
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="&#xE72E;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="Remote Link identity" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="How this PC's pairing identity is stored. Choose a portable mode to carry your pairings on a thumb drive between machines."
+                               Style="{StaticResource CardDescription}"/>
+                    <ComboBox Margin="0,12,0,8" Width="320" HorizontalAlignment="Left"
+                              ItemsSource="{Binding IdentityProtectionModes}"
+                              SelectedIndex="{Binding IdentityProtectionModeIndex, Mode=TwoWay}"/>
+                    <TextBlock Text="{Binding IdentityProtectionHint}" TextWrapping="Wrap"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"/>
+                </StackPanel>
+            </Border>
+
             <!-- ═══ Remote Link — Paired PCs (issue #138) ═══ -->
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
                 <StackPanel>
@@ -193,20 +211,38 @@
                     </StackPanel>
                     <TextBlock Text="{Binding RemoteLink_PairedPeersDescription, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}"/>
-                    <ItemsControl ItemsSource="{Binding TrustedPeers}" Margin="0,12,0,8">
+
+                    <!-- Paired: online dot · editable name · fingerprint · revoke -->
+                    <ItemsControl ItemsSource="{Binding TrustedPeers}" Margin="0,12,0,0">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid Margin="0,0,0,8">
+                                <Grid Margin="0,0,0,10">
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                    <Ellipse Grid.Column="0" Width="9" Height="9" VerticalAlignment="Center"
+                                             Margin="2,0,10,0" ToolTip="{Binding OnlineText}">
+                                        <Ellipse.Style>
+                                            <Style TargetType="Ellipse">
+                                                <Setter Property="Fill" Value="#806B6B6B"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsOnline}" Value="True">
+                                                        <Setter Property="Fill" Value="#FF4CAF50"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <ui:TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                    PlaceholderText="Name this PC" MaxLength="40"
+                                                    HorizontalAlignment="Left" MinWidth="240"/>
                                         <TextBlock Text="{Binding FingerprintDisplay}" FontSize="11"
-                                                   FontFamily="Consolas" Opacity="0.6"/>
+                                                   FontFamily="Consolas" Opacity="0.6" Margin="2,3,0,0"/>
                                     </StackPanel>
-                                    <Button Grid.Column="1" VerticalAlignment="Center"
+                                    <Button Grid.Column="2" VerticalAlignment="Center"
                                             Content="{Binding RemoteLink_Revoke, Source={x:Static strings:Strings.Instance}}"
                                             Command="{Binding RevokeCommand}"/>
                                 </Grid>
@@ -214,7 +250,32 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                     <Button Content="{Binding RemoteLink_RevokeAll, Source={x:Static strings:Strings.Instance}}"
-                            Command="{Binding RevokeAllPeersCommand}" HorizontalAlignment="Left"/>
+                            Command="{Binding RevokeAllPeersCommand}" HorizontalAlignment="Left" Margin="0,4,0,0"/>
+
+                    <!-- Discovered on the LAN but not paired yet -->
+                    <StackPanel Margin="0,16,0,0"
+                                Visibility="{Binding HasNearbyUnpaired, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <TextBlock Text="Nearby PCs (not paired)" FontWeight="SemiBold" Opacity="0.8" Margin="0,0,0,6"/>
+                        <ItemsControl ItemsSource="{Binding NearbyUnpaired}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,0,0,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding HostPort}" FontSize="11" FontFamily="Consolas" Opacity="0.6"/>
+                                        </StackPanel>
+                                        <Button Grid.Column="1" VerticalAlignment="Center"
+                                                Content="{Binding ButtonLabel}" IsEnabled="{Binding CanPair}"
+                                                Command="{Binding PairCommand}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 

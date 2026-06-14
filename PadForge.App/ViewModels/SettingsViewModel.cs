@@ -245,22 +245,106 @@ namespace PadForge.ViewModels
         /// <summary>Trusted paired PCs, shown in the Settings peer manager.</summary>
         public ObservableCollection<RemoteLinkTrustedPeer> TrustedPeers { get; } = new();
 
+        /// <summary>PadForge PCs discovered on the LAN that aren't paired yet — shown under
+        /// the paired list so all peers (paired + online + new) sit in one place.</summary>
+        public ObservableCollection<RemoteLinkNearbyPeer> NearbyUnpaired { get; } = new();
+
+        public bool HasNearbyUnpaired => NearbyUnpaired.Count > 0;
+
         /// <summary>Raised when the user revokes one peer (by fingerprint) or all.</summary>
         public event Action<string> PeerRevokeRequested;
         public event Action PeerRevokeAllRequested;
+
+        /// <summary>Raised when the user renames a peer (fingerprint, new name) — persisted.</summary>
+        public event Action<string, string> PeerRenameRequested;
 
         private RelayCommand _revokeAllPeersCommand;
         public RelayCommand RevokeAllPeersCommand =>
             _revokeAllPeersCommand ??= new RelayCommand(() => PeerRevokeAllRequested?.Invoke());
 
-        /// <summary>Rebuild the trusted-peer list from the trust store.</summary>
-        public void RefreshTrustedPeers(System.Collections.Generic.IEnumerable<PadForge.Engine.RemoteLink.PeerTrust> peers)
+        /// <summary>Rebuild the trusted-peer list from the trust store. Called on
+        /// pair / revoke / rename — NOT for online refresh (that updates in place via
+        /// <see cref="UpdatePeerOnlineStatus"/> so an in-progress name edit isn't disrupted).</summary>
+        public void RefreshTrustedPeers(System.Collections.Generic.IEnumerable<PadForge.Engine.RemoteLink.PeerTrust> peers,
+            System.Collections.Generic.IReadOnlyCollection<string> connectedFingerprints = null)
         {
             TrustedPeers.Clear();
             if (peers == null) return;
             foreach (var p in peers)
-                TrustedPeers.Add(new RemoteLinkTrustedPeer(p.Name, p.FingerprintHex, p.PairedUtc, p.GamepadOnly,
-                    fp => PeerRevokeRequested?.Invoke(fp)));
+            {
+                bool online = connectedFingerprints != null &&
+                    connectedFingerprints.Any(f => string.Equals(f, p.FingerprintHex, StringComparison.OrdinalIgnoreCase));
+                TrustedPeers.Add(new RemoteLinkTrustedPeer(p.Name, p.FingerprintHex, p.PairedUtc, p.GamepadOnly, online,
+                    fp => PeerRevokeRequested?.Invoke(fp),
+                    (fp, name) => PeerRenameRequested?.Invoke(fp, name)));
+            }
+        }
+
+        /// <summary>Update the online dots in place from the live connection set, without
+        /// rebuilding the list.</summary>
+        public void UpdatePeerOnlineStatus(System.Collections.Generic.IReadOnlyCollection<string> connectedFingerprints)
+        {
+            foreach (var peer in TrustedPeers)
+                peer.IsOnline = connectedFingerprints != null &&
+                    connectedFingerprints.Any(f => string.Equals(f, peer.FingerprintHex, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>Replace the nearby-unpaired list (discovered PCs not in the trust store).</summary>
+        public void SetNearbyUnpaired(System.Collections.Generic.IEnumerable<RemoteLinkNearbyPeer> peers)
+        {
+            NearbyUnpaired.Clear();
+            if (peers != null) foreach (var p in peers) NearbyUnpaired.Add(p);
+            OnPropertyChanged(nameof(HasNearbyUnpaired));
+        }
+
+        // ── Remote Link identity protection mode (issue #138 — thumb-drive portability) ──
+
+        /// <summary>Dropdown options, in index order: 0 Secure, 1 password-portable,
+        /// 2 open-portable. Plain language — no crypto jargon.</summary>
+        public System.Collections.Generic.IReadOnlyList<string> IdentityProtectionModes { get; } = new[]
+        {
+            "Secure — this PC only",
+            "Portable — password protected",
+            "Portable — no password",
+        };
+
+        private bool _suppressIdentityModeChange;
+        private int _identityProtectionModeIndex;
+        /// <summary>Selected protection mode (0/1/2). User changes raise
+        /// <see cref="IdentityProtectionModeChangeRequested"/>; programmatic reverts use
+        /// <see cref="SetIdentityProtectionModeSilently"/> so no event re-fires.</summary>
+        public int IdentityProtectionModeIndex
+        {
+            get => _identityProtectionModeIndex;
+            set
+            {
+                if (SetProperty(ref _identityProtectionModeIndex, value) && !_suppressIdentityModeChange)
+                {
+                    OnPropertyChanged(nameof(IdentityProtectionHint));
+                    IdentityProtectionModeChangeRequested?.Invoke(value);
+                }
+            }
+        }
+
+        /// <summary>One-line guidance under the dropdown for the selected mode.</summary>
+        public string IdentityProtectionHint => _identityProtectionModeIndex switch
+        {
+            1 => "Your identity travels on this drive and unlocks with your password on any PC. A lost drive is useless without it.",
+            2 => "Your identity travels on this drive with no prompt. Anyone holding the drive can use it — keep it safe.",
+            _ => "Locked to this PC (works for every Windows account on it). Can't be moved to another machine.",
+        };
+
+        /// <summary>Raised when the user picks a different protection mode (the new index).</summary>
+        public event Action<int> IdentityProtectionModeChangeRequested;
+
+        /// <summary>Set the selected mode without raising the change request (used to
+        /// initialize from settings and to revert a cancelled switch).</summary>
+        public void SetIdentityProtectionModeSilently(int index)
+        {
+            _suppressIdentityModeChange = true;
+            IdentityProtectionModeIndex = index;
+            _suppressIdentityModeChange = false;
+            OnPropertyChanged(nameof(IdentityProtectionHint));
         }
 
         /// <summary>Raised when the user requests adding a whitelist path (opens file dialog).</summary>

@@ -127,6 +127,18 @@ namespace PadForge.Common.Input
 
             ApplyAudioControl2(packet, fields);
 
+            // Reverse output relay (#138): a "peer://" device lives on another PC. The
+            // dispatcher has already baked the full config (rumble + adaptive triggers +
+            // lightbar + mic/player LED + audio-control) into this USB-shape packet, so
+            // ship the report body (report-id stripped) to the owner, which replays it
+            // via SDL_SendGamepadEffect and re-frames for its own transport (USB/BT).
+            if (RemoteLinkOutputRouter.IsPeerPath(devicePath))
+            {
+                if (packet.Length >= 2 && packet[0] == 0x02)
+                    RemoteLinkOutputRouter.ShipSonyEffect(devicePath, packet.AsSpan(1));
+                return true; // handled remotely; no local write
+            }
+
             return WriteRaw(devicePath, packet);
         }
 

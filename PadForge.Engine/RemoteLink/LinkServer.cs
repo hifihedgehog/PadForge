@@ -54,6 +54,10 @@ namespace PadForge.Engine.RemoteLink
         /// payload. InputService maps the slot to the physical device and drives it.</summary>
         public event Action<string, byte, byte[]> OutputReceived;
 
+        /// <summary>A paired peer sent a speaker PCM block (issue #138) for one of THIS
+        /// PC's shared pads. Args: peer fingerprint, link slot, raw PCM block.</summary>
+        public event Action<string, byte, byte[]> AudioReceived;
+
         /// <summary>Supplies the local devices to expose to a peer. Used by inbound
         /// (responder) connections so both sides share their controllers, not just the
         /// one that initiated. The outbound path passes its list to ConnectAsync.</summary>
@@ -255,6 +259,30 @@ namespace PadForge.Engine.RemoteLink
             if (matched) DiagLastError = "output: peer endpoint not learned yet";
         }
 
+        /// <summary>Send one speaker PCM block (issue #138) to the peer that owns the
+        /// device. Same addressing as <see cref="PushOutputEffect"/> but on the Audio
+        /// datagram type so the owner renders it to the pad speaker.</summary>
+        public void PushAudio(string peerFingerprint, byte slot, byte[] payload)
+        {
+            if (string.IsNullOrEmpty(peerFingerprint) || payload == null) return;
+            LinkPeerConnection[] conns;
+            lock (_lock) conns = _connections.ToArray();
+            ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
+            foreach (var c in conns)
+            {
+                if (!string.Equals(c.PeerFingerprintHex, peerFingerprint, StringComparison.OrdinalIgnoreCase)) continue;
+                var ep = c.PeerUdpEndpoint;
+                if (ep == null) continue;
+                try
+                {
+                    _udp.SendTo(c.DataSession.Seal(LinkMessageType.Audio, slot, ts, payload), ep);
+                    System.Threading.Interlocked.Increment(ref DiagDatagramsSent);
+                }
+                catch (Exception ex) { DiagLastError = "audio: " + ex.Message; }
+                return;
+            }
+        }
+
         // ── Accept / handshake (responder) ──────────────────────────────────
 
         private async Task AcceptLoopAsync(CancellationToken ct)
@@ -334,7 +362,9 @@ namespace PadForge.Engine.RemoteLink
 
         private async Task UdpLoopAsync(CancellationToken ct)
         {
-            var buf = new byte[2048];
+            // Large enough for a speaker PCM block (s16 48k stereo, 512 frames = 2048 B)
+            // plus the 14-byte header and 16-byte AEAD tag.
+            var buf = new byte[4096];
             var any = new IPEndPoint(IPAddress.Any, 0);
             while (!ct.IsCancellationRequested)
             {
@@ -383,6 +413,10 @@ namespace PadForge.Engine.RemoteLink
                     // drive the hardware (LinkServer is Engine-side, no UserDevices).
                     System.Threading.Interlocked.Increment(ref DiagOutputReceived);
                     OutputReceived?.Invoke(c.PeerFingerprintHex, slot, payload);
+                }
+                else if (type == LinkMessageType.Audio)
+                {
+                    AudioReceived?.Invoke(c.PeerFingerprintHex, slot, payload);
                 }
                 return;
             }

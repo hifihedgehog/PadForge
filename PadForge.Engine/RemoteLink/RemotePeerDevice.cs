@@ -31,6 +31,10 @@ namespace PadForge.Engine.RemoteLink
 
         public bool HasRumble { get; set; }
         public bool HasRumbleTriggers { get; set; }
+        /// <summary>The device exposes DirectInput-style haptic FFB (wheels, FFB sticks).
+        /// Advertised so the consumer's ForceFeedbackState instantiates and the FFB
+        /// pipeline runs for the remote device (issue #138 reverse output relay).</summary>
+        public bool HasHaptic { get; set; }
         public bool HasGyro { get; set; }
         public bool HasAccel { get; set; }
         public bool HasTouchpad { get; set; }
@@ -134,7 +138,11 @@ namespace PadForge.Engine.RemoteLink
         public IntPtr GamepadHandle => IntPtr.Zero;
         public bool HasRumble => Info.HasRumble;
         public bool HasRumbleTriggers => Info.HasRumbleTriggers;
-        public bool HasHaptic => false; // DualSense-effect return path is a later milestone.
+        // Advertised so the consumer's FFB pipeline (ForceFeedbackState) runs for a
+        // remote wheel / FFB stick and its directional/condition output gets captured
+        // and relayed to the owner. The owner re-creates the SDL haptic effect on the
+        // real handle; the consumer never opens an SDL haptic for a peer device.
+        public bool HasHaptic => Info.HasHaptic;
         public bool HasGyro => Info.HasGyro;
         public bool HasAccel => Info.HasAccel;
         public bool HasTouchpad => Info.HasTouchpad;

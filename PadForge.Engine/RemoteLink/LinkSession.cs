@@ -9,8 +9,9 @@ namespace PadForge.Engine.RemoteLink
         Input = 1,     // an absolute CustomInputState frame (host-bound)
         Haptic = 2,    // legacy scalar rumble update (superseded by Output)
         Keepalive = 3, // liveness when no input is flowing
-        Output = 4,    // a tagged output-effect frame (rumble / DualSense effect packet),
-                       // consumer -> owner, applied to the owner's physical device (#138 M2)
+        Output = 4,    // a tagged output-effect frame (Sony effect / Vibration / Wheel),
+                       // consumer -> owner, applied to the owner's physical device (#138)
+        Audio = 5,     // a speaker PCM block, consumer -> owner, rendered to the pad speaker
     }
 
     /// <summary>

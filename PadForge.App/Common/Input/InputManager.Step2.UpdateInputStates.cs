@@ -487,6 +487,19 @@ namespace PadForge.Common.Input
                 _combinedVibration.HasConditionData = false;
             }
 
+            // Reverse output relay (#138): a "peer://" device lives on another PC.
+            // Every config-baked value (post gain / audio-rumble / macro / constant
+            // force, plus directional / condition data) is now in _combinedVibration.
+            // Ship it to the owner for non-Sony, non-vendor-wheel devices — Xbox impulse
+            // pads, generic gamepads, FFB sticks, and Fanatec pedals. Vendor wheels fall
+            // through to their branch below, which ships the semantic wheel frame.
+            if (RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath)
+                && !(isVendorFfb && !isFanatecPedal))
+            {
+                RemoteLinkOutputRouter.ShipVibration(ud.DevicePath, _combinedVibration);
+                return;
+            }
+
             if (isXboxImpulse)
             {
                 // Xbox One+ sole-writer path. PadForge writes the HID
@@ -554,6 +567,39 @@ namespace PadForge.Common.Input
                         hasCond ? (int)ca.PositiveCoefficient : 0, hasCond ? (int)ca.NegativeCoefficient : 0,
                         hasCond ? (int)ca.Offset : 0, hasCond ? (int)ca.DeadBand : 0,
                         hasCond ? (int)ca.PositiveSaturation : 0, hasCond ? (int)ca.NegativeSaturation : 0, condGain);
+
+                    // Reverse output relay (#138): a "peer://" wheel lives on another PC.
+                    // Ship the semantic steering frame (force/condition/periodic + range +
+                    // RPM LEDs) and let the owner re-encode for ITS wheel's vendor/PID; the
+                    // vendor writers' stateful upload/play caches must stay on the owner.
+                    if (RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath))
+                    {
+                        int peerRange = int.TryParse(firstPadSetting.RotationRange, out int prg)
+                            ? System.Math.Clamp(prg, 40, 2520) : 900;
+                        bool ledsOn = firstPadSetting.WheelRpmLeds == "1";
+                        int ledMask = 0;
+                        if (ledsOn)
+                        {
+                            TelemetryHub.RequestActive();
+                            if (TelemetryHub.TryGetCurrent(out var ptel))
+                            {
+                                bool blinkOn = (Environment.TickCount / 60) % 2 == 0;
+                                float frac = ptel.RpmFraction;
+                                ledMask = isLogitechWheel ? RpmLedMap.Logitech(frac, blinkOn)
+                                    : isFanatecWheel ? RpmLedMap.Fanatec(frac, blinkOn)
+                                    : RpmLedMap.Thrustmaster(frac, blinkOn);
+                            }
+                        }
+                        RemoteLinkOutputRouter.ShipWheel(ud.DevicePath,
+                            hasCond, cv.HasDirectionalData, wheelForce, (short)periodicPeak, acMag,
+                            cv.EffectType, (int)cv.Period,
+                            hasCond ? ca.PositiveCoefficient : (short)0, hasCond ? ca.NegativeCoefficient : (short)0,
+                            hasCond ? ca.Offset : (short)0, hasCond ? (int)ca.DeadBand : 0,
+                            hasCond ? (int)ca.PositiveSaturation : 0, hasCond ? (int)ca.NegativeSaturation : 0, condGain,
+                            (ushort)peerRange, (ushort)ledMask, ledsOn);
+                        return;
+                    }
+
                     if (_appliedWheelFfb.TryGetValue(ud.DevicePath, out var prevFfb) && prevFfb.Equals(ffbSig))
                     {
                         // Unchanged — the wheel already holds this force; skip the HID write.

@@ -642,6 +642,75 @@ namespace PadForge.Common.Input
                 return _speakerPathCleared.Remove(deviceGuid);
         }
 
+        // ── Remote speaker audio (issue #138) ───────────────────────────────
+        // A consumer ships the speaker PCM it produced for a shared pad; the owner
+        // renders it to the real pad speaker through the existing Sink transport.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, RemoteAudioRing> _remoteRings = new();
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, long> _remoteAudioDemand = new();
+
+        /// <summary>Owner-side: a paired peer sent a speaker PCM block (s16 48 kHz
+        /// stereo, interleaved LE) for a shared pad. Feed it into the device's render
+        /// ring and mark demand so the worker builds the real BT/USB transport and the
+        /// sink renders the network audio in place of local loopback.</summary>
+        public static void FeedRemoteAudio(Guid physicalDeviceGuid, byte[] s16StereoPcm)
+        {
+            if (s16StereoPcm == null || s16StereoPcm.Length < 4) return;
+            var ring = _remoteRings.GetOrAdd(physicalDeviceGuid, _ => new RemoteAudioRing());
+            ring.WriteS16(s16StereoPcm);
+            bool isNew = !_remoteAudioDemand.ContainsKey(physicalDeviceGuid);
+            _remoteAudioDemand[physicalDeviceGuid] = Environment.TickCount64;
+            if (isNew)
+            {
+                lock (_lock) EnsureThreads_NoLock();
+                _workSignal.Set(); // build the transport for this newly-demanded pad
+            }
+        }
+
+        /// <summary>Float ring fed by the network thread (WriteS16) and drained by the
+        /// sink's render pull (ReadFloat). Holds ~0.5 s; on underrun it returns silence,
+        /// and the owner's adaptive BT pacing rides out the jitter.</summary>
+        internal sealed class RemoteAudioRing
+        {
+            private readonly float[] _ring = new float[Rate]; // 0.5 s of 48k stereo (Rate samples = Rate/2 frames *2)
+            private long _write;
+            private long _read = -1;
+            private readonly object _g = new();
+
+            public void WriteS16(byte[] pcm)
+            {
+                int samples = pcm.Length / 2;
+                lock (_g)
+                {
+                    for (int i = 0; i < samples; i++)
+                    {
+                        short s = (short)(pcm[i * 2] | (pcm[i * 2 + 1] << 8));
+                        _ring[_write % _ring.Length] = s / 32768f;
+                        _write++;
+                    }
+                }
+            }
+
+            /// <summary>Fill `count` interleaved-stereo floats from the ring. Keeps a
+            /// ~20 ms cushion behind the write edge; underruns emit silence.</summary>
+            public void ReadFloat(float[] buffer, int offset, int count)
+            {
+                lock (_g)
+                {
+                    const int Cushion = 1920;    // 20 ms stereo samples (960 frames)
+                    const int Catastrophe = 24000; // 250 ms
+                    long avail = _write;
+                    if (_read < 0 || _read > avail || avail - _read > Catastrophe)
+                        _read = Math.Max(0, avail - Cushion);
+                    int canRead = (int)Math.Min(count, avail - _read);
+                    for (int i = 0; i < canRead; i++)
+                        buffer[offset + i] = _ring[(_read + i) % _ring.Length];
+                    for (int i = canRead; i < count; i++)
+                        buffer[offset + i] = 0f;
+                    _read += canRead;
+                }
+            }
+        }
+
         /// <summary>Requests a sink reconcile and returns immediately. Call
         /// on device assignment changes and passthrough toggle changes —
         /// safe from the UI thread: the worker does all device I/O. The

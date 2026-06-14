@@ -290,6 +290,10 @@ namespace PadForge.Views
             bool hasTouchpad = false;
             bool hasWheel = false;
             bool hasGenericWheel = false;
+            // Controller speaker audio is a Sony-only feature: only the DualSense
+            // family and the DualShock 4 have a speaker. Same gating shape as
+            // adaptive triggers (DualSense) or impulse triggers (Xbox One+).
+            bool hasAudio = false;
             int numTouchpads = 0;
             if (DataContext is PadViewModel vmProfile
                 && vmProfile.SelectedMappedDevice != null
@@ -352,6 +356,8 @@ namespace PadForge.Views
                             bool isDs4 = ud.ProdId == 0x05C4 || ud.ProdId == 0x09CC || ud.ProdId == 0x0BA0;
                             hasAdaptiveTriggers = isDualSense || isDualSenseEdge;
                             hasLightbar = isDualSense || isDualSenseEdge || isDs4;
+                            // Speaker audio: DualSense family + DS4 (all have a speaker).
+                            hasAudio = isDualSense || isDualSenseEdge || isDs4;
                             // Indicator LEDs (player row + mic LED + brightness)
                             // are DualSense-family only — DS4 has neither.
                             hasIndicatorLeds = isDualSense || isDualSenseEdge;
@@ -377,6 +383,8 @@ namespace PadForge.Views
                 TabImpulseTriggers.Visibility = hasImpulseTriggers ? Visibility.Visible : Visibility.Collapsed;
             if (TabTouchpad != null)
                 TabTouchpad.Visibility = hasTouchpad ? Visibility.Visible : Visibility.Collapsed;
+            if (TabAudio != null)
+                TabAudio.Visibility = hasAudio ? Visibility.Visible : Visibility.Collapsed;
             if (TabWheel != null)
                 TabWheel.Visibility = (hasWheel || hasGenericWheel) ? Visibility.Visible : Visibility.Collapsed;
             // Rotation range + RPM LEDs are vendor-HID-only; hide them for a generic
@@ -454,6 +462,8 @@ namespace PadForge.Views
                 else if (vm.SelectedConfigTab == 10 && !hasTouchpad)
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 11 && !hasWheel)
+                    vm.SelectedConfigTab = 0;
+                else if (vm.SelectedConfigTab == 12 && !hasAudio) // 12 = Audio
                     vm.SelectedConfigTab = 0;
             }
         }

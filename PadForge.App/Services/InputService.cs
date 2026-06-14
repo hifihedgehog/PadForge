@@ -230,9 +230,14 @@ namespace PadForge.Services
             // Subscribe to Devices page selection changes for offline detail display.
             _mainVm.Devices.PropertyChanged += OnDevicesVmPropertyChanged;
 
-            // Remote Link peer-manager revoke actions (issue #138).
+            // Remote Link peer-manager actions (issue #138).
             _mainVm.Settings.PeerRevokeRequested += OnPeerRevokeRequested;
             _mainVm.Settings.PeerRevokeAllRequested += OnPeerRevokeAllRequested;
+            _mainVm.Settings.PeerRenameRequested += OnPeerRenameRequested;
+            _mainVm.Settings.IdentityProtectionModeChangeRequested += OnIdentityProtectionModeChangeRequested;
+            // Reflect the persisted identity-protection mode in the dropdown.
+            var ipm0 = _settingsService?.RemoteLink?.IdentityProtection ?? PadForge.Engine.RemoteLink.IdentityProtectionMode.Secure;
+            _mainVm.Settings.SetIdentityProtectionModeSilently((int)ipm0 - 1);
         }
 
         private void OnPeerRevokeRequested(string fingerprintHex)
@@ -243,7 +248,86 @@ namespace PadForge.Services
             if (entry?.PublicKey != null) trust.Revoke(entry.PublicKey);
             _linkServer?.RevokePeer(fingerprintHex);
             try { _settingsService?.Save(); } catch { }
-            _mainVm.Settings.RefreshTrustedPeers(trust.Peers);
+            _mainVm.Settings.RefreshTrustedPeers(trust.Peers, _linkServer?.ConnectedFingerprints());
+        }
+
+        /// <summary>Persist a peer's friendly-name edit (issue #138). The VM already holds
+        /// the new name, so no list rebuild — just update the trust store and save.</summary>
+        private void OnPeerRenameRequested(string fingerprintHex, string newName)
+        {
+            var trust = _settingsService?.RemoteLink?.Trust;
+            if (trust == null || string.IsNullOrEmpty(fingerprintHex)) return;
+            var entry = trust.Peers.FirstOrDefault(p => string.Equals(p.FingerprintHex, fingerprintHex, StringComparison.OrdinalIgnoreCase));
+            if (entry == null) return;
+            entry.Name = newName ?? "";
+            try { _settingsService?.Save(); } catch { }
+        }
+
+        /// <summary>The user picked a different identity-protection mode (issue #138). Re-wrap
+        /// the SAME live key under the new mode — the fingerprint is unchanged so pairings
+        /// survive and no reconnect is needed. Collects a password for the password mode;
+        /// reverts the dropdown if the identity can't be unlocked or the user cancels.</summary>
+        private void OnIdentityProtectionModeChangeRequested(int index)
+        {
+            var holder = _settingsService?.RemoteLink;
+            if (holder == null) return;
+            var newMode = (PadForge.Engine.RemoteLink.IdentityProtectionMode)(index + 1);
+            int oldIndex = (int)holder.IdentityProtection - 1;
+            if (newMode == holder.IdentityProtection) return;
+
+            // The live key, unlocked. Loads via the current mode (+ session password).
+            var identity = EnsureIdentityUnlocked();
+            if (identity == null)
+            {
+                _mainVm.Settings.SetIdentityProtectionModeSilently(oldIndex);
+                _mainVm.Dashboard.RemoteLinkStatus = "Unlock the current identity before changing its protection.";
+                return;
+            }
+
+            string password = null;
+            if (newMode == PadForge.Engine.RemoteLink.IdentityProtectionMode.PortablePassword)
+            {
+                var dlg = new Views.RemoteLinkPasswordDialog(true, "Set a password to protect your portable identity. You'll enter it to unlock Remote Link on each PC.")
+                { Owner = System.Windows.Application.Current?.MainWindow };
+                if (dlg.ShowDialog() != true) { _mainVm.Settings.SetIdentityProtectionModeSilently(oldIndex); return; }
+                password = dlg.Password;
+            }
+
+            byte[] priv = identity.ExportPrivateKey();
+            try { holder.ProtectedPrivateBase64 = IdentityProtector.Protect(priv, newMode, password); }
+            catch { _mainVm.Settings.SetIdentityProtectionModeSilently(oldIndex); return; }
+            finally { PadForge.Engine.RemoteLink.PeerCrypto.Zeroize(priv); }
+
+            holder.IdentityProtection = newMode;
+            _remoteLinkSessionPassword = newMode == PadForge.Engine.RemoteLink.IdentityProtectionMode.PortablePassword ? password : null;
+            try { _settingsService?.Save(); } catch { }
+            _mainVm.Dashboard.RemoteLinkStatus = "Identity protection updated.";
+        }
+
+        /// <summary>The live identity, loading it if needed. For password mode without a
+        /// session password it prompts once. Returns null if it stays locked.</summary>
+        private PeerIdentity EnsureIdentityUnlocked()
+        {
+            if (_remoteLinkIdentity != null) return _remoteLinkIdentity;
+            var id = EnsureRemoteLinkIdentity();
+            if (id != null) return id;
+
+            // Locked password identity: prompt once and retry. A modal dialog needs the UI
+            // thread — if we're off it (a background start path), stay locked; the status
+            // already explains why, and the user can unlock from Settings.
+            var holder = _settingsService?.RemoteLink;
+            if (holder?.IdentityProtection == PadForge.Engine.RemoteLink.IdentityProtectionMode.PortablePassword
+                && _dispatcher.CheckAccess())
+            {
+                var dlg = new Views.RemoteLinkPasswordDialog(false, "Enter your Remote Link password to unlock this identity.")
+                { Owner = System.Windows.Application.Current?.MainWindow };
+                if (dlg.ShowDialog() == true)
+                {
+                    _remoteLinkSessionPassword = dlg.Password;
+                    return EnsureRemoteLinkIdentity();
+                }
+            }
+            return null;
         }
 
         private void OnPeerRevokeAllRequested()
@@ -4680,7 +4764,8 @@ namespace PadForge.Services
             if (!_mainVm.Dashboard.EnableRemoteLink || _inputManager == null) return;
             if (_linkServer != null) return;
 
-            var identity = EnsureRemoteLinkIdentity();
+            // Loads the identity, prompting for the portable-password unlock if needed.
+            var identity = EnsureIdentityUnlocked();
             if (identity == null) return;
             var trust = _settingsService?.RemoteLink?.Trust ?? new PeerTrustStore();
 
@@ -4720,7 +4805,7 @@ namespace PadForge.Services
                 _dispatcher.BeginInvoke(() =>
                 {
                     try { _settingsService?.Save(); } catch { }
-                    _mainVm.Settings.RefreshTrustedPeers(_settingsService?.RemoteLink?.Trust?.Peers);
+                    _mainVm.Settings.RefreshTrustedPeers(_settingsService?.RemoteLink?.Trust?.Peers, _linkServer?.ConnectedFingerprints());
                 });
                 OnLinkPeersChanged(); // refresh Nearby PCs so this peer reads "Connected"
             };
@@ -4751,6 +4836,10 @@ namespace PadForge.Services
             {
                 var s = _linkServer;
                 if (s == null) return;
+                // Keep the peer-manager online dots live (connect/disconnect doesn't always
+                // raise a discovery change), on the UI thread.
+                var fps = s.ConnectedFingerprints();
+                _dispatcher.BeginInvoke(() => _mainVm.Settings.UpdatePeerOnlineStatus(fps));
                 int exposed; lock (_remoteLinkExposedLock) exposed = _remoteLinkExposed.Count;
                 RemoteLinkDiag.Log(
                     $"SNAP exposed={exposed} remoteDevs={RemoteLinkOutputRouter.DeviceCount} | " +
@@ -4771,13 +4860,20 @@ namespace PadForge.Services
             _dispatcher.BeginInvoke(() =>
             {
                 _mainVm.Dashboard.NearbyPeers.Clear();
+                var nearbyUnpaired = new System.Collections.Generic.List<ViewModels.RemoteLinkNearbyPeer>();
                 foreach (var p in peers)
                 {
                     bool paired = trust?.Peers?.Any(t => string.Equals(t.FingerprintHex, p.FingerprintHex, StringComparison.OrdinalIgnoreCase)) ?? false;
                     bool connected = connectedFps.Any(f => string.Equals(f, p.FingerprintHex, StringComparison.OrdinalIgnoreCase));
                     string hostPort = $"{p.Endpoint.Address}:{p.Endpoint.Port}";
                     _mainVm.Dashboard.NearbyPeers.Add(new ViewModels.RemoteLinkNearbyPeer(p.Name, hostPort, p.FingerprintHex, paired, connected, OnConnectToPeerRequested));
+                    // The Settings peer manager lists only the NOT-yet-paired ones underneath
+                    // the paired list (paired PCs already appear there with their online dot).
+                    if (!paired)
+                        nearbyUnpaired.Add(new ViewModels.RemoteLinkNearbyPeer(p.Name, hostPort, p.FingerprintHex, false, connected, OnConnectToPeerRequested));
                 }
+                _mainVm.Settings.SetNearbyUnpaired(nearbyUnpaired);
+                _mainVm.Settings.UpdatePeerOnlineStatus(connectedFps);
             });
         }
 
@@ -4798,7 +4894,12 @@ namespace PadForge.Services
                 _linkDiscovery.Dispose();
                 _linkDiscovery = null;
             }
-            _dispatcher.BeginInvoke(() => _mainVm.Dashboard.NearbyPeers.Clear());
+            _dispatcher.BeginInvoke(() =>
+            {
+                _mainVm.Dashboard.NearbyPeers.Clear();
+                _mainVm.Settings.SetNearbyUnpaired(null);
+                _mainVm.Settings.UpdatePeerOnlineStatus(System.Array.Empty<string>());
+            });
             if (_linkServer == null) return;
             _linkServer.Dispose();
             _linkServer = null;
@@ -4824,9 +4925,10 @@ namespace PadForge.Services
                 holder.ProtectedPrivateBase64 = newPriv;
                 holder.PublicBase64 = newPub;
                 _settingsService.Save();
+                _remoteLinkIdentity = identity;
                 return identity;
             }
-            if (status == IdentityUnprotect.Ok) return identity;
+            if (status == IdentityUnprotect.Ok) { _remoteLinkIdentity = identity; return identity; }
 
             // Locked: a real identity exists but can't be opened here. NEVER overwrite it —
             // surface why so the user can fix it (the right machine, or the password), and
@@ -4845,6 +4947,10 @@ namespace PadForge.Services
         /// <summary>Portable-password identity unlock for this session (issue #138). Set by
         /// the UI password prompt; never persisted. Null in Secure / open modes.</summary>
         private string _remoteLinkSessionPassword;
+
+        /// <summary>The live unlocked identity, cached so a mode switch can re-wrap the same
+        /// key (preserving the fingerprint) without reloading. Null until first loaded.</summary>
+        private PeerIdentity _remoteLinkIdentity;
 
         /// <summary>Show the SAS pairing dialog on the UI thread and block the socket
         /// thread until the user decides. First contact only; trusted peers reconnect

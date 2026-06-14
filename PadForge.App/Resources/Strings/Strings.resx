@@ -232,6 +232,8 @@
   <data name="Dashboard_RemoteLinkNearby" xml:space="preserve"><value>Nearby PCs</value></data>
   <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve"><value>PCs with Remote Link turned on, on the same network, appear here automatically.</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>Pair</value></data>
+  <data name="RemoteLink_Connect" xml:space="preserve"><value>Connect</value></data>
+  <data name="RemoteLink_Connected" xml:space="preserve"><value>Connected</value></data>
   <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Pair with remote PC</value></data>
   <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Confirm this code matches on both screens, then Pair.</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>Pair</value></data>

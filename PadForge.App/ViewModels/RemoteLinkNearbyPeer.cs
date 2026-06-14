@@ -7,12 +7,13 @@ namespace PadForge.ViewModels
     /// Dashboard "Nearby PCs" list. Clicking Pair initiates the pairing — no IP typing.</summary>
     public sealed class RemoteLinkNearbyPeer
     {
-        public RemoteLinkNearbyPeer(string name, string hostPort, string fingerprintHex, bool isPaired, Action<string> onPair)
+        public RemoteLinkNearbyPeer(string name, string hostPort, string fingerprintHex, bool isPaired, bool isConnected, Action<string> onPair)
         {
             Name = name;
             HostPort = hostPort;
             FingerprintHex = fingerprintHex;
             IsPaired = isPaired;
+            IsConnected = isConnected;
             PairCommand = new RelayCommand(() => onPair?.Invoke(hostPort));
         }
 
@@ -20,9 +21,20 @@ namespace PadForge.ViewModels
         public string HostPort { get; }
         public string FingerprintHex { get; }
         public bool IsPaired { get; }
+        public bool IsConnected { get; }
 
-        /// <summary>Name with a "(paired)" suffix when this PC is already trusted.</summary>
-        public string DisplayName => IsPaired ? $"{Name} (paired)" : Name;
+        /// <summary>Name with a state suffix.</summary>
+        public string DisplayName =>
+            IsConnected ? $"{Name} (connected)" : IsPaired ? $"{Name} (paired)" : Name;
+
+        /// <summary>Button text by state: Connected (disabled) / Connect (paired) / Pair (new).</summary>
+        public string ButtonLabel =>
+            IsConnected ? PadForge.Resources.Strings.Strings.Instance.RemoteLink_Connected
+            : IsPaired ? PadForge.Resources.Strings.Strings.Instance.RemoteLink_Connect
+            : PadForge.Resources.Strings.Strings.Instance.Dashboard_RemoteLinkPairButton;
+
+        /// <summary>The action button is disabled while a live session already exists.</summary>
+        public bool CanPair => !IsConnected;
 
         public RelayCommand PairCommand { get; }
     }

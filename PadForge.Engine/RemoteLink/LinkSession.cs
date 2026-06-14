@@ -7,8 +7,10 @@ namespace PadForge.Engine.RemoteLink
     public enum LinkMessageType : byte
     {
         Input = 1,     // an absolute CustomInputState frame (host-bound)
-        Haptic = 2,    // a rumble/feedback update (peer-bound)
+        Haptic = 2,    // legacy scalar rumble update (superseded by Output)
         Keepalive = 3, // liveness when no input is flowing
+        Output = 4,    // a tagged output-effect frame (rumble / DualSense effect packet),
+                       // consumer -> owner, applied to the owner's physical device (#138 M2)
     }
 
     /// <summary>

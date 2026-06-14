@@ -519,7 +519,7 @@
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" MinWidth="180"/>
                                     <ui:Button Command="{Binding PairCommand}" Padding="10,2" Margin="8,0,0,0"
-                                               Content="{Binding Dashboard_RemoteLinkPairButton, Source={x:Static strings:Strings.Instance}}"/>
+                                               Content="{Binding ButtonLabel}" IsEnabled="{Binding CanPair}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

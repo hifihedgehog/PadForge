@@ -685,6 +685,11 @@ namespace PadForge.Common.Input
                     // player) verbatim for the grace window, while still
                     // animating subsystems the writer didn't touch.
                     UserEffectsDispatcher.NotifyExternalSubsystems(idx, effectPayload);
+                    // Remote Link (#138 M2): when this slot's input source is a
+                    // remote peer's DualSense, the physical pad lives on another PC.
+                    // Forward the whole effect packet (rumble + AT + lightbar +
+                    // mic/player LED) so the owner drives the real hardware.
+                    RemoteLinkOutputRouter.OnLocalSonyEffect(idx, effectPayload);
                 }
             };
 
@@ -748,6 +753,11 @@ namespace PadForge.Common.Input
                         vibrationStates[idx].LeftTriggerMotorSpeed = 0;
                         vibrationStates[idx].RightTriggerMotorSpeed = 0;
                     }
+                    // Remote Link (#138 M2): forward rumble + impulse triggers to the
+                    // owner when this slot's source is a remote (non-Sony) pad.
+                    RemoteLinkOutputRouter.OnLocalRumble(idx,
+                        vibrationStates[idx].LeftMotorSpeed, vibrationStates[idx].RightMotorSpeed,
+                        vibrationStates[idx].LeftTriggerMotorSpeed, vibrationStates[idx].RightTriggerMotorSpeed);
                     return;
                 }
 

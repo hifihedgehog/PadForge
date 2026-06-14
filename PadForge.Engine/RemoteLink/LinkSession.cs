@@ -12,6 +12,9 @@ namespace PadForge.Engine.RemoteLink
         Output = 4,    // a tagged output-effect frame (Sony effect / Vibration / Wheel),
                        // consumer -> owner, applied to the owner's physical device (#138)
         Audio = 5,     // a speaker PCM block, consumer -> owner, rendered to the pad speaker
+        DeviceList = 6,// owner -> consumer: the owner's CURRENT exposed device set (stable
+                       // slot + online per device), re-sent on change and periodically so a
+                       // device hot-plugged after connect appears/disappears live (#138)
     }
 
     /// <summary>

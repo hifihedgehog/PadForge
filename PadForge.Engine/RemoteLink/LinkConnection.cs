@@ -157,13 +157,17 @@ namespace PadForge.Engine.RemoteLink
 
         // ── Device-list framing ─────────────────────────────────────────────
 
-        private static byte[] EncodeDeviceList(IReadOnlyList<RemotePeerDeviceInfo> devices)
+        // Shared by the handshake exchange AND the post-connect DeviceList sync (#138).
+        // Each entry leads with the owner's STABLE slot, and caps now carry HasHaptic +
+        // Online so a remote wheel's FFB pipeline runs and active/inactive propagates.
+        internal static byte[] EncodeDeviceList(IReadOnlyList<RemotePeerDeviceInfo> devices)
         {
             var buf = new List<byte> { (byte)Math.Min(devices.Count, 255) };
             int count = Math.Min(devices.Count, 255);
             for (int i = 0; i < count; i++)
             {
                 var d = devices[i];
+                buf.Add(d.Slot);
                 WriteString(buf, d.PeerLocalDeviceId);
                 WriteString(buf, d.Name);
                 WriteU16(buf, d.VendorId);
@@ -177,21 +181,25 @@ namespace PadForge.Engine.RemoteLink
                 if (d.HasGyro) caps |= 4;
                 if (d.HasAccel) caps |= 8;
                 if (d.HasTouchpad) caps |= 16;
+                if (d.HasHaptic) caps |= 32;
+                if (d.Online) caps |= 64;
                 buf.Add(caps);
                 WriteU16(buf, (ushort)d.InputDeviceType);
             }
             return buf.ToArray();
         }
 
-        private static List<RemotePeerDeviceInfo> DecodeDeviceList(byte[] data)
+        internal static List<RemotePeerDeviceInfo> DecodeDeviceList(byte[] data)
         {
             var list = new List<RemotePeerDeviceInfo>();
             int o = 0;
             int count = data[o++];
             for (int i = 0; i < count; i++)
             {
+                byte slot = data[o++];
                 var info = new RemotePeerDeviceInfo
                 {
+                    Slot = slot,
                     PeerLocalDeviceId = ReadString(data, ref o),
                     Name = ReadString(data, ref o),
                     VendorId = ReadU16(data, ref o),
@@ -206,6 +214,8 @@ namespace PadForge.Engine.RemoteLink
                 info.HasGyro = (caps & 4) != 0;
                 info.HasAccel = (caps & 8) != 0;
                 info.HasTouchpad = (caps & 16) != 0;
+                info.HasHaptic = (caps & 32) != 0;
+                info.Online = (caps & 64) != 0;
                 info.InputDeviceType = ReadU16(data, ref o);
                 list.Add(info);
             }

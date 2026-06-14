@@ -348,20 +348,24 @@ namespace PadForge.Engine.RemoteLink
             var conn = new LinkPeerConnection
             {
                 DataSession = new LinkSession(result.DataKey, result.IsInitiator),
-                RemoteDevices = result.RemoteDevices.ToArray(),
+                RemoteDevices = new System.Collections.Concurrent.ConcurrentDictionary<byte, RemotePeerDevice>(),
                 PeerUdpEndpoint = peerUdpEndpoint,
                 Tcp = client,
                 PeerFingerprintHex = result.PeerFingerprintHex,
                 ExposedLocal = exposeLocal?.ToArray() ?? Array.Empty<RemotePeerDeviceInfo>(),
                 LastActivityTicks = System.Diagnostics.Stopwatch.GetTimestamp(),
             };
-            // Stamp each device with its link slot (= its index in the peer's exposed
-            // list), so the reverse output channel can address it symmetrically.
-            for (int i = 0; i < conn.RemoteDevices.Length; i++)
-                conn.RemoteDevices[i].LinkSlot = (byte)i;
+            // Key each device by the owner's STABLE slot (carried in the device list), so a
+            // device hot-plugged after connect routes by a slot that never shifts (#138).
+            foreach (var d in result.RemoteDevices)
+            {
+                d.LinkSlot = d.Info.Slot;
+                d.SetConnected(d.Info.Online);
+                conn.RemoteDevices[d.LinkSlot] = d;
+            }
             lock (_lock) _connections.Add(conn);
-            foreach (var d in conn.RemoteDevices) DeviceConnected?.Invoke(d);
-            StatusChanged?.Invoke($"Peer {Short(conn.PeerFingerprintHex)} connected, {conn.RemoteDevices.Length} device(s)");
+            foreach (var d in conn.RemoteDevices.Values) DeviceConnected?.Invoke(d);
+            StatusChanged?.Invoke($"Peer {Short(conn.PeerFingerprintHex)} connected, {conn.RemoteDevices.Count} device(s)");
         }
 
         // ── UDP receive (data + learn-endpoint) ─────────────────────────────
@@ -409,8 +413,8 @@ namespace PadForge.Engine.RemoteLink
                     // Route by slot id to the matching device (the peer streams each of
                     // its devices on its own slot). Pass the send timestamp for
                     // newest-wins (the replay window accepts in-window reorders).
-                    if (slot < c.RemoteDevices.Length)
-                        c.RemoteDevices[slot].ApplyFramePayload(payload, ts);
+                    if (c.RemoteDevices.TryGetValue(slot, out var rd))
+                        rd.ApplyFramePayload(payload, ts);
                 }
                 else if (type == LinkMessageType.Output)
                 {
@@ -425,13 +429,84 @@ namespace PadForge.Engine.RemoteLink
                     System.Threading.Interlocked.Increment(ref DiagAudioReceived);
                     AudioReceived?.Invoke(c.PeerFingerprintHex, slot, payload);
                 }
+                else if (type == LinkMessageType.DeviceList)
+                {
+                    // The owner's current exposed-device set: add new, remove gone, update
+                    // active/inactive — so devices hot-plugged after connect appear live (#138).
+                    try { ReconcileRemoteDevices(c, LinkConnection.DecodeDeviceList(payload)); }
+                    catch (Exception ex) { DiagLastError = "devlist-recv: " + ex.Message; }
+                }
                 return;
+            }
+        }
+
+        /// <summary>Apply the owner's latest device list to a connection: add devices that
+        /// appeared, drop ones that vanished, and update active/inactive on the rest. Fires
+        /// DeviceConnected / DeviceDisconnected so InputService registers/unregisters them
+        /// exactly as it does for the handshake set. Runs on the UDP receive thread.</summary>
+        private void ReconcileRemoteDevices(LinkPeerConnection c, List<RemotePeerDeviceInfo> infos)
+        {
+            var present = new HashSet<byte>();
+            foreach (var info in infos)
+            {
+                info.PeerFingerprintHex = c.PeerFingerprintHex; // identity salted by the authenticated key
+                present.Add(info.Slot);
+                if (c.RemoteDevices.TryGetValue(info.Slot, out var existing))
+                {
+                    if (string.Equals(existing.Info.PeerLocalDeviceId, info.PeerLocalDeviceId, StringComparison.Ordinal))
+                    {
+                        existing.SetConnected(info.Online); // same device — just active/inactive
+                        continue;
+                    }
+                    // Slot now holds a different device: retire the old, add the new.
+                    if (c.RemoteDevices.TryRemove(info.Slot, out var stale))
+                    {
+                        stale.SetConnected(false);
+                        DeviceDisconnected?.Invoke(stale);
+                        stale.Dispose();
+                    }
+                }
+                var dev = new RemotePeerDevice(info) { LinkSlot = info.Slot };
+                dev.SetConnected(info.Online);
+                c.RemoteDevices[info.Slot] = dev;
+                DeviceConnected?.Invoke(dev);
+            }
+            foreach (var slot in c.RemoteDevices.Keys.ToList())
+            {
+                if (present.Contains(slot)) continue;
+                if (c.RemoteDevices.TryRemove(slot, out var gone))
+                {
+                    gone.SetConnected(false);
+                    DeviceDisconnected?.Invoke(gone);
+                    gone.Dispose();
+                }
+            }
+        }
+
+        /// <summary>Owner: push the current exposed-device set to every connected peer
+        /// (issue #138 live device sync). Sent on change and periodically; the consumer
+        /// reconciles. Each info carries its stable Slot + Online.</summary>
+        public void PushDeviceList(IReadOnlyList<RemotePeerDeviceInfo> devices)
+        {
+            if (devices == null) return;
+            byte[] payload;
+            try { payload = LinkConnection.EncodeDeviceList(devices); }
+            catch (Exception ex) { DiagLastError = "devlist-enc: " + ex.Message; return; }
+            LinkPeerConnection[] conns;
+            lock (_lock) conns = _connections.ToArray();
+            ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
+            foreach (var c in conns)
+            {
+                var ep = c.PeerUdpEndpoint;
+                if (ep == null) continue;
+                try { _udp.SendTo(c.DataSession.Seal(LinkMessageType.DeviceList, 0, ts, payload), ep); }
+                catch (Exception ex) { DiagLastError = "devlist: " + ex.Message; }
             }
         }
 
         private void DropConnection(LinkPeerConnection c)
         {
-            foreach (var d in c.RemoteDevices)
+            foreach (var d in c.RemoteDevices.Values)
             {
                 d.SetConnected(false);
                 DeviceDisconnected?.Invoke(d);
@@ -447,7 +522,10 @@ namespace PadForge.Engine.RemoteLink
         private sealed class LinkPeerConnection
         {
             public LinkSession DataSession;
-            public RemotePeerDevice[] RemoteDevices;
+            /// <summary>Devices the peer exposes, keyed by their stable link slot (#138 live
+            /// device sync). Concurrent: the UDP loop routes + reconciles it, the reaper
+            /// iterates it on drop.</summary>
+            public System.Collections.Concurrent.ConcurrentDictionary<byte, RemotePeerDevice> RemoteDevices;
             public volatile IPEndPoint PeerUdpEndpoint;
             public TcpClient Tcp;
             public string PeerFingerprintHex;

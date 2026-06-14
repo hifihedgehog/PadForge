@@ -74,6 +74,10 @@ namespace PadForge.Services
         // its slot while shared, so a device hot-plugged after connect routes by a slot
         // that never shifts. Freed when the device stops being shared. Under the lock above.
         private readonly Dictionary<string, byte> _exposedSlots = new();
+        // Auto-reconnect throttle (#138): last auto-dial per peer fingerprint, so a failing
+        // attempt doesn't spam ConnectAsync on every ~2s discovery tick.
+        private readonly Dictionary<string, long> _autoReconnectCooldown = new(StringComparer.OrdinalIgnoreCase);
+        private const long AutoReconnectCooldownMs = 5000;
         private InputHookManager _hookManager;
         private SettingsService _settingsService;
         private bool _disposed;
@@ -4867,6 +4871,26 @@ namespace PadForge.Services
             var peers = disc.Peers;
             var trust = _settingsService?.RemoteLink?.Trust;
             var connectedFps = _linkServer?.ConnectedFingerprints() ?? (IReadOnlyList<string>)System.Array.Empty<string>();
+
+            // Auto-reconnect (#138): when a paired PC appears on the LAN and we aren't linked,
+            // dial it automatically — no click. Only ONE side initiates (the lower fingerprint)
+            // so two PCs that both see each other don't both connect; the other just listens.
+            // Per-peer cooldown keeps a failing dial from spamming every discovery tick.
+            if (_mainVm.Dashboard.AutoReconnect && _remoteLinkIdentity != null)
+            {
+                string myFp = _remoteLinkIdentity.FingerprintHex;
+                long now = Environment.TickCount64;
+                foreach (var p in peers)
+                {
+                    var entry = trust?.Peers?.FirstOrDefault(t => string.Equals(t.FingerprintHex, p.FingerprintHex, StringComparison.OrdinalIgnoreCase));
+                    if (entry == null || !entry.ReconnectEnabled) continue;                                  // not a trusted auto-reconnect peer
+                    if (connectedFps.Any(f => string.Equals(f, p.FingerprintHex, StringComparison.OrdinalIgnoreCase))) continue; // already linked
+                    if (string.CompareOrdinal(myFp, p.FingerprintHex) >= 0) continue;                        // the lower fingerprint dials; the other listens
+                    if (_autoReconnectCooldown.TryGetValue(p.FingerprintHex, out var last) && now - last < AutoReconnectCooldownMs) continue;
+                    _autoReconnectCooldown[p.FingerprintHex] = now;
+                    OnConnectToPeerRequested($"{p.Endpoint.Address}:{p.Endpoint.Port}");
+                }
+            }
             _dispatcher.BeginInvoke(() =>
             {
                 _mainVm.Dashboard.NearbyPeers.Clear();

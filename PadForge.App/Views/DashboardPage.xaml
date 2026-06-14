@@ -497,7 +497,9 @@
                     <!-- On / off + port + live status -->
                     <CheckBox AutomationProperties.AutomationId="EnableRemoteLinkCheckBox"
                               Content="{Binding Dashboard_EnableRemoteLink, Source={x:Static strings:Strings.Instance}}"
-                              IsChecked="{Binding EnableRemoteLink}" Margin="0,0,0,10"/>
+                              IsChecked="{Binding EnableRemoteLink}" Margin="0,0,0,8"/>
+                    <CheckBox Content="{Binding RemoteLink_AutoReconnect, Source={x:Static strings:Strings.Instance}}"
+                              IsChecked="{Binding AutoReconnect}" Margin="0,0,0,10"/>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Text="{Binding Dashboard_Port, Source={x:Static strings:Strings.Instance}}"
                                    VerticalAlignment="Center" Margin="0,0,8,0"/>

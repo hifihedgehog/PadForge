@@ -1850,4 +1850,91 @@
   <data name="RemoteLink_AutoReconnect" xml:space="preserve">
     <value>Se reconnecter automatiquement</value>
   </data>
+  <data name="Dashboard_EnableRemoteLink" xml:space="preserve">
+    <value>Activer le serveur Remote Link</value>
+  </data>
+  <data name="Dashboard_RemoteLink" xml:space="preserve">
+    <value>Remote Link</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve">
+    <value>Ou se connecter par adresse (avancé)</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve">
+    <value>Appairer / Connecter</value>
+  </data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
+    <value>Partagez des manettes avec un PadForge appairé sur un autre PC via votre réseau.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
+    <value>Après un appairage unique, un PC de confiance se reconnecte automatiquement. Un PC appairé peut commander la sortie manette de celui-ci et, sauf si vous le limitez, également son clavier, sa souris et ses macros.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNearby" xml:space="preserve">
+    <value>PC à proximité</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve">
+    <value>Les PC dont Remote Link est activé, sur le même réseau, apparaissent ici automatiquement.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve">
+    <value>Appairer</value>
+  </data>
+  <data name="RemoteLink_Connect" xml:space="preserve">
+    <value>Connecter</value>
+  </data>
+  <data name="RemoteLink_Connected" xml:space="preserve">
+    <value>Connecté</value>
+  </data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve">
+    <value>Un PC appairé peut envoyer des entrées clavier, souris et macro à celui-ci, sauf si vous le limitez à la manette uniquement.</value>
+  </data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve">
+    <value>Limiter ce PC aux entrées manette uniquement</value>
+  </data>
+  <data name="RemoteLink_Identity" xml:space="preserve">
+    <value>Identité</value>
+  </data>
+  <data name="RemoteLink_NoPairedPeers" xml:space="preserve">
+    <value>Aucun PC appairé pour l&apos;instant.</value>
+  </data>
+  <data name="RemoteLink_Pair" xml:space="preserve">
+    <value>Appairer</value>
+  </data>
+  <data name="RemoteLink_PairedPeers" xml:space="preserve">
+    <value>PC appairés</value>
+  </data>
+  <data name="RemoteLink_PairedPeersDescription" xml:space="preserve">
+    <value>Les PC que vous avez appairés pour Remote Link. Révoquez-en un pour l&apos;empêcher de se connecter. Il devrait alors s&apos;appairer de nouveau.</value>
+  </data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve">
+    <value>Vérifiez que ce code est identique sur les deux écrans, puis appairez.</value>
+  </data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve">
+    <value>Appairer avec un PC distant</value>
+  </data>
+  <data name="RemoteLink_Reject" xml:space="preserve">
+    <value>Refuser</value>
+  </data>
+  <data name="RemoteLink_Revoke" xml:space="preserve">
+    <value>Révoquer</value>
+  </data>
+  <data name="RemoteLink_RevokeAll" xml:space="preserve">
+    <value>Tout révoquer</value>
+  </data>
+  <data name="RemoteLink_StatusListening" xml:space="preserve">
+    <value>À l&apos;écoute sur {0}</value>
+  </data>
+  <data name="RemoteLink_StatusStartFailed" xml:space="preserve">
+    <value>Échec du démarrage : {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerTimedOut" xml:space="preserve">
+    <value>Délai d&apos;attente dépassé pour le pair {0}</value>
+  </data>
+  <data name="RemoteLink_StatusConnectFailed" xml:space="preserve">
+    <value>Échec de la connexion : {0}</value>
+  </data>
+  <data name="RemoteLink_StatusLinkRejected" xml:space="preserve">
+    <value>Liaison refusée : {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
+    <value>Pair {0} connecté, {1} périphérique(s)</value>
+  </data>
 </root>

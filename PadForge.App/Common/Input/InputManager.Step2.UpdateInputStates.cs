@@ -496,6 +496,31 @@ namespace PadForge.Common.Input
             if (RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath)
                 && !(isVendorFfb && !isFanatecPedal))
             {
+                // Bake the consumer's Overall Strength into the directional/condition fields
+                // before shipping: the owner replays with ForceOverall=100, and unlike the
+                // scalar motors (already pre-scaled above) these are copied raw, so the slider
+                // would otherwise be lost. DeviceGain stays raw — the owner applies it once.
+                // Scale a COPY of the condition axes so the shared source state isn't mutated (#138 F30).
+                if (_combinedVibration.HasDirectionalData || _combinedVibration.HasConditionData)
+                {
+                    int og = int.TryParse(firstPadSetting?.ForceOverall, out int fg) ? System.Math.Clamp(fg, 0, 100) : 100;
+                    if (og != 100)
+                    {
+                        double s = og / 100.0;
+                        _combinedVibration.SignedMagnitude = (short)System.Math.Clamp(_combinedVibration.SignedMagnitude * s, -10000, 10000);
+                        var axes = _combinedVibration.ConditionAxes;
+                        if (_combinedVibration.HasConditionData && axes != null && _combinedVibration.ConditionAxisCount > 0)
+                        {
+                            var scaled = (ConditionAxisData[])axes.Clone();
+                            for (int ci = 0; ci < scaled.Length; ci++)
+                            {
+                                scaled[ci].PositiveCoefficient = (short)System.Math.Clamp(scaled[ci].PositiveCoefficient * s, -10000, 10000);
+                                scaled[ci].NegativeCoefficient = (short)System.Math.Clamp(scaled[ci].NegativeCoefficient * s, -10000, 10000);
+                            }
+                            _combinedVibration.ConditionAxes = scaled;
+                        }
+                    }
+                }
                 RemoteLinkOutputRouter.ShipVibration(ud.DevicePath, _combinedVibration);
                 return;
             }

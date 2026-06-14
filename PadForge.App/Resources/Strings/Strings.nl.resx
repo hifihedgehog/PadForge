@@ -1870,4 +1870,91 @@
   <data name="RemoteLink_AutoReconnect" xml:space="preserve">
     <value>Automatisch opnieuw verbinden</value>
   </data>
+  <data name="Dashboard_EnableRemoteLink" xml:space="preserve">
+    <value>Remote Link-server inschakelen</value>
+  </data>
+  <data name="Dashboard_RemoteLink" xml:space="preserve">
+    <value>Remote Link</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve">
+    <value>Of verbinden via adres (geavanceerd)</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve">
+    <value>Koppelen / Verbinden</value>
+  </data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
+    <value>Deel controllers met een gekoppelde PadForge op een andere pc via je netwerk.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
+    <value>Na een eenmalige koppeling maakt een vertrouwde pc automatisch opnieuw verbinding. Een gekoppelde pc kan de gamepad-uitvoer van deze pc aansturen, en tenzij je dit beperkt, ook het toetsenbord, de muis en de macro&apos;s.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNearby" xml:space="preserve">
+    <value>Pc&apos;s in de buurt</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve">
+    <value>Pc&apos;s met Remote Link ingeschakeld op hetzelfde netwerk verschijnen hier automatisch.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve">
+    <value>Koppelen</value>
+  </data>
+  <data name="RemoteLink_Connect" xml:space="preserve">
+    <value>Verbinden</value>
+  </data>
+  <data name="RemoteLink_Connected" xml:space="preserve">
+    <value>Verbonden</value>
+  </data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve">
+    <value>Een gekoppelde pc kan toetsenbord-, muis- en macro-invoer naar deze pc sturen, tenzij je deze beperkt tot alleen gamepad.</value>
+  </data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve">
+    <value>Deze pc beperken tot alleen gamepad-invoer</value>
+  </data>
+  <data name="RemoteLink_Identity" xml:space="preserve">
+    <value>Identiteit</value>
+  </data>
+  <data name="RemoteLink_NoPairedPeers" xml:space="preserve">
+    <value>Nog geen gekoppelde pc&apos;s.</value>
+  </data>
+  <data name="RemoteLink_Pair" xml:space="preserve">
+    <value>Koppelen</value>
+  </data>
+  <data name="RemoteLink_PairedPeers" xml:space="preserve">
+    <value>Gekoppelde pc&apos;s</value>
+  </data>
+  <data name="RemoteLink_PairedPeersDescription" xml:space="preserve">
+    <value>Pc&apos;s waarmee je voor Remote Link bent gekoppeld. Trek er een in om verbinding te voorkomen. Deze moet dan opnieuw koppelen.</value>
+  </data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve">
+    <value>Controleer of deze code op beide schermen overeenkomt en koppel dan.</value>
+  </data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve">
+    <value>Koppelen met externe pc</value>
+  </data>
+  <data name="RemoteLink_Reject" xml:space="preserve">
+    <value>Afwijzen</value>
+  </data>
+  <data name="RemoteLink_Revoke" xml:space="preserve">
+    <value>Intrekken</value>
+  </data>
+  <data name="RemoteLink_RevokeAll" xml:space="preserve">
+    <value>Alles intrekken</value>
+  </data>
+  <data name="RemoteLink_StatusListening" xml:space="preserve">
+    <value>Luistert op {0}</value>
+  </data>
+  <data name="RemoteLink_StatusStartFailed" xml:space="preserve">
+    <value>Starten mislukt: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerTimedOut" xml:space="preserve">
+    <value>Peer {0} heeft een time-out</value>
+  </data>
+  <data name="RemoteLink_StatusConnectFailed" xml:space="preserve">
+    <value>Verbinden mislukt: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusLinkRejected" xml:space="preserve">
+    <value>Koppeling geweigerd: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
+    <value>Peer {0} verbonden, {1} apparaat/apparaten</value>
+  </data>
 </root>

@@ -75,8 +75,9 @@ namespace PadForge.Services
         // that never shifts. Freed when the device stops being shared. Under the lock above.
         private readonly Dictionary<string, byte> _exposedSlots = new();
         // Auto-reconnect throttle (#138): last auto-dial per peer fingerprint, so a failing
-        // attempt doesn't spam ConnectAsync on every ~2s discovery tick.
-        private readonly Dictionary<string, long> _autoReconnectCooldown = new(StringComparer.OrdinalIgnoreCase);
+        // attempt doesn't spam ConnectAsync on every ~2s discovery tick. Concurrent because
+        // OnLinkPeersChanged fires from the discovery, UDP-reconcile, reaper and handshake threads.
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, long> _autoReconnectCooldown = new(StringComparer.OrdinalIgnoreCase);
         private const long AutoReconnectCooldownMs = 5000;
         private InputHookManager _hookManager;
         private SettingsService _settingsService;
@@ -4787,7 +4788,7 @@ namespace PadForge.Services
             _linkServer = new LinkServer(identity, trust, ApprovePairing);
             // Expose this PC's devices to inbound peers too (bidirectional sharing).
             _linkServer.ExposeProvider = () => BuildExposedDevices();
-            _linkServer.StatusChanged += s => _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = s);
+            _linkServer.StatusChanged += st => _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = FormatLinkStatus(st));
             // Reverse output relay (#138): our game's output for a remote device is
             // shipped to its owner; a peer's output for OUR device drives our hardware.
             RemoteLinkOutputRouter.SendOutput = (fp, slot, payload) => _linkServer?.PushOutputEffect(fp, slot, payload);
@@ -4828,7 +4829,14 @@ namespace PadForge.Services
 
             int port = _mainVm.Dashboard.RemoteLinkPort;
             if (port < 1024 || port > 65535) port = 27500;
-            _linkServer.Start(port);
+            if (!_linkServer.Start(port))
+            {
+                // Port unavailable: tear down so the _linkServer != null re-entry guard clears
+                // and a later enable can retry on a free port (the Web/DSU server idiom) (#138 F05).
+                _linkServer.Dispose();
+                _linkServer = null;
+                return;
+            }
 
             // LAN auto-discovery so peers appear by name — no IP typing.
             _linkDiscovery = new LinkDiscovery();
@@ -4888,7 +4896,10 @@ namespace PadForge.Services
                     if (string.CompareOrdinal(myFp, p.FingerprintHex) >= 0) continue;                        // the lower fingerprint dials; the other listens
                     if (_autoReconnectCooldown.TryGetValue(p.FingerprintHex, out var last) && now - last < AutoReconnectCooldownMs) continue;
                     _autoReconnectCooldown[p.FingerprintHex] = now;
-                    OnConnectToPeerRequested($"{p.Endpoint.Address}:{p.Endpoint.Port}");
+                    // Marshal the dial to the UI thread: OnConnectToPeerRequested mutates VM
+                    // state and starts the server, while OnLinkPeersChanged runs on background
+                    // (discovery / UDP / reaper / handshake) threads (#138 F09).
+                    _dispatcher.BeginInvoke(() => OnConnectToPeerRequested($"{p.Endpoint.Address}:{p.Endpoint.Port}"));
                 }
             }
 
@@ -4904,12 +4915,10 @@ namespace PadForge.Services
                     var e = trust.Peers.FirstOrDefault(t => string.Equals(t.FingerprintHex, p.FingerprintHex, StringComparison.OrdinalIgnoreCase));
                     if (e != null && !string.Equals(e.HostName, p.Name, StringComparison.Ordinal)) { e.HostName = p.Name; trustDirty = true; }
                 }
-                if (trustDirty) { try { _settingsService?.Save(); } catch { } }
             }
 
             _dispatcher.BeginInvoke(() =>
             {
-                _mainVm.Dashboard.NearbyPeers.Clear();
                 var nearbyUnpaired = new System.Collections.Generic.List<ViewModels.RemoteLinkNearbyPeer>();
                 // fingerprint -> host:port for paired peers seen on the LAN, so the paired
                 // list can show a Connect button on a discovered-but-offline peer.
@@ -4919,7 +4928,6 @@ namespace PadForge.Services
                     bool paired = trust?.Peers?.Any(t => string.Equals(t.FingerprintHex, p.FingerprintHex, StringComparison.OrdinalIgnoreCase)) ?? false;
                     bool connected = connectedFps.Any(f => string.Equals(f, p.FingerprintHex, StringComparison.OrdinalIgnoreCase));
                     string hostPort = $"{p.Endpoint.Address}:{p.Endpoint.Port}";
-                    _mainVm.Dashboard.NearbyPeers.Add(new ViewModels.RemoteLinkNearbyPeer(p.Name, hostPort, p.FingerprintHex, paired, connected, OnConnectToPeerRequested));
                     if (paired)
                         reachable[p.FingerprintHex] = hostPort;
                     else
@@ -4929,8 +4937,15 @@ namespace PadForge.Services
                 _mainVm.Settings.SetNearbyUnpaired(nearbyUnpaired);
                 _mainVm.Settings.UpdatePeerOnlineStatus(connectedFps);
                 _mainVm.Settings.UpdatePeerReachability(reachable);
-                // A host name just changed -> rebuild so the new name + default show.
-                if (trustDirty) _mainVm.Settings.RefreshTrustedPeers(trust?.Peers, connectedFps);
+                // A host name just changed -> persist it + rebuild so the new name + default
+                // show. The Save runs here on the UI thread, not on the background discovery
+                // thread (an off-thread Save races the UI-thread save and reads VM
+                // collections off-thread) (#138 F09).
+                if (trustDirty)
+                {
+                    try { _settingsService?.Save(); } catch { }
+                    _mainVm.Settings.RefreshTrustedPeers(trust?.Peers, connectedFps);
+                }
             });
         }
 
@@ -4953,7 +4968,6 @@ namespace PadForge.Services
             }
             _dispatcher.BeginInvoke(() =>
             {
-                _mainVm.Dashboard.NearbyPeers.Clear();
                 _mainVm.Settings.SetNearbyUnpaired(null);
                 _mainVm.Settings.UpdatePeerOnlineStatus(System.Array.Empty<string>());
             });
@@ -4961,6 +4975,24 @@ namespace PadForge.Services
             _linkServer.Dispose();
             _linkServer = null;
             _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.Common_Stopped;
+        }
+
+        /// <summary>Map an engine LinkServer status CODE to a localized dashboard string. The
+        /// engine can't reach the App's resources, so it emits a code and the App localizes (#138 F35).</summary>
+        private static string FormatLinkStatus(LinkServer.LinkStatus st)
+        {
+            var S = Strings.Instance;
+            switch (st.Kind)
+            {
+                case LinkServer.LinkStatusKind.Listening:     return string.Format(S.RemoteLink_StatusListening, st.Port);
+                case LinkServer.LinkStatusKind.Stopped:       return S.Common_Stopped;
+                case LinkServer.LinkStatusKind.StartFailed:   return string.Format(S.RemoteLink_StatusStartFailed, st.Message);
+                case LinkServer.LinkStatusKind.PeerTimedOut:  return string.Format(S.RemoteLink_StatusPeerTimedOut, st.Peer);
+                case LinkServer.LinkStatusKind.ConnectFailed: return string.Format(S.RemoteLink_StatusConnectFailed, st.Message);
+                case LinkServer.LinkStatusKind.LinkRejected:  return string.Format(S.RemoteLink_StatusLinkRejected, st.Message);
+                case LinkServer.LinkStatusKind.PeerConnected: return string.Format(S.RemoteLink_StatusPeerConnected, st.Peer, st.DeviceCount);
+                default:                                      return "";
+            }
         }
 
         /// <summary>Load the persisted Remote Link identity, minting + saving one on first use.</summary>
@@ -4985,7 +5017,14 @@ namespace PadForge.Services
                 _remoteLinkIdentity = identity;
                 return identity;
             }
-            if (status == IdentityUnprotect.Ok) { _remoteLinkIdentity = identity; return identity; }
+            if (status == IdentityUnprotect.Ok)
+            {
+                // The stored public was blank/garbage and got re-derived from the private:
+                // persist the heal so it isn't recomputed every launch (#138 F26).
+                if (newPub != null) { holder.PublicBase64 = newPub; try { _settingsService.Save(); } catch { } }
+                _remoteLinkIdentity = identity;
+                return identity;
+            }
 
             // Locked: a real identity exists but can't be opened here. NEVER overwrite it —
             // surface why so the user can fix it (the right machine, or the password), and
@@ -5069,7 +5108,7 @@ namespace PadForge.Services
             if (colon > 0 && int.TryParse(host.Substring(colon + 1), out int p)) { host = host.Substring(0, colon); port = p; }
 
             var expose = BuildExposedDevices();
-            _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = string.Format(Strings.Instance.RemoteLink_StatusConnecting, host, port));
+            _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = string.Format(Strings.Instance.RemoteLink_StatusConnecting, host, port));
             await server.ConnectAsync(host, port, expose);
         }
 
@@ -5134,7 +5173,14 @@ namespace PadForge.Services
                 // Release slots held by devices that are no longer shared, so they can be
                 // reused — and the consumer drops them on the next sync.
                 foreach (var goneId in _exposedSlots.Keys.Where(k => !seenIds.Contains(k)).ToList())
+                {
                     _exposedSlots.Remove(goneId);
+                    // Also drop the owner-side wheel one-shot cache so range / autocenter / RPM
+                    // LEDs re-apply from scratch on replug — the wheel power-cycles to factory
+                    // defaults while gone, and the cached tuple would suppress the re-send (#138 F38).
+                    if (Guid.TryParseExact(goneId, "N", out var goneGuid))
+                        _remoteWheelOneShot.TryRemove(goneGuid, out _);
+                }
 
                 _remoteLinkExposed.Clear();
                 _remoteLinkExposed.AddRange(sources);
@@ -5187,7 +5233,7 @@ namespace PadForge.Services
         private static readonly PadSetting _remoteApplyPs = new PadSetting { ForceOverall = "100" };
         // Owner-side wheel one-shot dedup (range/autocenter/LEDs are in every frame but
         // change rarely; re-writing them per frame would halve the wheel poll rate).
-        private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, (int range, int ledMask, bool ledValid)> _remoteWheelOneShot = new();
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, (int range, int ac, int ledMask, bool ledValid)> _remoteWheelOneShot = new();
         private long _outputApplied, _outputRecvSeen, _outputSourceNull;
 
         /// <summary>Resolve a link slot to the owner's physical source + UserDevice.</summary>
@@ -5243,8 +5289,19 @@ namespace PadForge.Services
 
                     case OutputEffectCodec.Kind.Vibration:
                         // Rumble + impulse triggers + directional/condition haptic, replayed
-                        // through the device's real SDL handle per its capabilities.
-                        ud?.ForceFeedbackState?.SetDeviceForces(ud, source, _remoteApplyPs, effect.Vibration);
+                        // through the device's real SDL handle per its capabilities. A Fanatec
+                        // pedal has no usable SDL rumble — locally it rides the raw-HID pedal
+                        // writer, so re-route it the same way here instead of dropping it (#138 F31).
+                        if (FanatecRawHidWriter.IsFanatecPedal(source.VendorId, source.ProductId))
+                        {
+                            byte brake    = (byte)(effect.Vibration.LeftMotorSpeed >> 8);  // XInput left  -> brake
+                            byte throttle = (byte)(effect.Vibration.RightMotorSpeed >> 8); // XInput right -> throttle
+                            FanatecRawHidWriter.WritePedalRumble(source.DevicePath, throttle, brake);
+                        }
+                        else
+                        {
+                            ud?.ForceFeedbackState?.SetDeviceForces(ud, source, _remoteApplyPs, effect.Vibration);
+                        }
                         System.Threading.Interlocked.Increment(ref _outputApplied);
                         if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply vib slot={slot} dev='{source.Name}' ({effect.Vibration.LeftMotorSpeed},{effect.Vibration.RightMotorSpeed}) n={rn}");
                         break;
@@ -5299,22 +5356,22 @@ namespace PadForge.Services
             }
 
             // Range + auto-center + RPM LEDs — re-send only when changed.
-            var prev = _remoteWheelOneShot.TryGetValue(source.InstanceGuid, out var p) ? p : (-1, -1, false);
-            if (prev.Item1 != w.RangeDeg)
+            var prev = _remoteWheelOneShot.TryGetValue(source.InstanceGuid, out var p) ? p : (-1, -1, -1, false);
+            if (prev.Item1 != w.RangeDeg || prev.Item2 != w.Ac)
             {
                 int acMag = w.Ac;
                 if (isLogi) { LogitechRawHidWriter.WriteRange(path, w.RangeDeg, pid); LogitechRawHidWriter.WriteAutocenter(path, acMag, LogitechRawHidWriter.IsMomo(pid)); }
                 else if (isFan) { FanatecRawHidWriter.WriteRange(path, w.RangeDeg, pid); FanatecRawHidWriter.WriteAutocenter(path, acMag); }
                 else { ThrustmasterRawHidWriter.WriteRange(path, w.RangeDeg, pid); ThrustmasterRawHidWriter.WriteAutocenter(path, acMag); }
             }
-            if (prev.Item2 != w.LedMask || prev.Item3 != w.LedValid)
+            if (prev.Item3 != w.LedMask || prev.Item4 != w.LedValid)
             {
                 int mask = w.LedValid ? w.LedMask : 0;
                 if (isLogi) LogitechRawHidWriter.WriteRpmLeds(path, (byte)mask);
                 else if (isFan) FanatecRawHidWriter.WriteRpmLeds(path, mask);
                 else ThrustmasterRawHidWriter.WriteRpmLeds(path, mask);
             }
-            _remoteWheelOneShot[source.InstanceGuid] = (w.RangeDeg, w.LedMask, w.LedValid);
+            _remoteWheelOneShot[source.InstanceGuid] = (w.RangeDeg, w.Ac, w.LedMask, w.LedValid);
         }
 
         /// <summary>A paired peer sent a speaker PCM block for one of THIS PC's shared

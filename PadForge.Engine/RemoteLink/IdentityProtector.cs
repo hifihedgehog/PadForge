@@ -180,14 +180,17 @@ namespace PadForge.Engine.RemoteLink
                 if (status == IdentityUnprotect.Ok)
                 {
                     byte[] pub = TryFromBase64(publicKeyBase64);
-                    if (pub != null && pub.Length == PeerCrypto.KeySize)
+                    if (pub == null || pub.Length != PeerCrypto.KeySize)
                     {
-                        identity = new PeerIdentity(priv, pub);
-                        return IdentityUnprotect.Ok;
+                        // Private recovered but the stored public is missing/garbage. The public
+                        // is fully determined by the private seed, so re-derive it and heal the
+                        // stored field — discarding a recoverable identity here would change the
+                        // fingerprint and break every existing pairing (#138 F26).
+                        pub = PeerCrypto.DeriveEd25519PublicKey(priv);
+                        persistPublic = Convert.ToBase64String(pub);
                     }
-                    // Private recovered but the paired public is missing/garbage: nothing
-                    // trustworthy to load, so re-mint (same as Corrupt).
-                    status = IdentityUnprotect.Corrupt;
+                    identity = new PeerIdentity(priv, pub);
+                    return IdentityUnprotect.Ok;
                 }
 
                 if (status == IdentityUnprotect.Empty || status == IdentityUnprotect.Corrupt)

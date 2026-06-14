@@ -1850,4 +1850,91 @@
   <data name="RemoteLink_AutoReconnect" xml:space="preserve">
     <value>自動的に再接続する</value>
   </data>
+  <data name="Dashboard_EnableRemoteLink" xml:space="preserve">
+    <value>Remote Link サーバーを有効にする</value>
+  </data>
+  <data name="Dashboard_RemoteLink" xml:space="preserve">
+    <value>Remote Link</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve">
+    <value>またはアドレスを指定して接続（詳細設定）</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve">
+    <value>ペアリング / 接続</value>
+  </data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
+    <value>ネットワーク経由で、別の PC のペアリング済み PadForge とコントローラーを共有します。</value>
+  </data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
+    <value>一度ペアリングすれば、信頼済みの PC は自動的に再接続します。ペアリング済みの PC はこの PC のゲームパッド出力を操作でき、制限しない限りキーボード・マウス・マクロも操作できます。</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNearby" xml:space="preserve">
+    <value>近くの PC</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve">
+    <value>同じネットワーク上で Remote Link を有効にしている PC が、ここに自動的に表示されます。</value>
+  </data>
+  <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve">
+    <value>ペアリング</value>
+  </data>
+  <data name="RemoteLink_Connect" xml:space="preserve">
+    <value>接続</value>
+  </data>
+  <data name="RemoteLink_Connected" xml:space="preserve">
+    <value>接続済み</value>
+  </data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve">
+    <value>ゲームパッドのみに制限しない限り、ペアリング済みの PC はこの PC にキーボード・マウス・マクロの入力を送信できます。</value>
+  </data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve">
+    <value>この PC をゲームパッド入力のみに制限する</value>
+  </data>
+  <data name="RemoteLink_Identity" xml:space="preserve">
+    <value>アイデンティティ</value>
+  </data>
+  <data name="RemoteLink_NoPairedPeers" xml:space="preserve">
+    <value>ペアリング済みの PC はまだありません。</value>
+  </data>
+  <data name="RemoteLink_Pair" xml:space="preserve">
+    <value>ペアリング</value>
+  </data>
+  <data name="RemoteLink_PairedPeers" xml:space="preserve">
+    <value>ペアリング済みの PC</value>
+  </data>
+  <data name="RemoteLink_PairedPeersDescription" xml:space="preserve">
+    <value>Remote Link でペアリングした PC の一覧です。接続を止めるには解除します。再接続するには、もう一度ペアリングが必要になります。</value>
+  </data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve">
+    <value>両方の画面でこのコードが一致していることを確認してから、ペアリングしてください。</value>
+  </data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve">
+    <value>リモート PC とペアリング</value>
+  </data>
+  <data name="RemoteLink_Reject" xml:space="preserve">
+    <value>拒否</value>
+  </data>
+  <data name="RemoteLink_Revoke" xml:space="preserve">
+    <value>解除</value>
+  </data>
+  <data name="RemoteLink_RevokeAll" xml:space="preserve">
+    <value>すべて解除</value>
+  </data>
+  <data name="RemoteLink_StatusListening" xml:space="preserve">
+    <value>{0} で待機中</value>
+  </data>
+  <data name="RemoteLink_StatusStartFailed" xml:space="preserve">
+    <value>開始に失敗しました: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerTimedOut" xml:space="preserve">
+    <value>PC {0} がタイムアウトしました</value>
+  </data>
+  <data name="RemoteLink_StatusConnectFailed" xml:space="preserve">
+    <value>接続に失敗しました: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusLinkRejected" xml:space="preserve">
+    <value>リンクが拒否されました: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
+    <value>PC {0} が接続しました、デバイス {1} 台</value>
+  </data>
 </root>

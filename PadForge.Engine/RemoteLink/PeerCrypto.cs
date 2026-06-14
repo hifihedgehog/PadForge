@@ -114,6 +114,15 @@ namespace PadForge.Engine.RemoteLink
                 ((Ed25519PublicKeyParameters)kp.Public).GetEncoded());
         }
 
+        /// <summary>Derive the Ed25519 public key from a 32-byte private seed. The public is
+        /// fully determined by the private, so a stored identity whose public field is lost can
+        /// be healed without changing its fingerprint (#138 F26).</summary>
+        public static byte[] DeriveEd25519PublicKey(byte[] privateKey)
+        {
+            RequireLength(privateKey, KeySize, nameof(privateKey));
+            return new Ed25519PrivateKeyParameters(privateKey, 0).GeneratePublicKey().GetEncoded();
+        }
+
         /// <summary>Sign a message with an Ed25519 private key. Returns a 64-byte signature.</summary>
         public static byte[] Ed25519Sign(byte[] privateKey, ReadOnlySpan<byte> message)
         {

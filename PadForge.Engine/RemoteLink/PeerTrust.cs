@@ -14,8 +14,14 @@ namespace PadForge.Engine.RemoteLink
         /// <summary>Peer static Ed25519 public key, base64. The pinned identity.</summary>
         [XmlAttribute] public string PublicKeyBase64 { get; set; } = "";
 
-        /// <summary>Human-readable name shown in the peer manager.</summary>
+        /// <summary>User's friendly name shown in the peer manager (editable).</summary>
         [XmlAttribute] public string Name { get; set; } = "";
+
+        /// <summary>The peer's reported machine (NetBIOS/host) name, learned from LAN
+        /// discovery and kept current. Shown next to the friendly name and used as the
+        /// default friendly name until the user renames it. Self-asserted, not the
+        /// authenticated identity (that's the fingerprint).</summary>
+        [XmlAttribute] public string HostName { get; set; } = "";
 
         /// <summary>When the one-time pairing grant happened (ISO-8601 UTC string).</summary>
         [XmlAttribute] public string PairedUtc { get; set; } = "";

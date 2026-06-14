@@ -277,7 +277,7 @@ namespace PadForge.ViewModels
             {
                 bool online = connectedFingerprints != null &&
                     connectedFingerprints.Any(f => string.Equals(f, p.FingerprintHex, StringComparison.OrdinalIgnoreCase));
-                TrustedPeers.Add(new RemoteLinkTrustedPeer(p.Name, p.FingerprintHex, p.PairedUtc, p.GamepadOnly, online,
+                TrustedPeers.Add(new RemoteLinkTrustedPeer(p.Name, p.HostName, p.FingerprintHex, p.PairedUtc, p.GamepadOnly, online,
                     fp => PeerRevokeRequested?.Invoke(fp),
                     (fp, name) => PeerRenameRequested?.Invoke(fp, name),
                     hostPort => PeerConnectRequested?.Invoke(hostPort)));

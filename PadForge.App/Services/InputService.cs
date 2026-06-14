@@ -4891,6 +4891,22 @@ namespace PadForge.Services
                     OnConnectToPeerRequested($"{p.Endpoint.Address}:{p.Endpoint.Port}");
                 }
             }
+
+            // Keep each paired peer's machine (NetBIOS) name current from discovery (#138):
+            // it's the default friendly name and the always-shown host label. Persist + a
+            // one-time list refresh only when it actually changes (not every 2 s tick).
+            bool trustDirty = false;
+            if (trust?.Peers != null)
+            {
+                foreach (var p in peers)
+                {
+                    if (string.IsNullOrWhiteSpace(p.Name)) continue;
+                    var e = trust.Peers.FirstOrDefault(t => string.Equals(t.FingerprintHex, p.FingerprintHex, StringComparison.OrdinalIgnoreCase));
+                    if (e != null && !string.Equals(e.HostName, p.Name, StringComparison.Ordinal)) { e.HostName = p.Name; trustDirty = true; }
+                }
+                if (trustDirty) { try { _settingsService?.Save(); } catch { } }
+            }
+
             _dispatcher.BeginInvoke(() =>
             {
                 _mainVm.Dashboard.NearbyPeers.Clear();
@@ -4913,6 +4929,8 @@ namespace PadForge.Services
                 _mainVm.Settings.SetNearbyUnpaired(nearbyUnpaired);
                 _mainVm.Settings.UpdatePeerOnlineStatus(connectedFps);
                 _mainVm.Settings.UpdatePeerReachability(reachable);
+                // A host name just changed -> rebuild so the new name + default show.
+                if (trustDirty) _mainVm.Settings.RefreshTrustedPeers(trust?.Peers, connectedFps);
             });
         }
 

@@ -64,6 +64,13 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
 
         private readonly MainViewModel _mainVm;
+
+        // Per-CC "this CC has shown absolute-fader travel (read outside the
+        // 48..80 relative band) during the current recording". A real encoder
+        // never leaves the band; a fader sweeping does. Used to stop a fader
+        // caught mid-sweep being mis-captured as an encoder pulse (issue #142 b).
+        // Reset when a recording's MIDI baseline is established.
+        private readonly bool[] _ccLeftBand = new bool[MidiInputState.CcCount];
         private DispatcherTimer _timer;
         private bool _disposed;
 
@@ -510,6 +517,7 @@ namespace PadForge.Services
                     if (baseline.Midi == null)
                     {
                         baseline.Midi = current.Midi.Clone();
+                        Array.Clear(_ccLeftBand, 0, _ccLeftBand.Length);
                     }
                     else
                     {
@@ -531,7 +539,11 @@ namespace PadForge.Services
                         // sweeping past center isn't misread as an encoder.
                         for (int i = 0; i < current.Midi.CcUp.Length; i++)
                         {
-                            if (Math.Abs(current.Midi.Cc[i] - 0x40) > MidiRelativeBand) continue;
+                            // A CC that has read outside the band this session is a
+                            // fader sweeping through center, not an encoder. Its
+                            // transient in-band pulses must not be captured.
+                            if (Math.Abs(current.Midi.Cc[i] - 0x40) > MidiRelativeBand) { _ccLeftBand[i] = true; continue; }
+                            if (_ccLeftBand[i]) continue;
                             if (current.Midi.CcUp[i] && !baseline.Midi.CcUp[i])
                             {
                                 CompleteRecordingWithDescriptor($"Midi CC {i} Up", dg);
@@ -979,9 +991,25 @@ namespace PadForge.Services
                 Mapping = mapping,
                 ExtraSource = extraSource,
                 Descriptor = finalDescriptor,
-                Type = MapType.Button,
+                // A recorded MIDI absolute CC ("Midi CC N") or pitch bend is a
+                // full bipolar axis (the engine reads it -1..+1), not a button.
+                // Tagging it Axis stops the bidirectional-axis auto-prompt from
+                // requesting a spurious second source (issue #142 a/b). Relative
+                // encoder pulses ("Midi CC N Up"/"Down") and notes stay buttons.
+                Type = MidiAxisClass(descriptor) ? MapType.Axis : MapType.Button,
             });
         }
+
+        /// <summary>True for a recorded MIDI descriptor the engine reads as a
+        /// full bipolar axis: an absolute CC ("Midi CC N") or pitch bend. The
+        /// relative-encoder pulses ("Midi CC N Up"/"Down") and notes are
+        /// button-class and excluded.</summary>
+        private static bool MidiAxisClass(string descriptor)
+            => descriptor == "Midi Pitch Bend"
+               || (descriptor != null
+                   && descriptor.StartsWith("Midi CC ", StringComparison.Ordinal)
+                   && !descriptor.EndsWith(" Up", StringComparison.Ordinal)
+                   && !descriptor.EndsWith(" Down", StringComparison.Ordinal));
 
         /// <summary>
         /// Determines whether an axis recording should auto-apply the Invert prefix

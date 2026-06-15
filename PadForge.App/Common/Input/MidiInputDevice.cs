@@ -330,7 +330,7 @@ namespace PadForge.Common.Input
     internal static class MidiInputRuntime
     {
         private static readonly object _lock = new();
-        private static MidiSession _session;
+        private static volatile MidiSession _session;
 
         /// <summary>The shared input session, or null when Windows MIDI
         /// Services is unavailable.</summary>

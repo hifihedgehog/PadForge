@@ -211,7 +211,7 @@
                             </Image.Style>
                         </Image>
                         <!-- MIDI glyph icon (visible only when OutputType == Midi) -->
-                        <TextBlock Text="&#xE8D6;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                        <TextBlock Text="&#xEC4F;" FontFamily="Segoe MDL2 Assets" FontSize="14"
                                    VerticalAlignment="Center" Margin="0,0,4,0">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
@@ -312,6 +312,16 @@
                     <TextBlock Text="{Binding Pad_ForceFeedback, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
 
+                <!-- Wheel tab — native-FFB wheels (Logitech / Fanatec / Thrustmaster) only.
+                     Visibility driven from code-behind (SyncTabVisibility) when the
+                     selected device matches a wheel VID/PID gate. Holds the wheel-only
+                     settings (rotation range, auto-center, RPM shift LEDs) that used to
+                     sit on the Force Feedback tab. -->
+                <RadioButton x:Name="TabWheel" Tag="11" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             Visibility="Collapsed">
+                    <TextBlock Text="{Binding Pad_Wheel, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
+                </RadioButton>
+
                 <!-- Impulse Triggers tab — Xbox One / Elite / Series only.
                      Visibility driven from code-behind via SyncTabVisibility
                      which checks the assigned device's HasRumbleTriggers
@@ -353,6 +363,15 @@
                 <RadioButton x:Name="TabTouchpad" Tag="10" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
                              Visibility="Collapsed">
                     <TextBlock Text="{Binding Pad_Touchpad, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
+                </RadioButton>
+
+                <!-- Audio tab: controller speaker output (issue #83) — passthrough,
+                     macro sounds, master volume. Visible only when the selected
+                     mapped device has a speaker: the DualSense family or the
+                     DualShock 4 (Sony VID 0x054C). Hidden for everything else. -->
+                <RadioButton x:Name="TabAudio" Tag="12" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             Visibility="Collapsed">
+                    <TextBlock Text="{Binding Pad_Audio, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
             </WrapPanel>
         </Border>
@@ -560,6 +579,7 @@
              Tabs: Controller | Mappings | Left Stick | Right Stick | Triggers | Force Feedback | Macros
              ═══════════════════════════════════════════ -->
         <TabControl Grid.Row="2"
+                    PreviewKeyDown="ConfigTabControl_PreviewKeyDown"
                     SelectedIndex="{Binding SelectedConfigTab, Mode=TwoWay}">
             <TabControl.Template>
                 <ControlTemplate TargetType="TabControl">
@@ -1205,6 +1225,12 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_RumbleStop, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.RumbleStop}"
                                                           ToolTip="{Binding MacroAction_RumbleStop_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_PlaySound, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.PlaySound}"
+                                                          ToolTip="{Binding MacroAction_PlaySound_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_SoundStop, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.SoundStop}"
+                                                          ToolTip="{Binding MacroAction_SoundStop_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding Macro_SetGyroEngaged, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.SetGyroEngaged}"
                                                           ToolTip="{Binding Macro_SetGyroEngaged_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -1528,6 +1554,50 @@
                                         </StackPanel>
                                     </Border>
 
+                                    <!-- Play Sound card (issue #83) — file + volume + loop + preview -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsPlaySoundType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_PlaySound, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,6"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                <TextBlock Text="{Binding Macro_Sound_File_Label, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
+                                                <TextBox Text="{Binding SoundFilePath, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Width="260" VerticalAlignment="Center"
+                                                         ToolTip="{Binding SoundFilePath}"/>
+                                                <Button Content="{Binding Macro_Sound_Browse, Source={x:Static strings:Strings.Instance}}"
+                                                        Click="BrowseSoundFile_Click" Padding="8,2" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                                                <Button Content="{Binding Macro_Sound_Preview, Source={x:Static strings:Strings.Instance}}"
+                                                        Click="PreviewSoundFile_Click" Padding="8,2" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                <TextBlock Text="{Binding Macro_Sound_Volume_Label, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
+                                                <Slider Value="{Binding SoundVolume, Mode=TwoWay}" Minimum="0" Maximum="100"
+                                                        Width="180" VerticalAlignment="Center"/>
+                                                <TextBox Text="{Binding SoundVolume, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                            </StackPanel>
+                                            <CheckBox IsChecked="{Binding SoundLoop, Mode=TwoWay}"
+                                                      Content="{Binding Macro_Sound_Loop, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Macro_Sound_Loop_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Stop Sounds card (issue #83) -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsSoundStopType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_SoundStop, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                            <TextBlock Text="{Binding MacroAction_SoundStop_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                       FontSize="11" TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        </StackPanel>
+                                    </Border>
+
                                     <!-- Axis target + value — for AxisSet -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                                 Visibility="{Binding IsAxisType, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -1805,6 +1875,7 @@
                                            Margin="12,0,8,0"/>
                                 <TextBox Text="{Binding RepeatDelayMs, Mode=TwoWay}"
                                          Width="60"/>
+                                <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                             </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
@@ -3059,6 +3130,7 @@
                                                          Style="{StaticResource DzDigitEdit}"/>
                                                 <Button Command="{Binding ResetCenterOffsetYCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetCenterOffsetY, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
+                                            <Separator Margin="0,8,0,8"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_DeadZoneShape, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <ComboBox AutomationProperties.AutomationId="DeadZoneShapeCombo"
@@ -3126,11 +3198,11 @@
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                 <Button Command="{Binding ResetLinearCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLinear, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
-                                            <TextBlock Text="{Binding Pad_SensitivityCurves, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,4,0,4"
-                                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}" FontSize="11"/>
+                                            <Separator Margin="0,8,0,8"/>
+                                            <TextBlock Text="{Binding Pad_SensitivityCurves, Source={x:Static strings:Strings.Instance}}"
+                                                       Style="{StaticResource CardSectionTitle}"/>
                                             <TextBlock Text="{Binding Pad_SensitivityCurveHint, Source={x:Static strings:Strings.Instance}}"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                       FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
+                                                       Style="{StaticResource CardDescription}"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_SensitivityX, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <ComboBox AutomationProperties.AutomationId="SensitivityXCombo"
@@ -3150,6 +3222,7 @@
                                                           Tag="{Binding}"/>
                                                 <Button Command="{Binding ResetSensitivityYCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetSensitivityY, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
+                                            <Separator Margin="0,8,0,8"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_MinRangeXLeft, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding MaxRangeXNeg, Mode=TwoWay}"
@@ -3359,11 +3432,297 @@
                                         </StackPanel>
                                     </Grid>
 
+                                    <!-- ═══ Steering (winding / 2D angle-to-axis / motion lean) #94 — divider-separated section like the rest of the card ═══ -->
+                                    <Separator Margin="0,16,0,8"/>
+                                    <StackPanel>
+                                            <TextBlock Text="{Binding Pad_Steering_Header, Source={x:Static strings:Strings.Instance}}"
+                                                       Style="{StaticResource CardSectionTitle}"/>
+                                            <TextBlock Text="{Binding Pad_Steering_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                                       Style="{StaticResource CardDescription}"/>
+
+                                            <!-- Mode -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="{Binding Pad_Steering_Mode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                <ComboBox SelectedIndex="{Binding SteeringModeIndex, Mode=TwoWay}" Width="200" VerticalAlignment="Center">
+                                                    <ComboBoxItem Content="{Binding Pad_Steering_Mode_Linear, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Steering_Mode_Winding, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Steering_Mode_AngleX, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Steering_Mode_AngleY, Source={x:Static strings:Strings.Instance}}"/>
+                                                </ComboBox>
+                                                <Button Command="{Binding ResetSteeringModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_Mode, Source={x:Static strings:Strings.Instance}}"/>
+                                            </StackPanel>
+
+                                            <!-- Winding parameters -->
+                                            <StackPanel Visibility="{Binding IsWindingMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Steering_WindRange, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                    <Slider Value="{Binding WindRangeDeg, Mode=TwoWay}" Minimum="90" Maximum="2520" Style="{StaticResource DzSlider}"/>
+                                                    <TextBox Text="{Binding WindRangeDeg, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                                    <Button Command="{Binding ResetWindRangeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_WindRange, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Steering_WindPower, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                    <Slider Value="{Binding WindPower, Mode=TwoWay}" Minimum="0" Maximum="4" Style="{StaticResource DzSlider}"/>
+                                                    <TextBox Text="{Binding WindPower, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <Button Command="{Binding ResetWindPowerCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_WindPower, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Steering_WindUnwindRate, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                    <Slider Value="{Binding WindUnwindRate, Mode=TwoWay}" Minimum="0" Maximum="10000" Style="{StaticResource DzSlider}"/>
+                                                    <TextBox Text="{Binding WindUnwindRate, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <Button Command="{Binding ResetWindUnwindRateCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_WindUnwindRate, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+
+                                            <!-- Angle-to-axis parameters -->
+                                            <StackPanel Visibility="{Binding IsAngleMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Steering_AngleInnerDz, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                    <Slider Value="{Binding AngleInnerDz, Mode=TwoWay}" Minimum="0" Maximum="89" Style="{StaticResource DzSlider}"/>
+                                                    <TextBox Text="{Binding AngleInnerDz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                                    <Button Command="{Binding ResetAngleInnerDzCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_AngleInnerDz, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Pad_Steering_AngleOuterDz, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                    <Slider Value="{Binding AngleOuterDz, Mode=TwoWay}" Minimum="0" Maximum="89" Style="{StaticResource DzSlider}"/>
+                                                    <TextBox Text="{Binding AngleOuterDz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                    <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                                    <Button Command="{Binding ResetAngleOuterDzCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_AngleOuterDz, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+
+                                        </StackPanel>
+
                                 </StackPanel>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+
+                    <!-- ═══ Steering at-lock feedback (#94) — per device, all opt-in.
+                         Channels are shown only when the SELECTED assigned device can
+                         do them (SyncTabVisibility gates each by capability). ═══ -->
+                    <Border x:Name="LockFeedbackCard" Style="{StaticResource CardBorder}" Margin="0,0,0,16">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <!-- Steering wheel flanked by vibration waves: the wheel hits its
+                                     lock and you feel the cue. -->
+                                <Viewbox Width="18" Height="18" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Stroke="{DynamicResource TextFillColorPrimaryBrush}" StrokeThickness="1.7"
+                                              StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                                              Data="M5,12 A7,7 0 1 1 19,12 A7,7 0 1 1 5,12 Z M10.1,12 A1.9,1.9 0 1 1 13.9,12 A1.9,1.9 0 1 1 10.1,12 Z M10.1,12 L5,12 M13.9,12 L19,12 M12,13.9 L12,19 M3.7,9.8 A2.9,2.9 0 0 0 3.7,14.2 M2,8.5 A4.6,4.6 0 0 0 2,15.5 M20.3,9.8 A2.9,2.9 0 0 1 20.3,14.2 M22,8.5 A4.6,4.6 0 0 1 22,15.5"/>
+                                    </Canvas>
+                                </Viewbox>
+                                <TextBlock Text="{Binding Pad_Steering_LockFeedback, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardTitle}"/>
+                                <Button Command="{Binding ResetSteeringLockAllCommand}" Style="{StaticResource ResetAllButton}"
+                                        Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                        ToolTip="{Binding Pad_Steering_Reset_LockFeedback, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding Pad_Steering_LockFeedback_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource CardDescription}"/>
+                            <!-- Each channel is a checkbox + its own reset (off), so every row
+                                 in the card has a reset like the sliders below. Visibility is
+                                 gated per row by SyncTabVisibility to the device's capability. -->
+                            <StackPanel x:Name="LockRumbleRow" Orientation="Horizontal" Margin="0,0,0,4">
+                                <CheckBox IsChecked="{Binding SteeringLockRumbleEnabled, Mode=TwoWay}" VerticalAlignment="Center"
+                                          Content="{Binding Pad_Steering_Lock_Rumble, Source={x:Static strings:Strings.Instance}}"/>
+                                <Button Command="{Binding ResetSteeringLockRumbleCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_Rumble, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                            <StackPanel x:Name="LockTriggerVibRow" Orientation="Horizontal" Margin="0,0,0,4">
+                                <CheckBox IsChecked="{Binding SteeringLockTriggerVibEnabled, Mode=TwoWay}" VerticalAlignment="Center"
+                                          Content="{Binding Pad_Steering_Lock_TriggerVib, Source={x:Static strings:Strings.Instance}}"/>
+                                <Button Command="{Binding ResetSteeringLockTriggerVibCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_TriggerVib, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                            <StackPanel x:Name="LockLightbarRow" Orientation="Horizontal" Margin="0,0,0,4">
+                                <CheckBox IsChecked="{Binding SteeringLockLightbarEnabled, Mode=TwoWay}" VerticalAlignment="Center"
+                                          Content="{Binding Pad_Steering_Lock_Lightbar, Source={x:Static strings:Strings.Instance}}"/>
+                                <Button Command="{Binding ResetSteeringLockLightbarCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_Lightbar, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                            <StackPanel x:Name="LockResistanceRow" Orientation="Horizontal" Margin="0,0,0,8">
+                                <CheckBox IsChecked="{Binding SteeringLockATResistanceEnabled, Mode=TwoWay}" VerticalAlignment="Center"
+                                          Content="{Binding Pad_Steering_Lock_ATResistance, Source={x:Static strings:Strings.Instance}}"/>
+                                <Button Command="{Binding ResetSteeringLockResistanceCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_ATResistance, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                            <!-- Pulse length — the rumble / trigger pulse duration. The lightbar has its
+                                 own Hold + Decay below, so this no longer covers it. -->
+                            <StackPanel x:Name="LockPulseSection">
+                                <Separator Margin="0,8,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                    <TextBlock Text="{Binding Pad_Steering_Lock_PulseMs, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding SteeringLockPulseMs, Mode=TwoWay}" Minimum="0" Maximum="2000" Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding SteeringLockPulseMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="ms" Style="{StaticResource DzPercent}"/>
+                                    <Button Command="{Binding ResetSteeringLockPulseCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_PulseMs, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <!-- Lightbar colour + fade — only meaningful on a device with a lightbar. -->
+                            <StackPanel x:Name="LockLightbarSection">
+                            <Separator Margin="0,8,0,8"/>
+                            <!-- Color source: Base color (Fixed) / Random Hue / Palette Step — the three
+                                 macro lightbar modes, with a palette dedicated to the steering lock. -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Text="{Binding Macro_LightbarColorSource_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <ComboBox SelectedValue="{Binding SteeringLockLightbarColorSource, Mode=TwoWay}" SelectedValuePath="Tag" Width="200" VerticalAlignment="Center">
+                                    <ComboBoxItem Content="{Binding Macro_LightbarColorSource_Fixed, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroLightbarColorSource.Fixed}"/>
+                                    <ComboBoxItem Content="{Binding Macro_LightbarColorSource_RandomHue, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroLightbarColorSource.RandomHue}"/>
+                                    <ComboBoxItem Content="{Binding Macro_LightbarColorSource_PaletteStep, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroLightbarColorSource.PaletteStep}"/>
+                                </ComboBox>
+                            </StackPanel>
+                            <!-- Fixed base color — full picker in a bounding box (matches every other
+                                 colour picker): HSV box, swatch, hex field, RGB sliders + per-channel resets.
+                                 Shown only for the Fixed source. -->
+                            <StackPanel Visibility="{Binding IsSteeringLockLightbarFixedColorVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="{Binding Pad_Steering_Lock_LightbarColor, Source={x:Static strings:Strings.Instance}}" Margin="0,0,0,4"/>
+                            <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,8"
+                                    HorizontalAlignment="Left"
+                                    BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                <StackPanel>
+                                    <views:ColorPickerControl Margin="0,0,0,12" HorizontalAlignment="Left"
+                                        Red="{Binding SteeringLockColorR, Mode=TwoWay}"
+                                        Green="{Binding SteeringLockColorG, Mode=TwoWay}"
+                                        Blue="{Binding SteeringLockColorB, Mode=TwoWay}"/>
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="64"/>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Grid.Column="0" Width="48" Height="36" CornerRadius="4" HorizontalAlignment="Left"
+                                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                            <Border.Background>
+                                                <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                    <Binding Path="SteeringLockColorR"/>
+                                                    <Binding Path="SteeringLockColorG"/>
+                                                    <Binding Path="SteeringLockColorB"/>
+                                                </MultiBinding>
+                                            </Border.Background>
+                                        </Border>
+                                        <TextBlock Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
+                                                   VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                        <TextBox Grid.Column="2" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                 FontFamily="Consolas" Padding="6,4"
+                                                 Text="{Binding SteeringLockLightbarColor, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    </Grid>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                        <Slider Value="{Binding SteeringLockColorR, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                        <TextBox Text="{Binding SteeringLockColorR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                        <Button Command="{Binding ResetSteeringLockColorRCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                        <Slider Value="{Binding SteeringLockColorG, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                        <TextBox Text="{Binding SteeringLockColorG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                        <Button Command="{Binding ResetSteeringLockColorGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                        <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                        <Slider Value="{Binding SteeringLockColorB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                        <TextBox Text="{Binding SteeringLockColorB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                        <Button Command="{Binding ResetSteeringLockColorBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                            </StackPanel>
+                            <!-- Dedicated palette — shown only for the Palette Step source. Its own colors,
+                                 stepped through one per lock entry, used only by the steering lock. -->
+                            <StackPanel Margin="0,0,0,8"
+                                        Visibility="{Binding IsSteeringLockLightbarPaletteVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Text="{Binding Macro_LightbarPalette_Label, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                <TextBlock Text="{Binding Pad_Steering_Lock_PaletteEmpty, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+                                <ItemsControl ItemsSource="{Binding SteeringLockLightbarPalette}" Margin="0,0,0,4">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate><WrapPanel Orientation="Horizontal"/></ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type vm:LightbarPaletteEntry}">
+                                            <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,8,8"
+                                                    BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                                <StackPanel>
+                                                    <Button Command="{Binding DataContext.RemoveSteeringLockPaletteColorCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}" HorizontalAlignment="Right" Margin="0,0,0,4" Padding="4,0" MinWidth="24"
+                                                            ToolTip="{Binding Pad_Lighting_RemoveColor, Source={x:Static strings:Strings.Instance}}">
+                                                        <TextBlock Text="&#xE738;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                                                    </Button>
+                                                    <!-- Full picker, same gamut as every other color selector:
+                                                         HSV box, swatch, hex field, RGB sliders + value fields. -->
+                                                    <views:ColorPickerControl Margin="0,0,0,12" HorizontalAlignment="Left"
+                                                        Red="{Binding R, Mode=TwoWay}" Green="{Binding G, Mode=TwoWay}" Blue="{Binding B, Mode=TwoWay}"/>
+                                                    <Grid Margin="0,0,0,10">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="64"/>
+                                                            <ColumnDefinition Width="60"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Border Grid.Column="0" Width="48" Height="36" CornerRadius="4" HorizontalAlignment="Left"
+                                                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                            <Border.Background>
+                                                                <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                                    <Binding Path="R"/>
+                                                                    <Binding Path="G"/>
+                                                                    <Binding Path="B"/>
+                                                                </MultiBinding>
+                                                            </Border.Background>
+                                                        </Border>
+                                                        <TextBlock Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
+                                                                   VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                                        <TextBox Grid.Column="2" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                                 FontFamily="Consolas" Padding="6,4"
+                                                                 Text="{Binding Hex, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                                 ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                    </Grid>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                        <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                                                        <Slider Value="{Binding R, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                                        <TextBox Text="{Binding R, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                                    </StackPanel>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                        <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                                                        <Slider Value="{Binding G, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                                        <TextBox Text="{Binding G, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                                    </StackPanel>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                                        <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                        <Slider Value="{Binding B, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                                                        <TextBox Text="{Binding B, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <Button Command="{Binding AddSteeringLockPaletteColorCommand}" HorizontalAlignment="Left" Padding="10,4">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Pad_Lighting_AddColor, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <!-- Hold + Decay — the reactive pulse on lock: hold the color at full for
+                                 Hold ms, then fade back over Decay ms (matches the macro lightbar). -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="{Binding Macro_LightbarHold_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <Slider Value="{Binding SteeringLockLightbarHoldMs, Mode=TwoWay}" Minimum="0" Maximum="2000" Style="{StaticResource DzSlider}"/>
+                                <TextBox Text="{Binding SteeringLockLightbarHoldMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                <TextBlock Text="ms" Style="{StaticResource DzPercent}"/>
+                                <Button Command="{Binding ResetSteeringLockLightbarHoldCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_LightbarHold, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                <TextBlock Text="{Binding Macro_LightbarDecay_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <Slider Value="{Binding SteeringLockLightbarFadeMs, Mode=TwoWay}" Minimum="0" Maximum="5000" Style="{StaticResource DzSlider}"/>
+                                <TextBox Text="{Binding SteeringLockLightbarFadeMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                <TextBlock Text="ms" Style="{StaticResource DzPercent}"/>
+                                <Button Command="{Binding ResetSteeringLockFadeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_LightbarFadeMs, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
@@ -3443,11 +3802,11 @@
                                                 <Button Command="{Binding ResetAntiDeadZoneCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAntiDeadZone, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
 
-                                            <TextBlock Text="{Binding Pad_SensitivityCurve, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,4,0,4"
-                                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}" FontSize="11"/>
+                                            <Separator Margin="0,8,0,8"/>
+                                            <TextBlock Text="{Binding Pad_SensitivityCurve, Source={x:Static strings:Strings.Instance}}"
+                                                       Style="{StaticResource CardSectionTitle}"/>
                                             <TextBlock Text="{Binding Pad_SensitivityCurveHintShort, Source={x:Static strings:Strings.Instance}}"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                       FontSize="10" Margin="0,0,0,6" TextWrapping="Wrap"/>
+                                                       Style="{StaticResource CardDescription}"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_Preset_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <ComboBox AutomationProperties.AutomationId="TriggerPresetCombo"
@@ -3588,7 +3947,7 @@
                         <!-- ── Constant Force section ── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xF0AD;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_ConstantForce_Header, Source={x:Static strings:Strings.Instance}}"
@@ -3650,8 +4009,7 @@
                                     <!-- Numeric readout + sliders -->
                                     <StackPanel Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Top">
                                         <TextBlock Text="{Binding Pad_ConstantForce_Position, Source={x:Static strings:Strings.Instance}}"
-                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   TextWrapping="Wrap" Margin="0,0,0,12"/>
+                                                   Style="{StaticResource CardDescription}"/>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                             <TextBlock Text="{Binding Pad_ConstantForce_X, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                             <Slider Value="{Binding ConstantForceX, Mode=TwoWay}"
@@ -3680,7 +4038,7 @@
                         <!-- ── Audio Bass Rumble section ── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <TextBlock Text="&#xE767;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                        VerticalAlignment="Center" Margin="0,0,8,0"/>
                             <TextBlock Text="{Binding Settings_AudioRumble, Source={x:Static strings:Strings.Instance}}"
@@ -4044,6 +4402,7 @@
                                             Minimum="250" Maximum="10000" TickFrequency="250"/>
                                     <TextBox Text="{Binding PlayStationConfig.LightbarPeriodMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                     <Button Command="{Binding PlayStationConfig.ResetLightbarPeriodCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarPeriod, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
@@ -4607,6 +4966,7 @@
                                                 Minimum="0" Maximum="5000" TickFrequency="50"/>
                                         <TextBox Text="{Binding PlayStationConfig.LightbarInputHoldMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                  Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                         <Button Command="{Binding PlayStationConfig.ResetLightbarInputHoldCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarInputHold, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
@@ -4616,6 +4976,7 @@
                                                 Minimum="0" Maximum="5000" TickFrequency="50"/>
                                         <TextBox Text="{Binding PlayStationConfig.LightbarInputDecayMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                  Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                         <Button Command="{Binding PlayStationConfig.ResetLightbarInputDecayCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLightbarInputDecay, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
                                 </StackPanel>
@@ -4629,7 +4990,9 @@
                                 <StackPanel Visibility="{Binding PlayStationConfig.ShowPaletteForOverlay, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Pad_Lighting_PaletteHeader, Source={x:Static strings:Strings.Instance}}"
                                                FontWeight="SemiBold" Margin="0,0,0,6"/>
-                                    <ItemsControl ItemsSource="{Binding PlayStationConfig.LightbarPalette}" Margin="0,0,0,8">
+                                    <!-- Bound to the InputReactive Cycle's OWN palette, separate from the
+                                         ColorCycle palette above — editing one no longer touches the other. -->
+                                    <ItemsControl ItemsSource="{Binding PlayStationConfig.LightbarInputReactivePalette}" Margin="0,0,0,8">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel Orientation="Horizontal"/>
@@ -4640,7 +5003,7 @@
                                                 <Border BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,8,8"
                                                         BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
                                                     <StackPanel>
-                                                        <Button Command="{Binding DataContext.PlayStationConfig.RemovePaletteColorCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        <Button Command="{Binding DataContext.PlayStationConfig.RemoveInputReactivePaletteColorCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                                 CommandParameter="{Binding}"
                                                                 HorizontalAlignment="Right" Margin="0,0,0,4"
                                                                 Padding="4,0" MinWidth="24"
@@ -4692,14 +5055,14 @@
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <Button Command="{Binding PlayStationConfig.AddPaletteColorCommand}"
+                                        <Button Command="{Binding PlayStationConfig.AddInputReactivePaletteColorCommand}"
                                                 Padding="10,4">
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                 <TextBlock Text="{Binding Pad_Lighting_AddColor, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </Button>
-                                        <Button Command="{Binding PlayStationConfig.ResetPaletteCommand}"
+                                        <Button Command="{Binding PlayStationConfig.ResetInputReactivePaletteCommand}"
                                                 Margin="8,0,0,0" Padding="10,4"
                                                 ToolTip="{Binding Pad_Lighting_ResetPaletteTooltip, Source={x:Static strings:Strings.Instance}}">
                                             <StackPanel Orientation="Horizontal">
@@ -4760,7 +5123,7 @@
                              on DS4 slots via SyncTabVisibility. -->
                         <Border x:Name="IndicatorLedsCard" Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xEF31;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Lighting_IndicatorLeds, Source={x:Static strings:Strings.Instance}}"
@@ -4770,7 +5133,7 @@
                                             ToolTip="{Binding Pad_ResetIndicatorLeds, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Pad_Lighting_IndicatorLeds_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                                           Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                                           Style="{StaticResource CardDescription}"/>
 
                                 <!-- Shared brightness — physically writes byte 42
                                      ledBrightness, which the DS5 firmware uses
@@ -4882,6 +5245,58 @@
                                               ToolTip="{Binding Pad_Gyro_ApplyToPassthrough_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Command="{Binding ResetGyroApplyToPassthroughCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetGyroApplyToPassthrough, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- ─── Motion Steering card (#94) — settings for the "Motion Lean"
+                             INPUT (tilt deadzones + grip orientation, per assigned device).
+                             Motion Lean itself is a normal input descriptor: the user maps
+                             it to an axis from the input dropdown in Mappings, like any
+                             gyro input. This card never targets or overrides an axis. -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <Viewbox Width="18" Height="18" VerticalAlignment="Center" Margin="0,0,8,0">
+                                        <Canvas Width="24" Height="24">
+                                            <Path Stroke="{DynamicResource TextFillColorPrimaryBrush}" StrokeThickness="1.7"
+                                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                                                  Data="M5,12 A7,7 0 1 1 19,12 A7,7 0 1 1 5,12 Z M10.1,12 A1.9,1.9 0 1 1 13.9,12 A1.9,1.9 0 1 1 10.1,12 Z M10.1,12 L5,12 M13.9,12 L19,12 M12,13.9 L12,19"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                    <TextBlock Text="{Binding Pad_MotionSteer_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding ResetMotionSteerAllCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_MotionSteer_Reset_All, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_MotionSteer_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Steering_MotionInnerDz, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding MotionSteerInnerDz, Mode=TwoWay}" Minimum="0" Maximum="179" Style="{StaticResource DzSlider}"/>
+                                        <TextBox Text="{Binding MotionSteerInnerDz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                        <Button Command="{Binding ResetMotionSteerInnerCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_MotionInnerDz, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Steering_MotionOuterDz, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding MotionSteerOuterDz, Mode=TwoWay}" Minimum="0" Maximum="179" Style="{StaticResource DzSlider}"/>
+                                        <TextBox Text="{Binding MotionSteerOuterDz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                        <Button Command="{Binding ResetMotionSteerOuterCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_MotionOuterDz, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Steering_Orientation, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <ComboBox SelectedIndex="{Binding MotionSteerOrientIndex, Mode=TwoWay}" Width="200" VerticalAlignment="Center">
+                                            <ComboBoxItem Content="{Binding Pad_Steering_Orient_Forward, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Steering_Orient_Left, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Steering_Orient_Right, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Steering_Orient_Backward, Source={x:Static strings:Strings.Instance}}"/>
+                                        </ComboBox>
+                                        <Button Command="{Binding ResetMotionSteerOrientCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_Orientation, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </StackPanel>
                         </Border>
@@ -5161,7 +5576,7 @@
                         <!-- ─── Engage card ─── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Gyro_Engage_Header, Source={x:Static strings:Strings.Instance}}"
@@ -5171,8 +5586,7 @@
                                             ToolTip="{Binding Pad_Gyro_ResetEngage_All_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Pad_Gyro_Engage_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           TextWrapping="Wrap" Margin="0,0,0,8" FontSize="11"/>
+                                           Style="{StaticResource CardDescription}"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Settings_GyroEasyAimThreshold, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Center"
@@ -5391,7 +5805,7 @@
                         <!-- ── Constant Trigger Force section ── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xF0AD;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_ConstantTriggerForce_Header, Source={x:Static strings:Strings.Instance}}"
@@ -5434,7 +5848,7 @@
                         <!-- ── Audio Bass Trigger Rumble section ── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE767;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_AudioTriggerRumble_Header, Source={x:Static strings:Strings.Instance}}"
@@ -5534,7 +5948,17 @@
                             <ComboBox ItemsSource="{Binding TouchpadIndexOptions}"
                                       SelectedItem="{Binding SelectedTouchpadIndex, Mode=TwoWay}"
                                       Width="120" VerticalAlignment="Center"
-                                      ScrollViewer.VerticalScrollBarVisibility="Visible"/>
+                                      ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <!-- Pad index is stored 0-based; show it 1-based
+                                             ("1"/"2") to match the previews and picker. The
+                                             adjacent label is already the word "Touchpad", so
+                                             the dropdown shows only the number. -->
+                                        <TextBlock Text="{Binding Converter={StaticResource OneBasedIndexConverter}}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                         </StackPanel>
 
                         <!-- ─── Joystick / D-pad output card ─── -->
@@ -5560,8 +5984,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadStick, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Pad_Touchpad_Stick_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                           Style="{StaticResource CardDescription}"/>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <CheckBox Content="{Binding Pad_Touchpad_StickEnabled, Source={x:Static strings:Strings.Instance}}"
@@ -5626,8 +6049,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadMouse, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Pad_Touchpad_Mouse_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                           Style="{StaticResource CardDescription}"/>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_Touchpad_MouseSensitivityX, Source={x:Static strings:Strings.Instance}}"
@@ -5707,6 +6129,7 @@
                                     <TextBox Text="{Binding TouchpadCooldownMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"
                                              ToolTip="{Binding Pad_Touchpad_CooldownMs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                     <Button Command="{Binding ResetTouchpadCooldownMsCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadCooldownMs, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -5751,6 +6174,7 @@
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadSwipeTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                     <Button Command="{Binding ResetTouchpadSwipeTimeWindowMsCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadSwipeTimeWindow, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -5792,6 +6216,7 @@
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadTapTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                     <Button Command="{Binding ResetTouchpadTapTimeWindowMsCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadTapTimeWindow, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -5800,6 +6225,7 @@
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadMultiTapGapMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                     <Button Command="{Binding ResetTouchpadMultiTapGapMsCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadMultiTapGap, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -5815,6 +6241,7 @@
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadLongPressTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                     <Button Command="{Binding ResetTouchpadLongPressTimeWindowMsCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadLongPressTimeWindow, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -5883,8 +6310,7 @@
                                 </StackPanel>
 
                                 <TextBlock Text="{Binding Pad_Touchpad_Custom_Empty, Source={x:Static strings:Strings.Instance}}"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           TextWrapping="Wrap" Margin="0,0,0,8"
+                                           Style="{StaticResource CardDescription}"
                                            Visibility="{Binding HasNoCustomTouchpadGestures, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                 <ItemsControl ItemsSource="{Binding CustomTouchpadGestures}" Margin="0,0,0,8">
@@ -5920,6 +6346,238 @@
                 </ScrollViewer>
             </TabItem>
 
+            <!-- ═══ Wheel (Tag 11) — native-FFB wheels only ═══ -->
+            <TabItem>
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="0,16,0,16">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <Viewbox Width="22" Height="22" VerticalAlignment="Center" Margin="0,0,10,0">
+                                <Canvas Width="24" Height="24">
+                                    <Path Stroke="{DynamicResource TextFillColorPrimaryBrush}" StrokeThickness="1.7"
+                                          StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                          Data="M2,12 A10,10 0 1 1 22,12 A10,10 0 1 1 2,12 Z M9.4,12 A2.6,2.6 0 1 1 14.6,12 A2.6,2.6 0 1 1 9.4,12 Z M9.4,12 L2.2,12 M14.6,12 L21.8,12 M12,14.6 L12,21.8"/>
+                                </Canvas>
+                            </Viewbox>
+                            <TextBlock Text="{Binding Pad_Wheel, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Pad_Wheel_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
+
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <Viewbox Width="18" Height="18" VerticalAlignment="Center" Margin="0,0,8,0">
+                                        <Canvas Width="24" Height="24">
+                                            <Path Stroke="{DynamicResource TextFillColorPrimaryBrush}" StrokeThickness="1.8"
+                                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                                  Data="M2,12 A10,10 0 1 1 22,12 A10,10 0 1 1 2,12 Z M9.4,12 A2.6,2.6 0 1 1 14.6,12 A2.6,2.6 0 1 1 9.4,12 Z M9.4,12 L2.2,12 M14.6,12 L21.8,12 M12,14.6 L12,21.8"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                    <TextBlock Text="{Binding Pad_Wheel, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding ResetWheelAllCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetWheel, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <!-- Rotation range — wheel hardware steering lock (not a force).
+                                     Native HID command (vendor wheels only); hidden for generic
+                                     SDL wheels, which expose no set-range API. -->
+                                <StackPanel x:Name="WheelRangeRow" Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pad_Wheel_RotationRange, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding WheelRotationRange, Mode=TwoWay}" Minimum="40" Maximum="2520"
+                                            Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding WheelRotationRange, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                    <Button Command="{Binding ResetWheelRotationRangeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetRotationRange, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <!-- Auto-center — centering spring force -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pad_Wheel_Autocenter, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding WheelAutoCenter, Mode=TwoWay}" Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding WheelAutoCenter, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                    <Button Command="{Binding ResetWheelAutoCenterCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAutocenter, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <!-- RPM shift LEDs — telemetry-driven rev display.
+                                     Native HID command (vendor wheels only); hidden for generic
+                                     SDL wheels, which have no addressable rev strip. -->
+                                <StackPanel x:Name="WheelRpmRow" Orientation="Horizontal" Margin="0,4,0,0">
+                                    <CheckBox IsChecked="{Binding WheelRpmLeds, Mode=TwoWay}"
+                                              Content="{Binding Pad_Wheel_RpmLeds, Source={x:Static strings:Strings.Instance}}"
+                                              VerticalAlignment="Center"/>
+                                    <Button Command="{Binding ResetWheelRpmLedsCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetRpmLeds, Source={x:Static strings:Strings.Instance}}" Margin="8,0,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- === TAB 12: Audio (slot-level, issue #83) === -->
+            <TabItem>
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="0,16,0,16">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="&#xE767;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20"
+                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding Pad_Audio_Header, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Pad_Audio_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
+
+                        <!-- Sound Output card -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE7F5;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Audio_Output_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding ResetSoundOutputAllCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_Audio_Reset_All, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Audio_Output_Desc, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+                                <!-- Per assigned device, by convention: this toggle (and the
+                                     speaker routing of macro sounds) follows the device selected
+                                     in the assigned-devices dropdown. No output picker. -->
+                                <CheckBox IsChecked="{Binding PlayStationConfig.AudioPassthroughEnabled, Mode=TwoWay}"
+                                          Content="{Binding Pad_Audio_Mirror, Source={x:Static strings:Strings.Instance}}"
+                                          ToolTip="{Binding Pad_Audio_Mirror_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                          Margin="0,0,0,8"
+                                          Visibility="{Binding SelectedDeviceHasSpeaker, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <!-- Mirror SOURCE: which playback device feeds the mirror.
+                                     "" = system default. Lets games that send specific
+                                     sounds to a separate playback device target the pad. -->
+                                <StackPanel Orientation="Horizontal" Margin="20,0,0,8"
+                                            Visibility="{Binding SelectedDeviceHasSpeaker, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding Pad_Audio_MirrorSource_Label, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <!-- SelectedValuePath/DisplayMemberPath MUST precede the
+                                         ItemsSource/SelectedValue bindings: XAML applies
+                                         attributes in order, and a SelectedValue that attaches
+                                         before SelectedValuePath is set fails to resolve and
+                                         never retries — the closed box renders blank. -->
+                                    <ComboBox SelectedValuePath="Id" DisplayMemberPath="Name"
+                                              ItemsSource="{Binding MirrorSourceOptions}"
+                                              SelectedValue="{Binding SelectedMirrorSourceId, Mode=TwoWay}"
+                                              MinWidth="260" MaxWidth="380"
+                                              DropDownOpened="MirrorSource_DropDownOpened"
+                                              IsEnabled="{Binding PlayStationConfig.AudioPassthroughEnabled}"
+                                              ToolTip="{Binding Pad_Audio_MirrorSource_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Audio_NoSpeaker, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"
+                                           Visibility="{Binding SelectedDeviceHasNoSpeaker, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pad_Audio_MasterVolume, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding SoundMasterVolume, Mode=TwoWay}" Minimum="0" Maximum="100" Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding SoundMasterVolume, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                    <Button Command="{Binding ResetSoundMasterVolumeCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_Audio_Reset_MasterVolume, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="{Binding Pad_Audio_Test, Source={x:Static strings:Strings.Instance}}"
+                                            Command="{Binding SoundTestCommand}" Padding="10,4" VerticalAlignment="Center"
+                                            ToolTip="{Binding Pad_Audio_Test_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Audio_StopAll, Source={x:Static strings:Strings.Instance}}"
+                                            Command="{Binding SoundStopAllCommand}" Padding="10,4" Margin="6,0,0,0" VerticalAlignment="Center"
+                                            ToolTip="{Binding Pad_Audio_StopAll_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Sound Macros hub card -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xEC4F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Audio_Macros_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Audio_Macros_Desc, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+                                <Button Content="{Binding Pad_Audio_NewSoundMacro, Source={x:Static strings:Strings.Instance}}"
+                                        Command="{Binding AddSoundMacroCommand}" Padding="10,4" HorizontalAlignment="Left"
+                                        Margin="0,0,0,8"/>
+                                <TextBlock Text="{Binding Pad_Audio_NoSoundMacros, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"
+                                           Visibility="{Binding HasNoSoundMacros, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <ItemsControl ItemsSource="{Binding SoundMacros}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Click="SoundMacroRow_Click" HorizontalAlignment="Stretch"
+                                                    HorizontalContentAlignment="Left" Margin="0,0,0,4" Padding="8,5"
+                                                    ToolTip="{Binding Pad_Audio_OpenMacro_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="&#xEC4F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                                               FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding SoundFilesSummary}" VerticalAlignment="Center"
+                                                               Margin="10,0,0,0" Opacity="0.6" FontSize="12"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Sound Packages card -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE8B7;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Audio_Packages_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Audio_Packages_Desc, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <Button Content="{Binding Pad_Audio_Packages_Add, Source={x:Static strings:Strings.Instance}}"
+                                            Click="PackageAdd_Click" Padding="10,4"
+                                            ToolTip="{Binding Pad_Audio_Packages_Add_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Audio_Packages_Create, Source={x:Static strings:Strings.Instance}}"
+                                            Click="PackageCreate_Click" Padding="10,4" Margin="6,0,0,0"
+                                            ToolTip="{Binding Pad_Audio_Packages_Create_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"
+                                            Click="PackageRemove_Click" Padding="10,4" Margin="6,0,0,0"
+                                            ToolTip="{Binding Pad_Audio_Packages_Remove_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock x:Name="SoundPackagesEmptyText"
+                                           Text="{Binding Pad_Audio_Packages_Empty, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+                                <ListBox x:Name="SoundPackagesList" MaxHeight="170">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Margin="0,2">
+                                                <TextBlock Text="&#xE8D6;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                                           FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding Path}" VerticalAlignment="Center"
+                                                           Margin="10,0,0,0" Opacity="0.6" FontSize="12"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
         </TabControl>
     </Grid>
 </UserControl>

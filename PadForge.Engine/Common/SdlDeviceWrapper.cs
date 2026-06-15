@@ -106,6 +106,18 @@ namespace PadForge.Engine
         /// <summary>Whether the device has a touchpad (DS4/DualSense/Steam Deck).</summary>
         public bool HasTouchpad { get; private set; }
 
+        /// <summary>Number of touchpad surfaces SDL reports for this device
+        /// (Steam Controller 2026 / Steam Deck = 2; DualSense / DS4 = 1).
+        /// Sourced from the per-pad finger-count scratch sized at open time.
+        /// Persisted onto UserDevice so the mapping picker keeps both pads
+        /// even when the device is offline.</summary>
+        public int NumTouchpads => _padFingerCounts?.Length ?? (HasTouchpad ? 1 : 0);
+
+        /// <summary>Per-pad finger counts from SDL_GetNumGamepadTouchpadFingers,
+        /// captured at open time. Persisted onto UserDevice so the picker offers
+        /// only the fingers each pad actually supports, even when offline.</summary>
+        public int[] TouchpadFingerCounts => _padFingerCounts ?? System.Array.Empty<int>();
+
         /// <summary>Human-readable device name.</summary>
         public string Name { get; private set; } = string.Empty;
 
@@ -419,6 +431,18 @@ namespace PadForge.Engine
         public CustomInputState GetCurrentState(bool forceRaw = false)
         {
             if (Joystick == IntPtr.Zero)
+                return null;
+
+            // A physically detached handle still "reads" — SDL returns signed 0
+            // for every axis, which the unsigned conversion turns into 32768
+            // (center). For a wheel pedal mapped as an inverted trigger that
+            // center becomes 65535-32768 = 32767 (~50% engaged) during the
+            // disconnect-debounce window, and Step 3 stamps it into the slot
+            // output. Detachment is permanent for this handle (a replug gets a
+            // new SDL instance), so refuse the read; Step 2 treats null as a
+            // failed read and marks the device offline, keeping the last GOOD
+            // input state.
+            if (!SDL_JoystickConnected(Joystick))
                 return null;
 
             // When the device is opened as a Gamepad, use the gamepad API to read

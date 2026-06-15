@@ -671,7 +671,7 @@
   <data name="Macro_FixedCount" xml:space="preserve"><value>Conteggio fisso</value></data>
   <data name="Macro_UntilRelease" xml:space="preserve"><value>Fino al rilascio</value></data>
   <data name="Macro_Count" xml:space="preserve"><value>Conteggio</value></data>
-  <data name="Macro_DelayMs" xml:space="preserve"><value>Ritardo (ms)</value></data>
+  <data name="Macro_DelayMs" xml:space="preserve"><value>Ritardo</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Sensibilità</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Nuova macro</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Registra attivatore</value></data>
@@ -1093,7 +1093,6 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Ripristina taglio bassi</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Ripristina motore sinistro</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Ripristina motore destro</value></data>
-  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>Touchpad 1 X</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Giroscopio beccheggio</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Giroscopio imbardata</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Giroscopio rollio</value></data>
@@ -1192,14 +1191,13 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Ripristina regolazione trasmissione</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilità</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Moltiplicatore di sensibilità del giroscopio per sorgente. 1,0 = predefinito del motore (500°/s → deflessione completa). Valori superiori a 1,0 sono più sensibili. Valori inferiori sono meno sensibili.</value></data>
-  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>
-  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Touchpad 2 X</value></data>
-  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Touchpad 2 Y</value></data>
-  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>Tocco touchpad 1</value></data>
-  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>Tocco touchpad 2</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Clic touchpad</value></data>
+  <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Touchpad {0} dito {1} X</value></data>
+  <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Touchpad {0} dito {1} Y</value></data>
+  <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>Touchpad {0} dito {1} tocco</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Movimento giroscopio</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>Movimento accelerometro</value></data>
+  <data name="Mapping_MotionLean" xml:space="preserve"><value>Inclinazione di movimento</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>Tastierino numerico *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>Tastierino numerico +</value></data>
@@ -1230,6 +1228,14 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>Sostituto drop-in di XInput. Filtra i controller virtuali di PadForge dalla sua stessa vista.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Pack icone Zacksly</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Icone di levette e grilletti derivate da "Xbox Series Button Icons and Controls" di Zacksly (CC BY 3.0)</value></data>
+  <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Encoder Opus in C# puro che alimenta l'audio dell'altoparlante DualSense via Bluetooth. Di Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>Ricerca sull'audio Bluetooth del DualSense di egormanga: il trasporto dei pacchetti su cui si basa lo stream dell'altoparlante. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Ricetta dell'altoparlante via Bluetooth di awalol: framing Opus e layout dei pacchetti. Grazie anche a TechAntohere per i risultati condivisi e i test. MIT.</value></data>
+  <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
+  <data name="About_DualSenseYDesc" xml:space="preserve"><value>Implementazione di riferimento per il passthrough audio USB del controller. Di WujekFoliarz.</value></data>
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Grilletti adattivi</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Grilletti adattivi</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configura gli effetti dei grilletti sul DualSense fisico assegnato. Gli effetti generati dal gioco vengono inoltrati automaticamente. Le impostazioni qui aggiungono un livello configurato dall'utente che si attiva quando nessun gioco sta scrivendo.</value></data>
@@ -1337,7 +1343,7 @@
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Reattivo all'input — ciclo della tavolozza</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Reattivo all'input — colore singolo per pressione</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Luminosità</value></data>
-  <data name="Pad_Lighting_Period" xml:space="preserve"><value>Periodo (ms)</value></data>
+  <data name="Pad_Lighting_Period" xml:space="preserve"><value>Periodo</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Tavolozza</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Colore 1</value></data>
   <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>Colore 2</value></data>
@@ -1347,8 +1353,8 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Aggiungi colore</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Ripristina tavolozza</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Sostituisce la tavolozza attuale con i quattro colori predefiniti (rosso, verde, blu, giallo).</value></data>
-  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Mantieni impulso (ms)</value></data>
-  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Decadimento impulso (ms)</value></data>
+  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Mantieni impulso</value></data>
+  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Decadimento impulso</value></data>
   <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>Ripristina grilletto sinistro</value></data>
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>Ripristina grilletto destro</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>Ripristina forza</value></data>
@@ -1417,7 +1423,7 @@
   <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>Rinomina livello</value></data>
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Non ereditare</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Quando selezionato, l'obiettivo di questo livello rimane SPENTO anziché ricadere sulla riga Base.</value></data>
-  <data name="Pad_Shift_Delay" xml:space="preserve"><value>Ritardo (ms)</value></data>
+  <data name="Pad_Shift_Delay" xml:space="preserve"><value>Ritardo</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Millisecondi per cui l'attivatore deve rimanere attivo prima che venga attivato il cambio di livello.</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Salta al livello</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Secondo ingresso dell'accordo</value></data>
@@ -1529,7 +1535,6 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Input per touchpad. I gesti (scorrimenti, tap, pizzichi, forme) e le modalità di output continue (stick virtuale / D-pad, mouse) diventano sorgenti di mappatura da collegare nella scheda Mappature.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Rilevamento gesti</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Abilita gesti su questo touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Interruttore principale per questo touchpad. Quando disattivato, nessun descrittore di gesto si attiva per questo touchpad. Le mappature esistenti di dita, clic e posizione continuano a funzionare.</value></data>
@@ -1538,22 +1543,22 @@
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>Solo personalizzati</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Entrambi</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>Quale catalogo di gesti il motore valuta rispetto ai percorsi delle dita in tempo reale. "Entrambi" è l'impostazione predefinita.</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Cooldown (ms)</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Cooldown</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Dopo l'attivazione di un gesto, ignora nuovi gesti su questo touchpad per il numero di millisecondi indicato. Evita attivazioni multiple causate da movimenti rapidi avanti e indietro.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Gesti integrati</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Scorrimenti a 4 direzioni (su / giù / sinistra / destra)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>Scorrimenti a 8 direzioni (aggiunge le diagonali)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Distanza scorrimento (0..1)</value></data>
-  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Finestra temporale scorrimento (ms)</value></data>
+  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Finestra temporale scorrimento</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Zone radiali (stile ruota delle armi)</value></data>
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Trascina verso l'esterno dal punto di appoggio del dito verso un settore. La zona 0 è ancorata in alto e le zone aumentano in senso orario. Ogni voce nel selettore mostra la sua direzione tra parentesi come gradi rispetto all'alto: (0°) è in alto, (90°) è a destra, (180°) è in basso, (270°) è a sinistra. Una sola zona è attiva alla volta. Trascinare in un'altra rilascia la precedente, così puoi scorrere le zone con un singolo gesto.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Numero di zone</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Zona morta centrale (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tocco / Doppio tocco / Triplo tocco</value></data>
-  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>Finestra temporale tocco (ms)</value></data>
-  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>Intervallo multi-tocco (ms)</value></data>
+  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>Finestra temporale tocco</value></data>
+  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>Intervallo multi-tocco</value></data>
   <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>Pressione prolungata</value></data>
-  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>Durata pressione prolungata (ms)</value></data>
+  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>Durata pressione prolungata</value></data>
   <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>Scorrimenti a due dita</value></data>
   <data name="Pad_Touchpad_PinchSpread" xml:space="preserve"><value>Pizzico / Allargamento</value></data>
   <data name="Pad_Touchpad_Rotate" xml:space="preserve"><value>Rotazione</value></data>
@@ -1647,4 +1652,317 @@
   <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>Numero di dita cambiato. Campioni azzerati.</value></data>
   <data name="Recorder_Error_NoEngine" xml:space="preserve"><value>Motore non in esecuzione. Avvia il motore prima di registrare.</value></data>
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>Nessun campione valido acquisito. Prova a disegnare di nuovo il gesto.</value></data>
+  <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Intervallo di rotazione</value></data>
+  <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Autocentratura</value></data>
+  <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>LED di regime</value></data>
+  <data name="Pad_Steering_Header" xml:space="preserve"><value>Sterzo</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Disattivato lascia lo stick normale. Le altre modalità lo fanno comportare come un volante.</value></data>
+  <data name="Pad_Steering_Mode" xml:space="preserve"><value>Modalità sterzo</value></data>
+  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>Disattivato</value></data>
+  <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>Avvolgimento</value></data>
+  <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>Angolo su asse (X)</value></data>
+  <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>Angolo su asse (Y)</value></data>
+  <data name="Pad_Steering_Mode_MotionLean" xml:space="preserve"><value>Inclinazione movimento</value></data>
+  <data name="Pad_Steering_WindRange" xml:space="preserve"><value>Intervallo di avvolgimento</value></data>
+  <data name="Pad_Steering_WindPower" xml:space="preserve"><value>Potenza di avvolgimento</value></data>
+  <data name="Pad_Steering_WindUnwindRate" xml:space="preserve"><value>Velocità di svolgimento</value></data>
+  <data name="Pad_Steering_AngleInnerDz" xml:space="preserve"><value>Zona morta interna angolo</value></data>
+  <data name="Pad_Steering_AngleOuterDz" xml:space="preserve"><value>Zona morta esterna angolo</value></data>
+  <data name="Pad_Steering_MotionInnerDz" xml:space="preserve"><value>Zona morta interna inclinazione</value></data>
+  <data name="Pad_Steering_MotionOuterDz" xml:space="preserve"><value>Zona morta esterna inclinazione</value></data>
+  <data name="Pad_Steering_Orientation" xml:space="preserve"><value>Orientamento controller</value></data>
+  <data name="Pad_Steering_Orient_Forward" xml:space="preserve"><value>Avanti</value></data>
+  <data name="Pad_Steering_Orient_Left" xml:space="preserve"><value>Sinistra</value></data>
+  <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>Destra</value></data>
+  <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>Indietro</value></data>
+  <data name="Pad_Steering_Reset_Mode" xml:space="preserve"><value>Ripristina modalità sterzo</value></data>
+  <data name="Pad_Steering_Reset_WindRange" xml:space="preserve"><value>Ripristina intervallo di avvolgimento</value></data>
+  <data name="Pad_Steering_Reset_WindPower" xml:space="preserve"><value>Ripristina potenza di avvolgimento</value></data>
+  <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Ripristina velocità di svolgimento</value></data>
+  <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Ripristina zona morta interna angolo</value></data>
+  <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Ripristina zona morta esterna angolo</value></data>
+  <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Ripristina zona morta interna inclinazione</value></data>
+  <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Ripristina zona morta esterna inclinazione</value></data>
+  <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Ripristina orientamento controller</value></data>
+  <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Sterzo a movimento</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Impostazioni per l’input "Inclinazione di movimento": inclina il controller come un volante. Assegna "Inclinazione di movimento" a un asse dello stick dal menu degli input in Mappature.</value></data>
+  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Ripristina tutte le impostazioni dello sterzo a movimento</value></data>
+  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback sterzo a fine corsa</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quando una levetta impostata su una modalità di sterzo viene portata fino al fine corsa, riproduce un segnale (vibrazione, grilletto o barra luminosa) per farti percepire il limite. Tutto disattivato per impostazione predefinita.</value></data>
+  <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Impulso di vibrazione al fine corsa</value></data>
+  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibrazione dei grilletti al fine corsa</value></data>
+  <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Impulso della barra luminosa al fine corsa</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Resistenza dei grilletti in prossimità del fine corsa</value></data>
+  <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>Durata dell'impulso</value></data>
+  <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Colore barra luminosa</value></data>
+  <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Dissolvenza barra luminosa</value></data>
+  <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>Ripristina durata dell'impulso</value></data>
+  <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>Ripristina colore barra luminosa</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Ripristina dissolvenza barra luminosa</value></data>
+  <data name="Pad_Wheel" xml:space="preserve"><value>Volante</value></data>
+  <data name="Pad_ResetWheel" xml:space="preserve"><value>Ripristina volante</value></data>
+  <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Ripristina intervallo di rotazione</value></data>
+  <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Ripristina autocentratura</value></data>
+  <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Ripristina LED di regime</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Angolo di sterzo, autocentratura e luci di cambio per volanti con force feedback.</value></data>
+  <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Ripristina feedback sterzo a fine corsa</value></data>
+  <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Ripristina impulso di vibrazione al fine corsa</value></data>
+  <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Ripristina vibrazione dei grilletti al fine corsa</value></data>
+  <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Ripristina impulso della barra luminosa al fine corsa</value></data>
+  <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Ripristina resistenza dei grilletti in prossimità del fine corsa</value></data>
+  <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Aggiungi colori da scorrere, uno per ogni fine corsa.</value></data>
+  <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Ripristina mantenimento barra luminosa</value></data>
+  <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
+  <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>I suoni delle macro e l’audio duplicato escono dall’altoparlante integrato del controller selezionato, via USB o Bluetooth. Scegli il dispositivo nel menu sopra: tutto qui lo segue.</value></data>
+  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Uscita audio</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>I suoni raggiungono automaticamente il controller selezionato. Via USB l’endpoint audio del pad è associato per contenitore hardware. Via Bluetooth l’audio viaggia in frame HID Sony.</value></data>
+  <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Sorgente mirroring</value></data>
+  <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Quale dispositivo di riproduzione viene riprodotto sull'altoparlante del controller. I giochi che inviano suoni specifici a un dispositivo di riproduzione separato possono usare questo.</value></data>
+  <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Predefinito di sistema</value></data>
+  <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(dispositivo non disponibile)</value></data>
+  <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Volume generale</value></data>
+  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Ripristina il volume generale al 100%</value></data>
+  <data name="Pad_Audio_Test" xml:space="preserve"><value>Prova</value></data>
+  <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>Riproduci un breve bip sul dispositivo selezionato</value></data>
+  <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Ferma tutti i suoni</value></data>
+  <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Ferma tutti i suoni delle macro di questo pad</value></data>
+  <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Macro sonore</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>I suoni sono riprodotti dalle macro: un trigger (pressione, rilascio, tenuta o formula) più un’azione "Riproduci suono". Creale qui o nella scheda Macro. Ritardi, ripetizioni e toggle funzionano.</value></data>
+  <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Nuova macro sonora</value></data>
+  <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Nessuna macro sonora. Creane una e scegli file audio e trigger.</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Apri questa macro nella scheda Macro</value></data>
+  <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Macro sonora {0}</value></data>
+  <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Riproduci suono</value></data>
+  <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Riproduci un file audio (.wav, .mp3, .m4a, .aac, .wma, .flac) sul dispositivo di uscita di questo pad</value></data>
+  <data name="MacroAction_Type_SoundStop" xml:space="preserve"><value>Ferma i suoni</value></data>
+  <data name="MacroAction_SoundStop_Tooltip" xml:space="preserve"><value>Ferma tutti i suoni delle macro di questo pad. Abbinalo a un "Riproduci suono" in loop per fermarlo da un’altra macro.</value></data>
+  <data name="MacroAction_PlaySound_Format" xml:space="preserve"><value>Riproduci {0} ({1}%)</value></data>
+  <data name="MacroAction_PlaySoundLoop_Format" xml:space="preserve"><value>Loop {0} ({1}%)</value></data>
+  <data name="Macro_Sound_File_Label" xml:space="preserve"><value>File audio</value></data>
+  <data name="Macro_Sound_Browse" xml:space="preserve"><value>Sfoglia…</value></data>
+  <data name="Macro_Sound_Preview" xml:space="preserve"><value>Anteprima</value></data>
+  <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
+  <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loop fino allo stop</value></data>
+  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Ripete il suono finché non parte un’azione "Ferma i suoni", o per le macro tieni/rilascia, finché il trigger non viene rilasciato</value></data>
+  <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Duplica l’audio di sistema sull’altoparlante del controller</value></data>
+  <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copia in parallelo ciò che riproduce l’uscita predefinita di sistema sull’altoparlante integrato di questo controller. Funziona via USB e Bluetooth.</value></data>
+  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Il dispositivo selezionato non ha un altoparlante integrato. I suoni macro di questo pad escono sull’uscita predefinita.</value></data>
+  <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>Riconoscitore di sagome per il touchpad (cerchio / quadrato / triangolo / Z / spunta e gesti registrati personalizzati). Rielaborazione in C# del riferimento JavaScript di Magrofuoco, Vatavu, Anthony e Wobbrock. BSD 3-Clause.</value></data>
+  <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>Punteggio a margine angolare che affianca il riconoscitore a nuvola di punti sulle forme a un dito. Adattato dal PointPatternAnalyzer di GestureSign. BSD 3-Clause.</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Ripristina mirror, sorgente del mirror e volume principale ai valori predefiniti</value></data>
+  <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Suite di test DualSense nel browser di Xuezhou Dai (daidr): riferimento per il framing CRC dei feature report Sony e i comandi di test del firmware che PadForge inoltra dal pad virtuale a quello fisico. MIT.</value></data>
+  <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>Riferimento audio Bluetooth del DualShock 4 di nefarius: framing dei report per lo stream dell'altoparlante DS4 di PadForge. L'encoder SBC è un'implementazione C# originale dalla specifica Bluetooth A2DP. Con documentazione del protocollo dal ds4mac di khallmark. MIT.</value></data>
+  <data name="Profiles_Export" xml:space="preserve"><value>Esporta…</value></data>
+  <data name="Profiles_Import" xml:space="preserve"><value>Importa…</value></data>
+  <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Profilo "{0}" esportato.</value></data>
+  <data name="Status_ProfileImported_Format" xml:space="preserve"><value>Profilo "{0}" importato ({1} pacchetto/i audio registrati).</value></data>
+  <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Il file non è un profilo PadForge leggibile.</value></data>
+  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Scegli un suono da {0}</value></data>
+  <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Pacchetti audio</value></data>
+  <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Un pacchetto audio è un singolo file ZIP di suoni con estensione .pfsounds. Aggiungine uno qui, poi scegli i suoi suoni in qualsiasi macro audio. PadForge legge direttamente dal file e non lo estrae mai. Tieni i pacchetti accanto a PadForge.exe così tutto resta portatile.</value></data>
+  <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Aggiungi pacchetto…</value></data>
+  <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Aggiungi un file .pfsounds esistente all'elenco.</value></data>
+  <data name="Pad_Audio_Packages_Create" xml:space="preserve"><value>Crea pacchetto…</value></data>
+  <data name="Pad_Audio_Packages_Create_Tooltip" xml:space="preserve"><value>Scegli i file audio e salvali come nuovo pacchetto .pfsounds.</value></data>
+  <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>Rimuovi il pacchetto selezionato dall'elenco. Il file non viene eliminato.</value></data>
+  <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>Nessun pacchetto audio aggiunto.</value></data>
+  <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Scegli i file audio per il pacchetto</value></data>
+  <data name="DeviceType_Midi" xml:space="preserve"><value>Controller MIDI</value></data>
+  <data name="Mapping_MidiNote_Format" xml:space="preserve"><value>Nota {0} ({1})</value></data>
+  <data name="Mapping_MidiCc_Format" xml:space="preserve"><value>CC {0}</value></data>
+  <data name="Mapping_MidiCcNamed_Format" xml:space="preserve"><value>CC {0} ({1})</value></data>
+  <data name="Mapping_MidiPitchBend" xml:space="preserve"><value>Pitch Bend</value></data>
+  <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
+  <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
+  <data name="RemoteLink_IdentityTitle" xml:space="preserve">
+    <value>Protezione dell'identità</value>
+  </data>
+  <data name="RemoteLink_IdentityDescription" xml:space="preserve">
+    <value>Come viene memorizzata l'identità di abbinamento di questo PC. Scegli una modalità portatile per portare i tuoi abbinamenti su una chiavetta USB tra computer diversi.</value>
+  </data>
+  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve">
+    <value>Nome di questo PC</value>
+  </data>
+  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
+    <value>PC nelle vicinanze (non abbinati)</value>
+  </data>
+  <data name="Common_Reset" xml:space="preserve">
+    <value>Reimposta</value>
+  </data>
+  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
+    <value>Password di Remote Link</value>
+  </data>
+  <data name="Devices_ButtonNumberTooltip" xml:space="preserve">
+    <value>Pulsante {0}</value>
+  </data>
+  <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
+    <value>Touchpad PadForge</value>
+  </data>
+  <data name="RemoteLink_PasswordEmpty" xml:space="preserve">
+    <value>Inserisci una password.</value>
+  </data>
+  <data name="RemoteLink_PasswordMismatch" xml:space="preserve">
+    <value>Le password non corrispondono.</value>
+  </data>
+  <data name="RemoteLink_IdentityModeSecure" xml:space="preserve">
+    <value>Sicuro — solo questo PC</value>
+  </data>
+  <data name="RemoteLink_IdentityModePortablePassword" xml:space="preserve">
+    <value>Portatile — protetto da password</value>
+  </data>
+  <data name="RemoteLink_IdentityModePortableOpen" xml:space="preserve">
+    <value>Portatile — senza password</value>
+  </data>
+  <data name="RemoteLink_IdentityHintPortablePassword" xml:space="preserve">
+    <value>La tua identità viaggia su questa unità e si sblocca con la tua password su qualsiasi PC. Un'unità smarrita è inutile senza di essa.</value>
+  </data>
+  <data name="RemoteLink_IdentityHintPortableOpen" xml:space="preserve">
+    <value>La tua identità viaggia su questa unità senza alcuna richiesta. Chiunque abbia l'unità può usarla. Conservala al sicuro.</value>
+  </data>
+  <data name="RemoteLink_IdentityHintSecure" xml:space="preserve">
+    <value>Bloccata su questo PC (funziona per ogni account Windows presente su di esso). Non può essere spostata su un'altra macchina.</value>
+  </data>
+  <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
+    <value>PC abbinato</value>
+  </data>
+  <data name="RemoteLink_Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="RemoteLink_Offline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="RemoteLink_GamepadOnlySuffix" xml:space="preserve">
+    <value>solo gamepad</value>
+  </data>
+  <data name="RemoteLink_PeerConnectedSuffix" xml:space="preserve">
+    <value>(connesso)</value>
+  </data>
+  <data name="RemoteLink_PeerPairedSuffix" xml:space="preserve">
+    <value>(associato)</value>
+  </data>
+  <data name="RemoteLink_StatusUnlockBeforeChange" xml:space="preserve">
+    <value>Sblocca l'identità corrente prima di modificarne la protezione.</value>
+  </data>
+  <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
+    <value>Imposta una password per proteggere la tua identità portatile. La inserirai per sbloccare Remote Link su ogni PC.</value>
+  </data>
+  <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
+    <value>Protezione dell'identità aggiornata.</value>
+  </data>
+  <data name="RemoteLink_PasswordUnlockPrompt" xml:space="preserve">
+    <value>Inserisci la tua password di Remote Link per sbloccare questa identità.</value>
+  </data>
+  <data name="RemoteLink_StatusWrongMachine" xml:space="preserve">
+    <value>L'identità Remote Link è vincolata a un altro PC. Passa a una modalità portatile sul PC originale per spostarla.</value>
+  </data>
+  <data name="RemoteLink_StatusWrongPassword" xml:space="preserve">
+    <value>La password di Remote Link non è corretta.</value>
+  </data>
+  <data name="RemoteLink_StatusIdentityUnavailable" xml:space="preserve">
+    <value>L'identità Remote Link non è disponibile.</value>
+  </data>
+  <data name="RemoteLink_StatusConnecting" xml:space="preserve">
+    <value>Connessione a {0}:{1}…</value>
+  </data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve">
+    <value>Riconnetti automaticamente</value>
+  </data>
+  <data name="Dashboard_EnableRemoteLink" xml:space="preserve">
+    <value>Attiva il server Remote Link</value>
+  </data>
+  <data name="Dashboard_RemoteLink" xml:space="preserve">
+    <value>Remote Link</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve">
+    <value>Oppure connetti tramite indirizzo (avanzate)</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve">
+    <value>Abbina / Connetti</value>
+  </data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
+    <value>Condividi i controller con un PadForge abbinato su un altro PC nella tua rete.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
+    <value>Dopo un abbinamento una tantum, un PC attendibile si riconnette automaticamente. Un PC abbinato può controllare l&apos;output del gamepad di questo PC e, se non lo limiti, anche tastiera, mouse e macro.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNearby" xml:space="preserve">
+    <value>PC nelle vicinanze</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve">
+    <value>I PC con Remote Link attivo, sulla stessa rete, compaiono qui automaticamente.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve">
+    <value>Abbina</value>
+  </data>
+  <data name="RemoteLink_Connect" xml:space="preserve">
+    <value>Connetti</value>
+  </data>
+  <data name="RemoteLink_Connected" xml:space="preserve">
+    <value>Connesso</value>
+  </data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve">
+    <value>Un PC abbinato può inviare input da tastiera, mouse e macro a questo PC, a meno che non lo limiti al solo gamepad.</value>
+  </data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve">
+    <value>Limita questo PC al solo input gamepad</value>
+  </data>
+  <data name="RemoteLink_Identity" xml:space="preserve">
+    <value>Identità</value>
+  </data>
+  <data name="RemoteLink_NoPairedPeers" xml:space="preserve">
+    <value>Nessun PC abbinato.</value>
+  </data>
+  <data name="RemoteLink_Pair" xml:space="preserve">
+    <value>Abbina</value>
+  </data>
+  <data name="RemoteLink_PairedPeers" xml:space="preserve">
+    <value>PC abbinati</value>
+  </data>
+  <data name="RemoteLink_PairedPeersDescription" xml:space="preserve">
+    <value>I PC che hai abbinato per Remote Link. Revocane uno per impedirgli di connettersi. Dovrà abbinarsi di nuovo.</value>
+  </data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve">
+    <value>Verifica che questo codice corrisponda su entrambi gli schermi, quindi premi Abbina.</value>
+  </data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve">
+    <value>Abbina a un PC remoto</value>
+  </data>
+  <data name="RemoteLink_Reject" xml:space="preserve">
+    <value>Rifiuta</value>
+  </data>
+  <data name="RemoteLink_Revoke" xml:space="preserve">
+    <value>Revoca</value>
+  </data>
+  <data name="RemoteLink_RevokeAll" xml:space="preserve">
+    <value>Revoca tutti</value>
+  </data>
+  <data name="RemoteLink_StatusListening" xml:space="preserve">
+    <value>In ascolto su {0}</value>
+  </data>
+  <data name="RemoteLink_StatusStartFailed" xml:space="preserve">
+    <value>Avvio non riuscito: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerTimedOut" xml:space="preserve">
+    <value>Timeout del peer {0}</value>
+  </data>
+  <data name="RemoteLink_StatusConnectFailed" xml:space="preserve">
+    <value>Connessione non riuscita: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusLinkRejected" xml:space="preserve">
+    <value>Collegamento rifiutato: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
+    <value>Peer {0} connesso, {1} dispositivi</value>
+  </data>
+  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
+    <value>Scegli un suono da un pacchetto aggiunto oppure sfoglia un file.</value>
+  </data>
+  <data name="Macro_Sound_BrowseFiles" xml:space="preserve">
+    <value>Sfoglia file…</value>
+  </data>
 </root>

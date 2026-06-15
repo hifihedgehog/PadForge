@@ -39,6 +39,22 @@ namespace PadForge.Views
 
         private void OnVmPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == nameof(ViewModels.DevicesViewModel.IsMidiDevice))
+            {
+                var vm = DataContext as ViewModels.DevicesViewModel;
+                if (vm != null && vm.IsMidiDevice)
+                {
+                    MidiNotesPreview.BindInput(() => vm.LiveMidi, Views.MidiPreviewView.InputSection.Notes);
+                    MidiCcPreview.BindInput(() => vm.LiveMidi, Views.MidiPreviewView.InputSection.Ccs);
+                }
+                else
+                {
+                    MidiNotesPreview.UnbindInput();
+                    MidiCcPreview.UnbindInput();
+                }
+                return;
+            }
+
             if (e.PropertyName is nameof(ViewModels.DevicesViewModel.TouchpadX0)
                               or nameof(ViewModels.DevicesViewModel.TouchpadY0)
                               or nameof(ViewModels.DevicesViewModel.TouchpadX1)
@@ -56,6 +72,24 @@ namespace PadForge.Views
                               or nameof(ViewModels.DevicesViewModel.TouchpadDown4))
             {
                 UpdateTouchpadDots();
+            }
+            else if (e.PropertyName is nameof(ViewModels.DevicesViewModel.Pad2X0)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Y0)
+                              or nameof(ViewModels.DevicesViewModel.Pad2X1)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Y1)
+                              or nameof(ViewModels.DevicesViewModel.Pad2X2)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Y2)
+                              or nameof(ViewModels.DevicesViewModel.Pad2X3)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Y3)
+                              or nameof(ViewModels.DevicesViewModel.Pad2X4)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Y4)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Down0)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Down1)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Down2)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Down3)
+                              or nameof(ViewModels.DevicesViewModel.Pad2Down4))
+            {
+                UpdateTouchpad2Dots();
             }
         }
 
@@ -92,6 +126,26 @@ namespace PadForge.Views
                 Canvas.SetLeft(TouchpadDot4, vm.TouchpadX4 * w - 7);
                 Canvas.SetTop(TouchpadDot4, vm.TouchpadY4 * h - 7);
             }
+        }
+
+        // Second touchpad surface (multi-pad devices). Mirrors UpdateTouchpadDots
+        // for the Pad2* finger slots inside Touchpad2PreviewBorder.
+        private void UpdateTouchpad2Dots()
+        {
+            if (DataContext is not ViewModels.DevicesViewModel vm) return;
+            if (Touchpad2PreviewBorder.Visibility != Visibility.Visible) return;
+
+            double w = Touchpad2PreviewBorder.ActualWidth;
+            double h = Touchpad2PreviewBorder.ActualHeight;
+            if (w <= 0 || h <= 0) return;
+
+            Canvas.SetLeft(Pad2Dot0, vm.Pad2X0 * w - 7);
+            Canvas.SetTop(Pad2Dot0, vm.Pad2Y0 * h - 7);
+            Canvas.SetLeft(Pad2Dot1, vm.Pad2X1 * w - 7);
+            Canvas.SetTop(Pad2Dot1, vm.Pad2Y1 * h - 7);
+            if (Pad2Dot2 != null) { Canvas.SetLeft(Pad2Dot2, vm.Pad2X2 * w - 7); Canvas.SetTop(Pad2Dot2, vm.Pad2Y2 * h - 7); }
+            if (Pad2Dot3 != null) { Canvas.SetLeft(Pad2Dot3, vm.Pad2X3 * w - 7); Canvas.SetTop(Pad2Dot3, vm.Pad2Y3 * h - 7); }
+            if (Pad2Dot4 != null) { Canvas.SetLeft(Pad2Dot4, vm.Pad2X4 * w - 7); Canvas.SetTop(Pad2Dot4, vm.Pad2Y4 * h - 7); }
         }
 
         private void RemoveDevice_Click(object sender, RoutedEventArgs e)
@@ -226,6 +280,15 @@ namespace PadForge.Views
             }
             flyout.IsOpen = true;
 
+            // Remove the flyout from the panel once it closes — otherwise
+            // every re-toggle on a mouse/keyboard leaks a closed Flyout plus
+            // its captured handler closures into the singleton page's panel.
+            void RemoveFromPanel()
+            {
+                if (target.Parent is System.Windows.Controls.Panel p && p.Children.Contains(flyout))
+                    p.Children.Remove(flyout);
+            }
+
             proceedBtn.Click += (s, ev) =>
             {
                 flyout.IsOpen = false;
@@ -240,9 +303,10 @@ namespace PadForge.Views
                     cb.Checked += HidingToggle_Changed;
                 }
                 vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
+                RemoveFromPanel();
             };
 
-            cancelBtn.Click += (s, ev) => flyout.IsOpen = false;
+            cancelBtn.Click += (s, ev) => { flyout.IsOpen = false; RemoveFromPanel(); };
         }
 
         private void SubmitMapping_Click(object sender, RoutedEventArgs e)

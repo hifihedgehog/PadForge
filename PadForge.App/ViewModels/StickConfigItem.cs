@@ -362,6 +362,75 @@ namespace PadForge.ViewModels
             IconLabel = iconLabel ?? string.Empty;
         }
 
+        // ── Steering mode (v3.4 #94) ──
+        // Per-stick steering source kind + tunables. SteeringKind is the
+        // MappingSource.Kind the engine dispatches on; the params feed the matching
+        // Param* fields on the stick's MappingSet rows at build time.
+        // Motion Lean is no longer a per-stick mode — it's the "Motion Lean" INPUT
+        // descriptor (picked from the input dropdown like any gyro input; tuning
+        // lives on the gyro tab's Motion Steering card). The engine MotionLeanX
+        // kind still backs that descriptor's evaluation. A stored "MotionLeanX"
+        // here falls back to Linear via IndexOf.
+        private static readonly string[] SteeringModeKinds =
+            { "Direct", "WindingStick", "AngleToAxisX", "AngleToAxisY" };
+
+        private int _steeringModeIndex; // 0 = Linear (Direct)
+        public int SteeringModeIndex
+        {
+            get => _steeringModeIndex;
+            set
+            {
+                if (SetProperty(ref _steeringModeIndex, Math.Clamp(value, 0, SteeringModeKinds.Length - 1)))
+                {
+                    OnPropertyChanged(nameof(SteeringKind));
+                    OnPropertyChanged(nameof(IsSteeringActive));
+                    OnPropertyChanged(nameof(IsWindingMode));
+                    OnPropertyChanged(nameof(IsAngleMode));
+                }
+            }
+        }
+
+        /// <summary>The MappingSource.Kind this stick's steering mode maps to
+        /// ("Direct" when Linear).</summary>
+        public string SteeringKind => SteeringModeKinds[Math.Clamp(_steeringModeIndex, 0, SteeringModeKinds.Length - 1)];
+
+        /// <summary>Sets the mode index from a MappingSource.Kind string (load path).</summary>
+        public void SetSteeringKind(string kind)
+        {
+            int i = Array.IndexOf(SteeringModeKinds, kind ?? "Direct");
+            SteeringModeIndex = i >= 0 ? i : 0;
+        }
+
+        public bool IsSteeringActive => _steeringModeIndex != 0;
+        public bool IsWindingMode => _steeringModeIndex == 1;
+        public bool IsAngleMode => _steeringModeIndex == 2 || _steeringModeIndex == 3;
+
+        private double _windRangeDeg = 900;
+        public double WindRangeDeg { get => _windRangeDeg; set => SetProperty(ref _windRangeDeg, Math.Clamp(value, 90, 2520)); }
+        private double _windPower = 1;
+        public double WindPower { get => _windPower; set => SetProperty(ref _windPower, Math.Clamp(value, 0, 4)); }
+        private double _windUnwindRate = 1800;
+        public double WindUnwindRate { get => _windUnwindRate; set => SetProperty(ref _windUnwindRate, Math.Clamp(value, 0, 10000)); }
+
+        private double _angleInnerDz;
+        public double AngleInnerDz { get => _angleInnerDz; set => SetProperty(ref _angleInnerDz, Math.Clamp(value, 0, 89)); }
+        private double _angleOuterDz = 10;
+        public double AngleOuterDz { get => _angleOuterDz; set => SetProperty(ref _angleOuterDz, Math.Clamp(value, 0, 89)); }
+
+        // Motion-lean deadzones + controller orientation moved to PadViewModel's
+        // Motion Steering (gyro tab); the per-stick steering modes here are Winding
+        // and Angle only, which use the Wind*/Angle* params above.
+
+        private ICommand _resetSteeringModeCommand;
+        public ICommand ResetSteeringModeCommand => _resetSteeringModeCommand ??= new RelayCommand(() => SteeringModeIndex = 0);
+        private ICommand _resetWindRangeCommand, _resetWindPowerCommand, _resetWindUnwindRateCommand;
+        public ICommand ResetWindRangeCommand => _resetWindRangeCommand ??= new RelayCommand(() => WindRangeDeg = 900);
+        public ICommand ResetWindPowerCommand => _resetWindPowerCommand ??= new RelayCommand(() => WindPower = 1);
+        public ICommand ResetWindUnwindRateCommand => _resetWindUnwindRateCommand ??= new RelayCommand(() => WindUnwindRate = 1800);
+        private ICommand _resetAngleInnerDzCommand, _resetAngleOuterDzCommand;
+        public ICommand ResetAngleInnerDzCommand => _resetAngleInnerDzCommand ??= new RelayCommand(() => AngleInnerDz = 0);
+        public ICommand ResetAngleOuterDzCommand => _resetAngleOuterDzCommand ??= new RelayCommand(() => AngleOuterDz = 10);
+
         // ── Reset commands ──
 
         private ICommand _resetAllCommand;
@@ -375,6 +444,9 @@ namespace PadForge.ViewModels
             SensitivityCurveX = "0,0;1,1"; SensitivityCurveY = "0,0;1,1";
             MaxRangeX = 100; MaxRangeY = 100;
             MaxRangeXNeg = 100; MaxRangeYNeg = 100;
+            SteeringModeIndex = 0;
+            WindRangeDeg = 900; WindPower = 1; WindUnwindRate = 1800;
+            AngleInnerDz = 0; AngleOuterDz = 10;
         });
 
         private ICommand _resetDeadZoneShapeCommand;

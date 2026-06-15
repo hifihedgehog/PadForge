@@ -60,6 +60,7 @@ namespace PadForge.Views
         {
             InitializeComponent();
             Loaded += PadPage_Loaded;
+            Unloaded += PadPage_Unloaded;
             DataContextChanged += OnDataContextChanged;
         }
 
@@ -71,6 +72,17 @@ namespace PadForge.Views
             SyncMidiConfigBar();
             SyncLightbarHexBox();
             SyncAudioHexBoxes();
+            // Loaded can fire again without a paired Unloaded when the
+            // element re-enters the tree — unsubscribe first so handlers
+            // never stack.
+            PadForge.Common.SoundPackageManager.RegistryChanged -= OnSoundPackageRegistryChanged;
+            PadForge.Common.SoundPackageManager.RegistryChanged += OnSoundPackageRegistryChanged;
+            RefreshSoundPackages();
+        }
+
+        private void PadPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            PadForge.Common.SoundPackageManager.RegistryChanged -= OnSoundPackageRegistryChanged;
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -274,7 +286,14 @@ namespace PadForge.Views
             bool hasForceFeedback = false;
             bool hasGyro = false;
             bool hasImpulseTriggers = false;
+            bool hasRumble = false;
             bool hasTouchpad = false;
+            bool hasWheel = false;
+            bool hasGenericWheel = false;
+            // Controller speaker audio is a Sony-only feature: only the DualSense
+            // family and the DualShock 4 have a speaker. Same gating shape as
+            // adaptive triggers (DualSense) or impulse triggers (Xbox One+).
+            bool hasAudio = false;
             int numTouchpads = 0;
             if (DataContext is PadViewModel vmProfile
                 && vmProfile.SelectedMappedDevice != null
@@ -299,6 +318,23 @@ namespace PadForge.Views
                         hasGyro = ud.HasGyro;
                         hasImpulseTriggers = ud.HasRumbleTriggers;
                         hasTouchpad = ud.HasTouchpad;
+                        // Native-FFB wheel → the Wheel tab (rotation range, auto-center,
+                        // RPM LEDs). Same VID/PID gates the wheel HID writers use.
+                        hasWheel =
+                            PadForge.Common.Input.LogitechRawHidWriter.IsLogitechWheel(ud.VendorId, ud.ProdId)
+                         || PadForge.Common.Input.FanatecRawHidWriter.IsFanatecWheel(ud.VendorId, ud.ProdId)
+                         || PadForge.Common.Input.ThrustmasterRawHidWriter.IsThrustmasterWheel(ud.VendorId, ud.ProdId);
+                        // Generic (non-vendor) FFB wheel routed through SDL: no native range
+                        // or RPM-LED support, but a single-axis spring-capable haptic still
+                        // self-centers from the Auto Centering slider (TryApplyAutoCenterSpring).
+                        // Show the Wheel tab with only the auto-center row in that case.
+                        hasGenericWheel =
+                            !hasWheel
+                         && ud.CapType == InputDeviceType.Driving
+                         && ud.Device != null
+                         && ud.Device.HasHaptic
+                         && ud.Device.NumHapticAxes <= 1
+                         && (ud.Device.HapticFeatures & SDL3.SDL.SDL_HAPTIC_SPRING) != 0;
                         // Pad count drives the Touchpad tab's per-pad
                         // pivot. Most devices = 1; Steam Controller 2026
                         // = 2 (Triton); original Steam Controller = 3.
@@ -320,10 +356,18 @@ namespace PadForge.Views
                             bool isDs4 = ud.ProdId == 0x05C4 || ud.ProdId == 0x09CC || ud.ProdId == 0x0BA0;
                             hasAdaptiveTriggers = isDualSense || isDualSenseEdge;
                             hasLightbar = isDualSense || isDualSenseEdge || isDs4;
+                            // Speaker audio: DualSense family + DS4 (all have a speaker).
+                            hasAudio = isDualSense || isDualSenseEdge || isDs4;
                             // Indicator LEDs (player row + mic LED + brightness)
                             // are DualSense-family only — DS4 has neither.
                             hasIndicatorLeds = isDualSense || isDualSenseEdge;
                         }
+                        // Grip-motor rumble: modern Xbox (impulse-trigger devices), the
+                        // Sony lightbar family (DualSense / Edge / DS4 all rumble), and any
+                        // generic SDL gamepad reporting rumble (covers Xbox 360 etc.).
+                        hasRumble = hasImpulseTriggers
+                                 || hasLightbar
+                                 || (ud.Device != null && ud.Device.HasRumble);
                         break;
                     }
                 }
@@ -339,8 +383,42 @@ namespace PadForge.Views
                 TabImpulseTriggers.Visibility = hasImpulseTriggers ? Visibility.Visible : Visibility.Collapsed;
             if (TabTouchpad != null)
                 TabTouchpad.Visibility = hasTouchpad ? Visibility.Visible : Visibility.Collapsed;
+            if (TabAudio != null)
+                TabAudio.Visibility = hasAudio ? Visibility.Visible : Visibility.Collapsed;
+            if (TabWheel != null)
+                TabWheel.Visibility = (hasWheel || hasGenericWheel) ? Visibility.Visible : Visibility.Collapsed;
+            // Rotation range + RPM LEDs are vendor-HID-only; hide them for a generic
+            // SDL wheel that only supports the software auto-center spring.
+            if (WheelRangeRow != null)
+                WheelRangeRow.Visibility = hasWheel ? Visibility.Visible : Visibility.Collapsed;
+            if (WheelRpmRow != null)
+                WheelRpmRow.Visibility = hasWheel ? Visibility.Visible : Visibility.Collapsed;
             if (IndicatorLedsCard != null)
                 IndicatorLedsCard.Visibility = hasIndicatorLeds ? Visibility.Visible : Visibility.Collapsed;
+
+            // Steering Lock Feedback channels — expose each only on a device that can
+            // do it. Trigger vibration = Xbox impulse triggers OR DualSense trigger
+            // haptics; resistance = DualSense adaptive triggers only; lightbar pulse =
+            // DualSense/DS4 lightbar; rumble pulse = grip-motor rumble. Hide the whole
+            // card when the selected device can't do any of them.
+            bool hasTriggerVib = hasImpulseTriggers || hasAdaptiveTriggers;
+            bool anyLockChannel = hasRumble || hasTriggerVib || hasLightbar || hasAdaptiveTriggers;
+            if (LockFeedbackCard != null)
+                LockFeedbackCard.Visibility = anyLockChannel ? Visibility.Visible : Visibility.Collapsed;
+            if (LockRumbleRow != null)
+                LockRumbleRow.Visibility = hasRumble ? Visibility.Visible : Visibility.Collapsed;
+            if (LockTriggerVibRow != null)
+                LockTriggerVibRow.Visibility = hasTriggerVib ? Visibility.Visible : Visibility.Collapsed;
+            if (LockLightbarRow != null)
+                LockLightbarRow.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
+            if (LockResistanceRow != null)
+                LockResistanceRow.Visibility = hasAdaptiveTriggers ? Visibility.Visible : Visibility.Collapsed;
+            // Pulse length drives the rumble/trigger pulse channels (the lightbar has its
+            // own Hold + Decay; resistance is continuous, no pulse).
+            if (LockPulseSection != null)
+                LockPulseSection.Visibility = (hasRumble || hasTriggerVib) ? Visibility.Visible : Visibility.Collapsed;
+            if (LockLightbarSection != null)
+                LockLightbarSection.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
 
             // Sync the per-pad pivot to the active device. PadViewModel
             // recomputes MaxTouchpadIndex / SelectedTouchpadIndex and
@@ -360,7 +438,8 @@ namespace PadForge.Views
 
             // SelectedConfigTab tag values: 0 Controller, 1 Macros, 2 Mappings,
             // 3 Sticks, 4 Triggers, 5 Force Feedback, 6 Adaptive Triggers,
-            // 7 Lighting, 8 Gyro, 9 Impulse Triggers. Macros, Mappings, and
+            // 7 Lighting, 8 Gyro, 9 Impulse Triggers, 10 Touchpad, 11 Wheel.
+            // Macros, Mappings, and
             // Force Feedback are visible for every VC type. MIDI hides
             // Sticks and Triggers; K+M hides Triggers only. Adaptive
             // Triggers, Lighting, Gyro, and Impulse Triggers are gated on
@@ -381,6 +460,10 @@ namespace PadForge.Views
                 else if (vm.SelectedConfigTab == 9 && !hasImpulseTriggers)
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 10 && !hasTouchpad)
+                    vm.SelectedConfigTab = 0;
+                else if (vm.SelectedConfigTab == 11 && !hasWheel)
+                    vm.SelectedConfigTab = 0;
+                else if (vm.SelectedConfigTab == 12 && !hasAudio) // 12 = Audio
                     vm.SelectedConfigTab = 0;
             }
         }
@@ -460,6 +543,40 @@ namespace PadForge.Views
             }
         }
 
+        /// <summary>The config TabControl uses a header-less template, so WPF's
+        /// built-in Ctrl+Tab handling in <c>TabControl.OnKeyDown</c> throws
+        /// "Value cannot be null (container)" out of <c>IndexFromContainer</c>
+        /// (discussion #140). Catch Ctrl+Tab here in the tunneling PreviewKeyDown,
+        /// before that bubbling handler runs, swallow it, and cycle the visible
+        /// tab strip ourselves instead.</summary>
+        private void ConfigTabControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Tab || (Keyboard.Modifiers & ModifierKeys.Control) == 0)
+                return;
+            e.Handled = true;
+            try { CycleConfigTab((Keyboard.Modifiers & ModifierKeys.Shift) != 0); }
+            catch { /* tab navigation must never crash the app */ }
+        }
+
+        /// <summary>Move to the next (or previous) visible config tab, wrapping.
+        /// Cycles the visible tab-strip RadioButtons so it matches the tabs shown
+        /// for this controller type / device. Setting <c>SelectedConfigTab</c>
+        /// updates the content and, via PropertyChanged, the strip highlight.</summary>
+        private void CycleConfigTab(bool backward)
+        {
+            if (DataContext is not PadViewModel vm) return;
+            var tags = new List<int>();
+            foreach (var rb in FindVisualChildren<RadioButton>(this))
+                if (rb.GroupName == "PadTab" && rb.IsVisible && rb.IsEnabled && TryGetTagIndex(rb, out int idx))
+                    tags.Add(idx);
+            if (tags.Count == 0) return;
+            int cur = tags.IndexOf(vm.SelectedConfigTab);
+            int next = cur < 0
+                ? 0
+                : (((cur + (backward ? -1 : 1)) % tags.Count) + tags.Count) % tags.Count;
+            vm.SelectedConfigTab = tags[next];
+        }
+
         private static bool TryGetTagIndex(FrameworkElement el, out int index)
         {
             if (el.Tag is int i) { index = i; return true; }
@@ -490,6 +607,186 @@ namespace PadForge.Views
         //  InputService.OnLayerActivated reloads MappingItems from the
         //  selected layer's MappingRows.
         // ─────────────────────────────────────────────
+
+        // ─────────────────────────────────────────────
+        //  Sound macro action handlers (issue #83)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Audio tab hub row: jump to the Macros tab with the
+        /// clicked sound macro selected.</summary>
+        private void SoundMacroRow_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is PadForge.ViewModels.MacroItem macro)
+                _currentPadVm?.OpenSoundMacro(macro);
+        }
+
+        /// <summary>Re-enumerate render endpoints right before the mirror
+        /// source dropdown opens, so hot-plugged devices show up.</summary>
+        private void MirrorSource_DropDownOpened(object sender, EventArgs e)
+            => _currentPadVm?.RefreshMirrorSources();
+
+        /// <summary>Choose a sound for the Play Sound action card. When packages
+        /// are added, the sounds inside them are offered directly — a filesystem
+        /// browse is only needed for a package or loose file that hasn't been
+        /// added yet (issue #83). The button's DataContext is the MacroAction.</summary>
+        private void BrowseSoundFile_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is not PadForge.ViewModels.MacroAction action)
+                return;
+
+            var packages = PadForge.Common.SoundPackageManager.Packages;
+            if (packages.Count > 0)
+            {
+                var items = new System.Collections.Generic.List<PickSoundDialog.Item>();
+                foreach (var p in packages)
+                    foreach (var entry in PadForge.Common.SoundPackageManager.ListSounds(p.Name))
+                        items.Add(new PickSoundDialog.Item(
+                            $"{System.IO.Path.GetFileName(entry)}  —  {p.Name}",
+                            PadForge.Common.SoundPackageManager.MakeRef(p.Name, entry)));
+
+                if (items.Count > 0)
+                {
+                    var picker = new PickSoundDialog(
+                        PadForge.Resources.Strings.Strings.Instance.Macro_Sound_Pick_Description,
+                        items, allowBrowse: true, preselectValue: action.SoundFilePath)
+                    { Owner = Window.GetWindow(this) };
+                    if (picker.ShowDialog() != true) return;
+                    if (!picker.BrowseRequested)
+                    {
+                        if (!string.IsNullOrEmpty(picker.SelectedSound))
+                            action.SoundFilePath = picker.SelectedSound;
+                        return;
+                    }
+                    // "Browse files…" — fall through to the filesystem dialog.
+                }
+            }
+
+            BrowseSoundFileFromDisk(action);
+        }
+
+        /// <summary>Filesystem browse for a loose sound file or a <c>.pfsounds</c>
+        /// package. Picking a package registers it and offers its sounds; the
+        /// action then stores <c>pfsound://Package/entry</c> so a shared profile
+        /// resolves on any machine that carries the package file.</summary>
+        private void BrowseSoundFileFromDisk(PadForge.ViewModels.MacroAction action)
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = PadForge.Resources.Strings.Strings.Instance.Macro_Sound_File_Label,
+                Filter = "Audio files and sound packages|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds"
+                       + "|Sound packages (*.pfsounds)|*.pfsounds|All files|*.*",
+                CheckFileExists = true,
+            };
+            try
+            {
+                if (!string.IsNullOrEmpty(action.SoundFilePath)
+                    && !PadForge.Common.SoundPackageManager.IsPackageRef(action.SoundFilePath))
+                    dlg.InitialDirectory = System.IO.Path.GetDirectoryName(action.SoundFilePath);
+            }
+            catch { }
+            if (dlg.ShowDialog() != true) return;
+
+            if (dlg.FileName.EndsWith(PadForge.Common.SoundPackageManager.FileExtension,
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                string pkg = PadForge.Common.SoundPackageManager.Register(dlg.FileName);
+                if (pkg == null) return;
+                var sounds = PadForge.Common.SoundPackageManager.ListSounds(pkg);
+                if (sounds.Count == 0) return;
+                string entry = sounds.Count == 1
+                    ? sounds[0]
+                    : PromptPickFromList(
+                        string.Format(PadForge.Resources.Strings.Strings.Instance.Macro_Sound_PickFromPackage_Format, pkg),
+                        sounds);
+                if (entry != null)
+                    action.SoundFilePath = PadForge.Common.SoundPackageManager.MakeRef(pkg, entry);
+                return;
+            }
+
+            action.SoundFilePath = dlg.FileName;
+        }
+
+        /// <summary>Modal list picker (package sound selection). Returns
+        /// the chosen item or null. FluentWindow chrome, same as the other
+        /// dialogs.</summary>
+        private string PromptPickFromList(string title, System.Collections.Generic.List<string> items)
+        {
+            var dlg = new PickSoundDialog(title, items) { Owner = Window.GetWindow(this) };
+            return dlg.ShowDialog() == true ? dlg.SelectedSound : null;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Sound Packages card
+        // ─────────────────────────────────────────────
+
+        private void OnSoundPackageRegistryChanged(object sender, EventArgs e)
+        {
+            // The registry can change from non-UI code paths (profile import).
+            Dispatcher.BeginInvoke(new Action(RefreshSoundPackages));
+        }
+
+        private void RefreshSoundPackages()
+        {
+            var packages = PadForge.Common.SoundPackageManager.Packages;
+            SoundPackagesList.ItemsSource = packages;
+            SoundPackagesEmptyText.Visibility = packages.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void PackageAdd_Click(object sender, RoutedEventArgs e)
+        {
+            string ext = PadForge.Common.SoundPackageManager.FileExtension;
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = PadForge.Resources.Strings.Strings.Instance.Pad_Audio_Packages_Add,
+                Filter = $"PadForge sound packages (*{ext})|*{ext}|All files|*.*",
+                Multiselect = true,
+                CheckFileExists = true,
+            };
+            if (dlg.ShowDialog() != true) return;
+            foreach (string file in dlg.FileNames)
+                PadForge.Common.SoundPackageManager.Register(file);
+        }
+
+        private void PackageCreate_Click(object sender, RoutedEventArgs e)
+        {
+            var pick = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = PadForge.Resources.Strings.Strings.Instance.Pad_Audio_Packages_PickSounds,
+                Filter = "Audio files|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|All files|*.*",
+                Multiselect = true,
+                CheckFileExists = true,
+            };
+            if (pick.ShowDialog() != true || pick.FileNames.Length == 0) return;
+
+            string ext = PadForge.Common.SoundPackageManager.FileExtension;
+            var save = new Microsoft.Win32.SaveFileDialog
+            {
+                Title = PadForge.Resources.Strings.Strings.Instance.Pad_Audio_Packages_Create,
+                FileName = "Sounds" + ext,
+                Filter = $"PadForge sound packages (*{ext})|*{ext}",
+            };
+            if (save.ShowDialog() != true) return;
+
+            string displayName = System.IO.Path.GetFileNameWithoutExtension(save.FileName);
+            if (PadForge.Common.SoundPackageManager.ExportPackage(save.FileName, displayName, pick.FileNames))
+                PadForge.Common.SoundPackageManager.Register(save.FileName);
+        }
+
+        private void PackageRemove_Click(object sender, RoutedEventArgs e)
+        {
+            if (SoundPackagesList.SelectedItem is PadForge.Common.SoundPackageManager.PackageRef pkg)
+                PadForge.Common.SoundPackageManager.Unregister(pkg.Name);
+        }
+
+        /// <summary>Preview the action's sound through the pad's configured
+        /// output device, at the action's volume (no loop).</summary>
+        private void PreviewSoundFile_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is not PadForge.ViewModels.MacroAction action)
+                return;
+            int slot = _currentPadVm?.PadIndex ?? 0;
+            PadForge.Common.Input.SoundMacroService.Play(slot, null, action.SoundFilePath, action.SoundVolume, loop: false);
+        }
 
         private void AddShiftLayer_Click(object sender, RoutedEventArgs e)
         {
@@ -1206,8 +1503,15 @@ namespace PadForge.Views
             ExtendedProductStringBox.Text = !string.IsNullOrEmpty(persistedProductString)
                 ? persistedProductString
                 : profileProductString;
-            ExtendedVidBox.Text = profile != null ? $"0x{profile.VendorId:X4}" : string.Empty;
-            ExtendedPidBox.Text = profile != null ? $"0x{profile.ProductId:X4}" : string.Empty;
+            // Show the user's override when set (non-zero); otherwise display the
+            // active profile's identity. Editing persists the override via
+            // ExtendedOverride_Changed; 0 means "use the profile's value."
+            int vidOverride = vm.ExtendedConfig?.VendorId ?? 0;
+            int pidOverride = vm.ExtendedConfig?.ProductId ?? 0;
+            ExtendedVidBox.Text = vidOverride > 0 ? $"0x{vidOverride:X4}"
+                : (profile != null ? $"0x{profile.VendorId:X4}" : string.Empty);
+            ExtendedPidBox.Text = pidOverride > 0 ? $"0x{pidOverride:X4}"
+                : (profile != null ? $"0x{profile.ProductId:X4}" : string.Empty);
             ExtendedOemOverrideChk.IsChecked = vm.ExtendedConfig?.OemNameOverride == true;
             ExtendedCustomizeChk.IsChecked = vm.ExtendedConfig?.Customize == true;
 
@@ -1244,15 +1548,32 @@ namespace PadForge.Views
 
         private void ExtendedOverride_Changed(object sender, RoutedEventArgs e)
         {
-            // Persist the user-edited Product String to the slot's
-            // ExtendedConfig. When OEM Name Override is active, Step 5 uses
-            // this value as the label for HMOemNameOverride.Set at VC-create
-            // time. VID/PID are profile-defined and not user-editable — those
-            // textboxes are display-only for the active profile.
+            // Persist the user-edited override fields to the slot's ExtendedConfig.
+            // ProductString feeds HMOemNameOverride when OEM Name Override is active;
+            // VID/PID feed HMProfileBuilder.Vid/.Pid at VC-create time (Customize-
+            // gated). A VID/PID of 0 (empty or malformed entry) means "use the
+            // active profile's value."
             if (_syncingExtendedConfig) return;
             if (DataContext is not PadViewModel vm || vm.ExtendedConfig == null) return;
             if (sender == ExtendedProductStringBox)
                 vm.ExtendedConfig.ProductString = ExtendedProductStringBox.Text ?? string.Empty;
+            else if (sender == ExtendedVidBox)
+                vm.ExtendedConfig.VendorId = ParseHexId(ExtendedVidBox.Text);
+            else if (sender == ExtendedPidBox)
+                vm.ExtendedConfig.ProductId = ParseHexId(ExtendedPidBox.Text);
+        }
+
+        /// <summary>Parses a "0xVVVV" / "VVVV" hex VID/PID entry to 0..0xFFFF.
+        /// Returns 0 ("use the active profile's value") for empty or malformed input.</summary>
+        private static int ParseHexId(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) return 0;
+            string t = text.Trim();
+            if (t.StartsWith("0x", System.StringComparison.OrdinalIgnoreCase))
+                t = t.Substring(2);
+            return int.TryParse(t, System.Globalization.NumberStyles.HexNumber,
+                System.Globalization.CultureInfo.InvariantCulture, out int v)
+                && v > 0 && v <= 0xFFFF ? v : 0;
         }
 
         private void ExtendedOverride_KeyDown(object sender, KeyEventArgs e)

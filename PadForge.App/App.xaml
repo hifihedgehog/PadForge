@@ -134,6 +134,7 @@
             <conv:RgbToBrushConverter x:Key="RgbToBrushConverter" />
             <conv:IndexToLetterConverter x:Key="IndexToLetterConverter" />
             <conv:IndexLessThanVisibilityConverter x:Key="IndexLessThanVisibilityConverter" />
+            <conv:OneBasedIndexConverter x:Key="OneBasedIndexConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

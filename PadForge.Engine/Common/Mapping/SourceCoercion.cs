@@ -41,6 +41,10 @@ namespace PadForge.Engine.Common.Mapping
                              // existence binds the device's sensor stream to
                              // the slot's motion channel; per-axis values are
                              // not coerced through this enum's scalar path.
+            Midi,            // "Midi Note N" / "Midi CC N" / "Midi Pitch Bend"
+                             // — read from CustomInputState.Midi (the full
+                             // MIDI namespace sub-state), never the gamepad
+                             // axis/button arrays.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -360,6 +364,8 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.Motion;
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
                 return SourceType.Gyro;
+            if (s.StartsWith("Midi ", StringComparison.Ordinal))
+                return SourceType.Midi;
 
             string[] parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2) return SourceType.Unmapped;
@@ -372,6 +378,45 @@ namespace PadForge.Engine.Common.Mapping
                 "pov"    => SourceType.PovDirection,
                 _        => SourceType.Unmapped,
             };
+        }
+
+        /// <summary>True for any MIDI-input descriptor
+        /// (<c>"Midi Note N"</c> / <c>"Midi CC N"</c> /
+        /// <c>"Midi Pitch Bend"</c>).</summary>
+        public static bool IsMidiDescriptor(string descriptor)
+            => !string.IsNullOrEmpty(descriptor)
+            && descriptor.StartsWith("Midi ", StringComparison.Ordinal);
+
+        /// <summary>Parses a MIDI descriptor into a kind and index.
+        /// kind: 'N' note, 'C' cc absolute, 'U' cc encoder-up pulse,
+        /// 'D' cc encoder-down pulse, 'P' pitch bend (index unused).
+        /// Returns false for anything that isn't a MIDI descriptor.</summary>
+        private static bool TryParseMidi(string descriptor, out char kind, out int index)
+        {
+            kind = '\0';
+            index = -1;
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            var parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 2 || !parts[0].Equals("Midi", StringComparison.Ordinal))
+                return false;
+            if (parts[1].Equals("Note", StringComparison.Ordinal) && parts.Length >= 3
+                && int.TryParse(parts[2], out index))
+            { kind = 'N'; return index >= 0 && index < MidiInputState.NoteCount; }
+            if (parts[1].Equals("CC", StringComparison.Ordinal) && parts.Length >= 3
+                && int.TryParse(parts[2], out index))
+            {
+                // "Midi CC N" absolute, "Midi CC N Up"/"Down" encoder pulses.
+                kind = 'C';
+                if (parts.Length >= 4)
+                {
+                    if (parts[3].Equals("Up", StringComparison.Ordinal)) kind = 'U';
+                    else if (parts[3].Equals("Down", StringComparison.Ordinal)) kind = 'D';
+                }
+                return index >= 0 && index < MidiInputState.CcCount;
+            }
+            if (parts[1].Equals("Pitch", StringComparison.Ordinal))
+            { kind = 'P'; index = 0; return true; }
+            return false;
         }
 
         /// <summary>True for the bundled motion-source descriptors
@@ -513,13 +558,27 @@ namespace PadForge.Engine.Common.Mapping
         }
 
         /// <summary>True for "Gyro Pitch" / "Gyro Yaw" / "Gyro Roll"
-        /// descriptors. Public so SourceEvaluator can decide between
-        /// rate-direct coercion (mouse / scroll targets) and rate-
-        /// additive integration (virtual stick targets) without
-        /// re-parsing.</summary>
+        /// descriptors. Public so SourceEvaluator can special-case gyro:
+        /// both stick and mouse targets are rate-direct, and the stick
+        /// (absolute-axis) path flips the sign so the stick deflects toward
+        /// the twist. Saves SourceEvaluator re-parsing the descriptor.</summary>
         public static bool IsGyroDescriptor(string descriptor)
             => !string.IsNullOrEmpty(descriptor)
             && descriptor.StartsWith("Gyro ", StringComparison.Ordinal);
+
+        /// <summary>The gravity-lean input descriptor. A first-class picker
+        /// entry (like "Gyro Roll"): mapping it to an axis target drives that
+        /// axis from controller tilt via <c>SourceKindRuntime.TickMotionLean</c>.
+        /// SourceEvaluator routes a Direct source carrying this descriptor into
+        /// the same math as Kind="MotionLeanX"; per-source ParamMotionInnerDz /
+        /// ParamMotionOuterDz / ParamControllerOrientation tune it (defaults
+        /// 15 / 135 / Forward — the JSM motion-deadzone defaults).</summary>
+        public const string MotionLeanDescriptor = "Motion Lean";
+
+        /// <summary>True when the descriptor is <see cref="MotionLeanDescriptor"/>.</summary>
+        public static bool IsMotionLeanDescriptor(string descriptor)
+            => !string.IsNullOrEmpty(descriptor)
+            && string.Equals(descriptor.Trim(), MotionLeanDescriptor, StringComparison.OrdinalIgnoreCase);
 
         /// <summary>Public form of <see cref="ReadCalibratedGyroRate"/>:
         /// returns the bias-subtracted gyro rate (rad/s) for the source's
@@ -960,6 +1019,28 @@ namespace PadForge.Engine.Common.Mapping
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
                 return ReadTouchpadBool(state, s);
 
+            if (s.StartsWith("Midi ", StringComparison.Ordinal))
+            {
+                if (state.Midi == null || !TryParseMidi(s, out char mk, out int mi)) return false;
+                switch (mk)
+                {
+                    case 'N': return state.Midi.Notes[mi];
+                    // CC as a button: pressed past the source deadzone
+                    // (default half-scale). Covers sustain pedals and
+                    // encoder/pad CC buttons.
+                    case 'C':
+                        int cdz = src.DeadZone > 0 ? src.DeadZone : 50;
+                        return state.Midi.Cc[mi] > (int)(127 * cdz / 100.0);
+                    case 'U': return state.Midi.CcUp[mi];   // encoder CW pulse
+                    case 'D': return state.Midi.CcDown[mi]; // encoder CCW pulse
+                    case 'P':
+                        int pdelta = state.Midi.PitchBend - MidiInputState.PitchBendCenter;
+                        if (pdelta < 0) pdelta = -pdelta;
+                        return pdelta > 32767 / 2;
+                }
+                return false;
+            }
+
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
             {
                 float tunedRate = ReadTunedGyroRate(state, src, slotIndex, out int gyroAxis, out _);
@@ -1069,6 +1150,23 @@ namespace PadForge.Engine.Common.Mapping
                 return ReadTouchpadBool(state, s) ? 1f : 0f;
             }
 
+            if (s.StartsWith("Midi ", StringComparison.Ordinal))
+            {
+                if (state.Midi == null || !TryParseMidi(s, out char mk, out int mi)) return 0f;
+                switch (mk)
+                {
+                    case 'N': return state.Midi.Notes[mi] ? 1f : 0f;
+                    // CC 0..127 → unipolar 0..1, then mapped to bipolar
+                    // [-1..+1] the same way a slider source is.
+                    case 'C': return state.Midi.Cc[mi] / 127f * 2f - 1f;
+                    case 'U': return state.Midi.CcUp[mi] ? 1f : 0f;   // pulse as 0/1
+                    case 'D': return state.Midi.CcDown[mi] ? 1f : 0f;
+                    case 'P': return Math.Max(-1f, Math.Min(1f,
+                        (state.Midi.PitchBend - MidiInputState.PitchBendCenter) / 32767f));
+                }
+                return 0f;
+            }
+
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
             {
                 float tunedRate = ReadTunedGyroRate(state, src, slotIndex, out int gyroAxis, out var tuning);
@@ -1145,6 +1243,22 @@ namespace PadForge.Engine.Common.Mapping
                 // position; no bipolar centering).
                 if (TryReadTouchpadAxisRaw(state, s, out float unipolar)) return unipolar;
                 return ReadTouchpadBool(state, s) ? 1f : 0f;
+            }
+
+            if (s.StartsWith("Midi ", StringComparison.Ordinal))
+            {
+                if (state.Midi == null || !TryParseMidi(s, out char mk, out int mi)) return 0f;
+                switch (mk)
+                {
+                    case 'N': return state.Midi.Notes[mi] ? 1f : 0f;
+                    // CC 0..127 → unipolar 0..1 (a fader/expression pedal
+                    // driving a trigger).
+                    case 'C': return state.Midi.Cc[mi] / 127f;
+                    case 'U': return state.Midi.CcUp[mi] ? 1f : 0f;
+                    case 'D': return state.Midi.CcDown[mi] ? 1f : 0f;
+                    case 'P': return Math.Abs(state.Midi.PitchBend - MidiInputState.PitchBendCenter) / 32767f;
+                }
+                return 0f;
             }
 
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
@@ -1416,15 +1530,16 @@ namespace PadForge.Engine.Common.Mapping
             float delta = raw - prev.PrevValue;
             _touchpadDeltas[key] = new TouchpadAxisDelta { PrevValue = raw, Seeded = true };
 
-            // Y axis: SDL touchpad raw_y=0 at top, raw_y=1 at bottom.
-            // A finger moving down has positive delta. KBM mouse Y
-            // convention (per KeyboardMouseVirtualController line 101)
-            // is positive = cursor UP. Without this flip, finger-down →
-            // bipolar positive → MouseDeltaY positive → cursor UP, which
-            // inverts the user's motion. Flip the delta so finger-down
-            // matches cursor-down.
-            if (axisOffset == 1)
-                delta = -delta;
+            // Y sign: return the RAW delta in SDL convention (raw_y=0 at top,
+            // so finger-DOWN → positive delta). DO NOT flip Y here. The KbmMouseY
+            // and KbmScroll paths in Step 3 already NegateAxis the evaluator's
+            // output — they explicitly document the contract "the evaluator
+            // returns SDL convention (positive = down)" (InputManager.Step3.
+            // UpdateOutputStates) — and the KBM virtual controller negates once
+            // more into screen-Y. A stick → KbmMouseY source rides exactly those
+            // two negations. An extra flip here made the touchpad path negate a
+            // third time, so finger-up drove the cursor DOWN. X needs no negate
+            // at any layer and is already correct.
 
             // Per-(slot, pad) mouse tuning: sensitivity multiplier per
             // axis plus optional invert. Slot-keyed so two slots sharing
@@ -1454,9 +1569,14 @@ namespace PadForge.Engine.Common.Mapping
         /// bottom/right = 1); this reader maps that to [-1..+1] directly
         /// so a DualSense touchpad → DualSense virtual touchpad
         /// passthrough preserves SDL's convention end-to-end. No Y flip
-        /// here — the relative reader has its own Y flip for the KBM
-        /// mouse convention, which does not apply to absolute-position
-        /// outputs. Pressure (axisOffset == 2) is unipolar, kept as
+        /// here, and none belongs here: the per-target Y sign is applied
+        /// downstream, per consumer. The stick path negates Y in
+        /// <c>InputManager.WriteBipolarAxisTarget</c> (finger-up →
+        /// stick-up); the touchpad→touchpad passthrough keeps SDL's top=0
+        /// as-is; the KBM mouse / scroll path negates in Step 3 plus the
+        /// virtual controller. A Y flip added here would corrupt ALL of
+        /// them at once — keep this a faithful [0..1] → [-1..+1] pass.
+        /// Pressure (axisOffset == 2) is unipolar, kept as
         /// [0..1] without recentering — pressure isn't a signed axis.
         /// Returns 0 when the finger is not in contact (the caller's
         /// gating wrapper usually filters us out first, but this is

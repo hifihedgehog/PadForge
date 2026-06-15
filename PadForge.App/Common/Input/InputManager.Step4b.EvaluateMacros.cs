@@ -236,12 +236,20 @@ namespace PadForge.Common.Input
         /// </summary>
         public MacroItem[][] MacroSnapshots { get; } = new MacroItem[MaxPads][];
 
+        // True while evaluating a slot fed by a gamepad-only-restricted peer (issue
+        // #138). The keyboard/mouse/scroll macro emission helpers consult this and
+        // suppress those actions, so a restricted peer can never inject keystrokes.
+        // Single-threaded (the poll loop), so a plain field is safe. Static so the
+        // static SendInput emission helpers can read it.
+        private static bool _currentMacroSlotRestricted;
+
         /// <summary>
         /// Step 4b: Evaluate macros for all pad slots.
         /// Called after CombineOutputStates and before VirtualDevices.
         /// </summary>
         private void EvaluateMacros()
         {
+            _currentMacroSlotRestricted = false; // global macros emit no keystrokes
             EvaluateGlobalMacros();
 
             for (int i = 0; i < MaxPads; i++)
@@ -250,6 +258,10 @@ namespace PadForge.Common.Input
                 if (macros == null || macros.Length == 0)
                     continue;
 
+                // Restricted if a restricted peer feeds this slot OR triggers any of
+                // its macros (the macro engine resolves triggers by device GUID
+                // independent of slot mapping, so a home-slot-only check left a hole).
+                _currentMacroSlotRestricted = IsSlotRestricted(i) || AnyMacroTriggerRestricted(macros);
                 try
                 {
                     if (SlotExtendedIsCustom[i])
@@ -445,6 +457,9 @@ namespace PadForge.Common.Input
                 {
                     macro.IsExecuting = false;
                     macro.CurrentActionIndex = 0;
+                    // Looping macro sounds are trigger-bound on this path:
+                    // release stops them (one-shots play out).
+                    SoundMacroService.StopLoopsForMacro(macro.PadIndex, macro);
                 }
 
                 // Execute current action if macro is running.
@@ -943,6 +958,28 @@ namespace PadForge.Common.Input
                     break;
                 }
 
+                case MacroActionType.PlaySound:
+                {
+                    // Single-frame fire like Rumble: hand the file to the
+                    // sound service (non-blocking; uncached files decode on
+                    // the thread pool) and advance. The macro object is the
+                    // loop key so trigger release / SoundStop can stop what
+                    // this macro started; looping starts are idempotent per
+                    // (macro, file) so an Until-Release list restart can't
+                    // stack instances.
+                    SoundMacroService.Play(macro.PadIndex, macro,
+                        action.SoundFilePath, action.SoundVolume, action.SoundLoop);
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.SoundStop:
+                {
+                    SoundMacroService.StopSlot(macro.PadIndex);
+                    AdvanceAction(macro);
+                    break;
+                }
+
                 case MacroActionType.LightbarColorClear:
                 {
                     int slotIndex = macro.PadIndex;
@@ -1043,49 +1080,23 @@ namespace PadForge.Common.Input
             if (slotIndex < 0 || slotIndex >= MaxPads) return;
 
             // Resolve the color ONCE for the whole slot so every device
-            // gets the same flash. PaletteStep with empty per-macro
-            // palette falls back to the slot's first device's palette
-            // (deterministic; any device's palette would do — the macro
-            // is slot-level by design and the user controls the
-            // per-macro palette explicitly).
+            // gets the same flash. Sticky always uses Fixed; Reactive resolves
+            // by the color source (PaletteStep falls back to the slot's palette
+            // when the per-macro palette is empty).
             byte r, g, b;
-            if (action.LightbarHoldMode == MacroLightbarHoldMode.Sticky
-                || action.LightbarColorSource == MacroLightbarColorSource.Fixed)
+            if (action.LightbarHoldMode == MacroLightbarHoldMode.Sticky)
             {
                 r = action.LightbarR;
                 g = action.LightbarG;
                 b = action.LightbarB;
             }
-            else if (action.LightbarColorSource == MacroLightbarColorSource.RandomHue)
+            else
             {
-                int h = _macroLightbarRng.Next(0, 360);
-                HsvToRgb(h, 1.0, 1.0, out r, out g, out b);
-            }
-            else // PaletteStep
-            {
-                var palette = ParseMacroPaletteCsv(action.LightbarPaletteCsv);
-                if (palette.Length == 0)
-                {
-                    foreach (var devCfg in EnumerateSlotPlayStationConfigs(slotIndex))
-                    {
-                        palette = devCfg.SnapshotLightbarPalette();
-                        if (palette.Length > 0) break;
-                    }
-                }
-                if (palette.Length > 0)
-                {
-                    int idx = (action.LightbarCycleIndex % palette.Length + palette.Length) % palette.Length;
-                    var entry = palette[idx];
-                    r = entry.R; g = entry.G; b = entry.B;
-                    action.LightbarCycleIndex = idx + 1;
-                }
-                else
-                {
-                    // Empty palette across the slot — treat as off so the
-                    // user gets feedback that their selection isn't
-                    // producing a visible result.
-                    r = 0; g = 0; b = 0;
-                }
+                int ci = action.LightbarCycleIndex;
+                (r, g, b) = ResolveOverrideLightbarColor(slotIndex, action.LightbarColorSource,
+                    action.LightbarR, action.LightbarG, action.LightbarB, action.LightbarPaletteCsv,
+                    ref ci, slotPaletteFallback: true);
+                action.LightbarCycleIndex = ci;
             }
 
             DateTime now = DateTime.UtcNow;
@@ -1121,6 +1132,46 @@ namespace PadForge.Common.Input
                 psCfg.MacroOverrideHoldEndUtc = holdEnd;
                 psCfg.MacroOverrideExpiresAtUtc = expiresAt;
             }
+        }
+
+        /// <summary>Resolves the RGB for an override lightbar fire from a color source,
+        /// shared by the macro lightbar action and the steering-lock lightbar cue. Fixed →
+        /// the given RGB; RandomHue → a fresh random hue; PaletteStep → the next entry of
+        /// <paramref name="paletteCsv"/>, advancing <paramref name="cycleIndex"/>. When the
+        /// palette is empty: macros (<paramref name="slotPaletteFallback"/> = true) fall back
+        /// to the slot's Lighting-tab palette; a dedicated palette (steering) does not — it
+        /// resolves to off so the empty selection is visibly inert.</summary>
+        private (byte r, byte g, byte b) ResolveOverrideLightbarColor(
+            int slotIndex, MacroLightbarColorSource source,
+            byte fr, byte fg, byte fb, string paletteCsv, ref int cycleIndex, bool slotPaletteFallback)
+        {
+            if (source == MacroLightbarColorSource.RandomHue)
+            {
+                int h = _macroLightbarRng.Next(0, 360);
+                HsvToRgb(h, 1.0, 1.0, out byte rr, out byte gg, out byte bb);
+                return (rr, gg, bb);
+            }
+            if (source == MacroLightbarColorSource.PaletteStep)
+            {
+                var palette = ParseMacroPaletteCsv(paletteCsv);
+                if (palette.Length == 0 && slotPaletteFallback)
+                {
+                    foreach (var devCfg in EnumerateSlotPlayStationConfigs(slotIndex))
+                    {
+                        palette = devCfg.SnapshotLightbarPalette();
+                        if (palette.Length > 0) break;
+                    }
+                }
+                if (palette.Length > 0)
+                {
+                    int idx = (cycleIndex % palette.Length + palette.Length) % palette.Length;
+                    var entry = palette[idx];
+                    cycleIndex = idx + 1;
+                    return (entry.R, entry.G, entry.B);
+                }
+                return (0, 0, 0);
+            }
+            return (fr, fg, fb); // Fixed
         }
 
         /// <summary>Pushes a Rumble action's override into the slot's
@@ -1366,6 +1417,9 @@ namespace PadForge.Common.Input
                 {
                     macro.IsExecuting = false;
                     macro.CurrentActionIndex = 0;
+                    // Looping macro sounds are trigger-bound on this path:
+                    // release stops them (one-shots play out).
+                    SoundMacroService.StopLoopsForMacro(macro.PadIndex, macro);
                 }
 
                 if (macro.IsExecuting && macro.Actions.Count > 0)
@@ -1618,6 +1672,28 @@ namespace PadForge.Common.Input
                     int slotIndex = macro.PadIndex;
                     if (slotIndex >= 0 && slotIndex < MaxPads)
                         MacroRumbleOverrides[slotIndex].Clear();
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.PlaySound:
+                {
+                    // Single-frame fire like Rumble: hand the file to the
+                    // sound service (non-blocking; uncached files decode on
+                    // the thread pool) and advance. The macro object is the
+                    // loop key so trigger release / SoundStop can stop what
+                    // this macro started; looping starts are idempotent per
+                    // (macro, file) so an Until-Release list restart can't
+                    // stack instances.
+                    SoundMacroService.Play(macro.PadIndex, macro,
+                        action.SoundFilePath, action.SoundVolume, action.SoundLoop);
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.SoundStop:
+                {
+                    SoundMacroService.StopSlot(macro.PadIndex);
                     AdvanceAction(macro);
                     break;
                 }
@@ -1926,6 +2002,7 @@ namespace PadForge.Common.Input
 
         private static void SendMouseMoveInput(int dx, int dy)
         {
+            if (_currentMacroSlotRestricted) return; // gamepad-only peer: no mouse
             if (dx == 0 && dy == 0) return;
             var input = new INPUT
             {
@@ -1937,6 +2014,7 @@ namespace PadForge.Common.Input
 
         private static void SendMouseButtonInput(MacroMouseButton button, bool down)
         {
+            if (_currentMacroSlotRestricted) return; // gamepad-only peer: no mouse buttons
             uint flags;
             uint mouseData = 0;
             switch (button)
@@ -1958,6 +2036,7 @@ namespace PadForge.Common.Input
 
         private static void SendMouseScrollInput(int amount)
         {
+            if (_currentMacroSlotRestricted) return; // gamepad-only peer: no scroll
             var input = new INPUT
             {
                 type = INPUT_MOUSE,
@@ -2003,6 +2082,7 @@ namespace PadForge.Common.Input
 
         private static void SendKeyInput(ushort virtualKeyCode, bool keyUp)
         {
+            if (_currentMacroSlotRestricted) return; // gamepad-only peer: no keystrokes
             ushort scanCode = (ushort)MapVirtualKey(virtualKeyCode, MAPVK_VK_TO_VSC);
 
             var input = new INPUT

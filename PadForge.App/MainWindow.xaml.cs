@@ -413,6 +413,8 @@ namespace PadForge
             _viewModel.Settings.NewProfileRequested += OnNewProfile;
             _viewModel.Settings.SaveAsProfileRequested += OnSaveAsProfile;
             _viewModel.Settings.DeleteProfileRequested += OnDeleteProfile;
+            _viewModel.Settings.ExportProfileRequested += OnExportProfile;
+            _viewModel.Settings.ImportProfileRequested += OnImportProfile;
             _viewModel.Settings.EditProfileRequested += OnEditProfile;
             _viewModel.Settings.LoadProfileRequested += OnLoadProfile;
             _viewModel.Settings.RevertToDefaultRequested += OnRevertToDefault;
@@ -514,9 +516,12 @@ namespace PadForge
             };
             _viewModel.Settings.UninstallMidiServicesRequested += async (s, e) =>
             {
-                // The uninstall guard prevents this when MIDI slots are active, so the
-                // SDK runtime won't be loaded in-process. Safe to wait for the uninstaller.
-                // Abandon the initializer just in case (e.g. IsAvailable was called elsewhere).
+                // The uninstall guard prevents this when MIDI slots are active, but
+                // MIDI *input* enumeration (issue #128) loads the SDK runtime whenever
+                // services are installed — tear those connections down first.
+                _inputService?.ShutdownMidiInputs();
+                // Abandon the initializer rather than disposing it — Dispose() calls
+                // into the runtime, which crashes if the service is being removed.
                 Common.Input.MidiVirtualController.Shutdown(skipDispose: true);
                 await RunDriverOperationAsync(
                     Strings.Instance.Status_UninstallingMidi, DriverInstaller.UninstallMidiServices, RefreshMidiServicesStatus);
@@ -528,8 +533,24 @@ namespace PadForge
             // Refresh PadPage dropdowns and Devices-page slot buttons after assignment changes.
             _deviceService.DeviceAssignmentChanged += (s, e) =>
             {
+                // Assigning a device auto-maps it and rebuilds the slot's
+                // MappingSet, leaving every pad's Mappings ViewModel momentarily
+                // behind. RefreshDeviceList below re-selects the slot's device,
+                // which fires OnSelectedDeviceChanged → SaveViewModelToPadSetting
+                // BEFORE RefreshMappingsToViewModel reloads the ViewModel. Mark
+                // the mapping views stale up front so that save skips its
+                // destructive clear+rewrite instead of wiping the fresh auto-map
+                // (the DualSense-to-an-occupied-slot "only the Share button maps"
+                // bug; see PadViewModel.MappingsViewLoaded). RefreshMappingsToViewModel
+                // clears the flag again once the ViewModel is current.
+                foreach (var p in _viewModel.Pads)
+                    p.MappingsViewLoaded = false;
+
                 _inputService.RefreshDeviceList();
                 _viewModel.Devices.RefreshSlotButtons();
+
+                // Issue #83 — controller-audio sinks follow assignments.
+                PadForge.Common.Input.AudioPassthroughService.Reconcile();
 
                 // Issue #61 fix — bring the per-VC MappingSets up to
                 // date with every assigned device's PadSetting BEFORE
@@ -815,6 +836,8 @@ namespace PadForge
                         nameof(PadViewModel.LeftTriggerMaxRange) or nameof(PadViewModel.RightTriggerMaxRange) or
                         nameof(PadViewModel.ForceOverallGain) or nameof(PadViewModel.LeftMotorStrength) or
                         nameof(PadViewModel.RightMotorStrength) or nameof(PadViewModel.SwapMotors) or
+                        nameof(PadViewModel.WheelRotationRange) or nameof(PadViewModel.WheelAutoCenter) or
+                        nameof(PadViewModel.WheelRpmLeds) or
                         nameof(PadViewModel.ImpulseOverallGain) or
                         nameof(PadViewModel.ImpulseLeftStrength) or nameof(PadViewModel.ImpulseRightStrength) or
                         nameof(PadViewModel.ImpulseSwapTriggers) or
@@ -844,7 +867,18 @@ namespace PadForge
                         nameof(PadViewModel.GyroAimEngageButton) or nameof(PadViewModel.GyroAimEngageDeviceGuid) or
                         nameof(PadViewModel.GyroAimEngageMode) or
                         nameof(PadViewModel.GyroInvertPitch) or nameof(PadViewModel.GyroInvertYawRoll) or
-                        nameof(PadViewModel.GyroApplyTuningToPassthrough))
+                        nameof(PadViewModel.GyroApplyTuningToPassthrough) or
+                        // Steering at-lock feedback (#94) — per-slot toggles + tunables.
+                        nameof(PadViewModel.SteeringLockRumbleEnabled) or
+                        nameof(PadViewModel.SteeringLockTriggerVibEnabled) or
+                        nameof(PadViewModel.SteeringLockLightbarEnabled) or
+                        nameof(PadViewModel.SteeringLockATResistanceEnabled) or
+                        nameof(PadViewModel.SteeringLockPulseMs) or
+                        nameof(PadViewModel.SteeringLockLightbarColor) or
+                        nameof(PadViewModel.SteeringLockLightbarColorSource) or
+                        nameof(PadViewModel.SteeringLockLightbarPaletteCsv) or
+                        nameof(PadViewModel.SteeringLockLightbarHoldMs) or
+                        nameof(PadViewModel.SteeringLockLightbarFadeMs))
                     {
                         _settingsService.MarkDirty();
                     }
@@ -852,6 +886,10 @@ namespace PadForge
 
                 // Extended custom stick/trigger config changes (indices 2+) trigger autosave.
                 pad.ConfigItemDirtyCallback = () => _settingsService.MarkDirty();
+
+                // Steering-mode change (incl. Reset all) re-stamps the engine MappingSets now
+                // so the stick stops/starts steering immediately, not on the 2s autosave.
+                pad.SteeringModeChangedCallback = () => _settingsService.PushUiExtraSourcesIntoSlotMappingSets();
 
                 // ExtendedConfig property changes (preset, counts) trigger autosave.
                 pad.ExtendedConfig.PropertyChanged += (s, e) => _settingsService.MarkDirty();
@@ -1403,6 +1441,10 @@ namespace PadForge
                 // touchpad rows on Sony, etc.) populate as MappingSet rows
                 // without waiting for a save+reload.
                 SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view — see OnSidebarTypeXbox / PadViewModel.MappingsViewLoaded.
+                // RefreshDeviceList below can re-select the slot's device and fire the
+                // mapping-persisting save; the flag keeps it from writing the pre-change view.
+                _viewModel.Pads[args.SlotIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
                 _inputService.RefreshDeviceList();
                 _viewModel.Devices.RefreshSlotButtons();
@@ -1700,6 +1742,7 @@ namespace PadForge
             {
                 _recorderService?.Dispose();
                 _inputService?.Dispose();
+                Common.Input.MidiInputRuntime.Shutdown();
                 Common.Input.MidiVirtualController.Shutdown();
             });
 
@@ -2462,6 +2505,12 @@ namespace PadForge
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Xbox;
                 _inputService.MoveSlotToGroupTail(padIndex);
                 SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view: the rebuild above re-auto-mapped
+                // the slot, but the OutputType setter's RebuildMappings reloaded the
+                // ViewModel from the pre-change MappingSet. Same guard as the device-
+                // assignment path (see PadViewModel.MappingsViewLoaded); cleared on
+                // the next RefreshMappingsCore.
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
             }
         }
@@ -2476,6 +2525,8 @@ namespace PadForge
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.PlayStation;
                 _inputService.MoveSlotToGroupTail(padIndex);
                 SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view — see OnSidebarTypeXbox / PadViewModel.MappingsViewLoaded.
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
             }
         }
@@ -2490,6 +2541,8 @@ namespace PadForge
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Extended;
                 _inputService.MoveSlotToGroupTail(padIndex);
                 SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view — see OnSidebarTypeXbox / PadViewModel.MappingsViewLoaded.
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
             }
         }
@@ -2504,6 +2557,8 @@ namespace PadForge
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.KeyboardMouse;
                 _inputService.MoveSlotToGroupTail(padIndex);
                 SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view — see OnSidebarTypeXbox / PadViewModel.MappingsViewLoaded.
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
             }
         }
@@ -2519,6 +2574,8 @@ namespace PadForge
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Midi;
                 _inputService.MoveSlotToGroupTail(padIndex);
                 SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view — see OnSidebarTypeXbox / PadViewModel.MappingsViewLoaded.
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
                 _settingsService.MarkDirty();
             }
         }
@@ -3920,6 +3977,87 @@ namespace PadForge
                 _viewModel.Settings.ActiveProfileInfo = Strings.Instance.Common_Default;
             _settingsService.MarkDirty();
             _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileDeleted_Format, selected.Name);
+        }
+
+        /// <summary>Exports the selected profile (with its referenced
+        /// sound packages bundled) to a shareable .pfprofile file.</summary>
+        private void OnExportProfile(object sender, EventArgs e)
+        {
+            var selected = _viewModel.Settings.SelectedProfile;
+            if (selected == null) return;
+
+            // The Default entry isn't a stored ProfileData row — export a
+            // snapshot of the current settings instead.
+            ProfileData profile;
+            if (selected.IsDefault)
+            {
+                profile = _inputService.SnapshotCurrentProfile();
+                if (profile == null) return;
+                profile.Name = selected.Name;
+            }
+            else
+            {
+                profile = SettingsManager.Profiles.Find(p => p.Id == selected.Id);
+                if (profile == null) return;
+            }
+
+            var dlg = new Microsoft.Win32.SaveFileDialog
+            {
+                Title = Strings.Instance.Profiles_Export,
+                FileName = profile.Name + PadForge.Common.ProfileTransfer.FileExtension,
+                Filter = $"PadForge profile (*{PadForge.Common.ProfileTransfer.FileExtension})|*{PadForge.Common.ProfileTransfer.FileExtension}",
+            };
+            if (dlg.ShowDialog() != true) return;
+            try
+            {
+                PadForge.Common.ProfileTransfer.Export(profile, dlg.FileName);
+                _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileExported_Format, profile.Name);
+            }
+            catch (Exception ex)
+            {
+                _viewModel.StatusText = ex.Message;
+            }
+        }
+
+        /// <summary>Imports a .pfprofile: bundled sound packages land next
+        /// to the exe and register; the profile joins the registry (name
+        /// deduped). The user activates it via the existing Load button.</summary>
+        private void OnImportProfile(object sender, EventArgs e)
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = Strings.Instance.Profiles_Import,
+                Filter = $"PadForge profile (*{PadForge.Common.ProfileTransfer.FileExtension})|*{PadForge.Common.ProfileTransfer.FileExtension}|All files|*.*",
+                CheckFileExists = true,
+            };
+            if (dlg.ShowDialog() != true) return;
+
+            var profile = PadForge.Common.ProfileTransfer.Import(dlg.FileName, out var packages);
+            if (profile == null)
+            {
+                _viewModel.StatusText = Strings.Instance.Status_ProfileImportFailed;
+                return;
+            }
+
+            // Dedup the display name against existing profiles.
+            string baseName = string.IsNullOrWhiteSpace(profile.Name) ? "Imported profile" : profile.Name.Trim();
+            string name = baseName;
+            int n = 2;
+            while (SettingsManager.Profiles.Any(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase)))
+                name = $"{baseName} ({n++})";
+            profile.Name = name;
+
+            SettingsManager.Profiles.Add(profile);
+            var listItem = new ViewModels.ProfileListItem
+            {
+                Id = profile.Id,
+                Name = profile.Name,
+                Executables = InputService.FormatExePaths(profile.ExecutableNames ?? string.Empty),
+            };
+            SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes);
+            _viewModel.Settings.ProfileItems.Add(listItem);
+            _settingsService.MarkDirty();
+            _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileImported_Format, profile.Name, packages.Count);
         }
 
         private void OnEditProfile(object sender, EventArgs e)

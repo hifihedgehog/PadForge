@@ -134,6 +134,13 @@ namespace PadForge.Common.Input
         /// </summary>
         public TouchpadState[] CombinedTouchpadStates { get; } = new TouchpadState[MaxPads];
 
+        /// <summary>Per-slot raw physical touchpad-click flag (any assigned device's
+        /// SDL_GAMEPAD_BUTTON_TOUCHPAD = InputState.Buttons[16]), OR'd across devices each
+        /// frame in Step 3 regardless of virtual-controller type or click mapping. The
+        /// InputReactive lightbar reads this so a touchpad press flashes even on a
+        /// non-PlayStation virtual (where TouchpadOutputState is never computed).</summary>
+        public bool[] SlotRawTouchpadClick { get; } = new bool[MaxPads];
+
         /// <summary>Per-(slot, device, touchpad-pad-index) gesture
         /// recognizer state. Slot-keyed so two slots sharing one
         /// physical touchpad each keep their own context and settings —
@@ -289,6 +296,15 @@ namespace PadForge.Common.Input
         /// combined with raw game-driven rumble via <c>max()</c>.
         /// </summary>
         public MacroRumbleOverride[] MacroRumbleOverrides { get; }
+            = InitMacroRumbleOverrides();
+
+        /// <summary>Per-slot trigger-actuator pulse for the steering at-lock feedback
+        /// (#94, channel 2). Reuses <see cref="MacroRumbleOverride"/> purely as a
+        /// hold+fade timer; its scalar output is routed to the trigger actuators (Xbox
+        /// impulse triggers in ApplyForceFeedback, DualSense trigger haptics via
+        /// <c>UserEffectsDispatcher</c>) rather than the grip motors, so trigger vibration
+        /// stays distinct from channel 1's rumble.</summary>
+        public MacroRumbleOverride[] SteeringTrigVibOverrides { get; }
             = InitMacroRumbleOverrides();
 
         private static MacroRumbleOverride[] InitMacroRumbleOverrides()
@@ -649,6 +665,9 @@ namespace PadForge.Common.Input
                 return;
 
             _running = false;
+
+            // Macro sounds die with the engine — releases the WASAPI clients.
+            SoundMacroService.StopAll();
 
             if (_pollingThread != null && _pollingThread.IsAlive)
             {

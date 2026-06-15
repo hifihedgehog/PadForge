@@ -26,6 +26,7 @@ namespace PadForge.ViewModels
         public PlayStationSlotConfig()
         {
             HookPalette(_lightbarPalette);
+            HookInputReactivePalette(_lightbarInputReactivePalette);
         }
 
         // Subscribe collection + per-item PropertyChanged so the
@@ -201,6 +202,31 @@ namespace PadForge.ViewModels
         {
             get => _lightbarEnabled;
             set => SetProperty(ref _lightbarEnabled, value);
+        }
+
+        private bool _audioPassthroughEnabled;
+        /// <summary>Issue #83 — mirror the system default audio output to
+        /// this pad's built-in speaker (USB Audio Class endpoint matched by
+        /// Container ID, or the Bluetooth HID audio stream). Per assigned
+        /// device, off by default. Macro sounds play through the speaker
+        /// regardless of this toggle; this mirrors EVERYTHING the system
+        /// default device plays, in parallel.</summary>
+        public bool AudioPassthroughEnabled
+        {
+            get => _audioPassthroughEnabled;
+            set => SetProperty(ref _audioPassthroughEnabled, value);
+        }
+
+        private string _audioMirrorSourceId = string.Empty;
+        /// <summary>Which render endpoint the mirror captures (MMDevice ID).
+        /// Empty = the system default device, re-resolved live. Lets games
+        /// that output specific sounds to a separate playback device (e.g.
+        /// Death Stranding's controller-speaker audio) target an endpoint
+        /// that PadForge then forwards to the pad over USB or Bluetooth.</summary>
+        public string AudioMirrorSourceId
+        {
+            get => _audioMirrorSourceId;
+            set => SetProperty(ref _audioMirrorSourceId, value ?? string.Empty);
         }
 
         // ────────────────────────────────────────────────
@@ -514,8 +540,7 @@ namespace PadForge.ViewModels
         /// user picking Cycle there gets the editor next to the dropdown
         /// they just used.</summary>
         public bool ShowPaletteForOverlay =>
-            _inputReactiveMode == InputReactiveMode.Cycle
-            && _lightbarMode != LightbarMode.ColorCycle;
+            _inputReactiveMode == InputReactiveMode.Cycle;
 
         /// <summary>True when the input-reactive overlay is the
         /// Fixed variant — the color picker for the per-press flash
@@ -704,6 +729,119 @@ namespace PadForge.ViewModels
                 }
             });
         private RelayCommand<LightbarPaletteEntry> _removePalette;
+
+        // ── InputReactive = Cycle palette — SEPARATE from the ColorCycle palette above. ──
+        // The base ColorCycle effect and the InputReactive Cycle overlay each step their own
+        // palette. They were briefly wired to the one collection above, so editing one changed
+        // the other; that was never intended. Same threading contract: timer-thread reads go
+        // through SnapshotLightbarInputReactivePalette().
+        private readonly object _lightbarInputReactivePaletteLock = new();
+        private ObservableCollection<LightbarPaletteEntry> _lightbarInputReactivePalette
+            = new ObservableCollection<LightbarPaletteEntry>
+            {
+                new LightbarPaletteEntry(0xFF, 0x00, 0x00),
+                new LightbarPaletteEntry(0x00, 0xFF, 0x00),
+                new LightbarPaletteEntry(0x00, 0x00, 0xFF),
+                new LightbarPaletteEntry(0xFF, 0xFF, 0x00),
+            };
+        public ObservableCollection<LightbarPaletteEntry> LightbarInputReactivePalette
+        {
+            get => _lightbarInputReactivePalette;
+            set
+            {
+                var v = value ?? new ObservableCollection<LightbarPaletteEntry>();
+                if (_lightbarInputReactivePalette == v) return;
+                lock (_lightbarInputReactivePaletteLock)
+                {
+                    UnhookInputReactivePalette(_lightbarInputReactivePalette);
+                    _lightbarInputReactivePalette = v;
+                    HookInputReactivePalette(_lightbarInputReactivePalette);
+                }
+                OnPropertyChanged(nameof(LightbarInputReactivePalette));
+            }
+        }
+
+        public LightbarPaletteEntry[] SnapshotLightbarInputReactivePalette()
+        {
+            lock (_lightbarInputReactivePaletteLock)
+                return _lightbarInputReactivePalette.ToArray();
+        }
+
+        public void ReplaceLightbarInputReactivePalette(IEnumerable<LightbarPaletteEntry> entries)
+        {
+            lock (_lightbarInputReactivePaletteLock)
+            {
+                _lightbarInputReactivePalette.Clear();
+                if (entries != null)
+                    foreach (var e in entries) _lightbarInputReactivePalette.Add(e);
+            }
+        }
+
+        private void HookInputReactivePalette(ObservableCollection<LightbarPaletteEntry> coll)
+        {
+            if (coll == null) return;
+            coll.CollectionChanged += OnInputReactivePaletteCollectionChanged;
+            foreach (var entry in coll) if (entry != null) entry.PropertyChanged += OnInputReactivePaletteEntryChanged;
+        }
+        private void UnhookInputReactivePalette(ObservableCollection<LightbarPaletteEntry> coll)
+        {
+            if (coll == null) return;
+            coll.CollectionChanged -= OnInputReactivePaletteCollectionChanged;
+            foreach (var entry in coll) if (entry != null) entry.PropertyChanged -= OnInputReactivePaletteEntryChanged;
+        }
+        private void OnInputReactivePaletteCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null) foreach (LightbarPaletteEntry old in e.OldItems) if (old != null) old.PropertyChanged -= OnInputReactivePaletteEntryChanged;
+            if (e.NewItems != null) foreach (LightbarPaletteEntry add in e.NewItems) if (add != null) add.PropertyChanged += OnInputReactivePaletteEntryChanged;
+            OnPropertyChanged(nameof(LightbarInputReactivePalette));
+        }
+        private void OnInputReactivePaletteEntryChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+            => OnPropertyChanged(nameof(LightbarInputReactivePalette));
+
+        public RelayCommand AddInputReactivePaletteColorCommand =>
+            _addInputReactivePalette ??= new RelayCommand(() =>
+            {
+                byte r = 0xFF, g = 0xFF, b = 0xFF;
+                lock (_lightbarInputReactivePaletteLock)
+                {
+                    if (_lightbarInputReactivePalette.Count > 0)
+                    {
+                        var last = _lightbarInputReactivePalette[_lightbarInputReactivePalette.Count - 1];
+                        if (last.R == 0xFF && last.G == 0x00 && last.B == 0x00) { r = 0x00; g = 0xFF; b = 0x00; }
+                        else if (last.R == 0x00 && last.G == 0xFF && last.B == 0x00) { r = 0x00; g = 0x00; b = 0xFF; }
+                        else if (last.R == 0x00 && last.G == 0x00 && last.B == 0xFF) { r = 0xFF; g = 0xFF; b = 0x00; }
+                        else { r = 0xFF; g = 0x00; b = 0x00; }
+                    }
+                    _lightbarInputReactivePalette.Add(new LightbarPaletteEntry(r, g, b));
+                }
+            });
+        private RelayCommand _addInputReactivePalette;
+
+        public RelayCommand<LightbarPaletteEntry> RemoveInputReactivePaletteColorCommand =>
+            _removeInputReactivePalette ??= new RelayCommand<LightbarPaletteEntry>(entry =>
+            {
+                if (entry == null) return;
+                lock (_lightbarInputReactivePaletteLock)
+                {
+                    if (_lightbarInputReactivePalette.Count <= 1) return; // never let it go empty
+                    _lightbarInputReactivePalette.Remove(entry);
+                }
+            });
+        private RelayCommand<LightbarPaletteEntry> _removeInputReactivePalette;
+
+        public RelayCommand ResetInputReactivePaletteCommand =>
+            _resetInputReactivePalette ??= new RelayCommand(() =>
+            {
+                lock (_lightbarInputReactivePaletteLock)
+                {
+                    _lightbarInputReactivePalette.Clear();
+                    _lightbarInputReactivePalette.Add(new LightbarPaletteEntry(0xFF, 0x00, 0x00));
+                    _lightbarInputReactivePalette.Add(new LightbarPaletteEntry(0x00, 0xFF, 0x00));
+                    _lightbarInputReactivePalette.Add(new LightbarPaletteEntry(0x00, 0x00, 0xFF));
+                    _lightbarInputReactivePalette.Add(new LightbarPaletteEntry(0xFF, 0xFF, 0x00));
+                }
+            });
+        private RelayCommand _resetInputReactivePalette;
 
         private int _lightbarInputHoldMs;
         /// <summary>Hold time for InputReactive pulses, in milliseconds.
@@ -969,6 +1107,7 @@ namespace PadForge.ViewModels
                 AudioMidToHighPercent = 66;
                 AudioCrossFadePercent = 5.0;
                 ResetPaletteCommand?.Execute(null);
+                ResetInputReactivePaletteCommand?.Execute(null);
             });
         private RelayCommand _resetLightbarAll;
 
@@ -1367,6 +1506,8 @@ namespace PadForge.ViewModels
         [XmlAttribute] public byte LightbarGreen { get; set; }
         [XmlAttribute] public byte LightbarBlue { get; set; } = 0xFF;
         [XmlAttribute] public bool LightbarEnabled { get; set; }
+        [XmlAttribute] public bool AudioPassthroughEnabled { get; set; }
+        [XmlAttribute] public string AudioMirrorSourceId { get; set; } = string.Empty;
         [XmlAttribute] public MicLedMode MicLedMode { get; set; } = MicLedMode.Off;
         [XmlAttribute] public string MicLedFollowDeviceId { get; set; } = string.Empty;
         [XmlAttribute] public PlayerLedMode PlayerLedMode { get; set; } = PlayerLedMode.Off;
@@ -1409,6 +1550,12 @@ namespace PadForge.ViewModels
         [XmlArray("LightbarPalette")]
         [XmlArrayItem("Color")]
         public LightbarPaletteEntryData[] LightbarPalette { get; set; }
+        /// <summary>Dedicated palette for the InputReactive = Cycle overlay, separate from
+        /// the ColorCycle palette above. Null on pre-split saves — load seeds it from
+        /// <see cref="LightbarPalette"/> so existing setups keep their colors.</summary>
+        [XmlArray("LightbarInputReactivePalette")]
+        [XmlArrayItem("Color")]
+        public LightbarPaletteEntryData[] LightbarInputReactivePalette { get; set; }
         [XmlAttribute] public int LightbarInputHoldMs { get; set; } = 0;
         [XmlAttribute] public int LightbarInputDecayMs { get; set; } = 600;
         [XmlAttribute] public bool LightbarInputRandomize { get; set; } = true;

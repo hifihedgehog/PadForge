@@ -323,7 +323,7 @@ namespace PadForge.Services
                 device.RumbleRequested += (low, high) =>
                 {
                     if (cts.IsCancellationRequested || ws.State != WebSocketState.Open) return;
-                    _ = SendJsonAsync(ws, new { type = "rumble", left = (int)low, right = (int)high }, cts.Token);
+                    _ = SendJsonAsync(ws, new { type = "rumble", left = (int)low, right = (int)high }, cts.Token, session.SendGate);
                 };
 
                 _clients[compositeKey] = session;
@@ -333,7 +333,7 @@ namespace PadForge.Services
                 StatusChanged?.Invoke(this, string.Format(Strings.Instance.Server_RunningClients_Format, _clients.Count));
 
                 // Send connection confirmation.
-                await SendJsonAsync(ws, new { type = "connected", padId, name }, cts.Token);
+                await SendJsonAsync(ws, new { type = "connected", padId, name }, cts.Token, session.SendGate);
 
                 // Receive loop.
                 var buffer = new byte[1024];
@@ -379,6 +379,11 @@ namespace PadForge.Services
                 finally
                 {
                     cts.Dispose();
+                    // Don't dispose SendGate: a rumble send may still hold it,
+                    // and Release() on a disposed SemaphoreSlim throws into the
+                    // fire-and-forget send. The gate never touches
+                    // AvailableWaitHandle, so it holds no unmanaged handle and
+                    // the GC reclaims it with nothing to leak.
                 }
             }
             catch (Exception ex)
@@ -436,9 +441,16 @@ namespace PadForge.Services
             }
         }
 
-        private static async Task SendJsonAsync(WebSocket ws, object obj, CancellationToken ct)
+        private static async Task SendJsonAsync(WebSocket ws, object obj, CancellationToken ct, SemaphoreSlim gate = null)
         {
             if (ws.State != WebSocketState.Open) return;
+            // Serialize concurrent sends on one socket — a managed WebSocket
+            // throws if a second SendAsync starts before the first completes.
+            if (gate != null)
+            {
+                try { await gate.WaitAsync(ct); }
+                catch { return; }
+            }
             try
             {
                 var json = JsonSerializer.Serialize(obj);
@@ -450,6 +462,7 @@ namespace PadForge.Services
                     ct);
             }
             catch { /* best effort */ }
+            finally { gate?.Release(); }
         }
 
         // ─────────────────────────────────────────────
@@ -680,6 +693,10 @@ namespace PadForge.Services
             public WebSocket Socket { get; }
             public WebControllerDevice Device { get; }
             public CancellationTokenSource CancellationSource { get; }
+            /// <summary>Serializes ws.SendAsync — a managed WebSocket forbids a
+            /// second outstanding send, so rapid rumble (SetRumble + StopRumble)
+            /// must not overlap.</summary>
+            public SemaphoreSlim SendGate { get; } = new SemaphoreSlim(1, 1);
 
             public ClientSession(WebSocket socket, WebControllerDevice device, CancellationTokenSource cts)
             {

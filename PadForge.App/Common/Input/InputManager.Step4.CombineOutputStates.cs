@@ -105,7 +105,19 @@ namespace PadForge.Common.Input
                         if (isExtended)
                         {
                             var rawState = us.ExtendedRawOutputState;
-                            if (firstRaw)
+                            // An offline assigned device never had Step 3
+                            // populate its raw state — all arrays null. If it
+                            // lands first in the buffer and seeds the combine,
+                            // every later merge silently no-ops against the
+                            // null destination (MergeExtendedRaw's null guards)
+                            // and the slot's combined output dies while each
+                            // online device's own state stays live. Skip
+                            // never-populated states entirely.
+                            if (rawState.Axes == null && rawState.Buttons == null && rawState.Povs == null)
+                            {
+                                // nothing to contribute
+                            }
+                            else if (firstRaw)
                             {
                                 combinedRaw = rawState;
                                 firstRaw = false;

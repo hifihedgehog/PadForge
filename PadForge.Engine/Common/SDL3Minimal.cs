@@ -722,7 +722,11 @@ namespace SDL3
             public ushort delay;
             public ushort button;
             public ushort interval;
-            private ushort _pad2;
+            // NO padding here. In the C ABI right_sat[0] follows `interval` directly at
+            // offset 30 (interval is a Uint16 at offset 28, already 2-aligned). A stray
+            // pad shifts every condition parameter 2 bytes, so SDL reads coeff/saturation
+            // as 0 and the effect (spring/damper/friction/inertia + the auto-center
+            // spring) applies no force. Verified vs SDL_haptic.h field order.
             // Per-axis arrays (3 axes max) — flattened as individual fields
             public ushort right_sat0, right_sat1, right_sat2;   // Positive saturation 0–65535
             public ushort left_sat0, left_sat1, left_sat2;      // Negative saturation 0–65535

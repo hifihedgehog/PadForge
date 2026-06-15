@@ -93,3 +93,55 @@ OpenXInput
   https://github.com/hifihedgehog/OpenXinput (forked for HIDMaestro filtering)
   Upstream ships only a Microsoft trademark disclaimer; no OSS license is
   granted. Redistributed as-is under the same terms as upstream.
+
+Concentus
+  https://github.com/lostromb/concentus
+  By Logan Stromberg, with copyrights held by Skype Limited, Xiph.Org
+  Foundation, and other Opus contributors. Encodes the Opus frames for
+  DualSense speaker audio over Bluetooth.
+  Licensed under the BSD 3-Clause License (the Opus license)
+
+SAxense
+  https://apps.sdore.me/SAxense (https://github.com/egormanga/SAxense)
+  By egormanga. DualSense Bluetooth audio research: the multiplexed
+  packet transport the controller speaker stream rides on. PadForge's
+  implementation is original C#.
+  Licensed under MPL-2.0
+
+dualsense-bt-haptics
+  https://github.com/awalol/dualsense-bt-haptics
+  By awalol. The HeadsetPlayMusic tool documented the Opus framing and
+  packet layout PadForge's Bluetooth speaker stream re-implements.
+  Licensed under MIT License
+
+DualSenseY-v2
+  https://github.com/WujekFoliarz/DualSenseY-v2
+  By WujekFoliarz. Behavioral reference for USB controller audio
+  passthrough and adaptive trigger effects. No license published.
+  PadForge's implementation is original C#.
+
+dualsense-tester
+  https://github.com/daidr/dualsense-tester (https://ds.daidr.me/)
+  Copyright (c) 2023 Xuezhou Dai (daidr)
+  Reference for the Sony Bluetooth feature-report CRC framing and the
+  vendor test commands PadForge forwards from virtual to physical pads.
+  Licensed under MIT License
+
+DS4AudioStreamer
+  https://github.com/nefarius/DS4AudioStreamer
+  By nefarius. Reference for the DualShock 4 Bluetooth audio report
+  framing (0x14/0x17 layout, frame counter, volume enables). PadForge's
+  SBC encoder is an original C# implementation from the public
+  Bluetooth A2DP specification and contains no libsbc (GPL) code.
+  Licensed under MIT License
+
+ds4mac
+  https://github.com/khallmark/ds4mac
+  By khallmark. DualShock 4 audio protocol documentation (SBC
+  parameters, packet layouts, Bluetooth-only audio finding).
+  Licensed under MIT License
+
+Special Thanks
+  TechAntohere (https://github.com/TechAntohere, u/Idkiamaguy645)
+  Shared his DualSense Bluetooth findings and testing, and pointed
+  PadForge to the working speaker recipe.

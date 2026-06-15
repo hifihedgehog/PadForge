@@ -21,6 +21,22 @@ namespace PadForge.Views
         public event EventHandler<string> ControllerElementRecordRequested;
 
         private PadViewModel _vm;
+
+        // Input mode (issue #128): the same control reused on the Devices
+        // page to visualize a MIDI INPUT device's live state. No PadViewModel,
+        // no MidiConfig window, no click-to-record — the full 0-127 namespace
+        // is laid out wrapped into octave rows and driven from a live
+        // MidiInputState supplied by the caller each render frame.
+        /// <summary>Which slice of the MIDI namespace an input-mode preview
+        /// renders. Split so the Devices page can place normal-size section
+        /// headers OUTSIDE the Viewbox (an in-canvas label would scale down
+        /// with the keys and become unreadable).</summary>
+        public enum InputSection { Notes, Ccs }
+
+        private bool _inputMode;
+        private InputSection _inputSection;
+        private Func<MidiInputState> _inputSource;
+
         private bool _dirty;
         private bool _layoutBuilt;
         private Wpf.Ui.Appearance.ApplicationTheme? _lastTheme;
@@ -49,6 +65,16 @@ namespace PadForge.Views
         private static Brush KeyBorderBrush => IsDarkTheme ? _kbD : _kbL;
         private static readonly Brush HoverBrush = F(0x40,0xA0,0xE0);
         private static readonly Brush FlashBrush = F(0xFF,0xA5,0x00);
+        // Relative-encoder pulse flash (input mode): the whole CC bar lights
+        // green on an up detent, orange on a down detent (issue #128).
+        private static readonly Brush CcUpPulseBrush = F(0x33,0xC0,0x55);
+        private static readonly Brush CcDownPulseBrush = F(0xE0,0x88,0x2A);
+
+        // Pulse latch (input mode): a detent's button pulse is only ~24 ms,
+        // too brief to see, so the preview holds the flash this long.
+        private const long PulseLatchMs = 180;
+        private readonly long[] _ccUpLitUntil = new long[MidiInputState.CcCount];
+        private readonly long[] _ccDownLitUntil = new long[MidiInputState.CcCount];
 
         // Layout constants
         private const double WhiteKeyWidth = 28;
@@ -115,6 +141,33 @@ namespace PadForge.Views
             _layoutBuilt = false;
         }
 
+        /// <summary>Drives the preview from a live MIDI INPUT state (full
+        /// 0-127 namespace, wrapped). Renders one <paramref name="section"/>
+        /// (notes or CCs) with no in-canvas title. <paramref name="source"/>
+        /// is polled each render frame and may return null until the first
+        /// message.</summary>
+        public void BindInput(Func<MidiInputState> source, InputSection section)
+        {
+            Unbind();
+            _inputMode = true;
+            _inputSection = section;
+            _inputSource = source;
+            CompositionTarget.Rendering -= OnRendering;
+            CompositionTarget.Rendering += OnRendering;
+            RebuildLayout();
+        }
+
+        public void UnbindInput()
+        {
+            CompositionTarget.Rendering -= OnRendering;
+            _inputMode = false;
+            _inputSource = null;
+            _layoutBuilt = false;
+            MidiCanvas.Children.Clear();
+            _keyWidgets.Clear();
+            _ccWidgets.Clear();
+        }
+
         private void OnVmPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(PadViewModel.MidiOutputSnapshot))
@@ -151,6 +204,12 @@ namespace PadForge.Views
             _keyWidgets.Clear();
             _ccWidgets.Clear();
             _layoutBuilt = false;
+
+            if (_inputMode)
+            {
+                BuildInputLayout();
+                return;
+            }
 
             if (_vm == null || _vm.OutputType != VirtualControllerType.Midi) return;
             var mc = _vm.MidiConfig;
@@ -204,10 +263,74 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
+        //  Input-mode layout — full 0-127 namespace, wrapped
+        // ─────────────────────────────────────────────
+
+        private const int CcPerRow = 32;     // 128 CCs -> 4 rows
+        private const int OctavesPerRow = 4;  // 11 octaves -> 3 rows
+
+        private void BuildInputLayout()
+        {
+            double topY = LayoutPadding;
+            double maxRight = 0;
+
+            // Drop any stale encoder-pulse flashes from a previous binding.
+            Array.Clear(_ccUpLitUntil, 0, _ccUpLitUntil.Length);
+            Array.Clear(_ccDownLitUntil, 0, _ccDownLitUntil.Length);
+
+            // No in-canvas section title — the Devices page draws a normal-
+            // size header outside the Viewbox so it stays readable.
+            if (_inputSection == InputSection.Ccs)
+            {
+                // ── CC sliders (all 128, wrapped) ──
+                double ccRowH = CcBarHeight + LabelHeight + 8;
+                for (int cc = 0; cc < 128; cc++)
+                {
+                    int row = cc / CcPerRow, col = cc % CcPerRow;
+                    double cx = LayoutPadding + col * (CcBarWidth + 6);
+                    double cy = topY + row * ccRowH;
+                    _ccWidgets.Add(CreateCcSlider(cc, cc, cx, cy, inputMode: true));
+                    maxRight = Math.Max(maxRight, cx + CcBarWidth);
+                }
+                int ccRows = (128 + CcPerRow - 1) / CcPerRow;
+                topY += ccRows * ccRowH;
+            }
+            else
+            {
+                // ── Piano keyboard (all 11 octaves, wrapped by octave) ──
+                double octaveWidth = 7 * WhiteKeyWidth;
+                double pianoRowH = WhiteKeyHeight + LabelHeight + 8;
+                int totalOctaves = (127 / 12) + 1; // 11 (octaves 0..10)
+                for (int oct = 0; oct < totalOctaves; oct++)
+                {
+                    int row = oct / OctavesPerRow, colOct = oct % OctavesPerRow;
+                    double rowX = LayoutPadding + colOct * octaveWidth;
+                    double rowY = topY + row * pianoRowH;
+
+                    int first = oct * 12;
+                    int last = Math.Min(first + 11, 127);
+                    var octNotes = new int[last - first + 1];
+                    for (int n = first; n <= last; n++) octNotes[n - first] = n;
+
+                    BuildPianoKeys(octNotes, rowX, rowY, inputMode: true);
+                    maxRight = Math.Max(maxRight, rowX + octaveWidth);
+                }
+                int pianoRows = (totalOctaves + OctavesPerRow - 1) / OctavesPerRow;
+                topY += pianoRows * pianoRowH;
+            }
+
+            MidiCanvas.Width = maxRight + LayoutPadding;
+            MidiCanvas.Height = topY + LayoutPadding;
+            _layoutBuilt = true;
+            _lastTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
+            _dirty = true;
+        }
+
+        // ─────────────────────────────────────────────
         //  CC Slider widget
         // ─────────────────────────────────────────────
 
-        private CcSliderWidget CreateCcSlider(int index, int ccNumber, double x, double y)
+        private CcSliderWidget CreateCcSlider(int index, int ccNumber, double x, double y, bool inputMode = false)
         {
             // Background bar
             var bg = new Rectangle
@@ -218,7 +341,7 @@ namespace PadForge.Views
                 Stroke = DimBrush,
                 StrokeThickness = 1,
                 RadiusX = 3, RadiusY = 3,
-                Cursor = Cursors.Hand
+                Cursor = inputMode ? Cursors.Arrow : Cursors.Hand
             };
             Canvas.SetLeft(bg, x);
             Canvas.SetTop(bg, y);
@@ -244,29 +367,31 @@ namespace PadForge.Views
             label.TextAlignment = TextAlignment.Center;
             MidiCanvas.Children.Add(label);
 
-            // Hover
-            bg.MouseEnter += (s, e) =>
+            // Hover + click-to-record are output-mode affordances only.
+            if (!inputMode)
             {
-                if (_flashTarget != null) return;
-                bg.Stroke = HoverBrush;
-                bg.StrokeThickness = 2;
-            };
-            bg.MouseLeave += (s, e) =>
-            {
-                if (_flashTarget != null) return;
-                bg.Stroke = DimBrush;
-                bg.StrokeThickness = 1;
-            };
-
-            // Click-to-record
-            bg.MouseLeftButtonDown += (s, e) =>
-            {
-                ControllerElementRecordRequested?.Invoke(this, $"MidiCC{index}");
-            };
+                bg.MouseEnter += (s, e) =>
+                {
+                    if (_flashTarget != null) return;
+                    bg.Stroke = HoverBrush;
+                    bg.StrokeThickness = 2;
+                };
+                bg.MouseLeave += (s, e) =>
+                {
+                    if (_flashTarget != null) return;
+                    bg.Stroke = DimBrush;
+                    bg.StrokeThickness = 1;
+                };
+                bg.MouseLeftButtonDown += (s, e) =>
+                {
+                    ControllerElementRecordRequested?.Invoke(this, $"MidiCC{index}");
+                };
+            }
 
             return new CcSliderWidget
             {
                 CcIndex = index,
+                CcNumber = ccNumber,
                 Background = bg,
                 Fill = fill,
                 X = x,
@@ -278,7 +403,7 @@ namespace PadForge.Views
         //  Piano keyboard
         // ─────────────────────────────────────────────
 
-        private void BuildPianoKeys(int[] noteNumbers, double startX, double y)
+        private void BuildPianoKeys(int[] noteNumbers, double startX, double y, bool inputMode = false)
         {
             // First pass: identify which notes are white and black
             var whiteNotes = new List<int>(); // indices into noteNumbers
@@ -299,7 +424,7 @@ namespace PadForge.Views
             {
                 int note = noteNumbers[idx];
                 var key = CreatePianoKey(idx, note, wx, y, WhiteKeyWidth, WhiteKeyHeight,
-                    WhiteKeyBrush, WhiteKeyPressedBrush, false);
+                    WhiteKeyBrush, WhiteKeyPressedBrush, false, inputMode);
                 _keyWidgets.Add(key);
                 whiteKeyPositions[note] = wx;
                 wx += WhiteKeyWidth;
@@ -333,13 +458,13 @@ namespace PadForge.Views
                 }
 
                 var key = CreatePianoKey(idx, note, bx, y, BlackKeyWidth, BlackKeyHeight,
-                    BlackKeyBrush, BlackKeyPressedBrush, true);
+                    BlackKeyBrush, BlackKeyPressedBrush, true, inputMode);
                 _keyWidgets.Add(key);
             }
         }
 
         private PianoKeyWidget CreatePianoKey(int noteIndex, int midiNote, double x, double y,
-            double width, double height, Brush normalBrush, Brush pressedBrush, bool isBlack)
+            double width, double height, Brush normalBrush, Brush pressedBrush, bool isBlack, bool inputMode = false)
         {
             var rect = new Rectangle
             {
@@ -350,7 +475,7 @@ namespace PadForge.Views
                 StrokeThickness = 1,
                 RadiusX = isBlack ? 2 : 3,
                 RadiusY = isBlack ? 2 : 3,
-                Cursor = Cursors.Hand
+                Cursor = inputMode ? Cursors.Arrow : Cursors.Hand
             };
             Canvas.SetLeft(rect, x);
             Canvas.SetTop(rect, y);
@@ -379,30 +504,32 @@ namespace PadForge.Views
                 MidiCanvas.Children.Add(label);
             }
 
-            // Hover
-            rect.MouseEnter += (s, e) =>
+            // Hover + click-to-record are output-mode affordances only.
+            if (!inputMode)
             {
-                if (_flashTarget != null) return;
-                rect.Stroke = HoverBrush;
-                rect.StrokeThickness = 2;
-            };
-            rect.MouseLeave += (s, e) =>
-            {
-                if (_flashTarget != null) return;
-                rect.Stroke = KeyBorderBrush;
-                rect.StrokeThickness = 1;
-            };
-
-            // Click-to-record
-            rect.MouseLeftButtonDown += (s, e) =>
-            {
-                ControllerElementRecordRequested?.Invoke(this, $"MidiNote{noteIndex}");
-                e.Handled = true;
-            };
+                rect.MouseEnter += (s, e) =>
+                {
+                    if (_flashTarget != null) return;
+                    rect.Stroke = HoverBrush;
+                    rect.StrokeThickness = 2;
+                };
+                rect.MouseLeave += (s, e) =>
+                {
+                    if (_flashTarget != null) return;
+                    rect.Stroke = KeyBorderBrush;
+                    rect.StrokeThickness = 1;
+                };
+                rect.MouseLeftButtonDown += (s, e) =>
+                {
+                    ControllerElementRecordRequested?.Invoke(this, $"MidiNote{noteIndex}");
+                    e.Handled = true;
+                };
+            }
 
             return new PianoKeyWidget
             {
                 NoteIndex = noteIndex,
+                MidiNote = midiNote,
                 IsBlack = isBlack,
                 Rect = rect,
                 NormalBrush = normalBrush,
@@ -475,7 +602,64 @@ namespace PadForge.Views
             var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
             if (_layoutBuilt && _lastTheme != currentTheme) RebuildLayout();
 
-            if (!_dirty || _vm == null || !_layoutBuilt) return;
+            if (!_layoutBuilt) return;
+
+            // Input mode: poll the live MIDI input state every frame (notes
+            // and CCs change continuously, so there's no dirty flag). Indexed
+            // by actual note / CC number against the full 0-127 arrays.
+            if (_inputMode)
+            {
+                // Skip the ~256-widget repaint when the Devices page is
+                // collapsed — the control stays bound (it's a persistent
+                // singleton), so without this the loop would run every frame
+                // against a hidden canvas.
+                if (!IsVisible) return;
+
+                var midi = _inputSource?.Invoke();
+                long now = Environment.TickCount64;
+                foreach (var w in _ccWidgets)
+                {
+                    int cc = w.CcNumber;
+                    double value = (midi?.Cc != null && cc < midi.Cc.Length)
+                        ? midi.Cc[cc] / 127.0 : 0;
+                    double fillH = Math.Clamp(value, 0, 1) * (CcBarHeight - 4);
+                    w.Fill.Height = fillH;
+                    Canvas.SetTop(w.Fill, w.Y + CcBarHeight - 2 - fillH);
+
+                    // Relative-encoder pulses: latch the flash so a ~24 ms
+                    // detent stays visible, then tint the WHOLE bar (an
+                    // encoder's value sits near center, so a half-fill is
+                    // meaningless — flood the cell). Green = clockwise,
+                    // orange = counter-clockwise.
+                    if (midi?.CcUp != null && cc < midi.CcUp.Length && midi.CcUp[cc])
+                        { _ccUpLitUntil[cc] = now + PulseLatchMs; _ccDownLitUntil[cc] = 0; }
+                    if (midi?.CcDown != null && cc < midi.CcDown.Length && midi.CcDown[cc])
+                        { _ccDownLitUntil[cc] = now + PulseLatchMs; _ccUpLitUntil[cc] = 0; }
+                    if (now < _ccUpLitUntil[cc])
+                    {
+                        w.Background.Fill = CcUpPulseBrush;
+                        w.Fill.Fill = CcUpPulseBrush;
+                    }
+                    else if (now < _ccDownLitUntil[cc])
+                    {
+                        w.Background.Fill = CcDownPulseBrush;
+                        w.Fill.Fill = CcDownPulseBrush;
+                    }
+                    else
+                    {
+                        w.Background.Fill = BgBrush;
+                        w.Fill.Fill = AccentBrush;
+                    }
+                }
+                foreach (var w in _keyWidgets)
+                {
+                    bool pressed = midi?.Notes != null && w.MidiNote < midi.Notes.Length && midi.Notes[w.MidiNote];
+                    w.Rect.Fill = pressed ? w.PressedBrush : w.NormalBrush;
+                }
+                return;
+            }
+
+            if (!_dirty || _vm == null) return;
             _dirty = false;
 
             var raw = _vm.MidiOutputSnapshot;
@@ -527,6 +711,7 @@ namespace PadForge.Views
         private struct CcSliderWidget
         {
             public int CcIndex;
+            public int CcNumber;   // actual MIDI CC number (input mode indexes the live array by this)
             public Rectangle Background;
             public Rectangle Fill;
             public double X, Y;
@@ -535,6 +720,7 @@ namespace PadForge.Views
         private struct PianoKeyWidget
         {
             public int NoteIndex;
+            public int MidiNote;   // actual MIDI note number (input mode indexes the live array by this)
             public bool IsBlack;
             public Rectangle Rect;
             public Brush NormalBrush;

@@ -427,10 +427,10 @@
                                    Margin="0,0,8,0"/>
                         <ui:NumberBox Value="{Binding DsuMotionServerPort, Mode=TwoWay}"
                                       Minimum="1024" Maximum="65535"
-                                      SpinButtonPlacementMode="Inline" Width="160"/>
+                                      SpinButtonPlacementMode="Inline" Width="200"/>
                         <Button Command="{Binding ResetDsuPortCommand}"
                                 Padding="4,2" VerticalAlignment="Center" Margin="4,0,0,0"
-                                ToolTip="Reset">
+                                ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
                             <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
                         </Button>
                     </StackPanel>
@@ -464,10 +464,10 @@
                                    Margin="0,0,8,0"/>
                         <ui:NumberBox Value="{Binding WebControllerPort, Mode=TwoWay}"
                                       Minimum="1024" Maximum="65535"
-                                      SpinButtonPlacementMode="Inline" Width="160"/>
+                                      SpinButtonPlacementMode="Inline" Width="200"/>
                         <Button Command="{Binding ResetWebPortCommand}"
                                 Padding="4,2" VerticalAlignment="Center" Margin="4,0,0,0"
-                                ToolTip="Reset">
+                                ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
                             <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
                         </Button>
                     </StackPanel>
@@ -479,6 +479,147 @@
                     </StackPanel>
                     <TextBlock Text="{Binding Dashboard_WebFooter, Source={x:Static strings:Strings.Instance}}"
                                FontSize="12" Opacity="0.5" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Remote Link (issue #138) -->
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
+                <TextBlock Text="&#xE71B;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Text="{Binding Dashboard_RemoteLink, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+            </StackPanel>
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="{Binding Dashboard_RemoteLinkDescription, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+
+                    <!-- On / off + port + live status -->
+                    <CheckBox AutomationProperties.AutomationId="EnableRemoteLinkCheckBox"
+                              Content="{Binding Dashboard_EnableRemoteLink, Source={x:Static strings:Strings.Instance}}"
+                              IsChecked="{Binding EnableRemoteLink}" Margin="0,0,0,8"/>
+                    <CheckBox Content="{Binding RemoteLink_AutoReconnect, Source={x:Static strings:Strings.Instance}}"
+                              IsChecked="{Binding AutoReconnect}" Margin="0,0,0,10"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="{Binding Dashboard_Port, Source={x:Static strings:Strings.Instance}}"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <ui:NumberBox Value="{Binding RemoteLinkPort, Mode=TwoWay}"
+                                      Minimum="1024" Maximum="65535"
+                                      SpinButtonPlacementMode="Inline" Width="200"/>
+                        <Button Command="{Binding ResetRemoteLinkPortCommand}"
+                                Padding="4,2" VerticalAlignment="Center" Margin="4,0,0,0" ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                        <Ellipse Width="8" Height="8"
+                                 Fill="{Binding EnableRemoteLink, Converter={StaticResource BoolToColorConverter}}"
+                                 VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding RemoteLinkStatus}" FontSize="12"/>
+                    </StackPanel>
+
+                    <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,14,0,14"/>
+
+                    <!-- Identity protection -->
+                    <TextBlock Text="{Binding RemoteLink_IdentityTitle, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,6"/>
+                    <TextBlock Text="{Binding RemoteLink_IdentityDescription, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}"/>
+                    <ComboBox Margin="0,10,0,8" Width="320" HorizontalAlignment="Left"
+                              ItemsSource="{Binding RemoteLink.IdentityProtectionModes}"
+                              SelectedIndex="{Binding RemoteLink.IdentityProtectionModeIndex, Mode=TwoWay}"/>
+                    <TextBlock Text="{Binding RemoteLink.IdentityProtectionHint}" TextWrapping="Wrap"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"/>
+
+                    <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,14,0,14"/>
+
+                    <!-- Paired PCs: online dot · editable name · revoke -->
+                    <TextBlock Text="{Binding RemoteLink_PairedPeers, Source={x:Static strings:Strings.Instance}}"
+                               FontWeight="SemiBold" FontSize="14" Margin="0,0,0,6"/>
+                    <TextBlock Text="{Binding RemoteLink_PairedPeersDescription, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}"/>
+                    <ItemsControl ItemsSource="{Binding RemoteLink.TrustedPeers}" Margin="0,12,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Ellipse Grid.Column="0" Width="9" Height="9" VerticalAlignment="Center"
+                                             Margin="2,0,10,0" ToolTip="{Binding OnlineText}">
+                                        <Ellipse.Style>
+                                            <Style TargetType="Ellipse">
+                                                <Setter Property="Fill" Value="#806B6B6B"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsOnline}" Value="True">
+                                                        <Setter Property="Fill" Value="#FF4CAF50"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <ui:TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                    PlaceholderText="{Binding RemoteLink_PeerNamePlaceholder, Source={x:Static strings:Strings.Instance}}" MaxLength="40"
+                                                    HorizontalAlignment="Left" MinWidth="240"/>
+                                        <TextBlock FontSize="11" Opacity="0.6" Margin="2,3,0,0" TextTrimming="CharacterEllipsis">
+                                            <Run Text="{Binding HostName, Mode=OneWay}" FontWeight="SemiBold"/>
+                                            <Run Text="{Binding FingerprintDisplay, Mode=OneWay, StringFormat='  ·  {0}'}" FontFamily="Consolas"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <ui:Button Content="{Binding Dashboard_RemoteLinkConnectButton, Source={x:Static strings:Strings.Instance}}"
+                                                   Command="{Binding ConnectCommand}" Appearance="Primary" Margin="0,0,8,0"
+                                                   Visibility="{Binding CanConnect, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                        <Button Content="{Binding RemoteLink_Revoke, Source={x:Static strings:Strings.Instance}}"
+                                                Command="{Binding RevokeCommand}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Button Content="{Binding RemoteLink_RevokeAll, Source={x:Static strings:Strings.Instance}}"
+                            Command="{Binding RemoteLink.RevokeAllPeersCommand}" HorizontalAlignment="Left" Margin="0,4,0,0"/>
+
+                    <!-- Nearby PCs not yet paired -->
+                    <StackPanel Margin="0,14,0,0"
+                                Visibility="{Binding RemoteLink.HasNearbyUnpaired, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <TextBlock Text="{Binding RemoteLink_NearbyTitle, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,6"/>
+                        <ItemsControl ItemsSource="{Binding RemoteLink.NearbyUnpaired}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,0,0,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding HostPort}" FontSize="11" FontFamily="Consolas" Opacity="0.6"/>
+                                        </StackPanel>
+                                        <ui:Button Grid.Column="1" VerticalAlignment="Center"
+                                                   Content="{Binding ButtonLabel}" IsEnabled="{Binding CanPair}"
+                                                   Command="{Binding PairCommand}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+
+                    <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,14,0,14"/>
+
+                    <!-- Connect by address (fallback when discovery can't see the PC) -->
+                    <TextBlock Text="{Binding Dashboard_RemoteLinkConnect, Source={x:Static strings:Strings.Instance}}"
+                               FontWeight="SemiBold" FontSize="14" Margin="0,0,0,6"/>
+                    <StackPanel Orientation="Horizontal">
+                        <ui:TextBox Text="{Binding RemoteLinkConnectHost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    PlaceholderText="192.168.1.20:27500" Width="220" VerticalAlignment="Center"/>
+                        <ui:Button Command="{Binding ConnectToPeerCommand}" Margin="8,0,0,0"
+                                   Content="{Binding Dashboard_RemoteLinkConnectButton, Source={x:Static strings:Strings.Instance}}"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding Dashboard_RemoteLinkFooter, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="12" Opacity="0.5" Margin="0,10,0,0" TextWrapping="Wrap"/>
                 </StackPanel>
             </Border>
 
@@ -509,7 +650,7 @@
                         <TextBlock Text="%" VerticalAlignment="Center" Margin="4,0,0,0"/>
                         <Button Command="{Binding ResetOpacityCommand}"
                                 Padding="4,2" VerticalAlignment="Center" Margin="4,0,0,0"
-                                ToolTip="Reset">
+                                ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
                             <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
                         </Button>
                     </StackPanel>

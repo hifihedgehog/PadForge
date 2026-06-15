@@ -24,6 +24,7 @@ namespace PadForge.Common.Input
         private readonly VirtualControllerType _type;
         private HMController _controller;
         private HMaestroFfbDecoder _ffbDecoder;
+        private Vibration[] _fbVibrationStates; // for the per-tick FFB re-evaluation
         private DualSensePassthroughDispatcher _ds5Dispatcher;
         private UserEffectsDispatcher _userEffectsDispatcher;
         private bool _disposed;
@@ -64,6 +65,16 @@ namespace PadForge.Common.Input
         private HMAxis _axLeftStickX, _axLeftStickY;
         private HMAxis _axRightStickX, _axRightStickY;
         private HMAxis _axLeftTrigger, _axRightTrigger;
+        // The trigger rows' wire-field keys when they differ from the
+        // canonical positions above (X360: canonical Z/Rz, fields Vx/Vy).
+        // HM's lanes disagree across SDK generations about which position
+        // they read triggers from — v1.3.9-1.3.16 HID lane: field key;
+        // v1.3.17 HID lane: canonical-first with field fallback; v1.3.17
+        // GIP/XUSB lane (XInput / WGI consumers): field key only. Mirror
+        // every trigger write to both positions so all lanes of whichever
+        // SDK is bundled read live values instead of the 0.5 extras seed
+        // (which pinned XInput/WGI triggers at 50%, discussion #130).
+        private HMAxis _axLeftTriggerField, _axRightTriggerField;
 
         // Per-call axes scratch dict, allocated once and reused across
         // every SubmitGamepadState / SubmitExtendedRawState frame to
@@ -130,6 +141,17 @@ namespace PadForge.Common.Input
             _axLeftTrigger  = ResolveAxisByRole("leftTrigger",  HMAxis.Z);
             _axRightTrigger = ResolveAxisByRole("rightTrigger", HMAxis.Rz);
 
+            // Mirror targets: the trigger rows' own wire-field keys, None
+            // when they coincide with the canonical position (Sony, where
+            // the axisMap already lands the role on the wire field).
+            var profTriggers = _profile.Triggers;
+            _axLeftTriggerField  = (profTriggers != null && profTriggers.Count > 0)
+                ? profTriggers[0].Axis : HMAxis.None;
+            _axRightTriggerField = (profTriggers != null && profTriggers.Count > 1)
+                ? profTriggers[1].Axis : HMAxis.None;
+            if (_axLeftTriggerField  == _axLeftTrigger)  _axLeftTriggerField  = HMAxis.None;
+            if (_axRightTriggerField == _axRightTrigger) _axRightTriggerField = HMAxis.None;
+
             // Seed the hot-path scratch dict so HM's encoder receives
             // sensible rest values for every declared axis. Sticks center
             // at 0.5, triggers release at 0. Any HMAxis from
@@ -141,7 +163,8 @@ namespace PadForge.Common.Input
             {
                 foreach (var hmAxis in availableAxes)
                 {
-                    float rest = (hmAxis == _axLeftTrigger || hmAxis == _axRightTrigger) ? 0f : 0.5f;
+                    float rest = (hmAxis == _axLeftTrigger || hmAxis == _axRightTrigger
+                               || hmAxis == _axLeftTriggerField || hmAxis == _axRightTriggerField) ? 0f : 0.5f;
                     _axesScratch[hmAxis] = rest;
                 }
             }
@@ -272,9 +295,24 @@ namespace PadForge.Common.Input
             _controller.SubmitRawReport(report);
         }
 
+        /// <summary>Re-evaluates PID effect state on the engine clock. The
+        /// HM packet callback applies the decoder only when the game sends a
+        /// report, but effect durations expire on the DEVICE clock — without
+        /// this per-tick pass, the last computed vibration latches on the
+        /// physical pad as soon as a game goes quiet. Called from every
+        /// per-tick Submit path; no-op for non-PID profiles.</summary>
+        public void TickFfb()
+        {
+            var vibs = _fbVibrationStates;
+            int idx = FeedbackPadIndex;
+            if (_ffbDecoder == null || vibs == null || idx < 0 || idx >= vibs.Length) return;
+            _ffbDecoder.Apply(vibs[idx]);
+        }
+
         public void SubmitGamepadState(Gamepad gp)
         {
             if (_controller == null) return;
+            TickFfb();
 
             // No dedup and no rate limit here — Step 5 already honors the
             // user-configured polling interval (default 1kHz). HIDMaestro is
@@ -313,6 +351,8 @@ namespace PadForge.Common.Input
             if (_axRightStickY != HMAxis.None) _axesScratch[_axRightStickY] = (32768f - gp.ThumbRY)  / 65535f;
             if (_axLeftTrigger  != HMAxis.None) _axesScratch[_axLeftTrigger]  = gp.LeftTrigger  / 65535f;
             if (_axRightTrigger != HMAxis.None) _axesScratch[_axRightTrigger] = gp.RightTrigger / 65535f;
+            if (_axLeftTriggerField  != HMAxis.None) _axesScratch[_axLeftTriggerField]  = gp.LeftTrigger  / 65535f;
+            if (_axRightTriggerField != HMAxis.None) _axesScratch[_axRightTriggerField] = gp.RightTrigger / 65535f;
 
             var state = new HMGamepadState
             {
@@ -362,6 +402,7 @@ namespace PadForge.Common.Input
             bool batteryCharging)
         {
             if (_controller == null) return;
+            TickFfb();
 
             // Tracking-ID synthesis. Bump each finger's ID on rising edge of
             // its down state; keep stable while held; ID stays at last value
@@ -389,6 +430,8 @@ namespace PadForge.Common.Input
             if (_axRightStickY != HMAxis.None) _axesScratch[_axRightStickY] = (32768f - gp.ThumbRY)  / 65535f;
             if (_axLeftTrigger  != HMAxis.None) _axesScratch[_axLeftTrigger]  = gp.LeftTrigger  / 65535f;
             if (_axRightTrigger != HMAxis.None) _axesScratch[_axRightTrigger] = gp.RightTrigger / 65535f;
+            if (_axLeftTriggerField  != HMAxis.None) _axesScratch[_axLeftTriggerField]  = gp.LeftTrigger  / 65535f;
+            if (_axRightTriggerField != HMAxis.None) _axesScratch[_axRightTriggerField] = gp.RightTrigger / 65535f;
 
             var state = new HMGamepadState
             {
@@ -457,6 +500,7 @@ namespace PadForge.Common.Input
         public void SubmitExtendedRawState(ExtendedRawState raw, int sticks, int triggers)
         {
             if (_controller == null) return;
+            TickFfb();
 
             short Ax(int i) => (raw.Axes != null && i >= 0 && i < raw.Axes.Length) ? raw.Axes[i] : (short)0;
 
@@ -567,6 +611,15 @@ namespace PadForge.Common.Input
         public void RegisterFeedbackCallback(int padIndex, Vibration[] vibrationStates)
         {
             FeedbackPadIndex = padIndex;
+            // Keep the registration for the per-tick FFB re-evaluation —
+            // the packet callback below only runs when the game SENDS
+            // something, but PID effect durations expire on the device
+            // clock. Without a periodic Apply, the last computed vibration
+            // latches on the physical pad the moment a game goes quiet
+            // (discussion #125: Jedi Outcast's stuck rumble — the field log
+            // showed Apply timestamps exactly matching packet arrivals and
+            // nothing after the final packet).
+            _fbVibrationStates = vibrationStates;
             if (_controller == null) return;
 
             // Virtual DualSense slots get a per-VC pass-through dispatcher
@@ -612,7 +665,7 @@ namespace PadForge.Common.Input
                 int idx = FeedbackPadIndex;
                 if (idx < 0 || idx >= vibrationStates.Length) return;
 
-                if (e.Fields.TryGetValue("leftMotor", out var lmObj) && lmObj is byte left
+                if (e.Fields.TryGetValue("leftMotor", out var lmObj2) && lmObj2 is byte left
                  && e.Fields.TryGetValue("rightMotor", out var rmObj) && rmObj is byte right)
                 {
                     vibrationStates[idx].LeftMotorSpeed  = (ushort)(left  * 257);
@@ -631,12 +684,34 @@ namespace PadForge.Common.Input
                     // subsystem (rumble / triggers / mic / lightbar /
                     // player) verbatim for the grace window, while still
                     // animating subsystems the writer didn't touch.
+                    // For a remote DualSense this merged output is forwarded at the
+                    // SonyEffectWriter chokepoint (issue #138), not here.
                     UserEffectsDispatcher.NotifyExternalSubsystems(idx, effectPayload);
                 }
             };
 
             _controller.OutputReceived += (ctrl, pkt) =>
             {
+                // Sony vendor test commands (SetFeature 0x80: deviceId,
+                // actionId, params — the report dualsense-tester /
+                // ds.daidr.me drives the firmware 1 kHz sine generator,
+                // speaker/headphone routing, and calibration actions
+                // through). Forward to the assigned physical DualSense so
+                // the test works through the virtual pad. Report 0x80 only:
+                // PID FFB feature writes (0x11 Create New Effect) ride the
+                // same HidFeature source and belong to the decoder below.
+                // GetFeature (0x81 response) round-trips are NOT forwarded —
+                // the driver serves feature reads synchronously and has no
+                // deferred-response path; fire-and-forget commands like the
+                // sine test don't need one.
+                if (_ds5Dispatcher != null
+                    && pkt.Source == HMOutputSource.HidFeature
+                    && pkt.ReportId == 0x80)
+                {
+                    _ds5Dispatcher.EnqueueFeature(pkt.ReportId, pkt.Data.Span);
+                    return;
+                }
+
                 int idx = FeedbackPadIndex;
                 if (idx < 0 || idx >= vibrationStates.Length) return;
 

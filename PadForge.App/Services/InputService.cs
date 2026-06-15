@@ -7,6 +7,7 @@ using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Common;
 using PadForge.Engine.Data;
+using PadForge.Engine.RemoteLink;
 using PadForge.Resources.Strings;
 using PadForge.ViewModels;
 
@@ -62,6 +63,22 @@ namespace PadForge.Services
         private readonly List<PadForge.Engine.Touchpad.TouchpadCustomGesture> _activeTouchpadGestures = new();
         private DsuMotionServer _dsuServer;
         private WebControllerServer _webServer;
+        private LinkServer _linkServer;
+        private LinkDiscovery _linkDiscovery;
+        private bool _remoteLinkConnectWired;
+        private System.Threading.Timer _remoteLinkStreamTimer;
+        private System.Threading.Timer _remoteLinkDiagTimer;
+        private readonly List<(RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)> _remoteLinkExposed = new();
+        private readonly object _remoteLinkExposedLock = new();
+        // Stable link slot per shared device id (#138 live device sync) — a device keeps
+        // its slot while shared, so a device hot-plugged after connect routes by a slot
+        // that never shifts. Freed when the device stops being shared. Under the lock above.
+        private readonly Dictionary<string, byte> _exposedSlots = new();
+        // Auto-reconnect throttle (#138): last auto-dial per peer fingerprint, so a failing
+        // attempt doesn't spam ConnectAsync on every ~2s discovery tick. Concurrent because
+        // OnLinkPeersChanged fires from the discovery, UDP-reconcile, reaper and handshake threads.
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, long> _autoReconnectCooldown = new(StringComparer.OrdinalIgnoreCase);
+        private const long AutoReconnectCooldownMs = 5000;
         private InputHookManager _hookManager;
         private SettingsService _settingsService;
         private bool _disposed;
@@ -207,10 +224,138 @@ namespace PadForge.Services
                 padVm.SelectedDeviceChanged += OnSelectedDeviceChanged;
                 padVm.MappingsRebuilt += OnMappingsRebuilt;
                 padVm.LayerActivated += OnLayerActivated;
+                // RebuildStickConfigs resets the new items' steering to defaults; reload the
+                // selected assigned device's steering into them (per-device, #94).
+                var capturedPad = padVm;
+                capturedPad.SteeringReloadCallback = () =>
+                {
+                    var sel = capturedPad.SelectedMappedDevice;
+                    if (sel == null || sel.InstanceGuid == Guid.Empty) return;
+                    var ps = SettingsManager.FindSettingByInstanceGuidAndSlot(sel.InstanceGuid, capturedPad.PadIndex)?.GetPadSetting();
+                    if (ps != null) capturedPad.LoadSteeringConfigItems(key => ps.GetExtendedMapping(key));
+                };
             }
 
             // Subscribe to Devices page selection changes for offline detail display.
             _mainVm.Devices.PropertyChanged += OnDevicesVmPropertyChanged;
+
+            // Remote Link peer-manager actions (issue #138).
+            _mainVm.Settings.PeerRevokeRequested += OnPeerRevokeRequested;
+            _mainVm.Settings.PeerRevokeAllRequested += OnPeerRevokeAllRequested;
+            _mainVm.Settings.PeerRenameRequested += OnPeerRenameRequested;
+            _mainVm.Settings.PeerConnectRequested += OnConnectToPeerRequested;
+            _mainVm.Settings.IdentityProtectionModeChangeRequested += OnIdentityProtectionModeChangeRequested;
+            // Reflect the persisted identity-protection mode in the dropdown.
+            var ipm0 = _settingsService?.RemoteLink?.IdentityProtection ?? PadForge.Engine.RemoteLink.IdentityProtectionMode.Secure;
+            _mainVm.Settings.SetIdentityProtectionModeSilently((int)ipm0 - 1);
+        }
+
+        private void OnPeerRevokeRequested(string fingerprintHex)
+        {
+            var trust = _settingsService?.RemoteLink?.Trust;
+            if (trust == null || string.IsNullOrEmpty(fingerprintHex)) return;
+            var entry = trust.Peers.FirstOrDefault(p => string.Equals(p.FingerprintHex, fingerprintHex, StringComparison.OrdinalIgnoreCase));
+            if (entry?.PublicKey != null) trust.Revoke(entry.PublicKey);
+            _linkServer?.RevokePeer(fingerprintHex);
+            try { _settingsService?.Save(); } catch { }
+            _mainVm.Settings.RefreshTrustedPeers(trust.Peers, _linkServer?.ConnectedFingerprints());
+        }
+
+        /// <summary>Persist a peer's friendly-name edit (issue #138). The VM already holds
+        /// the new name, so no list rebuild — just update the trust store and save.</summary>
+        private void OnPeerRenameRequested(string fingerprintHex, string newName)
+        {
+            var trust = _settingsService?.RemoteLink?.Trust;
+            if (trust == null || string.IsNullOrEmpty(fingerprintHex)) return;
+            var entry = trust.Peers.FirstOrDefault(p => string.Equals(p.FingerprintHex, fingerprintHex, StringComparison.OrdinalIgnoreCase));
+            if (entry == null) return;
+            entry.Name = newName ?? "";
+            try { _settingsService?.Save(); } catch { }
+        }
+
+        /// <summary>The user picked a different identity-protection mode (issue #138). Re-wrap
+        /// the SAME live key under the new mode — the fingerprint is unchanged so pairings
+        /// survive and no reconnect is needed. Collects a password for the password mode;
+        /// reverts the dropdown if the identity can't be unlocked or the user cancels.</summary>
+        private void OnIdentityProtectionModeChangeRequested(int index)
+        {
+            // Defer off the ComboBox's own selection-change. Showing the password
+            // dialog and reverting the selection synchronously from inside the
+            // binding setter leaves the dropdown stuck on the new mode when the
+            // user cancels, since a control mid-SelectionChanged ignores the
+            // revert. Running after the selection settles rolls a cancel back.
+            _dispatcher.BeginInvoke(() =>
+            {
+                var holder = _settingsService?.RemoteLink;
+                if (holder == null) return;
+                var newMode = (PadForge.Engine.RemoteLink.IdentityProtectionMode)(index + 1);
+                int oldIndex = (int)holder.IdentityProtection - 1;
+                if (newMode == holder.IdentityProtection) return;
+
+                // The live key, unlocked. Loads via the current mode (+ session password).
+                var identity = EnsureIdentityUnlocked();
+                if (identity == null)
+                {
+                    _mainVm.Settings.SetIdentityProtectionModeSilently(oldIndex);
+                    _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusUnlockBeforeChange;
+                    return;
+                }
+
+                string password = null;
+                if (newMode == PadForge.Engine.RemoteLink.IdentityProtectionMode.PortablePassword)
+                {
+                    var dlg = new Views.RemoteLinkPasswordDialog(true, Strings.Instance.RemoteLink_PasswordSetPrompt)
+                    { Owner = System.Windows.Application.Current?.MainWindow };
+                    if (dlg.ShowDialog() != true) { _mainVm.Settings.SetIdentityProtectionModeSilently(oldIndex); return; }
+                    password = dlg.Password;
+                }
+
+                byte[] priv = identity.ExportPrivateKey();
+                try { holder.ProtectedPrivateBase64 = IdentityProtector.Protect(priv, newMode, password); }
+                catch { _mainVm.Settings.SetIdentityProtectionModeSilently(oldIndex); return; }
+                finally { PadForge.Engine.RemoteLink.PeerCrypto.Zeroize(priv); }
+
+                holder.IdentityProtection = newMode;
+                _remoteLinkSessionPassword = newMode == PadForge.Engine.RemoteLink.IdentityProtectionMode.PortablePassword ? password : null;
+                try { _settingsService?.Save(); } catch { }
+                _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusIdentityUpdated;
+            });
+        }
+
+        /// <summary>The live identity, loading it if needed. For password mode without a
+        /// session password it prompts once. Returns null if it stays locked.</summary>
+        private PeerIdentity EnsureIdentityUnlocked()
+        {
+            if (_remoteLinkIdentity != null) return _remoteLinkIdentity;
+            var id = EnsureRemoteLinkIdentity();
+            if (id != null) return id;
+
+            // Locked password identity: prompt once and retry. A modal dialog needs the UI
+            // thread — if we're off it (a background start path), stay locked; the status
+            // already explains why, and the user can unlock from Settings.
+            var holder = _settingsService?.RemoteLink;
+            if (holder?.IdentityProtection == PadForge.Engine.RemoteLink.IdentityProtectionMode.PortablePassword
+                && _dispatcher.CheckAccess())
+            {
+                var dlg = new Views.RemoteLinkPasswordDialog(false, Strings.Instance.RemoteLink_PasswordUnlockPrompt)
+                { Owner = System.Windows.Application.Current?.MainWindow };
+                if (dlg.ShowDialog() == true)
+                {
+                    _remoteLinkSessionPassword = dlg.Password;
+                    return EnsureRemoteLinkIdentity();
+                }
+            }
+            return null;
+        }
+
+        private void OnPeerRevokeAllRequested()
+        {
+            var trust = _settingsService?.RemoteLink?.Trust;
+            if (trust == null) return;
+            foreach (var p in trust.Peers.ToList()) _linkServer?.RevokePeer(p.FingerprintHex);
+            trust.RevokeAll();
+            try { _settingsService?.Save(); } catch { }
+            _mainVm.Settings.RefreshTrustedPeers(trust.Peers);
         }
 
         // ─────────────────────────────────────────────
@@ -276,15 +421,22 @@ namespace PadForge.Services
             _inputManager.HmVcInactivityDestroyed += OnHmVcInactivityDestroyed;
             _inputManager.HmVcWentNonActive += OnHmVcWentNonActive;
 
-            // Expose per-slot button bitmaps to the user-effects dispatcher
-            // so InputReactive lightbar can detect button rising edges.
-            // Bound to the manager via a captured field so .NET keeps the
-            // delegate alive for the manager's lifetime.
+            // Expose per-slot button activity to the user-effects dispatcher so the
+            // InputReactive lightbar can detect rising edges. The 16-bit Gamepad.Buttons
+            // mask is full (DPAD..Y), so two presses that live outside it would otherwise
+            // never flash: the Share / Create button (its own bool field, where a Mic /
+            // Misc1 mapping lands) and the touchpad click. Fold both into the wider uint
+            // mask on spare bits. Bound to the manager via a captured field so .NET keeps
+            // the delegate alive for the manager's lifetime.
             UserEffectsDispatcher.SlotButtonsProvider = padIndex =>
             {
-                if (_inputManager == null) return (ushort)0;
-                if (padIndex < 0 || padIndex >= InputManager.MaxPads) return (ushort)0;
-                return _inputManager.CombinedOutputStates[padIndex].Buttons;
+                if (_inputManager == null) return 0u;
+                if (padIndex < 0 || padIndex >= InputManager.MaxPads) return 0u;
+                var gp = _inputManager.CombinedOutputStates[padIndex];
+                uint mask = gp.Buttons;
+                if (gp.Share) mask |= 0x10000u;                                  // Share / Create / Mic
+                if (_inputManager.SlotRawTouchpadClick[padIndex]) mask |= 0x20000u; // raw touchpad click
+                return mask;
             };
 
             // ══════════════════════════════════════════════════════════════
@@ -391,6 +543,14 @@ namespace PadForge.Services
             // ScaleTriggerRumbleForDevice (per-device strength + audio-
             // trigger mix + ImpulseSwapTriggers), and return the high
             // byte of each ushort.
+            UserEffectsDispatcher.SteeringAtResistanceProvider = padIndex =>
+                (_inputManager != null && padIndex >= 0 && padIndex < InputManager.MaxPads)
+                    ? _inputManager.SteeringAtResistance[padIndex] : 0f;
+
+            UserEffectsDispatcher.SteeringTriggerVibProvider = padIndex =>
+                (_inputManager != null && padIndex >= 0 && padIndex < InputManager.MaxPads)
+                    ? _inputManager.GetSteeringTrigVib(padIndex) : 0f;
+
             UserEffectsDispatcher.SlotImpulseTriggerForDeviceProvider = (padIndex, deviceGuid) =>
             {
                 if (_inputManager == null) return ((byte)0, (byte)0);
@@ -743,6 +903,27 @@ namespace PadForge.Services
             // exists (matches the engine-side fallback so a fresh
             // assignment gets sensible behavior without the user
             // opening the Touchpad tab).
+            // Issue #83 — per-slot per-device passthrough flags for the
+            // controller-audio service, sourced from the same per-device
+            // PlayStation configs the lighting dispatcher uses.
+            PadForge.Common.Input.AudioPassthroughService.PassthroughConfigProvider = slotIndex =>
+            {
+                if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count)
+                    return System.Linq.Enumerable.Empty<(Guid, bool, string)>();
+                return _mainVm.Pads[slotIndex].PerDevicePlayStationConfigs
+                    .Select(kv => (kv.Key, kv.Value.AudioPassthroughEnabled, kv.Value.AudioMirrorSourceId))
+                    .ToList();
+            };
+
+            // A persisted mirror toggle must resume on launch — the service
+            // otherwise only starts when poked (toggle change, assignment
+            // change, or a macro's sink lookup). One signal is enough: the
+            // worker self-heals device timing on its 5 s cadence. Skipped
+            // when no device has the toggle on, so the audio threads stay
+            // off for users who never use controller audio.
+            if (_mainVm.Pads.Any(p => p.PerDevicePlayStationConfigs.Any(kv => kv.Value.AudioPassthroughEnabled)))
+                PadForge.Common.Input.AudioPassthroughService.Reconcile();
+
             _inputManager.TouchpadGestureSettingsProvider = (slotIndex, deviceGuid, padIdx) =>
             {
                 var settings = SettingsManager.UserSettings;
@@ -864,6 +1045,9 @@ namespace PadForge.Services
             // Start web controller server if enabled.
             StartWebServerIfEnabled();
 
+            // Start Remote Link server if enabled (issue #138).
+            StartRemoteLinkIfEnabled();
+
             // Show touchpad overlay if enabled.
             if (_mainVm.Dashboard.EnableTouchpadOverlay)
                 ShowTouchpadOverlay();
@@ -947,14 +1131,14 @@ namespace PadForge.Services
                 _mainVm.Settings.PropertyChanged -= OnSettingsPropertyChanged;
                 _mainVm.Dashboard.PropertyChanged -= OnDashboardPropertyChanged;
                 _mainVm.Dashboard.ResetTouchpadOverlayPositionRequested -= OnResetTouchpadOverlayPosition;
-                _mainVm.Devices.PropertyChanged -= OnDevicesVmPropertyChanged;
 
-                foreach (var padVm in _mainVm.Pads)
-                {
-                    padVm.SelectedDeviceChanged -= OnSelectedDeviceChanged;
-                    padVm.MappingsRebuilt -= OnMappingsRebuilt;
-                    padVm.LayerActivated -= OnLayerActivated;
-                }
+                // NOTE: do NOT unsubscribe the constructor-only handlers here
+                // (Devices.PropertyChanged, and per-pad SelectedDeviceChanged /
+                // MappingsRebuilt / LayerActivated). Start() never re-adds them,
+                // so tearing them down on an engine Stop permanently breaks
+                // device-selection / mapping-rebuild / layer-switch until the
+                // app restarts. They are bound to app-lifetime VMs, not the
+                // engine, so they correctly persist across Stop/Start.
 
                 // Close overlay windows (not just hide — prevents shutdown hang).
                 if (_touchpadOverlay != null)
@@ -986,6 +1170,7 @@ namespace PadForge.Services
             }
             StopDsuServer();
             StopWebServer();
+            StopRemoteLink();
             StopAudioBassDetector();
             // Honor the persistent-cloaks setting on shutdown only.
             // Mid-session toggling EnableInputHiding off still decloaks
@@ -1016,6 +1201,8 @@ namespace PadForge.Services
                 UserEffectsDispatcher.SlotRumbleForDeviceProvider = null;
                 UserEffectsDispatcher.SlotRawRumbleProvider = null;
                 UserEffectsDispatcher.SlotImpulseTriggerForDeviceProvider = null;
+                UserEffectsDispatcher.SteeringAtResistanceProvider = null;
+                UserEffectsDispatcher.SteeringTriggerVibProvider = null;
                 UserEffectsDispatcher.TestRumbleTargetGuidProvider = null;
                 UserEffectsDispatcher.SlotBatteryPercentProvider = null;
                 UserEffectsDispatcher.SlotPerDeviceConfigsProvider = null;
@@ -1217,7 +1404,7 @@ namespace PadForge.Services
                             // for a per-device input preview. Reading
                             // ud.InputState directly shows each physical
                             // device's actual stick/trigger position.
-                            padVm.UpdateDeviceState(BuildPerDeviceSticksFromInputState(selected.InstanceGuid));
+                            padVm.UpdateDeviceState(BuildPerDeviceSticksFromInputState(selected.InstanceGuid, us));
                         }
                     }
                     else if (_inputManager.SlotExtendedIsCustom[i])
@@ -1366,7 +1553,12 @@ namespace PadForge.Services
                 }
             }
 
-            _inputManager.IsIdle = !anyActive;
+            // Stay at full poll rate while a paired peer is connected: this PC may be
+            // sharing its physical devices, and idling to ~20 Hz would sample that
+            // shared input choppily on the consumer even with no local slot active (#138).
+            bool remoteSharing = _linkServer != null && _linkServer.IsRunning && _linkServer.HasConnections;
+
+            _inputManager.IsIdle = !anyActive && !remoteSharing;
         }
 
         // ─────────────────────────────────────────────
@@ -1596,8 +1788,9 @@ namespace PadForge.Services
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
                 bool isMouse = ud.CapType == InputDeviceType.Mouse;
                 bool isTouchpad = ud.CapType == InputDeviceType.Touchpad;
+                bool isMidi = ud.CapType == InputDeviceType.Midi;
                 int[] btnIndices = ResolveButtonIndices(ud);
-                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad);
+                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad, isMidi);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad;
@@ -1634,8 +1827,9 @@ namespace PadForge.Services
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
                 bool isMouse = ud.CapType == InputDeviceType.Mouse;
                 bool isTouchpad2 = ud.CapType == InputDeviceType.Touchpad;
+                bool isMidi2 = ud.CapType == InputDeviceType.Midi;
                 int[] btnIndices = ResolveButtonIndices(ud);
-                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad2);
+                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad2, isMidi2);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad2;
@@ -1688,6 +1882,12 @@ namespace PadForge.Services
                     item.IsPressed = idx >= 0 && idx < state.Buttons.Length && state.Buttons[idx];
                 }
             }
+
+            // MIDI preview: hand the live state to the MidiPreviewView, which
+            // polls it each render frame (issue #128). Null until the first
+            // message arrives.
+            if (devVm.IsMidiDevice)
+                devVm.LiveMidi = state.Midi;
 
             // Update POV hat values in-place.
             for (int i = 0; i < devVm.RawPovs.Count; i++)
@@ -1758,6 +1958,26 @@ namespace PadForge.Services
                     devVm.TouchpadY4 = pad.FingerY[4];
                     devVm.TouchpadDown4 = pad.FingerDown[4];
                 }
+
+                // Second touchpad surface (Steam Controller 2026 / Deck / original
+                // Steam Controller). The preview previously stopped at pad 0; feed
+                // pad 1's fingers so both surfaces render. HasSecondTouchpadData
+                // gates the second preview's visibility.
+                bool hasSecondPad = state.Touchpads.Length > 1 && state.Touchpads[1] != null;
+                devVm.HasSecondTouchpadData = hasSecondPad;
+                if (hasSecondPad)
+                {
+                    var pad2 = state.Touchpads[1];
+                    if (pad2.MaxFingers > 0) { devVm.Pad2X0 = pad2.FingerX[0]; devVm.Pad2Y0 = pad2.FingerY[0]; devVm.Pad2Down0 = pad2.FingerDown[0]; }
+                    if (pad2.MaxFingers > 1) { devVm.Pad2X1 = pad2.FingerX[1]; devVm.Pad2Y1 = pad2.FingerY[1]; devVm.Pad2Down1 = pad2.FingerDown[1]; }
+                    if (pad2.MaxFingers > 2) { devVm.Pad2X2 = pad2.FingerX[2]; devVm.Pad2Y2 = pad2.FingerY[2]; devVm.Pad2Down2 = pad2.FingerDown[2]; }
+                    if (pad2.MaxFingers > 3) { devVm.Pad2X3 = pad2.FingerX[3]; devVm.Pad2Y3 = pad2.FingerY[3]; devVm.Pad2Down3 = pad2.FingerDown[3]; }
+                    if (pad2.MaxFingers > 4) { devVm.Pad2X4 = pad2.FingerX[4]; devVm.Pad2Y4 = pad2.FingerY[4]; devVm.Pad2Down4 = pad2.FingerDown[4]; }
+                }
+            }
+            else
+            {
+                devVm.HasSecondTouchpadData = false;
             }
         }
 
@@ -2215,6 +2435,10 @@ namespace PadForge.Services
             // so HIDMaestro regenerates the descriptor with or without the
             // PID block to match.
             _inputManager.SlotExtendedFfbEnabled[slotIndex] = customize ? cfg.ForceFeedbackEnabled : true;
+            // VID/PID override — Customize-gated like the OEM/FFB fields. 0 means
+            // "use the active profile's value" (the build path falls back to it).
+            _inputManager.SlotExtendedVendorId[slotIndex] = customize ? cfg.VendorId : 0;
+            _inputManager.SlotExtendedProductId[slotIndex] = customize ? cfg.ProductId : 0;
         }
 
         /// <summary>
@@ -2285,6 +2509,9 @@ namespace PadForge.Services
 
             // Force feedback (int properties — not locale-affected).
             ps.ForceOverall = padVm.ForceOverallGain.ToString();
+            ps.RotationRange = padVm.WheelRotationRange.ToString();
+            ps.AutoCenterStrength = padVm.WheelAutoCenter.ToString();
+            ps.WheelRpmLeds = padVm.WheelRpmLeds ? "1" : "0";
             ps.LeftMotorStrength = padVm.LeftMotorStrength.ToString();
             ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
             ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
@@ -2346,6 +2573,40 @@ namespace PadForge.Services
             ps.ConstantForceX = padVm.ConstantForceX.ToString("F4", ic);
             ps.ConstantForceY = padVm.ConstantForceY.ToString("F4", ic);
 
+            // Steering at-lock feedback (#94) — per assigned device (VM-prop pattern, like
+            // wheel/gyro): safe in every sync because these VM fields survive a
+            // RebuildStickConfigs (unlike the StickConfigs steering below).
+            ps.SteeringLockRumbleEnabled = padVm.SteeringLockRumbleEnabled ? "1" : "0";
+            ps.SteeringLockTriggerVibEnabled = padVm.SteeringLockTriggerVibEnabled ? "1" : "0";
+            ps.SteeringLockLightbarEnabled = padVm.SteeringLockLightbarEnabled ? "1" : "0";
+            ps.SteeringLockATResistanceEnabled = padVm.SteeringLockATResistanceEnabled ? "1" : "0";
+            ps.SteeringLockPulseMs = ((int)padVm.SteeringLockPulseMs).ToString(ic);
+            ps.SteeringLockLightbarColor = padVm.SteeringLockLightbarColor ?? "#FF0000";
+            ps.SteeringLockLightbarColorSource = padVm.SteeringLockLightbarColorSource.ToString();
+            ps.SteeringLockLightbarPaletteCsv = padVm.SteeringLockLightbarPaletteCsv ?? "";
+            ps.SteeringLockLightbarHoldMs = ((int)padVm.SteeringLockLightbarHoldMs).ToString(ic);
+            ps.SteeringLockLightbarFadeMs = ((int)padVm.SteeringLockLightbarFadeMs).ToString(ic);
+
+            // Per-stick steering mode + tunables (#94) — per assigned device. ONLY on a full
+            // sync (syncMappings: device-switch flush + explicit saves), NEVER the 30Hz
+            // path: a RebuildStickConfigs momentarily resets StickConfigs steering to
+            // defaults, and a 30Hz save would persist those defaults over the device's
+            // saved steering (the exact data loss that was reverted).
+            if (syncMappings)
+            {
+                foreach (var stick in padVm.StickConfigs)
+                {
+                    int g = stick.Index;
+                    if (g < 0) continue;
+                    ps.SetExtendedMapping($"Stick{g}SteerKind", stick.SteeringKind);
+                    ps.SetExtendedMapping($"Stick{g}SteerWindRange", stick.WindRangeDeg.ToString(ic));
+                    ps.SetExtendedMapping($"Stick{g}SteerWindPower", stick.WindPower.ToString(ic));
+                    ps.SetExtendedMapping($"Stick{g}SteerWindUnwind", stick.WindUnwindRate.ToString(ic));
+                    ps.SetExtendedMapping($"Stick{g}SteerAngleInner", stick.AngleInnerDz.ToString(ic));
+                    ps.SetExtendedMapping($"Stick{g}SteerAngleOuter", stick.AngleOuterDz.ToString(ic));
+                }
+            }
+
             // Mapping descriptors: clear + rewrite only when explicitly requested.
             // The 30Hz SyncViewModelToPadSettings path passes syncMappings=false
             // because ClearMappingDescriptors() creates a race window — the polling
@@ -2366,7 +2627,20 @@ namespace PadForge.Services
             // and explicitly clear the same target on every OTHER
             // device in the slot so any historical bleed heals over
             // saves.
-            if (syncMappings)
+            // GUARD: only run the destructive mapping clear+rewrite when the
+            // Mappings ViewModel actually mirrors the slot's current MappingSet.
+            // RefreshMappingsCore sets MappingsViewLoaded; a device assignment
+            // clears it (MainWindow's DeviceAssignmentChanged handler) for the
+            // window between auto-mapping the new device and reloading the
+            // ViewModel. During that window OnSelectedDeviceChanged can fire this
+            // save with a STALE (typically empty) padVm.Mappings — clearing every
+            // slot device's descriptors and rewriting from it would erase the
+            // freshly auto-mapped pad (the trace caught a DualSense dropping from
+            // 21 descriptors to 0). The MappingSet is authoritative and already
+            // holds the auto-map, so skipping the push loses nothing; the next
+            // save, after RefreshMappingsToViewModel, persists the mappings.
+            // Per-device tuning (saved above this block) is unaffected.
+            if (syncMappings && padVm.MappingsViewLoaded)
             {
                 // Snapshot every assigned device for this slot so the
                 // bleed-cleanup pass can iterate without re-locking.
@@ -2542,6 +2816,9 @@ namespace PadForge.Services
 
             // Force feedback.
             padVm.ForceOverallGain = TryParseInt(ps.ForceOverall, 100);
+            padVm.WheelRotationRange = TryParseInt(ps.RotationRange, 900);
+            padVm.WheelAutoCenter = TryParseInt(ps.AutoCenterStrength, 0);
+            padVm.WheelRpmLeds = ps.WheelRpmLeds == "1";
             padVm.LeftMotorStrength = TryParseInt(ps.LeftMotorStrength, 100);
             padVm.RightMotorStrength = TryParseInt(ps.RightMotorStrength, 100);
             padVm.SwapMotors = ps.ForceSwapMotor == "1" ||
@@ -2602,6 +2879,21 @@ namespace PadForge.Services
             padVm.ConstantForceX = TryParseDouble(ps.ConstantForceX, 0.0);
             padVm.ConstantForceY = TryParseDouble(ps.ConstantForceY, 0.0);
 
+            // Steering at-lock feedback (#94) — per assigned device (VM-prop pattern, like
+            // wheel/gyro): reload the selected device's values on dropdown swap.
+            padVm.SteeringLockRumbleEnabled = ps.SteeringLockRumbleEnabled == "1";
+            padVm.SteeringLockTriggerVibEnabled = ps.SteeringLockTriggerVibEnabled == "1";
+            padVm.SteeringLockLightbarEnabled = ps.SteeringLockLightbarEnabled == "1";
+            padVm.SteeringLockATResistanceEnabled = ps.SteeringLockATResistanceEnabled == "1";
+            padVm.SteeringLockPulseMs = TryParseDouble(ps.SteeringLockPulseMs, 80);
+            padVm.SteeringLockLightbarColor = string.IsNullOrWhiteSpace(ps.SteeringLockLightbarColor) ? "#FF0000" : ps.SteeringLockLightbarColor;
+            padVm.SteeringLockLightbarColorSource =
+                Enum.TryParse<ViewModels.MacroLightbarColorSource>(ps.SteeringLockLightbarColorSource, out var slcs)
+                    ? slcs : ViewModels.MacroLightbarColorSource.Fixed;
+            padVm.SteeringLockLightbarPaletteCsv = ps.SteeringLockLightbarPaletteCsv ?? "";
+            padVm.SteeringLockLightbarHoldMs = TryParseDouble(ps.SteeringLockLightbarHoldMs, 80);
+            padVm.SteeringLockLightbarFadeMs = TryParseDouble(ps.SteeringLockLightbarFadeMs, 250);
+
             // Touchpad-gestures tab — per-(device, pad) settings live
             // under PadSetting.TouchpadSettings as a typed sub-tree
             // (TouchpadSettingsEntry[]). Reading them into the VM
@@ -2612,6 +2904,12 @@ namespace PadForge.Services
 
             // Sync dynamic stick/trigger config items.
             padVm.SyncAllConfigItemsFromVm();
+
+            // Steering is per assigned device (#94): load THIS device's steering into the
+            // sticks (guarded, no dirty). Routes startup selection, device switch, preset/
+            // paste, and profile switch through one place so the card always shows the
+            // selected device's wheel config.
+            padVm.LoadSteeringConfigItems(key => ps.GetExtendedMapping(key));
 
             // Per-device tuning load is done; mapping descriptors are
             // per-VC and intentionally NOT refreshed here. The Mappings
@@ -2736,6 +3034,11 @@ namespace PadForge.Services
                 }
             }
 
+            // Mappings now mirror the slot's authoritative MappingSet. Clears the
+            // stale flag so SaveViewModelToPadSetting may persist mappings again
+            // (see PadViewModel.MappingsViewLoaded for the mid-assign clobber this
+            // guards against).
+            padVm.MappingsViewLoaded = true;
         }
 
         /// <summary>
@@ -2987,8 +3290,11 @@ namespace PadForge.Services
                             if (string.Equals(ps.Mode, "InBoxOnly", System.StringComparison.OrdinalIgnoreCase))
                                 continue;
                         }
+                        // Display pad number is 1-based (matches the in-box
+                        // gesture prefix in MappingDisplayResolver and the
+                        // Devices previews); the Descriptor below stays 0-based.
                         string display = multiPad
-                            ? string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, padIdx, cg.Name)
+                            ? string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, padIdx + 1, cg.Name)
                             : cg.Name;
                         flat.Add(new PadForge.ViewModels.InputChoice
                         {
@@ -3345,23 +3651,9 @@ namespace PadForge.Services
                     foreach (var s in srcRow.Sources)
                     {
                         if (s == null) continue;
-                        targetRow.Sources.Add(new Engine.Data.MappingSource
-                        {
-                            Kind = s.Kind ?? "Direct",
-                            DeviceGuid = targetGuid,
-                            Descriptor = s.Descriptor ?? "",
-                            Invert = s.Invert,
-                            HalfAxis = s.HalfAxis,
-                            Bidirectional = s.Bidirectional,
-                            DeadZone = s.DeadZone,
-                            ParamUp = s.ParamUp ?? "",
-                            ParamDown = s.ParamDown ?? "",
-                            ParamRate = s.ParamRate,
-                            ParamSticky = s.ParamSticky,
-                            ParamMin = s.ParamMin,
-                            ParamMax = s.ParamMax,
-                            ParamModifier = s.ParamModifier ?? "",
-                        });
+                        var clonedSrc = s.Clone();
+                        clonedSrc.DeviceGuid = targetGuid;   // Clone() carries every Param* field
+                        targetRow.Sources.Add(clonedSrc);
                     }
                 }
             }
@@ -3398,23 +3690,7 @@ namespace PadForge.Services
                         foreach (var s in r.Sources)
                         {
                             if (s == null) continue;
-                            rc.Sources.Add(new Engine.Data.MappingSource
-                            {
-                                Kind = s.Kind ?? "Direct",
-                                DeviceGuid = s.DeviceGuid ?? "",
-                                Descriptor = s.Descriptor ?? "",
-                                Invert = s.Invert,
-                                HalfAxis = s.HalfAxis,
-                                Bidirectional = s.Bidirectional,
-                                DeadZone = s.DeadZone,
-                                ParamUp = s.ParamUp ?? "",
-                                ParamDown = s.ParamDown ?? "",
-                                ParamRate = s.ParamRate,
-                                ParamSticky = s.ParamSticky,
-                                ParamMin = s.ParamMin,
-                                ParamMax = s.ParamMax,
-                                ParamModifier = s.ParamModifier ?? "",
-                            });
+                            rc.Sources.Add(s.Clone());   // Clone() carries every Param* field
                         }
                     }
                     copy.Rows.Add(rc);
@@ -3495,23 +3771,7 @@ namespace PadForge.Services
                     foreach (var s in row.Sources)
                     {
                         if (s == null) continue;
-                        clonedSources.Add(new Engine.Data.MappingSource
-                        {
-                            Kind = s.Kind ?? "Direct",
-                            DeviceGuid = s.DeviceGuid ?? "",
-                            Descriptor = s.Descriptor ?? "",
-                            Invert = s.Invert,
-                            HalfAxis = s.HalfAxis,
-                            Bidirectional = s.Bidirectional,
-                            DeadZone = s.DeadZone,
-                            ParamUp = s.ParamUp ?? "",
-                            ParamDown = s.ParamDown ?? "",
-                            ParamRate = s.ParamRate,
-                            ParamSticky = s.ParamSticky,
-                            ParamMin = s.ParamMin,
-                            ParamMax = s.ParamMax,
-                            ParamModifier = s.ParamModifier ?? "",
-                        });
+                        clonedSources.Add(s.Clone());   // Clone() carries every Param* field
                     }
                 }
                 result.Add(new Engine.Data.MappingRow
@@ -3558,23 +3818,9 @@ namespace PadForge.Services
                         if (s == null) continue;
                         var retargeted = RetargetDeviceGuidForSlot(s.DeviceGuid, padIndex);
                         if (retargeted == null) continue;
-                        rc.Sources.Add(new Engine.Data.MappingSource
-                        {
-                            Kind = s.Kind ?? "Direct",
-                            DeviceGuid = retargeted,
-                            Descriptor = s.Descriptor ?? "",
-                            Invert = s.Invert,
-                            HalfAxis = s.HalfAxis,
-                            Bidirectional = s.Bidirectional,
-                            DeadZone = s.DeadZone,
-                            ParamUp = s.ParamUp ?? "",
-                            ParamDown = s.ParamDown ?? "",
-                            ParamRate = s.ParamRate,
-                            ParamSticky = s.ParamSticky,
-                            ParamMin = s.ParamMin,
-                            ParamMax = s.ParamMax,
-                            ParamModifier = s.ParamModifier ?? "",
-                        });
+                        var clonedSrc = s.Clone();
+                        clonedSrc.DeviceGuid = retargeted;   // Clone() carries every Param* field
+                        rc.Sources.Add(clonedSrc);
                     }
                 }
                 copy.Rows.Add(rc);
@@ -3713,23 +3959,9 @@ namespace PadForge.Services
                             if (s == null) continue;
                             var retargeted = RetargetDeviceGuidForSlot(s.DeviceGuid, targetSlot);
                             if (retargeted == null) continue;
-                            rc.Sources.Add(new Engine.Data.MappingSource
-                            {
-                                Kind = s.Kind ?? "Direct",
-                                DeviceGuid = retargeted,
-                                Descriptor = s.Descriptor ?? "",
-                                Invert = s.Invert,
-                                HalfAxis = s.HalfAxis,
-                                Bidirectional = s.Bidirectional,
-                                DeadZone = s.DeadZone,
-                                ParamUp = s.ParamUp ?? "",
-                                ParamDown = s.ParamDown ?? "",
-                                ParamRate = s.ParamRate,
-                                ParamSticky = s.ParamSticky,
-                                ParamMin = s.ParamMin,
-                                ParamMax = s.ParamMax,
-                                ParamModifier = s.ParamModifier ?? "",
-                            });
+                            var clonedSrc = s.Clone();
+                            clonedSrc.DeviceGuid = retargeted;   // Clone() carries every Param* field
+                            rc.Sources.Add(clonedSrc);
                         }
                     }
                     copy.Rows.Add(rc);
@@ -3860,6 +4092,13 @@ namespace PadForge.Services
                         hmVc.AttachPlayStationConfig(anchor);
                 }
             }
+
+            // Steering is per assigned device: each source reads the selected device's live
+            // StickConfigs or another device's PadSetting. Re-stamp the in-memory MappingSet
+            // so the engine reflects the per-device steering immediately on selection
+            // (covers startup's first selection and every dropdown switch) without waiting
+            // for the next save.
+            _settingsService?.PushUiExtraSourcesIntoSlotMappingSets();
         }
 
         /// <summary>
@@ -4264,6 +4503,21 @@ namespace PadForge.Services
                     StartWebServerIfEnabled();
                 }
             }
+            else if (e.PropertyName == nameof(DashboardViewModel.EnableRemoteLink))
+            {
+                if (_mainVm.Dashboard.EnableRemoteLink)
+                    StartRemoteLinkIfEnabled();
+                else
+                    StopRemoteLink();
+            }
+            else if (e.PropertyName == nameof(DashboardViewModel.RemoteLinkPort))
+            {
+                if (_mainVm.Dashboard.EnableRemoteLink)
+                {
+                    StopRemoteLink();
+                    StartRemoteLinkIfEnabled();
+                }
+            }
             else if (e.PropertyName == nameof(DashboardViewModel.EnableTouchpadOverlay))
             {
                 if (_mainVm.Dashboard.EnableTouchpadOverlay)
@@ -4517,6 +4771,625 @@ namespace PadForge.Services
             _webServer = null;
             _mainVm.Dashboard.WebControllerStatus = Strings.Instance.Common_Stopped;
             _mainVm.Dashboard.WebControllerClientCount = 0;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Remote Link server lifecycle (issue #138)
+        // ─────────────────────────────────────────────
+
+        private void StartRemoteLinkIfEnabled()
+        {
+            if (!_mainVm.Dashboard.EnableRemoteLink || _inputManager == null) return;
+            if (_linkServer != null) return;
+
+            // Loads the identity, prompting for the portable-password unlock if needed.
+            var identity = EnsureIdentityUnlocked();
+            if (identity == null) return;
+            var trust = _settingsService?.RemoteLink?.Trust ?? new PeerTrustStore();
+
+            if (!_remoteLinkConnectWired)
+            {
+                _mainVm.Dashboard.ConnectToPeerRequested += OnConnectToPeerRequested;
+                _remoteLinkConnectWired = true;
+            }
+
+            _linkServer = new LinkServer(identity, trust, ApprovePairing);
+            // Expose this PC's devices to inbound peers too (bidirectional sharing).
+            _linkServer.ExposeProvider = () => BuildExposedDevices();
+            _linkServer.StatusChanged += st => _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = FormatLinkStatus(st));
+            // Reverse output relay (#138): our game's output for a remote device is
+            // shipped to its owner; a peer's output for OUR device drives our hardware.
+            RemoteLinkOutputRouter.SendOutput = (fp, slot, payload) => _linkServer?.PushOutputEffect(fp, slot, payload);
+            RemoteLinkOutputRouter.SendAudio = (fp, slot, payload) => _linkServer?.PushAudio(fp, slot, payload);
+            _linkServer.OutputReceived += OnRemoteOutputReceived;
+            _linkServer.AudioReceived += OnRemoteAudioReceived;
+            _linkServer.DeviceConnected += device =>
+            {
+                // Mark the restriction BEFORE the device goes online, or there is a
+                // window where its frames stream while IsSlotRestricted is still false.
+                bool restricted = _settingsService?.RemoteLink?.Trust?.Peers?
+                    .Any(t => string.Equals(t.FingerprintHex, device.Info.PeerFingerprintHex, StringComparison.OrdinalIgnoreCase) && t.GamepadOnly) ?? false;
+                _inputManager.SetDeviceRestricted(device.InstanceGuid, restricted);
+                _inputManager.RegisterPeerDevice(device);
+                // Map this device's "peer://" path to its owner so every output
+                // chokepoint can ship its config-baked output back (issue #138).
+                RemoteLinkOutputRouter.Register(device.DevicePath, device.Info.PeerFingerprintHex, device.LinkSlot);
+                // A remote pad connects AFTER the startup audio-reconcile check, so its
+                // speaker-passthrough config is never seen. Kick the audio service now so
+                // the worker starts and evaluates this peer:// pad as a ship target (#138).
+                PadForge.Common.Input.AudioPassthroughService.Reconcile();
+                // Persist a freshly granted peer + refresh the manager list (the grant
+                // happened inside the handshake, just before this fires).
+                _dispatcher.BeginInvoke(() =>
+                {
+                    try { _settingsService?.Save(); } catch { }
+                    _mainVm.Settings.RefreshTrustedPeers(_settingsService?.RemoteLink?.Trust?.Peers, _linkServer?.ConnectedFingerprints());
+                });
+                OnLinkPeersChanged(); // refresh Nearby PCs so this peer reads "Connected"
+            };
+            _linkServer.DeviceDisconnected += device =>
+            {
+                _inputManager.SetDeviceRestricted(device.InstanceGuid, false);
+                _inputManager.UnregisterExternalDevice(device.InstanceGuid);
+                RemoteLinkOutputRouter.Unregister(device.DevicePath);
+                OnLinkPeersChanged();
+            };
+
+            int port = _mainVm.Dashboard.RemoteLinkPort;
+            if (port < 1024 || port > 65535) port = 27500;
+            if (!_linkServer.Start(port))
+            {
+                // Port unavailable: tear down so the _linkServer != null re-entry guard clears
+                // and a later enable can retry on a free port (the Web/DSU server idiom) (#138 F05).
+                _linkServer.Dispose();
+                _linkServer = null;
+                return;
+            }
+
+            // LAN auto-discovery so peers appear by name — no IP typing.
+            _linkDiscovery = new LinkDiscovery();
+            _linkDiscovery.PeersChanged += OnLinkPeersChanged;
+            _linkDiscovery.Start(port, Environment.MachineName, identity.FingerprintHex);
+
+            // Stream exposed devices at ~125 Hz off the hot path.
+            _remoteLinkStreamTimer?.Dispose();
+            _remoteLinkStreamTimer = new System.Threading.Timer(RemoteLinkStreamTick, null, 8, 8);
+
+            // #138 M2 bring-up: snapshot both directions every 2s to %TEMP%\padforge-remotelink.log.
+            _remoteLinkDiagTimer?.Dispose();
+            _remoteLinkDiagTimer = new System.Threading.Timer(_ =>
+            {
+                var s = _linkServer;
+                if (s == null) return;
+                // Live device sync (#138): re-publish OUR current shareable set to peers so a
+                // controller plugged in after connect appears (and one unplugged disappears)
+                // on the other end. BuildExposedDevices rebuilds the stream snapshot too, so
+                // a new device starts streaming. Cheap; once per 2 s.
+                try { s.PushDeviceList(BuildExposedDevices()); } catch { }
+                // Keep the peer-manager online dots live (connect/disconnect doesn't always
+                // raise a discovery change), on the UI thread.
+                var fps = s.ConnectedFingerprints();
+                _dispatcher.BeginInvoke(() => _mainVm.Settings.UpdatePeerOnlineStatus(fps));
+                int exposed; lock (_remoteLinkExposedLock) exposed = _remoteLinkExposed.Count;
+                RemoteLinkDiag.Log(
+                    $"SNAP exposed={exposed} remoteDevs={RemoteLinkOutputRouter.DeviceCount} | " +
+                    $"IN sent={s.DiagDatagramsSent} recv={s.DiagDatagramsReceived} opened={s.DiagDatagramsOpened} | " +
+                    $"CAP sony={RemoteLinkOutputRouter.SonyCaptured} vib={RemoteLinkOutputRouter.VibrationCaptured} wheel={RemoteLinkOutputRouter.WheelCaptured} audio={RemoteLinkOutputRouter.AudioCaptured} shipped={RemoteLinkOutputRouter.Sent} | " +
+                    $"OUT recv={s.DiagOutputReceived} applied={_outputApplied} srcNull={_outputSourceNull} | " +
+                    $"AUDIO rx={s.DiagAudioReceived} ring={AudioPassthroughService.RemoteAudioRxBlocks} play={AudioPassthroughService.RemoteAudioRenderedFrames} | err='{s.DiagLastError}'");
+            }, null, 2000, 2000);
+        }
+
+        private void OnLinkPeersChanged()
+        {
+            var disc = _linkDiscovery;
+            if (disc == null) return;
+            var peers = disc.Peers;
+            var trust = _settingsService?.RemoteLink?.Trust;
+            var connectedFps = _linkServer?.ConnectedFingerprints() ?? (IReadOnlyList<string>)System.Array.Empty<string>();
+
+            // Auto-reconnect (#138): when a paired PC appears on the LAN and we aren't linked,
+            // dial it automatically — no click. Only ONE side initiates (the lower fingerprint)
+            // so two PCs that both see each other don't both connect; the other just listens.
+            // Per-peer cooldown keeps a failing dial from spamming every discovery tick.
+            if (_mainVm.Dashboard.AutoReconnect && _remoteLinkIdentity != null)
+            {
+                string myFp = _remoteLinkIdentity.FingerprintHex;
+                long now = Environment.TickCount64;
+                foreach (var p in peers)
+                {
+                    var entry = trust?.Peers?.FirstOrDefault(t => string.Equals(t.FingerprintHex, p.FingerprintHex, StringComparison.OrdinalIgnoreCase));
+                    if (entry == null || !entry.ReconnectEnabled) continue;                                  // not a trusted auto-reconnect peer
+                    if (connectedFps.Any(f => string.Equals(f, p.FingerprintHex, StringComparison.OrdinalIgnoreCase))) continue; // already linked
+                    if (string.CompareOrdinal(myFp, p.FingerprintHex) >= 0) continue;                        // the lower fingerprint dials; the other listens
+                    if (_autoReconnectCooldown.TryGetValue(p.FingerprintHex, out var last) && now - last < AutoReconnectCooldownMs) continue;
+                    _autoReconnectCooldown[p.FingerprintHex] = now;
+                    // Marshal the dial to the UI thread: OnConnectToPeerRequested mutates VM
+                    // state and starts the server, while OnLinkPeersChanged runs on background
+                    // (discovery / UDP / reaper / handshake) threads (#138 F09).
+                    _dispatcher.BeginInvoke(() => OnConnectToPeerRequested($"{p.Endpoint.Address}:{p.Endpoint.Port}"));
+                }
+            }
+
+            // Keep each paired peer's machine (NetBIOS) name current from discovery (#138):
+            // it's the default friendly name and the always-shown host label. Persist + a
+            // one-time list refresh only when it actually changes (not every 2 s tick).
+            bool trustDirty = false;
+            if (trust?.Peers != null)
+            {
+                foreach (var p in peers)
+                {
+                    if (string.IsNullOrWhiteSpace(p.Name)) continue;
+                    var e = trust.Peers.FirstOrDefault(t => string.Equals(t.FingerprintHex, p.FingerprintHex, StringComparison.OrdinalIgnoreCase));
+                    if (e != null && !string.Equals(e.HostName, p.Name, StringComparison.Ordinal)) { e.HostName = p.Name; trustDirty = true; }
+                }
+            }
+
+            _dispatcher.BeginInvoke(() =>
+            {
+                var nearbyUnpaired = new System.Collections.Generic.List<ViewModels.RemoteLinkNearbyPeer>();
+                // fingerprint -> host:port for paired peers seen on the LAN, so the paired
+                // list can show a Connect button on a discovered-but-offline peer.
+                var reachable = new System.Collections.Generic.Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var p in peers)
+                {
+                    bool paired = trust?.Peers?.Any(t => string.Equals(t.FingerprintHex, p.FingerprintHex, StringComparison.OrdinalIgnoreCase)) ?? false;
+                    bool connected = connectedFps.Any(f => string.Equals(f, p.FingerprintHex, StringComparison.OrdinalIgnoreCase));
+                    string hostPort = $"{p.Endpoint.Address}:{p.Endpoint.Port}";
+                    if (paired)
+                        reachable[p.FingerprintHex] = hostPort;
+                    else
+                        // Not yet paired — list it under the paired manager with a Pair button.
+                        nearbyUnpaired.Add(new ViewModels.RemoteLinkNearbyPeer(p.Name, hostPort, p.FingerprintHex, false, connected, OnConnectToPeerRequested));
+                }
+                _mainVm.Settings.SetNearbyUnpaired(nearbyUnpaired);
+                _mainVm.Settings.UpdatePeerOnlineStatus(connectedFps);
+                _mainVm.Settings.UpdatePeerReachability(reachable);
+                // A host name just changed -> persist it + rebuild so the new name + default
+                // show. The Save runs here on the UI thread, not on the background discovery
+                // thread (an off-thread Save races the UI-thread save and reads VM
+                // collections off-thread) (#138 F09).
+                if (trustDirty)
+                {
+                    try { _settingsService?.Save(); } catch { }
+                    _mainVm.Settings.RefreshTrustedPeers(trust?.Peers, connectedFps);
+                }
+            });
+        }
+
+        private void StopRemoteLink()
+        {
+            _remoteLinkStreamTimer?.Dispose();
+            _remoteLinkStreamTimer = null;
+            _remoteLinkDiagTimer?.Dispose();
+            _remoteLinkDiagTimer = null;
+            lock (_remoteLinkExposedLock) _remoteLinkExposed.Clear();
+            RemoteLinkOutputRouter.SendOutput = null;
+            RemoteLinkOutputRouter.SendAudio = null;
+            RemoteLinkOutputRouter.Clear();
+            _remoteWheelOneShot.Clear();
+            if (_linkDiscovery != null)
+            {
+                _linkDiscovery.PeersChanged -= OnLinkPeersChanged;
+                _linkDiscovery.Dispose();
+                _linkDiscovery = null;
+            }
+            _dispatcher.BeginInvoke(() =>
+            {
+                _mainVm.Settings.SetNearbyUnpaired(null);
+                _mainVm.Settings.UpdatePeerOnlineStatus(System.Array.Empty<string>());
+            });
+            if (_linkServer == null) return;
+            _linkServer.Dispose();
+            _linkServer = null;
+            _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.Common_Stopped;
+        }
+
+        /// <summary>Map an engine LinkServer status CODE to a localized dashboard string. The
+        /// engine can't reach the App's resources, so it emits a code and the App localizes (#138 F35).</summary>
+        private static string FormatLinkStatus(LinkServer.LinkStatus st)
+        {
+            var S = Strings.Instance;
+            switch (st.Kind)
+            {
+                case LinkServer.LinkStatusKind.Listening:     return string.Format(S.RemoteLink_StatusListening, st.Port);
+                case LinkServer.LinkStatusKind.Stopped:       return S.Common_Stopped;
+                case LinkServer.LinkStatusKind.StartFailed:   return string.Format(S.RemoteLink_StatusStartFailed, st.Message);
+                case LinkServer.LinkStatusKind.PeerTimedOut:  return string.Format(S.RemoteLink_StatusPeerTimedOut, st.Peer);
+                case LinkServer.LinkStatusKind.ConnectFailed: return string.Format(S.RemoteLink_StatusConnectFailed, st.Message);
+                case LinkServer.LinkStatusKind.LinkRejected:  return string.Format(S.RemoteLink_StatusLinkRejected, st.Message);
+                case LinkServer.LinkStatusKind.PeerConnected: return string.Format(S.RemoteLink_StatusPeerConnected, st.Peer, st.DeviceCount);
+                default:                                      return "";
+            }
+        }
+
+        /// <summary>Load the persisted Remote Link identity, minting + saving one on first use.</summary>
+        private PeerIdentity EnsureRemoteLinkIdentity()
+        {
+            var holder = _settingsService?.RemoteLink;
+            if (holder == null) return PeerIdentity.Generate();
+
+            // Password for a portable-password identity is collected by the UI and held for
+            // the session; null in Secure / open modes (and until the prompt lands).
+            string password = _remoteLinkSessionPassword;
+            var status = IdentityProtector.LoadOrMint(
+                holder.ProtectedPrivateBase64, holder.PublicBase64, password,
+                holder.IdentityProtection, password,
+                out var identity, out var newPriv, out var newPub);
+
+            if (status == IdentityUnprotect.Minted)
+            {
+                holder.ProtectedPrivateBase64 = newPriv;
+                holder.PublicBase64 = newPub;
+                _settingsService.Save();
+                _remoteLinkIdentity = identity;
+                return identity;
+            }
+            if (status == IdentityUnprotect.Ok)
+            {
+                // The stored public was blank/garbage and got re-derived from the private:
+                // persist the heal so it isn't recomputed every launch (#138 F26).
+                if (newPub != null) { holder.PublicBase64 = newPub; try { _settingsService.Save(); } catch { } }
+                _remoteLinkIdentity = identity;
+                return identity;
+            }
+
+            // Locked: a real identity exists but can't be opened here. NEVER overwrite it —
+            // surface why so the user can fix it (the right machine, or the password), and
+            // leave Remote Link off until then.
+            string msg = status switch
+            {
+                IdentityUnprotect.WrongMachine => Strings.Instance.RemoteLink_StatusWrongMachine,
+                IdentityUnprotect.NeedsPassword => Strings.Instance.RemoteLink_PasswordUnlockPrompt,
+                IdentityUnprotect.WrongPassword => Strings.Instance.RemoteLink_StatusWrongPassword,
+                _ => Strings.Instance.RemoteLink_StatusIdentityUnavailable,
+            };
+            _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = msg);
+            return null;
+        }
+
+        /// <summary>Portable-password identity unlock for this session (issue #138). Set by
+        /// the UI password prompt; never persisted. Null in Secure / open modes.</summary>
+        private string _remoteLinkSessionPassword;
+
+        /// <summary>The live unlocked identity, cached so a mode switch can re-wrap the same
+        /// key (preserving the fingerprint) without reloading. Null until first loaded.</summary>
+        private PeerIdentity _remoteLinkIdentity;
+
+        /// <summary>Show the SAS pairing dialog on the UI thread and block the socket
+        /// thread until the user decides. First contact only; trusted peers reconnect
+        /// without prompting.</summary>
+        private PairingApproval ApprovePairing(PendingPairing pending)
+        {
+            (bool approved, bool gamepadOnly) r;
+            // CRITICAL: if the handshake resumed on the UI thread (an outbound pair
+            // started from a button captures the WPF SynchronizationContext), a
+            // BeginInvoke+Wait would deadlock the UI thread against itself and the
+            // dialog could never show. Show it directly when already on the UI
+            // thread; only marshal+block from a background (socket) thread.
+            if (_dispatcher.CheckAccess())
+            {
+                r = ShowPairDialog(pending);
+            }
+            else
+            {
+                (bool approved, bool gamepadOnly) captured = (false, false);
+                using var done = new System.Threading.ManualResetEventSlim(false);
+                _dispatcher.BeginInvoke(() =>
+                {
+                    try { captured = ShowPairDialog(pending); }
+                    finally { done.Set(); }
+                });
+                if (!done.Wait(TimeSpan.FromMinutes(2))) return false;
+                r = captured;
+            }
+            // Persistence happens in DeviceConnected, after the grant lands in the trust store.
+            return new PairingApproval { Approved = r.approved, GamepadOnly = r.gamepadOnly };
+        }
+
+        private (bool approved, bool gamepadOnly) ShowPairDialog(PendingPairing pending)
+        {
+            try
+            {
+                var dlg = new Views.RemoteLinkPairDialog(pending.Sas, pending.PeerFingerprintHex);
+                var owner = System.Windows.Application.Current?.MainWindow;
+                if (owner != null && owner.IsLoaded) dlg.Owner = owner;
+                bool ok = dlg.ShowDialog() == true;
+                return (ok, dlg.GamepadOnly);
+            }
+            catch { return (false, false); }
+        }
+
+        private async void OnConnectToPeerRequested(string hostPort)
+        {
+            if (_linkServer == null)
+            {
+                _mainVm.Dashboard.EnableRemoteLink = true;
+                StartRemoteLinkIfEnabled();
+            }
+            var server = _linkServer;
+            if (server == null || string.IsNullOrWhiteSpace(hostPort)) return;
+
+            string host = hostPort.Trim();
+            int port = _mainVm.Dashboard.RemoteLinkPort;
+            int colon = host.LastIndexOf(':');
+            if (colon > 0 && int.TryParse(host.Substring(colon + 1), out int p)) { host = host.Substring(0, colon); port = p; }
+
+            var expose = BuildExposedDevices();
+            _ = _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = string.Format(Strings.Instance.RemoteLink_StatusConnecting, host, port));
+            await server.ConnectAsync(host, port, expose);
+        }
+
+        /// <summary>Build descriptors for every online physical controller this PC
+        /// shares, and remember their live sources for the stream timer. The slot id
+        /// is the list index, matching the order the peer rebuilds the devices in.</summary>
+        private IReadOnlyList<RemotePeerDeviceInfo> BuildExposedDevices()
+        {
+            var list = new List<RemotePeerDeviceInfo>();
+            var sources = new List<(RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)>();
+
+            // Hold the exposed lock around stable-slot allocation + the snapshot update so
+            // concurrent calls (handshake / periodic push) agree on slots. Lock order is
+            // always exposed-lock -> device SyncRoot (never the reverse), so no deadlock.
+            lock (_remoteLinkExposedLock)
+            {
+                var seenIds = new HashSet<string>();
+                var used = new HashSet<byte>(_exposedSlots.Values);
+                var devices = SettingsManager.UserDevices;
+                if (devices != null)
+                {
+                    lock (devices.SyncRoot)
+                    {
+                        foreach (var ud in devices.Items)
+                        {
+                            var dev = ud?.Device;
+                            if (ud == null || dev == null || !ud.IsOnline) continue;
+                            if (!IsShareableDevice(dev)) continue;
+                            if (list.Count >= 250) break; // slot id is a byte
+
+                            string id = ud.InstanceGuid.ToString("N");
+                            seenIds.Add(id);
+                            if (!_exposedSlots.TryGetValue(id, out byte slot))
+                            {
+                                slot = 0; while (used.Contains(slot)) slot++; // lowest free slot
+                                _exposedSlots[id] = slot; used.Add(slot);
+                            }
+                            var info = new RemotePeerDeviceInfo
+                            {
+                                Slot = slot,
+                                Online = true,
+                                PeerLocalDeviceId = id,
+                                Name = dev.Name,
+                                VendorId = dev.VendorId,
+                                ProductId = dev.ProductId,
+                                NumAxes = dev.NumAxes,
+                                NumButtons = dev.NumButtons,
+                                NumHats = dev.NumHats,
+                                HasRumble = dev.HasRumble,
+                                HasRumbleTriggers = dev.HasRumbleTriggers,
+                                HasHaptic = dev.HasHaptic,
+                                HasGyro = dev.HasGyro,
+                                HasAccel = dev.HasAccel,
+                                HasTouchpad = dev.HasTouchpad,
+                                InputDeviceType = dev.GetInputDeviceType(),
+                            };
+                            list.Add(info);
+                            sources.Add((info, dev, slot));
+                        }
+                    }
+                }
+                // Release slots held by devices that are no longer shared, so they can be
+                // reused — and the consumer drops them on the next sync.
+                foreach (var goneId in _exposedSlots.Keys.Where(k => !seenIds.Contains(k)).ToList())
+                {
+                    _exposedSlots.Remove(goneId);
+                    // Also drop the owner-side wheel one-shot cache so range / autocenter / RPM
+                    // LEDs re-apply from scratch on replug — the wheel power-cycles to factory
+                    // defaults while gone, and the cached tuple would suppress the re-send (#138 F38).
+                    if (Guid.TryParseExact(goneId, "N", out var goneGuid))
+                        _remoteWheelOneShot.TryRemove(goneGuid, out _);
+                }
+
+                _remoteLinkExposed.Clear();
+                _remoteLinkExposed.AddRange(sources);
+            }
+            return list;
+        }
+
+        /// <summary>Share every device the user sees in Devices — gamepads, joysticks,
+        /// wheels, keyboards, mice, MIDI, web, overlay. The ONE exclusion is a device
+        /// that is itself a remote peer's (peer://): re-sharing it would loop / relay.</summary>
+        private static bool IsShareableDevice(ISdlInputDevice dev)
+        {
+            string path = dev.DevicePath ?? "";
+            return !path.StartsWith("peer://", StringComparison.Ordinal);
+        }
+
+        private int _streamTickGuard;
+
+        private void RemoteLinkStreamTick(object state)
+        {
+            // Non-reentrant: a tick slower than the 8 ms period must not overlap the
+            // next one, or two concurrent Seal calls could race the send counter.
+            if (System.Threading.Interlocked.Exchange(ref _streamTickGuard, 1) == 1) return;
+            try
+            {
+                var server = _linkServer;
+                if (server == null) return;
+                (RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)[] exposed;
+                lock (_remoteLinkExposedLock) exposed = _remoteLinkExposed.ToArray();
+                if (exposed.Length == 0) return;
+
+                ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
+                foreach (var e in exposed)
+                {
+                    var s = e.source?.GetCurrentState();
+                    if (s == null) continue;
+                    var caps = new CustomInputStateCodec.Caps(e.source.HasGyro, e.source.HasAccel);
+                    server.PushLocalFrame(e.slot, s, caps, ts);
+                }
+            }
+            finally { System.Threading.Volatile.Write(ref _streamTickGuard, 0); }
+        }
+
+        /// <summary>Rebuild the consumer-side reverse-output routes (#138 M2): VC pad
+        /// slot -&gt; the remote targets (owner fingerprint + link slot) whose devices are
+        /// mapped to that slot. Called on peer connect/disconnect and on remap, so the
+        /// capture taps in HMaestroVirtualController forward to the right owner.</summary>
+        // Owner-side neutral PadSetting for replaying a relayed Vibration: the consumer
+        // already baked every gain in, so the owner must not re-scale (ForceOverall=100).
+        private static readonly PadSetting _remoteApplyPs = new PadSetting { ForceOverall = "100" };
+        // Owner-side wheel one-shot dedup (range/autocenter/LEDs are in every frame but
+        // change rarely; re-writing them per frame would halve the wheel poll rate).
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, (int range, int ac, int ledMask, bool ledValid)> _remoteWheelOneShot = new();
+        private long _outputApplied, _outputRecvSeen, _outputSourceNull;
+
+        /// <summary>Resolve a link slot to the owner's physical source + UserDevice.</summary>
+        private bool ResolveExposed(byte slot, out ISdlInputDevice source, out UserDevice ud)
+        {
+            source = null; ud = null;
+            lock (_remoteLinkExposedLock)
+                foreach (var e in _remoteLinkExposed)
+                    if (e.slot == slot) { source = e.source; break; }
+            if (source == null) return false;
+            ud = SettingsManager.FindDeviceByInstanceGuid(source.InstanceGuid);
+            return true;
+        }
+
+        /// <summary>A paired peer sent reverse output for one of THIS PC's shared devices
+        /// (issue #138). Map the link slot to the physical source and drive the hardware
+        /// directly — no local game / virtual controller is involved. The consumer baked
+        /// in all config; the owner only re-encodes for its real device. Runs on the UDP
+        /// receive thread (one writer).</summary>
+        private void OnRemoteOutputReceived(string peerFingerprint, byte slot, byte[] payload)
+        {
+            long rn = System.Threading.Interlocked.Increment(ref _outputRecvSeen);
+            if (!OutputEffectCodec.TryDecode(payload, out var effect))
+            {
+                if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply: decode FAILED len={payload?.Length} n={rn}");
+                return;
+            }
+            if (!ResolveExposed(slot, out var source, out var ud))
+            {
+                System.Threading.Interlocked.Increment(ref _outputSourceNull);
+                if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply: NO source for slot={slot} kind={effect.Kind} n={rn}");
+                return;
+            }
+            // Sole-writer guard (#138): this frame means a remote game is driving the
+            // shared device. Refresh the output lease so the owner's LOCAL output pipeline
+            // yields — the apply below is the sole hardware writer (no two-writer stutter).
+            RemoteLinkOutputRouter.ClaimOutput(ud?.DevicePath ?? source.DevicePath);
+            try
+            {
+                var handle = source.GamepadHandle;
+                switch (effect.Kind)
+                {
+                    case OutputEffectCodec.Kind.SonyEffect:
+                        // Replay the DualSense effect body through SDL, which re-frames it
+                        // for the physical pad's transport (USB 0x02 / BT 0x31 + CRC).
+                        if (handle != IntPtr.Zero && effect.SonyBody != null && effect.SonyBody.Length > 0)
+                        {
+                            bool ok = SDL3.SDL.SDL_SendGamepadEffect(handle, effect.SonyBody, 0, effect.SonyBody.Length);
+                            System.Threading.Interlocked.Increment(ref _outputApplied);
+                            if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply sony slot={slot} dev='{source.Name}' len={effect.SonyBody.Length} sdlOk={ok} n={rn}");
+                        }
+                        break;
+
+                    case OutputEffectCodec.Kind.Vibration:
+                        // Rumble + impulse triggers + directional/condition haptic, replayed
+                        // through the device's real SDL handle per its capabilities. A Fanatec
+                        // pedal has no usable SDL rumble — locally it rides the raw-HID pedal
+                        // writer, so re-route it the same way here instead of dropping it (#138 F31).
+                        if (FanatecRawHidWriter.IsFanatecPedal(source.VendorId, source.ProductId))
+                        {
+                            byte brake    = (byte)(effect.Vibration.LeftMotorSpeed >> 8);  // XInput left  -> brake
+                            byte throttle = (byte)(effect.Vibration.RightMotorSpeed >> 8); // XInput right -> throttle
+                            FanatecRawHidWriter.WritePedalRumble(source.DevicePath, throttle, brake);
+                        }
+                        else
+                        {
+                            ud?.ForceFeedbackState?.SetDeviceForces(ud, source, _remoteApplyPs, effect.Vibration);
+                        }
+                        System.Threading.Interlocked.Increment(ref _outputApplied);
+                        if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply vib slot={slot} dev='{source.Name}' ({effect.Vibration.LeftMotorSpeed},{effect.Vibration.RightMotorSpeed}) n={rn}");
+                        break;
+
+                    case OutputEffectCodec.Kind.Wheel:
+                        ApplyRemoteWheel(source, in effect.Wheel);
+                        System.Threading.Interlocked.Increment(ref _outputApplied);
+                        if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply wheel slot={slot} dev='{source.Name}' force={effect.Wheel.Force} n={rn}");
+                        break;
+                }
+            }
+            catch (Exception ex) { RemoteLinkDiag.Log($"apply EXCEPTION: {ex.Message}"); }
+        }
+
+        /// <summary>Re-encode a relayed wheel frame with the owner's own per-vendor writer
+        /// (the vendor PID quantization + report sizing + stateful upload/play caches must
+        /// live on the machine that owns the wheel).</summary>
+        private void ApplyRemoteWheel(ISdlInputDevice source, in OutputEffectCodec.WheelFrame w)
+        {
+            string path = source.DevicePath;
+            ushort vid = source.VendorId, pid = source.ProductId;
+            bool isLogi = LogitechRawHidWriter.IsLogitechWheel(vid, pid);
+            bool isFan  = FanatecRawHidWriter.IsFanatecWheel(vid, pid);
+            bool isTm   = ThrustmasterRawHidWriter.IsThrustmasterWheel(vid, pid);
+            if (!isLogi && !isFan && !isTm) return; // generic SDL wheel would ride Vibration
+
+            // Per-frame FFB (force / condition / periodic).
+            if (isLogi)
+            {
+                if (w.HasCond)
+                    LogitechRawHidWriter.WriteCondition(path, 0, w.Effect, w.Pc, w.Nc, w.Off, w.Db, w.Ps, w.Ns, w.CondGain, LogitechRawHidWriter.HasFrictionCap(pid));
+                else if (w.Force == 0) LogitechRawHidWriter.WriteStopEffect(path, 0);
+                else LogitechRawHidWriter.WriteConstantForce(path, 0, w.Force);
+            }
+            else if (isFan)
+            {
+                if (w.HasCond)
+                    FanatecRawHidWriter.WriteWheelCondition(path, w.Effect, w.Pc, w.Nc, w.Off, w.Db, w.Ps, w.Ns, w.CondGain);
+                else
+                {
+                    FanatecRawHidWriter.WriteWheelConstantForce(path, w.Force, pid);
+                    if (w.Ac > 0) FanatecRawHidWriter.WriteAutocenter(path, w.Ac);
+                }
+            }
+            else // Thrustmaster
+            {
+                if (w.HasCond)
+                    ThrustmasterRawHidWriter.WriteCondition(path, w.Effect, w.Pc, w.Nc, w.Off, w.Db, w.Ps, w.Ns, w.CondGain);
+                else if (w.Peak != 0)
+                    ThrustmasterRawHidWriter.WritePeriodic(path, w.Effect, w.Peak, w.Period);
+                else ThrustmasterRawHidWriter.WriteConstantForce(path, w.Force);
+            }
+
+            // Range + auto-center + RPM LEDs — re-send only when changed.
+            var prev = _remoteWheelOneShot.TryGetValue(source.InstanceGuid, out var p) ? p : (-1, -1, -1, false);
+            if (prev.Item1 != w.RangeDeg || prev.Item2 != w.Ac)
+            {
+                int acMag = w.Ac;
+                if (isLogi) { LogitechRawHidWriter.WriteRange(path, w.RangeDeg, pid); LogitechRawHidWriter.WriteAutocenter(path, acMag, LogitechRawHidWriter.IsMomo(pid)); }
+                else if (isFan) { FanatecRawHidWriter.WriteRange(path, w.RangeDeg, pid); FanatecRawHidWriter.WriteAutocenter(path, acMag); }
+                else { ThrustmasterRawHidWriter.WriteRange(path, w.RangeDeg, pid); ThrustmasterRawHidWriter.WriteAutocenter(path, acMag); }
+            }
+            if (prev.Item3 != w.LedMask || prev.Item4 != w.LedValid)
+            {
+                int mask = w.LedValid ? w.LedMask : 0;
+                if (isLogi) LogitechRawHidWriter.WriteRpmLeds(path, (byte)mask);
+                else if (isFan) FanatecRawHidWriter.WriteRpmLeds(path, mask);
+                else ThrustmasterRawHidWriter.WriteRpmLeds(path, mask);
+            }
+            _remoteWheelOneShot[source.InstanceGuid] = (w.RangeDeg, w.Ac, w.LedMask, w.LedValid);
+        }
+
+        /// <summary>A paired peer sent a speaker PCM block for one of THIS PC's shared
+        /// pads (issue #138). Feed it to the owner's audio passthrough, which renders it
+        /// to the real DualSense/DualShock speaker (BT Opus/SBC or USB UAC).</summary>
+        private void OnRemoteAudioReceived(string peerFingerprint, byte slot, byte[] payload)
+        {
+            if (payload == null || payload.Length < 2) return;
+            if (!ResolveExposed(slot, out var source, out _)) return;
+            AudioPassthroughService.FeedRemoteAudio(source.InstanceGuid, payload);
         }
 
         // ─────────────────────────────────────────────
@@ -5424,6 +6297,7 @@ namespace PadForge.Services
                 InputDeviceType.Mouse => "Mouse",
                 InputDeviceType.Keyboard => "Keyboard",
                 InputDeviceType.Touchpad => "Touchpad",
+                InputDeviceType.Midi => "Midi",
                 _ => "Device"
             };
 
@@ -5436,6 +6310,12 @@ namespace PadForge.Services
         /// Populates the MappedDevices collection with ALL devices assigned to each slot.
         /// Called after the device list changes or after a device is assigned to a slot.
         /// </summary>
+        /// <summary>
+        /// Tears down all MIDI input connections and suppresses their
+        /// re-enumeration. Called before uninstalling Windows MIDI Services.
+        /// </summary>
+        public void ShutdownMidiInputs() => _inputManager?.ShutdownMidiInputs();
+
         /// <summary>
         /// Forces a full re-sync of the device list UI from the current
         /// SettingsManager.UserDevices state. Called by the Refresh button.
@@ -5509,8 +6389,12 @@ namespace PadForge.Services
             var devs = SettingsManager.UserDevices?.Items;
             if (devs == null) return;
             (UserDevice ud, PadSetting ps)[] candidates;
-            lock (settings.SyncRoot)
+            // Canonical lock order is UserDevices -> UserSettings (see
+            // MappingSetEval's snapshot doc); Settings-first here was one half
+            // of an ABBA pair against the disconnect path's Devices-first
+            // nesting on the websocket thread.
             lock (SettingsManager.UserDevices.SyncRoot)
+            lock (settings.SyncRoot)
             {
                 var found = new List<(UserDevice, PadSetting)>();
                 for (int i = 0; i < settings.Items.Count; i++)
@@ -5560,7 +6444,7 @@ namespace PadForge.Services
                 if (slotSettings == null || slotSettings.Count == 0)
                 {
                     padVm.MappedDevices.Clear();
-                    padVm.MappedDeviceName = "No device mapped";
+                    padVm.MappedDeviceName = Strings.Instance.Mapping_NoDeviceMapped;
                     padVm.MappedDeviceGuid = Guid.Empty;
                     padVm.IsDeviceOnline = false;
                 }
@@ -6905,6 +7789,8 @@ namespace PadForge.Services
                     ButtonCount = cfg.ButtonCount,
                     OemNameOverride = cfg.OemNameOverride,
                     ProductString = cfg.ProductString,
+                    VendorId = cfg.VendorId,
+                    ProductId = cfg.ProductId,
                     Customize = cfg.Customize,
                     ForceFeedbackEnabled = cfg.ForceFeedbackEnabled
                 });
@@ -7460,6 +8346,8 @@ namespace PadForge.Services
                         cfg.ButtonCount = cfgData.ButtonCount;
                         cfg.OemNameOverride = cfgData.OemNameOverride;
                         cfg.ProductString = cfgData.ProductString ?? string.Empty;
+                        cfg.VendorId = cfgData.VendorId;
+                        cfg.ProductId = cfgData.ProductId;
                         cfg.Customize = cfgData.Customize;
                         cfg.ForceFeedbackEnabled = cfgData.ForceFeedbackEnabled;
                     }
@@ -8042,33 +8930,51 @@ namespace PadForge.Services
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>Builds a <see cref="Gamepad"/> from the physical
-        /// device's raw <see cref="UserDevice.InputState"/> axes, used
-        /// by the per-device Sticks/Triggers tab preview. Bypasses the
-        /// post-MappingSet intermediate so each physical device shows
-        /// its own stick/trigger position in a multi-device slot.
-        /// Layout per <see cref="SdlDeviceWrapper.GetGamepadState"/>:
-        /// Axis[0]=LX, [1]=LY, [2]=LT, [3]=RX, [4]=RY, [5]=RT
-        /// (unsigned 0..65535).</summary>
-        private Gamepad BuildPerDeviceSticksFromInputState(Guid instanceGuid)
+        /// <summary>Builds a <see cref="Gamepad"/> for the per-device
+        /// Sticks/Triggers tab preview. Triggers come from the engine's
+        /// per-device <see cref="UserSetting.RawMappedState"/> (descriptor-
+        /// resolved + inverted, pre-tuning); sticks come from the physical
+        /// device's raw <see cref="UserDevice.InputState"/> axes. Bypasses
+        /// the post-tuning output so each physical device shows its own
+        /// stick/trigger position in a multi-device slot.
+        /// Stick layout per <see cref="SdlDeviceWrapper.GetGamepadState"/>:
+        /// Axis[0]=LX, [1]=LY, [3]=RX, [4]=RY (unsigned 0..65535).</summary>
+        private Gamepad BuildPerDeviceSticksFromInputState(Guid instanceGuid, UserSetting us = null)
         {
             var ud = FindUserDevice(instanceGuid);
             var devState = ud?.InputState;
             Gamepad gp = default;
+
+            // Triggers: read RawMappedState (axis-selected + inverted, PRE-tuning)
+            // so the Triggers-tab preview honors the user's actual LeftTrigger/
+            // RightTrigger descriptors and their Invert flag. A wheel pedal mapped
+            // to "IAxis 3" then rests at released (0), not raw 65535, and the brake
+            // on "IAxis 2" drives the right trigger — the old fixed Axis[2]/Axis[5]
+            // read showed the wrong (un-inverted) pedal and left the other trigger
+            // dead. RawMappedState is pre-tuning, so the UI's ProcessTriggerForPreview
+            // re-applies deadzone/curve without double-processing. For default gamepad
+            // maps (LeftTrigger="Axis 2", RightTrigger="Axis 5") this is value-identical
+            // to the old raw read, so XInput-shaped pads don't change.
+            if (us != null)
+            {
+                gp.LeftTrigger = us.RawMappedState.LeftTrigger;
+                gp.RightTrigger = us.RawMappedState.RightTrigger;
+            }
+
             if (devState?.Axis == null || devState.Axis.Length < 6)
                 return gp;
 
-            // 0..65535 → signed -32768..32767 for stick axes; pass through for triggers.
-            // Y axes are negated: SDL convention is positive-down (screen
-            // coords); Gamepad/XInput convention is positive-up. The
-            // standard SDL→Gamepad path applies the same negation
+            // Sticks: 0..65535 → signed -32768..32767. Y axes are negated: SDL
+            // convention is positive-down (screen coords); Gamepad/XInput convention
+            // is positive-up. The standard SDL→Gamepad path applies the same negation
             // (SdlDeviceWrapper -> MapToThumbAxisWithNeg via PadSetting).
+            // NOTE: this still assumes the XInput stick-axis layout, so a wheel/
+            // joystick with remapped stick axes can mis-preview sticks; triggers
+            // were the reported case and are fixed above.
             gp.ThumbLX = (short)(devState.Axis[0] + short.MinValue);
             gp.ThumbLY = (short)Math.Clamp(-(devState.Axis[1] + short.MinValue), short.MinValue, short.MaxValue);
             gp.ThumbRX = (short)(devState.Axis[3] + short.MinValue);
             gp.ThumbRY = (short)Math.Clamp(-(devState.Axis[4] + short.MinValue), short.MinValue, short.MaxValue);
-            gp.LeftTrigger = (ushort)Math.Clamp(devState.Axis[2], 0, 65535);
-            gp.RightTrigger = (ushort)Math.Clamp(devState.Axis[5], 0, 65535);
             return gp;
         }
     }

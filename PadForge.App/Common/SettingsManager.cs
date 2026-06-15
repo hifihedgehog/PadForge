@@ -665,16 +665,29 @@ namespace PadForge.Common.Input
             var settings = UserSettings;
             if (settings == null) return;
 
+            // Snapshot the slot's UserSettings under the lock, then resolve
+            // devices and write PadSettings OUTSIDE it. FindDeviceByInstanceGuid
+            // takes the UserDevices lock; acquiring it while holding UserSettings
+            // inverts the canonical UserDevices -> UserSettings order and pairs
+            // into an ABBA deadlock with the disconnect/migration paths that
+            // nest Devices-first. SetPadSetting/PadSettingChecksum are per-object
+            // writes (the lock guards the Items collection, not the entries), the
+            // same pattern the device-assign flow already uses.
+            var slotSettings = new System.Collections.Generic.List<UserSetting>();
             lock (settings.SyncRoot)
             {
                 foreach (var us in settings.Items)
                 {
-                    if (us.MapTo != padIndex) continue;
-                    var ud = FindDeviceByInstanceGuid(us.InstanceGuid);
-                    var ps = CreateDefaultPadSetting(ud, outputType);
-                    us.SetPadSetting(ps);
-                    us.PadSettingChecksum = ps.PadSettingChecksum;
+                    if (us.MapTo == padIndex) slotSettings.Add(us);
                 }
+            }
+
+            foreach (var us in slotSettings)
+            {
+                var ud = FindDeviceByInstanceGuid(us.InstanceGuid);
+                var ps = CreateDefaultPadSetting(ud, outputType);
+                us.SetPadSetting(ps);
+                us.PadSettingChecksum = ps.PadSettingChecksum;
             }
         }
 

@@ -662,6 +662,10 @@ namespace PadForge.ViewModels
                         if (entry != null) _triggerInputEntries.Add(entry);
                     }
                 }
+                // Wire the loaded entries so post-load per-entry edits (Invert /
+                // HalfAxis / Bidirectional / DeadZone) bubble up and autosave —
+                // the XML-load path previously left them unwired.
+                WireTriggerInputEntries();
                 OnPropertyChanged(nameof(TriggerInputs));
                 OnPropertyChanged(nameof(UsesRawTrigger));
                 OnPropertyChanged(nameof(UsesPovTrigger));
@@ -853,6 +857,21 @@ namespace PadForge.ViewModels
         // ─────────────────────────────────────────────
         //  Trigger options
         // ─────────────────────────────────────────────
+
+        /// <summary>Compact "file1, file2" summary of this macro's Play
+        /// Sound actions, for the Audio tab's sound-macro hub list.</summary>
+        public string SoundFilesSummary
+        {
+            get
+            {
+                var names = Actions
+                    .Where(a => a.Type == MacroActionType.PlaySound && !string.IsNullOrEmpty(a.SoundFileName))
+                    .Select(a => a.SoundFileName)
+                    .Distinct()
+                    .ToList();
+                return names.Count == 0 ? string.Empty : string.Join(", ", names);
+            }
+        }
 
         private MacroTriggerMode _triggerMode = MacroTriggerMode.OnPress;
 
@@ -1440,6 +1459,8 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsLightbarPaletteVisible));
                     OnPropertyChanged(nameof(IsRumbleType));
                     OnPropertyChanged(nameof(IsRumbleStopType));
+                    OnPropertyChanged(nameof(IsPlaySoundType));
+                    OnPropertyChanged(nameof(IsSoundStopType));
                     OnPropertyChanged(nameof(IsAnyRumbleType));
                     OnPropertyChanged(nameof(IsSetGyroEngagedType));
                     OnPropertyChanged(nameof(IsRumbleReactiveHold));
@@ -1496,6 +1517,10 @@ namespace PadForge.ViewModels
         /// <summary>True when Type is RumbleStop.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsRumbleStopType => _type == MacroActionType.RumbleStop;
+
+        public bool IsPlaySoundType => _type == MacroActionType.PlaySound;
+
+        public bool IsSoundStopType => _type == MacroActionType.SoundStop;
 
         /// <summary>True when Type is SetGyroEngaged. Surfaces the
         /// Mode dropdown editor in the macro action UI.</summary>
@@ -2325,6 +2350,57 @@ namespace PadForge.ViewModels
             }
         }
 
+        // ── Sound (for MacroActionType.PlaySound / SoundStop, issue #83) ──
+
+        private string _soundFilePath = string.Empty;
+        /// <summary>Absolute path of the sound file to play. Decoded via
+        /// Media Foundation (wav / mp3 / m4a / aac / wma / flac) and cached
+        /// after first use so repeat fires start instantly.</summary>
+        public string SoundFilePath
+        {
+            get => _soundFilePath;
+            set
+            {
+                if (SetProperty(ref _soundFilePath, value ?? string.Empty))
+                {
+                    OnPropertyChanged(nameof(DisplayText));
+                    OnPropertyChanged(nameof(SoundFileName));
+                }
+            }
+        }
+
+        /// <summary>File name only, for compact display on the action row
+        /// and the Audio tab's sound-macro list. Package references render
+        /// as "entry — package".</summary>
+        public string SoundFileName
+        {
+            get
+            {
+                if (PadForge.Common.SoundPackageManager.IsPackageRef(_soundFilePath))
+                    return PadForge.Common.SoundPackageManager.DisplayName(_soundFilePath);
+                try { return string.IsNullOrEmpty(_soundFilePath) ? string.Empty : System.IO.Path.GetFileName(_soundFilePath); }
+                catch { return _soundFilePath; }
+            }
+        }
+
+        private int _soundVolume = 100;
+        /// <summary>Per-action volume percentage 0-100, multiplied with the
+        /// slot's master sound volume (Audio tab).</summary>
+        public int SoundVolume
+        {
+            get => _soundVolume;
+            set => SetProperty(ref _soundVolume, Math.Clamp(value, 0, 100));
+        }
+
+        private bool _soundLoop;
+        /// <summary>Loop until a SoundStop action (or, for While-Held /
+        /// Until-Release macros, the trigger's release). Off = play once.</summary>
+        public bool SoundLoop
+        {
+            get => _soundLoop;
+            set => SetProperty(ref _soundLoop, value);
+        }
+
         private string _lightbarPaletteCsv = string.Empty;
         /// <summary>CSV of "R,G,B" hex triplets defining the per-macro
         /// palette for <see cref="MacroLightbarColorSource.PaletteStep"/>.
@@ -2632,6 +2708,13 @@ namespace PadForge.ViewModels
                         CountSelectedCycleModes()),
                     MacroActionType.Rumble => FormatRumbleSummary(),
                     MacroActionType.RumbleStop => Strings.Instance.MacroAction_RumbleStop,
+                    MacroActionType.PlaySound => string.IsNullOrEmpty(_soundFilePath)
+                        ? Strings.Instance.MacroAction_Type_PlaySound
+                        : string.Format(
+                            _soundLoop ? Strings.Instance.MacroAction_PlaySoundLoop_Format
+                                       : Strings.Instance.MacroAction_PlaySound_Format,
+                            SoundFileName, _soundVolume),
+                    MacroActionType.SoundStop => Strings.Instance.MacroAction_Type_SoundStop,
                     MacroActionType.SetGyroEngaged => string.Format(
                         Strings.Instance.MacroAction_SetGyroEngaged_Format,
                         SetGyroEngagedModeDisplayName(_setGyroEngagedMode)),
@@ -2891,7 +2974,24 @@ namespace PadForge.ViewModels
         /// <summary>Releases any active rumble override on the slot.
         /// Pair with <see cref="Rumble"/> Sticky to give the user a
         /// deliberate way to undo the hold via another macro.</summary>
-        RumbleStop
+        RumbleStop,
+
+        /// <summary>Plays a sound file (issue #83). Routed through
+        /// <c>SoundMacroService</c> to the slot's configured output device
+        /// (Audio tab) — the system default or a specific endpoint such as
+        /// a USB DualSense's controller speaker. <c>SoundFilePath</c> picks
+        /// the file (wav / mp3 / m4a / aac / wma / flac via Media
+        /// Foundation), <c>SoundVolume</c> scales it (multiplied with the
+        /// slot's master volume), and <c>SoundLoop</c> loops it until a
+        /// <see cref="SoundStop"/> action or — for While-Held /
+        /// Until-Release macros — the trigger's release stops it. One-shots
+        /// always play to completion.</summary>
+        PlaySound,
+
+        /// <summary>Stops every macro sound on the slot. Pair with
+        /// <see cref="PlaySound"/> Loop to give the user a deliberate way
+        /// to end a looping sound via another macro.</summary>
+        SoundStop
     }
 
     /// <summary>Write mode for the

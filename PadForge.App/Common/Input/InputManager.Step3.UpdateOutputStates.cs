@@ -42,6 +42,9 @@ namespace PadForge.Common.Input
             // same frame skip rows already written.
             BeginFrameMultiSourceTracking();
 
+            // Clear the per-slot raw touchpad-click flags; they're re-OR'd per device below.
+            System.Array.Clear(SlotRawTouchpadClick, 0, SlotRawTouchpadClick.Length);
+
             // Snapshot settings into pre-allocated buffer (no LINQ allocation).
             int snapshotCount;
             lock (SettingsManager.UserSettings.SyncRoot)
@@ -64,6 +67,7 @@ namespace PadForge.Common.Input
                     if (ud == null)
                     {
                         us.OutputState = default;
+                        us.RawMappedState = default; // preview must not freeze on a removed device
                         continue;
                     }
                     // Device exists but input temporarily unavailable — keep
@@ -96,6 +100,23 @@ namespace PadForge.Common.Input
                         us.OutputState = MapInputToGamepad(ud.InputState, ps, out rawMapped);
                     }
                     us.RawMappedState = rawMapped;
+
+                    // Raw physical touchpad click (SDL_GAMEPAD_BUTTON_TOUCHPAD = Buttons[16]),
+                    // OR'd into the per-slot flag for the InputReactive lightbar so the press
+                    // flashes regardless of virtual-controller type or click mapping. Done here
+                    // (not via TouchpadOutputState) because that's only computed for PlayStation
+                    // slots and reflects the click's mapping, not the physical press.
+                    if (slotIndex >= 0 && slotIndex < MaxPads)
+                    {
+                        var rawButtons = ud.InputState.Buttons;
+                        if (rawButtons != null && rawButtons.Length > 16 && rawButtons[16])
+                            SlotRawTouchpadClick[slotIndex] = true;
+                    }
+
+                    // Steering at-lock haptic feedback (#94). The MappingSet eval above
+                    // updated this frame's lock state; fire the opt-in channels now.
+                    if (ms != null && ms.Rows != null && ms.Rows.Count > 0)
+                        ApplySteeringLockFeedback(ms, slotIndex, ps, ud);
 
                     // All non-gamepad output paths route per-target descriptor
                     // reads through the per-VC MappingSet when a Base-layer row
@@ -1654,12 +1675,13 @@ namespace PadForge.Common.Input
                 if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
                         slotIndex, "KbmMouseY", out short msyValue))
                 {
-                    raw.MouseDeltaY = msyValue;
-                    // MappingSet path: the user encodes direction explicitly via
-                    // per-source Invert. The Y-axis convention auto-negation
-                    // below (legacy single-analog-axis case) does NOT apply —
-                    // users who want SDL-Y-down → KBM-Y-up should set Invert on
-                    // their analog source.
+                    // KbmMouseY convention is positive = UP (the VC negates it to
+                    // screen-Y, which is positive = down). The MappingSet evaluator
+                    // returns SDL convention (positive = down), so negate to default
+                    // physical-up → cursor-up — matching the legacy single-descriptor
+                    // path below and the gamepad ThumbLY path. A per-source Invert
+                    // still flips direction from there.
+                    raw.MouseDeltaY = NegateAxis(msyValue);
                 }
                 else if (!string.IsNullOrEmpty(posDesc) || !string.IsNullOrEmpty(negDesc))
                 {
@@ -1703,8 +1725,10 @@ namespace PadForge.Common.Input
                 if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
                         slotIndex, "KbmScroll", out short scrollValue))
                 {
-                    // MappingSet path: user sets Invert per-source explicitly.
-                    raw.ScrollDelta = scrollValue;
+                    // KbmScroll convention is positive = UP; the MappingSet evaluator
+                    // returns SDL positive = down, so negate to default physical-up →
+                    // scroll-up (same fix as MouseDeltaY). Per-source Invert overrides.
+                    raw.ScrollDelta = NegateAxis(scrollValue);
                 }
                 else if (!string.IsNullOrEmpty(posDesc) || !string.IsNullOrEmpty(negDesc))
                 {

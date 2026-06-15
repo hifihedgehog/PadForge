@@ -109,8 +109,10 @@ namespace PadForge.Views
                 string nameForLabel = string.IsNullOrWhiteSpace(deviceName)
                     ? Strings.Instance.Recorder_TargetDevice_UnknownName
                     : deviceName;
+                // Pad number shown 1-based to match the rest of the UI;
+                // _padIndex stays 0-based for the engine wiring above.
                 DeviceLabel.Text = string.Format(Strings.Instance.Recorder_TargetDevice_Format,
-                    nameForLabel, _padIndex);
+                    nameForLabel, _padIndex + 1);
             }
             else
             {

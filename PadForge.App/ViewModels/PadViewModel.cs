@@ -105,6 +105,11 @@ namespace PadForge.ViewModels
         /// </summary>
         public Action ConfigItemDirtyCallback { get; set; }
 
+        /// <summary>Wired by MainWindow to re-stamp the engine's per-slot MappingSets
+        /// immediately on a steering-mode change (including Reset all -> Direct), so the
+        /// stick stops/starts steering at once instead of after the 2s autosave.</summary>
+        public Action SteeringModeChangedCallback { get; set; }
+
         private int _slotNumber;
         /// <summary>One-based sequential number among active slots, for display.</summary>
         public int SlotNumber
@@ -554,6 +559,12 @@ namespace PadForge.ViewModels
                     if (old != null) old.PropertyChanged -= OnSelectedDevicePropertyChanged;
                     if (value != null) value.PropertyChanged += OnSelectedDevicePropertyChanged;
                     OnPropertyChanged(nameof(HasSelectedDevice));
+                    OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
+                    OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
+                    // The mirror source is per device; re-point the combo at
+                    // the newly selected device's value.
+                    if (SelectedConfigTab == AudioTabIndex) RefreshMirrorSources();
+                    else OnPropertyChanged(nameof(SelectedMirrorSourceId));
                     // Swap the Lighting tab's bound config to the new
                     // device's per-device entry. UI bindings that resolve
                     // PlayStationConfig.* re-evaluate against the new
@@ -789,6 +800,31 @@ namespace PadForge.ViewModels
             new ObservableCollection<MappingItem>();
 
         /// <summary>
+        /// True when <see cref="Mappings"/> currently reflects this slot's
+        /// authoritative MappingSet — i.e. <c>RefreshMappingsCore</c> has run
+        /// since the MappingSet was last rebuilt. False during the window
+        /// between a MappingSet rebuild (e.g. a device assignment auto-mapping
+        /// a new pad) and the ViewModel reload that follows it.
+        ///
+        /// <para><b>Why this exists.</b> <c>SaveViewModelToPadSetting</c>
+        /// (syncMappings) persists the per-VC mappings by CLEARING every slot
+        /// device's PadSetting descriptors and rewriting them from
+        /// <see cref="Mappings"/>. That is only lossless when <see cref="Mappings"/>
+        /// is current. During an assignment the dropdown auto-selects the
+        /// just-assigned device, which fires <c>OnSelectedDeviceChanged</c> →
+        /// <c>SaveViewModelToPadSetting</c> a few milliseconds BEFORE
+        /// <c>RefreshMappingsToViewModel</c> reloads <see cref="Mappings"/> from
+        /// the freshly auto-mapped MappingSet. With a stale (empty)
+        /// <see cref="Mappings"/>, the clear+rewrite wiped the new device's
+        /// entire auto-map — the trace showed a DualSense going from 21 mapped
+        /// descriptors to 0 in 2 ms ("assigning my DualSense to the wheel's slot
+        /// only maps the Share button"). When this flag is false, the save skips
+        /// the mapping clobber (the MappingSet is authoritative and already
+        /// current); per-device tuning still saves.</para>
+        /// </summary>
+        public bool MappingsViewLoaded { get; set; }
+
+        /// <summary>
         /// Raised after RebuildMappings completes so listeners (e.g. InputService) can
         /// reload mapping descriptors from the active PadSetting into the new MappingItems.
         /// </summary>
@@ -1001,12 +1037,16 @@ namespace PadForge.ViewModels
             // Touchpad (PlayStation only)
             if (isPlayStation)
             {
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadX1, "TouchpadX1", MappingCategory.Touchpad));
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadY1, "TouchpadY1", MappingCategory.Touchpad));
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadX2, "TouchpadX2", MappingCategory.Touchpad));
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadY2, "TouchpadY2", MappingCategory.Touchpad));
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadContact1, "TouchpadContact1", MappingCategory.Touchpad));
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadContact2, "TouchpadContact2", MappingCategory.Touchpad));
+                // The virtual DualSense / DS4 exposes one touchpad with two
+                // fingers. Labels use the explicit "Touchpad {pad} Finger
+                // {finger}" format (pad 1, fingers 1-2) so the output targets
+                // read the same way as the physical-device picker.
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerX_Format,     1, 1), "TouchpadX1", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerY_Format,     1, 1), "TouchpadY1", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerX_Format,     1, 2), "TouchpadX2", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerY_Format,     1, 2), "TouchpadY2", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerTouch_Format, 1, 1), "TouchpadContact1", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Mapping_TouchpadFingerTouch_Format, 1, 2), "TouchpadContact2", MappingCategory.Touchpad));
                 Mappings.Add(new MappingItem(Strings.Instance.Mapping_TouchpadClick, "TouchpadClick", MappingCategory.Buttons));
 
                 // Motion passthrough — the virtual DualSense / DS4
@@ -1293,6 +1333,72 @@ namespace PadForge.ViewModels
             new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Space_Player, "Player"),
             new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Space_World,  "World"),
         };
+
+        // ── Motion Steering (v3.4 #94) — SETTINGS for the "Motion Lean" input.
+        // Motion Lean is a first-class input descriptor: the user maps it to an
+        // axis from the input dropdown in Mappings, like any gyro input. This
+        // card never targets or overrides an axis — the earlier design (an
+        // Enable + "Steers" target that stamped MotionLeanX over the chosen
+        // stick axis's existing source) replaced one input with another, which
+        // no other PadForge feature does, and was removed for exactly that
+        // reason. What remains is per-(slot, device) tuning: tilt deadzones and
+        // grip orientation, pushed onto the device's Motion Lean sources at
+        // save time (SettingsService.ApplyMotionLeanParamsToRow). ──
+
+        /// <summary>The stick X axes this slot's output exposes, as (label, X target, Y target).
+        /// Per-stick steering (Winding / Angle) resolves its target against this
+        /// one list, so a standard gamepad (Left/Right) and an Extended custom layout (one entry
+        /// per thumbstick, using the same interleaved axis layout the rest of the Extended
+        /// pipeline uses) go through the same code.</summary>
+        public IReadOnlyList<(string Label, string XTarget, string YTarget)> GetSteerableSticks()
+        {
+            var list = new List<(string, string, string)>();
+            if (OutputType == VirtualControllerType.Extended)
+            {
+                ExtendedConfig.ComputeAxisLayout(out var sx, out var sy, out _);
+                for (int g = 0; g < sx.Length && g < sy.Length; g++)
+                {
+                    string label = (g < StickConfigs.Count ? StickConfigs[g].Title : null)
+                        ?? string.Format(Strings.Instance.Extended_Stick_Format, g + 1);
+                    list.Add((label, $"ExtendedAxis{sx[g]}", $"ExtendedAxis{sy[g]}"));
+                }
+            }
+            else
+            {
+                list.Add((Strings.Instance.Btn_LeftStickX,  "LeftThumbAxisX",  "LeftThumbAxisY"));
+                list.Add((Strings.Instance.Btn_RightStickX, "RightThumbAxisX", "RightThumbAxisY"));
+            }
+            return list;
+        }
+
+        private double _motionSteerInnerDz = 15;
+        public double MotionSteerInnerDz { get => _motionSteerInnerDz; set => SetProperty(ref _motionSteerInnerDz, Math.Clamp(value, 0, 179)); }
+        private double _motionSteerOuterDz = 135;
+        public double MotionSteerOuterDz { get => _motionSteerOuterDz; set => SetProperty(ref _motionSteerOuterDz, Math.Clamp(value, 0, 179)); }
+
+        private static readonly string[] MotionSteerOrientValues = { "Forward", "Left", "Right", "Backward" };
+        private int _motionSteerOrientIndex;
+        public int MotionSteerOrientIndex
+        {
+            get => _motionSteerOrientIndex;
+            set { if (SetProperty(ref _motionSteerOrientIndex, Math.Clamp(value, 0, 3))) OnPropertyChanged(nameof(MotionSteerOrient)); }
+        }
+        public string MotionSteerOrient => MotionSteerOrientValues[Math.Clamp(_motionSteerOrientIndex, 0, 3)];
+        public void SetMotionSteerOrient(string o)
+        {
+            int i = System.Array.IndexOf(MotionSteerOrientValues, o ?? "Forward");
+            MotionSteerOrientIndex = i >= 0 ? i : 0;
+        }
+
+        private RelayCommand _resetMotionSteerInnerCommand, _resetMotionSteerOuterCommand,
+            _resetMotionSteerOrientCommand, _resetMotionSteerAllCommand;
+        public RelayCommand ResetMotionSteerInnerCommand => _resetMotionSteerInnerCommand ??= new RelayCommand(() => MotionSteerInnerDz = 15);
+        public RelayCommand ResetMotionSteerOuterCommand => _resetMotionSteerOuterCommand ??= new RelayCommand(() => MotionSteerOuterDz = 135);
+        public RelayCommand ResetMotionSteerOrientCommand => _resetMotionSteerOrientCommand ??= new RelayCommand(() => MotionSteerOrientIndex = 0);
+        public RelayCommand ResetMotionSteerAllCommand => _resetMotionSteerAllCommand ??= new RelayCommand(() =>
+        {
+            MotionSteerInnerDz = 15; MotionSteerOuterDz = 135; MotionSteerOrientIndex = 0;
+        });
 
         private double _gyroPlayerSpaceYawRelaxFactor = 1.41;
         public double GyroPlayerSpaceYawRelaxFactor
@@ -1665,6 +1771,42 @@ namespace PadForge.ViewModels
         private bool _swapMotors;
         public bool SwapMotors { get => _swapMotors; set => SetProperty(ref _swapMotors, value); }
 
+        private int _wheelRotationRange = 900;
+        /// <summary>Native-FFB wheel hardware rotation range (40–1080°). Persisted
+        /// in PadSetting.RotationRange; applied via the vendor HID writer in Step 2.</summary>
+        public int WheelRotationRange { get => _wheelRotationRange; set => SetProperty(ref _wheelRotationRange, Math.Clamp(value, 40, 2520)); }
+
+        private int _wheelAutoCenter;
+        /// <summary>Native-FFB wheel auto-center strength (0–100%; 0 = off).
+        /// Persisted in PadSetting.AutoCenterStrength.</summary>
+        public int WheelAutoCenter { get => _wheelAutoCenter; set => SetProperty(ref _wheelAutoCenter, Math.Clamp(value, 0, 100)); }
+
+        private bool _wheelRpmLeds;
+        /// <summary>Drive the wheel's RPM / shift LEDs from game telemetry (Logitech /
+        /// Fanatec). Persisted in PadSetting.WheelRpmLeds; consumed by Step 2.</summary>
+        public bool WheelRpmLeds { get => _wheelRpmLeds; set => SetProperty(ref _wheelRpmLeds, value); }
+
+        private RelayCommand _resetWheelRotationRangeCommand;
+        public RelayCommand ResetWheelRotationRangeCommand =>
+            _resetWheelRotationRangeCommand ??= new RelayCommand(() => WheelRotationRange = 900);
+
+        private RelayCommand _resetWheelAutoCenterCommand;
+        public RelayCommand ResetWheelAutoCenterCommand =>
+            _resetWheelAutoCenterCommand ??= new RelayCommand(() => WheelAutoCenter = 0);
+
+        private RelayCommand _resetWheelRpmLedsCommand;
+        public RelayCommand ResetWheelRpmLedsCommand =>
+            _resetWheelRpmLedsCommand ??= new RelayCommand(() => WheelRpmLeds = false);
+
+        private RelayCommand _resetWheelAllCommand;
+        public RelayCommand ResetWheelAllCommand =>
+            _resetWheelAllCommand ??= new RelayCommand(() =>
+            {
+                WheelRotationRange = 900;
+                WheelAutoCenter = 0;
+                WheelRpmLeds = false;
+            });
+
         private ICommand _resetForceAllCommand;
         public ICommand ResetForceAllCommand => _resetForceAllCommand ??= new RelayCommand(() =>
         {
@@ -1917,6 +2059,254 @@ namespace PadForge.ViewModels
         private bool _constantForceEnabled;
         public bool ConstantForceEnabled { get => _constantForceEnabled; set => SetProperty(ref _constantForceEnabled, value); }
 
+        // ── Steering at-lock feedback (#94), per slot ──
+        private bool _steeringLockRumbleEnabled;
+        public bool SteeringLockRumbleEnabled { get => _steeringLockRumbleEnabled; set => SetProperty(ref _steeringLockRumbleEnabled, value); }
+        private bool _steeringLockTriggerVibEnabled;
+        public bool SteeringLockTriggerVibEnabled { get => _steeringLockTriggerVibEnabled; set => SetProperty(ref _steeringLockTriggerVibEnabled, value); }
+        private bool _steeringLockLightbarEnabled;
+        public bool SteeringLockLightbarEnabled { get => _steeringLockLightbarEnabled; set => SetProperty(ref _steeringLockLightbarEnabled, value); }
+        private bool _steeringLockAtResistanceEnabled;
+        public bool SteeringLockATResistanceEnabled { get => _steeringLockAtResistanceEnabled; set => SetProperty(ref _steeringLockAtResistanceEnabled, value); }
+        private double _steeringLockPulseMs = 80;
+        public double SteeringLockPulseMs { get => _steeringLockPulseMs; set => SetProperty(ref _steeringLockPulseMs, Math.Clamp(value, 0, 2000)); }
+        private string _steeringLockLightbarColor = "#FF0000";
+        public string SteeringLockLightbarColor
+        {
+            get => _steeringLockLightbarColor;
+            set
+            {
+                if (SetProperty(ref _steeringLockLightbarColor, NormalizeSteeringLockColor(value)))
+                {
+                    OnPropertyChanged(nameof(SteeringLockColorR));
+                    OnPropertyChanged(nameof(SteeringLockColorG));
+                    OnPropertyChanged(nameof(SteeringLockColorB));
+                }
+            }
+        }
+
+        // Canonicalize hex-field input (accepts with/without '#', any case) to "#RRGGBB".
+        // Anything unparseable falls back to red, so the picker, sliders, swatch, and hex
+        // field stay in sync no matter what the user types.
+        private static string NormalizeSteeringLockColor(string value)
+        {
+            string s = (value ?? "").Trim();
+            if (s.StartsWith("#", StringComparison.Ordinal)) s = s.Substring(1);
+            if (s.Length == 6
+                && byte.TryParse(s.Substring(0, 2), System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out byte r)
+                && byte.TryParse(s.Substring(2, 2), System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out byte g)
+                && byte.TryParse(s.Substring(4, 2), System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out byte b))
+                return FormatSteeringLockColor(r, g, b);
+            return "#FF0000";
+        }
+
+        // Lightbar pulse colour exposed as R/G/B bytes for the shared ColorPickerControl,
+        // backed by the persisted hex string above (the engine reads the hex form). Keeps
+        // this colour setting consistent with every other lightbar colour in the app
+        // instead of a raw hex text box. Writes funnel back through the hex setter, so the
+        // existing dirty/save wiring on SteeringLockLightbarColor still fires.
+        public byte SteeringLockColorR { get => ParseSteeringLockColor().r; set { var c = ParseSteeringLockColor(); SteeringLockLightbarColor = FormatSteeringLockColor(value, c.g, c.b); } }
+        public byte SteeringLockColorG { get => ParseSteeringLockColor().g; set { var c = ParseSteeringLockColor(); SteeringLockLightbarColor = FormatSteeringLockColor(c.r, value, c.b); } }
+        public byte SteeringLockColorB { get => ParseSteeringLockColor().b; set { var c = ParseSteeringLockColor(); SteeringLockLightbarColor = FormatSteeringLockColor(c.r, c.g, value); } }
+
+        private (byte r, byte g, byte b) ParseSteeringLockColor()
+        {
+            string s = (_steeringLockLightbarColor ?? "#FF0000").Trim();
+            if (s.StartsWith("#", StringComparison.Ordinal)) s = s.Substring(1);
+            if (s.Length == 6
+                && byte.TryParse(s.Substring(0, 2), System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out byte r)
+                && byte.TryParse(s.Substring(2, 2), System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out byte g)
+                && byte.TryParse(s.Substring(4, 2), System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out byte b))
+                return (r, g, b);
+            return (0xFF, 0x00, 0x00);
+        }
+
+        private static string FormatSteeringLockColor(byte r, byte g, byte b)
+            => string.Format(System.Globalization.CultureInfo.InvariantCulture, "#{0:X2}{1:X2}{2:X2}", r, g, b);
+
+        private double _steeringLockLightbarHoldMs = 80;
+        public double SteeringLockLightbarHoldMs { get => _steeringLockLightbarHoldMs; set => SetProperty(ref _steeringLockLightbarHoldMs, Math.Clamp(value, 0, 2000)); }
+
+        private double _steeringLockLightbarFadeMs = 250;
+        public double SteeringLockLightbarFadeMs { get => _steeringLockLightbarFadeMs; set => SetProperty(ref _steeringLockLightbarFadeMs, Math.Clamp(value, 0, 5000)); }
+
+        // ── Steering-lock lightbar color source + dedicated palette (#94) ──
+        // Mirrors the macro lightbar's three modes (Fixed base color / RandomHue / PaletteStep).
+        // The palette is dedicated to the steering lock — never shared with the Lighting tab or
+        // a macro. Per device, so it swaps with SelectedMappedDevice: the CSV setter rebuilds the
+        // bound collection on every swap.
+        private MacroLightbarColorSource _steeringLockLightbarColorSource = MacroLightbarColorSource.Fixed;
+        public MacroLightbarColorSource SteeringLockLightbarColorSource
+        {
+            get => _steeringLockLightbarColorSource;
+            set
+            {
+                if (SetProperty(ref _steeringLockLightbarColorSource, value))
+                {
+                    OnPropertyChanged(nameof(IsSteeringLockLightbarFixedColorVisible));
+                    OnPropertyChanged(nameof(IsSteeringLockLightbarPaletteVisible));
+                }
+            }
+        }
+
+        /// <summary>Show the fixed-color picker only for the Fixed source.</summary>
+        public bool IsSteeringLockLightbarFixedColorVisible => _steeringLockLightbarColorSource == MacroLightbarColorSource.Fixed;
+        /// <summary>Show the dedicated palette editor only for the PaletteStep source.</summary>
+        public bool IsSteeringLockLightbarPaletteVisible => _steeringLockLightbarColorSource == MacroLightbarColorSource.PaletteStep;
+
+        private string _steeringLockLightbarPaletteCsv = string.Empty;
+        public string SteeringLockLightbarPaletteCsv
+        {
+            get => _steeringLockLightbarPaletteCsv;
+            set
+            {
+                string v = value ?? string.Empty;
+                if (_steeringLockLightbarPaletteCsv == v) return;
+                _steeringLockLightbarPaletteCsv = v;
+                RebuildSteeringLockPaletteFromCsv();   // keep the bound collection in step (device swap)
+                OnPropertyChanged();
+            }
+        }
+
+        private System.Collections.ObjectModel.ObservableCollection<LightbarPaletteEntry> _steeringLockLightbarPalette;
+        private bool _syncingSteeringLockPalette;
+
+        /// <summary>Editable view of the steering-lock palette, bound by the card's ItemsControl.
+        /// Edits write back to <see cref="SteeringLockLightbarPaletteCsv"/>.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public System.Collections.ObjectModel.ObservableCollection<LightbarPaletteEntry> SteeringLockLightbarPalette
+        {
+            get
+            {
+                if (_steeringLockLightbarPalette == null)
+                {
+                    _steeringLockLightbarPalette = new System.Collections.ObjectModel.ObservableCollection<LightbarPaletteEntry>();
+                    _steeringLockLightbarPalette.CollectionChanged += (_, e) =>
+                    {
+                        if (e.NewItems != null)
+                            foreach (LightbarPaletteEntry n in e.NewItems) n.PropertyChanged += OnSteeringLockPaletteEntryChanged;
+                        if (e.OldItems != null)
+                            foreach (LightbarPaletteEntry o in e.OldItems) o.PropertyChanged -= OnSteeringLockPaletteEntryChanged;
+                        SyncSteeringLockPaletteCsv();   // no-op while the guard is set (populate)
+                    };
+                    PopulateSteeringLockPalette(_steeringLockLightbarPaletteCsv);
+                }
+                return _steeringLockLightbarPalette;
+            }
+        }
+
+        // (Re)fills the bound collection from a CSV. Manually unsubscribes before the Clear
+        // (a Reset raises no OldItems), then lets CollectionChanged re-subscribe each Add.
+        // Guarded so neither the clear nor the adds write back over the CSV being loaded.
+        private void PopulateSteeringLockPalette(string csv)
+        {
+            _syncingSteeringLockPalette = true;
+            try
+            {
+                foreach (var e in _steeringLockLightbarPalette) e.PropertyChanged -= OnSteeringLockPaletteEntryChanged;
+                _steeringLockLightbarPalette.Clear();
+                foreach (var (r, g, b) in ParseLightbarPaletteCsv(csv))
+                    _steeringLockLightbarPalette.Add(new LightbarPaletteEntry { R = r, G = g, B = b });
+            }
+            finally { _syncingSteeringLockPalette = false; }
+        }
+
+        private void RebuildSteeringLockPaletteFromCsv()
+        {
+            if (_steeringLockLightbarPalette == null) return; // not materialized; getter builds it
+            PopulateSteeringLockPalette(_steeringLockLightbarPaletteCsv);
+            OnPropertyChanged(nameof(SteeringLockLightbarPalette));
+        }
+
+        private void OnSteeringLockPaletteEntryChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is nameof(LightbarPaletteEntry.R) or nameof(LightbarPaletteEntry.G) or nameof(LightbarPaletteEntry.B))
+                SyncSteeringLockPaletteCsv();
+        }
+
+        private void SyncSteeringLockPaletteCsv()
+        {
+            if (_syncingSteeringLockPalette || _steeringLockLightbarPalette == null) return;
+            var sb = new System.Text.StringBuilder();
+            for (int i = 0; i < _steeringLockLightbarPalette.Count; i++)
+            {
+                if (i > 0) sb.Append(',');
+                var e = _steeringLockLightbarPalette[i];
+                sb.Append($"{e.R:X2}{e.G:X2}{e.B:X2}");
+            }
+            string csv = sb.ToString();
+            if (_steeringLockLightbarPaletteCsv != csv)
+            {
+                _steeringLockLightbarPaletteCsv = csv;   // direct write; the collection is already current
+                OnPropertyChanged(nameof(SteeringLockLightbarPaletteCsv));
+            }
+        }
+
+        private static System.Collections.Generic.IEnumerable<(byte r, byte g, byte b)> ParseLightbarPaletteCsv(string csv)
+        {
+            if (string.IsNullOrWhiteSpace(csv)) yield break;
+            foreach (var raw in csv.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+            {
+                if (raw.Length != 6) continue;
+                if (byte.TryParse(raw.AsSpan(0, 2), System.Globalization.NumberStyles.HexNumber, null, out var r)
+                 && byte.TryParse(raw.AsSpan(2, 2), System.Globalization.NumberStyles.HexNumber, null, out var g)
+                 && byte.TryParse(raw.AsSpan(4, 2), System.Globalization.NumberStyles.HexNumber, null, out var b))
+                    yield return (r, g, b);
+            }
+        }
+
+        private ICommand _addSteeringLockPaletteColorCommand;
+        public ICommand AddSteeringLockPaletteColorCommand => _addSteeringLockPaletteColorCommand ??= new RelayCommand(() =>
+            SteeringLockLightbarPalette.Add(new LightbarPaletteEntry { R = 0xFF, G = 0xFF, B = 0xFF }));
+
+        private ICommand _removeSteeringLockPaletteColorCommand;
+        public ICommand RemoveSteeringLockPaletteColorCommand => _removeSteeringLockPaletteColorCommand ??= new RelayCommand<LightbarPaletteEntry>(entry =>
+        { if (entry != null) SteeringLockLightbarPalette.Remove(entry); });
+
+        // Per-channel colour resets (match the other lightbar pickers); each resets its
+        // channel to the #FF0000 default component, funneling through the hex setter.
+        private ICommand _resetSteeringLockColorRCommand;
+        public ICommand ResetSteeringLockColorRCommand => _resetSteeringLockColorRCommand ??= new RelayCommand(() => SteeringLockColorR = 0xFF);
+        private ICommand _resetSteeringLockColorGCommand;
+        public ICommand ResetSteeringLockColorGCommand => _resetSteeringLockColorGCommand ??= new RelayCommand(() => SteeringLockColorG = 0x00);
+        private ICommand _resetSteeringLockColorBCommand;
+        public ICommand ResetSteeringLockColorBCommand => _resetSteeringLockColorBCommand ??= new RelayCommand(() => SteeringLockColorB = 0x00);
+        private ICommand _resetSteeringLockPulseCommand;
+        public ICommand ResetSteeringLockPulseCommand => _resetSteeringLockPulseCommand ??= new RelayCommand(() => SteeringLockPulseMs = 80);
+        private ICommand _resetSteeringLockLightbarHoldCommand;
+        public ICommand ResetSteeringLockLightbarHoldCommand => _resetSteeringLockLightbarHoldCommand ??= new RelayCommand(() => SteeringLockLightbarHoldMs = 80);
+        private ICommand _resetSteeringLockFadeCommand;
+        public ICommand ResetSteeringLockFadeCommand => _resetSteeringLockFadeCommand ??= new RelayCommand(() => SteeringLockLightbarFadeMs = 250);
+
+        // Per-channel resets (each channel defaults to off), matching the per-row reset
+        // buttons on the sliders so every setting in the card has its own reset.
+        private ICommand _resetSteeringLockRumbleCommand;
+        public ICommand ResetSteeringLockRumbleCommand => _resetSteeringLockRumbleCommand ??= new RelayCommand(() => SteeringLockRumbleEnabled = false);
+        private ICommand _resetSteeringLockTriggerVibCommand;
+        public ICommand ResetSteeringLockTriggerVibCommand => _resetSteeringLockTriggerVibCommand ??= new RelayCommand(() => SteeringLockTriggerVibEnabled = false);
+        private ICommand _resetSteeringLockLightbarCommand;
+        public ICommand ResetSteeringLockLightbarCommand => _resetSteeringLockLightbarCommand ??= new RelayCommand(() => SteeringLockLightbarEnabled = false);
+        private ICommand _resetSteeringLockResistanceCommand;
+        public ICommand ResetSteeringLockResistanceCommand => _resetSteeringLockResistanceCommand ??= new RelayCommand(() => SteeringLockATResistanceEnabled = false);
+
+        // Reset all steering-lock-feedback settings to defaults (every channel off, pulse
+        // 80ms, fade 250ms, colour #FF0000). Each setter fires PropertyChanged, which the
+        // MainWindow handler turns into MarkDirty, so the reset persists like a manual edit.
+        private ICommand _resetSteeringLockAllCommand;
+        public ICommand ResetSteeringLockAllCommand => _resetSteeringLockAllCommand ??= new RelayCommand(() =>
+        {
+            SteeringLockRumbleEnabled = false;
+            SteeringLockTriggerVibEnabled = false;
+            SteeringLockLightbarEnabled = false;
+            SteeringLockATResistanceEnabled = false;
+            SteeringLockPulseMs = 80;
+            SteeringLockLightbarHoldMs = 80;
+            SteeringLockLightbarFadeMs = 250;
+            SteeringLockLightbarColor = "#FF0000";
+            SteeringLockLightbarColorSource = MacroLightbarColorSource.Fixed;
+            SteeringLockLightbarPaletteCsv = string.Empty;
+        });
+
         private double _constantForceX;
         public double ConstantForceX { get => _constantForceX; set => SetProperty(ref _constantForceX, Math.Clamp(value, -1.0, 1.0)); }
 
@@ -1975,7 +2365,9 @@ namespace PadForge.ViewModels
             ConstantForceY = 0;
             // Macros are bound to the slot, not the physical device, so a
             // slot deletion has to drop them. Otherwise the next VC created
-            // at this pad index inherits the deleted slot's macros.
+            // at this pad index inherits the deleted slot's macros. Their
+            // sounds go with them — a looping sound would be unstoppable.
+            PadForge.Common.Input.SoundMacroService.StopSlot(PadIndex);
             Macros.Clear();
 
             // Per-device Lighting tab configs live in this PadViewModel's
@@ -2204,6 +2596,9 @@ namespace PadForge.ViewModels
                 item.PropertyChanged += OnStickConfigPropertyChanged;
                 StickConfigs.Add(item);
             }
+            // Steering isn't in SyncStickItemFromVm, so the fresh items default to mode-off.
+            // Re-load the selected device's steering into them (host wires this).
+            SteeringReloadCallback?.Invoke();
         }
 
         /// <summary>
@@ -2351,6 +2746,44 @@ namespace PadForge.ViewModels
                 SyncTriggerItemFromVm(item);
         }
 
+        /// <summary>Invoked at the end of <see cref="RebuildStickConfigs"/> so the host can
+        /// re-load the selected assigned device's steering into the freshly-rebuilt items
+        /// (rebuild resets steering to defaults and SyncStickItemFromVm doesn't cover it).</summary>
+        public System.Action SteeringReloadCallback { get; set; }
+
+        /// <summary>Loads each stick's steering mode + tunables from the SELECTED assigned
+        /// device's stored values, with the dirty callback suppressed (mirrors the guarded
+        /// deadzone sync). Steering is per assigned device, so this runs on every device
+        /// select and after a rebuild. <paramref name="get"/> resolves a steering key
+        /// (e.g. "Stick0SteerKind") for the selected device. Steering has no flat VM mirror
+        /// property, so it loads straight onto the items.</summary>
+        public void LoadSteeringConfigItems(System.Func<string, string> get)
+        {
+            if (get == null) return;
+            bool prev = _syncingConfigItems;
+            _syncingConfigItems = true;
+            try
+            {
+                foreach (var stick in StickConfigs)
+                {
+                    int g = stick.Index;
+                    if (g < 0) continue;
+                    stick.SetSteeringKind(get($"Stick{g}SteerKind"));
+                    stick.WindRangeDeg = ParseSteerDouble(get($"Stick{g}SteerWindRange"), 900);
+                    stick.WindPower = ParseSteerDouble(get($"Stick{g}SteerWindPower"), 1);
+                    stick.WindUnwindRate = ParseSteerDouble(get($"Stick{g}SteerWindUnwind"), 1800);
+                    stick.AngleInnerDz = ParseSteerDouble(get($"Stick{g}SteerAngleInner"), 0);
+                    stick.AngleOuterDz = ParseSteerDouble(get($"Stick{g}SteerAngleOuter"), 10);
+                    // Motion-lean tuning moved to Motion Steering (loaded separately).
+                }
+            }
+            finally { _syncingConfigItems = prev; }
+        }
+
+        private static double ParseSteerDouble(string s, double dflt)
+            => double.TryParse(s, System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
+
         // Persisted stick-config property names. PropertyChanged on any other
         // property (LiveX/LiveY/RawX/RawY/LiveInputX/LiveInputY/IsCalibrating
         // and computed display siblings) is a per-frame UI update, not a
@@ -2365,6 +2798,11 @@ namespace PadForge.ViewModels
             nameof(StickConfigItem.MaxRangeX), nameof(StickConfigItem.MaxRangeY),
             nameof(StickConfigItem.MaxRangeXNeg), nameof(StickConfigItem.MaxRangeYNeg),
             nameof(StickConfigItem.CenterOffsetX), nameof(StickConfigItem.CenterOffsetY),
+            // Steering (#94) — without these, changing the steering mode / tunables
+            // never marks the profile dirty, so the selection is dropped on save.
+            nameof(StickConfigItem.SteeringModeIndex),
+            nameof(StickConfigItem.WindRangeDeg), nameof(StickConfigItem.WindPower), nameof(StickConfigItem.WindUnwindRate),
+            nameof(StickConfigItem.AngleInnerDz), nameof(StickConfigItem.AngleOuterDz),
         };
 
         private static readonly System.Collections.Generic.HashSet<string> TriggerConfigPropertyNames = new()
@@ -2431,6 +2869,12 @@ namespace PadForge.ViewModels
                     if (isConfigProp) ConfigItemDirtyCallback?.Invoke();
                     break;
             }
+
+            // A steering-mode switch (including Reset all setting it back to Direct) must
+            // re-stamp the engine's MappingSet now, not on the 2s autosave, or the stick
+            // keeps steering after the reset / mode change.
+            if (e.PropertyName == nameof(StickConfigItem.SteeringModeIndex))
+                SteeringModeChangedCallback?.Invoke();
         }
 
         private void OnTriggerConfigPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -2519,6 +2963,202 @@ namespace PadForge.ViewModels
                 }
             }, () => HasSelectedMacro);
 
+        // ═══════════════════════════════════════════════
+        //  Audio tab (issue #83) — per-slot sound output for macro sounds
+        // ═══════════════════════════════════════════════
+
+        /// <summary>True when the SELECTED assigned device has a built-in
+        /// speaker (DualSense / Edge / DualShock 4). The Audio tab is per
+        /// assigned device by convention — this gates the mirror toggle and
+        /// the routing notes.</summary>
+        public bool SelectedDeviceHasSpeaker
+        {
+            get
+            {
+                var sel = SelectedMappedDevice;
+                if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
+                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
+                if (ud == null || ud.VendorId != 0x054C) return false;
+                // DS5 family: audio on both transports. DS4: audio is
+                // Bluetooth-only (wired DS4 exposes no USB audio interface);
+                // Sony's USB wireless adaptor (0x0BA0) tunnels the radio link
+                // and provides real USB audio endpoints.
+                if (ud.ProdId is 0x0CE6 or 0x0DF2 or 0x0BA0) return true;
+                if (ud.ProdId is 0x05C4 or 0x09CC)
+                    return (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
+                return false;
+            }
+        }
+
+        public bool SelectedDeviceHasNoSpeaker => !SelectedDeviceHasSpeaker;
+
+        /// <summary>A render endpoint the mirror can capture; Id "" = the
+        /// system default device.</summary>
+        public sealed class MirrorSourceOption
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
+        }
+
+        public System.Collections.ObjectModel.ObservableCollection<MirrorSourceOption> MirrorSourceOptions { get; } = new();
+
+        private bool _refreshingMirrorSources;
+
+        /// <summary>Repopulates <see cref="MirrorSourceOptions"/> from the
+        /// active render endpoints. Guarded: rebuilding the ItemsSource makes
+        /// WPF write a transient null through SelectedValue (the Aim Engage
+        /// picker documents the same hazard), so config writes are suppressed
+        /// while the list is swapped.</summary>
+        public void RefreshMirrorSources()
+        {
+            _refreshingMirrorSources = true;
+            try
+            {
+                string current = PlayStationConfig?.AudioMirrorSourceId ?? string.Empty;
+                var desired = new System.Collections.Generic.List<MirrorSourceOption>
+                {
+                    new MirrorSourceOption { Id = string.Empty, Name = Strings.Instance.Pad_Audio_SystemDefault },
+                };
+                try
+                {
+                    using var en = new NAudio.CoreAudioApi.MMDeviceEnumerator();
+                    foreach (var dev in en.EnumerateAudioEndPoints(
+                        NAudio.CoreAudioApi.DataFlow.Render, NAudio.CoreAudioApi.DeviceState.Active))
+                    {
+                        using (dev)
+                            desired.Add(new MirrorSourceOption { Id = dev.ID, Name = dev.FriendlyName });
+                    }
+                }
+                catch { }
+                if (!string.IsNullOrEmpty(current)
+                    && !desired.Any(o => o.Id == current))
+                    desired.Add(new MirrorSourceOption { Id = current, Name = Strings.Instance.Pad_Audio_SourceUnavailable });
+
+                // Diff-sync in place — never Clear(). Rebuilding the list
+                // removes the ComboBox's selected item instance, and WPF
+                // clears the selection even when the rebuilt list carries
+                // the same Id; opening and closing the dropdown (which
+                // refreshes via DropDownOpened) blanked the field. Items
+                // whose Id survives keep their instance, so the selection
+                // rides through untouched.
+                for (int i = 0; i < desired.Count; i++)
+                {
+                    int j = -1;
+                    for (int k = i; k < MirrorSourceOptions.Count; k++)
+                        if (MirrorSourceOptions[k].Id == desired[i].Id) { j = k; break; }
+                    if (j < 0) MirrorSourceOptions.Insert(i, desired[i]);
+                    else if (j != i) MirrorSourceOptions.Move(j, i);
+                }
+                while (MirrorSourceOptions.Count > desired.Count)
+                    MirrorSourceOptions.RemoveAt(MirrorSourceOptions.Count - 1);
+
+                OnPropertyChanged(nameof(SelectedMirrorSourceId));
+            }
+            finally { _refreshingMirrorSources = false; }
+        }
+
+        /// <summary>ComboBox-facing proxy over
+        /// PlayStationConfig.AudioMirrorSourceId that ignores the transient
+        /// null write-back during ItemsSource rebuilds.</summary>
+        public string SelectedMirrorSourceId
+        {
+            get => PlayStationConfig?.AudioMirrorSourceId ?? string.Empty;
+            set
+            {
+                if (_refreshingMirrorSources || value == null) return;
+                if (PlayStationConfig == null) return;
+                if (PlayStationConfig.AudioMirrorSourceId == value) return;
+                PlayStationConfig.AudioMirrorSourceId = value;
+                OnPropertyChanged(nameof(SelectedMirrorSourceId));
+            }
+        }
+
+        private int _soundMasterVolume = 100;
+        /// <summary>Per-pad master volume for macro sounds (0-100),
+        /// multiplied with each action's own volume. Live sounds retune.</summary>
+        public int SoundMasterVolume
+        {
+            get => _soundMasterVolume;
+            set
+            {
+                int v = Math.Clamp(value, 0, 100);
+                if (SetProperty(ref _soundMasterVolume, v))
+                {
+                    PadForge.Common.Input.SoundMacroService.SetSlotVolume(PadIndex, v);
+                    PadForge.Common.Input.UserEffectsDispatcher.NotifySoundRoutingChanged(PadIndex);
+                    // Persisted in AppSettings.SlotSoundVolumes; without the
+                    // dirty mark a volume-only change skips the close-time
+                    // save (OnClosing gates on IsDirty).
+                    ConfigItemDirtyCallback?.Invoke();
+                }
+            }
+        }
+
+        /// <summary>This pad's macros that play a sound — the Audio tab's
+        /// quick list. Re-derived on Audio-tab entry.</summary>
+        public System.Collections.Generic.List<MacroItem> SoundMacros =>
+            Macros.Where(m => m.Actions.Any(a => a.Type == MacroActionType.PlaySound)).ToList();
+
+        public bool HasNoSoundMacros => SoundMacros.Count == 0;
+
+        private RelayCommand _soundTestCommand;
+        public RelayCommand SoundTestCommand =>
+            _soundTestCommand ??= new RelayCommand(
+                () => PadForge.Common.Input.SoundMacroService.PlayTestBeep(PadIndex, SelectedMappedDevice?.InstanceGuid ?? Guid.Empty),
+                () => HasSelectedDevice);
+
+        private RelayCommand _soundStopAllCommand;
+        public RelayCommand SoundStopAllCommand =>
+            _soundStopAllCommand ??= new RelayCommand(
+                () => PadForge.Common.Input.SoundMacroService.StopSlot(PadIndex));
+
+        private RelayCommand _resetSoundMasterVolumeCommand;
+        public RelayCommand ResetSoundMasterVolumeCommand =>
+            _resetSoundMasterVolumeCommand ??= new RelayCommand(() => SoundMasterVolume = 100);
+
+        private RelayCommand _resetSoundOutputAllCommand;
+        /// <summary>Resets the Sound Output card for the selected device:
+        /// mirror off, mirror source back to system default, master volume
+        /// to 100%.</summary>
+        public RelayCommand ResetSoundOutputAllCommand =>
+            _resetSoundOutputAllCommand ??= new RelayCommand(() =>
+            {
+                SoundMasterVolume = 100;
+                if (PlayStationConfig != null)
+                {
+                    PlayStationConfig.AudioPassthroughEnabled = false;
+                    SelectedMirrorSourceId = string.Empty;
+                }
+            });
+
+        private RelayCommand _addSoundMacroCommand;
+        /// <summary>Creates a macro pre-loaded with a Play Sound action and
+        /// jumps to the Macros tab to finish it (trigger + file) — the
+        /// "best of both worlds" flow: the Audio tab is the hub, the Macros
+        /// tab is the editor.</summary>
+        public RelayCommand AddSoundMacroCommand =>
+            _addSoundMacroCommand ??= new RelayCommand(() =>
+            {
+                var macro = new MacroItem
+                {
+                    PadIndex = PadIndex,
+                    Name = string.Format(Strings.Instance.Pad_Audio_SoundMacroName_Format, Macros.Count + 1),
+                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType)
+                };
+                macro.Actions.Add(new MacroAction { Type = MacroActionType.PlaySound });
+                Macros.Add(macro);
+                SelectedMacro = macro;
+                SelectedConfigTab = 1; // Macros tab
+            });
+
+        /// <summary>Jump to the Macros tab with the clicked sound macro selected.</summary>
+        public void OpenSoundMacro(MacroItem macro)
+        {
+            if (macro == null) return;
+            SelectedMacro = macro;
+            SelectedConfigTab = 1;
+        }
+
         /// <summary>
         /// Syncs macro button display style to all macros when the output
         /// controller type changes.
@@ -2548,8 +3188,24 @@ namespace PadForge.ViewModels
         public int SelectedConfigTab
         {
             get => _selectedConfigTab;
-            set => SetProperty(ref _selectedConfigTab, value);
+            set
+            {
+                if (SetProperty(ref _selectedConfigTab, value) && value == AudioTabIndex)
+                {
+                    // Entering the Audio tab: re-derive the sound-macro list,
+                    // the selected device's speaker capability, and the
+                    // mirror-source endpoint list.
+                    OnPropertyChanged(nameof(SoundMacros));
+                    OnPropertyChanged(nameof(HasNoSoundMacros));
+                    OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
+                    OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
+                    RefreshMirrorSources();
+                }
+            }
         }
+
+        /// <summary>Tab-strip index of the Audio tab (issue #83).</summary>
+        public const int AudioTabIndex = 12;
 
         // ═══════════════════════════════════════════════
         //  Commands
@@ -3378,6 +4034,7 @@ namespace PadForge.ViewModels
         public void RefreshCommands()
         {
             _testRumbleCommand?.NotifyCanExecuteChanged();
+            _soundTestCommand?.NotifyCanExecuteChanged();
             _testLeftImpulseTriggerCommand?.NotifyCanExecuteChanged();
             _testRightImpulseTriggerCommand?.NotifyCanExecuteChanged();
             _removeMacroCommand?.NotifyCanExecuteChanged();

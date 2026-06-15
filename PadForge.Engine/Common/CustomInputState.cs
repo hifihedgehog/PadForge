@@ -5,7 +5,11 @@ namespace PadForge.Engine
     /// <summary>
     /// API-agnostic snapshot of a device's complete input state at a single point in time.
     /// All values use unsigned conventions:
-    ///   Axes/Sliders: 0–65535  (center = 32767)
+    ///   Stick axes:   0–65535  (center = 32768; the producer emits (ushort)(raw - short.MinValue),
+    ///                 so a centered raw 0 yields 32768 — see SdlDeviceWrapper. Any receiver doing
+    ///                 neutral/deadzone math must use 32768, not the 32767 arithmetic midpoint.)
+    ///   Trigger axes: 0–65535  (0-based: 0 = released, 65535 = full; not centered)
+    ///   Sliders:      0–65535
     ///   POVs:         centidegrees 0–35900, or -1 for centered
     ///   Buttons:      true = pressed, false = released
     ///
@@ -90,6 +94,13 @@ namespace PadForge.Engine
         /// </summary>
         public TouchpadInputState[] Touchpads;
 
+        /// <summary>
+        /// Full MIDI input namespace (all 128 notes + 128 CCs + pitch bend),
+        /// channel-merged. Null when the device is not a MIDI input. Same
+        /// lazily-allocated, nullable cost model as <see cref="Touchpads"/>.
+        /// </summary>
+        public MidiInputState Midi;
+
         /// <summary>Battery percentage from SDL3 (0..100, or -1 if unknown).
         /// Refreshed periodically by SdlDeviceWrapper, not every frame.</summary>
         public int BatteryPercent;
@@ -140,6 +151,7 @@ namespace PadForge.Engine
                 for (int i = 0; i < Touchpads.Length; i++)
                     clone.Touchpads[i] = Touchpads[i]?.Clone();
             }
+            clone.Midi = Midi?.Clone();
             clone.BatteryPercent = BatteryPercent;
             clone.BatteryCharging = BatteryCharging;
             return clone;

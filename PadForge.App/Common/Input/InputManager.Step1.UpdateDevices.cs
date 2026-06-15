@@ -315,6 +315,9 @@ namespace PadForge.Common.Input
                 changed = true;
             }
 
+            // --- Phase 1e: MIDI input endpoints (issue #128) ---
+            changed |= UpdateMidiInputDevices();
+
             // --- Phase 2: Detect disconnected SDL devices (debounced) ---
             //
             // Signals that indicate the device might be gone:
@@ -344,7 +347,25 @@ namespace PadForge.Common.Input
                 UserDevice ud = FindOnlineDeviceBySdlInstanceId(sdlId);
                 if (ud == null)
                 {
-                    // UserDevice itself is gone — no handle to preserve.
+                    // Not found ONLINE. Two cases:
+                    //  - Step 2 already flipped the device offline (its
+                    //    GetCurrentState returned null when SDL reported the
+                    //    handle detached). The UserDevice still holds the dead
+                    //    SDL handle and none of the disconnect cleanup has run.
+                    //    Without this, MarkDeviceOffline became unreachable for
+                    //    real SDL unplugs the moment the detached-read guard
+                    //    shipped: the handle leaked, the wheel-replug writer
+                    //    resets never ran, and the per-slot output
+                    //    neutralization never happened. Finish the disconnect
+                    //    here — detachment is permanent for a handle, so no
+                    //    debounce applies.
+                    //  - The UserDevice itself is gone — nothing to clean.
+                    var offlineUd = FindDeviceBySdlInstanceIdAnyState(sdlId);
+                    if (offlineUd != null && offlineUd.Device != null)
+                    {
+                        MarkDeviceOffline(offlineUd);
+                        changed = true;
+                    }
                     disconnectedIds.Add(sdlId);
                     _sdlDisconnectCandidateSince.Remove(sdlId);
                     continue;
@@ -434,6 +455,30 @@ namespace PadForge.Common.Input
                 {
                     var d = devices[i];
                     if (d.IsOnline && d.Device != null && d.Device.SdlInstanceId == sdlInstanceId)
+                        return d;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Like <see cref="FindOnlineDeviceBySdlInstanceId"/> but without the
+        /// IsOnline filter. Used by the disconnect sweep to finish cleanup for
+        /// a device Step 2 already flipped offline (detached-handle read): the
+        /// UserDevice still holds the dead SDL wrapper that MarkDeviceOffline
+        /// must dispose.
+        /// </summary>
+        private UserDevice FindDeviceBySdlInstanceIdAnyState(uint sdlInstanceId)
+        {
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices == null) return null;
+
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                for (int i = 0; i < devices.Count; i++)
+                {
+                    var d = devices[i];
+                    if (d.Device != null && d.Device.SdlInstanceId == sdlInstanceId)
                         return d;
                 }
                 return null;
@@ -540,7 +585,45 @@ namespace PadForge.Common.Input
                 catch { /* best effort */ }
             }
 
+            // Clear native-wheel per-device state so a same-path replug re-applies the
+            // rotation range + auto-center disable (the wheel firmware power-cycles to its
+            // default centering spring on unplug) and the FFB state machines re-arm instead
+            // of refreshing/updating a slot the firmware reset to empty.
+            if (!string.IsNullOrEmpty(ud.DevicePath))
+            {
+                _appliedWheelSettings.TryRemove(ud.DevicePath, out _);
+                _appliedLeds.TryRemove(ud.DevicePath, out _);
+                _appliedWheelFfb.TryRemove(ud.DevicePath, out _);
+                LogitechRawHidWriter.ResetDevice(ud.DevicePath);
+                ThrustmasterRawHidWriter.ResetDevice(ud.DevicePath);
+                RawHidOutput.ResetDevice(ud.DevicePath);
+            }
+
             ud.ClearRuntimeState();
+
+            // Neutralize the device's per-slot mapped outputs. Step 3 skips
+            // offline devices and "keeps the last OutputState" (a guard against
+            // transient read glitches), so whatever was stamped on the final
+            // frames before this confirmed disconnect would otherwise persist
+            // for as long as the slot stays active: a detached pedal's
+            // recentered read (inverted trigger -> ~32767 = 50% engaged), or a
+            // button/pedal the user was holding at unplug. Step 4 copies
+            // OutputState into the slot's combined output and the per-device
+            // Triggers/Sticks preview reads RawMappedState, so both must go
+            // neutral (Gamepad default: triggers released, sticks centered).
+            var allSettings = SettingsManager.UserSettings;
+            if (allSettings != null)
+            {
+                lock (allSettings.SyncRoot)
+                {
+                    foreach (var us in allSettings.Items)
+                    {
+                        if (us == null || us.InstanceGuid != ud.InstanceGuid) continue;
+                        us.OutputState = default;
+                        us.RawMappedState = default;
+                    }
+                }
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -657,6 +740,149 @@ namespace PadForge.Common.Input
                 finally
                 {
                     wrapper?.Dispose();
+                }
+            }
+
+            return changed;
+        }
+
+        // MIDI input endpoints (Phase 1e, issue #128). The WinRT device
+        // query runs on a background task; the polling thread consumes the
+        // latest cached snapshot, mirroring the Raw Input keyboard/mouse
+        // enumeration above.
+        private readonly Dictionary<string, MidiInputDevice> _openedMidiInputs =
+            new Dictionary<string, MidiInputDevice>(StringComparer.OrdinalIgnoreCase);
+        private readonly object _midiInputsLock = new object();
+        private volatile List<(string Id, string Name)> _cachedMidiEndpoints;
+        private volatile bool _midiEnumRunning;
+        private volatile bool _midiInputsSuppressed;
+
+        /// <summary>
+        /// Tears down every open MIDI input connection and the shared input
+        /// session, and suppresses Phase 1e until app restart. Called before
+        /// uninstalling Windows MIDI Services so no in-process runtime
+        /// objects are alive during the uninstall.
+        /// </summary>
+        public void ShutdownMidiInputs()
+        {
+            _midiInputsSuppressed = true;
+            _cachedMidiEndpoints = null;
+            lock (_midiInputsLock)
+            {
+                foreach (var kvp in _openedMidiInputs)
+                {
+                    var ud = FindOnlineDeviceByInstanceGuid(kvp.Value.InstanceGuid);
+                    if (ud != null)
+                    {
+                        ud.IsOnline = false;
+                        ud.Device = null;
+                    }
+                    kvp.Value.Dispose();
+                }
+                _openedMidiInputs.Clear();
+            }
+            MidiInputRuntime.Shutdown();
+        }
+
+        /// <summary>
+        /// Phase 1e: registers MIDI input endpoints as input devices and
+        /// marks vanished ones offline. PadForge's own MIDI virtual
+        /// controller endpoints are deliberately included — assigning one
+        /// as an input to another slot is the no-hardware loopback path.
+        /// </summary>
+        private bool UpdateMidiInputDevices()
+        {
+            if (_midiInputsSuppressed)
+                return false;
+
+            if (!_midiEnumRunning)
+            {
+                _midiEnumRunning = true;
+                Task.Run(() =>
+                {
+                    try { _cachedMidiEndpoints = MidiInputRuntime.EnumerateEndpoints(); }
+                    catch { }
+                    finally { _midiEnumRunning = false; }
+                });
+            }
+
+            var endpoints = _cachedMidiEndpoints;
+            if (endpoints == null)
+                return false;
+
+            bool changed = false;
+            var current = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            // The lock guards against ShutdownMidiInputs (UI thread, MIDI
+            // services uninstall) racing this polling-thread sweep.
+            lock (_midiInputsLock)
+            {
+                // Re-check under the lock: ShutdownMidiInputs may have set
+                // the flag (and disposed the session) between the unlocked
+                // check above and acquiring the lock. Without this, a stale
+                // endpoint snapshot would dev.Open() and lazily recreate the
+                // MidiSession that uninstall is about to remove.
+                if (_midiInputsSuppressed)
+                    return false;
+
+                foreach (var (id, name) in endpoints)
+                {
+                    current.Add(id);
+
+                    if (_openedMidiInputs.TryGetValue(id, out var existing))
+                    {
+                        // If the user removed this device from the Devices page,
+                        // the connection is still tracked but the UserDevice is
+                        // gone. Reset tracking so it gets recreated. (Same
+                        // pattern as the PTP phase above.)
+                        if (FindOnlineDeviceByInstanceGuid(existing.InstanceGuid) != null)
+                            continue;
+                        existing.Dispose();
+                        _openedMidiInputs.Remove(id);
+                    }
+
+                    try
+                    {
+                        var dev = new MidiInputDevice(id, name);
+                        if (!dev.Open())
+                        {
+                            dev.Dispose();
+                            continue;
+                        }
+
+                        UserDevice ud = FindOrCreateUserDevice(dev.InstanceGuid, dev.ProductGuid);
+                        ud.LoadFromExternalDevice(dev);
+                        ud.IsOnline = true;
+                        _openedMidiInputs[id] = dev;
+                        changed = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        RaiseError($"Error opening MIDI endpoint '{name}'", ex);
+                    }
+                }
+
+                // Endpoints that vanished since the last snapshot.
+                List<string> gone = null;
+                foreach (var kvp in _openedMidiInputs)
+                    if (!current.Contains(kvp.Key))
+                        (gone ??= new List<string>()).Add(kvp.Key);
+
+                if (gone != null)
+                {
+                    foreach (var id in gone)
+                    {
+                        var dev = _openedMidiInputs[id];
+                        var ud = FindOnlineDeviceByInstanceGuid(dev.InstanceGuid);
+                        if (ud != null)
+                        {
+                            ud.IsOnline = false;
+                            ud.Device = null;
+                        }
+                        dev.Dispose();
+                        _openedMidiInputs.Remove(id);
+                        changed = true;
+                    }
                 }
             }
 
@@ -783,6 +1009,90 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
+        /// Registers a remote peer's device (issue #138) into the device list.
+        /// Called by LinkServer when a paired peer exposes a device. Same shape as
+        /// RegisterExternalDevice but uses the generic LoadFromExternalDevice, since
+        /// a RemotePeerDevice is just another ISdlInputDevice. Disconnect reuses
+        /// UnregisterExternalDevice(Guid) below.
+        /// </summary>
+        public void RegisterPeerDevice(PadForge.Engine.RemoteLink.RemotePeerDevice device)
+        {
+            if (device == null) return;
+
+            UserDevice ud = FindOrCreateUserDevice(device.InstanceGuid, device.ProductGuid);
+            ud.LoadFromExternalDevice(device);
+            ud.IsOnline = true;
+
+            DevicesUpdated?.Invoke(this, EventArgs.Empty);
+        }
+
+        // ── Gamepad-only restriction (issue #138) ───────────────────────────
+        // A peer paired with the "gamepad only" option may drive gamepad output
+        // but never keyboard/mouse/scroll — neither via a KBM virtual controller
+        // nor via a macro. The set holds the InstanceGuids of restricted peer
+        // devices; the SendInput chokepoints consult IsSlotRestricted.
+        private readonly HashSet<Guid> _restrictedDevices = new();
+        private readonly object _restrictedLock = new();
+
+        /// <summary>Mark (or clear) a device as gamepad-only restricted.</summary>
+        public void SetDeviceRestricted(Guid instanceGuid, bool restricted)
+        {
+            lock (_restrictedLock)
+            {
+                if (restricted) _restrictedDevices.Add(instanceGuid);
+                else _restrictedDevices.Remove(instanceGuid);
+            }
+        }
+
+        /// <summary>Snapshot of restricted device GUIDs, or null when none (early-out).</summary>
+        private Guid[] RestrictedSnapshot()
+        {
+            lock (_restrictedLock)
+            {
+                if (_restrictedDevices.Count == 0) return null;
+                var a = new Guid[_restrictedDevices.Count];
+                _restrictedDevices.CopyTo(a);
+                return a;
+            }
+        }
+
+        /// <summary>True if any of these macros is triggered by a restricted device,
+        /// even when it lives on a slot the restricted device isn't mapped to.</summary>
+        internal bool AnyMacroTriggerRestricted(PadForge.ViewModels.MacroItem[] macros)
+        {
+            if (macros == null) return false;
+            var restricted = RestrictedSnapshot();
+            if (restricted == null) return false;
+            foreach (var m in macros)
+            {
+                if (m == null) continue;
+                if (Array.IndexOf(restricted, m.TriggerDeviceGuid) >= 0) return true;
+                var entries = m.GetTriggerInputEntries();
+                if (entries != null)
+                    foreach (var e in entries)
+                        if (Array.IndexOf(restricted, e.DeviceGuid) >= 0) return true;
+            }
+            return false;
+        }
+
+        /// <summary>True if any online restricted device is a source for this slot.
+        /// Free when no peer is restricted (the common case early-outs).</summary>
+        internal bool IsSlotRestricted(int slot)
+        {
+            Guid[] restricted = RestrictedSnapshot();
+            if (restricted == null) return false;
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return false;
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                    if (us.MapTo == slot && Array.IndexOf(restricted, us.InstanceGuid) >= 0)
+                        return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Marks an external device as offline when its connection is lost.
         /// Called by WebControllerServer when a browser client disconnects.
         /// </summary>
@@ -791,6 +1101,14 @@ namespace PadForge.Common.Input
             var devices = SettingsManager.UserDevices;
             if (devices == null) return;
 
+            // Resolve under the devices lock, but mark offline OUTSIDE it.
+            // MarkDeviceOffline takes the UserSettings lock to neutralize the
+            // device's per-slot outputs; holding UserDevices while acquiring
+            // UserSettings here (a ThreadPool websocket-disconnect thread)
+            // would form an ABBA pair with the UI-thread sites that nest the
+            // same locks Settings-first. The lock only guards the scan; the
+            // marking itself needs no collection lock.
+            UserDevice target = null;
             lock (devices.SyncRoot)
             {
                 for (int i = 0; i < devices.Items.Count; i++)
@@ -798,11 +1116,14 @@ namespace PadForge.Common.Input
                     var d = devices.Items[i];
                     if (d.IsOnline && d.InstanceGuid == instanceGuid)
                     {
-                        MarkDeviceOffline(d);
+                        target = d;
                         break;
                     }
                 }
             }
+
+            if (target != null)
+                MarkDeviceOffline(target);
 
             DevicesUpdated?.Invoke(this, EventArgs.Empty);
         }

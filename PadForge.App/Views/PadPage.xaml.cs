@@ -543,6 +543,40 @@ namespace PadForge.Views
             }
         }
 
+        /// <summary>The config TabControl uses a header-less template, so WPF's
+        /// built-in Ctrl+Tab handling in <c>TabControl.OnKeyDown</c> throws
+        /// "Value cannot be null (container)" out of <c>IndexFromContainer</c>
+        /// (discussion #140). Catch Ctrl+Tab here in the tunneling PreviewKeyDown,
+        /// before that bubbling handler runs, swallow it, and cycle the visible
+        /// tab strip ourselves instead.</summary>
+        private void ConfigTabControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Tab || (Keyboard.Modifiers & ModifierKeys.Control) == 0)
+                return;
+            e.Handled = true;
+            try { CycleConfigTab((Keyboard.Modifiers & ModifierKeys.Shift) != 0); }
+            catch { /* tab navigation must never crash the app */ }
+        }
+
+        /// <summary>Move to the next (or previous) visible config tab, wrapping.
+        /// Cycles the visible tab-strip RadioButtons so it matches the tabs shown
+        /// for this controller type / device. Setting <c>SelectedConfigTab</c>
+        /// updates the content and, via PropertyChanged, the strip highlight.</summary>
+        private void CycleConfigTab(bool backward)
+        {
+            if (DataContext is not PadViewModel vm) return;
+            var tags = new List<int>();
+            foreach (var rb in FindVisualChildren<RadioButton>(this))
+                if (rb.GroupName == "PadTab" && rb.IsVisible && rb.IsEnabled && TryGetTagIndex(rb, out int idx))
+                    tags.Add(idx);
+            if (tags.Count == 0) return;
+            int cur = tags.IndexOf(vm.SelectedConfigTab);
+            int next = cur < 0
+                ? 0
+                : (((cur + (backward ? -1 : 1)) % tags.Count) + tags.Count) % tags.Count;
+            vm.SelectedConfigTab = tags[next];
+        }
+
         private static bool TryGetTagIndex(FrameworkElement el, out int index)
         {
             if (el.Tag is int i) { index = i; return true; }

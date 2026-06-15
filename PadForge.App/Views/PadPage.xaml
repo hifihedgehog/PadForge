@@ -579,6 +579,7 @@
              Tabs: Controller | Mappings | Left Stick | Right Stick | Triggers | Force Feedback | Macros
              ═══════════════════════════════════════════ -->
         <TabControl Grid.Row="2"
+                    PreviewKeyDown="ConfigTabControl_PreviewKeyDown"
                     SelectedIndex="{Binding SelectedConfigTab, Mode=TwoWay}">
             <TabControl.Template>
                 <ControlTemplate TargetType="TabControl">

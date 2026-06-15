@@ -131,6 +131,14 @@ namespace PadForge.Common.Input
             /// (created and used only on the BT thread).</summary>
             public IOpusEncoder Ds5OpusEncoder;
 
+            /// <summary>Per-sink DS5 BT audio sequence tag (report byte 1 high
+            /// nibble) and 0x11-header rolling packet counter. These were global,
+            /// so a second DualSense made each firmware see a sequence jumping by
+            /// two and drop/garble the audio. One counter pair per pad keeps every
+            /// stream monotonic (BT thread only).</summary>
+            public int Ds5Seq;
+            public byte Ds5PktCounter;
+
             /// <summary>BT idle-gate state (BT thread only).</summary>
             public bool BtStreaming;
 
@@ -1270,8 +1278,6 @@ namespace PadForge.Common.Input
         private const int Ds5OpusFrameSamples = 480;   // Opus frame samples per channel
         private const int Ds5OpusBytes = 200;          // hard-CBR frame size (160 kbps)
         private const int Ds5BtReportSize = 334;       // report 0x35 wire size
-        private static byte _ds5PktCounter;            // 0x11 header rolling counter
-        private static int _ds5Seq;                    // report seq tag (byte 1 high nibble)
 
         // DualShock 4 BT audio: SBC frames over output report 0x17
         // (462 bytes, 4 frames). Layout per DS4AudioStreamer
@@ -1513,14 +1519,14 @@ namespace PadForge.Common.Input
 
             Array.Clear(report, 0, report.Length);
             report[0] = 0x35;
-            report[1] = (byte)((_ds5Seq & 0x0F) << 4);
-            _ds5Seq = (_ds5Seq + 1) & 0x0F;
+            report[1] = (byte)((s.Ds5Seq & 0x0F) << 4);
+            s.Ds5Seq = (s.Ds5Seq + 1) & 0x0F;
             // packet 0x11: session header (SAxense default — no handshake)
             report[2] = 0x11 | 0x80;
             report[3] = 7;
             report[4] = 0xFE;
             report[9] = 0xFF;
-            report[10] = _ds5PktCounter++;
+            report[10] = s.Ds5PktCounter++;
             // packet 0x13: speaker audio lane (0x16 = headset jack), one
             // Opus frame filling the slot
             report[11] = 0x13 | 0x80;

@@ -1706,7 +1706,7 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>모든 사운드 중지</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>이 패드의 모든 매크로 사운드를 중지</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>사운드 매크로</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>사운드는 매크로가 재생합니다: 트리거(누름, 뎆, 유지, 수식) + "사운드 재생" 동작. 여기서나 매크로 탭에서 만드세요 — 지연, 반복, 토글 모두 지원됩니다.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>사운드는 매크로가 재생합니다: 트리거(누름, 뎆, 유지, 수식) + "사운드 재생" 동작. 여기서나 매크로 탭에서 만드세요. 지연, 반복, 토글 모두 지원됩니다.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>새 사운드 매크로</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>아직 사운드 매크로가 없습니다. 하나 만들고 사운드 파일과 트리거를 선택하세요.</value></data>
   <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>이 매크로를 매크로 탭에서 열기</value></data>
@@ -1800,7 +1800,7 @@
     <value>신원 정보가 이 드라이브에 담겨 이동하며, 어떤 PC에서든 비밀번호로 잠금이 해제됩니다. 드라이브를 잃어버려도 비밀번호가 없으면 쓸모가 없습니다.</value>
   </data>
   <data name="RemoteLink_IdentityHintPortableOpen" xml:space="preserve">
-    <value>신원 정보가 별도 확인 없이 이 드라이브에 담겨 이동합니다. 드라이브를 가진 사람은 누구나 사용할 수 있으니 — 안전하게 보관하세요.</value>
+    <value>신원 정보가 별도 확인 없이 이 드라이브에 담겨 이동합니다. 드라이브를 가진 사람은 누구나 사용할 수 있으니 안전하게 보관하세요.</value>
   </data>
   <data name="RemoteLink_IdentityHintSecure" xml:space="preserve">
     <value>이 PC에 고정됩니다(이 PC의 모든 Windows 계정에서 작동). 다른 컴퓨터로 옮길 수 없습니다.</value>

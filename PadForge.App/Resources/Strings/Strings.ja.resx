@@ -1800,7 +1800,7 @@
     <value>ご自身の ID はこのドライブに入って持ち運ばれ、どの PC でもパスワードで解除されます。ドライブを紛失しても、パスワードがなければ役に立ちません。</value>
   </data>
   <data name="RemoteLink_IdentityHintPortableOpen" xml:space="preserve">
-    <value>ご自身の ID は確認なしでこのドライブに入って持ち運ばれます。ドライブを持っている人は誰でも使用できます — 大切に保管してください。</value>
+    <value>ご自身の ID は確認なしでこのドライブに入って持ち運ばれます。ドライブを持っている人は誰でも使用できます。大切に保管してください。</value>
   </data>
   <data name="RemoteLink_IdentityHintSecure" xml:space="preserve">
     <value>この PC に固定されます（PC 上のすべての Windows アカウントで使えます）。別のマシンには移動できません。</value>

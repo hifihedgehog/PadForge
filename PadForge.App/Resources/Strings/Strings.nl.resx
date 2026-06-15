@@ -1712,9 +1712,9 @@
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Lightbar-vasthouden resetten</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macrogeluiden en gespiegelde systeemaudio spelen via de ingebouwde speaker van de geselecteerde controller, via USB of Bluetooth. Kies het apparaat in de lijst hierboven — alles hier volgt het.</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macrogeluiden en gespiegelde systeemaudio spelen via de ingebouwde speaker van de geselecteerde controller, via USB of Bluetooth. Kies het apparaat in de lijst hierboven. Alles hier volgt het.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Geluidsuitvoer</value></data>
-  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Geluiden gaan automatisch naar de geselecteerde controller. Via USB wordt het audio-eindpunt van de pad gematcht op hardwarecontainer; via Bluetooth wordt de audio in Sony-HID-frames gestreamd.</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Geluiden gaan automatisch naar de geselecteerde controller. Via USB wordt het audio-eindpunt van de pad gematcht op hardwarecontainer. Via Bluetooth wordt de audio in Sony-HID-frames gestreamd.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Spiegelbron</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Welk afspeelapparaat naar de luidspreker van de controller wordt gespiegeld. Games die bepaalde geluiden naar een apart afspeelapparaat sturen, kunnen dit apparaat gebruiken.</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Systeemstandaard</value></data>
@@ -1726,7 +1726,7 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Alle geluiden stoppen</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Alle macrogeluiden van deze pad stoppen</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Geluidsmacro’s</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Geluiden worden afgespeeld door macro’s: een trigger (indrukken, loslaten, vasthouden of formule) plus een "Geluid afspelen"-actie. Maak ze hier of op het tabblad Macro’s — vertragingen, herhalingen en schakelaars werken allemaal.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Geluiden worden afgespeeld door macro’s: een trigger (indrukken, loslaten, vasthouden of formule) plus een "Geluid afspelen"-actie. Maak ze hier of op het tabblad Macro’s. Vertragingen, herhalingen en schakelaars werken allemaal.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Nieuwe geluidsmacro</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Nog geen geluidsmacro’s. Maak er een en kies een geluidsbestand en trigger.</value></data>
   <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Deze macro openen op het tabblad Macro’s</value></data>
@@ -1742,7 +1742,7 @@
   <data name="Macro_Sound_Preview" xml:space="preserve"><value>Voorbeeld</value></data>
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loopen tot stop</value></data>
-  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Herhaal het geluid tot een "Geluiden stoppen"-actie draait — of, bij vasthouden/loslaten-macro’s, tot de trigger wordt losgelaten</value></data>
+  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Herhaal het geluid tot een "Geluiden stoppen"-actie draait, of bij vasthouden/loslaten-macro’s, tot de trigger wordt losgelaten</value></data>
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Systeemaudio spiegelen naar de controllerspeaker</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Speelt alles wat de standaarduitvoer afspeelt parallel af op de ingebouwde speaker van deze controller. Werkt via USB en Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Het geselecteerde apparaat heeft geen ingebouwde speaker. Macrogeluiden van deze pad spelen op de standaarduitvoer.</value></data>
@@ -1820,7 +1820,7 @@
     <value>Je identiteit reist mee op dit station en wordt op elke pc met je wachtwoord ontgrendeld. Een verloren station is zonder wachtwoord nutteloos.</value>
   </data>
   <data name="RemoteLink_IdentityHintPortableOpen" xml:space="preserve">
-    <value>Je identiteit reist mee op dit station zonder enige vraag. Iedereen die het station heeft, kan het gebruiken — bewaar het veilig.</value>
+    <value>Je identiteit reist mee op dit station zonder enige vraag. Iedereen die het station heeft, kan het gebruiken. Bewaar het veilig.</value>
   </data>
   <data name="RemoteLink_IdentityHintSecure" xml:space="preserve">
     <value>Gekoppeld aan deze pc (werkt voor elk Windows-account erop). Kan niet naar een andere machine worden verplaatst.</value>

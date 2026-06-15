@@ -1694,7 +1694,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Los sonidos de macro y el audio duplicado se reproducen por el altavoz integrado del mando seleccionado, por USB o Bluetooth. Elige el dispositivo en el desplegable de arriba: todo lo de aquí lo sigue.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Salida de sonido</value></data>
-  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Los sonidos se dirigen automáticamente al mando seleccionado. Por USB, el punto de audio del mando se asocia por contenedor de hardware; por Bluetooth, el audio se transmite en tramas HID de Sony.</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Los sonidos se dirigen automáticamente al mando seleccionado. Por USB, el punto de audio del mando se asocia por contenedor de hardware. Por Bluetooth, el audio se transmite en tramas HID de Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Fuente de duplicado</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Qué dispositivo de reproducción se duplica al altavoz del mando. Los juegos que envían sonidos específicos a un dispositivo de reproducción aparte pueden usar este.</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Predeterminado del sistema</value></data>
@@ -1706,7 +1706,7 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Detener todos los sonidos</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Detener todos los sonidos de macro de este mando</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Macros de sonido</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Los sonidos los reproducen las macros: un disparador (pulsar, soltar, mantener o fórmula) más una acción "Reproducir sonido". Créalas aquí o en la pestaña Macros — retardos, repeticiones y alternancias funcionan.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Los sonidos los reproducen las macros: un disparador (pulsar, soltar, mantener o fórmula) más una acción "Reproducir sonido". Créalas aquí o en la pestaña Macros. Retardos, repeticiones y alternancias funcionan.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Nueva macro de sonido</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Aún no hay macros de sonido. Crea una y elige archivo de sonido y disparador.</value></data>
   <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Abrir esta macro en la pestaña Macros</value></data>
@@ -1722,7 +1722,7 @@
   <data name="Macro_Sound_Preview" xml:space="preserve"><value>Vista previa</value></data>
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volumen</value></data>
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Bucle hasta detener</value></data>
-  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Repetir el sonido hasta que se ejecute una acción "Detener sonidos" — o, en macros de mantener/soltar, hasta soltar el disparador</value></data>
+  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Repetir el sonido hasta que se ejecute una acción "Detener sonidos", o en macros de mantener/soltar, hasta soltar el disparador</value></data>
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Duplicar el audio del sistema al altavoz del mando</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copia en paralelo lo que reproduce la salida predeterminada del sistema al altavoz integrado de este mando. Funciona por USB y Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>El dispositivo seleccionado no tiene altavoz integrado. Los sonidos de macro de este mando se reproducen en la salida predeterminada.</value></data>
@@ -1800,7 +1800,7 @@
     <value>Su identidad viaja en esta unidad y se desbloquea con su contraseña en cualquier PC. Una unidad perdida no sirve de nada sin ella.</value>
   </data>
   <data name="RemoteLink_IdentityHintPortableOpen" xml:space="preserve">
-    <value>Su identidad viaja en esta unidad sin ninguna solicitud. Cualquiera que tenga la unidad puede usarla — guárdela en un lugar seguro.</value>
+    <value>Su identidad viaja en esta unidad sin ninguna solicitud. Cualquiera que tenga la unidad puede usarla. Guárdela en un lugar seguro.</value>
   </data>
   <data name="RemoteLink_IdentityHintSecure" xml:space="preserve">
     <value>Vinculada a este PC (funciona para todas las cuentas de Windows del equipo). No se puede mover a otra máquina.</value>

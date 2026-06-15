@@ -1692,9 +1692,9 @@
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Réinitialiser le maintien de la barre lumineuse</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Les sons de macro et l’audio dupliqué jouent par le haut-parleur intégré de la manette sélectionnée, en USB ou Bluetooth. Choisissez le périphérique dans la liste au-dessus — tout ici le suit.</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Les sons de macro et l’audio dupliqué jouent par le haut-parleur intégré de la manette sélectionnée, en USB ou Bluetooth. Choisissez le périphérique dans la liste au-dessus. Tout ici le suit.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sortie audio</value></data>
-  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Les sons sont dirigés automatiquement vers la manette sélectionnée. En USB, le point de sortie audio est associé par conteneur matériel ; en Bluetooth, l’audio est transmis en trames HID Sony.</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Les sons sont dirigés automatiquement vers la manette sélectionnée. En USB, le point de sortie audio est associé par conteneur matériel. En Bluetooth, l’audio est transmis en trames HID Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Source du miroir</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Périphérique de lecture à refléter vers le haut-parleur de la manette. Les jeux qui envoient certains sons vers un périphérique de lecture distinct peuvent cibler celui-ci.</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Par défaut du système</value></data>
@@ -1706,7 +1706,7 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Arrêter tous les sons</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Arrêter tous les sons de macro de cette manette</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Macros sonores</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Les sons sont joués par des macros : un déclencheur (appui, relâchement, maintien ou formule) plus une action "Jouer un son". Créez-les ici ou dans l’onglet Macros — délais, répétitions et bascules fonctionnent.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Les sons sont joués par des macros : un déclencheur (appui, relâchement, maintien ou formule) plus une action "Jouer un son". Créez-les ici ou dans l’onglet Macros. Délais, répétitions et bascules fonctionnent.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Nouvelle macro sonore</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Pas encore de macro sonore. Créez-en une et choisissez un fichier audio et un déclencheur.</value></data>
   <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Ouvrir cette macro dans l’onglet Macros</value></data>
@@ -1722,7 +1722,7 @@
   <data name="Macro_Sound_Preview" xml:space="preserve"><value>Aperçu</value></data>
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Boucler jusqu’à l’arrêt</value></data>
-  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Répéter le son jusqu’à une action "Arrêter les sons" — ou, pour les macros maintien/relâchement, jusqu’au relâchement du déclencheur</value></data>
+  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Répéter le son jusqu’à une action "Arrêter les sons", ou pour les macros maintien/relâchement, jusqu’au relâchement du déclencheur</value></data>
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Dupliquer l’audio système sur le haut-parleur de la manette</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copie en parallèle ce que joue la sortie par défaut du système sur le haut-parleur intégré de cette manette. Fonctionne en USB et en Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Le périphérique sélectionné n’a pas de haut-parleur intégré. Les sons de macro de cette manette jouent sur la sortie par défaut.</value></data>
@@ -1800,7 +1800,7 @@
     <value>Votre identité voyage sur ce lecteur et se déverrouille avec votre mot de passe sur n'importe quel PC. Un lecteur perdu est inutile sans lui.</value>
   </data>
   <data name="RemoteLink_IdentityHintPortableOpen" xml:space="preserve">
-    <value>Votre identité voyage sur ce lecteur sans aucune invite. Quiconque détient le lecteur peut l'utiliser — gardez-le en lieu sûr.</value>
+    <value>Votre identité voyage sur ce lecteur sans aucune invite. Quiconque détient le lecteur peut l'utiliser. Gardez-le en lieu sûr.</value>
   </data>
   <data name="RemoteLink_IdentityHintSecure" xml:space="preserve">
     <value>Liée à ce PC (fonctionne pour tous les comptes Windows de celui-ci). Impossible de la déplacer vers une autre machine.</value>

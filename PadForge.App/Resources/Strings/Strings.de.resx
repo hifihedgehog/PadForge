@@ -1692,9 +1692,9 @@
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Lightbar-Haltedauer zurücksetzen</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makro-Sounds und gespiegeltes Systemaudio laufen über den eingebauten Lautsprecher des ausgewählten Controllers, per USB oder Bluetooth. Wähle das Gerät im Dropdown darüber — alle Einstellungen hier folgen ihm.</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makro-Sounds und gespiegeltes Systemaudio laufen über den eingebauten Lautsprecher des ausgewählten Controllers, per USB oder Bluetooth. Wähle das Gerät im Dropdown darüber. Alle Einstellungen hier folgen ihm.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Soundausgabe</value></data>
-  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Sounds werden automatisch zum ausgewählten Controller geleitet. Über USB wird das Audio-Endpunkt des Pads per Hardware-Container zugeordnet; über Bluetooth wird das Audio in Sony-HID-Frames gestreamt.</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Sounds werden automatisch zum ausgewählten Controller geleitet. Über USB wird das Audio-Endpunkt des Pads per Hardware-Container zugeordnet. Über Bluetooth wird das Audio in Sony-HID-Frames gestreamt.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Spiegelquelle</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Welches Wiedergabegerät auf den Controller-Lautsprecher gespiegelt wird. Spiele, die bestimmte Sounds an ein separates Wiedergabegerät senden, können dieses Gerät ansteuern.</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Systemstandard</value></data>
@@ -1706,7 +1706,7 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Alle Sounds stoppen</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Alle Makro-Sounds dieses Pads stoppen</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Sound-Makros</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Sounds werden von Makros abgespielt: ein Auslöser (Taste drücken, loslassen, halten oder Formel) plus eine "Sound abspielen"-Aktion. Erstelle sie hier oder im Makros-Tab — Verzögerungen, Wiederholungen und Umschalter funktionieren alle.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Sounds werden von Makros abgespielt: ein Auslöser (Taste drücken, loslassen, halten oder Formel) plus eine "Sound abspielen"-Aktion. Erstelle sie hier oder im Makros-Tab. Verzögerungen, Wiederholungen und Umschalter funktionieren alle.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Neues Sound-Makro</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Noch keine Sound-Makros. Erstelle eines und wähle Sounddatei und Auslöser.</value></data>
   <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Dieses Makro im Makros-Tab öffnen</value></data>
@@ -1722,7 +1722,7 @@
   <data name="Macro_Sound_Preview" xml:space="preserve"><value>Vorschau</value></data>
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Lautstärke</value></data>
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loopen bis gestoppt</value></data>
-  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Sound wiederholen, bis eine "Sounds stoppen"-Aktion läuft — oder bei Halten/Loslassen-Makros bis der Auslöser losgelassen wird</value></data>
+  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Sound wiederholen, bis eine "Sounds stoppen"-Aktion läuft, oder bei Halten/Loslassen-Makros bis der Auslöser losgelassen wird</value></data>
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Systemaudio auf den Controller-Lautsprecher spiegeln</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Gibt alles, was das Standard-Ausgabegerät spielt, parallel über den eingebauten Lautsprecher dieses Controllers aus. Funktioniert über USB und Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Das ausgewählte Gerät hat keinen eingebauten Lautsprecher. Makro-Sounds dieses Pads laufen über die Standard-Ausgabe.</value></data>
@@ -1800,7 +1800,7 @@
     <value>Ihre Identität reist auf diesem Laufwerk mit und wird mit Ihrem Passwort auf jedem PC entsperrt. Ein verlorenes Laufwerk ist ohne das Passwort nutzlos.</value>
   </data>
   <data name="RemoteLink_IdentityHintPortableOpen" xml:space="preserve">
-    <value>Ihre Identität reist auf diesem Laufwerk mit, ohne Abfrage. Jeder, der das Laufwerk besitzt, kann sie nutzen — bewahren Sie es sicher auf.</value>
+    <value>Ihre Identität reist auf diesem Laufwerk mit, ohne Abfrage. Jeder, der das Laufwerk besitzt, kann sie nutzen. Bewahren Sie es sicher auf.</value>
   </data>
   <data name="RemoteLink_IdentityHintSecure" xml:space="preserve">
     <value>An diesen PC gebunden (funktioniert für jedes Windows-Konto darauf). Kann nicht auf einen anderen Rechner übertragen werden.</value>

@@ -113,7 +113,7 @@ Two sim racers on two wheels at once. A flight stick plus throttle plus rudder p
 
 ### The controller is on the other PC. The game doesn't care.
 
-Remote Link shares devices between two PadForge instances on your network. A controller, wheel, or HOTAS plugged into one PC shows up in the other's PadForge as an ordinary mapping source, takes a slot, and drives a virtual controller the game reads as real hardware. It runs both directions at once, and the feedback comes home: rumble, force feedback, adaptive triggers, lightbar, player LEDs, and the controller speaker all play on the physical device wherever it lives. Pair once by matching a six-digit code on both screens, then trusted PCs reconnect on their own the moment they see each other. A gamepad-only switch keeps a paired PC from ever reaching your keyboard, mouse, or macros.
+Remote Link shares devices between two PadForge instances on your network. A controller, wheel, or HOTAS plugged into one PC shows up in the other's PadForge as an ordinary mapping source, takes a slot, and drives a virtual controller the game reads as real hardware. It runs both directions at once, and the feedback comes home: rumble, force feedback, adaptive triggers, lightbar, player LEDs, and the controller speaker all play on the physical device wherever it lives. Pair once by matching a six-digit code on both screens, then trusted PCs reconnect on their own the moment they see each other. A gamepad-only switch keeps a paired PC from ever reaching your keyboard, mouse, or macros. It finds PCs on your home network on its own, and reaches across the internet when both PCs share a VPN like ZeroTier.
 
 ![Remote Link](screenshots/remote-link.jpg)
 
@@ -301,7 +301,6 @@ Language (10 locales, live-switch with no restart). Theme (System / Light / Dark
 - PadForge runs elevated so it can install and manage the HIDMaestro driver. Non-elevated games still read the virtual controllers normally.
 - HidHide's device hiding is global per user account, not per-game.
 - MIDI input and the MIDI virtual controller both need Windows MIDI Services (Windows 11 24H2 / build 26100 or later). On older systems neither appears.
-- Remote Link shares devices between PCs on the same local network.
 
 ---
 

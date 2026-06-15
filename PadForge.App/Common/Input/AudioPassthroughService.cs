@@ -583,7 +583,7 @@ namespace PadForge.Common.Input
         /// the slot has eligible speaker pads whose sinks aren't live yet —
         /// the caller should drop the sound (not leak it to the PC speakers);
         /// the worker is signalled and the next trigger lands on the pad.</summary>
-        public static List<MixingSampleProvider> GetSlotSinkMixers(int slot, out bool pendingActivation)
+        public static List<MixingSampleProvider> GetSlotSinkMixers(int slot, out bool pendingActivation, Guid? deviceFilter = null)
         {
             bool anyEligible = false;
             foreach (var (_, ud) in EnumerateAssignedSonyPads(slot))
@@ -610,7 +610,8 @@ namespace PadForge.Common.Input
                 // worker builds (and keeps) its sinks from now on.
                 _macroDemand.Add(slot);
                 live = _sinks.Values
-                    .Where(s => s.Slot == slot && SinkAlive(s))
+                    .Where(s => s.Slot == slot && SinkAlive(s)
+                                && (deviceFilter == null || s.DeviceGuid == deviceFilter.Value))
                     .Select(s => s.MacroMixer)
                     .ToList();
             }

@@ -174,8 +174,11 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Short generated beep (880 Hz, 200 ms) for the Audio tab's
-        /// Test button — verifies the slot's audio route with no file.</summary>
-        public static void PlayTestBeep(int slot)
+        /// Test button. Plays a short beep through ONLY the assigned device
+        /// selected in the Audio tab (every tab right of the assigned-devices
+        /// list is per-device), or nowhere when that device has no live speaker
+        /// sink. It never fans out to the slot's other pads.</summary>
+        public static void PlayTestBeep(int slot, Guid deviceGuid)
         {
             if ((uint)slot >= MaxPads) return;
             StartPlacements(slot, macroKey: null, filePath: null, actionVolume: 1f, loop: false,
@@ -185,10 +188,11 @@ namespace PadForge.Common.Input
                     {
                         Type = SignalGeneratorType.Sin,
                         Frequency = 880,
-                        Gain = 1.0, // full scale — the Test button demos max loudness
+                        Gain = 1.0, // full scale so the Test button demos max loudness
                     };
                     return new OffsetSampleProvider(gen) { Take = TimeSpan.FromMilliseconds(200) };
-                });
+                },
+                deviceFilter: deviceGuid);
         }
 
         /// <summary>Stops every loop the given macro started on the slot
@@ -248,7 +252,7 @@ namespace PadForge.Common.Input
         }
 
         private static void StartPlacements(int slot, object macroKey, string filePath,
-            float actionVolume, bool loop, Func<ISampleProvider> makeInput)
+            float actionVolume, bool loop, Func<ISampleProvider> makeInput, Guid? deviceFilter = null)
         {
             try
             {
@@ -258,13 +262,17 @@ namespace PadForge.Common.Input
                 // the worker is still opening the pad's transport — drop the
                 // sound rather than leak it to the PC speakers; the next
                 // trigger lands on the pad.
-                var targets = AudioPassthroughService.GetSlotSinkMixers(slot, out bool pendingActivation);
+                var targets = AudioPassthroughService.GetSlotSinkMixers(slot, out bool pendingActivation, deviceFilter);
 
                 lock (_lock)
                 {
                     bool onController = targets.Count > 0;
                     if (!onController)
                     {
+                        // Device-scoped play (the Audio-tab test signal targets only the
+                        // selected device): play on that device or nowhere, never on the
+                        // PC speakers.
+                        if (deviceFilter != null) return;
                         if (pendingActivation || _controllerRouted[slot]) return;
                         var o = EnsureDefaultOutput_NoLock(slot);
                         if (o?.Mixer == null) return;

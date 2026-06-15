@@ -1937,4 +1937,10 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>Pair {0} connecté, {1} périphérique(s)</value>
   </data>
+  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
+    <value>Choisissez un son dans un paquet ajouté, ou parcourez un fichier.</value>
+  </data>
+  <data name="Macro_Sound_BrowseFiles" xml:space="preserve">
+    <value>Parcourir les fichiers…</value>
+  </data>
 </root>

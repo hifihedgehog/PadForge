@@ -591,12 +591,51 @@ namespace PadForge.Views
         private void MirrorSource_DropDownOpened(object sender, EventArgs e)
             => _currentPadVm?.RefreshMirrorSources();
 
-        /// <summary>Browse for a sound file on the Play Sound action card.
-        /// The button's DataContext is the MacroAction being edited.</summary>
+        /// <summary>Choose a sound for the Play Sound action card. When packages
+        /// are added, the sounds inside them are offered directly — a filesystem
+        /// browse is only needed for a package or loose file that hasn't been
+        /// added yet (issue #83). The button's DataContext is the MacroAction.</summary>
         private void BrowseSoundFile_Click(object sender, RoutedEventArgs e)
         {
             if ((sender as FrameworkElement)?.DataContext is not PadForge.ViewModels.MacroAction action)
                 return;
+
+            var packages = PadForge.Common.SoundPackageManager.Packages;
+            if (packages.Count > 0)
+            {
+                var items = new System.Collections.Generic.List<PickSoundDialog.Item>();
+                foreach (var p in packages)
+                    foreach (var entry in PadForge.Common.SoundPackageManager.ListSounds(p.Name))
+                        items.Add(new PickSoundDialog.Item(
+                            $"{System.IO.Path.GetFileName(entry)}  —  {p.Name}",
+                            PadForge.Common.SoundPackageManager.MakeRef(p.Name, entry)));
+
+                if (items.Count > 0)
+                {
+                    var picker = new PickSoundDialog(
+                        PadForge.Resources.Strings.Strings.Instance.Macro_Sound_Pick_Description,
+                        items, allowBrowse: true, preselectValue: action.SoundFilePath)
+                    { Owner = Window.GetWindow(this) };
+                    if (picker.ShowDialog() != true) return;
+                    if (!picker.BrowseRequested)
+                    {
+                        if (!string.IsNullOrEmpty(picker.SelectedSound))
+                            action.SoundFilePath = picker.SelectedSound;
+                        return;
+                    }
+                    // "Browse files…" — fall through to the filesystem dialog.
+                }
+            }
+
+            BrowseSoundFileFromDisk(action);
+        }
+
+        /// <summary>Filesystem browse for a loose sound file or a <c>.pfsounds</c>
+        /// package. Picking a package registers it and offers its sounds; the
+        /// action then stores <c>pfsound://Package/entry</c> so a shared profile
+        /// resolves on any machine that carries the package file.</summary>
+        private void BrowseSoundFileFromDisk(PadForge.ViewModels.MacroAction action)
+        {
             var dlg = new Microsoft.Win32.OpenFileDialog
             {
                 Title = PadForge.Resources.Strings.Strings.Instance.Macro_Sound_File_Label,
@@ -613,10 +652,6 @@ namespace PadForge.Views
             catch { }
             if (dlg.ShowDialog() != true) return;
 
-            // Picking a .pfsounds package registers it and offers its
-            // sounds; the action then stores pfsound://Package/entry so a
-            // shared profile resolves on any machine that carries the
-            // package file (registered automatically on import).
             if (dlg.FileName.EndsWith(PadForge.Common.SoundPackageManager.FileExtension,
                     StringComparison.OrdinalIgnoreCase))
             {

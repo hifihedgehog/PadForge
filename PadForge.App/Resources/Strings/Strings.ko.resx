@@ -1937,4 +1937,10 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>{0} 연결됨, 장치 {1}개</value>
   </data>
+  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
+    <value>추가된 패키지에서 사운드를 선택하거나 파일을 찾아보세요.</value>
+  </data>
+  <data name="Macro_Sound_BrowseFiles" xml:space="preserve">
+    <value>파일 찾아보기…</value>
+  </data>
 </root>

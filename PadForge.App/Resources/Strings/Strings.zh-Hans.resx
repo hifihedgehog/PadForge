@@ -1937,4 +1937,10 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>电脑 {0} 已连接，{1} 个设备</value>
   </data>
+  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
+    <value>从已添加的音效包中选择声音，或浏览文件。</value>
+  </data>
+  <data name="Macro_Sound_BrowseFiles" xml:space="preserve">
+    <value>浏览文件…</value>
+  </data>
 </root>

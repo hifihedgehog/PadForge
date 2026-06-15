@@ -93,7 +93,7 @@ The DualSense and DualShock 4 have a speaker built into the pad, and PadForge ca
 
 ### Turn the DualSense pad into a mouse, a stick, or a D-pad.
 
-A Touchpad tab on every slot whose source carries a touchpad surface (DualSense, DualSense Edge, DS4, Web Controller, on-screen Touchpad Overlay, Windows Precision Touchpad). Map a finger to mouse X/Y with per-axis sensitivity and invert. Anchor a virtual analog stick where your finger lands. Drop a wedge-thresholded D-pad on top. The gesture stack covers 4-way and 8-way swipes, taps, longpress, pinch, rotate, three- to five-finger gestures, and shape templates (Circle, Square, Triangle, Z, Checkmark — Circle binds clockwise and counter-clockwise separately). Every toggle saves per slot.
+A Touchpad tab on every slot whose source carries a touchpad surface (DualSense, DualSense Edge, DS4, Web Controller, on-screen Touchpad Overlay, Windows Precision Touchpad). Map a finger to mouse X/Y with per-axis sensitivity and invert. Anchor a virtual analog stick where your finger lands. Drop a wedge-thresholded D-pad on top. The gesture stack covers 4-way and 8-way swipes, taps, longpress, pinch, rotate, two- to five-finger gestures, and shape templates (Square, Triangle, Z, Checkmark, and Circle in either direction). Every toggle saves per slot.
 
 ![Touchpad tab](screenshots/touchpad.jpg)
 
@@ -187,7 +187,7 @@ Comparison reflects each tool's shipping release at the time of this README. Ver
 
 1. Download `PadForge.exe` from the [latest release](https://github.com/hifihedgehog/PadForge/releases/latest).
 2. Run it. PadForge always runs elevated, so Windows shows the UAC prompt at startup. The first launch installs HIDMaestro inside that same elevated session.
-3. Click **Add Controller** on the Dashboard. Pick Xbox, PlayStation, Extended, MIDI, or Keyboard+Mouse.
+3. Click **Add Controller** on the Dashboard. Pick Xbox, PlayStation, Extended, MIDI, or Keyboard + Mouse.
 4. On the new slot, drag a physical device onto it from the sidebar.
 5. Most controllers auto-map on assign. For the rest, click **Map All** to walk every button in one pass, or use the **Mappings** tab to bind one at a time.
 6. Launch your game. The game sees the virtual controller as real hardware.
@@ -232,7 +232,7 @@ Native force feedback for Logitech, Fanatec, and Thrustmaster wheels: constant f
 
 ### DualSense Adaptive Triggers
 ![Adaptive Triggers](screenshots/adaptive-triggers.jpg)
-Seven trigger effect modes. Off, Feedback, Weapon, Vibration, Multi-Position Feedback, Slope, Multi-Position Vibration. A live preview draws the resistance and amplitude curve while you drag Range, Strength, and Frequency. One-click GameCube preset loads parameters that mimic the click of a real GameCube trigger.
+Seven trigger effect modes. Off, Feedback, Weapon, Vibration, Multi-Position Feedback, Slope Feedback, Multi-Position Vibration. A live preview draws the resistance and amplitude curve while you drag Range, Strength, and Frequency. One-click GameCube preset loads parameters that mimic the click of a real GameCube trigger.
 
 ### DualSense lightbar
 ![Lighting](screenshots/lighting.jpg)
@@ -244,11 +244,11 @@ Controller speaker output for the DualSense and DualShock 4. Pick a Windows audi
 
 ### Touchpad
 ![Touchpad](screenshots/touchpad.jpg)
-Per-slot touchpad tuning on any source with a touchpad surface (DualSense, DualSense Edge, DS4, Web Controller, on-screen Touchpad Overlay, Windows Precision Touchpad). Five cards: Stick / D-Pad Output (anchor-relative virtual stick + wedge D-pad), Mouse Output (per-axis sensitivity and invert), Gesture Detection (master enable + cooldown), In-Box Gestures (swipes, taps, longpress, pinch, rotate, three- to five-finger, shape templates), Custom Gestures (recorded shape templates per profile).
+Per-slot touchpad tuning on any source with a touchpad surface (DualSense, DualSense Edge, DS4, Web Controller, on-screen Touchpad Overlay, Windows Precision Touchpad). Five cards: Stick / D-Pad Output (anchor-relative virtual stick + wedge D-pad), Mouse Output (per-axis sensitivity and invert), Gesture Detection (master enable + cooldown), In-Box Gestures (swipes, taps, longpress, pinch, rotate, two- to five-finger, shape templates), Custom Gestures (recorded shape templates per profile).
 
 ### Macros
 ![Macros](screenshots/macros.jpg)
-Combo triggers from buttons, axes, and POV directions. Action sequences with key presses, mouse moves, scroll, delays, system volume, app volume, lightbar overrides, and rumble overrides. Four fire modes (on press, on release, while held, always).
+Combo triggers from buttons, axes, and POV directions. Action sequences with key presses, mouse moves, scroll, delays, system volume, app volume, lightbar overrides, and rumble overrides. Five fire modes (on press, on release, while held, always, custom formula).
 
 ### Per-app profiles
 ![Profiles](screenshots/profiles.jpg)
@@ -288,7 +288,7 @@ Connect a phone or tablet over Wi-Fi. Browser shows an Xbox 360 layout, a DualSh
 
 ### Remote Link
 ![Remote Link](screenshots/remote-link.jpg)
-Pair your PCs and share their controllers every way. A wheel on one drives a game on another, with rumble, force feedback, adaptive triggers, lightbar, and speaker audio returning to the physical pad. Pair each pair once with a six-digit code. Trusted PCs reconnect on their own.
+Pair your PCs and share their controllers every way. A wheel on one drives a game on another, with rumble, force feedback, adaptive triggers, lightbar, player LEDs, and speaker audio returning to the physical pad. Pair each pair once with a six-digit code. Trusted PCs reconnect on their own.
 
 ### Settings
 ![Settings](screenshots/settings.jpg)

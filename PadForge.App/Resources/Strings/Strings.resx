@@ -227,7 +227,7 @@
   <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Share controllers with a paired PadForge on another PC over your network.</value></data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>Enable Remote Link server</value></data>
   <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>After a one-time pairing, a trusted PC reconnects automatically. A paired PC can drive this one's gamepad output, and unless you limit it, its keyboard, mouse, and macros too.</value></data>
-  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Or connect by address (advanced)</value></data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Or Connect by Address (Advanced)</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>Pair / Connect</value></data>
   <data name="Dashboard_RemoteLinkNearby" xml:space="preserve"><value>Nearby PCs</value></data>
   <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve"><value>PCs with Remote Link turned on, on the same network, appear here automatically.</value></data>
@@ -1841,7 +1841,7 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>Identity protection</value>
+    <value>Identity Protection</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>How this PC's pairing identity is stored. Choose a portable mode to carry your pairings on a thumb drive between machines.</value>
@@ -1850,7 +1850,7 @@
     <value>Name this PC</value>
   </data>
   <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>Nearby PCs (not paired)</value>
+    <value>Nearby PCs (Not Paired)</value>
   </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Reset</value>

@@ -1758,7 +1758,7 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>Proteção de identidade</value>
+    <value>Proteção de Identidade</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>Como a identidade de pareamento deste PC é armazenada. Escolha um modo portátil para levar seus pareamentos em um pen drive entre máquinas.</value>
@@ -1767,7 +1767,7 @@
     <value>Nome deste PC</value>
   </data>
   <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>PCs próximos (não pareados)</value>
+    <value>PCs Próximos (Não Pareados)</value>
   </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Redefinir</value>
@@ -1857,7 +1857,7 @@
     <value>Remote Link</value>
   </data>
   <data name="Dashboard_RemoteLinkConnect" xml:space="preserve">
-    <value>Ou conecte por endereço (avançado)</value>
+    <value>Ou Conecte por Endereço (Avançado)</value>
   </data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve">
     <value>Parear / Conectar</value>
@@ -1899,7 +1899,7 @@
     <value>Parear</value>
   </data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve">
-    <value>PCs pareados</value>
+    <value>PCs Pareados</value>
   </data>
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve">
     <value>PCs com os quais você pareou para o Remote Link. Revogue um para impedir que ele se conecte. Ele precisaria parear novamente.</value>

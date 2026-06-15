@@ -279,39 +279,47 @@ namespace PadForge.Services
         /// reverts the dropdown if the identity can't be unlocked or the user cancels.</summary>
         private void OnIdentityProtectionModeChangeRequested(int index)
         {
-            var holder = _settingsService?.RemoteLink;
-            if (holder == null) return;
-            var newMode = (PadForge.Engine.RemoteLink.IdentityProtectionMode)(index + 1);
-            int oldIndex = (int)holder.IdentityProtection - 1;
-            if (newMode == holder.IdentityProtection) return;
-
-            // The live key, unlocked. Loads via the current mode (+ session password).
-            var identity = EnsureIdentityUnlocked();
-            if (identity == null)
+            // Defer off the ComboBox's own selection-change. Showing the password
+            // dialog and reverting the selection synchronously from inside the
+            // binding setter leaves the dropdown stuck on the new mode when the
+            // user cancels, since a control mid-SelectionChanged ignores the
+            // revert. Running after the selection settles rolls a cancel back.
+            _dispatcher.BeginInvoke(() =>
             {
-                _mainVm.Settings.SetIdentityProtectionModeSilently(oldIndex);
-                _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusUnlockBeforeChange;
-                return;
-            }
+                var holder = _settingsService?.RemoteLink;
+                if (holder == null) return;
+                var newMode = (PadForge.Engine.RemoteLink.IdentityProtectionMode)(index + 1);
+                int oldIndex = (int)holder.IdentityProtection - 1;
+                if (newMode == holder.IdentityProtection) return;
 
-            string password = null;
-            if (newMode == PadForge.Engine.RemoteLink.IdentityProtectionMode.PortablePassword)
-            {
-                var dlg = new Views.RemoteLinkPasswordDialog(true, Strings.Instance.RemoteLink_PasswordSetPrompt)
-                { Owner = System.Windows.Application.Current?.MainWindow };
-                if (dlg.ShowDialog() != true) { _mainVm.Settings.SetIdentityProtectionModeSilently(oldIndex); return; }
-                password = dlg.Password;
-            }
+                // The live key, unlocked. Loads via the current mode (+ session password).
+                var identity = EnsureIdentityUnlocked();
+                if (identity == null)
+                {
+                    _mainVm.Settings.SetIdentityProtectionModeSilently(oldIndex);
+                    _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusUnlockBeforeChange;
+                    return;
+                }
 
-            byte[] priv = identity.ExportPrivateKey();
-            try { holder.ProtectedPrivateBase64 = IdentityProtector.Protect(priv, newMode, password); }
-            catch { _mainVm.Settings.SetIdentityProtectionModeSilently(oldIndex); return; }
-            finally { PadForge.Engine.RemoteLink.PeerCrypto.Zeroize(priv); }
+                string password = null;
+                if (newMode == PadForge.Engine.RemoteLink.IdentityProtectionMode.PortablePassword)
+                {
+                    var dlg = new Views.RemoteLinkPasswordDialog(true, Strings.Instance.RemoteLink_PasswordSetPrompt)
+                    { Owner = System.Windows.Application.Current?.MainWindow };
+                    if (dlg.ShowDialog() != true) { _mainVm.Settings.SetIdentityProtectionModeSilently(oldIndex); return; }
+                    password = dlg.Password;
+                }
 
-            holder.IdentityProtection = newMode;
-            _remoteLinkSessionPassword = newMode == PadForge.Engine.RemoteLink.IdentityProtectionMode.PortablePassword ? password : null;
-            try { _settingsService?.Save(); } catch { }
-            _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusIdentityUpdated;
+                byte[] priv = identity.ExportPrivateKey();
+                try { holder.ProtectedPrivateBase64 = IdentityProtector.Protect(priv, newMode, password); }
+                catch { _mainVm.Settings.SetIdentityProtectionModeSilently(oldIndex); return; }
+                finally { PadForge.Engine.RemoteLink.PeerCrypto.Zeroize(priv); }
+
+                holder.IdentityProtection = newMode;
+                _remoteLinkSessionPassword = newMode == PadForge.Engine.RemoteLink.IdentityProtectionMode.PortablePassword ? password : null;
+                try { _settingsService?.Save(); } catch { }
+                _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.RemoteLink_StatusIdentityUpdated;
+            });
         }
 
         /// <summary>The live identity, loading it if needed. For password mode without a

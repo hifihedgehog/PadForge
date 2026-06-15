@@ -1965,4 +1965,8 @@
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve">
     <value>Sfoglia file…</value>
   </data>
+  <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
+  <data name="About_NAudioDesc" xml:space="preserve"><value>Acquisizione loopback WASAPI per il mirroring audio del controller e la vibrazione dei grilletti dai bassi. Di Mark Heath. MIT.</value></data>
+  <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Crittografia per l'abbinamento e il trasporto di Remote Link (X25519, Ed25519, ChaCha20-Poly1305). Licenza Bouncy Castle, in stile MIT.</value></data>
 </root>

@@ -1943,4 +1943,8 @@
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve">
     <value>Buscar archivos…</value>
   </data>
+  <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
+  <data name="About_NAudioDesc" xml:space="preserve"><value>Captura WASAPI en bucle para el reflejo de audio del mando y la vibración de gatillos por graves. Por Mark Heath. MIT.</value></data>
+  <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Criptografía para el emparejamiento y el transporte de Remote Link (X25519, Ed25519, ChaCha20-Poly1305). Licencia Bouncy Castle, de estilo MIT.</value></data>
 </root>

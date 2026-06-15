@@ -1957,4 +1957,10 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>Peer {0} verbonden, {1} apparaat/apparaten</value>
   </data>
+  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
+    <value>Kies een geluid uit een toegevoegd pakket of blader naar een bestand.</value>
+  </data>
+  <data name="Macro_Sound_BrowseFiles" xml:space="preserve">
+    <value>Bladeren naar bestanden…</value>
+  </data>
 </root>

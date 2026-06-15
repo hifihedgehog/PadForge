@@ -1951,4 +1951,10 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>Peer {0} connected, {1} device(s)</value>
   </data>
+  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
+    <value>Pick a sound from an added package, or browse for a file.</value>
+  </data>
+  <data name="Macro_Sound_BrowseFiles" xml:space="preserve">
+    <value>Browse files…</value>
+  </data>
 </root>

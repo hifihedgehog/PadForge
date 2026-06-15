@@ -67,6 +67,8 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="{Binding About_DotNet10, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"/>
@@ -160,7 +162,16 @@
                     <TextBlock Grid.Row="18" Grid.Column="1"
                                Text="{Binding About_Ds4AudioDesc, Source={x:Static strings:Strings.Instance}}"
                                Opacity="0.7" Margin="0,6,0,0" TextWrapping="Wrap"/>
-                </Grid>
+
+                    <TextBlock Grid.Row="19" Text="{Binding About_NAudio, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="19" Grid.Column="1"
+                               Text="{Binding About_NAudioDesc, Source={x:Static strings:Strings.Instance}}"
+                               Opacity="0.7" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="20" Text="{Binding About_BouncyCastle, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Grid.Row="20" Grid.Column="1"
+                               Text="{Binding About_BouncyCastleDesc, Source={x:Static strings:Strings.Instance}}"
+                               Opacity="0.7" Margin="0,6,0,0" TextWrapping="Wrap"/>                </Grid>
             </Border>
 
             <!-- License -->

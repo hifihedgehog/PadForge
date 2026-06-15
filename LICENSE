@@ -141,6 +141,31 @@ ds4mac
   parameters, packet layouts, Bluetooth-only audio finding).
   Licensed under MIT License
 
+NAudio
+  https://github.com/naudio/NAudio
+  By Mark Heath and contributors. WASAPI loopback capture for the
+  controller-audio Windows-output mirror and the audio-bass trigger rumble.
+  Licensed under MIT License
+
+Bouncy Castle (bc-csharp)
+  https://github.com/bcgit/bc-csharp
+  Cryptography for Remote Link pairing and transport: X25519 key agreement,
+  Ed25519 signatures, and ChaCha20-Poly1305.
+  Licensed under the Bouncy Castle Licence (an adaptation of the MIT License)
+
+$Q Super-Quick Recognizer
+  https://depts.washington.edu/acelab/proj/dollar/qdollar.html
+  Copyright (c) 2018-2019 Nathan Magrofuoco, Jacob O. Wobbrock,
+  Radu-Daniel Vatavu, Lisa Anthony. The touchpad shape-template matcher is
+  a C# re-derivation of the canonical JavaScript reference.
+  Licensed under the BSD 3-Clause License
+
+GestureSign
+  https://github.com/TransposonY/GestureSign
+  Copyright (c) 2016 TransposonY. The touchpad angular-margin scoring is a
+  C# re-derivation of its PointPatternAnalyzer approach.
+  Licensed under the BSD 3-Clause License
+
 Special Thanks
   TechAntohere (https://github.com/TechAntohere, u/Idkiamaguy645)
   Shared his DualSense Bluetooth findings and testing, and pointed

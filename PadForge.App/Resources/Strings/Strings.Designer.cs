@@ -421,6 +421,10 @@ public class Strings : INotifyPropertyChanged
     public string About_DsTesterDesc => Get("About_DsTesterDesc");
     public string About_Ds4Audio => Get("About_Ds4Audio");
     public string About_Ds4AudioDesc => Get("About_Ds4AudioDesc");
+    public string About_NAudio => Get("About_NAudio");
+    public string About_NAudioDesc => Get("About_NAudioDesc");
+    public string About_BouncyCastle => Get("About_BouncyCastle");
+    public string About_BouncyCastleDesc => Get("About_BouncyCastleDesc");
     public string About_License => Get("About_License");
     public string About_LicenseText => Get("About_LicenseText");
     public string DeviceType_Gamepad => Get("DeviceType_Gamepad");

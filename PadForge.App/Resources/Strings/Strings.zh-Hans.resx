@@ -1719,7 +1719,7 @@
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>还没有声音宏。创建一个并选择声音文件和触发条件。</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>所选设备没有内置扬声器。此手柄的宏声音将在系统默认输出上播放。</value></data>
   <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>在“宏”选项卡中打开此宏</value></data>
-  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>声音会自动路由到所选手柄。USB 下按硬件容器匹配手柄自身的音频端点；蓝牙下音频以 Sony HID 帧流式发送。</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>声音会自动路由到所选手柄。USB 下按硬件容器匹配手柄自身的音频端点。蓝牙下音频以 Sony HID 帧流式发送。</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>声音输出</value></data>
   <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>将主音量重置为 100%</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>声音宏 {0}</value></data>
@@ -1800,7 +1800,7 @@
     <value>你的身份信息随此驱动器一同携带，在任何电脑上用密码解锁。即便驱动器丢失，没有密码也无法使用。</value>
   </data>
   <data name="RemoteLink_IdentityHintPortableOpen" xml:space="preserve">
-    <value>你的身份信息无需任何确认即随此驱动器携带。持有该驱动器的任何人都能使用 — 请妥善保管。</value>
+    <value>你的身份信息无需任何确认即随此驱动器携带。持有该驱动器的任何人都能使用，请妥善保管。</value>
   </data>
   <data name="RemoteLink_IdentityHintSecure" xml:space="preserve">
     <value>锁定到此电脑（对其上的每个 Windows 账户都有效）。无法移动到其他电脑。</value>

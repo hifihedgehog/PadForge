@@ -242,7 +242,7 @@
   <data name="RemoteLink_Identity" xml:space="preserve"><value>Identity</value></data>
   <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>A paired PC can send keyboard, mouse, and macro input to this one unless you limit it to gamepad only.</value></data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>Paired PCs</value></data>
-  <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>PCs you have paired with for Remote Link. Revoke one to stop it connecting; it would have to pair again.</value></data>
+  <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>PCs you have paired with for Remote Link. Revoke one to stop it connecting. It would have to pair again.</value></data>
   <data name="RemoteLink_NoPairedPeers" xml:space="preserve"><value>No paired PCs yet.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Revoke</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Revoke all</value></data>
@@ -1779,9 +1779,9 @@
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Reset Lightbar Hold</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macro sounds and mirrored system audio play through the selected controller’s built-in speaker, over USB or Bluetooth. Pick the device in the dropdown above — every setting here follows it.</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macro sounds and mirrored system audio play through the selected controller’s built-in speaker, over USB or Bluetooth. Pick the device in the dropdown above. Every setting here follows it.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sound Output</value></data>
-  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Sounds route to the selected controller automatically. Over USB the pad’s own audio endpoint is matched by hardware container; over Bluetooth the audio is streamed in Sony HID frames.</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Sounds route to the selected controller automatically. Over USB the pad’s own audio endpoint is matched by hardware container. Over Bluetooth the audio is streamed in Sony HID frames.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Mirror source</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Which playback device to mirror to the controller speaker. Games that send specific sounds to a separate playback device can target this one.</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>System default</value></data>
@@ -1793,7 +1793,7 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Stop all sounds</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Stop every macro sound on this pad</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Sound Macros</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Sounds are played by macros: a trigger (button press, release, hold, or formula) plus a Play Sound action. Build them here or on the Macros tab — delays, repeats, and toggles all work.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Sounds are played by macros: a trigger (button press, release, hold, or formula) plus a Play Sound action. Build them here or on the Macros tab. Delays, repeats, and toggles all work.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>New sound macro</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>No sound macros yet. Create one and pick a sound file and a trigger.</value></data>
   <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Open this macro on the Macros tab</value></data>
@@ -1809,7 +1809,7 @@
   <data name="Macro_Sound_Preview" xml:space="preserve"><value>Preview</value></data>
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loop until stopped</value></data>
-  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Repeat the sound until a Stop Sounds action runs — or, for While Held / Until Released macros, until the trigger is released</value></data>
+  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Repeat the sound until a Stop Sounds action runs, or for While Held / Until Released macros, until the trigger is released</value></data>
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Mirror system audio to the controller speaker</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copies whatever the system default output plays to this controller’s built-in speaker, in parallel. Works over USB and Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>The selected device has no built-in speaker. Macro sounds for this pad play on the system default output.</value></data>
@@ -1883,7 +1883,7 @@
     <value>Your identity travels on this drive and unlocks with your password on any PC. A lost drive is useless without it.</value>
   </data>
   <data name="RemoteLink_IdentityHintPortableOpen" xml:space="preserve">
-    <value>Your identity travels on this drive with no prompt. Anyone holding the drive can use it — keep it safe.</value>
+    <value>Your identity travels on this drive with no prompt. Anyone holding the drive can use it, so keep it safe.</value>
   </data>
   <data name="RemoteLink_IdentityHintSecure" xml:space="preserve">
     <value>Locked to this PC (works for every Windows account on it). Can't be moved to another machine.</value>

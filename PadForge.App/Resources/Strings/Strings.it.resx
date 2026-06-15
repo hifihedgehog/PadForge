@@ -1716,7 +1716,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>I suoni delle macro e l’audio duplicato escono dall’altoparlante integrato del controller selezionato, via USB o Bluetooth. Scegli il dispositivo nel menu sopra: tutto qui lo segue.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Uscita audio</value></data>
-  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>I suoni raggiungono automaticamente il controller selezionato. Via USB l’endpoint audio del pad è associato per contenitore hardware; via Bluetooth l’audio viaggia in frame HID Sony.</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>I suoni raggiungono automaticamente il controller selezionato. Via USB l’endpoint audio del pad è associato per contenitore hardware. Via Bluetooth l’audio viaggia in frame HID Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Sorgente mirroring</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Quale dispositivo di riproduzione viene riprodotto sull'altoparlante del controller. I giochi che inviano suoni specifici a un dispositivo di riproduzione separato possono usare questo.</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Predefinito di sistema</value></data>
@@ -1728,7 +1728,7 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Ferma tutti i suoni</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Ferma tutti i suoni delle macro di questo pad</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Macro sonore</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>I suoni sono riprodotti dalle macro: un trigger (pressione, rilascio, tenuta o formula) più un’azione "Riproduci suono". Creale qui o nella scheda Macro — ritardi, ripetizioni e toggle funzionano.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>I suoni sono riprodotti dalle macro: un trigger (pressione, rilascio, tenuta o formula) più un’azione "Riproduci suono". Creale qui o nella scheda Macro. Ritardi, ripetizioni e toggle funzionano.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Nuova macro sonora</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Nessuna macro sonora. Creane una e scegli file audio e trigger.</value></data>
   <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Apri questa macro nella scheda Macro</value></data>
@@ -1744,7 +1744,7 @@
   <data name="Macro_Sound_Preview" xml:space="preserve"><value>Anteprima</value></data>
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loop fino allo stop</value></data>
-  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Ripete il suono finché non parte un’azione "Ferma i suoni" — o, per le macro tieni/rilascia, finché il trigger non viene rilasciato</value></data>
+  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Ripete il suono finché non parte un’azione "Ferma i suoni", o per le macro tieni/rilascia, finché il trigger non viene rilasciato</value></data>
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Duplica l’audio di sistema sull’altoparlante del controller</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copia in parallelo ciò che riproduce l’uscita predefinita di sistema sull’altoparlante integrato di questo controller. Funziona via USB e Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Il dispositivo selezionato non ha un altoparlante integrato. I suoni macro di questo pad escono sull’uscita predefinita.</value></data>
@@ -1822,7 +1822,7 @@
     <value>La tua identità viaggia su questa unità e si sblocca con la tua password su qualsiasi PC. Un'unità smarrita è inutile senza di essa.</value>
   </data>
   <data name="RemoteLink_IdentityHintPortableOpen" xml:space="preserve">
-    <value>La tua identità viaggia su questa unità senza alcuna richiesta. Chiunque abbia l'unità può usarla — conservala al sicuro.</value>
+    <value>La tua identità viaggia su questa unità senza alcuna richiesta. Chiunque abbia l'unità può usarla. Conservala al sicuro.</value>
   </data>
   <data name="RemoteLink_IdentityHintSecure" xml:space="preserve">
     <value>Bloccata su questo PC (funziona per ogni account Windows presente su di esso). Non può essere spostata su un'altra macchina.</value>

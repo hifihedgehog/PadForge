@@ -103,11 +103,31 @@ namespace PadForge.Common.Input
             byte[] buf = ArrayPool<byte>.Shared.Rent(payload.Length);
             payload.CopyTo(buf);
 
-            var effect = new Ds5Effect(buf, payload.Length, reportId);
+            var effect = new Ds5Effect(buf, payload.Length, reportId, IsFeature: false);
             if (!_channel.Writer.TryWrite(effect))
             {
                 // Channel full (DropWrite) or completed (Dispose race) —
                 // either way, return the rented buffer.
+                ArrayPool<byte>.Shared.Return(buf);
+            }
+        }
+
+        /// <summary>Enqueues a Sony vendor test command (SetFeature 0x80
+        /// body, report-ID-stripped as published by the driver) for
+        /// forwarding to the assigned physical DualSenses via
+        /// HidD_SetFeature. Same rent-copy-enqueue contract as
+        /// <see cref="Enqueue"/>.</summary>
+        public void EnqueueFeature(byte reportId, ReadOnlySpan<byte> payload)
+        {
+            if (_disposed) return;
+            if (payload.IsEmpty) return;
+
+            byte[] buf = ArrayPool<byte>.Shared.Rent(payload.Length);
+            payload.CopyTo(buf);
+
+            var effect = new Ds5Effect(buf, payload.Length, reportId, IsFeature: true);
+            if (!_channel.Writer.TryWrite(effect))
+            {
                 ArrayPool<byte>.Shared.Return(buf);
             }
         }
@@ -166,6 +186,84 @@ namespace PadForge.Common.Input
             var targets = ResolveAssignedDualSenseHandles(_padIndex);
             if (targets == null || targets.Count == 0) return;
 
+            // Feature lane: Sony vendor test command (SetFeature 0x80 —
+            // firmware sine generator, speaker/headphone routing,
+            // calibration actions). SDL_SendGamepadEffect only carries
+            // output reports, so these go out via HidD_SetFeature on the
+            // device path; BT targets get the 0x53-seeded feature CRC.
+            if (effect.IsFeature)
+            {
+                // Sony vendor audio test (deviceId 6 = AUDIO): while the
+                // firmware waveout runs, the tester owns the pad's audio
+                // plane — see AudioPassthroughService.SetVendorAudioTest.
+                // The routing byte is sticky, so the effects dispatcher
+                // must rewrite it NOW (restore on start, re-assert on
+                // end); its timer only runs for lightbar animation, hence
+                // the explicit dispatch nudge.
+                //
+                // Activity STARTS on either the route-config command
+                // (action 4, BUILTIN_MIC_CALIB_DATA_VERIFY — the reference
+                // tester sends it ~20 ms before the tone, which gives the
+                // routing restore a head start over the waveout onset) or
+                // a WAVEOUT_CTRL on (action 2, param != 0). It ENDS only
+                // on WAVEOUT_CTRL off (action 2, param == 0) — or the
+                // 60 s expiry for abandoned tests.
+                if (effect.Length >= 3 && effect.Buffer[0] == 6
+                    && (effect.Buffer[1] == 2 || effect.Buffer[1] == 4))
+                {
+                    bool testOn = effect.Buffer[1] == 4 || effect.Buffer[2] != 0;
+                    foreach (var t in targets)
+                    {
+                        AudioPassthroughService.SetVendorAudioTest(t.DeviceGuid, testOn);
+
+                        // Replay the tester's most recently MASKED audio
+                        // state. The tester mutes the OTHER output before
+                        // each waveout (speaker volume 0 for the headphone
+                        // test) because the firmware's wave-route latches:
+                        // the headphone test's route-config carries
+                        // params[2]=0 for the speaker slot and zero means
+                        // "unchanged", so after any speaker test the
+                        // headphone tone ALSO plays on the speaker — at
+                        // whatever volume the pad holds. Our mask had eaten
+                        // that mute (and the asserts pinned volume high),
+                        // which is exactly the bleed-after-speaker-test the
+                        // field trace captured.
+                        if (testOn && _maskedAudioStash.TryGetValue(t.DeviceGuid, out var stash))
+                        {
+                            var replay = new byte[StandardPayloadSize];
+                            lock (stash)
+                            {
+                                replay[0] = stash[0];   // valid_flag0 audio bits (union)
+                                replay[1] = stash[1];   // valid_flag1 audio_flags2 bit
+                                replay[4] = stash[2];   // headphone volume
+                                replay[5] = stash[3];   // speaker volume
+                                replay[6] = stash[4];   // mic volume
+                                replay[7] = stash[5];   // audio_flags
+                                replay[37] = stash[6];  // audio_flags2
+                            }
+                            try { SDL_SendGamepadEffect(t.GamepadHandle, replay, 0, StandardPayloadSize); }
+                            catch { }
+                        }
+                    }
+                    UserEffectsDispatcher.NotifySoundRoutingChanged(_padIndex);
+                }
+
+                byte[] report = new byte[effect.Length + 1];
+                report[0] = effect.ReportId;
+                Array.Copy(effect.Buffer, 0, report, 1, effect.Length);
+                foreach (var target in targets)
+                {
+                    if (string.IsNullOrEmpty(target.DevicePath)) continue;
+                    try { RawHidOutput.SetFeature(target.DevicePath, report, target.IsBt); }
+                    catch { }
+                }
+                return;
+            }
+
+            // Lazily-built copy of the payload with the audio-control
+            // surface masked, shared across targets that need it.
+            byte[] sanitized = null;
+
             foreach (var target in targets)
             {
                 int forwardLen = effect.Length;
@@ -177,9 +275,61 @@ namespace PadForge.Common.Input
                 if (target.IsEdge == false && forwardLen > StandardPayloadSize)
                     forwardLen = StandardPayloadSize;
 
+                // Game audio-control bytes forward by default. While
+                // PadForge owns the device's audio session (mirror or a
+                // sound macro — i.e. an active sink), mask the audio
+                // fields so the game's packet can't clobber the speaker
+                // routing / volume / pre-gain mid-stream. Rumble,
+                // triggers, lightbar, and LEDs forward untouched either
+                // way; the game gets the pad back when the sink drops.
+                byte[] buf = effect.Buffer;
+                bool wantsPath = AudioPassthroughService.WantsSpeakerPath(target.DeviceGuid);
+                bool hasAudioBits = effect.Length > 7
+                    && (((effect.Buffer[0] & 0xF0) != 0) || ((effect.Buffer[1] & 0x80) != 0));
+                if (wantsPath)
+                {
+                    // Stash the audio surface we're about to strip when the
+                    // packet actually carries one (any audio valid bit set),
+                    // so a vendor-test activation can replay the writer's
+                    // intended audio state.
+                    if (hasAudioBits)
+                    {
+                        // ACCUMULATE, don't overwrite: the reference tester
+                        // splits one volume update into two packets (vf0 =
+                        // 0xA0 carrying the speaker volume, then vf0 = 0x90
+                        // carrying the headphone volume). Overwriting kept
+                        // only the last packet's valid bits, so the replay
+                        // shipped spkVol=0 WITHOUT its valid bit and the
+                        // firmware ignored the mute — the cold-start bleed.
+                        // Each field updates only when its valid bit is set;
+                        // the replay carries the union.
+                        var stash = _maskedAudioStash.GetOrAdd(target.DeviceGuid, _ => new byte[7]);
+                        lock (stash)
+                        {
+                            byte vf0 = (byte)(effect.Buffer[0] & 0xF0);
+                            byte vf1 = (byte)(effect.Buffer[1] & 0x80);
+                            stash[0] |= vf0;
+                            stash[1] |= vf1;
+                            if ((vf0 & 0x10) != 0) stash[2] = effect.Buffer[4]; // headphone vol
+                            if ((vf0 & 0x20) != 0) stash[3] = effect.Buffer[5]; // speaker vol
+                            if ((vf0 & 0x40) != 0) stash[4] = effect.Buffer[6]; // mic vol
+                            if ((vf0 & 0x80) != 0) stash[5] = effect.Buffer[7]; // audio_flags
+                            if (vf1 != 0 && effect.Length > 37) stash[6] = effect.Buffer[37]; // audio_flags2
+                        }
+                    }
+
+                    if (sanitized == null)
+                    {
+                        sanitized = new byte[effect.Length];
+                        Array.Copy(effect.Buffer, sanitized, effect.Length);
+                        MaskAudioControl(sanitized);
+                    }
+                    buf = sanitized;
+                }
+
                 try
                 {
-                    SDL_SendGamepadEffect(target.GamepadHandle, effect.Buffer, 0, forwardLen);
+                    SDL_SendGamepadEffect(target.GamepadHandle, buf, 0, forwardLen);
                 }
                 catch
                 {
@@ -187,6 +337,27 @@ namespace PadForge.Common.Input
                     // SDL handle gone stale, etc.  Drop and continue.
                 }
             }
+        }
+
+        /// <summary>Clears the audio-control surface of a report-ID-stripped
+        /// DS5 effect payload (the 47-byte <c>DS5EffectsState_t</c> form,
+        /// common prefix shared by the 63-byte Edge form): valid_flag0 bits
+        /// 4-7 (headphone / speaker / mic volume, audio control), the four
+        /// volume / audio_flags bytes at [4..7], and the
+        /// valid_flag1-bit-7-gated audio_flags2 pre-gain at common+37.
+        /// Offsets per dualsensectl's packed output struct — same layout
+        /// SonyEffectWriter.ApplyAudioControl2 pokes (USB report byte 38 =
+        /// payload byte 37).</summary>
+        private static void MaskAudioControl(byte[] p)
+        {
+            if (p.Length < 8) return;
+            p[0] &= 0x0F;   // valid_flag0: drop headphone/speaker/mic volume + audio control
+            p[1] &= 0x7F;   // valid_flag1: drop audio_flags2 (pre-gain) gate
+            p[4] = 0;       // headphone volume
+            p[5] = 0;       // speaker volume
+            p[6] = 0;       // mic volume
+            p[7] = 0;       // audio_flags (output routing)
+            if (p.Length > 37) p[37] = 0; // audio_flags2 (speaker pre-gain)
         }
 
         /// <summary>Returns the SDL gamepad handles for every physical
@@ -232,21 +403,38 @@ namespace PadForge.Common.Input
                     IntPtr handle = ud.Device?.GamepadHandle ?? IntPtr.Zero;
                     if (handle == IntPtr.Zero) continue;
 
-                    result.Add(new DualSenseTarget(handle, isEdge));
+                    string path = ud.DevicePath ?? string.Empty;
+                    bool isBt = path.IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
+                    result.Add(new DualSenseTarget(handle, isEdge, ud.InstanceGuid, path, isBt));
                 }
             }
             return result.Count == 0 ? null : result;
         }
 
         /// <summary>Per-target tuple used during dispatch.  IsEdge gates
-        /// the size-routing decision (truncate Edge → Standard).</summary>
-        private readonly record struct DualSenseTarget(IntPtr GamepadHandle, bool IsEdge);
+        /// the size-routing decision (truncate Edge → Standard); DeviceGuid
+        /// keys the audio-session ownership check; DevicePath + IsBt serve
+        /// the feature-report lane (HidD_SetFeature + BT CRC).</summary>
+        private readonly record struct DualSenseTarget(IntPtr GamepadHandle, bool IsEdge, Guid DeviceGuid, string DevicePath, bool IsBt);
 
         /// <summary>Channel record carrying a rented buffer plus the
         /// payload length and originating Report ID.  The buffer is owned
         /// by the worker after enqueue; the worker returns it to the
-        /// pool after dispatch.</summary>
-        private readonly record struct Ds5Effect(byte[] Buffer, int Length, byte ReportId);
+        /// pool after dispatch.  IsFeature routes the packet down the
+        /// HidD_SetFeature lane instead of SDL_SendGamepadEffect.</summary>
+        private readonly record struct Ds5Effect(byte[] Buffer, int Length, byte ReportId, bool IsFeature);
+
+        /// <summary>Per-target stash of the most recently MASKED audio
+        /// surface (valid_flag0 audio bits, valid_flag1 audio_flags2 bit,
+        /// volume/audio_flags bytes [4..7], audio_flags2 [37]). The
+        /// reference tester writes its audio state — speaker volume 0 for
+        /// the headphone test, 85 for the speaker test — ~20 ms BEFORE
+        /// the test commands, while the mirror still owns the pad and the
+        /// mask strips it. Replaying the stash at test activation hands
+        /// the tester exactly the audio state it asked for; without this,
+        /// the firmware's cross-output leak plays the headphone tone
+        /// through a speaker still sitting at the mirror's volume.</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, byte[]> _maskedAudioStash = new();
 
         /// <summary>Returns true when at least one DualSense / DualSense
         /// Edge is currently mapped + online for

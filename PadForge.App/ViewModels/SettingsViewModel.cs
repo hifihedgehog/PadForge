@@ -240,6 +240,126 @@ namespace PadForge.ViewModels
                 },
                 () => _selectedWhitelistPath != null);
 
+        // ── Remote Link paired peers (issue #138) ──
+
+        /// <summary>Trusted paired PCs, shown in the Settings peer manager.</summary>
+        public ObservableCollection<RemoteLinkTrustedPeer> TrustedPeers { get; } = new();
+
+        /// <summary>PadForge PCs discovered on the LAN that aren't paired yet — shown under
+        /// the paired list so all peers (paired + online + new) sit in one place.</summary>
+        public ObservableCollection<RemoteLinkNearbyPeer> NearbyUnpaired { get; } = new();
+
+        public bool HasNearbyUnpaired => NearbyUnpaired.Count > 0;
+
+        /// <summary>Raised when the user revokes one peer (by fingerprint) or all.</summary>
+        public event Action<string> PeerRevokeRequested;
+        public event Action PeerRevokeAllRequested;
+
+        /// <summary>Raised when the user renames a peer (fingerprint, new name) — persisted.</summary>
+        public event Action<string, string> PeerRenameRequested;
+
+        /// <summary>Raised when the user clicks Connect on a paired-but-offline peer (host:port).</summary>
+        public event Action<string> PeerConnectRequested;
+
+        private RelayCommand _revokeAllPeersCommand;
+        public RelayCommand RevokeAllPeersCommand =>
+            _revokeAllPeersCommand ??= new RelayCommand(() => PeerRevokeAllRequested?.Invoke());
+
+        /// <summary>Rebuild the trusted-peer list from the trust store. Called on
+        /// pair / revoke / rename — NOT for online refresh (that updates in place via
+        /// <see cref="UpdatePeerOnlineStatus"/> so an in-progress name edit isn't disrupted).</summary>
+        public void RefreshTrustedPeers(System.Collections.Generic.IEnumerable<PadForge.Engine.RemoteLink.PeerTrust> peers,
+            System.Collections.Generic.IReadOnlyCollection<string> connectedFingerprints = null)
+        {
+            TrustedPeers.Clear();
+            if (peers == null) return;
+            foreach (var p in peers)
+            {
+                bool online = connectedFingerprints != null &&
+                    connectedFingerprints.Any(f => string.Equals(f, p.FingerprintHex, StringComparison.OrdinalIgnoreCase));
+                TrustedPeers.Add(new RemoteLinkTrustedPeer(p.Name, p.HostName, p.FingerprintHex, p.PairedUtc, p.GamepadOnly, online,
+                    fp => PeerRevokeRequested?.Invoke(fp),
+                    (fp, name) => PeerRenameRequested?.Invoke(fp, name),
+                    hostPort => PeerConnectRequested?.Invoke(hostPort)));
+            }
+        }
+
+        /// <summary>Update the online dots in place from the live connection set, without
+        /// rebuilding the list.</summary>
+        public void UpdatePeerOnlineStatus(System.Collections.Generic.IReadOnlyCollection<string> connectedFingerprints)
+        {
+            foreach (var peer in TrustedPeers)
+                peer.IsOnline = connectedFingerprints != null &&
+                    connectedFingerprints.Any(f => string.Equals(f, peer.FingerprintHex, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>Update each paired peer's "reachable right now" host:port from LAN
+        /// discovery (in place), so a discovered-but-offline peer shows a Connect button.</summary>
+        public void UpdatePeerReachability(System.Collections.Generic.IReadOnlyDictionary<string, string> fingerprintToHostPort)
+        {
+            foreach (var peer in TrustedPeers)
+                peer.ReachableHostPort =
+                    fingerprintToHostPort != null && fingerprintToHostPort.TryGetValue(peer.FingerprintHex, out var hp) ? hp : null;
+        }
+
+        /// <summary>Replace the nearby-unpaired list (discovered PCs not in the trust store).</summary>
+        public void SetNearbyUnpaired(System.Collections.Generic.IEnumerable<RemoteLinkNearbyPeer> peers)
+        {
+            NearbyUnpaired.Clear();
+            if (peers != null) foreach (var p in peers) NearbyUnpaired.Add(p);
+            OnPropertyChanged(nameof(HasNearbyUnpaired));
+        }
+
+        // ── Remote Link identity protection mode (issue #138 — thumb-drive portability) ──
+
+        /// <summary>Dropdown options, in index order: 0 Secure, 1 password-portable,
+        /// 2 open-portable. Plain language — no crypto jargon.</summary>
+        public System.Collections.Generic.IReadOnlyList<string> IdentityProtectionModes => new[]
+        {
+            PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityModeSecure,
+            PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityModePortablePassword,
+            PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityModePortableOpen,
+        };
+
+        private bool _suppressIdentityModeChange;
+        private int _identityProtectionModeIndex;
+        /// <summary>Selected protection mode (0/1/2). User changes raise
+        /// <see cref="IdentityProtectionModeChangeRequested"/>; programmatic reverts use
+        /// <see cref="SetIdentityProtectionModeSilently"/> so no event re-fires.</summary>
+        public int IdentityProtectionModeIndex
+        {
+            get => _identityProtectionModeIndex;
+            set
+            {
+                if (SetProperty(ref _identityProtectionModeIndex, value) && !_suppressIdentityModeChange)
+                {
+                    OnPropertyChanged(nameof(IdentityProtectionHint));
+                    IdentityProtectionModeChangeRequested?.Invoke(value);
+                }
+            }
+        }
+
+        /// <summary>One-line guidance under the dropdown for the selected mode.</summary>
+        public string IdentityProtectionHint => _identityProtectionModeIndex switch
+        {
+            1 => PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityHintPortablePassword,
+            2 => PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityHintPortableOpen,
+            _ => PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityHintSecure,
+        };
+
+        /// <summary>Raised when the user picks a different protection mode (the new index).</summary>
+        public event Action<int> IdentityProtectionModeChangeRequested;
+
+        /// <summary>Set the selected mode without raising the change request (used to
+        /// initialize from settings and to revert a cancelled switch).</summary>
+        public void SetIdentityProtectionModeSilently(int index)
+        {
+            _suppressIdentityModeChange = true;
+            IdentityProtectionModeIndex = index;
+            _suppressIdentityModeChange = false;
+            OnPropertyChanged(nameof(IdentityProtectionHint));
+        }
+
         /// <summary>Raised when the user requests adding a whitelist path (opens file dialog).</summary>
         public event EventHandler AddWhitelistPathRequested;
 
@@ -597,6 +717,7 @@ namespace PadForge.ViewModels
                     _deleteProfileCommand?.NotifyCanExecuteChanged();
                     _editProfileCommand?.NotifyCanExecuteChanged();
                     _loadProfileCommand?.NotifyCanExecuteChanged();
+                    _exportProfileCommand?.NotifyCanExecuteChanged();
                 }
             }
         }
@@ -631,6 +752,13 @@ namespace PadForge.ViewModels
         /// <summary>Raised when the user requests loading the selected profile into the editor.</summary>
         public event EventHandler LoadProfileRequested;
 
+        /// <summary>Raised when the user requests exporting the selected
+        /// profile to a shareable .pfprofile file (issue #83 follow-up).</summary>
+        public event EventHandler ExportProfileRequested;
+
+        /// <summary>Raised when the user requests importing a .pfprofile file.</summary>
+        public event EventHandler ImportProfileRequested;
+
         private RelayCommand _newProfileCommand;
 
         /// <summary>Command to create a new empty profile.</summary>
@@ -653,6 +781,22 @@ namespace PadForge.ViewModels
                 () => DeleteProfileRequested?.Invoke(this, EventArgs.Empty),
                 () => _selectedProfile != null && !_selectedProfile.IsDefault);
 
+        private RelayCommand _exportProfileCommand;
+
+        /// <summary>Command to export the selected profile as a .pfprofile.
+        /// The Default entry exports a snapshot of the current settings.</summary>
+        public RelayCommand ExportProfileCommand =>
+            _exportProfileCommand ??= new RelayCommand(
+                () => ExportProfileRequested?.Invoke(this, EventArgs.Empty),
+                () => _selectedProfile != null);
+
+        private RelayCommand _importProfileCommand;
+
+        /// <summary>Command to import a .pfprofile.</summary>
+        public RelayCommand ImportProfileCommand =>
+            _importProfileCommand ??= new RelayCommand(
+                () => ImportProfileRequested?.Invoke(this, EventArgs.Empty));
+
         private RelayCommand _editProfileCommand;
 
         /// <summary>Command to edit the selected profile's name and executables.</summary>
@@ -674,14 +818,6 @@ namespace PadForge.ViewModels
                         LoadProfileRequested?.Invoke(this, EventArgs.Empty);
                 },
                 () => _selectedProfile != null);
-
-        /// <summary>Refreshes the can-execute state of profile commands.</summary>
-        public void RefreshProfileCommands()
-        {
-            _deleteProfileCommand?.NotifyCanExecuteChanged();
-            _editProfileCommand?.NotifyCanExecuteChanged();
-            _loadProfileCommand?.NotifyCanExecuteChanged();
-        }
     }
 
     /// <summary>

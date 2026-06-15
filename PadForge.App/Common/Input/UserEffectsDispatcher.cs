@@ -102,7 +102,7 @@ namespace PadForge.Common.Input
         /// <c>InputManager.CombinedOutputStates[i].Buttons</c>. Used by
         /// <see cref="LightbarMode.InputReactive"/> to detect rising edges
         /// and enqueue a fading pulse.</summary>
-        public static Func<int, ushort> SlotButtonsProvider { get; set; }
+        public static Func<int, uint> SlotButtonsProvider { get; set; }
 
         /// <summary>Static provider for the current rumble state of a
         /// given (slot, physical device) pair, returned as 8-bit
@@ -163,6 +163,16 @@ namespace PadForge.Common.Input
         /// </summary>
         public static Func<int, Guid, (byte right, byte left)> SlotImpulseTriggerForDeviceProvider { get; set; }
 
+        /// <summary>Per-slot steering at-lock AT-resistance (0..1) provider (#94,
+        /// channel 4), wired to <c>InputManager.SteeringAtResistance[slot]</c>. 0 when
+        /// the toggle is off or no steering source is approaching lock.</summary>
+        public static Func<int, float> SteeringAtResistanceProvider { get; set; }
+
+        /// <summary>Per-slot steering at-lock trigger-vibration pulse (0..1) provider (#94,
+        /// channel 2), wired to <c>InputManager.GetSteeringTrigVib(slot)</c>. A momentary
+        /// hold+fade pulse fired on lock entry; 0 otherwise.</summary>
+        public static Func<int, float> SteeringTriggerVibProvider { get; set; }
+
         // Animated-lightbar polling cadence — 30Hz is enough to feel
         // responsive without flooding the BT HID write path. WriteFile
         // open+close is ~1ms per call; 30Hz = 30ms budget.
@@ -195,7 +205,7 @@ namespace PadForge.Common.Input
         private uint _randomColor;
         private bool _audioOnsetActive;
         private long _pulseStartMs;
-        private ushort _lastButtons;
+        private uint _lastButtons;
         private readonly Random _rng = new Random();
 
         private sealed class DeviceState
@@ -203,7 +213,12 @@ namespace PadForge.Common.Input
             public uint PulseColor;
             public int PalettePulseIndex;
         }
-        private readonly Dictionary<Guid, DeviceState> _deviceStates = new();
+        // ConcurrentDictionary: GetOrCreateDeviceState inserts from the
+        // animation-timer thread (DrainInputPulses) while DispatchSnapshot
+        // reads it from the polling thread (battery-percent change); a plain
+        // Dictionary resizing during that read is undefined behavior, and two
+        // overlapping (non-serialized) timer callbacks could double-insert.
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, DeviceState> _deviceStates = new();
 
         // Per-device flag remembering whether PadForge's last dispatched
         // packet carried non-zero rumble. Drives the validFlag0 bit-0
@@ -447,14 +462,7 @@ namespace PadForge.Common.Input
         }
 
         private DeviceState GetOrCreateDeviceState(Guid deviceGuid)
-        {
-            if (!_deviceStates.TryGetValue(deviceGuid, out var state))
-            {
-                state = new DeviceState();
-                _deviceStates[deviceGuid] = state;
-            }
-            return state;
-        }
+            => _deviceStates.GetOrAdd(deviceGuid, _ => new DeviceState());
 
         /// <summary>Static provider returning every per-device
         /// <see cref="PlayStationSlotConfig"/> on a slot. The dispatcher's
@@ -562,6 +570,9 @@ namespace PadForge.Common.Input
                 || e.PropertyName == nameof(PlayStationSlotConfig.InputReactiveMode)
                 || e.PropertyName == nameof(PlayStationSlotConfig.MacroOverrideExpiresAtUtc))
                 UpdateAnimTimer();
+            if (e.PropertyName == nameof(PlayStationSlotConfig.AudioPassthroughEnabled)
+                || e.PropertyName == nameof(PlayStationSlotConfig.AudioMirrorSourceId))
+                AudioPassthroughService.Reconcile(); // start/stop/repoint the mirror now
             DispatchSnapshot();
         }
 
@@ -599,6 +610,16 @@ namespace PadForge.Common.Input
         /// inside DispatchSnapshot, so this method just kicks the
         /// snapshot. Safe to call from the polling thread.</summary>
         public static void NotifyBatteryPercentChanged(int padIndex)
+        {
+            if (_instances.TryGetValue(padIndex, out var inst) && inst != null)
+                inst.DispatchSnapshot();
+        }
+
+        /// <summary>Audio-tab routing or volume changed for the slot — push a
+        /// dispatch immediately so the speaker output path / volume bytes land
+        /// now instead of riding the next lightbar/battery dispatch (which can
+        /// be seconds away on an idle slot).</summary>
+        public static void NotifySoundRoutingChanged(int padIndex)
         {
             if (_instances.TryGetValue(padIndex, out var inst) && inst != null)
                 inst.DispatchSnapshot();
@@ -883,8 +904,8 @@ namespace PadForge.Common.Input
             // Slot-level button-press detection — one rising-edge event
             // per tick fans out to every per-device pulse below.
             var provider = SlotButtonsProvider;
-            ushort buttons = provider != null ? provider(_padIndex) : (ushort)0;
-            ushort newlyPressed = (ushort)(buttons & ~_lastButtons);
+            uint buttons = provider != null ? provider(_padIndex) : 0u;
+            uint newlyPressed = buttons & ~_lastButtons;
             _lastButtons = buttons;
             if (newlyPressed == 0) return;
 
@@ -932,7 +953,8 @@ namespace PadForge.Common.Input
                     }
                     else if (wantPaletteRoll)
                     {
-                        var palette = devCfg.SnapshotLightbarPalette();
+                        // InputReactive Cycle steps its OWN palette, not the ColorCycle one.
+                        var palette = devCfg.SnapshotLightbarInputReactivePalette();
                         int n = palette.Length;
                         if (n > 0)
                         {
@@ -1184,6 +1206,36 @@ namespace PadForge.Common.Input
                             devOverrides.RightTriggerEffect = Ds5EffectSynthesizer.BuildAtVibrationOverrideBlock(impR);
                         if (leftLingerActive && devOverrides.LeftTriggerEffect == null)
                             devOverrides.LeftTriggerEffect = Ds5EffectSynthesizer.BuildAtVibrationOverrideBlock(impL);
+
+                        // Steering at-lock AT resistance (#94, channel 4): ramp trigger
+                        // resistance with how close a steering source is to lock. Gated to
+                        // triggers the user hasn't configured (mode Off) with no override
+                        // already set this frame, so it never fights a user AT effect or the
+                        // impulse-AT buzz above. Already DS5- and test-target-scoped here.
+                        // Channel 2 (trigger-vibration pulse) runs before channel 4 so the
+                        // momentary at-lock buzz wins the trigger-effect slot during its
+                        // hold+fade window; channel 4's continuous resistance resumes once
+                        // the pulse decays to 0. Both gate on the trigger being unconfigured
+                        // (mode Off) with no override already set this frame.
+                        float steerVib = SteeringTriggerVibProvider?.Invoke(_padIndex) ?? 0f;
+                        if (steerVib > 0f)
+                        {
+                            byte strength = (byte)Math.Clamp((int)(steerVib * 255f), 0, 255);
+                            if (devCfg.RightTriggerMode == AdaptiveTriggerMode.Off && devOverrides.RightTriggerEffect == null)
+                                devOverrides.RightTriggerEffect = Ds5EffectSynthesizer.BuildAtVibrationOverrideBlock(strength);
+                            if (devCfg.LeftTriggerMode == AdaptiveTriggerMode.Off && devOverrides.LeftTriggerEffect == null)
+                                devOverrides.LeftTriggerEffect = Ds5EffectSynthesizer.BuildAtVibrationOverrideBlock(strength);
+                        }
+
+                        float steerRes = SteeringAtResistanceProvider?.Invoke(_padIndex) ?? 0f;
+                        if (steerRes > 0f)
+                        {
+                            byte force = (byte)Math.Clamp((int)(steerRes * 255f), 0, 255);
+                            if (devCfg.RightTriggerMode == AdaptiveTriggerMode.Off && devOverrides.RightTriggerEffect == null)
+                                devOverrides.RightTriggerEffect = Ds5EffectSynthesizer.BuildAtResistanceOverrideBlock(force);
+                            if (devCfg.LeftTriggerMode == AdaptiveTriggerMode.Off && devOverrides.LeftTriggerEffect == null)
+                                devOverrides.LeftTriggerEffect = Ds5EffectSynthesizer.BuildAtResistanceOverrideBlock(force);
+                        }
                     }
 
                     // Per-device peak scaling (each device has own
@@ -1307,6 +1359,54 @@ namespace PadForge.Common.Input
                                 devCfg, devPeak, nowMs,
                                 _randomColor, devPulseColor, devPulseIntensity,
                                 rR, rL, assertRumbleEnable, devOverrides, pctByte);
+
+                        // Macro-sound speaker routing (issue #83). The DualSense
+                        // firmware sends its USB program audio to the headphone
+                        // path by default and keeps the internal speaker silent.
+                        // While this slot's Audio tab targets the controller's
+                        // own endpoint, assert the speaker output path + volume
+                        // in the same output report the lightbar rides
+                        // (dualsensectl-verified: valid_flag0 0x20 speaker-volume
+                        // enable + 0x80 audio-control enable; audio_flags path
+                        // 3<<4 = internal speaker). Loudness is two firmware
+                        // knobs, and this block is their single owner — sample
+                        // amplitudes stay full-scale:
+                        //   - speakerVolume: effective range is 0x3D..0x64
+                        //     (dualsensectl: "the PS5 use 0x3d-0x64; trying
+                        //     over 0x64 doesnt change"), so the 0-100% master
+                        //     volume spans exactly that window (0 mutes).
+                        //   - speaker pre-gain: audio_flags2 bits 0-2 with
+                        //     valid_flag1 bit 7 (AUDIO_CONTROL2_ENABLE); value
+                        //     3 per dualsensectl's reference snippet. Without
+                        //     it the speaker tops out well below what the PS5
+                        //     drives it to. Encoded by SonyEffectWriter's
+                        //     audioControl2 poke (the HM profile doesn't
+                        //     declare the byte).
+                        // When routing switches away, restore the headphone
+                        // path once so the speaker doesn't stay latched.
+                        if (isDs5)
+                        {
+                            if (AudioPassthroughService.WantsSpeakerPath(ud.InstanceGuid))
+                            {
+                                int master = SoundMacroService.GetSlotVolume(_padIndex);
+                                byte spkVol = master <= 0
+                                    ? (byte)0
+                                    : (byte)(0x3D + master * (0x64 - 0x3D) / 100);
+                                fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0xA0);
+                                fields["validFlag1"] = (byte)((byte)fields["validFlag1"] | 0x80);
+                                fields["speakerVolume"] = spkVol;
+                                fields["audioControlFlags"] = (byte)(3 << 4);
+                                fields["audioControl2"] = (byte)3;
+                            }
+                            else if (AudioPassthroughService.TryConsumeSpeakerPathCleared(ud.InstanceGuid))
+                            {
+                                fields["validFlag0"] = (byte)((byte)fields["validFlag0"] | 0x80);
+                                fields["validFlag1"] = (byte)((byte)fields["validFlag1"] | 0x80);
+                                fields["audioControlFlags"] = (byte)0;
+                                fields["audioControl2"] = (byte)0;
+                            }
+                        }
+
                         SonyEffectWriter.Write(path, profile, fields);
                     }
                     catch

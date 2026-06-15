@@ -64,7 +64,16 @@ namespace PadForge.Engine.Common.Mapping
             // it uses for touchpad descriptors.
             bool relativeTouchpad = IsRelativeMotionTarget(target);
 
-            switch (src.Kind ?? "Direct")
+            // "Motion Lean" is a first-class INPUT descriptor (picked from the
+            // input dropdown like "Gyro Roll"), not a steering mode stamped onto
+            // a target. A plain Direct source carrying it routes into the same
+            // lean math as Kind="MotionLeanX"; the row's target is whatever axis
+            // the user mapped it to, and nothing overrides the stick's own input.
+            string kind = src.Kind ?? "Direct";
+            if (kind == "Direct" && SourceCoercion.IsMotionLeanDescriptor(src.Descriptor))
+                kind = "MotionLeanX";
+
+            switch (kind)
             {
                 case "Incremental":
                 {
@@ -81,7 +90,35 @@ namespace PadForge.Engine.Common.Mapping
                     var inner = CloneAsDirect(src, invertOverride: src.Invert ^ modifier);
                     return SourceCoercion.EvaluateForBipolarAxisTarget(state, inner, slotIndex, relativeTouchpad);
                 }
+                // Steering kinds (v3.4 #94): read a whole 2D stick (X = Descriptor,
+                // Y = ParamYDescriptor) or gravity, and project to one virtual-stick
+                // channel. The row's target picks the channel; the Kind picks the math.
+                case "WindingStick":
+                {
+                    if (runtime == null) return 0f;
+                    double v = runtime.TickWindingStick(slotIndex, target, sourceIndex, src, state, frameDeltaSeconds);
+                    return src.Invert ? -(float)v : (float)v;
+                }
+                case "AngleToAxisX":
+                {
+                    if (runtime == null) return 0f;
+                    double v = runtime.TickAngleToAxis(slotIndex, target, sourceIndex, src, state, isX: true);
+                    return src.Invert ? -(float)v : (float)v;
+                }
+                case "AngleToAxisY":
+                {
+                    if (runtime == null) return 0f;
+                    double v = runtime.TickAngleToAxis(slotIndex, target, sourceIndex, src, state, isX: false);
+                    return src.Invert ? -(float)v : (float)v;
+                }
+                case "MotionLeanX":
+                {
+                    if (runtime == null) return 0f;
+                    double v = runtime.TickMotionLean(slotIndex, target, sourceIndex, src, state, src.DeviceGuid);
+                    return src.Invert ? -(float)v : (float)v;
+                }
                 default:
+                {
                     // Gyro → virtual stick is rate-direct, same as gyro →
                     // mouse / scroll: instantaneous angular rate (post-tuning)
                     // maps to stick deflection magnitude. Stop tilting and
@@ -93,7 +130,15 @@ namespace PadForge.Engine.Common.Mapping
                     // "hold the controller tilted to keep turning" — the
                     // opposite of how gyro is supposed to feel (JSM
                     // MOUSE_JOYSTICK, Steam Input gyro→stick, Splatoon).
-                    return SourceCoercion.EvaluateForBipolarAxisTarget(state, src, slotIndex, relativeTouchpad);
+                    float v = SourceCoercion.EvaluateForBipolarAxisTarget(state, src, slotIndex, relativeTouchpad);
+                    // Per-axis-frame sign correction — see ShouldFlipForAxisFrame.
+                    // This is a SHARED seam (sticks, extended axes, KBM mouse,
+                    // and the touchpad-output passthrough all reach it), so the
+                    // sign rules MUST stay keyed on (source, target) there.
+                    if (ShouldFlipForAxisFrame(src, target))
+                        v = -v;
+                    return v;
+                }
             }
         }
 
@@ -108,6 +153,43 @@ namespace PadForge.Engine.Common.Mapping
             return target == "KbmMouseX"
                 || target == "KbmMouseY"
                 || target == "KbmScroll";
+        }
+
+        /// <summary>
+        /// Sign correction for one (source, absolute-axis target) pairing, applied
+        /// AFTER <see cref="SourceCoercion.EvaluateForBipolarAxisTarget"/>.
+        ///
+        /// <para>The bipolar coercion returns each source in its OWN natural frame,
+        /// which is not always the frame the destination axis expects. This helper
+        /// owns exactly ONE correction. DO NOT widen it without re-testing on
+        /// hardware: a sign wrong here is a silent, ship-breaking regression — the
+        /// control still moves, just the wrong way, and nothing downstream flags it.</para>
+        ///
+        /// <para><b>Gyro horizontal family (yaw / roll / horizontal, NOT pitch) → stick X.</b>
+        /// The gyro reports a right-hand-rule angular RATE; a leftward twist lands on
+        /// +X. A stick is a position, so it must deflect TOWARD the twist (twist left →
+        /// stick left). Flip.</para>
+        ///
+        /// <para><b>Why X only, and why nothing else.</b>
+        /// <c>InputManager.WriteBipolarAxisTarget</c> already encodes the engine's
+        /// stick sign convention: it negates Y for EVERY source (the SDL "+Y down → -axis"
+        /// rule, <c>gp.ThumbLY = -value</c>) and leaves X alone. So a correction belongs
+        /// here only where that downstream step does nothing — the X axis. Flipping a Y
+        /// target here would double-negate it. That is exactly what an earlier touchpad
+        /// branch did (finger-up drove the stick DOWN); it was removed. Everything else is
+        /// already correct downstream: gyro pitch rides the Y negate to nose-up → stick-down
+        /// (the flight-stick pull-back, JSM <c>processGyroStick</c> emits
+        /// <c>setStick(gyroStickX, -gyroStickY)</c>); touchpad finger-Y rides it to
+        /// finger-up → stick-up; KBM mouse / scroll keep their own aim convention. None of
+        /// them may be flipped here.</para>
+        /// </summary>
+        private static bool ShouldFlipForAxisFrame(MappingSource src, string target)
+        {
+            if (src == null) return false;
+            if (target != "LeftThumbAxisX" && target != "RightThumbAxisX") return false;
+            string desc = src.Descriptor ?? "";
+            return SourceCoercion.IsGyroDescriptor(desc)
+                && !desc.Trim().Equals("Gyro Pitch", StringComparison.OrdinalIgnoreCase);
         }
 
         public static float EvaluateForTriggerTarget(

@@ -203,6 +203,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsGamepad));
                     OnPropertyChanged(nameof(ShowInputModeSection));
                     OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
+                    OnPropertyChanged(nameof(IsMidiDevice));
                 }
             }
         }
@@ -219,6 +220,7 @@ namespace PadForge.ViewModels
             "Mouse" => Strings.Instance.DeviceType_Mouse,
             "Keyboard" => Strings.Instance.DeviceType_Keyboard,
             "Touchpad" => Strings.Instance.DeviceType_Touchpad,
+            "Midi" => Strings.Instance.DeviceType_Midi,
             _ => Strings.Instance.DeviceType_Device
         };
 
@@ -365,6 +367,10 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isHidHideAvailable, value);
         }
 
+        /// <summary>True for MIDI input devices — drives the live piano /
+        /// CC preview on the Devices page (issue #128).</summary>
+        public bool IsMidiDevice => DeviceTypeKey == "Midi";
+
         /// <summary>Whether to show the "Consume mapped inputs" toggle (keyboards and mice only).</summary>
         public bool ShowConsumeToggle => DeviceTypeKey == "Keyboard" || DeviceTypeKey == "Mouse";
 
@@ -376,7 +382,9 @@ namespace PadForge.ViewModels
         public bool IsInternalVirtual =>
             !string.IsNullOrEmpty(_devicePath)
             && (_devicePath.StartsWith("web://", StringComparison.Ordinal)
-             || _devicePath.StartsWith("overlay://", StringComparison.Ordinal));
+             || _devicePath.StartsWith("overlay://", StringComparison.Ordinal)
+             || _devicePath.StartsWith("midi://", StringComparison.Ordinal)
+             || _devicePath.StartsWith("peer://", StringComparison.Ordinal));
 
         /// <summary>True when at least one input-hiding toggle would be shown,
         /// so the "Input Hiding" section can hide its heading along with its
@@ -432,7 +440,7 @@ namespace PadForge.ViewModels
         public bool IsGamepad => DeviceTypeKey == "Gamepad";
 
         /// <summary>True if this device can have community mappings submitted (joysticks only, not gamepads/mice/keyboards).</summary>
-        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad";
+        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Midi";
 
         /// <summary>Capabilities summary string for display.</summary>
         public string CapabilitiesSummary

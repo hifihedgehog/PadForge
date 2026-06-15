@@ -248,6 +248,51 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlElement] public string ForceOverall { get; set; } = "100";
 
+        /// <summary>Wheel hardware rotation range in degrees (40–1080). Native
+        /// wheel FFB only (Logitech/Fanatec/Thrustmaster), applied via the vendor
+        /// HID writer. Default 900.</summary>
+        [XmlElement] public string RotationRange { get; set; } = "900";
+
+        /// <summary>Wheel auto-center spring strength (0–100%; 0 = off). Native
+        /// wheel FFB only (Logitech/Thrustmaster). Default 0.</summary>
+        [XmlElement] public string AutoCenterStrength { get; set; } = "0";
+
+        /// <summary>Drive the wheel's RPM / shift LEDs from the running racing
+        /// game's telemetry ("0" = off, "1" = on). Logitech / Fanatec only. The
+        /// telemetry source (Forza Data Out, Assetto Corsa shared memory) is
+        /// auto-detected. Default off.</summary>
+        [XmlElement] public string WheelRpmLeds { get; set; } = "0";
+
+        // ─── Steering at-lock feedback (v3.4 #94) ───
+        // Per-slot, opt-in haptic feedback when a steering source (winding / 2D
+        // angle-to-axis / motion-lean) saturates at full lock. All off by default.
+        /// <summary>Rumble pulse on steering lock entry. "0"/"1".</summary>
+        [XmlElement] public string SteeringLockRumbleEnabled       { get; set; } = "0";
+        /// <summary>Impulse-trigger pulse on steering lock entry. "0"/"1".</summary>
+        [XmlElement] public string SteeringLockTriggerVibEnabled   { get; set; } = "0";
+        /// <summary>Lightbar pulse on steering lock entry (DualSense / DS4). "0"/"1".</summary>
+        [XmlElement] public string SteeringLockLightbarEnabled     { get; set; } = "0";
+        /// <summary>Adaptive-trigger resistance ramp toward lock (DualSense). "0"/"1".</summary>
+        [XmlElement] public string SteeringLockATResistanceEnabled { get; set; } = "0";
+        /// <summary>Lock-entry rumble / trigger pulse length in ms.</summary>
+        [XmlElement] public string SteeringLockPulseMs             { get; set; } = "80";
+        /// <summary>Lock lightbar pulse color (hex #RRGGBB), used when the color
+        /// source is Fixed.</summary>
+        [XmlElement] public string SteeringLockLightbarColor       { get; set; } = "#FF0000";
+        /// <summary>Lock lightbar color source: "Fixed" (the color above), "RandomHue"
+        /// (a fresh random hue each lock), or "PaletteStep" (advance through the dedicated
+        /// steering palette below). Mirrors the macro lightbar's color modes.</summary>
+        [XmlElement] public string SteeringLockLightbarColorSource { get; set; } = "Fixed";
+        /// <summary>Dedicated palette for the PaletteStep color source — CSV of "RRGGBB"
+        /// hex triplets. Used only by the steering lock, never shared with another section.</summary>
+        [XmlElement] public string SteeringLockLightbarPaletteCsv  { get; set; } = "";
+        /// <summary>Lock lightbar hold length in ms — how long the color holds at full before
+        /// the decay fade begins (the lightbar's own hold, separate from the rumble/trigger
+        /// pulse length).</summary>
+        [XmlElement] public string SteeringLockLightbarHoldMs      { get; set; } = "80";
+        /// <summary>Lock lightbar decay (fade-back) length in ms after the hold.</summary>
+        [XmlElement] public string SteeringLockLightbarFadeMs      { get; set; } = "250";
+
         /// <summary>
         /// Whether to swap left and right rumble motors.
         /// "0" = no swap, "1" = swap.
@@ -998,6 +1043,7 @@ namespace PadForge.Engine.Data
             sb.Append(ButtonGuide); sb.Append('|');
             sb.Append(LeftThumbButton); sb.Append('|');
             sb.Append(RightThumbButton); sb.Append('|');
+            sb.Append(ButtonShare); sb.Append('|');
 
             // D-Pad
             sb.Append(DPad); sb.Append('|');
@@ -1072,6 +1118,19 @@ namespace PadForge.Engine.Data
             // Force feedback
             sb.Append(ForceType); sb.Append('|');
             sb.Append(ForceOverall); sb.Append('|');
+            sb.Append(RotationRange); sb.Append('|');
+            sb.Append(AutoCenterStrength); sb.Append('|');
+            sb.Append(WheelRpmLeds); sb.Append('|');
+            sb.Append(SteeringLockRumbleEnabled); sb.Append('|');
+            sb.Append(SteeringLockTriggerVibEnabled); sb.Append('|');
+            sb.Append(SteeringLockLightbarEnabled); sb.Append('|');
+            sb.Append(SteeringLockATResistanceEnabled); sb.Append('|');
+            sb.Append(SteeringLockPulseMs); sb.Append('|');
+            sb.Append(SteeringLockLightbarColor); sb.Append('|');
+            sb.Append(SteeringLockLightbarColorSource); sb.Append('|');
+            sb.Append(SteeringLockLightbarPaletteCsv); sb.Append('|');
+            sb.Append(SteeringLockLightbarHoldMs); sb.Append('|');
+            sb.Append(SteeringLockLightbarFadeMs); sb.Append('|');
             sb.Append(ForceSwapMotor); sb.Append('|');
             sb.Append(LeftMotorStrength); sb.Append('|');
             sb.Append(RightMotorStrength); sb.Append('|');
@@ -1191,6 +1250,22 @@ namespace PadForge.Engine.Data
                 }
             }
 
+            // Per-mapping bidirectional flags (parallel to the deadzone dict).
+            // Without these in the checksum, two devices identical except for a
+            // per-mapping Bidirectional flag collide on SaveToFile's dedup and
+            // the dropped device inherits the survivor's flag.
+            EnsureMappingBidirectionalDict();
+            if (_mappingBidirectionalDict.Count > 0)
+            {
+                sb.Append("MBD:");
+                var mbdKeys = new List<string>(_mappingBidirectionalDict.Keys);
+                mbdKeys.Sort(StringComparer.Ordinal);
+                foreach (var key in mbdKeys)
+                {
+                    sb.Append(key); sb.Append('='); sb.Append(_mappingBidirectionalDict[key]); sb.Append('|');
+                }
+            }
+
             // Per-(device, pad) touchpad gesture-detection settings.
             // Same shape as the gyro fix above — without these in the
             // checksum, two devices with otherwise-identical mappings
@@ -1273,6 +1348,7 @@ namespace PadForge.Engine.Data
             !string.IsNullOrEmpty(ButtonGuide) ||
             !string.IsNullOrEmpty(LeftThumbButton) ||
             !string.IsNullOrEmpty(RightThumbButton) ||
+            !string.IsNullOrEmpty(ButtonShare) ||
             !string.IsNullOrEmpty(DPad) ||
             !string.IsNullOrEmpty(DPadUp) ||
             !string.IsNullOrEmpty(DPadDown) ||
@@ -1315,6 +1391,7 @@ namespace PadForge.Engine.Data
             LeftShoulder = RightShoulder = "";
             ButtonBack = ButtonStart = ButtonGuide = "";
             LeftThumbButton = RightThumbButton = "";
+            ButtonShare = "";
             DPad = DPadUp = DPadDown = DPadLeft = DPadRight = "";
             LeftTrigger = RightTrigger = "";
             LeftThumbAxisX = LeftThumbAxisY = "";
@@ -1324,13 +1401,55 @@ namespace PadForge.Engine.Data
             TouchpadX1 = TouchpadY1 = TouchpadX2 = TouchpadY2 = "";
             TouchpadContact1 = TouchpadContact2 = TouchpadClick = "";
 
-            // Extended/MIDI/KBM mapping dictionaries and arrays.
-            ExtendedMappingEntries = null;
-            _extendedMappingDict = null;
+            // Extended mapping dict: clear only the input-routing descriptors and PRESERVE
+            // per-device tuning that shares this dict (steering Stick{g}Steer*, Extended
+            // stick/trigger deadzone/range/curve). Nulling the whole dict here destroyed a
+            // device's steering on every save that ran the descriptor-bleed cleanup (a
+            // device-switch flush): the steering keys vanished and read back as Direct on the
+            // next load. Stick deadzone/range live in named properties, which is why only
+            // steering (and Extended tuning) hit this.
+            if (_extendedMappingDict != null
+                || (ExtendedMappingEntries != null && ExtendedMappingEntries.Length > 0))
+            {
+                EnsureExtendedDict();
+                var preserved = new Dictionary<string, string>(StringComparer.Ordinal);
+                foreach (var kvp in _extendedMappingDict)
+                    if (IsPerDeviceTuningKey(kvp.Key))
+                        preserved[kvp.Key] = kvp.Value;
+                _extendedMappingDict = preserved;
+            }
+            ExtendedMappingEntries = null; // re-flushed from the dict on save
+
+            // MIDI/KBM mapping dictionaries and arrays (no tuning shares these).
             MidiMappingEntries = null;
             _midiMappingDict = null;
             KbmMappingEntries = null;
             _kbmMappingDict = null;
+        }
+
+        /// <summary>True for Extended-dict keys that are per-device TUNING (steering mode +
+        /// tunables, Extended stick/trigger deadzone/range/curve) rather than input-routing
+        /// descriptors. These survive <see cref="ClearMappingDescriptors"/> so a descriptor
+        /// rewrite can't wipe a device's tuning.</summary>
+        private static bool IsPerDeviceTuningKey(string k)
+        {
+            if (string.IsNullOrEmpty(k)) return false;
+            if (k.StartsWith("Stick", StringComparison.Ordinal) && k.Contains("Steer", StringComparison.Ordinal))
+                return true;
+            // Motion Lean input tuning (gyro tab's Motion Steering card):
+            // MotionSteerInner / MotionSteerOuter / MotionSteerOrient. Per-device
+            // tuning, not an input-routing descriptor — without this, the
+            // descriptor-bleed cleanup reset a non-selected device's tilt setup
+            // to defaults on every device-switch save.
+            if (k.StartsWith("MotionSteer", StringComparison.Ordinal))
+                return true;
+            if (k.StartsWith("ExtendedStick", StringComparison.Ordinal))
+                return true;
+            if (k.StartsWith("ExtendedTrigger", StringComparison.Ordinal)
+                && (k.EndsWith("Dz", StringComparison.Ordinal) || k.EndsWith("Adz", StringComparison.Ordinal)
+                    || k.EndsWith("Mr", StringComparison.Ordinal) || k.EndsWith("Curve", StringComparison.Ordinal)))
+                return true;
+            return false;
         }
 
         /// <summary>
@@ -1347,6 +1466,7 @@ namespace PadForge.Engine.Data
             Add(LeftShoulder); Add(RightShoulder);
             Add(ButtonBack); Add(ButtonStart); Add(ButtonGuide);
             Add(LeftThumbButton); Add(RightThumbButton);
+            Add(ButtonShare);
 
             // D-Pad
             Add(DPad); Add(DPadUp); Add(DPadDown); Add(DPadLeft); Add(DPadRight);
@@ -1456,6 +1576,13 @@ namespace PadForge.Engine.Data
             // Force feedback
             nameof(ForceType), nameof(ForceOverall), nameof(ForceSwapMotor),
             nameof(LeftMotorStrength), nameof(RightMotorStrength),
+            nameof(RotationRange), nameof(AutoCenterStrength), nameof(WheelRpmLeds),
+            // Steering at-lock feedback (#94)
+            nameof(SteeringLockRumbleEnabled), nameof(SteeringLockTriggerVibEnabled),
+            nameof(SteeringLockLightbarEnabled), nameof(SteeringLockATResistanceEnabled),
+            nameof(SteeringLockPulseMs), nameof(SteeringLockLightbarColor), nameof(SteeringLockLightbarFadeMs),
+            nameof(SteeringLockLightbarColorSource), nameof(SteeringLockLightbarPaletteCsv),
+            nameof(SteeringLockLightbarHoldMs),
             // Impulse trigger motors (Xbox One+)
             nameof(ImpulseOverallGain),
             nameof(ImpulseLeftStrength), nameof(ImpulseRightStrength),

@@ -146,16 +146,31 @@ namespace PadForge.Common
             else if (s.StartsWith("H", System.StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
             { prefix = s.Substring(0, 1); s = s.Substring(1); }
 
-            // Touchpad descriptors → localized display names.
+            // Touchpad descriptors → localized display names. Mirrors the
+            // picker (AddTouchpadRawChoices): per-finger axes spell out pad
+            // and finger explicitly ("Touchpad 1 Finger 1 X", 1-based for
+            // display, 0-based in the descriptor); the click is a single
+            // SDL button with no numbering.
             if (s.StartsWith("Touchpad", System.StringComparison.Ordinal))
             {
                 var si = Strings.Instance;
-                if (s.Contains("Finger 0 X")) return prefix + si.Mapping_TouchpadX1;
-                if (s.Contains("Finger 0 Y")) return prefix + si.Mapping_TouchpadY1;
-                if (s.Contains("Finger 0 Down")) return prefix + si.Mapping_TouchpadContact1;
-                if (s.Contains("Finger 1 X")) return prefix + si.Mapping_TouchpadX2;
-                if (s.Contains("Finger 1 Y")) return prefix + si.Mapping_TouchpadY2;
-                if (s.Contains("Finger 1 Down")) return prefix + si.Mapping_TouchpadContact2;
+                var tp = s.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
+                // "Touchpad {pad} Click" → single unnumbered click.
+                if (tp.Length >= 3 && tp[2].Equals("Click", System.StringComparison.OrdinalIgnoreCase))
+                    return prefix + si.Mapping_TouchpadClick;
+                // "Touchpad {pad} Finger {finger} {X|Y|Down}" → explicit axis.
+                if (tp.Length >= 5 && int.TryParse(tp[1], out int padIdx)
+                    && tp[2].Equals("Finger", System.StringComparison.OrdinalIgnoreCase)
+                    && int.TryParse(tp[3], out int fingerIdx))
+                {
+                    string fmt =
+                          tp[4].Equals("X",    System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerX_Format
+                        : tp[4].Equals("Y",    System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerY_Format
+                        : tp[4].Equals("Down", System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerTouch_Format
+                        : null;
+                    if (fmt == null) return null;
+                    return prefix + string.Format(fmt, padIdx + 1, fingerIdx + 1);
+                }
                 return null;
             }
 
@@ -178,6 +193,7 @@ namespace PadForge.Common
                 string sub = s.Substring(7).Trim();
                 if (sub.Equals("Gyro",  System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_MotionGyro;
                 if (sub.Equals("Accel", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_MotionAccel;
+                if (sub.Equals("Lean",  System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_MotionLean;
                 return null;
             }
 
@@ -433,6 +449,45 @@ namespace PadForge.Common
         /// dropdown entries. Null = no gating, shows everything the
         /// device's hardware could support (the legacy behavior).</para>
         /// </summary>
+        private static readonly string[] MidiNoteLetters =
+            { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
+
+        private static readonly System.Collections.Generic.Dictionary<int, string> MidiCcNames = new()
+        {
+            [1] = "Mod Wheel", [2] = "Breath", [4] = "Foot Pedal",
+            [5] = "Portamento Time", [7] = "Volume", [8] = "Balance",
+            [10] = "Pan", [11] = "Expression", [64] = "Sustain",
+            [65] = "Portamento", [66] = "Sostenuto", [67] = "Soft Pedal",
+            [71] = "Resonance", [74] = "Brightness", [91] = "Reverb", [93] = "Chorus",
+        };
+
+        /// <summary>Emits the full MIDI namespace as input choices: notes as
+        /// buttons ("Midi Note N"), CCs ("Midi CC N"), and pitch bend.</summary>
+        private static void AddMidiChoices(System.Collections.Generic.List<InputChoice> list, Strings si)
+        {
+            for (int n = 0; n < PadForge.Engine.MidiInputState.NoteCount; n++)
+            {
+                string noteName = $"{MidiNoteLetters[n % 12]}{n / 12 - 1}";
+                list.Add(new InputChoice
+                {
+                    Descriptor = $"Midi Note {n}",
+                    DisplayName = string.Format(si.Mapping_MidiNote_Format, n, noteName),
+                });
+            }
+            for (int c = 0; c < PadForge.Engine.MidiInputState.CcCount; c++)
+            {
+                string display = MidiCcNames.TryGetValue(c, out string nm)
+                    ? string.Format(si.Mapping_MidiCcNamed_Format, c, nm)
+                    : string.Format(si.Mapping_MidiCc_Format, c);
+                // Absolute value (fader/knob), then the two relative-encoder
+                // pulse buttons (endless rotary → up/down).
+                list.Add(new InputChoice { Descriptor = $"Midi CC {c}", DisplayName = display });
+                list.Add(new InputChoice { Descriptor = $"Midi CC {c} Up", DisplayName = string.Format(si.Mapping_MidiCcUp_Format, c) });
+                list.Add(new InputChoice { Descriptor = $"Midi CC {c} Down", DisplayName = string.Format(si.Mapping_MidiCcDown_Format, c) });
+            }
+            list.Add(new InputChoice { Descriptor = "Midi Pitch Bend", DisplayName = si.Mapping_MidiPitchBend });
+        }
+
         internal static InputChoice[] BuildInputChoices(UserDevice ud,
             System.Func<int, PadForge.Engine.Touchpad.TouchpadGestureSettings> touchpadSettingsForPad = null)
         {
@@ -442,6 +497,16 @@ namespace PadForge.Common
                 return list.ToArray();
 
             var si = Strings.Instance;
+
+            // MIDI input devices expose the whole MIDI namespace, listed
+            // here (no DeviceObjects, no config): all 128 notes, all 128
+            // CCs, and pitch bend. The descriptors resolve through the
+            // "Midi ..." family in SourceCoercion against CustomInputState.Midi.
+            if (ud.CapType == PadForge.Engine.InputDeviceType.Midi)
+            {
+                AddMidiChoices(list, si);
+                return list.ToArray();
+            }
 
             if (ud.DeviceObjects != null && ud.DeviceObjects.Length > 0)
             {
@@ -582,12 +647,64 @@ namespace PadForge.Common
             // web touchpad, overlay) has a wrapper and a click.
             if (ud.HasTouchpad || ud.IsTouchpad)
             {
-                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 0 X", DisplayName = si.Mapping_TouchpadX1 });
-                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 0 Y", DisplayName = si.Mapping_TouchpadY1 });
-                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 0 Down", DisplayName = si.Mapping_TouchpadContact1 });
-                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 X", DisplayName = si.Mapping_TouchpadX2 });
-                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 Y", DisplayName = si.Mapping_TouchpadY2 });
-                list.Add(new InputChoice { Descriptor = "Touchpad 0 Finger 1 Down", DisplayName = si.Mapping_TouchpadContact2 });
+                // One raw-axis block per touchpad surface the device exposes.
+                // Descriptors stay 0-based internally ("Touchpad 0 Finger 0 X",
+                // "Touchpad 1 Finger 0 X" for a second pad); the display names
+                // built below are 1-based. Multi-touchpad devices (Steam
+                // Controller 2026 / Steam Deck / original Steam Controller) get
+                // a block per pad. Pad count comes from the live device
+                // snapshot, mirroring AddTouchpadGestureChoices; absent a
+                // wrapper it stays a single pad.
+                // Pad + finger counts come from the live snapshot when the
+                // device is online (authoritative), else from the persisted
+                // Cap* values so a powered-off controller keeps the right shape
+                // instead of collapsing to one pad / two fingers. SDL enumerates
+                // the real per-pad finger count (SDL_GetNumGamepadTouchpadFingers):
+                // the Steam Controller 2026 reports 1 finger per pad, DualSense 2.
+                // Emitting a fixed two-finger block produced a dead "finger 2" on
+                // single-finger pads, so gate each finger on the actual count.
+                CustomInputState tpState = null;
+                try { tpState = ud.Device?.GetCurrentState(); }
+                catch { /* defensive: live read failure -> persisted counts */ }
+
+                int numPads = (tpState?.Touchpads != null && tpState.Touchpads.Length > 0)
+                    ? tpState.Touchpads.Length
+                    : (ud.CapTouchpadCount > 0 ? ud.CapTouchpadCount : 1);
+
+                int FingerCount(int p)
+                {
+                    if (tpState?.Touchpads != null && p < tpState.Touchpads.Length && tpState.Touchpads[p] != null)
+                        return tpState.Touchpads[p].MaxFingers;
+                    if (ud.CapTouchpadFingerCounts != null && p < ud.CapTouchpadFingerCounts.Length)
+                        return ud.CapTouchpadFingerCounts[p];
+                    return 2; // legacy fallback for configs predating per-pad finger persistence
+                }
+
+                // Display names spell out both pad and finger explicitly
+                // ("Touchpad 1 Finger 1 X"), 1-based for humans while the
+                // descriptor stays 0-based internally. Uniform for single-
+                // and multi-pad devices, so a DualSense reads
+                // "Touchpad 1 Finger 1 X / Touchpad 1 Finger 2 X" and the
+                // Steam Controller 2026 reads "Touchpad 1 Finger 1 X /
+                // Touchpad 2 Finger 1 X". One row per finger the pad
+                // actually reports (FingerCount), so single-finger pads
+                // don't list a dead second finger.
+                for (int p = 0; p < numPads; p++)
+                {
+                    int fingers = FingerCount(p);
+                    for (int f = 0; f < fingers; f++)
+                    {
+                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} X",    DisplayName = string.Format(si.Mapping_TouchpadFingerX_Format,    p + 1, f + 1) });
+                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Y",    DisplayName = string.Format(si.Mapping_TouchpadFingerY_Format,    p + 1, f + 1) });
+                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Down", DisplayName = string.Format(si.Mapping_TouchpadFingerTouch_Format, p + 1, f + 1) });
+                    }
+                }
+
+                // Touchpad click is a SINGLE SDL button (SDL_GAMEPAD_BUTTON_TOUCHPAD
+                // -> Buttons[16], surfaced as "Touchpad Click" in the button list).
+                // SDL defines it once with no per-pad numbering, so emit exactly one
+                // click descriptor, never "Touchpad 1 Click". A multi-pad device's
+                // second physical click surfaces as its own gamepad button (MISC2).
                 bool isPtpSystemTouchpad = ud.IsTouchpad && ud.Device == null;
                 if (!isPtpSystemTouchpad)
                     list.Add(new InputChoice { Descriptor = "Touchpad 0 Click", DisplayName = si.Mapping_TouchpadClick });
@@ -615,6 +732,14 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = "Motion Gyro",  DisplayName = si.Mapping_MotionGyro });
             if (ud.HasAccel)
                 list.Add(new InputChoice { Descriptor = "Motion Accel", DisplayName = si.Mapping_MotionAccel });
+
+            // Gravity-lean input: tilt the controller like a wheel and the lean
+            // angle drives whatever axis the user maps it to. A normal input
+            // descriptor — it does NOT override the target's other sources.
+            // Tuning (tilt deadzones / grip orientation) lives on the Gyro
+            // tab's Motion Steering card, per assigned device.
+            if (ud.HasAccel)
+                list.Add(new InputChoice { Descriptor = "Motion Lean", DisplayName = si.Mapping_MotionLean });
 
             // Touchpad gesture descriptors come LAST in the per-device
             // section so they appear after raw hardware (touchpad axes,
@@ -664,11 +789,15 @@ namespace PadForge.Common
             // PtpMaxFingers (5) per the HID PTP spec, so the fallback
             // must reflect that or 3/4/5-finger gestures never surface
             // in the picker.
-            int numPads = 1;
+            // Persisted CapTouchpadCount keeps both pads' gesture descriptors
+            // available when the device is offline (no live wrapper); the live
+            // snapshot overrides with authoritative pad + finger counts.
+            int numPads = ud.CapTouchpadCount > 0 ? ud.CapTouchpadCount : 1;
             int fallbackFingers = ud.IsTouchpad
                 ? PadForge.Engine.PrecisionTouchpadReader.PtpMaxFingers
                 : 2;
-            int[] perPadFingers = new[] { fallbackFingers };
+            int[] perPadFingers = new int[numPads];
+            for (int i = 0; i < numPads; i++) perPadFingers[i] = fallbackFingers;
             try
             {
                 var state = ud.Device?.GetCurrentState();
@@ -694,7 +823,7 @@ namespace PadForge.Common
             {
                 int max = perPadFingers[p];
                 string PadWrap(string label) => multiPad
-                    ? string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, p, label)
+                    ? string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, p + 1, label)
                     : label;
 
                 // Gating — when the App layer passes a per-pad settings
@@ -722,11 +851,12 @@ namespace PadForge.Common
                 // a flat list when your DualSense is also on the slot
                 // would be ambiguous otherwise. For single-pad devices
                 // the wrap is plain "Touchpad Stick X"; multi-pad uses
-                // the existing pad-prefix format "Touchpad 0: Stick X".
+                // the pad-prefix format "Touchpad 1: Stick X" (1-based,
+                // matching the per-finger axes and Devices previews).
                 if (s?.EnableJoystickOutput == true)
                 {
                     string StickWrap(string label) => multiPad
-                        ? string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, p, label)
+                        ? string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, p + 1, label)
                         : string.Format(si.Mapping_TouchpadGesture_SinglePadNoun_Format, label);
                     AddGesture(list, p, "StickX", StickWrap(si.Mapping_TouchpadGesture_StickX));
                     AddGesture(list, p, "StickY", StickWrap(si.Mapping_TouchpadGesture_StickY));

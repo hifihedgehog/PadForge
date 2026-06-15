@@ -671,7 +671,7 @@
   <data name="Macro_FixedCount" xml:space="preserve"><value>指定回数</value></data>
   <data name="Macro_UntilRelease" xml:space="preserve"><value>離すまで</value></data>
   <data name="Macro_Count" xml:space="preserve"><value>回数</value></data>
-  <data name="Macro_DelayMs" xml:space="preserve"><value>遅延 (ms)</value></data>
+  <data name="Macro_DelayMs" xml:space="preserve"><value>遅延</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>感度</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>新規マクロ</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>トリガーを記録</value></data>
@@ -1073,7 +1073,6 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>低音カットオフをリセット</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>左モーターをリセット</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>右モーターをリセット</value></data>
-  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>タッチパッド 1 X</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>ジャイロ ピッチ</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>ジャイロ ヨー</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>ジャイロ ロール</value></data>
@@ -1172,14 +1171,13 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>パススルー調整をリセット</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>感度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ソースごとのジャイロ感度倍率。1.0 = エンジンの既定 (500°/s → フルディフレクション)。1.0 を超えると敏感になり、1.0 未満では鈍くなります。</value></data>
-  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>タッチパッド 1 Y</value></data>
-  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>タッチパッド 2 X</value></data>
-  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>タッチパッド 2 Y</value></data>
-  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>タッチパッド 1 タッチ</value></data>
-  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>タッチパッド 2 タッチ</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>タッチパッドクリック</value></data>
+  <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} X</value></data>
+  <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} Y</value></data>
+  <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} タッチ</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>モーション ジャイロ</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>モーション 加速度センサー</value></data>
+  <data name="Mapping_MotionLean" xml:space="preserve"><value>モーションリーン</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>タッチパッド</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>テンキー *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>テンキー +</value></data>
@@ -1210,6 +1208,14 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput のドロップイン置換版。PadForge 自身の仮想コントローラーを自身のビューから除外します</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zackslyアイコンパック</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>「Xbox Series Button Icons and Controls」(Zacksly、CC BY 3.0) を基にしたスティックおよびトリガーのアイコン</value></data>
+  <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Bluetooth経由のDualSenseスピーカー音声を支える純C#製Opusエンコーダー。Logan Stromberg作。BSD 3-Clause。</value></data>
+  <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormangaによるDualSense Bluetooth音声の研究。コントローラースピーカーのストリームが利用するパケットトランスポート。apps.sdore.me/SAxense。MPL-2.0。</value></data>
+  <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalolによるBluetoothスピーカーのレシピ。Opusフレーミングとパケットレイアウト。知見の共有とテストを提供したTechAntohereにも感謝。MIT。</value></data>
+  <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
+  <data name="About_DualSenseYDesc" xml:space="preserve"><value>USBコントローラー音声パススルーの参照実装。WujekFoliarz作。</value></data>
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>アダプティブトリガー</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>アダプティブトリガー</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>割り当てられた物理 DualSense のトリガーエフェクトを設定します。ゲーム由来のトリガーエフェクトは自動的に転送されます。ここでの設定は、ゲームが書き込んでいないときに動作するユーザー設定レイヤーを追加します。</value></data>
@@ -1317,7 +1323,7 @@
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>インプットリアクティブ — パレットを巡回</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>インプットリアクティブ — 押下ごとに単色</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>明るさ</value></data>
-  <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期 (ms)</value></data>
+  <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>パレット</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>カラー 1</value></data>
   <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>カラー 2</value></data>
@@ -1327,8 +1333,8 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>カラーを追加</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>パレットをリセット</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>現在のパレットを既定の 4 色 (赤、緑、青、黄) に置き換えます。</value></data>
-  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>パルス保持 (ms)</value></data>
-  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>パルス減衰 (ms)</value></data>
+  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>パルス保持</value></data>
+  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>パルス減衰</value></data>
   <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>左トリガーをリセット</value></data>
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>右トリガーをリセット</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>強度をリセット</value></data>
@@ -1397,7 +1403,7 @@
   <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>レイヤー名の変更</value></data>
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>継承しない</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>オンにすると、このレイヤーのターゲットはベース行にフォールスルーせず、オフのままになります。</value></data>
-  <data name="Pad_Shift_Delay" xml:space="preserve"><value>遅延(ms)</value></data>
+  <data name="Pad_Shift_Delay" xml:space="preserve"><value>遅延</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>レイヤーの変更が発火する前に、アクティベーターがアクティブな状態を維持する必要があるミリ秒。</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>レイヤーへジャンプ</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>コードの2番目の入力</value></data>
@@ -1507,7 +1513,6 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>タッチパッド</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>タッチパッドごとの入力。ジェスチャー（スワイプ、タップ、ピンチ、シェイプ）と連続出力モード（仮想スティック / 方向キー、マウス）がマッピングソースになり、マッピングタブで割り当てられます。</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>タッチパッド</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>タッチパッド {0}</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>ジェスチャー検出</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>このタッチパッドでジェスチャーを有効にする</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>このタッチパッドのマスタートグルです。オフの場合、このタッチパッドではジェスチャーディスクリプタを発火しません。指 / クリック / 位置のマッピングはそのまま動作します。</value></data>
@@ -1516,22 +1521,22 @@
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>カスタムのみ</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>両方</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>ライブの指の軌跡を、どちらのジェスチャーカタログと照合するかを指定します。既定は「両方」です。</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>クールダウン (ms)</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>クールダウン</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>ジェスチャー発火後、このタッチパッドで指定ミリ秒間は新しいジェスチャーを無視します。素早い往復動作による多重発火を防ぎます。</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>組み込みジェスチャー</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4 方向スワイプ (上 / 下 / 左 / 右)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8 方向スワイプ (斜め方向を追加)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>スワイプ距離 (0..1)</value></data>
-  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>スワイプ時間ウィンドウ (ms)</value></data>
+  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>スワイプ時間ウィンドウ</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>放射ゾーン (ウェポンホイール式)</value></data>
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>指を置いた位置から外側に向かってスワイプし、扇形のセクターに入ります。ゾーン 0 は上方向にアンカーされ、ゾーンは時計回りに増えます。ピッカーの各エントリにはカッコ内に上方向からの角度が度数で表示されます。(0°) が上、(90°) が右、(180°) が下、(270°) が左です。一度に保持されるゾーンは 1 つだけで、別のゾーンに入ると前のゾーンが解放されるため、1 回のスワイプで複数のゾーンを循環できます。</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>ゾーン数</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>中心デッドゾーン (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>タップ / ダブルタップ / トリプルタップ</value></data>
-  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>タップ時間ウィンドウ (ms)</value></data>
-  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>マルチタップ間隔 (ms)</value></data>
+  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>タップ時間ウィンドウ</value></data>
+  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>マルチタップ間隔</value></data>
   <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>ロングプレス</value></data>
-  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>ロングプレス時間 (ms)</value></data>
+  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>ロングプレス時間</value></data>
   <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>2 本指スワイプ</value></data>
   <data name="Pad_Touchpad_PinchSpread" xml:space="preserve"><value>ピンチイン / ピンチアウト</value></data>
   <data name="Pad_Touchpad_Rotate" xml:space="preserve"><value>回転</value></data>
@@ -1625,4 +1630,317 @@
   <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>指の本数が変わりました。サンプルをクリアしました。</value></data>
   <data name="Recorder_Error_NoEngine" xml:space="preserve"><value>エンジンが動作していません。記録前にエンジンを起動してください。</value></data>
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>有効なサンプルが取得できませんでした。もう一度ジェスチャーを描いてみてください。</value></data>
+  <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>回転範囲</value></data>
+  <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>オートセンター強度</value></data>
+  <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>RPMシフトLED</value></data>
+  <data name="Pad_Steering_Header" xml:space="preserve"><value>ステアリング</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>オフではスティックは通常どおりです。その他のモードではハンドルのように動作します。</value></data>
+  <data name="Pad_Steering_Mode" xml:space="preserve"><value>ステアリングモード</value></data>
+  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>オフ</value></data>
+  <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>巻き取り</value></data>
+  <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>角度→軸 (X)</value></data>
+  <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>角度→軸 (Y)</value></data>
+  <data name="Pad_Steering_Mode_MotionLean" xml:space="preserve"><value>モーションリーン</value></data>
+  <data name="Pad_Steering_WindRange" xml:space="preserve"><value>巻き取り範囲</value></data>
+  <data name="Pad_Steering_WindPower" xml:space="preserve"><value>巻き取り強度</value></data>
+  <data name="Pad_Steering_WindUnwindRate" xml:space="preserve"><value>巻き戻しレート</value></data>
+  <data name="Pad_Steering_AngleInnerDz" xml:space="preserve"><value>角度内側デッドゾーン</value></data>
+  <data name="Pad_Steering_AngleOuterDz" xml:space="preserve"><value>角度外側デッドゾーン</value></data>
+  <data name="Pad_Steering_MotionInnerDz" xml:space="preserve"><value>リーン内側デッドゾーン</value></data>
+  <data name="Pad_Steering_MotionOuterDz" xml:space="preserve"><value>リーン外側デッドゾーン</value></data>
+  <data name="Pad_Steering_Orientation" xml:space="preserve"><value>コントローラーの向き</value></data>
+  <data name="Pad_Steering_Orient_Forward" xml:space="preserve"><value>前</value></data>
+  <data name="Pad_Steering_Orient_Left" xml:space="preserve"><value>左</value></data>
+  <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>右</value></data>
+  <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>後ろ</value></data>
+  <data name="Pad_Steering_Reset_Mode" xml:space="preserve"><value>ステアリングモードをリセット</value></data>
+  <data name="Pad_Steering_Reset_WindRange" xml:space="preserve"><value>巻き取り範囲をリセット</value></data>
+  <data name="Pad_Steering_Reset_WindPower" xml:space="preserve"><value>巻き取り強度をリセット</value></data>
+  <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>巻き戻しレートをリセット</value></data>
+  <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>角度内側デッドゾーンをリセット</value></data>
+  <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>角度外側デッドゾーンをリセット</value></data>
+  <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>リーン内側デッドゾーンをリセット</value></data>
+  <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>リーン外側デッドゾーンをリセット</value></data>
+  <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>コントローラーの向きをリセット</value></data>
+  <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>モーションステアリング</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>「モーションリーン」入力の設定。コントローラーをハンドルのように傾けます。マッピングの入力ドロップダウンで「モーションリーン」をスティック軸に割り当ててください。</value></data>
+  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>モーションステアリングの設定をすべてリセット</value></data>
+  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ステアリングロックフィードバック</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ステアリングモードに設定したスティックをフルロックまで操作しきると、合図（振動、トリガー、ライトバー）を発生させて操舵限界を体感できます。すべて既定でオフです。</value></data>
+  <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>ロック時にランブルパルス</value></data>
+  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>ロック時にトリガー振動</value></data>
+  <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>ロック時にライトバーパルス</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>ロック付近でトリガー抵抗</value></data>
+  <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>パルス長</value></data>
+  <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>ライトバーの色</value></data>
+  <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>ライトバーフェード</value></data>
+  <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>パルス長をリセット</value></data>
+  <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>ライトバーの色をリセット</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>ライトバーの減衰をリセット</value></data>
+  <data name="Pad_Wheel" xml:space="preserve"><value>ステアリング</value></data>
+  <data name="Pad_ResetWheel" xml:space="preserve"><value>ステアリングをリセット</value></data>
+  <data name="Pad_ResetRotationRange" xml:space="preserve"><value>回転範囲をリセット</value></data>
+  <data name="Pad_ResetAutocenter" xml:space="preserve"><value>オートセンター強度をリセット</value></data>
+  <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPMシフトLEDをリセット</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>フォースフィードバック対応ステアリングの回転範囲、オートセンター、シフトランプ。</value></data>
+  <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>ステアリングロックフィードバックをリセット</value></data>
+  <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>ロック時にランブルパルスをリセット</value></data>
+  <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>ロック時にトリガー振動をリセット</value></data>
+  <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>ロック時にライトバーパルスをリセット</value></data>
+  <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>ロック付近でトリガー抵抗をリセット</value></data>
+  <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>ロックごとに1色ずつ切り替える色を追加します。</value></data>
+  <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>ライトバーの保持をリセット</value></data>
+  <data name="Pad_Audio" xml:space="preserve"><value>オーディオ</value></data>
+  <data name="Pad_Audio_Header" xml:space="preserve"><value>オーディオ</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>マクロサウンドとミラーされたシステム音声は、選択中のコントローラーの内蔵スピーカーからUSBまたはBluetooth経由で再生されます。上のドロップダウンでデバイスを選択してください。</value></data>
+  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>サウンド出力</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>サウンドは選択中のコントローラーへ自動的にルーティングされます。USBではハードウェアコンテナでパッドのオーディオ端点を照合し、BluetoothではソニーHIDフレームで音声を送信します。</value></data>
+  <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>ミラーソース</value></data>
+  <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>コントローラーのスピーカーにミラーリングする再生デバイスを選択します。特定のサウンドを別の再生デバイスに出力するゲームは、このデバイスを対象にできます。</value></data>
+  <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>システム既定</value></data>
+  <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>（利用できないデバイス）</value></data>
+  <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>マスター音量</value></data>
+  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>マスター音量を100%にリセット</value></data>
+  <data name="Pad_Audio_Test" xml:space="preserve"><value>テスト</value></data>
+  <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>選択中のデバイスで短いビープ音を再生</value></data>
+  <data name="Pad_Audio_StopAll" xml:space="preserve"><value>すべてのサウンドを停止</value></data>
+  <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>このパッドのマクロサウンドをすべて停止</value></data>
+  <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>サウンドマクロ</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>サウンドはマクロが再生します：トリガー（押す・離す・長押し・数式）＋「サウンド再生」アクション。ここかマクロタブで作成でき、遅延・繰り返し・トグルも使えます。</value></data>
+  <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>新しいサウンドマクロ</value></data>
+  <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>サウンドマクロはまだありません。作成してサウンドファイルとトリガーを選んでください。</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>このマクロをマクロタブで開く</value></data>
+  <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>サウンドマクロ {0}</value></data>
+  <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>サウンド再生</value></data>
+  <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>サウンドファイル（.wav、.mp3、.m4a、.aac、.wma、.flac）をこのパッドの出力デバイスで再生</value></data>
+  <data name="MacroAction_Type_SoundStop" xml:space="preserve"><value>サウンド停止</value></data>
+  <data name="MacroAction_SoundStop_Tooltip" xml:space="preserve"><value>このパッドのマクロサウンドをすべて停止します。ループ再生と組み合わせて別のマクロから終了できます。</value></data>
+  <data name="MacroAction_PlaySound_Format" xml:space="preserve"><value>{0} を再生 ({1}%)</value></data>
+  <data name="MacroAction_PlaySoundLoop_Format" xml:space="preserve"><value>{0} をループ ({1}%)</value></data>
+  <data name="Macro_Sound_File_Label" xml:space="preserve"><value>サウンドファイル</value></data>
+  <data name="Macro_Sound_Browse" xml:space="preserve"><value>参照…</value></data>
+  <data name="Macro_Sound_Preview" xml:space="preserve"><value>試聴</value></data>
+  <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>音量</value></data>
+  <data name="Macro_Sound_Loop" xml:space="preserve"><value>停止までループ</value></data>
+  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>「サウンド停止」アクションが実行されるまで繰り返します。長押し／離すまでマクロではトリガーを離すと停止します</value></data>
+  <data name="Pad_Audio_Mirror" xml:space="preserve"><value>システム音声をコントローラーのスピーカーへミラー</value></data>
+  <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>システム既定の出力で再生中の音声を、このコントローラーの内蔵スピーカーにも並行して出力します。USBとBluetoothの両方で動作します。</value></data>
+  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>選択中のデバイスには内蔵スピーカーがありません。このパッドのマクロサウンドはシステム既定の出力で再生されます。</value></data>
+  <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>タッチパッドの形状テンプレートマッチャー（円 / 四角 / 三角 / Z / チェックマーク、およびカスタム記録ジェスチャー）。Magrofuoco、Vatavu、Anthony、WobbrockによるJavaScriptリファレンスのC#再実装。BSD 3-Clause。</value></data>
+  <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>一本指の形状でポイントクラウドマッチャーと並行して動作する角度マージン方式のスコアリング。GestureSignのPointPatternAnalyzerより。BSD 3-Clause。</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>ミラー、ミラーソース、マスター音量を既定値に戻す</value></data>
+  <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai（daidr）によるブラウザー版DualSenseテストスイート。SonyフィーチャーレポートのCRCフレーミングと、PadForgeが仮想パッドから物理パッドへ転送するファームウェアテストコマンドのリファレンス。MIT。</value></data>
+  <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefariusによるDualShock 4 Bluetooth音声リファレンス。PadForgeのDS4スピーカーストリームのレポートフレーミング。SBCエンコーダーはBluetooth A2DP仕様に基づく独自のC#実装。プロトコル文書はkhallmarkのds4macより。MIT。</value></data>
+  <data name="Profiles_Export" xml:space="preserve"><value>エクスポート…</value></data>
+  <data name="Profiles_Import" xml:space="preserve"><value>インポート…</value></data>
+  <data name="Status_ProfileExported_Format" xml:space="preserve"><value>プロファイル「{0}」をエクスポートしました。</value></data>
+  <data name="Status_ProfileImported_Format" xml:space="preserve"><value>プロファイル「{0}」をインポートしました（サウンドパッケージ {1} 件を登録）。</value></data>
+  <data name="Status_ProfileImportFailed" xml:space="preserve"><value>このファイルは読み取り可能なPadForgeプロファイルではありません。</value></data>
+  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>{0} からサウンドを選択</value></data>
+  <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>サウンドパッケージ</value></data>
+  <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>サウンドパッケージは、拡張子 .pfsounds の 1 つの ZIP ファイルにまとめたサウンド集です。ここに追加すると、どのサウンドマクロでもその中のサウンドを選べます。PadForge はファイルから直接読み取り、展開は行いません。パッケージを PadForge.exe と同じフォルダーに置けば、フォルダーごと持ち運べます。</value></data>
+  <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>パッケージを追加…</value></data>
+  <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>既存の .pfsounds ファイルを一覧に追加します。</value></data>
+  <data name="Pad_Audio_Packages_Create" xml:space="preserve"><value>パッケージを作成…</value></data>
+  <data name="Pad_Audio_Packages_Create_Tooltip" xml:space="preserve"><value>サウンドファイルを選んで新しい .pfsounds パッケージとして保存します。</value></data>
+  <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>選択したパッケージを一覧から削除します。ファイル自体は削除されません。</value></data>
+  <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>サウンドパッケージはありません。</value></data>
+  <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>パッケージに入れるサウンドファイルを選択</value></data>
+  <data name="DeviceType_Midi" xml:space="preserve"><value>MIDIコントローラー</value></data>
+  <data name="Mapping_MidiNote_Format" xml:space="preserve"><value>ノート {0} ({1})</value></data>
+  <data name="Mapping_MidiCc_Format" xml:space="preserve"><value>CC {0}</value></data>
+  <data name="Mapping_MidiCcNamed_Format" xml:space="preserve"><value>CC {0} ({1})</value></data>
+  <data name="Mapping_MidiPitchBend" xml:space="preserve"><value>ピッチベンド</value></data>
+  <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
+  <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
+  <data name="RemoteLink_IdentityTitle" xml:space="preserve">
+    <value>アイデンティティ保護</value>
+  </data>
+  <data name="RemoteLink_IdentityDescription" xml:space="preserve">
+    <value>この PC のペアリング ID の保存方法。ポータブル モードを選ぶと、ペアリング情報を USB メモリに入れて別のマシンへ持ち運べます。</value>
+  </data>
+  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve">
+    <value>この PC の名前</value>
+  </data>
+  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
+    <value>近くの PC（未ペアリング）</value>
+  </data>
+  <data name="Common_Reset" xml:space="preserve">
+    <value>リセット</value>
+  </data>
+  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
+    <value>Remote Link のパスワード</value>
+  </data>
+  <data name="Devices_ButtonNumberTooltip" xml:space="preserve">
+    <value>ボタン {0}</value>
+  </data>
+  <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
+    <value>PadForge タッチパッド</value>
+  </data>
+  <data name="RemoteLink_PasswordEmpty" xml:space="preserve">
+    <value>パスワードを入力してください。</value>
+  </data>
+  <data name="RemoteLink_PasswordMismatch" xml:space="preserve">
+    <value>パスワードが一致しません。</value>
+  </data>
+  <data name="RemoteLink_IdentityModeSecure" xml:space="preserve">
+    <value>セキュア — この PC のみ</value>
+  </data>
+  <data name="RemoteLink_IdentityModePortablePassword" xml:space="preserve">
+    <value>ポータブル — パスワード保護あり</value>
+  </data>
+  <data name="RemoteLink_IdentityModePortableOpen" xml:space="preserve">
+    <value>ポータブル — パスワードなし</value>
+  </data>
+  <data name="RemoteLink_IdentityHintPortablePassword" xml:space="preserve">
+    <value>ご自身の ID はこのドライブに入って持ち運ばれ、どの PC でもパスワードで解除されます。ドライブを紛失しても、パスワードがなければ役に立ちません。</value>
+  </data>
+  <data name="RemoteLink_IdentityHintPortableOpen" xml:space="preserve">
+    <value>ご自身の ID は確認なしでこのドライブに入って持ち運ばれます。ドライブを持っている人は誰でも使用できます。大切に保管してください。</value>
+  </data>
+  <data name="RemoteLink_IdentityHintSecure" xml:space="preserve">
+    <value>この PC に固定されます（PC 上のすべての Windows アカウントで使えます）。別のマシンには移動できません。</value>
+  </data>
+  <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
+    <value>ペアリング済みの PC</value>
+  </data>
+  <data name="RemoteLink_Online" xml:space="preserve">
+    <value>オンライン</value>
+  </data>
+  <data name="RemoteLink_Offline" xml:space="preserve">
+    <value>オフライン</value>
+  </data>
+  <data name="RemoteLink_GamepadOnlySuffix" xml:space="preserve">
+    <value>ゲームパッドのみ</value>
+  </data>
+  <data name="RemoteLink_PeerConnectedSuffix" xml:space="preserve">
+    <value>(接続済み)</value>
+  </data>
+  <data name="RemoteLink_PeerPairedSuffix" xml:space="preserve">
+    <value>（ペアリング済み）</value>
+  </data>
+  <data name="RemoteLink_StatusUnlockBeforeChange" xml:space="preserve">
+    <value>保護を変更する前に、現在のIDのロックを解除してください。</value>
+  </data>
+  <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
+    <value>ポータブルIDを保護するパスワードを設定してください。各PCでRemote Linkのロックを解除する際に入力します。</value>
+  </data>
+  <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
+    <value>IDの保護を更新しました。</value>
+  </data>
+  <data name="RemoteLink_PasswordUnlockPrompt" xml:space="preserve">
+    <value>このIDのロックを解除するには、Remote Linkのパスワードを入力してください。</value>
+  </data>
+  <data name="RemoteLink_StatusWrongMachine" xml:space="preserve">
+    <value>Remote LinkのIDは別のPCに固定されています。移動するには、元のPCでポータブルモードに切り替えてください。</value>
+  </data>
+  <data name="RemoteLink_StatusWrongPassword" xml:space="preserve">
+    <value>Remote Linkのパスワードが正しくありません。</value>
+  </data>
+  <data name="RemoteLink_StatusIdentityUnavailable" xml:space="preserve">
+    <value>Remote LinkのIDは利用できません。</value>
+  </data>
+  <data name="RemoteLink_StatusConnecting" xml:space="preserve">
+    <value>{0}:{1} に接続中…</value>
+  </data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve">
+    <value>自動的に再接続する</value>
+  </data>
+  <data name="Dashboard_EnableRemoteLink" xml:space="preserve">
+    <value>Remote Link サーバーを有効にする</value>
+  </data>
+  <data name="Dashboard_RemoteLink" xml:space="preserve">
+    <value>Remote Link</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve">
+    <value>またはアドレスを指定して接続（詳細設定）</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve">
+    <value>ペアリング / 接続</value>
+  </data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
+    <value>ネットワーク経由で、別の PC のペアリング済み PadForge とコントローラーを共有します。</value>
+  </data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
+    <value>一度ペアリングすれば、信頼済みの PC は自動的に再接続します。ペアリング済みの PC はこの PC のゲームパッド出力を操作でき、制限しない限りキーボード・マウス・マクロも操作できます。</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNearby" xml:space="preserve">
+    <value>近くの PC</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve">
+    <value>同じネットワーク上で Remote Link を有効にしている PC が、ここに自動的に表示されます。</value>
+  </data>
+  <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve">
+    <value>ペアリング</value>
+  </data>
+  <data name="RemoteLink_Connect" xml:space="preserve">
+    <value>接続</value>
+  </data>
+  <data name="RemoteLink_Connected" xml:space="preserve">
+    <value>接続済み</value>
+  </data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve">
+    <value>ゲームパッドのみに制限しない限り、ペアリング済みの PC はこの PC にキーボード・マウス・マクロの入力を送信できます。</value>
+  </data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve">
+    <value>この PC をゲームパッド入力のみに制限する</value>
+  </data>
+  <data name="RemoteLink_Identity" xml:space="preserve">
+    <value>アイデンティティ</value>
+  </data>
+  <data name="RemoteLink_NoPairedPeers" xml:space="preserve">
+    <value>ペアリング済みの PC はまだありません。</value>
+  </data>
+  <data name="RemoteLink_Pair" xml:space="preserve">
+    <value>ペアリング</value>
+  </data>
+  <data name="RemoteLink_PairedPeers" xml:space="preserve">
+    <value>ペアリング済みの PC</value>
+  </data>
+  <data name="RemoteLink_PairedPeersDescription" xml:space="preserve">
+    <value>Remote Link でペアリングした PC の一覧です。接続を止めるには解除します。再接続するには、もう一度ペアリングが必要になります。</value>
+  </data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve">
+    <value>両方の画面でこのコードが一致していることを確認してから、ペアリングしてください。</value>
+  </data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve">
+    <value>リモート PC とペアリング</value>
+  </data>
+  <data name="RemoteLink_Reject" xml:space="preserve">
+    <value>拒否</value>
+  </data>
+  <data name="RemoteLink_Revoke" xml:space="preserve">
+    <value>解除</value>
+  </data>
+  <data name="RemoteLink_RevokeAll" xml:space="preserve">
+    <value>すべて解除</value>
+  </data>
+  <data name="RemoteLink_StatusListening" xml:space="preserve">
+    <value>{0} で待機中</value>
+  </data>
+  <data name="RemoteLink_StatusStartFailed" xml:space="preserve">
+    <value>開始に失敗しました: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerTimedOut" xml:space="preserve">
+    <value>PC {0} がタイムアウトしました</value>
+  </data>
+  <data name="RemoteLink_StatusConnectFailed" xml:space="preserve">
+    <value>接続に失敗しました: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusLinkRejected" xml:space="preserve">
+    <value>リンクが拒否されました: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
+    <value>PC {0} が接続しました、デバイス {1} 台</value>
+  </data>
+  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
+    <value>追加済みパッケージからサウンドを選ぶか、ファイルを参照します。</value>
+  </data>
+  <data name="Macro_Sound_BrowseFiles" xml:space="preserve">
+    <value>ファイルを参照…</value>
+  </data>
 </root>

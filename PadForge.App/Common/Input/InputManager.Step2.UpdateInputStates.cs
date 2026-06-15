@@ -1,4 +1,5 @@
 using System;
+using PadForge.Common.Telemetry;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 
@@ -198,6 +199,11 @@ namespace PadForge.Common.Input
                 // device rumble pump merges them via max() at write time.
                 if (!hasGameRumble && MacroRumbleOverrides[padIndex].IsActive)
                     hasGameRumble = true;
+                // A steering at-lock trigger-vibration pulse (#94 ch.2) likewise needs the
+                // dispatcher's timer alive so the momentary block reaches the trigger
+                // actuators when nothing else is driving the slot.
+                if (!hasGameRumble && SteeringTrigVibOverrides[padIndex].IsActive)
+                    hasGameRumble = true;
 
                 bool hasAudioRumbleEnabled = false;
                 if (settingsForPoke != null)
@@ -298,12 +304,24 @@ namespace PadForge.Common.Input
             // require ud.Device != null so we know the controller is
             // currently connected.
             bool isXboxImpulse = XboxControllerIdentity.IsImpulseTriggerDevice(ud.VendorId, ud.ProdId);
-            if (!isXboxImpulse)
+            // Native vendor FFB (Logitech / Fanatec wheels + Fanatec pedals) is
+            // written via a custom HID output report (RawHidOutput), bypassing
+            // SDL. These devices don't necessarily advertise standard HID
+            // rumble/haptic and are intercepted BEFORE the SDL path, so they skip
+            // the HasRumble/HasHaptic gate. Dispatched below by ud.DevicePath, so
+            // ud.Device may be null. Strictly VID/PID-gated — non-vendor devices
+            // fall through to the unchanged scalar/haptic path.
+            bool isLogitechWheel = LogitechRawHidWriter.IsLogitechWheel(ud.VendorId, ud.ProdId);
+            bool isFanatecWheel  = FanatecRawHidWriter.IsFanatecWheel(ud.VendorId, ud.ProdId);
+            bool isFanatecPedal  = FanatecRawHidWriter.IsFanatecPedal(ud.VendorId, ud.ProdId);
+            bool isThrustmasterWheel = ThrustmasterRawHidWriter.IsThrustmasterWheel(ud.VendorId, ud.ProdId);
+            bool isVendorFfb = isLogitechWheel || isFanatecWheel || isFanatecPedal || isThrustmasterWheel;
+            if (!isXboxImpulse && !isVendorFfb)
             {
                 if (ud.Device == null || (!ud.Device.HasRumble && !ud.Device.HasHaptic))
                     return;
             }
-            else if (ud.Device == null)
+            else if (isXboxImpulse && ud.Device == null)
             {
                 return;
             }
@@ -415,6 +433,21 @@ namespace PadForge.Common.Input
                 if (scaledLT > combinedLT) combinedLT = scaledLT;
                 if (scaledRT > combinedRT) combinedRT = scaledRT;
 
+                // Steering at-lock trigger-vibration pulse (#94 ch.2) for Xbox-style
+                // impulse triggers. DualSense routes this through the AT-vibration block in
+                // UserEffectsDispatcher (which returns early for Sony pads above); this is
+                // the impulse-trigger equivalent, layered onto the slot's trigger output
+                // via max(). Injected raw (the pulse already carries its own strength) so
+                // the cue is felt at a consistent level rather than scaled by the
+                // per-device impulse gain meant for game rumble.
+                float steerTrigVib = GetSteeringTrigVib(padIndex);
+                if (steerTrigVib > 0f)
+                {
+                    ushort stv = (ushort)System.Math.Clamp((int)System.Math.Round(steerTrigVib * 65535f), 0, 65535);
+                    if (stv > combinedLT) combinedLT = stv;
+                    if (stv > combinedRT) combinedRT = stv;
+                }
+
                 if (directionalSource == null
                     && (effective.HasDirectionalData || effective.HasConditionData))
                     directionalSource = effective;
@@ -454,6 +487,51 @@ namespace PadForge.Common.Input
                 _combinedVibration.HasConditionData = false;
             }
 
+            // Reverse output relay (#138): a "peer://" device lives on another PC.
+            // Every config-baked value (post gain / audio-rumble / macro / constant
+            // force, plus directional / condition data) is now in _combinedVibration.
+            // Ship it to the owner for non-Sony, non-vendor-wheel devices — Xbox impulse
+            // pads, generic gamepads, FFB sticks, and Fanatec pedals. Vendor wheels fall
+            // through to their branch below, which ships the semantic wheel frame.
+            if (RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath)
+                && !(isVendorFfb && !isFanatecPedal))
+            {
+                // Bake the consumer's Overall Strength into the directional/condition fields
+                // before shipping: the owner replays with ForceOverall=100, and unlike the
+                // scalar motors (already pre-scaled above) these are copied raw, so the slider
+                // would otherwise be lost. DeviceGain stays raw — the owner applies it once.
+                // Scale a COPY of the condition axes so the shared source state isn't mutated (#138 F30).
+                if (_combinedVibration.HasDirectionalData || _combinedVibration.HasConditionData)
+                {
+                    int og = int.TryParse(firstPadSetting?.ForceOverall, out int fg) ? System.Math.Clamp(fg, 0, 100) : 100;
+                    if (og != 100)
+                    {
+                        double s = og / 100.0;
+                        _combinedVibration.SignedMagnitude = (short)System.Math.Clamp(_combinedVibration.SignedMagnitude * s, -10000, 10000);
+                        var axes = _combinedVibration.ConditionAxes;
+                        if (_combinedVibration.HasConditionData && axes != null && _combinedVibration.ConditionAxisCount > 0)
+                        {
+                            var scaled = (ConditionAxisData[])axes.Clone();
+                            for (int ci = 0; ci < scaled.Length; ci++)
+                            {
+                                scaled[ci].PositiveCoefficient = (short)System.Math.Clamp(scaled[ci].PositiveCoefficient * s, -10000, 10000);
+                                scaled[ci].NegativeCoefficient = (short)System.Math.Clamp(scaled[ci].NegativeCoefficient * s, -10000, 10000);
+                            }
+                            _combinedVibration.ConditionAxes = scaled;
+                        }
+                    }
+                }
+                RemoteLinkOutputRouter.ShipVibration(ud.DevicePath, _combinedVibration);
+                return;
+            }
+
+            // Sole-writer guard (#138): this LOCAL device is also shared out and a remote
+            // game is actively driving it (a relayed frame holds the output lease). Skip
+            // the owner's local write so the inbound relay is the sole hardware writer.
+            // One guard covers every class below — Xbox impulse, generic SDL rumble,
+            // vendor FFB, and wheels. Lapses ~3 s after the remote falls quiet.
+            if (RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)) return;
+
             if (isXboxImpulse)
             {
                 // Xbox One+ sole-writer path. PadForge writes the HID
@@ -471,10 +549,237 @@ namespace PadForge.Common.Input
                 return;
             }
 
+            // Native vendor FFB dispatch. Wheels: project the directional force
+            // onto the steering axis (shared ForceFeedbackState helper — same math
+            // as the SDL single-axis haptic path) and send a constant force.
+            // Fanatec pedals: map the combined L/R motors to the pedal rumble
+            // motors. ud.DevicePath is the openable HID interface path.
+            if (isVendorFfb)
+            {
+                int overallGain = int.TryParse(firstPadSetting?.ForceOverall, out int g)
+                    ? System.Math.Clamp(g, 0, 100) : 100;
+                if (isFanatecPedal)
+                {
+                    byte brake    = (byte)(combinedL >> 8); // XInput left  -> brake
+                    byte throttle = (byte)(combinedR >> 8); // XInput right -> throttle
+                    FanatecRawHidWriter.WritePedalRumble(ud.DevicePath, throttle, brake);
+                }
+                else // a wheel — Logitech / Fanatec / Thrustmaster
+                {
+                    var cv = _combinedVibration;
+                    // Spring / damper / friction (game-driven condition effect) when
+                    // present, else a constant force from the projected steering level.
+                    bool hasCond = cv.HasConditionData && cv.ConditionAxisCount > 0 && cv.ConditionAxes != null;
+                    var ca = hasCond ? cv.ConditionAxes[0] : default; // axis 0 = steering
+                    short level = ForceFeedbackState.ComputeWheelSteeringLevel(cv, overallGain);
+                    // Condition coefficients + clip scale by device gain too, matching the
+                    // constant-force helper (ComputeWheelSteeringLevel) and the SDL path.
+                    int condGain = overallGain * cv.DeviceGain / 255;
+                    // XInput/Xbox targets send rumble (two motor magnitudes, no
+                    // direction). A wheel has no rumble motor, so translate rumble into
+                    // an oscillating constant force on the steering axis (a buzz),
+                    // mirroring the Sine haptic strategy joysticks get in SetHapticForces.
+                    // Real directional FFB takes precedence; rumble fills in otherwise.
+                    short wheelForce = level != 0 ? level : ForceFeedbackState.ComputeWheelRumbleLevel(cv, overallGain);
+                    // Auto-center strength (Wheel-tab slider). Fanatec has no firmware
+                    // autocenter and ftec_set_range's f5 disables its stock spring, so
+                    // Fanatec centering is a per-frame software spring (slot 1); Logitech
+                    // and Thrustmaster use their firmware spring in the one-shot below.
+                    int desAc = int.TryParse(firstPadSetting.AutoCenterStrength, out int acp) ? System.Math.Clamp(acp, 0, 100) : 0;
+                    int acMag = desAc * 0xffff / 100; // 0..100% -> 0..0xffff
+                    // Skip the HID write when the force/condition is identical to last poll —
+                    // the wheel holds it, so re-sending is pure per-poll churn (the 1000->500 Hz
+                    // drop with a wheel connected). Active FFB changes the signature each tick
+                    // and still writes; only a steady force (idle, held spring) is throttled.
+                    int periodicPeak = (isThrustmasterWheel && !hasCond && cv.HasDirectionalData && cv.Period > 0
+                        && ForceFeedbackState.IsPeriodicEffect(cv.EffectType))
+                        ? ForceFeedbackState.ComputeWheelSteeringPeak(cv, overallGain) : 0;
+                    var ffbSig = new WheelFfbSig(hasCond, cv.HasDirectionalData, wheelForce, periodicPeak, acMag,
+                        (int)cv.EffectType, (int)cv.Period,
+                        hasCond ? (int)ca.PositiveCoefficient : 0, hasCond ? (int)ca.NegativeCoefficient : 0,
+                        hasCond ? (int)ca.Offset : 0, hasCond ? (int)ca.DeadBand : 0,
+                        hasCond ? (int)ca.PositiveSaturation : 0, hasCond ? (int)ca.NegativeSaturation : 0, condGain);
+
+                    // Reverse output relay (#138): a "peer://" wheel lives on another PC.
+                    // Ship the semantic steering frame (force/condition/periodic + range +
+                    // RPM LEDs) and let the owner re-encode for ITS wheel's vendor/PID; the
+                    // vendor writers' stateful upload/play caches must stay on the owner.
+                    if (RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath))
+                    {
+                        int peerRange = int.TryParse(firstPadSetting.RotationRange, out int prg)
+                            ? System.Math.Clamp(prg, 40, 2520) : 900;
+                        bool ledsOn = firstPadSetting.WheelRpmLeds == "1";
+                        int ledMask = 0;
+                        if (ledsOn)
+                        {
+                            TelemetryHub.RequestActive();
+                            if (TelemetryHub.TryGetCurrent(out var ptel))
+                            {
+                                bool blinkOn = (Environment.TickCount / 60) % 2 == 0;
+                                float frac = ptel.RpmFraction;
+                                ledMask = isLogitechWheel ? RpmLedMap.Logitech(frac, blinkOn)
+                                    : isFanatecWheel ? RpmLedMap.Fanatec(frac, blinkOn)
+                                    : RpmLedMap.Thrustmaster(frac, blinkOn);
+                            }
+                        }
+                        RemoteLinkOutputRouter.ShipWheel(ud.DevicePath,
+                            hasCond, cv.HasDirectionalData, wheelForce, (short)periodicPeak, acMag,
+                            cv.EffectType, (int)cv.Period,
+                            hasCond ? ca.PositiveCoefficient : (short)0, hasCond ? ca.NegativeCoefficient : (short)0,
+                            hasCond ? ca.Offset : (short)0, hasCond ? (int)ca.DeadBand : 0,
+                            hasCond ? (int)ca.PositiveSaturation : 0, hasCond ? (int)ca.NegativeSaturation : 0, condGain,
+                            (ushort)peerRange, (ushort)ledMask, ledsOn);
+                        return;
+                    }
+
+                    if (_appliedWheelFfb.TryGetValue(ud.DevicePath, out var prevFfb) && prevFfb.Equals(ffbSig))
+                    {
+                        // Unchanged — the wheel already holds this force; skip the HID write.
+                    }
+                    else if (isLogitechWheel)
+                    {
+                        if (hasCond)
+                            LogitechRawHidWriter.WriteCondition(ud.DevicePath, 0, cv.EffectType,
+                                ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
+                                (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain,
+                                LogitechRawHidWriter.HasFrictionCap(ud.ProdId));
+                        else if (wheelForce == 0) LogitechRawHidWriter.WriteStopEffect(ud.DevicePath, 0);
+                        else LogitechRawHidWriter.WriteConstantForce(ud.DevicePath, 0, wheelForce);
+                    }
+                    else if (isFanatecWheel)
+                    {
+                        if (hasCond)
+                            FanatecRawHidWriter.WriteWheelCondition(ud.DevicePath, cv.EffectType,
+                                ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
+                                (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain);
+                        else
+                        {
+                            FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, wheelForce, ud.ProdId);
+                            // Re-assert the software centering spring each frame so it
+                            // survives a game-driven condition overwriting slot 1.
+                            if (acMag > 0) FanatecRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);
+                        }
+                    }
+                    else // Thrustmaster wheel
+                    {
+                        if (hasCond)
+                            ThrustmasterRawHidWriter.WriteCondition(ud.DevicePath, cv.EffectType,
+                                ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
+                                (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain);
+                        else if (cv.HasDirectionalData && cv.Period > 0 && ForceFeedbackState.IsPeriodicEffect(cv.EffectType))
+                            // T300 firmware runs the waveform onboard (higher fidelity than
+                            // host sampling). Pass the un-sampled steering peak as the amplitude
+                            // — not the sampled level, which crosses zero mid-waveform.
+                            ThrustmasterRawHidWriter.WritePeriodic(ud.DevicePath, cv.EffectType,
+                                ForceFeedbackState.ComputeWheelSteeringPeak(cv, overallGain), (int)cv.Period);
+                        else ThrustmasterRawHidWriter.WriteConstantForce(ud.DevicePath, wheelForce);
+                    }
+                    _appliedWheelFfb[ud.DevicePath] = ffbSig;
+
+                    // Wheel settings (rotation range + auto-center) — one-shot,
+                    // re-sent only when the persisted value changes.
+                    int desRange = int.TryParse(firstPadSetting.RotationRange, out int rg) ? System.Math.Clamp(rg, 40, 2520) : 900; // per-wheel max enforced in each writer's WriteRange
+                    if (!_appliedWheelSettings.TryGetValue(ud.DevicePath, out var prevWs) || prevWs.range != desRange || prevWs.ac != desAc)
+                    {
+                        bool applied;
+                        if (isLogitechWheel)
+                        {
+                            applied  = LogitechRawHidWriter.WriteRange(ud.DevicePath, desRange, ud.ProdId);
+                            applied &= LogitechRawHidWriter.WriteAutocenter(ud.DevicePath, acMag, LogitechRawHidWriter.IsMomo(ud.ProdId));
+                        }
+                        else if (isFanatecWheel)
+                        {
+                            applied  = FanatecRawHidWriter.WriteRange(ud.DevicePath, desRange, ud.ProdId); // f5 in the range sequence disables the firmware centering spring
+                            applied &= FanatecRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);          // software centering spring replaces it (slot 1); disables at 0
+                        }
+                        else
+                        {
+                            applied  = ThrustmasterRawHidWriter.WriteRange(ud.DevicePath, desRange, ud.ProdId);
+                            applied &= ThrustmasterRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);
+                        }
+                        // Cache only once the wheel actually accepted the settings.
+                        // Latching on a failed write (device not ready on the first
+                        // dispatch frame) would never re-send the auto-center disable,
+                        // leaving the wheel at its firmware-default centering spring.
+                        if (applied) _appliedWheelSettings[ud.DevicePath] = (desRange, desAc);
+                    }
+
+                    // RPM / shift LEDs from the running game's telemetry (Logitech
+                    // 5-LED, Fanatec 9-LED rim, Thrustmaster 15-LED rim). Demand-
+                    // driven: requesting telemetry starts the hub; it stops itself
+                    // when no wheel asks. Re-sent only when the bitmask changes — the
+                    // redline blink flips the mask, so it animates without per-tick
+                    // HID churn. No telemetry (game closed / not racing) resolves to
+                    // mask 0, so the strip clears instead of freezing on last frame.
+                    if (firstPadSetting.WheelRpmLeds == "1" && (isLogitechWheel || isFanatecWheel || isThrustmasterWheel))
+                    {
+                        TelemetryHub.RequestActive();
+                        int mask = 0;
+                        if (TelemetryHub.TryGetCurrent(out var tel))
+                        {
+                            bool blinkOn = (Environment.TickCount / 60) % 2 == 0;
+                            float frac = tel.RpmFraction;
+                            if (isLogitechWheel) mask = RpmLedMap.Logitech(frac, blinkOn);
+                            else if (isFanatecWheel) mask = RpmLedMap.Fanatec(frac, blinkOn);
+                            else mask = RpmLedMap.Thrustmaster(frac, blinkOn);
+                        }
+                        if (!_appliedLeds.TryGetValue(ud.DevicePath, out int prevMask) || prevMask != mask)
+                        {
+                            if (isLogitechWheel) LogitechRawHidWriter.WriteRpmLeds(ud.DevicePath, (byte)mask);
+                            else if (isFanatecWheel) FanatecRawHidWriter.WriteRpmLeds(ud.DevicePath, mask);
+                            else ThrustmasterRawHidWriter.WriteRpmLeds(ud.DevicePath, mask);
+                            _appliedLeds[ud.DevicePath] = mask;
+                        }
+                    }
+                    else if (_appliedLeds.TryGetValue(ud.DevicePath, out int litMask) && litMask != 0)
+                    {
+                        // Feature turned off — clear the strip once.
+                        if (isLogitechWheel) LogitechRawHidWriter.WriteRpmLeds(ud.DevicePath, 0);
+                        else if (isFanatecWheel) FanatecRawHidWriter.WriteRpmLeds(ud.DevicePath, 0);
+                        else if (isThrustmasterWheel) ThrustmasterRawHidWriter.WriteRpmLeds(ud.DevicePath, 0);
+                        _appliedLeds[ud.DevicePath] = 0;
+                    }
+                }
+                return;
+            }
+
             ud.ForceFeedbackState.SetDeviceForces(ud, ud.Device, firstPadSetting, _combinedVibration);
         }
 
         private Vibration _combinedVibration;
+
+        // Per-device last-applied wheel rotation range + auto-center, so those
+        // one-shot settings are only re-sent to the wheel when they change.
+        // ConcurrentDictionary: the polling thread writes these every tick a
+        // wheel is assigned, while MarkDeviceOffline removes entries from a
+        // ThreadPool thread (web/overlay disconnect); a plain Dictionary
+        // resizing on the poll thread during that removal is undefined behavior.
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, (int range, int ac)> _appliedWheelSettings = new();
+
+        // Per-device last-applied RPM LED bitmask, so the strip is only re-sent
+        // when it changes (steady RPM = no write; blink/step = write on change).
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, int> _appliedLeds = new();
+
+        // Per-device last-applied wheel FFB force/condition. FFB is stateful — the wheel
+        // firmware holds the last force until changed — so re-sending an unchanged force
+        // every poll is a blocking HID write that halves the poll rate while a wheel is
+        // connected (worst at idle: a steady stop/zero force re-sent every tick). Write the
+        // force only when this signature changes.
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, WheelFfbSig> _appliedWheelFfb = new();
+        private readonly struct WheelFfbSig : System.IEquatable<WheelFfbSig>
+        {
+            public readonly bool HasCond, Dir; public readonly short Force;
+            public readonly int Peak, Ac, Effect, Period, Pc, Nc, Off, Db, Ps, Ns, CondGain;
+            public WheelFfbSig(bool hasCond, bool dir, short force, int peak, int ac, int effect, int period,
+                int pc, int nc, int off, int db, int ps, int ns, int condGain)
+            { HasCond = hasCond; Dir = dir; Force = force; Peak = peak; Ac = ac; Effect = effect; Period = period;
+              Pc = pc; Nc = nc; Off = off; Db = db; Ps = ps; Ns = ns; CondGain = condGain; }
+            public bool Equals(WheelFfbSig o) => HasCond == o.HasCond && Dir == o.Dir && Force == o.Force && Peak == o.Peak
+                && Ac == o.Ac && Effect == o.Effect && Period == o.Period && Pc == o.Pc && Nc == o.Nc && Off == o.Off
+                && Db == o.Db && Ps == o.Ps && Ns == o.Ns && CondGain == o.CondGain;
+            public override bool Equals(object o) => o is WheelFfbSig w && Equals(w);
+            public override int GetHashCode() => System.HashCode.Combine(Force, Effect, Period, Pc, Nc, Off, CondGain, Ac);
+        }
 
         // Per-slot scratch buffer reused across iterations of the
         // ApplyForceFeedback per-slot loop — the evaluator only writes

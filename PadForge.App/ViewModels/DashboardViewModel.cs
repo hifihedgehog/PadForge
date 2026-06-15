@@ -286,6 +286,76 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
+        //  Remote Link (issue #138)
+        // ─────────────────────────────────────────────
+
+        /// <summary>The Settings view model, which holds the Remote Link peer manager +
+        /// identity-protection state. Set once at startup so the Dashboard's Remote Link
+        /// section can show paired peers, identity mode, and nearby PCs in one place.</summary>
+        public SettingsViewModel RemoteLink { get; set; }
+
+        private bool _enableRemoteLink;
+
+        /// <summary>Whether the Remote Link server is listening for paired peers.</summary>
+        public bool EnableRemoteLink
+        {
+            get => _enableRemoteLink;
+            set => SetProperty(ref _enableRemoteLink, value);
+        }
+
+        private bool _autoReconnect = true;
+
+        /// <summary>Auto-reconnect: when a paired PC appears on the LAN, establish the link
+        /// without a click (issue #138). Default on.</summary>
+        public bool AutoReconnect
+        {
+            get => _autoReconnect;
+            set => SetProperty(ref _autoReconnect, value);
+        }
+
+        private int _remoteLinkPort = 27500;
+
+        /// <summary>TCP control + UDP data port for the Remote Link server.</summary>
+        public int RemoteLinkPort
+        {
+            get => _remoteLinkPort;
+            set => SetProperty(ref _remoteLinkPort, Math.Clamp(value, 1024, 65535));
+        }
+
+        private RelayCommand _resetRemoteLinkPortCommand;
+        public RelayCommand ResetRemoteLinkPortCommand =>
+            _resetRemoteLinkPortCommand ??= new RelayCommand(() => RemoteLinkPort = 27500);
+
+        private string _remoteLinkStatus = Strings.Instance.Common_Stopped;
+
+        /// <summary>Current Remote Link server status for UI display.</summary>
+        public string RemoteLinkStatus
+        {
+            get => _remoteLinkStatus;
+            set => SetProperty(ref _remoteLinkStatus, value ?? Strings.Instance.Common_Stopped);
+        }
+
+        private string _remoteLinkConnectHost = "";
+
+        /// <summary>Host (or host:port) the user types to initiate an outbound pairing.</summary>
+        public string RemoteLinkConnectHost
+        {
+            get => _remoteLinkConnectHost;
+            set => SetProperty(ref _remoteLinkConnectHost, value);
+        }
+
+        /// <summary>Raised when the user asks to connect/pair with a typed host[:port].</summary>
+        public event Action<string> ConnectToPeerRequested;
+
+        private RelayCommand _connectToPeerCommand;
+        public RelayCommand ConnectToPeerCommand =>
+            _connectToPeerCommand ??= new RelayCommand(() =>
+            {
+                if (!string.IsNullOrWhiteSpace(_remoteLinkConnectHost))
+                    ConnectToPeerRequested?.Invoke(_remoteLinkConnectHost.Trim());
+            });
+
+        // ─────────────────────────────────────────────
         //  Touchpad Overlay
         // ─────────────────────────────────────────────
 

@@ -46,6 +46,19 @@ namespace PadForge.Services
         /// </summary>
         private const int AxisHoldCycles = 3;
 
+        /// <summary>MIDI CC movement threshold (0-127) for the recorder to
+        /// accept a controller turn as the bound input.</summary>
+        private const int MidiCcThreshold = 10;
+
+        /// <summary>MIDI pitch-bend movement threshold (0-65535) from the
+        /// baseline for the recorder to accept a bend as the bound input.</summary>
+        private const int MidiPitchThreshold = 6000;
+
+        /// <summary>A CC value within this distance of center (0x40) is read
+        /// as a relative encoder (pulse buttons), not an absolute fader.
+        /// Matches MidiInputDevice.RelativeMax.</summary>
+        private const int MidiRelativeBand = 16;
+
         // ─────────────────────────────────────────────
         //  State
         // ─────────────────────────────────────────────
@@ -430,6 +443,12 @@ namespace PadForge.Services
                         anyHeld = current.Buttons[i];
                     for (int i = 0; i < CustomInputState.MaxPovs && !anyHeld; i++)
                         anyHeld = current.Povs[i] >= 0;
+                    // MIDI notes held at record start must clear too, so an
+                    // already-pressed key isn't captured the instant recording
+                    // begins (mirrors the button release-wait).
+                    if (!anyHeld && current.Midi?.Notes != null)
+                        for (int i = 0; i < current.Midi.Notes.Length && !anyHeld; i++)
+                            anyHeld = current.Midi.Notes[i];
 
                     if (anyHeld) continue;
 
@@ -480,6 +499,53 @@ namespace PadForge.Services
                     }
                 }
 
+                // ── MIDI notes (button-class, instant rising edge) ──
+                // MIDI input lives in the Midi sub-state, not Buttons[]/Axis[],
+                // so the sweeps above never see it. A MIDI device that hadn't
+                // sent anything at record start has a null baseline.Midi; adopt
+                // the current state as the reference and detect from the next
+                // tick so a resting note/CC doesn't false-trigger.
+                if (current.Midi != null)
+                {
+                    if (baseline.Midi == null)
+                    {
+                        baseline.Midi = current.Midi.Clone();
+                    }
+                    else
+                    {
+                        bool noteFired = false;
+                        for (int i = 0; i < current.Midi.Notes.Length; i++)
+                        {
+                            if (current.Midi.Notes[i] && !baseline.Midi.Notes[i])
+                            {
+                                CompleteRecordingWithDescriptor($"Midi Note {i}", dg);
+                                noteFired = true;
+                                break;
+                            }
+                        }
+                        if (noteFired) return;
+
+                        // Relative-encoder pulses (button-class): a turning
+                        // encoder fires a momentary CcUp/CcDown while its value
+                        // hovers near center. Gated near-center so a fader
+                        // sweeping past center isn't misread as an encoder.
+                        for (int i = 0; i < current.Midi.CcUp.Length; i++)
+                        {
+                            if (Math.Abs(current.Midi.Cc[i] - 0x40) > MidiRelativeBand) continue;
+                            if (current.Midi.CcUp[i] && !baseline.Midi.CcUp[i])
+                            {
+                                CompleteRecordingWithDescriptor($"Midi CC {i} Up", dg);
+                                return;
+                            }
+                            if (current.Midi.CcDown[i] && !baseline.Midi.CcDown[i])
+                            {
+                                CompleteRecordingWithDescriptor($"Midi CC {i} Down", dg);
+                                return;
+                            }
+                        }
+                    }
+                }
+
                 // Param recording (Incremental Up/Down, InvertOnHold Modifier)
                 // captures button-class inputs only — the engine's ReadButtonLikeBool
                 // recognizes Button / POV descriptors, nothing else. An axis
@@ -489,6 +555,35 @@ namespace PadForge.Services
                 // captured by stick drift on whichever axis crosses the
                 // detection threshold first; later tries hit the real button).
                 if (_paramTarget != ParamTarget.None) continue;
+
+                // ── MIDI CC / pitch bend (axis-class, threshold) ──
+                // After the param gate (these are continuous, not button-class)
+                // and before the generic axis sweep. baseline.Midi is non-null
+                // here (established in the notes block above).
+                if (current.Midi != null && baseline.Midi != null)
+                {
+                    int bestCc = -1, bestCcDelta = MidiCcThreshold;
+                    for (int i = 0; i < current.Midi.Cc.Length; i++)
+                    {
+                        // Skip values in the relative band — those are encoders,
+                        // bound as pulse buttons above, not absolute faders. A
+                        // first-detent jump to ~0x41 would otherwise read as a
+                        // big axis move from a 0 baseline.
+                        if (Math.Abs(current.Midi.Cc[i] - 0x40) <= MidiRelativeBand) continue;
+                        int d = Math.Abs(current.Midi.Cc[i] - baseline.Midi.Cc[i]);
+                        if (d > bestCcDelta) { bestCcDelta = d; bestCc = i; }
+                    }
+                    if (bestCc >= 0)
+                    {
+                        CompleteRecordingWithDescriptor($"Midi CC {bestCc}", dg);
+                        return;
+                    }
+                    if (Math.Abs(current.Midi.PitchBend - baseline.Midi.PitchBend) > MidiPitchThreshold)
+                    {
+                        CompleteRecordingWithDescriptor("Midi Pitch Bend", dg);
+                        return;
+                    }
+                }
 
                 // ── Check axes (requires hold confirmation) ──
                 int bestAxisIndex = -1;

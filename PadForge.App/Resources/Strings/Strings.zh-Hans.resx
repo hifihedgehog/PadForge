@@ -671,7 +671,7 @@
   <data name="Macro_FixedCount" xml:space="preserve"><value>固定次数</value></data>
   <data name="Macro_UntilRelease" xml:space="preserve"><value>直到释放</value></data>
   <data name="Macro_Count" xml:space="preserve"><value>次数</value></data>
-  <data name="Macro_DelayMs" xml:space="preserve"><value>延迟（ms）</value></data>
+  <data name="Macro_DelayMs" xml:space="preserve"><value>延迟</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>灵敏度</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>新建宏</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>录制触发器</value></data>
@@ -1073,7 +1073,6 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>重置低音截止</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>重置左马达</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>重置右马达</value></data>
-  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>触控板 1 X</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>陀螺仪 俯仰</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>陀螺仪 偏航</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>陀螺仪 翻滚</value></data>
@@ -1172,12 +1171,10 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>重置透传调校</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>灵敏度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>每个源的陀螺仪灵敏度倍数。1.0 = 引擎默认值（500°/s → 最大偏转）。大于 1.0 更灵敏。小于 1.0 不太灵敏。</value></data>
-  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>触控板 1 Y</value></data>
-  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>触控板 2 X</value></data>
-  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>触控板 2 Y</value></data>
-  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>触控板 1 触摸</value></data>
-  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>触控板 2 触摸</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>触控板点击</value></data>
+  <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} X</value></data>
+  <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} Y</value></data>
+  <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} 触摸</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>运动 陀螺仪</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>运动 加速度计</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>触控板</value></data>
@@ -1210,6 +1207,14 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput 的 API 兼容替代实现。将 PadForge 自身创建的虚拟控制器从其自身视图中过滤掉</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly 图标包</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>摇杆和扳机图标改编自 Zacksly 的"Xbox Series Button Icons and Controls"(CC BY 3.0)</value></data>
+  <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>纯 C# 的 Opus 编码器，驱动 DualSense 扬声器通过蓝牙播放音频。作者 Logan Stromberg。BSD 3-Clause。</value></data>
+  <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga 的 DualSense 蓝牙音频研究：手柄扬声器流所依赖的数据包传输。apps.sdore.me/SAxense。MPL-2.0。</value></data>
+  <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalol 的蓝牙扬声器方案：Opus 帧格式与数据包布局。也感谢 TechAntohere 分享研究成果并协助测试。MIT。</value></data>
+  <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
+  <data name="About_DualSenseYDesc" xml:space="preserve"><value>USB 手柄音频直通的参考实现。作者 WujekFoliarz。</value></data>
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>自适应扳机</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>自适应扳机</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>配置已分配的物理 DualSense 上的扳机效果。由游戏驱动的扳机效果会自动转发。此处的设置在没有游戏写入时叠加用户自定义层。</value></data>
@@ -1317,7 +1322,7 @@
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>输入响应 — 循环调色板</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>输入响应 — 每次按下单一颜色</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>亮度</value></data>
-  <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期 (ms)</value></data>
+  <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>调色板</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>颜色 1</value></data>
   <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>颜色 2</value></data>
@@ -1327,8 +1332,8 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>添加颜色</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>重置调色板</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>将当前调色板替换为四种默认颜色(红、绿、蓝、黄)。</value></data>
-  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>脉冲保持 (ms)</value></data>
-  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>脉冲衰减 (ms)</value></data>
+  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>脉冲保持</value></data>
+  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>脉冲衰减</value></data>
   <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>重置左扳机</value></data>
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>重置右扳机</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>重置强度</value></data>
@@ -1397,7 +1402,7 @@
   <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>重命名层</value></data>
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>不继承</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>选中时,此层的目标保持关闭,而不是回退到基础行。</value></data>
-  <data name="Pad_Shift_Delay" xml:space="preserve"><value>延迟(毫秒)</value></data>
+  <data name="Pad_Shift_Delay" xml:space="preserve"><value>延迟</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>触发层切换之前激活器必须保持激活的毫秒数。</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>跳转到层</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>和弦的第二个输入</value></data>
@@ -1507,7 +1512,6 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>触控板</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>按触控板的输入。手势（滑动、点按、捏合、形状）和连续输出模式（虚拟摇杆 / 方向键、鼠标）成为可在“映射”选项卡中绑定的映射来源。</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>触控板</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>触控板 {0}</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>手势检测</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>在此触控板上启用手势</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>此触控板的总开关。关闭时，此触控板不触发任何手势描述符。现有的手指、点击与位置映射仍正常工作。</value></data>
@@ -1516,22 +1520,22 @@
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>仅自定义</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>两者</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>引擎用哪个手势库与实时手指轨迹进行匹配。默认为“两者”。</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>冷却时间 (ms)</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>冷却时间</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>手势触发后，在此毫秒数内忽略此触控板上的新手势。防止快速来回动作引发的连发。</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>内置手势</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4 向滑动（上、下、左、右）</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8 向滑动（加入对角方向）</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>滑动距离 (0..1)</value></data>
-  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>滑动时间窗 (ms)</value></data>
+  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>滑动时间窗</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>径向扇区（武器轮盘风格）</value></data>
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>从手指落下的位置向外滑入扇区。0 区锚定在上方，扇区按顺时针方向递增。选择器中每一项的括号内以相对上方的角度（度）显示方向：(0°) 表示上、(90°) 表示右、(180°) 表示下、(270°) 表示左。同一时间只保持一个扇区激活。滑入另一个扇区会释放前一个，因此可以在一次滑动中循环切换多个扇区。</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>扇区数量</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>中心死区 (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>轻触 / 双击 / 三连击</value></data>
-  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>轻触时间窗 (ms)</value></data>
-  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>多次点击间隔 (ms)</value></data>
+  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>轻触时间窗</value></data>
+  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>多次点击间隔</value></data>
   <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>长按</value></data>
-  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>长按时长 (ms)</value></data>
+  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>长按时长</value></data>
   <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>双指滑动</value></data>
   <data name="Pad_Touchpad_PinchSpread" xml:space="preserve"><value>捏合 / 张开</value></data>
   <data name="Pad_Touchpad_Rotate" xml:space="preserve"><value>旋转</value></data>
@@ -1625,4 +1629,318 @@
   <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>手指数发生变化，样本已清空。</value></data>
   <data name="Recorder_Error_NoEngine" xml:space="preserve"><value>引擎未运行，请先启动引擎再录制。</value></data>
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>未采集到有效样本。请重新绘制手势。</value></data>
+  <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>旋转范围</value></data>
+  <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>自动回中强度</value></data>
+  <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>转速换挡灯</value></data>
+  <data name="Pad_Steering_Header" xml:space="preserve"><value>转向</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>关闭时摇杆保持正常。其他模式让它像方向盘一样工作。</value></data>
+  <data name="Pad_Steering_Mode" xml:space="preserve"><value>转向模式</value></data>
+  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>关闭</value></data>
+  <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>卷绕</value></data>
+  <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>角度映射到轴 (X)</value></data>
+  <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>角度映射到轴 (Y)</value></data>
+  <data name="Pad_Steering_Mode_MotionLean" xml:space="preserve"><value>体感倾斜</value></data>
+  <data name="Pad_Steering_WindRange" xml:space="preserve"><value>卷绕范围</value></data>
+  <data name="Pad_Steering_WindPower" xml:space="preserve"><value>卷绕强度</value></data>
+  <data name="Pad_Steering_WindUnwindRate" xml:space="preserve"><value>回绕速率</value></data>
+  <data name="Pad_Steering_AngleInnerDz" xml:space="preserve"><value>角度内死区</value></data>
+  <data name="Pad_Steering_AngleOuterDz" xml:space="preserve"><value>角度外死区</value></data>
+  <data name="Pad_Steering_MotionInnerDz" xml:space="preserve"><value>倾斜内死区</value></data>
+  <data name="Pad_Steering_MotionOuterDz" xml:space="preserve"><value>倾斜外死区</value></data>
+  <data name="Pad_Steering_Orientation" xml:space="preserve"><value>手柄朝向</value></data>
+  <data name="Pad_Steering_Orient_Forward" xml:space="preserve"><value>向前</value></data>
+  <data name="Pad_Steering_Orient_Left" xml:space="preserve"><value>向左</value></data>
+  <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>向右</value></data>
+  <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>向后</value></data>
+  <data name="Pad_Steering_Reset_Mode" xml:space="preserve"><value>重置转向模式</value></data>
+  <data name="Pad_Steering_Reset_WindRange" xml:space="preserve"><value>重置卷绕范围</value></data>
+  <data name="Pad_Steering_Reset_WindPower" xml:space="preserve"><value>重置卷绕强度</value></data>
+  <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>重置回绕速率</value></data>
+  <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>重置角度内死区</value></data>
+  <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>重置角度外死区</value></data>
+  <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>重置倾斜内死区</value></data>
+  <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>重置倾斜外死区</value></data>
+  <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>重置手柄朝向</value></data>
+  <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>体感转向</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>像方向盘一样倾斜手柄来转向所选轴。实体摇杆不受影响。</value></data>
+  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>重置所有体感转向设置</value></data>
+  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>转向极限反馈</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>当设为转向模式的摇杆转到极限时，发出提示（震动、扳机或灯条），让你感受到极限。默认全部关闭。</value></data>
+  <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>到达极限时震动脉冲</value></data>
+  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>到达极限时扳机振动</value></data>
+  <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>到达极限时灯条脉冲</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>接近极限时扳机阻力</value></data>
+  <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>脉冲时长</value></data>
+  <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>灯条颜色</value></data>
+  <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>灯条淡出</value></data>
+  <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>重置脉冲时长</value></data>
+  <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>重置灯条颜色</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>重置灯条衰减</value></data>
+  <data name="Pad_Wheel" xml:space="preserve"><value>方向盘</value></data>
+  <data name="Pad_ResetWheel" xml:space="preserve"><value>重置方向盘</value></data>
+  <data name="Pad_ResetRotationRange" xml:space="preserve"><value>重置旋转范围</value></data>
+  <data name="Pad_ResetAutocenter" xml:space="preserve"><value>重置自动回中强度</value></data>
+  <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>重置转速换挡灯</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>力反馈方向盘的转向范围、自动回中和换挡灯。</value></data>
+  <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>重置转向极限反馈</value></data>
+  <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>重置到达极限时震动脉冲</value></data>
+  <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>重置到达极限时扳机振动</value></data>
+  <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>重置到达极限时灯条脉冲</value></data>
+  <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>重置接近极限时扳机阻力</value></data>
+  <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>添加要逐个循环的颜色，每次锁定切换一个。</value></data>
+  <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>重置灯条保持</value></data>
+  <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>触摸板形状模板匹配器（圆形 / 方形 / 三角形 / Z / 对勾，以及自定义录制的手势）。基于 Magrofuoco、Vatavu、Anthony 和 Wobbrock 的 JavaScript 参考实现以 C# 重新推导。BSD 3-Clause。</value></data>
+  <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>角度容差评分方式，在单指形状上与点云匹配器并行运行。改编自 GestureSign 的 PointPatternAnalyzer。BSD 3-Clause。</value></data>
+  <data name="MacroAction_PlaySoundLoop_Format" xml:space="preserve"><value>循环播放 {0}（{1}%）</value></data>
+  <data name="MacroAction_PlaySound_Format" xml:space="preserve"><value>播放 {0}（{1}%）</value></data>
+  <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>在此手柄的输出设备上播放声音文件（.wav、.mp3、.m4a、.aac、.wma、.flac）</value></data>
+  <data name="MacroAction_SoundStop_Tooltip" xml:space="preserve"><value>停止此手柄上的所有宏声音。与循环的“播放声音”搭配，可从另一个宏中结束它。</value></data>
+  <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>播放声音</value></data>
+  <data name="MacroAction_Type_SoundStop" xml:space="preserve"><value>停止声音</value></data>
+  <data name="Macro_Sound_Browse" xml:space="preserve"><value>浏览…</value></data>
+  <data name="Macro_Sound_File_Label" xml:space="preserve"><value>声音文件</value></data>
+  <data name="Macro_Sound_Loop" xml:space="preserve"><value>循环直到停止</value></data>
+  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>重复播放该声音，直到“停止声音”动作运行。对于按住期间 / 松开时结束的宏，则播放到触发被松开为止</value></data>
+  <data name="Macro_Sound_Preview" xml:space="preserve"><value>试听</value></data>
+  <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>音量</value></data>
+  <data name="Mapping_MotionLean" xml:space="preserve"><value>体感倾斜</value></data>
+  <data name="Pad_Audio" xml:space="preserve"><value>音频</value></data>
+  <data name="Pad_Audio_Header" xml:space="preserve"><value>音频</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>声音由宏播放：一个触发（按键按下、松开、按住或公式）加一个“播放声音”动作。可在此处或“宏”选项卡中创建，延迟、重复和开关均可用。</value></data>
+  <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>声音宏</value></data>
+  <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>主音量</value></data>
+  <data name="Pad_Audio_Mirror" xml:space="preserve"><value>将系统音频镜像到手柄扬声器</value></data>
+  <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>镜像来源</value></data>
+  <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>选择镜像到手柄扬声器的播放设备。将特定声音发送到单独播放设备的游戏可以指向该设备。</value></data>
+  <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>将系统默认输出播放的内容并行复制到此手柄的内置扬声器。USB 和蓝牙均可用。</value></data>
+  <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>新建声音宏</value></data>
+  <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>还没有声音宏。创建一个并选择声音文件和触发条件。</value></data>
+  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>所选设备没有内置扬声器。此手柄的宏声音将在系统默认输出上播放。</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>在“宏”选项卡中打开此宏</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>声音会自动路由到所选手柄。USB 下按硬件容器匹配手柄自身的音频端点。蓝牙下音频以 Sony HID 帧流式发送。</value></data>
+  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>声音输出</value></data>
+  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>将主音量重置为 100%</value></data>
+  <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>声音宏 {0}</value></data>
+  <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>（设备不可用）</value></data>
+  <data name="Pad_Audio_StopAll" xml:space="preserve"><value>停止所有声音</value></data>
+  <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>停止此手柄上的所有宏声音</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>宏声音和镜像的系统音频通过所选手柄的内置扬声器播放，支持 USB 和蓝牙。请在上方下拉框中选择设备，此处的所有设置都跟随该设备。</value></data>
+  <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>系统默认</value></data>
+  <data name="Pad_Audio_Test" xml:space="preserve"><value>测试</value></data>
+  <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>在所选输出设备上播放短促提示音</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>将镜像、镜像来源和主音量重置为默认值</value></data>
+  <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai（daidr）开发的浏览器版 DualSense 测试套件。Sony 功能报告 CRC 帧格式以及 PadForge 从虚拟手柄转发到实体手柄的固件测试命令的参考。MIT。</value></data>
+  <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefarius 的 DualShock 4 蓝牙音频参考：PadForge DS4 扬声器流的报告帧格式。SBC 编码器是依据蓝牙 A2DP 规范的原创 C# 实现。协议文档来自 khallmark 的 ds4mac。MIT。</value></data>
+  <data name="Profiles_Export" xml:space="preserve"><value>导出…</value></data>
+  <data name="Profiles_Import" xml:space="preserve"><value>导入…</value></data>
+  <data name="Status_ProfileExported_Format" xml:space="preserve"><value>已导出配置文件“{0}”。</value></data>
+  <data name="Status_ProfileImported_Format" xml:space="preserve"><value>已导入配置文件“{0}”（注册了 {1} 个声音包）。</value></data>
+  <data name="Status_ProfileImportFailed" xml:space="preserve"><value>该文件不是可读取的 PadForge 配置文件。</value></data>
+  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>从 {0} 中选择声音</value></data>
+  <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>声音包</value></data>
+  <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>声音包是一个扩展名为 .pfsounds 的 ZIP 文件，里面装着声音文件。在这里添加后，任何声音宏都能选用其中的声音。PadForge 直接从文件中读取，从不解压。把声音包放在 PadForge.exe 旁边，整个文件夹就能随身携带。</value></data>
+  <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>添加声音包…</value></data>
+  <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>把现有的 .pfsounds 文件添加到列表。</value></data>
+  <data name="Pad_Audio_Packages_Create" xml:space="preserve"><value>创建声音包…</value></data>
+  <data name="Pad_Audio_Packages_Create_Tooltip" xml:space="preserve"><value>选择声音文件并保存为新的 .pfsounds 包。</value></data>
+  <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>从列表中移除所选声音包。文件本身不会被删除。</value></data>
+  <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>尚未添加声音包。</value></data>
+  <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>选择要放入声音包的声音文件</value></data>
+  <data name="DeviceType_Midi" xml:space="preserve"><value>MIDI 控制器</value></data>
+  <data name="Mapping_MidiNote_Format" xml:space="preserve"><value>音符 {0} ({1})</value></data>
+  <data name="Mapping_MidiCc_Format" xml:space="preserve"><value>CC {0}</value></data>
+  <data name="Mapping_MidiCcNamed_Format" xml:space="preserve"><value>CC {0} ({1})</value></data>
+  <data name="Mapping_MidiPitchBend" xml:space="preserve"><value>弯音</value></data>
+  <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
+  <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
+  <data name="RemoteLink_IdentityTitle" xml:space="preserve">
+    <value>身份保护</value>
+  </data>
+  <data name="RemoteLink_IdentityDescription" xml:space="preserve">
+    <value>此电脑的配对身份的存储方式。选择便携模式即可用 U 盘在不同电脑之间携带配对信息。</value>
+  </data>
+  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve">
+    <value>此电脑的名称</value>
+  </data>
+  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
+    <value>附近的电脑（未配对）</value>
+  </data>
+  <data name="Common_Reset" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
+    <value>Remote Link 密码</value>
+  </data>
+  <data name="Devices_ButtonNumberTooltip" xml:space="preserve">
+    <value>按钮 {0}</value>
+  </data>
+  <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
+    <value>PadForge 触控板</value>
+  </data>
+  <data name="RemoteLink_PasswordEmpty" xml:space="preserve">
+    <value>请输入密码。</value>
+  </data>
+  <data name="RemoteLink_PasswordMismatch" xml:space="preserve">
+    <value>两次输入的密码不一致。</value>
+  </data>
+  <data name="RemoteLink_IdentityModeSecure" xml:space="preserve">
+    <value>安全 — 仅此电脑</value>
+  </data>
+  <data name="RemoteLink_IdentityModePortablePassword" xml:space="preserve">
+    <value>便携 — 密码保护</value>
+  </data>
+  <data name="RemoteLink_IdentityModePortableOpen" xml:space="preserve">
+    <value>便携 — 无密码</value>
+  </data>
+  <data name="RemoteLink_IdentityHintPortablePassword" xml:space="preserve">
+    <value>你的身份信息随此驱动器一同携带，在任何电脑上用密码解锁。即便驱动器丢失，没有密码也无法使用。</value>
+  </data>
+  <data name="RemoteLink_IdentityHintPortableOpen" xml:space="preserve">
+    <value>你的身份信息无需任何确认即随此驱动器携带。持有该驱动器的任何人都能使用，请妥善保管。</value>
+  </data>
+  <data name="RemoteLink_IdentityHintSecure" xml:space="preserve">
+    <value>锁定到此电脑（对其上的每个 Windows 账户都有效）。无法移动到其他电脑。</value>
+  </data>
+  <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
+    <value>已配对的电脑</value>
+  </data>
+  <data name="RemoteLink_Online" xml:space="preserve">
+    <value>在线</value>
+  </data>
+  <data name="RemoteLink_Offline" xml:space="preserve">
+    <value>离线</value>
+  </data>
+  <data name="RemoteLink_GamepadOnlySuffix" xml:space="preserve">
+    <value>仅游戏手柄</value>
+  </data>
+  <data name="RemoteLink_PeerConnectedSuffix" xml:space="preserve">
+    <value>(已连接)</value>
+  </data>
+  <data name="RemoteLink_PeerPairedSuffix" xml:space="preserve">
+    <value>（已配对）</value>
+  </data>
+  <data name="RemoteLink_StatusUnlockBeforeChange" xml:space="preserve">
+    <value>更改保护前请先解锁当前身份。</value>
+  </data>
+  <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
+    <value>设置密码以保护您的便携身份。您将在每台电脑上输入它来解锁 Remote Link。</value>
+  </data>
+  <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
+    <value>身份保护已更新。</value>
+  </data>
+  <data name="RemoteLink_PasswordUnlockPrompt" xml:space="preserve">
+    <value>输入您的 Remote Link 密码以解锁此身份。</value>
+  </data>
+  <data name="RemoteLink_StatusWrongMachine" xml:space="preserve">
+    <value>Remote Link 身份已绑定到另一台电脑。请在原电脑上切换到便携模式以移动它。</value>
+  </data>
+  <data name="RemoteLink_StatusWrongPassword" xml:space="preserve">
+    <value>Remote Link 密码不正确。</value>
+  </data>
+  <data name="RemoteLink_StatusIdentityUnavailable" xml:space="preserve">
+    <value>Remote Link 身份不可用。</value>
+  </data>
+  <data name="RemoteLink_StatusConnecting" xml:space="preserve">
+    <value>正在连接到 {0}:{1}…</value>
+  </data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve">
+    <value>自动重新连接</value>
+  </data>
+  <data name="Dashboard_EnableRemoteLink" xml:space="preserve">
+    <value>启用 Remote Link 服务器</value>
+  </data>
+  <data name="Dashboard_RemoteLink" xml:space="preserve">
+    <value>Remote Link</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve">
+    <value>或通过地址连接（高级）</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve">
+    <value>配对 / 连接</value>
+  </data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
+    <value>通过网络与另一台电脑上已配对的 PadForge 共享控制器。</value>
+  </data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
+    <value>完成一次配对后，受信任的电脑会自动重新连接。已配对的电脑可以控制此电脑的游戏手柄输出，除非加以限制，否则也能控制其键盘、鼠标和宏。</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNearby" xml:space="preserve">
+    <value>附近的电脑</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve">
+    <value>同一网络中已开启 Remote Link 的电脑会自动显示在此处。</value>
+  </data>
+  <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve">
+    <value>配对</value>
+  </data>
+  <data name="RemoteLink_Connect" xml:space="preserve">
+    <value>连接</value>
+  </data>
+  <data name="RemoteLink_Connected" xml:space="preserve">
+    <value>已连接</value>
+  </data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve">
+    <value>除非你将其限制为仅游戏手柄，否则已配对的电脑可以向此电脑发送键盘、鼠标和宏输入。</value>
+  </data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve">
+    <value>将此电脑限制为仅游戏手柄输入</value>
+  </data>
+  <data name="RemoteLink_Identity" xml:space="preserve">
+    <value>身份</value>
+  </data>
+  <data name="RemoteLink_NoPairedPeers" xml:space="preserve">
+    <value>尚未配对任何电脑。</value>
+  </data>
+  <data name="RemoteLink_Pair" xml:space="preserve">
+    <value>配对</value>
+  </data>
+  <data name="RemoteLink_PairedPeers" xml:space="preserve">
+    <value>已配对的电脑</value>
+  </data>
+  <data name="RemoteLink_PairedPeersDescription" xml:space="preserve">
+    <value>你为 Remote Link 配对过的电脑。撤销某台即可阻止其连接，之后它需要重新配对。</value>
+  </data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve">
+    <value>确认两边屏幕上的验证码一致后，再进行配对。</value>
+  </data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve">
+    <value>与远程电脑配对</value>
+  </data>
+  <data name="RemoteLink_Reject" xml:space="preserve">
+    <value>拒绝</value>
+  </data>
+  <data name="RemoteLink_Revoke" xml:space="preserve">
+    <value>撤销</value>
+  </data>
+  <data name="RemoteLink_RevokeAll" xml:space="preserve">
+    <value>全部撤销</value>
+  </data>
+  <data name="RemoteLink_StatusListening" xml:space="preserve">
+    <value>正在监听 {0}</value>
+  </data>
+  <data name="RemoteLink_StatusStartFailed" xml:space="preserve">
+    <value>启动失败：{0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerTimedOut" xml:space="preserve">
+    <value>电脑 {0} 已超时</value>
+  </data>
+  <data name="RemoteLink_StatusConnectFailed" xml:space="preserve">
+    <value>连接失败：{0}</value>
+  </data>
+  <data name="RemoteLink_StatusLinkRejected" xml:space="preserve">
+    <value>连接被拒绝：{0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
+    <value>电脑 {0} 已连接，{1} 个设备</value>
+  </data>
+  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
+    <value>从已添加的音效包中选择声音，或浏览文件。</value>
+  </data>
+  <data name="Macro_Sound_BrowseFiles" xml:space="preserve">
+    <value>浏览文件…</value>
+  </data>
 </root>

@@ -102,3 +102,9 @@ publish_output/
 __pycache__/
 *.pyc
 
+
+# Scratch files dropped in the repo root (not PadForge sources)
+/tmpworkflow-v1.0.json
+/tmpopenvr_driver.h
+/tmpwmr_controller.c
+*openvr_driver_docs.md

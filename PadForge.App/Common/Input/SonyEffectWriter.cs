@@ -125,7 +125,63 @@ namespace PadForge.Common.Input
                 return false;
             }
 
+            ApplyAudioControl2(packet, fields);
+
+            // Reverse output relay (#138): a "peer://" device lives on another PC. The
+            // dispatcher has already baked the full config (rumble + adaptive triggers +
+            // lightbar + mic/player LED + audio-control) into this USB-shape packet, so
+            // ship the report body (report-id stripped) to the owner, which replays it
+            // via SDL_SendGamepadEffect and re-frames for its own transport (USB/BT).
+            if (RemoteLinkOutputRouter.IsPeerPath(devicePath))
+            {
+                // 0x02 = DualSense USB output report, 0x05 = DualShock 4 USB output report.
+                // A peer:// path is never classified Bluetooth, so these are the only two
+                // ids the consumer encoder produces here — accept both or DS4 output is
+                // silently dropped on the owner (#138 F29).
+                if (packet.Length >= 2 && (packet[0] == 0x02 || packet[0] == 0x05))
+                    RemoteLinkOutputRouter.ShipSonyEffect(devicePath, packet.AsSpan(1));
+                return true; // handled remotely; no local write
+            }
+
+            // Sole-writer guard (#138): a remote game holds the output lease on this LOCAL
+            // shared DualSense/DS4 — skip the local write so the inbound relay is the sole
+            // writer. Report success so the pipeline doesn't treat the skip as a failure.
+            if (RemoteLinkOutputRouter.IsClaimedByPeer(devicePath)) return true;
+
             return WriteRaw(devicePath, packet);
+        }
+
+        /// <summary>The DS5 audio_flags2 byte (speaker pre-gain in bits 0-2,
+        /// gated by valid_flag1 bit 7) isn't declared by the HM profiles, so
+        /// the encoder can't place it; poke it post-encode. Offsets per
+        /// dualsensectl's packed output struct (common+37): USB report 0x02
+        /// byte 38, BT report 0x31 byte 40 — after which the BT CRC32 footer
+        /// (over {0xA2} + bytes [0..73], LE at [74..77]) must be redone.</summary>
+        private static void ApplyAudioControl2(byte[] packet, IReadOnlyDictionary<string, object> fields)
+        {
+            if (!fields.TryGetValue("audioControl2", out var raw) || raw is not byte value) return;
+
+            if (packet[0] == 0x02 && packet.Length >= 48)
+            {
+                packet[38] = value;
+            }
+            else if (packet[0] == 0x31 && packet.Length >= 78)
+            {
+                packet[40] = value;
+                uint crc = 0xFFFFFFFFu;
+                crc ^= 0xA2;
+                for (int b = 0; b < 8; b++) crc = (crc >> 1) ^ (0xEDB88320u & (uint)(-(crc & 1)));
+                for (int i = 0; i <= 73; i++)
+                {
+                    crc ^= packet[i];
+                    for (int b = 0; b < 8; b++) crc = (crc >> 1) ^ (0xEDB88320u & (uint)(-(crc & 1)));
+                }
+                crc = ~crc;
+                packet[74] = (byte)(crc & 0xFF);
+                packet[75] = (byte)((crc >> 8) & 0xFF);
+                packet[76] = (byte)((crc >> 16) & 0xFF);
+                packet[77] = (byte)((crc >> 24) & 0xFF);
+            }
         }
 
         private static bool WriteRaw(string devicePath, byte[] buf)

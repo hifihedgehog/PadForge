@@ -122,6 +122,20 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isTouchpadDevice, value);
         }
 
+        private bool _isMidiDevice;
+        /// <summary>Whether the currently selected device is a MIDI input
+        /// device (drives the MidiPreviewView piano + CC preview, issue #128).</summary>
+        public bool IsMidiDevice
+        {
+            get => _isMidiDevice;
+            set => SetProperty(ref _isMidiDevice, value);
+        }
+
+        /// <summary>Live MIDI input state of the selected MIDI device, set
+        /// each poll tick by InputService. MidiPreviewView (input mode)
+        /// polls this every render frame. Null until the first message.</summary>
+        public PadForge.Engine.MidiInputState LiveMidi { get; set; }
+
         private bool _hasTouchpadData;
         /// <summary>Whether the selected device has touchpad data to display.</summary>
         public bool HasTouchpadData
@@ -156,6 +170,45 @@ namespace PadForge.ViewModels
         public bool TouchpadDown2 { get => _touchpadDown2; set => SetProperty(ref _touchpadDown2, value); }
         public bool TouchpadDown3 { get => _touchpadDown3; set => SetProperty(ref _touchpadDown3, value); }
         public bool TouchpadDown4 { get => _touchpadDown4; set => SetProperty(ref _touchpadDown4, value); }
+
+        // Second touchpad surface (Steam Controller 2026 / Steam Deck / original
+        // Steam Controller). Same 5-finger preview shape as the first pad; shown
+        // only when HasSecondTouchpadData is true (device reports 2+ pads).
+        private bool _hasSecondTouchpadData;
+        /// <summary>Whether the selected device exposes a second touchpad surface.</summary>
+        public bool HasSecondTouchpadData
+        {
+            get => _hasSecondTouchpadData;
+            set { if (SetProperty(ref _hasSecondTouchpadData, value)) OnPropertyChanged(nameof(TouchpadLabel)); }
+        }
+
+        /// <summary>Label for the first touchpad preview. Numbered ("Touchpad 1")
+        /// only on multi-pad devices, matching the mapping picker's 1-based pad
+        /// numbering so the user can tell the two surfaces apart. Single-pad
+        /// devices keep the plain "Touchpad".</summary>
+        public string TouchpadLabel => HasSecondTouchpadData
+            ? $"{PadForge.Resources.Strings.Strings.Instance.Btn_Touchpad} 1"
+            : PadForge.Resources.Strings.Strings.Instance.Btn_Touchpad;
+        /// <summary>Label for the second touchpad preview ("Touchpad 2").</summary>
+        public string Touchpad2Label => $"{PadForge.Resources.Strings.Strings.Instance.Btn_Touchpad} 2";
+        private double _pad2X0, _pad2Y0, _pad2X1, _pad2Y1, _pad2X2, _pad2Y2,
+                       _pad2X3, _pad2Y3, _pad2X4, _pad2Y4;
+        private bool _pad2Down0, _pad2Down1, _pad2Down2, _pad2Down3, _pad2Down4;
+        public double Pad2X0 { get => _pad2X0; set => SetProperty(ref _pad2X0, value); }
+        public double Pad2Y0 { get => _pad2Y0; set => SetProperty(ref _pad2Y0, value); }
+        public double Pad2X1 { get => _pad2X1; set => SetProperty(ref _pad2X1, value); }
+        public double Pad2Y1 { get => _pad2Y1; set => SetProperty(ref _pad2Y1, value); }
+        public double Pad2X2 { get => _pad2X2; set => SetProperty(ref _pad2X2, value); }
+        public double Pad2Y2 { get => _pad2Y2; set => SetProperty(ref _pad2Y2, value); }
+        public double Pad2X3 { get => _pad2X3; set => SetProperty(ref _pad2X3, value); }
+        public double Pad2Y3 { get => _pad2Y3; set => SetProperty(ref _pad2Y3, value); }
+        public double Pad2X4 { get => _pad2X4; set => SetProperty(ref _pad2X4, value); }
+        public double Pad2Y4 { get => _pad2Y4; set => SetProperty(ref _pad2Y4, value); }
+        public bool Pad2Down0 { get => _pad2Down0; set => SetProperty(ref _pad2Down0, value); }
+        public bool Pad2Down1 { get => _pad2Down1; set => SetProperty(ref _pad2Down1, value); }
+        public bool Pad2Down2 { get => _pad2Down2; set => SetProperty(ref _pad2Down2, value); }
+        public bool Pad2Down3 { get => _pad2Down3; set => SetProperty(ref _pad2Down3, value); }
+        public bool Pad2Down4 { get => _pad2Down4; set => SetProperty(ref _pad2Down4, value); }
 
         private double _mouseMotionX, _mouseMotionY;
         public double MouseMotionX { get => _mouseMotionX; set => SetProperty(ref _mouseMotionX, value); }
@@ -220,10 +273,10 @@ namespace PadForge.ViewModels
         /// are stored verbatim and used by the InputService update loop
         /// to read the matching <c>state.Buttons[Index]</c>.
         /// </summary>
-        internal void RebuildRawStateCollections(int axisCount, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false)
+        internal void RebuildRawStateCollections(int axisCount, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false)
         {
             RawAxes.Clear();
-            if (!isMouse)
+            if (!isMouse && !isMidi)
             {
                 for (int i = 0; i < axisCount; i++)
                     RawAxes.Add(new AxisDisplayItem { Index = i, Name = string.Format(Strings.Instance.Devices_Axis_Format, i) });
@@ -234,6 +287,18 @@ namespace PadForge.ViewModels
             IsKeyboardDevice = isKeyboard;
             IsMouseDevice = isMouse;
             IsTouchpadDevice = isTouchpad;
+
+            IsMidiDevice = isMidi;
+            if (isMidi)
+            {
+                // The MidiPreviewView (input mode) renders the piano + CCs
+                // directly from LiveMidi; no per-key VM collections. Clear
+                // the generic lists so a previously-selected gamepad's axes /
+                // buttons / POV hats don't leak into the MIDI view.
+                RawPovs.Clear();
+                SelectedButtonTotal = 0;
+                return;
+            }
 
             int buttonCount = buttonIndices?.Count ?? 0;
 
@@ -269,10 +334,13 @@ namespace PadForge.ViewModels
             IsKeyboardDevice = false;
             IsMouseDevice = false;
             IsTouchpadDevice = false;
+            IsMidiDevice = false;
+            LiveMidi = null;
             HasRawData = false;
             HasGyroData = false;
             HasAccelData = false;
             HasTouchpadData = false;
+            HasSecondTouchpadData = false;
             LastRawStateDeviceGuid = Guid.Empty;
         }
 

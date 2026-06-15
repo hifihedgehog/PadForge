@@ -671,7 +671,7 @@
   <data name="Macro_FixedCount" xml:space="preserve"><value>Vast aantal</value></data>
   <data name="Macro_UntilRelease" xml:space="preserve"><value>Tot loslaten</value></data>
   <data name="Macro_Count" xml:space="preserve"><value>Aantal</value></data>
-  <data name="Macro_DelayMs" xml:space="preserve"><value>Vertraging (ms)</value></data>
+  <data name="Macro_DelayMs" xml:space="preserve"><value>Vertraging</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Nieuwe macro</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Trigger opnemen</value></data>
@@ -1093,7 +1093,6 @@
   <data name="Pad_ResetAudioCutoff" xml:space="preserve"><value>Basafsnijding herstellen</value></data>
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Linkermotor herstellen</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Rechtermotor herstellen</value></data>
-  <data name="Mapping_TouchpadX1" xml:space="preserve"><value>Touchpad 1 X</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Gyro Pitch</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roll</value></data>
@@ -1192,14 +1191,13 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Doorgifte-afstemming resetten</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheidsvermenigvuldiger van de gyroscoop per bron. 1,0 = standaard van de engine (500°/s → volledige uitslag). Waarden boven 1,0 zijn gevoeliger. Daaronder minder.</value></data>
-  <data name="Mapping_TouchpadY1" xml:space="preserve"><value>Touchpad 1 Y</value></data>
-  <data name="Mapping_TouchpadX2" xml:space="preserve"><value>Touchpad 2 X</value></data>
-  <data name="Mapping_TouchpadY2" xml:space="preserve"><value>Touchpad 2 Y</value></data>
-  <data name="Mapping_TouchpadContact1" xml:space="preserve"><value>Touchpad 1 aanraking</value></data>
-  <data name="Mapping_TouchpadContact2" xml:space="preserve"><value>Touchpad 2 aanraking</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Touchpad-klik</value></data>
+  <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} X</value></data>
+  <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} Y</value></data>
+  <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} aanraking</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Beweging Gyro</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>Beweging Versnellingsmeter</value></data>
+  <data name="Mapping_MotionLean" xml:space="preserve"><value>Bewegingshelling</value></data>
   <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>Numeriek toetsenbord *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>Numeriek toetsenbord +</value></data>
@@ -1230,6 +1228,14 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>Drop-in vervanging voor XInput. Filtert PadForge's eigen virtuele controllers uit zijn eigen weergave.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly-iconenpakket</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Stick- en trigger-iconen afgeleid van "Xbox Series Button Icons and Controls" door Zacksly (CC BY 3.0)</value></data>
+  <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Pure C# Opus-encoder die DualSense-speakeraudio via Bluetooth aandrijft. Door Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>DualSense Bluetooth-audio-onderzoek door egormanga: het pakkettransport waarop de speakerstream van de controller is gebouwd. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Bluetooth-speakerrecept door awalol: Opus-framing en pakketindeling. Dank ook aan TechAntohere voor gedeelde bevindingen en tests. MIT.</value></data>
+  <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
+  <data name="About_DualSenseYDesc" xml:space="preserve"><value>Referentie-implementatie voor USB-controller-audiopassthrough. Door WujekFoliarz.</value></data>
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptieve triggers</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptieve triggers</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configureer trigger-effecten op de toegewezen fysieke DualSense. Game-gestuurde trigger-effecten worden automatisch doorgestuurd. De instellingen hier voegen een door de gebruiker geconfigureerde laag toe die actief is wanneer geen spel schrijft.</value></data>
@@ -1337,7 +1343,7 @@
   <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Invoerreactief — door palet bladeren</value></data>
   <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Invoerreactief — één kleur per druk</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Helderheid</value></data>
-  <data name="Pad_Lighting_Period" xml:space="preserve"><value>Periode (ms)</value></data>
+  <data name="Pad_Lighting_Period" xml:space="preserve"><value>Periode</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palet</value></data>
   <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Kleur 1</value></data>
   <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>Kleur 2</value></data>
@@ -1347,8 +1353,8 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Kleur toevoegen</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Palet herstellen</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Vervang het huidige palet door de vier standaardkleuren (rood, groen, blauw, geel).</value></data>
-  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Pulsbehoud (ms)</value></data>
-  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulsverval (ms)</value></data>
+  <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Pulsbehoud</value></data>
+  <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulsverval</value></data>
   <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>Linker trigger herstellen</value></data>
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>Rechter trigger herstellen</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>Sterkte herstellen</value></data>
@@ -1417,7 +1423,7 @@
   <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>Laag hernoemen</value></data>
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Niet overerven</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Indien aangevinkt blijft het doel van deze laag UIT in plaats van terug te vallen op de Basisregel.</value></data>
-  <data name="Pad_Shift_Delay" xml:space="preserve"><value>Vertraging (ms)</value></data>
+  <data name="Pad_Shift_Delay" xml:space="preserve"><value>Vertraging</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Milliseconden dat de activator actief moet blijven voordat de laagwijziging plaatsvindt.</value></data>
   <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Spring naar laag</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Tweede akkoord-invoer</value></data>
@@ -1527,7 +1533,6 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Invoer per touchpad. Gebaren (vegen, tikken, knijpen, vormen) en continue uitvoermodi (virtuele stick / D-pad, muis) worden mapping-bronnen die je op het tabblad Mappings kunt binden.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Gebarendetectie</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Gebaren op dit touchpad inschakelen</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Hoofdschakelaar voor dit touchpad. Bij uitschakeling activeert dit touchpad geen gebaardescriptoren. Bestaande vinger-, klik- en positietoewijzingen blijven werken.</value></data>
@@ -1536,22 +1541,22 @@
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>Alleen aangepaste</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Beide</value></data>
   <data name="Pad_Touchpad_Mode_Tooltip" xml:space="preserve"><value>Welke gebarencatalogus de engine vergelijkt met de actuele vingerpaden. &quot;Beide&quot; is standaard.</value></data>
-  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Afkoeling (ms)</value></data>
+  <data name="Pad_Touchpad_CooldownMs_Label" xml:space="preserve"><value>Afkoeling</value></data>
   <data name="Pad_Touchpad_CooldownMs_Tooltip" xml:space="preserve"><value>Nadat een gebaar is uitgevoerd, negeert deze touchpad nieuwe gebaren gedurende dit aantal milliseconden. Voorkomt dubbele afvuringen door snelle heen-en-weer-bewegingen.</value></data>
   <data name="Pad_Touchpad_InBox_Header" xml:space="preserve"><value>Ingebouwde gebaren</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>4-richtingsvegen (omhoog / omlaag / links / rechts)</value></data>
   <data name="Pad_Touchpad_EightWaySwipes" xml:space="preserve"><value>8-richtingsvegen (voegt diagonalen toe)</value></data>
   <data name="Pad_Touchpad_SwipeDistanceThreshold" xml:space="preserve"><value>Veegafstand (0..1)</value></data>
-  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Tijdsvenster voor veeg (ms)</value></data>
+  <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Tijdsvenster voor veeg</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Radiale zones (wapenwiel-stijl)</value></data>
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Veeg vanaf het neerzetpunt van je vinger naar buiten in een sector. Zone 0 is bovenaan verankerd en zones lopen met de klok mee op. Elke vermelding in de kiezer toont de richting tussen haakjes als graden ten opzichte van boven: (0°) is boven, (90°) is rechts, (180°) is onder, (270°) is links. Er is steeds maar één zone actief. In een andere vegen laat de vorige los, zodat je in één veegbeweging door de zones kunt bladeren.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Aantal zones</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Middendeadzone (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tik / Dubbele tik / Drievoudige tik</value></data>
-  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>Tijdsvenster voor tik (ms)</value></data>
-  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>Tussenpoze multi-tik (ms)</value></data>
+  <data name="Pad_Touchpad_TapTimeWindow" xml:space="preserve"><value>Tijdsvenster voor tik</value></data>
+  <data name="Pad_Touchpad_MultiTapGap" xml:space="preserve"><value>Tussenpoze multi-tik</value></data>
   <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>Lang indrukken</value></data>
-  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>Duur lang indrukken (ms)</value></data>
+  <data name="Pad_Touchpad_LongPressTimeWindow" xml:space="preserve"><value>Duur lang indrukken</value></data>
   <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>Tweevingervegen</value></data>
   <data name="Pad_Touchpad_PinchSpread" xml:space="preserve"><value>Knijpen / Spreiden</value></data>
   <data name="Pad_Touchpad_Rotate" xml:space="preserve"><value>Draaien</value></data>
@@ -1645,4 +1650,317 @@
   <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>Aantal vingers gewijzigd. Opnames gewist.</value></data>
   <data name="Recorder_Error_NoEngine" xml:space="preserve"><value>Engine draait niet. Start de engine voordat je opneemt.</value></data>
   <data name="Recorder_Error_BadSample" xml:space="preserve"><value>Geen geldige opname vastgelegd. Probeer het gebaar opnieuw te tekenen.</value></data>
+  <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rotatiebereik</value></data>
+  <data name="Pad_Wheel_Autocenter" xml:space="preserve"><value>Automatisch centreren</value></data>
+  <data name="Pad_Wheel_RpmLeds" xml:space="preserve"><value>Schakel-leds</value></data>
+  <data name="Pad_Steering_Header" xml:space="preserve"><value>Sturen</value></data>
+  <data name="Pad_Steering_Subtitle" xml:space="preserve"><value>Uit houdt deze stick normaal. De andere modi laten hem zich als een stuurwiel gedragen.</value></data>
+  <data name="Pad_Steering_Mode" xml:space="preserve"><value>Stuurmodus</value></data>
+  <data name="Pad_Steering_Mode_Linear" xml:space="preserve"><value>Uit</value></data>
+  <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>Draaien</value></data>
+  <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>Hoek naar as (X)</value></data>
+  <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>Hoek naar as (Y)</value></data>
+  <data name="Pad_Steering_Mode_MotionLean" xml:space="preserve"><value>Kantelbeweging</value></data>
+  <data name="Pad_Steering_WindRange" xml:space="preserve"><value>Draaibereik</value></data>
+  <data name="Pad_Steering_WindPower" xml:space="preserve"><value>Draaikracht</value></data>
+  <data name="Pad_Steering_WindUnwindRate" xml:space="preserve"><value>Terugdraaisnelheid</value></data>
+  <data name="Pad_Steering_AngleInnerDz" xml:space="preserve"><value>Binnenste hoekdeadzone</value></data>
+  <data name="Pad_Steering_AngleOuterDz" xml:space="preserve"><value>Buitenste hoekdeadzone</value></data>
+  <data name="Pad_Steering_MotionInnerDz" xml:space="preserve"><value>Binnenste kanteldeadzone</value></data>
+  <data name="Pad_Steering_MotionOuterDz" xml:space="preserve"><value>Buitenste kanteldeadzone</value></data>
+  <data name="Pad_Steering_Orientation" xml:space="preserve"><value>Controllerstand</value></data>
+  <data name="Pad_Steering_Orient_Forward" xml:space="preserve"><value>Vooruit</value></data>
+  <data name="Pad_Steering_Orient_Left" xml:space="preserve"><value>Links</value></data>
+  <data name="Pad_Steering_Orient_Right" xml:space="preserve"><value>Rechts</value></data>
+  <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>Achteruit</value></data>
+  <data name="Pad_Steering_Reset_Mode" xml:space="preserve"><value>Stuurmodus resetten</value></data>
+  <data name="Pad_Steering_Reset_WindRange" xml:space="preserve"><value>Draaibereik resetten</value></data>
+  <data name="Pad_Steering_Reset_WindPower" xml:space="preserve"><value>Draaikracht resetten</value></data>
+  <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Terugdraaisnelheid resetten</value></data>
+  <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Binnenste hoekdeadzone resetten</value></data>
+  <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Buitenste hoekdeadzone resetten</value></data>
+  <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Binnenste kanteldeadzone resetten</value></data>
+  <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Buitenste kanteldeadzone resetten</value></data>
+  <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Controllerstand resetten</value></data>
+  <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Bewegingsbesturing</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Instellingen voor de invoer "Bewegingshelling": kantel de controller als een stuur. Wijs "Bewegingshelling" toe aan een stick-as via de invoerlijst in Toewijzingen.</value></data>
+  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Alle bewegingsbesturing-instellingen herstellen</value></data>
+  <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback bij stuuraanslag</value></data>
+  <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Wanneer een stick die op een stuurmodus is ingesteld helemaal tot de volledige stuuraanslag wordt gedraaid, krijg je een signaal (rumble, trigger of lichtbalk) zodat je de limiet voelt. Alles staat standaard uit.</value></data>
+  <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Trilpuls bij stuuraanslag</value></data>
+  <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Triggervibratie bij stuuraanslag</value></data>
+  <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Lightbar-puls bij stuuraanslag</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Triggerweerstand nabij stuuraanslag</value></data>
+  <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>Pulslengte</value></data>
+  <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Lightbar-kleur</value></data>
+  <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Lightbar-vervaging</value></data>
+  <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>Pulslengte resetten</value></data>
+  <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>Lightbar-kleur resetten</value></data>
+  <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Lightbar-uitdoving resetten</value></data>
+  <data name="Pad_Wheel" xml:space="preserve"><value>Stuur</value></data>
+  <data name="Pad_ResetWheel" xml:space="preserve"><value>Stuur resetten</value></data>
+  <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Rotatiebereik resetten</value></data>
+  <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Automatisch centreren resetten</value></data>
+  <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Schakel-leds resetten</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Stuurbereik, automatisch centreren en schakellampjes voor force-feedbackstuurwielen.</value></data>
+  <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Feedback bij stuuraanslag resetten</value></data>
+  <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Trilpuls bij stuuraanslag resetten</value></data>
+  <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Triggervibratie bij stuuraanslag resetten</value></data>
+  <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Lightbar-puls bij stuuraanslag resetten</value></data>
+  <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Triggerweerstand nabij stuuraanslag resetten</value></data>
+  <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Voeg kleuren toe om te doorlopen, één per stuuraanslag.</value></data>
+  <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Lightbar-vasthouden resetten</value></data>
+  <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
+  <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macrogeluiden en gespiegelde systeemaudio spelen via de ingebouwde speaker van de geselecteerde controller, via USB of Bluetooth. Kies het apparaat in de lijst hierboven. Alles hier volgt het.</value></data>
+  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Geluidsuitvoer</value></data>
+  <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Geluiden gaan automatisch naar de geselecteerde controller. Via USB wordt het audio-eindpunt van de pad gematcht op hardwarecontainer. Via Bluetooth wordt de audio in Sony-HID-frames gestreamd.</value></data>
+  <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Spiegelbron</value></data>
+  <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Welk afspeelapparaat naar de luidspreker van de controller wordt gespiegeld. Games die bepaalde geluiden naar een apart afspeelapparaat sturen, kunnen dit apparaat gebruiken.</value></data>
+  <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Systeemstandaard</value></data>
+  <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(apparaat niet beschikbaar)</value></data>
+  <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Hoofdvolume</value></data>
+  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Hoofdvolume terug naar 100%</value></data>
+  <data name="Pad_Audio_Test" xml:space="preserve"><value>Test</value></data>
+  <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>Korte pieptoon afspelen op het gekozen apparaat</value></data>
+  <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Alle geluiden stoppen</value></data>
+  <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Alle macrogeluiden van deze pad stoppen</value></data>
+  <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Geluidsmacro’s</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Geluiden worden afgespeeld door macro’s: een trigger (indrukken, loslaten, vasthouden of formule) plus een "Geluid afspelen"-actie. Maak ze hier of op het tabblad Macro’s. Vertragingen, herhalingen en schakelaars werken allemaal.</value></data>
+  <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Nieuwe geluidsmacro</value></data>
+  <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Nog geen geluidsmacro’s. Maak er een en kies een geluidsbestand en trigger.</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Deze macro openen op het tabblad Macro’s</value></data>
+  <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Geluidsmacro {0}</value></data>
+  <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Geluid afspelen</value></data>
+  <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Een geluidsbestand (.wav, .mp3, .m4a, .aac, .wma, .flac) afspelen op het uitvoerapparaat van deze pad</value></data>
+  <data name="MacroAction_Type_SoundStop" xml:space="preserve"><value>Geluiden stoppen</value></data>
+  <data name="MacroAction_SoundStop_Tooltip" xml:space="preserve"><value>Stopt alle macrogeluiden van deze pad. Combineer met een loopend "Geluid afspelen" om het via een andere macro te stoppen.</value></data>
+  <data name="MacroAction_PlaySound_Format" xml:space="preserve"><value>{0} afspelen ({1}%)</value></data>
+  <data name="MacroAction_PlaySoundLoop_Format" xml:space="preserve"><value>{0} loopen ({1}%)</value></data>
+  <data name="Macro_Sound_File_Label" xml:space="preserve"><value>Geluidsbestand</value></data>
+  <data name="Macro_Sound_Browse" xml:space="preserve"><value>Bladeren…</value></data>
+  <data name="Macro_Sound_Preview" xml:space="preserve"><value>Voorbeeld</value></data>
+  <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
+  <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loopen tot stop</value></data>
+  <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Herhaal het geluid tot een "Geluiden stoppen"-actie draait, of bij vasthouden/loslaten-macro’s, tot de trigger wordt losgelaten</value></data>
+  <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Systeemaudio spiegelen naar de controllerspeaker</value></data>
+  <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Speelt alles wat de standaarduitvoer afspeelt parallel af op de ingebouwde speaker van deze controller. Werkt via USB en Bluetooth.</value></data>
+  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Het geselecteerde apparaat heeft geen ingebouwde speaker. Macrogeluiden van deze pad spelen op de standaarduitvoer.</value></data>
+  <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>Vormsjabloon-matcher voor het touchpad (cirkel / vierkant / driehoek / Z / vinkje en zelf opgenomen gebaren). C#-herafleiding van de JavaScript-referentie van Magrofuoco, Vatavu, Anthony en Wobbrock. BSD 3-Clause.</value></data>
+  <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>Hoekmarge-score die naast de puntenwolk-matcher draait op vormen met één vinger. Overgenomen uit GestureSigns PointPatternAnalyzer. BSD 3-Clause.</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Spiegeling, spiegelbron en hoofdvolume terugzetten naar standaardwaarden</value></data>
+  <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Browser-testsuite voor de DualSense door Xuezhou Dai (daidr): referentie voor de Sony feature-report-CRC-framing en de firmware-testopdrachten die PadForge van de virtuele naar de fysieke pad doorstuurt. MIT.</value></data>
+  <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>DualShock 4 Bluetooth-audioreferentie door nefarius: rapport-framing voor PadForges DS4-speakerstream. De SBC-encoder is een originele C#-implementatie volgens de Bluetooth A2DP-specificatie. Met protocoldocumentatie uit khallmarks ds4mac. MIT.</value></data>
+  <data name="Profiles_Export" xml:space="preserve"><value>Exporteren…</value></data>
+  <data name="Profiles_Import" xml:space="preserve"><value>Importeren…</value></data>
+  <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Profiel "{0}" geëxporteerd.</value></data>
+  <data name="Status_ProfileImported_Format" xml:space="preserve"><value>Profiel "{0}" geïmporteerd ({1} geluidspakket(ten) geregistreerd).</value></data>
+  <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Het bestand is geen leesbaar PadForge-profiel.</value></data>
+  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Kies een geluid uit {0}</value></data>
+  <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Geluidspakketten</value></data>
+  <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Een geluidspakket is één ZIP-bestand met geluiden, met de extensie .pfsounds. Voeg er hier een toe en kies de geluiden vervolgens in elke geluidsmacro. PadForge leest rechtstreeks uit het bestand en pakt het nooit uit. Bewaar pakketten naast PadForge.exe zodat alles draagbaar blijft.</value></data>
+  <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Pakket toevoegen…</value></data>
+  <data name="Pad_Audio_Packages_Add_Tooltip" xml:space="preserve"><value>Een bestaand .pfsounds-bestand aan de lijst toevoegen.</value></data>
+  <data name="Pad_Audio_Packages_Create" xml:space="preserve"><value>Pakket maken…</value></data>
+  <data name="Pad_Audio_Packages_Create_Tooltip" xml:space="preserve"><value>Geluidsbestanden kiezen en opslaan als nieuw .pfsounds-pakket.</value></data>
+  <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>Het geselecteerde pakket uit de lijst verwijderen. Het bestand wordt niet verwijderd.</value></data>
+  <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>Geen geluidspakketten toegevoegd.</value></data>
+  <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Kies de geluidsbestanden voor het pakket</value></data>
+  <data name="DeviceType_Midi" xml:space="preserve"><value>MIDI-controller</value></data>
+  <data name="Mapping_MidiNote_Format" xml:space="preserve"><value>Noot {0} ({1})</value></data>
+  <data name="Mapping_MidiCc_Format" xml:space="preserve"><value>CC {0}</value></data>
+  <data name="Mapping_MidiCcNamed_Format" xml:space="preserve"><value>CC {0} ({1})</value></data>
+  <data name="Mapping_MidiPitchBend" xml:space="preserve"><value>Pitch Bend</value></data>
+  <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
+  <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
+  <data name="RemoteLink_IdentityTitle" xml:space="preserve">
+    <value>Identiteitsbescherming</value>
+  </data>
+  <data name="RemoteLink_IdentityDescription" xml:space="preserve">
+    <value>Hoe de koppelingsidentiteit van deze pc wordt opgeslagen. Kies een draagbare modus om je koppelingen op een usb-stick tussen machines mee te nemen.</value>
+  </data>
+  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve">
+    <value>Naam van deze pc</value>
+  </data>
+  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
+    <value>Pc's in de buurt (niet gekoppeld)</value>
+  </data>
+  <data name="Common_Reset" xml:space="preserve">
+    <value>Opnieuw instellen</value>
+  </data>
+  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
+    <value>Remote Link-wachtwoord</value>
+  </data>
+  <data name="Devices_ButtonNumberTooltip" xml:space="preserve">
+    <value>Knop {0}</value>
+  </data>
+  <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
+    <value>PadForge-touchpad</value>
+  </data>
+  <data name="RemoteLink_PasswordEmpty" xml:space="preserve">
+    <value>Voer een wachtwoord in.</value>
+  </data>
+  <data name="RemoteLink_PasswordMismatch" xml:space="preserve">
+    <value>De wachtwoorden komen niet overeen.</value>
+  </data>
+  <data name="RemoteLink_IdentityModeSecure" xml:space="preserve">
+    <value>Beveiligd — alleen deze pc</value>
+  </data>
+  <data name="RemoteLink_IdentityModePortablePassword" xml:space="preserve">
+    <value>Draagbaar — wachtwoordbeveiligd</value>
+  </data>
+  <data name="RemoteLink_IdentityModePortableOpen" xml:space="preserve">
+    <value>Draagbaar — geen wachtwoord</value>
+  </data>
+  <data name="RemoteLink_IdentityHintPortablePassword" xml:space="preserve">
+    <value>Je identiteit reist mee op dit station en wordt op elke pc met je wachtwoord ontgrendeld. Een verloren station is zonder wachtwoord nutteloos.</value>
+  </data>
+  <data name="RemoteLink_IdentityHintPortableOpen" xml:space="preserve">
+    <value>Je identiteit reist mee op dit station zonder enige vraag. Iedereen die het station heeft, kan het gebruiken. Bewaar het veilig.</value>
+  </data>
+  <data name="RemoteLink_IdentityHintSecure" xml:space="preserve">
+    <value>Gekoppeld aan deze pc (werkt voor elk Windows-account erop). Kan niet naar een andere machine worden verplaatst.</value>
+  </data>
+  <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
+    <value>Gekoppelde pc</value>
+  </data>
+  <data name="RemoteLink_Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="RemoteLink_Offline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="RemoteLink_GamepadOnlySuffix" xml:space="preserve">
+    <value>alleen gamepad</value>
+  </data>
+  <data name="RemoteLink_PeerConnectedSuffix" xml:space="preserve">
+    <value>(verbonden)</value>
+  </data>
+  <data name="RemoteLink_PeerPairedSuffix" xml:space="preserve">
+    <value>(gekoppeld)</value>
+  </data>
+  <data name="RemoteLink_StatusUnlockBeforeChange" xml:space="preserve">
+    <value>Ontgrendel de huidige identiteit voordat u de beveiliging wijzigt.</value>
+  </data>
+  <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
+    <value>Stel een wachtwoord in om uw draagbare identiteit te beschermen. U voert het in om Remote Link op elke pc te ontgrendelen.</value>
+  </data>
+  <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
+    <value>Identiteitsbeveiliging bijgewerkt.</value>
+  </data>
+  <data name="RemoteLink_PasswordUnlockPrompt" xml:space="preserve">
+    <value>Voer uw Remote Link-wachtwoord in om deze identiteit te ontgrendelen.</value>
+  </data>
+  <data name="RemoteLink_StatusWrongMachine" xml:space="preserve">
+    <value>De Remote Link-identiteit is gekoppeld aan een andere pc. Schakel op de oorspronkelijke pc over naar een draagbare modus om deze te verplaatsen.</value>
+  </data>
+  <data name="RemoteLink_StatusWrongPassword" xml:space="preserve">
+    <value>Het Remote Link-wachtwoord is onjuist.</value>
+  </data>
+  <data name="RemoteLink_StatusIdentityUnavailable" xml:space="preserve">
+    <value>De Remote Link-identiteit is niet beschikbaar.</value>
+  </data>
+  <data name="RemoteLink_StatusConnecting" xml:space="preserve">
+    <value>Verbinden met {0}:{1}…</value>
+  </data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve">
+    <value>Automatisch opnieuw verbinden</value>
+  </data>
+  <data name="Dashboard_EnableRemoteLink" xml:space="preserve">
+    <value>Remote Link-server inschakelen</value>
+  </data>
+  <data name="Dashboard_RemoteLink" xml:space="preserve">
+    <value>Remote Link</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve">
+    <value>Of verbinden via adres (geavanceerd)</value>
+  </data>
+  <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve">
+    <value>Koppelen / Verbinden</value>
+  </data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
+    <value>Deel controllers met een gekoppelde PadForge op een andere pc via je netwerk.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
+    <value>Na een eenmalige koppeling maakt een vertrouwde pc automatisch opnieuw verbinding. Een gekoppelde pc kan de gamepad-uitvoer van deze pc aansturen, en tenzij je dit beperkt, ook het toetsenbord, de muis en de macro&apos;s.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNearby" xml:space="preserve">
+    <value>Pc&apos;s in de buurt</value>
+  </data>
+  <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve">
+    <value>Pc&apos;s met Remote Link ingeschakeld op hetzelfde netwerk verschijnen hier automatisch.</value>
+  </data>
+  <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve">
+    <value>Koppelen</value>
+  </data>
+  <data name="RemoteLink_Connect" xml:space="preserve">
+    <value>Verbinden</value>
+  </data>
+  <data name="RemoteLink_Connected" xml:space="preserve">
+    <value>Verbonden</value>
+  </data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve">
+    <value>Een gekoppelde pc kan toetsenbord-, muis- en macro-invoer naar deze pc sturen, tenzij je deze beperkt tot alleen gamepad.</value>
+  </data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve">
+    <value>Deze pc beperken tot alleen gamepad-invoer</value>
+  </data>
+  <data name="RemoteLink_Identity" xml:space="preserve">
+    <value>Identiteit</value>
+  </data>
+  <data name="RemoteLink_NoPairedPeers" xml:space="preserve">
+    <value>Nog geen gekoppelde pc&apos;s.</value>
+  </data>
+  <data name="RemoteLink_Pair" xml:space="preserve">
+    <value>Koppelen</value>
+  </data>
+  <data name="RemoteLink_PairedPeers" xml:space="preserve">
+    <value>Gekoppelde pc&apos;s</value>
+  </data>
+  <data name="RemoteLink_PairedPeersDescription" xml:space="preserve">
+    <value>Pc&apos;s waarmee je voor Remote Link bent gekoppeld. Trek er een in om verbinding te voorkomen. Deze moet dan opnieuw koppelen.</value>
+  </data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve">
+    <value>Controleer of deze code op beide schermen overeenkomt en koppel dan.</value>
+  </data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve">
+    <value>Koppelen met externe pc</value>
+  </data>
+  <data name="RemoteLink_Reject" xml:space="preserve">
+    <value>Afwijzen</value>
+  </data>
+  <data name="RemoteLink_Revoke" xml:space="preserve">
+    <value>Intrekken</value>
+  </data>
+  <data name="RemoteLink_RevokeAll" xml:space="preserve">
+    <value>Alles intrekken</value>
+  </data>
+  <data name="RemoteLink_StatusListening" xml:space="preserve">
+    <value>Luistert op {0}</value>
+  </data>
+  <data name="RemoteLink_StatusStartFailed" xml:space="preserve">
+    <value>Starten mislukt: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerTimedOut" xml:space="preserve">
+    <value>Peer {0} heeft een time-out</value>
+  </data>
+  <data name="RemoteLink_StatusConnectFailed" xml:space="preserve">
+    <value>Verbinden mislukt: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusLinkRejected" xml:space="preserve">
+    <value>Koppeling geweigerd: {0}</value>
+  </data>
+  <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
+    <value>Peer {0} verbonden, {1} apparaat/apparaten</value>
+  </data>
+  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
+    <value>Kies een geluid uit een toegevoegd pakket of blader naar een bestand.</value>
+  </data>
+  <data name="Macro_Sound_BrowseFiles" xml:space="preserve">
+    <value>Bladeren naar bestanden…</value>
+  </data>
 </root>

@@ -111,6 +111,21 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public bool HasTouchpad { get; set; }
 
+        /// <summary>Number of touchpad surfaces the device exposes
+        /// (Steam Controller 2026 / Steam Deck = 2; DualSense / DS4 = 1).
+        /// Persisted so the mapping picker offers every pad's descriptors
+        /// even when the device is offline. 0 on older saved configs that
+        /// predate this field — callers fall back to HasTouchpad (treat as 1).</summary>
+        [XmlElement]
+        public int CapTouchpadCount { get; set; }
+
+        /// <summary>Per-touchpad finger (simultaneous-contact) count, as SDL
+        /// enumerates it. Index aligns with the touchpad index. Persisted so the
+        /// mapping picker offers only the fingers each pad actually supports even
+        /// when the device is offline. Null/empty on configs predating this field
+        /// — callers fall back to the legacy two-finger assumption.</summary>
+        public int[] CapTouchpadFingerCounts { get; set; }
+
         /// <summary>Whether the device exposes per-trigger ("impulse") rumble
         /// motors (Xbox One / Elite / Series). Driven by
         /// <c>SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN</c>.</summary>
@@ -355,6 +370,8 @@ namespace PadForge.Engine.Data
             HasGyro = wrapper.HasGyro;
             HasAccel = wrapper.HasAccel;
             HasTouchpad = wrapper.HasTouchpad;
+            CapTouchpadCount = wrapper.NumTouchpads;
+            CapTouchpadFingerCounts = wrapper.TouchpadFingerCounts;
             HasRumbleTriggers = wrapper.HasRumbleTriggers;
 
             VendorId = wrapper.VendorId;
@@ -403,6 +420,18 @@ namespace PadForge.Engine.Data
         /// Populates the device identity and capabilities from a <see cref="WebControllerDevice"/>.
         /// </summary>
         public void LoadFromWebDevice(WebControllerDevice wrapper)
+        {
+            if (wrapper == null)
+                throw new ArgumentNullException(nameof(wrapper));
+            LoadFromDevice(wrapper);
+        }
+
+        /// <summary>
+        /// Populates the device identity and capabilities from any externally
+        /// managed <see cref="ISdlInputDevice"/> implementation the App layer
+        /// registers (MIDI input endpoints and other non-SDL sources).
+        /// </summary>
+        public void LoadFromExternalDevice(ISdlInputDevice wrapper)
         {
             if (wrapper == null)
                 throw new ArgumentNullException(nameof(wrapper));

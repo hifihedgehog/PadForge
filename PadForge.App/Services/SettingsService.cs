@@ -88,6 +88,28 @@ namespace PadForge.Services
         public string SettingsFilePath => _settingsFilePath;
 
         /// <summary>
+        /// Runtime holder for the Remote Link (issue #138) identity + trust list,
+        /// loaded from AppSettings and written back by BuildAppSettings. The static
+        /// identity is minted lazily on first Remote Link use, not on load, so
+        /// loading touches no behavior. Not serialized directly — it mirrors the
+        /// AppSettingsData.RemoteLink* fields.
+        /// </summary>
+        public sealed class RemoteLinkRuntime
+        {
+            public string ProtectedPrivateBase64 { get; set; } = "";
+            public string PublicBase64 { get; set; } = "";
+            /// <summary>How the private key above is wrapped at rest. Default machine-bound
+            /// (Secure); the user can switch to a portable mode for thumb-drive use.</summary>
+            public PadForge.Engine.RemoteLink.IdentityProtectionMode IdentityProtection { get; set; }
+                = PadForge.Engine.RemoteLink.IdentityProtectionMode.Secure;
+            public PadForge.Engine.RemoteLink.PeerTrustStore Trust { get; set; }
+                = new PadForge.Engine.RemoteLink.PeerTrustStore();
+        }
+
+        /// <summary>The loaded Remote Link identity + trust list (see <see cref="RemoteLinkRuntime"/>).</summary>
+        public RemoteLinkRuntime RemoteLink { get; private set; } = new RemoteLinkRuntime();
+
+        /// <summary>
         /// Whether settings have been modified since last save.
         /// </summary>
         public bool IsDirty { get; private set; }
@@ -323,6 +345,21 @@ namespace PadForge.Services
             }
             catch (Exception ex)
             {
+                // The file exists but couldn't be read. A later save would
+                // overwrite it with defaults, so preserve the original first.
+                try
+                {
+                    string bad = filePath + ".unreadable-" + DateTime.Now.ToString("yyyyMMdd-HHmmss");
+                    if (!File.Exists(bad))
+                        File.Copy(filePath, bad);
+                }
+                catch { /* preservation is best-effort */ }
+
+                // The app continues with defaults; seed the Profiles list
+                // (built-in Default entry) the same way a fresh install does.
+                if (_mainVm.Settings.ProfileItems.Count == 0)
+                    LoadProfiles(null, null);
+
                 _mainVm.StatusText = string.Format(Strings.Instance.Status_ErrorLoadingSettings_Format, ex.Message);
             }
         }
@@ -696,8 +733,258 @@ namespace PadForge.Services
                     {
                         if (extra != null) row.Sources.Add(extra.ToDomain());
                     }
+
+                    // Steering source kind (#94): steering is a per-stick GLOBAL, not a
+                    // per-layer mapping, so it has to live on the Base row that normal
+                    // (no-shift) play evaluates. Only stamp here when authoring Base; the
+                    // reconciliation pass below keeps the Base row in sync when the user is
+                    // authoring a shift layer. Persists on MappingSource (survives clones
+                    // via Clone()).
+                    if (string.Equals(activeMask, "Base", StringComparison.Ordinal))
+                        ApplySteeringKindToRow(row, mapping.TargetSettingName, padVm, slot);
+
+                    // Motion Lean tuning rides every layer's rows (the descriptor is a
+                    // normal input, not a Base-only steering mode).
+                    ApplyMotionLeanParamsToRow(row, padVm, slot);
+                }
+
+                // Steering Kind reconciliation on the Base layer (#94). The per-mapping
+                // loop above only rebuilds the active layer's rows, but steering Kind must
+                // track the StickConfigItem state on the Base row regardless of which layer
+                // is being authored. When authoring a shift layer, re-stamp the Base
+                // steering rows when steering is on, and clear a stale Kind when it's off —
+                // otherwise turning steering off from a shift layer leaves the Base row
+                // stuck in a steering mode forever.
+                if (!string.Equals(activeMask, "Base", StringComparison.Ordinal))
+                {
+                    foreach (var stick in padVm.GetSteerableSticks())
+                    foreach (var target in new[] { stick.XTarget, stick.YTarget })
+                    {
+                        MappingRow baseRow = null;
+                        foreach (var r in ms.Rows)
+                        {
+                            if (r != null
+                                && string.Equals(r.LayerMask ?? "Base", "Base", StringComparison.Ordinal)
+                                && string.Equals(r.Target, target, StringComparison.Ordinal))
+                            { baseRow = r; break; }
+                        }
+                        if (baseRow?.Sources == null || baseRow.Sources.Count == 0) continue;
+                        // Per-source stamp handles revert of non-steered sources internally.
+                        ApplySteeringKindToRow(baseRow, target, padVm, slot);
+                    }
                 }
             }
+        }
+
+        // Stamps per-assigned-device steering onto EVERY source in a stick-axis row. Each
+        // source's steering mode + tunables come from ITS OWN device's PadSetting, and it
+        // reads that device's OWN stick axes (so two devices on one slot each get their own
+        // wheel with the right axes). A source whose device isn't steering on this channel
+        // is reverted to a plain Direct mapping on its own axis. Returns true if any source
+        // on the row received a steering kind.
+        private static bool ApplySteeringKindToRow(MappingRow row, string target, PadViewModel padVm, int slot)
+        {
+            if (row?.Sources == null || row.Sources.Count == 0 || padVm == null) return false;
+            // Resolve this row's target to a stick index + its X/Y axis targets, covering both
+            // the standard gamepad pair and an Extended custom layout's numbered sticks.
+            if (!ResolveSteerTarget(padVm, target, out int stickIdx, out bool rowIsY, out string xTarget, out string yTarget))
+                return false;
+            bool any = false;
+
+            foreach (var src in row.Sources)
+            {
+                if (src == null) continue;
+                var cfg = ReadDeviceSteering(slot, src.DeviceGuid, stickIdx, padVm);
+                // Motion Lean is NOT stamped here. It's a first-class input descriptor
+                // ("Motion Lean" in the picker) the user maps to an axis like any gyro
+                // input; its sources keep Kind=Direct, so the revert guard below leaves
+                // them alone, and ApplyMotionLeanParamsToRow pushes the gyro-tab card's
+                // tuning onto them. The old design (gyro-tab Enable + target dropdown
+                // overriding the chosen stick axis's source with MotionLeanX) replaced
+                // one input with another — removed.
+                // AngleToAxisY outputs to the Y channel; every other mode to X. Only stamp
+                // this source when its device's mode targets THIS row's channel.
+                bool wantY = string.Equals(cfg.Kind, "AngleToAxisY", StringComparison.Ordinal);
+                if (cfg.Active && wantY == rowIsY)
+                {
+                    src.Kind = cfg.Kind;
+                    // Motion-lean reads gravity (by DeviceGuid), not stick axes. The 2D
+                    // modes read the DEVICE's own X axis (Descriptor) + Y axis
+                    // (ParamYDescriptor) — independent of which row we're stamping, so
+                    // AngleToAxisY on the Y row still gets X from the X target.
+                    if (!string.Equals(cfg.Kind, "MotionLeanX", StringComparison.Ordinal))
+                    {
+                        src.Descriptor = GetDeviceAxisDescriptor(padVm, xTarget, src.DeviceGuid);
+                        src.ParamYDescriptor = GetDeviceAxisDescriptor(padVm, yTarget, src.DeviceGuid);
+                    }
+                    src.ParamWindRangeDeg = cfg.WindRange;
+                    src.ParamWindPower = cfg.WindPower;
+                    src.ParamWindUnwindRate = cfg.WindUnwind;
+                    src.ParamAngleInnerDz = cfg.AngleInner;
+                    src.ParamAngleOuterDz = cfg.AngleOuter;
+                    src.ParamMotionInnerDz = cfg.MotionInner;
+                    src.ParamMotionOuterDz = cfg.MotionOuter;
+                    src.ParamControllerOrientation = cfg.Orient;
+                    any = true;
+                }
+                else
+                {
+                    // Not the steering output for this source's device. Revert it to a plain
+                    // Direct read of its own axis — but ONLY if it's currently a steering kind.
+                    // A normal mapping the user put on this axis (a button, a two-button
+                    // neg-pair, an axis) is left untouched: rewriting every source's descriptor
+                    // here clobbered neg-pairs down to the primary and broke button→axis maps.
+                    RevertSourceToDirect(src, target, padVm);
+                }
+            }
+            return any;
+        }
+
+        private static bool IsSteeringKind(string k)
+            => k == "WindingStick" || k == "AngleToAxisX" || k == "AngleToAxisY" || k == "MotionLeanX";
+
+        // Reads one device's per-stick steering config from its own PadSetting (per
+        // slot+device), applying the same defaults the UI load path uses. A guid-less
+        // source falls back to the live UI config for the selected stick.
+        private static (bool Active, string Kind, double WindRange, double WindPower, double WindUnwind,
+            double AngleInner, double AngleOuter, double MotionInner, double MotionOuter, string Orient)
+            ReadDeviceSteering(int slot, string deviceGuid, int stickIdx, PadViewModel padVm)
+        {
+            // The SELECTED device's latest steering lives in the live StickConfigs (the UI),
+            // which can be newer than its PadSetting; read it there so the stamp never lags a
+            // save. A guid-less source also uses the UI. Other devices read their own stored
+            // PadSetting so each keeps its own wheel.
+            Guid sel = padVm.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+            bool useUi = string.IsNullOrEmpty(deviceGuid)
+                || (sel != Guid.Empty && Guid.TryParse(deviceGuid, out var dg) && dg == sel);
+            if (useUi)
+            {
+                var s = padVm.StickConfigs?.FirstOrDefault(x => x.Index == stickIdx);
+                if (s == null) return (false, "Direct", 900, 1, 1800, 0, 10, 15, 135, "Forward");
+                // Motion fields are constants now — per-stick Motion Lean moved to Motion
+                // Steering, which supplies its own inner/outer/orient via the cfg override.
+                return (s.IsSteeringActive, s.SteeringKind, s.WindRangeDeg, s.WindPower, s.WindUnwindRate,
+                    s.AngleInnerDz, s.AngleOuterDz, 15, 135, "Forward");
+            }
+            PadSetting ps = Guid.TryParse(deviceGuid, out var g)
+                ? SettingsManager.FindSettingByInstanceGuidAndSlot(g, slot)?.GetPadSetting()
+                : null;
+            if (ps == null) return (false, "Direct", 900, 1, 1800, 0, 10, 15, 135, "Forward");
+            string kind = ps.GetExtendedMapping($"Stick{stickIdx}SteerKind");
+            // MotionLeanX is no longer a per-stick mode — it's driven by Motion Steering
+            // (gyro tab) via its own override. Treat a stored per-stick MotionLeanX as
+            // Direct so an old profile doesn't ghost-lean while the new card sits idle.
+            if (string.IsNullOrEmpty(kind) || kind == "MotionLeanX") kind = "Direct";
+            double D(string key, double dflt)
+                => double.TryParse(ps.GetExtendedMapping(key), System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
+            return (kind != "Direct", kind,
+                D($"Stick{stickIdx}SteerWindRange", 900),
+                D($"Stick{stickIdx}SteerWindPower", 1),
+                D($"Stick{stickIdx}SteerWindUnwind", 1800),
+                D($"Stick{stickIdx}SteerAngleInner", 0),
+                D($"Stick{stickIdx}SteerAngleOuter", 10),
+                15, 135, "Forward");
+        }
+
+        // Resolves a stick-axis target (standard Left/Right or Extended ExtendedAxis{n}) to a
+        // stick index + whether it's the Y axis, plus that stick's X/Y targets. One code path
+        // for both layouts, driven by the slot's actual sticks (PadViewModel.GetSteerableSticks).
+        private static bool ResolveSteerTarget(PadViewModel padVm, string target,
+            out int stickIdx, out bool rowIsY, out string xTarget, out string yTarget)
+        {
+            stickIdx = -1; rowIsY = false; xTarget = ""; yTarget = "";
+            if (string.IsNullOrEmpty(target)) return false;
+            var sticks = padVm.GetSteerableSticks();
+            for (int g = 0; g < sticks.Count; g++)
+            {
+                if (string.Equals(sticks[g].XTarget, target, StringComparison.Ordinal))
+                { stickIdx = g; rowIsY = false; xTarget = sticks[g].XTarget; yTarget = sticks[g].YTarget; return true; }
+                if (string.Equals(sticks[g].YTarget, target, StringComparison.Ordinal))
+                { stickIdx = g; rowIsY = true;  xTarget = sticks[g].XTarget; yTarget = sticks[g].YTarget; return true; }
+            }
+            return false;
+        }
+
+        // Pushes the Motion Steering card's per-device tuning (tilt deadzones + grip
+        // orientation) onto every "Motion Lean" source in a row. Motion Lean is a
+        // first-class input descriptor — the user maps it to an axis from the picker
+        // — so this NEVER changes a source's Kind, Descriptor, or target; it only
+        // refreshes the lean parameters the evaluator reads (ParamMotion* on the
+        // source). Mirrors ReadDeviceSteering's per-device resolution: the SELECTED
+        // device reads the live UI (newer than its PadSetting), every other device
+        // reads its own stored PadSetting so each keeps its own tilt tuning.
+        private static void ApplyMotionLeanParamsToRow(MappingRow row, PadViewModel padVm, int slot)
+        {
+            if (row?.Sources == null || padVm == null) return;
+            foreach (var src in row.Sources)
+            {
+                if (src == null || !Engine.Common.Mapping.SourceCoercion.IsMotionLeanDescriptor(src.Descriptor))
+                    continue;
+
+                Guid sel = padVm.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+                bool useUi = string.IsNullOrEmpty(src.DeviceGuid)
+                    || (sel != Guid.Empty && Guid.TryParse(src.DeviceGuid, out var dg) && dg == sel);
+                if (useUi)
+                {
+                    src.ParamMotionInnerDz = padVm.MotionSteerInnerDz;
+                    src.ParamMotionOuterDz = padVm.MotionSteerOuterDz;
+                    src.ParamControllerOrientation = padVm.MotionSteerOrient;
+                    continue;
+                }
+
+                PadSetting ps = Guid.TryParse(src.DeviceGuid, out var g)
+                    ? SettingsManager.FindSettingByInstanceGuidAndSlot(g, slot)?.GetPadSetting()
+                    : null;
+                if (ps == null) continue; // keep the source's existing params
+                double D(string key, double dflt)
+                    => double.TryParse(ps.GetExtendedMapping(key), System.Globalization.NumberStyles.Float,
+                        System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
+                string orient = ps.GetExtendedMapping("MotionSteerOrient");
+                src.ParamMotionInnerDz = D("MotionSteerInner", 15);
+                src.ParamMotionOuterDz = D("MotionSteerOuter", 135);
+                src.ParamControllerOrientation = string.IsNullOrEmpty(orient) ? "Forward" : orient;
+            }
+        }
+
+        // The bare stick-axis descriptor a given device reads for <paramref name="target"/>
+        // (e.g. "Axis 2"), from the UI mappings' primary source or the matching ExtraSource.
+        // Empty when the device has no source on that target.
+        private static string GetDeviceAxisDescriptor(PadViewModel padVm, string target, string deviceGuid)
+        {
+            var m = padVm?.Mappings?.FirstOrDefault(x => x.TargetSettingName == target);
+            if (m == null) return "";
+            if (string.Equals(m.PrimarySourceDeviceGuid ?? "", deviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
+                return StripSourcePrefix(m.SourceDescriptor);
+            var extra = m.ExtraSources?.FirstOrDefault(e =>
+                string.Equals(e.DeviceGuid ?? "", deviceGuid ?? "", StringComparison.OrdinalIgnoreCase));
+            return extra != null ? StripSourcePrefix(extra.Descriptor) : "";
+        }
+
+        // Reverts ONE source to a plain Direct read of its row's own device axis — but only
+        // if it's currently a steering kind. A normal Direct mapping (button, neg-pair, axis)
+        // is left untouched so this stamp never rewrites the user's own axis mappings.
+        private static void RevertSourceToDirect(Engine.Data.MappingSource src, string target, PadViewModel padVm)
+        {
+            if (src == null || !IsSteeringKind(src.Kind)) return;
+            src.Kind = "Direct";
+            src.Descriptor = GetDeviceAxisDescriptor(padVm, target, src.DeviceGuid);
+            src.ParamYDescriptor = "";
+            src.ParamWindRangeDeg = 0; src.ParamWindPower = 0; src.ParamWindUnwindRate = 0;
+            src.ParamAngleInnerDz = 0; src.ParamAngleOuterDz = 0;
+            src.ParamMotionInnerDz = 0; src.ParamMotionOuterDz = 0;
+            src.ParamControllerOrientation = null;
+        }
+
+        // Strips a leading I / H / IH inversion prefix off a source descriptor, matching
+        // the primary-source cleaning above; steering reads the bare axis.
+        private static string StripSourcePrefix(string d)
+        {
+            if (string.IsNullOrEmpty(d)) return "";
+            if (d.StartsWith("IH", StringComparison.OrdinalIgnoreCase)) return d.Substring(2);
+            if (d.StartsWith("I", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1])) return d.Substring(1);
+            if (d.StartsWith("H", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1])) return d.Substring(1);
+            return d;
         }
 
         /// <summary>
@@ -941,6 +1228,27 @@ namespace PadForge.Services
         private void LoadAppSettings(AppSettingsData appSettings)
         {
             var vm = _mainVm.Settings;
+            PadForge.Common.SoundPackageManager.LoadRegistry(
+                appSettings.SoundPackages?.Select(p => (p.Name, p.Path)));
+
+            // Remote Link (issue #138): carry the stored identity + trust list into
+            // the runtime holder. No minting here — the identity is created lazily
+            // on first Remote Link start — so this stays behavior-neutral on load.
+            try
+            {
+                // Mutate the existing holder + trust store in place (don't swap the
+                // instances) so a running LinkServer's references stay current across
+                // a Reload — else peers paired after a reload would be dropped on save
+                // and their gamepad-only restriction bypassed.
+                RemoteLink.ProtectedPrivateBase64 = appSettings.RemoteLinkIdentityPrivate ?? "";
+                RemoteLink.PublicBase64 = appSettings.RemoteLinkIdentityPublic ?? "";
+                RemoteLink.IdentityProtection =
+                    Enum.TryParse<PadForge.Engine.RemoteLink.IdentityProtectionMode>(appSettings.RemoteLinkIdentityProtection, out var ipm)
+                        ? ipm : PadForge.Engine.RemoteLink.IdentityProtectionMode.Secure;
+                RemoteLink.Trust.ReplaceAll(appSettings.RemoteLinkPeers);
+            }
+            catch { }
+            vm.RefreshTrustedPeers(RemoteLink.Trust?.Peers);
             vm.AutoStartEngine = appSettings.AutoStartEngine;
             vm.MinimizeToTray = appSettings.MinimizeToTray;
             vm.StartMinimized = appSettings.StartMinimized;
@@ -1027,6 +1335,13 @@ namespace PadForge.Services
                 }
             }
 
+            // Audio tab (issue #83): per-slot macro-sound master volume.
+            if (appSettings.SlotSoundVolumes != null)
+            {
+                for (int i = 0; i < _mainVm.Pads.Count && i < appSettings.SlotSoundVolumes.Length; i++)
+                    _mainVm.Pads[i].SoundMasterVolume = appSettings.SlotSoundVolumes[i];
+            }
+
             // Reconcile per-group order lists with the loaded topology. Pads
             // that the persisted lists reference but that are no longer
             // created (or that have changed types) are dropped; pads that
@@ -1054,6 +1369,10 @@ namespace PadForge.Services
             _mainVm.Dashboard.EnableWebController = appSettings.EnableWebController;
             _mainVm.Dashboard.WebControllerPort = appSettings.WebControllerPort > 0
                 ? appSettings.WebControllerPort : 8080;
+            _mainVm.Dashboard.EnableRemoteLink = appSettings.EnableRemoteLink;
+            _mainVm.Dashboard.AutoReconnect = appSettings.RemoteLinkAutoReconnect;
+            _mainVm.Dashboard.RemoteLinkPort = appSettings.RemoteLinkPort >= 1024 && appSettings.RemoteLinkPort <= 65535
+                ? appSettings.RemoteLinkPort : 27500;
 
             // Load touchpad overlay settings.
             _mainVm.Dashboard.EnableTouchpadOverlay = appSettings.EnableTouchpadOverlay;
@@ -1179,6 +1498,8 @@ namespace PadForge.Services
                     d.ButtonCount = s.ButtonCount;
                     d.OemNameOverride = s.OemNameOverride;
                     d.ProductString = s.ProductString ?? string.Empty;
+                    d.VendorId = s.VendorId;
+                    d.ProductId = s.ProductId;
                     d.Customize = s.Customize;
                     d.ForceFeedbackEnabled = s.ForceFeedbackEnabled;
                 }
@@ -1330,6 +1651,8 @@ namespace PadForge.Services
                 ButtonCount = cfg.ButtonCount,
                 OemNameOverride = cfg.OemNameOverride,
                 ProductString = cfg.ProductString,
+                VendorId = cfg.VendorId,
+                ProductId = cfg.ProductId,
                 Customize = cfg.Customize,
                 ForceFeedbackEnabled = cfg.ForceFeedbackEnabled,
             };
@@ -1354,6 +1677,8 @@ namespace PadForge.Services
             d.ButtonCount = cfg.ButtonCount;
             d.OemNameOverride = cfg.OemNameOverride;
             d.ProductString = cfg.ProductString ?? string.Empty;
+            d.VendorId = cfg.VendorId;
+            d.ProductId = cfg.ProductId;
             d.Customize = cfg.Customize;
             d.ForceFeedbackEnabled = cfg.ForceFeedbackEnabled;
         }
@@ -1420,6 +1745,8 @@ namespace PadForge.Services
                     cfg.ButtonCount = cfgData.ButtonCount;
                     cfg.OemNameOverride = cfgData.OemNameOverride;
                     cfg.ProductString = cfgData.ProductString ?? string.Empty;
+                    cfg.VendorId = cfgData.VendorId;
+                    cfg.ProductId = cfgData.ProductId;
                     cfg.Customize = cfgData.Customize;
                     cfg.ForceFeedbackEnabled = cfgData.ForceFeedbackEnabled;
                 }
@@ -1517,6 +1844,8 @@ namespace PadForge.Services
                     cfg.LightbarGreen = cfgData.LightbarGreen;
                     cfg.LightbarBlue = cfgData.LightbarBlue;
                     cfg.LightbarEnabled = cfgData.LightbarEnabled;
+                    cfg.AudioPassthroughEnabled = cfgData.AudioPassthroughEnabled;
+                    cfg.AudioMirrorSourceId = cfgData.AudioMirrorSourceId ?? string.Empty;
                     // Migrate legacy MicLightOn to the new MicLedMode if
                     // the new field hasn't been set explicitly.
                     if (cfgData.MicLedMode != ViewModels.MicLedMode.Off)
@@ -1570,6 +1899,19 @@ namespace PadForge.Services
                     if (cfgData.LightbarPalette != null && cfgData.LightbarPalette.Length > 0)
                     {
                         cfg.ReplaceLightbarPalette(cfgData.LightbarPalette
+                            .Select(e => new ViewModels.LightbarPaletteEntry(e.R, e.G, e.B)));
+                    }
+                    // InputReactive = Cycle now has its own palette. Pre-split saves don't carry
+                    // it (null), so seed it from the shared LightbarPalette to preserve existing
+                    // setups; once present it round-trips independently.
+                    if (cfgData.LightbarInputReactivePalette != null && cfgData.LightbarInputReactivePalette.Length > 0)
+                    {
+                        cfg.ReplaceLightbarInputReactivePalette(cfgData.LightbarInputReactivePalette
+                            .Select(e => new ViewModels.LightbarPaletteEntry(e.R, e.G, e.B)));
+                    }
+                    else if (cfgData.LightbarPalette != null && cfgData.LightbarPalette.Length > 0)
+                    {
+                        cfg.ReplaceLightbarInputReactivePalette(cfgData.LightbarPalette
                             .Select(e => new ViewModels.LightbarPaletteEntry(e.R, e.G, e.B)));
                     }
                     cfg.LightbarInputHoldMs = cfgData.LightbarInputHoldMs;
@@ -1733,6 +2075,9 @@ namespace PadForge.Services
 
                 // Load force feedback settings.
                 padVm.ForceOverallGain = TryParseInt(ps.ForceOverall, 100);
+                padVm.WheelRotationRange = TryParseInt(ps.RotationRange, 900);
+                padVm.WheelAutoCenter = TryParseInt(ps.AutoCenterStrength, 0);
+                padVm.WheelRpmLeds = ps.WheelRpmLeds == "1";
                 padVm.LeftMotorStrength = TryParseInt(ps.LeftMotorStrength, 100);
                 padVm.RightMotorStrength = TryParseInt(ps.RightMotorStrength, 100);
                 padVm.SwapMotors = ps.ForceSwapMotor == "1" ||
@@ -1778,6 +2123,14 @@ namespace PadForge.Services
                 padVm.GyroInvertYawRoll = ps.GyroInvertYawRoll == "1";
                 padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough == "1";
 
+                // Load Motion Steering tuning (per-(device, slot)) — settings for the
+                // "Motion Lean" input descriptor. The old Enabled/Target keys are gone
+                // (the input is mapped from the picker, never stamped onto a target);
+                // stale keys in old profiles are simply never read.
+                padVm.MotionSteerInnerDz = TryParseDouble(ps.GetExtendedMapping("MotionSteerInner"), 15);
+                padVm.MotionSteerOuterDz = TryParseDouble(ps.GetExtendedMapping("MotionSteerOuter"), 135);
+                padVm.SetMotionSteerOrient(ps.GetExtendedMapping("MotionSteerOrient"));
+
                 // Load audio bass rumble settings.
                 padVm.AudioRumbleEnabled = ps.AudioRumbleEnabled == "1";
                 padVm.AudioRumbleSensitivity = TryParseDouble(ps.AudioRumbleSensitivity, 4.0);
@@ -1789,6 +2142,15 @@ namespace PadForge.Services
                 padVm.ConstantForceEnabled = ps.ConstantForceEnabled == "1";
                 padVm.ConstantForceX = TryParseDouble(ps.ConstantForceX, 0.0);
                 padVm.ConstantForceY = TryParseDouble(ps.ConstantForceY, 0.0);
+
+                // Steering at-lock feedback (#94).
+                padVm.SteeringLockRumbleEnabled = ps.SteeringLockRumbleEnabled == "1";
+                padVm.SteeringLockTriggerVibEnabled = ps.SteeringLockTriggerVibEnabled == "1";
+                padVm.SteeringLockLightbarEnabled = ps.SteeringLockLightbarEnabled == "1";
+                padVm.SteeringLockATResistanceEnabled = ps.SteeringLockATResistanceEnabled == "1";
+                padVm.SteeringLockPulseMs = TryParseDouble(ps.SteeringLockPulseMs, 80);
+                padVm.SteeringLockLightbarColor = string.IsNullOrWhiteSpace(ps.SteeringLockLightbarColor) ? "#FF0000" : ps.SteeringLockLightbarColor;
+                padVm.SteeringLockLightbarFadeMs = TryParseDouble(ps.SteeringLockLightbarFadeMs, 250);
 
                 // Load deadzone settings (independent X/Y).
                 padVm.LeftDeadZoneShape = (int)InputManager.ParseDeadZoneShape(ps.LeftThumbDeadZoneShape);
@@ -1865,6 +2227,13 @@ namespace PadForge.Services
                     trig.SensitivityCurve = ps.GetExtendedMapping($"ExtendedTrigger{g}Curve") ?? "0,0;1,1";
                 }
 
+                // Steering is per assigned device (#94): the Sticks-tab card loads the
+                // SELECTED device's steering via InputService.LoadPadSettingToViewModel on
+                // device select, not the first device here. The engine reads each source's
+                // own device steering off the MappingSet (stamped per source in
+                // ApplySteeringKindToRow), so nothing per-device is loaded into the shared
+                // StickConfigs at profile-load time.
+
                 // Mappings are per-slot (live in SlotMappingSets), NOT per-device.
                 // Read from the authoritative MappingSet rather than the legacy
                 // per-device PadSetting fields. The legacy fields are stale
@@ -1886,6 +2255,10 @@ namespace PadForge.Services
         /// </summary>
         private void LoadMacros(MacroData[] macros)
         {
+            // Macro sounds are keyed to the MacroItem objects being replaced;
+            // a looping sound would have no owner left to stop it.
+            PadForge.Common.Input.SoundMacroService.StopAll();
+
             // Clear existing macros on all pads.
             foreach (var pad in _mainVm.Pads)
                 pad.Macros.Clear();
@@ -1955,7 +2328,10 @@ namespace PadForge.Services
                             LightbarFadeMs = Math.Clamp(ad.LightbarFadeMs, 0, 5000),
                             LightbarPaletteCsv = ad.LightbarPaletteCsv ?? string.Empty,
                             LightbarTargetMode = ad.LightbarTargetMode,
-                            LightbarCycleModesCsv = ad.LightbarCycleModesCsv
+                            LightbarCycleModesCsv = ad.LightbarCycleModesCsv,
+                            SoundFilePath = ad.SoundFilePath ?? string.Empty,
+                            SoundVolume = ad.SoundVolume > 0 ? ad.SoundVolume : 100,
+                            SoundLoop = ad.SoundLoop
                         });
                     }
                 }
@@ -2396,6 +2772,9 @@ namespace PadForge.Services
         private AppSettingsData BuildAppSettings()
         {
             var vm = _mainVm.Settings;
+            var soundPackages = PadForge.Common.SoundPackageManager.SaveRegistry()
+                .Select(p => new SoundPackageData { Name = p.Name, Path = p.Path })
+                .ToArray();
             // Sync the ViewModel toggle to the static state.
             SettingsManager.EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching;
 
@@ -2428,6 +2807,8 @@ namespace PadForge.Services
                     ButtonCount = cfg.ButtonCount,
                     OemNameOverride = cfg.OemNameOverride,
                     ProductString = cfg.ProductString,
+                    VendorId = cfg.VendorId,
+                    ProductId = cfg.ProductId,
                     Customize = cfg.Customize,
                     ForceFeedbackEnabled = cfg.ForceFeedbackEnabled
                 });
@@ -2476,6 +2857,13 @@ namespace PadForge.Services
 
             return new AppSettingsData
             {
+                SoundPackages = soundPackages,
+                // Remote Link (issue #138): persist the identity + trust list from
+                // the runtime holder (set on load / updated on pairing + revocation).
+                RemoteLinkIdentityPrivate = RemoteLink?.ProtectedPrivateBase64 ?? "",
+                RemoteLinkIdentityPublic = RemoteLink?.PublicBase64 ?? "",
+                RemoteLinkIdentityProtection = (RemoteLink?.IdentityProtection ?? PadForge.Engine.RemoteLink.IdentityProtectionMode.Secure).ToString(),
+                RemoteLinkPeers = RemoteLink?.Trust?.Peers?.ToArray(),
                 AutoStartEngine = vm.AutoStartEngine,
                 MinimizeToTray = vm.MinimizeToTray,
                 StartMinimized = vm.StartMinimized,
@@ -2490,6 +2878,7 @@ namespace PadForge.Services
                 GlobalMacros = SettingsManager.GlobalMacros,
                 SlotControllerTypes = isDefault ? slotTypes : defaultSnap.SlotControllerTypes,
                 SlotProfileIds = isDefault ? slotProfileIds : defaultSnap.SlotProfileIds,
+                SlotSoundVolumes = _mainVm.Pads.Select(p => p.SoundMasterVolume).ToArray(),
                 SlotCreated = isDefault
                     ? (bool[])SettingsManager.SlotCreated.Clone()
                     : defaultSnap.SlotCreated,
@@ -2500,6 +2889,9 @@ namespace PadForge.Services
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
                 WebControllerPort = _mainVm.Dashboard.WebControllerPort,
+                EnableRemoteLink = _mainVm.Dashboard.EnableRemoteLink,
+                RemoteLinkAutoReconnect = _mainVm.Dashboard.AutoReconnect,
+                RemoteLinkPort = _mainVm.Dashboard.RemoteLinkPort,
                 EnableTouchpadOverlay = _mainVm.Dashboard.EnableTouchpadOverlay,
                 TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity,
                 TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor,
@@ -2562,6 +2954,8 @@ namespace PadForge.Services
                     ButtonCount = cfg.ButtonCount,
                     OemNameOverride = cfg.OemNameOverride,
                     ProductString = cfg.ProductString,
+                    VendorId = cfg.VendorId,
+                    ProductId = cfg.ProductId,
                     Customize = cfg.Customize,
                     ForceFeedbackEnabled = cfg.ForceFeedbackEnabled
                 });
@@ -2622,6 +3016,8 @@ namespace PadForge.Services
                 LightbarGreen = cfg.LightbarGreen,
                 LightbarBlue = cfg.LightbarBlue,
                 LightbarEnabled = cfg.LightbarEnabled,
+                AudioPassthroughEnabled = cfg.AudioPassthroughEnabled,
+                AudioMirrorSourceId = cfg.AudioMirrorSourceId ?? string.Empty,
                 MicLedMode = cfg.MicLedMode,
                 MicLedFollowDeviceId = cfg.MicLedFollowDeviceId ?? string.Empty,
                 MicLightOn = cfg.MicLightOn,
@@ -2653,6 +3049,9 @@ namespace PadForge.Services
                 LightbarBatteryHighG = cfg.LightbarBatteryHighG,
                 LightbarBatteryHighB = cfg.LightbarBatteryHighB,
                 LightbarPalette = cfg.LightbarPalette
+                    .Select(e => new ViewModels.LightbarPaletteEntryData { R = e.R, G = e.G, B = e.B })
+                    .ToArray(),
+                LightbarInputReactivePalette = cfg.LightbarInputReactivePalette
                     .Select(e => new ViewModels.LightbarPaletteEntryData { R = e.R, G = e.G, B = e.B })
                     .ToArray(),
                 LightbarInputHoldMs = cfg.LightbarInputHoldMs,
@@ -2774,7 +3173,10 @@ namespace PadForge.Services
                             LightbarFadeMs = a.LightbarFadeMs,
                             LightbarPaletteCsv = a.LightbarPaletteCsv,
                             LightbarTargetMode = a.LightbarTargetMode,
-                            LightbarCycleModesCsv = a.LightbarCycleModesCsv
+                            LightbarCycleModesCsv = a.LightbarCycleModesCsv,
+                            SoundFilePath = string.IsNullOrEmpty(a.SoundFilePath) ? null : a.SoundFilePath,
+                            SoundVolume = a.SoundVolume,
+                            SoundLoop = a.SoundLoop
                         }).ToArray()
                     });
                 }
@@ -2806,6 +3208,9 @@ namespace PadForge.Services
 
                     // Write force feedback settings.
                     ps.ForceOverall = padVm.ForceOverallGain.ToString();
+                    ps.RotationRange = padVm.WheelRotationRange.ToString();
+                    ps.AutoCenterStrength = padVm.WheelAutoCenter.ToString();
+                    ps.WheelRpmLeds = padVm.WheelRpmLeds ? "1" : "0";
                     ps.LeftMotorStrength = padVm.LeftMotorStrength.ToString();
                     ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
                     ps.ForceSwapMotor = padVm.SwapMotors ? "1" : "0";
@@ -2854,6 +3259,13 @@ namespace PadForge.Services
                     ps.GyroInvertYawRoll = padVm.GyroInvertYawRoll ? "1" : "0";
                     ps.GyroApplyTuningToPassthrough = padVm.GyroApplyTuningToPassthrough ? "1" : "0";
 
+                    // Write Motion Steering tuning (per-(device, slot)) — settings for
+                    // the "Motion Lean" input descriptor. No Enabled/Target keys: the
+                    // input is mapped from the picker, never stamped onto a target.
+                    ps.SetExtendedMapping("MotionSteerInner", padVm.MotionSteerInnerDz.ToString(ic));
+                    ps.SetExtendedMapping("MotionSteerOuter", padVm.MotionSteerOuterDz.ToString(ic));
+                    ps.SetExtendedMapping("MotionSteerOrient", padVm.MotionSteerOrient);
+
                     // Write audio bass rumble settings.
                     ps.AudioRumbleEnabled = padVm.AudioRumbleEnabled ? "1" : "0";
                     ps.AudioRumbleSensitivity = padVm.AudioRumbleSensitivity.ToString("F1", ic);
@@ -2865,6 +3277,15 @@ namespace PadForge.Services
                     ps.ConstantForceEnabled = padVm.ConstantForceEnabled ? "1" : "0";
                     ps.ConstantForceX = padVm.ConstantForceX.ToString("F4", ic);
                     ps.ConstantForceY = padVm.ConstantForceY.ToString("F4", ic);
+
+                    // Steering at-lock feedback (#94).
+                    ps.SteeringLockRumbleEnabled = padVm.SteeringLockRumbleEnabled ? "1" : "0";
+                    ps.SteeringLockTriggerVibEnabled = padVm.SteeringLockTriggerVibEnabled ? "1" : "0";
+                    ps.SteeringLockLightbarEnabled = padVm.SteeringLockLightbarEnabled ? "1" : "0";
+                    ps.SteeringLockATResistanceEnabled = padVm.SteeringLockATResistanceEnabled ? "1" : "0";
+                    ps.SteeringLockPulseMs = ((int)padVm.SteeringLockPulseMs).ToString(ic);
+                    ps.SteeringLockLightbarColor = padVm.SteeringLockLightbarColor ?? "#FF0000";
+                    ps.SteeringLockLightbarFadeMs = ((int)padVm.SteeringLockLightbarFadeMs).ToString(ic);
 
                     // Write deadzone settings (independent X/Y).
                     ps.LeftThumbDeadZoneShape = padVm.LeftDeadZoneShape.ToString();
@@ -2926,6 +3347,22 @@ namespace PadForge.Services
                         ps.SetExtendedMapping($"ExtendedStick{g}MrXN", stick.MaxRangeXNeg.ToString(ic));
                         ps.SetExtendedMapping($"ExtendedStick{g}MrYN", stick.MaxRangeYNeg.ToString(ic));
                     }
+                    // Per-stick steering mode + tunables (#94), every stick index. The
+                    // engine reads Kind off the MappingSet rows (stamped in
+                    // SaveViewModelToMappingSet), but the settings persist here too so
+                    // the Sticks-tab card can reload them.
+                    foreach (var stick in padVm.StickConfigs)
+                    {
+                        int g = stick.Index;
+                        if (g < 0) continue;
+                        ps.SetExtendedMapping($"Stick{g}SteerKind", stick.SteeringKind);
+                        ps.SetExtendedMapping($"Stick{g}SteerWindRange", stick.WindRangeDeg.ToString(ic));
+                        ps.SetExtendedMapping($"Stick{g}SteerWindPower", stick.WindPower.ToString(ic));
+                        ps.SetExtendedMapping($"Stick{g}SteerWindUnwind", stick.WindUnwindRate.ToString(ic));
+                        ps.SetExtendedMapping($"Stick{g}SteerAngleInner", stick.AngleInnerDz.ToString(ic));
+                        ps.SetExtendedMapping($"Stick{g}SteerAngleOuter", stick.AngleOuterDz.ToString(ic));
+                    }
+
                     foreach (var trig in padVm.TriggerConfigs)
                     {
                         if (trig.Index < 2) continue;
@@ -3050,6 +3487,9 @@ namespace PadForge.Services
             _mainVm.Dashboard.DsuMotionServerPort = 26760;
             _mainVm.Dashboard.EnableWebController = false;
             _mainVm.Dashboard.WebControllerPort = 8080;
+            _mainVm.Dashboard.EnableRemoteLink = false;
+            _mainVm.Dashboard.AutoReconnect = true;
+            _mainVm.Dashboard.RemoteLinkPort = 27500;
             SettingsManager.EnableAutoProfileSwitching = false;
             SettingsManager.ActiveProfileId = null;
             SettingsManager.Profiles.Clear();
@@ -3359,6 +3799,17 @@ namespace PadForge.Services
     //  Serialization data classes
     // ─────────────────────────────────────────────────────────────────
 
+    /// <summary>One registered sound package (issue #83 follow-up).</summary>
+    public class SoundPackageData
+    {
+        [XmlAttribute]
+        public string Name { get; set; }
+
+        /// <summary>Exe-relative when under the application directory.</summary>
+        [XmlAttribute]
+        public string Path { get; set; }
+    }
+
     /// <summary>
     /// Root element for the PadForge settings XML file.
     /// </summary>
@@ -3410,6 +3861,45 @@ namespace PadForge.Services
     /// </summary>
     public class AppSettingsData
     {
+        /// <summary>Registered sound packages (issue #83 follow-up):
+        /// Name + stored path (exe-relative when the package sits in the
+        /// application directory, for portable kits).</summary>
+        [XmlArray("SoundPackages")]
+        [XmlArrayItem("Package")]
+        public SoundPackageData[] SoundPackages { get; set; }
+
+        // ── Remote Link (issue #138) — global (per-machine), not per-profile ──
+        /// <summary>This instance's static identity private key, DPAPI-protected
+        /// (base64). Empty until the first Remote Link use mints one.</summary>
+        [XmlElement]
+        public string RemoteLinkIdentityPrivate { get; set; } = "";
+
+        /// <summary>This instance's static identity public key (base64). Not secret.</summary>
+        [XmlElement]
+        public string RemoteLinkIdentityPublic { get; set; } = "";
+
+        /// <summary>How the private key is wrapped at rest: Secure (machine-bound, default),
+        /// PortablePassword, or PortableOpen. Drives thumb-drive portability (issue #138).</summary>
+        [XmlElement]
+        public string RemoteLinkIdentityProtection { get; set; } = "Secure";
+
+        /// <summary>Trusted paired peers. Old files lack this element and load as null.</summary>
+        [XmlArray("RemoteLinkPeers")]
+        [XmlArrayItem("Peer")]
+        public PadForge.Engine.RemoteLink.PeerTrust[] RemoteLinkPeers { get; set; }
+
+        /// <summary>Whether the Remote Link server listens. Global, not per-profile.</summary>
+        [XmlElement]
+        public bool EnableRemoteLink { get; set; }
+
+        /// <summary>Auto-reconnect: when a paired PC is seen on the LAN, establish the link
+        /// without a click (issue #138). Default on.</summary>
+        [XmlElement]
+        public bool RemoteLinkAutoReconnect { get; set; } = true;
+
+        [XmlElement]
+        public int RemoteLinkPort { get; set; } = 27500;
+
         [XmlElement]
         public bool AutoStartEngine { get; set; } = true;
 
@@ -3460,6 +3950,11 @@ namespace PadForge.Services
         [XmlArray("SlotControllerTypes")]
         [XmlArrayItem("Type")]
         public int[] SlotControllerTypes { get; set; }
+
+        /// <summary>Per-slot master volume for macro sounds (0-100).</summary>
+        [XmlArray("SlotSoundVolumes")]
+        [XmlArrayItem("Volume")]
+        public int[] SlotSoundVolumes { get; set; }
 
         /// <summary>
         /// Per-slot HIDMaestro profile slug (e.g. "xbox-360-wired",
@@ -3863,6 +4358,18 @@ namespace PadForge.Services
         [XmlElement] public ViewModels.LightbarMode LightbarTargetMode { get; set; } = ViewModels.LightbarMode.Static;
         /// <summary>CSV of LightbarMode int values for LightbarModeCycle.</summary>
         [XmlElement] public string LightbarCycleModesCsv { get; set; } = "1,2,3,4,11,12,13";
+
+        /// <summary>Sound file path for PlaySound (issue #83). Null when unset.</summary>
+        [XmlElement]
+        public string SoundFilePath { get; set; }
+
+        /// <summary>Per-action sound volume percentage (1-100). Default 100.</summary>
+        [XmlElement]
+        public int SoundVolume { get; set; } = 100;
+
+        /// <summary>Loop the sound until SoundStop / trigger release.</summary>
+        [XmlElement]
+        public bool SoundLoop { get; set; }
     }
 
     /// <summary>

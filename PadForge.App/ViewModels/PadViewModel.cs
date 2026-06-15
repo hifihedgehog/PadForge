@@ -3104,7 +3104,8 @@ namespace PadForge.ViewModels
         private RelayCommand _soundTestCommand;
         public RelayCommand SoundTestCommand =>
             _soundTestCommand ??= new RelayCommand(
-                () => PadForge.Common.Input.SoundMacroService.PlayTestBeep(PadIndex));
+                () => PadForge.Common.Input.SoundMacroService.PlayTestBeep(PadIndex, SelectedMappedDevice?.InstanceGuid ?? Guid.Empty),
+                () => HasSelectedDevice);
 
         private RelayCommand _soundStopAllCommand;
         public RelayCommand SoundStopAllCommand =>
@@ -4033,6 +4034,7 @@ namespace PadForge.ViewModels
         public void RefreshCommands()
         {
             _testRumbleCommand?.NotifyCanExecuteChanged();
+            _soundTestCommand?.NotifyCanExecuteChanged();
             _testLeftImpulseTriggerCommand?.NotifyCanExecuteChanged();
             _testRightImpulseTriggerCommand?.NotifyCanExecuteChanged();
             _removeMacroCommand?.NotifyCanExecuteChanged();

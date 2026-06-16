@@ -2334,6 +2334,12 @@ namespace PadForge.Services
                             SoundFilePath = ad.SoundFilePath ?? string.Empty,
                             SoundVolume = ad.SoundVolume > 0 ? ad.SoundVolume : 100,
                             SoundLoop = ad.SoundLoop,
+                            SetGyroEngagedMode = ad.SetGyroEngagedMode,
+                            RumbleHoldMode = ad.RumbleHoldMode,
+                            RumbleStrengthLeft = ad.RumbleStrengthLeft,
+                            RumbleStrengthRight = ad.RumbleStrengthRight,
+                            RumbleHoldMs = ad.RumbleHoldMs,
+                            RumbleFadeMs = ad.RumbleFadeMs,
                             CursorRecenterMode = ad.CursorRecenterMode,
                             CursorPinMode = ad.CursorPinMode,
                             CursorPinX = ad.CursorPinX,
@@ -3186,6 +3192,12 @@ namespace PadForge.Services
                             SoundFilePath = string.IsNullOrEmpty(a.SoundFilePath) ? null : a.SoundFilePath,
                             SoundVolume = a.SoundVolume,
                             SoundLoop = a.SoundLoop,
+                            SetGyroEngagedMode = a.SetGyroEngagedMode,
+                            RumbleHoldMode = a.RumbleHoldMode,
+                            RumbleStrengthLeft = a.RumbleStrengthLeft,
+                            RumbleStrengthRight = a.RumbleStrengthRight,
+                            RumbleHoldMs = a.RumbleHoldMs,
+                            RumbleFadeMs = a.RumbleFadeMs,
                             CursorRecenterMode = a.CursorRecenterMode,
                             CursorPinMode = a.CursorPinMode,
                             CursorPinX = a.CursorPinX,
@@ -4386,6 +4398,20 @@ namespace PadForge.Services
         /// <summary>Loop the sound until SoundStop / trigger release.</summary>
         [XmlElement]
         public bool SoundLoop { get; set; }
+
+        /// <summary>Write mode for SetGyroEngaged (Toggle / On / Off).</summary>
+        [XmlElement] public ViewModels.MacroSetGyroEngagedMode SetGyroEngagedMode { get; set; } = ViewModels.MacroSetGyroEngagedMode.Toggle;
+
+        /// <summary>Reactive / Sticky hold for Rumble and RumbleTrigger (issue #102).</summary>
+        [XmlElement] public ViewModels.MacroRumbleHoldMode RumbleHoldMode { get; set; } = ViewModels.MacroRumbleHoldMode.Reactive;
+        /// <summary>Left (heavy) motor strength 0..100 for Rumble / RumbleTrigger.</summary>
+        [XmlElement] public int RumbleStrengthLeft { get; set; } = 100;
+        /// <summary>Right (light) motor strength 0..100 for Rumble / RumbleTrigger.</summary>
+        [XmlElement] public int RumbleStrengthRight { get; set; } = 100;
+        /// <summary>Full-strength hold window for Reactive rumble, ms.</summary>
+        [XmlElement] public int RumbleHoldMs { get; set; } = 100;
+        /// <summary>Fade-out window for Reactive rumble, ms.</summary>
+        [XmlElement] public int RumbleFadeMs { get; set; } = 200;
 
         /// <summary>Which axes a MouseRecenter action snaps to center (issue #108).</summary>
         [XmlElement] public ViewModels.CursorRecenterMode CursorRecenterMode { get; set; } = ViewModels.CursorRecenterMode.XAndY;

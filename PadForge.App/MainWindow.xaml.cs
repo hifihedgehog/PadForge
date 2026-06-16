@@ -891,6 +891,16 @@ namespace PadForge
                         nameof(PadViewModel.ConstantForceX) or nameof(PadViewModel.ConstantForceY) or
                         nameof(PadViewModel.ConstantTriggerForceEnabled) or
                         nameof(PadViewModel.ConstantTriggerForceLeft) or nameof(PadViewModel.ConstantTriggerForceRight) or
+                        // Trigger rumble routing (#102). Per-trigger Source / Mode / Scale / Activator,
+                        // all per-(device, slot). Without these the card's edits never mark dirty and
+                        // revert on restart (the Activator descriptor is also marked dirty by its record
+                        // handler, but the dropdowns and scale need this gate too).
+                        nameof(PadViewModel.LeftTriggerRouteSource) or nameof(PadViewModel.RightTriggerRouteSource) or
+                        nameof(PadViewModel.LeftTriggerRouteMode) or nameof(PadViewModel.RightTriggerRouteMode) or
+                        nameof(PadViewModel.LeftTriggerRouteScale) or nameof(PadViewModel.RightTriggerRouteScale) or
+                        nameof(PadViewModel.LeftTriggerRouteActivator) or nameof(PadViewModel.RightTriggerRouteActivator) or
+                        nameof(PadViewModel.LeftTriggerRouteActivatorDeviceGuid) or nameof(PadViewModel.RightTriggerRouteActivatorDeviceGuid) or
+                        nameof(PadViewModel.LeftTriggerRouteActivatorMode) or nameof(PadViewModel.RightTriggerRouteActivatorMode) or
                         nameof(PadViewModel.OutputType) or
                         // Gyro tab — v3.3 + JoyShockMapper-canon fields all per-(device, slot).
                         nameof(PadViewModel.GyroSensitivityH) or nameof(PadViewModel.GyroSensitivityV) or

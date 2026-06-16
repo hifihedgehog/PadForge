@@ -282,6 +282,12 @@ namespace PadForge.Common
                 "Misc 4" => s.DevObj_Misc4,
                 "Misc 5" => s.DevObj_Misc5,
                 "Misc 6" => s.DevObj_Misc6,
+                // Mouse axes (issue #107 rename: Speed = relative delta, Position
+                // = absolute cursor). The position descriptors are localized at the
+                // picker, not here, since they are not device objects.
+                "Mouse Speed X" => s.Mapping_MouseSpeedX,
+                "Mouse Speed Y" => s.Mapping_MouseSpeedY,
+                "Mouse Scroll" => s.Mapping_MouseScroll,
                 _ => null
             };
             if (localized != null) return localized;
@@ -732,6 +738,16 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = "Motion Gyro",  DisplayName = si.Mapping_MotionGyro });
             if (ud.HasAccel)
                 list.Add(new InputChoice { Descriptor = "Motion Accel", DisplayName = si.Mapping_MotionAccel });
+
+            // Absolute cursor-position sources (#107). The cursor is system-wide,
+            // read from SourceCoercion.MouseCursorProvider regardless of device, but
+            // we list it under the mouse (always online) so the source's device
+            // binding stays stable instead of riding a pad that can disconnect.
+            if (ud.CapType == PadForge.Engine.InputDeviceType.Mouse)
+            {
+                list.Add(new InputChoice { Descriptor = "Mouse Position X", DisplayName = si.Mapping_MousePositionX });
+                list.Add(new InputChoice { Descriptor = "Mouse Position Y", DisplayName = si.Mapping_MousePositionY });
+            }
 
             // Gravity-lean input: tilt the controller like a wheel and the lean
             // angle drives whatever axis the user maps it to. A normal input

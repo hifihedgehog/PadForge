@@ -1176,6 +1176,13 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>パススルー調整をリセット</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>感度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ソースごとのジャイロ感度倍率。1.0 = エンジンの既定 (500°/s → フルディフレクション)。1.0 を超えると敏感になり、1.0 未満では鈍くなります。</value></data>
+  <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>マウス速度 X</value></data>
+  <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>マウス速度 Y</value></data>
+  <data name="Mapping_MouseScroll" xml:space="preserve"><value>マウススクロール</value></data>
+  <data name="Mapping_MousePositionX" xml:space="preserve"><value>マウス位置 X</value></data>
+  <data name="Mapping_MousePositionY" xml:space="preserve"><value>マウス位置 Y</value></data>
+  <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>感度</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ソースごとのカーソル感度。1.0 で中心から画面幅の 10% でスティックが最大まで倒れます。1.0 より大きいと少ないカーソル移動で最大に達し、1.0 より小さいとより多くの移動が必要です。</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>タッチパッドクリック</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} Y</value></data>

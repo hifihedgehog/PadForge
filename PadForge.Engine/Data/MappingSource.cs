@@ -103,6 +103,15 @@ namespace PadForge.Engine.Data
         /// affects sources whose descriptor starts with "Gyro ".</summary>
         [XmlAttribute] public double GyroSensitivity { get; set; } = 1.0;
 
+        /// <summary>v3.5 per-source mouse-cursor sensitivity multiplier (issue
+        /// #107). Applied to the normalized absolute cursor offset during bipolar
+        /// / unipolar / bool coercion so each "Mouse Position X" / "Mouse Position
+        /// Y" row tunes its own reach. Default 1.0 = full stick deflection at 10%
+        /// of screen width from center. Values &gt; 1.0 reach full deflection with
+        /// less cursor travel; values &lt; 1.0 need more. Only affects sources
+        /// whose descriptor starts with "Mouse Position ".</summary>
+        [XmlAttribute] public double MouseCursorSensitivity { get; set; } = 1.0;
+
         /// <summary>
         /// v3.3 per-source Do-not-inherit slot. Reserved in the schema for
         /// future per-source / per-zone fall-through suppression

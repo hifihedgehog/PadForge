@@ -1176,6 +1176,13 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>패스스루 조정 재설정</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>감도</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>소스별 자이로 감도 배율. 1.0 = 엔진 기본값 (500°/s → 최대 편향). 1.0보다 크면 더 민감하고, 1.0보다 작으면 덜 민감합니다.</value></data>
+  <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>마우스 속도 X</value></data>
+  <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>마우스 속도 Y</value></data>
+  <data name="Mapping_MouseScroll" xml:space="preserve"><value>마우스 스크롤</value></data>
+  <data name="Mapping_MousePositionX" xml:space="preserve"><value>마우스 위치 X</value></data>
+  <data name="Mapping_MousePositionY" xml:space="preserve"><value>마우스 위치 Y</value></data>
+  <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>감도</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>소스별 커서 감도입니다. 1.0이면 중앙에서 화면 너비의 10% 지점에서 스틱이 최대로 기울어집니다. 1.0보다 크면 더 적은 커서 이동으로 최대에 도달하고, 1.0보다 작으면 더 많이 움직여야 합니다.</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>터치패드 클릭</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>터치패드 {0} 손가락 {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>터치패드 {0} 손가락 {1} Y</value></data>

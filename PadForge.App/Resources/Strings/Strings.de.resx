@@ -1176,6 +1176,13 @@
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optionale Bedingungen, wann das Gyro aktiv ist. Stick-Auslenkung und eine Aktivierungs-Taste können das Gyro jeweils freigeben. Eine oder beide sind konfigurierbar. Sind beide gesetzt, müssen beide aktiv sein, damit das Gyro feuert.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Empfindlichkeit</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Empfindlichkeitsfaktor pro Quelle für das Gyroskop. 1,0 = Engine-Standard (500°/s → volle Auslenkung). Werte über 1,0 sind empfindlicher, Werte unter 1,0 weniger empfindlich.</value></data>
+  <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Maus Geschwindigkeit X</value></data>
+  <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Maus Geschwindigkeit Y</value></data>
+  <data name="Mapping_MouseScroll" xml:space="preserve"><value>Maus Scrollen</value></data>
+  <data name="Mapping_MousePositionX" xml:space="preserve"><value>Maus Position X</value></data>
+  <data name="Mapping_MousePositionY" xml:space="preserve"><value>Maus Position Y</value></data>
+  <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Empfindlichkeit</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Empfindlichkeit des Cursors pro Quelle. 1.0 erreicht volle Stick-Auslenkung bei 10 % der Bildschirmbreite ab der Mitte. Werte über 1.0 erreichen die volle Auslenkung mit weniger Cursorweg. Werte unter 1.0 brauchen mehr.</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Touchpad-Klick</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Y</value></data>

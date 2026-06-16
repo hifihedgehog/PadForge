@@ -45,6 +45,10 @@ namespace PadForge.Engine.Common.Mapping
                              // — read from CustomInputState.Midi (the full
                              // MIDI namespace sub-state), never the gamepad
                              // axis/button arrays.
+            MouseCursor,     // "Mouse Position X" / "Mouse Position Y" (issue #107).
+                             // Absolute desktop cursor position normalized to
+                             // [-1..+1] per screen axis, read from the global
+                             // MouseCursorProvider, not any device's axis array.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -181,6 +185,15 @@ namespace PadForge.Engine.Common.Mapping
         /// returns <c>1000 / Settings.PollingIntervalMs</c>; returns
         /// 60Hz if unwired.</summary>
         public static Func<float> PollHzProvider { get; set; }
+
+        /// <summary>Absolute desktop cursor position normalized to the [-1..+1]
+        /// stick range per screen axis (issue #107), as <c>(normX, normY)</c>.
+        /// Unclamped: the magnitude can exceed 1 toward the screen edges (the
+        /// per-source <see cref="ReadTunedMouseCursor"/> applies sensitivity then
+        /// clamps). Screen center reads (0, 0). The App layer's CursorControlService
+        /// samples <c>GetCursorPos</c> at 200 Hz, normalizes against the primary
+        /// monitor, and publishes here. Returns (0, 0) when unwired.</summary>
+        public static Func<(float normX, float normY)> MouseCursorProvider { get; set; }
 
         private static GyroTuning GetGyroTuning(string deviceGuid, int slotIndex)
         {
@@ -364,6 +377,8 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.Motion;
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
                 return SourceType.Gyro;
+            if (s.StartsWith("Mouse Position ", StringComparison.Ordinal))
+                return SourceType.MouseCursor;
             if (s.StartsWith("Midi ", StringComparison.Ordinal))
                 return SourceType.Midi;
 
@@ -565,6 +580,42 @@ namespace PadForge.Engine.Common.Mapping
         public static bool IsGyroDescriptor(string descriptor)
             => !string.IsNullOrEmpty(descriptor)
             && descriptor.StartsWith("Gyro ", StringComparison.Ordinal);
+
+        /// <summary>True for the absolute cursor-position descriptors
+        /// ("Mouse Position X" / "Mouse Position Y", issue #107). Drives the
+        /// per-source Mouse Cursor Sensitivity slider's visibility and the
+        /// reader branches that pull from <see cref="MouseCursorProvider"/>.</summary>
+        public static bool IsMouseCursorDescriptor(string descriptor)
+            => !string.IsNullOrEmpty(descriptor)
+            && descriptor.StartsWith("Mouse Position ", StringComparison.Ordinal);
+
+        /// <summary>Reads the per-source absolute cursor axis (issue #107): pulls
+        /// the normalized cursor position from <see cref="MouseCursorProvider"/>,
+        /// selects the X or Y component from the descriptor, applies the per-source
+        /// <see cref="MappingSource.MouseCursorSensitivity"/>, then clamps to
+        /// [-1..+1]. With sensitivity 1.0 the stick reaches full deflection at 10%
+        /// of screen width from center (the provider already divides by width/10).
+        /// Returns 0 for non-cursor descriptors or an unwired provider. Invert is
+        /// applied by the public Evaluate* wrappers, not here (matches the gyro and
+        /// generic-axis paths).</summary>
+        private static float ReadTunedMouseCursor(MappingSource src)
+        {
+            if (src == null) return 0f;
+            var provider = MouseCursorProvider;
+            if (provider == null) return 0f;
+            var (normX, normY) = provider();
+
+            string s = src.Descriptor ?? "";
+            float baseVal;
+            if (s.EndsWith(" X", StringComparison.Ordinal)) baseVal = normX;
+            else if (s.EndsWith(" Y", StringComparison.Ordinal)) baseVal = normY;
+            else return 0f;
+
+            float v = baseVal * (float)src.MouseCursorSensitivity;
+            if (v < -1f) v = -1f;
+            else if (v > 1f) v = 1f;
+            return v;
+        }
 
         /// <summary>The gravity-lean input descriptor. A first-class picker
         /// entry (like "Gyro Roll"): mapping it to an axis target drives that
@@ -1056,6 +1107,16 @@ namespace PadForge.Engine.Common.Mapping
                 return Math.Abs(tunedRate) > gyroThresh;
             }
 
+            if (s.StartsWith("Mouse Position ", StringComparison.Ordinal))
+            {
+                // Cursor-to-button: fire when the normalized, sensitivity-scaled
+                // cursor offset clears the per-source deadzone (or the global
+                // threshold when none is set).
+                float v = ReadTunedMouseCursor(src);
+                int cdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                return Math.Abs(v) > Math.Max(cdz, 1) / 100f;
+            }
+
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return false;
 
@@ -1180,6 +1241,9 @@ namespace PadForge.Engine.Common.Mapping
                 return v;
             }
 
+            if (s.StartsWith("Mouse Position ", StringComparison.Ordinal))
+                return ReadTunedMouseCursor(src);
+
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;
 
@@ -1272,6 +1336,9 @@ namespace PadForge.Engine.Common.Mapping
                 if (v > 1f) v = 1f;
                 return v;
             }
+
+            if (s.StartsWith("Mouse Position ", StringComparison.Ordinal))
+                return Math.Abs(ReadTunedMouseCursor(src));
 
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;

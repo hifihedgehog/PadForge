@@ -1541,6 +1541,13 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetGyroAimEngageMode => Get("Pad_ResetGyroAimEngageMode");
     public string Mapping_GyroSensitivity => Get("Mapping_GyroSensitivity");
     public string Mapping_GyroSensitivity_Tooltip => Get("Mapping_GyroSensitivity_Tooltip");
+    public string Mapping_MouseSpeedX => Get("Mapping_MouseSpeedX");
+    public string Mapping_MouseSpeedY => Get("Mapping_MouseSpeedY");
+    public string Mapping_MouseScroll => Get("Mapping_MouseScroll");
+    public string Mapping_MousePositionX => Get("Mapping_MousePositionX");
+    public string Mapping_MousePositionY => Get("Mapping_MousePositionY");
+    public string Mapping_MouseCursorSensitivity => Get("Mapping_MouseCursorSensitivity");
+    public string Mapping_MouseCursorSensitivity_Tooltip => Get("Mapping_MouseCursorSensitivity_Tooltip");
     public string MappingCategory_Touchpad => Get("MappingCategory_Touchpad");
     public string DevObj_LeftStickX => Get("DevObj_LeftStickX");
     public string DevObj_LeftStickY => Get("DevObj_LeftStickY");

@@ -1176,6 +1176,13 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Réinitialiser le réglage de transmission</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicateur de sensibilité du gyroscope par source. 1,0 = valeur par défaut du moteur (500°/s → pleine déviation). Au-dessus de 1,0 = plus sensible. En dessous = moins sensible.</value></data>
+  <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Vitesse souris X</value></data>
+  <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Vitesse souris Y</value></data>
+  <data name="Mapping_MouseScroll" xml:space="preserve"><value>Défilement souris</value></data>
+  <data name="Mapping_MousePositionX" xml:space="preserve"><value>Position souris X</value></data>
+  <data name="Mapping_MousePositionY" xml:space="preserve"><value>Position souris Y</value></data>
+  <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensibilité</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensibilité du curseur par source. 1.0 atteint la déflexion complète du stick à 10 % de la largeur de l'écran depuis le centre. Les valeurs supérieures à 1.0 atteignent la déflexion complète avec moins de déplacement du curseur. Les valeurs inférieures à 1.0 en demandent plus.</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Clic du pavé tactile</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} Y</value></data>

@@ -28,6 +28,7 @@ namespace PadForge.ViewModels
         private double _paramMax = 1;
         private string _paramModifier = "";
         private double _gyroSensitivity = 1.0;
+        private double _mouseCursorSensitivity = 1.0;
 
         public string Kind
         {
@@ -199,6 +200,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsDeadZoneApplicable));
                     OnPropertyChanged(nameof(IsHalfAxisApplicable));
                     OnPropertyChanged(nameof(IsGyroSource));
+                    OnPropertyChanged(nameof(IsMouseCursorSource));
                 }
             }
         }
@@ -209,6 +211,12 @@ namespace PadForge.ViewModels
         /// it's actually meaningful.</summary>
         public bool IsGyroSource => _descriptor != null
             && _descriptor.StartsWith("Gyro ", StringComparison.Ordinal);
+
+        /// <summary>True when this source's descriptor is an absolute cursor axis
+        /// ("Mouse Position X" / "Mouse Position Y", issue #107). Drives the
+        /// per-source Mouse Cursor Sensitivity slider's visibility.</summary>
+        public bool IsMouseCursorSource => _descriptor != null
+            && _descriptor.StartsWith("Mouse Position ", StringComparison.Ordinal);
         public bool Invert
         {
             get => _invert;
@@ -369,6 +377,15 @@ namespace PadForge.ViewModels
         {
             get => _gyroSensitivity;
             set => SetProperty(ref _gyroSensitivity, System.Math.Clamp(value, 0.1, 10.0));
+        }
+
+        /// <summary>Per-source mouse-cursor sensitivity (issue #107). Only applied
+        /// for "Mouse Position X/Y" descriptors (see <see cref="IsMouseCursorSource"/>).
+        /// Default 1.0 = full deflection at 10% of screen width from center.</summary>
+        public double MouseCursorSensitivity
+        {
+            get => _mouseCursorSensitivity;
+            set => SetProperty(ref _mouseCursorSensitivity, System.Math.Clamp(value, 0.1, 5.0));
         }
         public bool ParamSticky { get => _paramSticky; set => SetProperty(ref _paramSticky, value); }
         public double ParamMin { get => _paramMin; set => SetProperty(ref _paramMin, value); }
@@ -618,6 +635,7 @@ namespace PadForge.ViewModels
             ParamMax = _paramMax,
             ParamModifier = _paramModifier ?? "",
             GyroSensitivity = _gyroSensitivity,
+            MouseCursorSensitivity = _mouseCursorSensitivity,
         };
 
         /// <summary>Populates this VM from a domain
@@ -642,6 +660,7 @@ namespace PadForge.ViewModels
                 ParamMax = src.ParamMax,
                 ParamModifier = src.ParamModifier ?? "",
                 GyroSensitivity = src.GyroSensitivity > 0 ? src.GyroSensitivity : 1.0,
+                MouseCursorSensitivity = src.MouseCursorSensitivity > 0 ? src.MouseCursorSensitivity : 1.0,
             };
         }
     }

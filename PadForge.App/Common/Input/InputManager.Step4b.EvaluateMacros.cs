@@ -1058,6 +1058,18 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
                 }
+
+                case MacroActionType.MouseRecenter:
+                {
+                    // System-wide cursor write (#108): snap the desktop cursor to
+                    // the primary-monitor center on press. centerX = "not Y-only",
+                    // centerY = "not X-only", so X+Y recenters both.
+                    var m = action.CursorRecenterMode;
+                    CursorControlService.Active?.RecenterCursor(
+                        m != CursorRecenterMode.YOnly, m != CursorRecenterMode.XOnly);
+                    AdvanceAction(macro);
+                    break;
+                }
             }
         }
 
@@ -1733,6 +1745,15 @@ namespace PadForge.Common.Input
                     int slotIndex = macro.PadIndex;
                     if (slotIndex >= 0 && slotIndex < MaxPads)
                         MacroTriggerRumbleOverrides[slotIndex].Clear();
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.MouseRecenter:
+                {
+                    var m = action.CursorRecenterMode;
+                    CursorControlService.Active?.RecenterCursor(
+                        m != CursorRecenterMode.YOnly, m != CursorRecenterMode.XOnly);
                     AdvanceAction(macro);
                     break;
                 }

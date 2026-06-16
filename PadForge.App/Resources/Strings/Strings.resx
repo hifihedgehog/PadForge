@@ -991,6 +991,10 @@
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>On</value></data>
   <data name="Macro_SetGyroEngaged_Off" xml:space="preserve"><value>Off</value></data>
   <data name="MacroAction_SetGyroEngaged_Format" xml:space="preserve"><value>Set gyro engaged: {0}</value></data>
+  <data name="MacroAction_Type_MouseRecenter" xml:space="preserve"><value>Recenter Mouse</value></data>
+  <data name="MacroAction_MouseRecenter_Tooltip" xml:space="preserve"><value>Snaps the desktop cursor to the center of the primary monitor when this macro fires. Pick which axes recenter.</value></data>
+  <data name="MacroAction_MouseRecenter_Format" xml:space="preserve"><value>Recenter Mouse: {0}</value></data>
+  <data name="Macro_CursorRecenterMode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Hold</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>Reactive (fade)</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Sticky (hold)</value></data>

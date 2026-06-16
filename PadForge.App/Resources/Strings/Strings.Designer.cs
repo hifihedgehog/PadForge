@@ -1199,6 +1199,10 @@ public class Strings : INotifyPropertyChanged
     public string Macro_SetGyroEngaged_On => Get("Macro_SetGyroEngaged_On");
     public string Macro_SetGyroEngaged_Off => Get("Macro_SetGyroEngaged_Off");
     public string MacroAction_SetGyroEngaged_Format => Get("MacroAction_SetGyroEngaged_Format");
+    public string MacroAction_Type_MouseRecenter => Get("MacroAction_Type_MouseRecenter");
+    public string MacroAction_MouseRecenter_Tooltip => Get("MacroAction_MouseRecenter_Tooltip");
+    public string MacroAction_MouseRecenter_Format => Get("MacroAction_MouseRecenter_Format");
+    public string Macro_CursorRecenterMode_Label => Get("Macro_CursorRecenterMode_Label");
     public string Macro_RumbleHold_Label => Get("Macro_RumbleHold_Label");
     public string Macro_RumbleHold_Reactive => Get("Macro_RumbleHold_Reactive");
     public string Macro_RumbleHold_Sticky => Get("Macro_RumbleHold_Sticky");

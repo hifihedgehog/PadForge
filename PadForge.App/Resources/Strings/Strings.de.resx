@@ -750,6 +750,10 @@
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Ein</value></data>
   <data name="Macro_SetGyroEngaged_Off" xml:space="preserve"><value>Aus</value></data>
   <data name="MacroAction_SetGyroEngaged_Format" xml:space="preserve"><value>Gyro-Aktivierung setzen: {0}</value></data>
+  <data name="MacroAction_Type_MouseRecenter" xml:space="preserve"><value>Maus zentrieren</value></data>
+  <data name="MacroAction_MouseRecenter_Tooltip" xml:space="preserve"><value>Setzt den Desktop-Cursor in die Mitte des primären Monitors, wenn dieses Makro ausgelöst wird. Wählen Sie, welche Achsen zentriert werden.</value></data>
+  <data name="MacroAction_MouseRecenter_Format" xml:space="preserve"><value>Maus zentrieren: {0}</value></data>
+  <data name="Macro_CursorRecenterMode_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>Reaktiv (ausblenden)</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Permanent (halten)</value></data>

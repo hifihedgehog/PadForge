@@ -1240,6 +1240,9 @@
                                             <ComboBoxItem Content="{Binding Macro_SetGyroEngaged, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.SetGyroEngaged}"
                                                           ToolTip="{Binding Macro_SetGyroEngaged_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_MouseRecenter, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.MouseRecenter}"
+                                                          ToolTip="{Binding MacroAction_MouseRecenter_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         </ComboBox>
                                     </StackPanel>
 
@@ -1256,6 +1259,21 @@
                                             <ComboBoxItem Content="{Binding Macro_SetGyroEngaged_Toggle, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroSetGyroEngagedMode.Toggle}"/>
                                             <ComboBoxItem Content="{Binding Macro_SetGyroEngaged_On, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroSetGyroEngagedMode.On}"/>
                                             <ComboBoxItem Content="{Binding Macro_SetGyroEngaged_Off, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroSetGyroEngagedMode.Off}"/>
+                                        </ComboBox>
+                                    </StackPanel>
+
+                                    <!-- Cursor Recenter Mode picker (#108). X / Y / X+Y -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                                Visibility="{Binding IsMouseRecenterType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Macro_CursorRecenterMode_Label, Source={x:Static strings:Strings.Instance}}"
+                                                   Width="60" VerticalAlignment="Center"/>
+                                        <ComboBox SelectedValue="{Binding CursorRecenterMode, Mode=TwoWay}"
+                                                  SelectedValuePath="Tag"
+                                                  Width="160" VerticalAlignment="Center"
+                                                  ToolTip="{Binding MacroAction_MouseRecenter_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <ComboBoxItem Content="X+Y" Tag="{x:Static vm:CursorRecenterMode.XAndY}"/>
+                                            <ComboBoxItem Content="X" Tag="{x:Static vm:CursorRecenterMode.XOnly}"/>
+                                            <ComboBoxItem Content="Y" Tag="{x:Static vm:CursorRecenterMode.YOnly}"/>
                                         </ComboBox>
                                     </StackPanel>
 

@@ -750,6 +750,10 @@
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Activé</value></data>
   <data name="Macro_SetGyroEngaged_Off" xml:space="preserve"><value>Désactivé</value></data>
   <data name="MacroAction_SetGyroEngaged_Format" xml:space="preserve"><value>Définir l'activation du gyroscope : {0}</value></data>
+  <data name="MacroAction_Type_MouseRecenter" xml:space="preserve"><value>Recentrer la souris</value></data>
+  <data name="MacroAction_MouseRecenter_Tooltip" xml:space="preserve"><value>Place le curseur du bureau au centre du moniteur principal lorsque cette macro est déclenchée. Choisissez les axes à recentrer.</value></data>
+  <data name="MacroAction_MouseRecenter_Format" xml:space="preserve"><value>Recentrer la souris : {0}</value></data>
+  <data name="Macro_CursorRecenterMode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Maintien</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>Réactif (estomper)</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Persistant (maintenir)</value></data>

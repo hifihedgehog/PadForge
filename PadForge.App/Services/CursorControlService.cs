@@ -44,6 +44,10 @@ namespace PadForge.Services
         private static extern bool GetCursorPos(out POINT lpPoint);
 
         [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetCursorPos(int X, int Y);
+
+        [DllImport("user32.dll")]
         private static extern IntPtr MonitorFromPoint(POINT pt, uint dwFlags);
 
         [DllImport("user32.dll")]
@@ -61,8 +65,15 @@ namespace PadForge.Services
         private Timer _timer;
         private volatile bool _disposed;
 
+        /// <summary>The active service instance so the macro evaluator (a separate
+        /// object) can reach the cursor-write operations (#108 recenter, and later
+        /// #109 pin / #110 clamp). Set on construction, cleared on dispose. Null
+        /// while the engine is not running.</summary>
+        internal static CursorControlService Active { get; private set; }
+
         public CursorControlService()
         {
+            Active = this;
             SourceCoercion.MouseCursorProvider = () => (_normX, _normY);
             _timer = new Timer(_ => Tick(), null, 0, SampleIntervalMs);
         }
@@ -71,15 +82,8 @@ namespace PadForge.Services
         {
             if (_disposed) return;
             if (!GetCursorPos(out POINT p)) return;
+            if (!TryGetPrimaryRect(out RECT r)) return;
 
-            // Primary monitor lives at virtual-desktop origin; resolve its physical
-            // rect. DEFAULTTOPRIMARY keeps us on the primary even if (0,0) drifts.
-            var hMon = MonitorFromPoint(new POINT { X = 0, Y = 0 }, MONITOR_DEFAULTTOPRIMARY);
-            if (hMon == IntPtr.Zero) return;
-            var mi = new MONITORINFO { cbSize = Marshal.SizeOf<MONITORINFO>() };
-            if (!GetMonitorInfo(hMon, ref mi)) return;
-
-            var r = mi.rcMonitor;
             float w = r.Right - r.Left;
             if (w <= 0f) return;
 
@@ -91,9 +95,40 @@ namespace PadForge.Services
             _normY = (p.Y - centerY) / div;
         }
 
+        /// <summary>Resolves the primary monitor's physical-pixel rect. The primary
+        /// lives at virtual-desktop origin; DEFAULTTOPRIMARY keeps us there even if
+        /// (0,0) drifts. Re-queried per call so a resolution change is picked up.</summary>
+        private static bool TryGetPrimaryRect(out RECT rect)
+        {
+            rect = default;
+            var hMon = MonitorFromPoint(new POINT { X = 0, Y = 0 }, MONITOR_DEFAULTTOPRIMARY);
+            if (hMon == IntPtr.Zero) return false;
+            var mi = new MONITORINFO { cbSize = Marshal.SizeOf<MONITORINFO>() };
+            if (!GetMonitorInfo(hMon, ref mi)) return false;
+            rect = mi.rcMonitor;
+            return true;
+        }
+
+        /// <summary>Recenters the desktop cursor on the primary monitor (issue #108).
+        /// <paramref name="centerX"/> / <paramref name="centerY"/> select which axes
+        /// snap to center; an unselected axis keeps its current coordinate. Fired
+        /// once per macro press by the MouseRecenter action. The next 200 Hz tick
+        /// (≤5 ms later) re-samples, so the mapped "Mouse Position" source reports 0
+        /// on the recentered axes.</summary>
+        public void RecenterCursor(bool centerX, bool centerY)
+        {
+            if (_disposed) return;
+            if (!TryGetPrimaryRect(out RECT r)) return;
+            int cx = (r.Left + r.Right) / 2;
+            int cy = (r.Top + r.Bottom) / 2;
+            if (!GetCursorPos(out POINT p)) { p.X = cx; p.Y = cy; }
+            SetCursorPos(centerX ? cx : p.X, centerY ? cy : p.Y);
+        }
+
         public void Dispose()
         {
             _disposed = true;
+            if (Active == this) Active = null;
             // Only unhook our own provider so a re-create can rewire cleanly.
             SourceCoercion.MouseCursorProvider = null;
             _timer?.Dispose();

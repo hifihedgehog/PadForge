@@ -1463,6 +1463,10 @@
   <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>アクティベーターモード</value></data>
   <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>常にオン</value></data>
   <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>アクティベーターをリセット</value></data>
+  <data name="Pad_ResetTriggerRouteSource" xml:space="preserve"><value>ソースをリセット</value></data>
+  <data name="Pad_ResetTriggerRouteMode" xml:space="preserve"><value>モードをリセット</value></data>
+  <data name="Pad_ResetTriggerRouteScale" xml:space="preserve"><value>スケールをリセット</value></data>
+  <data name="Pad_ResetTriggerRouteActivatorMode" xml:space="preserve"><value>アクティベーターモードをリセット</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>各トリガーモーターに連続的な力を加え、オフにするまで保持します。ゲームが発するトリガー力が動作中はそちらが優先され、ゲームが止まると再開します。</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>トリガー定常力を適用する</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>左トリガー</value></data>

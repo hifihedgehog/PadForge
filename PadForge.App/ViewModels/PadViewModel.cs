@@ -1989,6 +1989,33 @@ namespace PadForge.ViewModels
                 RightTriggerRouteActivatorMode = "Hold";
             });
 
+        // Per-option resets for the Trigger Routing card (#102).
+        private RelayCommand _resetLeftTriggerRouteSourceCommand;
+        public RelayCommand ResetLeftTriggerRouteSourceCommand =>
+            _resetLeftTriggerRouteSourceCommand ??= new RelayCommand(() => LeftTriggerRouteSource = "None");
+        private RelayCommand _resetLeftTriggerRouteModeCommand;
+        public RelayCommand ResetLeftTriggerRouteModeCommand =>
+            _resetLeftTriggerRouteModeCommand ??= new RelayCommand(() => LeftTriggerRouteMode = "Duplicate");
+        private RelayCommand _resetLeftTriggerRouteScaleCommand;
+        public RelayCommand ResetLeftTriggerRouteScaleCommand =>
+            _resetLeftTriggerRouteScaleCommand ??= new RelayCommand(() => LeftTriggerRouteScale = 100);
+        private RelayCommand _resetLeftTriggerRouteActivatorModeCommand;
+        public RelayCommand ResetLeftTriggerRouteActivatorModeCommand =>
+            _resetLeftTriggerRouteActivatorModeCommand ??= new RelayCommand(() => LeftTriggerRouteActivatorMode = "Hold");
+
+        private RelayCommand _resetRightTriggerRouteSourceCommand;
+        public RelayCommand ResetRightTriggerRouteSourceCommand =>
+            _resetRightTriggerRouteSourceCommand ??= new RelayCommand(() => RightTriggerRouteSource = "None");
+        private RelayCommand _resetRightTriggerRouteModeCommand;
+        public RelayCommand ResetRightTriggerRouteModeCommand =>
+            _resetRightTriggerRouteModeCommand ??= new RelayCommand(() => RightTriggerRouteMode = "Duplicate");
+        private RelayCommand _resetRightTriggerRouteScaleCommand;
+        public RelayCommand ResetRightTriggerRouteScaleCommand =>
+            _resetRightTriggerRouteScaleCommand ??= new RelayCommand(() => RightTriggerRouteScale = 100);
+        private RelayCommand _resetRightTriggerRouteActivatorModeCommand;
+        public RelayCommand ResetRightTriggerRouteActivatorModeCommand =>
+            _resetRightTriggerRouteActivatorModeCommand ??= new RelayCommand(() => RightTriggerRouteActivatorMode = "Hold");
+
         private int _forceOverallGain = 100;
         public int ForceOverallGain { get => _forceOverallGain; set => SetProperty(ref _forceOverallGain, Math.Clamp(value, 0, 100)); }
 

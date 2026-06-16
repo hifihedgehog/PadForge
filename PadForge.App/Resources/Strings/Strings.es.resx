@@ -1463,6 +1463,10 @@
   <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>Modo de activación</value></data>
   <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>Siempre activo</value></data>
   <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>Restablecer activador</value></data>
+  <data name="Pad_ResetTriggerRouteSource" xml:space="preserve"><value>Restablecer fuente</value></data>
+  <data name="Pad_ResetTriggerRouteMode" xml:space="preserve"><value>Restablecer modo</value></data>
+  <data name="Pad_ResetTriggerRouteScale" xml:space="preserve"><value>Restablecer escala</value></data>
+  <data name="Pad_ResetTriggerRouteActivatorMode" xml:space="preserve"><value>Restablecer modo de activación</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Aplica una fuerza continua a cada motor de gatillo hasta que la desactives. La fuerza de gatillo generada por un juego prevalece mientras está activa y se reanuda cuando el juego se detiene.</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Aplicar fuerza constante en gatillos</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Gatillo izquierdo</value></data>

@@ -436,24 +436,28 @@
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Constant Trigger Force</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Trigger Routing</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Route the main rumble motors into the trigger channel, one trigger at a time. Works with XInput rumble and force feedback. An activator can gate it so the trigger only buzzes while you hold a button.</value></data>
-  <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Reset trigger routing</value></data>
-  <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Left trigger</value></data>
-  <data name="Pad_TriggerRouting_RightTrigger" xml:space="preserve"><value>Right trigger</value></data>
+  <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Reset Trigger Routing</value></data>
+  <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Left Trigger</value></data>
+  <data name="Pad_TriggerRouting_RightTrigger" xml:space="preserve"><value>Right Trigger</value></data>
   <data name="Pad_TriggerRouting_Source" xml:space="preserve"><value>Source</value></data>
-  <data name="Pad_TriggerRouting_Source_None" xml:space="preserve"><value>None (off)</value></data>
-  <data name="Pad_TriggerRouting_Source_MainLeft" xml:space="preserve"><value>Left motor</value></data>
-  <data name="Pad_TriggerRouting_Source_MainRight" xml:space="preserve"><value>Right motor</value></data>
-  <data name="Pad_TriggerRouting_Source_MaxOfBoth" xml:space="preserve"><value>Max of both motors</value></data>
-  <data name="Pad_TriggerRouting_Source_SumOfBoth" xml:space="preserve"><value>Sum of both motors</value></data>
+  <data name="Pad_TriggerRouting_Source_None" xml:space="preserve"><value>None (Off)</value></data>
+  <data name="Pad_TriggerRouting_Source_MainLeft" xml:space="preserve"><value>Left Motor</value></data>
+  <data name="Pad_TriggerRouting_Source_MainRight" xml:space="preserve"><value>Right Motor</value></data>
+  <data name="Pad_TriggerRouting_Source_MaxOfBoth" xml:space="preserve"><value>Max of Both Motors</value></data>
+  <data name="Pad_TriggerRouting_Source_SumOfBoth" xml:space="preserve"><value>Sum of Both Motors</value></data>
   <data name="Pad_TriggerRouting_Mode" xml:space="preserve"><value>Mode</value></data>
   <data name="Pad_TriggerRouting_Mode_Off" xml:space="preserve"><value>Off</value></data>
-  <data name="Pad_TriggerRouting_Mode_Duplicate" xml:space="preserve"><value>Duplicate (keep main motor)</value></data>
-  <data name="Pad_TriggerRouting_Mode_Redirect" xml:space="preserve"><value>Redirect (silence main motor)</value></data>
+  <data name="Pad_TriggerRouting_Mode_Duplicate" xml:space="preserve"><value>Duplicate (Keep Main Motor)</value></data>
+  <data name="Pad_TriggerRouting_Mode_Redirect" xml:space="preserve"><value>Redirect (Silence Main Motor)</value></data>
   <data name="Pad_TriggerRouting_Scale" xml:space="preserve"><value>Scale</value></data>
   <data name="Pad_TriggerRouting_Activator" xml:space="preserve"><value>Activator</value></data>
-  <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>Activator mode</value></data>
-  <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>Always on</value></data>
-  <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>Reset activator</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>Activator Mode</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>Always On</value></data>
+  <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>Reset Activator</value></data>
+  <data name="Pad_ResetTriggerRouteSource" xml:space="preserve"><value>Reset Source</value></data>
+  <data name="Pad_ResetTriggerRouteMode" xml:space="preserve"><value>Reset Mode</value></data>
+  <data name="Pad_ResetTriggerRouteScale" xml:space="preserve"><value>Reset Scale</value></data>
+  <data name="Pad_ResetTriggerRouteActivatorMode" xml:space="preserve"><value>Reset Activator Mode</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Apply a continuous force to each trigger motor until you toggle off. Game-driven trigger force from any source overrides while it's active and resumes when the game stops.</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Apply constant trigger force</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Left Trigger</value></data>

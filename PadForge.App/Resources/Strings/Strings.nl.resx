@@ -1483,6 +1483,10 @@
   <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>Activatormodus</value></data>
   <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>Altijd aan</value></data>
   <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>Activator resetten</value></data>
+  <data name="Pad_ResetTriggerRouteSource" xml:space="preserve"><value>Bron resetten</value></data>
+  <data name="Pad_ResetTriggerRouteMode" xml:space="preserve"><value>Modus resetten</value></data>
+  <data name="Pad_ResetTriggerRouteScale" xml:space="preserve"><value>Schaal resetten</value></data>
+  <data name="Pad_ResetTriggerRouteActivatorMode" xml:space="preserve"><value>Activatormodus resetten</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Past een continue kracht toe op elke triggermotor totdat je het uitschakelt. Door games gestuurde triggerkracht heeft tijdens de uitvoering voorrang en wordt hervat zodra het spel stopt.</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Constante triggerkracht toepassen</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Linkertrigger</value></data>

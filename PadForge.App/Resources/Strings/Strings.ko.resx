@@ -1463,6 +1463,10 @@
   <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>활성화 모드</value></data>
   <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>항상 켜기</value></data>
   <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>활성화기 재설정</value></data>
+  <data name="Pad_ResetTriggerRouteSource" xml:space="preserve"><value>소스 재설정</value></data>
+  <data name="Pad_ResetTriggerRouteMode" xml:space="preserve"><value>모드 재설정</value></data>
+  <data name="Pad_ResetTriggerRouteScale" xml:space="preserve"><value>배율 재설정</value></data>
+  <data name="Pad_ResetTriggerRouteActivatorMode" xml:space="preserve"><value>활성화 모드 재설정</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>끄기 전까지 각 트리거 모터에 지속적인 힘을 가합니다. 게임이 보내는 트리거 힘이 활성화된 동안에는 우선하며, 게임이 멈추면 다시 재개합니다.</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>지속 트리거 힘 적용</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>왼쪽 트리거</value></data>

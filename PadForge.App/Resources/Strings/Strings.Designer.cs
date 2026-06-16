@@ -532,6 +532,10 @@ public class Strings : INotifyPropertyChanged
     public string Pad_TriggerRouting_ActivatorMode => Get("Pad_TriggerRouting_ActivatorMode");
     public string Pad_TriggerRouting_ActivatorMode_AlwaysOn => Get("Pad_TriggerRouting_ActivatorMode_AlwaysOn");
     public string Pad_ResetTriggerRouteActivator => Get("Pad_ResetTriggerRouteActivator");
+    public string Pad_ResetTriggerRouteSource => Get("Pad_ResetTriggerRouteSource");
+    public string Pad_ResetTriggerRouteMode => Get("Pad_ResetTriggerRouteMode");
+    public string Pad_ResetTriggerRouteScale => Get("Pad_ResetTriggerRouteScale");
+    public string Pad_ResetTriggerRouteActivatorMode => Get("Pad_ResetTriggerRouteActivatorMode");
     public string Pad_ConstantTriggerForce_Description => Get("Pad_ConstantTriggerForce_Description");
     public string Pad_ConstantTriggerForce_Toggle => Get("Pad_ConstantTriggerForce_Toggle");
     public string Pad_ConstantTriggerForce_Left => Get("Pad_ConstantTriggerForce_Left");

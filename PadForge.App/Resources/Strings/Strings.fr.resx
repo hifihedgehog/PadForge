@@ -1463,6 +1463,10 @@
   <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>Mode d'activation</value></data>
   <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>Toujours actif</value></data>
   <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>Réinitialiser l'activateur</value></data>
+  <data name="Pad_ResetTriggerRouteSource" xml:space="preserve"><value>Réinitialiser la source</value></data>
+  <data name="Pad_ResetTriggerRouteMode" xml:space="preserve"><value>Réinitialiser le mode</value></data>
+  <data name="Pad_ResetTriggerRouteScale" xml:space="preserve"><value>Réinitialiser l'échelle</value></data>
+  <data name="Pad_ResetTriggerRouteActivatorMode" xml:space="preserve"><value>Réinitialiser le mode d'activation</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Applique une force continue à chaque moteur de gâchette jusqu'à ce que vous la désactiviez. La force de gâchette émise par un jeu prend le dessus tant qu'elle est active et reprend dès que le jeu s'arrête.</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Appliquer une force constante sur gâchettes</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Gâchette gauche</value></data>

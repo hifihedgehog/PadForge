@@ -9035,16 +9035,22 @@ namespace PadForge.Services
             // raw-axis read below would show delta motion on the left stick and pin
             // the right stick to a corner (axes 3/4 read 0, which is full deflection,
             // not center). The #107 "Mouse Position" source is a separate absolute
-            // signal that reaches the sticks only through the mapping. Read the
-            // per-device mapped output (RawMappedState), which carries the cursor on
-            // whichever stick it's mapped to and centers the sticks the mouse doesn't
-            // drive. This also matches what the engine actually sends downstream.
+            // cursor signal that reaches the sticks only through the mapping, and
+            // RawMappedState can't be reused here: a stick target that combines the
+            // mouse with another device is a multi-source row, evaluated once per
+            // slot, so the mouse's copy reads center. Read the live cursor directly
+            // for each stick axis the mouse maps a Mouse Position source to, and
+            // leave the rest centered.
             if (us != null && ud?.CapType == InputDeviceType.Mouse)
             {
-                gp.ThumbLX = us.RawMappedState.ThumbLX;
-                gp.ThumbLY = us.RawMappedState.ThumbLY;
-                gp.ThumbRX = us.RawMappedState.ThumbRX;
-                gp.ThumbRY = us.RawMappedState.ThumbRY;
+                int slot = us.MapTo;
+                MappingSet ms = (slot >= 0 && slot < SettingsManager.SlotMappingSets.Length)
+                    ? SettingsManager.SlotMappingSets[slot] : null;
+                string mouseGuid = instanceGuid.ToString();
+                gp.ThumbLX = MouseCursorStickValue(ms, "LeftThumbAxisX", mouseGuid);
+                gp.ThumbLY = MouseCursorStickValue(ms, "LeftThumbAxisY", mouseGuid);
+                gp.ThumbRX = MouseCursorStickValue(ms, "RightThumbAxisX", mouseGuid);
+                gp.ThumbRY = MouseCursorStickValue(ms, "RightThumbAxisY", mouseGuid);
                 return gp;
             }
 
@@ -9063,6 +9069,45 @@ namespace PadForge.Services
             gp.ThumbRX = (short)(devState.Axis[3] + short.MinValue);
             gp.ThumbRY = (short)Math.Clamp(-(devState.Axis[4] + short.MinValue), short.MinValue, short.MaxValue);
             return gp;
+        }
+
+        /// <summary>Live #107 cursor value for a stick target the mouse maps a
+        /// "Mouse Position" source to, in XInput short convention. Returns center (0)
+        /// when the mouse doesn't drive that axis. Mirrors
+        /// <c>SourceCoercion.ReadTunedMouseCursor</c> (component select, per-source
+        /// sensitivity, clamp, Invert) and <c>WriteBipolarAxisTarget</c> (Y negated),
+        /// so the Sticks-tab preview tracks the cursor on whatever stick it's mapped
+        /// to without depending on per-slot multi-source dedup.</summary>
+        private static short MouseCursorStickValue(MappingSet ms, string target, string mouseGuid)
+        {
+            if (ms?.Rows == null) return 0;
+            var provider = PadForge.Engine.Common.Mapping.SourceCoercion.MouseCursorProvider;
+            if (provider == null) return 0;
+
+            bool negateY = target == "LeftThumbAxisY" || target == "RightThumbAxisY";
+            for (int r = 0; r < ms.Rows.Count; r++)
+            {
+                var row = ms.Rows[r];
+                if (row?.Target != target || row.Sources == null) continue;
+                for (int s = 0; s < row.Sources.Count; s++)
+                {
+                    var src = row.Sources[s];
+                    if (src == null) continue;
+                    if (!string.Equals(src.DeviceGuid ?? "", mouseGuid, StringComparison.OrdinalIgnoreCase)) continue;
+                    if (!PadForge.Engine.Common.Mapping.SourceCoercion.IsMouseCursorDescriptor(src.Descriptor)) continue;
+
+                    var (nx, ny) = provider();
+                    string d = src.Descriptor ?? "";
+                    float v = d.EndsWith(" X", StringComparison.Ordinal) ? nx
+                            : d.EndsWith(" Y", StringComparison.Ordinal) ? ny : 0f;
+                    v *= (float)src.MouseCursorSensitivity;
+                    if (v < -1f) v = -1f; else if (v > 1f) v = 1f;
+                    if (src.Invert) v = -v;
+                    if (negateY) v = -v;
+                    return (short)Math.Clamp((int)(v * 32767f), short.MinValue, short.MaxValue);
+                }
+            }
+            return 0;
         }
     }
 }

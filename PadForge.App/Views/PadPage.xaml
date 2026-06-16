@@ -1136,7 +1136,7 @@
                                                           IsChecked="{Binding Bidirectional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           IsEnabled="{Binding HalfAxis}"
                                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                                <Slider Style="{StaticResource DzSlider}" Width="120"
+                                                <Slider Style="{StaticResource DzSlider}" Width="120" Minimum="1"
                                                         Value="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         TickFrequency="1"/>
                                                 <TextBox Text="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
@@ -2661,29 +2661,10 @@
                                                                       IsEnabled="{Binding HalfAxis}"
                                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                         </StackPanel>
-                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0" Width="230"
-                                                                    Visibility="{Binding IsKindDescriptorless, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
-                                                            <StackPanel.Style>
-                                                                <Style TargetType="StackPanel">
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding IsDeadZoneApplicable}" Value="False">
-                                                                            <Setter Property="IsEnabled" Value="False"/>
-                                                                            <Setter Property="Opacity" Value="0.35"/>
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </StackPanel.Style>
-                                                            <Slider Style="{StaticResource DzSlider}" Width="120"
-                                                                    Value="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                    TickFrequency="1"/>
-                                                            <TextBox Text="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                                     Style="{StaticResource DzValueEdit}"/>
-                                                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                                            <Button Command="{Binding ResetDeadZoneCommand}" Style="{StaticResource ResetButton}"/>
-                                                        </StackPanel>
                                                         <!-- Per-source gyro sensitivity. Only renders for
                                                              gyro descriptors so non-gyro sources don't see a
-                                                             knob that does nothing. -->
+                                                             knob that does nothing. Sits before the deadzone
+                                                             to match the primary-source row's order. -->
                                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0"
                                                                     Visibility="{Binding IsGyroSource, Converter={StaticResource BoolToVisibilityConverter}}">
                                                             <TextBlock Text="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}"
@@ -2711,6 +2692,27 @@
                                                                      Width="50" Margin="4,0,4,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
                                                             <TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                            <Button Command="{Binding ResetMouseCursorSensitivityCommand}" Style="{StaticResource ResetButton}"/>
+                                                        </StackPanel>
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0" Width="230"
+                                                                    Visibility="{Binding IsKindDescriptorless, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
+                                                            <StackPanel.Style>
+                                                                <Style TargetType="StackPanel">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsDeadZoneApplicable}" Value="False">
+                                                                            <Setter Property="IsEnabled" Value="False"/>
+                                                                            <Setter Property="Opacity" Value="0.35"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </StackPanel.Style>
+                                                            <Slider Style="{StaticResource DzSlider}" Width="120" Minimum="1"
+                                                                    Value="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                    TickFrequency="1"/>
+                                                            <TextBox Text="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                                     Style="{StaticResource DzValueEdit}"/>
+                                                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                            <Button Command="{Binding ResetDeadZoneCommand}" Style="{StaticResource ResetButton}"/>
                                                         </StackPanel>
                                                         <!-- Remove this source from the row entirely.
                                                              Distinct from Clear (which keeps the row) — uses
@@ -3058,6 +3060,7 @@
                                                          Width="50" Margin="4,0,4,0" Padding="2,1"
                                                          VerticalContentAlignment="Center"/>
                                                 <TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                <Button Command="{Binding ResetMouseCursorSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </DataTemplate>
@@ -3079,7 +3082,7 @@
                                                     </Style.Triggers>
                                                 </Style>
                                             </StackPanel.Style>
-                                            <Slider Style="{StaticResource DzSlider}" Width="120"
+                                            <Slider Style="{StaticResource DzSlider}" Width="120" Minimum="1"
                                                     Value="{Binding MappingDeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     TickFrequency="1"/>
                                             <TextBox Text="{Binding MappingDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"

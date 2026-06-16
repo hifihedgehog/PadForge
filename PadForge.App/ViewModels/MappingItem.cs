@@ -690,8 +690,10 @@ namespace PadForge.ViewModels
         /// </summary>
         public int MappingDeadZone
         {
+            // Minimum 1: a 0% axis-to-button deadzone is disallowed (0 was treated
+            // as "unset" downstream and reverted to the 50% default).
             get => _mappingDeadZone;
-            set => SetProperty(ref _mappingDeadZone, Math.Clamp(value, 0, 100));
+            set => SetProperty(ref _mappingDeadZone, Math.Clamp(value, 1, 100));
         }
 
         private double _gyroSensitivity = 1.0;
@@ -888,6 +890,11 @@ namespace PadForge.ViewModels
         /// <summary>Command to reset the per-mapping deadzone to default (50%).</summary>
         public RelayCommand ResetDeadZoneCommand =>
             _resetDeadZoneCommand ??= new RelayCommand(() => MappingDeadZone = 50);
+
+        private RelayCommand _resetMouseCursorSensitivityCommand;
+        /// <summary>Resets the primary source's mouse-cursor sensitivity to 1.0 (#107).</summary>
+        public RelayCommand ResetMouseCursorSensitivityCommand =>
+            _resetMouseCursorSensitivityCommand ??= new RelayCommand(() => MouseCursorSensitivity = 1.0);
 
         /// <summary>Raised when the user clicks Record on this row.</summary>
         public event EventHandler StartRecordingRequested;

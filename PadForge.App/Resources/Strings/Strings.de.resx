@@ -1463,6 +1463,10 @@
   <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>Aktivierungsmodus</value></data>
   <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>Immer an</value></data>
   <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>Aktivator zurücksetzen</value></data>
+  <data name="Pad_ResetTriggerRouteSource" xml:space="preserve"><value>Quelle zurücksetzen</value></data>
+  <data name="Pad_ResetTriggerRouteMode" xml:space="preserve"><value>Modus zurücksetzen</value></data>
+  <data name="Pad_ResetTriggerRouteScale" xml:space="preserve"><value>Skalierung zurücksetzen</value></data>
+  <data name="Pad_ResetTriggerRouteActivatorMode" xml:space="preserve"><value>Aktivierungsmodus zurücksetzen</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Wendet eine kontinuierliche Kraft auf jeden Trigger-Motor an, bis du sie ausschaltest. Spielgesteuerte Trigger-Kraft hat während ihrer Aktivität Vorrang und wird fortgesetzt, sobald das Spiel stoppt.</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Konstante Trigger-Kraft anwenden</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Linker Trigger</value></data>

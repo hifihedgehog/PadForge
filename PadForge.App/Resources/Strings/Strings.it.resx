@@ -1483,6 +1483,10 @@
   <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>Modalità di attivazione</value></data>
   <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>Sempre attivo</value></data>
   <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>Ripristina attivatore</value></data>
+  <data name="Pad_ResetTriggerRouteSource" xml:space="preserve"><value>Ripristina sorgente</value></data>
+  <data name="Pad_ResetTriggerRouteMode" xml:space="preserve"><value>Ripristina modalità</value></data>
+  <data name="Pad_ResetTriggerRouteScale" xml:space="preserve"><value>Ripristina scala</value></data>
+  <data name="Pad_ResetTriggerRouteActivatorMode" xml:space="preserve"><value>Ripristina modalità di attivazione</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Applica una forza continua a ciascun motore di grilletto finché non la disattivi. La forza di grilletto generata da un gioco ha la priorità mentre è attiva e riprende quando il gioco si ferma.</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Applica forza costante sui grilletti</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Grilletto sinistro</value></data>

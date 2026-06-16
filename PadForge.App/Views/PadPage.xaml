@@ -4146,6 +4146,8 @@
                                         <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_MaxOfBoth, Source={x:Static strings:Strings.Instance}}" Tag="MaxOfBoth"/>
                                         <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_SumOfBoth, Source={x:Static strings:Strings.Instance}}" Tag="SumOfBoth"/>
                                     </ComboBox>
+                                    <Button Command="{Binding ResetLeftTriggerRouteSourceCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTriggerRouteSource, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_TriggerRouting_Mode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -4154,6 +4156,8 @@
                                         <ComboBoxItem Content="{Binding Pad_TriggerRouting_Mode_Duplicate, Source={x:Static strings:Strings.Instance}}" Tag="Duplicate"/>
                                         <ComboBoxItem Content="{Binding Pad_TriggerRouting_Mode_Redirect, Source={x:Static strings:Strings.Instance}}" Tag="Redirect"/>
                                     </ComboBox>
+                                    <Button Command="{Binding ResetLeftTriggerRouteModeCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTriggerRouteMode, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_TriggerRouting_Scale, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -4161,6 +4165,8 @@
                                             SmallChange="1" LargeChange="10" Style="{StaticResource DzSlider}"/>
                                     <TextBox Text="{Binding LeftTriggerRouteScale, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
                                     <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
+                                    <Button Command="{Binding ResetLeftTriggerRouteScaleCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTriggerRouteScale, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_TriggerRouting_Activator, Source={x:Static strings:Strings.Instance}}"
@@ -4211,6 +4217,8 @@
                                         <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Toggle, Source={x:Static strings:Strings.Instance}}" Tag="Toggle"/>
                                         <ComboBoxItem Content="{Binding Pad_TriggerRouting_ActivatorMode_AlwaysOn, Source={x:Static strings:Strings.Instance}}" Tag="AlwaysOn"/>
                                     </ComboBox>
+                                    <Button Command="{Binding ResetLeftTriggerRouteActivatorModeCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTriggerRouteActivatorMode, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <!-- ─── Right trigger ─── -->
@@ -4225,6 +4233,8 @@
                                         <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_MaxOfBoth, Source={x:Static strings:Strings.Instance}}" Tag="MaxOfBoth"/>
                                         <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_SumOfBoth, Source={x:Static strings:Strings.Instance}}" Tag="SumOfBoth"/>
                                     </ComboBox>
+                                    <Button Command="{Binding ResetRightTriggerRouteSourceCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTriggerRouteSource, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_TriggerRouting_Mode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -4233,6 +4243,8 @@
                                         <ComboBoxItem Content="{Binding Pad_TriggerRouting_Mode_Duplicate, Source={x:Static strings:Strings.Instance}}" Tag="Duplicate"/>
                                         <ComboBoxItem Content="{Binding Pad_TriggerRouting_Mode_Redirect, Source={x:Static strings:Strings.Instance}}" Tag="Redirect"/>
                                     </ComboBox>
+                                    <Button Command="{Binding ResetRightTriggerRouteModeCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTriggerRouteMode, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_TriggerRouting_Scale, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -4240,6 +4252,8 @@
                                             SmallChange="1" LargeChange="10" Style="{StaticResource DzSlider}"/>
                                     <TextBox Text="{Binding RightTriggerRouteScale, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
                                     <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
+                                    <Button Command="{Binding ResetRightTriggerRouteScaleCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTriggerRouteScale, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_TriggerRouting_Activator, Source={x:Static strings:Strings.Instance}}"
@@ -4290,6 +4304,8 @@
                                         <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Toggle, Source={x:Static strings:Strings.Instance}}" Tag="Toggle"/>
                                         <ComboBoxItem Content="{Binding Pad_TriggerRouting_ActivatorMode_AlwaysOn, Source={x:Static strings:Strings.Instance}}" Tag="AlwaysOn"/>
                                     </ComboBox>
+                                    <Button Command="{Binding ResetRightTriggerRouteActivatorModeCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTriggerRouteActivatorMode, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

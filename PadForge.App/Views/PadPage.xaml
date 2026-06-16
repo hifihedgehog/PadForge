@@ -2677,6 +2677,7 @@
                                                                      Width="50" Margin="4,0,4,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
                                                             <TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                            <Button Command="{Binding ResetGyroSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                                         </StackPanel>
                                                         <!-- Per-source mouse cursor sensitivity (#107). Only
                                                              renders for "Mouse Position X/Y" descriptors. -->
@@ -3045,6 +3046,7 @@
                                                          Width="50" Margin="4,0,4,0" Padding="2,1"
                                                          VerticalContentAlignment="Center"/>
                                                 <TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                <Button Command="{Binding ResetGyroSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                             </StackPanel>
                                             <!-- Per-source mouse cursor sensitivity for the primary
                                                  source (#107). Renders only for "Mouse Position X/Y". -->

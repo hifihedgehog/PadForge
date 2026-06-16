@@ -896,6 +896,11 @@ namespace PadForge.ViewModels
         public RelayCommand ResetMouseCursorSensitivityCommand =>
             _resetMouseCursorSensitivityCommand ??= new RelayCommand(() => MouseCursorSensitivity = 1.0);
 
+        private RelayCommand _resetGyroSensitivityCommand;
+        /// <summary>Resets the primary source's gyro sensitivity to 1.0.</summary>
+        public RelayCommand ResetGyroSensitivityCommand =>
+            _resetGyroSensitivityCommand ??= new RelayCommand(() => GyroSensitivity = 1.0);
+
         /// <summary>Raised when the user clicks Record on this row.</summary>
         public event EventHandler StartRecordingRequested;
 

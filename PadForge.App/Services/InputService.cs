@@ -9030,6 +9030,24 @@ namespace PadForge.Services
                 gp.RightTrigger = us.RawMappedState.RightTrigger;
             }
 
+            // A mouse has no absolute stick axes. Its raw axes are relative motion
+            // deltas (Mouse Speed X/Y) and it has no right-stick axes at all, so the
+            // raw-axis read below would show delta motion on the left stick and pin
+            // the right stick to a corner (axes 3/4 read 0, which is full deflection,
+            // not center). The #107 "Mouse Position" source is a separate absolute
+            // signal that reaches the sticks only through the mapping. Read the
+            // per-device mapped output (RawMappedState), which carries the cursor on
+            // whichever stick it's mapped to and centers the sticks the mouse doesn't
+            // drive. This also matches what the engine actually sends downstream.
+            if (us != null && ud?.CapType == InputDeviceType.Mouse)
+            {
+                gp.ThumbLX = us.RawMappedState.ThumbLX;
+                gp.ThumbLY = us.RawMappedState.ThumbLY;
+                gp.ThumbRX = us.RawMappedState.ThumbRX;
+                gp.ThumbRY = us.RawMappedState.ThumbRY;
+                return gp;
+            }
+
             if (devState?.Axis == null || devState.Axis.Length < 6)
                 return gp;
 

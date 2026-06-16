@@ -738,6 +738,11 @@
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>停止震动</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>停止震动</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>释放分配插槽上任何活跃的震动覆盖。与 Sticky 震动动作搭配，通过另一个宏解除保持。</value></data>
+  <data name="MacroAction_Type_RumbleTrigger" xml:space="preserve"><value>覆盖扳机振动</value></data>
+  <data name="MacroAction_RumbleTrigger_Tooltip" xml:space="preserve"><value>通过宏驱动插槽的扳机振动。保持模式与覆盖振动相同，但强度馈送到扳机通道（Xbox 脉冲扳机和 DualSense 自适应扳机振动），而非握把马达。与扳机路由按最大值合成。</value></data>
+  <data name="MacroAction_Type_RumbleTriggerStop" xml:space="preserve"><value>停止扳机振动</value></data>
+  <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>停止扳机振动</value></data>
+  <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>释放插槽上任何活动的宏扳机振动。与粘滞的覆盖扳机振动搭配，以通过宏结束保持。</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>设置陀螺仪激活</value></data>
   <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>从宏中设置插槽的陀螺仪激活状态。切换：翻转当前状态。开：强制激活。关：强制停用。独立于 Gyro 选项卡的激活按钮，两个来源以 OR 方式组合，因此任何一方都无法停用另一方激活的状态。</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>模式</value></data>
@@ -1437,6 +1442,26 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>重置左扳机</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>重置右扳机</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>扳机持续力</value></data>
+  <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>扳机路由</value></data>
+  <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>将主振动马达路由到扳机通道，每个扳机单独设置。支持 XInput 振动和力反馈。激活器可对其进行门控，使扳机仅在按住按钮时振动。</value></data>
+  <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>重置扳机路由</value></data>
+  <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>左扳机</value></data>
+  <data name="Pad_TriggerRouting_RightTrigger" xml:space="preserve"><value>右扳机</value></data>
+  <data name="Pad_TriggerRouting_Source" xml:space="preserve"><value>来源</value></data>
+  <data name="Pad_TriggerRouting_Source_None" xml:space="preserve"><value>无（关闭）</value></data>
+  <data name="Pad_TriggerRouting_Source_MainLeft" xml:space="preserve"><value>左马达</value></data>
+  <data name="Pad_TriggerRouting_Source_MainRight" xml:space="preserve"><value>右马达</value></data>
+  <data name="Pad_TriggerRouting_Source_MaxOfBoth" xml:space="preserve"><value>两马达的最大值</value></data>
+  <data name="Pad_TriggerRouting_Source_SumOfBoth" xml:space="preserve"><value>两马达之和</value></data>
+  <data name="Pad_TriggerRouting_Mode" xml:space="preserve"><value>模式</value></data>
+  <data name="Pad_TriggerRouting_Mode_Off" xml:space="preserve"><value>关闭</value></data>
+  <data name="Pad_TriggerRouting_Mode_Duplicate" xml:space="preserve"><value>复制（保留主马达）</value></data>
+  <data name="Pad_TriggerRouting_Mode_Redirect" xml:space="preserve"><value>重定向（静音主马达）</value></data>
+  <data name="Pad_TriggerRouting_Scale" xml:space="preserve"><value>缩放</value></data>
+  <data name="Pad_TriggerRouting_Activator" xml:space="preserve"><value>激活器</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>激活模式</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>始终开启</value></data>
+  <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>重置激活器</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>在你关闭前持续向每个扳机马达施加力。游戏产生的扳机力在生效期间优先,游戏停止后恢复。</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>应用扳机持续力</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>左扳机</value></data>

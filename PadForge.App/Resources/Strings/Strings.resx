@@ -434,6 +434,26 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Reset Left Trigger</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Reset Right Trigger</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Constant Trigger Force</value></data>
+  <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Trigger Routing</value></data>
+  <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Route the main rumble motors into the trigger channel, one trigger at a time. Works with XInput rumble and force feedback. An activator can gate it so the trigger only buzzes while you hold a button.</value></data>
+  <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Reset trigger routing</value></data>
+  <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Left trigger</value></data>
+  <data name="Pad_TriggerRouting_RightTrigger" xml:space="preserve"><value>Right trigger</value></data>
+  <data name="Pad_TriggerRouting_Source" xml:space="preserve"><value>Source</value></data>
+  <data name="Pad_TriggerRouting_Source_None" xml:space="preserve"><value>None (off)</value></data>
+  <data name="Pad_TriggerRouting_Source_MainLeft" xml:space="preserve"><value>Left motor</value></data>
+  <data name="Pad_TriggerRouting_Source_MainRight" xml:space="preserve"><value>Right motor</value></data>
+  <data name="Pad_TriggerRouting_Source_MaxOfBoth" xml:space="preserve"><value>Max of both motors</value></data>
+  <data name="Pad_TriggerRouting_Source_SumOfBoth" xml:space="preserve"><value>Sum of both motors</value></data>
+  <data name="Pad_TriggerRouting_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_TriggerRouting_Mode_Off" xml:space="preserve"><value>Off</value></data>
+  <data name="Pad_TriggerRouting_Mode_Duplicate" xml:space="preserve"><value>Duplicate (keep main motor)</value></data>
+  <data name="Pad_TriggerRouting_Mode_Redirect" xml:space="preserve"><value>Redirect (silence main motor)</value></data>
+  <data name="Pad_TriggerRouting_Scale" xml:space="preserve"><value>Scale</value></data>
+  <data name="Pad_TriggerRouting_Activator" xml:space="preserve"><value>Activator</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>Activator mode</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>Always on</value></data>
+  <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>Reset activator</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Apply a continuous force to each trigger motor until you toggle off. Game-driven trigger force from any source overrides while it's active and resumes when the game stops.</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Apply constant trigger force</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Left Trigger</value></data>
@@ -955,6 +975,11 @@
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Stop Rumble</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Stop rumble</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Releases any active rumble override on the assigned slot. Pair with a Sticky Rumble action to undo the hold via another macro.</value></data>
+  <data name="MacroAction_Type_RumbleTrigger" xml:space="preserve"><value>Rumble Trigger Override</value></data>
+  <data name="MacroAction_RumbleTrigger_Tooltip" xml:space="preserve"><value>Drives the slot's trigger vibration from a macro. Same hold modes as Rumble Override, but the strength feeds the trigger channel (Xbox impulse triggers and DualSense Adaptive Trigger Vibration) instead of the grip motors. Max-combines with the trigger routing.</value></data>
+  <data name="MacroAction_Type_RumbleTriggerStop" xml:space="preserve"><value>Stop Trigger Vibration</value></data>
+  <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Stop trigger vibration</value></data>
+  <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Releases any active macro trigger vibration on the slot. Pair with a Sticky Rumble Trigger Override to end the hold from a macro.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Set Gyro Engaged</value></data>
   <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Sets the slot's gyro engage state from a macro. Toggle flips the current state. On forces gyro engaged. Off forces it disengaged. Independent of the Gyro tab's engage button. The two sources OR-combine, so neither can disable what the other engaged.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Mode</value></data>

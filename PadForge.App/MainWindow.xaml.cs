@@ -720,6 +720,46 @@ namespace PadForge
                         _settingsService.MarkDirty();
                     });
                 };
+
+                // Record buttons on the two Trigger Routing activators (#102).
+                // Same freeform-recorder toggle as the Aim Engage picker above.
+                pad.LeftTriggerRouteActivatorRecordRequested += (s, e) =>
+                {
+                    if (s is not PadViewModel pvm) return;
+                    if (pvm.LeftTriggerRouteActivatorRecording)
+                    {
+                        _recorderService.CancelRecording();
+                        pvm.LeftTriggerRouteActivatorRecording = false;
+                        return;
+                    }
+                    pvm.LeftTriggerRouteActivatorRecording = true;
+                    _recorderService.StartRecordingFreeform(pvm.PadIndex, (deviceGuid, descriptor) =>
+                    {
+                        pvm.LeftTriggerRouteActivator = descriptor ?? "";
+                        pvm.LeftTriggerRouteActivatorDeviceGuid = deviceGuid ?? "";
+                        pvm.LeftTriggerRouteActivatorRecording = false;
+                        _settingsService.MarkDirty();
+                    });
+                };
+
+                pad.RightTriggerRouteActivatorRecordRequested += (s, e) =>
+                {
+                    if (s is not PadViewModel pvm) return;
+                    if (pvm.RightTriggerRouteActivatorRecording)
+                    {
+                        _recorderService.CancelRecording();
+                        pvm.RightTriggerRouteActivatorRecording = false;
+                        return;
+                    }
+                    pvm.RightTriggerRouteActivatorRecording = true;
+                    _recorderService.StartRecordingFreeform(pvm.PadIndex, (deviceGuid, descriptor) =>
+                    {
+                        pvm.RightTriggerRouteActivator = descriptor ?? "";
+                        pvm.RightTriggerRouteActivatorDeviceGuid = deviceGuid ?? "";
+                        pvm.RightTriggerRouteActivatorRecording = false;
+                        _settingsService.MarkDirty();
+                    });
+                };
             }
 
             // Wire recorder for each pad's mapping rows.
@@ -1198,6 +1238,11 @@ namespace PadForge
                     // recording flag so the icon flips back to Record.
                     if (activePad.GyroAimEngageRecording)
                         activePad.GyroAimEngageRecording = false;
+                    // Trigger Routing activator record buttons (#102).
+                    if (activePad.LeftTriggerRouteActivatorRecording)
+                        activePad.LeftTriggerRouteActivatorRecording = false;
+                    if (activePad.RightTriggerRouteActivatorRecording)
+                        activePad.RightTriggerRouteActivatorRecording = false;
                 }
             };
 

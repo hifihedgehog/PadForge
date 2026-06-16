@@ -738,6 +738,11 @@
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Vibration stoppen</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Vibration stoppen</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Hebt eine aktive Vibrations-Überschreibung auf dem zugewiesenen Slot auf. Mit einer Sticky-Vibrations-Aktion kombinieren, um das Halten per Makro aufzuheben.</value></data>
+  <data name="MacroAction_Type_RumbleTrigger" xml:space="preserve"><value>Trigger-Vibration überschreiben</value></data>
+  <data name="MacroAction_RumbleTrigger_Tooltip" xml:space="preserve"><value>Steuert die Trigger-Vibration des Slots per Makro. Gleiche Haltemodi wie bei der Vibrationsüberschreibung, aber die Stärke speist den Trigger-Kanal (Xbox-Impulstrigger und DualSense Adaptive-Trigger-Vibration) statt der Griffmotoren. Wird per Maximum mit der Trigger-Weiterleitung kombiniert.</value></data>
+  <data name="MacroAction_Type_RumbleTriggerStop" xml:space="preserve"><value>Trigger-Vibration stoppen</value></data>
+  <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Trigger-Vibration stoppen</value></data>
+  <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Hebt eine aktive Makro-Trigger-Vibration auf dem Slot auf. Mit einer haltenden Trigger-Vibrationsüberschreibung kombinieren, um das Halten per Makro zu beenden.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Gyro-Aktivierung setzen</value></data>
   <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Setzt den Gyro-Aktivierungsstatus des Slots über ein Makro. Umschalten kippt den aktuellen Zustand. Ein erzwingt Aktivierung. Aus erzwingt Deaktivierung. Unabhängig von der Aktivierungstaste im Gyro-Tab. Beide Quellen werden ODER-kombiniert, sodass keine die andere deaktivieren kann.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Modus</value></data>
@@ -1438,6 +1443,26 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Linken Trigger zurücksetzen</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Rechten Trigger zurücksetzen</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Konstante Trigger-Kraft</value></data>
+  <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Trigger-Weiterleitung</value></data>
+  <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Leitet die Hauptvibrationsmotoren in den Trigger-Kanal, pro Trigger einzeln. Funktioniert mit XInput-Vibration und Force Feedback. Ein Aktivator kann sie steuern, sodass der Trigger nur vibriert, solange eine Taste gehalten wird.</value></data>
+  <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Trigger-Weiterleitung zurücksetzen</value></data>
+  <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Linker Trigger</value></data>
+  <data name="Pad_TriggerRouting_RightTrigger" xml:space="preserve"><value>Rechter Trigger</value></data>
+  <data name="Pad_TriggerRouting_Source" xml:space="preserve"><value>Quelle</value></data>
+  <data name="Pad_TriggerRouting_Source_None" xml:space="preserve"><value>Keine (aus)</value></data>
+  <data name="Pad_TriggerRouting_Source_MainLeft" xml:space="preserve"><value>Linker Motor</value></data>
+  <data name="Pad_TriggerRouting_Source_MainRight" xml:space="preserve"><value>Rechter Motor</value></data>
+  <data name="Pad_TriggerRouting_Source_MaxOfBoth" xml:space="preserve"><value>Maximum beider Motoren</value></data>
+  <data name="Pad_TriggerRouting_Source_SumOfBoth" xml:space="preserve"><value>Summe beider Motoren</value></data>
+  <data name="Pad_TriggerRouting_Mode" xml:space="preserve"><value>Modus</value></data>
+  <data name="Pad_TriggerRouting_Mode_Off" xml:space="preserve"><value>Aus</value></data>
+  <data name="Pad_TriggerRouting_Mode_Duplicate" xml:space="preserve"><value>Duplizieren (Hauptmotor behalten)</value></data>
+  <data name="Pad_TriggerRouting_Mode_Redirect" xml:space="preserve"><value>Umleiten (Hauptmotor stummschalten)</value></data>
+  <data name="Pad_TriggerRouting_Scale" xml:space="preserve"><value>Skalierung</value></data>
+  <data name="Pad_TriggerRouting_Activator" xml:space="preserve"><value>Aktivator</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>Aktivierungsmodus</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>Immer an</value></data>
+  <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>Aktivator zurücksetzen</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Wendet eine kontinuierliche Kraft auf jeden Trigger-Motor an, bis du sie ausschaltest. Spielgesteuerte Trigger-Kraft hat während ihrer Aktivität Vorrang und wird fortgesetzt, sobald das Spiel stoppt.</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Konstante Trigger-Kraft anwenden</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Linker Trigger</value></data>

@@ -1459,6 +1459,13 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsLightbarPaletteVisible));
                     OnPropertyChanged(nameof(IsRumbleType));
                     OnPropertyChanged(nameof(IsRumbleStopType));
+                    OnPropertyChanged(nameof(IsRumbleTriggerType));
+                    OnPropertyChanged(nameof(IsRumbleTriggerStopType));
+                    OnPropertyChanged(nameof(IsAnyRumbleSetType));
+                    OnPropertyChanged(nameof(IsAnyRumbleStopType));
+                    OnPropertyChanged(nameof(RumbleEditorTitle));
+                    OnPropertyChanged(nameof(RumbleStopEditorTitle));
+                    OnPropertyChanged(nameof(RumbleStopEditorBody));
                     OnPropertyChanged(nameof(IsPlaySoundType));
                     OnPropertyChanged(nameof(IsSoundStopType));
                     OnPropertyChanged(nameof(IsAnyRumbleType));
@@ -1518,6 +1525,42 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsRumbleStopType => _type == MacroActionType.RumbleStop;
 
+        /// <summary>True when Type is RumbleTrigger (issue #102).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsRumbleTriggerType => _type == MacroActionType.RumbleTrigger;
+
+        /// <summary>True when Type is RumbleTriggerStop (issue #102).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsRumbleTriggerStopType => _type == MacroActionType.RumbleTriggerStop;
+
+        /// <summary>True for either rumble-set action (main motors or trigger).
+        /// Both share the strength / hold-mode / duration param editor.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAnyRumbleSetType => IsRumbleType || IsRumbleTriggerType;
+
+        /// <summary>True for either rumble-stop action (main motors or trigger).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAnyRumbleStopType => IsRumbleStopType || IsRumbleTriggerStopType;
+
+        /// <summary>Header for the shared rumble-set param card: the trigger title
+        /// for a RumbleTrigger action, otherwise the main-motor Rumble title (#102).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string RumbleEditorTitle => IsRumbleTriggerType
+            ? Strings.Instance.MacroAction_Type_RumbleTrigger
+            : Strings.Instance.MacroAction_Type_Rumble;
+
+        /// <summary>Header for the shared rumble-stop card (#102).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string RumbleStopEditorTitle => IsRumbleTriggerStopType
+            ? Strings.Instance.MacroAction_Type_RumbleTriggerStop
+            : Strings.Instance.MacroAction_Type_RumbleStop;
+
+        /// <summary>Body text for the shared rumble-stop card (#102).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string RumbleStopEditorBody => IsRumbleTriggerStopType
+            ? Strings.Instance.MacroAction_RumbleTriggerStop_Tooltip
+            : Strings.Instance.MacroAction_RumbleStop_Tooltip;
+
         public bool IsPlaySoundType => _type == MacroActionType.PlaySound;
 
         public bool IsSoundStopType => _type == MacroActionType.SoundStop;
@@ -1532,19 +1575,21 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsAnyRumbleType
             => _type == MacroActionType.Rumble
-            || _type == MacroActionType.RumbleStop;
+            || _type == MacroActionType.RumbleStop
+            || _type == MacroActionType.RumbleTrigger
+            || _type == MacroActionType.RumbleTriggerStop;
 
         /// <summary>True when the Rumble action is in Reactive hold mode —
         /// drives visibility of the hold/fade sliders in the editor.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsRumbleReactiveHold
-            => _type == MacroActionType.Rumble
+            => (_type == MacroActionType.Rumble || _type == MacroActionType.RumbleTrigger)
                && _rumbleHoldMode == MacroRumbleHoldMode.Reactive;
 
         /// <summary>True when the Rumble action is in Sticky hold mode.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsRumbleStickyHold
-            => _type == MacroActionType.Rumble
+            => (_type == MacroActionType.Rumble || _type == MacroActionType.RumbleTrigger)
                && _rumbleHoldMode == MacroRumbleHoldMode.Sticky;
 
         /// <summary>True when Type is LightbarColorClear.</summary>
@@ -2708,6 +2753,8 @@ namespace PadForge.ViewModels
                         CountSelectedCycleModes()),
                     MacroActionType.Rumble => FormatRumbleSummary(),
                     MacroActionType.RumbleStop => Strings.Instance.MacroAction_RumbleStop,
+                    MacroActionType.RumbleTrigger => FormatRumbleTriggerSummary(),
+                    MacroActionType.RumbleTriggerStop => Strings.Instance.MacroAction_RumbleTriggerStop,
                     MacroActionType.PlaySound => string.IsNullOrEmpty(_soundFilePath)
                         ? Strings.Instance.MacroAction_Type_PlaySound
                         : string.Format(
@@ -2751,6 +2798,18 @@ namespace PadForge.ViewModels
             return _rumbleHoldMode == MacroRumbleHoldMode.Sticky
                 ? string.Format(Strings.Instance.MacroAction_Rumble_Sticky_Format, motors)
                 : string.Format(Strings.Instance.MacroAction_Rumble_Reactive_Format, motors, _rumbleHoldMs + _rumbleFadeMs);
+        }
+
+        /// <summary>Trigger-channel sibling of <see cref="FormatRumbleSummary"/>
+        /// (issue #102). Uses LT / RT trigger codes so the list row reads
+        /// distinctly from a main-motor Rumble action, reusing the same hold-mode
+        /// format strings (no separate translation needed).</summary>
+        private string FormatRumbleTriggerSummary()
+        {
+            string triggers = $"LT{_rumbleStrengthLeft}/RT{_rumbleStrengthRight}";
+            return _rumbleHoldMode == MacroRumbleHoldMode.Sticky
+                ? string.Format(Strings.Instance.MacroAction_Rumble_Sticky_Format, triggers)
+                : string.Format(Strings.Instance.MacroAction_Rumble_Reactive_Format, triggers, _rumbleHoldMs + _rumbleFadeMs);
         }
 
         /// <summary>Counts the modes selected in
@@ -2975,6 +3034,20 @@ namespace PadForge.ViewModels
         /// Pair with <see cref="Rumble"/> Sticky to give the user a
         /// deliberate way to undo the hold via another macro.</summary>
         RumbleStop,
+
+        /// <summary>Drives the slot's macro TRIGGER override (issue #102),
+        /// the sibling of <see cref="Rumble"/> for the trigger channel.
+        /// Reuses the same <c>RumbleStrengthLeft</c> / <c>RumbleStrengthRight</c>
+        /// / hold-mode / <c>RumbleHoldMs</c> / <c>RumbleFadeMs</c> fields, but
+        /// its scalar output max-combines into the trigger channel (Xbox impulse
+        /// triggers and DualSense AT Vibration) alongside the XInput/FFB → trigger
+        /// routing pass instead of the grip motors.</summary>
+        RumbleTrigger,
+
+        /// <summary>Releases any active macro trigger override on the slot
+        /// (issue #102). Sibling of <see cref="RumbleStop"/> for the trigger
+        /// channel; pair with a Sticky <see cref="RumbleTrigger"/>.</summary>
+        RumbleTriggerStop,
 
         /// <summary>Plays a sound file (issue #83). Routed through
         /// <c>SoundMacroService</c> to the slot's configured output device

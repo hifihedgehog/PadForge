@@ -50,6 +50,9 @@ namespace PadForge.Services
         private Vibration _constantForceScratchSony;
         private Vibration _macroRumbleScratchSony;
         private Vibration _constantTriggerForceScratchSony;
+        // #102 trigger-routing main-motor source for the Sony AT Vibration path.
+        private Vibration _routeMainScratchSony;
+        private Vibration _routeCfScratchSony;
         private DispatcherTimer _uiTimer;
         private ForegroundMonitorService _foregroundMonitor;
         private ProfileData _defaultProfileSnapshot;
@@ -520,6 +523,13 @@ namespace PadForge.Services
                 _inputManager.ScaleRumbleForDevice(
                     effective.LeftMotorSpeed, effective.RightMotorSpeed,
                     devicePs, out ushort scaledL, out ushort scaledR);
+
+                // #102 Redirect: silence the main motor(s) the engaged trigger route
+                // drew from on the physical DualSense, mirroring the Xbox physical
+                // write. The game still reads the unredirected virtual-controller state.
+                _inputManager.GetTriggerRouteMainRedirect(padIndex, out bool zMainL, out bool zMainR);
+                if (zMainL) scaledL = 0;
+                if (zMainR) scaledR = 0;
                 return ((byte)(scaledR >> 8), (byte)(scaledL >> 8));
             };
 
@@ -588,6 +598,15 @@ namespace PadForge.Services
                 _inputManager.ScaleTriggerRumbleForDevice(
                     effective.LeftTriggerMotorSpeed, effective.RightTriggerMotorSpeed,
                     devicePs, out ushort scaledL, out ushort scaledR);
+
+                // #102: route the device's main-motor amplitude + macro trigger
+                // override into the AT Vibration amplitude, the same max-combine the
+                // Xbox impulse path applies in ApplyForceFeedback. Reaches DualSense
+                // running as an Xbox-class VC (the gate above already passed).
+                if (_routeMainScratchSony == null) _routeMainScratchSony = new Vibration();
+                if (_routeCfScratchSony == null) _routeCfScratchSony = new Vibration();
+                _inputManager.ApplyTriggerRoutingForSony(padIndex, devicePs, raw,
+                    _routeMainScratchSony, _routeCfScratchSony, ref scaledL, ref scaledR);
                 return ((byte)(scaledR >> 8), (byte)(scaledL >> 8));
             };
 
@@ -2564,6 +2583,21 @@ namespace PadForge.Services
             ps.GyroAimEngageButton = padVm.GyroAimEngageButton ?? "";
             ps.GyroAimEngageDeviceGuid = padVm.GyroAimEngageDeviceGuid ?? "";
             ps.GyroAimEngageMode = string.IsNullOrEmpty(padVm.GyroAimEngageMode) ? "Hold" : padVm.GyroAimEngageMode;
+
+            // Trigger rumble routing (#102), per trigger.
+            ps.LeftTriggerRouteSource = string.IsNullOrEmpty(padVm.LeftTriggerRouteSource) ? "None" : padVm.LeftTriggerRouteSource;
+            ps.RightTriggerRouteSource = string.IsNullOrEmpty(padVm.RightTriggerRouteSource) ? "None" : padVm.RightTriggerRouteSource;
+            ps.LeftTriggerRouteMode = string.IsNullOrEmpty(padVm.LeftTriggerRouteMode) ? "Duplicate" : padVm.LeftTriggerRouteMode;
+            ps.RightTriggerRouteMode = string.IsNullOrEmpty(padVm.RightTriggerRouteMode) ? "Duplicate" : padVm.RightTriggerRouteMode;
+            ps.LeftTriggerRouteScale = padVm.LeftTriggerRouteScale.ToString();
+            ps.RightTriggerRouteScale = padVm.RightTriggerRouteScale.ToString();
+            ps.LeftTriggerRouteActivator = padVm.LeftTriggerRouteActivator ?? "";
+            ps.RightTriggerRouteActivator = padVm.RightTriggerRouteActivator ?? "";
+            ps.LeftTriggerRouteActivatorDeviceGuid = padVm.LeftTriggerRouteActivatorDeviceGuid ?? "";
+            ps.RightTriggerRouteActivatorDeviceGuid = padVm.RightTriggerRouteActivatorDeviceGuid ?? "";
+            ps.LeftTriggerRouteActivatorMode = string.IsNullOrEmpty(padVm.LeftTriggerRouteActivatorMode) ? "Hold" : padVm.LeftTriggerRouteActivatorMode;
+            ps.RightTriggerRouteActivatorMode = string.IsNullOrEmpty(padVm.RightTriggerRouteActivatorMode) ? "Hold" : padVm.RightTriggerRouteActivatorMode;
+
             ps.GyroInvertPitch = padVm.GyroInvertPitch ? "1" : "0";
             ps.GyroInvertYawRoll = padVm.GyroInvertYawRoll ? "1" : "0";
             ps.GyroApplyTuningToPassthrough = padVm.GyroApplyTuningToPassthrough ? "1" : "0";
@@ -2870,6 +2904,20 @@ namespace PadForge.Services
             padVm.GyroAimEngageButton = ps.GyroAimEngageButton ?? "";
             padVm.GyroAimEngageDeviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
             padVm.GyroAimEngageMode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
+
+            // Trigger rumble routing (#102), per trigger.
+            padVm.LeftTriggerRouteSource = string.IsNullOrEmpty(ps.LeftTriggerRouteSource) ? "None" : ps.LeftTriggerRouteSource;
+            padVm.RightTriggerRouteSource = string.IsNullOrEmpty(ps.RightTriggerRouteSource) ? "None" : ps.RightTriggerRouteSource;
+            padVm.LeftTriggerRouteMode = string.IsNullOrEmpty(ps.LeftTriggerRouteMode) ? "Duplicate" : ps.LeftTriggerRouteMode;
+            padVm.RightTriggerRouteMode = string.IsNullOrEmpty(ps.RightTriggerRouteMode) ? "Duplicate" : ps.RightTriggerRouteMode;
+            padVm.LeftTriggerRouteScale = TryParseInt(ps.LeftTriggerRouteScale, 100);
+            padVm.RightTriggerRouteScale = TryParseInt(ps.RightTriggerRouteScale, 100);
+            padVm.LeftTriggerRouteActivator = ps.LeftTriggerRouteActivator ?? "";
+            padVm.RightTriggerRouteActivator = ps.RightTriggerRouteActivator ?? "";
+            padVm.LeftTriggerRouteActivatorDeviceGuid = ps.LeftTriggerRouteActivatorDeviceGuid ?? "";
+            padVm.RightTriggerRouteActivatorDeviceGuid = ps.RightTriggerRouteActivatorDeviceGuid ?? "";
+            padVm.LeftTriggerRouteActivatorMode = string.IsNullOrEmpty(ps.LeftTriggerRouteActivatorMode) ? "Hold" : ps.LeftTriggerRouteActivatorMode;
+            padVm.RightTriggerRouteActivatorMode = string.IsNullOrEmpty(ps.RightTriggerRouteActivatorMode) ? "Hold" : ps.RightTriggerRouteActivatorMode;
             padVm.GyroInvertPitch = ps.GyroInvertPitch == "1";
             padVm.GyroInvertYawRoll = ps.GyroInvertYawRoll == "1";
             padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough == "1";
@@ -3327,6 +3375,8 @@ namespace PadForge.Services
             foreach (var c in flat)
                 padVm.SlotAvailableInputs.Add(c);
             padVm.OnGyroAimEngageSelectedInputRefresh();
+            padVm.OnLeftTriggerRouteActivatorSelectedInputRefresh();
+            padVm.OnRightTriggerRouteActivatorSelectedInputRefresh();
         }
 
         // ─────────────────────────────────────────────
@@ -8483,6 +8533,7 @@ namespace PadForge.Services
                     Common.Input.InputManager.ClearSourceKindRuntime();
                     Common.Input.InputManager.ClearAllShiftRuntime();
                     _inputManager?.ResetGyroEngageStates();
+                    _inputManager?.ResetTriggerRouteEngageStates();
                     _inputManager?.ResetGestureContexts();
                     _mainVm.StatusText = string.Format(Strings.Instance.Status_ProfileSwitched_Format, target.Name);
                 }
@@ -8497,6 +8548,7 @@ namespace PadForge.Services
                 Common.Input.InputManager.ClearSourceKindRuntime();
                 Common.Input.InputManager.ClearAllShiftRuntime();
                 _inputManager?.ResetGyroEngageStates();
+                _inputManager?.ResetTriggerRouteEngageStates();
                 _mainVm.StatusText = Strings.Instance.Status_ProfileSwitchedDefault;
             }
         }

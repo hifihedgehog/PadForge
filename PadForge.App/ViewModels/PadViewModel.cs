@@ -1759,6 +1759,236 @@ namespace PadForge.ViewModels
                 GyroAimEngageMode = "Hold";
             });
 
+        // ─────────────────────────────────────────────────────────────
+        //  Trigger rumble routing (issue #102). Per-trigger Source / Mode /
+        //  Scale plus a cross-device Activator (descriptor + owning device,
+        //  the same picker shape as Gyro Aim Engage) and an Activator Mode
+        //  (Hold / Toggle / AlwaysOn). Backed by the matching PadSetting
+        //  fields, synced in LoadPadSettingToViewModel / SavePadSetting.
+        // ─────────────────────────────────────────────────────────────
+
+        // ─── Left trigger ───
+        private string _leftTriggerRouteSource = "None";
+        public string LeftTriggerRouteSource
+        {
+            get => _leftTriggerRouteSource;
+            set => SetProperty(ref _leftTriggerRouteSource, string.IsNullOrEmpty(value) ? "None" : value);
+        }
+
+        private string _leftTriggerRouteMode = "Duplicate";
+        public string LeftTriggerRouteMode
+        {
+            get => _leftTriggerRouteMode;
+            set => SetProperty(ref _leftTriggerRouteMode, string.IsNullOrEmpty(value) ? "Duplicate" : value);
+        }
+
+        private int _leftTriggerRouteScale = 100;
+        public int LeftTriggerRouteScale
+        {
+            get => _leftTriggerRouteScale;
+            set => SetProperty(ref _leftTriggerRouteScale, Math.Clamp(value, 0, 200));
+        }
+
+        private string _leftTriggerRouteActivator = "";
+        public string LeftTriggerRouteActivator
+        {
+            get => _leftTriggerRouteActivator;
+            set { if (SetProperty(ref _leftTriggerRouteActivator, value ?? "")) OnPropertyChanged(nameof(LeftTriggerRouteActivatorSelectedInput)); }
+        }
+
+        private string _leftTriggerRouteActivatorDeviceGuid = "";
+        public string LeftTriggerRouteActivatorDeviceGuid
+        {
+            get => _leftTriggerRouteActivatorDeviceGuid;
+            set { if (SetProperty(ref _leftTriggerRouteActivatorDeviceGuid, value ?? "")) OnPropertyChanged(nameof(LeftTriggerRouteActivatorSelectedInput)); }
+        }
+
+        private string _leftTriggerRouteActivatorMode = "Hold";
+        public string LeftTriggerRouteActivatorMode
+        {
+            get => _leftTriggerRouteActivatorMode;
+            set => SetProperty(ref _leftTriggerRouteActivatorMode, string.IsNullOrEmpty(value) ? "Hold" : value);
+        }
+
+        /// <summary>InputChoice projection over the left-trigger activator
+        /// descriptor + device GUID, mirroring <see cref="GyroAimEngageSelectedInput"/>.
+        /// A null write-back from the ComboBox's TwoWay binding is ignored so a
+        /// transient empty list (during device switch) doesn't wipe the binding.</summary>
+        public InputChoice LeftTriggerRouteActivatorSelectedInput
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_leftTriggerRouteActivator)) return null;
+                foreach (var c in SlotAvailableInputs)
+                {
+                    if (c == null) continue;
+                    if (string.Equals(c.Descriptor, _leftTriggerRouteActivator, StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(c.DeviceGuid ?? "", _leftTriggerRouteActivatorDeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
+                        return c;
+                }
+                return null;
+            }
+            set
+            {
+                if (value == null) return;
+                LeftTriggerRouteActivator = value.Descriptor ?? "";
+                LeftTriggerRouteActivatorDeviceGuid = value.DeviceGuid ?? "";
+            }
+        }
+        public void OnLeftTriggerRouteActivatorSelectedInputRefresh()
+            => OnPropertyChanged(nameof(LeftTriggerRouteActivatorSelectedInput));
+
+        private bool _leftTriggerRouteActivatorRecording;
+        public bool LeftTriggerRouteActivatorRecording
+        {
+            get => _leftTriggerRouteActivatorRecording;
+            set
+            {
+                if (SetProperty(ref _leftTriggerRouteActivatorRecording, value))
+                {
+                    OnPropertyChanged(nameof(LeftTriggerRouteActivatorRecordButtonIcon));
+                    OnPropertyChanged(nameof(LeftTriggerRouteActivatorRecordButtonText));
+                }
+            }
+        }
+        // Segoe MDL2 glyphs:  Stop (recording),  Record (idle).
+        public string LeftTriggerRouteActivatorRecordButtonIcon => _leftTriggerRouteActivatorRecording ? "" : "";
+        public string LeftTriggerRouteActivatorRecordButtonText => _leftTriggerRouteActivatorRecording
+            ? Strings.Instance.Common_Recording
+            : Strings.Instance.Common_Record;
+        public event EventHandler LeftTriggerRouteActivatorRecordRequested;
+        public void FireLeftTriggerRouteActivatorRecord() => LeftTriggerRouteActivatorRecordRequested?.Invoke(this, EventArgs.Empty);
+        private RelayCommand _leftTriggerRouteActivatorRecordCommand;
+        public RelayCommand LeftTriggerRouteActivatorRecordCommand =>
+            _leftTriggerRouteActivatorRecordCommand ??= new RelayCommand(FireLeftTriggerRouteActivatorRecord);
+
+        private RelayCommand _resetLeftTriggerRouteActivatorCommand;
+        public RelayCommand ResetLeftTriggerRouteActivatorCommand =>
+            _resetLeftTriggerRouteActivatorCommand ??= new RelayCommand(() =>
+            {
+                LeftTriggerRouteActivator = "";
+                LeftTriggerRouteActivatorDeviceGuid = "";
+            });
+
+        // ─── Right trigger ───
+        private string _rightTriggerRouteSource = "None";
+        public string RightTriggerRouteSource
+        {
+            get => _rightTriggerRouteSource;
+            set => SetProperty(ref _rightTriggerRouteSource, string.IsNullOrEmpty(value) ? "None" : value);
+        }
+
+        private string _rightTriggerRouteMode = "Duplicate";
+        public string RightTriggerRouteMode
+        {
+            get => _rightTriggerRouteMode;
+            set => SetProperty(ref _rightTriggerRouteMode, string.IsNullOrEmpty(value) ? "Duplicate" : value);
+        }
+
+        private int _rightTriggerRouteScale = 100;
+        public int RightTriggerRouteScale
+        {
+            get => _rightTriggerRouteScale;
+            set => SetProperty(ref _rightTriggerRouteScale, Math.Clamp(value, 0, 200));
+        }
+
+        private string _rightTriggerRouteActivator = "";
+        public string RightTriggerRouteActivator
+        {
+            get => _rightTriggerRouteActivator;
+            set { if (SetProperty(ref _rightTriggerRouteActivator, value ?? "")) OnPropertyChanged(nameof(RightTriggerRouteActivatorSelectedInput)); }
+        }
+
+        private string _rightTriggerRouteActivatorDeviceGuid = "";
+        public string RightTriggerRouteActivatorDeviceGuid
+        {
+            get => _rightTriggerRouteActivatorDeviceGuid;
+            set { if (SetProperty(ref _rightTriggerRouteActivatorDeviceGuid, value ?? "")) OnPropertyChanged(nameof(RightTriggerRouteActivatorSelectedInput)); }
+        }
+
+        private string _rightTriggerRouteActivatorMode = "Hold";
+        public string RightTriggerRouteActivatorMode
+        {
+            get => _rightTriggerRouteActivatorMode;
+            set => SetProperty(ref _rightTriggerRouteActivatorMode, string.IsNullOrEmpty(value) ? "Hold" : value);
+        }
+
+        /// <summary>InputChoice projection over the right-trigger activator
+        /// descriptor + device GUID. See <see cref="LeftTriggerRouteActivatorSelectedInput"/>.</summary>
+        public InputChoice RightTriggerRouteActivatorSelectedInput
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_rightTriggerRouteActivator)) return null;
+                foreach (var c in SlotAvailableInputs)
+                {
+                    if (c == null) continue;
+                    if (string.Equals(c.Descriptor, _rightTriggerRouteActivator, StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(c.DeviceGuid ?? "", _rightTriggerRouteActivatorDeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
+                        return c;
+                }
+                return null;
+            }
+            set
+            {
+                if (value == null) return;
+                RightTriggerRouteActivator = value.Descriptor ?? "";
+                RightTriggerRouteActivatorDeviceGuid = value.DeviceGuid ?? "";
+            }
+        }
+        public void OnRightTriggerRouteActivatorSelectedInputRefresh()
+            => OnPropertyChanged(nameof(RightTriggerRouteActivatorSelectedInput));
+
+        private bool _rightTriggerRouteActivatorRecording;
+        public bool RightTriggerRouteActivatorRecording
+        {
+            get => _rightTriggerRouteActivatorRecording;
+            set
+            {
+                if (SetProperty(ref _rightTriggerRouteActivatorRecording, value))
+                {
+                    OnPropertyChanged(nameof(RightTriggerRouteActivatorRecordButtonIcon));
+                    OnPropertyChanged(nameof(RightTriggerRouteActivatorRecordButtonText));
+                }
+            }
+        }
+        public string RightTriggerRouteActivatorRecordButtonIcon => _rightTriggerRouteActivatorRecording ? "" : "";
+        public string RightTriggerRouteActivatorRecordButtonText => _rightTriggerRouteActivatorRecording
+            ? Strings.Instance.Common_Recording
+            : Strings.Instance.Common_Record;
+        public event EventHandler RightTriggerRouteActivatorRecordRequested;
+        public void FireRightTriggerRouteActivatorRecord() => RightTriggerRouteActivatorRecordRequested?.Invoke(this, EventArgs.Empty);
+        private RelayCommand _rightTriggerRouteActivatorRecordCommand;
+        public RelayCommand RightTriggerRouteActivatorRecordCommand =>
+            _rightTriggerRouteActivatorRecordCommand ??= new RelayCommand(FireRightTriggerRouteActivatorRecord);
+
+        private RelayCommand _resetRightTriggerRouteActivatorCommand;
+        public RelayCommand ResetRightTriggerRouteActivatorCommand =>
+            _resetRightTriggerRouteActivatorCommand ??= new RelayCommand(() =>
+            {
+                RightTriggerRouteActivator = "";
+                RightTriggerRouteActivatorDeviceGuid = "";
+            });
+
+        /// <summary>Resets the whole Trigger Routing card to defaults (#102).</summary>
+        private RelayCommand _resetTriggerRouteCardCommand;
+        public RelayCommand ResetTriggerRouteCardCommand =>
+            _resetTriggerRouteCardCommand ??= new RelayCommand(() =>
+            {
+                LeftTriggerRouteSource = "None";
+                LeftTriggerRouteMode = "Duplicate";
+                LeftTriggerRouteScale = 100;
+                LeftTriggerRouteActivator = "";
+                LeftTriggerRouteActivatorDeviceGuid = "";
+                LeftTriggerRouteActivatorMode = "Hold";
+                RightTriggerRouteSource = "None";
+                RightTriggerRouteMode = "Duplicate";
+                RightTriggerRouteScale = 100;
+                RightTriggerRouteActivator = "";
+                RightTriggerRouteActivatorDeviceGuid = "";
+                RightTriggerRouteActivatorMode = "Hold";
+            });
+
         private int _forceOverallGain = 100;
         public int ForceOverallGain { get => _forceOverallGain; set => SetProperty(ref _forceOverallGain, Math.Clamp(value, 0, 100)); }
 

@@ -738,6 +738,11 @@
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Trillen stoppen</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Trillen stoppen</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Maakt elke actieve trillingsoverschrijving op de toegewezen slot vrij. Combineer met een Sticky trilactie om het houden via een andere macro op te heffen.</value></data>
+  <data name="MacroAction_Type_RumbleTrigger" xml:space="preserve"><value>Triggervibratie overschrijven</value></data>
+  <data name="MacroAction_RumbleTrigger_Tooltip" xml:space="preserve"><value>Stuurt de triggervibratie van het slot aan vanuit een macro. Dezelfde vasthoudmodi als Vibratie overschrijven, maar de sterkte voedt het triggerkanaal (Xbox-impulstriggers en DualSense Adaptieve Triggervibratie) in plaats van de grijpmotoren. Wordt per maximum gecombineerd met de triggerroutering.</value></data>
+  <data name="MacroAction_Type_RumbleTriggerStop" xml:space="preserve"><value>Triggervibratie stoppen</value></data>
+  <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Triggervibratie stoppen</value></data>
+  <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Heft een actieve macro-triggervibratie op het slot op. Combineer met een vasthoudende Triggervibratie overschrijven om het vasthouden vanuit een macro te beëindigen.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Gyro-activering instellen</value></data>
   <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Stelt de gyro-activeringsstatus van het slot in vanuit een macro. Schakelen wisselt de huidige status. Aan forceert activering. Uit forceert deactivering. Onafhankelijk van de activeringsknop van het Gyro-tabblad. De twee bronnen worden OR-gecombineerd, dus geen van beide kan uitschakelen wat de ander heeft geactiveerd.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Modus</value></data>
@@ -1458,6 +1463,26 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Linkertrigger resetten</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Rechtertrigger resetten</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Constante triggerkracht</value></data>
+  <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Triggerroutering</value></data>
+  <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Routeert de hoofdvibratiemotoren naar het triggerkanaal, per trigger. Werkt met XInput-vibratie en force feedback. Een activator kan dit beperken zodat de trigger alleen trilt zolang je een knop ingedrukt houdt.</value></data>
+  <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Triggerroutering resetten</value></data>
+  <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Linkertrigger</value></data>
+  <data name="Pad_TriggerRouting_RightTrigger" xml:space="preserve"><value>Rechtertrigger</value></data>
+  <data name="Pad_TriggerRouting_Source" xml:space="preserve"><value>Bron</value></data>
+  <data name="Pad_TriggerRouting_Source_None" xml:space="preserve"><value>Geen (uit)</value></data>
+  <data name="Pad_TriggerRouting_Source_MainLeft" xml:space="preserve"><value>Linkermotor</value></data>
+  <data name="Pad_TriggerRouting_Source_MainRight" xml:space="preserve"><value>Rechtermotor</value></data>
+  <data name="Pad_TriggerRouting_Source_MaxOfBoth" xml:space="preserve"><value>Maximum van beide motoren</value></data>
+  <data name="Pad_TriggerRouting_Source_SumOfBoth" xml:space="preserve"><value>Som van beide motoren</value></data>
+  <data name="Pad_TriggerRouting_Mode" xml:space="preserve"><value>Modus</value></data>
+  <data name="Pad_TriggerRouting_Mode_Off" xml:space="preserve"><value>Uit</value></data>
+  <data name="Pad_TriggerRouting_Mode_Duplicate" xml:space="preserve"><value>Dupliceren (hoofdmotor behouden)</value></data>
+  <data name="Pad_TriggerRouting_Mode_Redirect" xml:space="preserve"><value>Omleiden (hoofdmotor dempen)</value></data>
+  <data name="Pad_TriggerRouting_Scale" xml:space="preserve"><value>Schaal</value></data>
+  <data name="Pad_TriggerRouting_Activator" xml:space="preserve"><value>Activator</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>Activatormodus</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>Altijd aan</value></data>
+  <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>Activator resetten</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Past een continue kracht toe op elke triggermotor totdat je het uitschakelt. Door games gestuurde triggerkracht heeft tijdens de uitvoering voorrang en wordt hervat zodra het spel stopt.</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Constante triggerkracht toepassen</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Linkertrigger</value></data>

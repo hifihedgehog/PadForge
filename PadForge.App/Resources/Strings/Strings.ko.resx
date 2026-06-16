@@ -738,6 +738,11 @@
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>진동 정지</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>진동 정지</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>할당된 슬롯에서 활성 상태인 진동 오버라이드를 해제합니다. Sticky 진동 액션과 짝지어 다른 매크로에서 유지를 해제하세요.</value></data>
+  <data name="MacroAction_Type_RumbleTrigger" xml:space="preserve"><value>트리거 진동 재정의</value></data>
+  <data name="MacroAction_RumbleTrigger_Tooltip" xml:space="preserve"><value>매크로에서 슬롯의 트리거 진동을 구동합니다. 진동 재정의와 동일한 유지 모드이지만, 강도가 그립 모터 대신 트리거 채널(Xbox 임펄스 트리거 및 DualSense 적응형 트리거 진동)로 전달됩니다. 트리거 라우팅과 최댓값으로 결합됩니다.</value></data>
+  <data name="MacroAction_Type_RumbleTriggerStop" xml:space="preserve"><value>트리거 진동 정지</value></data>
+  <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>트리거 진동 정지</value></data>
+  <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>슬롯에서 활성화된 매크로 트리거 진동을 해제합니다. 고정형 트리거 진동 재정의와 함께 사용하여 매크로로 유지를 종료합니다.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>자이로 활성 설정</value></data>
   <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>매크로에서 슬롯의 자이로 활성 상태를 설정합니다. 토글은 현재 상태를 뒤집습니다. 켜기는 강제로 활성화합니다. 끄기는 강제로 비활성화합니다. Gyro 탭의 활성화 버튼과 독립적이며, 두 소스는 OR로 결합되므로 어느 쪽도 다른 쪽이 활성화한 것을 비활성화할 수 없습니다.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>모드</value></data>
@@ -1438,6 +1443,26 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>왼쪽 트리거 재설정</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>오른쪽 트리거 재설정</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>지속 트리거 힘</value></data>
+  <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>트리거 라우팅</value></data>
+  <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>메인 진동 모터를 트리거 채널로, 트리거별로 라우팅합니다. XInput 진동과 포스 피드백에서 작동합니다. 활성화기로 제어하면 버튼을 누르고 있는 동안에만 트리거가 진동합니다.</value></data>
+  <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>트리거 라우팅 재설정</value></data>
+  <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>왼쪽 트리거</value></data>
+  <data name="Pad_TriggerRouting_RightTrigger" xml:space="preserve"><value>오른쪽 트리거</value></data>
+  <data name="Pad_TriggerRouting_Source" xml:space="preserve"><value>소스</value></data>
+  <data name="Pad_TriggerRouting_Source_None" xml:space="preserve"><value>없음(끄기)</value></data>
+  <data name="Pad_TriggerRouting_Source_MainLeft" xml:space="preserve"><value>왼쪽 모터</value></data>
+  <data name="Pad_TriggerRouting_Source_MainRight" xml:space="preserve"><value>오른쪽 모터</value></data>
+  <data name="Pad_TriggerRouting_Source_MaxOfBoth" xml:space="preserve"><value>두 모터의 최댓값</value></data>
+  <data name="Pad_TriggerRouting_Source_SumOfBoth" xml:space="preserve"><value>두 모터의 합</value></data>
+  <data name="Pad_TriggerRouting_Mode" xml:space="preserve"><value>모드</value></data>
+  <data name="Pad_TriggerRouting_Mode_Off" xml:space="preserve"><value>끄기</value></data>
+  <data name="Pad_TriggerRouting_Mode_Duplicate" xml:space="preserve"><value>복제(메인 모터 유지)</value></data>
+  <data name="Pad_TriggerRouting_Mode_Redirect" xml:space="preserve"><value>리디렉션(메인 모터 음소거)</value></data>
+  <data name="Pad_TriggerRouting_Scale" xml:space="preserve"><value>배율</value></data>
+  <data name="Pad_TriggerRouting_Activator" xml:space="preserve"><value>활성화기</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>활성화 모드</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>항상 켜기</value></data>
+  <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>활성화기 재설정</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>끄기 전까지 각 트리거 모터에 지속적인 힘을 가합니다. 게임이 보내는 트리거 힘이 활성화된 동안에는 우선하며, 게임이 멈추면 다시 재개합니다.</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>지속 트리거 힘 적용</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>왼쪽 트리거</value></data>

@@ -738,6 +738,11 @@
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>ランブル停止</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>ランブル停止</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>割り当てられたスロットでアクティブなランブル オーバーライドを解除します。Sticky ランブル アクションと組み合わせて、別のマクロから保持を解除できます。</value></data>
+  <data name="MacroAction_Type_RumbleTrigger" xml:space="preserve"><value>トリガー振動のオーバーライド</value></data>
+  <data name="MacroAction_RumbleTrigger_Tooltip" xml:space="preserve"><value>マクロからスロットのトリガー振動を駆動します。振動オーバーライドと同じホールドモードですが、強度はグリップモーターではなくトリガーチャンネル（Xbox インパルストリガーと DualSense アダプティブトリガー振動）に送られます。トリガールーティングと最大値で合成されます。</value></data>
+  <data name="MacroAction_Type_RumbleTriggerStop" xml:space="preserve"><value>トリガー振動を停止</value></data>
+  <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>トリガー振動を停止</value></data>
+  <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>スロット上のアクティブなマクロトリガー振動を解除します。スティッキーなトリガー振動オーバーライドと組み合わせて、マクロからホールドを終了させます。</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>ジャイロ起動を設定</value></data>
   <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>マクロからスロットのジャイロ起動状態を設定します。トグルは現在の状態を反転します。オンは強制的に起動します。オフは強制的に解除します。Gyro タブの起動ボタンとは独立しており、両ソースは OR で結合されるため、どちらも相手が起動したものを無効化できません。</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>モード</value></data>
@@ -1438,6 +1443,26 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>左トリガーをリセット</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>右トリガーをリセット</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>トリガー定常力</value></data>
+  <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>トリガールーティング</value></data>
+  <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>メインの振動モーターをトリガーチャンネルへ、トリガーごとに振り分けます。XInput 振動とフォースフィードバックに対応します。アクティベーターで制御すれば、ボタンを押している間だけトリガーが振動します。</value></data>
+  <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>トリガールーティングをリセット</value></data>
+  <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>左トリガー</value></data>
+  <data name="Pad_TriggerRouting_RightTrigger" xml:space="preserve"><value>右トリガー</value></data>
+  <data name="Pad_TriggerRouting_Source" xml:space="preserve"><value>ソース</value></data>
+  <data name="Pad_TriggerRouting_Source_None" xml:space="preserve"><value>なし（オフ）</value></data>
+  <data name="Pad_TriggerRouting_Source_MainLeft" xml:space="preserve"><value>左モーター</value></data>
+  <data name="Pad_TriggerRouting_Source_MainRight" xml:space="preserve"><value>右モーター</value></data>
+  <data name="Pad_TriggerRouting_Source_MaxOfBoth" xml:space="preserve"><value>両モーターの最大値</value></data>
+  <data name="Pad_TriggerRouting_Source_SumOfBoth" xml:space="preserve"><value>両モーターの合計</value></data>
+  <data name="Pad_TriggerRouting_Mode" xml:space="preserve"><value>モード</value></data>
+  <data name="Pad_TriggerRouting_Mode_Off" xml:space="preserve"><value>オフ</value></data>
+  <data name="Pad_TriggerRouting_Mode_Duplicate" xml:space="preserve"><value>複製（メインモーターを維持）</value></data>
+  <data name="Pad_TriggerRouting_Mode_Redirect" xml:space="preserve"><value>リダイレクト（メインモーターを無音化）</value></data>
+  <data name="Pad_TriggerRouting_Scale" xml:space="preserve"><value>スケール</value></data>
+  <data name="Pad_TriggerRouting_Activator" xml:space="preserve"><value>アクティベーター</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>アクティベーターモード</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>常にオン</value></data>
+  <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>アクティベーターをリセット</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>各トリガーモーターに連続的な力を加え、オフにするまで保持します。ゲームが発するトリガー力が動作中はそちらが優先され、ゲームが止まると再開します。</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>トリガー定常力を適用する</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>左トリガー</value></data>

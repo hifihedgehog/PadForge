@@ -738,6 +738,11 @@
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Parar vibração</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Parar vibração</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Libera qualquer sobreposição de vibração ativa no slot atribuído. Combine com uma ação Sticky de vibração para liberar a retenção a partir de outra macro.</value></data>
+  <data name="MacroAction_Type_RumbleTrigger" xml:space="preserve"><value>Substituir Vibração do Gatilho</value></data>
+  <data name="MacroAction_RumbleTrigger_Tooltip" xml:space="preserve"><value>Controla a vibração do gatilho do slot a partir de uma macro. Mesmos modos de retenção da Substituição de Vibração, mas a intensidade alimenta o canal do gatilho (gatilhos de impulso Xbox e Vibração de Gatilho Adaptável DualSense) em vez dos motores. Combina por máximo com o roteamento de gatilho.</value></data>
+  <data name="MacroAction_Type_RumbleTriggerStop" xml:space="preserve"><value>Parar Vibração do Gatilho</value></data>
+  <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Parar vibração do gatilho</value></data>
+  <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Libera qualquer vibração de gatilho por macro ativa no slot. Combine com uma Substituição de Vibração do Gatilho fixa para encerrar a retenção a partir de uma macro.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Definir Giroscópio Ativado</value></data>
   <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Define o estado de ativação do giroscópio do slot a partir de uma macro. Alternar inverte o estado atual. Ligar força a ativação. Desligar força a desativação. Independente do botão de ativação da aba Gyro: as duas fontes são combinadas com OR, então nenhuma pode desativar o que a outra ativou.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Modo</value></data>
@@ -1438,6 +1443,26 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Restaurar gatilho esquerdo</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Restaurar gatilho direito</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Força Constante nos Gatilhos</value></data>
+  <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Roteamento de Gatilhos</value></data>
+  <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Roteia os motores de vibração principais para o canal do gatilho, um gatilho por vez. Funciona com vibração XInput e force feedback. Um ativador pode condicioná-lo para que o gatilho só vibre enquanto você segura um botão.</value></data>
+  <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Redefinir roteamento de gatilhos</value></data>
+  <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Gatilho esquerdo</value></data>
+  <data name="Pad_TriggerRouting_RightTrigger" xml:space="preserve"><value>Gatilho direito</value></data>
+  <data name="Pad_TriggerRouting_Source" xml:space="preserve"><value>Fonte</value></data>
+  <data name="Pad_TriggerRouting_Source_None" xml:space="preserve"><value>Nenhuma (desligado)</value></data>
+  <data name="Pad_TriggerRouting_Source_MainLeft" xml:space="preserve"><value>Motor esquerdo</value></data>
+  <data name="Pad_TriggerRouting_Source_MainRight" xml:space="preserve"><value>Motor direito</value></data>
+  <data name="Pad_TriggerRouting_Source_MaxOfBoth" xml:space="preserve"><value>Máximo dos dois motores</value></data>
+  <data name="Pad_TriggerRouting_Source_SumOfBoth" xml:space="preserve"><value>Soma dos dois motores</value></data>
+  <data name="Pad_TriggerRouting_Mode" xml:space="preserve"><value>Modo</value></data>
+  <data name="Pad_TriggerRouting_Mode_Off" xml:space="preserve"><value>Desligado</value></data>
+  <data name="Pad_TriggerRouting_Mode_Duplicate" xml:space="preserve"><value>Duplicar (manter motor principal)</value></data>
+  <data name="Pad_TriggerRouting_Mode_Redirect" xml:space="preserve"><value>Redirecionar (silenciar motor principal)</value></data>
+  <data name="Pad_TriggerRouting_Scale" xml:space="preserve"><value>Escala</value></data>
+  <data name="Pad_TriggerRouting_Activator" xml:space="preserve"><value>Ativador</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>Modo de ativação</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>Sempre ligado</value></data>
+  <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>Redefinir ativador</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Aplica uma força contínua a cada motor de gatilho até você desativar. A força de gatilho gerada por um jogo prevalece enquanto está ativa e é retomada quando o jogo para.</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Aplicar força constante nos gatilhos</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Gatilho esquerdo</value></data>

@@ -298,6 +298,19 @@ namespace PadForge.Common.Input
         public MacroRumbleOverride[] MacroRumbleOverrides { get; }
             = InitMacroRumbleOverrides();
 
+        /// <summary>
+        /// Per-slot ephemeral macro override for the TRIGGER channel, driven by
+        /// <c>MacroActionType.RumbleTrigger</c> (set) and
+        /// <c>MacroActionType.RumbleTriggerStop</c> (clear). Sibling to
+        /// <see cref="MacroRumbleOverrides"/> (issue #102): same hold / fade timer,
+        /// but its scalar output max-combines into the trigger channel
+        /// (<c>LeftTriggerMotorSpeed</c> / <c>RightTriggerMotorSpeed</c>) alongside
+        /// the game-driven impulse output and the main-motor → trigger routing pass,
+        /// at the same three injection points.
+        /// </summary>
+        public MacroRumbleOverride[] MacroTriggerRumbleOverrides { get; }
+            = InitMacroRumbleOverrides();
+
         /// <summary>Per-slot trigger-actuator pulse for the steering at-lock feedback
         /// (#94, channel 2). Reuses <see cref="MacroRumbleOverride"/> purely as a
         /// hold+fade timer; its scalar output is routed to the trigger actuators (Xbox
@@ -389,6 +402,31 @@ namespace PadForge.Common.Input
         /// button. Owned by <see cref="UpdateGyroEngageStates"/> as the
         /// edge-detection input for Toggle mode.</summary>
         private readonly bool[] _prevAimEngageButtonDown = new bool[MaxPads];
+
+        /// <summary>Per-slot trigger-route engaged bits (issue #102), one each
+        /// for the left and right trigger. Settled once per tick by
+        /// <see cref="UpdateTriggerRouteEngageStates"/> (Hold tracks the
+        /// activator, Toggle flips on rising edge, AlwaysOn / empty descriptor
+        /// = always on). Read in the trigger routing pass
+        /// (<c>ScaleTriggerRumbleForDevice</c>) to gate the main-motor → trigger
+        /// routing per side.</summary>
+        public volatile bool[] TriggerRouteEngagedLeft = new bool[MaxPads];
+        public volatile bool[] TriggerRouteEngagedRight = new bool[MaxPads];
+        private readonly bool[] _prevTriggerRouteLeftDown = new bool[MaxPads];
+        private readonly bool[] _prevTriggerRouteRightDown = new bool[MaxPads];
+
+        /// <summary>Per-slot resolved trigger-route config (issue #102), captured
+        /// from the same first-device-wins PadSetting the engaged bits use so the
+        /// routing pass reads one consistent slot config instead of re-resolving
+        /// per device. Source: 0 None, 1 MainLeft, 2 MainRight, 3 MaxOfBoth,
+        /// 4 SumOfBoth. Scale is the 0-200% slider as 0.0-2.0. Redirect = silence
+        /// the main motor(s) the route drew from on the physical write.</summary>
+        private readonly byte[] _routeSourceLeft = new byte[MaxPads];
+        private readonly byte[] _routeSourceRight = new byte[MaxPads];
+        private readonly double[] _routeScaleLeft = new double[MaxPads];
+        private readonly double[] _routeScaleRight = new double[MaxPads];
+        private readonly bool[] _routeRedirectLeft = new bool[MaxPads];
+        private readonly bool[] _routeRedirectRight = new bool[MaxPads];
 
         /// <summary>Monotonic frame counter feeding the Sony Report 0x01
         /// timestamp / packet-sequence fields. Game-side parsers (e.g. SDL3's
@@ -849,6 +887,7 @@ namespace PadForge.Common.Input
 
                         UpdateInputStates();
                         UpdateGyroEngageStates();
+                        UpdateTriggerRouteEngageStates();
                         UpdateMotionSnapshots();
                         BroadcastDsuMotion();
                         UpdateOutputStates();
@@ -1068,6 +1107,209 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Settles each slot's left/right trigger-route engaged bits
+        /// once per tick (issue #102), from the first device on the slot that
+        /// has a non-None route source. Mirrors
+        /// <see cref="UpdateGyroEngageStates"/>: Hold tracks the activator
+        /// (empty descriptor = always on), Toggle flips the sticky bit on each
+        /// rising edge, AlwaysOn ignores the descriptor. The route source
+        /// itself being None leaves the side disengaged.</summary>
+        private void UpdateTriggerRouteEngageStates()
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return;
+
+            for (int slot = 0; slot < MaxPads; slot++)
+            {
+                PadSetting ps = null;
+                if (SettingsManager.SlotCreated[slot])
+                {
+                    lock (settings.SyncRoot)
+                    {
+                        for (int i = 0; i < settings.Items.Count; i++)
+                        {
+                            var us = settings.Items[i];
+                            if (us == null || us.MapTo != slot) continue;
+                            var p = us.GetPadSetting();
+                            if (p == null) continue;
+                            if (!RouteSideActive(p.LeftTriggerRouteSource, p.LeftTriggerRouteMode)
+                                && !RouteSideActive(p.RightTriggerRouteSource, p.RightTriggerRouteMode)) continue;
+                            ps = p;
+                            break;
+                        }
+                    }
+                }
+
+                if (ps == null)
+                {
+                    TriggerRouteEngagedLeft[slot] = false;
+                    TriggerRouteEngagedRight[slot] = false;
+                    _prevTriggerRouteLeftDown[slot] = false;
+                    _prevTriggerRouteRightDown[slot] = false;
+                    _routeSourceLeft[slot] = 0;
+                    _routeSourceRight[slot] = 0;
+                    continue;
+                }
+
+                byte srcLByte = RouteSideActive(ps.LeftTriggerRouteSource, ps.LeftTriggerRouteMode)
+                    ? ParseRouteSource(ps.LeftTriggerRouteSource) : (byte)0;
+                byte srcRByte = RouteSideActive(ps.RightTriggerRouteSource, ps.RightTriggerRouteMode)
+                    ? ParseRouteSource(ps.RightTriggerRouteSource) : (byte)0;
+                _routeSourceLeft[slot] = srcLByte;
+                _routeSourceRight[slot] = srcRByte;
+                _routeScaleLeft[slot] = ParseRouteScale(ps.LeftTriggerRouteScale);
+                _routeScaleRight[slot] = ParseRouteScale(ps.RightTriggerRouteScale);
+                _routeRedirectLeft[slot] = ps.LeftTriggerRouteMode == "Redirect";
+                _routeRedirectRight[slot] = ps.RightTriggerRouteMode == "Redirect";
+
+                bool srcL = srcLByte != 0;
+                bool srcR = srcRByte != 0;
+
+                // Settle unconditionally (the activator edge state must advance even
+                // when the source is None) then AND with the source-active flag.
+                bool leftSettled = SettleRouteActivator(
+                    slot, ps.LeftTriggerRouteActivator, ps.LeftTriggerRouteActivatorDeviceGuid,
+                    ps.LeftTriggerRouteActivatorMode, _prevTriggerRouteLeftDown,
+                    TriggerRouteEngagedLeft[slot], out bool leftDown);
+                TriggerRouteEngagedLeft[slot] = srcL && leftSettled;
+                _prevTriggerRouteLeftDown[slot] = leftDown;
+
+                bool rightSettled = SettleRouteActivator(
+                    slot, ps.RightTriggerRouteActivator, ps.RightTriggerRouteActivatorDeviceGuid,
+                    ps.RightTriggerRouteActivatorMode, _prevTriggerRouteRightDown,
+                    TriggerRouteEngagedRight[slot], out bool rightDown);
+                TriggerRouteEngagedRight[slot] = srcR && rightSettled;
+                _prevTriggerRouteRightDown[slot] = rightDown;
+            }
+        }
+
+        /// <summary>Trigger-route source enum parse:
+        /// 0 None, 1 MainLeft, 2 MainRight, 3 MaxOfBoth, 4 SumOfBoth.</summary>
+        internal static byte ParseRouteSource(string s) => s switch
+        {
+            "MainLeft" => 1, "MainRight" => 2, "MaxOfBoth" => 3, "SumOfBoth" => 4, _ => 0,
+        };
+
+        /// <summary>True when one trigger's routing is live: a real source picked
+        /// (not None) and the Mode not explicitly Off. Source None and Mode Off are
+        /// both off switches (the recipe exposes both), so either one disables.</summary>
+        internal static bool RouteSideActive(string source, string mode)
+            => ParseRouteSource(source) != 0 && mode != "Off";
+
+        /// <summary>Parses the per-trigger route Scale slider (0-200%, stored as an
+        /// integer string) to a 0.0-2.0 multiplier. Out-of-range or unparseable
+        /// values clamp to the 0-200 band; default 100% maps to 1.0.</summary>
+        private static double ParseRouteScale(string s)
+            => System.Math.Clamp(int.TryParse(s, out int v) ? v : 100, 0, 200) / 100.0;
+
+        /// <summary>Trigger rumble routing (#102): given a slot's post-gain
+        /// main-motor amplitudes, computes the trigger-channel injection (routed
+        /// main-motor amplitude max-combined with the macro trigger override) and
+        /// flags which main motors to silence (Redirect mode), reading the per-slot
+        /// engaged bits plus resolved source/scale/mode captured by
+        /// <see cref="UpdateTriggerRouteEngageStates"/>. The routed value comes from
+        /// the pre-redirect main motor so Redirect moves the energy to the trigger
+        /// rather than dropping it. The macro override is independent of the route
+        /// activator, so it contributes even when both routing sides are disengaged.</summary>
+        private void ApplyTriggerRouting(int slot, ushort mainL, ushort mainR,
+            out ushort routedLeft, out ushort routedRight, out bool zeroMainL, out bool zeroMainR)
+        {
+            routedLeft = 0; routedRight = 0; zeroMainL = false; zeroMainR = false;
+            if (TriggerRouteEngagedLeft[slot])
+            {
+                routedLeft = RouteMain(_routeSourceLeft[slot], _routeScaleLeft[slot], mainL, mainR);
+                if (_routeRedirectLeft[slot]) MarkRedirect(_routeSourceLeft[slot], ref zeroMainL, ref zeroMainR);
+            }
+            if (TriggerRouteEngagedRight[slot])
+            {
+                routedRight = RouteMain(_routeSourceRight[slot], _routeScaleRight[slot], mainL, mainR);
+                if (_routeRedirectRight[slot]) MarkRedirect(_routeSourceRight[slot], ref zeroMainL, ref zeroMainR);
+            }
+
+            // Macro trigger override (#102) max-combines with the routed value, the
+            // same way MacroRumbleOverride layers onto the main motors.
+            MacroTriggerRumbleOverrides[slot].ComputeMotors(out ushort macroLT, out ushort macroRT);
+            if (macroLT > routedLeft) routedLeft = macroLT;
+            if (macroRT > routedRight) routedRight = macroRT;
+        }
+
+        /// <summary>Selects the routed source amplitude per <paramref name="source"/>
+        /// (1 MainLeft, 2 MainRight, 3 MaxOfBoth, 4 SumOfBoth) and applies the
+        /// 0.0-2.0 scale, clamped to the ushort range.</summary>
+        private static ushort RouteMain(byte source, double scale, ushort mainL, ushort mainR)
+        {
+            int v = source switch
+            {
+                1 => mainL,
+                2 => mainR,
+                3 => System.Math.Max(mainL, mainR),
+                4 => System.Math.Min(mainL + mainR, 65535),
+                _ => 0,
+            };
+            if (v <= 0 || scale <= 0) return 0;
+            return (ushort)System.Math.Clamp((long)System.Math.Round(v * scale), 0, 65535);
+        }
+
+        /// <summary>Flags the main motor(s) a Redirect route draws from: MainLeft
+        /// silences left, MainRight silences right, Max / Sum silence both.</summary>
+        private static void MarkRedirect(byte source, ref bool zeroL, ref bool zeroR)
+        {
+            if (source == 1 || source >= 3) zeroL = true;
+            if (source == 2 || source >= 3) zeroR = true;
+        }
+
+        /// <summary>Sony dispatcher trigger path (#102): computes the trigger-channel
+        /// injection (routed main-motor amplitude + macro trigger override) for one
+        /// (slot, device) and max-combines it into the impulse-trigger amplitudes the
+        /// caller already scaled, so the DualSense AT Vibration auto-route picks up
+        /// routed rumble the same way Xbox impulse triggers do. The main-motor source
+        /// mirrors the Sony main-rumble provider (macro main rumble + constant force +
+        /// per-device gain). Runs on the dispatcher thread, so it takes caller-owned
+        /// scratch to stay off the input thread's buffers.</summary>
+        internal void ApplyTriggerRoutingForSony(int slot, PadSetting devicePs, Vibration raw,
+            Vibration macroScratch, Vibration cfScratch, ref ushort triggerL, ref ushort triggerR)
+        {
+            if (slot < 0 || slot >= MaxPads || raw == null) return;
+            var withMacro = MacroRumbleOverride.Merge(raw, MacroRumbleOverrides[slot], macroScratch);
+            var eff = ConstantForceEvaluator.Resolve(withMacro, devicePs, cfScratch);
+            ScaleRumbleForDevice(eff.LeftMotorSpeed, eff.RightMotorSpeed, devicePs,
+                out ushort mainL, out ushort mainR);
+            ApplyTriggerRouting(slot, mainL, mainR,
+                out ushort routedLT, out ushort routedRT, out _, out _);
+            if (routedLT > triggerL) triggerL = routedLT;
+            if (routedRT > triggerR) triggerR = routedRT;
+        }
+
+        /// <summary>Sony dispatcher main-motor path (#102): reports whether the slot's
+        /// engaged Redirect routing should silence each main motor on the physical
+        /// DualSense, mirroring the Redirect zeroing the Xbox physical write applies in
+        /// ApplyForceFeedback. The game-facing virtual-controller state is unaffected.</summary>
+        internal void GetTriggerRouteMainRedirect(int slot, out bool zeroMainL, out bool zeroMainR)
+        {
+            zeroMainL = false; zeroMainR = false;
+            if (slot < 0 || slot >= MaxPads) return;
+            if (TriggerRouteEngagedLeft[slot] && _routeRedirectLeft[slot])
+                MarkRedirect(_routeSourceLeft[slot], ref zeroMainL, ref zeroMainR);
+            if (TriggerRouteEngagedRight[slot] && _routeRedirectRight[slot])
+                MarkRedirect(_routeSourceRight[slot], ref zeroMainL, ref zeroMainR);
+        }
+
+        /// <summary>Settles one trigger's route activator. Returns the engaged
+        /// state and outputs the raw button-down for next-tick edge detection.
+        /// Hold tracks the button (empty descriptor = always on); Toggle flips
+        /// on rising edge; AlwaysOn ignores the descriptor.</summary>
+        private static bool SettleRouteActivator(int slot, string descriptor, string deviceGuid,
+            string mode, bool[] prevDown, bool curEngaged, out bool buttonDown)
+        {
+            buttonDown = !string.IsNullOrEmpty(descriptor)
+                && (SourceCoercion.ButtonHeldProvider?.Invoke(deviceGuid ?? "", descriptor, slot) ?? false);
+            if (string.IsNullOrEmpty(mode)) mode = "Hold";
+            if (mode == "AlwaysOn") return true;
+            if (mode == "Toggle")
+                return (buttonDown && !prevDown[slot]) ? !curEngaged : curEngaged;
+            return string.IsNullOrEmpty(descriptor) || buttonDown; // Hold: empty = always on
+        }
+
         /// <summary>Clears both gyro-engage per-slot bits and the edge-
         /// detection scratch. Called by the App layer after a profile
         /// switch / settings reload so the new profile's engage state
@@ -1079,6 +1321,23 @@ namespace PadForge.Common.Input
                 GyroEngagedFromButton[i] = false;
                 GyroEngagedFromMacro[i] = false;
                 _prevAimEngageButtonDown[i] = false;
+            }
+        }
+
+        /// <summary>Clears both trigger-route per-slot engaged bits and the
+        /// edge-detection scratch (issue #102). Called by the App layer after a
+        /// profile switch / settings reload so a new profile's Toggle activator
+        /// doesn't inherit the prior profile's sticky engaged state.</summary>
+        public void ResetTriggerRouteEngageStates()
+        {
+            for (int i = 0; i < MaxPads; i++)
+            {
+                TriggerRouteEngagedLeft[i] = false;
+                TriggerRouteEngagedRight[i] = false;
+                _prevTriggerRouteLeftDown[i] = false;
+                _prevTriggerRouteRightDown[i] = false;
+                _routeSourceLeft[i] = 0;
+                _routeSourceRight[i] = 0;
             }
         }
 

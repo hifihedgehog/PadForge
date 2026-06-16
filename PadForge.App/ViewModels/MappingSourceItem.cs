@@ -302,8 +302,12 @@ namespace PadForge.ViewModels
         public bool Bidirectional { get => _bidirectional; set => SetProperty(ref _bidirectional, value); }
         public int DeadZone
         {
+            // Minimum 1: a 0% axis-to-button deadzone is disallowed. The engine
+            // and load/save paths treat DeadZone == 0 as "unset" and fall back to
+            // the default, so a user-set 0 silently reverted to 50%. Clamping at 1
+            // keeps every value meaningful.
             get => _deadZone;
-            set => SetProperty(ref _deadZone, System.Math.Clamp(value, 0, 100));
+            set => SetProperty(ref _deadZone, System.Math.Clamp(value, 1, 100));
         }
 
         /// <summary>True when the per-source deadzone column is
@@ -615,6 +619,10 @@ namespace PadForge.ViewModels
         private RelayCommand _resetDeadZoneCommand;
         public RelayCommand ResetDeadZoneCommand =>
             _resetDeadZoneCommand ??= new RelayCommand(() => DeadZone = 50);
+
+        private RelayCommand _resetMouseCursorSensitivityCommand;
+        public RelayCommand ResetMouseCursorSensitivityCommand =>
+            _resetMouseCursorSensitivityCommand ??= new RelayCommand(() => MouseCursorSensitivity = 1.0);
 
         /// <summary>Builds a domain <see cref="Engine.Data.MappingSource"/>
         /// from this VM's current values. Used by the Save pipeline.</summary>

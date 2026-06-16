@@ -750,6 +750,10 @@
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>オン</value></data>
   <data name="Macro_SetGyroEngaged_Off" xml:space="preserve"><value>オフ</value></data>
   <data name="MacroAction_SetGyroEngaged_Format" xml:space="preserve"><value>ジャイロ起動を設定: {0}</value></data>
+  <data name="MacroAction_Type_MouseRecenter" xml:space="preserve"><value>マウスを中央に戻す</value></data>
+  <data name="MacroAction_MouseRecenter_Tooltip" xml:space="preserve"><value>このマクロが実行されると、デスクトップのカーソルをプライマリモニターの中央に移動します。中央に戻す軸を選択してください。</value></data>
+  <data name="MacroAction_MouseRecenter_Format" xml:space="preserve"><value>マウスを中央に戻す: {0}</value></data>
+  <data name="Macro_CursorRecenterMode_Label" xml:space="preserve"><value>モード</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>保持</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>リアクティブ（フェード）</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>スティッキー（保持）</value></data>

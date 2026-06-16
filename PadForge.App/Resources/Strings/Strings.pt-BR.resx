@@ -750,6 +750,10 @@
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Ligar</value></data>
   <data name="Macro_SetGyroEngaged_Off" xml:space="preserve"><value>Desligar</value></data>
   <data name="MacroAction_SetGyroEngaged_Format" xml:space="preserve"><value>Definir giroscópio ativado: {0}</value></data>
+  <data name="MacroAction_Type_MouseRecenter" xml:space="preserve"><value>Centralizar Mouse</value></data>
+  <data name="MacroAction_MouseRecenter_Tooltip" xml:space="preserve"><value>Coloca o cursor da área de trabalho no centro do monitor principal quando esta macro é acionada. Escolha quais eixos centralizar.</value></data>
+  <data name="MacroAction_MouseRecenter_Format" xml:space="preserve"><value>Centralizar Mouse: {0}</value></data>
+  <data name="Macro_CursorRecenterMode_Label" xml:space="preserve"><value>Modo</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Modo</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>Reativo (esmaecer)</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Permanente (manter)</value></data>

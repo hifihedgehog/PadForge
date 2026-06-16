@@ -1470,6 +1470,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsSoundStopType));
                     OnPropertyChanged(nameof(IsAnyRumbleType));
                     OnPropertyChanged(nameof(IsSetGyroEngagedType));
+                    OnPropertyChanged(nameof(IsMouseRecenterType));
                     OnPropertyChanged(nameof(IsRumbleReactiveHold));
                     OnPropertyChanged(nameof(IsRumbleStickyHold));
                 }
@@ -1569,6 +1570,11 @@ namespace PadForge.ViewModels
         /// Mode dropdown editor in the macro action UI.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsSetGyroEngagedType => _type == MacroActionType.SetGyroEngaged;
+
+        /// <summary>True when Type is MouseRecenter (issue #108). Surfaces the
+        /// Cursor Recenter Mode dropdown in the macro action UI.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsMouseRecenterType => _type == MacroActionType.MouseRecenter;
 
         /// <summary>True when Type is any rumble-related action — drives
         /// the macro editor's grouping into a single CardBorder.</summary>
@@ -2598,6 +2604,19 @@ namespace PadForge.ViewModels
             }
         }
 
+        private CursorRecenterMode _cursorRecenterMode = CursorRecenterMode.XAndY;
+        /// <summary>Which axes a <see cref="MacroActionType.MouseRecenter"/> action
+        /// snaps to the primary-monitor center (issue #108).</summary>
+        public CursorRecenterMode CursorRecenterMode
+        {
+            get => _cursorRecenterMode;
+            set
+            {
+                if (SetProperty(ref _cursorRecenterMode, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
         // CSV of LightbarMode int values for ModeCycle. Default skips
         // Off and the audio modes — most users want a quick visual
         // toggle, not silent output.
@@ -2765,6 +2784,9 @@ namespace PadForge.ViewModels
                     MacroActionType.SetGyroEngaged => string.Format(
                         Strings.Instance.MacroAction_SetGyroEngaged_Format,
                         SetGyroEngagedModeDisplayName(_setGyroEngagedMode)),
+                    MacroActionType.MouseRecenter => string.Format(
+                        Strings.Instance.MacroAction_MouseRecenter_Format,
+                        CursorRecenterModeDisplayName(_cursorRecenterMode)),
                     _ => Strings.Instance.Macro_UnknownAction
                 };
             }
@@ -2891,6 +2913,16 @@ namespace PadForge.ViewModels
             MacroSetGyroEngagedMode.On     => Strings.Instance.Macro_SetGyroEngaged_On,
             MacroSetGyroEngagedMode.Off    => Strings.Instance.Macro_SetGyroEngaged_Off,
             MacroSetGyroEngagedMode.Toggle => Strings.Instance.Macro_SetGyroEngaged_Toggle,
+            _ => mode.ToString()
+        };
+
+        /// <summary>Axis symbol for the cursor recenter mode (#108). Universal
+        /// symbols, not localized.</summary>
+        private static string CursorRecenterModeDisplayName(CursorRecenterMode mode) => mode switch
+        {
+            CursorRecenterMode.XOnly => "X",
+            CursorRecenterMode.YOnly => "Y",
+            CursorRecenterMode.XAndY => "X+Y",
             _ => mode.ToString()
         };
     }
@@ -3064,7 +3096,26 @@ namespace PadForge.ViewModels
         /// <summary>Stops every macro sound on the slot. Pair with
         /// <see cref="PlaySound"/> Loop to give the user a deliberate way
         /// to end a looping sound via another macro.</summary>
-        SoundStop
+        SoundStop,
+
+        /// <summary>Recenters the desktop cursor on press (issue #108). The
+        /// <see cref="MacroItem.CursorRecenterMode"/> picks which axes snap to the
+        /// primary-monitor center (X only / Y only / both). One press, one cursor
+        /// write, no continuous evaluation or release behavior. Pairs with the #107
+        /// "Mouse Position X/Y" sources so a button can re-zero the mapped stick.</summary>
+        MouseRecenter
+    }
+
+    /// <summary>Which axes a <see cref="MacroActionType.MouseRecenter"/> action
+    /// snaps to the primary-monitor center (issue #108).</summary>
+    public enum CursorRecenterMode
+    {
+        /// <summary>Snap only the X coordinate to center; leave Y where it is.</summary>
+        XOnly = 0,
+        /// <summary>Snap only the Y coordinate to center; leave X where it is.</summary>
+        YOnly = 1,
+        /// <summary>Snap both X and Y to center.</summary>
+        XAndY = 2
     }
 
     /// <summary>Write mode for the

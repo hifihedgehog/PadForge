@@ -750,6 +750,10 @@
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>开</value></data>
   <data name="Macro_SetGyroEngaged_Off" xml:space="preserve"><value>关</value></data>
   <data name="MacroAction_SetGyroEngaged_Format" xml:space="preserve"><value>设置陀螺仪激活:{0}</value></data>
+  <data name="MacroAction_Type_MouseRecenter" xml:space="preserve"><value>鼠标居中</value></data>
+  <data name="MacroAction_MouseRecenter_Tooltip" xml:space="preserve"><value>当此宏触发时，将桌面光标移动到主显示器的中央。选择要居中的轴。</value></data>
+  <data name="MacroAction_MouseRecenter_Format" xml:space="preserve"><value>鼠标居中:{0}</value></data>
+  <data name="Macro_CursorRecenterMode_Label" xml:space="preserve"><value>模式</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>保持</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>反应式（淡出）</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>持续（保持）</value></data>

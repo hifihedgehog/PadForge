@@ -750,6 +750,10 @@
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>켜기</value></data>
   <data name="Macro_SetGyroEngaged_Off" xml:space="preserve"><value>끄기</value></data>
   <data name="MacroAction_SetGyroEngaged_Format" xml:space="preserve"><value>자이로 활성 설정: {0}</value></data>
+  <data name="MacroAction_Type_MouseRecenter" xml:space="preserve"><value>마우스 중앙 정렬</value></data>
+  <data name="MacroAction_MouseRecenter_Tooltip" xml:space="preserve"><value>이 매크로가 실행되면 데스크톱 커서를 기본 모니터의 중앙으로 이동합니다. 중앙으로 정렬할 축을 선택하세요.</value></data>
+  <data name="MacroAction_MouseRecenter_Format" xml:space="preserve"><value>마우스 중앙 정렬: {0}</value></data>
+  <data name="Macro_CursorRecenterMode_Label" xml:space="preserve"><value>모드</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>유지</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>반응형 (페이드)</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>고정형 (유지)</value></data>

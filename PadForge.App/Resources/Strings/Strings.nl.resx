@@ -750,6 +750,10 @@
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Aan</value></data>
   <data name="Macro_SetGyroEngaged_Off" xml:space="preserve"><value>Uit</value></data>
   <data name="MacroAction_SetGyroEngaged_Format" xml:space="preserve"><value>Gyro-activering instellen: {0}</value></data>
+  <data name="MacroAction_Type_MouseRecenter" xml:space="preserve"><value>Muis centreren</value></data>
+  <data name="MacroAction_MouseRecenter_Tooltip" xml:space="preserve"><value>Plaatst de bureaubladcursor in het midden van het primaire beeldscherm wanneer deze macro wordt uitgevoerd. Kies welke assen worden gecentreerd.</value></data>
+  <data name="MacroAction_MouseRecenter_Format" xml:space="preserve"><value>Muis centreren: {0}</value></data>
+  <data name="Macro_CursorRecenterMode_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Houden</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>Reactief (vervagen)</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Plakkerig (vasthouden)</value></data>

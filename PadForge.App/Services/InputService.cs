@@ -544,15 +544,15 @@ namespace PadForge.Services
                 return ((byte)(raw.RightMotorSpeed >> 8), (byte)(raw.LeftMotorSpeed >> 8));
             };
 
-            // Per-(slot, device) impulse-trigger magnitudes for the
-            // impulse-to-AdaptiveTrigger-Vibration auto-route on DualSense
-            // pads. Returns (0, 0) when the slot's output VC isn't Xbox-
-            // class — other VC types don't emit impulse trigger commands.
-            // Otherwise mirrors the main-rumble provider shape: apply
-            // ConstantTriggerForceEvaluator (override-with-resume) then
-            // ScaleTriggerRumbleForDevice (per-device strength + audio-
-            // trigger mix + ImpulseSwapTriggers), and return the high
-            // byte of each ushort.
+            // Per-(slot, device) trigger magnitudes for the DualSense Adaptive
+            // Trigger Vibration auto-route. Game-written impulse triggers only
+            // arrive on Xbox-class VCs, but the #102 main-motor to trigger routing
+            // and the macro trigger override source from the main motor, so they
+            // apply on any output VC type (Xbox, DualShock 4, DualSense, generic).
+            // Mirrors the main-rumble provider shape: ConstantTriggerForceEvaluator
+            // (override-with-resume), ScaleTriggerRumbleForDevice (per-device
+            // strength + audio-trigger mix + ImpulseSwapTriggers), then
+            // ApplyTriggerRoutingForSony, returning the high byte of each ushort.
             UserEffectsDispatcher.SteeringAtResistanceProvider = padIndex =>
                 (_inputManager != null && padIndex >= 0 && padIndex < InputManager.MaxPads)
                     ? _inputManager.SteeringAtResistance[padIndex] : 0f;
@@ -566,8 +566,12 @@ namespace PadForge.Services
                 if (_inputManager == null) return ((byte)0, (byte)0);
                 if (padIndex < 0 || padIndex >= InputManager.MaxPads) return ((byte)0, (byte)0);
                 if (padIndex >= _mainVm.Pads.Count) return ((byte)0, (byte)0);
-                if (_mainVm.Pads[padIndex].OutputType != VirtualControllerType.Xbox)
-                    return ((byte)0, (byte)0);
+                // No output-VC gate (#102): game-written impulse triggers only arrive
+                // on Xbox-class VCs (so raw.*TriggerMotorSpeed is 0 for others), but
+                // the main-motor -> trigger routing and the macro trigger override
+                // below source from the main motor, which every VC type drives. They
+                // must reach the physical DualSense's AT Vibration whatever the slot
+                // outputs as (Xbox, DualShock 4, DualSense, generic).
 
                 var raw = _inputManager.VibrationStates[padIndex];
                 if (raw == null) return ((byte)0, (byte)0);

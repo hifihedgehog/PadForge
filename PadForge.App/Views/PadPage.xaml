@@ -4117,6 +4117,183 @@
                         </StackPanel>
                             </StackPanel>
                         </Border>
+
+                        <!-- ── Trigger Routing section (issue #102): route main-motor rumble
+                             into the trigger channel, per trigger, with a cross-device activator. -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE72A;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_TriggerRouting_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <Button Command="{Binding ResetTriggerRouteCardCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetTriggerRouting, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_TriggerRouting_Description, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+
+                                <!-- ─── Left trigger ─── -->
+                                <TextBlock Text="{Binding Pad_TriggerRouting_LeftTrigger, Source={x:Static strings:Strings.Instance}}"
+                                           FontWeight="SemiBold" Margin="0,0,0,6"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_TriggerRouting_Source, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ComboBox SelectedValue="{Binding LeftTriggerRouteSource, Mode=TwoWay}" SelectedValuePath="Tag" MinWidth="220">
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_None, Source={x:Static strings:Strings.Instance}}" Tag="None"/>
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_MainLeft, Source={x:Static strings:Strings.Instance}}" Tag="MainLeft"/>
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_MainRight, Source={x:Static strings:Strings.Instance}}" Tag="MainRight"/>
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_MaxOfBoth, Source={x:Static strings:Strings.Instance}}" Tag="MaxOfBoth"/>
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_SumOfBoth, Source={x:Static strings:Strings.Instance}}" Tag="SumOfBoth"/>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_TriggerRouting_Mode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ComboBox SelectedValue="{Binding LeftTriggerRouteMode, Mode=TwoWay}" SelectedValuePath="Tag" MinWidth="220">
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Mode_Off, Source={x:Static strings:Strings.Instance}}" Tag="Off"/>
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Mode_Duplicate, Source={x:Static strings:Strings.Instance}}" Tag="Duplicate"/>
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Mode_Redirect, Source={x:Static strings:Strings.Instance}}" Tag="Redirect"/>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_TriggerRouting_Scale, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding LeftTriggerRouteScale, Mode=TwoWay}" Minimum="0" Maximum="200"
+                                            SmallChange="1" LargeChange="10" Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding LeftTriggerRouteScale, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_TriggerRouting_Activator, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource DzLabel}" VerticalAlignment="Top" Margin="0,4,0,0"/>
+                                    <StackPanel Orientation="Vertical">
+                                        <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
+                                                  SelectedItem="{Binding LeftTriggerRouteActivatorSelectedInput, Mode=TwoWay}"
+                                                  DisplayMemberPath="DisplayName" MinWidth="220" Padding="4,2">
+                                            <ComboBox.GroupStyle>
+                                                <GroupStyle>
+                                                    <GroupStyle.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           TextTrimming="CharacterEllipsis"/>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </GroupStyle.HeaderTemplate>
+                                                </GroupStyle>
+                                            </ComboBox.GroupStyle>
+                                        </ComboBox>
+                                        <TextBlock FontSize="10" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="4,1,0,0" TextTrimming="CharacterEllipsis">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Text" Value="{Binding LeftTriggerRouteActivatorSelectedInput.DeviceLabel}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding LeftTriggerRouteActivatorSelectedInput}" Value="{x:Null}">
+                                                            <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <Setter Property="FontStyle" Value="Italic"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <Button Command="{Binding LeftTriggerRouteActivatorRecordCommand}" Width="40" VerticalAlignment="Top" Margin="6,0,0,0">
+                                        <TextBlock Text="{Binding LeftTriggerRouteActivatorRecordButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
+                                        <Button.ToolTip><TextBlock Text="{Binding LeftTriggerRouteActivatorRecordButtonText}"/></Button.ToolTip>
+                                    </Button>
+                                    <Button Command="{Binding ResetLeftTriggerRouteActivatorCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top"
+                                            ToolTip="{Binding Pad_ResetTriggerRouteActivator, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="{Binding Pad_TriggerRouting_ActivatorMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ComboBox SelectedValue="{Binding LeftTriggerRouteActivatorMode, Mode=TwoWay}" SelectedValuePath="Tag" MinWidth="220">
+                                        <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Hold, Source={x:Static strings:Strings.Instance}}" Tag="Hold"/>
+                                        <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Toggle, Source={x:Static strings:Strings.Instance}}" Tag="Toggle"/>
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_ActivatorMode_AlwaysOn, Source={x:Static strings:Strings.Instance}}" Tag="AlwaysOn"/>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <!-- ─── Right trigger ─── -->
+                                <TextBlock Text="{Binding Pad_TriggerRouting_RightTrigger, Source={x:Static strings:Strings.Instance}}"
+                                           FontWeight="SemiBold" Margin="0,12,0,6"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_TriggerRouting_Source, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ComboBox SelectedValue="{Binding RightTriggerRouteSource, Mode=TwoWay}" SelectedValuePath="Tag" MinWidth="220">
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_None, Source={x:Static strings:Strings.Instance}}" Tag="None"/>
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_MainLeft, Source={x:Static strings:Strings.Instance}}" Tag="MainLeft"/>
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_MainRight, Source={x:Static strings:Strings.Instance}}" Tag="MainRight"/>
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_MaxOfBoth, Source={x:Static strings:Strings.Instance}}" Tag="MaxOfBoth"/>
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_SumOfBoth, Source={x:Static strings:Strings.Instance}}" Tag="SumOfBoth"/>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_TriggerRouting_Mode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ComboBox SelectedValue="{Binding RightTriggerRouteMode, Mode=TwoWay}" SelectedValuePath="Tag" MinWidth="220">
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Mode_Off, Source={x:Static strings:Strings.Instance}}" Tag="Off"/>
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Mode_Duplicate, Source={x:Static strings:Strings.Instance}}" Tag="Duplicate"/>
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Mode_Redirect, Source={x:Static strings:Strings.Instance}}" Tag="Redirect"/>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_TriggerRouting_Scale, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding RightTriggerRouteScale, Mode=TwoWay}" Minimum="0" Maximum="200"
+                                            SmallChange="1" LargeChange="10" Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding RightTriggerRouteScale, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_TriggerRouting_Activator, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource DzLabel}" VerticalAlignment="Top" Margin="0,4,0,0"/>
+                                    <StackPanel Orientation="Vertical">
+                                        <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
+                                                  SelectedItem="{Binding RightTriggerRouteActivatorSelectedInput, Mode=TwoWay}"
+                                                  DisplayMemberPath="DisplayName" MinWidth="220" Padding="4,2">
+                                            <ComboBox.GroupStyle>
+                                                <GroupStyle>
+                                                    <GroupStyle.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           TextTrimming="CharacterEllipsis"/>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </GroupStyle.HeaderTemplate>
+                                                </GroupStyle>
+                                            </ComboBox.GroupStyle>
+                                        </ComboBox>
+                                        <TextBlock FontSize="10" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="4,1,0,0" TextTrimming="CharacterEllipsis">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Text" Value="{Binding RightTriggerRouteActivatorSelectedInput.DeviceLabel}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding RightTriggerRouteActivatorSelectedInput}" Value="{x:Null}">
+                                                            <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <Setter Property="FontStyle" Value="Italic"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <Button Command="{Binding RightTriggerRouteActivatorRecordCommand}" Width="40" VerticalAlignment="Top" Margin="6,0,0,0">
+                                        <TextBlock Text="{Binding RightTriggerRouteActivatorRecordButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
+                                        <Button.ToolTip><TextBlock Text="{Binding RightTriggerRouteActivatorRecordButtonText}"/></Button.ToolTip>
+                                    </Button>
+                                    <Button Command="{Binding ResetRightTriggerRouteActivatorCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top"
+                                            ToolTip="{Binding Pad_ResetTriggerRouteActivator, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="{Binding Pad_TriggerRouting_ActivatorMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ComboBox SelectedValue="{Binding RightTriggerRouteActivatorMode, Mode=TwoWay}" SelectedValuePath="Tag" MinWidth="220">
+                                        <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Hold, Source={x:Static strings:Strings.Instance}}" Tag="Hold"/>
+                                        <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Toggle, Source={x:Static strings:Strings.Instance}}" Tag="Toggle"/>
+                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_ActivatorMode_AlwaysOn, Source={x:Static strings:Strings.Instance}}" Tag="AlwaysOn"/>
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
@@ -5851,182 +6028,6 @@
                                              Style="{StaticResource DzValueEdit}"/>
                                     <Button Command="{Binding ResetConstantTriggerRightCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetConstantTriggerRight, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
-
-                        <!-- ── Trigger Routing section (issue #102): route main-motor rumble
-                             into the trigger channel, per trigger, with a cross-device activator. -->
-                        <Border Style="{StaticResource CardBorder}">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="&#xE72A;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                    <TextBlock Text="{Binding Pad_TriggerRouting_Header, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource CardTitle}"/>
-                                    <Button Command="{Binding ResetTriggerRouteCardCommand}" Style="{StaticResource ResetAllButton}"
-                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
-                                            ToolTip="{Binding Pad_ResetTriggerRouting, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                                <TextBlock Text="{Binding Pad_TriggerRouting_Description, Source={x:Static strings:Strings.Instance}}"
-                                           Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-
-                                <!-- ─── Left trigger ─── -->
-                                <TextBlock Text="{Binding Pad_TriggerRouting_LeftTrigger, Source={x:Static strings:Strings.Instance}}"
-                                           FontWeight="SemiBold" Margin="0,0,0,6"/>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Text="{Binding Pad_TriggerRouting_Source, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <ComboBox SelectedValue="{Binding LeftTriggerRouteSource, Mode=TwoWay}" SelectedValuePath="Tag" MinWidth="220">
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_None, Source={x:Static strings:Strings.Instance}}" Tag="None"/>
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_MainLeft, Source={x:Static strings:Strings.Instance}}" Tag="MainLeft"/>
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_MainRight, Source={x:Static strings:Strings.Instance}}" Tag="MainRight"/>
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_MaxOfBoth, Source={x:Static strings:Strings.Instance}}" Tag="MaxOfBoth"/>
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_SumOfBoth, Source={x:Static strings:Strings.Instance}}" Tag="SumOfBoth"/>
-                                    </ComboBox>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Text="{Binding Pad_TriggerRouting_Mode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <ComboBox SelectedValue="{Binding LeftTriggerRouteMode, Mode=TwoWay}" SelectedValuePath="Tag" MinWidth="220">
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Mode_Off, Source={x:Static strings:Strings.Instance}}" Tag="Off"/>
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Mode_Duplicate, Source={x:Static strings:Strings.Instance}}" Tag="Duplicate"/>
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Mode_Redirect, Source={x:Static strings:Strings.Instance}}" Tag="Redirect"/>
-                                    </ComboBox>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Text="{Binding Pad_TriggerRouting_Scale, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <Slider Value="{Binding LeftTriggerRouteScale, Mode=TwoWay}" Minimum="0" Maximum="200"
-                                            SmallChange="1" LargeChange="10" Style="{StaticResource DzSlider}"/>
-                                    <TextBox Text="{Binding LeftTriggerRouteScale, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                    <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Text="{Binding Pad_TriggerRouting_Activator, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource DzLabel}" VerticalAlignment="Top" Margin="0,4,0,0"/>
-                                    <StackPanel Orientation="Vertical">
-                                        <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
-                                                  SelectedItem="{Binding LeftTriggerRouteActivatorSelectedInput, Mode=TwoWay}"
-                                                  DisplayMemberPath="DisplayName" MinWidth="220" Padding="4,2">
-                                            <ComboBox.GroupStyle>
-                                                <GroupStyle>
-                                                    <GroupStyle.HeaderTemplate>
-                                                        <DataTemplate>
-                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
-                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                                           TextTrimming="CharacterEllipsis"/>
-                                                            </Border>
-                                                        </DataTemplate>
-                                                    </GroupStyle.HeaderTemplate>
-                                                </GroupStyle>
-                                            </ComboBox.GroupStyle>
-                                        </ComboBox>
-                                        <TextBlock FontSize="10" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="4,1,0,0" TextTrimming="CharacterEllipsis">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Text" Value="{Binding LeftTriggerRouteActivatorSelectedInput.DeviceLabel}"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding LeftTriggerRouteActivatorSelectedInput}" Value="{x:Null}">
-                                                            <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
-                                                            <Setter Property="FontStyle" Value="Italic"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                    </StackPanel>
-                                    <Button Command="{Binding LeftTriggerRouteActivatorRecordCommand}" Width="40" VerticalAlignment="Top" Margin="6,0,0,0">
-                                        <TextBlock Text="{Binding LeftTriggerRouteActivatorRecordButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
-                                        <Button.ToolTip><TextBlock Text="{Binding LeftTriggerRouteActivatorRecordButtonText}"/></Button.ToolTip>
-                                    </Button>
-                                    <Button Command="{Binding ResetLeftTriggerRouteActivatorCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top"
-                                            ToolTip="{Binding Pad_ResetTriggerRouteActivator, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                    <TextBlock Text="{Binding Pad_TriggerRouting_ActivatorMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <ComboBox SelectedValue="{Binding LeftTriggerRouteActivatorMode, Mode=TwoWay}" SelectedValuePath="Tag" MinWidth="220">
-                                        <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Hold, Source={x:Static strings:Strings.Instance}}" Tag="Hold"/>
-                                        <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Toggle, Source={x:Static strings:Strings.Instance}}" Tag="Toggle"/>
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_ActivatorMode_AlwaysOn, Source={x:Static strings:Strings.Instance}}" Tag="AlwaysOn"/>
-                                    </ComboBox>
-                                </StackPanel>
-
-                                <!-- ─── Right trigger ─── -->
-                                <TextBlock Text="{Binding Pad_TriggerRouting_RightTrigger, Source={x:Static strings:Strings.Instance}}"
-                                           FontWeight="SemiBold" Margin="0,12,0,6"/>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Text="{Binding Pad_TriggerRouting_Source, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <ComboBox SelectedValue="{Binding RightTriggerRouteSource, Mode=TwoWay}" SelectedValuePath="Tag" MinWidth="220">
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_None, Source={x:Static strings:Strings.Instance}}" Tag="None"/>
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_MainLeft, Source={x:Static strings:Strings.Instance}}" Tag="MainLeft"/>
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_MainRight, Source={x:Static strings:Strings.Instance}}" Tag="MainRight"/>
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_MaxOfBoth, Source={x:Static strings:Strings.Instance}}" Tag="MaxOfBoth"/>
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Source_SumOfBoth, Source={x:Static strings:Strings.Instance}}" Tag="SumOfBoth"/>
-                                    </ComboBox>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Text="{Binding Pad_TriggerRouting_Mode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <ComboBox SelectedValue="{Binding RightTriggerRouteMode, Mode=TwoWay}" SelectedValuePath="Tag" MinWidth="220">
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Mode_Off, Source={x:Static strings:Strings.Instance}}" Tag="Off"/>
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Mode_Duplicate, Source={x:Static strings:Strings.Instance}}" Tag="Duplicate"/>
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_Mode_Redirect, Source={x:Static strings:Strings.Instance}}" Tag="Redirect"/>
-                                    </ComboBox>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Text="{Binding Pad_TriggerRouting_Scale, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <Slider Value="{Binding RightTriggerRouteScale, Mode=TwoWay}" Minimum="0" Maximum="200"
-                                            SmallChange="1" LargeChange="10" Style="{StaticResource DzSlider}"/>
-                                    <TextBox Text="{Binding RightTriggerRouteScale, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                    <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0" Opacity="0.6"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Text="{Binding Pad_TriggerRouting_Activator, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource DzLabel}" VerticalAlignment="Top" Margin="0,4,0,0"/>
-                                    <StackPanel Orientation="Vertical">
-                                        <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
-                                                  SelectedItem="{Binding RightTriggerRouteActivatorSelectedInput, Mode=TwoWay}"
-                                                  DisplayMemberPath="DisplayName" MinWidth="220" Padding="4,2">
-                                            <ComboBox.GroupStyle>
-                                                <GroupStyle>
-                                                    <GroupStyle.HeaderTemplate>
-                                                        <DataTemplate>
-                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
-                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                                           TextTrimming="CharacterEllipsis"/>
-                                                            </Border>
-                                                        </DataTemplate>
-                                                    </GroupStyle.HeaderTemplate>
-                                                </GroupStyle>
-                                            </ComboBox.GroupStyle>
-                                        </ComboBox>
-                                        <TextBlock FontSize="10" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="4,1,0,0" TextTrimming="CharacterEllipsis">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Text" Value="{Binding RightTriggerRouteActivatorSelectedInput.DeviceLabel}"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding RightTriggerRouteActivatorSelectedInput}" Value="{x:Null}">
-                                                            <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
-                                                            <Setter Property="FontStyle" Value="Italic"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                    </StackPanel>
-                                    <Button Command="{Binding RightTriggerRouteActivatorRecordCommand}" Width="40" VerticalAlignment="Top" Margin="6,0,0,0">
-                                        <TextBlock Text="{Binding RightTriggerRouteActivatorRecordButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
-                                        <Button.ToolTip><TextBlock Text="{Binding RightTriggerRouteActivatorRecordButtonText}"/></Button.ToolTip>
-                                    </Button>
-                                    <Button Command="{Binding ResetRightTriggerRouteActivatorCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top"
-                                            ToolTip="{Binding Pad_ResetTriggerRouteActivator, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                    <TextBlock Text="{Binding Pad_TriggerRouting_ActivatorMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <ComboBox SelectedValue="{Binding RightTriggerRouteActivatorMode, Mode=TwoWay}" SelectedValuePath="Tag" MinWidth="220">
-                                        <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Hold, Source={x:Static strings:Strings.Instance}}" Tag="Hold"/>
-                                        <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Toggle, Source={x:Static strings:Strings.Instance}}" Tag="Toggle"/>
-                                        <ComboBoxItem Content="{Binding Pad_TriggerRouting_ActivatorMode_AlwaysOn, Source={x:Static strings:Strings.Instance}}" Tag="AlwaysOn"/>
-                                    </ComboBox>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

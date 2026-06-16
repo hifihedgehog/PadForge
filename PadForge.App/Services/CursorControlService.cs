@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using PadForge.Engine.Common.Mapping;
+using PadForge.ViewModels;
 
 namespace PadForge.Services
 {
@@ -65,6 +66,20 @@ namespace PadForge.Services
         private Timer _timer;
         private volatile bool _disposed;
 
+        // Sticky pin state (#109) and region-clamp state (#110). The enable bools
+        // are volatile so the 200 Hz timer thread sees a toggle promptly; the
+        // config fields are published before the bool is set true (volatile-bool
+        // release on write, acquire on read), so a tick that observes the flag also
+        // observes a consistent config. They are not changed again while engaged,
+        // so the timer reads stable values.
+        private volatile bool _isPinned;
+        private CursorPinMode _pinMode;
+        private int _pinX, _pinY;
+
+        private volatile bool _isClamped;
+        private CursorClampMode _clampMode;
+        private int _clampInsetX, _clampInsetY;
+
         /// <summary>The active service instance so the macro evaluator (a separate
         /// object) can reach the cursor-write operations (#108 recenter, and later
         /// #109 pin / #110 clamp). Set on construction, cleared on dispose. Null
@@ -81,8 +96,15 @@ namespace PadForge.Services
         private void Tick()
         {
             if (_disposed) return;
-            if (!GetCursorPos(out POINT p)) return;
             if (!TryGetPrimaryRect(out RECT r)) return;
+
+            // Enforce the cursor-write contracts before sampling so the published
+            // sample reflects the post-write position (#109 pin, #110 clamp). One
+            // thread owns both the read and the writes, so they cannot race.
+            EnforcePin(r);
+            EnforceClamp(r);
+
+            if (!GetCursorPos(out POINT p)) return;
 
             float w = r.Right - r.Left;
             if (w <= 0f) return;
@@ -123,6 +145,91 @@ namespace PadForge.Services
             int cy = (r.Top + r.Bottom) / 2;
             if (!GetCursorPos(out POINT p)) { p.X = cx; p.Y = cy; }
             SetCursorPos(centerX ? cx : p.X, centerY ? cy : p.Y);
+        }
+
+        /// <summary>Toggles the sticky cursor pin (issue #109). First call engages
+        /// the pin at (<paramref name="x"/>, <paramref name="y"/>) for the selected
+        /// axes; the next 200 Hz tick starts writing the cursor there before
+        /// sampling. A second call releases it. Config is published before the
+        /// enable flag so the timer never reads a half-set target.</summary>
+        public void TogglePin(CursorPinMode mode, int x, int y)
+        {
+            if (_disposed) return;
+            if (_isPinned) { _isPinned = false; return; }
+            _pinMode = mode;
+            _pinX = x;
+            _pinY = y;
+            _isPinned = true;
+        }
+
+        /// <summary>Toggles the cursor region clamp (issue #110). First call engages
+        /// the clamp with the given per-edge insets for the selected axes; each tick
+        /// then keeps the cursor inside the inset rectangle, writing only when a
+        /// clamped axis is outside. A second call releases it.</summary>
+        public void ToggleClamp(CursorClampMode mode, int insetX, int insetY)
+        {
+            if (_disposed) return;
+            if (_isClamped) { _isClamped = false; return; }
+            _clampMode = mode;
+            _clampInsetX = insetX;
+            _clampInsetY = insetY;
+            _isClamped = true;
+        }
+
+        /// <summary>Writes the cursor to the pin target on the pinned axes (#109).
+        /// Runs before the sample so the published position is the pinned coord.</summary>
+        private void EnforcePin(RECT r)
+        {
+            if (!_isPinned) return;
+            if (!GetCursorPos(out POINT p)) return;
+            int tx = _pinMode != CursorPinMode.YOnly ? _pinX : p.X;
+            int ty = _pinMode != CursorPinMode.XOnly ? _pinY : p.Y;
+            if (tx != p.X || ty != p.Y) SetCursorPos(tx, ty);
+        }
+
+        /// <summary>Keeps the cursor inside the inset rectangle on the clamped axes
+        /// (#110). Writes only when a clamped axis is outside, matching the
+        /// only-when-different optimization from the reference implementation.</summary>
+        private void EnforceClamp(RECT r)
+        {
+            if (!_isClamped) return;
+            if (!GetCursorPos(out POINT p)) return;
+            int left = r.Left + _clampInsetX;
+            int right = r.Right - _clampInsetX;
+            int top = r.Top + _clampInsetY;
+            int bottom = r.Bottom - _clampInsetY;
+            int nx = p.X, ny = p.Y;
+            if (_clampMode != CursorClampMode.YOnly)
+            {
+                if (nx < left) nx = left; else if (nx > right) nx = right;
+            }
+            if (_clampMode != CursorClampMode.XOnly)
+            {
+                if (ny < top) ny = top; else if (ny > bottom) ny = bottom;
+            }
+            if (nx != p.X || ny != p.Y) SetCursorPos(nx, ny);
+        }
+
+        /// <summary>Primary-monitor center in physical pixels. Used to seed a pin
+        /// action's default target (issue #109).</summary>
+        public static bool TryGetPrimaryCenter(out int x, out int y)
+        {
+            x = 0; y = 0;
+            if (!TryGetPrimaryRect(out RECT r)) return false;
+            x = (r.Left + r.Right) / 2;
+            y = (r.Top + r.Bottom) / 2;
+            return true;
+        }
+
+        /// <summary>Primary-monitor width/height in physical pixels. Used to clamp
+        /// pin coords (#109) and region insets (#110) to on-screen ranges.</summary>
+        public static bool TryGetPrimarySize(out int width, out int height)
+        {
+            width = 0; height = 0;
+            if (!TryGetPrimaryRect(out RECT r)) return false;
+            width = r.Right - r.Left;
+            height = r.Bottom - r.Top;
+            return true;
         }
 
         public void Dispose()

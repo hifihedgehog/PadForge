@@ -754,6 +754,19 @@
   <data name="MacroAction_MouseRecenter_Tooltip" xml:space="preserve"><value>Porta il cursore del desktop al centro del monitor principale quando questa macro viene attivata. Scegli quali assi centrare.</value></data>
   <data name="MacroAction_MouseRecenter_Format" xml:space="preserve"><value>Centra il mouse: {0}</value></data>
   <data name="Macro_CursorRecenterMode_Label" xml:space="preserve"><value>Modalità</value></data>
+  <data name="MacroAction_Type_MouseFixPosition" xml:space="preserve"><value>Fissa posizione del mouse</value></data>
+  <data name="MacroAction_MouseFixPosition_Tooltip" xml:space="preserve"><value>Attiva o disattiva un blocco del cursore alla pressione. Premi una volta per fissare il cursore alla coordinata di destinazione, premi di nuovo per rilasciarlo.</value></data>
+  <data name="MacroAction_MouseFixPosition_Format" xml:space="preserve"><value>Fissa posizione del mouse: {0}</value></data>
+  <data name="Macro_CursorPinMode_Label" xml:space="preserve"><value>Modalità</value></data>
+  <data name="Macro_CursorPinX_Label" xml:space="preserve"><value>Fissa X</value></data>
+  <data name="Macro_CursorPinY_Label" xml:space="preserve"><value>Fissa Y</value></data>
+  <data name="MacroAction_Type_MouseLimitRegion" xml:space="preserve"><value>Limita regione del mouse</value></data>
+  <data name="MacroAction_MouseLimitRegion_Tooltip" xml:space="preserve"><value>Attiva o disattiva un limite di regione del cursore alla pressione. Premi una volta per tenere il cursore dentro la regione, premi di nuovo per rilasciarlo.</value></data>
+  <data name="MacroAction_MouseLimitRegion_Format" xml:space="preserve"><value>Limita regione del mouse: {0}</value></data>
+  <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Modalità</value></data>
+  <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>Margine X</value></data>
+  <data name="Macro_CursorClampInsetY_Label" xml:space="preserve"><value>Margine Y</value></data>
+  <data name="Macro_CursorWrite_Caveat" xml:space="preserve"><value>Mentre è attivo, PadForge scrive la posizione del cursore a ogni frame. I giochi che muovono il cursore per conto proprio possono interferire.</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Modalità</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>Reattiva (dissolvenza)</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Persistente (mantieni)</value></data>

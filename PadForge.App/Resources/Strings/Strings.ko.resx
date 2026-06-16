@@ -754,6 +754,19 @@
   <data name="MacroAction_MouseRecenter_Tooltip" xml:space="preserve"><value>이 매크로가 실행되면 데스크톱 커서를 기본 모니터의 중앙으로 이동합니다. 중앙으로 정렬할 축을 선택하세요.</value></data>
   <data name="MacroAction_MouseRecenter_Format" xml:space="preserve"><value>마우스 중앙 정렬: {0}</value></data>
   <data name="Macro_CursorRecenterMode_Label" xml:space="preserve"><value>모드</value></data>
+  <data name="MacroAction_Type_MouseFixPosition" xml:space="preserve"><value>마우스 위치 고정</value></data>
+  <data name="MacroAction_MouseFixPosition_Tooltip" xml:space="preserve"><value>누를 때마다 커서 고정을 전환합니다. 한 번 누르면 커서를 대상 좌표에 고정하고, 다시 누르면 해제합니다.</value></data>
+  <data name="MacroAction_MouseFixPosition_Format" xml:space="preserve"><value>마우스 위치 고정: {0}</value></data>
+  <data name="Macro_CursorPinMode_Label" xml:space="preserve"><value>모드</value></data>
+  <data name="Macro_CursorPinX_Label" xml:space="preserve"><value>고정 X</value></data>
+  <data name="Macro_CursorPinY_Label" xml:space="preserve"><value>고정 Y</value></data>
+  <data name="MacroAction_Type_MouseLimitRegion" xml:space="preserve"><value>마우스 영역 제한</value></data>
+  <data name="MacroAction_MouseLimitRegion_Tooltip" xml:space="preserve"><value>누를 때마다 커서 영역 제한을 전환합니다. 한 번 누르면 커서를 영역 안에 유지하고, 다시 누르면 해제합니다.</value></data>
+  <data name="MacroAction_MouseLimitRegion_Format" xml:space="preserve"><value>마우스 영역 제한: {0}</value></data>
+  <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>모드</value></data>
+  <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>여백 X</value></data>
+  <data name="Macro_CursorClampInsetY_Label" xml:space="preserve"><value>여백 Y</value></data>
+  <data name="Macro_CursorWrite_Caveat" xml:space="preserve"><value>이 기능이 활성화된 동안 PadForge는 매 프레임마다 커서 위치를 기록합니다. 커서를 직접 움직이는 게임은 간섭할 수 있습니다.</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>유지</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>반응형 (페이드)</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>고정형 (유지)</value></data>

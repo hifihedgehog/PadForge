@@ -11,6 +11,7 @@ using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Resources.Strings;
+using PadForge.Services;
 
 namespace PadForge.ViewModels
 {
@@ -1471,8 +1472,24 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsAnyRumbleType));
                     OnPropertyChanged(nameof(IsSetGyroEngagedType));
                     OnPropertyChanged(nameof(IsMouseRecenterType));
+                    OnPropertyChanged(nameof(IsMouseFixPositionType));
+                    OnPropertyChanged(nameof(IsMouseLimitRegionType));
                     OnPropertyChanged(nameof(IsRumbleReactiveHold));
                     OnPropertyChanged(nameof(IsRumbleStickyHold));
+
+                    // Seed a freshly-typed pin action with the primary monitor's
+                    // current center (issue #109). XML defaults cannot run code, so
+                    // a (0,0) coord would sit the pin at the screen corner. Treat
+                    // (0,0) as "unconfigured" and resolve it once on type switch.
+                    // A loaded action keeps its saved coord (deserialized before
+                    // this path ever runs).
+                    if (_type == MacroActionType.MouseFixPosition
+                        && _cursorPinX == 0 && _cursorPinY == 0
+                        && CursorControlService.TryGetPrimaryCenter(out int pcx, out int pcy))
+                    {
+                        CursorPinX = pcx;
+                        CursorPinY = pcy;
+                    }
                 }
             }
         }
@@ -1575,6 +1592,16 @@ namespace PadForge.ViewModels
         /// Cursor Recenter Mode dropdown in the macro action UI.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsMouseRecenterType => _type == MacroActionType.MouseRecenter;
+
+        /// <summary>True when Type is MouseFixPosition (issue #109). Surfaces the
+        /// Cursor Pin Mode dropdown plus the Pin X / Pin Y spinboxes.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsMouseFixPositionType => _type == MacroActionType.MouseFixPosition;
+
+        /// <summary>True when Type is MouseLimitRegion (issue #110). Surfaces the
+        /// Cursor Clamp Mode dropdown plus the Inset X / Inset Y spinboxes.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsMouseLimitRegionType => _type == MacroActionType.MouseLimitRegion;
 
         /// <summary>True when Type is any rumble-related action — drives
         /// the macro editor's grouping into a single CardBorder.</summary>
@@ -2617,6 +2644,84 @@ namespace PadForge.ViewModels
             }
         }
 
+        private CursorPinMode _cursorPinMode = CursorPinMode.XAndY;
+        /// <summary>Which axes a <see cref="MacroActionType.MouseFixPosition"/>
+        /// action pins while engaged (issue #109). The other axis stays free.</summary>
+        public CursorPinMode CursorPinMode
+        {
+            get => _cursorPinMode;
+            set
+            {
+                if (SetProperty(ref _cursorPinMode, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private int _cursorPinX;
+        /// <summary>Target X coordinate (primary-monitor physical pixels) a pin
+        /// action holds while engaged (issue #109). Defaults to the monitor center
+        /// on first type switch. Clamped to the primary monitor's width.</summary>
+        public int CursorPinX
+        {
+            get => _cursorPinX;
+            set => SetProperty(ref _cursorPinX, ClampToPrimaryWidth(value));
+        }
+
+        private int _cursorPinY;
+        /// <summary>Target Y coordinate (primary-monitor physical pixels) a pin
+        /// action holds while engaged (issue #109). Defaults to the monitor center
+        /// on first type switch. Clamped to the primary monitor's height.</summary>
+        public int CursorPinY
+        {
+            get => _cursorPinY;
+            set => SetProperty(ref _cursorPinY, ClampToPrimaryHeight(value));
+        }
+
+        private CursorClampMode _cursorClampMode = CursorClampMode.XAndY;
+        /// <summary>Which axes a <see cref="MacroActionType.MouseLimitRegion"/>
+        /// action clamps inside the inset region while engaged (issue #110).</summary>
+        public CursorClampMode CursorClampMode
+        {
+            get => _cursorClampMode;
+            set
+            {
+                if (SetProperty(ref _cursorClampMode, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private int _cursorClampInsetX = 50;
+        /// <summary>Pixels held back from each left/right edge for a region clamp
+        /// (issue #110). The cursor is kept inside [inset, width - inset] on X.
+        /// Clamped to 0..half the primary monitor's width.</summary>
+        public int CursorClampInsetX
+        {
+            get => _cursorClampInsetX;
+            set => SetProperty(ref _cursorClampInsetX, ClampInsetToHalfWidth(value));
+        }
+
+        private int _cursorClampInsetY = 50;
+        /// <summary>Pixels held back from each top/bottom edge for a region clamp
+        /// (issue #110). The cursor is kept inside [inset, height - inset] on Y.
+        /// Clamped to 0..half the primary monitor's height.</summary>
+        public int CursorClampInsetY
+        {
+            get => _cursorClampInsetY;
+            set => SetProperty(ref _cursorClampInsetY, ClampInsetToHalfHeight(value));
+        }
+
+        private RelayCommand _resetCursorClampInsetXCommand;
+        /// <summary>Resets the region-clamp X inset to the 50 px default (#110).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand ResetCursorClampInsetXCommand =>
+            _resetCursorClampInsetXCommand ??= new RelayCommand(() => CursorClampInsetX = 50);
+
+        private RelayCommand _resetCursorClampInsetYCommand;
+        /// <summary>Resets the region-clamp Y inset to the 50 px default (#110).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand ResetCursorClampInsetYCommand =>
+            _resetCursorClampInsetYCommand ??= new RelayCommand(() => CursorClampInsetY = 50);
+
         // CSV of LightbarMode int values for ModeCycle. Default skips
         // Off and the audio modes — most users want a quick visual
         // toggle, not silent output.
@@ -2787,6 +2892,12 @@ namespace PadForge.ViewModels
                     MacroActionType.MouseRecenter => string.Format(
                         Strings.Instance.MacroAction_MouseRecenter_Format,
                         CursorRecenterModeDisplayName(_cursorRecenterMode)),
+                    MacroActionType.MouseFixPosition => string.Format(
+                        Strings.Instance.MacroAction_MouseFixPosition_Format,
+                        CursorPinModeDisplayName(_cursorPinMode)),
+                    MacroActionType.MouseLimitRegion => string.Format(
+                        Strings.Instance.MacroAction_MouseLimitRegion_Format,
+                        CursorClampModeDisplayName(_cursorClampMode)),
                     _ => Strings.Instance.Macro_UnknownAction
                 };
             }
@@ -2925,6 +3036,58 @@ namespace PadForge.ViewModels
             CursorRecenterMode.XAndY => "X+Y",
             _ => mode.ToString()
         };
+
+        /// <summary>Axis symbol for the cursor pin mode (#109). Universal
+        /// symbols, not localized.</summary>
+        private static string CursorPinModeDisplayName(CursorPinMode mode) => mode switch
+        {
+            CursorPinMode.XOnly => "X",
+            CursorPinMode.YOnly => "Y",
+            CursorPinMode.XAndY => "X+Y",
+            _ => mode.ToString()
+        };
+
+        /// <summary>Axis symbol for the cursor clamp mode (#110). Universal
+        /// symbols, not localized.</summary>
+        private static string CursorClampModeDisplayName(CursorClampMode mode) => mode switch
+        {
+            CursorClampMode.XOnly => "X",
+            CursorClampMode.YOnly => "Y",
+            CursorClampMode.XAndY => "X+Y",
+            _ => mode.ToString()
+        };
+
+        // Coordinate / inset clamps for the pin (#109) and region (#110) actions.
+        // Resolve the primary monitor on demand so an off-screen coord can never be
+        // saved. If the monitor can't be read, the raw value passes through (a later
+        // tick re-clamps at write time anyway).
+        private static int ClampToPrimaryWidth(int value)
+        {
+            if (value < 0) return 0;
+            if (CursorControlService.TryGetPrimarySize(out int w, out _) && value > w) return w;
+            return value;
+        }
+
+        private static int ClampToPrimaryHeight(int value)
+        {
+            if (value < 0) return 0;
+            if (CursorControlService.TryGetPrimarySize(out _, out int h) && value > h) return h;
+            return value;
+        }
+
+        private static int ClampInsetToHalfWidth(int value)
+        {
+            if (value < 0) return 0;
+            if (CursorControlService.TryGetPrimarySize(out int w, out _) && value > w / 2) return w / 2;
+            return value;
+        }
+
+        private static int ClampInsetToHalfHeight(int value)
+        {
+            if (value < 0) return 0;
+            if (CursorControlService.TryGetPrimarySize(out _, out int h) && value > h / 2) return h / 2;
+            return value;
+        }
     }
 
     // ─────────────────────────────────────────────
@@ -3103,7 +3266,23 @@ namespace PadForge.ViewModels
         /// primary-monitor center (X only / Y only / both). One press, one cursor
         /// write, no continuous evaluation or release behavior. Pairs with the #107
         /// "Mouse Position X/Y" sources so a button can re-zero the mapped stick.</summary>
-        MouseRecenter
+        MouseRecenter,
+
+        /// <summary>Toggles a sticky cursor pin on press (issue #109). While
+        /// engaged, the <see cref="CursorControlService"/> writes the cursor to
+        /// <see cref="MacroItem.CursorPinX"/> / <c>CursorPinY</c> on every 200 Hz
+        /// tick before sampling, so the mapped "Mouse Position" source reads the
+        /// pinned coord. <see cref="MacroItem.CursorPinMode"/> picks which axes are
+        /// held. A second press releases the pin.</summary>
+        MouseFixPosition,
+
+        /// <summary>Toggles a cursor region clamp on press (issue #110). While
+        /// engaged, the <see cref="CursorControlService"/> keeps the cursor inside
+        /// the inset rectangle every 200 Hz tick, writing only when a clamped axis
+        /// is outside. <see cref="MacroItem.CursorClampMode"/> picks which axes are
+        /// clamped, and <c>CursorClampInsetX</c> / <c>CursorClampInsetY</c> set the
+        /// margin held back from each edge. A second press releases the clamp.</summary>
+        MouseLimitRegion
     }
 
     /// <summary>Which axes a <see cref="MacroActionType.MouseRecenter"/> action
@@ -3115,6 +3294,30 @@ namespace PadForge.ViewModels
         /// <summary>Snap only the Y coordinate to center; leave X where it is.</summary>
         YOnly = 1,
         /// <summary>Snap both X and Y to center.</summary>
+        XAndY = 2
+    }
+
+    /// <summary>Which axes a <see cref="MacroActionType.MouseFixPosition"/> action
+    /// pins to its target coordinate (issue #109).</summary>
+    public enum CursorPinMode
+    {
+        /// <summary>Pin only the X coordinate; leave Y free.</summary>
+        XOnly = 0,
+        /// <summary>Pin only the Y coordinate; leave X free.</summary>
+        YOnly = 1,
+        /// <summary>Pin both X and Y.</summary>
+        XAndY = 2
+    }
+
+    /// <summary>Which axes a <see cref="MacroActionType.MouseLimitRegion"/> action
+    /// clamps inside the inset region (issue #110).</summary>
+    public enum CursorClampMode
+    {
+        /// <summary>Clamp only the X coordinate; leave Y free.</summary>
+        XOnly = 0,
+        /// <summary>Clamp only the Y coordinate; leave X free.</summary>
+        YOnly = 1,
+        /// <summary>Clamp both X and Y.</summary>
         XAndY = 2
     }
 

@@ -754,6 +754,19 @@
   <data name="MacroAction_MouseRecenter_Tooltip" xml:space="preserve"><value>Setzt den Desktop-Cursor in die Mitte des primären Monitors, wenn dieses Makro ausgelöst wird. Wählen Sie, welche Achsen zentriert werden.</value></data>
   <data name="MacroAction_MouseRecenter_Format" xml:space="preserve"><value>Maus zentrieren: {0}</value></data>
   <data name="Macro_CursorRecenterMode_Label" xml:space="preserve"><value>Modus</value></data>
+  <data name="MacroAction_Type_MouseFixPosition" xml:space="preserve"><value>Mausposition fixieren</value></data>
+  <data name="MacroAction_MouseFixPosition_Tooltip" xml:space="preserve"><value>Schaltet beim Drücken eine feste Cursor-Position um. Einmal drücken fixiert den Cursor an der Zielkoordinate, erneut drücken gibt ihn frei.</value></data>
+  <data name="MacroAction_MouseFixPosition_Format" xml:space="preserve"><value>Mausposition fixieren: {0}</value></data>
+  <data name="Macro_CursorPinMode_Label" xml:space="preserve"><value>Modus</value></data>
+  <data name="Macro_CursorPinX_Label" xml:space="preserve"><value>Pin X</value></data>
+  <data name="Macro_CursorPinY_Label" xml:space="preserve"><value>Pin Y</value></data>
+  <data name="MacroAction_Type_MouseLimitRegion" xml:space="preserve"><value>Mausbereich begrenzen</value></data>
+  <data name="MacroAction_MouseLimitRegion_Tooltip" xml:space="preserve"><value>Schaltet beim Drücken eine Cursor-Bereichsbegrenzung um. Einmal drücken hält den Cursor im Bereich, erneut drücken gibt ihn frei.</value></data>
+  <data name="MacroAction_MouseLimitRegion_Format" xml:space="preserve"><value>Mausbereich begrenzen: {0}</value></data>
+  <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Modus</value></data>
+  <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>Abstand X</value></data>
+  <data name="Macro_CursorClampInsetY_Label" xml:space="preserve"><value>Abstand Y</value></data>
+  <data name="Macro_CursorWrite_Caveat" xml:space="preserve"><value>Während dies aktiv ist, schreibt PadForge die Cursor-Position in jedem Frame. Spiele, die den Cursor selbst bewegen, können stören.</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>Reaktiv (ausblenden)</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Permanent (halten)</value></data>

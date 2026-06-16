@@ -995,6 +995,19 @@
   <data name="MacroAction_MouseRecenter_Tooltip" xml:space="preserve"><value>Snaps the desktop cursor to the center of the primary monitor when this macro fires. Pick which axes recenter.</value></data>
   <data name="MacroAction_MouseRecenter_Format" xml:space="preserve"><value>Recenter Mouse: {0}</value></data>
   <data name="Macro_CursorRecenterMode_Label" xml:space="preserve"><value>Mode</value></data>
+  <data name="MacroAction_Type_MouseFixPosition" xml:space="preserve"><value>Fix Mouse Position</value></data>
+  <data name="MacroAction_MouseFixPosition_Tooltip" xml:space="preserve"><value>Toggles a sticky cursor pin on press. Press once to pin the cursor at the target coordinate, press again to release.</value></data>
+  <data name="MacroAction_MouseFixPosition_Format" xml:space="preserve"><value>Fix Mouse Position: {0}</value></data>
+  <data name="Macro_CursorPinMode_Label" xml:space="preserve"><value>Mode</value></data>
+  <data name="Macro_CursorPinX_Label" xml:space="preserve"><value>Pin X</value></data>
+  <data name="Macro_CursorPinY_Label" xml:space="preserve"><value>Pin Y</value></data>
+  <data name="MacroAction_Type_MouseLimitRegion" xml:space="preserve"><value>Limit Mouse Region</value></data>
+  <data name="MacroAction_MouseLimitRegion_Tooltip" xml:space="preserve"><value>Toggles a cursor region clamp on press. Press once to keep the cursor inside the region, press again to release.</value></data>
+  <data name="MacroAction_MouseLimitRegion_Format" xml:space="preserve"><value>Limit Mouse Region: {0}</value></data>
+  <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Mode</value></data>
+  <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>Inset X</value></data>
+  <data name="Macro_CursorClampInsetY_Label" xml:space="preserve"><value>Inset Y</value></data>
+  <data name="Macro_CursorWrite_Caveat" xml:space="preserve"><value>While this is active, PadForge writes the cursor position every frame. Games that move the cursor themselves can interfere.</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Hold</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>Reactive (fade)</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Sticky (hold)</value></data>

@@ -754,6 +754,19 @@
   <data name="MacroAction_MouseRecenter_Tooltip" xml:space="preserve"><value>Plaatst de bureaubladcursor in het midden van het primaire beeldscherm wanneer deze macro wordt uitgevoerd. Kies welke assen worden gecentreerd.</value></data>
   <data name="MacroAction_MouseRecenter_Format" xml:space="preserve"><value>Muis centreren: {0}</value></data>
   <data name="Macro_CursorRecenterMode_Label" xml:space="preserve"><value>Modus</value></data>
+  <data name="MacroAction_Type_MouseFixPosition" xml:space="preserve"><value>Muispositie vastzetten</value></data>
+  <data name="MacroAction_MouseFixPosition_Tooltip" xml:space="preserve"><value>Schakelt een cursorvergrendeling in of uit bij het indrukken. Druk eenmaal om de cursor op de doelcoördinaat vast te zetten, druk opnieuw om hem vrij te geven.</value></data>
+  <data name="MacroAction_MouseFixPosition_Format" xml:space="preserve"><value>Muispositie vastzetten: {0}</value></data>
+  <data name="Macro_CursorPinMode_Label" xml:space="preserve"><value>Modus</value></data>
+  <data name="Macro_CursorPinX_Label" xml:space="preserve"><value>Pin X</value></data>
+  <data name="Macro_CursorPinY_Label" xml:space="preserve"><value>Pin Y</value></data>
+  <data name="MacroAction_Type_MouseLimitRegion" xml:space="preserve"><value>Muisgebied beperken</value></data>
+  <data name="MacroAction_MouseLimitRegion_Tooltip" xml:space="preserve"><value>Schakelt een cursorgebiedslimiet in of uit bij het indrukken. Druk eenmaal om de cursor binnen het gebied te houden, druk opnieuw om hem vrij te geven.</value></data>
+  <data name="MacroAction_MouseLimitRegion_Format" xml:space="preserve"><value>Muisgebied beperken: {0}</value></data>
+  <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Modus</value></data>
+  <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>Marge X</value></data>
+  <data name="Macro_CursorClampInsetY_Label" xml:space="preserve"><value>Marge Y</value></data>
+  <data name="Macro_CursorWrite_Caveat" xml:space="preserve"><value>Zolang dit actief is, schrijft PadForge elke frame de cursorpositie. Games die de cursor zelf verplaatsen, kunnen storen.</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Houden</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>Reactief (vervagen)</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Plakkerig (vasthouden)</value></data>

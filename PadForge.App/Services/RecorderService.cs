@@ -539,10 +539,19 @@ namespace PadForge.Services
                         // sweeping past center isn't misread as an encoder.
                         for (int i = 0; i < current.Midi.CcUp.Length; i++)
                         {
-                            // A CC that has read outside the band this session is a
+                            // A CC that has MOVED outside the band this session is a
                             // fader sweeping through center, not an encoder. Its
-                            // transient in-band pulses must not be captured.
-                            if (Math.Abs(current.Midi.Cc[i] - 0x40) > MidiRelativeBand) { _ccLeftBand[i] = true; continue; }
+                            // transient in-band pulses must not be captured. Gate on
+                            // "changed from the record baseline": a resting or
+                            // never-touched CC defaults to 0 (far from 0x40 but never
+                            // swept anywhere), and the old absolute-distance test
+                            // pre-marked it as a fader on the first tick, suppressing
+                            // its encoder pulses before the user even turned it. That
+                            // is the auto-map-encoders regression in #144 / #142.
+                            // Encoders only registered if moved before the device was
+                            // assigned (which left Cc[i] near center).
+                            if (current.Midi.Cc[i] != baseline.Midi.Cc[i]
+                                && Math.Abs(current.Midi.Cc[i] - 0x40) > MidiRelativeBand) { _ccLeftBand[i] = true; continue; }
                             if (_ccLeftBand[i]) continue;
                             if (current.Midi.CcUp[i] && !baseline.Midi.CcUp[i])
                             {

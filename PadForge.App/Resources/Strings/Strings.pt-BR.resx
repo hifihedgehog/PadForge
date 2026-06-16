@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -1445,7 +1445,7 @@
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Força Constante nos Gatilhos</value></data>
   <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Roteamento de Gatilhos</value></data>
   <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Roteia os motores de vibração principais para o canal do gatilho, um gatilho por vez. Funciona com vibração XInput e force feedback. Um ativador pode condicioná-lo para que o gatilho só vibre enquanto você segura um botão.</value></data>
-  <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Redefinir roteamento de gatilhos</value></data>
+  <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Redefinir Roteamento de Gatilhos</value></data>
   <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Gatilho esquerdo</value></data>
   <data name="Pad_TriggerRouting_RightTrigger" xml:space="preserve"><value>Gatilho direito</value></data>
   <data name="Pad_TriggerRouting_Source" xml:space="preserve"><value>Fonte</value></data>
@@ -1462,11 +1462,11 @@
   <data name="Pad_TriggerRouting_Activator" xml:space="preserve"><value>Ativador</value></data>
   <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>Modo de ativação</value></data>
   <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>Sempre ligado</value></data>
-  <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>Redefinir ativador</value></data>
-  <data name="Pad_ResetTriggerRouteSource" xml:space="preserve"><value>Redefinir fonte</value></data>
-  <data name="Pad_ResetTriggerRouteMode" xml:space="preserve"><value>Redefinir modo</value></data>
-  <data name="Pad_ResetTriggerRouteScale" xml:space="preserve"><value>Redefinir escala</value></data>
-  <data name="Pad_ResetTriggerRouteActivatorMode" xml:space="preserve"><value>Redefinir modo de ativação</value></data>
+  <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>Redefinir Ativador</value></data>
+  <data name="Pad_ResetTriggerRouteSource" xml:space="preserve"><value>Redefinir Fonte</value></data>
+  <data name="Pad_ResetTriggerRouteMode" xml:space="preserve"><value>Redefinir Modo</value></data>
+  <data name="Pad_ResetTriggerRouteScale" xml:space="preserve"><value>Redefinir Escala</value></data>
+  <data name="Pad_ResetTriggerRouteActivatorMode" xml:space="preserve"><value>Redefinir Modo de Ativação</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Aplica uma força contínua a cada motor de gatilho até você desativar. A força de gatilho gerada por um jogo prevalece enquanto está ativa e é retomada quando o jogo para.</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Aplicar força constante nos gatilhos</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Gatilho esquerdo</value></data>

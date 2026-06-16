@@ -53,6 +53,8 @@ namespace PadForge.Services
         // #102 trigger-routing main-motor source for the Sony AT Vibration path.
         private Vibration _routeMainScratchSony;
         private Vibration _routeCfScratchSony;
+        // #107 absolute cursor-position sampler (publishes SourceCoercion.MouseCursorProvider).
+        private CursorControlService _cursorControlService;
         private DispatcherTimer _uiTimer;
         private ForegroundMonitorService _foregroundMonitor;
         private ProfileData _defaultProfileSnapshot;
@@ -794,6 +796,12 @@ namespace PadForge.Services
                 return ms > 0 ? 1000f / ms : 60f;
             };
 
+            // Cursor-position source (#107): a 200 Hz sampler publishes the
+            // normalized desktop cursor position into MouseCursorProvider for
+            // "Mouse Position X/Y" mapping sources. Disposed on engine stop.
+            _cursorControlService?.Dispose();
+            _cursorControlService = new CursorControlService();
+
             // — resolved Aim-Engage state for the slot. OR-combines the
             // per-slot bit settled by UpdateGyroEngageStates (engage
             // button under Hold / Toggle semantics) with the bit written
@@ -1239,6 +1247,9 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureFiredProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureAxisProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseSettingsProvider = null;
+                // #107: stop sampling the cursor and unhook MouseCursorProvider.
+                _cursorControlService?.Dispose();
+                _cursorControlService = null;
                 lock (_gravityStateLock) _gravityState.Clear();
             }
 
@@ -3032,6 +3043,7 @@ namespace PadForge.Services
                     if (primary.DeadZone > 0) mapping.MappingDeadZone = primary.DeadZone;
                     mapping.IsBidirectional = primary.Bidirectional;
                     mapping.GyroSensitivity = primary.GyroSensitivity > 0 ? primary.GyroSensitivity : 1.0;
+                    mapping.MouseCursorSensitivity = primary.MouseCursorSensitivity > 0 ? primary.MouseCursorSensitivity : 1.0;
                     mapping.PrimarySourceDeviceGuid = primary.DeviceGuid ?? "";
                     mapping.PrimarySourceDeviceLabel = ResolveDeviceLabel(primary.DeviceGuid);
 
@@ -3054,6 +3066,7 @@ namespace PadForge.Services
                     mapping.MappingDeadZone = 50;
                     mapping.IsBidirectional = false;
                     mapping.GyroSensitivity = 1.0;
+                    mapping.MouseCursorSensitivity = 1.0;
                 }
 
                 MappingDisplayResolver.ResolveDisplayText(mapping, primaryUd);

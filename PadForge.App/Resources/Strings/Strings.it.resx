@@ -1196,6 +1196,13 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Ripristina regolazione trasmissione</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilità</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Moltiplicatore di sensibilità del giroscopio per sorgente. 1,0 = predefinito del motore (500°/s → deflessione completa). Valori superiori a 1,0 sono più sensibili. Valori inferiori sono meno sensibili.</value></data>
+  <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Velocità mouse X</value></data>
+  <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Velocità mouse Y</value></data>
+  <data name="Mapping_MouseScroll" xml:space="preserve"><value>Scorrimento mouse</value></data>
+  <data name="Mapping_MousePositionX" xml:space="preserve"><value>Posizione mouse X</value></data>
+  <data name="Mapping_MousePositionY" xml:space="preserve"><value>Posizione mouse Y</value></data>
+  <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensibilità</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensibilità del cursore per sorgente. 1.0 raggiunge la deflessione completa dello stick al 10% della larghezza dello schermo dal centro. Valori superiori a 1.0 raggiungono la deflessione completa con meno movimento del cursore. Valori inferiori a 1.0 ne richiedono di più.</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Clic touchpad</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Touchpad {0} dito {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Touchpad {0} dito {1} Y</value></data>

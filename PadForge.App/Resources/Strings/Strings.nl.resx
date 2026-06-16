@@ -1196,6 +1196,13 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Doorgifte-afstemming resetten</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheidsvermenigvuldiger van de gyroscoop per bron. 1,0 = standaard van de engine (500°/s → volledige uitslag). Waarden boven 1,0 zijn gevoeliger. Daaronder minder.</value></data>
+  <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Muis snelheid X</value></data>
+  <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Muis snelheid Y</value></data>
+  <data name="Mapping_MouseScroll" xml:space="preserve"><value>Muis scrollen</value></data>
+  <data name="Mapping_MousePositionX" xml:space="preserve"><value>Muis positie X</value></data>
+  <data name="Mapping_MousePositionY" xml:space="preserve"><value>Muis positie Y</value></data>
+  <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Cursorgevoeligheid per bron. 1.0 bereikt volledige stickuitslag bij 10% van de schermbreedte vanaf het midden. Waarden boven 1.0 bereiken volledige uitslag met minder cursorbeweging. Waarden onder 1.0 hebben meer nodig.</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Touchpad-klik</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} Y</value></data>

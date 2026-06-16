@@ -230,6 +230,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsDeadZoneApplicable));
                     OnPropertyChanged(nameof(IsHalfAxisApplicable));
                     OnPropertyChanged(nameof(IsGyroSource));
+                    OnPropertyChanged(nameof(IsMouseCursorSource));
                     OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
                     // Toggling the primary source flips the row's
                     // effective source count, which can change whether
@@ -694,6 +695,24 @@ namespace PadForge.ViewModels
         }
 
         private double _gyroSensitivity = 1.0;
+        private double _mouseCursorSensitivity = 1.0;
+
+        /// <summary>Per-source mouse-cursor sensitivity for the primary source
+        /// (issue #107). Mirrors <see cref="MappingSourceItem.MouseCursorSensitivity"/>,
+        /// applied only when the primary descriptor is a "Mouse Position X/Y" axis
+        /// (see <see cref="IsMouseCursorSource"/>). 1.0 = full deflection at 10% of
+        /// screen width from center.</summary>
+        public double MouseCursorSensitivity
+        {
+            get => _mouseCursorSensitivity;
+            set => SetProperty(ref _mouseCursorSensitivity, Math.Clamp(value, 0.1, 5.0));
+        }
+
+        /// <summary>True when the primary source descriptor is an absolute cursor
+        /// axis ("Mouse Position X/Y"). Mirrors
+        /// <see cref="MappingSourceItem.IsMouseCursorSource"/>.</summary>
+        public bool IsMouseCursorSource => !string.IsNullOrEmpty(_sourceDescriptor)
+            && _sourceDescriptor.StartsWith("Mouse Position ", StringComparison.Ordinal);
 
         /// <summary>Per-source gyro sensitivity multiplier for the primary
         /// source. Mirrors <see cref="MappingSourceItem.GyroSensitivity"/>;

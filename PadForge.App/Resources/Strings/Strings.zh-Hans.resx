@@ -1176,6 +1176,13 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>重置透传调校</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>灵敏度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>每个源的陀螺仪灵敏度倍数。1.0 = 引擎默认值（500°/s → 最大偏转）。大于 1.0 更灵敏。小于 1.0 不太灵敏。</value></data>
+  <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>鼠标速度 X</value></data>
+  <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>鼠标速度 Y</value></data>
+  <data name="Mapping_MouseScroll" xml:space="preserve"><value>鼠标滚动</value></data>
+  <data name="Mapping_MousePositionX" xml:space="preserve"><value>鼠标位置 X</value></data>
+  <data name="Mapping_MousePositionY" xml:space="preserve"><value>鼠标位置 Y</value></data>
+  <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>灵敏度</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>每个来源的光标灵敏度。1.0 时，从中心移动屏幕宽度的 10% 即可使摇杆完全偏转。大于 1.0 时用更少的光标移动即可完全偏转，小于 1.0 时需要更多。</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>触控板点击</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} Y</value></data>

@@ -154,7 +154,7 @@ namespace PadForge.Engine
             {
                 InputIndex = 0,
                 ObjectTypeGuid = ObjectGuid.XAxis,
-                Name = "X Motion",
+                Name = "Mouse Speed X",
                 ObjectType = DeviceObjectTypeFlags.RelativeAxis,
                 Offset = 0
             };
@@ -162,7 +162,7 @@ namespace PadForge.Engine
             {
                 InputIndex = 1,
                 ObjectTypeGuid = ObjectGuid.YAxis,
-                Name = "Y Motion",
+                Name = "Mouse Speed Y",
                 ObjectType = DeviceObjectTypeFlags.RelativeAxis,
                 Offset = 4
             };
@@ -170,7 +170,7 @@ namespace PadForge.Engine
             {
                 InputIndex = 2,
                 ObjectTypeGuid = ObjectGuid.ZAxis,
-                Name = "Scroll",
+                Name = "Mouse Scroll",
                 ObjectType = DeviceObjectTypeFlags.RelativeAxis,
                 Offset = 8
             };

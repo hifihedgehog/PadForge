@@ -1070,6 +1070,26 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
                 }
+
+                case MacroActionType.MouseFixPosition:
+                {
+                    // Toggle the sticky cursor pin (#109). The 200 Hz service
+                    // thread enforces the target each tick while engaged.
+                    CursorControlService.Active?.TogglePin(
+                        action.CursorPinMode, action.CursorPinX, action.CursorPinY);
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.MouseLimitRegion:
+                {
+                    // Toggle the cursor region clamp (#110). The service keeps the
+                    // cursor inside the inset rectangle each tick while engaged.
+                    CursorControlService.Active?.ToggleClamp(
+                        action.CursorClampMode, action.CursorClampInsetX, action.CursorClampInsetY);
+                    AdvanceAction(macro);
+                    break;
+                }
             }
         }
 
@@ -1754,6 +1774,22 @@ namespace PadForge.Common.Input
                     var m = action.CursorRecenterMode;
                     CursorControlService.Active?.RecenterCursor(
                         m != CursorRecenterMode.YOnly, m != CursorRecenterMode.XOnly);
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.MouseFixPosition:
+                {
+                    CursorControlService.Active?.TogglePin(
+                        action.CursorPinMode, action.CursorPinX, action.CursorPinY);
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.MouseLimitRegion:
+                {
+                    CursorControlService.Active?.ToggleClamp(
+                        action.CursorClampMode, action.CursorClampInsetX, action.CursorClampInsetY);
                     AdvanceAction(macro);
                     break;
                 }

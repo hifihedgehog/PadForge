@@ -754,6 +754,19 @@
   <data name="MacroAction_MouseRecenter_Tooltip" xml:space="preserve"><value>Place le curseur du bureau au centre du moniteur principal lorsque cette macro est déclenchée. Choisissez les axes à recentrer.</value></data>
   <data name="MacroAction_MouseRecenter_Format" xml:space="preserve"><value>Recentrer la souris : {0}</value></data>
   <data name="Macro_CursorRecenterMode_Label" xml:space="preserve"><value>Mode</value></data>
+  <data name="MacroAction_Type_MouseFixPosition" xml:space="preserve"><value>Fixer la position de la souris</value></data>
+  <data name="MacroAction_MouseFixPosition_Tooltip" xml:space="preserve"><value>Active ou désactive un verrouillage du curseur à l'appui. Appuyez une fois pour fixer le curseur à la coordonnée cible, appuyez de nouveau pour le libérer.</value></data>
+  <data name="MacroAction_MouseFixPosition_Format" xml:space="preserve"><value>Fixer la position de la souris : {0}</value></data>
+  <data name="Macro_CursorPinMode_Label" xml:space="preserve"><value>Mode</value></data>
+  <data name="Macro_CursorPinX_Label" xml:space="preserve"><value>Fixer X</value></data>
+  <data name="Macro_CursorPinY_Label" xml:space="preserve"><value>Fixer Y</value></data>
+  <data name="MacroAction_Type_MouseLimitRegion" xml:space="preserve"><value>Limiter la zone de la souris</value></data>
+  <data name="MacroAction_MouseLimitRegion_Tooltip" xml:space="preserve"><value>Active ou désactive une limite de zone du curseur à l'appui. Appuyez une fois pour garder le curseur dans la zone, appuyez de nouveau pour le libérer.</value></data>
+  <data name="MacroAction_MouseLimitRegion_Format" xml:space="preserve"><value>Limiter la zone de la souris : {0}</value></data>
+  <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Mode</value></data>
+  <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>Marge X</value></data>
+  <data name="Macro_CursorClampInsetY_Label" xml:space="preserve"><value>Marge Y</value></data>
+  <data name="Macro_CursorWrite_Caveat" xml:space="preserve"><value>Tant que ceci est actif, PadForge écrit la position du curseur à chaque image. Les jeux qui déplacent eux-mêmes le curseur peuvent interférer.</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Maintien</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>Réactif (estomper)</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Persistant (maintenir)</value></data>

@@ -2333,7 +2333,14 @@ namespace PadForge.Services
                             LightbarCycleModesCsv = ad.LightbarCycleModesCsv,
                             SoundFilePath = ad.SoundFilePath ?? string.Empty,
                             SoundVolume = ad.SoundVolume > 0 ? ad.SoundVolume : 100,
-                            SoundLoop = ad.SoundLoop
+                            SoundLoop = ad.SoundLoop,
+                            CursorRecenterMode = ad.CursorRecenterMode,
+                            CursorPinMode = ad.CursorPinMode,
+                            CursorPinX = ad.CursorPinX,
+                            CursorPinY = ad.CursorPinY,
+                            CursorClampMode = ad.CursorClampMode,
+                            CursorClampInsetX = ad.CursorClampInsetX,
+                            CursorClampInsetY = ad.CursorClampInsetY
                         });
                     }
                 }
@@ -3178,7 +3185,14 @@ namespace PadForge.Services
                             LightbarCycleModesCsv = a.LightbarCycleModesCsv,
                             SoundFilePath = string.IsNullOrEmpty(a.SoundFilePath) ? null : a.SoundFilePath,
                             SoundVolume = a.SoundVolume,
-                            SoundLoop = a.SoundLoop
+                            SoundLoop = a.SoundLoop,
+                            CursorRecenterMode = a.CursorRecenterMode,
+                            CursorPinMode = a.CursorPinMode,
+                            CursorPinX = a.CursorPinX,
+                            CursorPinY = a.CursorPinY,
+                            CursorClampMode = a.CursorClampMode,
+                            CursorClampInsetX = a.CursorClampInsetX,
+                            CursorClampInsetY = a.CursorClampInsetY
                         }).ToArray()
                     });
                 }
@@ -4372,6 +4386,23 @@ namespace PadForge.Services
         /// <summary>Loop the sound until SoundStop / trigger release.</summary>
         [XmlElement]
         public bool SoundLoop { get; set; }
+
+        /// <summary>Which axes a MouseRecenter action snaps to center (issue #108).</summary>
+        [XmlElement] public ViewModels.CursorRecenterMode CursorRecenterMode { get; set; } = ViewModels.CursorRecenterMode.XAndY;
+
+        /// <summary>Which axes a MouseFixPosition action pins (issue #109).</summary>
+        [XmlElement] public ViewModels.CursorPinMode CursorPinMode { get; set; } = ViewModels.CursorPinMode.XAndY;
+        /// <summary>Pin target X in primary-monitor pixels (issue #109).</summary>
+        [XmlElement] public int CursorPinX { get; set; }
+        /// <summary>Pin target Y in primary-monitor pixels (issue #109).</summary>
+        [XmlElement] public int CursorPinY { get; set; }
+
+        /// <summary>Which axes a MouseLimitRegion action clamps (issue #110).</summary>
+        [XmlElement] public ViewModels.CursorClampMode CursorClampMode { get; set; } = ViewModels.CursorClampMode.XAndY;
+        /// <summary>Per-edge X inset for the region clamp, pixels (issue #110).</summary>
+        [XmlElement] public int CursorClampInsetX { get; set; } = 50;
+        /// <summary>Per-edge Y inset for the region clamp, pixels (issue #110).</summary>
+        [XmlElement] public int CursorClampInsetY { get; set; } = 50;
     }
 
     /// <summary>

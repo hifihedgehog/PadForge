@@ -754,6 +754,19 @@
   <data name="MacroAction_MouseRecenter_Tooltip" xml:space="preserve"><value>当此宏触发时，将桌面光标移动到主显示器的中央。选择要居中的轴。</value></data>
   <data name="MacroAction_MouseRecenter_Format" xml:space="preserve"><value>鼠标居中:{0}</value></data>
   <data name="Macro_CursorRecenterMode_Label" xml:space="preserve"><value>模式</value></data>
+  <data name="MacroAction_Type_MouseFixPosition" xml:space="preserve"><value>固定鼠标位置</value></data>
+  <data name="MacroAction_MouseFixPosition_Tooltip" xml:space="preserve"><value>按下时切换光标固定。按一次将光标固定到目标坐标，再按一次解除。</value></data>
+  <data name="MacroAction_MouseFixPosition_Format" xml:space="preserve"><value>固定鼠标位置:{0}</value></data>
+  <data name="Macro_CursorPinMode_Label" xml:space="preserve"><value>模式</value></data>
+  <data name="Macro_CursorPinX_Label" xml:space="preserve"><value>固定 X</value></data>
+  <data name="Macro_CursorPinY_Label" xml:space="preserve"><value>固定 Y</value></data>
+  <data name="MacroAction_Type_MouseLimitRegion" xml:space="preserve"><value>限制鼠标区域</value></data>
+  <data name="MacroAction_MouseLimitRegion_Tooltip" xml:space="preserve"><value>按下时切换光标区域限制。按一次将光标保持在区域内，再按一次解除。</value></data>
+  <data name="MacroAction_MouseLimitRegion_Format" xml:space="preserve"><value>限制鼠标区域:{0}</value></data>
+  <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>模式</value></data>
+  <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>边距 X</value></data>
+  <data name="Macro_CursorClampInsetY_Label" xml:space="preserve"><value>边距 Y</value></data>
+  <data name="Macro_CursorWrite_Caveat" xml:space="preserve"><value>在此功能启用期间，PadForge 会在每一帧写入光标位置。自行移动光标的游戏可能会产生干扰。</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>保持</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>反应式（淡出）</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>持续（保持）</value></data>

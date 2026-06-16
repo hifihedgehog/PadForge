@@ -1243,6 +1243,12 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_MouseRecenter, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.MouseRecenter}"
                                                           ToolTip="{Binding MacroAction_MouseRecenter_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_MouseFixPosition, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.MouseFixPosition}"
+                                                          ToolTip="{Binding MacroAction_MouseFixPosition_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_MouseLimitRegion, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.MouseLimitRegion}"
+                                                          ToolTip="{Binding MacroAction_MouseLimitRegion_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         </ComboBox>
                                     </StackPanel>
 
@@ -1275,6 +1281,72 @@
                                             <ComboBoxItem Content="X" Tag="{x:Static vm:CursorRecenterMode.XOnly}"/>
                                             <ComboBoxItem Content="Y" Tag="{x:Static vm:CursorRecenterMode.YOnly}"/>
                                         </ComboBox>
+                                    </StackPanel>
+
+                                    <!-- Fix Mouse Position editor (#109). Mode + Pin X / Pin Y -->
+                                    <StackPanel Margin="0,0,0,6"
+                                                Visibility="{Binding IsMouseFixPositionType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="{Binding Macro_CursorPinMode_Label, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="60" VerticalAlignment="Center"/>
+                                            <ComboBox SelectedValue="{Binding CursorPinMode, Mode=TwoWay}"
+                                                      SelectedValuePath="Tag"
+                                                      Width="160" VerticalAlignment="Center"
+                                                      ToolTip="{Binding MacroAction_MouseFixPosition_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                                <ComboBoxItem Content="X+Y" Tag="{x:Static vm:CursorPinMode.XAndY}"/>
+                                                <ComboBoxItem Content="X" Tag="{x:Static vm:CursorPinMode.XOnly}"/>
+                                                <ComboBoxItem Content="Y" Tag="{x:Static vm:CursorPinMode.YOnly}"/>
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="{Binding Macro_CursorPinX_Label, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="60" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding CursorPinX, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                     Width="80" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="{Binding Macro_CursorPinY_Label, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="60" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding CursorPinY, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                     Width="80" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding Macro_CursorWrite_Caveat, Source={x:Static strings:Strings.Instance}}"
+                                                   FontSize="11" TextWrapping="Wrap"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    </StackPanel>
+
+                                    <!-- Limit Mouse Region editor (#110). Mode + Inset X / Inset Y -->
+                                    <StackPanel Margin="0,0,0,6"
+                                                Visibility="{Binding IsMouseLimitRegionType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="{Binding Macro_CursorClampMode_Label, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="60" VerticalAlignment="Center"/>
+                                            <ComboBox SelectedValue="{Binding CursorClampMode, Mode=TwoWay}"
+                                                      SelectedValuePath="Tag"
+                                                      Width="160" VerticalAlignment="Center"
+                                                      ToolTip="{Binding MacroAction_MouseLimitRegion_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                                <ComboBoxItem Content="X+Y" Tag="{x:Static vm:CursorClampMode.XAndY}"/>
+                                                <ComboBoxItem Content="X" Tag="{x:Static vm:CursorClampMode.XOnly}"/>
+                                                <ComboBoxItem Content="Y" Tag="{x:Static vm:CursorClampMode.YOnly}"/>
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="{Binding Macro_CursorClampInsetX_Label, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="60" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding CursorClampInsetX, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                     Width="80" VerticalAlignment="Center"/>
+                                            <Button Command="{Binding ResetCursorClampInsetXCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="{Binding Macro_CursorClampInsetY_Label, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="60" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding CursorClampInsetY, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                     Width="80" VerticalAlignment="Center"/>
+                                            <Button Command="{Binding ResetCursorClampInsetYCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0"/>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding Macro_CursorWrite_Caveat, Source={x:Static strings:Strings.Instance}}"
+                                                   FontSize="11" TextWrapping="Wrap"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
 
                                     <!-- Button flags — checkbox grid for ButtonPress / ButtonRelease -->

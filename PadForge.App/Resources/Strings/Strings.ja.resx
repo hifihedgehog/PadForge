@@ -754,6 +754,19 @@
   <data name="MacroAction_MouseRecenter_Tooltip" xml:space="preserve"><value>このマクロが実行されると、デスクトップのカーソルをプライマリモニターの中央に移動します。中央に戻す軸を選択してください。</value></data>
   <data name="MacroAction_MouseRecenter_Format" xml:space="preserve"><value>マウスを中央に戻す: {0}</value></data>
   <data name="Macro_CursorRecenterMode_Label" xml:space="preserve"><value>モード</value></data>
+  <data name="MacroAction_Type_MouseFixPosition" xml:space="preserve"><value>マウス位置を固定</value></data>
+  <data name="MacroAction_MouseFixPosition_Tooltip" xml:space="preserve"><value>押すたびにカーソルの固定を切り替えます。一度押すとカーソルを目標座標に固定し、もう一度押すと解除します。</value></data>
+  <data name="MacroAction_MouseFixPosition_Format" xml:space="preserve"><value>マウス位置を固定: {0}</value></data>
+  <data name="Macro_CursorPinMode_Label" xml:space="preserve"><value>モード</value></data>
+  <data name="Macro_CursorPinX_Label" xml:space="preserve"><value>固定 X</value></data>
+  <data name="Macro_CursorPinY_Label" xml:space="preserve"><value>固定 Y</value></data>
+  <data name="MacroAction_Type_MouseLimitRegion" xml:space="preserve"><value>マウス範囲を制限</value></data>
+  <data name="MacroAction_MouseLimitRegion_Tooltip" xml:space="preserve"><value>押すたびにカーソルの範囲制限を切り替えます。一度押すとカーソルを範囲内に保ち、もう一度押すと解除します。</value></data>
+  <data name="MacroAction_MouseLimitRegion_Format" xml:space="preserve"><value>マウス範囲を制限: {0}</value></data>
+  <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>モード</value></data>
+  <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>余白 X</value></data>
+  <data name="Macro_CursorClampInsetY_Label" xml:space="preserve"><value>余白 Y</value></data>
+  <data name="Macro_CursorWrite_Caveat" xml:space="preserve"><value>これが有効な間、PadForge は毎フレーム、カーソル位置を書き込みます。カーソルを自分で動かすゲームは干渉する場合があります。</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>保持</value></data>
   <data name="Macro_RumbleHold_Reactive" xml:space="preserve"><value>リアクティブ（フェード）</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>スティッキー（保持）</value></data>

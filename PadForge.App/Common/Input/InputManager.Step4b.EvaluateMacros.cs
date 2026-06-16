@@ -958,6 +958,25 @@ namespace PadForge.Common.Input
                     break;
                 }
 
+                case MacroActionType.RumbleTrigger:
+                {
+                    // Trigger-channel sibling of Rumble (#102). Stamps the slot's
+                    // MacroTriggerRumbleOverrides; the routing pass max-combines it
+                    // into the trigger channel on each subsequent tick.
+                    ApplyTriggerRumbleAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.RumbleTriggerStop:
+                {
+                    int slotIndex = macro.PadIndex;
+                    if (slotIndex >= 0 && slotIndex < MaxPads)
+                        MacroTriggerRumbleOverrides[slotIndex].Clear();
+                    AdvanceAction(macro);
+                    break;
+                }
+
                 case MacroActionType.PlaySound:
                 {
                     // Single-frame fire like Rumble: hand the file to the
@@ -1201,6 +1220,34 @@ namespace PadForge.Common.Input
                 // Mirror the lightbar Reactive minimum-1ms guard so a
                 // Hold=0 / Fade=0 pulse still registers active for at
                 // least one tick.
+                if (holdMs == 0 && fadeMs == 0) holdMs = 1;
+                ovr.FireReactive(left, right, holdMs, fadeMs);
+            }
+        }
+
+        /// <summary>Trigger-channel sibling of <see cref="ApplyRumbleAction"/>
+        /// (issue #102). Pushes the action's strength / hold-mode / duration into
+        /// the slot's <see cref="MacroTriggerRumbleOverrides"/>, which the routing
+        /// pass max-combines into the trigger channel. Reuses the same
+        /// <c>RumbleStrengthLeft/Right</c> and hold fields (an action is either a
+        /// main-motor or trigger rumble, never both).</summary>
+        private void ApplyTriggerRumbleAction(MacroItem macro, MacroAction action)
+        {
+            int slotIndex = macro.PadIndex;
+            if (slotIndex < 0 || slotIndex >= MaxPads) return;
+
+            byte left = (byte)Math.Clamp(action.RumbleStrengthLeft, 0, 100);
+            byte right = (byte)Math.Clamp(action.RumbleStrengthRight, 0, 100);
+            var ovr = MacroTriggerRumbleOverrides[slotIndex];
+
+            if (action.RumbleHoldMode == MacroRumbleHoldMode.Sticky)
+            {
+                ovr.FireSticky(left, right);
+            }
+            else
+            {
+                int holdMs = Math.Max(action.RumbleHoldMs, 0);
+                int fadeMs = Math.Max(action.RumbleFadeMs, 0);
                 if (holdMs == 0 && fadeMs == 0) holdMs = 1;
                 ovr.FireReactive(left, right, holdMs, fadeMs);
             }
@@ -1672,6 +1719,20 @@ namespace PadForge.Common.Input
                     int slotIndex = macro.PadIndex;
                     if (slotIndex >= 0 && slotIndex < MaxPads)
                         MacroRumbleOverrides[slotIndex].Clear();
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.RumbleTrigger:
+                    ApplyTriggerRumbleAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.RumbleTriggerStop:
+                {
+                    int slotIndex = macro.PadIndex;
+                    if (slotIndex >= 0 && slotIndex < MaxPads)
+                        MacroTriggerRumbleOverrides[slotIndex].Clear();
                     AdvanceAction(macro);
                     break;
                 }

@@ -421,6 +421,17 @@ namespace PadForge.Common.Input
                 ScaleRumbleForDevice(effective.LeftMotorSpeed, effective.RightMotorSpeed,
                     devicePs, out ushort scaledL, out ushort scaledR);
 
+                // Trigger rumble routing (#102): route the slot's post-gain
+                // main-motor amplitude into the trigger channel when the
+                // per-trigger activator is engaged. Computed from the pre-redirect
+                // main motor; Redirect then silences the main motor(s) the route
+                // drew from on this physical write.
+                ApplyTriggerRouting(padIndex, scaledL, scaledR,
+                    out ushort routedLT, out ushort routedRT,
+                    out bool zeroMainL, out bool zeroMainR);
+                if (zeroMainL) scaledL = 0;
+                if (zeroMainR) scaledR = 0;
+
                 if (scaledL > combinedL) combinedL = scaledL;
                 if (scaledR > combinedR) combinedR = scaledR;
 
@@ -432,6 +443,10 @@ namespace PadForge.Common.Input
 
                 if (scaledLT > combinedLT) combinedLT = scaledLT;
                 if (scaledRT > combinedRT) combinedRT = scaledRT;
+
+                // #102 routed contribution layers onto the impulse output via max().
+                if (routedLT > combinedLT) combinedLT = routedLT;
+                if (routedRT > combinedRT) combinedRT = routedRT;
 
                 // Steering at-lock trigger-vibration pulse (#94 ch.2) for Xbox-style
                 // impulse triggers. DualSense routes this through the AT-vibration block in
@@ -963,6 +978,15 @@ namespace PadForge.Common.Input
                     ScaleRumbleForDevice(effective.LeftMotorSpeed, effective.RightMotorSpeed,
                         devicePs, out ushort scaledL, out ushort scaledR);
 
+                    // #102 trigger routing for the motor meters: mirror the
+                    // hardware path so the FFB-tab meter reflects what the user is
+                    // tuning the route Scale against.
+                    ApplyTriggerRouting(padIndex, scaledL, scaledR,
+                        out ushort routedLT, out ushort routedRT,
+                        out bool zeroMainL, out bool zeroMainR);
+                    if (zeroMainL) scaledL = 0;
+                    if (zeroMainR) scaledR = 0;
+
                     if (scaledL > bestL) bestL = scaledL;
                     if (scaledR > bestR) bestR = scaledR;
 
@@ -971,6 +995,8 @@ namespace PadForge.Common.Input
 
                     if (scaledLT > bestLT) bestLT = scaledLT;
                     if (scaledRT > bestRT) bestRT = scaledRT;
+                    if (routedLT > bestLT) bestLT = routedLT;
+                    if (routedRT > bestRT) bestRT = routedRT;
 
                     if (directionalSource == null
                         && (effective.HasDirectionalData || effective.HasConditionData))
@@ -982,8 +1008,8 @@ namespace PadForge.Common.Input
                     {
                         selL = scaledL;
                         selR = scaledR;
-                        selLT = scaledLT;
-                        selRT = scaledRT;
+                        selLT = (ushort)System.Math.Max(scaledLT, routedLT);
+                        selRT = (ushort)System.Math.Max(scaledRT, routedRT);
                         if (effective.HasDirectionalData || effective.HasConditionData)
                             selectedDirectional = effective;
                     }

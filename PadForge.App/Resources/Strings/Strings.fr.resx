@@ -738,6 +738,11 @@
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Arrêter la vibration</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Arrêter la vibration</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Libère toute superposition de vibration active sur le slot. À associer à une action Sticky de vibration pour relâcher le maintien via une autre macro.</value></data>
+  <data name="MacroAction_Type_RumbleTrigger" xml:space="preserve"><value>Remplacer la vibration de gâchette</value></data>
+  <data name="MacroAction_RumbleTrigger_Tooltip" xml:space="preserve"><value>Pilote la vibration de gâchette du slot depuis une macro. Mêmes modes de maintien que Remplacer la vibration, mais l'intensité alimente le canal de gâchette (gâchettes à impulsion Xbox et Vibration de Gâchette Adaptative DualSense) au lieu des moteurs. Combinée par maximum avec le routage de gâchette.</value></data>
+  <data name="MacroAction_Type_RumbleTriggerStop" xml:space="preserve"><value>Arrêter la vibration de gâchette</value></data>
+  <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Arrêter la vibration de gâchette</value></data>
+  <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Libère toute vibration de gâchette par macro active sur le slot. À associer à un Remplacement de vibration de gâchette persistant pour terminer le maintien depuis une macro.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Définir l'activation du gyroscope</value></data>
   <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Définit l'état d'activation du gyroscope du slot depuis une macro. Bascule inverse l'état actuel. Activé force l'activation. Désactivé force la désactivation. Indépendant du bouton d'activation de l'onglet Gyro. Les deux sources se combinent par OU, donc aucune ne peut désactiver ce que l'autre a activé.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Mode</value></data>
@@ -1438,6 +1443,26 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Réinitialiser la gâchette gauche</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Réinitialiser la gâchette droite</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Force constante sur gâchettes</value></data>
+  <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Routage des gâchettes</value></data>
+  <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Route les moteurs de vibration principaux vers le canal de gâchette, une gâchette à la fois. Fonctionne avec la vibration XInput et le retour de force. Un activateur peut le conditionner pour que la gâchette ne vibre que lorsqu'un bouton est maintenu.</value></data>
+  <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Réinitialiser le routage des gâchettes</value></data>
+  <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Gâchette gauche</value></data>
+  <data name="Pad_TriggerRouting_RightTrigger" xml:space="preserve"><value>Gâchette droite</value></data>
+  <data name="Pad_TriggerRouting_Source" xml:space="preserve"><value>Source</value></data>
+  <data name="Pad_TriggerRouting_Source_None" xml:space="preserve"><value>Aucune (désactivé)</value></data>
+  <data name="Pad_TriggerRouting_Source_MainLeft" xml:space="preserve"><value>Moteur gauche</value></data>
+  <data name="Pad_TriggerRouting_Source_MainRight" xml:space="preserve"><value>Moteur droit</value></data>
+  <data name="Pad_TriggerRouting_Source_MaxOfBoth" xml:space="preserve"><value>Maximum des deux moteurs</value></data>
+  <data name="Pad_TriggerRouting_Source_SumOfBoth" xml:space="preserve"><value>Somme des deux moteurs</value></data>
+  <data name="Pad_TriggerRouting_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_TriggerRouting_Mode_Off" xml:space="preserve"><value>Désactivé</value></data>
+  <data name="Pad_TriggerRouting_Mode_Duplicate" xml:space="preserve"><value>Dupliquer (garder le moteur principal)</value></data>
+  <data name="Pad_TriggerRouting_Mode_Redirect" xml:space="preserve"><value>Rediriger (couper le moteur principal)</value></data>
+  <data name="Pad_TriggerRouting_Scale" xml:space="preserve"><value>Échelle</value></data>
+  <data name="Pad_TriggerRouting_Activator" xml:space="preserve"><value>Activateur</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>Mode d'activation</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>Toujours actif</value></data>
+  <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>Réinitialiser l'activateur</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Applique une force continue à chaque moteur de gâchette jusqu'à ce que vous la désactiviez. La force de gâchette émise par un jeu prend le dessus tant qu'elle est active et reprend dès que le jeu s'arrête.</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Appliquer une force constante sur gâchettes</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Gâchette gauche</value></data>

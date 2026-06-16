@@ -373,6 +373,57 @@ namespace PadForge.Engine.Data
         /// (0..100%).</summary>
         [XmlElement] public string AudioRumbleRightTrigger { get; set; } = "100";
 
+        // ─────────────────────────────────────────────
+        //  Trigger rumble routing (issue #102)
+        //  Routes the main rumble-motor amplitude (XInput rumble + the scalar
+        //  magnitude FFB games write through XINPUT_VIBRATION) into the trigger
+        //  channel (Xbox impulse triggers and DualSense AT Vibration), gated by
+        //  a per-trigger activator. Source None keeps impulse-only behavior.
+        // ─────────────────────────────────────────────
+
+        /// <summary>Left-trigger rumble route source: None / MainLeft /
+        /// MainRight / MaxOfBoth / SumOfBoth. None routes nothing.</summary>
+        [XmlElement] public string LeftTriggerRouteSource { get; set; } = "None";
+
+        /// <summary>Right-trigger rumble route source. See LeftTriggerRouteSource.</summary>
+        [XmlElement] public string RightTriggerRouteSource { get; set; } = "None";
+
+        /// <summary>Left-trigger route mode: Duplicate (keep the main motor
+        /// spinning while feeding the trigger) or Redirect (silence the main
+        /// motor on the physical device). Ignored when source is None.</summary>
+        [XmlElement] public string LeftTriggerRouteMode { get; set; } = "Duplicate";
+
+        /// <summary>Right-trigger route mode. See LeftTriggerRouteMode.</summary>
+        [XmlElement] public string RightTriggerRouteMode { get; set; } = "Duplicate";
+
+        /// <summary>Left-trigger routed-amplitude scale, 0..200% of the source
+        /// main-motor amplitude.</summary>
+        [XmlElement] public string LeftTriggerRouteScale { get; set; } = "100";
+
+        /// <summary>Right-trigger routed-amplitude scale, 0..200%.</summary>
+        [XmlElement] public string RightTriggerRouteScale { get; set; } = "100";
+
+        /// <summary>Left-trigger route activator descriptor (cross-device, the
+        /// same picker as Gyro Aim Engage). Empty = always engaged.</summary>
+        [XmlElement] public string LeftTriggerRouteActivator { get; set; } = "";
+
+        /// <summary>Right-trigger route activator descriptor.</summary>
+        [XmlElement] public string RightTriggerRouteActivator { get; set; } = "";
+
+        /// <summary>Device GUID the left-trigger route activator reads from
+        /// (cross-device, same shape as GyroAimEngageDeviceGuid).</summary>
+        [XmlElement] public string LeftTriggerRouteActivatorDeviceGuid { get; set; } = "";
+
+        /// <summary>Device GUID the right-trigger route activator reads from.</summary>
+        [XmlElement] public string RightTriggerRouteActivatorDeviceGuid { get; set; } = "";
+
+        /// <summary>Left-trigger route activator mode: Hold / Toggle / AlwaysOn.
+        /// AlwaysOn (and an empty activator) ignore the descriptor.</summary>
+        [XmlElement] public string LeftTriggerRouteActivatorMode { get; set; } = "Hold";
+
+        /// <summary>Right-trigger route activator mode. See above.</summary>
+        [XmlElement] public string RightTriggerRouteActivatorMode { get; set; } = "Hold";
+
         /// <summary>Enable audio bass rumble for this device. "0" = off (default), "1" = on.</summary>
         [XmlElement] public string AudioRumbleEnabled { get; set; } = "0";
 
@@ -1185,6 +1236,19 @@ namespace PadForge.Engine.Data
             sb.Append(GyroAimEngageButton); sb.Append('|');
             sb.Append(GyroAimEngageDeviceGuid); sb.Append('|');
             sb.Append(GyroAimEngageMode); sb.Append('|');
+            // Trigger rumble routing (#102)
+            sb.Append(LeftTriggerRouteSource); sb.Append('|');
+            sb.Append(RightTriggerRouteSource); sb.Append('|');
+            sb.Append(LeftTriggerRouteMode); sb.Append('|');
+            sb.Append(RightTriggerRouteMode); sb.Append('|');
+            sb.Append(LeftTriggerRouteScale); sb.Append('|');
+            sb.Append(RightTriggerRouteScale); sb.Append('|');
+            sb.Append(LeftTriggerRouteActivator); sb.Append('|');
+            sb.Append(RightTriggerRouteActivator); sb.Append('|');
+            sb.Append(LeftTriggerRouteActivatorDeviceGuid); sb.Append('|');
+            sb.Append(RightTriggerRouteActivatorDeviceGuid); sb.Append('|');
+            sb.Append(LeftTriggerRouteActivatorMode); sb.Append('|');
+            sb.Append(RightTriggerRouteActivatorMode); sb.Append('|');
             sb.Append(GyroInvertPitch); sb.Append('|');
             sb.Append(GyroInvertYawRoll); sb.Append('|');
             sb.Append(GyroApplyTuningToPassthrough); sb.Append('|');
@@ -1592,6 +1656,15 @@ namespace PadForge.Engine.Data
             nameof(AudioRumbleTriggersEnabled),
             nameof(AudioRumbleTriggersSensitivity), nameof(AudioRumbleTriggersCutoffHz),
             nameof(AudioRumbleLeftTrigger), nameof(AudioRumbleRightTrigger),
+            // Trigger rumble routing (#102). Omitting these from the clone list
+            // makes the Trigger Routing card revert to defaults on restart and
+            // breaks copy/paste, the same failure the Gyro tuning note below warns about.
+            nameof(LeftTriggerRouteSource), nameof(RightTriggerRouteSource),
+            nameof(LeftTriggerRouteMode), nameof(RightTriggerRouteMode),
+            nameof(LeftTriggerRouteScale), nameof(RightTriggerRouteScale),
+            nameof(LeftTriggerRouteActivator), nameof(RightTriggerRouteActivator),
+            nameof(LeftTriggerRouteActivatorDeviceGuid), nameof(RightTriggerRouteActivatorDeviceGuid),
+            nameof(LeftTriggerRouteActivatorMode), nameof(RightTriggerRouteActivatorMode),
             // Audio bass rumble
             nameof(AudioRumbleEnabled), nameof(AudioRumbleSensitivity),
             nameof(AudioRumbleCutoffHz), nameof(AudioRumbleLeftMotor), nameof(AudioRumbleRightMotor),

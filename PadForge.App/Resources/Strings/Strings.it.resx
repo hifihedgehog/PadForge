@@ -738,6 +738,11 @@
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Ferma vibrazione</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Ferma vibrazione</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Rilascia qualsiasi sovrapposizione di vibrazione attiva sullo slot assegnato. Da abbinare a un'azione Sticky di vibrazione per rilasciare il mantenimento tramite un'altra macro.</value></data>
+  <data name="MacroAction_Type_RumbleTrigger" xml:space="preserve"><value>Override vibrazione grilletto</value></data>
+  <data name="MacroAction_RumbleTrigger_Tooltip" xml:space="preserve"><value>Pilota la vibrazione del grilletto dello slot da una macro. Stesse modalità di mantenimento dell'Override vibrazione, ma l'intensità alimenta il canale del grilletto (grilletti a impulso Xbox e Vibrazione Grilletto Adattivo DualSense) anziché i motori. Si combina per massimo con l'instradamento del grilletto.</value></data>
+  <data name="MacroAction_Type_RumbleTriggerStop" xml:space="preserve"><value>Ferma vibrazione grilletto</value></data>
+  <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Ferma vibrazione grilletto</value></data>
+  <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Rilascia qualsiasi vibrazione del grilletto da macro attiva sullo slot. Abbinare a un Override vibrazione grilletto persistente per terminare il mantenimento da una macro.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Imposta giroscopio attivato</value></data>
   <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Imposta lo stato di attivazione del giroscopio dello slot da una macro. Attiva/disattiva inverte lo stato corrente. Attivato forza l'attivazione. Disattivato forza la disattivazione. Indipendente dal pulsante di attivazione della scheda Gyro. Le due fonti si combinano con OR, quindi nessuna può disattivare ciò che l'altra ha attivato.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Modalità</value></data>
@@ -1458,6 +1463,26 @@
   <data name="Pad_ResetImpulseLeft" xml:space="preserve"><value>Reimposta grilletto sinistro</value></data>
   <data name="Pad_ResetImpulseRight" xml:space="preserve"><value>Reimposta grilletto destro</value></data>
   <data name="Pad_ConstantTriggerForce_Header" xml:space="preserve"><value>Forza costante sui grilletti</value></data>
+  <data name="Pad_TriggerRouting_Header" xml:space="preserve"><value>Instradamento grilletti</value></data>
+  <data name="Pad_TriggerRouting_Description" xml:space="preserve"><value>Instrada i motori di vibrazione principali nel canale del grilletto, un grilletto alla volta. Funziona con la vibrazione XInput e il force feedback. Un attivatore può condizionarlo in modo che il grilletto vibri solo mentre tieni premuto un pulsante.</value></data>
+  <data name="Pad_ResetTriggerRouting" xml:space="preserve"><value>Ripristina instradamento grilletti</value></data>
+  <data name="Pad_TriggerRouting_LeftTrigger" xml:space="preserve"><value>Grilletto sinistro</value></data>
+  <data name="Pad_TriggerRouting_RightTrigger" xml:space="preserve"><value>Grilletto destro</value></data>
+  <data name="Pad_TriggerRouting_Source" xml:space="preserve"><value>Sorgente</value></data>
+  <data name="Pad_TriggerRouting_Source_None" xml:space="preserve"><value>Nessuna (disattivato)</value></data>
+  <data name="Pad_TriggerRouting_Source_MainLeft" xml:space="preserve"><value>Motore sinistro</value></data>
+  <data name="Pad_TriggerRouting_Source_MainRight" xml:space="preserve"><value>Motore destro</value></data>
+  <data name="Pad_TriggerRouting_Source_MaxOfBoth" xml:space="preserve"><value>Massimo dei due motori</value></data>
+  <data name="Pad_TriggerRouting_Source_SumOfBoth" xml:space="preserve"><value>Somma dei due motori</value></data>
+  <data name="Pad_TriggerRouting_Mode" xml:space="preserve"><value>Modalità</value></data>
+  <data name="Pad_TriggerRouting_Mode_Off" xml:space="preserve"><value>Disattivato</value></data>
+  <data name="Pad_TriggerRouting_Mode_Duplicate" xml:space="preserve"><value>Duplica (mantieni motore principale)</value></data>
+  <data name="Pad_TriggerRouting_Mode_Redirect" xml:space="preserve"><value>Reindirizza (silenzia motore principale)</value></data>
+  <data name="Pad_TriggerRouting_Scale" xml:space="preserve"><value>Scala</value></data>
+  <data name="Pad_TriggerRouting_Activator" xml:space="preserve"><value>Attivatore</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode" xml:space="preserve"><value>Modalità di attivazione</value></data>
+  <data name="Pad_TriggerRouting_ActivatorMode_AlwaysOn" xml:space="preserve"><value>Sempre attivo</value></data>
+  <data name="Pad_ResetTriggerRouteActivator" xml:space="preserve"><value>Ripristina attivatore</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Applica una forza continua a ciascun motore di grilletto finché non la disattivi. La forza di grilletto generata da un gioco ha la priorità mentre è attiva e riprende quando il gioco si ferma.</value></data>
   <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Applica forza costante sui grilletti</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Grilletto sinistro</value></data>

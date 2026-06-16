@@ -624,6 +624,10 @@ namespace PadForge.ViewModels
         public RelayCommand ResetMouseCursorSensitivityCommand =>
             _resetMouseCursorSensitivityCommand ??= new RelayCommand(() => MouseCursorSensitivity = 1.0);
 
+        private RelayCommand _resetGyroSensitivityCommand;
+        public RelayCommand ResetGyroSensitivityCommand =>
+            _resetGyroSensitivityCommand ??= new RelayCommand(() => GyroSensitivity = 1.0);
+
         /// <summary>Builds a domain <see cref="Engine.Data.MappingSource"/>
         /// from this VM's current values. Used by the Save pipeline.</summary>
         public Engine.Data.MappingSource ToDomain() => new()

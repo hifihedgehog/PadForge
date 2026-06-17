@@ -2012,4 +2012,13 @@
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Criptografia para o emparelhamento e o transporte do Remote Link (X25519, Ed25519, ChaCha20-Poly1305). Licença Bouncy Castle, de estilo MIT.</value></data>
   <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Gravando "{0}": pressione a entrada da direção Cima...</value></data>
   <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Gravando "{0}": agora pressione a entrada da direção Baixo...</value></data>
+  <data name="Common_Duplicate" xml:space="preserve"><value>Duplicar</value></data>
+  <data name="Macro_CopyNameFormat" xml:space="preserve"><value>{0} (Cópia)</value></data>
+  <data name="Pad_Macros_CopyFromOtherDevice" xml:space="preserve"><value>Copiar de Outro Dispositivo...</value></data>
+  <data name="Pad_Macros_OrphanWarning" xml:space="preserve"><value>{0} fontes de acionamento ou ações não correspondem a este dispositivo. Grave novamente ou remova-as.</value></data>
+  <data name="Pad_Macros_PickTargetDevice" xml:space="preserve"><value>Mapear estes acionadores para este dispositivo</value></data>
+  <data name="Status_MacroCopied" xml:space="preserve"><value>Macro copiada para a área de transferência.</value></data>
+  <data name="Status_MacroPasted" xml:space="preserve"><value>Macro colada.</value></data>
+  <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>A área de transferência não contém uma macro copiada.</value></data>
+  <data name="Status_MacroNoTargetDevice" xml:space="preserve"><value>Este slot não tem dispositivo atribuído para mapear a macro.</value></data>
 </root>

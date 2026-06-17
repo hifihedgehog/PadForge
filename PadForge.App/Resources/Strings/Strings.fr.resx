@@ -2012,4 +2012,13 @@
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Cryptographie pour l'appairage et le transport de Remote Link (X25519, Ed25519, ChaCha20-Poly1305). Licence Bouncy Castle, de type MIT.</value></data>
   <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Enregistrement « {0} » : appuyez sur l'entrée de la direction Haut...</value></data>
   <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Enregistrement « {0} » : appuyez maintenant sur l'entrée de la direction Bas...</value></data>
+  <data name="Common_Duplicate" xml:space="preserve"><value>Dupliquer</value></data>
+  <data name="Macro_CopyNameFormat" xml:space="preserve"><value>{0} (copie)</value></data>
+  <data name="Pad_Macros_CopyFromOtherDevice" xml:space="preserve"><value>Copier depuis un autre appareil...</value></data>
+  <data name="Pad_Macros_OrphanWarning" xml:space="preserve"><value>{0} sources de déclenchement ou actions ne correspondent pas à cet appareil. Réenregistrez-les ou supprimez-les.</value></data>
+  <data name="Pad_Macros_PickTargetDevice" xml:space="preserve"><value>Associer ces déclencheurs à cet appareil</value></data>
+  <data name="Status_MacroCopied" xml:space="preserve"><value>Macro copiée dans le presse-papiers.</value></data>
+  <data name="Status_MacroPasted" xml:space="preserve"><value>Macro collée.</value></data>
+  <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>Le presse-papiers ne contient pas de macro copiée.</value></data>
+  <data name="Status_MacroNoTargetDevice" xml:space="preserve"><value>Cet emplacement n'a aucun appareil assigné auquel associer la macro.</value></data>
 </root>

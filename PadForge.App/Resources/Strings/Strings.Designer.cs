@@ -216,6 +216,8 @@ public class Strings : INotifyPropertyChanged
     public string Status_NoSettingsFile => Get("Status_NoSettingsFile");
     public string Status_NoDeviceToRecord => Get("Status_NoDeviceToRecord");
     public string Status_RecordingPrompt_Format => Get("Status_RecordingPrompt_Format");
+    public string Status_RecordKindUp_Format => Get("Status_RecordKindUp_Format");
+    public string Status_RecordKindDown_Format => Get("Status_RecordKindDown_Format");
     public string Status_RecordingCancelled => Get("Status_RecordingCancelled");
     public string Status_RecordingTimedOut_Format => Get("Status_RecordingTimedOut_Format");
     public string Status_EngineStarted => Get("Status_EngineStarted");

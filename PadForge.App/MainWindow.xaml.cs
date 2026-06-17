@@ -976,6 +976,17 @@ namespace PadForge
                 var activePad = _viewModel.SelectedPad;
                 if (activePad == null) return;
 
+                // #111 audit fix B (backstop). If a different mapping's recording
+                // completed while a kind recording was pending on another row, clear
+                // that orphaned state so its Record button leaves Stop. Skipped during
+                // the kind's own Up->Down sequence, where result.Mapping is the kind row.
+                if (_kindRecordMapping != null && !ReferenceEquals(result.Mapping, _kindRecordMapping))
+                {
+                    _kindRecordMapping.IsRecording = false;
+                    _kindRecordMapping = null;
+                    _kindRecordStage = KindRecStage.None;
+                }
+
                 // ─────────────────────────────────────────────────────────
                 //  REGRESSION GUARD — the Device dropdown must NOT influence
                 //  which physical device a recorded mapping is attached to.
@@ -4242,6 +4253,16 @@ namespace PadForge
                 if (s is MappingItem mi)
                 {
                     Guid deviceGuid = capturedPad.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+
+                    // #111 audit fix B. A fresh recording supersedes any in-flight
+                    // kind recording on another row. Clear that row's stuck Stop
+                    // state so its button does not linger showing "recording".
+                    if (_kindRecordMapping != null && !ReferenceEquals(_kindRecordMapping, mi))
+                    {
+                        _kindRecordMapping.IsRecording = false;
+                        _kindRecordMapping = null;
+                        _kindRecordStage = KindRecStage.None;
+                    }
 
                     // #111 non-Direct primary kind. The one Record button drives
                     // the kind's own inputs, never a conflicting Direct descriptor.

@@ -119,6 +119,21 @@ namespace PadForge.ViewModels
             return null;
         }
 
+        // #111 audit fix A. A stateful kind (Ramp / Incremental) is keyed only by
+        // (slot, target, srcIdx), so it needs a concrete DeviceGuid. With none, the
+        // per-device eval treats it as "any device" and ticks the accumulator once
+        // per assigned device (N-times-too-fast on a multi-device slot). Stamp the
+        // device from the picked input when the source has none yet, mirroring the
+        // SelectedInput setter. Recording already stamps it.
+        private void StampDeviceFromParamChoice(InputChoice value)
+        {
+            if (string.IsNullOrEmpty(_deviceGuid) && !string.IsNullOrEmpty(value?.DeviceGuid))
+            {
+                DeviceGuid = value.DeviceGuid;
+                DeviceLabel = value.DeviceLabel ?? "";
+            }
+        }
+
         public InputChoice ParamUpInputChoice
         {
             get => ResolveParamChoice(_paramUp);
@@ -128,6 +143,7 @@ namespace PadForge.ViewModels
                 if (!string.Equals(_paramUp, d, StringComparison.Ordinal))
                 {
                     _paramUp = d;
+                    StampDeviceFromParamChoice(value);
                     OnPropertyChanged(nameof(ParamUp));
                     OnPropertyChanged(nameof(ParamUpInputChoice));
                 }
@@ -143,6 +159,7 @@ namespace PadForge.ViewModels
                 if (!string.Equals(_paramDown, d, StringComparison.Ordinal))
                 {
                     _paramDown = d;
+                    StampDeviceFromParamChoice(value);
                     OnPropertyChanged(nameof(ParamDown));
                     OnPropertyChanged(nameof(ParamDownInputChoice));
                 }
@@ -158,6 +175,7 @@ namespace PadForge.ViewModels
                 if (!string.Equals(_paramModifier, d, StringComparison.Ordinal))
                 {
                     _paramModifier = d;
+                    StampDeviceFromParamChoice(value);
                     OnPropertyChanged(nameof(ParamModifier));
                     OnPropertyChanged(nameof(ParamModifierInputChoice));
                 }

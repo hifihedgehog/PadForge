@@ -1049,7 +1049,12 @@ namespace PadForge
                 if (result.ExtraSource != null)
                 {
                     var parent = result.Mapping;
-                    if (parent != null && !parent.ExtraSources.Contains(result.ExtraSource))
+                    // A Param recording (Up / Down / Modifier) only updated a field on
+                    // an existing source. That source is an extra, or the row's primary
+                    // kind holder which is NOT in ExtraSources. Adding it here would
+                    // spawn a stray secondary row (#111). Only new-source paths append.
+                    if (!result.IsParamRecording
+                        && parent != null && !parent.ExtraSources.Contains(result.ExtraSource))
                         parent.ExtraSources.Add(result.ExtraSource);  // fires EnsureCombineModeDefault + WireExtraSource via CollectionChanged
                     CommitRecordedMappingSet();
                     if (activePad.IsMapAllActive)

@@ -2224,9 +2224,9 @@
                                     <StackPanel Orientation="Vertical">
                                         <!-- Primary mode + kind tuning (#111). The Mode dropdown lives here
                                              in the detail strip so the Source cell holds only the mapping and
-                                             never crowds the input picker. ✕ resets to Direct. The Ramp /
-                                             Incremental sliders below are gated by kind. DataContext is the
-                                             row's PrimaryKindSource. -->
+                                             never crowds the input picker. Set it to Direct (or hit the row's
+                                             Clear) to drop the kind. The Ramp / Incremental sliders below are
+                                             gated by kind. DataContext is the row's PrimaryKindSource. -->
                                         <StackPanel DataContext="{Binding PrimaryKindSource}" Margin="0,0,0,6">
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                                 <TextBlock Text="{Binding Pad_Mapping_PrimaryMode, Source={x:Static strings:Strings.Instance}}"
@@ -2238,10 +2238,6 @@
                                                           MinWidth="130" Padding="4,2" VerticalAlignment="Center"
                                                           ToolTip="{Binding Pad_Mapping_Kind_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                           PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
-                                                <Button Content="✕" Padding="6,0" Margin="6,0,0,0" VerticalAlignment="Center"
-                                                        Command="{Binding DataContext.ClearPrimaryKindCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
-                                                        ToolTip="{Binding Pad_Mapping_PrimaryMode, Source={x:Static strings:Strings.Instance}}"
-                                                        Visibility="{Binding DataContext.IsPrimaryDirect, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
                                                         Visibility="{Binding IsRampedKind, Converter={StaticResource BoolToVisibilityConverter}}">

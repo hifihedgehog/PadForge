@@ -212,21 +212,6 @@ namespace PadForge.ViewModels
             }
         }
 
-        private RelayCommand _clearPrimaryKindCommand;
-        /// <summary>Resets the primary back to Direct and clears the kind's keys, so
-        /// the row falls back to its descriptor primary (the Clear button on the
-        /// primary-mode cell).</summary>
-        public RelayCommand ClearPrimaryKindCommand =>
-            _clearPrimaryKindCommand ??= new RelayCommand(() =>
-            {
-                var p = PrimaryKindSource;
-                if (p == null) return;
-                p.ParamUp = "";
-                p.ParamDown = "";
-                p.ParamModifier = "";
-                p.Kind = "Direct";
-            });
-
         private void OnPrimaryKindSourcePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(MappingSourceItem.Kind))
@@ -990,6 +975,17 @@ namespace PadForge.ViewModels
                 MappingDeadZone = 50;
                 PrimarySourceDeviceGuid = "";
                 PrimarySourceDeviceLabel = "";
+                // Also wipe a non-Direct primary kind (#111): empty its Up/Down/
+                // Modifier keys and drop back to Direct so Clear leaves nothing
+                // assigned, whether the primary is a plain descriptor or a kind.
+                var p = PrimaryKindSource;
+                if (p != null)
+                {
+                    p.ParamUp = "";
+                    p.ParamDown = "";
+                    p.ParamModifier = "";
+                    p.Kind = "Direct";
+                }
                 SyncSelectedInputFromDescriptor();
             });
 

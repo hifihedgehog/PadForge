@@ -684,24 +684,6 @@ namespace PadForge.ViewModels
             return _triggerInputEntries ?? (IReadOnlyList<TriggerInputEntry>)Array.Empty<TriggerInputEntry>();
         }
 
-        /// <summary>The device that owns this macro's trigger surface, used as the
-        /// "source" when copying it to another device (#112). Prefers the legacy
-        /// single-device trigger guid, then the first multi-device entry, action, or
-        /// expression variable that names a device. Empty when nothing is bound.</summary>
-        public Guid GetPrimaryDeviceGuid()
-        {
-            if (_triggerDeviceGuid != Guid.Empty) return _triggerDeviceGuid;
-            foreach (var e in GetTriggerInputEntries())
-                if (e.DeviceGuid != Guid.Empty) return e.DeviceGuid;
-            foreach (var a in Actions)
-                if (a.SourceDeviceGuid != Guid.Empty) return a.SourceDeviceGuid;
-            if (_triggerExpressionVariables != null)
-                foreach (var v in _triggerExpressionVariables)
-                    if (v.DeviceGuid != Guid.Empty) return v.DeviceGuid;
-            return Guid.Empty;
-        }
-
-
         /// <summary>Subset of <see cref="GetTriggerInputEntries"/> containing
         /// just the axis-bearing entries — used by the per-entry editor in
         /// the macro trigger panel so the user can toggle Invert / HalfAxis

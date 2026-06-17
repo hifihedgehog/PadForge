@@ -3251,26 +3251,22 @@ namespace PadForge.Services
             };
         }
 
-        /// <summary>JSON envelope for the macro clipboard (#112). Carries the
-        /// macro DTOs plus the device that owned the original trigger surface, so a
-        /// later Copy From Other Device can rewrite that guid onto a picked target.</summary>
+        /// <summary>JSON envelope for the macro clipboard (#112).</summary>
         public sealed class MacroClipboardEnvelope
         {
             public string Type { get; set; }
             public int Version { get; set; }
-            public string SourceDeviceGuid { get; set; }
             public MacroData[] Macros { get; set; }
         }
 
         private const string MacroClipboardType = "PadForgeMacro";
 
         /// <summary>Serializes macros into the clipboard envelope JSON (#112).</summary>
-        public static string SerializeMacrosToClipboard(MacroData[] macros, string sourceDeviceGuid)
+        public static string SerializeMacrosToClipboard(MacroData[] macros)
             => System.Text.Json.JsonSerializer.Serialize(new MacroClipboardEnvelope
             {
                 Type = MacroClipboardType,
                 Version = 1,
-                SourceDeviceGuid = sourceDeviceGuid,
                 Macros = macros,
             });
 

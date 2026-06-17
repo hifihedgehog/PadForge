@@ -4885,8 +4885,32 @@ namespace PadForge
         /// and append its macros to this one. Mirrors the Mappings-tab Copy From, which
         /// is VC-to-VC. A copied macro whose trigger is bound to a device not present on
         /// this VC pastes with that trigger unresolved (re-record it), same as Paste.</summary>
+        /// <summary>Formats a slot as the Copy From dialog's VC label, e.g.
+        /// "Virtual Controller 3 — Xbox 2". Shared by the mapping and macro Copy From
+        /// pickers (#112) so they read identically.</summary>
+        private static string FormatVcSlotName(int slotIndex, VirtualControllerType outputType)
+        {
+            int globalNum = SettingsManager.SlotOrders.GetGlobalSlotNumber(slotIndex);
+            int inGroupNum = SettingsManager.SlotOrders.GetOrderFor(outputType).IndexOf(slotIndex) + 1;
+            string typeName = ControllerTypeDisplayName(outputType);
+            string vcWord = Strings.Instance.Main_VirtualController_Format.Replace("{0}", globalNum.ToString());
+            return inGroupNum > 0 ? $"{vcWord} — {typeName} {inGroupNum}" : $"{vcWord} — {typeName}";
+        }
+
+        private static string ControllerTypeDisplayName(VirtualControllerType t) => t switch
+        {
+            VirtualControllerType.Xbox          => Strings.Instance.ControllerType_Xbox,
+            VirtualControllerType.PlayStation   => Strings.Instance.ControllerType_PlayStation,
+            VirtualControllerType.Extended      => Strings.Instance.ControllerType_Extended,
+            VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
+            VirtualControllerType.Midi          => Strings.Instance.ControllerType_MIDI,
+            _ => t.ToString(),
+        };
+
         private void OnCopyMacroFrom(PadViewModel padVm)
         {
+            // Same dialog, naming, and GUID display as the Mappings-tab Copy From, but
+            // listing virtual controllers that have macros rather than mappings (#112).
             var entries = new List<CopyFromDialog.DeviceEntry>();
             for (int i = 0; i < _viewModel.Pads.Count; i++)
             {
@@ -4894,23 +4918,15 @@ namespace PadForge
                 var src = _viewModel.Pads[i];
                 if (src.Macros.Count == 0) continue;
 
-                int globalNum = SettingsManager.SlotOrders.GetGlobalSlotNumber(i);
-                string typeName = src.OutputType switch
-                {
-                    VirtualControllerType.Xbox          => Strings.Instance.ControllerType_Xbox,
-                    VirtualControllerType.PlayStation   => Strings.Instance.ControllerType_PlayStation,
-                    VirtualControllerType.Extended      => Strings.Instance.ControllerType_Extended,
-                    VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
-                    VirtualControllerType.Midi          => Strings.Instance.ControllerType_MIDI,
-                    _ => src.OutputType.ToString(),
-                };
-                string vcWord = Strings.Instance.Main_VirtualController_Format.Replace("{0}", globalNum.ToString());
+                Guid donor = src.SelectedMappedDevice?.InstanceGuid
+                    ?? (src.MappedDevices.FirstOrDefault()?.InstanceGuid ?? Guid.Empty);
                 entries.Add(new CopyFromDialog.DeviceEntry
                 {
-                    Name = $"{vcWord} ({typeName}, {src.Macros.Count})",
-                    SourceSlot = i,
-                    SlotLabel = string.Empty,
+                    Name = FormatVcSlotName(i, src.OutputType),
+                    SlotLabel = donor != Guid.Empty ? $"{donor:D}" : string.Empty,
                     LayoutLabel = string.Empty,
+                    InstanceGuid = donor,
+                    SourceSlot = i,
                 });
             }
 
@@ -4920,7 +4936,7 @@ namespace PadForge
                 return;
             }
 
-            var dialog = new CopyFromDialog(entries) { Owner = this, Title = Strings.Instance.Pad_CopyFrom };
+            var dialog = new CopyFromDialog(entries) { Owner = this };
             if (dialog.ShowDialog() != true || dialog.SelectedEntry == null) return;
 
             int srcSlot = dialog.SelectedEntry.SourceSlot;
@@ -5040,13 +5056,7 @@ namespace PadForge
                 string primary;
                 if (us.MapTo >= 0)
                 {
-                    int globalNum = SettingsManager.SlotOrders.GetGlobalSlotNumber(us.MapTo);
-                    int inGroupNum = SettingsManager.SlotOrders.GetOrderFor(outputType).IndexOf(us.MapTo) + 1;
-                    string typeName = ControllerTypeDisplayName(outputType);
-                    string vcWord = Strings.Instance.Main_VirtualController_Format.Replace("{0}", globalNum.ToString());
-                    primary = inGroupNum > 0
-                        ? $"{vcWord} — {typeName} {inGroupNum}"
-                        : $"{vcWord} — {typeName}";
+                    primary = FormatVcSlotName(us.MapTo, outputType);
                 }
                 else
                 {
@@ -5068,16 +5078,6 @@ namespace PadForge
                     SourceSlot = us.MapTo,
                 });
             }
-
-            static string ControllerTypeDisplayName(VirtualControllerType t) => t switch
-            {
-                VirtualControllerType.Xbox          => Strings.Instance.ControllerType_Xbox,
-                VirtualControllerType.PlayStation   => Strings.Instance.ControllerType_PlayStation,
-                VirtualControllerType.Extended      => Strings.Instance.ControllerType_Extended,
-                VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
-                VirtualControllerType.Midi          => Strings.Instance.ControllerType_MIDI,
-                _ => t.ToString(),
-            };
 
             if (entries.Count == 0)
             {

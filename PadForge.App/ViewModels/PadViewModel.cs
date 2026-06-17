@@ -3190,6 +3190,10 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(HasSelectedMacro));
                     _removeMacroCommand?.NotifyCanExecuteChanged();
+                    // CommunityToolkit RelayCommand doesn't auto-requery, so the
+                    // selection-gated macro commands stay disabled until told (#112).
+                    _duplicateMacroCommand?.NotifyCanExecuteChanged();
+                    _copyMacroCommand?.NotifyCanExecuteChanged();
                 }
             }
         }
@@ -3253,12 +3257,6 @@ namespace PadForge.ViewModels
         public RelayCommand PasteMacroCommand =>
             _pasteMacroCommand ??= new RelayCommand(
                 () => PasteMacroRequested?.Invoke(this, EventArgs.Empty));
-
-        public event EventHandler CopyMacroFromOtherDeviceRequested;
-        private RelayCommand _copyMacroFromOtherDeviceCommand;
-        public RelayCommand CopyMacroFromOtherDeviceCommand =>
-            _copyMacroFromOtherDeviceCommand ??= new RelayCommand(
-                () => CopyMacroFromOtherDeviceRequested?.Invoke(this, EventArgs.Empty));
 
         // ═══════════════════════════════════════════════
         //  Audio tab (issue #83) — per-slot sound output for macro sounds

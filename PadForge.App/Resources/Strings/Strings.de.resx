@@ -2014,11 +2014,7 @@
   <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Aufnahme für „{0}": Drücken Sie jetzt die Ab-Eingabe...</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplizieren</value></data>
   <data name="Macro_CopyNameFormat" xml:space="preserve"><value>{0} (Kopie)</value></data>
-  <data name="Pad_Macros_CopyFromOtherDevice" xml:space="preserve"><value>Von anderem Gerät kopieren...</value></data>
-  <data name="Pad_Macros_OrphanWarning" xml:space="preserve"><value>{0} Auslöserquellen oder Aktionen passen nicht zu diesem Gerät. Neu aufnehmen oder entfernen.</value></data>
-  <data name="Pad_Macros_PickTargetDevice" xml:space="preserve"><value>Diese Auslöser diesem Gerät zuordnen</value></data>
   <data name="Status_MacroCopied" xml:space="preserve"><value>Makro in die Zwischenablage kopiert.</value></data>
   <data name="Status_MacroPasted" xml:space="preserve"><value>Makro eingefügt.</value></data>
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>Die Zwischenablage enthält kein kopiertes Makro.</value></data>
-  <data name="Status_MacroNoTargetDevice" xml:space="preserve"><value>Diesem Steckplatz ist kein Gerät zugewiesen, dem das Makro zugeordnet werden kann.</value></data>
 </root>

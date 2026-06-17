@@ -701,27 +701,12 @@
                             <Button Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyMacroCommand}"
                                     Padding="8,4" Margin="0,0,4,4"/>
                             <Button Content="{Binding Common_Paste, Source={x:Static strings:Strings.Instance}}" Command="{Binding PasteMacroCommand}"
-                                    Padding="8,4" Margin="0,0,4,4"/>
-                            <Button Content="{Binding Pad_Macros_CopyFromOtherDevice, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyMacroFromOtherDeviceCommand}"
                                     Padding="8,4" Margin="0,0,0,4"/>
                         </WrapPanel>
 
                         <ListBox ItemsSource="{Binding Macros}"
-                                 SelectedItem="{Binding SelectedMacro, Mode=TwoWay}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
-                                        <!-- #112 orphan warning: a Copy From Other Device left a
-                                             trigger or action on a button this device lacks. -->
-                                        <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="12"
-                                                   Foreground="#E8A23D" Margin="6,0,0,0" VerticalAlignment="Center"
-                                                   Visibility="{Binding HasOrphans, Converter={StaticResource BoolToVisibilityConverter}}"
-                                                   ToolTip="{Binding OrphanWarningText}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                                 SelectedItem="{Binding SelectedMacro, Mode=TwoWay}"
+                                 DisplayMemberPath="Name"/>
                     </DockPanel>
 
                     <GridSplitter Grid.Column="1" Width="4" Margin="4,0"

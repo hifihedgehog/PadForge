@@ -63,40 +63,6 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void RewriteForDevice_RemapsAllSurfaces()
-        {
-            var a = Guid.NewGuid();
-            var b = Guid.NewGuid();
-            var m = new MacroItem { Name = "X", TriggerDeviceGuid = a };
-            m.Actions.Add(new MacroAction { Type = MacroActionType.ButtonPress, SourceDeviceGuid = a });
-            m.TriggerExpressionVariables.Add(new MacroExpressionVariable { DeviceGuid = a, RawButton = 5 });
-
-            m.RewriteForDevice(a, b, idx => idx == 5);
-
-            Assert.Equal(b, m.TriggerDeviceGuid);
-            Assert.Equal(b, m.Actions[0].SourceDeviceGuid);
-            Assert.Equal(b, m.TriggerExpressionVariables[0].DeviceGuid);
-            Assert.False(m.TriggerExpressionVariables[0].IsOrphan);
-            Assert.Equal(0, m.OrphanCount);
-        }
-
-        [Fact]
-        public void RewriteForDevice_FlagsOrphanWhenTargetLacksButton()
-        {
-            var a = Guid.NewGuid();
-            var b = Guid.NewGuid();
-            var m = new MacroItem { Name = "X" };
-            m.TriggerExpressionVariables.Add(new MacroExpressionVariable { DeviceGuid = a, RawButton = 9 });
-
-            m.RewriteForDevice(a, b, idx => false); // target has no buttons
-
-            Assert.Equal(b, m.TriggerExpressionVariables[0].DeviceGuid);
-            Assert.True(m.TriggerExpressionVariables[0].IsOrphan);
-            Assert.Equal(1, m.OrphanCount);
-            Assert.True(m.HasOrphans);
-        }
-
-        [Fact]
         public void GetPrimaryDeviceGuid_PrefersLegacyTriggerDevice()
         {
             Assert.Equal(Guid.Empty, new MacroItem().GetPrimaryDeviceGuid());

@@ -2014,11 +2014,7 @@
   <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Grabando "{0}": ahora presione la entrada de la dirección Abajo...</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplicar</value></data>
   <data name="Macro_CopyNameFormat" xml:space="preserve"><value>{0} (copia)</value></data>
-  <data name="Pad_Macros_CopyFromOtherDevice" xml:space="preserve"><value>Copiar desde otro dispositivo...</value></data>
-  <data name="Pad_Macros_OrphanWarning" xml:space="preserve"><value>{0} fuentes de activación o acciones no coinciden con este dispositivo. Vuelve a grabarlas o elimínalas.</value></data>
-  <data name="Pad_Macros_PickTargetDevice" xml:space="preserve"><value>Asignar estos activadores a este dispositivo</value></data>
   <data name="Status_MacroCopied" xml:space="preserve"><value>Macro copiada al portapapeles.</value></data>
   <data name="Status_MacroPasted" xml:space="preserve"><value>Macro pegada.</value></data>
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>El portapapeles no contiene una macro copiada.</value></data>
-  <data name="Status_MacroNoTargetDevice" xml:space="preserve"><value>Esta ranura no tiene ningún dispositivo asignado al que asignar la macro.</value></data>
 </root>

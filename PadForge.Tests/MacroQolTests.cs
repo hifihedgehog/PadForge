@@ -42,13 +42,11 @@ namespace PadForge.Tests
         [Fact]
         public void ClipboardEnvelope_RoundTrips()
         {
-            var guid = Guid.NewGuid();
             var data = SettingsService.BuildMacroDataForMacro(SampleMacro(), 0);
-            string json = SettingsService.SerializeMacrosToClipboard(new[] { data }, guid.ToString("N"));
+            string json = SettingsService.SerializeMacrosToClipboard(new[] { data });
 
             var env = SettingsService.TryParseMacroClipboard(json);
             Assert.NotNull(env);
-            Assert.Equal(guid.ToString("N"), env.SourceDeviceGuid);
             Assert.Single(env.Macros);
             Assert.Equal("Combo", env.Macros[0].Name);
             Assert.Equal(MacroActionType.ButtonPress, env.Macros[0].Actions[0].Type);
@@ -60,15 +58,6 @@ namespace PadForge.Tests
             Assert.Null(SettingsService.TryParseMacroClipboard(""));
             Assert.Null(SettingsService.TryParseMacroClipboard("not json"));
             Assert.Null(SettingsService.TryParseMacroClipboard("{\"Type\":\"PadForgeSettings\"}"));
-        }
-
-        [Fact]
-        public void GetPrimaryDeviceGuid_PrefersLegacyTriggerDevice()
-        {
-            Assert.Equal(Guid.Empty, new MacroItem().GetPrimaryDeviceGuid());
-
-            var a = Guid.NewGuid();
-            Assert.Equal(a, new MacroItem { TriggerDeviceGuid = a }.GetPrimaryDeviceGuid());
         }
     }
 }

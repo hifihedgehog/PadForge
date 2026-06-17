@@ -4846,9 +4846,7 @@ namespace PadForge
                 var macro = padVm.SelectedMacro;
                 if (macro == null) return;
                 var data = SettingsService.BuildMacroDataForMacro(macro, padVm.PadIndex);
-                var src = macro.GetPrimaryDeviceGuid();
-                string srcGuid = src != Guid.Empty ? src.ToString("N") : null;
-                Clipboard.SetText(SettingsService.SerializeMacrosToClipboard(new[] { data }, srcGuid));
+                Clipboard.SetText(SettingsService.SerializeMacrosToClipboard(new[] { data }));
                 _viewModel.StatusText = Strings.Instance.Status_MacroCopied;
             }
             catch (Exception ex)

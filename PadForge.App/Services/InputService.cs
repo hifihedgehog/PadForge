@@ -3033,8 +3033,16 @@ namespace PadForge.Services
                 mapping.NoInherit = msRowsByTarget.TryGetValue(target, out var preCheck)
                                     && preCheck != null && preCheck.NoInherit;
 
+                // Sources[0] is the primary only when it's a plain Direct source.
+                // A stateful first source (Incremental / Ramped / InvertOnHold /
+                // steering) means the row was authored with no primary descriptor,
+                // e.g. a keyboard ramp on an otherwise-empty row. Reading it as the
+                // primary would drop its Kind and swallow it from the extras loop,
+                // so the row would vanish on reload (#111 follow-up). Treat it as
+                // having no primary and load every source as an extra below.
                 if (msRowsByTarget.TryGetValue(target, out var msRow)
-                    && msRow.Sources != null && msRow.Sources.Count > 0)
+                    && msRow.Sources != null && msRow.Sources.Count > 0
+                    && string.Equals(msRow.Sources[0].Kind ?? "Direct", "Direct", StringComparison.Ordinal))
                 {
                     var primary = msRow.Sources[0];
                     string encoded = ReencodePrefixForLegacy(
@@ -3088,9 +3096,14 @@ namespace PadForge.Services
                 {
                     mapping.CombineMode = msRow2.CombineMode ?? "";
                     mapping.CombineExpression = msRow2.CombineExpression ?? "";
-                    if (msRow2.Sources != null)
+                    if (msRow2.Sources != null && msRow2.Sources.Count > 0)
                     {
-                        for (int si = 1; si < msRow2.Sources.Count; si++)
+                        // Sources[0] is the primary only when it's Direct (see the
+                        // primary-load gate above). A stateful first source means the
+                        // row has no primary, so every source is an extra and the
+                        // extras loop must start at 0 instead of 1.
+                        int extrasStart = string.Equals(msRow2.Sources[0].Kind ?? "Direct", "Direct", StringComparison.Ordinal) ? 1 : 0;
+                        for (int si = extrasStart; si < msRow2.Sources.Count; si++)
                         {
                             mapping.ExtraSources.Add(
                                 ViewModels.MappingSourceItem.FromDomain(msRow2.Sources[si]));

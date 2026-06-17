@@ -73,6 +73,9 @@ namespace PadForge.ViewModels
             // may have flipped.
             OnPropertyChanged(nameof(IsCombineExpressionWarning));
             RefreshVariableAliases();
+            // Adding/removing a secondary can gate InvertOnHold in the primary
+            // dropdown on or off (#111 audit C).
+            EnforcePrimaryKindGate();
 
             if (e.NewItems != null)
             {
@@ -112,6 +115,12 @@ namespace PadForge.ViewModels
                 && sender is MappingSourceItem msi)
             {
                 RefreshExtraSourceInputs(msi);
+            }
+            // A secondary toggling to/from InvertOnHold changes whether it
+            // contributes, which gates InvertOnHold in the primary dropdown (#111 audit C).
+            if (string.Equals(e.PropertyName, nameof(MappingSourceItem.Kind), StringComparison.Ordinal))
+            {
+                EnforcePrimaryKindGate();
             }
             // Any change that affects the source's friendly label
             // ripples to the variable-alias display for that position.
@@ -212,6 +221,55 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>True when the row has at least one secondary source that
+        /// contributes a value to the combine (any kind other than InvertOnHold,
+        /// which is a pure row modifier). InvertOnHold as the primary only does
+        /// something when such a secondary exists for it to flip.</summary>
+        private bool HasContributingExtraSource
+        {
+            get
+            {
+                foreach (var s in ExtraSources)
+                    if (s != null && !string.Equals(s.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal))
+                        return true;
+                return false;
+            }
+        }
+
+        /// <summary>Kind choices offered in the PRIMARY mode dropdown. Same as
+        /// <see cref="MappingSourceItem.KindOptions"/>, but InvertOnHold is hidden
+        /// unless the row has a contributing secondary source (#111 audit C). As a
+        /// solo primary, InvertOnHold flips nothing, so offering it would invite a
+        /// mapping that silently does nothing. The extra-source dropdown still binds
+        /// the full list, since that is where InvertOnHold belongs.</summary>
+        public System.Collections.Generic.IReadOnlyList<MappingSourceItem.KindChoice> PrimaryKindOptions
+        {
+            get
+            {
+                var all = MappingSourceItem.KindOptions;
+                if (HasContributingExtraSource) return all;
+                var filtered = new System.Collections.Generic.List<MappingSourceItem.KindChoice>(all.Count);
+                foreach (var k in all)
+                    if (!string.Equals(k.Value, "InvertOnHold", StringComparison.Ordinal))
+                        filtered.Add(k);
+                return filtered;
+            }
+        }
+
+        /// <summary>Keeps the primary off an option the gate no longer offers. When
+        /// the last contributing secondary goes away while the primary is InvertOnHold,
+        /// the primary would be inert, so revert it to Direct. Re-fires the options so
+        /// the dropdown updates.</summary>
+        private void EnforcePrimaryKindGate()
+        {
+            if (!HasContributingExtraSource
+                && string.Equals(PrimaryKindSource?.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal))
+            {
+                PrimaryKindSource.Kind = "Direct";
+            }
+            OnPropertyChanged(nameof(PrimaryKindOptions));
+        }
+
         private void OnPrimaryKindSourcePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(MappingSourceItem.Kind))
@@ -219,6 +277,9 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(IsPrimaryDirect));
                 OnPropertyChanged(nameof(IsMultiSource));
                 OnPropertyChanged(nameof(PrimaryKindLabel));
+                // A primary set (or loaded) as InvertOnHold with no contributing
+                // secondary is inert; revert it to Direct (#111 audit C).
+                EnforcePrimaryKindGate();
             }
             if (string.Equals(e.PropertyName, nameof(MappingSourceItem.DeviceGuid), StringComparison.Ordinal)
                 && sender is MappingSourceItem msi)

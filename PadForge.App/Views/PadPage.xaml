@@ -2232,7 +2232,7 @@
                                                 <TextBlock Text="{Binding Pad_Mapping_PrimaryMode, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Margin="0,0,6,0"
                                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="11"/>
-                                                <ComboBox ItemsSource="{x:Static vm:MappingSourceItem.KindOptions}"
+                                                <ComboBox ItemsSource="{Binding DataContext.PrimaryKindOptions, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                           SelectedValue="{Binding Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           SelectedValuePath="Value" DisplayMemberPath="Name"
                                                           MinWidth="130" Padding="4,2" VerticalAlignment="Center"

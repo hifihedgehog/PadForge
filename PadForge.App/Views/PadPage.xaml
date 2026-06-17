@@ -3146,35 +3146,20 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Vertical">
-                                            <!-- Primary mode (#111). Direct uses the descriptor picker
-                                                 below; Ramp / Incremental show inline Up/Down keys; Invert
-                                                 On Hold shows a modifier key. The sliders for Ramp /
-                                                 Incremental live in the row-detail strip. The ✕ resets to
-                                                 Direct. Bound through PrimaryKindSource on the row. -->
-                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
-                                                <ComboBox ItemsSource="{x:Static vm:MappingSourceItem.KindOptions}"
-                                                          SelectedValue="{Binding PrimaryKindSource.Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                          SelectedValuePath="Value" DisplayMemberPath="Name"
-                                                          MinWidth="110" Padding="4,2" VerticalAlignment="Center"
-                                                          ToolTip="{Binding Pad_Mapping_Kind_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                                          PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
-                                                <Button Content="✕" Padding="6,0" Margin="4,0,0,0" VerticalAlignment="Center"
-                                                        Command="{Binding ClearPrimaryKindCommand}"
-                                                        ToolTip="{Binding Pad_Mapping_PrimaryMode, Source={x:Static strings:Strings.Instance}}"
-                                                        Visibility="{Binding IsPrimaryDirect, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
-                                            </StackPanel>
-                                            <!-- Cross-device source picker. ItemsSource is the
-                                                 grouped CollectionView (GroupDescription on
-                                                 InputChoice.DeviceLabel) so the dropdown shows
-                                                 each device's inputs under a device-name header.
-                                                 SelectedItem write-back tags the row with the
-                                                 picked InputChoice's DeviceGuid + DeviceLabel,
-                                                 which is what makes the unified Mappings tab
-                                                 device-correct without the user having to
-                                                 fiddle with the Device dropdown to the right. -->
-                                            <ComboBox ItemsSource="{Binding AvailableInputsView}"
+                                            <!-- Direct row (#111). The input picker fills the cell; the
+                                                 Mode dropdown is hidden at rest and reveals inline at the
+                                                 right on hover / selection, so plain Direct rows stay
+                                                 uncluttered. Picking a kind flips IsPrimaryDirect false and
+                                                 swaps to the non-Direct block below. Cross-device picker:
+                                                 the grouped view headers each device; SelectedItem tags the
+                                                 row with the picked DeviceGuid + DeviceLabel. -->
+                                            <Grid Visibility="{Binding IsPrimaryDirect, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                            <ComboBox Grid.Column="0" ItemsSource="{Binding AvailableInputsView}"
                                                       SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      Visibility="{Binding IsPrimaryDirect, Converter={StaticResource BoolToVisibilityConverter}}"
                                                       DisplayMemberPath="DisplayName"
                                                       Margin="0" Padding="4,2"
                                                       HorizontalAlignment="Stretch"
@@ -3196,6 +3181,37 @@
                                                     </GroupStyle>
                                                 </ComboBox.GroupStyle>
                                             </ComboBox>
+                                                <!-- Mode switch for a Direct row: collapsed at rest, revealed
+                                                     inline on hover / row-selection / focus so the resting row
+                                                     shows only the input picker. Picking a kind flips to the
+                                                     non-Direct block. -->
+                                                <ComboBox Grid.Column="1" ItemsSource="{x:Static vm:MappingSourceItem.KindOptions}"
+                                                          SelectedValue="{Binding PrimaryKindSource.Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          SelectedValuePath="Value" DisplayMemberPath="Name"
+                                                          Width="92" Margin="6,0,0,0" Padding="4,2" VerticalAlignment="Center"
+                                                          ToolTip="{Binding Pad_Mapping_Kind_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                          PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                    <ComboBox.Style>
+                                                        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}" Value="True">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}" Value="True">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </Trigger>
+                                                                <Trigger Property="IsDropDownOpen" Value="True">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </ComboBox.Style>
+                                                </ComboBox>
+                                            </Grid>
                                             <!-- Phase 2C — primary source's device origin badge.
                                                  Visible when the row is bound to a per-VC
                                                  MappingSet primary and resolved to a
@@ -3248,7 +3264,22 @@
                                                  modifier key for Invert On Hold. DataContext is the row's
                                                  PrimaryKindSource; the Up/Down list binds the row's
                                                  AvailableInputsView via the DataGridRow ancestor. -->
-                                            <StackPanel DataContext="{Binding PrimaryKindSource}">
+                                            <StackPanel DataContext="{Binding PrimaryKindSource}"
+                                                        Visibility="{Binding DataContext.IsPrimaryDirect, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
+                                                <!-- Mode header for a non-Direct row: the Mode dropdown lives
+                                                     here (top-left, above the keys) instead of on every Direct
+                                                     row. ✕ resets to Direct via the row VM's command. -->
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                    <ComboBox ItemsSource="{x:Static vm:MappingSourceItem.KindOptions}"
+                                                              SelectedValue="{Binding Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              SelectedValuePath="Value" DisplayMemberPath="Name"
+                                                              MinWidth="110" Padding="4,2" VerticalAlignment="Center"
+                                                              ToolTip="{Binding Pad_Mapping_Kind_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                              PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
+                                                    <Button Content="✕" Padding="6,0" Margin="4,0,0,0" VerticalAlignment="Center"
+                                                            Command="{Binding DataContext.ClearPrimaryKindCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                            ToolTip="{Binding Pad_Mapping_PrimaryMode, Source={x:Static strings:Strings.Instance}}"/>
+                                                </StackPanel>
                                                 <StackPanel Orientation="Horizontal" Margin="0,2,0,0"
                                                             Visibility="{Binding UsesUpDownKeys, Converter={StaticResource BoolToVisibilityConverter}}">
                                                     <TextBlock Text="↥" FontSize="13" VerticalAlignment="Center" Margin="0,0,2,0"

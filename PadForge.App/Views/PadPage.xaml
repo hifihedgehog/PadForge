@@ -3257,31 +3257,121 @@
                                                             Visibility="{Binding UsesUpDownKeys, Converter={StaticResource BoolToVisibilityConverter}}">
                                                     <TextBlock Text="↥" FontSize="13" VerticalAlignment="Center" Margin="0,0,2,0"
                                                                ToolTip="{Binding Pad_Mapping_Up_IconTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                    <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
-                                                              SelectedItem="{Binding ParamUpInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                              DisplayMemberPath="DisplayName" MinWidth="150" Padding="4,2" VerticalAlignment="Center"
-                                                              ToolTip="{Binding Pad_Mapping_Up_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
-                                                              PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
+                                                    <StackPanel Orientation="Vertical">
+                                                        <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                                  SelectedItem="{Binding ParamUpInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                  DisplayMemberPath="DisplayName" MinWidth="150" Padding="4,2" VerticalAlignment="Center"
+                                                                  ToolTip="{Binding Pad_Mapping_Up_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
+                                                                  PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                            <ComboBox.GroupStyle>
+                                                                <GroupStyle>
+                                                                    <GroupStyle.HeaderTemplate>
+                                                                        <DataTemplate>
+                                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                                           TextTrimming="CharacterEllipsis"/>
+                                                                            </Border>
+                                                                        </DataTemplate>
+                                                                    </GroupStyle.HeaderTemplate>
+                                                                </GroupStyle>
+                                                            </ComboBox.GroupStyle>
+                                                        </ComboBox>
+                                                        <TextBlock FontSize="10" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                   Margin="4,1,0,0" TextTrimming="CharacterEllipsis">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="Text" Value="{Binding ParamUpDeviceLabel}"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding ParamUp}" Value="">
+                                                                            <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
+                                                                            <Setter Property="FontStyle" Value="Italic"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
+                                                    </StackPanel>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal" Margin="0,2,0,0"
                                                             Visibility="{Binding UsesUpDownKeys, Converter={StaticResource BoolToVisibilityConverter}}">
                                                     <TextBlock Text="↧" FontSize="13" VerticalAlignment="Center" Margin="0,0,2,0"
                                                                ToolTip="{Binding Pad_Mapping_Down_IconTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                    <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
-                                                              SelectedItem="{Binding ParamDownInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                              DisplayMemberPath="DisplayName" MinWidth="150" Padding="4,2" VerticalAlignment="Center"
-                                                              ToolTip="{Binding Pad_Mapping_Down_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
-                                                              PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
+                                                    <StackPanel Orientation="Vertical">
+                                                        <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                                  SelectedItem="{Binding ParamDownInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                  DisplayMemberPath="DisplayName" MinWidth="150" Padding="4,2" VerticalAlignment="Center"
+                                                                  ToolTip="{Binding Pad_Mapping_Down_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
+                                                                  PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                            <ComboBox.GroupStyle>
+                                                                <GroupStyle>
+                                                                    <GroupStyle.HeaderTemplate>
+                                                                        <DataTemplate>
+                                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                                           TextTrimming="CharacterEllipsis"/>
+                                                                            </Border>
+                                                                        </DataTemplate>
+                                                                    </GroupStyle.HeaderTemplate>
+                                                                </GroupStyle>
+                                                            </ComboBox.GroupStyle>
+                                                        </ComboBox>
+                                                        <TextBlock FontSize="10" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                   Margin="4,1,0,0" TextTrimming="CharacterEllipsis">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="Text" Value="{Binding ParamDownDeviceLabel}"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding ParamDown}" Value="">
+                                                                            <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
+                                                                            <Setter Property="FontStyle" Value="Italic"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
+                                                    </StackPanel>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal" Margin="0,2,0,0"
                                                             Visibility="{Binding IsInvertOnHoldKind, Converter={StaticResource BoolToVisibilityConverter}}">
                                                     <TextBlock Text="⇋" FontSize="13" VerticalAlignment="Center" Margin="0,0,2,0"
                                                                ToolTip="{Binding Pad_Mapping_Modifier_IconTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                    <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
-                                                              SelectedItem="{Binding ParamModifierInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                              DisplayMemberPath="DisplayName" MinWidth="150" Padding="4,2" VerticalAlignment="Center"
-                                                              ToolTip="{Binding Pad_Mapping_Modifier_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
-                                                              PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
+                                                    <StackPanel Orientation="Vertical">
+                                                        <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                                  SelectedItem="{Binding ParamModifierInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                  DisplayMemberPath="DisplayName" MinWidth="150" Padding="4,2" VerticalAlignment="Center"
+                                                                  ToolTip="{Binding Pad_Mapping_Modifier_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
+                                                                  PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                            <ComboBox.GroupStyle>
+                                                                <GroupStyle>
+                                                                    <GroupStyle.HeaderTemplate>
+                                                                        <DataTemplate>
+                                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                                           TextTrimming="CharacterEllipsis"/>
+                                                                            </Border>
+                                                                        </DataTemplate>
+                                                                    </GroupStyle.HeaderTemplate>
+                                                                </GroupStyle>
+                                                            </ComboBox.GroupStyle>
+                                                        </ComboBox>
+                                                        <TextBlock FontSize="10" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                   Margin="4,1,0,0" TextTrimming="CharacterEllipsis">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="Text" Value="{Binding ParamModifierDeviceLabel}"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding ParamModifier}" Value="">
+                                                                            <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
+                                                                            <Setter Property="FontStyle" Value="Italic"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
+                                                    </StackPanel>
                                                 </StackPanel>
                                             </StackPanel>
                                         </StackPanel>

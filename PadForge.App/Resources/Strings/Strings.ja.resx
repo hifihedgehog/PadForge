@@ -2014,11 +2014,7 @@
   <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>記録中「{0}」: 次に「下」方向の入力を押してください...</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>複製</value></data>
   <data name="Macro_CopyNameFormat" xml:space="preserve"><value>{0} (コピー)</value></data>
-  <data name="Pad_Macros_CopyFromOtherDevice" xml:space="preserve"><value>他のデバイスからコピー...</value></data>
-  <data name="Pad_Macros_OrphanWarning" xml:space="preserve"><value>{0} 個のトリガーソースまたはアクションがこのデバイスと一致しません。録り直すか削除してください。</value></data>
-  <data name="Pad_Macros_PickTargetDevice" xml:space="preserve"><value>これらのトリガーをこのデバイスに割り当てる</value></data>
   <data name="Status_MacroCopied" xml:space="preserve"><value>マクロをクリップボードにコピーしました。</value></data>
   <data name="Status_MacroPasted" xml:space="preserve"><value>マクロを貼り付けました。</value></data>
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>クリップボードにコピーされたマクロがありません。</value></data>
-  <data name="Status_MacroNoTargetDevice" xml:space="preserve"><value>このスロットにはマクロを割り当てるデバイスがありません。</value></data>
 </root>

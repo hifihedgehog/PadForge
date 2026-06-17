@@ -2036,11 +2036,7 @@
   <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Registrazione "{0}": ora premi l'ingresso per la direzione Giù...</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplica</value></data>
   <data name="Macro_CopyNameFormat" xml:space="preserve"><value>{0} (copia)</value></data>
-  <data name="Pad_Macros_CopyFromOtherDevice" xml:space="preserve"><value>Copia da un altro dispositivo...</value></data>
-  <data name="Pad_Macros_OrphanWarning" xml:space="preserve"><value>{0} sorgenti trigger o azioni non corrispondono a questo dispositivo. Registrale di nuovo o rimuovile.</value></data>
-  <data name="Pad_Macros_PickTargetDevice" xml:space="preserve"><value>Assegna questi trigger a questo dispositivo</value></data>
   <data name="Status_MacroCopied" xml:space="preserve"><value>Macro copiata negli appunti.</value></data>
   <data name="Status_MacroPasted" xml:space="preserve"><value>Macro incollata.</value></data>
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>Gli appunti non contengono una macro copiata.</value></data>
-  <data name="Status_MacroNoTargetDevice" xml:space="preserve"><value>Questo slot non ha un dispositivo assegnato a cui associare la macro.</value></data>
 </root>

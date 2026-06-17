@@ -2034,11 +2034,7 @@
   <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Opname "{0}": druk nu op de invoer voor de richting Omlaag...</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Dupliceren</value></data>
   <data name="Macro_CopyNameFormat" xml:space="preserve"><value>{0} (kopie)</value></data>
-  <data name="Pad_Macros_CopyFromOtherDevice" xml:space="preserve"><value>Kopiëren van ander apparaat...</value></data>
-  <data name="Pad_Macros_OrphanWarning" xml:space="preserve"><value>{0} triggerbronnen of acties passen niet bij dit apparaat. Neem ze opnieuw op of verwijder ze.</value></data>
-  <data name="Pad_Macros_PickTargetDevice" xml:space="preserve"><value>Deze triggers aan dit apparaat koppelen</value></data>
   <data name="Status_MacroCopied" xml:space="preserve"><value>Macro naar klembord gekopieerd.</value></data>
   <data name="Status_MacroPasted" xml:space="preserve"><value>Macro geplakt.</value></data>
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>Het klembord bevat geen gekopieerde macro.</value></data>
-  <data name="Status_MacroNoTargetDevice" xml:space="preserve"><value>Deze sleuf heeft geen toegewezen apparaat om de macro aan te koppelen.</value></data>
 </root>

@@ -2039,4 +2039,6 @@
   <data name="Status_MacroCopied" xml:space="preserve"><value>Macro copiata negli appunti.</value></data>
   <data name="Status_MacroPasted" xml:space="preserve"><value>Macro incollata.</value></data>
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>Gli appunti non contengono una macro copiata.</value></data>
+  <data name="Status_MacroCopiedFrom" xml:space="preserve"><value>Macro copiate dal controller virtuale selezionato.</value></data>
+  <data name="Status_MacroNoSource" xml:space="preserve"><value>Nessun altro controller virtuale ha macro da copiare.</value></data>
 </root>

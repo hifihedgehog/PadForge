@@ -2017,4 +2017,6 @@
   <data name="Status_MacroCopied" xml:space="preserve"><value>Macro copiada para a área de transferência.</value></data>
   <data name="Status_MacroPasted" xml:space="preserve"><value>Macro colada.</value></data>
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>A área de transferência não contém uma macro copiada.</value></data>
+  <data name="Status_MacroCopiedFrom" xml:space="preserve"><value>Macros copiadas do controle virtual selecionado.</value></data>
+  <data name="Status_MacroNoSource" xml:space="preserve"><value>Nenhum outro controle virtual tem macros para copiar.</value></data>
 </root>

@@ -701,7 +701,10 @@
                             <Button Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyMacroCommand}"
                                     Padding="8,4" Margin="0,0,4,4"/>
                             <Button Content="{Binding Common_Paste, Source={x:Static strings:Strings.Instance}}" Command="{Binding PasteMacroCommand}"
-                                    Padding="8,4" Margin="0,0,0,4"/>
+                                    Padding="8,4" Margin="0,0,4,4"/>
+                            <Button Content="{Binding Pad_CopyFrom, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyMacroFromCommand}"
+                                    Padding="8,4" Margin="0,0,0,4"
+                                    ToolTip="{Binding Pad_CopyFromTooltip, Source={x:Static strings:Strings.Instance}}"/>
                         </WrapPanel>
 
                         <ListBox ItemsSource="{Binding Macros}"

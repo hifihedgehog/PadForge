@@ -2017,4 +2017,6 @@
   <data name="Status_MacroCopied" xml:space="preserve"><value>Makro in die Zwischenablage kopiert.</value></data>
   <data name="Status_MacroPasted" xml:space="preserve"><value>Makro eingefügt.</value></data>
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>Die Zwischenablage enthält kein kopiertes Makro.</value></data>
+  <data name="Status_MacroCopiedFrom" xml:space="preserve"><value>Makros vom ausgewählten virtuellen Controller kopiert.</value></data>
+  <data name="Status_MacroNoSource" xml:space="preserve"><value>Keine anderen virtuellen Controller haben Makros zum Kopieren.</value></data>
 </root>

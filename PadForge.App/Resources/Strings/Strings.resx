@@ -165,6 +165,8 @@
   <data name="Status_MacroCopied" xml:space="preserve"><value>Macro copied to clipboard.</value></data>
   <data name="Status_MacroPasted" xml:space="preserve"><value>Macro pasted.</value></data>
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>Clipboard does not contain a copied macro.</value></data>
+  <data name="Status_MacroCopiedFrom" xml:space="preserve"><value>Macros copied from the selected virtual controller.</value></data>
+  <data name="Status_MacroNoSource" xml:space="preserve"><value>No other virtual controllers have macros to copy from.</value></data>
   <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>Profile "{0}" created (empty).</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Profile "{0}" created.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>Profile "{0}" deleted.</value></data>

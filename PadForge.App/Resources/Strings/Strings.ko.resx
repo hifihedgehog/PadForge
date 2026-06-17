@@ -2017,4 +2017,6 @@
   <data name="Status_MacroCopied" xml:space="preserve"><value>매크로를 클립보드에 복사했습니다.</value></data>
   <data name="Status_MacroPasted" xml:space="preserve"><value>매크로를 붙여넣었습니다.</value></data>
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>클립보드에 복사된 매크로가 없습니다.</value></data>
+  <data name="Status_MacroCopiedFrom" xml:space="preserve"><value>선택한 가상 컨트롤러에서 매크로를 복사했습니다.</value></data>
+  <data name="Status_MacroNoSource" xml:space="preserve"><value>복사할 매크로가 있는 다른 가상 컨트롤러가 없습니다.</value></data>
 </root>

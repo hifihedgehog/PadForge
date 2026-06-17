@@ -1465,6 +1465,7 @@ namespace PadForge
                 pad.CopyFromRequested += (s, e) => OnCopyFrom(capturedPad);
                 pad.CopyMacroRequested += (s, e) => OnCopyMacro(capturedPad);
                 pad.PasteMacroRequested += (s, e) => OnPasteMacro(capturedPad);
+                pad.CopyMacroFromRequested += (s, e) => OnCopyMacroFrom(capturedPad);
             }
 
             // Build the sidebar navigation items dynamically.
@@ -4878,6 +4879,66 @@ namespace PadForge
             {
                 _viewModel.StatusText = string.Format(Strings.Instance.Status_PasteFailed_Format, ex.Message);
             }
+        }
+
+        /// <summary>VC-level macro Copy From (#112): pick another virtual controller
+        /// and append its macros to this one. Mirrors the Mappings-tab Copy From, which
+        /// is VC-to-VC. A copied macro whose trigger is bound to a device not present on
+        /// this VC pastes with that trigger unresolved (re-record it), same as Paste.</summary>
+        private void OnCopyMacroFrom(PadViewModel padVm)
+        {
+            var entries = new List<CopyFromDialog.DeviceEntry>();
+            for (int i = 0; i < _viewModel.Pads.Count; i++)
+            {
+                if (i == padVm.PadIndex) continue;
+                var src = _viewModel.Pads[i];
+                if (src.Macros.Count == 0) continue;
+
+                int globalNum = SettingsManager.SlotOrders.GetGlobalSlotNumber(i);
+                string typeName = src.OutputType switch
+                {
+                    VirtualControllerType.Xbox          => Strings.Instance.ControllerType_Xbox,
+                    VirtualControllerType.PlayStation   => Strings.Instance.ControllerType_PlayStation,
+                    VirtualControllerType.Extended      => Strings.Instance.ControllerType_Extended,
+                    VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
+                    VirtualControllerType.Midi          => Strings.Instance.ControllerType_MIDI,
+                    _ => src.OutputType.ToString(),
+                };
+                string vcWord = Strings.Instance.Main_VirtualController_Format.Replace("{0}", globalNum.ToString());
+                entries.Add(new CopyFromDialog.DeviceEntry
+                {
+                    Name = $"{vcWord} ({typeName}, {src.Macros.Count})",
+                    SourceSlot = i,
+                    SlotLabel = string.Empty,
+                    LayoutLabel = string.Empty,
+                });
+            }
+
+            if (entries.Count == 0)
+            {
+                _viewModel.StatusText = Strings.Instance.Status_MacroNoSource;
+                return;
+            }
+
+            var dialog = new CopyFromDialog(entries) { Owner = this, Title = Strings.Instance.Pad_CopyFrom };
+            if (dialog.ShowDialog() != true || dialog.SelectedEntry == null) return;
+
+            int srcSlot = dialog.SelectedEntry.SourceSlot;
+            if (srcSlot < 0 || srcSlot >= _viewModel.Pads.Count) return;
+            var source = _viewModel.Pads[srcSlot];
+
+            MacroItem last = null;
+            foreach (var macro in source.Macros.ToList())
+            {
+                var data = SettingsService.BuildMacroDataForMacro(macro, padVm.PadIndex);
+                var clone = SettingsService.LoadMacroFromData(data, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount);
+                clone.PadIndex = padVm.PadIndex;
+                padVm.Macros.Add(clone);
+                last = clone;
+            }
+            if (last != null) padVm.SelectedMacro = last;
+            _settingsService.MarkDirty();
+            _viewModel.StatusText = Strings.Instance.Status_MacroCopiedFrom;
         }
 
         private void OnCopyFrom(PadViewModel padVm)

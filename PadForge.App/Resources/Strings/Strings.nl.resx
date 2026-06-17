@@ -2037,4 +2037,6 @@
   <data name="Status_MacroCopied" xml:space="preserve"><value>Macro naar klembord gekopieerd.</value></data>
   <data name="Status_MacroPasted" xml:space="preserve"><value>Macro geplakt.</value></data>
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>Het klembord bevat geen gekopieerde macro.</value></data>
+  <data name="Status_MacroCopiedFrom" xml:space="preserve"><value>Macro's gekopieerd van de geselecteerde virtuele controller.</value></data>
+  <data name="Status_MacroNoSource" xml:space="preserve"><value>Geen andere virtuele controllers hebben macro's om van te kopiëren.</value></data>
 </root>

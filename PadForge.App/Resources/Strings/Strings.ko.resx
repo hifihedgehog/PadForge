@@ -469,6 +469,7 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>최댓값</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>누산기의 상한. 1 = 전체 양수.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>램프</value></data>
+  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>기본 모드</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>어택</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>해당 키를 누르고 있는 동안 최대 편향에 도달하는 시간(초). 0 = 즉시.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>릴리스</value></data>

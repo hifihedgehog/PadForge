@@ -671,16 +671,7 @@ namespace PadForge.Services
                     // descriptor into a device's PadSetting), so the
                     // filter here is no longer needed.
                     string primaryDesc = mapping.SourceDescriptor ?? "";
-                    bool primaryIsKind = mapping.PrimaryKindSource != null
-                        && !string.Equals(mapping.PrimaryKindSource.Kind ?? "Direct", "Direct", StringComparison.Ordinal);
-                    if (primaryIsKind)
-                    {
-                        // Non-Direct primary kind (Incremental / Ramped / InvertOnHold,
-                        // #111 follow-up). The descriptor is unused; persist the kind and
-                        // its params as Sources[0] so the load reads it as the primary.
-                        row.Sources.Add(mapping.PrimaryKindSource.ToDomain());
-                    }
-                    else if (!string.IsNullOrEmpty(primaryDesc))
+                    if (!string.IsNullOrEmpty(primaryDesc))
                     {
                         // Strip any I/H prefix off the descriptor so
                         // the new schema's per-source bool flags are

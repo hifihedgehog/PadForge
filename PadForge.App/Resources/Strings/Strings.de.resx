@@ -469,7 +469,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Obere Grenze des Akkumulators. 1 = voll positiv.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampe</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Primärer Modus</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Anstieg</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Sekunden bis zur vollen Auslenkung, während die passende Taste gehalten wird. 0 = sofort.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Abfall</value></data>

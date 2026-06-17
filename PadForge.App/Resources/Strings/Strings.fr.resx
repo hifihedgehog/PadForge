@@ -469,7 +469,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Borne supérieure de l'accumulateur. 1 = positif complet.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampe</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Mode principal</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Attaque</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Secondes pour atteindre la pleine amplitude tant que la touche correspondante est maintenue. 0 = instantané.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Relâchement</value></data>

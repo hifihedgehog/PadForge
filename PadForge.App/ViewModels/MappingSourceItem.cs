@@ -29,6 +29,10 @@ namespace PadForge.ViewModels
         private string _paramModifier = "";
         private double _gyroSensitivity = 1.0;
         private double _mouseCursorSensitivity = 1.0;
+        private double _paramAttackTime = 0.30;
+        private double _paramReleaseTime = 0.30;
+        private bool _paramAutocenter = true;
+        private double _paramReverseMultiplier = 4.0;
 
         public string Kind
         {
@@ -39,6 +43,7 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(IsIncrementalKind));
                     OnPropertyChanged(nameof(IsInvertOnHoldKind));
+                    OnPropertyChanged(nameof(IsRampedKind));
                     OnPropertyChanged(nameof(IsKindDescriptorless));
                     OnPropertyChanged(nameof(ParamUpInputChoice));
                     OnPropertyChanged(nameof(ParamDownInputChoice));
@@ -49,6 +54,7 @@ namespace PadForge.ViewModels
 
         public bool IsIncrementalKind => string.Equals(_kind, "Incremental", StringComparison.Ordinal);
         public bool IsInvertOnHoldKind => string.Equals(_kind, "InvertOnHold", StringComparison.Ordinal);
+        public bool IsRampedKind => string.Equals(_kind, "Ramped", StringComparison.Ordinal);
 
         /// <summary>True for kinds where the source's main Descriptor +
         /// Invert / HalfAxis / DeadZone fields are unused (Incremental
@@ -56,7 +62,7 @@ namespace PadForge.ViewModels
         /// modifier that only uses ParamModifier). Used by the XAML to
         /// collapse the redundant primary controls so the user only sees
         /// the kind-specific row below.</summary>
-        public bool IsKindDescriptorless => IsIncrementalKind || IsInvertOnHoldKind;
+        public bool IsKindDescriptorless => IsIncrementalKind || IsInvertOnHoldKind || IsRampedKind;
 
         /// <summary>One entry in the user-facing Kind dropdown. <see cref="Value"/>
         /// is the schema/engine identifier ("Direct" / "Incremental" / "InvertOnHold")
@@ -88,6 +94,7 @@ namespace PadForge.ViewModels
                     new KindChoice { Value = "Direct",       Name = Strings.Instance.Pad_Mapping_Kind_Direct },
                     new KindChoice { Value = "Incremental",  Name = Strings.Instance.Pad_Mapping_Kind_Incremental },
                     new KindChoice { Value = "InvertOnHold", Name = Strings.Instance.Pad_Mapping_Kind_InvertOnHold },
+                    new KindChoice { Value = "Ramped",       Name = Strings.Instance.Pad_Mapping_Kind_Ramped },
                 };
                 _kindOptionsCache = arr;
                 _kindOptionsCacheCulture = currentCulture;
@@ -394,6 +401,40 @@ namespace PadForge.ViewModels
         public bool ParamSticky { get => _paramSticky; set => SetProperty(ref _paramSticky, value); }
         public double ParamMin { get => _paramMin; set => SetProperty(ref _paramMin, value); }
         public double ParamMax { get => _paramMax; set => SetProperty(ref _paramMax, value); }
+
+        /// <summary>Ramped attack time in seconds (issue #111). 0 to 5; the UI slider
+        /// runs 0 to 2. Time for the axis to travel 0 to ±1 while the matching key is
+        /// held. Only meaningful when <see cref="IsRampedKind"/>.</summary>
+        public double ParamAttackTime
+        {
+            get => _paramAttackTime;
+            set => SetProperty(ref _paramAttackTime, System.Math.Clamp(value, 0, 5));
+        }
+
+        /// <summary>Ramped release time in seconds (issue #111). 0 to 5. Time for the
+        /// axis to travel ±1 back to 0 after release.</summary>
+        public double ParamReleaseTime
+        {
+            get => _paramReleaseTime;
+            set => SetProperty(ref _paramReleaseTime, System.Math.Clamp(value, 0, 5));
+        }
+
+        /// <summary>Ramped autocenter (issue #111). True = release ramps back to zero;
+        /// false = the axis cruises (holds its last value). Gates the reverse speed-up.</summary>
+        public bool ParamAutocenter
+        {
+            get => _paramAutocenter;
+            set => SetProperty(ref _paramAutocenter, value);
+        }
+
+        /// <summary>Ramped reverse speed-up multiplier (issue #111). 1 to 10. Applied
+        /// to the toward-zero step when switching directions while still on the
+        /// original side. 1 disables the speed-up.</summary>
+        public double ParamReverseMultiplier
+        {
+            get => _paramReverseMultiplier;
+            set => SetProperty(ref _paramReverseMultiplier, System.Math.Clamp(value, 1, 10));
+        }
         public string ParamModifier
         {
             get => _paramModifier;
@@ -648,6 +689,10 @@ namespace PadForge.ViewModels
             ParamModifier = _paramModifier ?? "",
             GyroSensitivity = _gyroSensitivity,
             MouseCursorSensitivity = _mouseCursorSensitivity,
+            ParamAttackTime = _paramAttackTime,
+            ParamReleaseTime = _paramReleaseTime,
+            ParamAutocenter = _paramAutocenter,
+            ParamReverseMultiplier = _paramReverseMultiplier,
         };
 
         /// <summary>Populates this VM from a domain
@@ -673,6 +718,10 @@ namespace PadForge.ViewModels
                 ParamModifier = src.ParamModifier ?? "",
                 GyroSensitivity = src.GyroSensitivity > 0 ? src.GyroSensitivity : 1.0,
                 MouseCursorSensitivity = src.MouseCursorSensitivity > 0 ? src.MouseCursorSensitivity : 1.0,
+                ParamAttackTime = src.ParamAttackTime,
+                ParamReleaseTime = src.ParamReleaseTime,
+                ParamAutocenter = src.ParamAutocenter,
+                ParamReverseMultiplier = src.ParamReverseMultiplier >= 1 ? src.ParamReverseMultiplier : 4.0,
             };
         }
     }

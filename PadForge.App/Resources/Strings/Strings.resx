@@ -696,7 +696,7 @@
   <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>Direct</value></data>
   <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>Incremental</value></data>
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Invert On Hold</value></data>
-  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direct = read the source descriptor; Incremental = ramp an accumulator via Up/Down buttons; Invert On Hold = flip the row's output while a modifier button is held.</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direct = read the source descriptor; Incremental = ramp an accumulator via Up/Down buttons; Invert On Hold = flip the row's output while a modifier button is held; Ramp = a time-based axis envelope (attack and release) driven by Up/Down direction keys.</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>Button that ramps the accumulator upward while held</value></data>
   <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Up: button that ramps the accumulator upward while held.</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Button that ramps the accumulator downward while held</value></data>
@@ -709,6 +709,15 @@
   <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Lower bound of the accumulator. -1 = full negative for bipolar axis targets; 0 = unipolar.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Upper bound of the accumulator. 1 = full positive.</value></data>
+  <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Ramp</value></data>
+  <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Attack</value></data>
+  <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Seconds to reach full deflection while the matching key is held. 0 = instant.</value></data>
+  <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Release</value></data>
+  <data name="Pad_Mapping_Ramp_Release_Tooltip" xml:space="preserve"><value>Seconds to return to center after release. 0 = instant.</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse" xml:space="preserve"><value>Reverse</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse_Tooltip" xml:space="preserve"><value>How much faster the axis returns to center when you press the opposite key before it settles. 1 = no speed-up.</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter" xml:space="preserve"><value>Autocenter</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>When checked, the axis ramps back to center on release. When unchecked, it holds its last position.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Button that inverts the row's output while held</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modifier: while held, the row's output flips sign.</value></data>
   <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Add source</value></data>

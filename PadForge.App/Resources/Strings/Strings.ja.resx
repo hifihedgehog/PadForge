@@ -468,6 +468,15 @@
   <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>アキュムレーターの下限値。-1 = 双極性軸ターゲットの最大負；0 = 単極性。</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>最大</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>アキュムレーターの上限値。1 = 最大正。</value></data>
+  <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>ランプ</value></data>
+  <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>アタック</value></data>
+  <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>対応するキーを押している間にフル偏向へ達するまでの秒数。0 = 即時。</value></data>
+  <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>リリース</value></data>
+  <data name="Pad_Mapping_Ramp_Release_Tooltip" xml:space="preserve"><value>離した後に中央へ戻るまでの秒数。0 = 即時。</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse" xml:space="preserve"><value>反転</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse_Tooltip" xml:space="preserve"><value>落ち着く前に反対のキーを押したとき、軸が中央へ戻る速さの倍率。1 = 加速なし。</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter" xml:space="preserve"><value>オートセンター</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>オンの場合、離すと軸が中央へ戻ります。オフの場合、最後の位置を保持します。</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>押している間、行の出力を反転するボタン</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>モディファイアー: 押している間、行の出力の符号が反転します。</value></data>
   <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ ソースを追加</value></data>

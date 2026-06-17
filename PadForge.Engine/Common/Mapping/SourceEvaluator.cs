@@ -38,6 +38,11 @@ namespace PadForge.Engine.Common.Mapping
                     bool result = v > 0.5;
                     return src.Invert ? !result : result;
                 }
+                case "Ramped":
+                    // A ramped axis envelope has no defensible boolean reading; a
+                    // button target gets nothing (issue #111). Picking a threshold
+                    // here would surprise anyone who set up the row.
+                    return false;
                 case "InvertOnHold":
                 {
                     bool modifier = ReadButtonLikeBool(state, src.ParamModifier);
@@ -79,6 +84,15 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     if (runtime == null) return 0f;
                     double v = runtime.TickIncremental(slotIndex, target, sourceIndex,
+                        src, state, frameDeltaSeconds);
+                    if (v < -1) v = -1;
+                    if (v > 1) v = 1;
+                    return src.Invert ? -(float)v : (float)v;
+                }
+                case "Ramped":
+                {
+                    if (runtime == null) return 0f;
+                    double v = runtime.TickRamped(slotIndex, target, sourceIndex,
                         src, state, frameDeltaSeconds);
                     if (v < -1) v = -1;
                     if (v > 1) v = 1;
@@ -209,6 +223,18 @@ namespace PadForge.Engine.Common.Mapping
                     if (v < 0) v = 0;
                     if (v > 1) v = 1;
                     return src.Invert ? 1f - (float)v : (float)v;
+                }
+                case "Ramped":
+                {
+                    // A trigger has no negative side: fold the bipolar envelope to
+                    // [0, 1] so the positive-direction key drives the trigger and the
+                    // negative-direction key reads as released (issue #111).
+                    if (runtime == null) return 0f;
+                    double v = runtime.TickRamped(slotIndex, target, sourceIndex,
+                        src, state, frameDeltaSeconds);
+                    if (v < 0) v = 0;
+                    if (v > 1) v = 1;
+                    return (float)v;
                 }
                 case "InvertOnHold":
                 {

@@ -468,6 +468,15 @@
   <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Limite inferiore dell'accumulatore. -1 = negativo completo per assi bipolari; 0 = unipolare.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Limite superiore dell'accumulatore. 1 = positivo completo.</value></data>
+  <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampa</value></data>
+  <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Attacco</value></data>
+  <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Secondi per raggiungere la deflessione completa mentre il tasto è premuto. 0 = istantaneo.</value></data>
+  <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Rilascio</value></data>
+  <data name="Pad_Mapping_Ramp_Release_Tooltip" xml:space="preserve"><value>Secondi per tornare al centro dopo il rilascio. 0 = istantaneo.</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse" xml:space="preserve"><value>Inversione</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse_Tooltip" xml:space="preserve"><value>Quanto più velocemente l'asse torna al centro quando premi il tasto opposto prima che si assesti. 1 = nessuna accelerazione.</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter" xml:space="preserve"><value>Autocentratura</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Selezionato: l'asse torna al centro al rilascio. Deselezionato: mantiene l'ultima posizione.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Pulsante che inverte l'uscita della riga mentre è tenuto premuto</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modificatore: mentre è tenuto premuto, l'uscita della riga cambia segno.</value></data>
   <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Aggiungi sorgente</value></data>

@@ -851,6 +851,15 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Mapping_Min_Tooltip => Get("Pad_Mapping_Min_Tooltip");
     public string Pad_Mapping_Max => Get("Pad_Mapping_Max");
     public string Pad_Mapping_Max_Tooltip => Get("Pad_Mapping_Max_Tooltip");
+    public string Pad_Mapping_Kind_Ramped => Get("Pad_Mapping_Kind_Ramped");
+    public string Pad_Mapping_Ramp_Attack => Get("Pad_Mapping_Ramp_Attack");
+    public string Pad_Mapping_Ramp_Attack_Tooltip => Get("Pad_Mapping_Ramp_Attack_Tooltip");
+    public string Pad_Mapping_Ramp_Release => Get("Pad_Mapping_Ramp_Release");
+    public string Pad_Mapping_Ramp_Release_Tooltip => Get("Pad_Mapping_Ramp_Release_Tooltip");
+    public string Pad_Mapping_Ramp_Reverse => Get("Pad_Mapping_Ramp_Reverse");
+    public string Pad_Mapping_Ramp_Reverse_Tooltip => Get("Pad_Mapping_Ramp_Reverse_Tooltip");
+    public string Pad_Mapping_Ramp_Autocenter => Get("Pad_Mapping_Ramp_Autocenter");
+    public string Pad_Mapping_Ramp_Autocenter_Tooltip => Get("Pad_Mapping_Ramp_Autocenter_Tooltip");
     public string Pad_Mapping_Modifier_IconTooltip => Get("Pad_Mapping_Modifier_IconTooltip");
     public string Pad_Mapping_Modifier_PickerTooltip => Get("Pad_Mapping_Modifier_PickerTooltip");
     public string Pad_Mapping_AddSource => Get("Pad_Mapping_AddSource");

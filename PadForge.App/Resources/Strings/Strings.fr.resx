@@ -468,6 +468,15 @@
   <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Borne inférieure de l'accumulateur. -1 = négatif complet pour les axes bipolaires ; 0 = unipolaire.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Borne supérieure de l'accumulateur. 1 = positif complet.</value></data>
+  <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampe</value></data>
+  <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Attaque</value></data>
+  <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Secondes pour atteindre la pleine amplitude tant que la touche correspondante est maintenue. 0 = instantané.</value></data>
+  <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Relâchement</value></data>
+  <data name="Pad_Mapping_Ramp_Release_Tooltip" xml:space="preserve"><value>Secondes pour revenir au centre après le relâchement. 0 = instantané.</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse" xml:space="preserve"><value>Inversion</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse_Tooltip" xml:space="preserve"><value>À quel point l'axe revient plus vite au centre quand vous appuyez sur la touche opposée avant qu'il se stabilise. 1 = pas d'accélération.</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter" xml:space="preserve"><value>Auto-centrage</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Coché : l'axe revient au centre au relâchement. Décoché : il garde sa dernière position.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Bouton qui inverse la sortie de la ligne lorsqu'il est maintenu</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modificateur : lorsqu'il est maintenu, la sortie de la ligne change de signe.</value></data>
   <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Ajouter une source</value></data>

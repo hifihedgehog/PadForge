@@ -468,6 +468,15 @@
   <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Untere Grenze des Akkumulators. -1 = voll negativ für bipolare Achsen; 0 = unipolar.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Obere Grenze des Akkumulators. 1 = voll positiv.</value></data>
+  <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampe</value></data>
+  <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Anstieg</value></data>
+  <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Sekunden bis zur vollen Auslenkung, während die passende Taste gehalten wird. 0 = sofort.</value></data>
+  <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Abfall</value></data>
+  <data name="Pad_Mapping_Ramp_Release_Tooltip" xml:space="preserve"><value>Sekunden bis zur Rückkehr zur Mitte nach dem Loslassen. 0 = sofort.</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse" xml:space="preserve"><value>Umkehr</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse_Tooltip" xml:space="preserve"><value>Wie viel schneller die Achse zur Mitte zurückkehrt, wenn die Gegentaste gedrückt wird, bevor sie sich beruhigt. 1 = keine Beschleunigung.</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter" xml:space="preserve"><value>Auto-Zentrierung</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Aktiviert: Die Achse kehrt beim Loslassen zur Mitte zurück. Deaktiviert: Sie hält ihre letzte Position.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Taste, die beim Halten den Zeilenausgang umkehrt</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modifikator: solange gehalten, wird das Vorzeichen des Zeilenausgangs umgekehrt.</value></data>
   <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Quelle hinzufügen</value></data>

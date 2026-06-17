@@ -26,6 +26,12 @@ namespace PadForge.Engine.Common.Mapping
         private readonly Dictionary<(int slot, string target, int srcIdx), double> _incrementalAccum
             = new();
 
+        // Ramped axis envelope accumulator (v3.5 #111), bipolar [-1, +1], same
+        // (slot, target, srcIdx) key as Incremental so two ramped sources on one
+        // row keep independent state.
+        private readonly Dictionary<(int slot, string target, int srcIdx), double> _rampedAccum
+            = new();
+
         // ── Steering kinds (v3.4 #94) ──
         /// <summary>Lock-edge transition reported to the lock-feedback layer.</summary>
         public enum LockEdge : byte { None, Enter, Exit }
@@ -54,6 +60,7 @@ namespace PadForge.Engine.Common.Mapping
         public void Clear()
         {
             _incrementalAccum.Clear();
+            _rampedAccum.Clear();
             _windingState.Clear();
             _lockState.Clear();
             _motionNeutral.Clear();
@@ -140,6 +147,84 @@ namespace PadForge.Engine.Common.Mapping
 
             _incrementalAccum[key] = current;
             return current;
+        }
+
+        /// <summary>
+        /// Updates the Ramped axis envelope for this source and returns the
+        /// per-frame bipolar value in [-1, +1] (issue #111). The positive key
+        /// (<see cref="MappingSource.ParamUp"/>) attacks toward +1, the negative key
+        /// (<see cref="MappingSource.ParamDown"/>) toward -1, each over
+        /// <see cref="MappingSource.ParamAttackTime"/>. Releasing both ramps back to 0
+        /// over <see cref="MappingSource.ParamReleaseTime"/> when autocenter is on, or
+        /// holds (cruise) when off. Pressing the opposite key while still on the
+        /// original side first returns toward zero at the release rate, multiplied by
+        /// <see cref="MappingSource.ParamReverseMultiplier"/> when autocenter is on,
+        /// then attacks the new side once it crosses zero. Linear ramps only; the
+        /// FreePIE center_reduction shaping is out of scope per the recipe.
+        /// </summary>
+        public double TickRamped(
+            int slotIndex,
+            string target,
+            int sourceIndex,
+            MappingSource src,
+            CustomInputState state,
+            double frameDeltaSeconds)
+        {
+            if (src == null || state == null) return 0;
+            var key = (slotIndex, target ?? "", sourceIndex);
+            _rampedAccum.TryGetValue(key, out double v);
+
+            bool up = ReadButtonLikeBool(state, src.ParamUp);     // positive direction
+            bool down = ReadButtonLikeBool(state, src.ParamDown); // negative direction
+
+            double attack = src.ParamAttackTime;   if (attack < 0) attack = 0;
+            double release = src.ParamReleaseTime; if (release < 0) release = 0;
+            double rev = src.ParamReverseMultiplier; if (rev < 1) rev = 1;
+
+            // Per-tick fraction of the full 0..1 travel. Time 0 means instant.
+            double attackStep  = attack  > 0 ? frameDeltaSeconds / attack  : 1.0;
+            double releaseStep = release > 0 ? frameDeltaSeconds / release : 1.0;
+
+            if (up && !down)
+            {
+                if (v < 0)
+                {
+                    // Still on the negative side while pressing positive: return toward
+                    // zero at the release rate (4x faster when autocenter is on), then
+                    // attack the positive side once it crosses zero.
+                    v += releaseStep * (src.ParamAutocenter ? rev : 1.0);
+                    if (v > 0) v = 0;
+                }
+                else
+                {
+                    v += attackStep;
+                    if (v > 1) v = 1;
+                }
+            }
+            else if (down && !up)
+            {
+                if (v > 0)
+                {
+                    v -= releaseStep * (src.ParamAutocenter ? rev : 1.0);
+                    if (v < 0) v = 0;
+                }
+                else
+                {
+                    v -= attackStep;
+                    if (v < -1) v = -1;
+                }
+            }
+            else if (src.ParamAutocenter)
+            {
+                // Neither (or both) held: ramp back toward zero at the release rate.
+                if (v > 0) { v -= releaseStep; if (v < 0) v = 0; }
+                else if (v < 0) { v += releaseStep; if (v > 0) v = 0; }
+            }
+            // else: autocenter off and not driving → cruise, hold last value.
+
+            if (v < -1) v = -1; else if (v > 1) v = 1;
+            _rampedAccum[key] = v;
+            return v;
         }
 
         // ── Steering kind ticks (v3.4 #94) ──

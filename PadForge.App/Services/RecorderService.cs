@@ -799,6 +799,7 @@ namespace PadForge.Services
                     ExtraSource = extraSource,
                     Descriptor = finalDescriptor,
                     Type = type,
+                    IsParamRecording = true,
                 });
                 return;
             }
@@ -1149,5 +1150,11 @@ namespace PadForge.Services
 
         /// <summary>The detected input type.</summary>
         public MapType Type { get; set; }
+
+        /// <summary>True when the recording only updated a Param field
+        /// (Up / Down / Modifier) on <see cref="ExtraSource"/>. The source
+        /// already exists (it's an extra source, or the row's primary kind
+        /// holder), so the completion handler must NOT add it to ExtraSources.</summary>
+        public bool IsParamRecording { get; set; }
     }
 }

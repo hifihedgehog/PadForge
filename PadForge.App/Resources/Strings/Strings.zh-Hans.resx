@@ -469,6 +469,7 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>最大</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>累加器上限。1 = 完全正值。</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>渐变</value></data>
+  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>主模式</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>上升</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>按住对应按键时达到完全偏转的秒数。0 = 立即。</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>下降</value></data>

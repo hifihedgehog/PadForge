@@ -1463,6 +1463,9 @@ namespace PadForge
                 pad.CopySettingsRequested += (s, e) => OnCopySettings(capturedPad);
                 pad.PasteSettingsRequested += (s, e) => OnPasteSettings(capturedPad);
                 pad.CopyFromRequested += (s, e) => OnCopyFrom(capturedPad);
+                pad.CopyMacroRequested += (s, e) => OnCopyMacro(capturedPad);
+                pad.PasteMacroRequested += (s, e) => OnPasteMacro(capturedPad);
+                pad.CopyMacroFromOtherDeviceRequested += (s, e) => OnCopyMacroFromOtherDevice(capturedPad);
             }
 
             // Build the sidebar navigation items dynamically.
@@ -4827,6 +4830,117 @@ namespace PadForge
 
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsPasted;
+            }
+            catch (Exception ex)
+            {
+                _viewModel.StatusText = string.Format(Strings.Instance.Status_PasteFailed_Format, ex.Message);
+            }
+        }
+
+        // ── Macro clipboard (#112) ──
+
+        private void OnCopyMacro(PadViewModel padVm)
+        {
+            try
+            {
+                var macro = padVm.SelectedMacro;
+                if (macro == null) return;
+                var data = SettingsService.BuildMacroDataForMacro(macro, padVm.PadIndex);
+                var src = macro.GetPrimaryDeviceGuid();
+                string srcGuid = src != Guid.Empty ? src.ToString("N") : null;
+                Clipboard.SetText(SettingsService.SerializeMacrosToClipboard(new[] { data }, srcGuid));
+                _viewModel.StatusText = Strings.Instance.Status_MacroCopied;
+            }
+            catch (Exception ex)
+            {
+                _viewModel.StatusText = string.Format(Strings.Instance.Status_CopyFailed_Format, ex.Message);
+            }
+        }
+
+        private void OnPasteMacro(PadViewModel padVm)
+        {
+            try
+            {
+                var env = SettingsService.TryParseMacroClipboard(Clipboard.GetText());
+                if (env == null) { _viewModel.StatusText = Strings.Instance.Status_MacroClipboardInvalid; return; }
+                MacroItem last = null;
+                foreach (var md in env.Macros)
+                {
+                    var macro = SettingsService.LoadMacroFromData(md, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount);
+                    macro.PadIndex = padVm.PadIndex;
+                    padVm.Macros.Add(macro);
+                    last = macro;
+                }
+                if (last != null) padVm.SelectedMacro = last;
+                _settingsService.MarkDirty();
+                _viewModel.StatusText = Strings.Instance.Status_MacroPasted;
+            }
+            catch (Exception ex)
+            {
+                _viewModel.StatusText = string.Format(Strings.Instance.Status_PasteFailed_Format, ex.Message);
+            }
+        }
+
+        private void OnCopyMacroFromOtherDevice(PadViewModel padVm)
+        {
+            try
+            {
+                var env = SettingsService.TryParseMacroClipboard(Clipboard.GetText());
+                if (env == null) { _viewModel.StatusText = Strings.Instance.Status_MacroClipboardInvalid; return; }
+
+                // Pick which of this slot's assigned devices the macro's triggers bind to.
+                var devices = padVm.MappedDevices
+                    .Where(d => d != null && d.InstanceGuid != Guid.Empty)
+                    .GroupBy(d => d.InstanceGuid).Select(g => g.First()).ToList();
+                if (devices.Count == 0) { _viewModel.StatusText = Strings.Instance.Status_MacroNoTargetDevice; return; }
+
+                Guid targetGuid;
+                if (devices.Count == 1)
+                {
+                    targetGuid = devices[0].InstanceGuid;
+                }
+                else
+                {
+                    var entries = devices.Select(d => new CopyFromDialog.DeviceEntry
+                    {
+                        Name = d.Name,
+                        InstanceGuid = d.InstanceGuid,
+                        SlotLabel = string.Empty,
+                        LayoutLabel = string.Empty,
+                    }).ToList();
+                    var dialog = new CopyFromDialog(entries)
+                    {
+                        Owner = this,
+                        Title = Strings.Instance.Pad_Macros_PickTargetDevice,
+                    };
+                    if (dialog.ShowDialog() != true || dialog.SelectedEntry == null) return;
+                    targetGuid = dialog.SelectedEntry.InstanceGuid;
+                }
+
+                var targetUd = SettingsManager.FindDeviceByInstanceGuid(targetGuid);
+                Func<int, bool> hasButton = idx => targetUd?.DeviceObjects != null
+                    && targetUd.DeviceObjects.Any(o => o != null
+                        && (o.ObjectType & DeviceObjectTypeFlags.PushButton) != 0
+                        && o.InputIndex == idx);
+
+                Guid.TryParse(env.SourceDeviceGuid, out var srcGuid);
+
+                MacroItem last = null;
+                int orphanTotal = 0;
+                foreach (var md in env.Macros)
+                {
+                    var macro = SettingsService.LoadMacroFromData(md, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount);
+                    macro.PadIndex = padVm.PadIndex;
+                    macro.RewriteForDevice(srcGuid, targetGuid, hasButton);
+                    orphanTotal += macro.OrphanCount;
+                    padVm.Macros.Add(macro);
+                    last = macro;
+                }
+                if (last != null) padVm.SelectedMacro = last;
+                _settingsService.MarkDirty();
+                _viewModel.StatusText = orphanTotal > 0
+                    ? string.Format(Strings.Instance.Pad_Macros_OrphanWarning, orphanTotal)
+                    : Strings.Instance.Status_MacroPasted;
             }
             catch (Exception ex)
             {

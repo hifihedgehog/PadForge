@@ -11,6 +11,7 @@ using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 using PadForge.Resources.Strings;
+using PadForge.Services;
 
 namespace PadForge.ViewModels
 {
@@ -3219,6 +3220,45 @@ namespace PadForge.ViewModels
                     SelectedMacro = Macros.LastOrDefault();
                 }
             }, () => HasSelectedMacro);
+
+        private RelayCommand _duplicateMacroCommand;
+        /// <summary>Duplicates the selected macro within this slot (#112). The clone
+        /// round-trips through the macro DTO, so it is a deep copy and the runtime-only
+        /// execution state (IsExecuting, CurrentActionIndex, ...) drops away. A macro
+        /// that is mid-fire keeps firing to completion; the clone starts cold.</summary>
+        public RelayCommand DuplicateMacroCommand =>
+            _duplicateMacroCommand ??= new RelayCommand(() =>
+            {
+                if (_selectedMacro == null) return;
+                var data = SettingsService.BuildMacroDataForMacro(_selectedMacro, PadIndex);
+                var clone = SettingsService.LoadMacroFromData(data, OutputType, ExtendedConfig?.ButtonCount);
+                clone.PadIndex = PadIndex;
+                clone.Name = string.Format(Strings.Instance.Macro_CopyNameFormat, _selectedMacro.Name);
+                Macros.Add(clone);
+                SelectedMacro = clone;
+            }, () => HasSelectedMacro);
+
+        // Macro clipboard (#112). The View layer (MainWindow) owns the clipboard
+        // and the device picker, so these mirror the slot Copy / Paste / Copy From
+        // triplet: the command raises an event, MainWindow does the work.
+        public event EventHandler CopyMacroRequested;
+        private RelayCommand _copyMacroCommand;
+        public RelayCommand CopyMacroCommand =>
+            _copyMacroCommand ??= new RelayCommand(
+                () => CopyMacroRequested?.Invoke(this, EventArgs.Empty),
+                () => HasSelectedMacro);
+
+        public event EventHandler PasteMacroRequested;
+        private RelayCommand _pasteMacroCommand;
+        public RelayCommand PasteMacroCommand =>
+            _pasteMacroCommand ??= new RelayCommand(
+                () => PasteMacroRequested?.Invoke(this, EventArgs.Empty));
+
+        public event EventHandler CopyMacroFromOtherDeviceRequested;
+        private RelayCommand _copyMacroFromOtherDeviceCommand;
+        public RelayCommand CopyMacroFromOtherDeviceCommand =>
+            _copyMacroFromOtherDeviceCommand ??= new RelayCommand(
+                () => CopyMacroFromOtherDeviceRequested?.Invoke(this, EventArgs.Empty));
 
         // ═══════════════════════════════════════════════
         //  Audio tab (issue #83) — per-slot sound output for macro sounds

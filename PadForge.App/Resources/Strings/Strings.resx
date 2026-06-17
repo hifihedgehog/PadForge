@@ -70,6 +70,7 @@
   <data name="Common_Refresh" xml:space="preserve"><value>Refresh</value></data>
   <data name="Common_Copy" xml:space="preserve"><value>Copy</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Paste</value></data>
+  <data name="Common_Duplicate" xml:space="preserve"><value>Duplicate</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Enabled</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Disabled</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Installed</value></data>
@@ -161,6 +162,10 @@
   <data name="Status_NoDeviceToCopyFrom" xml:space="preserve"><value>No device selected to copy from.</value></data>
   <data name="Status_NoOtherDevices" xml:space="preserve"><value>No other configured virtual controllers found to copy from.</value></data>
   <data name="Status_SettingsCopiedFromDevice" xml:space="preserve"><value>Settings copied from selected device.</value></data>
+  <data name="Status_MacroCopied" xml:space="preserve"><value>Macro copied to clipboard.</value></data>
+  <data name="Status_MacroPasted" xml:space="preserve"><value>Macro pasted.</value></data>
+  <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>Clipboard does not contain a copied macro.</value></data>
+  <data name="Status_MacroNoTargetDevice" xml:space="preserve"><value>This slot has no assigned device to map the macro to.</value></data>
   <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>Profile "{0}" created (empty).</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Profile "{0}" created.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>Profile "{0}" deleted.</value></data>
@@ -417,6 +422,10 @@
 
   <!-- ═══ Pad Page ═══ -->
   <data name="Pad_Macros" xml:space="preserve"><value>Macros</value></data>
+  <data name="Macro_CopyNameFormat" xml:space="preserve"><value>{0} (Copy)</value></data>
+  <data name="Pad_Macros_CopyFromOtherDevice" xml:space="preserve"><value>Copy From Other Device...</value></data>
+  <data name="Pad_Macros_OrphanWarning" xml:space="preserve"><value>{0} trigger sources or actions don't match this device. Re-record or remove them.</value></data>
+  <data name="Pad_Macros_PickTargetDevice" xml:space="preserve"><value>Map these triggers to this device</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Mappings</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Triggers</value></data>

@@ -1776,6 +1776,10 @@
   <data name="Pad_Shift_CycleDirection_Next" xml:space="preserve"><value>Next</value></data>
   <data name="Pad_Shift_CycleDirection_Previous" xml:space="preserve"><value>Previous</value></data>
   <data name="Pad_Shift_CycleDirection_Tooltip" xml:space="preserve"><value>Next walks forward through the layers. Set a second activator on the same list to Previous to walk backward. Both share one position.</value></data>
+  <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Wrap Around</value></data>
+  <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>When on, stepping past the last layer returns to the first, and past the first returns to the last. When off, the cursor stops at the ends.</value></data>
+  <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Include Base</value></data>
+  <data name="Pad_Shift_CycleIncludeBase_Tooltip" xml:space="preserve"><value>When on, the unshifted Base is a stop in the rotation, so cycling can land back on it. When off, the cursor stays on the checked layers and you return to Base with a separate activator.</value></data>
   <data name="Pad_Shift_Kind" xml:space="preserve"><value>Activator Kind</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Button</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Chord (A + B)</value></data>

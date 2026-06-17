@@ -2023,4 +2023,8 @@
   <data name="Pad_Shift_CycleDirection_Next" xml:space="preserve"><value>Nächste</value></data>
   <data name="Pad_Shift_CycleDirection_Previous" xml:space="preserve"><value>Vorherige</value></data>
   <data name="Pad_Shift_CycleDirection_Tooltip" xml:space="preserve"><value>Nächste geht die Ebenen vorwärts durch. Stellen Sie einen zweiten Auslöser mit derselben Liste auf Vorherige, um rückwärts zu gehen. Beide teilen sich eine Position.</value></data>
+  <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Umlaufen</value></data>
+  <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Wenn aktiviert, kehrt der Cursor nach der letzten Ebene zur ersten zurück und vor der ersten zur letzten. Wenn deaktiviert, stoppt er an den Enden.</value></data>
+  <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Basis einbeziehen</value></data>
+  <data name="Pad_Shift_CycleIncludeBase_Tooltip" xml:space="preserve"><value>Wenn aktiviert, ist die ungeschaltete Basis ein Halt im Umlauf, sodass der Wechsel wieder dort landen kann. Wenn deaktiviert, bleibt der Cursor auf den ausgewählten Ebenen, und Sie kehren mit einem separaten Auslöser zur Basis zurück.</value></data>
 </root>

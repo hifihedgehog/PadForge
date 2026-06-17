@@ -1,10 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!-- Matches PadForge.Engine's TFM so the Windows-targeted engine assembly
-         can be referenced directly. The tested code (PeerCrypto, the wire codec)
-         is platform-neutral, but the reference TFM has to line up. -->
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <!-- Matches PadForge.App's TFM (the more specific of App/Engine) so both the
+         Windows-targeted engine assembly and the WPF app assembly can be referenced
+         directly. The macro QOL tests (#112) exercise App-layer DTO round-trips and
+         the device-rewrite logic, which live in PadForge.App. -->
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <IsPackable>false</IsPackable>
@@ -19,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PadForge.Engine\PadForge.Engine.csproj" />
+    <ProjectReference Include="..\PadForge.App\PadForge.App.csproj" />
   </ItemGroup>
 
   <ItemGroup>

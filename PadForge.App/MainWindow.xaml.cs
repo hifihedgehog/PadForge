@@ -4931,7 +4931,13 @@ namespace PadForge
                 {
                     var macro = SettingsService.LoadMacroFromData(md, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount);
                     macro.PadIndex = padVm.PadIndex;
-                    macro.RewriteForDevice(srcGuid, targetGuid, hasButton);
+                    // Only retarget when the copied macro actually had a source device.
+                    // With no source guid (legacy Xbox-bitmask trigger, axis-only, or an
+                    // output-channel expression) there is nothing to remap, and rewriting
+                    // Guid.Empty would wrongly stamp the target onto unbound fields, so
+                    // this degenerates to a verbatim paste.
+                    if (srcGuid != Guid.Empty)
+                        macro.RewriteForDevice(srcGuid, targetGuid, hasButton);
                     orphanTotal += macro.OrphanCount;
                     padVm.Macros.Add(macro);
                     last = macro;

@@ -119,6 +119,13 @@ namespace PadForge.Engine.Data
         /// Used only when <see cref="Mode"/> == <c>"Cycle"</c>.</summary>
         [XmlAttribute] public string CycleLayers { get; set; } = "";
 
+        /// <summary>v3 Cycle direction (#119). <c>"Next"</c> (default) advances
+        /// forward through <see cref="CycleLayers"/>; <c>"Previous"</c> steps
+        /// backward. A Next activator and a Previous activator wired to the same
+        /// <see cref="CycleLayers"/> list walk one shared cursor, so two buttons
+        /// browse a queue forward and back (weapon / menu switching).</summary>
+        [XmlAttribute] public string Direction { get; set; } = "Next";
+
         /// <summary>v3 personalization: emoji or single-grapheme string
         /// shown on the engaged-layer flyout. Empty falls back to the
         /// universal Shift glyph <c>⇧</c>.</summary>

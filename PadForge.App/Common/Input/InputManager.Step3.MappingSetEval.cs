@@ -349,7 +349,6 @@ namespace PadForge.Common.Input
         {
             public bool[] WasDown = System.Array.Empty<bool>();
             public bool[] ToggleOn = System.Array.Empty<bool>();
-            public int[]  CycleIndex   = System.Array.Empty<int>();      // v3 Cycle mode position
             public long[] EngageStartTicks = System.Array.Empty<long>(); // v2 Delay debounce
             // Cycle mode caches the split CycleLayers string per-activator
             // so the polling-thread tick doesn't reallocate every frame.
@@ -379,6 +378,13 @@ namespace PadForge.Common.Input
             public readonly List<int> Stack = new();
             public string CustomLayer = "";   // v2 Custom mode current layer (overrides stack when non-empty)
 
+            // v3 Cycle position, keyed by the activator's CycleLayers string
+            // rather than by activator index, so a Next activator and a Previous
+            // activator on the same list share one cursor (#119), and separate
+            // queues (different lists) keep independent positions. Guarded by
+            // SyncRoot like CustomLayer. 0 = Base; 1..N = layers[0..N-1].
+            public readonly Dictionary<string, int> CycleIndexByList = new();
+
             /// <summary>Sync lock guarding <see cref="Stack"/> and
             /// <see cref="CustomLayer"/> against cross-thread reads (UI
             /// thread <see cref="GetEngagedLayerMask"/> + Clear) versus
@@ -393,7 +399,6 @@ namespace PadForge.Common.Input
                 int newSize = count;
                 WasDown = ResizeBool(WasDown, newSize);
                 ToggleOn = ResizeBool(ToggleOn, newSize);
-                CycleIndex = ResizeInt(CycleIndex, newSize);
                 EngageStartTicks = ResizeLong(EngageStartTicks, newSize);
                 CycleLayersSplit = ResizeStringArrays(CycleLayersSplit, newSize);
                 CycleLayersSource = ResizeStringArr(CycleLayersSource, newSize);
@@ -406,7 +411,6 @@ namespace PadForge.Common.Input
             {
                 System.Array.Clear(WasDown, 0, WasDown.Length);
                 System.Array.Clear(ToggleOn, 0, ToggleOn.Length);
-                System.Array.Clear(CycleIndex, 0, CycleIndex.Length);
                 System.Array.Clear(EngageStartTicks, 0, EngageStartTicks.Length);
                 System.Array.Clear(CycleLayersSplit, 0, CycleLayersSplit.Length);
                 System.Array.Clear(CycleLayersSource, 0, CycleLayersSource.Length);
@@ -417,6 +421,7 @@ namespace PadForge.Common.Input
                 {
                     Stack.Clear();
                     CustomLayer = "";
+                    CycleIndexByList.Clear();
                 }
             }
 
@@ -664,9 +669,19 @@ namespace PadForge.Common.Input
                         var layers = rt.CycleLayersSplit[actIdx];
                         if (layers != null && layers.Length > 0)
                         {
-                            rt.CycleIndex[actIdx] = (rt.CycleIndex[actIdx] + 1) % (layers.Length + 1);
-                            string newLayer = rt.CycleIndex[actIdx] == 0 ? "" : layers[rt.CycleIndex[actIdx] - 1];
-                            lock (rt.SyncRoot) rt.CustomLayer = newLayer;
+                            int n = layers.Length;
+                            bool previous = string.Equals(act.Direction, "Previous", System.StringComparison.Ordinal);
+                            // Shared cursor keyed by the list string, so a Next and a
+                            // Previous activator on the same list step one position
+                            // (#119). Reverse step (pos - 1) mod (n + 1) is written
+                            // as (pos + n) mod (n + 1) to stay non-negative.
+                            lock (rt.SyncRoot)
+                            {
+                                rt.CycleIndexByList.TryGetValue(src, out int pos);
+                                pos = previous ? (pos + n) % (n + 1) : (pos + 1) % (n + 1);
+                                rt.CycleIndexByList[src] = pos;
+                                rt.CustomLayer = pos == 0 ? "" : layers[pos - 1];
+                            }
                         }
                     }
                     break;

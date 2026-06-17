@@ -413,9 +413,26 @@
             <!-- Cycle layers (Mode=Cycle). Checkbox list of existing
                  layers; check the ones to include in the rotation. Order
                  follows the source list. -->
-            <TextBlock Grid.Row="15" x:Name="CycleLabel"
-                       Text="{Binding Pad_Shift_CycleLayers, Source={x:Static strings:Strings.Instance}}"
-                       Margin="0,0,0,4"/>
+            <Grid Grid.Row="15" x:Name="CycleHeaderRow" Margin="0,0,0,4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                           Text="{Binding Pad_Shift_CycleLayers, Source={x:Static strings:Strings.Instance}}"/>
+                <!-- Cycle direction (#119): one activator walks Next, a second on the
+                     same list walks Previous, sharing one cursor. -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Pad_Shift_CycleDirection, Source={x:Static strings:Strings.Instance}}"
+                               VerticalAlignment="Center" Margin="0,0,6,0"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    <ComboBox x:Name="CycleDirectionCombo" MinWidth="120" SelectedValuePath="Tag"
+                              ToolTip="{Binding Pad_Shift_CycleDirection_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                        <ComboBoxItem Tag="Next" Content="{Binding Pad_Shift_CycleDirection_Next, Source={x:Static strings:Strings.Instance}}"/>
+                        <ComboBoxItem Tag="Previous" Content="{Binding Pad_Shift_CycleDirection_Previous, Source={x:Static strings:Strings.Instance}}"/>
+                    </ComboBox>
+                </StackPanel>
+            </Grid>
             <ListBox Grid.Row="16" x:Name="CycleLayersList" Margin="0,0,0,12"
                      MinHeight="80" MaxHeight="160"
                      ScrollViewer.VerticalScrollBarVisibility="Visible"

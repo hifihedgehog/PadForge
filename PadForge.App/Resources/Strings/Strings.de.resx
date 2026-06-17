@@ -2019,4 +2019,8 @@
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>Die Zwischenablage enthält kein kopiertes Makro.</value></data>
   <data name="Status_MacroCopiedFrom" xml:space="preserve"><value>Makros vom ausgewählten virtuellen Controller kopiert.</value></data>
   <data name="Status_MacroNoSource" xml:space="preserve"><value>Keine anderen virtuellen Controller haben Makros zum Kopieren.</value></data>
+  <data name="Pad_Shift_CycleDirection" xml:space="preserve"><value>Richtung</value></data>
+  <data name="Pad_Shift_CycleDirection_Next" xml:space="preserve"><value>Nächste</value></data>
+  <data name="Pad_Shift_CycleDirection_Previous" xml:space="preserve"><value>Vorherige</value></data>
+  <data name="Pad_Shift_CycleDirection_Tooltip" xml:space="preserve"><value>Nächste geht die Ebenen vorwärts durch. Stellen Sie einen zweiten Auslöser mit derselben Liste auf Vorherige, um rückwärts zu gehen. Beide teilen sich eine Position.</value></data>
 </root>

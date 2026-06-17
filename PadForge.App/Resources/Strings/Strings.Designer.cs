@@ -1885,6 +1885,10 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Shift_ChordSecondInput => Get("Pad_Shift_ChordSecondInput");
     public string Pad_Shift_AxisThreshold => Get("Pad_Shift_AxisThreshold");
     public string Pad_Shift_CycleLayers => Get("Pad_Shift_CycleLayers");
+    public string Pad_Shift_CycleDirection => Get("Pad_Shift_CycleDirection");
+    public string Pad_Shift_CycleDirection_Next => Get("Pad_Shift_CycleDirection_Next");
+    public string Pad_Shift_CycleDirection_Previous => Get("Pad_Shift_CycleDirection_Previous");
+    public string Pad_Shift_CycleDirection_Tooltip => Get("Pad_Shift_CycleDirection_Tooltip");
     public string Pad_Shift_Kind => Get("Pad_Shift_Kind");
     public string Pad_Shift_KindButton => Get("Pad_Shift_KindButton");
     public string Pad_Shift_KindChord => Get("Pad_Shift_KindChord");

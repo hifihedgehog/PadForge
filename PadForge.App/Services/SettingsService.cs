@@ -1431,65 +1431,46 @@ namespace PadForge.Services
             var dst = _mainVm.Pads[dstSlot];
             if (src == null || dst == null) return;
 
-            // The Lighting tab is per-device, so the user's configured
-            // lightbar lives in one of the source slot's
-            // PerDevicePlayStationConfigs entries — NOT necessarily on
-            // src.PlayStationConfig, which is the anchor for the
-            // SelectedMappedDevice and may be the shared empty sentinel
-            // if the source slot never had a device selected. Pick the
-            // most-configured entry: prefer the anchor if it carries
-            // non-default settings, otherwise scan per-device entries
-            // for the first one with non-default values.
-            var sourceCfg = src.PlayStationConfig;
-            bool anchorIsDefault =
-                sourceCfg == null
-                || (sourceCfg.LightbarMode == ViewModels.LightbarMode.Off
-                    && sourceCfg.LeftTriggerMode == ViewModels.AdaptiveTriggerMode.Off
-                    && sourceCfg.RightTriggerMode == ViewModels.AdaptiveTriggerMode.Off
-                    && sourceCfg.MicLedMode == ViewModels.MicLedMode.Off
-                    && sourceCfg.PlayerLedMode == ViewModels.PlayerLedMode.Off);
-            if (anchorIsDefault && src.PerDevicePlayStationConfigs != null)
-            {
-                foreach (var kvp in src.PerDevicePlayStationConfigs)
-                {
-                    var candidate = kvp.Value;
-                    if (candidate == null) continue;
-                    if (candidate.LightbarMode != ViewModels.LightbarMode.Off
-                        || candidate.LeftTriggerMode != ViewModels.AdaptiveTriggerMode.Off
-                        || candidate.RightTriggerMode != ViewModels.AdaptiveTriggerMode.Off
-                        || candidate.MicLedMode != ViewModels.MicLedMode.Off
-                        || candidate.PlayerLedMode != ViewModels.PlayerLedMode.Off)
-                    {
-                        sourceCfg = candidate;
-                        break;
-                    }
-                }
-            }
+            // The Lighting / Adaptive Triggers / Audio tabs are per-device. Match
+            // each destination device to the SOURCE config for the same device GUID,
+            // so a slot with two differently-configured controllers keeps both rather
+            // than flattening to one. A destination device the source slot did not
+            // have falls back to a representative source config (a configured anchor,
+            // else the first configured per-device entry).
+            dst.EnsurePlayStationConfigsForMappedDevices();
+            var srcByGuid = src.PerDevicePlayStationConfigs;
+            var srcAnchor = src.PlayStationConfig;
+            var fallbackCfg = IsPlayStationConfigConfigured(srcAnchor) ? srcAnchor : null;
+            if (fallbackCfg == null && srcByGuid != null)
+                foreach (var kvp in srcByGuid)
+                    if (IsPlayStationConfigConfigured(kvp.Value)) { fallbackCfg = kvp.Value; break; }
+            fallbackCfg ??= srcAnchor;
 
-            if (sourceCfg != null)
+            if (fallbackCfg != null || (srcByGuid != null && srcByGuid.Count > 0))
             {
-                dst.EnsurePlayStationConfigsForMappedDevices();
-                var data = BuildPlayStationConfigData(sourceCfg, dstSlot, Guid.Empty);
-
-                // Write every per-device entry on dst so device-switching
-                // doesn't bring back the old lightbar.
                 if (dst.PerDevicePlayStationConfigs != null)
                 {
                     foreach (var kvp in dst.PerDevicePlayStationConfigs)
                     {
                         var dstCfg = kvp.Value;
                         if (dstCfg == null) continue;
-                        ApplyPlayStationConfigData(dstCfg, data);
+                        var srcCfg = (srcByGuid != null && srcByGuid.TryGetValue(kvp.Key, out var m) && m != null)
+                            ? m : fallbackCfg;
+                        if (srcCfg != null)
+                            ApplyPlayStationConfigData(dstCfg, BuildPlayStationConfigData(srcCfg, dstSlot, Guid.Empty));
                     }
                 }
-                // Anchor write — only when a real device is selected on
-                // the destination, otherwise dst.PlayStationConfig is the
-                // shared static sentinel which would leak into every
-                // slot's no-device view.
+                // Anchor write only when a real device is selected on the
+                // destination (otherwise dst.PlayStationConfig is the shared
+                // sentinel that would leak into every no-device view).
                 if (dst.SelectedMappedDevice != null
                     && dst.SelectedMappedDevice.InstanceGuid != Guid.Empty)
                 {
-                    ApplyPlayStationConfigData(dst.PlayStationConfig, data);
+                    var selGuid = dst.SelectedMappedDevice.InstanceGuid;
+                    var srcCfg = (srcByGuid != null && srcByGuid.TryGetValue(selGuid, out var m2) && m2 != null)
+                        ? m2 : (srcAnchor ?? fallbackCfg);
+                    if (srcCfg != null)
+                        ApplyPlayStationConfigData(dst.PlayStationConfig, BuildPlayStationConfigData(srcCfg, dstSlot, Guid.Empty));
                 }
             }
 
@@ -1583,6 +1564,35 @@ namespace PadForge.Services
         /// old lightbar. Like the in-process Copy From, this runs
         /// unconditionally regardless of slot output type — PlayStation
         /// device features are physical-device passthrough.</summary>
+        /// <summary>True when a PlayStation config DTO carries any non-default
+        /// device setting: lighting, adaptive triggers, Mic LED, Player LED, OR audio
+        /// (passthrough / audio-lightbar / mirror source). The audio arm matters because
+        /// the old "is this configured" checks ignored it, so an audio-only setup was
+        /// treated as empty when Copy / Paste / Copy From picked a representative.</summary>
+        public static bool IsPlayStationConfigDataConfigured(ViewModels.PlayStationSlotConfigData c)
+            => c != null
+            && (c.LightbarMode != ViewModels.LightbarMode.Off
+                || c.LeftTriggerMode != ViewModels.AdaptiveTriggerMode.Off
+                || c.RightTriggerMode != ViewModels.AdaptiveTriggerMode.Off
+                || c.MicLedMode != ViewModels.MicLedMode.Off
+                || c.PlayerLedMode != ViewModels.PlayerLedMode.Off
+                || c.AudioPassthroughEnabled
+                || c.AudioLightbarEnabled
+                || !string.IsNullOrEmpty(c.AudioMirrorSourceId));
+
+        /// <summary>VM-shape twin of <see cref="IsPlayStationConfigDataConfigured"/>,
+        /// for the in-process Copy From path.</summary>
+        public static bool IsPlayStationConfigConfigured(ViewModels.PlayStationSlotConfig c)
+            => c != null
+            && (c.LightbarMode != ViewModels.LightbarMode.Off
+                || c.LeftTriggerMode != ViewModels.AdaptiveTriggerMode.Off
+                || c.RightTriggerMode != ViewModels.AdaptiveTriggerMode.Off
+                || c.MicLedMode != ViewModels.MicLedMode.Off
+                || c.PlayerLedMode != ViewModels.PlayerLedMode.Off
+                || c.AudioPassthroughEnabled
+                || c.AudioLightbarEnabled
+                || !string.IsNullOrEmpty(c.AudioMirrorSourceId));
+
         public void ApplyPlayStationConfigsToSlot(int slotIndex,
             ViewModels.PlayStationSlotConfigData[] configs)
         {
@@ -1591,41 +1601,30 @@ namespace PadForge.Services
             var padVm = _mainVm.Pads[slotIndex];
             if (padVm == null) return;
 
-            // Find the anchor entry from the snapshot, then fall back to
-            // any per-device entry with non-default values if the anchor
-            // looks empty (mirrors CopySlotConfigsAcrossSlots's source-
-            // picker logic so a slot whose anchor was the empty sentinel
-            // at copy time still pastes useful settings).
-            ViewModels.PlayStationSlotConfigData chosen = null;
+            // Index the snapshot by device GUID, plus the anchor (Empty GUID).
+            // The copy carries one entry per source device, so the apply lands
+            // each device's settings on the matching destination device instead
+            // of flattening the whole slot to one representative config.
+            var byGuid = new System.Collections.Generic.Dictionary<Guid, ViewModels.PlayStationSlotConfigData>();
+            ViewModels.PlayStationSlotConfigData anchor = null;
             foreach (var c in configs)
             {
                 if (c == null) continue;
-                if (c.DeviceGuid == Guid.Empty) { chosen = c; break; }
+                if (c.DeviceGuid == Guid.Empty) { anchor ??= c; continue; }
+                byGuid[c.DeviceGuid] = c;
             }
-            bool anchorIsDefault =
-                chosen == null
-                || (chosen.LightbarMode == ViewModels.LightbarMode.Off
-                    && chosen.LeftTriggerMode == ViewModels.AdaptiveTriggerMode.Off
-                    && chosen.RightTriggerMode == ViewModels.AdaptiveTriggerMode.Off
-                    && chosen.MicLedMode == ViewModels.MicLedMode.Off
-                    && chosen.PlayerLedMode == ViewModels.PlayerLedMode.Off);
-            if (anchorIsDefault)
-            {
+
+            // Representative config for destination devices the source slot did
+            // not have: a configured anchor, else the first configured per-device
+            // entry, else the anchor so a new device still gets something.
+            var fallback = IsPlayStationConfigDataConfigured(anchor) ? anchor : null;
+            if (fallback == null)
                 foreach (var c in configs)
-                {
-                    if (c == null || c.DeviceGuid == Guid.Empty) continue;
-                    if (c.LightbarMode != ViewModels.LightbarMode.Off
-                        || c.LeftTriggerMode != ViewModels.AdaptiveTriggerMode.Off
-                        || c.RightTriggerMode != ViewModels.AdaptiveTriggerMode.Off
-                        || c.MicLedMode != ViewModels.MicLedMode.Off
-                        || c.PlayerLedMode != ViewModels.PlayerLedMode.Off)
-                    {
-                        chosen = c;
-                        break;
-                    }
-                }
-            }
-            if (chosen == null) return;
+                    if (IsPlayStationConfigDataConfigured(c)) { fallback = c; break; }
+            fallback ??= anchor;
+            if (fallback == null)
+                foreach (var v in byGuid.Values) { fallback = v; break; }
+            if (fallback == null) return;
 
             padVm.EnsurePlayStationConfigsForMappedDevices();
             if (padVm.PerDevicePlayStationConfigs != null)
@@ -1633,13 +1632,16 @@ namespace PadForge.Services
                 foreach (var kvp in padVm.PerDevicePlayStationConfigs)
                 {
                     if (kvp.Value == null) continue;
-                    ApplyPlayStationConfigData(kvp.Value, chosen);
+                    var srcData = byGuid.TryGetValue(kvp.Key, out var m) ? m : fallback;
+                    ApplyPlayStationConfigData(kvp.Value, srcData);
                 }
             }
             if (padVm.SelectedMappedDevice != null
                 && padVm.SelectedMappedDevice.InstanceGuid != Guid.Empty)
             {
-                ApplyPlayStationConfigData(padVm.PlayStationConfig, chosen);
+                var srcData = byGuid.TryGetValue(padVm.SelectedMappedDevice.InstanceGuid, out var m2)
+                    ? m2 : (anchor ?? fallback);
+                ApplyPlayStationConfigData(padVm.PlayStationConfig, srcData);
             }
         }
 

@@ -469,7 +469,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Bovengrens van de accumulator. 1 = volledig positief.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Verloop</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Primaire modus</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Stijgen</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Seconden om volledige uitslag te bereiken terwijl de bijbehorende toets ingedrukt blijft. 0 = direct.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Dalen</value></data>

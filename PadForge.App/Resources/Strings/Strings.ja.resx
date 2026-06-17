@@ -469,7 +469,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>最大</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>アキュムレーターの上限値。1 = 最大正。</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>ランプ</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>プライマリモード</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>アタック</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>対応するキーを押している間にフル偏向へ達するまでの秒数。0 = 即時。</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>リリース</value></data>

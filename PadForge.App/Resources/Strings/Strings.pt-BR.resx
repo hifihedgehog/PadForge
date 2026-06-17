@@ -469,7 +469,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Máx</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Limite superior do acumulador. 1 = totalmente positivo.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampa</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Modo Principal</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Ataque</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Segundos para atingir a deflexão total enquanto a tecla correspondente é mantida. 0 = instantâneo.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Liberação</value></data>

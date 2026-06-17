@@ -44,12 +44,6 @@ namespace PadForge.ViewModels
             // changes — this is what enables the cascading
             // device/input picker.
             ExtraSources.CollectionChanged += OnExtraSourcesCollectionChanged;
-
-            // Primary source Kind holder (#111 follow-up). Reuses the per-source
-            // MappingSourceItem so the primary can be Ramped / Incremental /
-            // InvertOnHold with the same UI and recording as extra sources.
-            _primaryKindSource = new MappingSourceItem { ParentMappingItem = this };
-            _primaryKindSource.PropertyChanged += OnPrimaryKindSourcePropertyChanged;
         }
 
         // ─────────────────────────────────────────────
@@ -169,80 +163,8 @@ namespace PadForge.ViewModels
         /// AvailableInputs list is rebuilt.</summary>
         public void RefreshAllExtraSourceInputs()
         {
-            RefreshExtraSourceInputs(PrimaryKindSource);
             foreach (var msi in ExtraSources)
                 RefreshExtraSourceInputs(msi);
-        }
-
-        // ─────────────────────────────────────────────
-        //  Primary source Kind (#111 follow-up)
-        //
-        //  The primary mapping can use Incremental / Ramped / InvertOnHold,
-        //  not only Direct. The Kind and its kind-specific params live on a
-        //  reused MappingSourceItem so the dropdown, cards, cross-device key
-        //  pickers, and recording all come for free. For Direct the primary
-        //  descriptor still lives in SourceDescriptor; for the stateful kinds
-        //  the descriptor is unused and PrimaryKindSource drives the row.
-        // ─────────────────────────────────────────────
-
-        private MappingSourceItem _primaryKindSource;
-        public MappingSourceItem PrimaryKindSource
-        {
-            get => _primaryKindSource;
-            private set => SetProperty(ref _primaryKindSource, value);
-        }
-
-        /// <summary>True when the primary uses the plain Direct descriptor (the
-        /// default). Gates the Source-column picker (shown) vs the kind cards
-        /// (hidden) in the row-detail strip.</summary>
-        public bool IsPrimaryDirect =>
-            string.Equals(PrimaryKindSource?.Kind ?? "Direct", "Direct", StringComparison.Ordinal);
-
-        private void OnPrimaryKindSourcePropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(MappingSourceItem.Kind))
-            {
-                OnPropertyChanged(nameof(IsPrimaryDirect));
-                OnPropertyChanged(nameof(IsMultiSource));
-            }
-            if (string.Equals(e.PropertyName, nameof(MappingSourceItem.DeviceGuid), StringComparison.Ordinal)
-                && sender is MappingSourceItem msi)
-            {
-                RefreshExtraSourceInputs(msi);
-            }
-        }
-
-        /// <summary>Hydrates the reused <see cref="PrimaryKindSource"/> from a stored
-        /// <see cref="Engine.Data.MappingSource"/> on load. Copies into the existing
-        /// object so its PropertyChanged wiring (recording, dirty, picker refresh)
-        /// survives. A null or Direct source resets it to a plain Direct holder so the
-        /// row falls back to its <see cref="SourceDescriptor"/> primary.</summary>
-        public void LoadPrimaryKind(Engine.Data.MappingSource src)
-        {
-            var p = PrimaryKindSource;
-            if (p == null) return;
-            if (src == null || string.Equals(src.Kind ?? "Direct", "Direct", StringComparison.Ordinal))
-            {
-                p.ParamUp = "";
-                p.ParamDown = "";
-                p.ParamModifier = "";
-                p.Kind = "Direct";
-                return;
-            }
-            p.DeviceGuid = src.DeviceGuid ?? "";
-            p.ParamUp = src.ParamUp ?? "";
-            p.ParamDown = src.ParamDown ?? "";
-            p.ParamRate = src.ParamRate;
-            p.ParamSticky = src.ParamSticky;
-            p.ParamMin = src.ParamMin;
-            p.ParamMax = src.ParamMax;
-            p.ParamModifier = src.ParamModifier ?? "";
-            p.ParamAttackTime = src.ParamAttackTime;
-            p.ParamReleaseTime = src.ParamReleaseTime;
-            p.ParamAutocenter = src.ParamAutocenter;
-            p.ParamReverseMultiplier = src.ParamReverseMultiplier >= 1 ? src.ParamReverseMultiplier : 4.0;
-            p.Kind = src.Kind; // set Kind last so card visibility settles after params load
-            RefreshExtraSourceInputs(p);
         }
 
         /// <summary>
@@ -1129,7 +1051,7 @@ namespace PadForge.ViewModels
             }
         }
 
-        public bool IsMultiSource => ExtraSources.Count > 0 || !IsPrimaryDirect;
+        public bool IsMultiSource => ExtraSources.Count > 0;
 
         /// <summary>Number of source variables the row's combine formula can
         /// reference. Primary slot (<c>a</c>) is always present, plus one

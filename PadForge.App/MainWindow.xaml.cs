@@ -4316,9 +4316,6 @@ namespace PadForge
                 };
             }
             foreach (var msi in mapping.ExtraSources) WireExtraSource(msi);
-            // The primary's kind holder (#111 follow-up) records its Up/Down/Modifier
-            // keys and marks dirty through the same wiring as an extra source.
-            if (mapping.PrimaryKindSource != null) WireExtraSource(mapping.PrimaryKindSource);
             mapping.ExtraSources.CollectionChanged += (s, e) =>
             {
                 if (e.NewItems != null)

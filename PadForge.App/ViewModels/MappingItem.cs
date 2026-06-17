@@ -198,12 +198,42 @@ namespace PadForge.ViewModels
         public bool IsPrimaryDirect =>
             string.Equals(PrimaryKindSource?.Kind ?? "Direct", "Direct", StringComparison.Ordinal);
 
+        /// <summary>Friendly name of the primary's current Kind (e.g. "Ramp"), for
+        /// any compact display when the primary is non-Direct.</summary>
+        public string PrimaryKindLabel
+        {
+            get
+            {
+                var k = PrimaryKindSource?.Kind ?? "Direct";
+                foreach (var opt in MappingSourceItem.KindOptions)
+                    if (string.Equals(opt.Value, k, StringComparison.Ordinal))
+                        return opt.Name;
+                return k;
+            }
+        }
+
+        private RelayCommand _clearPrimaryKindCommand;
+        /// <summary>Resets the primary back to Direct and clears the kind's keys, so
+        /// the row falls back to its descriptor primary (the Clear button on the
+        /// primary-mode cell).</summary>
+        public RelayCommand ClearPrimaryKindCommand =>
+            _clearPrimaryKindCommand ??= new RelayCommand(() =>
+            {
+                var p = PrimaryKindSource;
+                if (p == null) return;
+                p.ParamUp = "";
+                p.ParamDown = "";
+                p.ParamModifier = "";
+                p.Kind = "Direct";
+            });
+
         private void OnPrimaryKindSourcePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(MappingSourceItem.Kind))
             {
                 OnPropertyChanged(nameof(IsPrimaryDirect));
                 OnPropertyChanged(nameof(IsMultiSource));
+                OnPropertyChanged(nameof(PrimaryKindLabel));
             }
             if (string.Equals(e.PropertyName, nameof(MappingSourceItem.DeviceGuid), StringComparison.Ordinal)
                 && sender is MappingSourceItem msi)

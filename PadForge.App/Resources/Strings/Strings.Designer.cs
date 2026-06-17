@@ -116,6 +116,7 @@ public class Strings : INotifyPropertyChanged
     public string Common_Refresh => Get("Common_Refresh");
     public string Common_Copy => Get("Common_Copy");
     public string Common_Paste => Get("Common_Paste");
+    public string Common_Duplicate => Get("Common_Duplicate");
     public string Common_Enabled => Get("Common_Enabled");
     public string Common_Disabled => Get("Common_Disabled");
     public string Common_Installed => Get("Common_Installed");
@@ -199,6 +200,10 @@ public class Strings : INotifyPropertyChanged
     public string Status_NoDeviceToCopyFrom => Get("Status_NoDeviceToCopyFrom");
     public string Status_NoOtherDevices => Get("Status_NoOtherDevices");
     public string Status_SettingsCopiedFromDevice => Get("Status_SettingsCopiedFromDevice");
+    public string Status_MacroCopied => Get("Status_MacroCopied");
+    public string Status_MacroPasted => Get("Status_MacroPasted");
+    public string Status_MacroClipboardInvalid => Get("Status_MacroClipboardInvalid");
+    public string Status_MacroNoTargetDevice => Get("Status_MacroNoTargetDevice");
     public string Status_ProfileCreatedEmpty_Format => Get("Status_ProfileCreatedEmpty_Format");
     public string Status_ProfileCreated_Format => Get("Status_ProfileCreated_Format");
     public string Status_ProfileDeleted_Format => Get("Status_ProfileDeleted_Format");
@@ -496,6 +501,10 @@ public class Strings : INotifyPropertyChanged
     public string Devices_DeviceKind_Mouse => Get("Devices_DeviceKind_Mouse");
     public string Devices_DeviceKind_Keyboard => Get("Devices_DeviceKind_Keyboard");
     public string Pad_Macros => Get("Pad_Macros");
+    public string Macro_CopyNameFormat => Get("Macro_CopyNameFormat");
+    public string Pad_Macros_CopyFromOtherDevice => Get("Pad_Macros_CopyFromOtherDevice");
+    public string Pad_Macros_OrphanWarning => Get("Pad_Macros_OrphanWarning");
+    public string Pad_Macros_PickTargetDevice => Get("Pad_Macros_PickTargetDevice");
     public string Pad_Mappings => Get("Pad_Mappings");
     public string Pad_Sticks => Get("Pad_Sticks");
     public string Pad_Triggers => Get("Pad_Triggers");

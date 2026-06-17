@@ -2280,96 +2280,110 @@ namespace PadForge.Services
                     continue;
 
                 var padVm = _mainVm.Pads[md.PadIndex];
-                var macro = new MacroItem
-                {
-                    PadIndex = md.PadIndex,
-                    Name = md.Name ?? "Macro",
-                    IsEnabled = md.IsEnabled,
-                    TriggerButtons = md.TriggerButtons,
-                    TriggerCustomButtons = md.TriggerCustomButtons,
-                    TriggerDeviceGuid = Guid.TryParse(md.TriggerDeviceGuid, out var parsedGuid)
-                        ? parsedGuid : Guid.Empty,
-                    TriggerRawButtons = ParseRawButtonIndices(md.TriggerRawButtons),
-                    TriggerSource = md.TriggerSource,
-                    TriggerMode = md.TriggerMode,
-                    ConsumeTriggerButtons = md.ConsumeTriggerButtons,
-                    RepeatMode = md.RepeatMode,
-                    RepeatCount = md.RepeatCount,
-                    RepeatDelayMs = md.RepeatDelayMs,
-                    TriggerAxisTargetList = md.TriggerAxisTargets,
-                    TriggerAxisThreshold = md.TriggerAxisThreshold > 0 ? md.TriggerAxisThreshold : 50,
-                    TriggerPovs = md.TriggerPovs ?? Array.Empty<string>(),
-                    TriggerInputs = md.TriggerInputs,
-                    TriggerExpression = md.TriggerExpression ?? "",
-                    TriggerExpressionVariableSpecs = md.TriggerExpressionVariables
-                };
-
-                if (md.Actions != null)
-                {
-                    foreach (var ad in md.Actions)
-                    {
-                        macro.Actions.Add(new MacroAction
-                        {
-                            Type = ad.Type,
-                            ButtonFlags = ad.ButtonFlags,
-                            CustomButtons = ad.CustomButtons,
-                            KeyCode = ad.KeyCode,
-                            KeyString = !string.IsNullOrEmpty(ad.KeyString)
-                                ? ad.KeyString
-                                : (ad.KeyCode != 0 ? $"{{{(VirtualKey)ad.KeyCode}}}" : ""),
-                            DurationMs = ad.DurationMs,
-                            AxisValue = ad.AxisValue,
-                            AxisTarget = ad.AxisTarget,
-                            AxisSource = ad.AxisSource,
-                            SourceDeviceGuid = Guid.TryParse(ad.SourceDeviceGuid, out var devGuid)
-                                ? devGuid : Guid.Empty,
-                            SourceDeviceAxisIndex = ad.SourceDeviceAxisIndex,
-                            ProcessName = ad.ProcessName ?? "",
-                            VolumeLimit = ad.VolumeLimit > 0 ? ad.VolumeLimit : 100,
-                            MouseSensitivity = ad.MouseSensitivity > 0 ? ad.MouseSensitivity : 10f,
-                            MouseButton = ad.MouseButton,
-                            InvertAxis = ad.InvertAxis,
-                            ShowVolumeOsd = ad.ShowVolumeOsd,
-                            LightbarR = ad.LightbarR,
-                            LightbarG = ad.LightbarG,
-                            LightbarB = ad.LightbarB,
-                            LightbarHoldMode = ad.LightbarHoldMode,
-                            LightbarColorSource = ad.LightbarColorSource,
-                            LightbarHoldMs = Math.Clamp(ad.LightbarHoldMs, 0, 5000),
-                            LightbarFadeMs = Math.Clamp(ad.LightbarFadeMs, 0, 5000),
-                            LightbarPaletteCsv = ad.LightbarPaletteCsv ?? string.Empty,
-                            LightbarTargetMode = ad.LightbarTargetMode,
-                            LightbarCycleModesCsv = ad.LightbarCycleModesCsv,
-                            SoundFilePath = ad.SoundFilePath ?? string.Empty,
-                            SoundVolume = ad.SoundVolume > 0 ? ad.SoundVolume : 100,
-                            SoundLoop = ad.SoundLoop,
-                            SetGyroEngagedMode = ad.SetGyroEngagedMode,
-                            RumbleHoldMode = ad.RumbleHoldMode,
-                            RumbleStrengthLeft = ad.RumbleStrengthLeft,
-                            RumbleStrengthRight = ad.RumbleStrengthRight,
-                            RumbleHoldMs = ad.RumbleHoldMs,
-                            RumbleFadeMs = ad.RumbleFadeMs,
-                            CursorRecenterMode = ad.CursorRecenterMode,
-                            CursorPinMode = ad.CursorPinMode,
-                            CursorPinX = ad.CursorPinX,
-                            CursorPinY = ad.CursorPinY,
-                            CursorClampMode = ad.CursorClampMode,
-                            CursorClampInsetX = ad.CursorClampInsetX,
-                            CursorClampInsetY = ad.CursorClampInsetY
-                        });
-                    }
-                }
-
-                // Set after actions are populated so propagation reaches all of them.
-                var style = MacroButtonNames.DeriveStyle(padVm.OutputType);
-                int btnCount = (padVm.OutputType == VirtualControllerType.Extended ? padVm.ExtendedConfig?.ButtonCount : null) ?? 11;
-                macro.CustomButtonCount = btnCount;
-                macro.ButtonStyle = style;
-                foreach (var action in macro.Actions)
-                    action.CustomButtonCount = btnCount;
-
+                var macro = LoadMacroFromData(md, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount);
                 padVm.Macros.Add(macro);
             }
+        }
+
+        /// <summary>Deserializes one <see cref="MacroData"/> DTO into a fresh
+        /// <see cref="MacroItem"/>, applying the target pad's button style and count.
+        /// Extracted from <see cref="LoadMacros"/> so Duplicate / Paste (#112) rebuild a
+        /// macro through the same mapping. The returned macro is not added to any pad.</summary>
+        public static MacroItem LoadMacroFromData(MacroData md, VirtualControllerType outputType, int? extendedButtonCount)
+        {
+            var macro = new MacroItem
+            {
+                PadIndex = md.PadIndex,
+                Name = md.Name ?? "Macro",
+                IsEnabled = md.IsEnabled,
+                TriggerButtons = md.TriggerButtons,
+                TriggerCustomButtons = md.TriggerCustomButtons,
+                TriggerDeviceGuid = Guid.TryParse(md.TriggerDeviceGuid, out var parsedGuid)
+                    ? parsedGuid : Guid.Empty,
+                TriggerRawButtons = ParseRawButtonIndices(md.TriggerRawButtons),
+                TriggerSource = md.TriggerSource,
+                TriggerMode = md.TriggerMode,
+                ConsumeTriggerButtons = md.ConsumeTriggerButtons,
+                RepeatMode = md.RepeatMode,
+                RepeatCount = md.RepeatCount,
+                RepeatDelayMs = md.RepeatDelayMs,
+                TriggerAxisTargetList = md.TriggerAxisTargets,
+                TriggerAxisThreshold = md.TriggerAxisThreshold > 0 ? md.TriggerAxisThreshold : 50,
+                TriggerPovs = md.TriggerPovs ?? Array.Empty<string>(),
+                TriggerInputs = md.TriggerInputs,
+                TriggerExpression = md.TriggerExpression ?? "",
+                TriggerExpressionVariableSpecs = md.TriggerExpressionVariables
+            };
+
+            if (md.Actions != null)
+                foreach (var ad in md.Actions)
+                    macro.Actions.Add(BuildMacroAction(ad));
+
+            // Set after actions are populated so propagation reaches all of them.
+            var style = MacroButtonNames.DeriveStyle(outputType);
+            int btnCount = (outputType == VirtualControllerType.Extended ? extendedButtonCount : null) ?? 11;
+            macro.CustomButtonCount = btnCount;
+            macro.ButtonStyle = style;
+            foreach (var action in macro.Actions)
+                action.CustomButtonCount = btnCount;
+
+            return macro;
+        }
+
+        /// <summary>Deserializes one <see cref="ActionData"/> DTO into a fresh
+        /// <see cref="MacroAction"/>. Extracted from <see cref="LoadMacros"/> so the
+        /// action Duplicate command (#112) reuses the same field mapping.</summary>
+        public static MacroAction BuildMacroAction(ActionData ad)
+        {
+            return new MacroAction
+            {
+                Type = ad.Type,
+                ButtonFlags = ad.ButtonFlags,
+                CustomButtons = ad.CustomButtons,
+                KeyCode = ad.KeyCode,
+                KeyString = !string.IsNullOrEmpty(ad.KeyString)
+                    ? ad.KeyString
+                    : (ad.KeyCode != 0 ? $"{{{(VirtualKey)ad.KeyCode}}}" : ""),
+                DurationMs = ad.DurationMs,
+                AxisValue = ad.AxisValue,
+                AxisTarget = ad.AxisTarget,
+                AxisSource = ad.AxisSource,
+                SourceDeviceGuid = Guid.TryParse(ad.SourceDeviceGuid, out var devGuid)
+                    ? devGuid : Guid.Empty,
+                SourceDeviceAxisIndex = ad.SourceDeviceAxisIndex,
+                ProcessName = ad.ProcessName ?? "",
+                VolumeLimit = ad.VolumeLimit > 0 ? ad.VolumeLimit : 100,
+                MouseSensitivity = ad.MouseSensitivity > 0 ? ad.MouseSensitivity : 10f,
+                MouseButton = ad.MouseButton,
+                InvertAxis = ad.InvertAxis,
+                ShowVolumeOsd = ad.ShowVolumeOsd,
+                LightbarR = ad.LightbarR,
+                LightbarG = ad.LightbarG,
+                LightbarB = ad.LightbarB,
+                LightbarHoldMode = ad.LightbarHoldMode,
+                LightbarColorSource = ad.LightbarColorSource,
+                LightbarHoldMs = Math.Clamp(ad.LightbarHoldMs, 0, 5000),
+                LightbarFadeMs = Math.Clamp(ad.LightbarFadeMs, 0, 5000),
+                LightbarPaletteCsv = ad.LightbarPaletteCsv ?? string.Empty,
+                LightbarTargetMode = ad.LightbarTargetMode,
+                LightbarCycleModesCsv = ad.LightbarCycleModesCsv,
+                SoundFilePath = ad.SoundFilePath ?? string.Empty,
+                SoundVolume = ad.SoundVolume > 0 ? ad.SoundVolume : 100,
+                SoundLoop = ad.SoundLoop,
+                SetGyroEngagedMode = ad.SetGyroEngagedMode,
+                RumbleHoldMode = ad.RumbleHoldMode,
+                RumbleStrengthLeft = ad.RumbleStrengthLeft,
+                RumbleStrengthRight = ad.RumbleStrengthRight,
+                RumbleHoldMs = ad.RumbleHoldMs,
+                RumbleFadeMs = ad.RumbleFadeMs,
+                CursorRecenterMode = ad.CursorRecenterMode,
+                CursorPinMode = ad.CursorPinMode,
+                CursorPinX = ad.CursorPinX,
+                CursorPinY = ad.CursorPinY,
+                CursorClampMode = ad.CursorClampMode,
+                CursorClampInsetX = ad.CursorClampInsetX,
+                CursorClampInsetY = ad.CursorClampInsetY
+            };
         }
 
         /// <summary>
@@ -3144,82 +3158,136 @@ namespace PadForge.Services
             {
                 var padVm = _mainVm.Pads[i];
                 foreach (var macro in padVm.Macros)
-                {
-                    list.Add(new MacroData
-                    {
-                        PadIndex = i,
-                        Name = macro.Name,
-                        IsEnabled = macro.IsEnabled,
-                        TriggerButtons = macro.TriggerButtons,
-                        TriggerDeviceGuid = macro.TriggerDeviceGuid != Guid.Empty
-                            ? macro.TriggerDeviceGuid.ToString("N") : null,
-                        TriggerRawButtons = macro.TriggerRawButtons.Length > 0
-                            ? string.Join(",", macro.TriggerRawButtons) : null,
-                        TriggerSource = macro.TriggerSource,
-                        TriggerMode = macro.TriggerMode,
-                        ConsumeTriggerButtons = macro.ConsumeTriggerButtons,
-                        RepeatMode = macro.RepeatMode,
-                        RepeatCount = macro.RepeatCount,
-                        RepeatDelayMs = macro.RepeatDelayMs,
-                        TriggerCustomButtons = macro.TriggerCustomButtons,
-                        TriggerAxisTargets = macro.TriggerAxisTargetList,
-                        TriggerAxisThreshold = macro.TriggerAxisThreshold,
-                        TriggerPovs = macro.TriggerPovs?.Length > 0 ? macro.TriggerPovs : null,
-                        TriggerInputs = string.IsNullOrEmpty(macro.TriggerInputs) ? null : macro.TriggerInputs,
-                        TriggerExpression = string.IsNullOrEmpty(macro.TriggerExpression) ? null : macro.TriggerExpression,
-                        TriggerExpressionVariables = macro.TriggerExpressionVariableSpecs,
-                        Actions = macro.Actions.Select(a => new ActionData
-                        {
-                            Type = a.Type,
-                            ButtonFlags = a.ButtonFlags,
-                            CustomButtons = a.CustomButtons,
-                            KeyCode = a.ParsedKeyCodes.Length > 0 ? a.ParsedKeyCodes[0] : a.KeyCode,
-                            KeyString = a.KeyString,
-                            DurationMs = a.DurationMs,
-                            AxisValue = a.AxisValue,
-                            AxisTarget = a.AxisTarget,
-                            AxisSource = a.AxisSource,
-                            SourceDeviceGuid = a.SourceDeviceGuid != Guid.Empty
-                                ? a.SourceDeviceGuid.ToString("N") : null,
-                            SourceDeviceAxisIndex = a.SourceDeviceAxisIndex,
-                            ProcessName = a.ProcessName,
-                            VolumeLimit = a.VolumeLimit,
-                            MouseSensitivity = a.MouseSensitivity,
-                            MouseButton = a.MouseButton,
-                            InvertAxis = a.InvertAxis,
-                            ShowVolumeOsd = a.ShowVolumeOsd,
-                            LightbarR = a.LightbarR,
-                            LightbarG = a.LightbarG,
-                            LightbarB = a.LightbarB,
-                            LightbarHoldMode = a.LightbarHoldMode,
-                            LightbarColorSource = a.LightbarColorSource,
-                            LightbarHoldMs = a.LightbarHoldMs,
-                            LightbarFadeMs = a.LightbarFadeMs,
-                            LightbarPaletteCsv = a.LightbarPaletteCsv,
-                            LightbarTargetMode = a.LightbarTargetMode,
-                            LightbarCycleModesCsv = a.LightbarCycleModesCsv,
-                            SoundFilePath = string.IsNullOrEmpty(a.SoundFilePath) ? null : a.SoundFilePath,
-                            SoundVolume = a.SoundVolume,
-                            SoundLoop = a.SoundLoop,
-                            SetGyroEngagedMode = a.SetGyroEngagedMode,
-                            RumbleHoldMode = a.RumbleHoldMode,
-                            RumbleStrengthLeft = a.RumbleStrengthLeft,
-                            RumbleStrengthRight = a.RumbleStrengthRight,
-                            RumbleHoldMs = a.RumbleHoldMs,
-                            RumbleFadeMs = a.RumbleFadeMs,
-                            CursorRecenterMode = a.CursorRecenterMode,
-                            CursorPinMode = a.CursorPinMode,
-                            CursorPinX = a.CursorPinX,
-                            CursorPinY = a.CursorPinY,
-                            CursorClampMode = a.CursorClampMode,
-                            CursorClampInsetX = a.CursorClampInsetX,
-                            CursorClampInsetY = a.CursorClampInsetY
-                        }).ToArray()
-                    });
-                }
+                    list.Add(BuildMacroDataForMacro(macro, i));
             }
 
             return list.Count > 0 ? list.ToArray() : null;
+        }
+
+        /// <summary>Serializes one <see cref="MacroItem"/> into its
+        /// <see cref="MacroData"/> DTO. Extracted from <see cref="BuildMacroData"/>
+        /// so the macro Duplicate / Copy / Paste commands (#112) can round-trip a
+        /// single macro through the same mapping the save path uses.</summary>
+        public static MacroData BuildMacroDataForMacro(MacroItem macro, int padIndex)
+        {
+            return new MacroData
+            {
+                PadIndex = padIndex,
+                Name = macro.Name,
+                IsEnabled = macro.IsEnabled,
+                TriggerButtons = macro.TriggerButtons,
+                TriggerDeviceGuid = macro.TriggerDeviceGuid != Guid.Empty
+                    ? macro.TriggerDeviceGuid.ToString("N") : null,
+                TriggerRawButtons = macro.TriggerRawButtons.Length > 0
+                    ? string.Join(",", macro.TriggerRawButtons) : null,
+                TriggerSource = macro.TriggerSource,
+                TriggerMode = macro.TriggerMode,
+                ConsumeTriggerButtons = macro.ConsumeTriggerButtons,
+                RepeatMode = macro.RepeatMode,
+                RepeatCount = macro.RepeatCount,
+                RepeatDelayMs = macro.RepeatDelayMs,
+                TriggerCustomButtons = macro.TriggerCustomButtons,
+                TriggerAxisTargets = macro.TriggerAxisTargetList,
+                TriggerAxisThreshold = macro.TriggerAxisThreshold,
+                TriggerPovs = macro.TriggerPovs?.Length > 0 ? macro.TriggerPovs : null,
+                TriggerInputs = string.IsNullOrEmpty(macro.TriggerInputs) ? null : macro.TriggerInputs,
+                TriggerExpression = string.IsNullOrEmpty(macro.TriggerExpression) ? null : macro.TriggerExpression,
+                TriggerExpressionVariables = macro.TriggerExpressionVariableSpecs,
+                Actions = macro.Actions.Select(BuildActionData).ToArray()
+            };
+        }
+
+        /// <summary>Serializes one <see cref="MacroAction"/> into its
+        /// <see cref="ActionData"/> DTO. Extracted from <see cref="BuildMacroData"/>
+        /// so the action Duplicate command (#112) reuses the same field mapping.</summary>
+        public static ActionData BuildActionData(MacroAction a)
+        {
+            return new ActionData
+            {
+                Type = a.Type,
+                ButtonFlags = a.ButtonFlags,
+                CustomButtons = a.CustomButtons,
+                KeyCode = a.ParsedKeyCodes.Length > 0 ? a.ParsedKeyCodes[0] : a.KeyCode,
+                KeyString = a.KeyString,
+                DurationMs = a.DurationMs,
+                AxisValue = a.AxisValue,
+                AxisTarget = a.AxisTarget,
+                AxisSource = a.AxisSource,
+                SourceDeviceGuid = a.SourceDeviceGuid != Guid.Empty
+                    ? a.SourceDeviceGuid.ToString("N") : null,
+                SourceDeviceAxisIndex = a.SourceDeviceAxisIndex,
+                ProcessName = a.ProcessName,
+                VolumeLimit = a.VolumeLimit,
+                MouseSensitivity = a.MouseSensitivity,
+                MouseButton = a.MouseButton,
+                InvertAxis = a.InvertAxis,
+                ShowVolumeOsd = a.ShowVolumeOsd,
+                LightbarR = a.LightbarR,
+                LightbarG = a.LightbarG,
+                LightbarB = a.LightbarB,
+                LightbarHoldMode = a.LightbarHoldMode,
+                LightbarColorSource = a.LightbarColorSource,
+                LightbarHoldMs = a.LightbarHoldMs,
+                LightbarFadeMs = a.LightbarFadeMs,
+                LightbarPaletteCsv = a.LightbarPaletteCsv,
+                LightbarTargetMode = a.LightbarTargetMode,
+                LightbarCycleModesCsv = a.LightbarCycleModesCsv,
+                SoundFilePath = string.IsNullOrEmpty(a.SoundFilePath) ? null : a.SoundFilePath,
+                SoundVolume = a.SoundVolume,
+                SoundLoop = a.SoundLoop,
+                SetGyroEngagedMode = a.SetGyroEngagedMode,
+                RumbleHoldMode = a.RumbleHoldMode,
+                RumbleStrengthLeft = a.RumbleStrengthLeft,
+                RumbleStrengthRight = a.RumbleStrengthRight,
+                RumbleHoldMs = a.RumbleHoldMs,
+                RumbleFadeMs = a.RumbleFadeMs,
+                CursorRecenterMode = a.CursorRecenterMode,
+                CursorPinMode = a.CursorPinMode,
+                CursorPinX = a.CursorPinX,
+                CursorPinY = a.CursorPinY,
+                CursorClampMode = a.CursorClampMode,
+                CursorClampInsetX = a.CursorClampInsetX,
+                CursorClampInsetY = a.CursorClampInsetY
+            };
+        }
+
+        /// <summary>JSON envelope for the macro clipboard (#112). Carries the
+        /// macro DTOs plus the device that owned the original trigger surface, so a
+        /// later Copy From Other Device can rewrite that guid onto a picked target.</summary>
+        public sealed class MacroClipboardEnvelope
+        {
+            public string Type { get; set; }
+            public int Version { get; set; }
+            public string SourceDeviceGuid { get; set; }
+            public MacroData[] Macros { get; set; }
+        }
+
+        private const string MacroClipboardType = "PadForgeMacro";
+
+        /// <summary>Serializes macros into the clipboard envelope JSON (#112).</summary>
+        public static string SerializeMacrosToClipboard(MacroData[] macros, string sourceDeviceGuid)
+            => System.Text.Json.JsonSerializer.Serialize(new MacroClipboardEnvelope
+            {
+                Type = MacroClipboardType,
+                Version = 1,
+                SourceDeviceGuid = sourceDeviceGuid,
+                Macros = macros,
+            });
+
+        /// <summary>Parses a clipboard string into a macro envelope, or null when the
+        /// text is not a PadForge macro envelope (#112). Never throws.</summary>
+        public static MacroClipboardEnvelope TryParseMacroClipboard(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json)) return null;
+            try
+            {
+                var env = System.Text.Json.JsonSerializer.Deserialize<MacroClipboardEnvelope>(json);
+                return env != null
+                    && string.Equals(env.Type, MacroClipboardType, StringComparison.Ordinal)
+                    && env.Macros != null
+                    ? env : null;
+            }
+            catch { return null; }
         }
 
         /// <summary>

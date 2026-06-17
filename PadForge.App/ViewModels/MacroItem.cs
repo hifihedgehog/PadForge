@@ -564,6 +564,18 @@ namespace PadForge.ViewModels
             [System.Xml.Serialization.XmlIgnore]
             public string AxisLabel => _axisTarget == MacroAxisTarget.None ? "" : _axisTarget.DisplayName();
 
+            /// <summary>True when a Copy From Other Device (#112) left this entry on a
+            /// button the target device doesn't have. The engine's per-tick check fails
+            /// it silently; this flag drives the editor's warning so it isn't a silent
+            /// no-op. Runtime-only, recomputed by the rewrite, never serialized.</summary>
+            private bool _isOrphan;
+            [System.Xml.Serialization.XmlIgnore]
+            public bool IsOrphan
+            {
+                get => _isOrphan;
+                set => SetProperty(ref _isOrphan, value);
+            }
+
             /// <summary>Compact tagged form for XML round-trip.
             /// Format: <c>in:GUID:ax:Target:HalfAxis:Invert:DeadZone:Bidirectional</c>
             /// (e.g. <c>in:GUID:ax:LeftStickX:1:0:50:1</c>). The trailing
@@ -683,6 +695,88 @@ namespace PadForge.ViewModels
             EnsureTriggerInputEntries();
             return _triggerInputEntries ?? (IReadOnlyList<TriggerInputEntry>)Array.Empty<TriggerInputEntry>();
         }
+
+        /// <summary>The device that owns this macro's trigger surface, used as the
+        /// "source" when copying it to another device (#112). Prefers the legacy
+        /// single-device trigger guid, then the first multi-device entry, action, or
+        /// expression variable that names a device. Empty when nothing is bound.</summary>
+        public Guid GetPrimaryDeviceGuid()
+        {
+            if (_triggerDeviceGuid != Guid.Empty) return _triggerDeviceGuid;
+            foreach (var e in GetTriggerInputEntries())
+                if (e.DeviceGuid != Guid.Empty) return e.DeviceGuid;
+            foreach (var a in Actions)
+                if (a.SourceDeviceGuid != Guid.Empty) return a.SourceDeviceGuid;
+            if (_triggerExpressionVariables != null)
+                foreach (var v in _triggerExpressionVariables)
+                    if (v.DeviceGuid != Guid.Empty) return v.DeviceGuid;
+            return Guid.Empty;
+        }
+
+        /// <summary>Rewrites every reference to <paramref name="sourceGuid"/> across this
+        /// macro's trigger entries, legacy trigger device, action sources, and expression
+        /// variables to <paramref name="targetGuid"/> (#112, Copy From Other Device).
+        /// Best-effort: a button index the target device lacks is flagged
+        /// <see cref="TriggerInputEntry.IsOrphan"/> rather than dropped, so the move
+        /// never silently loses a trigger. Axis sources use the SDL gamepad layout and
+        /// translate cleanly, so they are never orphaned.</summary>
+        public void RewriteForDevice(Guid sourceGuid, Guid targetGuid, Func<int, bool> targetHasButton)
+        {
+            targetHasButton ??= _ => true;
+
+            if (_triggerDeviceGuid == sourceGuid)
+                TriggerDeviceGuid = targetGuid;
+
+            foreach (var e in GetTriggerInputEntries())
+            {
+                if (e.DeviceGuid == sourceGuid) e.DeviceGuid = targetGuid;
+                e.IsOrphan = e.DeviceGuid == targetGuid && e.RawButton >= 0 && !targetHasButton(e.RawButton);
+            }
+
+            foreach (var a in Actions)
+            {
+                if (a.SourceDeviceGuid == sourceGuid) a.SourceDeviceGuid = targetGuid;
+                a.IsOrphan = false;
+            }
+
+            if (_triggerExpressionVariables != null)
+                foreach (var v in _triggerExpressionVariables)
+                {
+                    if (v.DeviceGuid == sourceGuid) v.DeviceGuid = targetGuid;
+                    v.IsOrphan = v.DeviceGuid == targetGuid && v.RawButton >= 0 && !targetHasButton(v.RawButton);
+                }
+
+            OnPropertyChanged(nameof(TriggerInputs));
+            OnPropertyChanged(nameof(TriggerDisplayText));
+            OnPropertyChanged(nameof(OrphanCount));
+            OnPropertyChanged(nameof(HasOrphans));
+            OnPropertyChanged(nameof(OrphanWarningText));
+        }
+
+        /// <summary>Count of trigger entries, actions, and expression variables a device
+        /// rewrite could not resolve on the target device (#112).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public int OrphanCount
+        {
+            get
+            {
+                int n = 0;
+                foreach (var e in GetTriggerInputEntries()) if (e.IsOrphan) n++;
+                foreach (var a in Actions) if (a.IsOrphan) n++;
+                if (_triggerExpressionVariables != null)
+                    foreach (var v in _triggerExpressionVariables) if (v.IsOrphan) n++;
+                return n;
+            }
+        }
+
+        [System.Xml.Serialization.XmlIgnore]
+        public bool HasOrphans => OrphanCount > 0;
+
+        /// <summary>Tooltip for a macro row with orphaned trigger sources or actions
+        /// after a device move (#112). Empty when the macro is clean.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string OrphanWarningText => HasOrphans
+            ? string.Format(Strings.Instance.Pad_Macros_OrphanWarning, OrphanCount) : "";
 
         /// <summary>Subset of <see cref="GetTriggerInputEntries"/> containing
         /// just the axis-bearing entries — used by the per-entry editor in
@@ -1402,6 +1496,22 @@ namespace PadForge.ViewModels
                     Actions.Remove(_selectedAction);
                     SelectedAction = Actions.LastOrDefault();
                 }
+            }, () => _selectedAction != null);
+
+        private RelayCommand _duplicateActionCommand;
+        /// <summary>Duplicates the selected action and inserts the clone right after it
+        /// (#112). Round-trips through the ActionData DTO for a clean deep copy, then
+        /// re-applies this macro's button style and count (display-only, not in the DTO).</summary>
+        public RelayCommand DuplicateActionCommand =>
+            _duplicateActionCommand ??= new RelayCommand(() =>
+            {
+                if (_selectedAction == null) return;
+                var clone = SettingsService.BuildMacroAction(SettingsService.BuildActionData(_selectedAction));
+                clone.ButtonStyle = _buttonStyle;
+                clone.CustomButtonCount = _customButtonCount;
+                int idx = Actions.IndexOf(_selectedAction);
+                if (idx < 0) Actions.Add(clone); else Actions.Insert(idx + 1, clone);
+                SelectedAction = clone;
             }, () => _selectedAction != null);
 
         public event EventHandler RecordTriggerRequested;
@@ -2836,6 +2946,17 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _sourceDeviceAxisIndex, value);
         }
 
+        /// <summary>True when a Copy From Other Device (#112) couldn't translate this
+        /// action's source onto the target device. Axis sources use the SDL gamepad
+        /// layout and always translate, so this stays false for them. Runtime-only.</summary>
+        private bool _isOrphan;
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsOrphan
+        {
+            get => _isOrphan;
+            set => SetProperty(ref _isOrphan, value);
+        }
+
         /// <summary>Human-readable display text for the action list.</summary>
         public string DisplayText
         {
@@ -3476,6 +3597,16 @@ namespace PadForge.ViewModels
         {
             get => _deviceGuid;
             set { if (SetProperty(ref _deviceGuid, value)) OnPropertyChanged(nameof(DisplaySummary)); }
+        }
+
+        /// <summary>True when a Copy From Other Device (#112) left this variable on a
+        /// button the target device doesn't have. Runtime-only, set by the rewrite.</summary>
+        private bool _isOrphan;
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsOrphan
+        {
+            get => _isOrphan;
+            set { if (SetProperty(ref _isOrphan, value)) OnPropertyChanged(nameof(DisplaySummary)); }
         }
 
         private int _rawButton = -1;

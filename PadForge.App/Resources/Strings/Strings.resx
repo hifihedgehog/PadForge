@@ -1772,6 +1772,10 @@
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Second Chord Input</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Axis Threshold</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Cycle Through Layers</value></data>
+  <data name="Pad_Shift_CycleDirection" xml:space="preserve"><value>Direction</value></data>
+  <data name="Pad_Shift_CycleDirection_Next" xml:space="preserve"><value>Next</value></data>
+  <data name="Pad_Shift_CycleDirection_Previous" xml:space="preserve"><value>Previous</value></data>
+  <data name="Pad_Shift_CycleDirection_Tooltip" xml:space="preserve"><value>Next walks forward through the layers. Set a second activator on the same list to Previous to walk backward. Both share one position.</value></data>
   <data name="Pad_Shift_Kind" xml:space="preserve"><value>Activator Kind</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Button</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Chord (A + B)</value></data>

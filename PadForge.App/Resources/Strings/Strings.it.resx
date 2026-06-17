@@ -2041,4 +2041,8 @@
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>Gli appunti non contengono una macro copiata.</value></data>
   <data name="Status_MacroCopiedFrom" xml:space="preserve"><value>Macro copiate dal controller virtuale selezionato.</value></data>
   <data name="Status_MacroNoSource" xml:space="preserve"><value>Nessun altro controller virtuale ha macro da copiare.</value></data>
+  <data name="Pad_Shift_CycleDirection" xml:space="preserve"><value>Direzione</value></data>
+  <data name="Pad_Shift_CycleDirection_Next" xml:space="preserve"><value>Successivo</value></data>
+  <data name="Pad_Shift_CycleDirection_Previous" xml:space="preserve"><value>Precedente</value></data>
+  <data name="Pad_Shift_CycleDirection_Tooltip" xml:space="preserve"><value>Successivo avanza tra i livelli. Imposta un secondo attivatore con lo stesso elenco su Precedente per andare indietro. Entrambi condividono una posizione.</value></data>
 </root>

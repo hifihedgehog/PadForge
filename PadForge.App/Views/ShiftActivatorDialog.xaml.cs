@@ -138,6 +138,8 @@ namespace PadForge.Views
                 SelectJumpToLayer(existing.JumpToLayer ?? "");
                 // Select Cycle layers from the pipe-separated string.
                 SelectCycleLayers(existing.CycleLayers ?? "");
+                CycleDirectionCombo.SelectedValue = string.Equals(existing.Direction, "Previous", StringComparison.Ordinal)
+                    ? "Previous" : "Next";
 
                 Loaded += (_, __) => SelectInputs(existing);
             }
@@ -148,6 +150,7 @@ namespace PadForge.Views
                 ModeCombo.SelectedValue = "Hold";
                 AxisThresholdSlider.Value = 0.5;
                 DelaySlider.Value = 0;
+                CycleDirectionCombo.SelectedValue = "Next";
                 // Default jump target = Base for new Custom activators.
                 if (jumpItems.Count > 0) JumpToLayerCombo.SelectedIndex = 0;
                 // Honor the picker's initial color on first save — without
@@ -517,7 +520,7 @@ namespace PadForge.Views
             bool isCycle = mode == "Cycle";
             JumpLabel.Visibility = isCustom ? Visibility.Visible : Visibility.Collapsed;
             JumpToLayerCombo.Visibility = isCustom ? Visibility.Visible : Visibility.Collapsed;
-            CycleLabel.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
+            CycleHeaderRow.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
             CycleLayersList.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
         }
 
@@ -604,6 +607,7 @@ namespace PadForge.Views
                 AxisThreshold = AxisThresholdSlider.Value,
                 JumpToLayer = jumpToLayer,
                 CycleLayers = cycleLayers,
+                Direction = CycleDirectionCombo.SelectedValue as string ?? "Next",
                 DelayMs = (int)Math.Round(DelaySlider.Value),
                 PostponeMapping = PostponeMappingBox.IsChecked == true,
                 Color = colorHex,

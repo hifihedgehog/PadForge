@@ -2032,4 +2032,6 @@
   <data name="About_NAudioDesc" xml:space="preserve"><value>Acquisizione loopback WASAPI per il mirroring audio del controller e la vibrazione dei grilletti dai bassi. Di Mark Heath. MIT.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Crittografia per l'abbinamento e il trasporto di Remote Link (X25519, Ed25519, ChaCha20-Poly1305). Licenza Bouncy Castle, in stile MIT.</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Registrazione "{0}": premi l'ingresso per la direzione Su...</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Registrazione "{0}": ora premi l'ingresso per la direzione Giù...</value></data>
 </root>

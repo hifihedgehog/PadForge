@@ -2010,4 +2010,6 @@
   <data name="About_NAudioDesc" xml:space="preserve"><value>Capture WASAPI en boucle pour la recopie audio de la manette et la vibration des gâchettes par les basses. Par Mark Heath. MIT.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Cryptographie pour l'appairage et le transport de Remote Link (X25519, Ed25519, ChaCha20-Poly1305). Licence Bouncy Castle, de type MIT.</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Enregistrement « {0} » : appuyez sur l'entrée de la direction Haut...</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Enregistrement « {0} » : appuyez maintenant sur l'entrée de la direction Bas...</value></data>
 </root>

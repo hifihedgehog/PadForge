@@ -2010,4 +2010,6 @@
   <data name="About_NAudioDesc" xml:space="preserve"><value>コントローラー音声のミラーリングと低音トリガーランブルを支えるWASAPIループバックキャプチャ。Mark Heath作。MIT。</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Remote Link のペアリングと通信を支える暗号処理（X25519、Ed25519、ChaCha20-Poly1305）。Bouncy Castle ライセンス（MIT 系）。</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>記録中「{0}」: 「上」方向の入力を押してください...</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>記録中「{0}」: 次に「下」方向の入力を押してください...</value></data>
 </root>

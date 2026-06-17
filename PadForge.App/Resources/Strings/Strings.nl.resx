@@ -2030,4 +2030,6 @@
   <data name="About_NAudioDesc" xml:space="preserve"><value>WASAPI-loopbackopname voor de controller-audiospiegeling en de audio-bas-triggerrumble. Door Mark Heath. MIT.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Cryptografie voor het koppelen en het transport van Remote Link (X25519, Ed25519, ChaCha20-Poly1305). Bouncy Castle-licentie, een MIT-achtige licentie.</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Opname "{0}": druk op de invoer voor de richting Omhoog...</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Opname "{0}": druk nu op de invoer voor de richting Omlaag...</value></data>
 </root>

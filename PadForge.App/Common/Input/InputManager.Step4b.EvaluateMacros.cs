@@ -359,7 +359,7 @@ namespace PadForge.Common.Input
                         {
                             var e = entries[i];
                             if (e.AxisTarget == MacroAxisTarget.None) continue;
-                            var ud = FindOnlineDeviceByInstanceGuid(e.DeviceGuid);
+                            var ud = FindSlotDeviceByInstanceGuid(e.DeviceGuid, macro.PadIndex);
                             if (ud == null || !ud.IsOnline || ud.InputState?.Axis == null)
                             { axisOk = false; break; }
                             int axIdx = e.AxisTarget switch
@@ -499,7 +499,7 @@ namespace PadForge.Common.Input
             var sources = _macroExprSourcesBuf ??= new List<float>(8);
             sources.Clear();
             for (int i = 0; i < n; i++)
-                sources.Add(ReadExpressionVariable(vars[i], in gp));
+                sources.Add(ReadExpressionVariable(vars[i], in gp, macro.PadIndex));
             float result = compiled.Evaluate(sources);
             return result >= 0.5f;
         }
@@ -516,7 +516,7 @@ namespace PadForge.Common.Input
             var sources = _macroExprSourcesBuf ??= new List<float>(8);
             sources.Clear();
             for (int i = 0; i < n; i++)
-                sources.Add(ReadExpressionVariableRaw(vars[i], in raw));
+                sources.Add(ReadExpressionVariableRaw(vars[i], in raw, macro.PadIndex));
             float result = compiled.Evaluate(sources);
             return result >= 0.5f;
         }
@@ -525,14 +525,14 @@ namespace PadForge.Common.Input
         /// against the slot's combined <see cref="Gamepad"/>. Buttons → 0/1,
         /// triggers → 0..1, sticks → 0..1 (0.5 = rest), POVs → 1 when the live POV
         /// is in the same 45° sector as the stored direction.</summary>
-        private float ReadExpressionVariable(MacroExpressionVariable v, in Gamepad gp)
+        private float ReadExpressionVariable(MacroExpressionVariable v, in Gamepad gp, int slotIndex)
         {
             if (v == null || !v.IsBound) return 0f;
 
             if (v.Source == MacroTriggerSource.OutputController)
                 return ReadOutputChannel(v.OutputChannel, in gp);
 
-            var ud = FindOnlineDeviceByInstanceGuid(v.DeviceGuid);
+            var ud = FindSlotDeviceByInstanceGuid(v.DeviceGuid, slotIndex);
             if (ud == null || !ud.IsOnline || ud.InputState == null) return 0f;
 
             if (v.RawButton >= 0)
@@ -562,12 +562,12 @@ namespace PadForge.Common.Input
         /// <summary>Same as <see cref="ReadExpressionVariable"/> but the
         /// OutputController arm reads 0 because Extended slots have no Xbox-shape
         /// combined state.</summary>
-        private float ReadExpressionVariableRaw(MacroExpressionVariable v, in ExtendedRawState raw)
+        private float ReadExpressionVariableRaw(MacroExpressionVariable v, in ExtendedRawState raw, int slotIndex)
         {
             if (v == null || !v.IsBound) return 0f;
             if (v.Source == MacroTriggerSource.OutputController) return 0f;
 
-            var ud = FindOnlineDeviceByInstanceGuid(v.DeviceGuid);
+            var ud = FindSlotDeviceByInstanceGuid(v.DeviceGuid, slotIndex);
             if (ud == null || !ud.IsOnline || ud.InputState == null) return 0f;
 
             if (v.RawButton >= 0)
@@ -640,6 +640,18 @@ namespace PadForge.Common.Input
             _ => -1
         };
 
+        /// <summary>Resolves an online device by GUID only when it is assigned to
+        /// <paramref name="slotIndex"/>. A macro must fire from its own virtual
+        /// controller's devices, never from a device on another VC. Without this a
+        /// macro copied to a slot that does not have its trigger device would still
+        /// fire from that foreign device (#112).</summary>
+        private Engine.Data.UserDevice FindSlotDeviceByInstanceGuid(Guid instanceGuid, int slotIndex)
+        {
+            if (instanceGuid == Guid.Empty) return null;
+            if (SettingsManager.FindSettingByInstanceGuidAndSlot(instanceGuid, slotIndex) == null) return null;
+            return FindOnlineDeviceByInstanceGuid(instanceGuid);
+        }
+
         /// <summary>
         /// Checks whether every raw-button entry on the macro's trigger is
         /// currently pressed on its respective assigned device. Walks the
@@ -660,7 +672,7 @@ namespace PadForge.Common.Input
                 {
                     var e = entries[i];
                     if (e.RawButton < 0) continue; // POV entries handled by CheckRawPovTrigger
-                    var ud = FindOnlineDeviceByInstanceGuid(e.DeviceGuid);
+                    var ud = FindSlotDeviceByInstanceGuid(e.DeviceGuid, macro.PadIndex);
                     if (ud == null || !ud.IsOnline || ud.InputState?.Buttons == null) return false;
                     var btns = ud.InputState.Buttons;
                     if (e.RawButton >= btns.Length || !btns[e.RawButton]) return false;
@@ -669,7 +681,7 @@ namespace PadForge.Common.Input
             }
 
             // Legacy single-device fallback.
-            var udLegacy = FindOnlineDeviceByInstanceGuid(macro.TriggerDeviceGuid);
+            var udLegacy = FindSlotDeviceByInstanceGuid(macro.TriggerDeviceGuid, macro.PadIndex);
             if (udLegacy == null || !udLegacy.IsOnline || udLegacy.InputState == null)
                 return false;
 
@@ -700,7 +712,7 @@ namespace PadForge.Common.Input
                     var e = entries[i];
                     if (string.IsNullOrEmpty(e.Pov)) continue; // button entries handled separately
                     if (!MacroItem.ParsePovTrigger(e.Pov, out int idx, out int targetCd)) return false;
-                    var ud = FindOnlineDeviceByInstanceGuid(e.DeviceGuid);
+                    var ud = FindSlotDeviceByInstanceGuid(e.DeviceGuid, macro.PadIndex);
                     if (ud == null || !ud.IsOnline || ud.InputState?.Povs == null) return false;
                     var povs = ud.InputState.Povs;
                     if (idx < 0 || idx >= povs.Length || povs[idx] < 0) return false;
@@ -712,7 +724,7 @@ namespace PadForge.Common.Input
             }
 
             // Legacy single-device fallback.
-            var udLegacy = FindOnlineDeviceByInstanceGuid(macro.TriggerDeviceGuid);
+            var udLegacy = FindSlotDeviceByInstanceGuid(macro.TriggerDeviceGuid, macro.PadIndex);
             if (udLegacy == null || !udLegacy.IsOnline || udLegacy.InputState == null)
                 return false;
 

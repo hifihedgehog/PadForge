@@ -2012,4 +2012,13 @@
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>用于 Remote Link 配对和传输的加密（X25519、Ed25519、ChaCha20-Poly1305）。Bouncy Castle 许可证（MIT 类）。</value></data>
   <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>录制中"{0}"：请按下"向上"方向的输入...</value></data>
   <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>录制中"{0}"：现在请按下"向下"方向的输入...</value></data>
+  <data name="Common_Duplicate" xml:space="preserve"><value>创建副本</value></data>
+  <data name="Macro_CopyNameFormat" xml:space="preserve"><value>{0}（副本）</value></data>
+  <data name="Pad_Macros_CopyFromOtherDevice" xml:space="preserve"><value>从其他设备复制...</value></data>
+  <data name="Pad_Macros_OrphanWarning" xml:space="preserve"><value>{0} 个触发源或操作与此设备不匹配。请重新录制或移除它们。</value></data>
+  <data name="Pad_Macros_PickTargetDevice" xml:space="preserve"><value>将这些触发器映射到此设备</value></data>
+  <data name="Status_MacroCopied" xml:space="preserve"><value>已将宏复制到剪贴板。</value></data>
+  <data name="Status_MacroPasted" xml:space="preserve"><value>已粘贴宏。</value></data>
+  <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>剪贴板中不包含已复制的宏。</value></data>
+  <data name="Status_MacroNoTargetDevice" xml:space="preserve"><value>此插槽没有分配设备来映射宏。</value></data>
 </root>

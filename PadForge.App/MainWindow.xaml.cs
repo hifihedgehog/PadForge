@@ -60,6 +60,13 @@ namespace PadForge
         private MappingItem _pendingNegMapping;
         /// <summary>Saved positive descriptor while recording the negative direction.</summary>
         private string _savedPosDescriptor;
+
+        // #111 single-button recording for a non-Direct primary kind. The one
+        // row Record button records the kind's own inputs. Ramp / Incremental
+        // capture Up then Down in sequence. Invert On Hold captures the modifier.
+        private enum KindRecStage { None, Up, Down }
+        private MappingItem _kindRecordMapping;   // non-null while a kind record is in flight
+        private KindRecStage _kindRecordStage;
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private System.Windows.Threading.DispatcherTimer _driverStatusTimer;
 
@@ -1057,6 +1064,34 @@ namespace PadForge
                         && parent != null && !parent.ExtraSources.Contains(result.ExtraSource))
                         parent.ExtraSources.Add(result.ExtraSource);  // fires EnsureCombineModeDefault + WireExtraSource via CollectionChanged
                     CommitRecordedMappingSet();
+
+                    // #111 single-button kind recording. After the Up key lands,
+                    // auto-advance to capture Down with the same Record button so
+                    // the user never juggles separate record controls.
+                    if (result.IsParamRecording && _kindRecordMapping != null
+                        && ReferenceEquals(_kindRecordMapping, parent))
+                    {
+                        if (_kindRecordStage == KindRecStage.Up)
+                        {
+                            _kindRecordStage = KindRecStage.Down;
+                            _recorderService.StartRecordingExtraSourceParam(
+                                parent, result.ExtraSource, activePad.PadIndex,
+                                RecorderService.ParamTarget.Down);
+                            if (_recorderService.IsRecording)
+                            {
+                                activePad.CurrentRecordingTarget = parent.TargetSettingName;
+                                _viewModel.StatusText = string.Format(
+                                    Strings.Instance.Status_RecordKindDown_Format, parent.TargetLabel);
+                                return; // keep recording; Down phase is live
+                            }
+                        }
+                        // Down captured (or single-shot modifier, or Down failed to
+                        // start): the sequence is done. Drop the row's Stop state.
+                        _kindRecordStage = KindRecStage.None;
+                        _kindRecordMapping.IsRecording = false;
+                        _kindRecordMapping = null;
+                    }
+
                     if (activePad.IsMapAllActive)
                         activePad.OnMapAllItemCompleted();
                     else
@@ -4208,6 +4243,38 @@ namespace PadForge
                 {
                     Guid deviceGuid = capturedPad.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
 
+                    // #111 non-Direct primary kind. The one Record button drives
+                    // the kind's own inputs, never a conflicting Direct descriptor.
+                    // Ramp / Incremental record Up then Down (see the sequential
+                    // advance in RecordingCompleted). Invert On Hold records the
+                    // single modifier. The per-direction pickers stay for manual
+                    // edits, but there is only ever one Record button on the row.
+                    var pk = mi.PrimaryKindSource;
+                    if (pk != null && !mi.IsPrimaryDirect)
+                    {
+                        var firstTarget = pk.UsesUpDownKeys
+                            ? RecorderService.ParamTarget.Up
+                            : RecorderService.ParamTarget.Modifier;
+                        _kindRecordMapping = mi;
+                        _kindRecordStage = pk.UsesUpDownKeys ? KindRecStage.Up : KindRecStage.None;
+                        mi.IsRecording = true;
+                        _recorderService.StartRecordingExtraSourceParam(mi, pk, capturedPad.PadIndex, firstTarget);
+                        if (_recorderService.IsRecording)
+                        {
+                            capturedPad.CurrentRecordingTarget = mi.TargetSettingName;
+                            _viewModel.StatusText = pk.UsesUpDownKeys
+                                ? string.Format(Strings.Instance.Status_RecordKindUp_Format, mi.TargetLabel)
+                                : string.Format(Strings.Instance.Status_RecordingPrompt_Format, mi.TargetLabel);
+                        }
+                        else
+                        {
+                            mi.IsRecording = false;
+                            _kindRecordMapping = null;
+                            _kindRecordStage = KindRecStage.None;
+                        }
+                        return;
+                    }
+
                     // Y axes: record neg (up in game) first due to NegateAxis inversion.
                     // For standard gamepad: TargetSettingName contains "AxisY".
                     // For Extended custom sticks: TargetSettingName is "ExtendedAxisN" — check label for "Y".
@@ -4238,6 +4305,14 @@ namespace PadForge
             {
                 _recorderService.CancelRecording();
                 capturedPad.CurrentRecordingTarget = null;
+                // #111 clear any in-flight single-button kind recording so a
+                // re-click starts fresh and the row button leaves its Stop state.
+                if (_kindRecordMapping != null)
+                {
+                    _kindRecordMapping.IsRecording = false;
+                    _kindRecordMapping = null;
+                    _kindRecordStage = KindRecStage.None;
+                }
             };
 
             // Mapping descriptor changes (inversion, half-axis, source) trigger autosave.

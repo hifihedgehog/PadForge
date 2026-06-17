@@ -178,6 +178,8 @@
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>No settings file found on disk.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>No device connected to record from.</value></data>
   <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Recording: press a button or move an axis for "{0}"...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Recording "{0}": press the Up direction input...</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Recording "{0}": now press the Down direction input...</value></data>
   <data name="Status_RecordingCancelled" xml:space="preserve"><value>Recording cancelled.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Recording timed out for "{0}".</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Engine started.</value></data>

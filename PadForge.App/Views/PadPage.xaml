@@ -3233,10 +3233,12 @@
                                                     ToolTip="{Binding Pad_Mapping_AddOppositeDir_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                     Visibility="{Binding ShouldShowEmptyDirectionHint, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-                                            <!-- Primary kind inputs (#111), inline in the cell. Up/Down for
-                                                 Ramp / Incremental (both directions map right here), or the
-                                                 modifier key for Invert On Hold. DataContext is the row's
-                                                 PrimaryKindSource; the Up/Down list binds the row's
+                                            <!-- Primary kind inputs (#111), inline in the cell. Up/Down pickers
+                                                 for Ramp / Incremental (both directions map right here), or the
+                                                 modifier key for Invert On Hold. These are for manual edits. The
+                                                 row's single Record button captures them (Up then Down, or the
+                                                 modifier) so there is only one Record control. DataContext is the
+                                                 row's PrimaryKindSource. The pickers bind the row's
                                                  AvailableInputsView via the DataGridRow ancestor. -->
                                             <StackPanel DataContext="{Binding PrimaryKindSource}"
                                                         Visibility="{Binding DataContext.IsPrimaryDirect, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
@@ -3249,10 +3251,6 @@
                                                               DisplayMemberPath="DisplayName" MinWidth="150" Padding="4,2" VerticalAlignment="Center"
                                                               ToolTip="{Binding Pad_Mapping_Up_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                               PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
-                                                    <Button Command="{Binding RecordParamUpCommand}" Width="34" Margin="4,0,0,0" Padding="2" VerticalAlignment="Center">
-                                                        <TextBlock Text="{Binding RecordIconParamUp}" FontFamily="Segoe MDL2 Assets"/>
-                                                        <Button.ToolTip><TextBlock Text="{Binding RecordTextParamUp}"/></Button.ToolTip>
-                                                    </Button>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal" Margin="0,2,0,0"
                                                             Visibility="{Binding UsesUpDownKeys, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -3263,10 +3261,6 @@
                                                               DisplayMemberPath="DisplayName" MinWidth="150" Padding="4,2" VerticalAlignment="Center"
                                                               ToolTip="{Binding Pad_Mapping_Down_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                               PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
-                                                    <Button Command="{Binding RecordParamDownCommand}" Width="34" Margin="4,0,0,0" Padding="2" VerticalAlignment="Center">
-                                                        <TextBlock Text="{Binding RecordIconParamDown}" FontFamily="Segoe MDL2 Assets"/>
-                                                        <Button.ToolTip><TextBlock Text="{Binding RecordTextParamDown}"/></Button.ToolTip>
-                                                    </Button>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal" Margin="0,2,0,0"
                                                             Visibility="{Binding IsInvertOnHoldKind, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -3277,10 +3271,6 @@
                                                               DisplayMemberPath="DisplayName" MinWidth="150" Padding="4,2" VerticalAlignment="Center"
                                                               ToolTip="{Binding Pad_Mapping_Modifier_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                               PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
-                                                    <Button Command="{Binding RecordParamModifierCommand}" Width="34" Margin="4,0,0,0" Padding="2" VerticalAlignment="Center">
-                                                        <TextBlock Text="{Binding RecordIconParamModifier}" FontFamily="Segoe MDL2 Assets"/>
-                                                        <Button.ToolTip><TextBlock Text="{Binding RecordTextParamModifier}"/></Button.ToolTip>
-                                                    </Button>
                                                 </StackPanel>
                                             </StackPanel>
                                         </StackPanel>

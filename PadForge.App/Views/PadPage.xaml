@@ -3192,8 +3192,12 @@
                                                           ToolTip="{Binding Pad_Mapping_Kind_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                           PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                     <ComboBox.Style>
+                                                        <!-- Hidden (not Collapsed) at rest so it reserves its
+                                                             column width. The input picker is sized once with
+                                                             room for the combo, so revealing it on hover never
+                                                             reshares the column or squeezes the picker. -->
                                                         <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Setter Property="Visibility" Value="Hidden"/>
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}" Value="True">
                                                                     <Setter Property="Visibility" Value="Visible"/>

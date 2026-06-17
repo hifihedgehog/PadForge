@@ -382,7 +382,9 @@ namespace PadForge.Common.Input
             // rather than by activator index, so a Next activator and a Previous
             // activator on the same list share one cursor (#119), and separate
             // queues (different lists) keep independent positions. Guarded by
-            // SyncRoot like CustomLayer. 0 = Base; 1..N = layers[0..N-1].
+            // SyncRoot like CustomLayer. 0 = Base (the resting state before the
+            // first press; only a stop in the rotation when CycleIncludeBase);
+            // 1..N = layers[0..N-1].
             public readonly Dictionary<string, int> CycleIndexByList = new();
 
             /// <summary>Sync lock guarding <see cref="Stack"/> and
@@ -652,11 +654,12 @@ namespace PadForge.Common.Input
                 }
                 case "Cycle":
                 {
-                    // v3: each press advances through CycleLayers. Wraps
-                    // past the last entry back to Base (empty string).
-                    // Split result is cached per-activator so the polling
-                    // thread doesn't allocate every frame; recomputed when
-                    // the activator's CycleLayers string changes.
+                    // v3: each press steps a cursor through CycleLayers in the
+                    // activator's Direction (#119). Stepping past an end follows
+                    // CycleWrap (loop vs clamp); whether the unshifted Base is a
+                    // stop follows CycleIncludeBase. Split result is cached
+                    // per-activator so the polling thread doesn't allocate every
+                    // frame; recomputed when the activator's CycleLayers changes.
                     bool risingEdge = inputDown && !rt.WasDown[actIdx] && delayMet;
                     if (risingEdge)
                     {
@@ -671,14 +674,34 @@ namespace PadForge.Common.Input
                         {
                             int n = layers.Length;
                             bool previous = string.Equals(act.Direction, "Previous", System.StringComparison.Ordinal);
+                            bool wrap = act.CycleWrap;
+                            bool includeBase = act.CycleIncludeBase;
                             // Shared cursor keyed by the list string, so a Next and a
-                            // Previous activator on the same list step one position
-                            // (#119). Reverse step (pos - 1) mod (n + 1) is written
-                            // as (pos + n) mod (n + 1) to stay non-negative.
+                            // Previous activator on the same list step one cursor.
+                            // pos 0 = Base; 1..N index layers[0..N-1].
                             lock (rt.SyncRoot)
                             {
                                 rt.CycleIndexByList.TryGetValue(src, out int pos);
-                                pos = previous ? (pos + n) % (n + 1) : (pos + 1) % (n + 1);
+                                if (includeBase)
+                                {
+                                    // Base is a real stop in the ring [0..N].
+                                    if (wrap)
+                                        pos = previous ? (pos + n) % (n + 1) : (pos + 1) % (n + 1);
+                                    else
+                                        pos = previous ? System.Math.Max(pos - 1, 0)
+                                                       : System.Math.Min(pos + 1, n);
+                                }
+                                else
+                                {
+                                    // Layers only [1..N]; Base (pos 0) is just the
+                                    // pre-first-press resting state, never re-entered.
+                                    if (pos <= 0)
+                                        pos = previous ? (wrap ? n : 1) : 1;
+                                    else if (previous)
+                                        pos = pos > 1 ? pos - 1 : (wrap ? n : 1);
+                                    else
+                                        pos = pos < n ? pos + 1 : (wrap ? 1 : n);
+                                }
                                 rt.CycleIndexByList[src] = pos;
                                 rt.CustomLayer = pos == 0 ? "" : layers[pos - 1];
                             }

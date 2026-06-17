@@ -2023,4 +2023,8 @@
   <data name="Pad_Shift_CycleDirection_Next" xml:space="preserve"><value>Siguiente</value></data>
   <data name="Pad_Shift_CycleDirection_Previous" xml:space="preserve"><value>Anterior</value></data>
   <data name="Pad_Shift_CycleDirection_Tooltip" xml:space="preserve"><value>Siguiente avanza por las capas. Configura un segundo activador con la misma lista en Anterior para retroceder. Ambos comparten una posición.</value></data>
+  <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Dar la vuelta</value></data>
+  <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Cuando está activado, al pasar de la última capa se vuelve a la primera, y antes de la primera se va a la última. Cuando está desactivado, el cursor se detiene en los extremos.</value></data>
+  <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Incluir Base</value></data>
+  <data name="Pad_Shift_CycleIncludeBase_Tooltip" xml:space="preserve"><value>Cuando está activado, la Base sin modificar es una parada en la rotación, así que el ciclo puede volver a ella. Cuando está desactivado, el cursor permanece en las capas marcadas y vuelves a la Base con un activador aparte.</value></data>
 </root>

@@ -115,8 +115,11 @@ namespace PadForge.Engine.Data
 
         /// <summary>v3 Cycle mode: pipe-separated ordered list of layer
         /// masks to cycle through (e.g. <c>"Shift1|Shift2|Shift3"</c>).
-        /// Each press advances to the next; press past last wraps to Base.
-        /// Used only when <see cref="Mode"/> == <c>"Cycle"</c>.</summary>
+        /// Each press steps the cursor one position in the
+        /// <see cref="Direction"/>. Stepping past an end follows
+        /// <see cref="CycleWrap"/>; whether Base is a stop follows
+        /// <see cref="CycleIncludeBase"/>. Used only when
+        /// <see cref="Mode"/> == <c>"Cycle"</c>.</summary>
         [XmlAttribute] public string CycleLayers { get; set; } = "";
 
         /// <summary>v3 Cycle direction (#119). <c>"Next"</c> (default) advances
@@ -125,6 +128,19 @@ namespace PadForge.Engine.Data
         /// <see cref="CycleLayers"/> list walk one shared cursor, so two buttons
         /// browse a queue forward and back (weapon / menu switching).</summary>
         [XmlAttribute] public string Direction { get; set; } = "Next";
+
+        /// <summary>v3 Cycle wrap (#119). When <c>true</c> (default), stepping
+        /// past the last position returns to the first (and past the first to the
+        /// last). When <c>false</c>, the cursor clamps at the ends.</summary>
+        [XmlAttribute] public bool CycleWrap { get; set; } = true;
+
+        /// <summary>v3 Cycle include-Base (#119). When <c>false</c> (default), the
+        /// cursor walks the queued layers only: Base is the resting state before
+        /// the first press, but never a stop in the rotation (a weapon cursor stays
+        /// on a weapon). When <c>true</c>, the unshifted Base is also a stop in the
+        /// ring, so cycling can land back on it. A separate activator can always
+        /// return to Base regardless of this flag.</summary>
+        [XmlAttribute] public bool CycleIncludeBase { get; set; } = false;
 
         /// <summary>v3 personalization: emoji or single-grapheme string
         /// shown on the engaged-layer flyout. Empty falls back to the

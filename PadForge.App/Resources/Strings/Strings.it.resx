@@ -2045,4 +2045,8 @@
   <data name="Pad_Shift_CycleDirection_Next" xml:space="preserve"><value>Successivo</value></data>
   <data name="Pad_Shift_CycleDirection_Previous" xml:space="preserve"><value>Precedente</value></data>
   <data name="Pad_Shift_CycleDirection_Tooltip" xml:space="preserve"><value>Successivo avanza tra i livelli. Imposta un secondo attivatore con lo stesso elenco su Precedente per andare indietro. Entrambi condividono una posizione.</value></data>
+  <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Avvolgi</value></data>
+  <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Se attivo, oltre l'ultimo livello il cursore torna al primo, e prima del primo va all'ultimo. Se disattivato, il cursore si ferma agli estremi.</value></data>
+  <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Includi Base</value></data>
+  <data name="Pad_Shift_CycleIncludeBase_Tooltip" xml:space="preserve"><value>Se attivo, la Base non modificata è una fermata nella rotazione, così il ciclo può tornarci. Se disattivato, il cursore resta sui livelli selezionati e torni alla Base con un attivatore separato.</value></data>
 </root>

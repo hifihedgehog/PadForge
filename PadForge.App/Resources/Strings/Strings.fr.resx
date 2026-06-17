@@ -2017,4 +2017,6 @@
   <data name="Status_MacroCopied" xml:space="preserve"><value>Macro copiée dans le presse-papiers.</value></data>
   <data name="Status_MacroPasted" xml:space="preserve"><value>Macro collée.</value></data>
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>Le presse-papiers ne contient pas de macro copiée.</value></data>
+  <data name="Status_MacroCopiedFrom" xml:space="preserve"><value>Macros copiées depuis la manette virtuelle sélectionnée.</value></data>
+  <data name="Status_MacroNoSource" xml:space="preserve"><value>Aucune autre manette virtuelle n'a de macros à copier.</value></data>
 </root>

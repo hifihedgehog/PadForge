@@ -2017,4 +2017,6 @@
   <data name="Status_MacroCopied" xml:space="preserve"><value>已将宏复制到剪贴板。</value></data>
   <data name="Status_MacroPasted" xml:space="preserve"><value>已粘贴宏。</value></data>
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>剪贴板中不包含已复制的宏。</value></data>
+  <data name="Status_MacroCopiedFrom" xml:space="preserve"><value>已从所选虚拟控制器复制宏。</value></data>
+  <data name="Status_MacroNoSource" xml:space="preserve"><value>没有其他虚拟控制器有可复制的宏。</value></data>
 </root>

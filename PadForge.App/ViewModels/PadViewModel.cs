@@ -3258,6 +3258,15 @@ namespace PadForge.ViewModels
             _pasteMacroCommand ??= new RelayCommand(
                 () => PasteMacroRequested?.Invoke(this, EventArgs.Empty));
 
+        /// <summary>VC-level Copy From (#112): pull macros from another virtual
+        /// controller into this one, mirroring the Mappings-tab Copy From. MainWindow
+        /// shows the VC picker and does the copy.</summary>
+        public event EventHandler CopyMacroFromRequested;
+        private RelayCommand _copyMacroFromCommand;
+        public RelayCommand CopyMacroFromCommand =>
+            _copyMacroFromCommand ??= new RelayCommand(
+                () => CopyMacroFromRequested?.Invoke(this, EventArgs.Empty));
+
         // ═══════════════════════════════════════════════
         //  Audio tab (issue #83) — per-slot sound output for macro sounds
         // ═══════════════════════════════════════════════

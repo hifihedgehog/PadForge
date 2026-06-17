@@ -203,6 +203,8 @@ public class Strings : INotifyPropertyChanged
     public string Status_MacroCopied => Get("Status_MacroCopied");
     public string Status_MacroPasted => Get("Status_MacroPasted");
     public string Status_MacroClipboardInvalid => Get("Status_MacroClipboardInvalid");
+    public string Status_MacroCopiedFrom => Get("Status_MacroCopiedFrom");
+    public string Status_MacroNoSource => Get("Status_MacroNoSource");
     public string Status_ProfileCreatedEmpty_Format => Get("Status_ProfileCreatedEmpty_Format");
     public string Status_ProfileCreated_Format => Get("Status_ProfileCreated_Format");
     public string Status_ProfileDeleted_Format => Get("Status_ProfileDeleted_Format");

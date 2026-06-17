@@ -2017,4 +2017,6 @@
   <data name="Status_MacroCopied" xml:space="preserve"><value>マクロをクリップボードにコピーしました。</value></data>
   <data name="Status_MacroPasted" xml:space="preserve"><value>マクロを貼り付けました。</value></data>
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>クリップボードにコピーされたマクロがありません。</value></data>
+  <data name="Status_MacroCopiedFrom" xml:space="preserve"><value>選択した仮想コントローラーからマクロをコピーしました。</value></data>
+  <data name="Status_MacroNoSource" xml:space="preserve"><value>コピーできるマクロを持つ他の仮想コントローラーがありません。</value></data>
 </root>

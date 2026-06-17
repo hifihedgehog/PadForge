@@ -2010,4 +2010,6 @@
   <data name="About_NAudioDesc" xml:space="preserve"><value>Captura WASAPI em loopback para o espelhamento de áudio do controle e a vibração dos gatilhos por graves. Por Mark Heath. MIT.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Criptografia para o emparelhamento e o transporte do Remote Link (X25519, Ed25519, ChaCha20-Poly1305). Licença Bouncy Castle, de estilo MIT.</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Gravando "{0}": pressione a entrada da direção Cima...</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Gravando "{0}": agora pressione a entrada da direção Baixo...</value></data>
 </root>

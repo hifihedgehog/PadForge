@@ -2010,4 +2010,6 @@
   <data name="About_NAudioDesc" xml:space="preserve"><value>用于手柄音频镜像和低音扳机震动的 WASAPI 环回捕获。作者 Mark Heath。MIT。</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>用于 Remote Link 配对和传输的加密（X25519、Ed25519、ChaCha20-Poly1305）。Bouncy Castle 许可证（MIT 类）。</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>录制中"{0}"：请按下"向上"方向的输入...</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>录制中"{0}"：现在请按下"向下"方向的输入...</value></data>
 </root>

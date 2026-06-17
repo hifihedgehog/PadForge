@@ -2010,4 +2010,6 @@
   <data name="About_NAudioDesc" xml:space="preserve"><value>WASAPI-Loopback-Aufnahme für die Controller-Audio-Spiegelung und das Audio-Bass-Trigger-Rumble. Von Mark Heath. MIT.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Kryptografie für die Remote-Link-Kopplung und -Übertragung (X25519, Ed25519, ChaCha20-Poly1305). Bouncy-Castle-Lizenz, eine MIT-ähnliche Lizenz.</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Aufnahme für „{0}": Drücken Sie die Auf-Eingabe...</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Aufnahme für „{0}": Drücken Sie jetzt die Ab-Eingabe...</value></data>
 </root>

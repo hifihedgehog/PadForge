@@ -2010,4 +2010,6 @@
   <data name="About_NAudioDesc" xml:space="preserve"><value>컨트롤러 오디오 미러링과 저음 트리거 진동을 위한 WASAPI 루프백 캡처. Mark Heath 제작. MIT.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Remote Link 페어링 및 전송을 위한 암호화(X25519, Ed25519, ChaCha20-Poly1305). Bouncy Castle 라이선스(MIT 계열).</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>기록 중 "{0}": 위 방향 입력을 누르십시오...</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>기록 중 "{0}": 이제 아래 방향 입력을 누르십시오...</value></data>
 </root>

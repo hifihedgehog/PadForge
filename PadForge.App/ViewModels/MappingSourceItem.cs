@@ -44,6 +44,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsIncrementalKind));
                     OnPropertyChanged(nameof(IsInvertOnHoldKind));
                     OnPropertyChanged(nameof(IsRampedKind));
+                    OnPropertyChanged(nameof(UsesUpDownKeys));
                     OnPropertyChanged(nameof(IsKindDescriptorless));
                     OnPropertyChanged(nameof(ParamUpInputChoice));
                     OnPropertyChanged(nameof(ParamDownInputChoice));
@@ -55,6 +56,11 @@ namespace PadForge.ViewModels
         public bool IsIncrementalKind => string.Equals(_kind, "Incremental", StringComparison.Ordinal);
         public bool IsInvertOnHoldKind => string.Equals(_kind, "InvertOnHold", StringComparison.Ordinal);
         public bool IsRampedKind => string.Equals(_kind, "Ramped", StringComparison.Ordinal);
+
+        /// <summary>True for the kinds authored via a positive (Up) and negative
+        /// (Down) key pair: Incremental and Ramped. Drives the inline Up/Down
+        /// pickers' visibility in the primary cell and the secondary rows.</summary>
+        public bool UsesUpDownKeys => IsIncrementalKind || IsRampedKind;
 
         /// <summary>True for kinds where the source's main Descriptor +
         /// Invert / HalfAxis / DeadZone fields are unused (Incremental

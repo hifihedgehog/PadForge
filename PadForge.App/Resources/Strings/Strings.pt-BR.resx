@@ -468,6 +468,15 @@
   <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Limite inferior do acumulador. -1 = totalmente negativo para alvos de eixo bipolar; 0 = unipolar.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Máx</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Limite superior do acumulador. 1 = totalmente positivo.</value></data>
+  <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampa</value></data>
+  <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Ataque</value></data>
+  <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Segundos para atingir a deflexão total enquanto a tecla correspondente é mantida. 0 = instantâneo.</value></data>
+  <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Liberação</value></data>
+  <data name="Pad_Mapping_Ramp_Release_Tooltip" xml:space="preserve"><value>Segundos para voltar ao centro após soltar. 0 = instantâneo.</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse" xml:space="preserve"><value>Inversão</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse_Tooltip" xml:space="preserve"><value>O quanto o eixo volta mais rápido ao centro ao pressionar a tecla oposta antes de se estabilizar. 1 = sem aceleração.</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter" xml:space="preserve"><value>Autocentralização</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Marcado: o eixo volta ao centro ao soltar. Desmarcado: mantém a última posição.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Botão que inverte a saída da linha enquanto pressionado</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modificador: enquanto pressionado, a saída da linha inverte o sinal.</value></data>
   <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Adicionar fonte</value></data>

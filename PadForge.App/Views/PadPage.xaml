@@ -2940,6 +2940,142 @@
                                                                      VerticalContentAlignment="Center"
                                                                      ToolTip="{Binding Pad_Mapping_Max_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                         </StackPanel>
+
+                                                        <!-- Ramped inline controls (#111). Same Up/Down pickers as
+                                                             Incremental (Up = positive direction, Down = negative),
+                                                             plus Attack / Release / Reverse / Autocenter. -->
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                                                                    Visibility="{Binding IsRampedKind, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                            <TextBlock Text="↥" FontSize="14" VerticalAlignment="Center" Margin="0,0,2,0"
+                                                                       ToolTip="{Binding Pad_Mapping_Up_IconTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <StackPanel Orientation="Vertical" Margin="0,0,2,0">
+                                                                <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView,
+                                                                            RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                                          SelectedItem="{Binding ParamUpInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                          DisplayMemberPath="DisplayName"
+                                                                          MinWidth="180" Padding="4,2"
+                                                                          ToolTip="{Binding Pad_Mapping_Up_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
+                                                                          PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                                    <ComboBox.GroupStyle>
+                                                                        <GroupStyle>
+                                                                            <GroupStyle.HeaderTemplate>
+                                                                                <DataTemplate>
+                                                                                    <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                                        <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                                                   TextTrimming="CharacterEllipsis"/>
+                                                                                    </Border>
+                                                                                </DataTemplate>
+                                                                            </GroupStyle.HeaderTemplate>
+                                                                        </GroupStyle>
+                                                                    </ComboBox.GroupStyle>
+                                                                </ComboBox>
+                                                                <TextBlock FontSize="10"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           Margin="4,1,0,0"
+                                                                           TextTrimming="CharacterEllipsis">
+                                                                    <TextBlock.Style>
+                                                                        <Style TargetType="TextBlock">
+                                                                            <Setter Property="Text" Value="{Binding ParamUpDeviceLabel}"/>
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding ParamUp}" Value="">
+                                                                                    <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
+                                                                                    <Setter Property="FontStyle" Value="Italic"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBlock.Style>
+                                                                </TextBlock>
+                                                            </StackPanel>
+                                                            <Button Command="{Binding RecordParamUpCommand}"
+                                                                    Width="36" Margin="0,0,6,0" Padding="2"
+                                                                    VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding RecordIconParamUp}" FontFamily="Segoe MDL2 Assets"/>
+                                                                <Button.ToolTip>
+                                                                    <TextBlock Text="{Binding RecordTextParamUp}"/>
+                                                                </Button.ToolTip>
+                                                            </Button>
+                                                            <TextBlock Text="↧" FontSize="14" VerticalAlignment="Center" Margin="0,0,2,0"
+                                                                       ToolTip="{Binding Pad_Mapping_Down_IconTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <StackPanel Orientation="Vertical" Margin="0,0,2,0">
+                                                                <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView,
+                                                                            RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                                          SelectedItem="{Binding ParamDownInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                          DisplayMemberPath="DisplayName"
+                                                                          MinWidth="180" Padding="4,2"
+                                                                          ToolTip="{Binding Pad_Mapping_Down_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
+                                                                          PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                                    <ComboBox.GroupStyle>
+                                                                        <GroupStyle>
+                                                                            <GroupStyle.HeaderTemplate>
+                                                                                <DataTemplate>
+                                                                                    <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                                        <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                                                   TextTrimming="CharacterEllipsis"/>
+                                                                                    </Border>
+                                                                                </DataTemplate>
+                                                                            </GroupStyle.HeaderTemplate>
+                                                                        </GroupStyle>
+                                                                    </ComboBox.GroupStyle>
+                                                                </ComboBox>
+                                                                <TextBlock FontSize="10"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           Margin="4,1,0,0"
+                                                                           TextTrimming="CharacterEllipsis">
+                                                                    <TextBlock.Style>
+                                                                        <Style TargetType="TextBlock">
+                                                                            <Setter Property="Text" Value="{Binding ParamDownDeviceLabel}"/>
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding ParamDown}" Value="">
+                                                                                    <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
+                                                                                    <Setter Property="FontStyle" Value="Italic"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBlock.Style>
+                                                                </TextBlock>
+                                                            </StackPanel>
+                                                            <Button Command="{Binding RecordParamDownCommand}"
+                                                                    Width="36" Margin="0,0,8,0" Padding="2"
+                                                                    VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding RecordIconParamDown}" FontFamily="Segoe MDL2 Assets"/>
+                                                                <Button.ToolTip>
+                                                                    <TextBlock Text="{Binding RecordTextParamDown}"/>
+                                                                </Button.ToolTip>
+                                                            </Button>
+                                                            <TextBlock Text="{Binding Pad_Mapping_Ramp_Attack, Source={x:Static strings:Strings.Instance}}"
+                                                                       VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                            <Slider Value="{Binding ParamAttackTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                    Minimum="0" Maximum="2" SmallChange="0.05" LargeChange="0.25"
+                                                                    Width="80" VerticalAlignment="Center"
+                                                                    ToolTip="{Binding Pad_Mapping_Ramp_Attack_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <TextBox Text="{Binding ParamAttackTime, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                                                     Width="44" Margin="4,0,8,0" Padding="2,1"
+                                                                     VerticalContentAlignment="Center"/>
+                                                            <TextBlock Text="{Binding Pad_Mapping_Ramp_Release, Source={x:Static strings:Strings.Instance}}"
+                                                                       VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                            <Slider Value="{Binding ParamReleaseTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                    Minimum="0" Maximum="2" SmallChange="0.05" LargeChange="0.25"
+                                                                    Width="80" VerticalAlignment="Center"
+                                                                    ToolTip="{Binding Pad_Mapping_Ramp_Release_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <TextBox Text="{Binding ParamReleaseTime, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                                                     Width="44" Margin="4,0,8,0" Padding="2,1"
+                                                                     VerticalContentAlignment="Center"/>
+                                                            <TextBlock Text="{Binding Pad_Mapping_Ramp_Reverse, Source={x:Static strings:Strings.Instance}}"
+                                                                       VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                            <Slider Value="{Binding ParamReverseMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                    Minimum="1" Maximum="10" SmallChange="1" LargeChange="1"
+                                                                    Width="70" VerticalAlignment="Center"
+                                                                    ToolTip="{Binding Pad_Mapping_Ramp_Reverse_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <TextBox Text="{Binding ParamReverseMultiplier, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.0}}"
+                                                                     Width="40" Margin="4,0,8,0" Padding="2,1"
+                                                                     VerticalContentAlignment="Center"/>
+                                                            <CheckBox Content="{Binding Pad_Mapping_Ramp_Autocenter, Source={x:Static strings:Strings.Instance}}"
+                                                                      IsChecked="{Binding ParamAutocenter, Mode=TwoWay}"
+                                                                      VerticalAlignment="Center" Margin="0,0,8,0"
+                                                                      ToolTip="{Binding Pad_Mapping_Ramp_Autocenter_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                        </StackPanel>
                                                         <Button Content="✕" Padding="6,2" Margin="2"
                                                                 VerticalAlignment="Center"
                                                                 Command="{Binding DataContext.RemoveExtraSourceCommand,

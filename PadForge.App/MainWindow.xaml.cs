@@ -4307,7 +4307,11 @@ namespace PadForge
                         or nameof(MappingSourceItem.ParamSticky)
                         or nameof(MappingSourceItem.ParamMin)
                         or nameof(MappingSourceItem.ParamMax)
-                        or nameof(MappingSourceItem.ParamModifier))
+                        or nameof(MappingSourceItem.ParamModifier)
+                        or nameof(MappingSourceItem.ParamAttackTime)
+                        or nameof(MappingSourceItem.ParamReleaseTime)
+                        or nameof(MappingSourceItem.ParamAutocenter)
+                        or nameof(MappingSourceItem.ParamReverseMultiplier))
                         _settingsService.MarkDirty();
                 };
             }

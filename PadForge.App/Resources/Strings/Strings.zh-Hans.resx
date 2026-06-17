@@ -468,6 +468,15 @@
   <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>累加器下限。-1 = 双极轴目标的完全负值。0 = 单极。</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>最大</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>累加器上限。1 = 完全正值。</value></data>
+  <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>渐变</value></data>
+  <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>上升</value></data>
+  <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>按住对应按键时达到完全偏转的秒数。0 = 立即。</value></data>
+  <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>下降</value></data>
+  <data name="Pad_Mapping_Ramp_Release_Tooltip" xml:space="preserve"><value>松开后返回中心的秒数。0 = 立即。</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse" xml:space="preserve"><value>反向</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse_Tooltip" xml:space="preserve"><value>在轴稳定前按下相反按键时，轴返回中心的加速倍数。1 = 不加速。</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter" xml:space="preserve"><value>自动回中</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>勾选时，松开后轴返回中心。取消勾选时，保持最后的位置。</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>按住时反转该行输出的按钮</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>修改键：按住时，该行输出的符号翻转。</value></data>
   <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ 添加来源</value></data>

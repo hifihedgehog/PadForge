@@ -468,6 +468,15 @@
   <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>누산기의 하한. -1 = 양극 축 대상의 전체 음수; 0 = 단극.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>최댓값</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>누산기의 상한. 1 = 전체 양수.</value></data>
+  <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>램프</value></data>
+  <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>어택</value></data>
+  <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>해당 키를 누르고 있는 동안 최대 편향에 도달하는 시간(초). 0 = 즉시.</value></data>
+  <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>릴리스</value></data>
+  <data name="Pad_Mapping_Ramp_Release_Tooltip" xml:space="preserve"><value>놓은 후 중앙으로 돌아오는 시간(초). 0 = 즉시.</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse" xml:space="preserve"><value>반전</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse_Tooltip" xml:space="preserve"><value>축이 안정되기 전에 반대 키를 누를 때 중앙으로 더 빠르게 돌아오는 배율. 1 = 가속 없음.</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter" xml:space="preserve"><value>자동 센터</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>켜면 놓을 때 축이 중앙으로 돌아옵니다. 끄면 마지막 위치를 유지합니다.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>누르고 있는 동안 행의 출력을 반전시키는 버튼</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>수정자: 누르고 있는 동안 행의 출력 부호가 반전됩니다.</value></data>
   <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ 소스 추가</value></data>

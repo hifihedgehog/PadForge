@@ -1216,26 +1216,13 @@ namespace PadForge.Views
             _currentPadVm.ConfigItemDirtyCallback?.Invoke();
         }
 
+        // Full memberwise copy. The previous hand-listed clone silently dropped
+        // every Param* added after it was written (Gyro / Mouse-cursor sensitivity,
+        // the steering params, and the #111 ramp params), so a layer copy lost them.
+        // MappingSource.Clone() copies every field, which is what the type's own doc
+        // says to use at clone sites.
         private static Engine.Data.MappingSource CloneSource(Engine.Data.MappingSource s)
-        {
-            return new Engine.Data.MappingSource
-            {
-                Kind = s.Kind,
-                DeviceGuid = s.DeviceGuid,
-                Descriptor = s.Descriptor,
-                Invert = s.Invert,
-                HalfAxis = s.HalfAxis,
-                Bidirectional = s.Bidirectional,
-                DeadZone = s.DeadZone,
-                ParamUp = s.ParamUp,
-                ParamDown = s.ParamDown,
-                ParamRate = s.ParamRate,
-                ParamSticky = s.ParamSticky,
-                ParamMin = s.ParamMin,
-                ParamMax = s.ParamMax,
-                ParamModifier = s.ParamModifier,
-            };
-        }
+            => s?.Clone();
 
         /// <summary>Reads the slot's MappingSet from
         /// <see cref="Common.SettingsManager.SlotMappingSets"/> by pad index.

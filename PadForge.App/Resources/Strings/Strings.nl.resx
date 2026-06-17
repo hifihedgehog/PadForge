@@ -468,6 +468,15 @@
   <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Ondergrens van de accumulator. -1 = volledig negatief voor bipolaire asdoelen; 0 = unipolair.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Bovengrens van de accumulator. 1 = volledig positief.</value></data>
+  <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Verloop</value></data>
+  <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Stijgen</value></data>
+  <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Seconden om volledige uitslag te bereiken terwijl de bijbehorende toets ingedrukt blijft. 0 = direct.</value></data>
+  <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Dalen</value></data>
+  <data name="Pad_Mapping_Ramp_Release_Tooltip" xml:space="preserve"><value>Seconden om terug naar het midden te gaan na loslaten. 0 = direct.</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse" xml:space="preserve"><value>Omkeren</value></data>
+  <data name="Pad_Mapping_Ramp_Reverse_Tooltip" xml:space="preserve"><value>Hoeveel sneller de as naar het midden terugkeert als je de tegenovergestelde toets indrukt voordat hij tot rust komt. 1 = geen versnelling.</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter" xml:space="preserve"><value>Auto-centreren</value></data>
+  <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Aangevinkt: de as keert bij loslaten terug naar het midden. Uitgevinkt: hij houdt zijn laatste positie.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Knop die de uitvoer van de rij omkeert zolang ingedrukt</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Aanpassingsknop: zolang ingedrukt, keert de uitvoer van de rij van teken.</value></data>
   <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Bron toevoegen</value></data>

@@ -23,8 +23,8 @@ namespace PadForge.Engine.Data
     public class MappingSource
     {
         /// <summary>Source kind discriminator. <c>"Direct"</c> (default),
-        /// <c>"Incremental"</c>, <c>"InvertOnHold"</c>. Forward-compatible:
-        /// unknown values treated as Direct.</summary>
+        /// <c>"Incremental"</c>, <c>"InvertOnHold"</c>, <c>"Ramped"</c>, plus the
+        /// steering kinds. Forward-compatible: unknown values treated as Direct.</summary>
         [XmlAttribute] public string Kind { get; set; } = "Direct";
 
         /// <summary>Device this source reads from. Empty string means "first
@@ -92,6 +92,33 @@ namespace PadForge.Engine.Data
         /// inverts the inner source while held. Only read when
         /// <c>Kind == "InvertOnHold"</c>.</summary>
         [XmlAttribute] public string ParamModifier { get; set; } = "";
+
+        // ─── Ramped axis envelope (v3.5 #111) ───
+        // A keyboard-to-axis time-based ramp. The positive-direction key (ParamUp)
+        // and negative-direction key (ParamDown) drive a bipolar accumulator in
+        // [-1, +1] that attacks toward the held side over ParamAttackTime and
+        // releases back toward zero over ParamReleaseTime. Math ported from the
+        // KBM2Gamepad / FreePIE throttle logic referenced in the issue.
+
+        /// <summary>Ramped attack time in seconds: how long the axis takes to travel
+        /// 0 to ±1 while the matching-direction key is held. 0 = instant. Only read
+        /// when <c>Kind == "Ramped"</c>.</summary>
+        [XmlAttribute] public double ParamAttackTime { get; set; } = 0.30;
+
+        /// <summary>Ramped release time in seconds: how long the axis takes to travel
+        /// ±1 back to 0 after release (and the base rate when reversing). 0 = instant.</summary>
+        [XmlAttribute] public double ParamReleaseTime { get; set; } = 0.30;
+
+        /// <summary>Ramped autocenter. <c>true</c> = releasing both keys ramps the
+        /// axis back toward zero at the release rate. <c>false</c> = the axis holds
+        /// its last value (cruise). The reverse speed-up is gated on this being on.</summary>
+        [XmlAttribute] public bool ParamAutocenter { get; set; } = true;
+
+        /// <summary>Ramped reverse multiplier. Applied to the toward-zero step while
+        /// the opposite-direction key is held and the axis is still on the original
+        /// side, so a direction switch returns to zero faster before attacking the new
+        /// side. 1.0 disables the speed-up. Gated on <see cref="ParamAutocenter"/>.</summary>
+        [XmlAttribute] public double ParamReverseMultiplier { get; set; } = 4.0;
 
         /// <summary>v3.2 per-source gyro sensitivity multiplier. Applied
         /// to the calibrated gyro rate during bipolar / unipolar coercion

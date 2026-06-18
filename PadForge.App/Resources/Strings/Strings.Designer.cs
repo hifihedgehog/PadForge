@@ -1851,6 +1851,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Shift_AddLayer_Tooltip => Get("Pad_Shift_AddLayer_Tooltip");
     public string Pad_Shift_BaseTabLabel => Get("Pad_Shift_BaseTabLabel");
     public string Pad_Shift_DialogTitle => Get("Pad_Shift_DialogTitle");
+    public string Pad_Shift_BaseConfigTitle => Get("Pad_Shift_BaseConfigTitle");
     public string Pad_Shift_LayerName => Get("Pad_Shift_LayerName");
     public string Pad_Shift_ActivatorInput => Get("Pad_Shift_ActivatorInput");
     public string Pad_Shift_Mode => Get("Pad_Shift_Mode");

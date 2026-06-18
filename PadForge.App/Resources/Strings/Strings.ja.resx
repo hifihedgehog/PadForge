@@ -1416,6 +1416,7 @@
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Shift レイヤーを追加します。ボタンを押している間または切り替えている間にアクティブになる第2のマッピング テーブルです。</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>ベース</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift レイヤー</value></data>
+  <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>ベースを構成</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>レイヤー名</value></data>
   <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>アクティベーター入力</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>モード</value></data>

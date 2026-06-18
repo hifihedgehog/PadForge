@@ -1415,6 +1415,7 @@
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>添加一个 Shift 层：在按住或切换按钮时激活的第二个映射表。</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>基础</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift 层</value></data>
+  <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>配置基础层</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>层名称</value></data>
   <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>激活器输入</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>模式</value></data>

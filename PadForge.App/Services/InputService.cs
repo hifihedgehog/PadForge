@@ -5535,40 +5535,68 @@ namespace PadForge.Services
                 }
             }
 
-            // No-op when (slot, mask) tuple hasn't changed since last tick.
-            if (engagedSlot == _shiftLayerFlyoutLastSlot
-                && string.Equals(engagedMask, _shiftLayerFlyoutLastShown, System.StringComparison.Ordinal))
-                return;
-            _shiftLayerFlyoutLastSlot = engagedSlot;
-            _shiftLayerFlyoutLastShown = engagedMask;
+            // Capture the prior (slot, mask) before updating so a transition
+            // from a shift layer back to Base can surface the Base flyout (#119).
+            int prevSlot = _shiftLayerFlyoutLastSlot;
+            string prevShown = _shiftLayerFlyoutLastShown;
 
-            if (engagedSlot < 0)
+            // No-op when (slot, mask) tuple hasn't changed since last tick.
+            if (engagedSlot == prevSlot
+                && string.Equals(engagedMask, prevShown, System.StringComparison.Ordinal))
+                return;
+
+            if (engagedSlot >= 0)
             {
-                _shiftLayerFlyout?.HideFlyout();
+                _shiftLayerFlyoutLastSlot = engagedSlot;
+                _shiftLayerFlyoutLastShown = engagedMask;
+
+                // Resolve activator (for LayerName + Color + Icon) by the engaged mask.
+                var ms = sets[engagedSlot];
+                string layerName = engagedMask;
+                string color = "";
+                string icon = "";
+                if (ms?.ShiftActivators != null)
+                {
+                    foreach (var a in ms.ShiftActivators)
+                    {
+                        if (a == null) continue;
+                        if (!string.Equals(a.LayerMask, engagedMask, System.StringComparison.Ordinal)) continue;
+                        if (!string.IsNullOrEmpty(a.LayerName)) layerName = a.LayerName;
+                        color = a.Color ?? "";
+                        icon = a.Icon ?? "";
+                        break;
+                    }
+                }
+
+                if (_shiftLayerFlyout == null)
+                    _shiftLayerFlyout = new Views.ShiftLayerFlyout();
+                _shiftLayerFlyout.ShowLayer(layerName, color, icon);
                 return;
             }
 
-            // Resolve activator (for LayerName + Color + Icon) by the engaged mask.
-            var ms = sets[engagedSlot];
-            string layerName = engagedMask;
-            string color = "";
-            string icon = "";
-            if (ms?.ShiftActivators != null)
+            // Everything is at Base now. Surface that slot's Base flyout once on
+            // the shift-layer -> Base transition (#119). A steady Base state, or
+            // a transition we already showed, shows nothing.
+            _shiftLayerFlyoutLastSlot = -1;
+            _shiftLayerFlyoutLastShown = "Base";
+            if (prevSlot < 0 || prevSlot >= sets.Length
+                || string.Equals(prevShown, "Base", System.StringComparison.Ordinal))
+                return;
+
+            var baseMs = sets[prevSlot];
+            string baseName = PadForge.Resources.Strings.Strings.Instance.Pad_Shift_BaseTabLabel;
+            string baseColor = "";
+            string baseIcon = "";
+            if (baseMs != null)
             {
-                foreach (var a in ms.ShiftActivators)
-                {
-                    if (a == null) continue;
-                    if (!string.Equals(a.LayerMask, engagedMask, System.StringComparison.Ordinal)) continue;
-                    if (!string.IsNullOrEmpty(a.LayerName)) layerName = a.LayerName;
-                    color = a.Color ?? "";
-                    icon = a.Icon ?? "";
-                    break;
-                }
+                if (!string.IsNullOrEmpty(baseMs.BaseLayerName)) baseName = baseMs.BaseLayerName;
+                baseColor = baseMs.BaseColor ?? "";
+                baseIcon = baseMs.BaseIcon ?? "";
             }
 
             if (_shiftLayerFlyout == null)
                 _shiftLayerFlyout = new Views.ShiftLayerFlyout();
-            _shiftLayerFlyout.ShowLayer(layerName, color, icon);
+            _shiftLayerFlyout.ShowLayer(baseName, baseColor, baseIcon);
         }
 
         private void ShowTouchpadOverlay()

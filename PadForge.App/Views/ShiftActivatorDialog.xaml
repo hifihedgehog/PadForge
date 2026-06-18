@@ -197,7 +197,7 @@
                  in the dropdown, mirroring the Mapping table's combine-mode
                  picker so the user gets a one-line explanation of each
                  option without hunting through tooltips. -->
-            <TextBlock Grid.Row="2"
+            <TextBlock Grid.Row="2" x:Name="KindLabel"
                        Text="{Binding Pad_Shift_Kind, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
             <ComboBox Grid.Row="3" x:Name="KindCombo" Margin="0,0,0,12"
@@ -220,10 +220,10 @@
             <!-- Activator input. Sub-label below the dropdown mirrors the
                  Mappings tab Source column: shows the picked input's owning
                  device, italic "Unassigned" when nothing is selected. -->
-            <TextBlock Grid.Row="4"
+            <TextBlock Grid.Row="4" x:Name="InputLabel"
                        Text="{Binding Pad_Shift_ActivatorInput, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
-            <StackPanel Grid.Row="5" Margin="0,0,0,12">
+            <StackPanel Grid.Row="5" x:Name="InputRow" Margin="0,0,0,12">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -361,7 +361,7 @@
             </StackPanel>
 
             <!-- Mode -->
-            <TextBlock Grid.Row="10"
+            <TextBlock Grid.Row="10" x:Name="ModeLabel"
                        Text="{Binding Pad_Shift_Mode, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
             <ComboBox Grid.Row="11" x:Name="ModeCombo" Margin="0,0,0,12"
@@ -383,7 +383,7 @@
 
             <!-- Two activator-behavior checkboxes stacked together. Both
                  are toggles on the activator itself (not on the rows). -->
-            <StackPanel Grid.Row="12" Orientation="Vertical" Margin="0,0,0,12">
+            <StackPanel Grid.Row="12" x:Name="BehaviorChecksRow" Orientation="Vertical" Margin="0,0,0,12">
                 <!-- Inherit unmapped targets from Base. Off by default —
                      shift layer REPLACES Base entirely; targets the layer
                      doesn't map output zero. Check to fall through to Base. -->
@@ -458,7 +458,7 @@
             </ListBox>
 
             <!-- Delay slider + numeric -->
-            <Grid Grid.Row="17" Margin="0,0,0,12">
+            <Grid Grid.Row="17" x:Name="DelayRow" Margin="0,0,0,12">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>

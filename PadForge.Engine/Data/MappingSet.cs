@@ -35,5 +35,21 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlElement("ShiftActivator")]
         public List<ShiftActivator> ShiftActivators { get; set; } = new();
+
+        // ── Base layer flyout appearance (#119) ──
+        // Base has no activator, so its display name / dot color / glyph for
+        // the engaged-layer flyout and the Base tab live here. Empty falls
+        // back to the localized "Base" label, a gray dot, and the Shift glyph.
+
+        /// <summary>Display name shown on the Base tab and the Base flyout.
+        /// Empty falls back to the localized "Base" label.</summary>
+        [XmlAttribute] public string BaseLayerName { get; set; } = "";
+
+        /// <summary>Base flyout / tab dot color, <c>"#RRGGBB"</c>. Empty = gray.</summary>
+        [XmlAttribute] public string BaseColor { get; set; } = "";
+
+        /// <summary>Base flyout glyph (emoji or single grapheme). Empty falls
+        /// back to the universal Shift glyph.</summary>
+        [XmlAttribute] public string BaseIcon { get; set; } = "";
     }
 }

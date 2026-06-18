@@ -1416,6 +1416,7 @@
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Adiciona uma camada Shift: uma segunda tabela de mapeamento que é ativada enquanto um botão é mantido ou alternado.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Base</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Camada Shift</value></data>
+  <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Configurar Base</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nome da camada</value></data>
   <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Entrada ativadora</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modo</value></data>

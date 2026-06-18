@@ -867,6 +867,25 @@ namespace PadForge.Views
             string mask = TagToLayerMask(sender);
             if (string.IsNullOrEmpty(mask)) return;
 
+            // Base has no activator. Configure edits its flyout/tab appearance
+            // (name + icon + color), stored on the MappingSet (#119).
+            if (string.Equals(mask, "Base", StringComparison.Ordinal))
+            {
+                var baseMs = GetOrCreateSlotMappingSet(_currentPadVm.PadIndex);
+                var bdlg = new ShiftActivatorDialog(
+                    baseMs.BaseLayerName ?? "", baseMs.BaseColor ?? "", baseMs.BaseIcon ?? "")
+                {
+                    Owner = Window.GetWindow(this),
+                };
+                if (bdlg.ShowDialog() != true || bdlg.Result == null) return;
+                baseMs.BaseLayerName = bdlg.Result.LayerName ?? "";
+                baseMs.BaseColor = bdlg.Result.Color ?? "";
+                baseMs.BaseIcon = bdlg.Result.Icon ?? "";
+                _currentPadVm.RebuildLayerTabs(baseMs.ShiftActivators);
+                _currentPadVm.ConfigItemDirtyCallback?.Invoke();
+                return;
+            }
+
             var slotMs = GetSlotMappingSet(_currentPadVm.PadIndex);
             if (slotMs?.ShiftActivators == null) return;
             var existing = slotMs.ShiftActivators.Find(

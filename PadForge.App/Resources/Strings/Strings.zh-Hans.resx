@@ -1423,7 +1423,7 @@
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>切换</value></data>
   <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>锁定</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>循环</value></data>
-  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>粘性(单次)</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>粘性(单次)</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>无按钮</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>需要层名称。</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>此插槽已存在同名的层。</value></data>
@@ -1460,7 +1460,7 @@
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>点击以激活。再次点击以释放。层在多次按下中持续存在。</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>按下以锁定并保持此层。再次按下返回基础层。另一个锁定按钮会切换到它自己的层。</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>每次按下都通过有序的层列表前进。回绕到基础。</value></data>
-  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>点击一次以激活。下次映射的按钮按下在层上触发,然后自动释放。</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>点击一次以激活。下次映射的按钮按下在层上触发,然后自动释放。</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>没有自己的按钮。将它加入循环控件的队列，循环就会到达它。</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>从基础继承未映射的目标</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>同时触发激活器自身的映射</value></data>
@@ -2028,4 +2028,17 @@
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>开启后，越过最后一层会回到第一层，第一层之前会到最后一层。关闭后，光标停在两端。</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>包含基础层</value></data>
   <data name="Pad_Shift_CycleIncludeBase_Tooltip" xml:space="preserve"><value>开启后，未变换的基础层也是循环中的一个停留点，切换可以回到它。关闭后，光标只在勾选的层之间移动，需用单独的激活器回到基础层。</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>配对</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>配对控制器</value></data>
+  <data name="WiiPair_Family" xml:space="preserve"><value>控制器类型</value></data>
+  <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
+  <data name="WiiPair_Instructions" xml:space="preserve"><value>打开电池盖并按下红色的 SYNC 按钮。让 PadForge 持续搜索，直到您的控制器出现。</value></data>
+  <data name="WiiPair_Temporary" xml:space="preserve"><value>临时配对（按住 1 和 2）</value></data>
+  <data name="WiiPair_Pair" xml:space="preserve"><value>配对</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>正在搜索。现在请按 SYNC 按钮。</value></data>
+  <data name="WiiPair_Found" xml:space="preserve"><value>找到的控制器</value></data>
+  <data name="WiiPair_NothingYet" xml:space="preserve"><value>尚未找到控制器。请确认蓝色指示灯正在闪烁。</value></data>
+  <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>已配对 {0}。它将出现在您的设备列表中。</value></data>
+  <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>未找到蓝牙适配器。请连接蓝牙适配器后重试。</value></data>
+  <data name="WiiPair_Done" xml:space="preserve"><value>完成</value></data>
 </root>

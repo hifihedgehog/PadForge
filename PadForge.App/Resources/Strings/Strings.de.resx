@@ -1424,7 +1424,7 @@
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Umschalten</value></data>
   <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Einrasten</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Durchlaufen</value></data>
-  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Klebrig (einmalig)</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Klebrig (einmalig)</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Keine Taste</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Ebenenname ist erforderlich.</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>Eine Ebene mit diesem Namen existiert bereits auf diesem Slot.</value></data>
@@ -1461,7 +1461,7 @@
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Tippen zum Aktivieren. Erneut tippen zum Lösen. Ebene bleibt über viele Drücke bestehen.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Drücken, um diese Ebene einzurasten und zu halten. Erneut drücken, um zur Basis zurückzukehren. Eine andere Einrast-Taste wechselt zu ihrer eigenen Ebene.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Jeder Druck rückt durch eine geordnete Ebenenliste. Springt zurück zu Basis.</value></data>
-  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Einmal tippen zum Aktivieren. Der nächste zugewiesene Tastendruck feuert auf der Ebene, dann automatisches Lösen.</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Einmal tippen zum Aktivieren. Der nächste zugewiesene Tastendruck feuert auf der Ebene, dann automatisches Lösen.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Keine eigene Taste. Fügen Sie sie der Warteschlange einer Zyklus-Steuerung hinzu, dann wird sie vom Zyklus erreicht.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Nicht zugewiesene Ziele von Basis erben</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Auch eigenes Mapping des Auslösers feuern</value></data>
@@ -2028,4 +2028,17 @@
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Wenn aktiviert, kehrt der Cursor nach der letzten Ebene zur ersten zurück und vor der ersten zur letzten. Wenn deaktiviert, stoppt er an den Enden.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Basis einbeziehen</value></data>
   <data name="Pad_Shift_CycleIncludeBase_Tooltip" xml:space="preserve"><value>Wenn aktiviert, ist die ungeschaltete Basis ein Halt im Umlauf, sodass der Wechsel wieder dort landen kann. Wenn deaktiviert, bleibt der Cursor auf den ausgewählten Ebenen, und Sie kehren mit einem separaten Auslöser zur Basis zurück.</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Koppeln</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Controller koppeln</value></data>
+  <data name="WiiPair_Family" xml:space="preserve"><value>Controller-Familie</value></data>
+  <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
+  <data name="WiiPair_Instructions" xml:space="preserve"><value>Öffnen Sie das Batteriefach und drücken Sie die rote SYNC-Taste. Lassen Sie PadForge suchen, bis Ihr Controller erscheint.</value></data>
+  <data name="WiiPair_Temporary" xml:space="preserve"><value>Temporäre Kopplung (1 und 2 halten)</value></data>
+  <data name="WiiPair_Pair" xml:space="preserve"><value>Koppeln</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Suche läuft. Drücken Sie jetzt die SYNC-Taste.</value></data>
+  <data name="WiiPair_Found" xml:space="preserve"><value>Gefundene Controller</value></data>
+  <data name="WiiPair_NothingYet" xml:space="preserve"><value>Noch keine Controller gefunden. Stellen Sie sicher, dass die blauen Lichter blinken.</value></data>
+  <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} gekoppelt. Der Controller erscheint in Ihrer Geräteliste.</value></data>
+  <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Kein Bluetooth-Funkmodul gefunden. Schließen Sie einen Bluetooth-Adapter an und versuchen Sie es erneut.</value></data>
+  <data name="WiiPair_Done" xml:space="preserve"><value>Fertig</value></data>
 </root>

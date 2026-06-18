@@ -19,6 +19,8 @@
             <TextBlock Text="{Binding Devices_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}"/>
             <Button Content="{Binding Common_Refresh, Source={x:Static strings:Strings.Instance}}" Margin="16,0,0,0"
                     Command="{Binding RefreshCommand}"/>
+            <Button Content="{Binding Devices_Pair, Source={x:Static strings:Strings.Instance}}" Margin="8,0,0,0"
+                    Command="{Binding PairCommand}"/>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0">
                 <TextBlock Opacity="0.6" Text="{Binding OnlineCount, Mode=OneWay}"/>
                 <TextBlock Opacity="0.6" Text="{Binding Devices_OnlineTotal, Source={x:Static strings:Strings.Instance}}"/>

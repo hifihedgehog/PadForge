@@ -88,6 +88,21 @@ namespace PadForge.Views
                 jumpItems.Add(new LayerOption { LayerMask = a.LayerMask ?? "", DisplayName = display });
                 cycleItems.Add(new LayerOption { LayerMask = a.LayerMask ?? "", DisplayName = display });
             }
+            // #119: include the activator's OWN layer in the cycle queue. A
+            // Next/Previous pair walking one queue must each list the SAME set
+            // of layers to share a cursor, and a queue can include the walker's
+            // own layer (Custom-jump excludes it, but Cycle is a queue, not a
+            // jump-to-other). Without this the own layer is unreachable and two
+            // buttons can never hold an identical list.
+            if (existing != null && !string.IsNullOrEmpty(existing.LayerMask)
+                && !cycleItems.Exists(o => string.Equals(o.LayerMask, existing.LayerMask, StringComparison.Ordinal)))
+            {
+                var ownDisplay = string.IsNullOrEmpty(existing.LayerName) ? existing.LayerMask : existing.LayerName;
+                cycleItems.Add(new LayerOption { LayerMask = existing.LayerMask, DisplayName = ownDisplay });
+            }
+            // Canonical order (by mask) so two activators that check the same
+            // set produce the same pipe-joined string, the shared-cursor key.
+            cycleItems.Sort((x, y) => string.CompareOrdinal(x.LayerMask, y.LayerMask));
             JumpToLayerCombo.ItemsSource = jumpItems;
             CycleLayersList.ItemsSource = cycleItems;
 
@@ -586,9 +601,14 @@ namespace PadForge.Views
             string cycleLayers = "";
             if (CycleLayersList.SelectedItems != null && CycleLayersList.SelectedItems.Count > 0)
             {
+                // Walk Items (canonical display order), not SelectedItems
+                // (selection order), so the saved string is deterministic and
+                // two activators that check the same set match byte-for-byte
+                // (#119, the shared-cursor key).
                 var picked = new List<string>();
-                foreach (var item in CycleLayersList.SelectedItems)
-                    if (item is LayerOption opt && !string.IsNullOrEmpty(opt.LayerMask))
+                foreach (var item in CycleLayersList.Items)
+                    if (item is LayerOption opt && CycleLayersList.SelectedItems.Contains(item)
+                        && !string.IsNullOrEmpty(opt.LayerMask))
                         picked.Add(opt.LayerMask);
                 cycleLayers = string.Join("|", picked);
             }

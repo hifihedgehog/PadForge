@@ -917,6 +917,9 @@ namespace PadForge.Views
             existing.AxisThreshold = dlg.Result.AxisThreshold;
             existing.JumpToLayer = dlg.Result.JumpToLayer;
             existing.CycleLayers = dlg.Result.CycleLayers;
+            existing.Direction = dlg.Result.Direction;
+            existing.CycleWrap = dlg.Result.CycleWrap;
+            existing.CycleIncludeBase = dlg.Result.CycleIncludeBase;
             existing.DelayMs = dlg.Result.DelayMs;
             existing.Color = dlg.Result.Color;
             existing.Icon = dlg.Result.Icon;

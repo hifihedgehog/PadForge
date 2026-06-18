@@ -682,26 +682,8 @@ namespace PadForge.Common.Input
                             lock (rt.SyncRoot)
                             {
                                 rt.CycleIndexByList.TryGetValue(src, out int pos);
-                                if (includeBase)
-                                {
-                                    // Base is a real stop in the ring [0..N].
-                                    if (wrap)
-                                        pos = previous ? (pos + n) % (n + 1) : (pos + 1) % (n + 1);
-                                    else
-                                        pos = previous ? System.Math.Max(pos - 1, 0)
-                                                       : System.Math.Min(pos + 1, n);
-                                }
-                                else
-                                {
-                                    // Layers only [1..N]; Base (pos 0) is just the
-                                    // pre-first-press resting state, never re-entered.
-                                    if (pos <= 0)
-                                        pos = previous ? (wrap ? n : 1) : 1;
-                                    else if (previous)
-                                        pos = pos > 1 ? pos - 1 : (wrap ? n : 1);
-                                    else
-                                        pos = pos < n ? pos + 1 : (wrap ? 1 : n);
-                                }
+                                pos = PadForge.Engine.Common.ShiftCycleStepper.Step(
+                                    pos, n, previous, wrap, includeBase);
                                 rt.CycleIndexByList[src] = pos;
                                 rt.CustomLayer = pos == 0 ? "" : layers[pos - 1];
                             }

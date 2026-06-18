@@ -1436,6 +1436,7 @@
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Voeg een Shift-laag toe. Een tweede toewijzingstabel die actief is terwijl een knop wordt ingedrukt of geschakeld.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Basis</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift-laag</value></data>
+  <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Basis configureren</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Laagnaam</value></data>
   <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Activator-invoer</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modus</value></data>

@@ -1416,6 +1416,7 @@
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Eine Shift-Ebene hinzufügen. Eine zweite Mapping-Tabelle, die aktiv ist, während eine Taste gehalten oder umgeschaltet wird.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Basis</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift-Ebene</value></data>
+  <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Basis konfigurieren</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Ebenenname</value></data>
   <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Aktivator-Eingabe</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modus</value></data>

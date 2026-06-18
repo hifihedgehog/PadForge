@@ -1416,6 +1416,7 @@
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Shift 레이어를 추가합니다. 버튼을 누르거나 토글하는 동안 활성화되는 두 번째 매핑 테이블입니다.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>기본</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift 레이어</value></data>
+  <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>베이스 구성</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>레이어 이름</value></data>
   <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>활성화 입력</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>모드</value></data>

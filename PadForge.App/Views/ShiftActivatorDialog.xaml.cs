@@ -33,6 +33,7 @@ namespace PadForge.Views
         private bool _suppressColorPickerWriteback;
         private bool _recordingPrimary;
         private bool _recordingChord;
+        private bool _baseMode;   // #119: editing only the Base layer's flyout appearance
         private string _selectedIcon = "";
 
         // Tracked so the matching RemoveValueChanged fires on Closed.
@@ -43,6 +44,82 @@ namespace PadForge.Views
         private System.ComponentModel.DependencyPropertyDescriptor _greenDpd;
         private System.ComponentModel.DependencyPropertyDescriptor _blueDpd;
         private EventHandler _onRgbHandler;
+
+        /// <summary>Base-appearance mode (#119): edit only the Base layer's
+        /// display name, icon, and color dot for the engaged-layer flyout and
+        /// the Base tab. Base has no activator input/mode/cycle, so every
+        /// activator-specific row is collapsed. Save returns a
+        /// <see cref="ShiftActivator"/> carrying just LayerName/Color/Icon
+        /// (LayerMask = "Base"); the caller stores those on the MappingSet.</summary>
+        public ShiftActivatorDialog(string baseName, string baseColor, string baseIcon)
+        {
+            InitializeComponent();
+            _baseMode = true;
+            Title = Strings.Instance.Pad_Shift_BaseConfigTitle;
+            // Only name + icon + color show in this mode; shrink from the full
+            // 700px so the buttons aren't stranded above a dead gap.
+            Height = 520;
+
+            LayerNameBox.Text = baseName ?? "";
+
+            if (!string.IsNullOrEmpty(baseColor))
+            {
+                var c = ParseColor(baseColor);
+                if (c.HasValue)
+                {
+                    _suppressColorPickerWriteback = true;
+                    ColorPicker.Red = c.Value.R;
+                    ColorPicker.Green = c.Value.G;
+                    ColorPicker.Blue = c.Value.B;
+                    _suppressColorPickerWriteback = false;
+                    _colorSet = true;
+                }
+            }
+
+            // Same RGB-watch wiring + leak teardown as the main ctor, scoped
+            // to this mode (no recorder, no input lists).
+            _redDpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(
+                ColorPickerControl.RedProperty, typeof(ColorPickerControl));
+            _greenDpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(
+                ColorPickerControl.GreenProperty, typeof(ColorPickerControl));
+            _blueDpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(
+                ColorPickerControl.BlueProperty, typeof(ColorPickerControl));
+            _onRgbHandler = (_, __) => OnColorPickerChanged();
+            _redDpd?.AddValueChanged(ColorPicker, _onRgbHandler);
+            _greenDpd?.AddValueChanged(ColorPicker, _onRgbHandler);
+            _blueDpd?.AddValueChanged(ColorPicker, _onRgbHandler);
+            UpdateHexBoxFromPicker();
+
+            InitEmojiPicker(baseIcon ?? "");
+            CollapseForBaseMode();
+
+            Loaded += (_, __) => { LayerNameBox.Focus(); LayerNameBox.SelectAll(); };
+            Closed += (_, __) =>
+            {
+                if (_onRgbHandler != null)
+                {
+                    _redDpd?.RemoveValueChanged(ColorPicker, _onRgbHandler);
+                    _greenDpd?.RemoveValueChanged(ColorPicker, _onRgbHandler);
+                    _blueDpd?.RemoveValueChanged(ColorPicker, _onRgbHandler);
+                    _onRgbHandler = null;
+                }
+            };
+        }
+
+        /// <summary>Collapses every activator-specific row, leaving the name,
+        /// icon, and color sections for Base-appearance mode.</summary>
+        private void CollapseForBaseMode()
+        {
+            var hide = new System.Windows.UIElement[]
+            {
+                KindLabel, KindCombo, InputLabel, InputRow, ChordLabel, ChordSecondRow,
+                AxisThresholdLabel, AxisThresholdRow, ModeLabel, ModeCombo,
+                BehaviorChecksRow, JumpLabel, JumpToLayerCombo, CycleHeaderRow,
+                CycleLayersList, DelayRow, HintText,
+            };
+            foreach (var el in hide)
+                if (el != null) el.Visibility = Visibility.Collapsed;
+        }
 
         public ShiftActivatorDialog(
             IReadOnlyList<InputChoice> availableInputs,
@@ -559,6 +636,25 @@ namespace PadForge.Views
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            if (_baseMode)
+            {
+                // Base-appearance mode: only name/color/icon matter. Name may
+                // be empty (falls back to the localized Base label downstream).
+                string baseColorHex = _colorSet
+                    ? $"#{ColorPicker.Red:X2}{ColorPicker.Green:X2}{ColorPicker.Blue:X2}"
+                    : "";
+                Result = new ShiftActivator
+                {
+                    LayerMask = "Base",
+                    LayerName = (LayerNameBox.Text ?? "").Trim(),
+                    Color = baseColorHex,
+                    Icon = _selectedIcon ?? "",
+                };
+                DialogResult = true;
+                Close();
+                return;
+            }
+
             string name = (LayerNameBox.Text ?? "").Trim();
             if (string.IsNullOrEmpty(name))
             {

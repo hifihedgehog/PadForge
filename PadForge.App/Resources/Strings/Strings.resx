@@ -1740,6 +1740,7 @@
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Add a shift layer. A second mapping table that activates while a button is held or toggled.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Base</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift Layer</value></data>
+  <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Configure Base</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Layer Name</value></data>
   <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Activator Input</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mode</value></data>

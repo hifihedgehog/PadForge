@@ -1416,6 +1416,7 @@
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Añade una capa Shift. Una segunda tabla de asignaciones que se activa mientras se mantiene o alterna un botón.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Base</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Capa Shift</value></data>
+  <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Configurar Base</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nombre de la capa</value></data>
   <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Entrada activadora</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modo</value></data>

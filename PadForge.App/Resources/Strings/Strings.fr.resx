@@ -1416,6 +1416,7 @@
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Ajoute une couche Shift. Un second tableau d'affectations actif tant qu'un bouton est maintenu ou basculé.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Base</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Couche Shift</value></data>
+  <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Configurer la Base</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nom de la couche</value></data>
   <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Entrée d'activation</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mode</value></data>

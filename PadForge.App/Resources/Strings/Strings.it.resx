@@ -1436,6 +1436,7 @@
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Aggiunge un livello Shift. Una seconda tabella di assegnazioni attiva mentre un pulsante è tenuto premuto o attivato.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Base</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Livello Shift</value></data>
+  <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Configura Base</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nome del livello</value></data>
   <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Ingresso attivatore</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modalità</value></data>

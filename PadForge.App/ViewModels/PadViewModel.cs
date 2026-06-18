@@ -909,10 +909,25 @@ namespace PadForge.ViewModels
             System.Collections.Generic.IReadOnlyList<PadForge.Engine.Data.ShiftActivator> activators)
         {
             LayerTabs.Clear();
+            // Base flyout/tab appearance (#119) lives on the slot's MappingSet,
+            // since Base has no activator. Empty name falls back to the label.
+            string baseName = PadForge.Resources.Strings.Strings.Instance.Pad_Shift_BaseTabLabel;
+            string baseColor = "";
+            var slotSets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+            if (slotSets != null && PadIndex >= 0 && PadIndex < slotSets.Length)
+            {
+                var slotMs = slotSets[PadIndex];
+                if (slotMs != null)
+                {
+                    if (!string.IsNullOrEmpty(slotMs.BaseLayerName)) baseName = slotMs.BaseLayerName;
+                    baseColor = slotMs.BaseColor ?? "";
+                }
+            }
             LayerTabs.Add(new ShiftLayerInfo
             {
                 LayerMask = "Base",
-                LayerName = PadForge.Resources.Strings.Strings.Instance.Pad_Shift_BaseTabLabel,
+                LayerName = baseName,
+                Color = baseColor,
                 IsActive = string.Equals(_activeLayerMask, "Base", StringComparison.Ordinal),
             });
             bool activeFound = LayerTabs[0].IsActive;

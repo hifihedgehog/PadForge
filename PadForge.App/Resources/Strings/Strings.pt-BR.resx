@@ -1417,8 +1417,8 @@
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Base</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Camada Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Configurar Base</value></data>
-  <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nome da camada</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Entrada ativadora</value></data>
+  <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nome da Camada</value></data>
+  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Entrada Ativadora</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modo</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Manter</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alternar</value></data>
@@ -1429,31 +1429,31 @@
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>O nome da camada é obrigatório.</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>Já existe uma camada com esse nome nesta vaga.</value></data>
   <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>Escolha uma entrada ativadora.</value></data>
-  <data name="Pad_Shift_Configure" xml:space="preserve"><value>Configurar ativador…</value></data>
-  <data name="Pad_Shift_Rename" xml:space="preserve"><value>Renomear camada…</value></data>
-  <data name="Pad_Shift_Color" xml:space="preserve"><value>Cor da camada</value></data>
+  <data name="Pad_Shift_Configure" xml:space="preserve"><value>Configurar Ativador…</value></data>
+  <data name="Pad_Shift_Rename" xml:space="preserve"><value>Renomear Camada…</value></data>
+  <data name="Pad_Shift_Color" xml:space="preserve"><value>Cor da Camada</value></data>
   <data name="Pad_ResetLayerColor" xml:space="preserve"><value>Redefinir cor da camada</value></data>
   <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Escolha um emoji para aparecer no flyout quando esta camada estiver ativa.</value></data>
   <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>Redefinir (⇧)</value></data>
-  <data name="Pad_Shift_Copy" xml:space="preserve"><value>Copiar linhas da camada</value></data>
-  <data name="Pad_Shift_Paste" xml:space="preserve"><value>Colar linhas na camada</value></data>
-  <data name="Pad_Shift_Clear" xml:space="preserve"><value>Limpar linhas da camada</value></data>
-  <data name="Pad_Shift_Delete" xml:space="preserve"><value>Excluir camada</value></data>
-  <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Excluir camada Shift</value></data>
+  <data name="Pad_Shift_Copy" xml:space="preserve"><value>Copiar Linhas da Camada</value></data>
+  <data name="Pad_Shift_Paste" xml:space="preserve"><value>Colar Linhas na Camada</value></data>
+  <data name="Pad_Shift_Clear" xml:space="preserve"><value>Limpar Linhas da Camada</value></data>
+  <data name="Pad_Shift_Delete" xml:space="preserve"><value>Excluir Camada</value></data>
+  <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Excluir Camada Shift</value></data>
   <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>Excluir a camada "{0}" e todas as suas linhas de mapeamento? Esta ação não pode ser desfeita.</value></data>
-  <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>Renomear camada</value></data>
-  <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Não herdar</value></data>
+  <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>Renomear Camada</value></data>
+  <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Não Herdar</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Quando marcado, o alvo desta camada permanece DESLIGADO em vez de cair para a linha Base.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Atraso</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Milissegundos que o ativador deve permanecer engatado antes que a troca de camada seja acionada.</value></data>
-  <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Saltar para camada</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Segunda entrada do acorde</value></data>
-  <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Limite do eixo</value></data>
-  <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Ciclar entre camadas</value></data>
-  <data name="Pad_Shift_Kind" xml:space="preserve"><value>Tipo de ativador</value></data>
+  <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Saltar para Camada</value></data>
+  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Segunda Entrada do Acorde</value></data>
+  <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Limite do Eixo</value></data>
+  <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Ciclar entre Camadas</value></data>
+  <data name="Pad_Shift_Kind" xml:space="preserve"><value>Tipo de Ativador</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Botão</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Acorde (A + B)</value></data>
-  <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Eixo além do limite</value></data>
+  <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Eixo Além do Limite</value></data>
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Uma única pressão de botão (ou direção POV) ativa a camada.</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Ambos os botões devem ser mantidos pressionados simultaneamente para ativar. Acorde entre dispositivos com suporte.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Ativa enquanto um eixo analógico ultrapassa o valor limite.</value></data>

@@ -537,16 +537,15 @@ namespace PadForge.Common.Input
                 // Enable Switch 2 Pro Controller HIDAPI driver (requires libusb-1.0.dll).
                 SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_SWITCH2, "1");
 
-                // Leave SDL's Wii HIDAPI driver OFF (#116). It cannot drive a
-                // Bluetooth Wii Remote on Windows 8+: SDL's hidapi sends output
-                // reports with WriteFile for report lengths <= 512 (the remote's
-                // is 22), and the Microsoft Bluetooth stack rejects WriteFile for
-                // the remote (only HidD_SetOutputReport works), so every init
-                // write fails and the remote never streams. PadForge reads it
-                // directly instead (WiiControllerHidDevice / Phase 1f). With the hint
-                // off, SDL ignores the remote and never creates a dead phantom
-                // joystick for it.
-                SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_WII, "0");
+                // Enable SDL's Wii HIDAPI driver (#116). SDL surfaces the
+                // Bluetooth-paired Wii Remote / Nunchuk / Classic / Wii U Pro and
+                // parses them, and lights the player LED (which stops the idle
+                // flashing). This relies on the SDL3 fork's hid_write fix
+                // (hifihedgehog/SDL#2): on Windows 8+ a Wii Remote's output
+                // reports must go via HidD_SetOutputReport, since the Microsoft
+                // Bluetooth stack rejects WriteFile for it. PadForge pairs the
+                // controller (WiiPairingService) and SDL drives it from there.
+                SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_WII, "1");
 
                 // Allow screensaver/sleep even while SDL video is active.
                 SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
@@ -1766,7 +1765,6 @@ namespace PadForge.Common.Input
                 return;
 
             Stop();
-            ShutdownWiiInputs(); // release held Wii Remote HID handles (#116)
             ShutdownSdl();
             _disposed = true;
 

@@ -647,9 +647,6 @@ namespace PadForge
             {
                 var dialog = new Views.PairDeviceDialog { Owner = this };
                 dialog.ShowDialog();
-                // Open any just-paired Wii Remote right away. It stays connected
-                // only briefly after pairing, so don't wait for the next poll (#116).
-                _inputService.OpenPairedWiiRemotes();
                 _inputService.RefreshDeviceList();
                 _viewModel.StatusText = Strings.Instance.Status_DeviceListRefreshed;
             };

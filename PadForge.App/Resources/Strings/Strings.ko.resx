@@ -1424,7 +1424,8 @@
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>토글</value></data>
   <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>사용자 지정(레이어로 점프)</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>순환</value></data>
-  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>스티키(한 번)</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>스티키(한 번)</value></data>
+  <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>버튼 없음</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>레이어 이름은 필수입니다.</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>이 슬롯에는 같은 이름의 레이어가 이미 존재합니다.</value></data>
   <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>활성화 입력을 선택하세요.</value></data>
@@ -1460,7 +1461,8 @@
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>탭하여 활성화. 다시 탭하여 해제. 레이어는 여러 번 누르는 동안 지속됩니다.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>누르면 특정 레이어로 이동합니다. 다른 전환이 실행될 때까지 유지됩니다.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>각 누름은 정렬된 레이어 목록을 진행합니다. 기본으로 돌아갑니다.</value></data>
-  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>한 번 탭하여 활성화. 다음 매핑된 버튼 누름이 레이어에서 실행되고 자동 해제됩니다.</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>한 번 탭하여 활성화. 다음 매핑된 버튼 누름이 레이어에서 실행되고 자동 해제됩니다.</value></data>
+  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>자체 버튼이 없습니다. 사이클 컨트롤의 대기열에 추가하거나 사용자 지정 점프 대상으로 만들면 그 방식으로 레이어에 도달합니다.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>매핑되지 않은 대상을 기본에서 상속</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>활성화 버튼의 자체 매핑도 실행</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>선택하면 활성화 버튼이 소스로 사용되는 모든 행을 계속 구동합니다. 한 번 누르면 레이어를 변경하고 버튼의 자체 매핑도 실행합니다. 선택 해제(기본값)하면 누름은 레이어 변경에서만 소비됩니다.</value></data>

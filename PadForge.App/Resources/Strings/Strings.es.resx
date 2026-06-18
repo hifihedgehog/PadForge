@@ -1424,7 +1424,8 @@
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alternar</value></data>
   <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Personalizado (saltar a capa)</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Ciclo</value></data>
-  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Adhesivo (una vez)</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Adhesivo (una vez)</value></data>
+  <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Sin botón</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Se requiere el nombre de la capa.</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>Ya existe una capa con ese nombre en esta ranura.</value></data>
   <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>Elige una entrada activadora.</value></data>
@@ -1460,7 +1461,8 @@
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Toca para activar. Toca de nuevo para liberar. La capa persiste a través de muchas pulsaciones.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>La pulsación salta a una capa específica. Permanece hasta que se dispara otra transición.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Cada pulsación avanza por una lista ordenada de capas. Vuelve a Base.</value></data>
-  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Toca una vez para activar. La siguiente pulsación de botón mapeado se dispara en la capa y luego se libera automáticamente.</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Toca una vez para activar. La siguiente pulsación de botón mapeado se dispara en la capa y luego se libera automáticamente.</value></data>
+  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Sin botón propio. Agrégala a la cola de un control de Ciclo, o conviértela en destino de un salto Personalizado, y se llega a la capa de ese modo.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Heredar objetivos sin asignar de Base</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Disparar también el mapeo propio del activador</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Cuando se marca, el botón activador sigue impulsando cualquier fila que lo use como fuente: una pulsación cambia la capa Y dispara el mapeo propio del botón. Cuando no se marca (por defecto), la pulsación es consumida solo por el cambio de capa.</value></data>

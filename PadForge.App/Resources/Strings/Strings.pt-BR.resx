@@ -1424,7 +1424,8 @@
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alternar</value></data>
   <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Personalizado (saltar para camada)</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Ciclo</value></data>
-  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Adesivo (uma vez)</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Adesivo (uma vez)</value></data>
+  <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Sem botão</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>O nome da camada é obrigatório.</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>Já existe uma camada com esse nome nesta vaga.</value></data>
   <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>Escolha uma entrada ativadora.</value></data>
@@ -1460,7 +1461,8 @@
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Toque para ativar. Toque novamente para liberar. A camada persiste através de muitas pressões.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>A pressão pula para uma camada específica. Permanece até que outra transição dispare.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Cada pressão avança através de uma lista ordenada de camadas. Volta para Base.</value></data>
-  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Toque uma vez para ativar. A próxima pressão de botão mapeado dispara na camada, depois libera automaticamente.</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Toque uma vez para ativar. A próxima pressão de botão mapeado dispara na camada, depois libera automaticamente.</value></data>
+  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Sem botão próprio. Adicione-a à fila de um controle de Ciclo, ou torne-a um destino de salto Personalizado, e a camada é alcançada assim.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Herdar alvos não mapeados da Base</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Também disparar o mapeamento próprio do ativador</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Quando marcado, o botão ativador continua a impulsionar qualquer linha que o use como fonte. Um toque muda a camada E dispara o mapeamento próprio do botão. Quando desmarcado (padrão), o toque é consumido apenas pela mudança de camada.</value></data>

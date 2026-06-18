@@ -1424,7 +1424,8 @@
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>トグル</value></data>
   <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>カスタム(レイヤーへジャンプ)</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>サイクル</value></data>
-  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>スティッキー(ワンショット)</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>スティッキー(ワンショット)</value></data>
+  <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>ボタンなし</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>レイヤー名は必須です。</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>このスロットには同じ名前のレイヤーが既に存在します。</value></data>
   <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>アクティベーター入力を選択してください。</value></data>
@@ -1460,7 +1461,8 @@
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>タップで有効化。再タップで解除。レイヤーは多くの押下を超えて持続します。</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>押下で特定のレイヤーにジャンプ。別の遷移が発火するまで維持。</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>各押下で順序付きレイヤー リストを進めます。ベースに戻ります。</value></data>
-  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>1 回タップで有効化。次にマッピング済みボタンを押すとレイヤー上で発火し、自動的に解除されます。</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>1 回タップで有効化。次にマッピング済みボタンを押すとレイヤー上で発火し、自動的に解除されます。</value></data>
+  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>専用のボタンはありません。サイクルコントロールのキューに追加するか、カスタムジャンプの対象にすると、その方法でレイヤーに到達します。</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>未割り当てターゲットをベースから継承</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>アクティベーター自身のマッピングも発火</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>有効にすると、アクティベーターのボタンはそれをソースとして使用するすべての行を引き続き駆動します。1回押すとレイヤーが変更され、ボタン自身のマッピングも発火します。無効(既定)にすると、押下はレイヤー変更でのみ消費されます。</value></data>

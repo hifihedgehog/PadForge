@@ -1444,7 +1444,8 @@
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alterna</value></data>
   <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Personalizzato (salta al livello)</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Ciclo</value></data>
-  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Adesivo (una volta)</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Adesivo (una volta)</value></data>
+  <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Nessun pulsante</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Il nome del livello è obbligatorio.</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>Esiste già un livello con questo nome in questo slot.</value></data>
   <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>Scegli un ingresso attivatore.</value></data>
@@ -1480,7 +1481,8 @@
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Tocca per attivare. Tocca di nuovo per rilasciare. Il livello persiste tra molte pressioni.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>La pressione salta a un livello specifico. Rimane fino a quando un'altra transizione si attiva.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Ogni pressione avanza attraverso un elenco ordinato di livelli. Torna a Base.</value></data>
-  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tocca una volta per attivare. La prossima pressione di pulsante mappato si attiva sul livello, quindi si rilascia automaticamente.</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tocca una volta per attivare. La prossima pressione di pulsante mappato si attiva sul livello, quindi si rilascia automaticamente.</value></data>
+  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Nessun pulsante proprio. Aggiungilo alla coda di un controllo Ciclo, oppure rendilo destinazione di un salto Personalizzato, e il livello viene raggiunto così.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Eredita obiettivi non assegnati da Base</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Attiva anche la mappatura propria dell'attivatore</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Se selezionato, il pulsante attivatore continua a guidare ogni riga che lo usa come sorgente. Una pressione cambia livello E attiva la mappatura propria del pulsante. Se non selezionato (predefinito), la pressione è consumata solo dal cambio di livello.</value></data>

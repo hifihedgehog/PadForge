@@ -1422,7 +1422,7 @@
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mode</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Maintenir</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Bascule</value></data>
-  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Personnalisé (aller à la couche)</value></data>
+  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Verrouiller</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Cycle</value></data>
   <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Collant (une fois)</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Aucun bouton</value></data>
@@ -1459,7 +1459,7 @@
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>S'active tant qu'un axe analogique dépasse la valeur seuil.</value></data>
   <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>La couche reste activée tant que l'activateur est maintenu. Libère au relâchement.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Appui pour activer. Appui à nouveau pour libérer. La couche persiste à travers de nombreuses pressions.</value></data>
-  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>La pression saute vers une couche spécifique. Reste jusqu'à ce qu'une autre transition se déclenche.</value></data>
+  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Appuyez pour verrouiller cette couche et la maintenir. Appuyez de nouveau pour revenir à la Base. Un autre bouton Verrouiller bascule vers sa propre couche.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Chaque pression avance dans une liste ordonnée de couches. Revient à Base.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tapotez une fois pour activer. La prochaine pression de bouton mappé se déclenche sur la couche, puis se libère automatiquement.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Aucun bouton propre. Ajoutez-la à la file d'un contrôle de Cycle, ou faites-en une cible de saut Personnalisé, et la couche est atteinte ainsi.</value></data>

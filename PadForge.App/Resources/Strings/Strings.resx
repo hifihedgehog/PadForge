@@ -1746,7 +1746,7 @@
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mode</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Hold</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Toggle</value></data>
-  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Custom (jump to layer)</value></data>
+  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Latch</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Cycle</value></data>
   <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Sticky (one-shot)</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>No Button</value></data>
@@ -1793,7 +1793,7 @@
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Engages while an analog axis is past the threshold value.</value></data>
   <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Layer stays engaged while the activator is held. Releases when you let go.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Tap to engage. Tap again to release. Layer persists across many presses.</value></data>
-  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Press jumps to a specific layer. Stays until another transition fires.</value></data>
+  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Press to latch this layer on and hold it. Press again to release back to Base. A different Latch button switches to its own layer.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Each press advances through an ordered layer list. Wraps back to Base.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tap once to engage. The next mapped button press fires on the layer, then auto-releases.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>No button of its own. Add it to a Cycle control's queue, or make it a Custom jump target, and the layer is reached that way.</value></data>

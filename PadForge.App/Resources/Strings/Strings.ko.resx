@@ -1422,7 +1422,7 @@
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>모드</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>홀드</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>토글</value></data>
-  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>사용자 지정(레이어로 점프)</value></data>
+  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>고정</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>순환</value></data>
   <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>스티키(한 번)</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>버튼 없음</value></data>
@@ -1459,7 +1459,7 @@
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>아날로그 축이 임계값을 초과하는 동안 활성화됩니다.</value></data>
   <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>활성화 버튼을 누르고 있는 동안 레이어가 활성화되며, 놓으면 해제됩니다.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>탭하여 활성화. 다시 탭하여 해제. 레이어는 여러 번 누르는 동안 지속됩니다.</value></data>
-  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>누르면 특정 레이어로 이동합니다. 다른 전환이 실행될 때까지 유지됩니다.</value></data>
+  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>누르면 이 레이어를 고정하여 유지합니다. 다시 누르면 베이스로 돌아갑니다. 다른 고정 버튼은 자신의 레이어로 전환합니다.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>각 누름은 정렬된 레이어 목록을 진행합니다. 기본으로 돌아갑니다.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>한 번 탭하여 활성화. 다음 매핑된 버튼 누름이 레이어에서 실행되고 자동 해제됩니다.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>자체 버튼이 없습니다. 사이클 컨트롤의 대기열에 추가하거나 사용자 지정 점프 대상으로 만들면 그 방식으로 레이어에 도달합니다.</value></data>

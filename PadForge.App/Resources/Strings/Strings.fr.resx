@@ -1462,7 +1462,7 @@
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Appuyez pour verrouiller cette couche et la maintenir. Appuyez de nouveau pour revenir à la Base. Un autre bouton Verrouiller bascule vers sa propre couche.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Chaque pression avance dans une liste ordonnée de couches. Revient à Base.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tapotez une fois pour activer. La prochaine pression de bouton mappé se déclenche sur la couche, puis se libère automatiquement.</value></data>
-  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Aucun bouton propre. Ajoutez-la à la file d'un contrôle de Cycle, ou faites-en une cible de saut Personnalisé, et la couche est atteinte ainsi.</value></data>
+  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Aucun bouton propre. Ajoutez-la à la file d'un contrôle de Cycle, et le cycle l'atteint.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Hériter les cibles non affectées de Base</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Déclencher aussi le mapping propre de l'activateur</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Si coché, le bouton activateur continue de piloter toute ligne qui l'utilise comme source. Une pression change la couche ET déclenche le mapping propre du bouton. Si non coché (par défaut), la pression est consommée uniquement par le changement de couche.</value></data>

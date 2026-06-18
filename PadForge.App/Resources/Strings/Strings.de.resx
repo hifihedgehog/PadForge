@@ -1462,7 +1462,7 @@
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Drücken, um diese Ebene einzurasten und zu halten. Erneut drücken, um zur Basis zurückzukehren. Eine andere Einrast-Taste wechselt zu ihrer eigenen Ebene.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Jeder Druck rückt durch eine geordnete Ebenenliste. Springt zurück zu Basis.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Einmal tippen zum Aktivieren. Der nächste zugewiesene Tastendruck feuert auf der Ebene, dann automatisches Lösen.</value></data>
-  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Keine eigene Taste. Fügen Sie sie der Warteschlange einer Zyklus-Steuerung hinzu oder machen Sie sie zum Ziel eines benutzerdefinierten Sprungs, dann wird die Ebene so erreicht.</value></data>
+  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Keine eigene Taste. Fügen Sie sie der Warteschlange einer Zyklus-Steuerung hinzu, dann wird sie vom Zyklus erreicht.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Nicht zugewiesene Ziele von Basis erben</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Auch eigenes Mapping des Auslösers feuern</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Wenn aktiviert, treibt die Auslöser-Taste weiterhin jede Zeile an, die sie als Quelle verwendet. Ein Druck wechselt die Ebene UND feuert das eigene Mapping der Taste. Wenn deaktiviert (Standard), wird der Druck nur vom Ebenenwechsel verbraucht.</value></data>

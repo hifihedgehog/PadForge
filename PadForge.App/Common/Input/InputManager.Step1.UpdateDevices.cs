@@ -111,6 +111,17 @@ namespace PadForge.Common.Input
                     if (_openedSdlInstanceIds.Contains(instanceId))
                         continue;
 
+                    // PadForge reads Wii controllers directly over HID (Phase 1f),
+                    // so skip the empty phantom SDL surfaces for the same device
+                    // through a non-hidapi backend (dinput/rawinput) now that the
+                    // Wii hidapi driver is off. VID 057E + PID 0306/0330 is a Wii
+                    // Remote / Wii Remote Plus / Wii U Pro Controller. Without this
+                    // a dead duplicate joystick trails the working direct-read entry.
+                    ushort wiiVid = SDL_GetJoystickVendorForID(instanceId);
+                    ushort wiiPid = SDL_GetJoystickProductForID(instanceId);
+                    if (wiiVid == 0x057E && (wiiPid == 0x0306 || wiiPid == 0x0330))
+                        continue;
+
                     // Open the device by instance ID. The SDL3 fork already
                     // dropped HIDMaestro HIDs from hid_enumerate and any HM-
                     // only XInput slot from SDL_XINPUT_JoystickDetect, so

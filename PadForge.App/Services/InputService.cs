@@ -4290,10 +4290,30 @@ namespace PadForge.Services
         {
             if (sender is not PadViewModel padVm) return;
             RefreshMappingsCore(padVm);
-            var ud = padVm.SelectedMappedDevice != null
-                && padVm.SelectedMappedDevice.InstanceGuid != Guid.Empty
-                ? FindUserDevice(padVm.SelectedMappedDevice.InstanceGuid) : null;
-            PopulateAvailableInputs(padVm, ud);
+            // The cross-device AvailableInputs list is layer-INDEPENDENT (it
+            // depends on the slot's assigned devices, not which shift layer is
+            // active). So a layer switch only needs to re-resolve each row's
+            // selected input against the EXISTING list, NOT rebuild it.
+            // PopulateAvailableInputs is an O(rows x inputs) clear-and-refill of
+            // every row's ObservableCollection; running it per layer activation
+            // made the Mappings tab lag on every layer switch / load when a slot
+            // had shift layers. The light resync below avoids that.
+            ResyncMappingSelectedInputs(padVm);
+        }
+
+        /// <summary>Re-resolves every row's selected input (primary + extras)
+        /// against the row's already-populated AvailableInputs list, without
+        /// rebuilding that list. Used on a shift-layer switch, where the input
+        /// list is unchanged but the per-row descriptors just changed.</summary>
+        private static void ResyncMappingSelectedInputs(PadViewModel padVm)
+        {
+            if (padVm?.Mappings == null) return;
+            foreach (var mapping in padVm.Mappings)
+            {
+                if (mapping == null) continue;
+                mapping.SyncSelectedInputFromDescriptor();
+                mapping.RefreshAllExtraSourceInputs();
+            }
         }
 
         // ─────────────────────────────────────────────

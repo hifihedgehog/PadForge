@@ -719,7 +719,7 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Upper bound of the accumulator. 1 = full positive.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Ramp</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Primary mode</value></data>
+  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Primary Mode</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Attack</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Seconds to reach full deflection while the matching key is held. 0 = instant.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Release</value></data>

@@ -412,7 +412,6 @@ namespace PadForge.Common.Input
                 System.Array.Clear(WasDown, 0, WasDown.Length);
                 System.Array.Clear(ToggleOn, 0, ToggleOn.Length);
                 System.Array.Clear(EngageStartTicks, 0, EngageStartTicks.Length);
-                System.Array.Clear(CycleIndex, 0, CycleIndex.Length);
                 System.Array.Clear(CyclePrevWasDown, 0, CyclePrevWasDown.Length);
                 System.Array.Clear(CycleLayersSplit, 0, CycleLayersSplit.Length);
                 System.Array.Clear(CycleLayersSource, 0, CycleLayersSource.Length);
@@ -423,6 +422,9 @@ namespace PadForge.Common.Input
                 {
                     Stack.Clear();
                     CustomLayer = "";
+                    // CycleIndex is read/written under SyncRoot in the Cycle
+                    // case (alongside CustomLayer), so clear it under the lock.
+                    System.Array.Clear(CycleIndex, 0, CycleIndex.Length);
                 }
             }
 

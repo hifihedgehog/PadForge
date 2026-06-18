@@ -114,7 +114,7 @@ namespace PadForge.Views
             {
                 KindLabel, KindCombo, InputLabel, InputRow, ChordLabel, ChordSecondRow,
                 AxisThresholdLabel, AxisThresholdRow, ModeLabel, ModeCombo,
-                BehaviorChecksRow, JumpLabel, JumpToLayerCombo, CycleHeaderRow,
+                BehaviorChecksRow, CycleHeaderRow,
                 CycleLayersList, DelayRow, HintText,
             };
             foreach (var el in hide)
@@ -151,18 +151,12 @@ namespace PadForge.Views
             _otherActivators = otherActivators?.Where(a => a != null).ToList()
                 ?? new List<ShiftActivator>();
 
-            // Populate the Custom-jump and Cycle dropdowns with the
-            // OTHER layers on this slot. Each item carries a LayerMask;
-            // an extra "(Base)" entry maps to empty string.
-            var jumpItems = new List<LayerOption>
-            {
-                new LayerOption { LayerMask = "", DisplayName = "(Base)" }
-            };
+            // Populate the Cycle layer list with the OTHER layers on this slot.
+            // Each item carries a LayerMask.
             var cycleItems = new List<LayerOption>();
             foreach (var a in _otherActivators)
             {
                 var display = string.IsNullOrEmpty(a.LayerName) ? a.LayerMask : a.LayerName;
-                jumpItems.Add(new LayerOption { LayerMask = a.LayerMask ?? "", DisplayName = display });
                 cycleItems.Add(new LayerOption { LayerMask = a.LayerMask ?? "", DisplayName = display });
             }
             // #119: include the activator's OWN layer in the cycle queue. A
@@ -180,7 +174,6 @@ namespace PadForge.Views
             // Canonical order (by mask) so two activators that check the same
             // set produce the same pipe-joined string, the shared-cursor key.
             cycleItems.Sort((x, y) => string.CompareOrdinal(x.LayerMask, y.LayerMask));
-            JumpToLayerCombo.ItemsSource = jumpItems;
             CycleLayersList.ItemsSource = cycleItems;
 
             // Validation context.
@@ -226,8 +219,6 @@ namespace PadForge.Views
                     }
                 }
 
-                // Select JumpToLayer in the dropdown when in Custom mode.
-                SelectJumpToLayer(existing.JumpToLayer ?? "");
                 // Select Cycle layers from the pipe-separated string.
                 SelectCycleLayers(existing.CycleLayers ?? "");
                 CycleWrapBox.IsChecked = existing.CycleWrap;
@@ -244,12 +235,10 @@ namespace PadForge.Views
                 DelaySlider.Value = 0;
                 CycleWrapBox.IsChecked = true;
                 CycleIncludeBaseBox.IsChecked = false;
-                // Default jump target = Base for new Custom activators.
-                if (jumpItems.Count > 0) JumpToLayerCombo.SelectedIndex = 0;
-                // Honor the picker's initial color on first save — without
-                // this the user sees blue in the picker but the tab strip
-                // shows gray because _colorSet stayed false until they
-                // dragged the picker. Reset always takes it back to empty.
+                // Honor the picker's initial color on first save. Without this
+                // the user sees blue in the picker but the tab strip shows gray
+                // because _colorSet stayed false until they dragged the picker.
+                // Reset always takes it back to empty.
                 _colorSet = true;
             }
 
@@ -373,20 +362,6 @@ namespace PadForge.Views
             }
             catch { }
             return null;
-        }
-
-        private void SelectJumpToLayer(string layerMask)
-        {
-            foreach (var item in JumpToLayerCombo.Items)
-            {
-                if (item is LayerOption opt
-                    && string.Equals(opt.LayerMask, layerMask ?? "", StringComparison.Ordinal))
-                {
-                    JumpToLayerCombo.SelectedItem = item;
-                    return;
-                }
-            }
-            if (JumpToLayerCombo.Items.Count > 0) JumpToLayerCombo.SelectedIndex = 0;
         }
 
         private void SelectCycleLayers(string pipeSeparated)
@@ -617,10 +592,6 @@ namespace PadForge.Views
             string mode = ModeCombo.SelectedValue as string ?? "Hold";
             bool isCycle = mode == "Cycle";
             bool isPassive = mode == "Passive";
-            // Latch (legacy value "Custom", #119) engages its OWN layer, so it
-            // has no jump-target picker anymore.
-            JumpLabel.Visibility = Visibility.Collapsed;
-            JumpToLayerCombo.Visibility = Visibility.Collapsed;
             CycleHeaderRow.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
             CycleLayersList.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
 

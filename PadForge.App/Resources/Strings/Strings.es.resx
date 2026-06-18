@@ -2022,10 +2022,6 @@
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>El portapapeles no contiene una macro copiada.</value></data>
   <data name="Status_MacroCopiedFrom" xml:space="preserve"><value>Macros copiadas desde el controlador virtual seleccionado.</value></data>
   <data name="Status_MacroNoSource" xml:space="preserve"><value>Ningún otro controlador virtual tiene macros para copiar.</value></data>
-  <data name="Pad_Shift_CycleDirection" xml:space="preserve"><value>Dirección</value></data>
-  <data name="Pad_Shift_CycleDirection_Next" xml:space="preserve"><value>Siguiente</value></data>
-  <data name="Pad_Shift_CycleDirection_Previous" xml:space="preserve"><value>Anterior</value></data>
-  <data name="Pad_Shift_CycleDirection_Tooltip" xml:space="preserve"><value>Siguiente avanza por las capas. Configura un segundo activador con la misma lista en Anterior para retroceder. Ambos comparten una posición.</value></data>
   <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Botón siguiente</value></data>
   <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Botón anterior</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Dar la vuelta</value></data>

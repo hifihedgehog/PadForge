@@ -2280,6 +2280,15 @@ namespace PadForge.Views
                     // SizeToHeader skip cells).
                     if (unit != DataGridLengthUnitType.SizeToHeader)
                     {
+                        // The widest dropdown ITEM is the same for every row in a
+                        // column: all Source pickers bind to the slot's single
+                        // cross-device input list. So measure the dropdown once per
+                        // column, not once per row. Per row it was an
+                        // O(rows x ~150 items) TextBlock-allocate-and-measure loop
+                        // that stalled the Mapping tab ~1s on switch; this makes it
+                        // O(items). Stays <= 0 until a row with a ComboBox is found,
+                        // so columns whose combos live only in later rows still size.
+                        double columnComboMax = 0.0;
                         foreach (var item in grid.Items)
                         {
                             if (grid.ItemContainerGenerator.ContainerFromItem(item) is not DataGridRow row)
@@ -2289,13 +2298,13 @@ namespace PadForge.Views
                             cellContent.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                             double cellWidth = cellContent.DesiredSize.Width;
 
-                            // Augment with the widest dropdown item across every
-                            // ComboBox in the cell's visual tree — a Source-style
-                            // cell shouldn't shrink to the selected item's width
-                            // when the dropdown carries longer entries.
-                            double comboMax = MeasureWidestComboBoxItem(cellContent);
-                            if (comboMax > 0)
-                                cellWidth = Math.Max(cellWidth, comboMax + ComboBoxArrowPadding);
+                            // Augment with the widest dropdown item (measured once).
+                            // A Source-style cell shouldn't shrink to the selected
+                            // item's width when the dropdown carries longer entries.
+                            if (columnComboMax <= 0.0)
+                                columnComboMax = MeasureWidestComboBoxItem(cellContent);
+                            if (columnComboMax > 0.0)
+                                cellWidth = Math.Max(cellWidth, columnComboMax + ComboBoxArrowPadding);
 
                             maxContent = Math.Max(maxContent, cellWidth);
                         }

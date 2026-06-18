@@ -230,8 +230,6 @@ namespace PadForge.Views
                 SelectJumpToLayer(existing.JumpToLayer ?? "");
                 // Select Cycle layers from the pipe-separated string.
                 SelectCycleLayers(existing.CycleLayers ?? "");
-                CycleDirectionCombo.SelectedValue = string.Equals(existing.Direction, "Previous", StringComparison.Ordinal)
-                    ? "Previous" : "Next";
                 CycleWrapBox.IsChecked = existing.CycleWrap;
                 CycleIncludeBaseBox.IsChecked = existing.CycleIncludeBase;
 
@@ -244,7 +242,6 @@ namespace PadForge.Views
                 ModeCombo.SelectedValue = "Hold";
                 AxisThresholdSlider.Value = 0.5;
                 DelaySlider.Value = 0;
-                CycleDirectionCombo.SelectedValue = "Next";
                 CycleWrapBox.IsChecked = true;
                 CycleIncludeBaseBox.IsChecked = false;
                 // Default jump target = Base for new Custom activators.
@@ -422,13 +419,18 @@ namespace PadForge.Views
                     }
                 }
             }
-            if (ChordSecondCombo.ItemsSource != null)
+            // The second picker holds the chord second half (Kind=Chord) or the
+            // Cycle Previous button (Mode=Cycle, #119).
+            bool isCycle = string.Equals(existing.Mode, "Cycle", StringComparison.Ordinal);
+            string secondDesc = isCycle ? existing.CyclePrevDescriptor : existing.ChordSecondDescriptor;
+            string secondGuid = isCycle ? existing.CyclePrevDeviceGuid : existing.ChordSecondDeviceGuid;
+            if (ChordSecondCombo.ItemsSource != null && !string.IsNullOrEmpty(secondDesc))
             {
                 foreach (var item in ChordSecondCombo.Items)
                 {
                     if (item is InputChoice c
-                        && string.Equals(c.Descriptor ?? "", existing.ChordSecondDescriptor ?? "", StringComparison.OrdinalIgnoreCase)
-                        && string.Equals(c.DeviceGuid ?? "", existing.ChordSecondDeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
+                        && string.Equals(c.Descriptor ?? "", secondDesc, StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(c.DeviceGuid ?? "", secondGuid ?? "", StringComparison.OrdinalIgnoreCase))
                     {
                         ChordSecondCombo.SelectedItem = c;
                         break;
@@ -618,6 +620,32 @@ namespace PadForge.Views
             JumpToLayerCombo.Visibility = isCustom ? Visibility.Visible : Visibility.Collapsed;
             CycleHeaderRow.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
             CycleLayersList.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
+
+            // Cycle (#119) owns both input pickers: the primary is the Next
+            // button and the second picker (otherwise the chord second half) is
+            // the Previous button. Kind is fixed to Button, so hide the Kind
+            // selector and relabel the two pickers.
+            KindLabel.Visibility = isCycle ? Visibility.Collapsed : Visibility.Visible;
+            KindCombo.Visibility = isCycle ? Visibility.Collapsed : Visibility.Visible;
+            // Delay is a hold-to-engage debounce, meaningless for a press-to-step
+            // cycle, so hide it in Cycle mode.
+            DelayRow.Visibility = isCycle ? Visibility.Collapsed : Visibility.Visible;
+
+            if (isCycle)
+            {
+                if (!string.Equals(KindCombo.SelectedValue as string, "Button", StringComparison.Ordinal))
+                    KindCombo.SelectedValue = "Button";   // -> button-only combos
+                InputLabel.Text = Strings.Instance.Pad_Shift_CycleNextButton;
+                ChordLabel.Text = Strings.Instance.Pad_Shift_CyclePrevButton;
+                ChordLabel.Visibility = Visibility.Visible;
+                ChordSecondRow.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                InputLabel.Text = Strings.Instance.Pad_Shift_ActivatorInput;
+                ChordLabel.Text = Strings.Instance.Pad_Shift_ChordSecondInput;
+                ApplyKindVisibility();   // chord / axis rows revert to kind-driven
+            }
         }
 
         private static string SuggestNextLayerName(IEnumerable<ShiftActivator> existing)
@@ -713,21 +741,27 @@ namespace PadForge.Views
                 ? $"#{ColorPicker.Red:X2}{ColorPicker.Green:X2}{ColorPicker.Blue:X2}"
                 : "";
 
+            // The second input picker doubles as the chord second half (Kind=
+            // Chord) or the Cycle Previous button (Mode=Cycle, #119).
+            string mode = ModeCombo.SelectedValue as string ?? "Hold";
+            bool isCycle = mode == "Cycle";
+
             Result = new ShiftActivator
             {
                 LayerName = name,
                 LayerMask = mask,
                 DeviceGuid = input.DeviceGuid ?? "",
                 Descriptor = input.Descriptor ?? "",
-                Mode = ModeCombo.SelectedValue as string ?? "Hold",
+                Mode = mode,
                 Kind = kind,
                 InheritUnmapped = InheritUnmappedBox.IsChecked == true,
-                ChordSecondDeviceGuid = chordSecond?.DeviceGuid ?? "",
-                ChordSecondDescriptor = chordSecond?.Descriptor ?? "",
+                ChordSecondDeviceGuid = isCycle ? "" : (chordSecond?.DeviceGuid ?? ""),
+                ChordSecondDescriptor = isCycle ? "" : (chordSecond?.Descriptor ?? ""),
                 AxisThreshold = AxisThresholdSlider.Value,
                 JumpToLayer = jumpToLayer,
                 CycleLayers = cycleLayers,
-                Direction = CycleDirectionCombo.SelectedValue as string ?? "Next",
+                CyclePrevDeviceGuid = isCycle ? (chordSecond?.DeviceGuid ?? "") : "",
+                CyclePrevDescriptor = isCycle ? (chordSecond?.Descriptor ?? "") : "",
                 CycleWrap = CycleWrapBox.IsChecked == true,
                 CycleIncludeBase = CycleIncludeBaseBox.IsChecked == true,
                 DelayMs = (int)Math.Round(DelaySlider.Value),

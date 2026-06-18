@@ -2044,6 +2044,8 @@
   <data name="Pad_Shift_CycleDirection_Next" xml:space="preserve"><value>Volgende</value></data>
   <data name="Pad_Shift_CycleDirection_Previous" xml:space="preserve"><value>Vorige</value></data>
   <data name="Pad_Shift_CycleDirection_Tooltip" xml:space="preserve"><value>Volgende loopt vooruit door de lagen. Stel een tweede activator met dezelfde lijst in op Vorige om terug te lopen. Beide delen één positie.</value></data>
+  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Volgende-knop</value></data>
+  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Vorige-knop</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Doorlopen</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Indien aan keert de cursor na de laatste laag terug naar de eerste, en vóór de eerste naar de laatste. Indien uit stopt de cursor aan de uiteinden.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Basis opnemen</value></data>

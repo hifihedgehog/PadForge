@@ -350,6 +350,11 @@ namespace PadForge.Common.Input
             public bool[] WasDown = System.Array.Empty<bool>();
             public bool[] ToggleOn = System.Array.Empty<bool>();
             public long[] EngageStartTicks = System.Array.Empty<long>(); // v2 Delay debounce
+            // v3 Cycle (#119): per-activator cursor (0 = Base, 1..N index the
+            // queued layers) and the Previous-button down latch. The Next button
+            // uses the shared WasDown latch; Previous gets its own.
+            public int[] CycleIndex = System.Array.Empty<int>();
+            public bool[] CyclePrevWasDown = System.Array.Empty<bool>();
             // Cycle mode caches the split CycleLayers string per-activator
             // so the polling-thread tick doesn't reallocate every frame.
             // Recomputed when the source string changes.
@@ -378,15 +383,6 @@ namespace PadForge.Common.Input
             public readonly List<int> Stack = new();
             public string CustomLayer = "";   // v2 Custom mode current layer (overrides stack when non-empty)
 
-            // v3 Cycle position, keyed by the activator's CycleLayers string
-            // rather than by activator index, so a Next activator and a Previous
-            // activator on the same list share one cursor (#119), and separate
-            // queues (different lists) keep independent positions. Guarded by
-            // SyncRoot like CustomLayer. 0 = Base (the resting state before the
-            // first press; only a stop in the rotation when CycleIncludeBase);
-            // 1..N = layers[0..N-1].
-            public readonly Dictionary<string, int> CycleIndexByList = new();
-
             /// <summary>Sync lock guarding <see cref="Stack"/> and
             /// <see cref="CustomLayer"/> against cross-thread reads (UI
             /// thread <see cref="GetEngagedLayerMask"/> + Clear) versus
@@ -402,6 +398,8 @@ namespace PadForge.Common.Input
                 WasDown = ResizeBool(WasDown, newSize);
                 ToggleOn = ResizeBool(ToggleOn, newSize);
                 EngageStartTicks = ResizeLong(EngageStartTicks, newSize);
+                CycleIndex = ResizeInt(CycleIndex, newSize);
+                CyclePrevWasDown = ResizeBool(CyclePrevWasDown, newSize);
                 CycleLayersSplit = ResizeStringArrays(CycleLayersSplit, newSize);
                 CycleLayersSource = ResizeStringArr(CycleLayersSource, newSize);
                 StickyEngaged = ResizeBool(StickyEngaged, newSize);
@@ -414,6 +412,8 @@ namespace PadForge.Common.Input
                 System.Array.Clear(WasDown, 0, WasDown.Length);
                 System.Array.Clear(ToggleOn, 0, ToggleOn.Length);
                 System.Array.Clear(EngageStartTicks, 0, EngageStartTicks.Length);
+                System.Array.Clear(CycleIndex, 0, CycleIndex.Length);
+                System.Array.Clear(CyclePrevWasDown, 0, CyclePrevWasDown.Length);
                 System.Array.Clear(CycleLayersSplit, 0, CycleLayersSplit.Length);
                 System.Array.Clear(CycleLayersSource, 0, CycleLayersSource.Length);
                 System.Array.Clear(StickyEngaged, 0, StickyEngaged.Length);
@@ -423,7 +423,6 @@ namespace PadForge.Common.Input
                 {
                     Stack.Clear();
                     CustomLayer = "";
-                    CycleIndexByList.Clear();
                 }
             }
 
@@ -573,6 +572,17 @@ namespace PadForge.Common.Input
                 var a = activators[i];
                 if (a == null) continue;
                 if (a.PostponeMapping) continue;
+                // Cycle suppresses each of its two buttons by its own latch
+                // (Next via WasDown, Previous via CyclePrevWasDown), so a press
+                // that steps the queue doesn't also fire the button's mapping.
+                if (string.Equals(a.Mode, "Cycle", System.StringComparison.Ordinal))
+                {
+                    if (rt.WasDown[i] && !string.IsNullOrEmpty(a.Descriptor))
+                        suppressed.Add((a.DeviceGuid ?? "") + "|" + a.Descriptor);
+                    if (rt.CyclePrevWasDown[i] && !string.IsNullOrEmpty(a.CyclePrevDescriptor))
+                        suppressed.Add((a.CyclePrevDeviceGuid ?? "") + "|" + a.CyclePrevDescriptor);
+                    continue;
+                }
                 if (!rt.WasDown[i]) continue;
                 if (!string.IsNullOrEmpty(a.Descriptor))
                     suppressed.Add((a.DeviceGuid ?? "") + "|" + a.Descriptor);
@@ -654,41 +664,59 @@ namespace PadForge.Common.Input
                 }
                 case "Cycle":
                 {
-                    // v3: each press steps a cursor through CycleLayers in the
-                    // activator's Direction (#119). Stepping past an end follows
-                    // CycleWrap (loop vs clamp); whether the unshifted Base is a
-                    // stop follows CycleIncludeBase. Split result is cached
-                    // per-activator so the polling thread doesn't allocate every
-                    // frame; recomputed when the activator's CycleLayers changes.
-                    bool risingEdge = inputDown && !rt.WasDown[actIdx] && delayMet;
-                    if (risingEdge)
+                    // v3 (#119): one Cycle control holds the queue plus a Next
+                    // button (the activator's own input -> inputDown) and a
+                    // Previous button (CyclePrev*). Next steps the cursor forward
+                    // through CycleLayers, Previous backward. Stepping past an end
+                    // follows CycleWrap; whether Base is a stop follows
+                    // CycleIncludeBase. The split list is cached per-activator
+                    // (recomputed when it changes) so the tick doesn't allocate.
+                    string src = act.CycleLayers ?? "";
+                    if (!string.Equals(rt.CycleLayersSource[actIdx], src, System.StringComparison.Ordinal))
                     {
-                        string src = act.CycleLayers ?? "";
-                        if (!string.Equals(rt.CycleLayersSource[actIdx], src, System.StringComparison.Ordinal))
+                        rt.CycleLayersSplit[actIdx] = src.Split('|', System.StringSplitOptions.RemoveEmptyEntries);
+                        rt.CycleLayersSource[actIdx] = src;
+                    }
+                    var layers = rt.CycleLayersSplit[actIdx];
+
+                    // Previous button. Read against its own device when it lives
+                    // on a different controller than Next (mirrors cross-device
+                    // chord via LookupDeviceState).
+                    bool prevDown = false;
+                    if (!string.IsNullOrEmpty(act.CyclePrevDescriptor))
+                    {
+                        CustomInputState prevState = state;
+                        if (!string.IsNullOrEmpty(act.CyclePrevDeviceGuid)
+                            && !string.Equals(act.CyclePrevDeviceGuid, act.DeviceGuid, System.StringComparison.OrdinalIgnoreCase))
                         {
-                            rt.CycleLayersSplit[actIdx] = src.Split('|', System.StringSplitOptions.RemoveEmptyEntries);
-                            rt.CycleLayersSource[actIdx] = src;
+                            prevState = LookupDeviceState(act.CyclePrevDeviceGuid) ?? state;
                         }
-                        var layers = rt.CycleLayersSplit[actIdx];
-                        if (layers != null && layers.Length > 0)
+                        prevDown = SourceKindRuntimeReadButtonLikeBool(prevState, act.CyclePrevDescriptor);
+                    }
+
+                    // Cycle steps on a press edge; Delay (a hold-to-engage
+                    // debounce) doesn't apply to a press-to-step control.
+                    bool nextRising = inputDown && !rt.WasDown[actIdx];
+                    bool prevRising = prevDown && !rt.CyclePrevWasDown[actIdx];
+
+                    if ((nextRising || prevRising) && layers != null && layers.Length > 0)
+                    {
+                        int n = layers.Length;
+                        bool wrap = act.CycleWrap;
+                        bool includeBase = act.CycleIncludeBase;
+                        lock (rt.SyncRoot)
                         {
-                            int n = layers.Length;
-                            bool previous = string.Equals(act.Direction, "Previous", System.StringComparison.Ordinal);
-                            bool wrap = act.CycleWrap;
-                            bool includeBase = act.CycleIncludeBase;
-                            // Shared cursor keyed by the list string, so a Next and a
-                            // Previous activator on the same list step one cursor.
-                            // pos 0 = Base; 1..N index layers[0..N-1].
-                            lock (rt.SyncRoot)
-                            {
-                                rt.CycleIndexByList.TryGetValue(src, out int pos);
-                                pos = PadForge.Engine.Common.ShiftCycleStepper.Step(
-                                    pos, n, previous, wrap, includeBase);
-                                rt.CycleIndexByList[src] = pos;
-                                rt.CustomLayer = pos == 0 ? "" : layers[pos - 1];
-                            }
+                            int pos = rt.CycleIndex[actIdx];
+                            if (nextRising)
+                                pos = PadForge.Engine.Common.ShiftCycleStepper.Step(pos, n, previous: false, wrap, includeBase);
+                            if (prevRising)
+                                pos = PadForge.Engine.Common.ShiftCycleStepper.Step(pos, n, previous: true, wrap, includeBase);
+                            rt.CycleIndex[actIdx] = pos;
+                            rt.CustomLayer = pos == 0 ? "" : layers[pos - 1];
                         }
                     }
+
+                    rt.CyclePrevWasDown[actIdx] = prevDown;
                     break;
                 }
                 case "Sticky":

@@ -2024,6 +2024,8 @@
   <data name="Pad_Shift_CycleDirection_Next" xml:space="preserve"><value>Suivant</value></data>
   <data name="Pad_Shift_CycleDirection_Previous" xml:space="preserve"><value>Précédent</value></data>
   <data name="Pad_Shift_CycleDirection_Tooltip" xml:space="preserve"><value>Suivant avance dans les couches. Réglez un second activateur avec la même liste sur Précédent pour reculer. Les deux partagent une position.</value></data>
+  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Bouton Suivant</value></data>
+  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Bouton Précédent</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Boucler</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Activé, après la dernière couche le curseur revient à la première, et avant la première il va à la dernière. Désactivé, le curseur s'arrête aux extrémités.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Inclure la Base</value></data>

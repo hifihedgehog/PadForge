@@ -1890,6 +1890,8 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Shift_CycleDirection_Next => Get("Pad_Shift_CycleDirection_Next");
     public string Pad_Shift_CycleDirection_Previous => Get("Pad_Shift_CycleDirection_Previous");
     public string Pad_Shift_CycleDirection_Tooltip => Get("Pad_Shift_CycleDirection_Tooltip");
+    public string Pad_Shift_CycleNextButton => Get("Pad_Shift_CycleNextButton");
+    public string Pad_Shift_CyclePrevButton => Get("Pad_Shift_CyclePrevButton");
     public string Pad_Shift_CycleWrap => Get("Pad_Shift_CycleWrap");
     public string Pad_Shift_CycleWrap_Tooltip => Get("Pad_Shift_CycleWrap_Tooltip");
     public string Pad_Shift_CycleIncludeBase => Get("Pad_Shift_CycleIncludeBase");

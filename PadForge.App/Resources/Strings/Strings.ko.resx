@@ -2024,6 +2024,8 @@
   <data name="Pad_Shift_CycleDirection_Next" xml:space="preserve"><value>다음</value></data>
   <data name="Pad_Shift_CycleDirection_Previous" xml:space="preserve"><value>이전</value></data>
   <data name="Pad_Shift_CycleDirection_Tooltip" xml:space="preserve"><value>「다음」은 레이어를 앞으로 이동합니다. 같은 목록의 두 번째 활성기를 「이전」으로 설정하면 뒤로 이동합니다. 둘이 하나의 위치를 공유합니다.</value></data>
+  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>다음 버튼</value></data>
+  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>이전 버튼</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>순환</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>켜면 마지막 레이어를 지나면 첫 번째로 돌아가고, 첫 번째 앞에서는 마지막으로 이동합니다. 끄면 커서가 양 끝에서 멈춥니다.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>베이스 포함</value></data>

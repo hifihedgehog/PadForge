@@ -781,6 +781,10 @@ namespace PadForge.Common.Input
         /// activator should be considered "down" for engagement purposes.</summary>
         private static bool ReadActivatorInput(ShiftActivator act, CustomInputState state)
         {
+            // Input-less layers (#119) are passive targets: no own button, so
+            // they never self-engage and are reached only via Cycle / Custom jump.
+            if (string.IsNullOrEmpty(act.Descriptor)) return false;
+
             string kind = act.Kind ?? "Button";
             switch (kind)
             {

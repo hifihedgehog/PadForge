@@ -1442,7 +1442,7 @@
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modus</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Vasthouden</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Schakelen</value></data>
-  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Aangepast (spring naar laag)</value></data>
+  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Vergrendelen</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Cyclus</value></data>
   <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Plakkerig (eenmalig)</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Geen knop</value></data>
@@ -1479,7 +1479,7 @@
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Activeert zolang een analoge as de drempelwaarde overschrijdt.</value></data>
   <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Laag blijft geactiveerd zolang de activator wordt ingedrukt; lost los bij loslaten.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Tik om te activeren. Tik opnieuw om los te laten. Laag blijft bestaan over vele drukken.</value></data>
-  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Druk springt naar een specifieke laag. Blijft tot een andere overgang vuurt.</value></data>
+  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Druk om deze laag te vergrendelen en vast te houden. Druk nogmaals om terug te keren naar de Basis. Een andere Vergrendel-knop schakelt naar zijn eigen laag.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Elke druk gaat door een geordende laaglijst; gaat terug naar Basis.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tik één keer om te activeren. De volgende toegewezen knopdruk vuurt op de laag, daarna automatische release.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Geen eigen knop. Voeg hem toe aan de wachtrij van een Cyclus-besturing, of maak er een doel van een Aangepaste sprong van, dan wordt de laag zo bereikt.</value></data>

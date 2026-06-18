@@ -1422,7 +1422,7 @@
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modo</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Manter</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alternar</value></data>
-  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Personalizado (saltar para camada)</value></data>
+  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Fixar</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Ciclo</value></data>
   <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Adesivo (uma vez)</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Sem botão</value></data>
@@ -1459,7 +1459,7 @@
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Ativa enquanto um eixo analógico ultrapassa o valor limite.</value></data>
   <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>A camada permanece ativada enquanto o ativador é mantido. Libera ao soltar.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Toque para ativar. Toque novamente para liberar. A camada persiste através de muitas pressões.</value></data>
-  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>A pressão pula para uma camada específica. Permanece até que outra transição dispare.</value></data>
+  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Pressione para fixar esta camada e mantê-la. Pressione novamente para voltar à Base. Outro botão Fixar muda para a própria camada.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Cada pressão avança através de uma lista ordenada de camadas. Volta para Base.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Toque uma vez para ativar. A próxima pressão de botão mapeado dispara na camada, depois libera automaticamente.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Sem botão próprio. Adicione-a à fila de um controle de Ciclo, ou torne-a um destino de salto Personalizado, e a camada é alcançada assim.</value></data>

@@ -648,17 +648,24 @@ namespace PadForge.Common.Input
                     UpdateStack(rt, actIdx, rt.ToggleOn[actIdx]);
                     break;
                 }
-                case "Custom":
+                case "Custom":   // displayed as "Latch" (#119)
                 {
-                    // v2: press transitions to JumpToLayer; release does
-                    // nothing (layer persists until another Custom activator
-                    // fires or all Hold/Toggle activators in the stack lose
-                    // engagement). Empty JumpToLayer means "back to Base."
+                    // Latch: press engages THIS activator's own layer as the
+                    // active override and holds it. Press again releases back to
+                    // Base. Pressing a different Latch switches the active layer
+                    // (single-valued override). The own layer's mappings fire
+                    // while latched. (Legacy value "Custom"; the old jump-to-a-
+                    // separate-target behavior is gone, its own layer was unused.)
                     bool risingEdge = inputDown && !rt.WasDown[actIdx] && delayMet;
                     if (risingEdge)
                     {
-                        string newLayer = act.JumpToLayer ?? "";
-                        lock (rt.SyncRoot) rt.CustomLayer = newLayer;
+                        string own = act.LayerMask ?? "";
+                        if (!string.IsNullOrEmpty(own))
+                        {
+                            lock (rt.SyncRoot)
+                                rt.CustomLayer = string.Equals(rt.CustomLayer, own, System.StringComparison.Ordinal)
+                                    ? "" : own;
+                        }
                     }
                     break;
                 }

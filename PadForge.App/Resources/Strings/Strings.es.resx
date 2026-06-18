@@ -1422,7 +1422,7 @@
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modo</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Mantener</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alternar</value></data>
-  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Personalizado (saltar a capa)</value></data>
+  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Fijar</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Ciclo</value></data>
   <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Adhesivo (una vez)</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Sin botón</value></data>
@@ -1459,7 +1459,7 @@
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Se activa mientras un eje analógico supera el valor umbral.</value></data>
   <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>La capa permanece activa mientras se mantiene el activador. Se libera al soltar.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Toca para activar. Toca de nuevo para liberar. La capa persiste a través de muchas pulsaciones.</value></data>
-  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>La pulsación salta a una capa específica. Permanece hasta que se dispara otra transición.</value></data>
+  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Pulsa para fijar esta capa y mantenerla. Pulsa de nuevo para volver a la Base. Otro botón de Fijar cambia a su propia capa.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Cada pulsación avanza por una lista ordenada de capas. Vuelve a Base.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Toca una vez para activar. La siguiente pulsación de botón mapeado se dispara en la capa y luego se libera automáticamente.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Sin botón propio. Agrégala a la cola de un control de Ciclo, o conviértela en destino de un salto Personalizado, y se llega a la capa de ese modo.</value></data>

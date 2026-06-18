@@ -1442,7 +1442,7 @@
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modalità</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Tieni premuto</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alterna</value></data>
-  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Personalizzato (salta al livello)</value></data>
+  <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Blocca</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Ciclo</value></data>
   <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Adesivo (una volta)</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Nessun pulsante</value></data>
@@ -1479,7 +1479,7 @@
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Si attiva mentre un asse analogico supera il valore soglia.</value></data>
   <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Il livello rimane attivo finché l'attivatore è tenuto. Si rilascia quando lasci.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Tocca per attivare. Tocca di nuovo per rilasciare. Il livello persiste tra molte pressioni.</value></data>
-  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>La pressione salta a un livello specifico. Rimane fino a quando un'altra transizione si attiva.</value></data>
+  <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Premi per bloccare questo livello e mantenerlo. Premi di nuovo per tornare alla Base. Un altro pulsante Blocca passa al proprio livello.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Ogni pressione avanza attraverso un elenco ordinato di livelli. Torna a Base.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tocca una volta per attivare. La prossima pressione di pulsante mappato si attiva sul livello, quindi si rilascia automaticamente.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Nessun pulsante proprio. Aggiungilo alla coda di un controllo Ciclo, oppure rendilo destinazione di un salto Personalizzato, e il livello viene raggiunto così.</value></data>

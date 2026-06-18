@@ -615,11 +615,12 @@ namespace PadForge.Views
         private void ApplyModeVisibility()
         {
             string mode = ModeCombo.SelectedValue as string ?? "Hold";
-            bool isCustom = mode == "Custom";
             bool isCycle = mode == "Cycle";
             bool isPassive = mode == "Passive";
-            JumpLabel.Visibility = isCustom ? Visibility.Visible : Visibility.Collapsed;
-            JumpToLayerCombo.Visibility = isCustom ? Visibility.Visible : Visibility.Collapsed;
+            // Latch (legacy value "Custom", #119) engages its OWN layer, so it
+            // has no jump-target picker anymore.
+            JumpLabel.Visibility = Visibility.Collapsed;
+            JumpToLayerCombo.Visibility = Visibility.Collapsed;
             CycleHeaderRow.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
             CycleLayersList.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
 
@@ -739,9 +740,8 @@ namespace PadForge.Views
             while (_existingLayerMasks.Contains(mask))
                 mask = $"{baseMask}_{suffix++}";
 
+            // Latch (#119) has no jump target; it engages its own layer.
             string jumpToLayer = "";
-            if (JumpToLayerCombo.SelectedItem is LayerOption jump)
-                jumpToLayer = jump.LayerMask ?? "";
 
             string cycleLayers = "";
             if (CycleLayersList.SelectedItems != null && CycleLayersList.SelectedItems.Count > 0)

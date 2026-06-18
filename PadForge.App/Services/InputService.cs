@@ -3895,8 +3895,6 @@ namespace PadForge.Services
             if (snap == null) return;
 
             var slotMs = sets[padIndex] ??= new Engine.Data.MappingSet();
-            // Replace the slot's shift state with the clipboard's.
-            slotMs.ShiftActivators = new System.Collections.Generic.List<Engine.Data.ShiftActivator>();
             var tempSrc = new Engine.Data.MappingSet
             {
                 ShiftActivators = snap.Activators,
@@ -3904,7 +3902,19 @@ namespace PadForge.Services
                 BaseColor = snap.BaseColor ?? "",
                 BaseIcon = snap.BaseIcon ?? "",
             };
-            CopyShiftActivators(tempSrc, slotMs, retargetSlot: padIndex);
+            // Build into a detached MappingSet, then swap the finished list
+            // onto the live slot in one atomic reference assignment. The
+            // engine polling thread enumerates slotMs.ShiftActivators every
+            // frame without our lock, so it must never observe a list that
+            // is mid-fill (an incremental Add path can throw inside its
+            // foreach). This mirrors how ApplySlotMappingSetFromRows swaps a
+            // whole fresh MappingSet rather than mutating the live one.
+            var built = new Engine.Data.MappingSet();
+            CopyShiftActivators(tempSrc, built, retargetSlot: padIndex);
+            slotMs.ShiftActivators = built.ShiftActivators;
+            slotMs.BaseLayerName = built.BaseLayerName;
+            slotMs.BaseColor = built.BaseColor;
+            slotMs.BaseIcon = built.BaseIcon;
         }
 
         /// <summary>Whole-slot snapshot of every row in the given slot's

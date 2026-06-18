@@ -1425,7 +1425,7 @@
   <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Fixar</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Ciclo</value></data>
   <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Adesivo (uma vez)</value></data>
-  <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Sem botão</value></data>
+  <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Sem Botão</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>O nome da camada é obrigatório.</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>Já existe uma camada com esse nome nesta vaga.</value></data>
   <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>Escolha uma entrada ativadora.</value></data>
@@ -2026,9 +2026,9 @@
   <data name="Pad_Shift_CycleDirection_Next" xml:space="preserve"><value>Próximo</value></data>
   <data name="Pad_Shift_CycleDirection_Previous" xml:space="preserve"><value>Anterior</value></data>
   <data name="Pad_Shift_CycleDirection_Tooltip" xml:space="preserve"><value>Próximo avança pelas camadas. Defina um segundo ativador com a mesma lista como Anterior para voltar. Ambos compartilham uma posição.</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Botão próximo</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Botão anterior</value></data>
-  <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Dar a volta</value></data>
+  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Botão Próximo</value></data>
+  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Botão Anterior</value></data>
+  <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Dar a Volta</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Quando ligado, ao passar da última camada volta para a primeira, e antes da primeira vai para a última. Quando desligado, o cursor para nas extremidades.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Incluir Base</value></data>
   <data name="Pad_Shift_CycleIncludeBase_Tooltip" xml:space="preserve"><value>Quando ligado, a Base sem modificação é uma parada no ciclo, então o rodízio pode voltar para ela. Quando desligado, o cursor fica nas camadas marcadas e você volta para a Base com um ativador separado.</value></data>

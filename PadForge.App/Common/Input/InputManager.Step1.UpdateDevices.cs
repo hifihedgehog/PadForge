@@ -900,8 +900,8 @@ namespace PadForge.Common.Input
         // Wii driver init writes all fail and the remote never streams. PadForge
         // opens and reads it directly instead. Enumeration runs on a background
         // task; the polling thread consumes the cached snapshot, mirroring MIDI.
-        private readonly Dictionary<string, WiiRemoteHidDevice> _openedWiiDevices =
-            new Dictionary<string, WiiRemoteHidDevice>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, WiiControllerHidDevice> _openedWiiDevices =
+            new Dictionary<string, WiiControllerHidDevice>(StringComparer.OrdinalIgnoreCase);
         private readonly object _wiiDevicesLock = new object();
         private volatile List<WiiHidEnumerator.WiiHidInfo> _cachedWiiDevices;
         private volatile bool _wiiEnumRunning;
@@ -966,7 +966,7 @@ namespace PadForge.Common.Input
 
                     try
                     {
-                        var dev = new WiiRemoteHidDevice(info.Path, info.ProductId, info.Name, info.Serial);
+                        var dev = new WiiControllerHidDevice(info.Path, info.ProductId, info.Name, info.Serial);
                         if (!dev.Open())
                         {
                             dev.Dispose();

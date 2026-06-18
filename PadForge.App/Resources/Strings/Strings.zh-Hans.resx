@@ -1423,7 +1423,8 @@
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>切换</value></data>
   <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>自定义(跳转到层)</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>循环</value></data>
-  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>粘性(单次)</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>粘性(单次)</value></data>
+  <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>无按钮</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>需要层名称。</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>此插槽已存在同名的层。</value></data>
   <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>请选择一个激活器输入。</value></data>
@@ -1459,7 +1460,8 @@
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>点击以激活。再次点击以释放。层在多次按下中持续存在。</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>按下跳转到特定层。保持直到另一个转换触发。</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>每次按下都通过有序的层列表前进。回绕到基础。</value></data>
-  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>点击一次以激活。下次映射的按钮按下在层上触发,然后自动释放。</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>点击一次以激活。下次映射的按钮按下在层上触发,然后自动释放。</value></data>
+  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>没有自己的按钮。将它加入循环控件的队列，或设为自定义跳转的目标，即可通过该方式到达此层。</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>从基础继承未映射的目标</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>同时触发激活器自身的映射</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>选中时，激活器按钮继续驱动以它为源的任何行。一次按压同时切换层并触发按钮自身的映射。未选中（默认）时，按压仅被层切换消费。</value></data>

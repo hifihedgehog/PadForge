@@ -1860,6 +1860,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Shift_ModeCustom => Get("Pad_Shift_ModeCustom");
     public string Pad_Shift_ModeCycle => Get("Pad_Shift_ModeCycle");
     public string Pad_Shift_ModeSticky => Get("Pad_Shift_ModeSticky");
+    public string Pad_Shift_ModePassive => Get("Pad_Shift_ModePassive");
     public string Pad_Shift_HintNameRequired => Get("Pad_Shift_HintNameRequired");
     public string Pad_Shift_HintNameDuplicate => Get("Pad_Shift_HintNameDuplicate");
     public string Pad_Shift_HintInputRequired => Get("Pad_Shift_HintInputRequired");
@@ -1908,6 +1909,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Shift_ModeCustom_Subtitle => Get("Pad_Shift_ModeCustom_Subtitle");
     public string Pad_Shift_ModeCycle_Subtitle => Get("Pad_Shift_ModeCycle_Subtitle");
     public string Pad_Shift_ModeSticky_Subtitle => Get("Pad_Shift_ModeSticky_Subtitle");
+    public string Pad_Shift_ModePassive_Subtitle => Get("Pad_Shift_ModePassive_Subtitle");
     public string Pad_Shift_InheritUnmapped => Get("Pad_Shift_InheritUnmapped");
     public string Pad_Shift_InheritUnmapped_Tooltip => Get("Pad_Shift_InheritUnmapped_Tooltip");
 }

@@ -1424,7 +1424,8 @@
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Umschalten</value></data>
   <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Benutzerdefiniert (Sprung zur Ebene)</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Durchlaufen</value></data>
-  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Klebrig (einmalig)</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Klebrig (einmalig)</value></data>
+  <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Keine Taste</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Ebenenname ist erforderlich.</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>Eine Ebene mit diesem Namen existiert bereits auf diesem Slot.</value></data>
   <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>Wählen Sie eine Aktivator-Eingabe.</value></data>
@@ -1460,7 +1461,8 @@
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Tippen zum Aktivieren. Erneut tippen zum Lösen. Ebene bleibt über viele Drücke bestehen.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Druck springt zu einer bestimmten Ebene. Bleibt, bis ein anderer Übergang feuert.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Jeder Druck rückt durch eine geordnete Ebenenliste. Springt zurück zu Basis.</value></data>
-  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Einmal tippen zum Aktivieren. Der nächste zugewiesene Tastendruck feuert auf der Ebene, dann automatisches Lösen.</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Einmal tippen zum Aktivieren. Der nächste zugewiesene Tastendruck feuert auf der Ebene, dann automatisches Lösen.</value></data>
+  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Keine eigene Taste. Fügen Sie sie der Warteschlange einer Zyklus-Steuerung hinzu oder machen Sie sie zum Ziel eines benutzerdefinierten Sprungs, dann wird die Ebene so erreicht.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Nicht zugewiesene Ziele von Basis erben</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Auch eigenes Mapping des Auslösers feuern</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Wenn aktiviert, treibt die Auslöser-Taste weiterhin jede Zeile an, die sie als Quelle verwendet. Ein Druck wechselt die Ebene UND feuert das eigene Mapping der Taste. Wenn deaktiviert (Standard), wird der Druck nur vom Ebenenwechsel verbraucht.</value></data>

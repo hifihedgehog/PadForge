@@ -1444,7 +1444,8 @@
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Schakelen</value></data>
   <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Aangepast (spring naar laag)</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Cyclus</value></data>
-  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Plakkerig (eenmalig)</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Plakkerig (eenmalig)</value></data>
+  <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Geen knop</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Laagnaam is vereist.</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>Een laag met die naam bestaat al op deze sleuf.</value></data>
   <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>Kies een activator-invoer.</value></data>
@@ -1480,7 +1481,8 @@
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Tik om te activeren. Tik opnieuw om los te laten. Laag blijft bestaan over vele drukken.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Druk springt naar een specifieke laag. Blijft tot een andere overgang vuurt.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Elke druk gaat door een geordende laaglijst; gaat terug naar Basis.</value></data>
-  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tik één keer om te activeren. De volgende toegewezen knopdruk vuurt op de laag, daarna automatische release.</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tik één keer om te activeren. De volgende toegewezen knopdruk vuurt op de laag, daarna automatische release.</value></data>
+  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Geen eigen knop. Voeg hem toe aan de wachtrij van een Cyclus-besturing, of maak er een doel van een Aangepaste sprong van, dan wordt de laag zo bereikt.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Niet-toegewezen doelen van Basis overerven</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Ook de eigen toewijzing van de activator activeren</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Indien aangevinkt stuurt de activatorknop nog steeds elke rij aan die hem als bron gebruikt. Één druk wisselt de laag EN activeert de eigen toewijzing van de knop. Indien niet aangevinkt (standaard) wordt de druk alleen verbruikt door de laagwissel.</value></data>

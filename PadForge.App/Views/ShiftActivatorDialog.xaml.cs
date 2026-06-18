@@ -503,6 +503,7 @@ namespace PadForge.Views
                 new ChoiceOption { Value = "Custom", Name = s.Pad_Shift_ModeCustom, Description = s.Pad_Shift_ModeCustom_Subtitle },
                 new ChoiceOption { Value = "Cycle",  Name = s.Pad_Shift_ModeCycle,  Description = s.Pad_Shift_ModeCycle_Subtitle  },
                 new ChoiceOption { Value = "Sticky", Name = s.Pad_Shift_ModeSticky, Description = s.Pad_Shift_ModeSticky_Subtitle },
+                new ChoiceOption { Value = "Passive", Name = s.Pad_Shift_ModePassive, Description = s.Pad_Shift_ModePassive_Subtitle },
             };
         }
 
@@ -616,20 +617,31 @@ namespace PadForge.Views
             string mode = ModeCombo.SelectedValue as string ?? "Hold";
             bool isCustom = mode == "Custom";
             bool isCycle = mode == "Cycle";
+            bool isPassive = mode == "Passive";
             JumpLabel.Visibility = isCustom ? Visibility.Visible : Visibility.Collapsed;
             JumpToLayerCombo.Visibility = isCustom ? Visibility.Visible : Visibility.Collapsed;
             CycleHeaderRow.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
             CycleLayersList.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
 
-            // Cycle (#119) owns both input pickers: the primary is the Next
-            // button and the second picker (otherwise the chord second half) is
-            // the Previous button. Kind is fixed to Button, so hide the Kind
-            // selector and relabel the two pickers.
-            KindLabel.Visibility = isCycle ? Visibility.Collapsed : Visibility.Visible;
-            KindCombo.Visibility = isCycle ? Visibility.Collapsed : Visibility.Visible;
-            // Delay is a hold-to-engage debounce, meaningless for a press-to-step
-            // cycle, so hide it in Cycle mode.
-            DelayRow.Visibility = isCycle ? Visibility.Collapsed : Visibility.Visible;
+            // Passive (No Button, #119) layers have no activator at all. They are
+            // reached only by a Cycle queue or a Custom jump, so hide every input
+            // row. Cycle hides the Kind selector (button-driven) and Delay (press-
+            // to-step). The Postpone toggle only makes sense with an own input.
+            InputLabel.Visibility = isPassive ? Visibility.Collapsed : Visibility.Visible;
+            InputRow.Visibility = isPassive ? Visibility.Collapsed : Visibility.Visible;
+            KindLabel.Visibility = (isPassive || isCycle) ? Visibility.Collapsed : Visibility.Visible;
+            KindCombo.Visibility = (isPassive || isCycle) ? Visibility.Collapsed : Visibility.Visible;
+            DelayRow.Visibility = (isPassive || isCycle) ? Visibility.Collapsed : Visibility.Visible;
+            PostponeMappingBox.Visibility = isPassive ? Visibility.Collapsed : Visibility.Visible;
+
+            if (isPassive)
+            {
+                ChordLabel.Visibility = Visibility.Collapsed;
+                ChordSecondRow.Visibility = Visibility.Collapsed;
+                AxisThresholdLabel.Visibility = Visibility.Collapsed;
+                AxisThresholdRow.Visibility = Visibility.Collapsed;
+                return;
+            }
 
             if (isCycle)
             {
@@ -697,11 +709,20 @@ namespace PadForge.Views
                 LayerNameBox.SelectAll();
                 return;
             }
-            // The activator input is OPTIONAL (#119). A layer with no input is a
-            // passive target: it owns a tab and mappings but never self-engages,
-            // reached only through a Cycle queue or a Custom jump. This unblocks
-            // building the weapon layers a cycle walks (they need no button).
+            // Mode decides whether a button is required (#119). Passive (No
+            // Button) has none by design. Cycle's Next/Previous are optional, so
+            // it can be set up incrementally. Hold/Toggle/Custom/Sticky drive off
+            // a button, so require one.
+            string mode = ModeCombo.SelectedValue as string ?? "Hold";
+            bool isPassive = mode == "Passive";
+            bool isCycle = mode == "Cycle";
             InputChoice input = InputCombo.SelectedItem as InputChoice;
+            if (!isPassive && !isCycle && input == null)
+            {
+                ShowHint(Strings.Instance.Pad_Shift_HintInputRequired);
+                InputCombo.Focus();
+                return;
+            }
             string kind = KindCombo.SelectedValue as string ?? "Button";
             InputChoice chordSecond = ChordSecondCombo.SelectedItem as InputChoice;
             // A chord needs both halves, but only when a primary input is set.
@@ -742,10 +763,8 @@ namespace PadForge.Views
                 : "";
 
             // The second input picker doubles as the chord second half (Kind=
-            // Chord) or the Cycle Previous button (Mode=Cycle, #119).
-            string mode = ModeCombo.SelectedValue as string ?? "Hold";
-            bool isCycle = mode == "Cycle";
-
+            // Chord) or the Cycle Previous button (Mode=Cycle, #119). mode/isCycle
+            // were resolved during validation above.
             Result = new ShiftActivator
             {
                 LayerName = name,

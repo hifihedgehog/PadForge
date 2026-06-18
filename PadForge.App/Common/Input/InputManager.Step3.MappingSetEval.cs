@@ -764,6 +764,10 @@ namespace PadForge.Common.Input
                     }
                     break;
                 }
+                case "Passive":
+                    // #119: a No-Button layer never self-engages. It owns a tab
+                    // and mappings, reached only via a Cycle queue or Custom jump.
+                    break;
                 case "Hold":
                 default:
                 {

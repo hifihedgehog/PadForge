@@ -29,14 +29,13 @@ namespace PadForge.Services
     ///
     /// Requires the process to be elevated. PadForge always runs elevated.
     ///
-    /// This service does the OS-level pairing only. Once paired, the remote
-    /// enumerates as a HID interface but does NOT stream on its own and drops off
-    /// Bluetooth within seconds unless something opens it and sets its reporting
-    /// mode. SDL cannot do that on Windows 8+ (its hidapi writes output reports
-    /// with WriteFile, which the Microsoft Bluetooth stack rejects for the
-    /// remote), so PadForge reads the remote directly over raw HID via
-    /// <c>WiiControllerHidDevice</c> (InputManager Phase 1f), which holds the handle
-    /// open and kickstarts the stream with HidD_SetOutputReport.
+    /// This service does the OS-level pairing only. Once paired, SDL's
+    /// hidapi_wii driver enumerates and drives the controller (Wii Remote,
+    /// Nunchuk, Classic, Wii U Pro) and PadForge's normal device pipeline maps
+    /// it from there. SDL driving a Bluetooth Wii Remote on Windows 8+ relies on
+    /// the SDL3 fork's hid_write fix (hifihedgehog/SDL#2): the remote's output
+    /// reports must go via HidD_SetOutputReport, since the Microsoft Bluetooth
+    /// stack rejects WriteFile for it.
     /// </summary>
     public sealed class WiiPairingService
     {

@@ -6548,12 +6548,6 @@ namespace PadForge.Services
         /// in-process (#116). Call only from the UI thread (the SDL_Init thread).</summary>
         public void PumpSdlEvents() => _inputManager?.PumpSdlEvents();
 
-        /// <summary>Opens freshly-paired Bluetooth Wii Remotes right away (issue
-        /// #116). Call after the pairing dialog closes; the remote becomes
-        /// playable without a restart even though it stays connected only briefly
-        /// after pairing.</summary>
-        public void OpenPairedWiiRemotes() => _inputManager?.OpenPairedWiiRemotesNow();
-
         /// <summary>
         /// Repopulates the source dropdown choices for all pads.
         /// Called when ForceRawJoystickMode changes to refresh display names.

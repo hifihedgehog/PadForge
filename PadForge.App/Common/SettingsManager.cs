@@ -524,45 +524,66 @@ namespace PadForge.Common.Input
             // the user wants to record raw mappings manually.
             if (ud.CapType == InputDeviceType.Gamepad && !ud.ForceRawJoystickMode)
             {
+                // Only auto-map inputs the device actually exposes. Binding an
+                // output to a source the device lacks is NOT harmless: a missing
+                // axis reads 0, and the stick mapper turns 0 into a hard
+                // upper-left deflection instead of resting at center (a Wii Remote
+                // with no analog sticks pinned both sticks to the corner). So gate
+                // every axis/button/hat the way the Misc1/Share binding below
+                // already does. When DeviceObjects is unavailable (a
+                // capability-less ghost), fall back to the full standard layout so
+                // a real gamepad assigned offline still maps.
+                var objs = ud.DeviceObjects;
+                bool haveCaps = objs != null && objs.Length > 0;
+                bool HasAxis(int idx) => !haveCaps || objs.Any(o => o != null
+                    && (o.ObjectType & DeviceObjectTypeFlags.AbsoluteAxis) != 0 && o.InputIndex == idx);
+                bool HasButton(int idx) => !haveCaps || objs.Any(o => o != null
+                    && (o.ObjectType & DeviceObjectTypeFlags.PushButton) != 0 && o.InputIndex == idx);
+                bool HasHat() => !haveCaps || objs.Any(o => o != null
+                    && (o.ObjectType & DeviceObjectTypeFlags.PointOfViewController) != 0);
+
                 if (outputType == Engine.VirtualControllerType.Midi)
                 {
-                    // MIDI auto-mapping: 6 CCs for axes, 11 notes for buttons.
-                    // Maps SDL3 gamepad axes to CC0-CC5 and buttons to Note0-Note10.
+                    // MIDI auto-mapping: CC0-CC5 for axes, Note0-Note10 for buttons.
                     for (int i = 0; i < 6; i++)
-                        ps.SetMidiMapping($"MidiCC{i}", $"Axis {i}");
+                        if (HasAxis(i)) ps.SetMidiMapping($"MidiCC{i}", $"Axis {i}");
                     for (int i = 0; i < 11; i++)
-                        ps.SetMidiMapping($"MidiNote{i}", $"Button {i}");
+                        if (HasButton(i)) ps.SetMidiMapping($"MidiNote{i}", $"Button {i}");
                     ps.FlushMidiMappings();
 
                     ps.UpdateChecksum();
                     return ps;
                 }
 
-                ps.LeftThumbAxisX = "Axis 0";
-                ps.LeftThumbAxisY = "Axis 1";
-                ps.LeftTrigger = "Axis 2";
-                ps.RightThumbAxisX = "Axis 3";
-                ps.RightThumbAxisY = "Axis 4";
-                ps.RightTrigger = "Axis 5";
+                // Sticks and triggers (SDL3 axis order LX/LY/LT/RX/RY/RT).
+                if (HasAxis(0)) ps.LeftThumbAxisX = "Axis 0";
+                if (HasAxis(1)) ps.LeftThumbAxisY = "Axis 1";
+                if (HasAxis(2)) ps.LeftTrigger = "Axis 2";
+                if (HasAxis(3)) ps.RightThumbAxisX = "Axis 3";
+                if (HasAxis(4)) ps.RightThumbAxisY = "Axis 4";
+                if (HasAxis(5)) ps.RightTrigger = "Axis 5";
 
                 // D-pad from hat switch (individual directions for UI display and remapping).
-                ps.DPadUp = "POV 0 Up";
-                ps.DPadDown = "POV 0 Down";
-                ps.DPadLeft = "POV 0 Left";
-                ps.DPadRight = "POV 0 Right";
+                if (HasHat())
+                {
+                    ps.DPadUp = "POV 0 Up";
+                    ps.DPadDown = "POV 0 Down";
+                    ps.DPadLeft = "POV 0 Left";
+                    ps.DPadRight = "POV 0 Right";
+                }
 
                 // SDL3 XInput backend button indices.
-                ps.ButtonA = "Button 0";
-                ps.ButtonB = "Button 1";
-                ps.ButtonX = "Button 2";
-                ps.ButtonY = "Button 3";
-                ps.LeftShoulder = "Button 4";
-                ps.RightShoulder = "Button 5";
-                ps.ButtonBack = "Button 6";
-                ps.ButtonStart = "Button 7";
-                ps.LeftThumbButton = "Button 8";
-                ps.RightThumbButton = "Button 9";
-                ps.ButtonGuide = "Button 10";
+                if (HasButton(0)) ps.ButtonA = "Button 0";
+                if (HasButton(1)) ps.ButtonB = "Button 1";
+                if (HasButton(2)) ps.ButtonX = "Button 2";
+                if (HasButton(3)) ps.ButtonY = "Button 3";
+                if (HasButton(4)) ps.LeftShoulder = "Button 4";
+                if (HasButton(5)) ps.RightShoulder = "Button 5";
+                if (HasButton(6)) ps.ButtonBack = "Button 6";
+                if (HasButton(7)) ps.ButtonStart = "Button 7";
+                if (HasButton(8)) ps.LeftThumbButton = "Button 8";
+                if (HasButton(9)) ps.RightThumbButton = "Button 9";
+                if (HasButton(10)) ps.ButtonGuide = "Button 10";
 
                 // Xbox Share auto-map: any controller that exposes
                 // SDL_GAMEPAD_BUTTON_MISC1 (Xbox Share, DualSense Mic,

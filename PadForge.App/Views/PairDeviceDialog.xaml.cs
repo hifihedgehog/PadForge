@@ -28,6 +28,7 @@ namespace PadForge.Views
         {
             InitializeComponent();
             Closing += OnClosing;
+            LogPathText.Text = "Log: " + WiiPairingService.LogPath;
         }
 
         private async void Pair_Click(object sender, RoutedEventArgs e)

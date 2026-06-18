@@ -44,6 +44,10 @@ namespace PadForge
 
         private readonly MainViewModel _viewModel;
         private InputService _inputService;
+
+        // Pumps SDL's event queue on the UI thread so hidapi controller hot-plug
+        // works in-process (#116). See where it is started in the constructor.
+        private System.Windows.Threading.DispatcherTimer _sdlPumpTimer;
         private SettingsService _settingsService;
 
         /// <summary>Exposes the app's SettingsService to dialogs / pages
@@ -643,12 +647,26 @@ namespace PadForge
             {
                 var dialog = new Views.PairDeviceDialog { Owner = this };
                 dialog.ShowDialog();
-                // A freshly paired controller enumerates as a HID gamepad; pull
-                // it into the device list. Refresh unconditionally since a paired
-                // device may surface a beat after the dialog closes.
+                // Open any just-paired Wii Remote right away. It stays connected
+                // only briefly after pairing, so don't wait for the next poll (#116).
+                _inputService.OpenPairedWiiRemotes();
                 _inputService.RefreshDeviceList();
                 _viewModel.StatusText = Strings.Instance.Status_DeviceListRefreshed;
             };
+
+            // Pump SDL's event queue on the UI thread (the SDL_Init thread).
+            // SDL's hidapi posts its device-change messages to a hidden window
+            // on this thread; dispatching them is what makes SDL re-scan for
+            // connected/removed controllers. Without this, a device that drops on
+            // a read hiccup never returns and a freshly-paired one never appears
+            // until an app restart (#116). 100 ms is well under SDL's own
+            // detection cadence and negligible cost.
+            _sdlPumpTimer = new System.Windows.Threading.DispatcherTimer
+            {
+                Interval = System.TimeSpan.FromMilliseconds(100)
+            };
+            _sdlPumpTimer.Tick += (s, e) => _inputService.PumpSdlEvents();
+            _sdlPumpTimer.Start();
 
             // Wire test rumble for each pad (both motors, or individual).
             foreach (var pad in _viewModel.Pads)

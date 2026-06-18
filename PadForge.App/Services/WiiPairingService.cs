@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -10,37 +11,55 @@ namespace PadForge.Services
     ///
     /// Wii Remotes, the Nunchuk/Classic extensions, and the Wii U Pro
     /// Controller use a legacy Bluetooth pairing ceremony that the Windows
-    /// pairing UI cannot drive. The PIN is six raw address bytes rather than
-    /// an ASCII string, and WinRT's pairing API only accepts strings, so the
-    /// only viable path is Win32 <c>bluetoothapis</c> with a legacy-PIN
-    /// authentication callback. This follows Dolphin's
-    /// Source/Core/Core/HW/WiimoteReal/IOWin.cpp, the canonical Windows
-    /// reference for pairing Wiimotes through the OS stack without a registry
-    /// link-key hack.
+    /// pairing UI cannot drive. This is a direct port of Dolphin's
+    /// Source/Core/Core/HW/WiimoteReal/IOWin.cpp, the canonical decade-old
+    /// Windows reference. The important part Dolphin establishes: do NOT use
+    /// the BluetoothRegisterForAuthenticationEx callback path. Use the
+    /// deprecated BluetoothAuthenticateDevice with the PIN passed directly as a
+    /// wide-char array (each of the six Bluetooth-address bytes widened into one
+    /// WCHAR, low byte first), then BluetoothEnumerateInstalledServices (which
+    /// Dolphin notes "must be done to make the remote remember the pairing"),
+    /// then BluetoothSetServiceState to enable the HID service.
     ///
     /// Two pairing modes, matching the controller's two sync methods:
     ///  - SYNC button (red button under the battery cover). PIN is the host
-    ///    radio's address, low byte first. Triggers full bonding, so the
-    ///    controller reconnects on any button press after a disconnect. Pair
-    ///    once, reconnect free from then on.
-    ///  - 1+2 hold (temporary). PIN is the controller's own address, low byte
-    ///    first. Per the WiiBrew spec the controller does not bond in this
-    ///    mode and must be re-paired every session.
+    ///    radio's address. Bonds persistently, so the controller reconnects on
+    ///    any button press after a disconnect.
+    ///  - 1+2 hold (temporary). PIN is the controller's own address.
     ///
-    /// Requires the process to be elevated. <c>BluetoothSetServiceState</c>
-    /// writes the link key under SYSTEM privilege, which is why no manual
-    /// registry edit is needed. PadForge always runs elevated.
+    /// Requires the process to be elevated. PadForge always runs elevated.
     ///
-    /// Once paired the controller enumerates as a HID gamepad and the bundled
-    /// SDL3 fork's hidapi_wii driver surfaces it. PadForge's normal device
-    /// pipeline maps it from there. This service does the OS-level pairing
-    /// only.
+    /// This service does the OS-level pairing only. Once paired, the remote
+    /// enumerates as a HID interface but does NOT stream on its own and drops off
+    /// Bluetooth within seconds unless something opens it and sets its reporting
+    /// mode. SDL cannot do that on Windows 8+ (its hidapi writes output reports
+    /// with WriteFile, which the Microsoft Bluetooth stack rejects for the
+    /// remote), so PadForge reads the remote directly over raw HID via
+    /// <c>WiiRemoteHidDevice</c> (InputManager Phase 1f), which holds the handle
+    /// open and kickstarts the stream with HidD_SetOutputReport.
     /// </summary>
     public sealed class WiiPairingService
     {
         /// <summary>Name prefix every Wii peripheral advertises over Bluetooth
-        /// ("Nintendo RVL-CNT-01", "-TR", "-UC", and so on).</summary>
-        private const string WiiNamePrefix = "Nintendo RVL-";
+        /// ("Nintendo RVL-CNT-01", "-TR", "-UC", and so on). A fresh inquiry
+        /// often returns an empty name, so this is the preferred match but not
+        /// the only one (see the Class-of-Device fallback below).</summary>
+        private const string WiiNamePrefix = "Nintendo";
+
+        // Known Wii controller Class-of-Device values, used as a fallback match
+        // when the inquiry returns no name (common for a never-seen device).
+        // 0x002504 = Wii Remote, 0x000508 = Wii Remote Plus / -TR. Matching the
+        // exact values rather than the broad Peripheral major class avoids
+        // attempting to pair a stray Bluetooth keyboard or mouse.
+        private static bool IsWiiClassOfDevice(uint cod) =>
+            cod == 0x002504 || cod == 0x000508;
+
+        /// <summary>Path of the human-readable pairing log. Surfaced in the
+        /// dialog so a failed pair can be diagnosed from real data.</summary>
+        public static string LogPath =>
+            Path.Combine(Path.GetTempPath(), "PadForge-WiiPair.log");
+
+        private static readonly object _logLock = new();
 
         /// <summary>Result of one inquiry-and-pair pass.</summary>
         public sealed class PairPassResult
@@ -51,27 +70,22 @@ namespace PadForge.Services
             /// <summary>Controllers this pass successfully bonded (by name).</summary>
             public List<string> Paired { get; } = new();
 
+            /// <summary>Total Bluetooth devices the inquiry returned this pass,
+            /// Wii or not. Zero means the inquiry itself saw nothing.</summary>
+            public int DiscoveredCount { get; set; }
+
             /// <summary>Set when the radio could not be opened or queried. Null
             /// on success even when no controllers were found.</summary>
             public string Error { get; set; }
         }
 
-        // Holds the legacy PIN for the in-flight device so the auth callback,
-        // which the Bluetooth stack invokes on its own thread, can read it.
-        // RunPairingPass bonds one device at a time, so a single field is safe.
-        private byte[] _currentPin;
-        private IntPtr _currentRadio;
-
-        // The registered callback must outlive the native registration, so it
-        // is held in a field to keep the GC from collecting the delegate.
-        private BluetoothAuthCallbackEx _authCallback;
-
         /// <summary>
-        /// Runs a single Bluetooth inquiry and attempts to bond every Wii
-        /// controller currently in pairing mode. Blocks for the inquiry
-        /// duration (about three seconds), so call it from a background thread.
-        /// The caller loops over passes until a controller pairs or the user
-        /// cancels.
+        /// Runs a single Bluetooth inquiry and attempts to pair every Wii
+        /// controller in pairing mode, following Dolphin's
+        /// FindAndAuthenticateWiimotes flow. Blocks for the inquiry duration
+        /// (about three seconds), so call it from a background thread. The
+        /// caller loops over passes (Dolphin runs three iterations per click)
+        /// until a controller pairs or the user cancels.
         /// </summary>
         /// <param name="temporary">True to use the 1+2 temporary PIN (the
         /// controller's own address). False to use the SYNC-button PIN (the
@@ -91,6 +105,7 @@ namespace PadForge.Services
                 hRadioFind = BluetoothFindFirstRadio(ref radioParams, out hRadio);
                 if (hRadioFind == IntPtr.Zero || hRadio == IntPtr.Zero)
                 {
+                    Log($"no radio (win32={Marshal.GetLastWin32Error()})");
                     result.Error = "no-radio";
                     return result;
                 }
@@ -99,21 +114,27 @@ namespace PadForge.Services
                 {
                     dwSize = (uint)Marshal.SizeOf<BLUETOOTH_RADIO_INFO>()
                 };
-                if (BluetoothGetRadioInfo(hRadio, ref radioInfo) != 0)
+                uint riRc = BluetoothGetRadioInfo(hRadio, ref radioInfo);
+                if (riRc != 0)
                 {
+                    Log($"BluetoothGetRadioInfo failed rc={riRc}");
                     result.Error = "radio-info";
                     return result;
                 }
 
-                _currentRadio = hRadio;
+                Log($"=== pass start (temporary={temporary}) host={FormatAddr(radioInfo.address)} radio='{radioInfo.szName}' ===");
 
                 var search = new BLUETOOTH_DEVICE_SEARCH_PARAMS
                 {
                     dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_SEARCH_PARAMS>(),
-                    fReturnAuthenticated = 0,
-                    fReturnRemembered = 0,
+                    // Return every state, not just unknown. A controller left
+                    // in a stale half-paired state by an earlier attempt is
+                    // "remembered", and filtering those out hides it so it can
+                    // never be reset and re-paired.
+                    fReturnAuthenticated = 1,
+                    fReturnRemembered = 1,
                     fReturnUnknown = 1,
-                    fReturnConnected = 0,
+                    fReturnConnected = 1,
                     fIssueInquiry = 1,
                     cTimeoutMultiplier = 2, // about 2.5s of inquiry per pass
                     hRadio = hRadio
@@ -126,7 +147,10 @@ namespace PadForge.Services
 
                 IntPtr hDevFind = BluetoothFindFirstDevice(ref search, ref deviceInfo);
                 if (hDevFind == IntPtr.Zero)
-                    return result; // inquiry ran, nothing matched
+                {
+                    Log($"inquiry returned 0 devices (win32={Marshal.GetLastWin32Error()}). Close Windows' own 'Add a device' panel so the radio is free for this inquiry.");
+                    return result;
+                }
 
                 try
                 {
@@ -134,15 +158,54 @@ namespace PadForge.Services
                     {
                         if (ct.IsCancellationRequested) break;
 
+                        result.DiscoveredCount++;
                         string name = deviceInfo.szName ?? string.Empty;
-                        if (!name.StartsWith(WiiNamePrefix, StringComparison.OrdinalIgnoreCase))
+                        uint cod = deviceInfo.ulClassofDevice;
+                        bool nameMatch = !string.IsNullOrEmpty(name)
+                            && name.StartsWith(WiiNamePrefix, StringComparison.OrdinalIgnoreCase);
+                        bool codMatch = string.IsNullOrEmpty(name) && IsWiiClassOfDevice(cod);
+                        bool isWii = nameMatch || codMatch;
+
+                        Log($"  device addr={FormatAddr(deviceInfo.Address)} cod=0x{cod:X6} " +
+                            $"name='{name}' conn={deviceInfo.fConnected} remem={deviceInfo.fRemembered} auth={deviceInfo.fAuthenticated} " +
+                            $"=> {(isWii ? (nameMatch ? "WII(name)" : "WII(cod)") : "skip")}");
+
+                        if (!isWii) continue;
+
+                        string label = string.IsNullOrEmpty(name) ? FormatAddr(deviceInfo.Address) : name;
+
+                        // Already connected and working. Leave it alone.
+                        if (deviceInfo.fConnected != 0)
+                        {
+                            Log($"  {label} already connected");
+                            result.Found.Add(label);
+                            result.Paired.Add(label);
                             continue;
+                        }
 
-                        result.Found.Add(name);
+                        // Dolphin's RemoveUnusableWiimoteBluetoothDevices: a
+                        // remembered-but-not-connected-and-not-authenticated
+                        // record cannot reconnect and blocks re-pairing. Forget
+                        // it and let the next pass rediscover it fresh.
+                        if (deviceInfo.fRemembered != 0 && deviceInfo.fAuthenticated == 0)
+                        {
+                            uint rmRc = BluetoothRemoveDevice(ref deviceInfo.Address);
+                            Log($"  {label} unusable remembered record, BluetoothRemoveDevice rc={rmRc} (rediscover next pass)");
+                            continue;
+                        }
 
-                        ulong pinSource = temporary ? deviceInfo.Address : radioInfo.address;
-                        if (TryPairDevice(hRadio, deviceInfo, pinSource))
-                            result.Paired.Add(name);
+                        result.Found.Add(label);
+
+                        ulong pinSource = temporary ? deviceInfo.Address.ullLong : radioInfo.address.ullLong;
+                        if (TryPairDevice(hRadio, ref deviceInfo, pinSource, label))
+                        {
+                            Log($"  PAIRED {label}");
+                            result.Paired.Add(label);
+                        }
+                        else
+                        {
+                            Log($"  pair FAILED for {label}");
+                        }
                     }
                     while (BluetoothFindNextDevice(hDevFind, ref deviceInfo));
                 }
@@ -150,18 +213,21 @@ namespace PadForge.Services
                 {
                     BluetoothFindDeviceClose(hDevFind);
                 }
+
+                Log($"=== pass end: discovered={result.DiscoveredCount} wiiFound={result.Found.Count} paired={result.Paired.Count} ===");
             }
-            catch (DllNotFoundException)
+            catch (DllNotFoundException ex)
             {
+                Log($"bluetooth stack not found: {ex.Message}");
                 result.Error = "no-bluetooth-stack";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log($"exception: {ex}");
                 result.Error = "exception";
             }
             finally
             {
-                _currentRadio = IntPtr.Zero;
                 if (hRadio != IntPtr.Zero) CloseHandle(hRadio);
                 if (hRadioFind != IntPtr.Zero) BluetoothFindRadioClose(hRadioFind);
             }
@@ -170,79 +236,135 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Bonds one discovered controller. Clears any stale bond first, then
-        /// installs the legacy-PIN auth callback and enables the HID service,
-        /// which is the step that makes the controller remember the host.
+        /// Fast check (no inquiry) for whether a paired Wii controller is
+        /// currently connected. Used after pairing to time the SDL
+        /// re-enumeration to the moment the controller actually connects (it
+        /// connects on a button press, which can be many seconds after the
+        /// pair completes), rather than a fixed delay.
         /// </summary>
-        private bool TryPairDevice(IntPtr hRadio, BLUETOOTH_DEVICE_INFO device, ulong pinSource)
+        public bool IsWiiConnected()
         {
-            _currentPin = AddressToPin(pinSource);
-
-            // A stale bond from a prior session can make the service-enable
-            // reuse an old link key and fail. Forget the device first so the
-            // PIN exchange runs clean. Best effort, errors ignored.
-            var addr = new BLUETOOTH_ADDRESS { ullLong = device.Address };
-            BluetoothRemoveDevice(ref addr);
-
-            IntPtr hAuth = IntPtr.Zero;
-            _authCallback = AuthCallback;
+            IntPtr hRadio = IntPtr.Zero, hRadioFind = IntPtr.Zero;
             try
             {
-                uint reg = BluetoothRegisterForAuthenticationEx(
-                    ref device, out hAuth, _authCallback, IntPtr.Zero);
-                if (reg != 0) return false;
+                var rp = new BLUETOOTH_FIND_RADIO_PARAMS
+                { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_FIND_RADIO_PARAMS>() };
+                hRadioFind = BluetoothFindFirstRadio(ref rp, out hRadio);
+                if (hRadioFind == IntPtr.Zero || hRadio == IntPtr.Zero) return false;
 
-                var hidGuid = HumanInterfaceDeviceServiceClass_UUID;
-                uint rc = BluetoothSetServiceState(
-                    hRadio, ref device, ref hidGuid, BLUETOOTH_SERVICE_ENABLE);
-                return rc == 0;
+                var search = new BLUETOOTH_DEVICE_SEARCH_PARAMS
+                {
+                    dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_SEARCH_PARAMS>(),
+                    fReturnAuthenticated = 1,
+                    fReturnRemembered = 1,
+                    fReturnUnknown = 0,
+                    fReturnConnected = 1,
+                    fIssueInquiry = 0, // no inquiry: just read current state, fast
+                    cTimeoutMultiplier = 0,
+                    hRadio = hRadio
+                };
+                var di = new BLUETOOTH_DEVICE_INFO
+                { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_INFO>() };
+
+                IntPtr hFind = BluetoothFindFirstDevice(ref search, ref di);
+                if (hFind == IntPtr.Zero) return false;
+                try
+                {
+                    do
+                    {
+                        string name = di.szName ?? string.Empty;
+                        if (di.fConnected != 0
+                            && name.StartsWith(WiiNamePrefix, StringComparison.OrdinalIgnoreCase))
+                            return true;
+                    }
+                    while (BluetoothFindNextDevice(hFind, ref di));
+                }
+                finally { BluetoothFindDeviceClose(hFind); }
+                return false;
             }
+            catch { return false; }
             finally
             {
-                if (hAuth != IntPtr.Zero) BluetoothUnregisterAuthentication(hAuth);
-                _authCallback = null;
-                _currentPin = null;
+                if (hRadio != IntPtr.Zero) CloseHandle(hRadio);
+                if (hRadioFind != IntPtr.Zero) BluetoothFindRadioClose(hRadioFind);
             }
         }
 
         /// <summary>
-        /// Auth callback the Bluetooth stack invokes during bonding. Replies
-        /// with the six-byte legacy PIN for the in-flight controller.
+        /// Bonds one discovered controller, porting Dolphin's AuthenticateWiimote
+        /// plus the HID-service enable. Authenticates with the deprecated
+        /// BluetoothAuthenticateDevice (PIN passed directly, no callback), then
+        /// enumerates installed services so the remote remembers the pairing,
+        /// then enables the HID service.
         /// </summary>
-        private bool AuthCallback(IntPtr pvParam, IntPtr pParams)
+        private bool TryPairDevice(IntPtr hRadio, ref BLUETOOTH_DEVICE_INFO device, ulong pinSource, string label)
         {
-            byte[] pin = _currentPin;
-            if (pin == null) return false;
-
-            // deviceInfo is the first field of the callback params struct.
-            var device = Marshal.PtrToStructure<BLUETOOTH_DEVICE_INFO>(pParams);
-
-            var pin16 = new byte[16];
-            Array.Copy(pin, pin16, Math.Min(pin.Length, 16));
-
-            var response = new BLUETOOTH_AUTHENTICATE_RESPONSE
+            if (device.fAuthenticated == 0)
             {
-                bthAddressRemote = device.Address,
-                authMethod = BLUETOOTH_AUTHENTICATION_METHOD_LEGACY,
-                pinInfo = new BLUETOOTH_PIN_INFO { pin = pin16, pinLength = (byte)Math.Min(pin.Length, 16) },
-                negativeResponse = 0
-            };
+                // The PIN is the six Bluetooth-address bytes (low byte first),
+                // each widened into one WCHAR, length six. This exact shape is
+                // what Dolphin passes and what the deprecated API expects.
+                char[] passkey = new char[6];
+                for (int i = 0; i < 6; i++)
+                    passkey[i] = (char)((pinSource >> (8 * i)) & 0xFF);
+                Log($"    BluetoothAuthenticateDevice {label} passkey={FormatPasskey(passkey)}");
 
-            uint rc = BluetoothSendAuthenticationResponseEx(_currentRadio, ref response);
+                uint authRc = BluetoothAuthenticateDevice(IntPtr.Zero, hRadio, ref device, passkey, 6);
+                Log($"    BluetoothAuthenticateDevice rc={authRc}" + (authRc != 0 ? $" ({DescribeError(authRc)})" : ""));
+                if (authRc != 0)
+                    return false;
+
+                // "Apparently must be done to make the remote remember the
+                // pairing." (Dolphin). Count-only query, null service array.
+                uint pcServices = 0;
+                uint enumRc = BluetoothEnumerateInstalledServices(hRadio, ref device, ref pcServices, IntPtr.Zero);
+                Log($"    BluetoothEnumerateInstalledServices rc={enumRc} services={pcServices}");
+                if (enumRc != 0 && enumRc != ERROR_MORE_DATA)
+                    return false;
+            }
+
+            var hidGuid = HumanInterfaceDeviceServiceClass_UUID;
+            uint rc = BluetoothSetServiceState(hRadio, ref device, ref hidGuid, BLUETOOTH_SERVICE_ENABLE);
+            Log($"    BluetoothSetServiceState(HID, ENABLE) rc={rc}" + (rc != 0 ? $" ({DescribeError(rc)})" : ""));
             return rc == 0;
         }
 
-        /// <summary>
-        /// Builds the legacy PIN from a Bluetooth address: the six address
-        /// bytes, least significant first. This is the "address in reverse byte
-        /// order" the WiiBrew spec describes.
-        /// </summary>
-        private static byte[] AddressToPin(ulong address)
+        private static string FormatAddr(BLUETOOTH_ADDRESS a) => FormatAddr(a.ullLong);
+
+        private static string FormatAddr(ulong a) =>
+            $"{(a >> 40) & 0xFF:X2}:{(a >> 32) & 0xFF:X2}:{(a >> 24) & 0xFF:X2}:{(a >> 16) & 0xFF:X2}:{(a >> 8) & 0xFF:X2}:{a & 0xFF:X2}";
+
+        private static string FormatPasskey(char[] p)
         {
-            var pin = new byte[6];
-            for (int i = 0; i < 6; i++)
-                pin[i] = (byte)((address >> (8 * i)) & 0xFF);
-            return pin;
+            var parts = new string[p.Length];
+            for (int i = 0; i < p.Length; i++) parts[i] = ((int)p[i]).ToString("X2");
+            return string.Join(" ", parts);
+        }
+
+        private static string DescribeError(uint rc) => rc switch
+        {
+            5 => "ACCESS_DENIED (need elevation)",
+            31 => "GEN_FAILURE",
+            87 => "INVALID_PARAMETER",
+            170 => "BUSY",
+            234 => "MORE_DATA",
+            259 => "NO_MORE_ITEMS",
+            1167 => "DEVICE_NOT_CONNECTED",
+            _ => "see winerror.h"
+        };
+
+        /// <summary>Public entry point so the SDL re-enumeration step (in
+        /// InputManager) can write to the same diagnostic log as pairing.</summary>
+        public static void LogLine(string message) => Log(message);
+
+        private static void Log(string message)
+        {
+            try
+            {
+                lock (_logLock)
+                    File.AppendAllText(LogPath, $"{DateTime.Now:HH:mm:ss.fff} {message}{Environment.NewLine}");
+            }
+            catch { /* logging must never break pairing */ }
         }
 
         // ─────────────────────────────────────────────
@@ -250,13 +372,11 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
 
         private const uint BLUETOOTH_SERVICE_ENABLE = 0x01;
-        private const uint BLUETOOTH_AUTHENTICATION_METHOD_LEGACY = 1;
+        private const uint ERROR_MORE_DATA = 234;
 
         // HumanInterfaceDeviceServiceClass_UUID {00001124-0000-1000-8000-00805F9B34FB}
         private static readonly Guid HumanInterfaceDeviceServiceClass_UUID =
             new Guid(0x00001124, 0x0000, 0x1000, 0x80, 0x00, 0x00, 0x80, 0x5F, 0x9B, 0x34, 0xFB);
-
-        private delegate bool BluetoothAuthCallbackEx(IntPtr pvParam, IntPtr pParams);
 
         [StructLayout(LayoutKind.Sequential)]
         private struct BLUETOOTH_FIND_RADIO_PARAMS
@@ -264,22 +384,23 @@ namespace PadForge.Services
             public uint dwSize;
         }
 
-        // BLUETOOTH_ADDRESS is a packed union of a 48-bit address. The low six
-        // bytes of the 64-bit value are the address, least significant first.
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        // BLUETOOTH_ADDRESS is an 8-byte (ULONGLONG) union; the low six bytes
+        // are the address, least significant first.
+        [StructLayout(LayoutKind.Sequential)]
         private struct BLUETOOTH_ADDRESS
         {
             public ulong ullLong;
         }
 
-        // Pack = 1 keeps the 48-bit address field tight against dwSize, matching
-        // the native layout where BLUETOOTH_ADDRESS has byte alignment. Every
-        // field after it is naturally aligned regardless, so the rest matches.
-        [StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
+        // Default packing is REQUIRED (not Pack = 1). BLUETOOTH_ADDRESS is
+        // 8-byte aligned, so the native struct has 4 pad bytes after dwSize.
+        // Pack = 1 undersizes it and BluetoothGetRadioInfo rejects dwSize with
+        // ERROR_REVISION_MISMATCH (1306). Natural alignment gives 520 bytes.
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         private struct BLUETOOTH_RADIO_INFO
         {
             public uint dwSize;
-            public ulong address;
+            public BLUETOOTH_ADDRESS address;
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 248)]
             public string szName;
             public uint ulClassofDevice;
@@ -287,11 +408,12 @@ namespace PadForge.Services
             public ushort manufacturer;
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
+        // Default packing, same reason as BLUETOOTH_RADIO_INFO. Native 560 bytes.
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         private struct BLUETOOTH_DEVICE_INFO
         {
             public uint dwSize;
-            public ulong Address;
+            public BLUETOOTH_ADDRESS Address;
             public uint ulClassofDevice;
             public int fConnected;
             public int fRemembered;
@@ -323,25 +445,6 @@ namespace PadForge.Services
             public IntPtr hRadio;
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        private struct BLUETOOTH_PIN_INFO
-        {
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-            public byte[] pin;
-            public byte pinLength;
-        }
-
-        // Explicit layout models the native union: the PIN info sits at the
-        // union offset (12) and the whole struct is 48 bytes.
-        [StructLayout(LayoutKind.Explicit, Size = 48)]
-        private struct BLUETOOTH_AUTHENTICATE_RESPONSE
-        {
-            [FieldOffset(0)] public ulong bthAddressRemote;
-            [FieldOffset(8)] public uint authMethod;
-            [FieldOffset(12)] public BLUETOOTH_PIN_INFO pinInfo;
-            [FieldOffset(44)] public byte negativeResponse;
-        }
-
         [DllImport("bthprops.cpl", SetLastError = true)]
         private static extern IntPtr BluetoothFindFirstRadio(
             ref BLUETOOTH_FIND_RADIO_PARAMS pbtfrp, out IntPtr phRadio);
@@ -367,17 +470,17 @@ namespace PadForge.Services
         [DllImport("bthprops.cpl")]
         private static extern uint BluetoothRemoveDevice(ref BLUETOOTH_ADDRESS pAddress);
 
-        [DllImport("bthprops.cpl")]
-        private static extern uint BluetoothRegisterForAuthenticationEx(
-            ref BLUETOOTH_DEVICE_INFO pbtdiIn, out IntPtr phRegHandleOut,
-            BluetoothAuthCallbackEx pfnCallbackIn, IntPtr pvParam);
+        // Deprecated but the proven Wiimote path (Dolphin). PIN is passed
+        // directly as a wide-char array, length = number of address bytes (6).
+        [DllImport("bthprops.cpl", CharSet = CharSet.Unicode)]
+        private static extern uint BluetoothAuthenticateDevice(
+            IntPtr hwndParent, IntPtr hRadio, ref BLUETOOTH_DEVICE_INFO pbtdi,
+            char[] pszPasskey, uint ulPasskeyLength);
 
         [DllImport("bthprops.cpl")]
-        private static extern bool BluetoothUnregisterAuthentication(IntPtr hRegHandle);
-
-        [DllImport("bthprops.cpl")]
-        private static extern uint BluetoothSendAuthenticationResponseEx(
-            IntPtr hRadio, ref BLUETOOTH_AUTHENTICATE_RESPONSE pauthResponse);
+        private static extern uint BluetoothEnumerateInstalledServices(
+            IntPtr hRadio, ref BLUETOOTH_DEVICE_INFO pbtdi,
+            ref uint pcServiceInout, IntPtr pGuidServices);
 
         [DllImport("bthprops.cpl")]
         private static extern uint BluetoothSetServiceState(

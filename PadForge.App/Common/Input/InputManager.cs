@@ -537,17 +537,23 @@ namespace PadForge.Common.Input
                 // Enable Switch 2 Pro Controller HIDAPI driver (requires libusb-1.0.dll).
                 SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_SWITCH2, "1");
 
+                // Leave SDL's Wii HIDAPI driver OFF (#116). It cannot drive a
+                // Bluetooth Wii Remote on Windows 8+: SDL's hidapi sends output
+                // reports with WriteFile for report lengths <= 512 (the remote's
+                // is 22), and the Microsoft Bluetooth stack rejects WriteFile for
+                // the remote (only HidD_SetOutputReport works), so every init
+                // write fails and the remote never streams. PadForge reads it
+                // directly instead (WiiRemoteHidDevice / Phase 1f). With the hint
+                // off, SDL ignores the remote and never creates a dead phantom
+                // joystick for it.
+                SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_WII, "0");
+
                 // Allow screensaver/sleep even while SDL video is active.
                 SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
 
                 // SDL3: SDL_Init returns bool (true = success), and
                 // SDL_INIT_GAMECONTROLLER is renamed to SDL_INIT_GAMEPAD.
                 // SDL_INIT_VIDEO is required for keyboard/mouse enumeration.
-                // Note: SDL_Init itself does not enumerate joysticks; the
-                // orphan-sweep Wait lives in Step 1's UpdateDevices so the
-                // wait happens on the polling thread, not here on the UI
-                // thread (InputService.Start is called from MainWindow's
-                // constructor before window.Show runs).
                 if (!SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_GAMEPAD | SDL_INIT_VIDEO | SDL_INIT_HAPTIC))
                 {
                     string error = SDL_GetError();
@@ -555,9 +561,8 @@ namespace PadForge.Common.Input
                     return false;
                 }
 
-                // Load PadForge community mappings (extends SDL's built-in gamecontrollerdb).
-                // File is embedded in the exe so the app ships as a single-file binary
-                // with no loose resource files. Stream it in and apply per-line via
+                // Load PadForge community mappings (extends SDL's built-in
+                // gamecontrollerdb). Embedded in the exe; apply per-line via
                 // SDL_AddGamepadMapping rather than the file-path overload.
                 LoadEmbeddedGamepadMappings();
 
@@ -658,6 +663,33 @@ namespace PadForge.Common.Input
         /// Starts the background polling thread. Safe to call multiple times;
         /// subsequent calls are ignored if already running.
         /// </summary>
+        /// <summary>
+        /// Pumps SDL's event queue. MUST be called on the thread that ran
+        /// SDL_Init (the UI thread here), because SDL's hidapi creates its
+        /// device-change message window there and Windows posts WM_DEVICECHANGE
+        /// only to that thread. SDL's hidapi only re-scans for connected/removed
+        /// controllers when those messages are dispatched (SDL_hidapi.c relies on
+        /// the SDL_PumpEvents loop on the video thread). Without this, a device
+        /// that drops on a read hiccup never comes back and a freshly-plugged one
+        /// never appears until an app restart re-enumerates from scratch.
+        /// </summary>
+        public void PumpSdlEvents()
+        {
+            if (!_sdlInitialized)
+                return;
+
+            // Dispatch SDL's hidapi device-change messages (their hidden window
+            // lives on this, the SDL_Init thread), then run the joystick update
+            // HERE so the resulting hidapi re-scan / new-device enumeration runs
+            // on the thread that owns the joystick subsystem. The polling thread
+            // reads device STATE fine, but enumerating a newly-connected
+            // controller only produces joysticks on the init thread (a re-scan on
+            // the polling thread yields zero). This is what makes a hot-plugged
+            // controller (e.g. a DualSense) appear in-process without a restart.
+            SDL_PumpEvents();
+            SDL_UpdateJoysticks();
+        }
+
         public void Start()
         {
             if (_running || _disposed)
@@ -766,7 +798,7 @@ namespace PadForge.Common.Input
         /// </summary>
         private void PollingLoop()
         {
-            // Keep timeBeginPeriod(1) — it still helps multimedia timers and
+            // Keep timeBeginPeriod(1). It still helps multimedia timers and
             // other system timing used by SDL, HIDMaestro, and the UI dispatcher.
             timeBeginPeriod(1);
 
@@ -1734,6 +1766,7 @@ namespace PadForge.Common.Input
                 return;
 
             Stop();
+            ShutdownWiiInputs(); // release held Wii Remote HID handles (#116)
             ShutdownSdl();
             _disposed = true;
 

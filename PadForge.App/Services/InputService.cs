@@ -3785,13 +3785,20 @@ namespace PadForge.Services
         private static void CopyShiftActivators(Engine.Data.MappingSet src, Engine.Data.MappingSet dst,
             int retargetSlot = -1)
         {
-            if (src?.ShiftActivators == null) return;
+            if (src == null) return;
+            // Base-layer flyout appearance (#119) travels with the shift authoring.
+            dst.BaseLayerName = src.BaseLayerName ?? "";
+            dst.BaseColor = src.BaseColor ?? "";
+            dst.BaseIcon = src.BaseIcon ?? "";
+            if (src.ShiftActivators == null) return;
             dst.ShiftActivators ??= new System.Collections.Generic.List<Engine.Data.ShiftActivator>();
             foreach (var a in src.ShiftActivators)
             {
                 if (a == null) continue;
                 string deviceGuid = a.DeviceGuid ?? "";
                 string chordSecondGuid = a.ChordSecondDeviceGuid ?? "";
+                string cyclePrevGuid = a.CyclePrevDeviceGuid ?? "";
+                string cyclePrevDesc = a.CyclePrevDescriptor ?? "";
                 if (retargetSlot >= 0)
                 {
                     var retargeted = RetargetDeviceGuidForSlot(deviceGuid, retargetSlot);
@@ -3802,6 +3809,15 @@ namespace PadForge.Services
                         var retargetedChord = RetargetDeviceGuidForSlot(chordSecondGuid, retargetSlot);
                         if (retargetedChord == null) continue;
                         chordSecondGuid = retargetedChord;
+                    }
+                    // Cycle Previous button (#119). Unlike a chord, a prev-button
+                    // device that isn't on the target slot drops just that button,
+                    // not the whole activator (the Next button still works).
+                    if (!string.IsNullOrEmpty(cyclePrevGuid))
+                    {
+                        var retargetedPrev = RetargetDeviceGuidForSlot(cyclePrevGuid, retargetSlot);
+                        if (retargetedPrev == null) { cyclePrevGuid = ""; cyclePrevDesc = ""; }
+                        else cyclePrevGuid = retargetedPrev;
                     }
                 }
                 dst.ShiftActivators.Add(new Engine.Data.ShiftActivator
@@ -3821,9 +3837,74 @@ namespace PadForge.Services
                     ChordSecondDescriptor = a.ChordSecondDescriptor ?? "",
                     AxisThreshold = a.AxisThreshold,
                     CycleLayers = a.CycleLayers ?? "",
+                    CyclePrevDeviceGuid = cyclePrevGuid,
+                    CyclePrevDescriptor = cyclePrevDesc,
+                    CycleWrap = a.CycleWrap,
+                    CycleIncludeBase = a.CycleIncludeBase,
                     Icon = a.Icon ?? "",
                 });
             }
+        }
+
+        /// <summary>Clipboard snapshot of a slot's shift authoring (activators
+        /// + Base flyout appearance). Serialized into the Copy payload so
+        /// Copy / Paste carries shift layers, matching Copy From (#119).</summary>
+        public sealed class ShiftLayerSnapshot
+        {
+            public System.Collections.Generic.List<Engine.Data.ShiftActivator> Activators { get; set; }
+            public string BaseLayerName { get; set; } = "";
+            public string BaseColor { get; set; } = "";
+            public string BaseIcon { get; set; } = "";
+        }
+
+        /// <summary>Builds the shift-layer clipboard snapshot JSON for a slot,
+        /// or null when the slot has no shift authoring. Device GUIDs are kept
+        /// source-side; the paste path retargets them.</summary>
+        public static string BuildShiftLayerSnapshotJson(int padIndex)
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null || padIndex < 0 || padIndex >= sets.Length) return null;
+            var ms = sets[padIndex];
+            if (ms == null) return null;
+            bool hasActivators = ms.ShiftActivators != null && ms.ShiftActivators.Count > 0;
+            bool hasBase = !string.IsNullOrEmpty(ms.BaseLayerName)
+                || !string.IsNullOrEmpty(ms.BaseColor) || !string.IsNullOrEmpty(ms.BaseIcon);
+            if (!hasActivators && !hasBase) return null;
+            var snap = new ShiftLayerSnapshot
+            {
+                Activators = ms.ShiftActivators,
+                BaseLayerName = ms.BaseLayerName ?? "",
+                BaseColor = ms.BaseColor ?? "",
+                BaseIcon = ms.BaseIcon ?? "",
+            };
+            return System.Text.Json.JsonSerializer.Serialize(snap,
+                new System.Text.Json.JsonSerializerOptions { WriteIndented = false });
+        }
+
+        /// <summary>Paste companion: replaces a slot's shift authoring from a
+        /// clipboard snapshot, retargeting activator device GUIDs onto the
+        /// target slot's same-product devices (#119).</summary>
+        public static void ApplyShiftLayerSnapshotJson(int padIndex, string json)
+        {
+            if (string.IsNullOrEmpty(json)) return;
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null || padIndex < 0 || padIndex >= sets.Length) return;
+            ShiftLayerSnapshot snap;
+            try { snap = System.Text.Json.JsonSerializer.Deserialize<ShiftLayerSnapshot>(json); }
+            catch { return; }
+            if (snap == null) return;
+
+            var slotMs = sets[padIndex] ??= new Engine.Data.MappingSet();
+            // Replace the slot's shift state with the clipboard's.
+            slotMs.ShiftActivators = new System.Collections.Generic.List<Engine.Data.ShiftActivator>();
+            var tempSrc = new Engine.Data.MappingSet
+            {
+                ShiftActivators = snap.Activators,
+                BaseLayerName = snap.BaseLayerName ?? "",
+                BaseColor = snap.BaseColor ?? "",
+                BaseIcon = snap.BaseIcon ?? "",
+            };
+            CopyShiftActivators(tempSrc, slotMs, retargetSlot: padIndex);
         }
 
         /// <summary>Whole-slot snapshot of every row in the given slot's

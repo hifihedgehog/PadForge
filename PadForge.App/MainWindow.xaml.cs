@@ -4717,6 +4717,10 @@ namespace PadForge
                 if (midiCfg != null)
                     ps.SlotMidiConfigJson = System.Text.Json.JsonSerializer.Serialize(midiCfg, jsonOpts);
 
+                // Carry the slot's shift authoring (activators + Base appearance)
+                // so Copy / Paste includes shift layers like Copy From (#119).
+                ps.SlotShiftActivatorsJson = InputService.BuildShiftLayerSnapshotJson(padVm.PadIndex);
+
                 // Bundle EVERY device's PadSetting on the source slot so
                 // per-device tuning (deadzones, sensitivity, FFB, Gyro,
                 // TouchpadSettings) round-trips for all devices, not just
@@ -4768,6 +4772,15 @@ namespace PadForge
                 {
                     InputService.ApplySlotMappingSetFromRows(padVm.PadIndex, ps.SlotMultiSourceRows);
                     ps.DeviceScopedMultiSourceRows = null;
+                }
+
+                // Apply the slot's shift authoring (activators + Base appearance)
+                // on a same-layout paste, after the row replace above rebuilt the
+                // MappingSet. Matches Copy From so shift layers round-trip (#119).
+                if (!string.IsNullOrEmpty(ps.SlotShiftActivatorsJson)
+                    && MappingTranslation.IsSameLayout(srcType, srcIsExtended, targetType, targetIsExtended))
+                {
+                    InputService.ApplyShiftLayerSnapshotJson(padVm.PadIndex, ps.SlotShiftActivatorsJson);
                 }
 
                 _inputService.ApplyPadSettingToCurrentDeviceTranslated(
@@ -4825,8 +4838,15 @@ namespace PadForge
                         _inputService.ApplyPerDeviceSettingsToSlot(padVm.PadIndex, perDevice,
                             srcType, srcIsExtended, targetType, targetIsExtended);
                     }
-                    catch { /* malformed payload — per-device paste skipped */ }
+                    catch { /* malformed payload, per-device paste skipped */ }
                 }
+
+                // Rebuild the shift-layer tab strip so pasted layers show up
+                // immediately instead of being invisible until relaunch (#119).
+                var pastedMs = SettingsManager.SlotMappingSets != null
+                    && padVm.PadIndex >= 0 && padVm.PadIndex < SettingsManager.SlotMappingSets.Length
+                    ? SettingsManager.SlotMappingSets[padVm.PadIndex] : null;
+                padVm.RebuildLayerTabs(pastedMs?.ShiftActivators);
 
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsPasted;

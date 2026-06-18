@@ -1424,7 +1424,7 @@
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alternar</value></data>
   <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Fijar</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Ciclo</value></data>
-  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Adhesivo (una vez)</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Adhesivo (una vez)</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Sin botón</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Se requiere el nombre de la capa.</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>Ya existe una capa con ese nombre en esta ranura.</value></data>
@@ -1461,7 +1461,7 @@
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Toca para activar. Toca de nuevo para liberar. La capa persiste a través de muchas pulsaciones.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Pulsa para fijar esta capa y mantenerla. Pulsa de nuevo para volver a la Base. Otro botón de Fijar cambia a su propia capa.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Cada pulsación avanza por una lista ordenada de capas. Vuelve a Base.</value></data>
-  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Toca una vez para activar. La siguiente pulsación de botón mapeado se dispara en la capa y luego se libera automáticamente.</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Toca una vez para activar. La siguiente pulsación de botón mapeado se dispara en la capa y luego se libera automáticamente.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Sin botón propio. Agrégala a la cola de un control de Ciclo y el ciclo la alcanza.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Heredar objetivos sin asignar de Base</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Disparar también el mapeo propio del activador</value></data>
@@ -2028,4 +2028,17 @@
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Cuando está activado, al pasar de la última capa se vuelve a la primera, y antes de la primera se va a la última. Cuando está desactivado, el cursor se detiene en los extremos.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Incluir Base</value></data>
   <data name="Pad_Shift_CycleIncludeBase_Tooltip" xml:space="preserve"><value>Cuando está activado, la Base sin modificar es una parada en la rotación, así que el ciclo puede volver a ella. Cuando está desactivado, el cursor permanece en las capas marcadas y vuelves a la Base con un activador aparte.</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Vincular</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Vincular un mando</value></data>
+  <data name="WiiPair_Family" xml:space="preserve"><value>Familia de mando</value></data>
+  <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
+  <data name="WiiPair_Instructions" xml:space="preserve"><value>Abre la tapa de las pilas y pulsa el botón rojo SYNC. Deja que PadForge siga buscando hasta que aparezca tu mando.</value></data>
+  <data name="WiiPair_Temporary" xml:space="preserve"><value>Vinculación temporal (mantén 1 y 2)</value></data>
+  <data name="WiiPair_Pair" xml:space="preserve"><value>Vincular</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Buscando. Pulsa el botón SYNC ahora.</value></data>
+  <data name="WiiPair_Found" xml:space="preserve"><value>Mandos encontrados</value></data>
+  <data name="WiiPair_NothingYet" xml:space="preserve"><value>Aún no se encontraron mandos. Asegúrate de que las luces azules parpadeen.</value></data>
+  <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} vinculado. Aparecerá en tu lista de dispositivos.</value></data>
+  <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>No se encontró ninguna radio Bluetooth. Conecta un adaptador Bluetooth e inténtalo de nuevo.</value></data>
+  <data name="WiiPair_Done" xml:space="preserve"><value>Listo</value></data>
 </root>

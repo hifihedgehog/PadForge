@@ -638,6 +638,18 @@ namespace PadForge
                 _viewModel.StatusText = Strings.Instance.Status_DeviceListRefreshed;
             };
 
+            // Wire devices page Bluetooth pairing (Wii controllers, issue #116).
+            _viewModel.Devices.PairRequested += (s, e) =>
+            {
+                var dialog = new Views.PairDeviceDialog { Owner = this };
+                dialog.ShowDialog();
+                // A freshly paired controller enumerates as a HID gamepad; pull
+                // it into the device list. Refresh unconditionally since a paired
+                // device may surface a beat after the dialog closes.
+                _inputService.RefreshDeviceList();
+                _viewModel.StatusText = Strings.Instance.Status_DeviceListRefreshed;
+            };
+
             // Wire test rumble for each pad (both motors, or individual).
             foreach (var pad in _viewModel.Pads)
             {

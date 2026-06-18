@@ -1424,7 +1424,7 @@
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>トグル</value></data>
   <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>固定</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>サイクル</value></data>
-  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>スティッキー(ワンショット)</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>スティッキー(ワンショット)</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>ボタンなし</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>レイヤー名は必須です。</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>このスロットには同じ名前のレイヤーが既に存在します。</value></data>
@@ -1461,7 +1461,7 @@
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>タップで有効化。再タップで解除。レイヤーは多くの押下を超えて持続します。</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>押すとこのレイヤーを固定して保持します。もう一度押すとベースに戻ります。別の固定ボタンはそれぞれのレイヤーに切り替えます。</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>各押下で順序付きレイヤー リストを進めます。ベースに戻ります。</value></data>
-  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>1 回タップで有効化。次にマッピング済みボタンを押すとレイヤー上で発火し、自動的に解除されます。</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>1 回タップで有効化。次にマッピング済みボタンを押すとレイヤー上で発火し、自動的に解除されます。</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>専用のボタンはありません。サイクルコントロールのキューに追加すると、サイクルがこのレイヤーに到達します。</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>未割り当てターゲットをベースから継承</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>アクティベーター自身のマッピングも発火</value></data>
@@ -2028,4 +2028,17 @@
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>オンにすると、最後のレイヤーの次で最初に戻り、最初の前で最後に移動します。オフにすると、カーソルは両端で止まります。</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>ベースを含める</value></data>
   <data name="Pad_Shift_CycleIncludeBase_Tooltip" xml:space="preserve"><value>オンにすると、シフトなしのベースも循環の停止位置になり、切り替えでベースに戻れます。オフにすると、カーソルは選択したレイヤーだけを巡り、ベースへは別のアクティベーターで戻ります。</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>ペアリング</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>コントローラーをペアリング</value></data>
+  <data name="WiiPair_Family" xml:space="preserve"><value>コントローラーの種類</value></data>
+  <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
+  <data name="WiiPair_Instructions" xml:space="preserve"><value>電池カバーを開けて赤いSYNCボタンを押してください。コントローラーが表示されるまでPadForgeに検索させてください。</value></data>
+  <data name="WiiPair_Temporary" xml:space="preserve"><value>一時的なペアリング（1と2を長押し）</value></data>
+  <data name="WiiPair_Pair" xml:space="preserve"><value>ペアリング</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>検索中です。今すぐSYNCボタンを押してください。</value></data>
+  <data name="WiiPair_Found" xml:space="preserve"><value>見つかったコントローラー</value></data>
+  <data name="WiiPair_NothingYet" xml:space="preserve"><value>まだコントローラーが見つかりません。青いランプが点滅していることを確認してください。</value></data>
+  <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} をペアリングしました。デバイス一覧に表示されます。</value></data>
+  <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Bluetoothアダプターが見つかりません。Bluetoothアダプターを接続してから再試行してください。</value></data>
+  <data name="WiiPair_Done" xml:space="preserve"><value>完了</value></data>
 </root>

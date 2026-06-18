@@ -1444,7 +1444,7 @@
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alterna</value></data>
   <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Blocca</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Ciclo</value></data>
-  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Adesivo (una volta)</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Adesivo (una volta)</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Nessun pulsante</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Il nome del livello è obbligatorio.</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>Esiste già un livello con questo nome in questo slot.</value></data>
@@ -1481,7 +1481,7 @@
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Tocca per attivare. Tocca di nuovo per rilasciare. Il livello persiste tra molte pressioni.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Premi per bloccare questo livello e mantenerlo. Premi di nuovo per tornare alla Base. Un altro pulsante Blocca passa al proprio livello.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Ogni pressione avanza attraverso un elenco ordinato di livelli. Torna a Base.</value></data>
-  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tocca una volta per attivare. La prossima pressione di pulsante mappato si attiva sul livello, quindi si rilascia automaticamente.</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tocca una volta per attivare. La prossima pressione di pulsante mappato si attiva sul livello, quindi si rilascia automaticamente.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Nessun pulsante proprio. Aggiungilo alla coda di un controllo Ciclo e il ciclo lo raggiunge.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Eredita obiettivi non assegnati da Base</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Attiva anche la mappatura propria dell'attivatore</value></data>
@@ -2050,4 +2050,17 @@
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Se attivo, oltre l'ultimo livello il cursore torna al primo, e prima del primo va all'ultimo. Se disattivato, il cursore si ferma agli estremi.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Includi Base</value></data>
   <data name="Pad_Shift_CycleIncludeBase_Tooltip" xml:space="preserve"><value>Se attivo, la Base non modificata è una fermata nella rotazione, così il ciclo può tornarci. Se disattivato, il cursore resta sui livelli selezionati e torni alla Base con un attivatore separato.</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Associa</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Associa un controller</value></data>
+  <data name="WiiPair_Family" xml:space="preserve"><value>Famiglia di controller</value></data>
+  <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
+  <data name="WiiPair_Instructions" xml:space="preserve"><value>Apri il coperchio delle batterie e premi il pulsante rosso SYNC. Lascia che PadForge continui a cercare finché il controller non compare.</value></data>
+  <data name="WiiPair_Temporary" xml:space="preserve"><value>Associazione temporanea (tieni premuti 1 e 2)</value></data>
+  <data name="WiiPair_Pair" xml:space="preserve"><value>Associa</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Ricerca in corso. Premi ora il pulsante SYNC.</value></data>
+  <data name="WiiPair_Found" xml:space="preserve"><value>Controller trovati</value></data>
+  <data name="WiiPair_NothingYet" xml:space="preserve"><value>Nessun controller trovato per ora. Assicurati che le luci blu lampeggino.</value></data>
+  <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} associato. Comparirà nel tuo elenco dispositivi.</value></data>
+  <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Nessuna radio Bluetooth trovata. Collega un adattatore Bluetooth e riprova.</value></data>
+  <data name="WiiPair_Done" xml:space="preserve"><value>Fatto</value></data>
 </root>

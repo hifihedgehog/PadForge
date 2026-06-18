@@ -1424,7 +1424,7 @@
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>토글</value></data>
   <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>고정</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>순환</value></data>
-  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>스티키(한 번)</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>스티키(한 번)</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>버튼 없음</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>레이어 이름은 필수입니다.</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>이 슬롯에는 같은 이름의 레이어가 이미 존재합니다.</value></data>
@@ -1461,7 +1461,7 @@
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>탭하여 활성화. 다시 탭하여 해제. 레이어는 여러 번 누르는 동안 지속됩니다.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>누르면 이 레이어를 고정하여 유지합니다. 다시 누르면 베이스로 돌아갑니다. 다른 고정 버튼은 자신의 레이어로 전환합니다.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>각 누름은 정렬된 레이어 목록을 진행합니다. 기본으로 돌아갑니다.</value></data>
-  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>한 번 탭하여 활성화. 다음 매핑된 버튼 누름이 레이어에서 실행되고 자동 해제됩니다.</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>한 번 탭하여 활성화. 다음 매핑된 버튼 누름이 레이어에서 실행되고 자동 해제됩니다.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>자체 버튼이 없습니다. 사이클 컨트롤의 대기열에 추가하면 사이클이 이 레이어에 도달합니다.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>매핑되지 않은 대상을 기본에서 상속</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>활성화 버튼의 자체 매핑도 실행</value></data>
@@ -2028,4 +2028,17 @@
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>켜면 마지막 레이어를 지나면 첫 번째로 돌아가고, 첫 번째 앞에서는 마지막으로 이동합니다. 끄면 커서가 양 끝에서 멈춥니다.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>베이스 포함</value></data>
   <data name="Pad_Shift_CycleIncludeBase_Tooltip" xml:space="preserve"><value>켜면 시프트되지 않은 베이스도 순환의 정지 지점이 되어 다시 베이스로 돌아올 수 있습니다. 끄면 커서가 선택한 레이어에만 머무르며, 베이스로는 별도의 활성기로 돌아갑니다.</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>페어링</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>컨트롤러 페어링</value></data>
+  <data name="WiiPair_Family" xml:space="preserve"><value>컨트롤러 종류</value></data>
+  <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
+  <data name="WiiPair_Instructions" xml:space="preserve"><value>배터리 덮개를 열고 빨간색 SYNC 버튼을 누르세요. 컨트롤러가 나타날 때까지 PadForge가 계속 검색하도록 두세요.</value></data>
+  <data name="WiiPair_Temporary" xml:space="preserve"><value>임시 페어링(1과 2 누르기)</value></data>
+  <data name="WiiPair_Pair" xml:space="preserve"><value>페어링</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>검색 중입니다. 지금 SYNC 버튼을 누르세요.</value></data>
+  <data name="WiiPair_Found" xml:space="preserve"><value>찾은 컨트롤러</value></data>
+  <data name="WiiPair_NothingYet" xml:space="preserve"><value>아직 컨트롤러를 찾지 못했습니다. 파란색 표시등이 깜박이는지 확인하세요.</value></data>
+  <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} 페어링됨. 장치 목록에 표시됩니다.</value></data>
+  <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Bluetooth 라디오를 찾을 수 없습니다. Bluetooth 어댑터를 연결한 후 다시 시도하세요.</value></data>
+  <data name="WiiPair_Done" xml:space="preserve"><value>완료</value></data>
 </root>

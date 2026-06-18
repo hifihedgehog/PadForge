@@ -1444,7 +1444,7 @@
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Schakelen</value></data>
   <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Vergrendelen</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Cyclus</value></data>
-  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Plakkerig (eenmalig)</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Plakkerig (eenmalig)</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Geen knop</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Laagnaam is vereist.</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>Een laag met die naam bestaat al op deze sleuf.</value></data>
@@ -1481,7 +1481,7 @@
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Tik om te activeren. Tik opnieuw om los te laten. Laag blijft bestaan over vele drukken.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Druk om deze laag te vergrendelen en vast te houden. Druk nogmaals om terug te keren naar de Basis. Een andere Vergrendel-knop schakelt naar zijn eigen laag.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Elke druk gaat door een geordende laaglijst; gaat terug naar Basis.</value></data>
-  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tik één keer om te activeren. De volgende toegewezen knopdruk vuurt op de laag, daarna automatische release.</value></data>
+  <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tik één keer om te activeren. De volgende toegewezen knopdruk vuurt op de laag, daarna automatische release.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Geen eigen knop. Voeg hem toe aan de wachtrij van een Cyclus-besturing, dan bereikt de cyclus hem.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Niet-toegewezen doelen van Basis overerven</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Ook de eigen toewijzing van de activator activeren</value></data>
@@ -2048,4 +2048,17 @@
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Indien aan keert de cursor na de laatste laag terug naar de eerste, en vóór de eerste naar de laatste. Indien uit stopt de cursor aan de uiteinden.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Basis opnemen</value></data>
   <data name="Pad_Shift_CycleIncludeBase_Tooltip" xml:space="preserve"><value>Indien aan is de niet-geschakelde Basis een stop in de rotatie, zodat het wisselen er weer op kan landen. Indien uit blijft de cursor op de aangevinkte lagen en keer je met een aparte activator terug naar de Basis.</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Koppelen</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Een controller koppelen</value></data>
+  <data name="WiiPair_Family" xml:space="preserve"><value>Controllerfamilie</value></data>
+  <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
+  <data name="WiiPair_Instructions" xml:space="preserve"><value>Open het batterijklepje en druk op de rode SYNC-knop. Laat PadForge zoeken totdat je controller verschijnt.</value></data>
+  <data name="WiiPair_Temporary" xml:space="preserve"><value>Tijdelijke koppeling (1 en 2 ingedrukt houden)</value></data>
+  <data name="WiiPair_Pair" xml:space="preserve"><value>Koppelen</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Bezig met zoeken. Druk nu op de SYNC-knop.</value></data>
+  <data name="WiiPair_Found" xml:space="preserve"><value>Gevonden controllers</value></data>
+  <data name="WiiPair_NothingYet" xml:space="preserve"><value>Nog geen controllers gevonden. Controleer of de blauwe lampjes knipperen.</value></data>
+  <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} gekoppeld. Het verschijnt in je apparatenlijst.</value></data>
+  <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Geen Bluetooth-radio gevonden. Sluit een Bluetooth-adapter aan en probeer het opnieuw.</value></data>
+  <data name="WiiPair_Done" xml:space="preserve"><value>Klaar</value></data>
 </root>

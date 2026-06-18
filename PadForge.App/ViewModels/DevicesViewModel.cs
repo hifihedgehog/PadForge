@@ -355,6 +355,14 @@ namespace PadForge.ViewModels
             _refreshCommand ??= new RelayCommand(
                 () => RefreshRequested?.Invoke(this, EventArgs.Empty));
 
+        private RelayCommand _pairCommand;
+
+        /// <summary>Command to open the Bluetooth pairing flow for controllers
+        /// that need an in-app pairing ceremony (Wii controllers, issue #116).</summary>
+        public RelayCommand PairCommand =>
+            _pairCommand ??= new RelayCommand(
+                () => PairRequested?.Invoke(this, EventArgs.Empty));
+
         private RelayCommand<int> _assignToSlotCommand;
 
         /// <summary>
@@ -406,6 +414,9 @@ namespace PadForge.ViewModels
 
         /// <summary>Raised when a refresh is requested.</summary>
         public event EventHandler RefreshRequested;
+
+        /// <summary>Raised when the user opens the Bluetooth pairing flow.</summary>
+        public event EventHandler PairRequested;
 
         /// <summary>Raised when the user assigns a device to a slot. Arg = slot index.</summary>
         public event EventHandler<int> AssignToSlotRequested;

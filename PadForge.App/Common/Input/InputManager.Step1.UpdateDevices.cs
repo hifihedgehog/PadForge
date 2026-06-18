@@ -318,6 +318,9 @@ namespace PadForge.Common.Input
             // --- Phase 1e: MIDI input endpoints (issue #128) ---
             changed |= UpdateMidiInputDevices();
 
+            // --- Phase 1f: Bluetooth Wii Remotes read directly over HID (#116) ---
+            changed |= UpdateWiiHidDevices();
+
             // --- Phase 2: Detect disconnected SDL devices (debounced) ---
             //
             // Signals that indicate the device might be gone:
@@ -887,6 +890,171 @@ namespace PadForge.Common.Input
             }
 
             return changed;
+        }
+
+        // Bluetooth Wii Remotes read directly over HID (Phase 1f, issue #116).
+        // SDL cannot drive a Bluetooth Wii Remote on Windows 8+: its hidapi
+        // sends output reports with WriteFile for report lengths <= 512 (the
+        // Wii Remote's is 22), and the Microsoft Bluetooth stack rejects
+        // WriteFile for the remote (only HidD_SetOutputReport works), so SDL's
+        // Wii driver init writes all fail and the remote never streams. PadForge
+        // opens and reads it directly instead. Enumeration runs on a background
+        // task; the polling thread consumes the cached snapshot, mirroring MIDI.
+        private readonly Dictionary<string, WiiRemoteHidDevice> _openedWiiDevices =
+            new Dictionary<string, WiiRemoteHidDevice>(StringComparer.OrdinalIgnoreCase);
+        private readonly object _wiiDevicesLock = new object();
+        private volatile List<WiiHidEnumerator.WiiHidInfo> _cachedWiiDevices;
+        private volatile bool _wiiEnumRunning;
+
+        /// <summary>
+        /// Phase 1f: opens freshly-paired Bluetooth Wii Remotes as direct-HID
+        /// input devices and marks vanished ones offline. Holding the HID handle
+        /// open keeps the remote connected (it otherwise drops within seconds),
+        /// and the device's kickstart stops the LED flashing and starts the
+        /// button stream.
+        /// </summary>
+        private bool UpdateWiiHidDevices()
+        {
+            if (!_wiiEnumRunning)
+            {
+                _wiiEnumRunning = true;
+                Task.Run(() =>
+                {
+                    try { _cachedWiiDevices = WiiHidEnumerator.Enumerate(); }
+                    catch { }
+                    finally { _wiiEnumRunning = false; }
+                });
+            }
+
+            var devices = _cachedWiiDevices;
+            if (devices == null)
+                return false;
+
+            return ProcessWiiDevices(devices, dropVanished: true);
+        }
+
+        /// <summary>
+        /// Opens any newly-present Wii Remote in <paramref name="devices"/> and,
+        /// when <paramref name="dropVanished"/> is set, marks tracked remotes that
+        /// are no longer present offline. Shared by the polling-thread sweep and
+        /// the post-pair burst; serialized on <see cref="_wiiDevicesLock"/>.
+        /// </summary>
+        private bool ProcessWiiDevices(List<WiiHidEnumerator.WiiHidInfo> devices, bool dropVanished)
+        {
+            bool changed = false;
+            var current = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            lock (_wiiDevicesLock)
+            {
+                foreach (var info in devices)
+                {
+                    current.Add(info.Path);
+
+                    if (_openedWiiDevices.TryGetValue(info.Path, out var existing))
+                    {
+                        // Healthy and still listed on the Devices page: leave it.
+                        // If the read loop died or the user removed the device,
+                        // drop tracking so it gets reopened below.
+                        if (existing.IsAttached
+                            && FindOnlineDeviceByInstanceGuid(existing.InstanceGuid) != null)
+                            continue;
+                        var staleUd = FindOnlineDeviceByInstanceGuid(existing.InstanceGuid);
+                        if (staleUd != null) { staleUd.IsOnline = false; staleUd.Device = null; }
+                        existing.Dispose();
+                        _openedWiiDevices.Remove(info.Path);
+                    }
+
+                    try
+                    {
+                        var dev = new WiiRemoteHidDevice(info.Path, info.ProductId, info.Name, info.Serial);
+                        if (!dev.Open())
+                        {
+                            dev.Dispose();
+                            continue;
+                        }
+
+                        UserDevice ud = FindOrCreateUserDevice(dev.InstanceGuid, dev.ProductGuid);
+                        ud.LoadFromExternalDevice(dev);
+                        ud.IsOnline = true;
+                        _openedWiiDevices[info.Path] = dev;
+                        changed = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        RaiseError($"Error opening Wii Remote '{info.Name}'", ex);
+                    }
+                }
+
+                // Remotes that vanished (disconnected / unpaired) since the snapshot.
+                if (dropVanished)
+                {
+                    List<string> gone = null;
+                    foreach (var kvp in _openedWiiDevices)
+                        if (!current.Contains(kvp.Key))
+                            (gone ??= new List<string>()).Add(kvp.Key);
+
+                    if (gone != null)
+                    {
+                        foreach (var path in gone)
+                        {
+                            var dev = _openedWiiDevices[path];
+                            var ud = FindOnlineDeviceByInstanceGuid(dev.InstanceGuid);
+                            if (ud != null) { ud.IsOnline = false; ud.Device = null; }
+                            dev.Dispose();
+                            _openedWiiDevices.Remove(path);
+                            changed = true;
+                        }
+                    }
+                }
+            }
+
+            if (changed)
+                DevicesUpdated?.Invoke(this, EventArgs.Empty);
+            return changed;
+        }
+
+        /// <summary>
+        /// Opens freshly-paired Wii Remotes immediately, retrying for a short
+        /// window. A SYNC-paired remote stays connected only a few seconds after
+        /// pairing (and reconnects on a button press), so the regular 2-second
+        /// poll can miss it. Called right after the pairing dialog so the remote
+        /// becomes playable without waiting for the next poll or a restart (#116).
+        /// Runs its own background loop; returns immediately.
+        /// </summary>
+        public void OpenPairedWiiRemotesNow()
+        {
+            Task.Run(() =>
+            {
+                // ~12 s of 500 ms attempts: covers the brief post-pair window and
+                // the moment the user presses a button to reconnect.
+                for (int i = 0; i < 24; i++)
+                {
+                    try
+                    {
+                        var devices = WiiHidEnumerator.Enumerate();
+                        _cachedWiiDevices = devices; // keep the poll path's cache fresh
+                        ProcessWiiDevices(devices, dropVanished: false);
+                    }
+                    catch { }
+                    Thread.Sleep(500);
+                }
+            });
+        }
+
+        /// <summary>Closes every open Wii Remote HID handle. Called on shutdown
+        /// so no remote is left held open (which would block reopening it).</summary>
+        public void ShutdownWiiInputs()
+        {
+            lock (_wiiDevicesLock)
+            {
+                foreach (var kvp in _openedWiiDevices)
+                {
+                    var ud = FindOnlineDeviceByInstanceGuid(kvp.Value.InstanceGuid);
+                    if (ud != null) { ud.IsOnline = false; ud.Device = null; }
+                    kvp.Value.Dispose();
+                }
+                _openedWiiDevices.Clear();
+            }
         }
 
         /// <summary>

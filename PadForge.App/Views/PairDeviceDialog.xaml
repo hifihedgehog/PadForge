@@ -70,6 +70,11 @@
                      Background="{DynamicResource ControlFillColorDefaultBrush}"/>
         </StackPanel>
 
+        <!-- Diagnostic log path (non-localized, it's a file path) -->
+        <TextBlock Grid.Row="5" x:Name="LogPathText" TextWrapping="Wrap" Margin="0,0,0,8"
+                   FontSize="11" Opacity="0.6"
+                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+
         <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">
             <ui:Button x:Name="PairButton" Appearance="Primary" MinWidth="96" Margin="0,0,8,0"
                        Content="{Binding WiiPair_Pair, Source={x:Static strings:Strings.Instance}}"

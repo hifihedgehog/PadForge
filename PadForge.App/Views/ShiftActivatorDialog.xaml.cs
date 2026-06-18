@@ -697,15 +697,15 @@ namespace PadForge.Views
                 LayerNameBox.SelectAll();
                 return;
             }
-            if (InputCombo.SelectedItem is not InputChoice input)
-            {
-                ShowHint(Strings.Instance.Pad_Shift_HintInputRequired);
-                InputCombo.Focus();
-                return;
-            }
+            // The activator input is OPTIONAL (#119). A layer with no input is a
+            // passive target: it owns a tab and mappings but never self-engages,
+            // reached only through a Cycle queue or a Custom jump. This unblocks
+            // building the weapon layers a cycle walks (they need no button).
+            InputChoice input = InputCombo.SelectedItem as InputChoice;
             string kind = KindCombo.SelectedValue as string ?? "Button";
             InputChoice chordSecond = ChordSecondCombo.SelectedItem as InputChoice;
-            if (kind == "Chord" && chordSecond == null)
+            // A chord needs both halves, but only when a primary input is set.
+            if (input != null && kind == "Chord" && chordSecond == null)
             {
                 ShowHint(Strings.Instance.Pad_Shift_HintInputRequired);
                 ChordSecondCombo.Focus();
@@ -750,8 +750,8 @@ namespace PadForge.Views
             {
                 LayerName = name,
                 LayerMask = mask,
-                DeviceGuid = input.DeviceGuid ?? "",
-                Descriptor = input.Descriptor ?? "",
+                DeviceGuid = input?.DeviceGuid ?? "",
+                Descriptor = input?.Descriptor ?? "",
                 Mode = mode,
                 Kind = kind,
                 InheritUnmapped = InheritUnmappedBox.IsChecked == true,

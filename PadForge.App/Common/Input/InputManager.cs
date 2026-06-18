@@ -543,7 +543,7 @@ namespace PadForge.Common.Input
                 // is 22), and the Microsoft Bluetooth stack rejects WriteFile for
                 // the remote (only HidD_SetOutputReport works), so every init
                 // write fails and the remote never streams. PadForge reads it
-                // directly instead (WiiRemoteHidDevice / Phase 1f). With the hint
+                // directly instead (WiiControllerHidDevice / Phase 1f). With the hint
                 // off, SDL ignores the remote and never creates a dead phantom
                 // joystick for it.
                 SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_WII, "0");

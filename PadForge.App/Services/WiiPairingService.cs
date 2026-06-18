@@ -35,7 +35,7 @@ namespace PadForge.Services
     /// mode. SDL cannot do that on Windows 8+ (its hidapi writes output reports
     /// with WriteFile, which the Microsoft Bluetooth stack rejects for the
     /// remote), so PadForge reads the remote directly over raw HID via
-    /// <c>WiiRemoteHidDevice</c> (InputManager Phase 1f), which holds the handle
+    /// <c>WiiControllerHidDevice</c> (InputManager Phase 1f), which holds the handle
     /// open and kickstarts the stream with HidD_SetOutputReport.
     /// </summary>
     public sealed class WiiPairingService

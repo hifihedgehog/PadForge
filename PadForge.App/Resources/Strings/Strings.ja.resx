@@ -2024,6 +2024,8 @@
   <data name="Pad_Shift_CycleDirection_Next" xml:space="preserve"><value>次へ</value></data>
   <data name="Pad_Shift_CycleDirection_Previous" xml:space="preserve"><value>前へ</value></data>
   <data name="Pad_Shift_CycleDirection_Tooltip" xml:space="preserve"><value>「次へ」はレイヤーを順方向に進みます。同じリストの2つ目のアクティベーターを「前へ」に設定すると逆方向に進みます。両方が1つの位置を共有します。</value></data>
+  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>次へボタン</value></data>
+  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>前へボタン</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>折り返し</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>オンにすると、最後のレイヤーの次で最初に戻り、最初の前で最後に移動します。オフにすると、カーソルは両端で止まります。</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>ベースを含める</value></data>

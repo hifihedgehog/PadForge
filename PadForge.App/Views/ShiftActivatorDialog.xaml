@@ -414,28 +414,11 @@
                  layers; check the ones to include in the rotation. Order
                  follows the source list. -->
             <StackPanel Grid.Row="15" x:Name="CycleHeaderRow" Margin="0,0,0,4">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" VerticalAlignment="Center"
-                               Text="{Binding Pad_Shift_CycleLayers, Source={x:Static strings:Strings.Instance}}"/>
-                    <!-- Cycle direction (#119): one activator walks Next, a second on the
-                         same list walks Previous, sharing one cursor. -->
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="{Binding Pad_Shift_CycleDirection, Source={x:Static strings:Strings.Instance}}"
-                                   VerticalAlignment="Center" Margin="0,0,6,0"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                        <ComboBox x:Name="CycleDirectionCombo" MinWidth="120" SelectedValuePath="Tag"
-                                  ToolTip="{Binding Pad_Shift_CycleDirection_Tooltip, Source={x:Static strings:Strings.Instance}}">
-                            <ComboBoxItem Tag="Next" Content="{Binding Pad_Shift_CycleDirection_Next, Source={x:Static strings:Strings.Instance}}"/>
-                            <ComboBoxItem Tag="Previous" Content="{Binding Pad_Shift_CycleDirection_Previous, Source={x:Static strings:Strings.Instance}}"/>
-                        </ComboBox>
-                    </StackPanel>
-                </Grid>
-                <!-- Cycle wrap + Base inclusion (#119). Wrap loops the ends together;
-                     Include Base puts the unshifted state back in the rotation. -->
+                <TextBlock VerticalAlignment="Center"
+                           Text="{Binding Pad_Shift_CycleLayers, Source={x:Static strings:Strings.Instance}}"/>
+                <!-- Cycle wrap + Base inclusion (#119). Wrap loops the ends together,
+                     Include Base puts the unshifted state back in the rotation.
+                     Next/Previous are the two button pickers above (one control). -->
                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                     <CheckBox x:Name="CycleWrapBox" IsChecked="True"
                               Content="{Binding Pad_Shift_CycleWrap, Source={x:Static strings:Strings.Instance}}"

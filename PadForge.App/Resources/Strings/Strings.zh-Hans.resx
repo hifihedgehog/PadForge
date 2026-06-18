@@ -2024,6 +2024,8 @@
   <data name="Pad_Shift_CycleDirection_Next" xml:space="preserve"><value>下一个</value></data>
   <data name="Pad_Shift_CycleDirection_Previous" xml:space="preserve"><value>上一个</value></data>
   <data name="Pad_Shift_CycleDirection_Tooltip" xml:space="preserve"><value>“下一个”在层中向前移动。将使用相同列表的第二个激活器设置为“上一个”即可向后移动。两者共享一个位置。</value></data>
+  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>下一个按钮</value></data>
+  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>上一个按钮</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>循环</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>开启后，越过最后一层会回到第一层，第一层之前会到最后一层。关闭后，光标停在两端。</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>包含基础层</value></data>

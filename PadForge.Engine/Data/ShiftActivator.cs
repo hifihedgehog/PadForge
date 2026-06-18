@@ -115,19 +115,23 @@ namespace PadForge.Engine.Data
 
         /// <summary>v3 Cycle mode: pipe-separated ordered list of layer
         /// masks to cycle through (e.g. <c>"Shift1|Shift2|Shift3"</c>).
-        /// Each press steps the cursor one position in the
-        /// <see cref="Direction"/>. Stepping past an end follows
-        /// <see cref="CycleWrap"/>; whether Base is a stop follows
-        /// <see cref="CycleIncludeBase"/>. Used only when
+        /// The Next button (<see cref="Descriptor"/>) steps the cursor forward,
+        /// the Previous button (<see cref="CyclePrevDescriptor"/>) backward.
+        /// Stepping past an end follows <see cref="CycleWrap"/>; whether Base is
+        /// a stop follows <see cref="CycleIncludeBase"/>. Used only when
         /// <see cref="Mode"/> == <c>"Cycle"</c>.</summary>
         [XmlAttribute] public string CycleLayers { get; set; } = "";
 
-        /// <summary>v3 Cycle direction (#119). <c>"Next"</c> (default) advances
-        /// forward through <see cref="CycleLayers"/>; <c>"Previous"</c> steps
-        /// backward. A Next activator and a Previous activator wired to the same
-        /// <see cref="CycleLayers"/> list walk one shared cursor, so two buttons
-        /// browse a queue forward and back (weapon / menu switching).</summary>
-        [XmlAttribute] public string Direction { get; set; } = "Next";
+        /// <summary>v3 Cycle Previous button (#119). One Cycle activator holds
+        /// the whole queue plus both buttons: <see cref="Descriptor"/> /
+        /// <see cref="DeviceGuid"/> is the Next button, and these two are the
+        /// Previous button. Cross-device is allowed (read via the prev device's
+        /// state, like a chord's second half). Empty = no Previous button.</summary>
+        [XmlAttribute] public string CyclePrevDeviceGuid { get; set; } = "";
+
+        /// <summary>v3 Cycle Previous button input descriptor (#119). See
+        /// <see cref="CyclePrevDeviceGuid"/>.</summary>
+        [XmlAttribute] public string CyclePrevDescriptor { get; set; } = "";
 
         /// <summary>v3 Cycle wrap (#119). When <c>true</c> (default), stepping
         /// past the last position returns to the first (and past the first to the

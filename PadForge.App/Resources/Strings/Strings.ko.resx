@@ -2022,10 +2022,6 @@
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>클립보드에 복사된 매크로가 없습니다.</value></data>
   <data name="Status_MacroCopiedFrom" xml:space="preserve"><value>선택한 가상 컨트롤러에서 매크로를 복사했습니다.</value></data>
   <data name="Status_MacroNoSource" xml:space="preserve"><value>복사할 매크로가 있는 다른 가상 컨트롤러가 없습니다.</value></data>
-  <data name="Pad_Shift_CycleDirection" xml:space="preserve"><value>방향</value></data>
-  <data name="Pad_Shift_CycleDirection_Next" xml:space="preserve"><value>다음</value></data>
-  <data name="Pad_Shift_CycleDirection_Previous" xml:space="preserve"><value>이전</value></data>
-  <data name="Pad_Shift_CycleDirection_Tooltip" xml:space="preserve"><value>「다음」은 레이어를 앞으로 이동합니다. 같은 목록의 두 번째 활성기를 「이전」으로 설정하면 뒤로 이동합니다. 둘이 하나의 위치를 공유합니다.</value></data>
   <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>다음 버튼</value></data>
   <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>이전 버튼</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>순환</value></data>

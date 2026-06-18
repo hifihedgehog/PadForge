@@ -2022,10 +2022,6 @@
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>剪贴板中不包含已复制的宏。</value></data>
   <data name="Status_MacroCopiedFrom" xml:space="preserve"><value>已从所选虚拟控制器复制宏。</value></data>
   <data name="Status_MacroNoSource" xml:space="preserve"><value>没有其他虚拟控制器有可复制的宏。</value></data>
-  <data name="Pad_Shift_CycleDirection" xml:space="preserve"><value>方向</value></data>
-  <data name="Pad_Shift_CycleDirection_Next" xml:space="preserve"><value>下一个</value></data>
-  <data name="Pad_Shift_CycleDirection_Previous" xml:space="preserve"><value>上一个</value></data>
-  <data name="Pad_Shift_CycleDirection_Tooltip" xml:space="preserve"><value>“下一个”在层中向前移动。将使用相同列表的第二个激活器设置为“上一个”即可向后移动。两者共享一个位置。</value></data>
   <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>下一个按钮</value></data>
   <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>上一个按钮</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>循环</value></data>

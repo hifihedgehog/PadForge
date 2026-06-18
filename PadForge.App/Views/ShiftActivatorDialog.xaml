@@ -401,14 +401,8 @@
                           ToolTip="{Binding Pad_Shift_PostponeMapping_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
             </StackPanel>
 
-            <!-- Jump-to-layer (Mode=Custom). Dropdown of existing layers
-                 plus a "(Base)" entry that maps to empty string. -->
-            <TextBlock Grid.Row="13" x:Name="JumpLabel"
-                       Text="{Binding Pad_Shift_JumpToLayer, Source={x:Static strings:Strings.Instance}}"
-                       Margin="0,0,0,4"/>
-            <ComboBox Grid.Row="14" x:Name="JumpToLayerCombo" Margin="0,0,0,12"
-                      ScrollViewer.VerticalScrollBarVisibility="Visible"
-                      DisplayMemberPath="DisplayName"/>
+            <!-- Rows 13-14 (the old Custom jump-to-layer picker) were removed
+                 with the Latch redesign; Latch engages its own layer. -->
 
             <!-- Cycle layers (Mode=Cycle). Checkbox list of existing
                  layers; check the ones to include in the rotation. Order

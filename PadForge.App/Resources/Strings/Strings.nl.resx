@@ -1482,7 +1482,7 @@
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Druk om deze laag te vergrendelen en vast te houden. Druk nogmaals om terug te keren naar de Basis. Een andere Vergrendel-knop schakelt naar zijn eigen laag.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Elke druk gaat door een geordende laaglijst; gaat terug naar Basis.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tik één keer om te activeren. De volgende toegewezen knopdruk vuurt op de laag, daarna automatische release.</value></data>
-  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Geen eigen knop. Voeg hem toe aan de wachtrij van een Cyclus-besturing, of maak er een doel van een Aangepaste sprong van, dan wordt de laag zo bereikt.</value></data>
+  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Geen eigen knop. Voeg hem toe aan de wachtrij van een Cyclus-besturing, dan bereikt de cyclus hem.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Niet-toegewezen doelen van Basis overerven</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Ook de eigen toewijzing van de activator activeren</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Indien aangevinkt stuurt de activatorknop nog steeds elke rij aan die hem als bron gebruikt. Één druk wisselt de laag EN activeert de eigen toewijzing van de knop. Indien niet aangevinkt (standaard) wordt de druk alleen verbruikt door de laagwissel.</value></data>

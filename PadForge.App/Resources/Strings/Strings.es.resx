@@ -1462,7 +1462,7 @@
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Pulsa para fijar esta capa y mantenerla. Pulsa de nuevo para volver a la Base. Otro botón de Fijar cambia a su propia capa.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Cada pulsación avanza por una lista ordenada de capas. Vuelve a Base.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Toca una vez para activar. La siguiente pulsación de botón mapeado se dispara en la capa y luego se libera automáticamente.</value></data>
-  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Sin botón propio. Agrégala a la cola de un control de Ciclo, o conviértela en destino de un salto Personalizado, y se llega a la capa de ese modo.</value></data>
+  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Sin botón propio. Agrégala a la cola de un control de Ciclo y el ciclo la alcanza.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Heredar objetivos sin asignar de Base</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Disparar también el mapeo propio del activador</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Cuando se marca, el botón activador sigue impulsando cualquier fila que lo use como fuente: una pulsación cambia la capa Y dispara el mapeo propio del botón. Cuando no se marca (por defecto), la pulsación es consumida solo por el cambio de capa.</value></data>

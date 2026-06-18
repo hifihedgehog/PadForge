@@ -1796,7 +1796,7 @@
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Press to latch this layer on and hold it. Press again to release back to Base. A different Latch button switches to its own layer.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Each press advances through an ordered layer list. Wraps back to Base.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Tap once to engage. The next mapped button press fires on the layer, then auto-releases.</value></data>
-  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>No button of its own. Add it to a Cycle control's queue, or make it a Custom jump target, and the layer is reached that way.</value></data>
+  <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>No button of its own. Add it to a Cycle control's queue, and the cycle reaches it.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Inherit Unmapped Targets From Base</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Also Fire Activator's Own Mapping</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>When checked, the activator button still drives any row that uses it as a source. One press both changes layer AND fires the button's own mapping. When unchecked (default), the activator press is consumed by the layer change only.</value></data>

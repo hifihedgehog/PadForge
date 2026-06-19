@@ -19,12 +19,12 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.x
 
@@ -38,7 +38,7 @@ jobs:
           echo "COMMIT_COUNT=$(git rev-list --count HEAD)" >> "$GITHUB_ENV"
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: PadForge_r${{ env.COMMIT_COUNT }}@${{ env.COMMIT_SHORT }}
           path: PadForge.App/bin/Release/net10.0-windows10.0.26100.0/win-x64/publish/

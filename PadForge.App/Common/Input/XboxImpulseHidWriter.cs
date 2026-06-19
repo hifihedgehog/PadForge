@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
 using Microsoft.Win32.SafeHandles;
 using PadForge.Engine;
 using PadForge.Engine.Data;
@@ -207,47 +206,6 @@ namespace PadForge.Common.Input
             return matchedPath;
         }
 
-        /// <summary>Walks the PnP tree from <paramref name="leafDevInst"/>
-        /// upward (up to 16 levels) and checks each node's instance ID
-        /// against <paramref name="targetInstanceId"/> case-insensitively.
-        /// Returns true if the target is found anywhere in the parent
-        /// chain (inclusive of the leaf). Used to bridge the format
-        /// difference between
-        /// <see cref="StableXInputInstance.FindAll"/> (returns
-        /// HID-class node — for BT-paired Xbox, that's the
-        /// BTHLEDEVICE parent) and HID-interface enumeration (returns
-        /// the HID-child grandchild).</summary>
-        private static bool MatchesTargetInPnpChain(
-            uint leafDevInst, string targetInstanceId, out string matchedNodeId)
-        {
-            matchedNodeId = null;
-            if (string.IsNullOrEmpty(targetInstanceId)) return false;
-
-            uint devInst = leafDevInst;
-            var idBuf = new StringBuilder(512);
-
-            for (int depth = 0; depth < 16; depth++)
-            {
-                idBuf.Clear();
-                idBuf.EnsureCapacity(512);
-                if (CM_Get_Device_IDW(devInst, idBuf, idBuf.Capacity, 0) != 0)
-                    break;
-
-                string nodeId = idBuf.ToString();
-                if (string.Equals(nodeId, targetInstanceId, StringComparison.OrdinalIgnoreCase))
-                {
-                    matchedNodeId = nodeId;
-                    return true;
-                }
-
-                if (CM_Get_Parent(out uint parent, devInst, 0) != 0) break;
-                if (parent == 0 || parent == devInst) break;
-                devInst = parent;
-            }
-
-            return false;
-        }
-
         private static int ParseXInputSlot(string devicePath)
         {
             const string prefix = "XInput#";
@@ -411,12 +369,6 @@ namespace PadForge.Common.Input
             public uint DevInst;
             public IntPtr Reserved;
         }
-
-        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
-        private static extern int CM_Get_Device_IDW(uint devInst, StringBuilder buffer, int len, int flags);
-
-        [DllImport("cfgmgr32.dll")]
-        private static extern int CM_Get_Parent(out uint parent, uint devInst, int flags);
 
         [DllImport("setupapi.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]

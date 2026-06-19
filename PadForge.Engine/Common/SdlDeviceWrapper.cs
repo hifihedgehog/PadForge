@@ -937,8 +937,22 @@ namespace PadForge.Engine
             bool isGamepad = GameController != IntPtr.Zero;
 
             // --- Axes ---
+            // For SDL3-recognized gamepads, skip standard axis positions the
+            // device doesn't physically have (asked via SDL_GamepadHasAxis),
+            // mirroring the button gate below. DeviceObjects is the capability
+            // list CreateDefaultPadSetting's HasAxis() trusts, so a stickless
+            // gamepad must not advertise phantom Left/Right Stick axes (which
+            // read as a dead center). Raw joystick devices (isGamepad=false)
+            // keep the flat enumeration unchanged.
             for (int i = 0; i < NumAxes; i++)
             {
+                if (isGamepad && i < standardAxisGuids.Length)
+                {
+                    int sdlAxis = GamepadAxisForPosition(i);
+                    if (sdlAxis < 0 || !SDL_GamepadHasAxis(GameController, sdlAxis))
+                        continue;
+                }
+
                 var item = new DeviceObjectItem();
                 item.InputIndex = i;
 
@@ -999,12 +1013,12 @@ namespace PadForge.Engine
                 finalCount++;
             }
 
-            // Trim if we skipped any — caller iterates Length, can't have nulls.
-            int totalIncluded = NumAxes + NumHats + finalCount;
-            if (totalIncluded < items.Length)
+            // Trim if we skipped any axis or button. The caller iterates Length
+            // and can't have nulls. index is the exact count actually written.
+            if (index < items.Length)
             {
-                var trimmed = new DeviceObjectItem[totalIncluded];
-                Array.Copy(items, trimmed, totalIncluded);
+                var trimmed = new DeviceObjectItem[index];
+                Array.Copy(items, trimmed, index);
                 return trimmed;
             }
             return items;
@@ -1294,6 +1308,27 @@ namespace PadForge.Engine
             }
 
             return list.ToArray();
+        }
+
+        /// <summary>
+        /// Maps a DeviceObjects axis position (LX/LY/LT/RX/RY/RT order, matching
+        /// <see cref="GetGamepadAxisName"/> and the CustomInputState Axis[] layout)
+        /// to the SDL gamepad axis enum, so axis-object enumeration can gate on
+        /// <see cref="SDL_GamepadHasAxis"/> the way the button path gates on
+        /// SDL_GamepadHasButton. Returns -1 for non-standard positions.
+        /// </summary>
+        private static int GamepadAxisForPosition(int position)
+        {
+            return position switch
+            {
+                0 => SDL_GAMEPAD_AXIS_LEFTX,
+                1 => SDL_GAMEPAD_AXIS_LEFTY,
+                2 => SDL_GAMEPAD_AXIS_LEFT_TRIGGER,
+                3 => SDL_GAMEPAD_AXIS_RIGHTX,
+                4 => SDL_GAMEPAD_AXIS_RIGHTY,
+                5 => SDL_GAMEPAD_AXIS_RIGHT_TRIGGER,
+                _ => -1
+            };
         }
 
         private static int GamepadButtonForPosition(int position)

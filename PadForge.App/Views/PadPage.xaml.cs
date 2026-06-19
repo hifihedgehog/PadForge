@@ -1353,16 +1353,6 @@ namespace PadForge.Views
             padVm.ConstantForceY = System.Math.Clamp(y, -1.0, 1.0);
         }
 
-        // ─────────────────────────────────────────────
-        //  Map All stop button
-        // ─────────────────────────────────────────────
-
-        private void MapAllStop_Click(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is PadViewModel padVm)
-                padVm.StopMapAll();
-        }
-
         private void MapAllToggle_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is PadViewModel padVm)

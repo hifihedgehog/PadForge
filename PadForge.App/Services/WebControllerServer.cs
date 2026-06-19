@@ -379,6 +379,11 @@ namespace PadForge.Services
                 finally
                 {
                     cts.Dispose();
+                    // Dispose the WebSocket after CloseAsync (the documented close
+                    // lifecycle). A late fire-and-forget rumble send would hit a
+                    // disposed socket, but SendJsonAsync is best-effort guarded and
+                    // checks ws.State, so the throw is swallowed.
+                    try { ws?.Dispose(); } catch { }
                     // Don't dispose SendGate: a rumble send may still hold it,
                     // and Release() on a disposed SemaphoreSlim throws into the
                     // fire-and-forget send. The gate never touches

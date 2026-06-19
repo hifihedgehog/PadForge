@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Reference copy of the SignPath artifact configuration for PadForge.
+  This XML is NOT read from the repository. Paste it into the SignPath
+  portal: Project > Artifact Configurations > Create, then note the slug
+  and put it in .github/workflows/release.yml (SIGNPATH_ARTIFACT_CONFIG_SLUG).
+
+  The release workflow uploads a single PadForge.exe, which GitHub wraps in
+  an artifact container (a .zip). SignPath opens that zip, Authenticode-signs
+  PadForge.exe inside it, re-zips, and returns the signed archive.
+-->
+<artifact-configuration xmlns="http://signpath.io/artifact-configuration/v1">
+  <zip-file>
+    <pe-file path="PadForge.exe">
+      <authenticode-sign/>
+    </pe-file>
+  </zip-file>
+</artifact-configuration>

@@ -162,8 +162,11 @@ namespace PadForge.Engine.RemoteLink
                 for (int p = 0; p < padCount; p++)
                 {
                     var pad = state.Touchpads[p];
-                    int fingers = pad?.MaxFingers ?? 0;
-                    destination[o++] = (byte)Math.Min(fingers, 255);
+                    // Clamp once and reuse for both the header byte and the loop
+                    // bound, mirroring the pad-count path above, so decode (which
+                    // reads the header byte) consumes exactly what encode wrote.
+                    int fingers = Math.Min(pad?.MaxFingers ?? 0, 255);
+                    destination[o++] = (byte)fingers;
                     destination[o++] = (byte)((pad != null && pad.Clicked) ? 1 : 0);
                     for (int f = 0; f < fingers; f++)
                     {

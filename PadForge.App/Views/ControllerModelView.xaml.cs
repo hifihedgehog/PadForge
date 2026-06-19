@@ -1144,15 +1144,6 @@ namespace PadForge.Views
         }
 
         /// <summary>
-        /// Shows a flat 3D arrow at the stick indicating the axis direction.
-        /// Called when the user clicks on a stick ring — uses the actual hit Y position.
-        /// </summary>
-        private void ShowAxisArrow(Point3D hitPos, string axis)
-        {
-            ShowArrowForTarget(axis);
-        }
-
-        /// <summary>
         /// Creates a flat rectangular arrow (box shaft + triangular prism head).
         /// Arrow points along +X/-X (isX) or +Z/-Z (!isX).
         /// For X axis: neg=false → +X (right), neg=true → -X (left).

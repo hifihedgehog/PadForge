@@ -1561,7 +1561,12 @@ namespace PadForge.Engine.Common.Mapping
             if (fingerIdx < 0 || fingerIdx >= pad.MaxFingers) return false;
 
             string deviceGuid = src?.DeviceGuid ?? string.Empty;
-            string key = deviceGuid + "|" + padIdx + "|" + fingerIdx + "|" + axisOffset;
+            // Key includes slotIndex so two slots sharing one physical touchpad
+            // track their own previous-frame position, matching the slot-keyed
+            // TouchpadMouseSettingsProvider lookup below. Without it the slot
+            // evaluated first each frame overwrites PrevValue and the second
+            // slot reads a zero delta.
+            string key = slotIndex + "|" + deviceGuid + "|" + padIdx + "|" + fingerIdx + "|" + axisOffset;
 
             // Lifted finger → reset delta tracker, return 0.
             if (!pad.FingerDown[fingerIdx])

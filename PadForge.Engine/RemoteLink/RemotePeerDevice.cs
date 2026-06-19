@@ -235,7 +235,13 @@ namespace PadForge.Engine.RemoteLink
 
         private DeviceObjectItem[] SynthesizeGamepadObjects()
         {
-            int axes = Math.Min(Math.Max(NumAxes, 0), StandardAxisGuids.Length);
+            // Emit every advertised axis, not just the first 6. A remote wheel /
+            // flight stick exposes more than 6 axes (NumAxes is carried on the
+            // device list and the per-frame state codec ships Axis[0..N]); capping
+            // at 6 dropped those extra axes so they couldn't be mapped on the
+            // consumer. The first 6 keep the standard X/Y/Z/Rx/Ry/Rz GUIDs; the
+            // rest get Slider GUIDs with generic names, mirroring SdlDeviceWrapper.
+            int axes = Math.Max(NumAxes, 0);
             int buttons = Math.Max(NumButtons, 0);
             int povs = Math.Max(NumHats, 0);
             var items = new DeviceObjectItem[axes + buttons + povs];
@@ -244,8 +250,8 @@ namespace PadForge.Engine.RemoteLink
                 items[idx++] = new DeviceObjectItem
                 {
                     InputIndex = i,
-                    ObjectTypeGuid = StandardAxisGuids[i],
-                    Name = StandardAxisNames[i],
+                    ObjectTypeGuid = i < StandardAxisGuids.Length ? StandardAxisGuids[i] : ObjectGuid.Slider,
+                    Name = i < StandardAxisNames.Length ? StandardAxisNames[i] : $"Slider {i - StandardAxisGuids.Length}",
                     ObjectType = DeviceObjectTypeFlags.AbsoluteAxis,
                     Offset = (offset++) * 4
                 };

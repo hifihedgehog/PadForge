@@ -474,7 +474,9 @@ namespace PadForge.Common.Input
                     for (int i = 0; i < count; i++)
                         if (buffer[offset + i] > 1e-4f || buffer[offset + i] < -1e-4f)
                         { _sink.LastAudibleTicks = Environment.TickCount64;
-                          System.Threading.Interlocked.Add(ref _remoteAudioRenderedFrames, count); break; }
+                          // count is interleaved-stereo element count (frames*2);
+                          // the counter is documented as frames, so halve it.
+                          System.Threading.Interlocked.Add(ref _remoteAudioRenderedFrames, count / 2); break; }
                     return count;
                 }
 

@@ -63,14 +63,6 @@ namespace PadForge.Common.Input
         /// Argument is the pad index that went non-active.</summary>
         public event System.EventHandler<int> HmVcWentNonActive;
 
-        /// <summary>Internal helper for Step 5 to fan-out the
-        /// non-active event without exposing direct invocation to other
-        /// classes.</summary>
-        internal void RaiseHmVcWentNonActive(int padIndex)
-        {
-            HmVcWentNonActive?.Invoke(this, padIndex);
-        }
-
         /// <summary>Device re-enumeration interval in milliseconds (every 2 seconds).</summary>
         private const int EnumerationIntervalMs = 2000;
 
@@ -432,7 +424,6 @@ namespace PadForge.Common.Input
         /// timestamp / packet-sequence fields. Game-side parsers (e.g. SDL3's
         /// PS5 driver) reject duplicate packet-sequence values, so this MUST
         /// advance every frame regardless of input state.</summary>
-        internal long SonyFrameCounter => _sonyFrameCounter;
         private long _sonyFrameCounter;
 
         /// <summary>

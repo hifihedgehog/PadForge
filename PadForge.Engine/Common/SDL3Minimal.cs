@@ -296,6 +296,13 @@ namespace SDL3
         public static bool SDL_GamepadHasButton(IntPtr gamepad, int button) =>
             _SDL_GamepadHasButton(gamepad, button);
 
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GamepadHasAxis")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_GamepadHasAxis(IntPtr gamepad, int axis);
+
+        public static bool SDL_GamepadHasAxis(IntPtr gamepad, int axis) =>
+            _SDL_GamepadHasAxis(gamepad, axis);
+
         // Gamepad axis indices (SDL_GamepadAxis enum).
         public const int SDL_GAMEPAD_AXIS_LEFTX = 0;
         public const int SDL_GAMEPAD_AXIS_LEFTY = 1;

@@ -326,33 +326,6 @@ namespace PadForge.ViewModels
             return CurveLut.Lookup(lut, Math.Clamp(magnitude, 0, 1));
         }
 
-        /// <summary>
-        /// Builds a 0..1 → 0..1 curve for triggers (unsigned, deadzone flattened).
-        /// </summary>
-        internal static PointCollection BuildTriggerCurvePoints(string curveString, double deadZone, double maxRange, int chartSize = 120, int sampleCount = 64)
-        {
-            double dzNorm = deadZone / 100.0;
-            double mrNorm = maxRange / 100.0;
-            if (mrNorm <= dzNorm) mrNorm = dzNorm + 0.01;
-            var lut = CurveLut.GetOrBuild(curveString);
-
-            var pts = new PointCollection(sampleCount + 1);
-            for (int i = 0; i <= sampleCount; i++)
-            {
-                double t = i / (double)sampleCount;
-                double output;
-                if (t < dzNorm)
-                    output = 0;
-                else
-                {
-                    double remapped = Math.Min((t - dzNorm) / (mrNorm - dzNorm), 1.0);
-                    output = lut != null ? CurveLut.Lookup(lut, remapped) : remapped;
-                }
-                pts.Add(new Point(t * chartSize, (1.0 - output) * chartSize));
-            }
-            return pts;
-        }
-
         public StickConfigItem(int index, string title, int axisXIndex = -1, int axisYIndex = -1, string iconLabel = "")
         {
             Index = index;

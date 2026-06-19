@@ -513,16 +513,6 @@ namespace PadForge.Services
             ms.Rows.RemoveAll(r => r?.Sources == null || r.Sources.Count == 0);
         }
 
-        private static bool IsGamepadOnlyTarget(string target)
-        {
-            if (string.IsNullOrEmpty(target)) return false;
-            if (target.StartsWith("Kbm", StringComparison.Ordinal)) return false;
-            if (target.StartsWith("Midi", StringComparison.Ordinal)) return false;
-            if (target.StartsWith("Extended", StringComparison.Ordinal)) return false;
-            if (target.StartsWith("Touchpad", StringComparison.Ordinal)) return false;
-            return true; // ButtonA/B/X/Y, LeftShoulder, ..., LeftThumbAxisX, LeftTrigger, DPad*, etc.
-        }
-
         private static MappingSet BuildOneSlotFromLegacy(int slot)
         {
             UserSetting[] snapshot;
@@ -1194,42 +1184,6 @@ namespace PadForge.Services
                     merged.ShiftActivators = current.ShiftActivators;
 
                 sets[slot] = merged;
-            }
-        }
-
-        /// <summary>
-        /// Phase 1b legacy entry point: rebuilds every slot's MappingSet
-        /// from the per-(VC × Device) PadSetting mapping fields. Now used
-        /// only as a "reset to legacy" path; ordinary loads route through
-        /// <see cref="LoadOrMigrateSlotMappingSets"/>.
-        /// </summary>
-        private static void BuildSlotMappingSetsFromLegacy()
-        {
-            var sets = SettingsManager.SlotMappingSets;
-            if (sets == null || sets.Length == 0) return;
-
-            // Snapshot the user-settings list under the lock so we can iterate
-            // safely while the engine polls.
-            UserSetting[] snapshot;
-            lock (SettingsManager.UserSettings.SyncRoot)
-            {
-                snapshot = SettingsManager.UserSettings.Items.ToArray();
-            }
-
-            for (int slot = 0; slot < sets.Length; slot++)
-            {
-                var devicesForSlot = new List<(string DeviceGuid, PadSetting PadSetting)>();
-                foreach (var us in snapshot)
-                {
-                    if (us == null || us.MapTo != slot) continue;
-                    var ps = us.GetPadSetting();
-                    if (ps == null) continue;
-                    devicesForSlot.Add((
-                        us.InstanceGuid.ToString(),
-                        ps));
-                }
-
-                sets[slot] = MappingSetMigrator.BuildFromLegacy(slot, devicesForSlot);
             }
         }
 
@@ -3817,29 +3771,6 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
         //  PadSetting reflection helpers
         // ─────────────────────────────────────────────
-
-        /// <summary>
-        /// Gets a string property value from a PadSetting by property name.
-        /// For keys starting with "Extended", uses the dictionary-based Extended mapping system.
-        /// </summary>
-        private static string GetPadSettingProperty(PadSetting ps, string propertyName)
-        {
-            if (ps == null || string.IsNullOrEmpty(propertyName))
-                return string.Empty;
-
-            if (propertyName.StartsWith("Extended", StringComparison.Ordinal))
-                return ps.GetExtendedMapping(propertyName);
-            if (propertyName.StartsWith("Midi", StringComparison.Ordinal))
-                return ps.GetMidiMapping(propertyName);
-            if (propertyName.StartsWith("Kbm", StringComparison.Ordinal))
-                return ps.GetKbmMapping(propertyName);
-
-            var prop = typeof(PadSetting).GetProperty(propertyName);
-            if (prop == null || prop.PropertyType != typeof(string))
-                return string.Empty;
-
-            return prop.GetValue(ps) as string ?? string.Empty;
-        }
 
         /// <summary>
         /// Sets a string property value on a PadSetting by property name.

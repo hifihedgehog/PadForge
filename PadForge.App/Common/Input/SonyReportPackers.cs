@@ -171,13 +171,16 @@ namespace PadForge.Common.Input
             //
             // sPreviousTouch[0..1] (bytes 42-50, 51-59) stay zero — real DS4
             // firmware leaves them unset between contact events anyway.
+            // Always emit the touch block so idle/lift frames carry the finger-up
+            // bit (EncodeDs4Touch writes 0x80 when a finger is up), matching real
+            // DS4 firmware and the DualSense builder below. Leaving bytes 33-41 at
+            // 0x00 on idle reads as a phantom finger down at the origin in parsers
+            // that don't gate on bTouchPacketsN. dest[32] still reports 0 packets
+            // on idle for parsers that do respect the count.
             int touchPackets = (tp.Down0 || tp.Down1) ? 1 : 0;
             dest[32] = (byte)touchPackets;
-            if (touchPackets > 0)
-            {
-                dest[33] = tp.PacketCounter;
-                EncodeDs4Touch(dest.Slice(34, 8), tp);
-            }
+            dest[33] = tp.PacketCounter;
+            EncodeDs4Touch(dest.Slice(34, 8), tp);
 
             // Bytes 60-62 padding (zero from Clear()).
         }

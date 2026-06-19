@@ -22,7 +22,9 @@ namespace PadForge.Engine
         // ─────────────────────────────────────────────
 
         private const int WM_INPUT = 0x00FF;
+        private const int WM_INPUT_DEVICE_CHANGE = 0x00FE;
         private const int WM_QUIT = 0x0012;
+        private const int GIDC_REMOVAL = 2;
 
         private const ushort HID_USAGE_PAGE_DIGITIZER = 0x0D;
         private const ushort HID_USAGE_DIGITIZER_TOUCH_PAD = 0x05;
@@ -38,6 +40,7 @@ namespace PadForge.Engine
         private const ushort HID_USAGE_GENERIC_Y = 0x31;
 
         private const uint RIDEV_INPUTSINK = 0x00000100;
+        private const uint RIDEV_DEVNOTIFY = 0x00002000;
         private const uint RID_INPUT = 0x10000003;
         private const uint RIM_TYPEHID = 2;
 
@@ -247,6 +250,10 @@ namespace PadForge.Engine
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool DestroyWindow(IntPtr hWnd);
 
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool UnregisterClassW(IntPtr lpClassName, IntPtr hInstance);
+
         [DllImport("kernel32.dll")]
         private static extern IntPtr GetModuleHandleW(IntPtr lpModuleName);
 
@@ -263,6 +270,7 @@ namespace PadForge.Engine
         private IntPtr _hwnd;
         private WndProcDelegate _wndProcDelegate; // prevent GC collection
         private IntPtr _wndProcPtr;
+        private ushort _classAtom; // uniquely-named window class, UnregisterClass-ed on teardown
 
         /// <summary>Cached preparsed data per device handle.</summary>
         private readonly Dictionary<IntPtr, IntPtr> _preparsedCache = new();
@@ -532,6 +540,7 @@ namespace PadForge.Engine
                 _running = false;
                 return;
             }
+            _classAtom = atom;
 
             _hwnd = CreateWindowExW(0, (IntPtr)atom, IntPtr.Zero, 0,
                 0, 0, 0, 0, HWND_MESSAGE, IntPtr.Zero, wc.hInstance, IntPtr.Zero);
@@ -551,7 +560,10 @@ namespace PadForge.Engine
                 {
                     usUsagePage = HID_USAGE_PAGE_DIGITIZER,
                     usUsage = HID_USAGE_DIGITIZER_TOUCH_PAD,
-                    dwFlags = RIDEV_INPUTSINK,
+                    // DEVNOTIFY so the loop receives WM_INPUT_DEVICE_CHANGE and can
+                    // free a removed touchpad's cached preparsed/HID buffers instead
+                    // of holding every handle ever seen until Dispose.
+                    dwFlags = RIDEV_INPUTSINK | RIDEV_DEVNOTIFY,
                     hwndTarget = _hwnd
                 }
             };
@@ -576,6 +588,16 @@ namespace PadForge.Engine
 
             DestroyWindow(_hwnd);
             _hwnd = IntPtr.Zero;
+
+            // Unregister the uniquely-named window class so its atom doesn't leak
+            // on every engine off/on toggle. Keep the unique name (a fixed name
+            // shared across reader instances would bind a window to a stale
+            // instance's WndProc); unregister it here per instance instead.
+            if (_classAtom != 0)
+            {
+                UnregisterClassW((IntPtr)_classAtom, GetModuleHandleW(IntPtr.Zero));
+                _classAtom = 0;
+            }
         }
 
         private delegate IntPtr WndProcDelegate(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
@@ -585,6 +607,26 @@ namespace PadForge.Engine
             if (msg == WM_INPUT)
             {
                 ProcessRawInput(lParam);
+                return IntPtr.Zero;
+            }
+            if (msg == WM_INPUT_DEVICE_CHANGE)
+            {
+                // A touchpad was removed: free its cached preparsed HGLOBAL and
+                // drop the value-caps / range entries so they don't accumulate
+                // across device churn. Runs on the message-loop thread, the same
+                // thread that populates these caches in ProcessRawInput, so no
+                // extra synchronization is required.
+                if ((int)wParam == GIDC_REMOVAL)
+                {
+                    IntPtr removed = lParam;
+                    if (_preparsedCache.TryGetValue(removed, out var pp))
+                    {
+                        Marshal.FreeHGlobal(pp);
+                        _preparsedCache.Remove(removed);
+                    }
+                    _valueCapsCache.Remove(removed);
+                    _rangeCache.Remove(removed);
+                }
                 return IntPtr.Zero;
             }
             return DefWindowProcW(hWnd, msg, wParam, lParam);

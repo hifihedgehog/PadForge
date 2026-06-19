@@ -51,8 +51,6 @@ namespace PadForge.Views
         // keeps reading the same place. Indexers can't return ref to
         // value-typed array elements in property form, so wrappers use
         // helper methods where needed.
-        private int? _finger0TouchId { get => _slotTouchIds[0]; set => _slotTouchIds[0] = value; }
-        private int? _finger1TouchId { get => _slotTouchIds[1]; set => _slotTouchIds[1] = value; }
         private float _x0 { get => _slotX[0]; set => _slotX[0] = value; }
         private float _y0 { get => _slotY[0]; set => _slotY[0] = value; }
         private float _x1 { get => _slotX[1]; set => _slotX[1] = value; }

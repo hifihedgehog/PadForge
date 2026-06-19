@@ -47,8 +47,11 @@ namespace PadForge.Common.Input
                 var list = new List<EndpointInfo>(collection.Count);
                 foreach (var d in collection)
                 {
-                    bool isInput = d.DataFlow == DataFlow.Capture;
-                    list.Add(new EndpointInfo(d.ID, d.FriendlyName, isInput));
+                    using (d)
+                    {
+                        bool isInput = d.DataFlow == DataFlow.Capture;
+                        list.Add(new EndpointInfo(d.ID, d.FriendlyName, isInput));
+                    }
                 }
                 return list
                     .OrderBy(e => e.IsInput ? 0 : 1)  // inputs first
@@ -142,7 +145,7 @@ namespace PadForge.Common.Input
                 {
                     _lastTouchTicks.Remove(id);
                     _muteCache.Remove(id);
-                    _devices.Remove(id);
+                    if (_devices.Remove(id, out var staleDev)) staleDev?.Dispose();
                 }
                 active = _lastTouchTicks.Keys.ToArray();
             }
@@ -161,7 +164,7 @@ namespace PadForge.Common.Input
                     lock (_gate)
                     {
                         _muteCache.Remove(id);
-                        _devices.Remove(id);
+                        if (_devices.Remove(id, out var badDev)) badDev?.Dispose();
                     }
                 }
             }

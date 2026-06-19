@@ -411,8 +411,8 @@
 
             <!-- ═══ Motion Server ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
-                <ui:SymbolIcon Symbol="Compass24" FontSize="16"
-                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Text="&#xE7AD;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
                 <TextBlock Text="{Binding Dashboard_MotionServer, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>
 

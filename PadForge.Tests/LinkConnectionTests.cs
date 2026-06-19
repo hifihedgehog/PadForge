@@ -106,6 +106,30 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public async Task SharedDevices_FromHandshake_AreLabeledWithThePeerName()
+        {
+            // The handshake device set is the COMMON path (devices already shared when the
+            // link comes up). It must apply the peer label, not just the later hot-plug
+            // reconcile path. Regression guard for the peer-name suffix never showing on
+            // devices present at connect.
+            var (chA, chB) = MemChannel.Pair();
+            var idA = PeerIdentity.Generate();
+            var idB = PeerIdentity.Generate();
+            // B already knows A by a custom name (a prior pairing the user renamed).
+            var trustA = new PeerTrustStore(new[] { PeerTrust.FromPublicKey(idB.PublicKey, "B", "t", true, false) });
+            var trustB = new PeerTrustStore(new[] { PeerTrust.FromPublicKey(idA.PublicKey, "Living Room PC", "t", true, false) });
+            Func<PendingPairing, PairingApproval> noPrompt = _ => throw new Exception("reconnect must not prompt");
+
+            var taskA = LinkConnection.RunResponderAsync(chA, idA, trustA, new[] { PadInfo() }, Caps, noPrompt, "t");
+            var taskB = LinkConnection.RunInitiatorAsync(chB, idB, trustB, Array.Empty<RemotePeerDeviceInfo>(), Caps, noPrompt, "t");
+            await taskA;
+            var rB = await taskB;
+
+            Assert.Single(rB.RemoteDevices);
+            Assert.Equal("A Pad (Living Room PC)", rB.RemoteDevices[0].Name);
+        }
+
+        [Fact]
         public async Task PeerFingerprint_IsTheAuthenticatedPeerIdentity()
         {
             var (chA, chB) = MemChannel.Pair();

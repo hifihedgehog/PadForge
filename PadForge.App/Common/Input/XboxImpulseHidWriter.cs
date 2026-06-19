@@ -68,10 +68,7 @@ namespace PadForge.Common.Input
 
             string interfacePath = ResolveInterfacePath(ud);
             if (string.IsNullOrEmpty(interfacePath))
-            {
-                Probe($"path=NULL vid={ud.VendorId:X4} pid={ud.ProdId:X4} dp={ud.DevicePath}");
                 return false;
-            }
 
             // SDL3 HIDAPI scales 16-bit → 0..100 via `/ 655`. Match that.
             byte lt = (byte)Math.Min(100, leftTrigger16 / 655);
@@ -88,8 +85,7 @@ namespace PadForge.Common.Input
             // XUSB interface — verified by X1nput.
             byte[] buf = new byte[] { 0x03, 0x0F, lt, rt, lm, rm, 0xFF, 0x00, 0xEB };
 
-            (bool ok, int err) = WriteRawDiag(interfacePath, buf);
-            Probe($"write {(ok ? "OK" : "FAIL")} err={err} pid={ud.ProdId:X4} bytes={buf.Length} motors=L{lm}/R{rm}/LT{lt}/RT{rt} path={interfacePath}");
+            (bool ok, _) = WriteRawDiag(interfacePath, buf);
             return ok;
         }
 
@@ -123,10 +119,7 @@ namespace PadForge.Common.Input
         {
             int slot = ParseXInputSlot(ud.DevicePath);
             if (slot < 0)
-            {
-                Probe($"non-XInput path dp={ud.DevicePath} — writer only supports XInput-slot-bound devices");
                 return null;
-            }
 
             Guid classGuid = XUSB_INTERFACE_CLASS_GUID;
             string matchedPath = null;
@@ -136,11 +129,7 @@ namespace PadForge.Common.Input
                 DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
 
             if (devInfoSet == new IntPtr(-1))
-            {
-                Probe($"SetupDiGetClassDevs(XUSB) INVALID, err={Marshal.GetLastWin32Error()}");
                 return null;
-            }
-            Probe($"target slot={slot} (Nth non-HM XUSB iface in enumeration order)");
 
             int survivingIdx = 0;
 
@@ -168,7 +157,6 @@ namespace PadForge.Common.Input
 
                         string path = Marshal.PtrToStringUni(IntPtr.Add(detail, 4));
                         if (string.IsNullOrEmpty(path)) continue;
-                        Probe($"  iface[{i}] enumerated path={path}");
 
                         // Open the XUSB interface with the same flags
                         // OpenXInput uses (OpenXinput.cpp:2887).
@@ -182,39 +170,23 @@ namespace PadForge.Common.Input
                             GENERIC_READ | GENERIC_WRITE,
                             FILE_SHARE_READ | FILE_SHARE_WRITE, 0);
                         if (probeHandle.IsInvalid)
-                        {
-                            Probe($"  iface[{i}] open FAIL err={Marshal.GetLastWin32Error()} path={path}");
                             continue;
-                        }
 
                         // HM virtual filter — substring on the path,
                         // case-insensitive. Matches the cheap fast-path
                         // OpenXInput uses to skip HIDMaestro virtual
                         // XInput devices during its enumeration.
                         if (path.IndexOf("hidmaestro", StringComparison.OrdinalIgnoreCase) >= 0)
-                        {
-                            Probe($"  iface[{i}] HM-virtual, skipping path={path}");
                             continue;
-                        }
 
                         // XUSB device's VID/PID via IOCTL. Used as a
                         // sanity check that this slot is actually the
                         // VID/PID PadForge expects.
-                        if (!QueryXusbDeviceInfo(probeHandle, out ushort vid, out ushort pid))
-                        {
-                            Probe($"  iface[{i}] xusb info IOCTL FAIL err={Marshal.GetLastWin32Error()} path={path}");
+                        if (!QueryXusbDeviceInfo(probeHandle, out _, out _))
                             continue;
-                        }
 
-                        bool atTarget = survivingIdx == slot;
-                        Probe($"  iface[{i}] surviving-pos={survivingIdx} vid={vid:X4} pid={pid:X4} target={atTarget} path={path}");
-
-                        if (atTarget)
+                        if (survivingIdx == slot)
                         {
-                            if (vid != ud.VendorId || pid != ud.ProdId)
-                            {
-                                Probe($"  WARNING: target slot VID/PID {vid:X4}/{pid:X4} != ud {ud.VendorId:X4}/{ud.ProdId:X4} — writing anyway since slot ordering is the source of truth");
-                            }
                             matchedPath = path;
                             break;
                         }
@@ -232,7 +204,6 @@ namespace PadForge.Common.Input
                 SetupDiDestroyDeviceInfoList(devInfoSet);
             }
 
-            Probe($"resolved={(matchedPath != null ? "OK" : "NULL")} for vid={ud.VendorId:X4} pid={ud.ProdId:X4} dp={ud.DevicePath}");
             return matchedPath;
         }
 
@@ -348,25 +319,6 @@ namespace PadForge.Common.Input
             vid = (ushort)(outBuf[8] | (outBuf[9] << 8));
             pid = (ushort)(outBuf[10] | (outBuf[11] << 8));
             return true;
-        }
-
-        // Diagnostic probe (USB Xbox investigation).
-        private static readonly string s_probePath =
-            System.IO.Path.Combine(System.IO.Path.GetTempPath(), "padforge-xbox-hid-writer.log");
-        private static readonly object s_probeLock = new();
-
-        private static void Probe(string line)
-        {
-            try
-            {
-                lock (s_probeLock)
-                {
-                    System.IO.File.AppendAllText(s_probePath,
-                        $"{DateTime.Now:HH:mm:ss.fff} {line}\n",
-                        System.Text.Encoding.UTF8);
-                }
-            }
-            catch { }
         }
 
         // ─────────────────────────────────────────────

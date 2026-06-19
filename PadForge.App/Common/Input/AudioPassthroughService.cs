@@ -714,7 +714,6 @@ namespace PadForge.Common.Input
             _remoteAudioDemand[physicalDeviceGuid] = Environment.TickCount64;
             if (isNew)
             {
-                RemoteLinkDiag.Log($"audio RX first block dev={physicalDeviceGuid:N} len={s16StereoPcm.Length}");
                 lock (_lock) EnsureThreads_NoLock();
                 _workSignal.Set(); // build the transport for this newly-demanded pad
             }
@@ -847,7 +846,6 @@ namespace PadForge.Common.Input
                     if ((ud.DevicePath ?? "").StartsWith("peer://", StringComparison.Ordinal))
                     {
                         if (!ptOn && !demand) continue;
-                        RemoteLinkDiag.Log($"reconcile peer audio pad slot={slot} ptOn={ptOn} demand={demand} pid={ud.ProdId:X4} {ud.DevicePath}");
                         desired.Add((slot, guid, ud.DevicePath, false, false, ptOn, mirrorSrc, false, true));
                         continue;
                     }

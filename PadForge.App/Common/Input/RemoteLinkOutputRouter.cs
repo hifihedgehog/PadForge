@@ -42,8 +42,6 @@ namespace PadForge.Common.Input
         public static Action<string, byte, byte[]> SendOutput { get; set; }
         public static Action<string, byte, byte[]> SendAudio { get; set; }
 
-        // Diagnostics (#138 reverse-channel bring-up).
-        public static long SonyCaptured, VibrationCaptured, WheelCaptured, AudioCaptured, Sent;
         public static int DeviceCount => _byPath.Count;
 
         public static bool IsPeerPath(string devicePath) =>
@@ -89,7 +87,6 @@ namespace PadForge.Common.Input
         {
             if (string.IsNullOrEmpty(devicePath) || string.IsNullOrEmpty(fingerprint)) return;
             _byPath[devicePath] = new Target(fingerprint, linkSlot);
-            RemoteLinkDiag.Log($"router register {devicePath} -> {fingerprint.Substring(0, Math.Min(8, fingerprint.Length))} slot={linkSlot} (total {_byPath.Count})");
         }
 
         public static void Unregister(string devicePath)
@@ -117,14 +114,12 @@ namespace PadForge.Common.Input
         public static bool ShipSonyEffect(string devicePath, ReadOnlySpan<byte> effectBody)
         {
             if (!_byPath.TryGetValue(devicePath, out var t)) return false;
-            long n = System.Threading.Interlocked.Increment(ref SonyCaptured);
             if (effectBody.Length == 0) return true;
             if (_lastSony.TryGetValue(devicePath, out var prev) && prev.AsSpan().SequenceEqual(effectBody))
                 return true;
             _lastSony[devicePath] = effectBody.ToArray();
             byte[] blob = OutputEffectCodec.EncodeSonyEffect(effectBody);
             Dispatch(t, blob);
-            if (n == 1 || n % 240 == 0) RemoteLinkDiag.Log($"ship sony {devicePath} len={effectBody.Length} n={n}");
             return true;
         }
 
@@ -133,7 +128,6 @@ namespace PadForge.Common.Input
         public static bool ShipVibration(string devicePath, Vibration v)
         {
             if (v == null || !_byPath.TryGetValue(devicePath, out var t)) return false;
-            long n = System.Threading.Interlocked.Increment(ref VibrationCaptured);
             // Cheap dedup on the common scalar case (directional frames always ship).
             int dirHash = v.HasDirectionalData || v.HasConditionData
                 ? unchecked((int)(v.EffectType * 31 + (uint)v.SignedMagnitude * 7 + v.Direction * 13 + v.Period))
@@ -145,7 +139,6 @@ namespace PadForge.Common.Input
             _lastVib[devicePath] = key;
             byte[] blob = OutputEffectCodec.EncodeVibration(v);
             Dispatch(t, blob);
-            if (n == 1 || n % 240 == 0) RemoteLinkDiag.Log($"ship vib {devicePath} ({v.LeftMotorSpeed},{v.RightMotorSpeed},{v.LeftTriggerMotorSpeed},{v.RightTriggerMotorSpeed}) dir={v.HasDirectionalData} cond={v.HasConditionData} n={n}");
             return true;
         }
 
@@ -157,14 +150,12 @@ namespace PadForge.Common.Input
             ushort rangeDeg, ushort ledMask, bool ledValid)
         {
             if (!_byPath.TryGetValue(devicePath, out var t)) return false;
-            long n = System.Threading.Interlocked.Increment(ref WheelCaptured);
             byte[] blob = OutputEffectCodec.EncodeWheel(hasCond, dir, force, peak, ac, effect, period,
                 pc, nc, off, db, ps, ns, condGain, rangeDeg, ledMask, ledValid);
             if (_lastWheel.TryGetValue(devicePath, out var prev) && prev.AsSpan().SequenceEqual(blob))
                 return true;
             _lastWheel[devicePath] = blob;
             Dispatch(t, blob);
-            if (n == 1 || n % 240 == 0) RemoteLinkDiag.Log($"ship wheel {devicePath} force={force} range={rangeDeg} led={ledMask:X} n={n}");
             return true;
         }
 
@@ -175,7 +166,6 @@ namespace PadForge.Common.Input
             if (pcmBlock == null || !_byPath.TryGetValue(devicePath, out var t)) return false;
             var send = SendAudio;
             if (send == null) return false;
-            System.Threading.Interlocked.Increment(ref AudioCaptured);
             send(t.Fingerprint, t.LinkSlot, pcmBlock);
             return true;
         }
@@ -185,7 +175,6 @@ namespace PadForge.Common.Input
             var send = SendOutput;
             if (send == null) return;
             send(t.Fingerprint, t.LinkSlot, blob);
-            System.Threading.Interlocked.Increment(ref Sent);
         }
     }
 }

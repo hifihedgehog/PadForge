@@ -72,7 +72,7 @@ namespace PadForge.Services
         private LinkDiscovery _linkDiscovery;
         private bool _remoteLinkConnectWired;
         private System.Threading.Timer _remoteLinkStreamTimer;
-        private System.Threading.Timer _remoteLinkDiagTimer;
+        private System.Threading.Timer _remoteLinkSyncTimer;
         private readonly List<(RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)> _remoteLinkExposed = new();
         private readonly object _remoteLinkExposedLock = new();
         // Stable link slot per shared device id (#138 live device sync) — a device keeps
@@ -5044,28 +5044,19 @@ namespace PadForge.Services
             _remoteLinkStreamTimer?.Dispose();
             _remoteLinkStreamTimer = new System.Threading.Timer(RemoteLinkStreamTick, null, 8, 8);
 
-            // #138 M2 bring-up: snapshot both directions every 2s to %TEMP%\padforge-remotelink.log.
-            _remoteLinkDiagTimer?.Dispose();
-            _remoteLinkDiagTimer = new System.Threading.Timer(_ =>
+            // Live device sync (#138): every 2s re-publish OUR current shareable set to peers
+            // so a controller plugged in after connect appears (and one unplugged disappears)
+            // on the other end, and keep the peer-manager online dots live. Cheap; once per 2 s.
+            _remoteLinkSyncTimer?.Dispose();
+            _remoteLinkSyncTimer = new System.Threading.Timer(_ =>
             {
                 var s = _linkServer;
                 if (s == null) return;
-                // Live device sync (#138): re-publish OUR current shareable set to peers so a
-                // controller plugged in after connect appears (and one unplugged disappears)
-                // on the other end. BuildExposedDevices rebuilds the stream snapshot too, so
-                // a new device starts streaming. Cheap; once per 2 s.
+                // BuildExposedDevices rebuilds the stream snapshot too, so a new device starts streaming.
                 try { s.PushDeviceList(BuildExposedDevices()); } catch { }
-                // Keep the peer-manager online dots live (connect/disconnect doesn't always
-                // raise a discovery change), on the UI thread.
+                // Connect/disconnect doesn't always raise a discovery change; refresh on the UI thread.
                 var fps = s.ConnectedFingerprints();
                 _dispatcher.BeginInvoke(() => _mainVm.Settings.UpdatePeerOnlineStatus(fps));
-                int exposed; lock (_remoteLinkExposedLock) exposed = _remoteLinkExposed.Count;
-                RemoteLinkDiag.Log(
-                    $"SNAP exposed={exposed} remoteDevs={RemoteLinkOutputRouter.DeviceCount} | " +
-                    $"IN sent={s.DiagDatagramsSent} recv={s.DiagDatagramsReceived} opened={s.DiagDatagramsOpened} | " +
-                    $"CAP sony={RemoteLinkOutputRouter.SonyCaptured} vib={RemoteLinkOutputRouter.VibrationCaptured} wheel={RemoteLinkOutputRouter.WheelCaptured} audio={RemoteLinkOutputRouter.AudioCaptured} shipped={RemoteLinkOutputRouter.Sent} | " +
-                    $"OUT recv={s.DiagOutputReceived} applied={_outputApplied} srcNull={_outputSourceNull} | " +
-                    $"AUDIO rx={s.DiagAudioReceived} ring={AudioPassthroughService.RemoteAudioRxBlocks} play={AudioPassthroughService.RemoteAudioRenderedFrames} | err='{s.DiagLastError}'");
             }, null, 2000, 2000);
         }
 
@@ -5150,8 +5141,8 @@ namespace PadForge.Services
         {
             _remoteLinkStreamTimer?.Dispose();
             _remoteLinkStreamTimer = null;
-            _remoteLinkDiagTimer?.Dispose();
-            _remoteLinkDiagTimer = null;
+            _remoteLinkSyncTimer?.Dispose();
+            _remoteLinkSyncTimer = null;
             lock (_remoteLinkExposedLock) _remoteLinkExposed.Clear();
             RemoteLinkOutputRouter.SendOutput = null;
             RemoteLinkOutputRouter.SendAudio = null;
@@ -5431,8 +5422,6 @@ namespace PadForge.Services
         // Owner-side wheel one-shot dedup (range/autocenter/LEDs are in every frame but
         // change rarely; re-writing them per frame would halve the wheel poll rate).
         private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, (int range, int ac, int ledMask, bool ledValid)> _remoteWheelOneShot = new();
-        private long _outputApplied, _outputRecvSeen, _outputSourceNull;
-
         /// <summary>Resolve a link slot to the owner's physical source + UserDevice.</summary>
         private bool ResolveExposed(byte slot, out ISdlInputDevice source, out UserDevice ud)
         {
@@ -5452,21 +5441,13 @@ namespace PadForge.Services
         /// receive thread (one writer).</summary>
         private void OnRemoteOutputReceived(string peerFingerprint, byte slot, byte[] payload)
         {
-            long rn = System.Threading.Interlocked.Increment(ref _outputRecvSeen);
             if (!OutputEffectCodec.TryDecode(payload, out var effect))
-            {
-                if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply: decode FAILED len={payload?.Length} n={rn}");
                 return;
-            }
             if (!ResolveExposed(slot, out var source, out var ud))
-            {
-                System.Threading.Interlocked.Increment(ref _outputSourceNull);
-                if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply: NO source for slot={slot} kind={effect.Kind} n={rn}");
                 return;
-            }
             // Sole-writer guard (#138): this frame means a remote game is driving the
             // shared device. Refresh the output lease so the owner's LOCAL output pipeline
-            // yields — the apply below is the sole hardware writer (no two-writer stutter).
+            // yields. The apply below is the sole hardware writer (no two-writer stutter).
             RemoteLinkOutputRouter.ClaimOutput(ud?.DevicePath ?? source.DevicePath);
             try
             {
@@ -5477,18 +5458,14 @@ namespace PadForge.Services
                         // Replay the DualSense effect body through SDL, which re-frames it
                         // for the physical pad's transport (USB 0x02 / BT 0x31 + CRC).
                         if (handle != IntPtr.Zero && effect.SonyBody != null && effect.SonyBody.Length > 0)
-                        {
-                            bool ok = SDL3.SDL.SDL_SendGamepadEffect(handle, effect.SonyBody, 0, effect.SonyBody.Length);
-                            System.Threading.Interlocked.Increment(ref _outputApplied);
-                            if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply sony slot={slot} dev='{source.Name}' len={effect.SonyBody.Length} sdlOk={ok} n={rn}");
-                        }
+                            SDL3.SDL.SDL_SendGamepadEffect(handle, effect.SonyBody, 0, effect.SonyBody.Length);
                         break;
 
                     case OutputEffectCodec.Kind.Vibration:
                         // Rumble + impulse triggers + directional/condition haptic, replayed
                         // through the device's real SDL handle per its capabilities. A Fanatec
-                        // pedal has no usable SDL rumble — locally it rides the raw-HID pedal
-                        // writer, so re-route it the same way here instead of dropping it (#138 F31).
+                        // pedal has no usable SDL rumble, so re-route it through the raw-HID
+                        // pedal writer (as the local path does) instead of dropping it (#138 F31).
                         if (FanatecRawHidWriter.IsFanatecPedal(source.VendorId, source.ProductId))
                         {
                             byte brake    = (byte)(effect.Vibration.LeftMotorSpeed >> 8);  // XInput left  -> brake
@@ -5499,18 +5476,14 @@ namespace PadForge.Services
                         {
                             ud?.ForceFeedbackState?.SetDeviceForces(ud, source, _remoteApplyPs, effect.Vibration);
                         }
-                        System.Threading.Interlocked.Increment(ref _outputApplied);
-                        if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply vib slot={slot} dev='{source.Name}' ({effect.Vibration.LeftMotorSpeed},{effect.Vibration.RightMotorSpeed}) n={rn}");
                         break;
 
                     case OutputEffectCodec.Kind.Wheel:
                         ApplyRemoteWheel(source, in effect.Wheel);
-                        System.Threading.Interlocked.Increment(ref _outputApplied);
-                        if (rn == 1 || rn % 240 == 0) RemoteLinkDiag.Log($"apply wheel slot={slot} dev='{source.Name}' force={effect.Wheel.Force} n={rn}");
                         break;
                 }
             }
-            catch (Exception ex) { RemoteLinkDiag.Log($"apply EXCEPTION: {ex.Message}"); }
+            catch { /* a malformed frame must never take down the receive thread */ }
         }
 
         /// <summary>Re-encode a relayed wheel frame with the owner's own per-vendor writer

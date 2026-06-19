@@ -236,7 +236,11 @@ Floor and ceiling per trigger. Anti-deadzone. Sensitivity curves. Live value bar
 
 ### Force feedback and rumble
 ![Force Feedback](screenshots/force-feedback.jpg)
-Per-motor strength, overall gain, motor swap. Live motor activity bars. Audio Bass Rumble captures system audio, isolates bass through a 48 dB/octave filter, and pushes it to the rumble motors. Music feels physical even when the game is silent. A Trigger Routing card sends the main rumble motors into the trigger motors one trigger at a time. Duplicate keeps the main motor running, Redirect silences it. Each trigger has its own Source, a 0-200% Scale, and an optional button Activator. It reaches Xbox impulse triggers and DualSense Adaptive Trigger Vibration.
+Per-motor strength, overall gain, motor swap. Live motor activity bars. Audio Bass Rumble captures system audio, isolates bass through a 48 dB/octave filter, and pushes it to the rumble motors. Music feels physical even when the game is silent.
+
+### Trigger routing
+![Trigger Routing](screenshots/trigger-routing.jpg)
+Send the main rumble motors into the trigger motors, one trigger at a time. Duplicate keeps the main motor running, Redirect silences it. Each trigger has its own Source, a 0-200% Scale, and an optional button Activator. Reaches Xbox impulse triggers and DualSense Adaptive Trigger Vibration.
 
 ### Wheel
 ![Wheel](screenshots/wheel.jpg)

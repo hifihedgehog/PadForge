@@ -455,7 +455,7 @@
   <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>Direct</value></data>
   <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>Incrémental</value></data>
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Inverser au maintien</value></data>
-  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direct = lire le descripteur de source ; Incrémental = incrémenter un accumulateur via les boutons Haut/Bas ; Inverser au maintien = inverser la sortie de la ligne lorsqu'un bouton modificateur est maintenu.</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direct - lire le descripteur de source. Incrémental - incrémenter un accumulateur via les boutons Haut/Bas. Inverser au maintien - inverser la sortie de la ligne lorsqu'un bouton modificateur est maintenu. Rampe - une enveloppe d'axe temporelle (attaque et relâchement) pilotée par les touches de direction Haut/Bas.</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>Bouton qui incrémente l'accumulateur vers le haut lorsqu'il est maintenu</value></data>
   <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Haut : bouton qui incrémente l'accumulateur vers le haut lorsqu'il est maintenu.</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Bouton qui décrémente l'accumulateur vers le bas lorsqu'il est maintenu</value></data>

@@ -25,7 +25,7 @@ Free Windows app. No subscription. No paywall. No nag screens. Built on SDL3, [H
 
 PadForge is for sim racers running wheels in games that only understand Xbox controllers. For DualSense owners who want adaptive triggers and lightbar effects in Steam games that ignore them. For accessibility users mapping whatever hardware they can use. For anyone whose controller doesn't match what their game expects.
 
-> **New in 3.4.** Four headline additions. **Remote Link** shares controllers across the PCs on your network. A wheel, pad, or HOTAS plugged into one machine drives a game on another, both directions at once, with rumble and force feedback returning to the real device. Pair once by matching a six-digit code on both screens, then trusted PCs reconnect on their own. A gamepad-only switch keeps a paired PC away from your keyboard, mouse, and macros. **Wheel force feedback** now reaches Logitech, Fanatec, and Thrustmaster wheels in their own native protocols: constant force plus spring, damper, and friction, with a Wheel tab for rotation range, auto-center, and RPM shift LEDs. **MIDI input** turns a MIDI keyboard or pad controller into a mapping source, with notes, CC, pitch bend, and encoder knobs binding like buttons and axes. **Controller speaker audio** plays your computer's audio or a slot's macro sounds through a DualSense or DualShock 4 speaker. Carrying forward from 3.3: per-slot Touchpad outputs (mouse, stick, D-pad) and the gesture engine, the Gyro motion-passthrough card, and Copy / Copy From across every assigned device's tuning. From 3.2: the rebuilt mapping engine, gyro at Steam Input parity, Impulse Triggers, and 2026 Steam Controller support. [Wiki](https://github.com/hifihedgehog/PadForge/wiki).
+> **New in 3.5.** Six headline additions. **Wii Bluetooth controllers** pair from inside PadForge, because Windows can't pair them on its own. A Wii controller's PIN is six raw bytes, not a string, and it changes with which sync button you press. Press the red SYNC button under the battery cover and the controller bonds, so it reconnects on any button press afterward. The Wii Remote, Remote plus Nunchuk, Classic Controller, and Wii U Pro Controller map as normal pads, with accelerometer and Wii Motion Plus gyro flowing through the existing motion pipeline. **Mouse cursor position** joins the mapping sources: Mouse Position X and Y read the absolute desktop cursor and drive a stick, trigger, or button, each with its own Sensitivity. **Shift layers** now run on six activation modes (Hold, Toggle, Latch, Cycle, Sticky, No Button), with a Cycle queue where one button steps forward and a second steps back through the same list of layers. **Trigger Routing** feeds the main rumble motors into the trigger motors per trigger, reaching both Xbox impulse triggers and DualSense Adaptive Trigger Vibration. **Ramp** turns two held keyboard keys into a smooth analog axis, and every mapping's primary source now picks a Kind: Direct, Incremental, Invert On Hold, or Ramp. **Macro quality-of-life** adds duplicate, copy and paste across virtual controllers, and copy-from-another-controller, plus mouse-cursor macro actions that recenter, pin, or fence the pointer. Carrying forward from 3.4: Remote Link controller sharing across PCs, native wheel force feedback for Logitech, Fanatec, and Thrustmaster, MIDI input as a mapping source, and controller speaker audio on the DualSense and DualShock 4. [Wiki](https://github.com/hifihedgehog/PadForge/wiki).
 
 <p align="center">
   <a href="https://github.com/hifihedgehog/HIDMaestro">
@@ -56,13 +56,13 @@ Plug a Logitech, Fanatec, or Thrustmaster wheel into a slot and PadForge drives 
 
 ### Pedals, wheel, and HOTAS throttle. One virtual stick.
 
-One mapping row can read from any number of physical inputs across any number of physical devices. Six combine modes (Strongest, Combined, Average, Either, Both, Only one) plus a drag-and-drop custom formula editor. Cross-device chords so a button on the wheel and a button on the shifter trigger one virtual press.
+One mapping row can read from any number of physical inputs across any number of physical devices. Six combine modes (Strongest, Combined, Average, Either, Both, Only one) plus a drag-and-drop custom formula editor. Cross-device chords so a button on the wheel and a button on the shifter trigger one virtual press. A Primary Mode dropdown sets how the main source reads: Direct, Incremental, Invert On Hold, or Ramp. Ramp builds a stick axis from two keyboard keys. The Up key drives toward +1 and the Down key toward -1, each over an Attack time. Release ramps back to center over a Release time when Autocenter is on, or holds where you left it when off. A Reverse multiplier sets how fast it returns when you press the opposite key.
 
 ![Multi-source mapping row with combine modes and formula editor](screenshots/mappings.jpg)
 
 ### Caps Lock for your controller.
 
-Each slot can carry extra mapping tables that turn on while a button, chord, or axis is held. Five activation modes (Hold, Toggle, Sticky, Cycle, Custom jump-to). Per-layer color and emoji icon. A Win11-style flyout pops to confirm the active layer the moment it engages.
+Each slot can carry extra mapping tables that turn on while a button, chord, or axis fires. Six activation modes: Hold, Toggle, Latch, Cycle, Sticky, and No Button. Latch presses a layer on and leaves it on. Press it again for Base, or press a different Latch button to switch. Cycle puts a queue of layers under one control. The activator steps forward, a second Previous button steps back through the same list, and that Previous button can sit on another device. Wrap Around loops past the last layer to the first. Include Base folds the resting layer into the rotation or leaves it out. A No Button layer has no activator of its own and exists only to ride a Cycle queue. Each layer carries its own color and emoji icon, and a Win11-style flyout confirms the active layer the moment it engages.
 
 ![Shift layer tab strip above the mapping grid](screenshots/mappings.jpg)
 
@@ -71,6 +71,12 @@ Each slot can carry extra mapping tables that turn on while a button, chord, or 
 Reference frames (Local, Player, World). Dual-threshold smoothing. Real-world calibration. A cross-device Aim Engage button. Tuning saves per pad per slot, so the same pad on two slots can feel two different ways. Gyro Pitch / Yaw / Roll bind as first-class sources in the mapping table.
 
 ![Gyro tab](screenshots/gyro.jpg)
+
+### Move the mouse, move the stick.
+
+Two new mapping sources, Mouse Position X and Mouse Position Y, read where the desktop cursor sits on screen. Center reads zero, and distance from center pushes the stick toward its edge. (That differs from the Mouse Speed X/Y sources, which read how fast the mouse moves.) Each row using a Mouse Position source gets its own Sensitivity, from 0.1 to 5.0. At 1.0 the stick reaches full deflection when the cursor sits 10% of the screen width from center. Raise it for less cursor travel, lower it for more. A Mouse Position source can drive a stick axis, a trigger, or a button. Primary monitor only.
+
+![Mouse Position source in the mapping row](screenshots/mappings.jpg)
 
 ### Forza, Gears, and Halo on your real Xbox pad.
 
@@ -110,6 +116,12 @@ No phone handy? Turn on **Touchpad Overlay** from the Dashboard. A transparent o
 Two sim racers on two wheels at once. A flight stick plus throttle plus rudder pedals as one virtual HOTAS. Mixed gamepad types in one session. Up to 16 controllers. One combo press toggles every virtual controller on or off when you need to step away.
 
 ![Dashboard with multiple slots](screenshots/dashboard.jpg)
+
+### Windows can't pair a Wii Remote. PadForge can.
+
+A Wii controller's Bluetooth PIN is six raw bytes, not a string, and it changes with which sync button you press. Windows' own pairing screen never finishes the bond. PadForge runs the pairing itself. Open the Devices page, click **Pair**, and press the red SYNC button under the battery cover. The controller bonds, so it reconnects on any button press from then on. (Hold 1 and 2 instead for a temporary pairing that lasts the session.) The Wii Remote, Remote plus Nunchuk, Classic Controller, and Wii U Pro Controller all map as normal pads through SDL. Accelerometer and Wii Motion Plus gyro run through the gyro pipeline, so gyro-to-mouse, gyro-to-stick, and motion mapping work. Swap a Nunchuk on or off mid-session and PadForge re-identifies it without a restart. Needs a Bluetooth radio on the PC.
+
+![Pair a Wii controller](screenshots/wii-pair.jpg)
 
 ### The controller is on the other PC. The game doesn't care.
 
@@ -156,7 +168,7 @@ PadForge reads MIDI input devices as mapping sources too. Notes, Control Change 
 | Keyboard + Mouse virtual output | ✅ | ❌ | ❌ | ✅ | ✅ | ✅ |
 | Multi-source per row (one output, many inputs) | ✅ 6 combine modes + formula | ⚠️ "Combine Into" merges pads | ⚠️ MapperDataCollection (basic) | ❌ uses per-input Activators | ❌ | ⚠️ per-input Activators |
 | Custom formula editor (arithmetic, logic, if-then-else) | ✅ drag-and-drop operators + 10 starter recipes | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Shift layers / modifier overlays | ✅ Hold / Toggle / Sticky / Cycle / Custom | ❌ | ❌ | ✅ up to 10 (Hold / Toggle / Custom) | ✅ Mode Shifts | ✅ Action Set Layers (stackable) |
+| Shift layers / modifier overlays | ✅ Hold / Toggle / Latch / Cycle / Sticky / No Button | ❌ | ❌ | ✅ up to 10 (Hold / Toggle / Custom) | ✅ Mode Shifts | ✅ Action Set Layers (stackable) |
 | Cross-device chords (input on pad A + input on pad B) | ✅ | ❌ | ❌ | ✅ via Group of devices | ❌ | ❌ same controller only |
 | Gyro mapping | ✅ Local / Player / World, RWC, Aim Engage | ❌ | ❌ | ✅ since v5.3 (curves, Flick Stick) | ✅ gyro-to-mouse, gyro-to-RS | ✅ |
 | Xbox Impulse Trigger passthrough | ✅ + DualSense AT Vibration auto-route | ❌ | ❌ | ✅ Xbox One output only | ❌ | ❌ |
@@ -212,7 +224,7 @@ Flat schematic of the same controller, same live state. Useful on small monitors
 
 ### Button and axis mappings
 ![Mappings](screenshots/mappings.jpg)
-Record a binding by pressing a button. Pick from a dropdown of every available input (including raw HID buttons past the standard 11). Set Invert, Half-axis, or a per-mapping threshold for axis-to-button activation.
+Record a binding by pressing a button. Pick from a dropdown of every available input (including raw HID buttons past the standard 11). Set Invert, Half-axis, or a per-mapping threshold for axis-to-button activation. A Primary Mode dropdown picks how the source reads: Direct, Incremental, Invert On Hold, or Ramp. Ramp turns an Up key and a Down key into a smooth axis, tuned by Attack, Release, Reverse, and Autocenter.
 
 ### Stick deadzones
 ![Sticks](screenshots/sticks.jpg)
@@ -224,7 +236,7 @@ Floor and ceiling per trigger. Anti-deadzone. Sensitivity curves. Live value bar
 
 ### Force feedback and rumble
 ![Force Feedback](screenshots/force-feedback.jpg)
-Per-motor strength, overall gain, motor swap. Live motor activity bars. Audio Bass Rumble captures system audio, isolates bass through a 48 dB/octave filter, and pushes it to the rumble motors. Music feels physical even when the game is silent.
+Per-motor strength, overall gain, motor swap. Live motor activity bars. Audio Bass Rumble captures system audio, isolates bass through a 48 dB/octave filter, and pushes it to the rumble motors. Music feels physical even when the game is silent. A Trigger Routing card sends the main rumble motors into the trigger motors one trigger at a time. Duplicate keeps the main motor running, Redirect silences it. Each trigger has its own Source, a 0-200% Scale, and an optional button Activator. It reaches Xbox impulse triggers and DualSense Adaptive Trigger Vibration.
 
 ### Wheel
 ![Wheel](screenshots/wheel.jpg)
@@ -248,7 +260,7 @@ Per-slot touchpad tuning on any source with a touchpad surface (DualSense, DualS
 
 ### Macros
 ![Macros](screenshots/macros.jpg)
-Combo triggers from buttons, axes, and POV directions. Action sequences with key presses, mouse moves, scroll, delays, system volume, app volume, lightbar overrides, and rumble overrides. Five fire modes (on press, on release, while held, always, custom formula).
+Combo triggers from buttons, axes, and POV directions. Action sequences with key presses, mouse moves, scroll, delays, system volume, app volume, lightbar overrides, and rumble overrides. Five fire modes (on press, on release, while held, always, custom formula). A macro toolbar duplicates a macro, copies and pastes it into another virtual controller, and pulls every macro from another controller in one step. Mouse-cursor actions snap the pointer to center (Recenter Mouse), pin it at a coordinate (Fix Mouse Position), or fence it inside a rectangle (Limit Mouse Region).
 
 ### Per-app profiles
 ![Profiles](screenshots/profiles.jpg)

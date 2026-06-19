@@ -455,7 +455,7 @@
   <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>直接</value></data>
   <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>渐增</value></data>
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>按住反转</value></data>
-  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>直接 = 读取来源描述符。渐增 = 通过上/下按钮累加。按住反转 = 按住修改键时翻转该行输出。</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>直接 - 读取来源描述符。渐增 - 通过上/下按钮累加。按住反转 - 按住修改键时翻转该行输出。渐变 - 由上/下方向键驱动的基于时间的轴包络（起音与释音）。</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>按住时向上累加的按钮</value></data>
   <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>向上：按住时向上累加的按钮。</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>按住时向下累加的按钮</value></data>

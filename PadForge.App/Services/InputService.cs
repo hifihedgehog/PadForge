@@ -6548,6 +6548,11 @@ namespace PadForge.Services
         /// in-process (#116). Call only from the UI thread (the SDL_Init thread).</summary>
         public void PumpSdlEvents() => _inputManager?.PumpSdlEvents();
 
+        /// <summary>Forces SDL to cleanly re-open the Wii hidapi devices after a
+        /// pairing (#116). Call after the pairing dialog closes so a just-paired
+        /// Wii controller appears without an app restart.</summary>
+        public void RescanWiiControllers() => _inputManager?.RescanWiiControllers();
+
         /// <summary>
         /// Repopulates the source dropdown choices for all pads.
         /// Called when ForceRawJoystickMode changes to refresh display names.

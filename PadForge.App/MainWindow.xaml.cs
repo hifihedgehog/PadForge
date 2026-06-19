@@ -647,6 +647,10 @@ namespace PadForge
             {
                 var dialog = new Views.PairDeviceDialog { Owner = this };
                 dialog.ShowDialog();
+                // A just-paired Wii controller is grabbed by SDL mid-pairing and
+                // dropped. Force SDL to cleanly re-open it so it appears without
+                // an app restart (#116).
+                _inputService.RescanWiiControllers();
                 _inputService.RefreshDeviceList();
                 _viewModel.StatusText = Strings.Instance.Status_DeviceListRefreshed;
             };

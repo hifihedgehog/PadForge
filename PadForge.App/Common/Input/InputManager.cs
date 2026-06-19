@@ -689,6 +689,34 @@ namespace PadForge.Common.Input
             SDL_UpdateJoysticks();
         }
 
+        /// <summary>
+        /// Forces SDL to cleanly re-open the Wii hidapi driver's devices after a
+        /// pairing (#116). During the Bluetooth pairing ceremony SDL grabs the
+        /// Wii Remote mid-pairing, then our BluetoothSetServiceState and the
+        /// pairing churn invalidate that handle, so the joystick drops and SDL
+        /// keeps a stale device that only a full app restart clears. Toggling the
+        /// Wii hidapi hint off then on replicates the restart for just this driver:
+        /// off runs SDL_HIDAPIDriverHintChanged which disables the driver (SDL
+        /// cleans up the stale device and closes the dead handle) and resets the
+        /// hidapi change count to force a re-enumerate; on re-opens and re-inits
+        /// the now-stable device. Repeated over ~11s to cover the post-pair
+        /// settling window. The UI-thread pump processes each toggle. Safe to call
+        /// from any thread (SDL_SetHint is thread-safe).
+        /// </summary>
+        public void RescanWiiControllers()
+        {
+            Task.Run(() =>
+            {
+                for (int i = 0; i < 8 && !_disposed; i++)
+                {
+                    SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_WII, "0");
+                    Thread.Sleep(200);
+                    SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_WII, "1");
+                    Thread.Sleep(1200);
+                }
+            });
+        }
+
         public void Start()
         {
             if (_running || _disposed)

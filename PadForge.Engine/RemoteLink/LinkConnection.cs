@@ -142,6 +142,13 @@ namespace PadForge.Engine.RemoteLink
             foreach (var info in peerInfos)
             {
                 info.PeerFingerprintHex = peerFpHex; // identity is salted by the authenticated peer key
+                // Name each device under the peer it came from, e.g. "DualSense (John's PC)",
+                // the same labeling the hot-plug reconcile path applies. Without this, devices
+                // already shared when the link comes up (the common case) carried no peer label,
+                // because only ReconcileRemoteDevices did the suffixing.
+                string peerLabel = trust?.ResolvePeerLabel(peerFpHex);
+                if (!string.IsNullOrWhiteSpace(peerLabel))
+                    info.Name = $"{info.Name} ({peerLabel})";
                 remoteDevices.Add(new RemotePeerDevice(info));
             }
 

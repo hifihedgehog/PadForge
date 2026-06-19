@@ -53,6 +53,20 @@ namespace PadForge.Engine.RemoteLink
 
         public bool IsTrusted(byte[] publicKey) => Find(publicKey) != null;
 
+        /// <summary>The label to suffix onto a peer's shared device names: the custom name the
+        /// user set, else the discovery-learned host name, else null when neither is known yet.
+        /// Matched by fingerprint, case-insensitive. Lets a remote peer's devices read e.g.
+        /// "DualSense Wireless Controller (John's PC)" in the device list.</summary>
+        public string ResolvePeerLabel(string peerFingerprintHex)
+        {
+            if (string.IsNullOrWhiteSpace(peerFingerprintHex)) return null;
+            var peer = Peers.FirstOrDefault(p =>
+                string.Equals(p.FingerprintHex, peerFingerprintHex, StringComparison.OrdinalIgnoreCase));
+            if (peer == null) return null;
+            if (!string.IsNullOrWhiteSpace(peer.Name)) return peer.Name;
+            return string.IsNullOrWhiteSpace(peer.HostName) ? null : peer.HostName;
+        }
+
         /// <summary>
         /// The admission decision for a connecting peer's static key. An unknown key
         /// is always FirstContact regardless of any auto-select or network hint.

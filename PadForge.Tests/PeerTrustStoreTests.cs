@@ -68,6 +68,32 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void ResolvePeerLabel_PrefersCustomNameThenHostNameElseNull()
+        {
+            var store = new PeerTrustStore();
+
+            // Custom name set -> use it.
+            var named = store.Grant(Key(21), "John's PC", "t", reconnect: true, gamepadOnly: false);
+            Assert.Equal("John's PC", store.ResolvePeerLabel(named.FingerprintHex));
+            // Fingerprint match is case-insensitive (Convert.ToHexString is upper-case).
+            Assert.Equal("John's PC", store.ResolvePeerLabel(named.FingerprintHex.ToLowerInvariant()));
+
+            // No custom name, but a discovery-learned host name -> fall back to the host name.
+            var hostOnly = store.Grant(Key(22), "", "t", reconnect: true, gamepadOnly: false);
+            hostOnly.HostName = "OFFICE-DESKTOP";
+            Assert.Equal("OFFICE-DESKTOP", store.ResolvePeerLabel(hostOnly.FingerprintHex));
+
+            // Neither known yet -> null (no suffix appended).
+            var bare = store.Grant(Key(23), "", "t", reconnect: true, gamepadOnly: false);
+            Assert.Null(store.ResolvePeerLabel(bare.FingerprintHex));
+
+            // Unknown / null / blank fingerprint -> null.
+            Assert.Null(store.ResolvePeerLabel("DEADBEEF"));
+            Assert.Null(store.ResolvePeerLabel(null));
+            Assert.Null(store.ResolvePeerLabel("   "));
+        }
+
+        [Fact]
         public void Revoke_RemovesAndFailsClosed()
         {
             var store = new PeerTrustStore();

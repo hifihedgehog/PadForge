@@ -411,8 +411,8 @@
 
             <!-- ═══ Motion Server ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
-                <TextBlock Text="&#xEC05;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <ui:SymbolIcon Symbol="Compass24" FontSize="16"
+                               VerticalAlignment="Center" Margin="0,0,8,0"/>
                 <TextBlock Text="{Binding Dashboard_MotionServer, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>
 
@@ -484,7 +484,7 @@
 
             <!-- Remote Link (issue #138) -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
-                <TextBlock Text="&#xE71B;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                <TextBlock Text="&#xE969;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                            VerticalAlignment="Center" Margin="0,0,8,0"/>
                 <TextBlock Text="{Binding Dashboard_RemoteLink, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>

@@ -45,12 +45,12 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.x
 
@@ -74,7 +74,7 @@ jobs:
       # signs PadForge.exe inside that zip.
       - name: Upload unsigned artifact
         id: upload-unsigned
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: PadForge-unsigned
           path: unsigned/PadForge.exe
@@ -126,7 +126,7 @@ jobs:
       # build artifact so you can download and inspect it.
       - name: Upload signed zip (manual runs)
         if: github.event_name == 'workflow_dispatch'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: PadForge-signed-zip
           path: release/PadForge-v${{ steps.stage.outputs.version }}-win-x64.zip

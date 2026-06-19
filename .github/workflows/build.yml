@@ -54,24 +54,52 @@ jobs:
           cp "$GITHUB_WORKSPACE/release/PadForge.zip" \
              "$GITHUB_WORKSPACE/release/PadForge_r${COMMIT_COUNT}@${COMMIT_SHORT}.zip"
 
-      - name: Release — archive-${{ github.ref_name }}
+      - name: Release rolling dev archive
         if: github.event_name == 'push'
         env:
           GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+          REF: ${{ github.ref_name }}
         shell: bash
         run: |
-          tag="archive-${{ github.ref_name }}"
-          gh release create "$tag" \
-            --repo "${{ github.repository }}" \
-            --target "${{ github.sha }}" \
-            --prerelease \
-            --title "PadForge build archive" \
-            --notes "Latest build: https://github.com/${{ github.repository }}/releases/tag/latest-${{ github.ref_name }}" \
-            || echo "Archive release already exists"
-          gh release upload "$tag" \
-            --repo "${{ github.repository }}" \
-            --clobber \
-            "release/PadForge_r${COMMIT_COUNT}@${COMMIT_SHORT}.zip"
+          set -o pipefail
+          base="archive-${REF}"
+          asset="release/PadForge_r${COMMIT_COUNT}@${COMMIT_SHORT}.zip"
+          limit=999   # GitHub caps a release at 1000 assets. Roll a bit early.
+
+          # Highest existing archive part (base = part 1, base-N = part N).
+          part=$(gh release list --repo "$REPO" --limit 1000 --json tagName --jq '.[].tagName' \
+                 | { grep -E "^${base}(-[0-9]+)?$" || true; } \
+                 | sed -E "s/^${base}$/${base}-1/" | sed -E "s/^${base}-//" \
+                 | sort -n | tail -1)
+          [ -z "$part" ] && part=1
+          if [ "$part" -le 1 ]; then active="$base"; else active="${base}-${part}"; fi
+
+          count=$(gh release view "$active" --repo "$REPO" --json assets --jq '.assets | length' 2>/dev/null || echo 0)
+          echo "Active archive $active has $count assets"
+
+          # When the active part is full, start a new one that links back to it.
+          if [ "$count" -ge "$limit" ]; then
+            prev="$active"
+            part=$((part + 1))
+            active="${base}-${part}"
+            echo "Archive full, rolling to $active"
+            gh release create "$active" --repo "$REPO" --target "$SHA" --prerelease \
+              --title "PadForge dev build archive (part ${part})" \
+              --notes "Older dev builds are in the previous archive: https://github.com/${REPO}/releases/tag/${prev}" \
+              || echo "(part may already exist)"
+          fi
+
+          # First-ever run for this part: make sure it exists.
+          gh release view "$active" --repo "$REPO" >/dev/null 2>&1 || \
+            gh release create "$active" --repo "$REPO" --target "$SHA" --prerelease \
+              --title "PadForge dev build archive" \
+              --notes "Latest build: https://github.com/${REPO}/releases/tag/latest-${REF}" \
+              || true
+
+          gh release upload "$active" --repo "$REPO" --clobber "$asset"
+          echo "ARCHIVE_TAG=$active" >> "$GITHUB_ENV"
 
       - name: Release — latest-${{ github.ref_name }}
         if: github.event_name == 'push'
@@ -88,7 +116,7 @@ jobs:
             --target "${{ github.sha }}" \
             --prerelease \
             --title "PadForge r${COMMIT_COUNT}@${COMMIT_SHORT}" \
-            --notes "Build archive: https://github.com/${{ github.repository }}/releases/tag/archive-${{ github.ref_name }}
+            --notes "Build archive: https://github.com/${{ github.repository }}/releases/tag/${ARCHIVE_TAG:-archive-${{ github.ref_name }}}
           Build log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           gh release upload "$tag" \
             --repo "${{ github.repository }}" \

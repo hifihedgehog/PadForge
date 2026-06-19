@@ -455,7 +455,7 @@
   <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>Directo</value></data>
   <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>Incremental</value></data>
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Invertir al mantener</value></data>
-  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Directo = leer el descriptor de fuente; Incremental = incrementar un acumulador con los botones Arriba/Abajo; Invertir al mantener = invertir la salida de la fila mientras se mantiene un botón modificador.</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Directo - leer el descriptor de fuente. Incremental - incrementar un acumulador con los botones Arriba/Abajo. Invertir al mantener - invertir la salida de la fila mientras se mantiene un botón modificador. Rampa - una envolvente de eje basada en el tiempo (ataque y liberación) controlada por las teclas de dirección Arriba/Abajo.</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>Botón que incrementa el acumulador hacia arriba mientras se mantiene</value></data>
   <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Arriba: botón que incrementa el acumulador hacia arriba mientras se mantiene.</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Botón que reduce el acumulador hacia abajo mientras se mantiene</value></data>

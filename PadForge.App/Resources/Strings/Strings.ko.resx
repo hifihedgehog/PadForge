@@ -455,7 +455,7 @@
   <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>직접</value></data>
   <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>증분</value></data>
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>누른 채 반전</value></data>
-  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>직접 = 소스 디스크립터를 읽음; 증분 = 위/아래 버튼으로 누산기를 조정함; 누른 채 반전 = 수정자 버튼을 누르고 있는 동안 행의 출력을 반전함.</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>직접 - 소스 디스크립터를 읽음. 증분 - 위/아래 버튼으로 누산기를 조정함. 누른 채 반전 - 수정자 버튼을 누르고 있는 동안 행의 출력을 반전함. 램프 - 위/아래 방향 키로 구동되는 시간 기반 축 엔벨로프(어택과 릴리스).</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>누르고 있는 동안 누산기를 위로 증가시키는 버튼</value></data>
   <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>위: 누르고 있는 동안 누산기를 위로 증가시키는 버튼.</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>누르고 있는 동안 누산기를 아래로 감소시키는 버튼</value></data>

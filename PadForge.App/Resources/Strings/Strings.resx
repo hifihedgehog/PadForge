@@ -705,7 +705,7 @@
   <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>Direct</value></data>
   <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>Incremental</value></data>
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Invert On Hold</value></data>
-  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direct = read the source descriptor; Incremental = ramp an accumulator via Up/Down buttons; Invert On Hold = flip the row's output while a modifier button is held; Ramp = a time-based axis envelope (attack and release) driven by Up/Down direction keys.</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direct - read the source descriptor. Incremental - ramp an accumulator via Up/Down buttons. Invert On Hold - flip the row's output while a modifier button is held. Ramp - a time-based axis envelope (attack and release) driven by Up/Down direction keys.</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>Button that ramps the accumulator upward while held</value></data>
   <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Up: button that ramps the accumulator upward while held.</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Button that ramps the accumulator downward while held</value></data>

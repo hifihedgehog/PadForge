@@ -455,7 +455,7 @@
   <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>Direct</value></data>
   <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>Incrementeel</value></data>
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Inverteren bij vasthouden</value></data>
-  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direct = lees de brondescriptor; Incrementeel = verhoog een accumulator via Omhoog/Omlaag-knoppen; Inverteren bij vasthouden = draai de uitvoer van de rij om terwijl een aanpassingsknop ingedrukt is.</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direct - lees de brondescriptor. Incrementeel - verhoog een accumulator via Omhoog/Omlaag-knoppen. Inverteren bij vasthouden - draai de uitvoer van de rij om terwijl een aanpassingsknop ingedrukt is. Verloop - een tijdgebaseerde as-envelop (attack en release), aangestuurd door de Omhoog/Omlaag-richtingstoetsen.</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>Knop die de accumulator omhoog stuurt zolang ingedrukt</value></data>
   <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Omhoog: knop die de accumulator omhoog stuurt zolang ingedrukt.</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Knop die de accumulator omlaag stuurt zolang ingedrukt</value></data>

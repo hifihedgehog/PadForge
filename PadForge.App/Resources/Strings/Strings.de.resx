@@ -455,7 +455,7 @@
   <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>Direkt</value></data>
   <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>Inkrementell</value></data>
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Beim Halten umkehren</value></data>
-  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direkt = Quelldeskriptor direkt lesen; Inkrementell = Akkumulator über Auf/Ab-Tasten rampen; Beim Halten umkehren = Ausgang der Zeile umkehren, solange eine Modifikator-Taste gehalten wird.</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>Direkt - Quelldeskriptor direkt lesen. Inkrementell - Akkumulator über Auf/Ab-Tasten rampen. Beim Halten umkehren - Ausgang der Zeile umkehren, solange eine Modifikator-Taste gehalten wird. Rampe - eine zeitbasierte Achsen-Hüllkurve (Attack und Release), gesteuert durch die Auf/Ab-Richtungstasten.</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>Taste, die den Akkumulator beim Halten nach oben rampt</value></data>
   <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>Auf: Taste, die den Akkumulator beim Halten nach oben rampt.</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Taste, die den Akkumulator beim Halten nach unten rampt</value></data>

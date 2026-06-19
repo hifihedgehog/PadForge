@@ -504,6 +504,17 @@ namespace PadForge.Engine.RemoteLink
                 }
                 else
                 {
+                    // Show the device under the peer it came from: append the peer's
+                    // name parenthetically (the custom name we gave it, else its
+                    // announced host name). Done once at first connect, so reconnects
+                    // and slot moves keep the existing device's name (no double suffix).
+                    var peer = _trust.Peers.FirstOrDefault(p =>
+                        string.Equals(p.FingerprintHex, info.PeerFingerprintHex, StringComparison.OrdinalIgnoreCase));
+                    string peerName = peer == null ? null
+                        : (!string.IsNullOrWhiteSpace(peer.Name) ? peer.Name : peer.HostName);
+                    if (!string.IsNullOrWhiteSpace(peerName))
+                        info.Name = $"{info.Name} ({peerName})";
+
                     var dev = new RemotePeerDevice(info) { LinkSlot = info.Slot };
                     dev.SetConnected(info.Online);
                     next[info.Slot] = dev;

@@ -251,6 +251,7 @@ namespace PadForge.Common
             var s = Strings.Instance;
             var localized = name switch
             {
+                "Any NFC Tag" => s.Mapping_NfcAnyTag,
                 "Left Stick X" => s.DevObj_LeftStickX,
                 "Left Stick Y" => s.DevObj_LeftStickY,
                 "Left Trigger" => s.DevObj_LeftTrigger,
@@ -780,7 +781,10 @@ namespace PadForge.Common
             ud.ForceRawJoystickMode ||
             (ud.CapType != InputDeviceType.Gamepad &&
              ud.CapType != InputDeviceType.Mouse &&
-             ud.CapType != InputDeviceType.Keyboard);
+             ud.CapType != InputDeviceType.Keyboard &&
+             // NFC readers carry one named button ("Any NFC Tag"); show the
+             // friendly name from GetDeviceObjects, not "Button 0" (#150).
+             ud.CapType != InputDeviceType.Nfc);
 
         /// <summary>Surfaces touchpad gesture descriptors in the input
         /// picker, one block per touchpad surface the device exposes.

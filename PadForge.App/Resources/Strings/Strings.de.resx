@@ -1076,6 +1076,7 @@
   <data name="DevObj_POV" xml:space="preserve"><value>POV</value></data>
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>Taste {0}</value></data>
+  <data name="Mapping_NfcAnyTag" xml:space="preserve"><value>Beliebiger NFC-Tag</value></data>
   <data name="DevObj_AxisN" xml:space="preserve"><value>Achse {0}</value></data>
   <data name="DevObj_Misc1" xml:space="preserve"><value>Teilen</value></data>
   <data name="DevObj_Misc2" xml:space="preserve"><value>Sonstige 2</value></data>

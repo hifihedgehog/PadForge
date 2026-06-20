@@ -1628,6 +1628,7 @@ public class Strings : INotifyPropertyChanged
     public string DevObj_POV => Get("DevObj_POV");
     public string DevObj_POVN => Get("DevObj_POVN");
     public string DevObj_Button => Get("DevObj_Button");
+    public string Mapping_NfcAnyTag => Get("Mapping_NfcAnyTag");
     public string DevObj_AxisN => Get("DevObj_AxisN");
     public string DevObj_Misc1 => Get("DevObj_Misc1");
     public string DevObj_Misc2 => Get("DevObj_Misc2");

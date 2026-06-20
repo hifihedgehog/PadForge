@@ -44,7 +44,7 @@ namespace PadForge.Engine.Haptics
             // +Infinity would otherwise spin forever (Inf * 0.5f == Inf keeps
             // the upper loop's condition true), and NaN slips past every
             // comparison (all are unordered-false) and would propagate a
-            // non-finite value into Math.Log2 and a garbage byte. The reference
+            // non-finite value into MathF.Log2 and a garbage byte. The reference
             // fold_frequency (rumble.h:27-32) has the same latent +Inf spin; the
             // guard is the deliberate divergence that keeps it bounded.
             if (float.IsNaN(freq) || float.IsInfinity(freq) || freq <= 0.0f) return JoyConFreqMin;

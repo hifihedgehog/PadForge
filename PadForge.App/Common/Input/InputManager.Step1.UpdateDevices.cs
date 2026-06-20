@@ -772,6 +772,11 @@ namespace PadForge.Common.Input
         // appears later in the session is still picked up (self-healing like
         // the MIDI sweep). Counts down; Start() is attempted at zero.
         private int _nfcStartRetryCountdown;
+        // Set true by ShutdownNfcReaders so a poll thread still inside Phase 1f
+        // after the engine stop (the InputManager.Stop join can time out) cannot
+        // re-Start a fresh monitor + context after teardown. Mirrors the MIDI
+        // _midiInputsSuppressed latch.
+        private volatile bool _nfcInputsSuppressed;
         private const int _nfcStartRetryPolls = 300; // ~5 s at 60 Hz
 
         /// <summary>
@@ -912,6 +917,7 @@ namespace PadForge.Common.Input
         /// </summary>
         public void ShutdownNfcReaders()
         {
+            _nfcInputsSuppressed = true;
             lock (_nfcReadersLock)
             {
                 foreach (var kvp in _openedNfcReaders)
@@ -940,6 +946,11 @@ namespace PadForge.Common.Input
         /// </summary>
         private bool UpdateNfcReaderDevices()
         {
+            // Suppressed after teardown so a late poll cannot resurrect the
+            // monitor + context once ShutdownNfcReaders has disposed Active.
+            if (_nfcInputsSuppressed)
+                return false;
+
             var svc = PadForge.Services.NfcReaderService.Active;
             if (svc == null)
             {

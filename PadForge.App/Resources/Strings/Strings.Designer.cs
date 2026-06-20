@@ -1550,6 +1550,11 @@ public class Strings : INotifyPropertyChanged
     public string Settings_GyroAimEngageMode_Tooltip => Get("Settings_GyroAimEngageMode_Tooltip");
     public string Settings_GyroAimEngageMode_Hold => Get("Settings_GyroAimEngageMode_Hold");
     public string Settings_GyroAimEngageMode_Toggle => Get("Settings_GyroAimEngageMode_Toggle");
+    public string Settings_GyroEngageStickSide => Get("Settings_GyroEngageStickSide");
+    public string Settings_GyroEngageStickSide_Tooltip => Get("Settings_GyroEngageStickSide_Tooltip");
+    public string Settings_GyroEngageStickSide_Right => Get("Settings_GyroEngageStickSide_Right");
+    public string Settings_GyroEngageStickSide_Left => Get("Settings_GyroEngageStickSide_Left");
+    public string Settings_GyroEngageStickSide_Either => Get("Settings_GyroEngageStickSide_Either");
     public string Pad_Gyro_Engage_Header => Get("Pad_Gyro_Engage_Header");
     public string Pad_Gyro_Engage_Subtitle => Get("Pad_Gyro_Engage_Subtitle");
     public string Pad_Gyro_Space_Local => Get("Pad_Gyro_Space_Local");
@@ -1588,6 +1593,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetGyroEasyAimThreshold => Get("Pad_ResetGyroEasyAimThreshold");
     public string Pad_ResetGyroAimEngageButton => Get("Pad_ResetGyroAimEngageButton");
     public string Pad_ResetGyroAimEngageMode => Get("Pad_ResetGyroAimEngageMode");
+    public string Pad_ResetGyroEngageStickSide => Get("Pad_ResetGyroEngageStickSide");
     public string Mapping_GyroSensitivity => Get("Mapping_GyroSensitivity");
     public string Mapping_GyroSensitivity_Tooltip => Get("Mapping_GyroSensitivity_Tooltip");
     public string Mapping_MouseSpeedX => Get("Mapping_MouseSpeedX");

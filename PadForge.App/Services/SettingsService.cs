@@ -2074,6 +2074,7 @@ namespace PadForge.Services
                 padVm.GyroOutputCurve = string.IsNullOrEmpty(ps.GyroOutputCurve) ? "Linear" : ps.GyroOutputCurve;
                 padVm.GyroSensitivityUnits = string.IsNullOrEmpty(ps.GyroSensitivityUnits) ? "Multiplier" : ps.GyroSensitivityUnits;
                 padVm.GyroEasyAimStickThreshold = TryParseDouble(ps.GyroEasyAimStickThreshold, 0);
+                padVm.GyroEngageStickSide = string.IsNullOrEmpty(ps.GyroEngageStickSide) ? "Right" : ps.GyroEngageStickSide;
 
                 // Load JoyShockMapper-canongyro extensions.
                 padVm.GyroSpace = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace;
@@ -3301,6 +3302,7 @@ namespace PadForge.Services
                     ps.GyroOutputCurve = padVm.GyroOutputCurve ?? "Linear";
                     ps.GyroSensitivityUnits = padVm.GyroSensitivityUnits ?? "Multiplier";
                     ps.GyroEasyAimStickThreshold = padVm.GyroEasyAimStickThreshold.ToString(ic);
+                    ps.GyroEngageStickSide = string.IsNullOrEmpty(padVm.GyroEngageStickSide) ? "Right" : padVm.GyroEngageStickSide;
 
                     // Write JoyShockMapper-canongyro extensions.
                     ps.GyroSpace = padVm.GyroSpace ?? "Local";

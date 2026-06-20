@@ -953,7 +953,7 @@ namespace PadForge
                         nameof(PadViewModel.GyroSmoothingWindowMs) or
                         nameof(PadViewModel.GyroRealWorldCalibration) or
                         nameof(PadViewModel.GyroAimEngageButton) or nameof(PadViewModel.GyroAimEngageDeviceGuid) or
-                        nameof(PadViewModel.GyroAimEngageMode) or
+                        nameof(PadViewModel.GyroAimEngageMode) or nameof(PadViewModel.GyroEngageStickSide) or
                         nameof(PadViewModel.GyroInvertPitch) or nameof(PadViewModel.GyroInvertYawRoll) or
                         nameof(PadViewModel.GyroApplyTuningToPassthrough) or
                         // Steering at-lock feedback (#94) — per-slot toggles + tunables.

@@ -82,6 +82,7 @@ namespace PadForge.Engine
         public const int Supplemental = 25;
         public const int Touchpad = 26;
         public const int Midi = 27;
+        public const int Nfc = 28;
     }
 
     // ─────────────────────────────────────────────────────────────────

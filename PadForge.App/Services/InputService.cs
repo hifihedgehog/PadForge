@@ -9134,6 +9134,8 @@ namespace PadForge.Services
                 return;
 
             try { Stop(); } catch { /* Best effort on shutdown */ }
+            // Cancel the NFC monitor thread + release the PC/SC context (#150).
+            try { _inputManager?.ShutdownNfcReaders(); } catch { /* Best effort on shutdown */ }
             _disposed = true;
             GC.SuppressFinalize(this);
         }

@@ -318,6 +318,9 @@ namespace PadForge.Common.Input
             // --- Phase 1e: MIDI input endpoints (issue #128) ---
             changed |= UpdateMidiInputDevices();
 
+            // --- Phase 1f: NFC PC/SC readers (issue #150) ---
+            changed |= UpdateNfcReaderDevices();
+
             // --- Phase 2: Detect disconnected SDL devices (debounced) ---
             //
             // Signals that indicate the device might be gone:
@@ -757,6 +760,14 @@ namespace PadForge.Common.Input
         private volatile bool _midiEnumRunning;
         private volatile bool _midiInputsSuppressed;
 
+        // NFC PC/SC readers (Phase 1f, issue #150). The monitor service owns
+        // the PC/SC context + its own event thread; this sweep just mirrors
+        // the visible reader set into UserDevices, like the MIDI sweep above.
+        private readonly Dictionary<string, NfcReaderDevice> _openedNfcReaders =
+            new Dictionary<string, NfcReaderDevice>(StringComparer.OrdinalIgnoreCase);
+        private readonly object _nfcReadersLock = new object();
+        private bool _nfcStartAttempted;
+
         /// <summary>
         /// Tears down every open MIDI input connection and the shared input
         /// session, and suppresses Phase 1e until app restart. Called before
@@ -881,6 +892,113 @@ namespace PadForge.Common.Input
                         }
                         dev.Dispose();
                         _openedMidiInputs.Remove(id);
+                        changed = true;
+                    }
+                }
+            }
+
+            return changed;
+        }
+
+        /// <summary>
+        /// Tears down every open NFC reader device and the shared monitor
+        /// service. Called on app shutdown alongside ShutdownMidiInputs.
+        /// </summary>
+        public void ShutdownNfcReaders()
+        {
+            lock (_nfcReadersLock)
+            {
+                foreach (var kvp in _openedNfcReaders)
+                {
+                    var ud = FindOnlineDeviceByInstanceGuid(kvp.Value.InstanceGuid);
+                    if (ud != null)
+                    {
+                        ud.IsOnline = false;
+                        ud.Device = null;
+                    }
+                    kvp.Value.Dispose();
+                }
+                _openedNfcReaders.Clear();
+            }
+            try { PadForge.Services.NfcReaderService.Active?.Dispose(); } catch { }
+        }
+
+        /// <summary>
+        /// Phase 1f: registers each visible PC/SC reader as an input device
+        /// and marks vanished ones offline, mirroring UpdateMidiInputDevices.
+        /// The shared monitor (NfcReaderService) is started once, lazily; when
+        /// the Smart Card service is unavailable it never starts and this sweep
+        /// is permanently inert, exactly like absent MIDI services.
+        /// </summary>
+        private bool UpdateNfcReaderDevices()
+        {
+            var svc = PadForge.Services.NfcReaderService.Active;
+            if (svc == null)
+            {
+                if (_nfcStartAttempted) return false;
+                _nfcStartAttempted = true;
+                svc = PadForge.Services.NfcReaderService.Start();
+                if (svc == null) return false; // no Smart Card service
+            }
+
+            var readers = svc.GetReaders();
+
+            bool changed = false;
+            var current = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            lock (_nfcReadersLock)
+            {
+                foreach (var reader in readers)
+                {
+                    current.Add(reader);
+
+                    if (_openedNfcReaders.TryGetValue(reader, out var existing))
+                    {
+                        // Recreate if the user removed it from the Devices page.
+                        if (FindOnlineDeviceByInstanceGuid(existing.InstanceGuid) != null)
+                            continue;
+                        existing.Dispose();
+                        _openedNfcReaders.Remove(reader);
+                    }
+
+                    try
+                    {
+                        var dev = new NfcReaderDevice(reader);
+                        if (!dev.Open())
+                        {
+                            dev.Dispose();
+                            continue;
+                        }
+                        UserDevice ud = FindOrCreateUserDevice(dev.InstanceGuid, dev.ProductGuid);
+                        ud.LoadFromExternalDevice(dev);
+                        ud.IsOnline = true;
+                        _openedNfcReaders[reader] = dev;
+                        changed = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        RaiseError($"Error opening NFC reader '{reader}'", ex);
+                    }
+                }
+
+                List<string> gone = null;
+                foreach (var kvp in _openedNfcReaders)
+                    if (!current.Contains(kvp.Key))
+                        (gone ??= new List<string>()).Add(kvp.Key);
+
+                if (gone != null)
+                {
+                    foreach (var reader in gone)
+                    {
+                        var dev = _openedNfcReaders[reader];
+                        var ud = FindOnlineDeviceByInstanceGuid(dev.InstanceGuid);
+                        if (ud != null)
+                        {
+                            ud.IsOnline = false;
+                            ud.Device = null;
+                        }
+                        dev.Dispose();
+                        _openedNfcReaders.Remove(reader);
                         changed = true;
                     }
                 }

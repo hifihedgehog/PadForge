@@ -58,8 +58,18 @@ namespace PadForge.Engine.Haptics
         /// first) into 16-bit PCM. Mirrors the Wii Remote / Dolphin decode.</summary>
         public static short[] Decode(byte[] adpcm)
         {
-            if (adpcm == null || adpcm.Length == 0) return Array.Empty<short>();
             var s = State.Initial;
+            return Decode(adpcm, ref s);
+        }
+
+        /// <summary>Streaming decode: continues from the caller-held
+        /// <paramref name="s"/> instead of resetting, so consecutive report
+        /// payloads decode without a state discontinuity at each boundary (the
+        /// Wii decoder keeps its predictor/step across reports, never resetting
+        /// mid-cue). Output is always 2 samples per input byte.</summary>
+        public static short[] Decode(byte[] adpcm, ref State s)
+        {
+            if (adpcm == null || adpcm.Length == 0) return Array.Empty<short>();
             var pcm = new short[adpcm.Length * 2];
             int o = 0;
             foreach (byte b in adpcm)
@@ -73,11 +83,25 @@ namespace PadForge.Engine.Haptics
         /// <summary>Encodes 16-bit PCM into Yamaha ADPCM (2 samples/byte, high
         /// nibble first). Greedy nearest-reconstruction search over the 16
         /// nibbles, advancing the encoder's mirror of the decode state so the
-        /// stream round-trips through <see cref="Decode"/>.</summary>
+        /// stream round-trips through <see cref="Decode(byte[])"/>. Resets state
+        /// each call (whole-cue encode).</summary>
         public static byte[] Encode(short[] pcm)
         {
-            if (pcm == null || pcm.Length == 0) return Array.Empty<byte>();
             var s = State.Initial;
+            return Encode(pcm, ref s);
+        }
+
+        /// <summary>Streaming encode: continues from the caller-held
+        /// <paramref name="s"/>. A chunked stream (encode per report payload)
+        /// must use this so the predictor/step carry forward; a fresh
+        /// <see cref="Encode(short[])"/> per chunk would reset to
+        /// predictor=0/step=127 while the Wii decoder keeps its running state,
+        /// producing an amplitude discontinuity (audible click) at every report
+        /// boundary. Pass even-length chunks so the byte packing stays aligned
+        /// across calls (an odd chunk leaves a half-filled trailing byte).</summary>
+        public static byte[] Encode(short[] pcm, ref State s)
+        {
+            if (pcm == null || pcm.Length == 0) return Array.Empty<byte>();
             int outLen = (pcm.Length + 1) / 2;
             var outBytes = new byte[outLen];
 

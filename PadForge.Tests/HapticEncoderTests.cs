@@ -33,16 +33,31 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void JoyConFold_NonFiniteFoldsToFloor_NoHang()
+        {
+            // +Infinity must NOT spin the fold loop (Inf * 0.5f == Inf), and NaN
+            // (all comparisons unordered-false) must not slip through to a
+            // garbage byte. Both fold to the band floor. A 2s xUnit budget makes
+            // a regression to an unguarded loop fail rather than hang forever.
+            Assert.Equal(HapticToneEncoder.JoyConFreqMin, HapticToneEncoder.FoldJoyConFrequency(float.PositiveInfinity));
+            Assert.Equal(HapticToneEncoder.JoyConFreqMin, HapticToneEncoder.FoldJoyConFrequency(float.NegativeInfinity));
+            Assert.Equal(HapticToneEncoder.JoyConFreqMin, HapticToneEncoder.FoldJoyConFrequency(float.NaN));
+            // And the encoder itself must terminate and emit a defined packet.
+            byte[] bytes = HapticToneEncoder.EncodeJoyConRumble(float.PositiveInfinity, 0.5f);
+            Assert.Equal(4, bytes.Length);
+        }
+
+        [Fact]
         public void JoyConEncode_MatchesReferenceFormulaByteForByte()
         {
             // Recompute encode_rumble (rumble.h:87-113) independently for a
             // mid-band tone and assert the implementation agrees bit for bit.
-            // AwayFromZero matches the reference roundf (NOT C# default ToEven).
+            // Float32 (MathF) + AwayFromZero mirrors the reference roundf(log2f).
             float freq = 320f, amp = 0.5f;
-            byte encFreq = (byte)Math.Round(Math.Log2(freq / 10.0) * 32.0, MidpointRounding.AwayFromZero);
+            byte encFreq = (byte)MathF.Round(MathF.Log2(freq / 10.0f) * 32.0f, MidpointRounding.AwayFromZero);
             ushort hf = (ushort)((encFreq - 0x60) * 4);
             byte lf = (byte)(encFreq - 0x40);
-            byte encAmp = (byte)Math.Round(Math.Log2(amp * 8.7) * 32.0, MidpointRounding.AwayFromZero); // amp > 0.23 segment
+            byte encAmp = (byte)MathF.Round(MathF.Log2(amp * 8.7f) * 32.0f, MidpointRounding.AwayFromZero); // amp > 0.23 segment
             ushort hfAmp = (ushort)(encAmp * 2);
             byte lfAmp = (byte)((encAmp >> 1) + 0x40);
             var expected = new byte[]
@@ -56,24 +71,39 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void JoyConEncode_RoundsHalfAwayFromZero_NotBankers()
+        public void JoyConEncode_UsesFloatAwayFromZero_NotDoubleNotBankers()
         {
-            // The reference roundf rounds half away from zero. At the analytic
-            // boundary f = 10*2^((k+0.5)/32) the product log2(f/10)*32 == k+0.5.
-            // For k=88 -> 68.004254 Hz: away-from-zero yields enc_freq 89,
-            // banker's (ToEven) would yield 88. enc_freq feeds lf = enc_freq-0x40,
-            // and out[2]'s low 7 bits carry lf. So the low 7 bits must be
-            // 89-0x40 = 25, never 24.
-            float freq = (float)(10.0 * Math.Pow(2.0, 88.5 / 32.0));
-            byte[] bytes = HapticToneEncoder.EncodeJoyConRumble(freq, 0.5f);
+            // rumble.h:95 computes enc_freq = roundf(log2f(freq/10) * 32) in
+            // float32, round-half-away-from-zero. The encoder must match THAT,
+            // not C# default double Math.Log2 and not banker's ToEven. Both a
+            // regression to double and to ToEven diverge from the float-away
+            // reference at the analytic tie frequencies f = 10*2^((k+0.5)/32),
+            // where float32 log2f lands exactly on k+0.5. Sweep those ties and
+            // assert the encoder equals the float-away reference everywhere, and
+            // confirm at least one tie actually discriminates (so this test has
+            // teeth, unlike a single-point check that may miss the midpoint).
+            bool discriminating = false;
+            for (int k = 66; k <= 180; k += 2) // even k: at a true .5, away != even
+            {
+                float freq = (float)(10.0 * Math.Pow(2.0, (k + 0.5) / 32.0));
+                if (freq < HapticToneEncoder.JoyConFreqMin || freq > HapticToneEncoder.JoyConFreqMax)
+                    continue;
 
-            byte awayEncFreq = (byte)Math.Round(Math.Log2(freq / 10.0) * 32.0, MidpointRounding.AwayFromZero);
-            int expectedLf = (awayEncFreq - 0x40) & 0x7F;
-            Assert.Equal(expectedLf, bytes[2] & 0x7F);
-            // And explicitly: it must not be the banker's-rounding result.
-            byte evenEncFreq = (byte)Math.Round(Math.Log2(freq / 10.0) * 32.0, MidpointRounding.ToEven);
-            if (awayEncFreq != evenEncFreq)
-                Assert.NotEqual((evenEncFreq - 0x40) & 0x7F, bytes[2] & 0x7F);
+                byte refAway = (byte)MathF.Round(MathF.Log2(freq / 10.0f) * 32.0f, MidpointRounding.AwayFromZero);
+                byte refEven = (byte)MathF.Round(MathF.Log2(freq / 10.0f) * 32.0f, MidpointRounding.ToEven);
+                byte dblAway = (byte)Math.Round(Math.Log2(freq / 10.0) * 32.0, MidpointRounding.AwayFromZero);
+
+                int implLf = HapticToneEncoder.EncodeJoyConRumble(freq, 0.5f)[2] & 0x7F;
+
+                // Must equal the float away-from-zero reference. A regression to
+                // double or ToEven would diverge here at a discriminating tie.
+                Assert.Equal((refAway - 0x40) & 0x7F, implLf);
+
+                if (refAway != refEven) discriminating = true;   // catches ToEven regression
+                if (refAway != dblAway) discriminating = true;   // catches double regression
+            }
+            Assert.True(discriminating,
+                "no tie frequency exercised the float/away-from-zero divergence; the guard would be vacuous");
         }
 
         [Fact]
@@ -175,6 +205,48 @@ namespace PadForge.Tests
             double meanErr = sumErr / n;
             // Yamaha ADPCM on a smooth tone tracks well; well under 10% FS.
             Assert.True(meanErr < 3276, $"mean abs error {meanErr} too high");
+        }
+
+        [Fact]
+        public void Adpcm_ChunkedStreamMatchesWholeCue()
+        {
+            // A streaming sink encodes per report payload, not whole-cue. The
+            // state-carrying overloads must carry predictor/step across chunks
+            // so the chunked byte stream is IDENTICAL to a single-call encode
+            // (else the Wii decoder, which never resets mid-cue, hears a click
+            // at each report boundary). Reset-per-chunk would diverge after the
+            // first chunk.
+            int n = 256;
+            var pcm = new short[n];
+            for (int i = 0; i < n; i++)
+                pcm[i] = (short)(6000 * Math.Sin(2 * Math.PI * i / 24.0));
+
+            byte[] whole = WiiSpeakerAdpcm.Encode(pcm);
+
+            // Encode in even-length chunks carrying state forward.
+            var s = WiiSpeakerAdpcm.State.Initial;
+            var chunked = new System.Collections.Generic.List<byte>();
+            for (int off = 0; off < n; off += 40) // 40 = even chunk
+            {
+                int len = Math.Min(40, n - off);
+                var chunk = new short[len];
+                Array.Copy(pcm, off, chunk, 0, len);
+                chunked.AddRange(WiiSpeakerAdpcm.Encode(chunk, ref s));
+            }
+
+            Assert.Equal(whole, chunked.ToArray());
+
+            // And a reset-per-chunk encode must NOT match (proves the test has
+            // teeth: state continuity is what makes the streams equal).
+            var resetChunked = new System.Collections.Generic.List<byte>();
+            for (int off = 0; off < n; off += 40)
+            {
+                int len = Math.Min(40, n - off);
+                var chunk = new short[len];
+                Array.Copy(pcm, off, chunk, 0, len);
+                resetChunked.AddRange(WiiSpeakerAdpcm.Encode(chunk)); // fresh state each chunk
+            }
+            Assert.NotEqual(whole, resetChunked.ToArray());
         }
 
         [Fact]

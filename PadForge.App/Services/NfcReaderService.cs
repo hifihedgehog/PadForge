@@ -74,6 +74,15 @@ namespace PadForge.Services
             // than every wake.
             var lastState = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
+            // The PnP pseudo-reader's last-known state. This MUST carry forward
+            // like a real reader's: SCardGetStatusChange returns immediately
+            // whenever any watched entry's actual state differs from the
+            // dwCurrentState passed in, and the PnP reader's real state is never
+            // UNAWARE. Re-pinning it to UNAWARE every loop guaranteed a
+            // perpetual mismatch and an immediate return, busy-spinning a CPU
+            // core. Seed UNAWARE once, then feed back the returned event state.
+            int pnpState = WinScard.SCARD_STATE_UNAWARE;
+
             while (_running)
             {
                 List<string> readers;
@@ -89,7 +98,7 @@ namespace PadForge.Services
                 states[0] = new WinScard.SCARD_READERSTATE
                 {
                     szReader = WinScard.PNP_NOTIFICATION,
-                    dwCurrentState = WinScard.SCARD_STATE_UNAWARE,
+                    dwCurrentState = pnpState,
                     rgbAtr = new byte[36],
                 };
                 for (int i = 0; i < readers.Count; i++)
@@ -111,12 +120,37 @@ namespace PadForge.Services
                     uint urc = unchecked((uint)rc);
                     // Cancelled = Dispose() asked us to stop.
                     if (urc == WinScard.SCARD_E_CANCELLED) break;
-                    // No readers yet: wait for the PnP entry alone would have
-                    // returned. Brief sleep avoids a busy spin when the service
-                    // bounces, then re-enumerate.
+
+                    // The Smart Card service stopped (e.g. the last reader was
+                    // unplugged on Win10/11, which stops SCardSvr, or the
+                    // service was restarted). The existing context is now dead
+                    // and winscard never re-binds it to a restarted resource
+                    // manager, so we must release it and establish a fresh one
+                    // or NFC never recovers for the session.
+                    if (urc == WinScard.SCARD_E_NO_SERVICE
+                        || urc == WinScard.SCARD_E_SERVICE_STOPPED
+                        || urc == WinScard.SCARD_E_INVALID_HANDLE)
+                    {
+                        Thread.Sleep(1000);
+                        if (!_running) break;
+                        if (TryReestablishContext())
+                        {
+                            lastState.Clear();
+                            pnpState = WinScard.SCARD_STATE_UNAWARE;
+                        }
+                        continue;
+                    }
+
+                    // Other transient error (no readers yet, timeout). Brief
+                    // sleep avoids a busy spin, then re-enumerate.
                     Thread.Sleep(500);
                     continue;
                 }
+
+                // Carry the PnP entry's returned state forward (masked of the
+                // CHANGED bit) so the next call blocks instead of returning
+                // immediately. This is the busy-spin fix.
+                pnpState = states[0].dwEventState & ~WinScard.SCARD_STATE_CHANGED;
 
                 // states[0] is PnP; entries 1.. are the real readers.
                 for (int i = 1; i < states.Length; i++)
@@ -129,11 +163,13 @@ namespace PadForge.Services
                     bool present = (ev & WinScard.SCARD_STATE_PRESENT) != 0;
                     if (!changed || !present) continue;
 
-                    // A card just arrived on this reader. Read its UID and
-                    // fan out. Connect/transmit can fail transiently (the tag
-                    // is mid-seat); a null UID just drops the event.
+                    // A card just arrived on this reader. ReadUid establishes
+                    // its own short-lived context (it never touches the
+                    // monitored context), so a connect/transmit racing teardown
+                    // cannot crash. A null UID (mid-seat tag, foreign card) just
+                    // drops the event.
                     string uid = null;
-                    try { uid = WinScard.ReadUid(_ctx, reader); }
+                    try { uid = WinScard.ReadUid(reader); }
                     catch { }
                     if (!string.IsNullOrEmpty(uid))
                     {
@@ -141,7 +177,41 @@ namespace PadForge.Services
                         catch { }
                     }
                 }
+
+                // Prune state for readers that vanished, so a pathological
+                // stack that renames a reader on every reconnect cannot grow
+                // lastState without bound across a long session.
+                if (lastState.Count > readers.Count)
+                {
+                    var live = new HashSet<string>(readers, StringComparer.OrdinalIgnoreCase);
+                    var stale = new List<string>();
+                    foreach (var k in lastState.Keys)
+                        if (!live.Contains(k)) stale.Add(k);
+                    foreach (var k in stale) lastState.Remove(k);
+                }
             }
+        }
+
+        /// <summary>Releases the dead context and establishes a fresh one in
+        /// place, so a stopped-then-restarted Smart Card service is recovered
+        /// without restarting PadForge. Returns false (caller retries) on
+        /// failure.</summary>
+        private bool TryReestablishContext()
+        {
+            var old = _ctx;
+            if (old != IntPtr.Zero)
+            {
+                try { WinScard.SCardReleaseContext(old); } catch { }
+            }
+            int rc = WinScard.SCardEstablishContext(
+                WinScard.SCARD_SCOPE_SYSTEM, IntPtr.Zero, IntPtr.Zero, out var fresh);
+            if (rc != WinScard.SCARD_S_SUCCESS || fresh == IntPtr.Zero)
+            {
+                _ctx = IntPtr.Zero;
+                return false;
+            }
+            _ctx = fresh;
+            return true;
         }
 
         public void Dispose()
@@ -152,12 +222,22 @@ namespace PadForge.Services
             {
                 try { WinScard.SCardCancel(ctx); } catch { }
             }
-            try { _thread?.Join(1000); } catch { }
-            if (ctx != IntPtr.Zero)
+            // Wait for the monitor thread to actually exit before releasing the
+            // context. The monitored context is only ever used by the
+            // cancelable SCardGetStatusChange (ReadUid uses its own child
+            // context), so SCardCancel reliably ends the only blocking call and
+            // the thread exits promptly. Only release the context if the thread
+            // confirmed exit; if the join times out, leave the context for the
+            // OS to reclaim at process exit rather than release it under an
+            // in-flight native call. This is app-shutdown only, so a leaked
+            // context is bounded and harmless.
+            bool exited = true;
+            try { exited = _thread?.Join(2000) ?? true; } catch { exited = true; }
+            if (exited && ctx != IntPtr.Zero)
             {
                 try { WinScard.SCardReleaseContext(ctx); } catch { }
-                _ctx = IntPtr.Zero;
             }
+            _ctx = IntPtr.Zero;
             if (Active == this) Active = null;
         }
     }

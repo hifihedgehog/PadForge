@@ -40,7 +40,14 @@ namespace PadForge.Engine.Haptics
         /// (fold_frequency, rumble.h:27-32).</summary>
         public static float FoldJoyConFrequency(float freq)
         {
-            if (freq <= 0.0f) return JoyConFreqMin;
+            // NaN and infinity have no pitch class. Fold them to the band floor:
+            // +Infinity would otherwise spin forever (Inf * 0.5f == Inf keeps
+            // the upper loop's condition true), and NaN slips past every
+            // comparison (all are unordered-false) and would propagate a
+            // non-finite value into Math.Log2 and a garbage byte. The reference
+            // fold_frequency (rumble.h:27-32) has the same latent +Inf spin; the
+            // guard is the deliberate divergence that keeps it bounded.
+            if (float.IsNaN(freq) || float.IsInfinity(freq) || freq <= 0.0f) return JoyConFreqMin;
             while (freq < JoyConFreqMin) freq *= 2.0f;
             while (freq > JoyConFreqMax) freq *= 0.5f;
             return freq;
@@ -55,22 +62,25 @@ namespace PadForge.Engine.Haptics
             if (amp < 0.0f) amp = 0.0f;
             if (amp > JoyConAmpMax) amp = JoyConAmpMax;
 
-            // Frequency: enc_freq = round(log2(freq/10) * 32). The reference
-            // uses C roundf (round half AWAY from zero); C# Math.Round defaults
-            // to banker's rounding (ToEven), which differs on the k+0.5
-            // boundaries that real input frequencies hit (e.g. 68.004254 Hz
-            // lands on 88.5). AwayFromZero keeps the wire bytes identical to
-            // rumble.h / rumble_data_table.md.
-            byte encFreq = (byte)Math.Round(Math.Log2(freqHz / 10.0f) * 32.0, MidpointRounding.AwayFromZero);
+            // Frequency: enc_freq = round(log2(freq/10) * 32). Computed in
+            // float32 with MathF.Log2 and MathF.Round, NOT Math.Log2 (double),
+            // to be bit-faithful to the proven-on-hardware reference
+            // rumble.h:95 (roundf(log2f(...) * 32.0f), all float). A double log2
+            // of the same input diverges from the reference by one enc_freq step
+            // at a thin set of boundary frequencies, shifting the wire pitch one
+            // quantization step. MidpointRounding.AwayFromZero matches C roundf
+            // (round half away from zero, not C# default banker's ToEven).
+            byte encFreq = (byte)MathF.Round(MathF.Log2(freqHz / 10.0f) * 32.0f, MidpointRounding.AwayFromZero);
             ushort hf = (ushort)((encFreq - 0x60) * 4);
             byte lf = (byte)(encFreq - 0x40);
 
-            // Amplitude: two log segments, dead below 0.012.
+            // Amplitude: two log segments, dead below 0.012. Same float32 path
+            // as the reference rumble.h:102/104.
             byte encAmp = 0;
             if (amp > 0.23f)
-                encAmp = (byte)Math.Round(Math.Log2(amp * 8.7f) * 32.0, MidpointRounding.AwayFromZero);
+                encAmp = (byte)MathF.Round(MathF.Log2(amp * 8.7f) * 32.0f, MidpointRounding.AwayFromZero);
             else if (amp > 0.012f)
-                encAmp = (byte)Math.Round(Math.Log2(amp * 17.0f) * 16.0, MidpointRounding.AwayFromZero);
+                encAmp = (byte)MathF.Round(MathF.Log2(amp * 17.0f) * 16.0f, MidpointRounding.AwayFromZero);
 
             ushort hfAmp = (ushort)(encAmp * 2);
             byte lfAmp = (byte)((encAmp >> 1) + 0x40);

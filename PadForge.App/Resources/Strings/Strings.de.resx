@@ -1152,6 +1152,7 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Easy-Aim-Schwellenwert zurücksetzen</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Aktivierungs-Taste zurücksetzen</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Aktivierungsmodus zurücksetzen</value></data>
+  <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Aktivierungs-Stick zurücksetzen</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Bewegungsdurchleitung</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Gyro-Abstimmung auf Bewegungsdurchleitung anwenden</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Wendet die optionale Gyro-Abstimmung dieses Tabs (Totzone, Empfindlichkeit, Glättung, Antwortkurve, Invertierung) auf die Bewegungsdaten an, die der virtuelle Controller an das Spiel oder den Emulator meldet. Deaktiviere es, um nur die kalibrierte Messung zu senden und das Spiel seine eigene Empfindlichkeit und Glättung anwenden zu lassen. Die Kalibrierungs-Driftkorrektur greift in beiden Fällen.</value></data>
@@ -1199,6 +1200,11 @@
   <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Halten: Gyro aktiv, solange die Aktivierungstaste gedrückt ist. Umschalten: Jeder Tastendruck schaltet den Gyro um; Loslassen hat keine Wirkung. Umschalten ist über den Polling-Tick hinweg persistent und setzt beim Profilwechsel zurück.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Halten</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Umschalten</value></data>
+  <data name="Settings_GyroEngageStickSide" xml:space="preserve"><value>Aktivierungs-Stick</value></data>
+  <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Welcher Stick die Easy-Aim-Schwelle steuert. Rechts (Standard) lässt vorhandene Profile unverändert. Beide steuert über den Stick, der weiter ausgelenkt wird.</value></data>
+  <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Rechter Stick</value></data>
+  <data name="Settings_GyroEngageStickSide_Left" xml:space="preserve"><value>Linker Stick</value></data>
+  <data name="Settings_GyroEngageStickSide_Either" xml:space="preserve"><value>Beide Sticks</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktivierung</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optionale Bedingungen, wann das Gyro aktiv ist. Stick-Auslenkung und eine Aktivierungs-Taste können das Gyro jeweils freigeben. Eine oder beide sind konfigurierbar. Sind beide gesetzt, müssen beide aktiv sein, damit das Gyro feuert.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Empfindlichkeit</value></data>

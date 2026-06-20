@@ -6257,6 +6257,26 @@
                                             ToolTip="{Binding Pad_ResetGyroEasyAimThreshold, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
+                                <!-- Engage stick side (#120). Which stick's
+                                     deflection the threshold above gates on.
+                                     Right (default) preserves existing profiles.
+                                     Either gates on the larger of the two sticks. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <TextBlock Text="{Binding Settings_GyroEngageStickSide, Source={x:Static strings:Strings.Instance}}"
+                                               Width="270" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_GyroEngageStickSide_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBox SelectedValue="{Binding GyroEngageStickSide, Mode=TwoWay}"
+                                              SelectedValuePath="Tag"
+                                              Width="200" VerticalAlignment="Center"
+                                              ToolTip="{Binding Settings_GyroEngageStickSide_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBoxItem Content="{Binding Settings_GyroEngageStickSide_Right, Source={x:Static strings:Strings.Instance}}" Tag="Right"/>
+                                        <ComboBoxItem Content="{Binding Settings_GyroEngageStickSide_Left, Source={x:Static strings:Strings.Instance}}" Tag="Left"/>
+                                        <ComboBoxItem Content="{Binding Settings_GyroEngageStickSide_Either, Source={x:Static strings:Strings.Instance}}" Tag="Either"/>
+                                    </ComboBox>
+                                    <Button Command="{Binding ResetGyroEngageStickSideCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroEngageStickSide, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
                                 <!-- Aim Engage button — cross-device picker that writes
                                      both the descriptor and owning device GUID atomically.
                                      ItemsSource is the slot's combined cross-device InputChoice

@@ -102,6 +102,11 @@ namespace PadForge.Engine.Common.Mapping
             public float Acceleration;
             public string OutputCurve;
             public float EasyAimStickThreshold01;
+            // Which stick the Easy-Aim threshold gates on (issue #120):
+            // "Right" (default), "Left", or "Either" (the larger of the
+            // two deflections). Empty / unrecognized reads as "Right" for
+            // back-compat with profiles saved before the selector existed.
+            public string EasyAimStickSide;
 
             // Player / World space
             public string Space;                     // "Local" / "Player" / "World"
@@ -148,8 +153,32 @@ namespace PadForge.Engine.Common.Mapping
         /// the binding layer needing direct access to the combined
         /// gamepad state. App wires this against
         /// <c>InputManager.CombinedOutputStates[slot]</c> at startup.
-        /// Returns 0 when slot is empty / state unavailable.</summary>
-        public static Func<int, float> SlotRightStickDeflectionProvider { get; set; }
+        /// Returns 0 when slot is empty / state unavailable. The bool
+        /// argument selects the stick: true = left, false = right (issue
+        /// #120 generalized this from the right-stick-only Easy Aim gate).</summary>
+        public static Func<int, bool, float> SlotStickDeflectionProvider { get; set; }
+
+        /// <summary>Resolves the Easy-Aim gating deflection (0..1) for the
+        /// configured stick side. "Left" / "Either" read accordingly;
+        /// anything else (including "Right", empty, or null) reads the
+        /// right stick so profiles saved before the selector existed keep
+        /// their original right-stick behavior. Returns 1f (gate fully
+        /// open) when the provider is unwired, matching the prior
+        /// <c>?? 1f</c> fallback at the call sites.</summary>
+        private static float ResolveStickDeflection(int slotIndex, string side)
+        {
+            var p = SlotStickDeflectionProvider;
+            if (p == null) return 1f;
+            if (string.Equals(side, "Left", StringComparison.OrdinalIgnoreCase))
+                return p(slotIndex, true);
+            if (string.Equals(side, "Either", StringComparison.OrdinalIgnoreCase))
+            {
+                float l = p(slotIndex, true);
+                float r = p(slotIndex, false);
+                return l > r ? l : r;
+            }
+            return p(slotIndex, false);
+        }
 
         /// <summary>— per-device gravity vector estimator. The app
         /// layer low-pass-filters <c>state.Accel[]</c> per device and
@@ -680,7 +709,7 @@ namespace PadForge.Engine.Common.Mapping
             // configured threshold. Threshold 0 = always-on (default).
             if (tuning.EasyAimStickThreshold01 > 0f && slotIndex >= 0)
             {
-                float defl = SlotRightStickDeflectionProvider?.Invoke(slotIndex) ?? 1f;
+                float defl = ResolveStickDeflection(slotIndex, tuning.EasyAimStickSide);
                 if (defl < tuning.EasyAimStickThreshold01) return 0f;
             }
             // Aim Engage — per-slot resolved engaged bit. Held button or
@@ -837,7 +866,7 @@ namespace PadForge.Engine.Common.Mapping
             // while engage is active.
             if (tuning.EasyAimStickThreshold01 > 0f && slotIndex >= 0)
             {
-                float defl = SlotRightStickDeflectionProvider?.Invoke(slotIndex) ?? 1f;
+                float defl = ResolveStickDeflection(slotIndex, tuning.EasyAimStickSide);
                 if (defl < tuning.EasyAimStickThreshold01) return;
             }
             if (slotIndex >= 0)

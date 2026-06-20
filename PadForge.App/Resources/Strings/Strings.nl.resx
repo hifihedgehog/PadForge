@@ -1183,6 +1183,11 @@
   <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Vasthouden: gyro is actief zolang de activeringsknop wordt ingedrukt. Schakelen: elke druk schakelt de gyro aan of uit, en loslaten doet niets. Schakelen is persistent over de polling-tick en wordt gereset bij profielwisseling.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Vasthouden</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Schakelen</value></data>
+  <data name="Settings_GyroEngageStickSide" xml:space="preserve"><value>Activeringsstick</value></data>
+  <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Welke stick de Easy Aim-drempel regelt. Rechts (standaard) laat bestaande profielen ongewijzigd. Beide gebruikt de stick die het verst wordt uitgeslagen.</value></data>
+  <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Rechterstick</value></data>
+  <data name="Settings_GyroEngageStickSide_Left" xml:space="preserve"><value>Linkerstick</value></data>
+  <data name="Settings_GyroEngageStickSide_Either" xml:space="preserve"><value>Beide sticks</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Activering</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optionele beperkingen op wanneer de gyro actief is. Stickuitslag rechts en een activatieknop kunnen elk de gyro-uitvoer beperken. Configureer één of beide. Als beide zijn ingesteld moeten beide actief zijn voor de gyro werkt.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokaal</value></data>
@@ -1217,6 +1222,7 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim-drempel resetten</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Activatieknop resetten</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Activeringsmodus resetten</value></data>
+  <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Activeringsstick resetten</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Bewegingsdoorgifte</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Gyro-afstemming toepassen op bewegingsdoorgifte</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Past de optionele gyro-afstemming van dit tabblad (dode zone, gevoeligheid, afvlakking, responscurve, omkering) toe op de beweging die de virtuele controller aan het spel of de emulator doorgeeft. Schakel het uit om alleen de gekalibreerde meting te sturen en het spel zijn eigen gevoeligheid en afvlakking te laten toepassen. De kalibratie-driftcorrectie geldt in beide gevallen.</value></data>

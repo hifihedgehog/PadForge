@@ -1493,6 +1493,17 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gyroAimEngageMode, string.IsNullOrEmpty(value) ? "Hold" : value);
         }
 
+        private string _gyroEngageStickSide = "Right";
+        /// <summary>Which stick's deflection drives the Easy-Aim threshold
+        /// gate (issue #120): "Right" (default), "Left", or "Either" (the
+        /// larger of the two). Empty collapses to "Right" so old profiles
+        /// keep their original right-stick behavior.</summary>
+        public string GyroEngageStickSide
+        {
+            get => _gyroEngageStickSide;
+            set => SetProperty(ref _gyroEngageStickSide, string.IsNullOrEmpty(value) ? "Right" : value);
+        }
+
         /// <summary>Tells the view to re-resolve
         /// <see cref="GyroAimEngageSelectedInput"/> after
         /// <see cref="SlotAvailableInputs"/> is populated. Called by
@@ -1690,6 +1701,10 @@ namespace PadForge.ViewModels
         public RelayCommand ResetGyroAimEngageModeCommand =>
             _resetGyroAimEngageModeCommand ??= new RelayCommand(() => GyroAimEngageMode = "Hold");
 
+        private RelayCommand _resetGyroEngageStickSideCommand;
+        public RelayCommand ResetGyroEngageStickSideCommand =>
+            _resetGyroEngageStickSideCommand ??= new RelayCommand(() => GyroEngageStickSide = "Right");
+
         /// <summary>Whether the Aim Engage recorder is currently
         /// listening for the next physical input. Drives the record
         /// button's icon + tooltip swap so the affordance matches the
@@ -1770,6 +1785,7 @@ namespace PadForge.ViewModels
             _resetGyroEngageCardCommand ??= new RelayCommand(() =>
             {
                 GyroEasyAimStickThreshold = 0;
+                GyroEngageStickSide = "Right";
                 GyroAimEngageButton = "";
                 GyroAimEngageDeviceGuid = "";
                 GyroAimEngageMode = "Hold";

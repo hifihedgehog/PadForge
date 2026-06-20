@@ -1163,6 +1163,11 @@
   <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Segurar: o giroscópio dispara enquanto o botão de ativação é segurado. Alternar: cada pressionamento liga ou desliga o giroscópio. Soltar não faz nada. Alternar é persistente entre ciclos de polling e reseta na troca de perfil.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Segurar</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Alternar</value></data>
+  <data name="Settings_GyroEngageStickSide" xml:space="preserve"><value>Analógico de Ativação</value></data>
+  <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Qual analógico controla o limiar do Easy Aim. Direito (padrão) mantém os perfis existentes inalterados. Qualquer um usa o analógico mais deslocado.</value></data>
+  <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Analógico Direito</value></data>
+  <data name="Settings_GyroEngageStickSide_Left" xml:space="preserve"><value>Analógico Esquerdo</value></data>
+  <data name="Settings_GyroEngageStickSide_Either" xml:space="preserve"><value>Qualquer Analógico</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Ativação</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Restrições opcionais que limitam quando o giroscópio está ativo. A deflexão do analógico direito e um botão de ativação podem controlar a saída cada um. Configure um ou ambos. Se ambos estiverem configurados, devem estar ativos simultaneamente.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Local</value></data>
@@ -1197,6 +1202,7 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Restaurar Limiar do Easy Aim</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Restaurar Botão de Ativação</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Restaurar Modo de Ativação</value></data>
+  <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Restaurar Analógico de Ativação</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Transmissão do Movimento</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Aplicar o Ajuste do Giroscópio à Transmissão do Movimento</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Aplica o ajuste opcional do giroscópio desta aba (zona morta, sensibilidade, suavização, curva de resposta, inversão) ao movimento que o controle virtual envia ao jogo ou emulador. Desative para enviar apenas a leitura calibrada e deixar o jogo aplicar a própria sensibilidade e suavização. A correção de deriva por calibração se aplica de qualquer forma.</value></data>

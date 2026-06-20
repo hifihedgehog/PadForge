@@ -1163,6 +1163,11 @@
   <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>保持：按住激活按钮时陀螺仪开启。切换：每次按下切换陀螺仪开关。释放无效。切换在轮询周期之间持续，切换配置文件时重置。</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>保持</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>切换</value></data>
+  <data name="Settings_GyroEngageStickSide" xml:space="preserve"><value>激活摇杆</value></data>
+  <data name="Settings_GyroEngageStickSide_Tooltip" xml:space="preserve"><value>Easy Aim 阈值由哪个摇杆门控。右（默认）保持现有配置不变。任一使用偏移更大的摇杆。</value></data>
+  <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>右摇杆</value></data>
+  <data name="Settings_GyroEngageStickSide_Left" xml:space="preserve"><value>左摇杆</value></data>
+  <data name="Settings_GyroEngageStickSide_Either" xml:space="preserve"><value>任一摇杆</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>激活</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>可选条件，用以限制陀螺仪何时生效。右摇杆偏移与激活按键各自可门控输出。可单独配置或同时配置。两者都配置时必须同时满足，陀螺仪才会触发。</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>本地</value></data>
@@ -1197,6 +1202,7 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>重置 Easy Aim 阈值</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>重置激活键</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>重置激活模式</value></data>
+  <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>重置激活摇杆</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>运动透传</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>将陀螺仪调校应用于运动透传</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>将本选项卡的可选陀螺仪调校（死区、灵敏度、平滑、响应曲线、反转）应用到虚拟手柄上报给游戏或模拟器的运动数据。关闭后仅发送校准后的读数，由游戏自行应用灵敏度与平滑。无论是否开启，校准漂移校正始终生效。</value></data>

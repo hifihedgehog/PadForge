@@ -37,9 +37,19 @@ namespace PadForge.Tests
         {
             // +Infinity must NOT spin the fold loop (Inf * 0.5f == Inf), and NaN
             // (all comparisons unordered-false) must not slip through to a
-            // garbage byte. Both fold to the band floor. A 2s xUnit budget makes
-            // a regression to an unguarded loop fail rather than hang forever.
-            Assert.Equal(HapticToneEncoder.JoyConFreqMin, HapticToneEncoder.FoldJoyConFrequency(float.PositiveInfinity));
+            // garbage byte. Both fold to the band floor. Run the +Inf case on a
+            // worker thread and bound it with Join(2000): a regression that
+            // removes the guard turns +Inf into an infinite loop, and this fails
+            // in 2s instead of hanging the whole run (xunit Timeout is async-only
+            // and would not interrupt a synchronous spin anyway).
+            float plusInf = float.NaN;
+            var worker = new System.Threading.Thread(
+                () => plusInf = HapticToneEncoder.FoldJoyConFrequency(float.PositiveInfinity))
+            { IsBackground = true };
+            worker.Start();
+            Assert.True(worker.Join(2000), "+Inf fold did not terminate within 2s (the NaN/Inf guard is missing).");
+            Assert.Equal(HapticToneEncoder.JoyConFreqMin, plusInf);
+
             Assert.Equal(HapticToneEncoder.JoyConFreqMin, HapticToneEncoder.FoldJoyConFrequency(float.NegativeInfinity));
             Assert.Equal(HapticToneEncoder.JoyConFreqMin, HapticToneEncoder.FoldJoyConFrequency(float.NaN));
             // And the encoder itself must terminate and emit a defined packet.
@@ -247,6 +257,19 @@ namespace PadForge.Tests
                 resetChunked.AddRange(WiiSpeakerAdpcm.Encode(chunk)); // fresh state each chunk
             }
             Assert.NotEqual(whole, resetChunked.ToArray());
+        }
+
+        [Fact]
+        public void Adpcm_StreamingEncode_RejectsOddChunk()
+        {
+            // An odd streaming chunk would ship a padding nibble the decoder
+            // consumes as a real sample, permanently desyncing the stream. The
+            // overload must throw rather than corrupt silently. The one-shot
+            // Encode stays lenient (self-contained, no following chunk).
+            var s = WiiSpeakerAdpcm.State.Initial;
+            Assert.Throws<System.ArgumentException>(() => WiiSpeakerAdpcm.Encode(new short[] { 1, 2, 3 }, ref s));
+            // One-shot odd input is allowed (no desync hazard).
+            Assert.Equal(2, WiiSpeakerAdpcm.Encode(new short[] { 1, 2, 3 }).Length);
         }
 
         [Fact]

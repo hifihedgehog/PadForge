@@ -9133,9 +9133,16 @@ namespace PadForge.Services
             if (_disposed)
                 return;
 
+            // Capture the InputManager BEFORE Stop(): Stop() nulls _inputManager,
+            // so reading it afterward (as the original code did) made the NFC
+            // teardown a silent no-op and leaked the monitor thread + PC/SC
+            // context every shutdown (the round-3 finding). Tear NFC down AFTER
+            // Stop() has halted the poll loop, so UpdateNfcReaderDevices can no
+            // longer re-Start a fresh monitor once Active is disposed.
+            var inputManager = _inputManager;
             try { Stop(); } catch { /* Best effort on shutdown */ }
             // Cancel the NFC monitor thread + release the PC/SC context (#150).
-            try { _inputManager?.ShutdownNfcReaders(); } catch { /* Best effort on shutdown */ }
+            try { inputManager?.ShutdownNfcReaders(); } catch { /* Best effort on shutdown */ }
             _disposed = true;
             GC.SuppressFinalize(this);
         }

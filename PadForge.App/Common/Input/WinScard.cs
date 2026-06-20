@@ -56,6 +56,13 @@ namespace PadForge.Common.Input
         public const uint SCARD_E_NO_SERVICE = 0x8010001D;
         public const uint SCARD_E_SERVICE_STOPPED = 0x8010001E;
         public const uint SCARD_E_INVALID_HANDLE = 0x80100003;
+        // SCARD_E_SHUTDOWN and the bare Win32 ERROR_INVALID_HANDLE are what
+        // winscard actually returns on Windows 10/11 when the last reader is
+        // unplugged (the resource manager tears down), per pcsc-sharp's
+        // CardErrorExt: it routes Shutdown | InvalidHandleWindows to the
+        // recoverable NoService class. They must also drive a re-establish.
+        public const uint SCARD_E_SHUTDOWN = 0x80100018;
+        public const uint ERROR_INVALID_HANDLE = 0x00000006;
         public const uint SCARD_E_NO_READERS_AVAILABLE = 0x8010002E;
         public const uint SCARD_E_UNKNOWN_READER = 0x80100009;
 

@@ -87,8 +87,11 @@ namespace PadForge.Engine.Haptics
         /// each call (whole-cue encode).</summary>
         public static byte[] Encode(short[] pcm)
         {
+            // One-shot whole-cue encode. Lenient on odd length: a self-contained
+            // cue has no following chunk to desync, so the trailing odd sample
+            // just occupies the final byte's high nibble.
             var s = State.Initial;
-            return Encode(pcm, ref s);
+            return EncodeCore(pcm, ref s);
         }
 
         /// <summary>Streaming encode: continues from the caller-held
@@ -97,9 +100,26 @@ namespace PadForge.Engine.Haptics
         /// <see cref="Encode(short[])"/> per chunk would reset to
         /// predictor=0/step=127 while the Wii decoder keeps its running state,
         /// producing an amplitude discontinuity (audible click) at every report
-        /// boundary. Pass even-length chunks so the byte packing stays aligned
-        /// across calls (an odd chunk leaves a half-filled trailing byte).</summary>
+        /// boundary. Chunks MUST be even length: an odd chunk leaves a padding
+        /// low-nibble of 0 in its trailing byte that the Wii decoder consumes as
+        /// a real sample, permanently desyncing decoder state for the rest of the
+        /// stream (silent whole-stream corruption, not a local glitch). The
+        /// overload throws on an odd length rather than corrupt silently; a
+        /// caller streaming an odd final tail should pad it or finish with the
+        /// one-shot <see cref="Encode(short[])"/>.</summary>
         public static byte[] Encode(short[] pcm, ref State s)
+        {
+            // Streaming chunks MUST be even length, or the trailing padding
+            // nibble desyncs the decoder for the rest of the stream. Fail fast
+            // instead of corrupting silently.
+            if (pcm != null && (pcm.Length & 1) != 0)
+                throw new ArgumentException(
+                    "Streaming Encode requires an even-length chunk; an odd chunk desyncs decoder state for the rest of the stream.",
+                    nameof(pcm));
+            return EncodeCore(pcm, ref s);
+        }
+
+        private static byte[] EncodeCore(short[] pcm, ref State s)
         {
             if (pcm == null || pcm.Length == 0) return Array.Empty<byte>();
             int outLen = (pcm.Length + 1) / 2;

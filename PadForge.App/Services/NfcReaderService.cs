@@ -48,13 +48,25 @@ namespace PadForge.Services
                 WinScard.SCARD_SCOPE_SYSTEM, IntPtr.Zero, IntPtr.Zero, out svc._ctx);
             if (rc != WinScard.SCARD_S_SUCCESS || svc._ctx == IntPtr.Zero)
                 return null; // no Smart Card service / no resource manager
-            svc._running = true;
-            svc._thread = new Thread(svc.MonitorLoop)
+            try
             {
-                IsBackground = true,
-                Name = "PadForge NFC Monitor",
-            };
-            svc._thread.Start();
+                svc._running = true;
+                svc._thread = new Thread(svc.MonitorLoop)
+                {
+                    IsBackground = true,
+                    Name = "PadForge NFC Monitor",
+                };
+                svc._thread.Start();
+            }
+            catch
+            {
+                // Thread creation/start failed (OOM-class). Release the context
+                // we just established so it does not leak (there is no finalizer
+                // and Active was never published).
+                try { WinScard.SCardReleaseContext(svc._ctx); } catch { }
+                svc._ctx = IntPtr.Zero;
+                return null;
+            }
             Active = svc;
             return svc;
         }
@@ -94,25 +106,40 @@ namespace PadForge.Services
                 // One PnP sentinel entry + one entry per real reader. Watching
                 // the PnP entry makes the blocking call wake on reader add /
                 // remove so a reader plugged in after launch is picked up.
-                var states = new WinScard.SCARD_READERSTATE[readers.Count + 1];
-                states[0] = new WinScard.SCARD_READERSTATE
+                WinScard.SCARD_READERSTATE[] states;
+                int rc;
+                try
                 {
-                    szReader = WinScard.PNP_NOTIFICATION,
-                    dwCurrentState = pnpState,
-                    rgbAtr = new byte[36],
-                };
-                for (int i = 0; i < readers.Count; i++)
-                {
-                    lastState.TryGetValue(readers[i], out int prev);
-                    states[i + 1] = new WinScard.SCARD_READERSTATE
+                    states = new WinScard.SCARD_READERSTATE[readers.Count + 1];
+                    states[0] = new WinScard.SCARD_READERSTATE
                     {
-                        szReader = readers[i],
-                        dwCurrentState = prev,
+                        szReader = WinScard.PNP_NOTIFICATION,
+                        dwCurrentState = pnpState,
                         rgbAtr = new byte[36],
                     };
-                }
+                    for (int i = 0; i < readers.Count; i++)
+                    {
+                        lastState.TryGetValue(readers[i], out int prev);
+                        states[i + 1] = new WinScard.SCARD_READERSTATE
+                        {
+                            szReader = readers[i],
+                            dwCurrentState = prev,
+                            rgbAtr = new byte[36],
+                        };
+                    }
 
-                int rc = WinScard.SCardGetStatusChange(_ctx, WinScard.INFINITE, states, states.Length);
+                    rc = WinScard.SCardGetStatusChange(_ctx, WinScard.INFINITE, states, states.Length);
+                }
+                catch
+                {
+                    // An allocation or marshaling fault must not kill the monitor
+                    // thread: nothing nulls Active on a thread death, so the
+                    // throttle would never restart it and NFC would go silent for
+                    // the session. Back off and retry instead.
+                    if (!_running) break;
+                    Thread.Sleep(500);
+                    continue;
+                }
                 if (!_running) break;
 
                 if (rc != WinScard.SCARD_S_SUCCESS)
@@ -126,10 +153,15 @@ namespace PadForge.Services
                     // service was restarted). The existing context is now dead
                     // and winscard never re-binds it to a restarted resource
                     // manager, so we must release it and establish a fresh one
-                    // or NFC never recovers for the session.
+                    // or NFC never recovers for the session. On Windows the
+                    // last-reader-unplug case returns SHUTDOWN or the bare
+                    // ERROR_INVALID_HANDLE, not NO_SERVICE (pcsc-sharp Changelog
+                    // 6.1.0), so all of those route here.
                     if (urc == WinScard.SCARD_E_NO_SERVICE
                         || urc == WinScard.SCARD_E_SERVICE_STOPPED
-                        || urc == WinScard.SCARD_E_INVALID_HANDLE)
+                        || urc == WinScard.SCARD_E_INVALID_HANDLE
+                        || urc == WinScard.SCARD_E_SHUTDOWN
+                        || urc == WinScard.ERROR_INVALID_HANDLE)
                     {
                         Thread.Sleep(1000);
                         if (!_running) break;
@@ -217,27 +249,38 @@ namespace PadForge.Services
         public void Dispose()
         {
             _running = false;
-            var ctx = _ctx;
-            if (ctx != IntPtr.Zero)
+            // Best-effort cancel of the blocking SCardGetStatusChange on whatever
+            // context the monitor currently holds. A snapshot is fine: after
+            // _running = false the monitor will not re-establish again (it
+            // re-checks _running before TryReestablishContext), so it exits at
+            // its next wake regardless of which context the cancel hit.
+            var cancelCtx = _ctx;
+            if (cancelCtx != IntPtr.Zero)
             {
-                try { WinScard.SCardCancel(ctx); } catch { }
+                try { WinScard.SCardCancel(cancelCtx); } catch { }
             }
-            // Wait for the monitor thread to actually exit before releasing the
-            // context. The monitored context is only ever used by the
-            // cancelable SCardGetStatusChange (ReadUid uses its own child
-            // context), so SCardCancel reliably ends the only blocking call and
-            // the thread exits promptly. Only release the context if the thread
-            // confirmed exit; if the join times out, leave the context for the
-            // OS to reclaim at process exit rather than release it under an
-            // in-flight native call. This is app-shutdown only, so a leaked
-            // context is bounded and harmless.
+
             bool exited = true;
             try { exited = _thread?.Join(2000) ?? true; } catch { exited = true; }
-            if (exited && ctx != IntPtr.Zero)
+
+            // Release the context ONLY after the monitor thread has exited. The
+            // re-establish path mutates _ctx on the monitor thread, so reading it
+            // for release while the thread is still alive would risk a torn read
+            // and a double-release/leak (the round-3 finding). Post-exit, _ctx is
+            // stable and holds the final context the monitor left; any context it
+            // swapped out during re-establish was already released by the monitor
+            // itself. If the join times out, leave the context for the OS to
+            // reclaim at process exit rather than release it under an in-flight
+            // native call. App-shutdown only, so the leak is bounded.
+            if (exited)
             {
-                try { WinScard.SCardReleaseContext(ctx); } catch { }
+                var ctx = _ctx;
+                if (ctx != IntPtr.Zero)
+                {
+                    try { WinScard.SCardReleaseContext(ctx); } catch { }
+                }
+                _ctx = IntPtr.Zero;
             }
-            _ctx = IntPtr.Zero;
             if (Active == this) Active = null;
         }
     }

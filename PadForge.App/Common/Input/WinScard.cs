@@ -54,6 +54,8 @@ namespace PadForge.Common.Input
         public const uint SCARD_E_TIMEOUT = 0x8010000A;
         public const uint SCARD_E_CANCELLED = 0x80100002;
         public const uint SCARD_E_NO_SERVICE = 0x8010001D;
+        public const uint SCARD_E_SERVICE_STOPPED = 0x8010001E;
+        public const uint SCARD_E_INVALID_HANDLE = 0x80100003;
         public const uint SCARD_E_NO_READERS_AVAILABLE = 0x8010002E;
         public const uint SCARD_E_UNKNOWN_READER = 0x80100009;
 
@@ -156,11 +158,23 @@ namespace PadForge.Common.Input
         /// the tag UID as an uppercase hex string, or null on any failure (no
         /// card, foreign card without a UID, transmit error). The reader stays
         /// untouched on disconnect (SCARD_LEAVE_CARD).</summary>
-        public static string ReadUid(IntPtr ctx, string reader)
+        public static string ReadUid(string reader)
         {
+            // Establish a short-lived context dedicated to this read. The
+            // monitor thread's long-lived context must only ever be used by the
+            // cancelable SCardGetStatusChange; SCardCancel cannot interrupt
+            // SCardConnect/Transmit, so connecting on the monitored context
+            // would let teardown release it out from under an in-flight RF
+            // transmit (a native crash at shutdown). A per-read child context
+            // is fully scoped to this call and independent of teardown.
+            IntPtr ctx = IntPtr.Zero;
             IntPtr card = IntPtr.Zero;
             try
             {
+                if (SCardEstablishContext(SCARD_SCOPE_SYSTEM, IntPtr.Zero, IntPtr.Zero, out ctx) != SCARD_S_SUCCESS
+                    || ctx == IntPtr.Zero)
+                    return null;
+
                 int rc = SCardConnect(ctx, reader, SCARD_SHARE_SHARED, SCARD_PROTOCOL_Tx,
                     out card, out int activeProtocol);
                 if (rc != SCARD_S_SUCCESS) return null;
@@ -201,6 +215,8 @@ namespace PadForge.Common.Input
             {
                 if (card != IntPtr.Zero)
                     SCardDisconnect(card, SCARD_LEAVE_CARD);
+                if (ctx != IntPtr.Zero)
+                    SCardReleaseContext(ctx);
             }
         }
     }

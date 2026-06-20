@@ -1076,6 +1076,7 @@
   <data name="DevObj_POV" xml:space="preserve"><value>POV</value></data>
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>버튼 {0}</value></data>
+  <data name="Mapping_NfcAnyTag" xml:space="preserve"><value>모든 NFC 태그</value></data>
   <data name="DevObj_AxisN" xml:space="preserve"><value>축 {0}</value></data>
   <data name="DevObj_Misc1" xml:space="preserve"><value>공유</value></data>
   <data name="DevObj_Misc2" xml:space="preserve"><value>기타 2</value></data>

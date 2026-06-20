@@ -6,7 +6,10 @@ namespace PadForge.Engine.Haptics
     /// Yamaha 4-bit ADPCM codec for the Wii Remote speaker (issue #146,
     /// sub-feature 2). The decoder is the public WiiBrew / Dolphin algorithm
     /// (facts from dolphin Speaker.cpp:24-54, GPLv2, read for the table and
-    /// formula only). The encoder is the original inverse: per target PCM
+    /// formula only). The dolphin clone is sparse, so that file is git-tracked
+    /// but not on disk; retrieve it with
+    /// <c>git -C dolphin show HEAD:Source/Core/Core/HW/WiimoteEmu/Speaker.cpp</c>
+    /// (Read/Grep alone cannot see it). The encoder is the original inverse: per target PCM
     /// sample, try all 16 nibbles, keep the one whose reconstructed predictor
     /// lands closest, then advance the state with the exact decode formulas.
     /// Two samples pack per byte, high nibble first.

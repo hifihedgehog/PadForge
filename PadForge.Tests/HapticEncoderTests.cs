@@ -37,11 +37,12 @@ namespace PadForge.Tests
         {
             // Recompute encode_rumble (rumble.h:87-113) independently for a
             // mid-band tone and assert the implementation agrees bit for bit.
+            // AwayFromZero matches the reference roundf (NOT C# default ToEven).
             float freq = 320f, amp = 0.5f;
-            byte encFreq = (byte)Math.Round(Math.Log2(freq / 10.0) * 32.0);
+            byte encFreq = (byte)Math.Round(Math.Log2(freq / 10.0) * 32.0, MidpointRounding.AwayFromZero);
             ushort hf = (ushort)((encFreq - 0x60) * 4);
             byte lf = (byte)(encFreq - 0x40);
-            byte encAmp = (byte)Math.Round(Math.Log2(amp * 8.7) * 32.0); // amp > 0.23 segment
+            byte encAmp = (byte)Math.Round(Math.Log2(amp * 8.7) * 32.0, MidpointRounding.AwayFromZero); // amp > 0.23 segment
             ushort hfAmp = (ushort)(encAmp * 2);
             byte lfAmp = (byte)((encAmp >> 1) + 0x40);
             var expected = new byte[]
@@ -52,6 +53,27 @@ namespace PadForge.Tests
                 (byte)(lfAmp >> 1),
             };
             Assert.Equal(expected, HapticToneEncoder.EncodeJoyConRumble(freq, amp));
+        }
+
+        [Fact]
+        public void JoyConEncode_RoundsHalfAwayFromZero_NotBankers()
+        {
+            // The reference roundf rounds half away from zero. At the analytic
+            // boundary f = 10*2^((k+0.5)/32) the product log2(f/10)*32 == k+0.5.
+            // For k=88 -> 68.004254 Hz: away-from-zero yields enc_freq 89,
+            // banker's (ToEven) would yield 88. enc_freq feeds lf = enc_freq-0x40,
+            // and out[2]'s low 7 bits carry lf. So the low 7 bits must be
+            // 89-0x40 = 25, never 24.
+            float freq = (float)(10.0 * Math.Pow(2.0, 88.5 / 32.0));
+            byte[] bytes = HapticToneEncoder.EncodeJoyConRumble(freq, 0.5f);
+
+            byte awayEncFreq = (byte)Math.Round(Math.Log2(freq / 10.0) * 32.0, MidpointRounding.AwayFromZero);
+            int expectedLf = (awayEncFreq - 0x40) & 0x7F;
+            Assert.Equal(expectedLf, bytes[2] & 0x7F);
+            // And explicitly: it must not be the banker's-rounding result.
+            byte evenEncFreq = (byte)Math.Round(Math.Log2(freq / 10.0) * 32.0, MidpointRounding.ToEven);
+            if (awayEncFreq != evenEncFreq)
+                Assert.NotEqual((evenEncFreq - 0x40) & 0x7F, bytes[2] & 0x7F);
         }
 
         [Fact]
@@ -93,13 +115,22 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void SteamClassic_StopIsHeaderOnly()
+        public void SteamClassic_StopMatchesReferenceNote0RepeatZero()
         {
+            // The reference NOTE_STOP is "note 0 (8.1758 Hz), duration 0", which
+            // falls through encode: the note-0 period stays in bytes 3-6 and only
+            // the repeat count (bytes 7-8) is zeroed (main.cpp:114-134). So a stop
+            // is not a blank packet.
             byte[] blob = HapticToneEncoder.EncodeSteamClassic(0f, 0.0, haptic: 0);
             Assert.Equal(0x8F, blob[0]);
             Assert.Equal(0x07, blob[1]);
             Assert.Equal(0x00, blob[2]);
-            Assert.Equal(0, blob[3]); // no period written
+
+            ushort periodCommand = (ushort)((1.0 / 8.1758f) * HapticToneEncoder.SteamMagicPeriodRatio);
+            Assert.Equal((byte)(periodCommand % 0xFF), blob[3]); // note-0 period present
+            Assert.Equal((byte)(periodCommand / 0xFF), blob[4]);
+            Assert.Equal(0, blob[7]); // repeat count zeroed -> silent
+            Assert.Equal(0, blob[8]);
         }
 
         // ─── Wii speaker Yamaha ADPCM (dolphin Speaker.cpp) ───

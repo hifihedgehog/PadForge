@@ -55,17 +55,22 @@ namespace PadForge.Engine.Haptics
             if (amp < 0.0f) amp = 0.0f;
             if (amp > JoyConAmpMax) amp = JoyConAmpMax;
 
-            // Frequency: enc_freq = round(log2(freq/10) * 32).
-            byte encFreq = (byte)Math.Round(Math.Log2(freqHz / 10.0f) * 32.0);
+            // Frequency: enc_freq = round(log2(freq/10) * 32). The reference
+            // uses C roundf (round half AWAY from zero); C# Math.Round defaults
+            // to banker's rounding (ToEven), which differs on the k+0.5
+            // boundaries that real input frequencies hit (e.g. 68.004254 Hz
+            // lands on 88.5). AwayFromZero keeps the wire bytes identical to
+            // rumble.h / rumble_data_table.md.
+            byte encFreq = (byte)Math.Round(Math.Log2(freqHz / 10.0f) * 32.0, MidpointRounding.AwayFromZero);
             ushort hf = (ushort)((encFreq - 0x60) * 4);
             byte lf = (byte)(encFreq - 0x40);
 
             // Amplitude: two log segments, dead below 0.012.
             byte encAmp = 0;
             if (amp > 0.23f)
-                encAmp = (byte)Math.Round(Math.Log2(amp * 8.7f) * 32.0);
+                encAmp = (byte)Math.Round(Math.Log2(amp * 8.7f) * 32.0, MidpointRounding.AwayFromZero);
             else if (amp > 0.012f)
-                encAmp = (byte)Math.Round(Math.Log2(amp * 17.0f) * 16.0);
+                encAmp = (byte)Math.Round(Math.Log2(amp * 17.0f) * 16.0, MidpointRounding.AwayFromZero);
 
             ushort hfAmp = (ushort)(encAmp * 2);
             byte lfAmp = (byte)((encAmp >> 1) + 0x40);
@@ -109,11 +114,16 @@ namespace PadForge.Engine.Haptics
             blob[0] = 0x8F;
             blob[1] = 0x07;
 
+            // NOTE_STOP: the reference does not zero the blob. It sets note 0
+            // (midiFrequency[0] = 8.1758 Hz) and duration 0, then falls through
+            // the same encode path, so the note-0 period is still written and
+            // only the repeat count is zeroed (main.cpp:114-134). Reproduce that
+            // exactly: a stop is "this tone, repeated zero times", not a blank
+            // packet. Use the same 8.1758 Hz note-0 frequency.
             if (freqHz <= 0f)
             {
-                // NOTE_STOP path: note 0, zero duration.
-                blob[2] = (byte)haptic;
-                return blob;
+                freqHz = 8.1758f;
+                durationSeconds = 0.0;
             }
 
             double period = 1.0 / freqHz;

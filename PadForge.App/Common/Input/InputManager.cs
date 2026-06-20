@@ -538,6 +538,16 @@ namespace PadForge.Common.Input
                 // controller (WiiPairingService) and SDL drives it from there.
                 SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_WII, "1");
 
+                // Enable the SDL3 fork's Bluetooth-LE Switch 2 driver (hifihedgehog/SDL#5).
+                // Switch 2 controllers (Pro Controller 2, Joy-Con 2 L/R, NSO GameCube) speak a
+                // custom BLE GATT service, not HID-over-Bluetooth, so SDL's hidapi can't see
+                // them. This new WinRT driver scans for the Nintendo advertisement, connects,
+                // and surfaces them as ordinary SDL gamepads (the existing fabricated Switch 2
+                // mappings fire via the 'h' GUID signature). When on, it runs a BLE
+                // advertisement scan while PadForge is open. Runtime is hypothesis-under-test
+                // (no Switch 2 hardware has validated it yet).
+                SDL_SetHint(SDL_HINT_JOYSTICK_BLE_SWITCH2, "1");
+
                 // Allow screensaver/sleep even while SDL video is active.
                 SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
 

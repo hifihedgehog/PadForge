@@ -768,16 +768,18 @@ namespace PadForge.Common.Input
         private readonly object _nfcReadersLock = new object();
         // Retry throttle for starting the NFC monitor. Not a permanent latch:
         // if the Smart Card service is down at launch, Start() fails, and we
-        // retry every _nfcStartRetryPolls cycles so a service/reader that
-        // appears later in the session is still picked up (self-healing like
-        // the MIDI sweep). Counts down; Start() is attempted at zero.
-        private int _nfcStartRetryCountdown;
+        // retry on a WALL-CLOCK interval so a service/reader that appears later
+        // in the session is still picked up (self-healing like the MIDI sweep).
+        // Wall-clock, not a poll counter: the device sweep runs at the
+        // enumeration cadence (~2 s), not the pipeline rate, so a poll-count
+        // throttle sized for 60 Hz would stretch a "5 s" retry to ~10 minutes.
+        private long _nfcNextStartTicks; // Environment.TickCount64 of the next allowed Start attempt
         // Set true by ShutdownNfcReaders so a poll thread still inside Phase 1f
         // after the engine stop (the InputManager.Stop join can time out) cannot
         // re-Start a fresh monitor + context after teardown. Mirrors the MIDI
         // _midiInputsSuppressed latch.
         private volatile bool _nfcInputsSuppressed;
-        private const int _nfcStartRetryPolls = 300; // ~5 s at 60 Hz
+        private const int _nfcStartRetryMs = 5000;
 
         /// <summary>
         /// Tears down every open MIDI input connection and the shared input
@@ -954,14 +956,13 @@ namespace PadForge.Common.Input
             var svc = PadForge.Services.NfcReaderService.Active;
             if (svc == null)
             {
-                // Throttle start attempts so a missing Smart Card service does
-                // not trigger an SCardEstablishContext every poll.
-                if (_nfcStartRetryCountdown > 0)
-                {
-                    _nfcStartRetryCountdown--;
+                // Throttle start attempts (wall-clock) so a missing Smart Card
+                // service does not trigger an SCardEstablishContext every sweep,
+                // while still retrying every ~5 s regardless of the sweep rate.
+                long now = Environment.TickCount64;
+                if (now < _nfcNextStartTicks)
                     return false;
-                }
-                _nfcStartRetryCountdown = _nfcStartRetryPolls;
+                _nfcNextStartTicks = now + _nfcStartRetryMs;
                 svc = PadForge.Services.NfcReaderService.Start();
                 if (svc == null) return false; // no Smart Card service yet; retry later
             }

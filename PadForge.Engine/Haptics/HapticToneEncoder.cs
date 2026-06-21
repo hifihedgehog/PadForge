@@ -74,13 +74,22 @@ namespace PadForge.Engine.Haptics
             ushort hf = (ushort)((encFreq - 0x60) * 4);
             byte lf = (byte)(encFreq - 0x40);
 
-            // Amplitude: two log segments, dead below 0.012. Same float32 path
-            // as the reference rumble.h:102/104.
+            // Amplitude: two log segments, dead below 0.12. The second segment
+            // log2(amp*17)*16 is only non-negative for amp >= 1/17 (~0.0588),
+            // so the threshold MUST sit above that or a quiet tone computes a
+            // negative enc_amp that the (byte) cast wraps to a near-max value
+            // (quietest tones play loudest). rumble.h:103 uses 0.012f, but that
+            // value lands inside the negative-garbage band; the
+            // Nintendo_Switch_Reverse_Engineering rumble_data_table.md:30 value
+            // 0.12f is authoritative for this threshold because it is the one
+            // that keeps the formula in its valid domain. The float32 path
+            // itself still mirrors rumble.h:102/104. The Max(0, .) is a
+            // belt-and-suspenders clamp so a negative round can never wrap.
             byte encAmp = 0;
             if (amp > 0.23f)
-                encAmp = (byte)MathF.Round(MathF.Log2(amp * 8.7f) * 32.0f, MidpointRounding.AwayFromZero);
-            else if (amp > 0.012f)
-                encAmp = (byte)MathF.Round(MathF.Log2(amp * 17.0f) * 16.0f, MidpointRounding.AwayFromZero);
+                encAmp = (byte)Math.Max(0f, MathF.Round(MathF.Log2(amp * 8.7f) * 32.0f, MidpointRounding.AwayFromZero));
+            else if (amp > 0.12f)
+                encAmp = (byte)Math.Max(0f, MathF.Round(MathF.Log2(amp * 17.0f) * 16.0f, MidpointRounding.AwayFromZero));
 
             ushort hfAmp = (ushort)(encAmp * 2);
             byte lfAmp = (byte)((encAmp >> 1) + 0x40);

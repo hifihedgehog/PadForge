@@ -1794,6 +1794,14 @@ namespace PadForge.Common.Input
                 return;
 
             Stop();
+            // Tear down NFC here, after Stop() has halted the poll loop (so the
+            // suppression latch + a stopped sweep prevent a re-Start) but BEFORE
+            // ShutdownSdl() tears down the device list that ShutdownNfcReaders'
+            // FindOnlineDeviceByInstanceGuid walks. Calling it from
+            // InputService.Dispose after this object was already disposed risked
+            // a use-after-dispose whose swallowed throw would skip the actual
+            // NfcReaderService teardown (#150, round-4 finding).
+            ShutdownNfcReaders();
             ShutdownSdl();
             _disposed = true;
 

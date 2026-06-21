@@ -127,6 +127,29 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void JoyConEncode_QuietBand_NoNegativeAmpWrap()
+        {
+            // The second amp segment log2(amp*17)*16 is negative below amp=1/17
+            // (~0.0588), so the threshold must sit above that. With the
+            // table-authoritative 0.12 threshold, a tone in the OLD (0.012,
+            // 0.0588) band now falls in the dead zone (enc_amp 0 -> out[3]=0x20)
+            // instead of wrapping a negative round to a near-max amplitude byte
+            // (the pre-fix garbage: amp=0.02 produced out[3]=0x59, loudest tone
+            // from the quietest input). out[3] = ((enc_amp>>1)+0x40)>>1.
+            Assert.Equal(0x20, HapticToneEncoder.EncodeJoyConRumble(320f, 0.02f)[3]);
+            Assert.Equal(0x20, HapticToneEncoder.EncodeJoyConRumble(320f, 0.05f)[3]);
+
+            // A tone just above the 0.12 threshold encodes a SMALL positive
+            // amplitude, neither silence nor garbage.
+            byte encAmp = (byte)Math.Max(0f, MathF.Round(MathF.Log2(0.15f * 17.0f) * 16.0f, MidpointRounding.AwayFromZero));
+            Assert.InRange((int)encAmp, 1, 63);
+            int expectedOut3 = ((encAmp >> 1) + 0x40) >> 1;
+            byte[] soft = HapticToneEncoder.EncodeJoyConRumble(320f, 0.15f);
+            Assert.Equal(expectedOut3, soft[3]);
+            Assert.NotEqual(0x20, soft[3]); // audible, not dead
+        }
+
+        [Fact]
         public void MidiNote69_Is440Hz()
         {
             Assert.Equal(440f, HapticToneEncoder.MidiNoteToFrequency(69), 3);

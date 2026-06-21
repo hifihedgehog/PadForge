@@ -3313,7 +3313,11 @@ namespace PadForge.ViewModels
                 var sel = SelectedMappedDevice;
                 if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
                 var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
-                if (ud == null || ud.VendorId != 0x054C) return false;
+                if (ud == null) return false;
+                // Wii Remote built-in speaker (#146): Nintendo VID 0x057E,
+                // RVL-CNT-01 (0x0306) / -TR (0x0330).
+                if (PadForge.Common.Input.WiiSpeakerService.DeviceHasSpeaker(ud)) return true;
+                if (ud.VendorId != 0x054C) return false;
                 // DS5 family: audio on both transports. DS4: audio is
                 // Bluetooth-only (wired DS4 exposes no USB audio interface);
                 // Sony's USB wireless adaptor (0x0BA0) tunnels the radio link

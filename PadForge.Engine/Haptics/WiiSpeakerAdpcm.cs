@@ -55,7 +55,12 @@ namespace PadForge.Engine.Haptics
         }
 
         /// <summary>Decodes an ADPCM byte stream (2 samples/byte, high nibble
-        /// first) into 16-bit PCM. Mirrors the Wii Remote / Dolphin decode.</summary>
+        /// first) into 16-bit PCM. Mirrors the Wii Remote / Dolphin decode.
+        /// Resets state each call (whole-stream decode): decoding a captured
+        /// chunked stream one chunk at a time through this overload would
+        /// reintroduce a discontinuity at each boundary. Use
+        /// <see cref="Decode(byte[], ref State)"/> to decode a stream in
+        /// pieces.</summary>
         public static short[] Decode(byte[] adpcm)
         {
             var s = State.Initial;

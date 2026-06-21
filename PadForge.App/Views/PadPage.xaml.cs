@@ -359,8 +359,14 @@ namespace PadForge.Views
                             // Speaker audio: DualSense family + DS4 (all have a speaker).
                             hasAudio = isDualSense || isDualSenseEdge || isDs4;
                             // Indicator LEDs (player row + mic LED + brightness)
-                            // are DualSense-family only — DS4 has neither.
+                            // are DualSense-family only. DS4 has neither.
                             hasIndicatorLeds = isDualSense || isDualSenseEdge;
+                        }
+                        else if (PadForge.Common.Input.WiiSpeakerService.DeviceHasSpeaker(ud))
+                        {
+                            // Wii Remote built-in speaker (#146): macro sounds
+                            // play through it like the Sony controller speaker.
+                            hasAudio = true;
                         }
                         // Grip-motor rumble: modern Xbox (impulse-trigger devices), the
                         // Sony lightbar family (DualSense / Edge / DS4 all rumble), and any

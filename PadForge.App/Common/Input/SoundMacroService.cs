@@ -239,6 +239,7 @@ namespace PadForge.Common.Input
                 }
             }
             AudioPassthroughService.Shutdown();
+            WiiSpeakerService.Shutdown();
         }
 
         // ─────────────────────────────────────────────
@@ -263,6 +264,9 @@ namespace PadForge.Common.Input
                 // sound rather than leak it to the PC speakers; the next
                 // trigger lands on the pad.
                 var targets = AudioPassthroughService.GetSlotSinkMixers(slot, out bool pendingActivation, deviceFilter);
+                // Wii Remote speakers are a parallel sink family (#146); fan the
+                // same macro sound into them too.
+                targets.AddRange(WiiSpeakerService.GetSlotSinkMixers(slot, deviceFilter));
 
                 lock (_lock)
                 {

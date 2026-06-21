@@ -959,6 +959,10 @@ namespace PadForge.Services
             if (_mainVm.Pads.Any(p => p.PerDevicePlayStationConfigs.Any(kv => kv.Value.AudioPassthroughEnabled)))
                 PadForge.Common.Input.AudioPassthroughService.Reconcile();
 
+            // Wii Remote speaker sinks (#146): self-healing periodic reconcile
+            // builds/tears down a sink as a Wii Remote is assigned to a slot.
+            PadForge.Common.Input.WiiSpeakerService.EnsureStarted();
+
             _inputManager.TouchpadGestureSettingsProvider = (slotIndex, deviceGuid, padIdx) =>
             {
                 var settings = SettingsManager.UserSettings;

@@ -512,11 +512,13 @@ namespace PadForge.Common.Input
         /// COM device I/O; snapshots the sink set first.</summary>
         private static void ReconcileMirrors()
         {
+            if (_suppressed) return;
             var provider = AudioPassthroughService.PassthroughConfigProvider;
             List<Sink> live;
-            lock (_lock) live = _sinks.ToList();
+            lock (_lock) live = _suppressed ? new List<Sink>() : _sinks.ToList();
             foreach (var s in live)
             {
+                if (_suppressed) break;
                 bool wantOn = false; string wantSrc = "";
                 try
                 {
@@ -530,7 +532,14 @@ namespace PadForge.Common.Input
                 if (wantOn && (!s.MirrorOn || s.MirrorSourceId != wantSrc))
                 {
                     StopMirror(s);          // rebuild on a source change
-                    StartMirror(s, wantSrc);
+                    // Re-check under the lock that a concurrent Shutdown has not
+                    // dropped this sink (Shutdown sets _suppressed then clears
+                    // _sinks under _lock). Starting a capture on a torn-down sink
+                    // would leak it -- TeardownSink already ran, so nothing would
+                    // ever StopMirror it. Same recheck shape as BuildSink's commit.
+                    bool stillLive;
+                    lock (_lock) stillLive = !_suppressed && _sinks.Contains(s);
+                    if (stillLive) StartMirror(s, wantSrc);
                 }
                 else if (!wantOn && s.MirrorOn)
                 {
@@ -573,7 +582,18 @@ namespace PadForge.Common.Input
 
                 ISampleProvider sp = buf.ToSampleProvider();
                 if (sp.WaveFormat.SampleRate != MixRate) sp = new WdlResamplingSampleProvider(sp, MixRate);
+                // Fold to EXACTLY 2 channels for the 48 kHz / 2ch MacroMixer. A
+                // render endpoint's mix format can be mono, or 4/6/8 channels
+                // (quad / 5.1 / 7.1 on HDMI/AVR/optical -- the codebase already
+                // meets a 4ch extensible-float 48k endpoint at
+                // AudioPassthroughService.cs:538). NAudio's MixingSampleProvider
+                // requires every input to match the mixer's channel count, so an
+                // N!=2 source makes AddMixerInput throw and the mirror silently
+                // never starts. MultiplexingSampleProvider(.., 2) maps output ch0<-
+                // input ch0 and ch1<-input ch1, the same first-two-channels read the
+                // proven Sony mirror does (AudioPassthroughService.cs:414-420).
                 if (sp.WaveFormat.Channels == 1) sp = new MonoToStereoSampleProvider(sp);
+                else if (sp.WaveFormat.Channels != 2) sp = new MultiplexingSampleProvider(new[] { sp }, 2);
 
                 s.MacroMixer.AddMixerInput(sp);   // MixingSampleProvider locks internally
                 s.MirrorCapture = cap;

@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using PadForge.Engine.Haptics;
@@ -19,28 +21,32 @@ namespace PadForge.Common.Input
     ///
     /// The wire protocol is the public WiiBrew speaker protocol, grounded in
     /// dolphin (Source/Core/Core/HW/WiimoteEmu/Speaker.cpp + Speaker.h, read via
-    /// git show): I2C slave 0x51, register map speaker_data@0x00 / format@0x02
-    /// (0x00 = 4-bit Yamaha ADPCM) / sample_rate u16 LE @0x03 / volume@0x05,
-    /// ADPCM playback Hz = (6000000 / sample_rate_reg) * 2. Encoding is the
-    /// verified <see cref="WiiSpeakerAdpcm"/>, LOW-nibble-first on the wire,
-    /// proven byte-identical to ffmpeg's adpcm_yamaha (the encoder Touchmote
-    /// ships to real hardware, which plays it correctly). The 48 kHz macro mix is resampled to the speaker
-    /// rate by a real anti-aliased resampler (WdlResamplingSampleProvider), then
-    /// each 40-sample frame is ADPCM-encoded and written as ONE 0x18 report per
-    /// tick, never bursting (dolphin's real-Wiimote writer model and the Sony
-    /// lane's one-report-per-tick rule). Each cue starts from a FRESH ADPCM
-    /// decoder and streams contiguously (the Touchmote model); carrying
-    /// differential state across a silence gap desynced the next cue = garble.
+    /// git show): I2C slave 0x51, register map speaker_data@0x00 / format@0x02 /
+    /// sample_rate u16 LE @0x03 / volume@0x05.
     ///
-    /// Output write path is chosen per device by a probe in BuildSink: if the BT
-    /// stack accepts overlapped WriteFile (it did on the test machine), we use a
-    /// pipelined WriteFile pool (<see cref="WiiWritePool"/>, the Sony BtWritePool
-    /// shape) which submits without blocking and holds the native 6000 Hz =
-    /// 150 reports/s cadence. If the stack rejects WriteFile (SDL fix #2), we
-    /// fall back to synchronous HidD_SetOutputReport at 2400 Hz = 60 reports/s,
-    /// the rate its ~12 ms write can pace and the one measured clean. PadForge
-    /// owns Wii OUTPUT exclusively (SDL is input-only), like the Sony audio/rumble
-    /// path, so there is no second-writer contention.
+    /// Format is signed 8-bit PCM at 2000 Hz -- the WiiBrew-recommended config for
+    /// slow Bluetooth stacks (config bytes 00 40 70 17 60 00 00). PCM is MEMORYLESS
+    /// (each sample independent), so a dropped or late 0x18 report on the slow,
+    /// SDL-shared BT link is a single click, not the cascading garble that 4-bit
+    /// Yamaha ADPCM (differential) produced. Touchmote uses ADPCM at 6 kHz because
+    /// WiimoteLib owns the Wiimote exclusively with a tight MicroTimer (no drops);
+    /// PadForge shares the link with SDL's continuous input reporting, so the
+    /// robust PCM path fits, and it matches the user's finding that the speaker
+    /// worked at the lower 2400 Hz but garbled at 6000 Hz. The 48 kHz macro mix is
+    /// resampled to 2000 Hz mono by an anti-aliased resampler
+    /// (WdlResamplingSampleProvider); each 20-sample frame is written as ONE 0x18
+    /// report (20 bytes) per tick at the WiimoteLib MicroTimer cadence
+    /// (high-resolution Stopwatch busy-wait, 10 ms = 100 reports/s). The
+    /// <see cref="WiiSpeakerAdpcm"/> codec stays available/tested but is off the
+    /// live path. The ADPCM playback formula, for reference, is
+    /// (6000000 / sample_rate_reg) * 2 Hz; PCM is 12000000 / sample_rate_reg.
+    ///
+    /// Output write path is chosen per device by a probe in BuildSink: overlapped
+    /// WriteFile when the BT stack accepts it (sub-millisecond, paces the 10 ms
+    /// cadence easily), else synchronous HidD_SetOutputReport (~12 ms/write here,
+    /// SDL fix #2). PadForge owns Wii OUTPUT (SDL is input-only) but SDL still
+    /// writes occasional control reports + continuous input reporting on the same
+    /// link, which is why memoryless PCM matters.
     ///
     /// Residual: the rumble bit (every output report carries it; our writes leave
     /// it 0, so a cue briefly suppresses SDL-driven rumble).
@@ -58,34 +64,33 @@ namespace PadForge.Common.Input
 
         // Mixer rate matches SoundMacroService so decoded PCM mixes in cleanly.
         private const int MixRate = 48000;
-        // The Wii plays ADPCM at (6000000 / sample_rate_reg) * 2 Hz (dolphin
-        // Speaker.cpp: "ADPCM sample rate is thought to be x2"), and each 0x18
-        // report carries 40 samples, so the report rate = playback_Hz / 40.
-        // 6000 Hz (reg 2000) = 150 reports/s is the native rate that Touchmote
-        // ships on a PC stack (AudioUtil.cs "the only sample rate that works"),
-        // with a write path equivalent to our overlapped WriteFile pool. So the
-        // BT connection rate is NOT the wall (an earlier 6000 Hz garble was, more
-        // likely, our pipeline: we carried differential ADPCM state across the
-        // HangoverMs start/stop gaps; the real speaker decoder appears to reset
-        // across a gap, desyncing the next cue). With the per-cue decoder reset
-        // (see StreamLoop) we run native 6000 Hz on the WriteFile-pool path. The
-        // 2400 Hz (reg 5000) = 60 reports/s synchronous-HidD path is the fallback
-        // when the BT stack rejects WriteFile (SDL fix #2): it is the only rate
-        // the slower ~12 ms synchronous write can pace, and it measured clean.
-        private const ushort HiRateReg = 2000;   // (6000000/2000) x2 = 6000 Hz (native)
-        private const int HiRate = 6000;
-        private const ushort LoRateReg = 5000;   // (6000000/5000) x2 = 2400 Hz
-        private const int LoRate = 2400;
-        private const int FrameSamples = 40;                // 40 samples -> 20 ADPCM bytes (DATA_SIZE)
-        // Full volume. dolphin's ADPCM volume_divisor is 0x7F and Touchmote's
-        // working speaker output uses 0xFF (MultiWiiPointerProvider.cs:295); the
-        // Wii speaker is very low-power, so 0x40 (~half) was needlessly faint.
-        // EXACT WiimoteLib value: it writes (Volume * 64 / 255) to the volume
-        // register, so full volume (0xFF) becomes 0x40 (decompiled
-        // WiimoteLib.GetSpeakerConfig). Writing the unscaled 0xFF overdrives the
-        // speaker past its range and distorts. dolphin's ADPCM volume_divisor is
-        // 0x7F, consistent with 0x40 being a normal mid value, not 0xFF.
-        private const byte SpeakerVolume = 0x40;
+        // ── 8-bit signed PCM at 2000 Hz: the WiiBrew-recommended speaker config
+        //    for slow Bluetooth stacks (config bytes 00 40 70 17 60 00 00). ──
+        // Why PCM, not 4-bit ADPCM: ADPCM is DIFFERENTIAL -- each sample depends
+        // on the prior predictor/step, so a single 0x18 report dropped or delayed
+        // on a slow/shared BT link desyncs the decoder and cascades into full
+        // garble for the rest of the cue. PCM is MEMORYLESS -- every sample is
+        // independent -- so a dropped report is one click, not garble. Touchmote
+        // gets away with ADPCM at 6 kHz because WiimoteLib owns the Wiimote
+        // exclusively with a tight MicroTimer (no drops); PadForge shares the link
+        // with SDL (continuous input reporting), so the robust PCM path fits. This
+        // also matches the user's own finding that the speaker worked at the lower
+        // 2400 Hz (60 reports/s, fewer drops) but garbled at 6000 Hz (150/s).
+        // WiiBrew: pcm_sample_rate = 12000000 / rate_value, so 2000 Hz needs
+        // rate_value 6000 = 0x1770 (little-endian RR RR = 70 17). For 8-bit PCM a
+        // 0x18 report's 20 payload bytes are 20 samples, so 2000 Hz = 100
+        // reports/s (10 ms cadence) -- lighter on the BT than ADPCM's 150/s.
+        private const byte SpeakerFormatPcm = 0x40; // dolphin DATA_FORMAT_PCM / WiiBrew FF
+        private const ushort PcmRateReg = 6000;     // 12000000 / 2000 Hz = 0x1770
+        private const int PcmRate = 2000;           // playback Hz
+        private const int SamplesPerReport = 20;    // 8-bit PCM: 20 bytes = 20 samples per 0x18 report
+        // Full hardware volume. PadForge scales loudness in SOFTWARE -- the macro
+        // VolumeSampleProvider applies the user's volume settings to the float
+        // samples before the 8-bit quantize -- so the speaker's own volume byte
+        // stays at max and the user's setting carries the actual level. PCM uses
+        // the full 0x00-0xFF range (dolphin volume_divisor 0xFF); WiiBrew's sample
+        // config shows 0x60 but that is just one example, not a ceiling.
+        private const byte SpeakerVolume = 0xFF;
         // Once a cue starts, keep streaming for this long after the last frame
         // that crossed the content threshold, so quiet dips inside the cue do
         // not break the stream (which the Wii FIFO hears as gaps/garble). Long
@@ -93,15 +98,6 @@ namespace PadForge.Common.Input
         // near-silent tail after a cue (which encodes to a faint buzz, the codec
         // has no "hold") is brief. Streaming stops cleanly after this.
         private const int HangoverMs = 300;
-        // One-pole DC-block coefficient: cutoff ~= (1-R)*Fs/(2*pi). R=0.95 at
-        // 6000 Hz -> ~48 Hz, chosen to remove the sub-50 Hz band that held 69% of
-        // the captured content's AC power and integrated into a speaker-railing
-        // ramp. Verified offline against the real captured wire content: this R
-        // collapses the per-0.1s DC excursion ~14x (3466 -> 248 LSB); R=0.999
-        // (~1 Hz) was far too mild and did nothing. The audio band (peaks at
-        // 350/470/1048 Hz) is well above the cutoff, and a piezo cannot reproduce
-        // sub-50 Hz, so nothing audible is lost.
-        private const float DcBlockR = 0.95f;
 
         private sealed class Sink
         {
@@ -119,16 +115,13 @@ namespace PadForge.Common.Input
             public Thread Thread;          // single cadence/encode/write thread
             public volatile bool Running;
             public WiiSpeakerAdpcm.State Adpcm = WiiSpeakerAdpcm.State.Initial;
-            // Per-sink one-pole DC-block filter memory (NEVER static: each Wii
-            // Remote in a slot filters its own stream). Reset at each cue start.
-            public float DcX, DcY;
             // Per-sink write path, chosen by the BuildSink probe. When the BT
             // stack accepts pipelined overlapped WriteFile we run the native
             // 6000 Hz through Pool; otherwise the synchronous HidD path at the
             // lower rate. Rate/RateReg drive the resampler, the config register,
             // and the cadence.
-            public int Rate = LoRate;
-            public ushort RateReg = LoRateReg;
+            public int Rate = PcmRate;
+            public ushort RateReg = PcmRateReg;
             public bool UseWriteFile;
             public WiiWritePool Pool;
             // Wall-clock (Environment.TickCount64) of the last frame with real
@@ -143,6 +136,16 @@ namespace PadForge.Common.Input
             // from the device, never hardcoded (matches RawHidOutput / SDL
             // hid_write_output_report). >= ReportLen always.
             public int PadLen = ReportLen;
+            // System-audio passthrough (the "mirror", same option DualSense uses):
+            // when AudioPassthroughEnabled is set for this Wii device, a
+            // WasapiLoopbackCapture of the chosen endpoint is added to MacroMixer
+            // so the speaker plays system audio. Reconciled each pass from
+            // AudioPassthroughService.PassthroughConfigProvider (covers all devices
+            // in the slot, Wii included).
+            public bool MirrorOn;
+            public string MirrorSourceId = "";   // "" = system default endpoint
+            public WasapiLoopbackCapture MirrorCapture;
+            public ISampleProvider MirrorInput;   // the provider added to MacroMixer
             // Diagnostics (per-second snapshot to the log): did the writes land?
             public long WrOk, WrFail, Dropped, Audible, LoopTicks, WriteMicros;
             public int LastErr;
@@ -497,8 +500,99 @@ namespace PadForge.Common.Input
                         lock (_lock) _sinks.Remove(s);
                     }
                 }
+
+                ReconcileMirrors();
             }
             finally { Interlocked.Exchange(ref _reconcileBusy, 0); }
+        }
+
+        /// <summary>For each live sink, start or stop its system-audio loopback
+        /// mirror to match the per-device passthrough config (the same option the
+        /// DualSense path reads). Runs OUTSIDE _lock since WASAPI start/stop is
+        /// COM device I/O; snapshots the sink set first.</summary>
+        private static void ReconcileMirrors()
+        {
+            var provider = AudioPassthroughService.PassthroughConfigProvider;
+            List<Sink> live;
+            lock (_lock) live = _sinks.ToList();
+            foreach (var s in live)
+            {
+                bool wantOn = false; string wantSrc = "";
+                try
+                {
+                    var cfg = provider?.Invoke(s.Slot);
+                    if (cfg != null)
+                        foreach (var c in cfg)
+                            if (c.Device == s.DeviceGuid) { wantOn = c.PassthroughOn; wantSrc = c.MirrorSource ?? ""; break; }
+                }
+                catch { }
+
+                if (wantOn && (!s.MirrorOn || s.MirrorSourceId != wantSrc))
+                {
+                    StopMirror(s);          // rebuild on a source change
+                    StartMirror(s, wantSrc);
+                }
+                else if (!wantOn && s.MirrorOn)
+                {
+                    StopMirror(s);
+                }
+            }
+        }
+
+        /// <summary>Opens a WasapiLoopbackCapture on the chosen render endpoint and
+        /// feeds it (resampled to the 48 kHz stereo mixer format) into the sink's
+        /// MacroMixer, so the Wii speaker plays system audio. Best-effort: on any
+        /// failure the mirror simply stays off.</summary>
+        private static void StartMirror(Sink s, string endpointId)
+        {
+            if (s.MacroMixer == null) return;
+            try
+            {
+                MMDevice dev;
+                using (var en = new MMDeviceEnumerator())
+                    dev = string.IsNullOrEmpty(endpointId)
+                        ? en.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia)
+                        : en.GetDevice(endpointId);
+                if (dev == null || dev.State != DeviceState.Active) { dev?.Dispose(); return; }
+
+                var cap = new WasapiLoopbackCapture(dev);
+                // ReadFully keeps the provider returning `count` (zero-filled) during
+                // silence so the mixer never drops it as a finished one-shot.
+                var buf = new BufferedWaveProvider(cap.WaveFormat)
+                {
+                    BufferDuration = TimeSpan.FromMilliseconds(500),
+                    DiscardOnBufferOverflow = true,
+                    ReadFully = true,
+                };
+                cap.DataAvailable += (o, e) =>
+                {
+                    try { if (e.BytesRecorded > 0) buf.AddSamples(e.Buffer, 0, e.BytesRecorded); } catch { }
+                };
+                cap.StartRecording();
+                dev.Dispose();   // WasapiLoopbackCapture holds its own device ref
+
+                ISampleProvider sp = buf.ToSampleProvider();
+                if (sp.WaveFormat.SampleRate != MixRate) sp = new WdlResamplingSampleProvider(sp, MixRate);
+                if (sp.WaveFormat.Channels == 1) sp = new MonoToStereoSampleProvider(sp);
+
+                s.MacroMixer.AddMixerInput(sp);   // MixingSampleProvider locks internally
+                s.MirrorCapture = cap;
+                s.MirrorInput = sp;
+                s.MirrorOn = true;
+                s.MirrorSourceId = endpointId ?? "";
+                Log($"mirror on slot={s.Slot} src={(string.IsNullOrEmpty(endpointId) ? "default" : endpointId)} fmt={cap.WaveFormat}");
+            }
+            catch { try { StopMirror(s); } catch { } }
+        }
+
+        private static void StopMirror(Sink s)
+        {
+            try { if (s.MirrorInput != null && s.MacroMixer != null) s.MacroMixer.RemoveMixerInput(s.MirrorInput); } catch { }
+            try { s.MirrorCapture?.StopRecording(); } catch { }
+            try { s.MirrorCapture?.Dispose(); } catch { }
+            s.MirrorCapture = null;
+            s.MirrorInput = null;
+            s.MirrorOn = false;
         }
 
         /// <summary>Opens the device, runs the speaker init, and starts the
@@ -520,18 +614,20 @@ namespace PadForge.Common.Input
                 int outLen = capOut >= ReportLen ? capOut : ReportLen;
                 s.PadLen = outLen;
 
-                // Run the native 6000 Hz / 150 reports/s that WiimoteLib uses
-                // (SampleRate 3000 -> reg 6000000/3000 = 2000 -> x2 = 6000 Hz;
-                // reportInterval 20000000/3000 = 6667 us). The probe only chooses
-                // the WRITE METHOD, not the rate: WiimoteLib streams via an async
-                // overlapped FileStream (our WriteFile pool); HidD is its fallback
-                // alt-write. There is no separate low rate (the 2400 Hz was an
-                // invention, not in any reference).
+                // Run 8-bit PCM at 2000 Hz = 100 reports/s (WiiBrew-recommended for
+                // slow BT). See the constants block for why PCM over ADPCM.
+                //
+                // DELIVERY: overlapped WriteFile. Measured on this BT stack,
+                // HidD_SetOutputReport takes ~12 ms per write (live log avgWriteUs
+                // 11000-12500) and could not even sustain the old 6.67 ms ADPCM
+                // cadence (loop went erratic, writes failed lastErr 21). WriteFile
+                // completes sub-millisecond, so it paces the 10 ms PCM cadence with
+                // margin to spare. HidD stays the fallback if WriteFile is rejected.
                 bool wf = ProbeWriteFile(h, outLen, out int probeErr);
                 s.UseWriteFile = wf;
-                s.Rate = HiRate;
-                s.RateReg = HiRateReg;
-                Log($"open ok slot={s.Slot} capOut={capOut} padLen={outLen} writeFile={wf} probeErr={probeErr} rate={s.Rate}");
+                s.Rate = PcmRate;
+                s.RateReg = PcmRateReg;
+                Log($"open ok slot={s.Slot} capOut={capOut} padLen={outLen} writeFile={wf} probeErr={probeErr} rate={s.Rate} fmt=PCM8");
                 InitSpeaker(h, outLen, s.RateReg);
 
                 // Commit under _lock, but only if a concurrent Shutdown/teardown
@@ -581,6 +677,9 @@ namespace PadForge.Common.Input
 
         private static void TeardownSink(Sink s)
         {
+            // Stop the system-audio mirror capture first (its DataAvailable feeds
+            // the MacroMixer the stream thread reads).
+            try { StopMirror(s); } catch { }
             // Stop the stream thread and wait for it to ACTUALLY exit before
             // touching the handle. That thread calls the synchronous
             // HidD_SetOutputReport, which can block past a short join on a
@@ -633,11 +732,14 @@ namespace PadForge.Common.Input
             // 7-byte config written to register 0xa20001 -> offsets 0x01..0x07:
             // [unk_1, format(0x02), rate_lo(0x03), rate_hi(0x04), volume(0x05), unk, unk].
             // sample_rate is little-endian (dolphin reads reg_data.sample_rate as
-            // a native u16 with no swap on its LE host).
+            // a native u16 with no swap on its LE host). WiiBrew 8-bit-PCM-at-2000-Hz
+            // config (format 0x40 PCM, rate 0x1770 = 6000 -> 12000000/6000 = 2000 Hz)
+            // with the volume byte at full 0xFF instead of WiiBrew's 0x60 example,
+            // because PadForge scales loudness in software.
             WriteRegister(h, 0xa20001, new byte[]
             {
                 0x00,
-                WiiSpeakerAdpcm_FormatAdpcm,               // 0x00 = 4-bit Yamaha ADPCM
+                SpeakerFormatPcm,                          // 0x40 = signed 8-bit PCM
                 (byte)(rateReg & 0xFF),
                 (byte)(rateReg >> 8),
                 SpeakerVolume,
@@ -713,8 +815,9 @@ namespace PadForge.Common.Input
             HidD_SetOutputReport(h, buf, buf.Length);
         }
 
-        // 0x18 SpeakerData: [0x18, (len<<3)|rumble, <up to 20 ADPCM bytes>],
-        // sized to the device's output report length (zero-padded).
+        // 0x18 SpeakerData: [0x18, (len<<3)|rumble, <up to 20 payload bytes>],
+        // sized to the device's output report length (zero-padded). For 8-bit PCM
+        // the 20 payload bytes are 20 samples; len is the byte count (WiiBrew LL).
         private static byte[] BuildSpeakerReport(byte[] adpcm, int len, int outLen)
         {
             var buf = new byte[outLen < ReportLen ? ReportLen : outLen];
@@ -741,95 +844,72 @@ namespace PadForge.Common.Input
         //    advances in-order only on a confirmed write. ──
         private static void StreamLoop(Sink s)
         {
-            var monoF = new float[FrameSamples];
-            var mono = new short[FrameSamples];
+            var monoF = new float[SamplesPerReport];
+            var pcm8 = new byte[SamplesPerReport];
 
+            // Pace on a high-resolution Stopwatch (the old DateTime.UtcNow clock
+            // only advanced at the ~1-15 ms system timer tick, which wobbled the
+            // cadence). For 8-bit PCM the interval is SamplesPerReport / rate =
+            // 20 / 2000 Hz = 10 ms (100 reports/s). Wait by SLEEPING most of the
+            // interval and spinning only the last ~0.5 ms: PCM is memoryless so it
+            // does not need WiimoteLib's continuous Highest-priority busy-spin, and
+            // a busy-spin here starved the DualSense audio-passthrough BtThread
+            // (also ThreadPriority.Highest) and broke that audio. AboveNormal keeps
+            // this thread below the audio path.
             try { Thread.CurrentThread.Priority = ThreadPriority.AboveNormal; } catch { }
             timeBeginPeriod(1);
-            IntPtr hrTimer = CreatePacingTimer();
             try
             {
-                // 40 samples per tick at WiiRate. The resampler pulls exactly one
-                // tick of 48 kHz source per Read, so the pitch is exact and the
-                // speaker is fed at its true consumption rate (no underrun).
-                double CadenceMs = (double)FrameSamples * 1000.0 / s.Rate;
-                long cadTicks = (long)(CadenceMs * TimeSpan.TicksPerMillisecond);
-                long next = DateTime.UtcNow.Ticks + cadTicks;
+                var sw = System.Diagnostics.Stopwatch.StartNew();
+                long stopwatchFreq = System.Diagnostics.Stopwatch.Frequency;
+                long intervalUs = (long)SamplesPerReport * 1_000_000L / s.Rate; // 20 / 2000 Hz = 10000 us
+                long intervalTicks = intervalUs * stopwatchFreq / 1_000_000L;
+                long next = sw.ElapsedTicks + intervalTicks;
                 long nextLogAt = Environment.TickCount64 + 1000;
-                bool wasStreaming = false;
 
                 while (s.Running)
                 {
                     s.LoopTicks++;
                     int got = 0;
-                    try { got = s.MonoSource.Read(monoF, 0, FrameSamples); } catch { }
+                    try { got = s.MonoSource.Read(monoF, 0, SamplesPerReport); } catch { }
                     bool audible = false;
-                    for (int i = 0; i < FrameSamples; i++)
+                    for (int i = 0; i < SamplesPerReport; i++)
                     {
                         float v = i < got ? monoF[i] : 0f;
                         if (v > 0.0008f || v < -0.0008f) audible = true;
-                        // One-pole DC-block / ~20 Hz high-pass BEFORE quantize.
-                        // Yamaha ADPCM is a pure differential integrator with NO
-                        // leaky term, so any DC / sub-50 Hz content in the
-                        // resampled mono integrates into an unbounded predictor
-                        // ramp that rails the Wii piezo = the garble (measured on
-                        // the captured wire content: ~14000 LSB DC excursion over a
-                        // 4 s cue, 69% of AC power below 50 Hz). The WDL resampler
-                        // is DC-preserving and the mixer can carry a DC offset;
-                        // ffmpeg's resampler (the working Touchmote path) is
-                        // DC-neutral, which is exactly why that path never garbles.
-                        // R=0.95 at 6000 Hz -> ~48 Hz cutoff; the piezo cannot
-                        // reproduce sub-50 Hz so nothing audible is lost. Verified
-                        // offline against the real captured wire content: collapses
-                        // the per-0.1s DC excursion ~14x (3466 -> 248 LSB). Filter
-                        // the SAMPLE; keep `audible` on raw v.
-                        float y = v - s.DcX + DcBlockR * s.DcY;
-                        s.DcX = v; s.DcY = y;
-                        int iv = (int)Math.Round(y * 32767.0);
-                        mono[i] = (short)(iv > 32767 ? 32767 : iv < -32768 ? -32768 : iv);
+                        // Signed 8-bit PCM: the Wii plays each report byte as
+                        // (s16)(s8)data[i] * 0x100 (dolphin Speaker.cpp PCM branch).
+                        // Memoryless -- no codec state -- so a dropped or late report
+                        // on the slow shared BT link is a single click, not the
+                        // cascading desync that differential ADPCM produced.
+                        int iv = (int)Math.Round(v * 127.0);
+                        pcm8[i] = (byte)(sbyte)(iv > 127 ? 127 : iv < -128 ? -128 : iv);
                     }
 
-                    // Stream CONTINUOUSLY while a cue is active. Any frame above
-                    // the threshold (re)arms a HangoverMs window; while it is open
-                    // we send EVERY frame, quiet ones included, so quiet dips do
-                    // not punch gaps mid-cue. After HangoverMs of true silence we
-                    // stop, then START THE NEXT CUE WITH A FRESH ADPCM DECODER.
-                    // This mirrors the proven Touchmote model (each cue is encoded
-                    // from a reset predictor=0/step=127 and streamed contiguously
-                    // start-to-end). The real Wii speaker appears to reset its
-                    // decoder across a silence gap, so carrying differential
-                    // predictor/step state across the stop desynced every frame of
-                    // the next cue = the garble. We advance encoder state only on a
-                    // confirmed send, so within a contiguous cue the two stay locked.
+                    // Stream while a cue is active. A frame above the threshold
+                    // (re)arms a HangoverMs window; while it is open we send every
+                    // frame (quiet dips included) so the FIFO stays fed, and after
+                    // HangoverMs of true silence we stop so we are not pushing noise
+                    // between cues. 8-bit PCM is memoryless, so there is no codec
+                    // state to reset at a cue boundary (the differential-ADPCM reset
+                    // dance is gone) and a skipped report never desyncs the rest.
                     long nowMs = Environment.TickCount64;
                     if (audible) s.LastContentMs = nowMs;
                     bool streaming = (nowMs - s.LastContentMs) < HangoverMs;
-                    if (streaming && !wasStreaming)
-                    {
-                        s.Adpcm = WiiSpeakerAdpcm.State.Initial; // fresh decoder at each cue start
-                        s.DcX = 0f; s.DcY = 0f;                  // and a settled DC-block filter
-                    }
-                    wasStreaming = streaming;
                     if (streaming && s.Handle != IntPtr.Zero)
                     {
                         Interlocked.Increment(ref s.Audible);
-                        var trial = s.Adpcm;
-                        byte[] enc = WiiSpeakerAdpcm.Encode(mono, ref trial); // 40 -> 20 bytes
-                        byte[] report = BuildSpeakerReport(enc, enc.Length, s.PadLen);
+                        byte[] report = BuildSpeakerReport(pcm8, SamplesPerReport, s.PadLen);
                         long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
                         bool ok, dropped = false;
                         if (s.UseWriteFile && s.Pool != null)
                         {
-                            // Pipelined overlapped WriteFile: TrySend submits (does
-                            // not wait for the BT round-trip), so the cadence thread
-                            // is not blocked and can hold the 6000 Hz tick. A
-                            // submitted report is queued in order and will be sent,
-                            // so advancing the encoder on submit stays phase-locked.
+                            // Overlapped WriteFile (the only delivery that paces 100
+                            // reports/s here; HidD measured ~12 ms/write). On a hard
+                            // failure fall back to HidD for the rest of the cue.
                             int r = s.Pool.TrySend(s.Handle, report, report.Length, out int werr);
                             if (r < 0)
                             {
-                                // WriteFile rejected after the probe passed (rare:
-                                // disconnect). Fall back to HidD for the rest.
                                 s.UseWriteFile = false; s.LastErr = werr;
                                 ok = HidWriteReport(s.Handle, report);
                             }
@@ -838,11 +918,8 @@ namespace PadForge.Common.Input
                         else ok = HidWriteReport(s.Handle, report);
                         long us = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1_000_000 / System.Diagnostics.Stopwatch.Frequency;
                         Interlocked.Add(ref s.WriteMicros, us);
-                        // Advance encoder state ONLY on a confirmed send. ADPCM is
-                        // differential: advancing past a frame the device never got
-                        // desyncs the decoder for the rest of the cue.
-                        if (ok) { s.Adpcm = trial; Interlocked.Increment(ref s.WrOk); CaptureSent(enc); }
-                        else if (dropped) Interlocked.Increment(ref s.Dropped); // pool saturated; skip, keep state
+                        if (ok) { Interlocked.Increment(ref s.WrOk); CaptureSent(pcm8); }
+                        else if (dropped) Interlocked.Increment(ref s.Dropped);
                         else { s.LastErr = Marshal.GetLastWin32Error(); Interlocked.Increment(ref s.WrFail); }
                     }
 
@@ -861,21 +938,27 @@ namespace PadForge.Common.Input
                         nextLogAt = Environment.TickCount64 + 1000;
                     }
 
-                    // Accumulative schedule, matching WiimoteLib's MicroTimer
-                    // (num += interval; never re-snaps a missed tick). The write
-                    // above BLOCKS until the report is delivered, so the writes
-                    // self-pace in order and cannot burst; when a write runs long
-                    // the schedule is behind and the next tick fires with no wait
-                    // (catch up), but the next blocking write still serializes it.
-                    long nowTicks = DateTime.UtcNow.Ticks;
-                    double waitMs = (next - nowTicks) / (double)TimeSpan.TicksPerMillisecond;
-                    if (waitMs > 0.3) HighResWait(hrTimer, waitMs);
-                    next += cadTicks;
+                    // Sleep most of the way to the next 10 ms grid point (yielding
+                    // the CPU so the Highest-priority audio threads are never
+                    // starved), then spin only the final ~0.5 ms for accuracy.
+                    // Accumulative (next += interval) so a long write is caught up
+                    // rather than re-snapped. When idle, just sleep and re-base.
+                    if (streaming)
+                    {
+                        long spinTicks = stopwatchFreq / 2000; // ~0.5 ms
+                        while (s.Running && (next - sw.ElapsedTicks) > spinTicks) Thread.Sleep(1);
+                        while (s.Running && sw.ElapsedTicks < next) Thread.SpinWait(16);
+                        next += intervalTicks;
+                    }
+                    else
+                    {
+                        Thread.Sleep(2);
+                        next = sw.ElapsedTicks + intervalTicks;
+                    }
                 }
             }
             finally
             {
-                if (hrTimer != IntPtr.Zero) CloseHandle(hrTimer);
                 timeEndPeriod(1);
             }
         }

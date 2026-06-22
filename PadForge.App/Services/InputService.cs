@@ -957,7 +957,10 @@ namespace PadForge.Services
             // when no device has the toggle on, so the audio threads stay
             // off for users who never use controller audio.
             if (_mainVm.Pads.Any(p => p.PerDevicePlayStationConfigs.Any(kv => kv.Value.AudioPassthroughEnabled)))
+            {
                 PadForge.Common.Input.AudioPassthroughService.Reconcile();
+                PadForge.Common.Input.WiiSpeakerService.Reconcile(); // pick up the Wii mirror too
+            }
 
             // Wii Remote speaker sinks (#146): self-healing periodic reconcile
             // builds/tears down a sink as a Wii Remote is assigned to a slot.

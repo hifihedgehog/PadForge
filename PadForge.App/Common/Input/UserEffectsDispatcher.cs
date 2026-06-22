@@ -572,7 +572,10 @@ namespace PadForge.Common.Input
                 UpdateAnimTimer();
             if (e.PropertyName == nameof(PlayStationSlotConfig.AudioPassthroughEnabled)
                 || e.PropertyName == nameof(PlayStationSlotConfig.AudioMirrorSourceId))
+            {
                 AudioPassthroughService.Reconcile(); // start/stop/repoint the mirror now
+                WiiSpeakerService.Reconcile();        // same for a Wii Remote speaker mirror
+            }
             DispatchSnapshot();
         }
 

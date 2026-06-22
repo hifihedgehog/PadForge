@@ -114,7 +114,6 @@ namespace PadForge.Common.Input
             public NAudio.Wave.ISampleProvider MonoSource;
             public Thread Thread;          // single cadence/encode/write thread
             public volatile bool Running;
-            public WiiSpeakerAdpcm.State Adpcm = WiiSpeakerAdpcm.State.Initial;
             // Per-sink write path, chosen by the BuildSink probe. When the BT
             // stack accepts pipelined overlapped WriteFile we run the native
             // 6000 Hz through Pool; otherwise the synchronous HidD path at the
@@ -185,7 +184,6 @@ namespace PadForge.Common.Input
 
         private const uint GENERIC_WRITE = 0x40000000, GENERIC_READ = 0x80000000;
         private const uint SHARE_RW = 0x3, OPEN_EXISTING = 3;
-        private const uint FILE_FLAG_OVERLAPPED = 0x40000000;
         // Exact WiimoteLib open flags: Temporary | Write_Through | Overlapped |
         // NoBuffering (decompiled WiimoteLib OpenWiimoteDeviceHandle). For a HID
         // device these cache/file hints are effectively no-ops but we match the
@@ -193,7 +191,6 @@ namespace PadForge.Common.Input
         private const uint WII_OPEN_FLAGS = 0x40000000 /*OVERLAPPED*/ | 0x80000000 /*WRITE_THROUGH*/
                                           | 0x20000000 /*NO_BUFFERING*/ | 0x00000100 /*TEMPORARY*/;
         private const int ERROR_IO_PENDING = 997;
-        private const int ERROR_INVALID_PARAMETER = 87;
         private static readonly IntPtr INVALID = new IntPtr(-1);
 
         // Overlapped WriteFile path (the fast Wii output the BT stack may accept).
@@ -363,51 +360,14 @@ namespace PadForge.Common.Input
             catch { }
         }
 
-        // ── Precise pacing (1 ms timer + high-res waitable timer), the same
-        //    mechanism AudioPassthroughService.BtThreadMain uses. Thread.Sleep
-        //    has ~15 ms granularity, which underruns the speaker, and bursting
-        //    catch-up frames overflows its shallow buffer: both crackle. ──
+        // timeBeginPeriod raises the system timer resolution to 1 ms so the
+        // StreamLoop's Thread.Sleep between Stopwatch grid points is fine-grained.
+        // WaitForSingleObject blocks on the write pool's overlapped completion
+        // (and the BuildSink probe).
         [DllImport("winmm.dll")] private static extern uint timeBeginPeriod(uint ms);
         [DllImport("winmm.dll")] private static extern uint timeEndPeriod(uint ms);
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        private static extern IntPtr CreateWaitableTimerExW(IntPtr attr, string name, uint flags, uint access);
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool SetWaitableTimer(IntPtr timer, ref long dueTime, int period,
-            IntPtr completionRoutine, IntPtr arg, bool resume);
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern uint WaitForSingleObject(IntPtr handle, uint ms);
-        private const uint CREATE_WAITABLE_TIMER_HIGH_RESOLUTION = 0x2;
-        // TIMER_ALL_ACCESS (0x1F0003) is REJECTED together with the high-res
-        // flag on some Windows builds (CreateWaitableTimerExW returns Zero), per
-        // the field telemetry in AudioPassthroughService. Use the minimal mask
-        // (TIMER_MODIFY_STATE | SYNCHRONIZE) the proven streamer uses so the
-        // high-res timer actually gets created instead of silently degrading to
-        // the Thread.Sleep cadence that crackles.
-        private const uint TIMER_MODIFY_STATE = 0x0002;
-        private const uint SYNCHRONIZE = 0x00100000;
-        private const uint TIMER_ACCESS = TIMER_MODIFY_STATE | SYNCHRONIZE;
-
-        // Creates the pacing timer: high-resolution if the OS allows it, else a
-        // plain waitable timer, else Zero (HighResWait then uses Thread.Sleep).
-        private static IntPtr CreatePacingTimer()
-        {
-            IntPtr t = CreateWaitableTimerExW(IntPtr.Zero, null,
-                CREATE_WAITABLE_TIMER_HIGH_RESOLUTION, TIMER_ACCESS);
-            if (t == IntPtr.Zero)
-                t = CreateWaitableTimerExW(IntPtr.Zero, null, 0, TIMER_ACCESS);
-            return t;
-        }
-
-        private static void HighResWait(IntPtr timer, double ms)
-        {
-            if (timer == IntPtr.Zero) { Thread.Sleep((int)Math.Max(1, ms)); return; }
-            long due = -(long)(ms * 10000.0); // 100ns units, negative = relative
-            if (due >= 0) due = -1;
-            if (SetWaitableTimer(timer, ref due, 0, IntPtr.Zero, IntPtr.Zero, false))
-                WaitForSingleObject(timer, (uint)Math.Max(1, ms + 50));
-            else
-                Thread.Sleep((int)Math.Max(1, ms));
-        }
 
         /// <summary>Returns the live macro-sink mixers for the slot's Wii
         /// Remotes, so SoundMacroService routes macro sounds into the speaker.
@@ -579,6 +539,12 @@ namespace PadForge.Common.Input
                 };
                 cap.StartRecording();
                 dev.Dispose();   // WasapiLoopbackCapture holds its own device ref
+                // Publish the capture to the sink IMMEDIATELY: from here on the
+                // catch -> StopMirror must be able to StopRecording/Dispose it. If
+                // the provider chain or AddMixerInput below throws (e.g. an
+                // unexpected capture format), a capture assigned only afterward
+                // would leak with its live DataAvailable handler and device ref.
+                s.MirrorCapture = cap;
 
                 ISampleProvider sp = buf.ToSampleProvider();
                 if (sp.WaveFormat.SampleRate != MixRate) sp = new WdlResamplingSampleProvider(sp, MixRate);
@@ -596,7 +562,6 @@ namespace PadForge.Common.Input
                 else if (sp.WaveFormat.Channels != 2) sp = new MultiplexingSampleProvider(new[] { sp }, 2);
 
                 s.MacroMixer.AddMixerInput(sp);   // MixingSampleProvider locks internally
-                s.MirrorCapture = cap;
                 s.MirrorInput = sp;
                 s.MirrorOn = true;
                 s.MirrorSourceId = endpointId ?? "";
@@ -805,8 +770,6 @@ namespace PadForge.Common.Input
             }
         }
 
-        private const byte WiiSpeakerAdpcm_FormatAdpcm = 0x00;
-
         // 0x16 WriteData: [0x16, 0x04|rumble, addr(3 BE), len, data(<=16)].
         // byte1 bit2 (0x04) selects the control-register address space; rumble
         // bit kept 0 (see class-doc residual on SDL coexistence).
@@ -838,12 +801,12 @@ namespace PadForge.Common.Input
         // 0x18 SpeakerData: [0x18, (len<<3)|rumble, <up to 20 payload bytes>],
         // sized to the device's output report length (zero-padded). For 8-bit PCM
         // the 20 payload bytes are 20 samples; len is the byte count (WiiBrew LL).
-        private static byte[] BuildSpeakerReport(byte[] adpcm, int len, int outLen)
+        private static byte[] BuildSpeakerReport(byte[] payload, int len, int outLen)
         {
             var buf = new byte[outLen < ReportLen ? ReportLen : outLen];
             buf[0] = 0x18;
             buf[1] = (byte)((len << 3) & 0xF8); // rumble bit 0 left clear
-            Array.Copy(adpcm, 0, buf, 2, Math.Min(len, 20));
+            Array.Copy(payload, 0, buf, 2, Math.Min(len, 20));
             return buf;
         }
 
@@ -852,16 +815,12 @@ namespace PadForge.Common.Input
             try { return HidD_SetOutputReport(h, report, report.Length); } catch { return false; }
         }
 
-        // ── Stream thread: read WiiRate mono from the properly-resampled source,
-        //    ADPCM-encode carrying state, and write ONE 0x18 report per tick,
-        //    synchronously, NEVER bursting. This mirrors the two proven
-        //    references exactly: dolphin's real-Wiimote writer (one report, then
-        //    sleep_until the next) and the Sony BtThreadMain firmware rule ("one
-        //    report per tick, never burst. Faster delivery or back-to-back
-        //    catch-up frames overflow the pad's shallow receive buffer and it
-        //    drops audio"). The write (~11 ms) fits inside the 16.667 ms tick, so
-        //    there is no queue, no second thread, no burst, and the encoder state
-        //    advances in-order only on a confirmed write. ──
+        // ── Stream thread: read 2000 Hz mono from the resampled source, quantize
+        //    to signed 8-bit PCM, and write ONE 0x18 report (20 samples) per 10 ms
+        //    tick, never bursting -- the Sony BtThreadMain firmware rule ("one
+        //    report per tick; back-to-back catch-up frames overflow the pad's
+        //    shallow receive buffer and it drops audio"). PCM is memoryless, so a
+        //    skipped report is a single click, not a cascading desync. ──
         private static void StreamLoop(Sink s)
         {
             var monoF = new float[SamplesPerReport];

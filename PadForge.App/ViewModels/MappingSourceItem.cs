@@ -139,7 +139,15 @@ namespace PadForge.ViewModels
             get => ResolveParamChoice(_paramUp);
             set
             {
-                var d = value?.Descriptor ?? "";
+                // A null write means the picker's current InputChoice could not be
+                // resolved against the row's AvailableInputs (e.g. a keyboard key on
+                // an axis row, or a transient list rebuild on navigation). WPF's
+                // TwoWay ComboBox writes null back when its selected item leaves the
+                // ItemsSource -- treating that as a clear silently wiped the stored
+                // Up/Down key on every refresh (#160). Preserve the descriptor; only
+                // a real choice (incl. an explicit empty-descriptor "none") changes it.
+                if (value == null) return;
+                var d = value.Descriptor ?? "";
                 if (!string.Equals(_paramUp, d, StringComparison.Ordinal))
                 {
                     _paramUp = d;
@@ -155,7 +163,8 @@ namespace PadForge.ViewModels
             get => ResolveParamChoice(_paramDown);
             set
             {
-                var d = value?.Descriptor ?? "";
+                if (value == null) return; // see ParamUpInputChoice: don't let an unresolved picker wipe the key (#160)
+                var d = value.Descriptor ?? "";
                 if (!string.Equals(_paramDown, d, StringComparison.Ordinal))
                 {
                     _paramDown = d;
@@ -171,7 +180,8 @@ namespace PadForge.ViewModels
             get => ResolveParamChoice(_paramModifier);
             set
             {
-                var d = value?.Descriptor ?? "";
+                if (value == null) return; // see ParamUpInputChoice: don't let an unresolved picker wipe the key (#160)
+                var d = value.Descriptor ?? "";
                 if (!string.Equals(_paramModifier, d, StringComparison.Ordinal))
                 {
                     _paramModifier = d;

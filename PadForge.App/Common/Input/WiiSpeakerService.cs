@@ -145,9 +145,6 @@ namespace PadForge.Common.Input
             public string MirrorSourceId = "";   // "" = system default endpoint
             public WasapiLoopbackCapture MirrorCapture;
             public ISampleProvider MirrorInput;   // the provider added to MacroMixer
-            // Diagnostics (per-second snapshot to the log): did the writes land?
-            public long WrOk, WrFail, Dropped, Audible, LoopTicks, WriteMicros;
-            public int LastErr;
         }
 
         private static readonly object _lock = new();
@@ -319,45 +316,6 @@ namespace PadForge.Common.Input
                 return (caps.OutputReportByteLength, caps.InputReportByteLength);
             }
             finally { HidD_FreePreparsedData(pp); }
-        }
-
-        // Lightweight diagnostic log so a single hardware test gives ground
-        // truth (did the writes land, what is the report length, how many frames
-        // dropped) instead of another blind guess. Best-effort, never throws.
-        // Ground-truth capture: append the exact ADPCM payload bytes (in wire
-        // order, only frames actually written to the device) so the stream can
-        // be decoded offline and compared to the source. Capped so the file
-        // stays small. This is the decisive "is our data correct or is the
-        // hardware mangling it" test.
-        private static readonly object _capLock = new object();
-        private static long _capBytes;
-        private const long CapMaxBytes = 12000; // ~100 s at 2400 Hz / 60 fps
-        private static void CaptureSent(byte[] adpcm)
-        {
-            try
-            {
-                lock (_capLock)
-                {
-                    if (_capBytes >= CapMaxBytes) return;
-                    using var fs = new System.IO.FileStream(@"C:\tmp\wii-capture.adpcm",
-                        System.IO.FileMode.Append, System.IO.FileAccess.Write, System.IO.FileShare.Read);
-                    fs.Write(adpcm, 0, adpcm.Length);
-                    _capBytes += adpcm.Length;
-                }
-            }
-            catch { }
-        }
-
-        private static readonly object _logLock = new object();
-        private static void Log(string msg)
-        {
-            try
-            {
-                lock (_logLock)
-                    System.IO.File.AppendAllText(@"C:\tmp\wii-speaker.log",
-                        DateTime.UtcNow.ToString("HH:mm:ss.fff") + "  " + msg + "\r\n");
-            }
-            catch { }
         }
 
         // timeBeginPeriod raises the system timer resolution to 1 ms so the
@@ -565,7 +523,6 @@ namespace PadForge.Common.Input
                 s.MirrorInput = sp;
                 s.MirrorOn = true;
                 s.MirrorSourceId = endpointId ?? "";
-                Log($"mirror on slot={s.Slot} src={(string.IsNullOrEmpty(endpointId) ? "default" : endpointId)} fmt={cap.WaveFormat}");
             }
             catch { try { StopMirror(s); } catch { } }
         }
@@ -591,11 +548,8 @@ namespace PadForge.Common.Input
                 h = CreateFileW(s.HidPath, GENERIC_WRITE | GENERIC_READ, SHARE_RW,
                     IntPtr.Zero, OPEN_EXISTING, WII_OPEN_FLAGS, IntPtr.Zero);
                 if (h == INVALID || h == IntPtr.Zero)
-                {
-                    Log($"open FAILED err={Marshal.GetLastWin32Error()} path={s.HidPath}");
                     return false; // device busy / no raw access; retry next reconcile
-                }
-                var (capOut, capIn) = QueryReportLens(h);
+                var (capOut, _) = QueryReportLens(h);
                 int outLen = capOut >= ReportLen ? capOut : ReportLen;
                 s.PadLen = outLen;
 
@@ -603,16 +557,14 @@ namespace PadForge.Common.Input
                 // slow BT). See the constants block for why PCM over ADPCM.
                 //
                 // DELIVERY: overlapped WriteFile. Measured on this BT stack,
-                // HidD_SetOutputReport takes ~12 ms per write (live log avgWriteUs
-                // 11000-12500) and could not even sustain the old 6.67 ms ADPCM
-                // cadence (loop went erratic, writes failed lastErr 21). WriteFile
-                // completes sub-millisecond, so it paces the 10 ms PCM cadence with
-                // margin to spare. HidD stays the fallback if WriteFile is rejected.
-                bool wf = ProbeWriteFile(h, outLen, out int probeErr);
-                s.UseWriteFile = wf;
+                // HidD_SetOutputReport takes ~11-12 ms per write and could not even
+                // sustain the old 6.67 ms ADPCM cadence (the loop went erratic and
+                // writes failed). WriteFile completes sub-millisecond, so it paces
+                // the 10 ms PCM cadence with margin. HidD stays the fallback if
+                // WriteFile is rejected.
+                s.UseWriteFile = ProbeWriteFile(h, outLen, out _);
                 s.Rate = PcmRate;
                 s.RateReg = PcmRateReg;
-                Log($"open ok slot={s.Slot} capOut={capOut} padLen={outLen} writeFile={wf} probeErr={probeErr} rate={s.Rate} fmt=PCM8");
                 InitSpeaker(h, outLen, s.RateReg);
 
                 // Commit under _lock, but only if a concurrent Shutdown/teardown
@@ -628,7 +580,7 @@ namespace PadForge.Common.Input
                 // StreamLoop never takes _lock, so there is no deadlock.
                 var mono = new StereoToMonoSampleProvider(s.MacroMixer) { LeftVolume = 0.5f, RightVolume = 0.5f };
                 var resampled = new WdlResamplingSampleProvider(mono, s.Rate);
-                var pool = wf ? new WiiWritePool(outLen) : null;
+                var pool = s.UseWriteFile ? new WiiWritePool(outLen) : null;
                 lock (_lock)
                 {
                     if (_suppressed || !_sinks.Contains(s))
@@ -844,11 +796,9 @@ namespace PadForge.Common.Input
                 long intervalUs = (long)SamplesPerReport * 1_000_000L / s.Rate; // 20 / 2000 Hz = 10000 us
                 long intervalTicks = intervalUs * stopwatchFreq / 1_000_000L;
                 long next = sw.ElapsedTicks + intervalTicks;
-                long nextLogAt = Environment.TickCount64 + 1000;
 
                 while (s.Running)
                 {
-                    s.LoopTicks++;
                     int got = 0;
                     try { got = s.MonoSource.Read(monoF, 0, SamplesPerReport); } catch { }
                     bool audible = false;
@@ -877,44 +827,19 @@ namespace PadForge.Common.Input
                     bool streaming = (nowMs - s.LastContentMs) < HangoverMs;
                     if (streaming && s.Handle != IntPtr.Zero)
                     {
-                        Interlocked.Increment(ref s.Audible);
                         byte[] report = BuildSpeakerReport(pcm8, SamplesPerReport, s.PadLen);
-                        long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
-                        bool ok, dropped = false;
                         if (s.UseWriteFile && s.Pool != null)
                         {
-                            // Overlapped WriteFile (the only delivery that paces 100
-                            // reports/s here; HidD measured ~12 ms/write). On a hard
-                            // failure fall back to HidD for the rest of the cue.
-                            int r = s.Pool.TrySend(s.Handle, report, report.Length, out int werr);
-                            if (r < 0)
+                            // Overlapped WriteFile paces 100 reports/s (HidD measured
+                            // ~12 ms/write, too slow). On a hard failure fall back to
+                            // HidD for the rest of the cue.
+                            if (s.Pool.TrySend(s.Handle, report, report.Length, out _) < 0)
                             {
-                                s.UseWriteFile = false; s.LastErr = werr;
-                                ok = HidWriteReport(s.Handle, report);
+                                s.UseWriteFile = false;
+                                HidWriteReport(s.Handle, report);
                             }
-                            else { ok = (r == 1); dropped = (r == 0); }
                         }
-                        else ok = HidWriteReport(s.Handle, report);
-                        long us = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1_000_000 / System.Diagnostics.Stopwatch.Frequency;
-                        Interlocked.Add(ref s.WriteMicros, us);
-                        if (ok) { Interlocked.Increment(ref s.WrOk); CaptureSent(pcm8); }
-                        else if (dropped) Interlocked.Increment(ref s.Dropped);
-                        else { s.LastErr = Marshal.GetLastWin32Error(); Interlocked.Increment(ref s.WrFail); }
-                    }
-
-                    if (Environment.TickCount64 >= nextLogAt)
-                    {
-                        long ok = Interlocked.Read(ref s.WrOk), fail = Interlocked.Read(ref s.WrFail);
-                        long drop = Interlocked.Read(ref s.Dropped), aud = Interlocked.Read(ref s.Audible);
-                        long ticks = Interlocked.Read(ref s.LoopTicks), wus = Interlocked.Read(ref s.WriteMicros);
-                        long avgWriteUs = (ok + fail) > 0 ? wus / (ok + fail) : 0;
-                        if (ok + fail + aud > 0)
-                            Log($"slot={s.Slot} rate={s.Rate} wf={s.UseWriteFile} loopTicks={ticks} streamedFrames={aud} writesOk={ok} dropped={drop} writesFail={fail} lastErr={s.LastErr} avgWriteUs={avgWriteUs}");
-                        Interlocked.Exchange(ref s.WrOk, 0); Interlocked.Exchange(ref s.WrFail, 0);
-                        Interlocked.Exchange(ref s.Dropped, 0);
-                        Interlocked.Exchange(ref s.Audible, 0); Interlocked.Exchange(ref s.LoopTicks, 0);
-                        Interlocked.Exchange(ref s.WriteMicros, 0);
-                        nextLogAt = Environment.TickCount64 + 1000;
+                        else HidWriteReport(s.Handle, report);
                     }
 
                     // Sleep most of the way to the next 10 ms grid point (yielding

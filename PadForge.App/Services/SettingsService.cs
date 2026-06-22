@@ -1100,11 +1100,21 @@ namespace PadForge.Services
                     if (er == null) continue;
 
                     // Drop sources for devices that left the slot.
+                    // Exception: non-Direct kind sources (Ramped /
+                    // Incremental / InvertOnHold / steering) have no
+                    // legacy representation, so the BuildFromLegacy
+                    // rebuild can never re-add them. Stripping one here
+                    // is permanent data loss (#160). The dedicated
+                    // unassign hook StripDeviceFromAllSlots still removes
+                    // a kind source whose device genuinely left the slot
+                    // (it matches by guid regardless of Kind), so a truly
+                    // departed device is still cleaned up there.
                     if (er.Sources != null)
                     {
                         er.Sources.RemoveAll(s =>
                             !string.IsNullOrEmpty(s?.DeviceGuid)
-                            && !devGuidsInSlot.Contains(s.DeviceGuid.ToLowerInvariant()));
+                            && !devGuidsInSlot.Contains(s.DeviceGuid.ToLowerInvariant())
+                            && string.Equals(s.Kind ?? "Direct", "Direct", StringComparison.Ordinal));
                     }
 
                     var key = (er.Target ?? "", er.LayerMask ?? "Base");

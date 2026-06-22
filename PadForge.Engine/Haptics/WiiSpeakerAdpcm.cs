@@ -4,15 +4,29 @@ namespace PadForge.Engine.Haptics
 {
     /// <summary>
     /// Yamaha 4-bit ADPCM codec for the Wii Remote speaker (issue #146,
-    /// sub-feature 2). The decoder is the public WiiBrew / Dolphin algorithm
-    /// (facts from dolphin Speaker.cpp:24-54, GPLv2, read for the table and
-    /// formula only). The dolphin clone is sparse, so that file is git-tracked
-    /// but not on disk; retrieve it with
+    /// sub-feature 2). The expand-nibble math (DiffLookup / IndexScale / clip)
+    /// is the public WiiBrew / Dolphin algorithm (facts from dolphin
+    /// Speaker.cpp:24-54, GPLv2, read for the table and formula only). The
+    /// dolphin clone is sparse, so that file is git-tracked but not on disk;
+    /// retrieve it with
     /// <c>git -C dolphin show HEAD:Source/Core/Core/HW/WiimoteEmu/Speaker.cpp</c>
     /// (Read/Grep alone cannot see it). The encoder is the original inverse: per target PCM
     /// sample, try all 16 nibbles, keep the one whose reconstructed predictor
     /// lands closest, then advance the state with the exact decode formulas.
-    /// Two samples pack per byte, high nibble first.
+    ///
+    /// Two samples pack per byte, LOW nibble first: the chronologically first
+    /// sample (2n) goes in bits 0-3, the second (2n+1) in bits 4-7. This is the
+    /// order the REAL Wii speaker consumes, proven by byte identity to the
+    /// working reference: Touchmote encodes cues with ffmpeg's adpcm_yamaha and
+    /// streams those bytes UNMODIFIED to a real Wii Remote via WiimoteLib, and it
+    /// plays correctly. ffmpeg packs low-first, and our greedy encoder produces
+    /// bytes BYTE-IDENTICAL to ffmpeg when packed low-first (verified: 0/750 and
+    /// 0/900 differing bytes; the ffmpeg wire decodes clean only low-first, RMS
+    /// 419 vs 26816 as noise high-first). dolphin's EMULATED decoder reads
+    /// high-first internally, but the authority for the wire is real hardware via
+    /// the proven ffmpeg/WiimoteLib path, which is low-first. Yamaha ADPCM is
+    /// differential, so swapping the nibble order scrambles the predictor = full
+    /// garble. Do NOT "fix" this back to high-first.
     ///
     /// A Wii Remote speaker is a low-rate single channel (ADPCM Hz =
     /// 6000000 / sample_rate, typically ~3 kHz), so this serves short alert
@@ -54,8 +68,8 @@ namespace PadForge.Engine.Haptics
             return (short)s.Predictor;
         }
 
-        /// <summary>Decodes an ADPCM byte stream (2 samples/byte, high nibble
-        /// first) into 16-bit PCM. Mirrors the Wii Remote / Dolphin decode.
+        /// <summary>Decodes an ADPCM byte stream (2 samples/byte, low nibble
+        /// first) into 16-bit PCM. Mirrors the real Wii Remote decode order.
         /// Resets state each call (whole-stream decode): decoding a captured
         /// chunked stream one chunk at a time through this overload would
         /// reintroduce a discontinuity at each boundary. Use
@@ -79,13 +93,13 @@ namespace PadForge.Engine.Haptics
             int o = 0;
             foreach (byte b in adpcm)
             {
-                pcm[o++] = ExpandNibble(ref s, (b >> 4) & 0x0F); // high nibble first
-                pcm[o++] = ExpandNibble(ref s, b & 0x0F);
+                pcm[o++] = ExpandNibble(ref s, b & 0x0F);           // low nibble first (ffmpeg adpcm_yamaha = real Wii)
+                pcm[o++] = ExpandNibble(ref s, (b >> 4) & 0x0F);
             }
             return pcm;
         }
 
-        /// <summary>Encodes 16-bit PCM into Yamaha ADPCM (2 samples/byte, high
+        /// <summary>Encodes 16-bit PCM into Yamaha ADPCM (2 samples/byte, low
         /// nibble first). Greedy nearest-reconstruction search over the 16
         /// nibbles, advancing the encoder's mirror of the decode state so the
         /// stream round-trips through <see cref="Decode(byte[])"/>. Resets state
@@ -94,7 +108,7 @@ namespace PadForge.Engine.Haptics
         {
             // One-shot whole-cue encode. Lenient on odd length: a self-contained
             // cue has no following chunk to desync, so the trailing odd sample
-            // just occupies the final byte's high nibble.
+            // just occupies the final byte's low nibble (high nibble stays 0).
             var s = State.Initial;
             return EncodeCore(pcm, ref s);
         }
@@ -106,7 +120,7 @@ namespace PadForge.Engine.Haptics
         /// predictor=0/step=127 while the Wii decoder keeps its running state,
         /// producing an amplitude discontinuity (audible click) at every report
         /// boundary. Chunks MUST be even length: an odd chunk leaves a padding
-        /// low-nibble of 0 in its trailing byte that the Wii decoder consumes as
+        /// high-nibble of 0 in its trailing byte that the Wii decoder consumes as
         /// a real sample, permanently desyncing decoder state for the rest of the
         /// stream (silent whole-stream corruption, not a local glitch). The
         /// overload throws on an odd length rather than corrupt silently; a
@@ -136,9 +150,9 @@ namespace PadForge.Engine.Haptics
                 ExpandNibble(ref s, nibble); // advance state exactly as the decoder will
 
                 if ((i & 1) == 0)
-                    outBytes[i >> 1] = (byte)(nibble << 4);       // high nibble first
+                    outBytes[i >> 1] = (byte)(nibble & 0x0F);           // first sample -> LOW nibble (ffmpeg/Wii order)
                 else
-                    outBytes[i >> 1] |= (byte)(nibble & 0x0F);    // low nibble
+                    outBytes[i >> 1] |= (byte)((nibble & 0x0F) << 4);   // second sample -> high nibble
             }
             return outBytes;
         }

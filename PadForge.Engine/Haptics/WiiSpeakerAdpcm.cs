@@ -29,10 +29,11 @@ namespace PadForge.Engine.Haptics
     /// hardware-verified Touchmote playback settled it.
     ///
     /// A Wii Remote speaker is a low-rate single channel (ADPCM Hz =
-    /// 6000000 / sample_rate, typically ~3 kHz), so this serves short alert
-    /// cues, not music. The streaming sink (enable 0x14, the 7-byte config,
-    /// paced 0x18 writes via HidD_SetOutputReport) is the hardware-gated
-    /// remainder; this codec is its verifiable core.
+    /// 6000000 / sample_rate, typically ~3 kHz), suited to short alert cues, not
+    /// music. NOTE: the live WiiSpeakerService path ships 8-bit PCM (memoryless,
+    /// robust to the SDL-shared BT link), not this differential ADPCM. This codec
+    /// is kept compiled and unit-tested (HapticEncoderTests) as the verified
+    /// reference implementation, but it is OFF the live streaming path.
     /// </summary>
     public static class WiiSpeakerAdpcm
     {

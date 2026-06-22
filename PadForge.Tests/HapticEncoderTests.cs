@@ -298,13 +298,13 @@ namespace PadForge.Tests
         [Fact]
         public void Adpcm_LowNibbleDecodedFirst()
         {
-            // Wire order is LOW nibble first (sample 2n in bits 0-3), proven by
-            // byte identity to ffmpeg's adpcm_yamaha (the encoder Touchmote ships
-            // to real hardware; ffmpeg packs low-first and its wire decodes clean
-            // only low-first). One byte 0x0F: low nibble 15 (sample 0), high nibble
-            // 0 (sample 1). From Initial (predictor 0, step 127): nibble 15 ->
-            // 127*-15/8 = -238; nibble 0 from there steps back up, so sample 1 >
-            // sample 0.
+            // Wire order is LOW nibble first (sample 2n in bits 0-3), confirmed on
+            // this exact hardware: Touchmote feeds ffmpeg adpcm_yamaha (low-first)
+            // bytes unchanged via WiimoteLib.StartPlayback and they play intelligibly
+            // on the user's own Wii Remote. One byte 0x0F: low nibble 15 (sample 0),
+            // high nibble 0 (sample 1). From Initial (predictor 0, step 127): nibble
+            // 15 -> 127*-15/8 = -238; nibble 0 from there steps back up, so sample 1
+            // > sample 0.
             short[] dec = WiiSpeakerAdpcm.Decode(new byte[] { 0x0F });
             Assert.Equal(2, dec.Length);
             Assert.Equal(-238, dec[0]);        // low nibble 15 first (large negative step)

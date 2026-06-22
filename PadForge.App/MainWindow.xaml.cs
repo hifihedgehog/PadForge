@@ -560,8 +560,9 @@ namespace PadForge
                 _inputService.RefreshDeviceList();
                 _viewModel.Devices.RefreshSlotButtons();
 
-                // Issue #83 — controller-audio sinks follow assignments.
+                // Issue #83. Controller-audio sinks follow assignments.
                 PadForge.Common.Input.AudioPassthroughService.Reconcile();
+                PadForge.Common.Input.WiiSpeakerService.Reconcile();
 
                 // Issue #61 fix — bring the per-VC MappingSets up to
                 // date with every assigned device's PadSetting BEFORE

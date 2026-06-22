@@ -16,17 +16,17 @@ namespace PadForge.Engine.Haptics
     ///
     /// Two samples pack per byte, LOW nibble first: the chronologically first
     /// sample (2n) goes in bits 0-3, the second (2n+1) in bits 4-7. This is the
-    /// order the REAL Wii speaker consumes, proven by byte identity to the
-    /// working reference: Touchmote encodes cues with ffmpeg's adpcm_yamaha and
-    /// streams those bytes UNMODIFIED to a real Wii Remote via WiimoteLib, and it
-    /// plays correctly. ffmpeg packs low-first, and our greedy encoder produces
-    /// bytes BYTE-IDENTICAL to ffmpeg when packed low-first (verified: 0/750 and
-    /// 0/900 differing bytes; the ffmpeg wire decodes clean only low-first, RMS
-    /// 419 vs 26816 as noise high-first). dolphin's EMULATED decoder reads
-    /// high-first internally, but the authority for the wire is real hardware via
-    /// the proven ffmpeg/WiimoteLib path, which is low-first. Yamaha ADPCM is
-    /// differential, so swapping the nibble order scrambles the predictor = full
-    /// garble. Do NOT "fix" this back to high-first.
+    /// order the REAL Wii speaker hardware consumes, confirmed against this exact
+    /// hardware: Touchmote converts cues with ffmpeg (-c:a adpcm_yamaha, which
+    /// packs LOW-first) and WiimoteLib.StartPlayback streams those bytes UNCHANGED
+    /// to the Wii Remote, and they play intelligibly on the user's own Wiimote.
+    /// ffmpeg's adpcm_yamaha is low-first (ramp test). dolphin's EMULATED decoder
+    /// reads high-first internally (Speaker.cpp deliberately deviates from the
+    /// ffmpeg math it credits), but the authority for the real wire is the proven
+    /// ffmpeg/WiimoteLib path verified on hardware, which is low-first. Yamaha
+    /// ADPCM is a differential integrator, so swapping the nibble order scrambles
+    /// the predictor into full garble. Do NOT "fix" this back to high-first; a
+    /// hardware-verified Touchmote playback settled it.
     ///
     /// A Wii Remote speaker is a low-rate single channel (ADPCM Hz =
     /// 6000000 / sample_rate, typically ~3 kHz), so this serves short alert
@@ -93,7 +93,7 @@ namespace PadForge.Engine.Haptics
             int o = 0;
             foreach (byte b in adpcm)
             {
-                pcm[o++] = ExpandNibble(ref s, b & 0x0F);           // low nibble first (ffmpeg adpcm_yamaha = real Wii)
+                pcm[o++] = ExpandNibble(ref s, b & 0x0F);           // LOW nibble first (ffmpeg adpcm_yamaha = real Wii)
                 pcm[o++] = ExpandNibble(ref s, (b >> 4) & 0x0F);
             }
             return pcm;

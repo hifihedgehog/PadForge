@@ -1270,6 +1270,67 @@ namespace PadForge.Common.Input
             return string.Equals(src.DeviceGuid, thisDeviceGuid, System.StringComparison.OrdinalIgnoreCase);
         }
 
+        /// <summary>
+        /// Per-device trigger value (0-65535) for the Triggers-tab live preview.
+        /// Evaluates only <paramref name="deviceGuid"/>'s own sources on the
+        /// target row, so the preview reflects the selected device's own
+        /// contribution even when that source is the secondary entry on a
+        /// multi-source row.
+        ///
+        /// <para>Why this is separate from <c>RawMappedState</c>: a multi-source
+        /// row is evaluated once per slot in <see cref="ApplyMappingSetToGamepad"/>
+        /// (the <c>_multiSourceEvaluatedTargetsBySlot</c> de-dup), so its combined
+        /// value lands on only the first-evaluated device's <c>RawMappedState</c>.
+        /// Every other device's snapshot reads 0, which blanked the Triggers-tab
+        /// preview whenever the selected device was a secondary source on a
+        /// LeftTrigger/RightTrigger row. This re-evaluates per device instead.</para>
+        ///
+        /// <para>Runtime is passed null and dt 0 on purpose: Direct sources (the
+        /// axis triggers this previews) evaluate statelessly, while Incremental /
+        /// Ramped sources short-circuit to 0 (see
+        /// <see cref="SourceEvaluator.EvaluateForTriggerTarget"/>) without ticking
+        /// the live slot accumulators the polling thread owns, so calling this from
+        /// the UI refresh can never double-advance them. No shared static buffers
+        /// are touched and the row walk is mutation-guarded, so it is safe to call
+        /// off the polling thread.</para>
+        /// </summary>
+        internal static ushort EvaluatePerDeviceTriggerPreview(
+            CustomInputState state, MappingSet mappingSet, string deviceGuid, string target, int slotIndex)
+        {
+            if (state == null || mappingSet == null) return 0;
+            try
+            {
+                var rows = mappingSet.Rows;
+                if (rows == null) return 0;
+                for (int r = 0; r < rows.Count; r++)
+                {
+                    var row = rows[r];
+                    if (row == null || row.Sources == null) continue;
+                    if (!string.Equals(row.Target, target, System.StringComparison.Ordinal)) continue;
+
+                    List<float> contribs = null;
+                    for (int i = 0; i < row.Sources.Count; i++)
+                    {
+                        var src = row.Sources[i];
+                        if (IsRowModifierSource(src)) continue;
+                        if (!SourceMatchesDevice(src, deviceGuid)) continue;
+                        (contribs ??= new List<float>(row.Sources.Count)).Add(
+                            SourceEvaluator.EvaluateForTriggerTarget(state, src, slotIndex, target, i, null, 0));
+                    }
+                    if (contribs == null || contribs.Count == 0) continue; // no source for this device on this row
+
+                    float combined = ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, contribs));
+                    return (ushort)System.Math.Clamp((int)(combined * 65535f), 0, 65535);
+                }
+            }
+            catch
+            {
+                // Best-effort preview. A concurrent save-path mutation of Rows /
+                // Sources resolves on the next frame; never throw into the UI update.
+            }
+            return 0;
+        }
+
         private static float ClampBipolar(float v)
         {
             if (float.IsNaN(v) || float.IsInfinity(v)) return 0f;

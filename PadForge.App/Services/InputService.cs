@@ -9177,8 +9177,28 @@ namespace PadForge.Services
             // to the old raw read, so XInput-shaped pads don't change.
             if (us != null)
             {
-                gp.LeftTrigger = us.RawMappedState.LeftTrigger;
-                gp.RightTrigger = us.RawMappedState.RightTrigger;
+                // Per-device trigger preview. Evaluate THIS device's own trigger
+                // sources directly rather than reading us.RawMappedState: a
+                // multi-source (e.g. MaxAbs) LeftTrigger/RightTrigger row is
+                // evaluated once per slot in Step 3, so its combined value lands
+                // on only the first-evaluated device's RawMappedState, leaving a
+                // secondary-source device's preview blank (the Triggers-tab "left
+                // trigger doesn't preview when it's a secondary mapping" bug).
+                // Single-source / legacy slots have no MappingSet, so keep reading
+                // RawMappedState there (already per-device-correct).
+                MappingSet ms = (us.MapTo >= 0 && us.MapTo < SettingsManager.SlotMappingSets.Length)
+                    ? SettingsManager.SlotMappingSets[us.MapTo] : null;
+                if (ms != null && devState != null)
+                {
+                    string g = instanceGuid.ToString();
+                    gp.LeftTrigger  = InputManager.EvaluatePerDeviceTriggerPreview(devState, ms, g, "LeftTrigger",  us.MapTo);
+                    gp.RightTrigger = InputManager.EvaluatePerDeviceTriggerPreview(devState, ms, g, "RightTrigger", us.MapTo);
+                }
+                else
+                {
+                    gp.LeftTrigger = us.RawMappedState.LeftTrigger;
+                    gp.RightTrigger = us.RawMappedState.RightTrigger;
+                }
             }
 
             // A mouse has no absolute stick axes. Its raw axes are relative motion

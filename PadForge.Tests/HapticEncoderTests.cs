@@ -364,5 +364,60 @@ namespace PadForge.Tests
             var (_, amp) = ReduceSine(330f, 0.0f);
             Assert.Equal(0f, amp);
         }
+
+        // ─── Steam Controller 2026 (Triton) / Deck (SteamHapticsSinger) ───
+
+        [Fact]
+        public void Steam2026_FramesReport0x83()
+        {
+            // main.cpp:259-265: [0]=0x83, [5]=0xFF, [6]=0x7F, freq command non-zero.
+            var blob = HapticToneEncoder.EncodeSteam2026(440f, 1.0f);
+            Assert.Equal(65, blob.Length);
+            Assert.Equal(0x83, blob[0]);
+            Assert.Equal(0xFF, blob[5]);
+            Assert.Equal(0x7F, blob[6]);
+            Assert.True(blob[3] != 0 || blob[4] != 0); // a real frequency command
+        }
+
+        [Fact]
+        public void Steam2026_StopIsReport0x82()
+        {
+            // main.cpp:254-257: note-off so the pad does not reboot.
+            var blob = HapticToneEncoder.EncodeSteam2026Stop(haptic: 1);
+            Assert.Equal(0x82, blob[0]);
+            Assert.Equal(1, blob[1]);
+        }
+
+        [Fact]
+        public void SteamDeck_CarriesFrequencyInHz()
+        {
+            // main.cpp:279-286: [0]=0xEA, [3]=0x03, [6..7]=int(freq) LSB/MSB.
+            var blob = HapticToneEncoder.EncodeSteamDeck(440f, 1.0f);
+            Assert.Equal(0xEA, blob[0]);
+            Assert.Equal(0x03, blob[3]);
+            Assert.Equal(440 % 0xFF, blob[6]);
+            Assert.Equal(440 / 0xFF, blob[7]);
+        }
+
+        // ─── Switch 2 HD rumble (SDL_hidapi_switch2.c EncodeHDRumble) ───
+
+        [Fact]
+        public void Switch2HD_PacksFixedCarrierAtZeroAmp()
+        {
+            // EncodeHDRumble(0x187, 0, 0x112, 0, out): hand-computed from the bit
+            // layout at SDL_hidapi_switch2.c:1108-1112.
+            var hd = HapticToneEncoder.EncodeSwitch2HD(0f);
+            Assert.Equal(new byte[] { 0x87, 0x01, 0x20, 0x11, 0x00 }, hd);
+        }
+
+        [Fact]
+        public void Switch2HD_AmplitudeRaisesTheAmpBits()
+        {
+            // A non-zero amplitude must lift the packed amp bits above the silent
+            // vector (proves amplitude actually threads through the pack).
+            var loud = HapticToneEncoder.EncodeSwitch2HD(1.0f);
+            var quiet = HapticToneEncoder.EncodeSwitch2HD(0f);
+            Assert.NotEqual(quiet, loud);
+        }
     }
 }

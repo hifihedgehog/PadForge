@@ -246,77 +246,12 @@ namespace PadForge.Engine.Haptics
             return blob;
         }
 
-        // ─────────────────────────────────────────────────────────────
-        //  Switch 2 HD Rumble (5-byte pack). Ground truth: SDL fork
-        //  SDL_hidapi_switch2.c EncodeHDRumble (line 1106-1113).
-        // ─────────────────────────────────────────────────────────────
-
-        // The Switch 2 carrier is FIXED by the driver init (rumble_hi_freq 0x187,
-        // rumble_lo_freq 0x112, SDL_hidapi_switch2.c:689-690); no reference exposes
-        // a Switch 2 frequency encoding, so a Switch 2 "tone" can only modulate
-        // amplitude at that fixed carrier (a fixed-pitch buzz envelope, honestly
-        // not a pitch-varying tone like the Joy-Con gen-1 / Steam paths).
-        public const ushort Switch2HiFreq = 0x187;
-        public const ushort Switch2LoFreq = 0x112;
-
-        /// <summary>Packs one HD-rumble group into 5 bytes at the fixed carrier
-        /// with the given amplitude (0..1), the SDL wired layout. AMPLITUDE-ONLY:
-        /// no tone-enable bit exists in this layout, so it vibrates, it does not
-        /// play a pitch. Bit layout from EncodeHDRumble
-        /// (SDL_hidapi_switch2.c:1106-1113). Kept for the wired amplitude path;
-        /// the tone path uses EncodeSwitch2Vibration.</summary>
-        public static byte[] EncodeSwitch2HD(float amp)
-        {
-            if (amp < 0f) amp = 0f; if (amp > 1f) amp = 1f;
-            ushort a = (ushort)(amp * ushort.MaxValue);
-            ushort hi = Switch2HiFreq, lo = Switch2LoFreq, hiA = a, loA = a;
-            return new byte[]
-            {
-                (byte)(hi & 0xFF),
-                (byte)(((hiA >> 4) & 0xfc) | ((hi >> 8) & 0x03)),
-                (byte)((hiA >> 12) | (lo << 4)),
-                (byte)((loA & 0xc0) | ((lo >> 4) & 0x3f)),
-                (byte)(loA >> 8),
-            };
-        }
-
-        // ─────────────────────────────────────────────────────────────
-        //  Switch 2 vibration with TONE enable (5-byte VibrationData).
-        //  Ground truth: switch2-controllers/controller.py VibrationData
-        //  (lines 188-209). This is the BLE encoding, and unlike the SDL
-        //  wired EncodeHDRumble it carries a per-band en_tone bit (bit 9 LF,
-        //  bit 29 HF) that switches the actuator from rumble to an audible
-        //  tone. lf_freq/hf_freq are 9-bit; the reference defaults 0x0e1 (225)
-        //  and 0x1e1 (481) read as Hz, so the frequency is carried directly
-        //  in Hz (clamped to the 9-bit / 511 Hz range). Hypothesis-under-test:
-        //  the Hz-direct freq field and whether this BLE layout is accepted on
-        //  the transport PadForge's HID handle reaches.
-        // ─────────────────────────────────────────────────────────────
-
-        /// <summary>One 5-byte Switch 2 VibrationData group with tone enabled, at
-        /// the given frequency (Hz, clamped to the 9-bit field) and amplitude
-        /// (0..1, 10-bit). Both LF and HF bands carry the same tone. Layout is
-        /// controller.py VibrationData.get_bytes (196-209).</summary>
-        public static byte[] EncodeSwitch2Vibration(float freqHz, float amp)
-        {
-            if (amp < 0f) amp = 0f; if (amp > 1f) amp = 1f;
-            int f = (int)freqHz; if (f < 1) f = 1; if (f > 0x1FF) f = 0x1FF; // 9-bit
-            int a = (int)(amp * 0x3FF); if (a > 0x3FF) a = 0x3FF;            // 10-bit
-            ulong v = 0;
-            v |= (ulong)(f & 0x1FF);          // lf_freq  bits 0-8
-            v |= 1UL << 9;                    // lf_en_tone bit 9
-            v |= (ulong)(a & 0x3FF) << 10;    // lf_amp   bits 10-19
-            v |= (ulong)(f & 0x1FF) << 20;    // hf_freq  bits 20-28
-            v |= 1UL << 29;                   // hf_en_tone bit 29
-            v |= (ulong)(a & 0x3FF) << 30;    // hf_amp   bits 30-39
-            return new byte[]
-            {
-                (byte)(v & 0xFF),
-                (byte)((v >> 8) & 0xFF),
-                (byte)((v >> 16) & 0xFF),
-                (byte)((v >> 24) & 0xFF),
-                (byte)((v >> 32) & 0xFF),
-            };
-        }
+        // Switch 2 was dropped from the #147 tone scope. No reference plays an
+        // audible tone on a Switch 2 actuator: switch2-controllers/controller.py
+        // defines en_tone/lf_freq/hf_freq but never sets them, and the one PC
+        // project that drives Switch 2 frequency (TommyWabg/switch2-controllers-
+        // windows10-gyro) uses it to shape RUMBLE feel (bass_thump vs sharp_click),
+        // never en_tone, never a melody. The gen-1 Joy-Con (joycon-singer) and
+        // Steam (SteamControllerSinger) tone paths above are the grounded ones.
     }
 }

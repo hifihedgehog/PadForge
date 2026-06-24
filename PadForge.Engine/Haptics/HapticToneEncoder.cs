@@ -122,11 +122,13 @@ namespace PadForge.Engine.Haptics
         /// 0 = right, 1 = left. <paramref name="durationSeconds"/> &lt; 0 sustains
         /// (repeat 0x7FFF). Mirrors SteamController_PlayNote.
         ///
-        /// Note (hypothesis-under-test): the reference splits the 16-bit period and
-        /// repeat values with <c>% 0xFF</c> / <c>/ 0xFF</c>, not <c>0x100</c>. That
-        /// is reproduced verbatim because it is the proven-on-hardware code, but it
-        /// reads like an off-by-one LSB/MSB split. A hardware pass should confirm
-        /// whether 0x100 sounds truer; until then the proven bytes win.</summary>
+        /// Note: the reference splits the 16-bit period and repeat values with
+        /// <c>% 0xFF</c> / <c>/ 0xFF</c>, not <c>0x100</c> / <c>&gt;&gt; 8</c>. This
+        /// is a real protocol quirk (the split desyncs from a clean low/high byte at
+        /// byte boundaries), but it is confirmed byte-identical to the proven
+        /// SteamControllerSinger main.cpp:129-134 on all six bytes (e.g. period
+        /// 0x0466 -> LSB 0x67, which 0x100 would render 0x66). Do not "fix" it to
+        /// 0x100; that would diverge from the only same-transport reference.</summary>
         public static byte[] EncodeSteamClassic(float freqHz, double durationSeconds, int haptic = 0)
         {
             var blob = new byte[64];
@@ -227,7 +229,18 @@ namespace PadForge.Engine.Haptics
 
         /// <summary>Steam Deck (Jupiter) tone, report <c>0xEA</c>, 64-byte SET_FEATURE
         /// (control transfer in the reference). <paramref name="haptic"/> 0/1.
-        /// Frequency is carried in Hz directly. Mirrors main.cpp:279-286.</summary>
+        /// Frequency is carried in Hz directly. Mirrors SteamHapticsSinger
+        /// main.cpp:279-286, the device-specific Jupiter path.
+        ///
+        /// Reference choice (hypothesis-under-test on hardware): the two Steam
+        /// references disagree on the Deck. SteamHapticsSinger drives it with this
+        /// dedicated 0xEA Jupiter report; the older SteamControllerSinger drives the
+        /// Deck (0x1205) through the generic 2015 0x8F path. PadForge follows the
+        /// device-specific one (0xEA). The gain uses the same signed directVel
+        /// mapping as Triton (amp=1 -> 0x7F, amp=0 -> 0x80), not the reference's
+        /// 0x00 non-directVel default, because the sink feeds a continuous
+        /// amplitude, not discrete note velocities. haptic is the trackpad channel
+        /// only (the rumble-motor channel swap/table is out of this path's scope).</summary>
         public static byte[] EncodeSteamDeck(float freqHz, float amp, int durationMs = 0x7FFF, int haptic = 0)
         {
             var blob = new byte[64];

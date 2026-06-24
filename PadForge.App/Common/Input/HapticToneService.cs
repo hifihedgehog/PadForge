@@ -7,7 +7,6 @@ using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using PadForge.Engine.Haptics;
-using static SDL3.SDL;
 
 namespace PadForge.Common.Input
 {
@@ -34,11 +33,12 @@ namespace PadForge.Common.Input
     /// returns SDL_Unsupported). Tone playback needs the raw-HID writer pattern
     /// PadForge already built for the Wii speaker and the Sony speaker.
     ///
-    /// Switch 2 is the one exception: its actuator channel is owned by the SDL
-    /// drivers (BLE vibration_char / wired bulk MI_01), unreachable from a HID
-    /// handle, so a raw write only buzzes. Its tone group goes through
-    /// SDL_SendGamepadEffect (the DualSense-passthrough channel) instead, and
-    /// plays once the SDL fork forwards the en_tone VibrationData (SDL#5).
+    /// Switch 2 is deliberately NOT here: no reference plays an audible tone on a
+    /// Switch 2 actuator (controller.py defines en_tone/lf_freq/hf_freq but never
+    /// sets them; the one PC project that drives Switch 2 frequency, TommyWabg's
+    /// switch2-controllers fork, uses it to shape RUMBLE feel, never a melody), so
+    /// the Switch 2 tone path was dropped from #147 rather than ship a tab that
+    /// can never make sound.
     ///
     /// Protocol bytes are facts from the cloned references (joycon-singer
     /// rumble.h / main_pc.cpp, SteamControllerSinger main.cpp,
@@ -56,14 +56,13 @@ namespace PadForge.Common.Input
         private const ushort ValveVid = 0x28DE;
 
         // Device families. Nintendo gen-1: Joy-Con L 0x2006, R 0x2007, Pro 0x2009
-        // (joycon-singer). Switch 2: Joy-Con2 L 0x2067, R 0x2066, Pro2 0x2069 (SDL
-        // usb_ids.h). Valve: Steam Controller 2015 wired 0x1102 / dongle 0x1142,
-        // SC2026 0x1302 / Puck 0x1304 (Triton), Steam Deck 0x1205 (Jupiter)
-        // (SteamControllerSinger / SteamHapticsSinger).
-        private enum Family { None, JoyConL, JoyConR, Pro, Steam, Steam2026, SteamDeck, Switch2L, Switch2R, Switch2Pro }
+        // (joycon-singer). Valve: Steam Controller 2015 wired 0x1102 / dongle
+        // 0x1142, SC2026 0x1302 / Puck 0x1304 (Triton), Steam Deck 0x1205
+        // (Jupiter) (SteamControllerSinger / SteamHapticsSinger). Switch 2 is
+        // intentionally absent (no reference plays a tone on it, see class doc).
+        private enum Family { None, JoyConL, JoyConR, Pro, Steam, Steam2026, SteamDeck }
 
         private static bool IsJoyConGen1(Family f) => f == Family.JoyConL || f == Family.JoyConR || f == Family.Pro;
-        private static bool IsSwitch2(Family f) => f == Family.Switch2L || f == Family.Switch2R || f == Family.Switch2Pro;
 
         private static Family FamilyOf(Engine.Data.UserDevice ud)
         {
@@ -73,15 +72,9 @@ namespace PadForge.Common.Input
                 if (ud.ProdId == 0x2006) return Family.JoyConL;
                 if (ud.ProdId == 0x2007) return Family.JoyConR;
                 if (ud.ProdId == 0x2009) return Family.Pro;
-                // Switch 2 (Joy-Con2 L 0x2067, R 0x2066, Pro2 0x2069). These are
-                // recognized so the Audio tab shows, but they are NOT raw-HID
-                // rumble devices: their actuator channel is owned by SDL (BLE
-                // vibration_char / wired bulk). The sink routes the en_tone group
-                // via SDL_SendGamepadEffect, not a HID handle. That delivers once
-                // SDL's SendEffect (both stubs today) forwards it.
-                if (ud.ProdId == 0x2067) return Family.Switch2L;
-                if (ud.ProdId == 0x2066) return Family.Switch2R;
-                if (ud.ProdId == 0x2069) return Family.Switch2Pro;
+                // Switch 2 (0x2067/0x2066/0x2069) is intentionally NOT matched: no
+                // reference plays a tone on its actuator, so it gets no tone sink
+                // and no Audio tab (see class doc).
             }
             else if (ud.VendorId == ValveVid)
             {
@@ -421,14 +414,6 @@ namespace PadForge.Common.Input
         /// WiiSpeakerService.BuildSink.</summary>
         private static bool BuildSink(Sink s)
         {
-            // Switch 2 is not a raw-HID rumble device: its actuator channel is
-            // owned by the SDL drivers (BLE vibration_char / wired bulk MI_01).
-            // Route the en_tone VibrationData group through SDL_SendGamepadEffect
-            // (the same channel the DualSense passthrough uses) instead of opening
-            // a HID handle. No HID write means no buzz; the tone delivers once
-            // SDL's SendEffect forwards it.
-            if (IsSwitch2(s.Family)) return BuildSwitch2Sink(s);
-
             IntPtr h = IntPtr.Zero;
             try
             {
@@ -491,42 +476,13 @@ namespace PadForge.Common.Input
             }
         }
 
-        // Switch 2 sink: no HID handle. The stream thread reduces the macro mix
-        // and sends the en_tone group via SDL_SendGamepadEffect. Mirrors the HID
-        // BuildSink's commit/race discipline minus the CreateFileW.
-        private static bool BuildSwitch2Sink(Sink s)
-        {
-            try
-            {
-                var mono = new StereoToMonoSampleProvider(s.MacroMixer) { LeftVolume = 0.5f, RightVolume = 0.5f };
-                var resampled = new WdlResamplingSampleProvider(mono, ReduceRate);
-                lock (_lock)
-                {
-                    if (_suppressed || !_sinks.Contains(s)) return true; // race lost
-                    s.MonoSource = resampled;
-                    s.Reducer = new HapticToneReducer(ReduceRate);
-                    s.Running = true;
-                    s.Thread = new Thread(() => StreamLoop(s)) { IsBackground = true, Name = "PadForge HD Haptic" };
-                    s.Thread.Start();
-                }
-                return true;
-            }
-            catch { TeardownSink(s); return false; }
-        }
-
         private static void TeardownSink(Sink s)
         {
             try { StopMirror(s); } catch { }
             s.Running = false;
             bool exited = true;
             try { exited = s.Thread?.Join(3000) ?? true; } catch { exited = true; }
-            if (exited && IsSwitch2(s.Family))
-            {
-                // No HID handle; quiet the SDL-owned actuator with a final
-                // zero-amplitude en_tone group through the same SDL channel.
-                try { Switch2SendEffect(s, HapticToneEncoder.EncodeSwitch2Vibration(1f, 0f)); } catch { }
-            }
-            else if (exited && s.Handle != IntPtr.Zero)
+            if (exited && s.Handle != IntPtr.Zero)
             {
                 // Quiet the actuator on the way out, per family.
                 try
@@ -705,18 +661,13 @@ namespace PadForge.Common.Input
                     if (audible) s.LastContentMs = nowMs;
                     bool streaming = (nowMs - s.LastContentMs) < HangoverMs;
 
-                    // Switch 2 has no HID handle (SDL owns its actuator); every
-                    // other family needs its open handle before a tick writes.
-                    if (s.Handle != IntPtr.Zero || IsSwitch2(s.Family))
+                    if (s.Handle != IntPtr.Zero)
                     {
                         switch (s.Family)
                         {
                             case Family.Steam: StreamSteamTick(s, toneHz, amp, streaming); break;
                             case Family.Steam2026: StreamSteam2026Tick(s, toneHz, amp, streaming); break;
                             case Family.SteamDeck: StreamSteamDeckTick(s, toneHz, amp, streaming); break;
-                            case Family.Switch2L:
-                            case Family.Switch2R:
-                            case Family.Switch2Pro: StreamSwitch2Tick(s, toneHz, amp, streaming); break;
                             default: StreamJoyConTick(s, toneHz, amp, streaming); break;
                         }
                     }
@@ -812,42 +763,6 @@ namespace PadForge.Common.Input
                 SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, durationMs: 0));
                 s.SteamOn = false;
             }
-        }
-
-        // ── Switch 2 vibration TONE over SDL's actuator channel ──
-        // The Switch 2 rumble channel is owned by the SDL drivers (BLE
-        // vibration_char / wired bulk MI_01), so PadForge sends the 5-byte
-        // en_tone VibrationData group (controller.py 188-209: per-band en_tone bit
-        // makes the actuator play a pitch instead of a buzz) through
-        // SDL_SendGamepadEffect, the channel the DualSense passthrough already
-        // uses. The SDL driver frames it (seq + report id + Pro mirror) and
-        // transports it. Delivery waits on SDL's SendEffect, both entry points
-        // stubs today (SDL#5); until then this is a no-op write, NOT a buzz. The
-        // en_tone payload + Hz-direct frequency are hypothesis-under-test.
-        private static void StreamSwitch2Tick(Sink s, float toneHz, float amp, bool streaming)
-        {
-            if (streaming)
-            {
-                Switch2SendEffect(s, HapticToneEncoder.EncodeSwitch2Vibration(toneHz, amp));
-                s.JoyConWasStreaming = true;
-            }
-            else if (s.JoyConWasStreaming)
-            {
-                Switch2SendEffect(s, HapticToneEncoder.EncodeSwitch2Vibration(toneHz, 0f));
-                s.JoyConWasStreaming = false;
-            }
-        }
-
-        // Resolve the device's live SDL gamepad handle and forward the 5-byte
-        // en_tone group. The handle can change across reconnects, so it is looked
-        // up per write rather than cached (same source the DualSense passthrough
-        // reads: UserDevice.Device.GamepadHandle).
-        private static void Switch2SendEffect(Sink s, byte[] hd5)
-        {
-            IntPtr gp = IntPtr.Zero;
-            try { gp = SettingsManager.FindDeviceByInstanceGuid(s.DeviceGuid)?.Device?.GamepadHandle ?? IntPtr.Zero; } catch { }
-            if (gp == IntPtr.Zero) return;
-            try { SDL_SendGamepadEffect(gp, hd5, 0, hd5.Length); } catch { }
         }
 
         // Steam Deck 0xEA feature write: prepend the report-id byte, size to

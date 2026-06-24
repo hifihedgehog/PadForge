@@ -404,38 +404,7 @@ namespace PadForge.Tests
             Assert.Equal(0x7F, blob[5]);
         }
 
-        // ─── Switch 2 HD rumble (SDL_hidapi_switch2.c EncodeHDRumble) ───
-
-        [Fact]
-        public void Switch2HD_PacksFixedCarrierAtZeroAmp()
-        {
-            // EncodeHDRumble(0x187, 0, 0x112, 0, out): hand-computed from the bit
-            // layout at SDL_hidapi_switch2.c:1108-1112.
-            var hd = HapticToneEncoder.EncodeSwitch2HD(0f);
-            Assert.Equal(new byte[] { 0x87, 0x01, 0x20, 0x11, 0x00 }, hd);
-        }
-
-        [Fact]
-        public void Switch2HD_AmplitudeRaisesTheAmpBits()
-        {
-            // A non-zero amplitude must lift the packed amp bits above the silent
-            // vector (proves amplitude actually threads through the pack).
-            var loud = HapticToneEncoder.EncodeSwitch2HD(1.0f);
-            var quiet = HapticToneEncoder.EncodeSwitch2HD(0f);
-            Assert.NotEqual(quiet, loud);
-        }
-
-        [Fact]
-        public void Switch2Vibration_SetsToneEnableAndCarriesFrequency()
-        {
-            // controller.py VibrationData (188-209): lf_freq bits 0-8, lf_en_tone
-            // bit 9, hf_en_tone bit 29. 225 Hz = 0x0E1 -> byte0 = 0xE1; the tone
-            // bits MUST be set or the actuator only buzzes (the original bug).
-            var v = HapticToneEncoder.EncodeSwitch2Vibration(225f, 1.0f);
-            Assert.Equal(5, v.Length);
-            Assert.Equal(0xE1, v[0]);              // lf_freq low 8 bits of 225
-            Assert.True((v[1] & 0x02) != 0);       // lf_en_tone (bit 9 = byte1 bit1)
-            Assert.True((v[3] & 0x20) != 0);       // hf_en_tone (bit 29 = byte3 bit5)
-        }
+        // Switch 2 was dropped from the #147 tone scope (no reference plays a tone
+        // on a Switch 2 actuator), so its encoder + tests were removed.
     }
 }

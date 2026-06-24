@@ -56,8 +56,9 @@ namespace PadForge.Common.Input
         private const ushort ValveVid = 0x28DE;
 
         // Device families. Nintendo gen-1: Joy-Con L 0x2006, R 0x2007, Pro 0x2009
-        // (joycon-singer). Valve: Steam Controller 2015 wired 0x1102 / dongle
-        // 0x1142, SC2026 0x1302 / Puck 0x1304 (Triton), Steam Deck 0x1205
+        // (joycon-singer). Valve: Steam Controller 0x1101 + 2015 wired 0x1102 /
+        // dongle 0x1142 (all Original 0x8F, SteamHapticsSinger main.cpp:27,101-114),
+        // SC2026 0x1302 / Puck 0x1304 (Triton), Steam Deck 0x1205
         // (Jupiter) (SteamControllerSinger / SteamHapticsSinger). Switch 2 is
         // intentionally absent (no reference plays a tone on it, see class doc).
         private enum Family { None, JoyConL, JoyConR, Pro, Steam, Steam2026, SteamDeck }
@@ -78,7 +79,7 @@ namespace PadForge.Common.Input
             }
             else if (ud.VendorId == ValveVid)
             {
-                if (ud.ProdId == 0x1102 || ud.ProdId == 0x1142) return Family.Steam;
+                if (ud.ProdId == 0x1101 || ud.ProdId == 0x1102 || ud.ProdId == 0x1142) return Family.Steam;
                 if (ud.ProdId == 0x1302 || ud.ProdId == 0x1304) return Family.Steam2026;
                 if (ud.ProdId == 0x1205) return Family.SteamDeck;
             }

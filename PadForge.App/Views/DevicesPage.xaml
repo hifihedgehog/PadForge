@@ -286,7 +286,7 @@
 
                             <CheckBox Content="{Binding Devices_ForceRaw, Source={x:Static strings:Strings.Instance}}"
                                       IsChecked="{Binding SelectedDevice.ForceRawJoystickMode, Mode=TwoWay}"
-                                      Checked="HidingToggle_Changed" Unchecked="HidingToggle_Changed"
+                                      Click="HidingToggle_Click"
                                       ToolTip="{Binding Devices_ForceRawTooltip, Source={x:Static strings:Strings.Instance}}"
                                       Margin="0,0,0,4"/>
 
@@ -302,7 +302,7 @@
                                   IsChecked="{Binding SelectedDevice.HidHideEnabled, Mode=TwoWay}"
                                   IsEnabled="{Binding SelectedDevice.IsHidHideAvailable}"
                                   Visibility="{Binding SelectedDevice.IsInternalVirtual, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
-                                  Checked="HidingToggle_Changed" Unchecked="HidingToggle_Changed"
+                                  Click="HidingToggle_Click"
                                   Margin="0,0,0,4">
                             <CheckBox.ToolTip>
                                 <TextBlock>
@@ -322,7 +322,7 @@
 
                         <CheckBox Content="{Binding Devices_ConsumeMapped, Source={x:Static strings:Strings.Instance}}"
                                   IsChecked="{Binding SelectedDevice.ConsumeInputEnabled, Mode=TwoWay}"
-                                  Checked="HidingToggle_Changed" Unchecked="HidingToggle_Changed"
+                                  Click="HidingToggle_Click"
                                   ToolTip="{Binding Devices_ConsumeTooltip, Source={x:Static strings:Strings.Instance}}"
                                   Margin="0,0,0,4">
                             <CheckBox.Style>

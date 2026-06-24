@@ -6264,25 +6264,88 @@ namespace PadForge.Services
             var assignedSlots = SettingsManager.GetAssignedSlots(ud.InstanceGuid);
             if (assignedSlots == null) return;
 
+            string deviceGuidStr = ud.InstanceGuid.ToString();
+
+            // Parse a "Button {index}" descriptor and route the index to the
+            // right suppression set. For a keyboard the index is a VKey code,
+            // for a mouse it is a button id (0=L, 1=M, 2=R, 3=X1, 4=X2).
+            void AddDescriptor(string descriptor)
+            {
+                if (string.IsNullOrEmpty(descriptor)) return;
+                if (descriptor.StartsWith("Button ", StringComparison.Ordinal) &&
+                    int.TryParse(descriptor.AsSpan(7), out int index))
+                {
+                    if (ud.IsKeyboard) keys.Add(index);
+                    else if (ud.IsMouse) mouseButtons.Add(index);
+                }
+            }
+
             foreach (int slotIndex in assignedSlots)
             {
-                // Find the UserSetting for this device + slot.
+                // Legacy single-source PadSetting descriptors. These hold the
+                // owning Direct mapping's descriptor only, so they catch the
+                // primary Direct case (and stay as a fallback for configs not
+                // resaved since the MappingSet UI shipped).
                 var us = SettingsManager.FindSettingByInstanceGuidAndSlot(ud.InstanceGuid, slotIndex);
-                if (us == null) continue;
-
-                var ps = us.GetPadSetting();
-                if (ps == null) continue;
-
-                foreach (string descriptor in ps.GetAllMappingDescriptors())
+                var ps = us?.GetPadSetting();
+                if (ps != null)
                 {
-                    // Parse "Button {index}" descriptors.
-                    if (descriptor.StartsWith("Button ", StringComparison.Ordinal) &&
-                        int.TryParse(descriptor.AsSpan(7), out int buttonIndex))
+                    foreach (string descriptor in ps.GetAllMappingDescriptors())
+                        AddDescriptor(descriptor);
+                }
+
+                // Authoritative per-slot MappingSet: every source on every row.
+                // The legacy PadSetting cannot encode Ramp/Incremental up/down
+                // keys (they live in ParamUp/ParamDown, not SourceDescriptor) or
+                // secondary sources on a multi-source row, so reading the same
+                // data the engine evaluates is what makes consumption cover all
+                // mapping kinds and both primary and secondary sources.
+                var msArr = SettingsManager.SlotMappingSets;
+                if (msArr != null && slotIndex >= 0 && slotIndex < msArr.Length)
+                {
+                    var ms = msArr[slotIndex];
+                    if (ms?.Rows != null)
                     {
-                        if (ud.IsKeyboard)
-                            keys.Add(buttonIndex); // buttonIndex is the VKey code
-                        else if (ud.IsMouse)
-                            mouseButtons.Add(buttonIndex); // buttonIndex is 0=L, 1=M, 2=R, 3=X1, 4=X2
+                        foreach (var row in ms.Rows)
+                        {
+                            if (row?.Sources == null) continue;
+                            foreach (var src in row.Sources)
+                            {
+                                if (src == null) continue;
+
+                                // Same device scoping the engine uses for a
+                                // per-device pass: empty DeviceGuid means "any
+                                // device" (it resolves to this one at runtime).
+                                if (!string.IsNullOrEmpty(src.DeviceGuid) &&
+                                    !string.Equals(src.DeviceGuid, deviceGuidStr, StringComparison.OrdinalIgnoreCase))
+                                    continue;
+
+                                // Collect exactly the descriptors each kind reads
+                                // as input, mirroring SourceEvaluator's dispatch.
+                                switch (src.Kind ?? "Direct")
+                                {
+                                    case "Incremental":
+                                    case "Ramped":
+                                        AddDescriptor(src.ParamUp);
+                                        AddDescriptor(src.ParamDown);
+                                        break;
+                                    case "InvertOnHold":
+                                        AddDescriptor(src.Descriptor);
+                                        AddDescriptor(src.ParamModifier);
+                                        break;
+                                    case "WindingStick":
+                                    case "AngleToAxisX":
+                                    case "AngleToAxisY":
+                                    case "MotionLeanX":
+                                        AddDescriptor(src.Descriptor);
+                                        AddDescriptor(src.ParamYDescriptor);
+                                        break;
+                                    default: // Direct + unknown kinds
+                                        AddDescriptor(src.Descriptor);
+                                        break;
+                                }
+                            }
+                        }
                     }
                 }
             }

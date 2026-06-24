@@ -1,0 +1,99 @@
+# Device-mapping auto-reject.
+#
+# Device-mapping submissions (the device_mapping.yml issue form, label
+# `device-mapping`) arrive with the mapping tables pre-filled with
+# `FILL IN` placeholders. The form's own instructions say a submission
+# that still has any `FILL IN` cell cannot be integrated and will be sent
+# back. This workflow enforces that: when a `device-mapping` issue is
+# opened with any table cell still reading `FILL IN`, it closes the issue
+# as `not planned` with the standard "fill in the real raw indices" reply
+# and locks it.
+#
+# Detection is deliberately narrow. It matches `| FILL IN` (a markdown
+# table cell that still holds the placeholder), NOT the bare words
+# "FILL IN". The verification checklist legitimately contains the sentence
+# "I have replaced every FILL IN placeholder" on every submission,
+# complete or not, so a bare-substring check would reject everything. A
+# fully filled submission has zero `| FILL IN` cells and is left untouched
+# for manual review and integration.
+#
+# Never acts on issues whose author is OWNER / COLLABORATOR / MEMBER, so
+# maintainer test submissions are not auto-closed.
+#
+# Auth: GITHUB_TOKEN with `issues: write` covers comment + close + lock.
+# The comment goes out before the lock, so no collaborator token is
+# needed. The reply is self-contained, so this does not rely on the
+# lock-form-response workflow firing (a GITHUB_TOKEN-driven lock does not
+# re-trigger other workflows, which also avoids a duplicate bot comment).
+
+name: Device mapping auto-reject
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  auto-reject:
+    runs-on: ubuntu-latest
+    if: ${{ contains(github.event.issue.labels.*.name, 'device-mapping') && github.event.issue.state == 'open' }}
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+      ISSUE_AUTHOR_ASSOCIATION: ${{ github.event.issue.author_association }}
+      ISSUE_BODY: ${{ github.event.issue.body }}
+      REPO: ${{ github.repository }}
+    steps:
+      - name: Skip project members
+        id: skip
+        run: |
+          set -euo pipefail
+          case "$ISSUE_AUTHOR_ASSOCIATION" in
+            OWNER|COLLABORATOR|MEMBER)
+              echo "Author association is $ISSUE_AUTHOR_ASSOCIATION. Skipping."
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "skip=false" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
+
+      - name: Detect unfilled placeholder cells
+        id: detect
+        if: ${{ steps.skip.outputs.skip == 'false' }}
+        run: |
+          set -euo pipefail
+          BODY_FILE="$(mktemp)"
+          printf '%s' "${ISSUE_BODY:-}" > "$BODY_FILE"
+          # Match a markdown table cell that still holds the placeholder.
+          # Does not match the checklist sentence "every FILL IN placeholder"
+          # because that has no leading pipe.
+          if grep -qE '\|[[:space:]]*FILL IN' "$BODY_FILE"; then
+            echo "Found at least one unfilled table cell."
+            echo "unfilled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No unfilled table cells. Leaving for manual review."
+            echo "unfilled=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Reject, close, and lock
+        if: ${{ steps.skip.outputs.skip == 'false' && steps.detect.outputs.unfilled == 'true' }}
+        run: |
+          set -euo pipefail
+          COMMENT_FILE="$(mktemp)"
+          cat > "$COMMENT_FILE" <<'EOF'
+          Thanks for taking the time to submit this. It cannot go into the database as it stands, so it is being closed automatically.
+
+          The mapping tables still contain `FILL IN` placeholders, so there is nothing here to integrate. The form needs the actual raw indices read from PadForge's Devices page, one number per row, with `none` for any input the controller does not have.
+
+          The easiest way to fill it in is the **Submit Mapping** button on the device's card in PadForge's Devices page. It pre-fills the name, IDs, counts, and SDL GUID, and leaves you only the per-input tables to complete by pressing each control and reading the raw index that lights up.
+
+          A generic controller does not come with an automatic Xbox 360 layout. Which physical button or axis becomes A, B, a stick, or a trigger is something only you can see on your own device.
+
+          This issue is now closed and locked. When you have the real raw indices, open a **fresh submission** with the tables filled in. For setup help in the meantime, the [Discussions](https://github.com/hifihedgehog/PadForge/discussions) board is the best place.
+          EOF
+          gh issue close "$ISSUE_NUMBER" --repo "$REPO" --reason "not planned" --comment "$(cat "$COMMENT_FILE")"
+          gh api --method PUT "repos/${REPO}/issues/${ISSUE_NUMBER}/lock" -f lock_reason='resolved'

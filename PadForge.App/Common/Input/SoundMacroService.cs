@@ -240,6 +240,7 @@ namespace PadForge.Common.Input
             }
             AudioPassthroughService.Shutdown();
             WiiSpeakerService.Shutdown();
+            HapticToneService.Shutdown();
         }
 
         // ─────────────────────────────────────────────
@@ -267,6 +268,9 @@ namespace PadForge.Common.Input
                 // Wii Remote speakers are a parallel sink family (#146); fan the
                 // same macro sound into them too.
                 targets.AddRange(WiiSpeakerService.GetSlotSinkMixers(slot, deviceFilter));
+                // Switch HD Rumble + Steam Controller haptics are a parallel
+                // tone-sink family (#147); fan the same macro sound to them.
+                targets.AddRange(HapticToneService.GetSlotSinkMixers(slot, deviceFilter));
 
                 lock (_lock)
                 {

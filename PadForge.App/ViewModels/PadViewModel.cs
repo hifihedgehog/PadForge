@@ -3317,6 +3317,9 @@ namespace PadForge.ViewModels
                 // Wii Remote built-in speaker (#146): Nintendo VID 0x057E,
                 // RVL-CNT-01 (0x0306) / -TR (0x0330).
                 if (PadForge.Common.Input.WiiSpeakerService.DeviceHasSpeaker(ud)) return true;
+                // Switch HD Rumble / Steam Controller haptic tones (#147):
+                // Joy-Con L/R, Switch Pro, Steam Controller 2015.
+                if (PadForge.Common.Input.HapticToneService.DeviceHasHaptics(ud)) return true;
                 if (ud.VendorId != 0x054C) return false;
                 // DS5 family: audio on both transports. DS4: audio is
                 // Bluetooth-only (wired DS4 exposes no USB audio interface);

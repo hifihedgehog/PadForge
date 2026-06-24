@@ -492,7 +492,7 @@ namespace PadForge.Common.Input
                         case Family.SteamDeck: SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, durationMs: 0)); break;
                         case Family.Switch2L:
                         case Family.Switch2R:
-                        case Family.Switch2Pro: Switch2WriteRumble(s, HapticToneEncoder.EncodeSwitch2HD(0f)); break;
+                        case Family.Switch2Pro: Switch2WriteRumble(s, HapticToneEncoder.EncodeSwitch2Vibration(1f, 0f)); break;
                         default: JoyConWriteRumble(s, HapticToneEncoder.JoyConNeutral()); break;
                     }
                 }
@@ -671,7 +671,7 @@ namespace PadForge.Common.Input
                             case Family.SteamDeck: StreamSteamDeckTick(s, toneHz, amp, streaming); break;
                             case Family.Switch2L:
                             case Family.Switch2R:
-                            case Family.Switch2Pro: StreamSwitch2Tick(s, amp, streaming); break;
+                            case Family.Switch2Pro: StreamSwitch2Tick(s, toneHz, amp, streaming); break;
                             default: StreamJoyConTick(s, toneHz, amp, streaming); break;
                         }
                     }
@@ -769,22 +769,22 @@ namespace PadForge.Common.Input
             }
         }
 
-        // ── Switch 2 HD rumble: report 0x01 (Joy-Con2 L/R) / 0x02 (Pro2), byte
-        //    [0x01]=0x50|(seq&0xF), 5-byte HD at [0x02]; Pro mirrors [0x01..0x06]
-        //    to [0x11] (SDL_hidapi_switch2.c:1149-1170). Fixed carrier, so this is
-        //    an amplitude envelope at one pitch, not a pitch-varying tone, and the
-        //    transport is HID-best-effort (the SDL driver drives real Switch 2
-        //    rumble over WinUSB/BLE, which a raw-HID sink may not reach). ──
-        private static void StreamSwitch2Tick(Sink s, float amp, bool streaming)
+        // ── Switch 2 vibration TONE: report 0x01 (Joy-Con2 L/R) / 0x02 (Pro2),
+        //    byte [0x01]=0x50|(seq&0xF) (SDL framing that reaches the controller),
+        //    with the 5-byte VibrationData payload at [0x02] carrying the per-band
+        //    en_tone bit (controller.py 188-209) so the actuator plays a pitch
+        //    instead of a buzz; Pro mirrors [0x01..0x06] to [0x11]. The tone
+        //    payload + the Hz-direct frequency are hypothesis-under-test. ──
+        private static void StreamSwitch2Tick(Sink s, float toneHz, float amp, bool streaming)
         {
             if (streaming)
             {
-                Switch2WriteRumble(s, HapticToneEncoder.EncodeSwitch2HD(amp));
+                Switch2WriteRumble(s, HapticToneEncoder.EncodeSwitch2Vibration(toneHz, amp));
                 s.JoyConWasStreaming = true;
             }
             else if (s.JoyConWasStreaming)
             {
-                Switch2WriteRumble(s, HapticToneEncoder.EncodeSwitch2HD(0f));
+                Switch2WriteRumble(s, HapticToneEncoder.EncodeSwitch2Vibration(toneHz, 0f));
                 s.JoyConWasStreaming = false;
             }
         }

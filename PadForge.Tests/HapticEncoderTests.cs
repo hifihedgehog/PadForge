@@ -424,5 +424,18 @@ namespace PadForge.Tests
             var quiet = HapticToneEncoder.EncodeSwitch2HD(0f);
             Assert.NotEqual(quiet, loud);
         }
+
+        [Fact]
+        public void Switch2Vibration_SetsToneEnableAndCarriesFrequency()
+        {
+            // controller.py VibrationData (188-209): lf_freq bits 0-8, lf_en_tone
+            // bit 9, hf_en_tone bit 29. 225 Hz = 0x0E1 -> byte0 = 0xE1; the tone
+            // bits MUST be set or the actuator only buzzes (the original bug).
+            var v = HapticToneEncoder.EncodeSwitch2Vibration(225f, 1.0f);
+            Assert.Equal(5, v.Length);
+            Assert.Equal(0xE1, v[0]);              // lf_freq low 8 bits of 225
+            Assert.True((v[1] & 0x02) != 0);       // lf_en_tone (bit 9 = byte1 bit1)
+            Assert.True((v[3] & 0x20) != 0);       // hf_en_tone (bit 29 = byte3 bit5)
+        }
     }
 }

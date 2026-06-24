@@ -200,9 +200,13 @@ namespace PadForge.Engine.Haptics
             var blob = new byte[65];
             blob[0] = 0x83;
             blob[1] = (byte)haptic;
-            // gain: reference default 0xFE; scale the reducer amplitude into the
-            // gain byte so a quiet cue is quieter (directVel path, main.cpp:261).
-            blob[2] = (byte)Math.Clamp((int)(amp * 0xFE), 0, 0xFE);
+            // Gain follows the reference velocity->gain mapping
+            // velocity*255/127 - 128 (main.cpp:261, the directVel path), treating
+            // the reducer amplitude as velocity. This is SIGNED: amp=1 -> 0x7F
+            // (loud), amp=0 -> 0x80 (silent). The fixed-0xFE non-directVel default
+            // is for a discrete note player and is NOT used here.
+            int vel2026 = (int)(amp * 127f);
+            blob[2] = (byte)(vel2026 * 255 / 127 - 128);
             ushort cmd = TritonTrackpad[NearestMidiNote(freqHz)];
             blob[3] = (byte)(cmd % 0xFF);
             blob[4] = (byte)(cmd / 0xFF);
@@ -230,7 +234,10 @@ namespace PadForge.Engine.Haptics
             blob[0] = 0xEA;
             blob[2] = (byte)(haptic == 0 ? 1 : 0); // !channel (main.cpp:280)
             blob[3] = 0x03;
-            blob[5] = (byte)Math.Clamp((int)(amp * 0xFF), 0, 0xFF);
+            // Same velocity->gain mapping as Triton (main.cpp:282 directVel path),
+            // signed: amp=1 -> 0x7F, amp=0 -> 0x80.
+            int velDeck = (int)(amp * 127f);
+            blob[5] = (byte)(velDeck * 255 / 127 - 128);
             int f = (int)freqHz;
             blob[6] = (byte)(f % 0xFF);
             blob[7] = (byte)(f / 0xFF);

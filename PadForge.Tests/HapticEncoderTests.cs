@@ -377,6 +377,9 @@ namespace PadForge.Tests
             Assert.Equal(0xFF, blob[5]);
             Assert.Equal(0x7F, blob[6]);
             Assert.True(blob[3] != 0 || blob[4] != 0); // a real frequency command
+            // Gain is the signed velocity mapping (velocity*255/127 - 128,
+            // main.cpp:261): full amplitude -> velocity 127 -> 0x7F.
+            Assert.Equal(0x7F, blob[2]);
         }
 
         [Fact]
@@ -397,6 +400,8 @@ namespace PadForge.Tests
             Assert.Equal(0x03, blob[3]);
             Assert.Equal(440 % 0xFF, blob[6]);
             Assert.Equal(440 / 0xFF, blob[7]);
+            // Gain: same signed velocity mapping (main.cpp:282), full amp -> 0x7F.
+            Assert.Equal(0x7F, blob[5]);
         }
 
         // ─── Switch 2 HD rumble (SDL_hidapi_switch2.c EncodeHDRumble) ───

@@ -164,21 +164,28 @@ namespace PadForge.Views
         }
 
         /// <summary>
-        /// Handles CheckBox Checked/Unchecked for HidHide and ConsumeInput toggles.
+        /// Handles the HidHide / ConsumeInput / ForceRaw toggle clicks. Uses the
+        /// Click event, not Checked/Unchecked, so it fires only on real user
+        /// interaction. The Checked event also fired when the TwoWay binding set
+        /// IsChecked as the selected device changed, which reverted the box and
+        /// popped the warning on every device selection (issue #161).
         /// Shows a warning flyout for mice and keyboards before enabling.
         /// Propagates the change back through DevicesViewModel → DeviceService → InputService.
         /// </summary>
-        private void HidingToggle_Changed(object sender, RoutedEventArgs e)
+        private void HidingToggle_Click(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as ViewModels.DevicesViewModel;
             var dev = vm?.SelectedDevice;
             if (dev == null) return;
 
-            // Warn when enabling input blocking on a mouse or keyboard.
-            if (e.RoutedEvent == CheckBox.CheckedEvent && dev.ShowConsumeToggle)
+            var cb = sender as CheckBox;
+
+            // Warn when enabling input blocking on a mouse or keyboard. After a
+            // click the box has already toggled, so IsChecked == true means the
+            // user just turned it on.
+            if (cb?.IsChecked == true && dev.ShowConsumeToggle)
             {
-                var cb = sender as CheckBox;
-                bool isHidHide = cb?.Content?.ToString()?.Contains("HidHide") == true;
+                bool isHidHide = cb.Content?.ToString()?.Contains("HidHide") == true;
                 string action = isHidHide
                     ? Strings.Instance.Devices_HideAction
                     : Strings.Instance.Devices_ConsumeAction;
@@ -292,16 +299,13 @@ namespace PadForge.Views
             proceedBtn.Click += (s, ev) =>
             {
                 flyout.IsOpen = false;
-                if (cb != null)
-                {
-                    // Temporarily unhook to avoid re-entering HidingToggle_Changed.
-                    cb.Checked -= HidingToggle_Changed;
-                    if (isHidHide)
-                        dev.HidHideEnabled = true;
-                    else
-                        dev.ConsumeInputEnabled = true;
-                    cb.Checked += HidingToggle_Changed;
-                }
+                // Set the model value; the TwoWay binding re-checks the box.
+                // Programmatic IsChecked changes do not raise Click, so there
+                // is no handler to unhook and no re-entry.
+                if (isHidHide)
+                    dev.HidHideEnabled = true;
+                else
+                    dev.ConsumeInputEnabled = true;
                 vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
                 RemoveFromPanel();
             };

@@ -66,9 +66,15 @@ namespace PadForge.Common.Input
                 if (ud.ProdId == 0x2006) return Family.JoyConL;
                 if (ud.ProdId == 0x2007) return Family.JoyConR;
                 if (ud.ProdId == 0x2009) return Family.Pro;
-                if (ud.ProdId == 0x2067) return Family.Switch2L;
-                if (ud.ProdId == 0x2066) return Family.Switch2R;
-                if (ud.ProdId == 0x2069) return Family.Switch2Pro;
+                // Switch 2 (Joy-Con2 L 0x2067, R 0x2066, Pro2 0x2069) is NOT a
+                // raw-HID rumble device: its actuator channel is owned by the SDL
+                // drivers (BLE vibration_char / wired bulk), and tones need the
+                // en_tone VibrationData sent over that channel. A raw-HID write
+                // here only buzzes. The real path is SDL's SendEffect forwarding
+                // the en_tone group (both stubs today), then PadForge sending it
+                // via SDL_SendGamepadEffect. Spec: C:\tmp\sdl5-switch2-tone-sendeffect.md
+                // (hifihedgehog/SDL#5). The Switch2* families + EncodeSwitch2Vibration
+                // stay ready for that route. Not matched here so nothing buzzes.
             }
             else if (ud.VendorId == ValveVid)
             {

@@ -160,5 +160,114 @@ namespace PadForge.Engine.Haptics
             blob[8] = (byte)(repeatCount / 0xFF);   // MSB repeat
             return blob;
         }
+
+        // ─────────────────────────────────────────────────────────────
+        //  Steam Controller 2026 (Triton, report 0x83) + Steam Deck
+        //  (Jupiter, report 0xEA). Ground truth: SteamHapticsSinger
+        //  main.cpp:34-36 (tables), 244-294 (report framing).
+        // ─────────────────────────────────────────────────────────────
+
+        // MIDI note -> Hz (SteamHapticsSinger main.cpp:34). Used to map a
+        // continuous frequency to the nearest note for the Triton command tables.
+        private static readonly double[] MidiHz =
+        {
+            0,8.662,9.177,9.723,10.301,10.913,11.562,12.250,12.978,13.750,14.568,15.434,16.352,17.324,18.354,19.445,20.602,21.827,23.125,24.500,25.957,27.500,29.135,30.868,32.703,34.648,36.708,38.891,41.203,43.654,46.249,48.999,51.913,55.000,58.270,61.735,65.406,69.296,73.416,77.782,82.407,87.307,92.499,97.999,103.826,110.000,116.541,123.471,130.813,138.591,146.832,155.563,164.814,174.614,184.997,195.998,207.652,220.000,233.082,246.942,261.626,277.183,293.665,311.127,329.628,349.228,369.994,391.995,415.305,440.000,466.164,493.883,523.251,554.365,587.330,622.254,659.255,698.456,739.989,783.991,830.609,880.000,932.328,987.767,1046.502,1108.731,1174.659,1244.508,1318.510,1396.913,1479.978,1567.982,1661.219,1760.000,1864.655,1975.533,2093.005,2217.461,2349.318,2489.016,2637.020,2793.826,2959.955,3135.963,3322.438,3520.000,3729.310,3951.066,4186.009,4434.922,4698.636,4978.032,5274.041,5587.652,5919.911,6271.927,6644.875,7040.000,7458.620,7902.133,8372.018,8869.844,9397.273,9956.063,10548.082,11175.303,11839.822,12543.854
+        };
+        // MIDI note -> Triton trackpad command value (main.cpp:35).
+        private static readonly ushort[] TritonTrackpad =
+        {
+            0,10,10,11,11,12,13,13,14,15,16,16,17,18,19,20,22,23,24,25,27,29,30,32,34,36,38,40,42,45,47,50,53,56,59,63,66,70,75,80,84,89,94,100,107,113,120,126,134,142,151,160,169,179,189,200,213,226,239,253,267,283,300,318,336,357,377,399,423,449,477,505,535,566,598,636,674,713,756,800,848,898,951,1008,1068,1131,1199,1270,1345,1425,1510,1600,1693,1792,1897,2008,2125,2249,2381,2521,2669,2826,2992,3168,3354,3552,3761,3983,4218,4467,4731,5010,5306,5620,5952,6304,6677,7072,7491,7934,8404,8902,9429,9988,10580,11207,11872,12576
+        };
+
+        /// <summary>Nearest MIDI note to a frequency, for the Triton tables.</summary>
+        private static int NearestMidiNote(float freqHz)
+        {
+            int best = 69; double bestErr = double.MaxValue;
+            for (int n = 1; n < MidiHz.Length; n++)
+            {
+                double e = Math.Abs(MidiHz[n] - freqHz);
+                if (e < bestErr) { bestErr = e; best = n; }
+            }
+            return best;
+        }
+
+        /// <summary>Steam Controller 2026 (Triton) tone, report <c>0x83</c>, 65-byte
+        /// hid_write. <paramref name="haptic"/> is the channel (0/1 trackpads).
+        /// Mirrors SteamHapticsSinger main.cpp:258-266. The frequency command comes
+        /// from the per-haptic calibration table (Hz mapped to the nearest note).</summary>
+        public static byte[] EncodeSteam2026(float freqHz, float amp, int haptic = 0)
+        {
+            var blob = new byte[65];
+            blob[0] = 0x83;
+            blob[1] = (byte)haptic;
+            // gain: reference default 0xFE; scale the reducer amplitude into the
+            // gain byte so a quiet cue is quieter (directVel path, main.cpp:261).
+            blob[2] = (byte)Math.Clamp((int)(amp * 0xFE), 0, 0xFE);
+            ushort cmd = TritonTrackpad[NearestMidiNote(freqHz)];
+            blob[3] = (byte)(cmd % 0xFF);
+            blob[4] = (byte)(cmd / 0xFF);
+            blob[5] = 0xFF;
+            blob[6] = 0x7F;
+            return blob;
+        }
+
+        /// <summary>Steam Controller 2026 note-off, report <c>0x82</c>
+        /// (main.cpp:254-257). Stops the tone without rebooting the pad.</summary>
+        public static byte[] EncodeSteam2026Stop(int haptic = 0)
+        {
+            var blob = new byte[65];
+            blob[0] = 0x82;
+            blob[1] = (byte)haptic;
+            return blob;
+        }
+
+        /// <summary>Steam Deck (Jupiter) tone, report <c>0xEA</c>, 64-byte SET_FEATURE
+        /// (control transfer in the reference). <paramref name="haptic"/> 0/1.
+        /// Frequency is carried in Hz directly. Mirrors main.cpp:279-286.</summary>
+        public static byte[] EncodeSteamDeck(float freqHz, float amp, int durationMs = 0x7FFF, int haptic = 0)
+        {
+            var blob = new byte[64];
+            blob[0] = 0xEA;
+            blob[2] = (byte)(haptic == 0 ? 1 : 0); // !channel (main.cpp:280)
+            blob[3] = 0x03;
+            blob[5] = (byte)Math.Clamp((int)(amp * 0xFF), 0, 0xFF);
+            int f = (int)freqHz;
+            blob[6] = (byte)(f % 0xFF);
+            blob[7] = (byte)(f / 0xFF);
+            blob[8] = (byte)(durationMs % 0xFF);
+            blob[9] = (byte)(durationMs / 0xFF);
+            return blob;
+        }
+
+        // ─────────────────────────────────────────────────────────────
+        //  Switch 2 HD Rumble (5-byte pack). Ground truth: SDL fork
+        //  SDL_hidapi_switch2.c EncodeHDRumble (line 1106-1113).
+        // ─────────────────────────────────────────────────────────────
+
+        // The Switch 2 carrier is FIXED by the driver init (rumble_hi_freq 0x187,
+        // rumble_lo_freq 0x112, SDL_hidapi_switch2.c:689-690); no reference exposes
+        // a Switch 2 frequency encoding, so a Switch 2 "tone" can only modulate
+        // amplitude at that fixed carrier (a fixed-pitch buzz envelope, honestly
+        // not a pitch-varying tone like the Joy-Con gen-1 / Steam paths).
+        public const ushort Switch2HiFreq = 0x187;
+        public const ushort Switch2LoFreq = 0x112;
+
+        /// <summary>Packs one HD-rumble group into 5 bytes for the Switch 2 output
+        /// report, at the fixed carrier with the given amplitude (0..1). Bit layout
+        /// from EncodeHDRumble (SDL_hidapi_switch2.c:1106-1113).</summary>
+        public static byte[] EncodeSwitch2HD(float amp)
+        {
+            if (amp < 0f) amp = 0f; if (amp > 1f) amp = 1f;
+            ushort a = (ushort)(amp * ushort.MaxValue);
+            ushort hi = Switch2HiFreq, lo = Switch2LoFreq, hiA = a, loA = a;
+            return new byte[]
+            {
+                (byte)(hi & 0xFF),
+                (byte)(((hiA >> 4) & 0xfc) | ((hi >> 8) & 0x03)),
+                (byte)((hiA >> 12) | (lo << 4)),
+                (byte)((loA & 0xc0) | ((lo >> 4) & 0x3f)),
+                (byte)(loA >> 8),
+            };
+        }
     }
 }

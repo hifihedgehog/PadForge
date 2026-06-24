@@ -48,10 +48,15 @@ namespace PadForge.Common.Input
         private const ushort NintendoVid = 0x057E;
         private const ushort ValveVid = 0x28DE;
 
-        // M1 device family. PIDs: Joy-Con L 0x2006, Joy-Con R 0x2007, Switch Pro
-        // 0x2009 (joycon-singer NINTENDO_VID + PRO/JOYCON PIDs). Steam Controller
-        // 2015 wired 0x1102, dongle 0x1142 (SteamControllerSinger opens these).
-        private enum Family { None, JoyConL, JoyConR, Pro, Steam }
+        // Device families. Nintendo gen-1: Joy-Con L 0x2006, R 0x2007, Pro 0x2009
+        // (joycon-singer). Switch 2: Joy-Con2 L 0x2067, R 0x2066, Pro2 0x2069 (SDL
+        // usb_ids.h). Valve: Steam Controller 2015 wired 0x1102 / dongle 0x1142,
+        // SC2026 0x1302 / Puck 0x1304 (Triton), Steam Deck 0x1205 (Jupiter)
+        // (SteamControllerSinger / SteamHapticsSinger).
+        private enum Family { None, JoyConL, JoyConR, Pro, Steam, Steam2026, SteamDeck, Switch2L, Switch2R, Switch2Pro }
+
+        private static bool IsJoyConGen1(Family f) => f == Family.JoyConL || f == Family.JoyConR || f == Family.Pro;
+        private static bool IsSwitch2(Family f) => f == Family.Switch2L || f == Family.Switch2R || f == Family.Switch2Pro;
 
         private static Family FamilyOf(Engine.Data.UserDevice ud)
         {
@@ -61,10 +66,15 @@ namespace PadForge.Common.Input
                 if (ud.ProdId == 0x2006) return Family.JoyConL;
                 if (ud.ProdId == 0x2007) return Family.JoyConR;
                 if (ud.ProdId == 0x2009) return Family.Pro;
+                if (ud.ProdId == 0x2067) return Family.Switch2L;
+                if (ud.ProdId == 0x2066) return Family.Switch2R;
+                if (ud.ProdId == 0x2069) return Family.Switch2Pro;
             }
             else if (ud.VendorId == ValveVid)
             {
                 if (ud.ProdId == 0x1102 || ud.ProdId == 0x1142) return Family.Steam;
+                if (ud.ProdId == 0x1302 || ud.ProdId == 0x1304) return Family.Steam2026;
+                if (ud.ProdId == 0x1205) return Family.SteamDeck;
             }
             return Family.None;
         }
@@ -132,6 +142,10 @@ namespace PadForge.Common.Input
             public bool UseWriteFile;
 
             public long LastContentMs = long.MinValue / 2;
+
+            // Switch 2 HD-rumble rolling sequence (report byte [0x01] low nibble,
+            // 0x50 | seq&0xF; SDL_hidapi_switch2.c:1154). Per-sink, never static.
+            public byte Switch2Seq;
 
             // Joy-Con stream-edge state: while a cue is active we write a rumble
             // packet every tick, but when it ends we send ONE neutral and then go
@@ -409,9 +423,9 @@ namespace PadForge.Common.Input
                 s.OutLen = capOut > 0 ? capOut : 64;
                 s.FeatLen = capFeat > 0 ? capFeat : 65;
 
-                if (s.Family == Family.JoyConL || s.Family == Family.JoyConR || s.Family == Family.Pro)
+                if (IsJoyConGen1(s.Family))
                 {
-                    // Joy-Con init: set input report mode 0x30 then enable
+                    // Joy-Con gen-1 init: set input report mode 0x30 then enable
                     // vibration 0x48, each an 0x01-prefixed 12-byte command packet
                     // with the rolling timer byte, 50 ms apart. open_controller
                     // does set_input_mode (main_pc.cpp:131) then enable_vibration
@@ -422,7 +436,15 @@ namespace PadForge.Common.Input
                     JoyConSendCommand(h, s, subcommand: 0x48, arg: 0x01); // enable vibration
                     Thread.Sleep(50);
                 }
-                // Steam needs no init: each 0x8F SET_FEATURE is self-contained.
+                else if (IsSwitch2(s.Family) || s.Family == Family.Steam2026)
+                {
+                    // These drive output reports (Switch 2 0x01/0x02, SC2026 0x83).
+                    // Try WriteFile first; JoyConOutputWrite falls back to
+                    // HidD_SetOutputReport per write if the stack rejects it. A
+                    // Joy-Con-0x10 probe would be a foreign report here, so skip it.
+                    s.UseWriteFile = true;
+                }
+                // Steam 2015 / Deck need no init: each feature write is self-contained.
 
                 var mono = new StereoToMonoSampleProvider(s.MacroMixer) { LeftVolume = 0.5f, RightVolume = 0.5f };
                 var resampled = new WdlResamplingSampleProvider(mono, ReduceRate);
@@ -460,11 +482,19 @@ namespace PadForge.Common.Input
             try { exited = s.Thread?.Join(3000) ?? true; } catch { exited = true; }
             if (exited && s.Handle != IntPtr.Zero)
             {
-                // Quiet the actuator on the way out.
+                // Quiet the actuator on the way out, per family.
                 try
                 {
-                    if (s.Family == Family.Steam) SteamStop(s);
-                    else JoyConWriteRumble(s, HapticToneEncoder.JoyConNeutral());
+                    switch (s.Family)
+                    {
+                        case Family.Steam: SteamStop(s); break;
+                        case Family.Steam2026: JoyConOutputWrite(s, ResizeOut(HapticToneEncoder.EncodeSteam2026Stop(), s.OutLen)); break;
+                        case Family.SteamDeck: SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, durationMs: 0)); break;
+                        case Family.Switch2L:
+                        case Family.Switch2R:
+                        case Family.Switch2Pro: Switch2WriteRumble(s, HapticToneEncoder.EncodeSwitch2HD(0f)); break;
+                        default: JoyConWriteRumble(s, HapticToneEncoder.JoyConNeutral()); break;
+                    }
                 }
                 catch { }
                 try { CancelIo(s.Handle); } catch { }
@@ -634,8 +664,16 @@ namespace PadForge.Common.Input
 
                     if (s.Handle != IntPtr.Zero)
                     {
-                        if (s.Family == Family.Steam) StreamSteamTick(s, toneHz, amp, streaming);
-                        else StreamJoyConTick(s, toneHz, amp, streaming);
+                        switch (s.Family)
+                        {
+                            case Family.Steam: StreamSteamTick(s, toneHz, amp, streaming); break;
+                            case Family.Steam2026: StreamSteam2026Tick(s, toneHz, amp, streaming); break;
+                            case Family.SteamDeck: StreamSteamDeckTick(s, toneHz, amp, streaming); break;
+                            case Family.Switch2L:
+                            case Family.Switch2R:
+                            case Family.Switch2Pro: StreamSwitch2Tick(s, amp, streaming); break;
+                            default: StreamJoyConTick(s, toneHz, amp, streaming); break;
+                        }
                     }
 
                     if (streaming)
@@ -687,6 +725,101 @@ namespace PadForge.Common.Input
             {
                 SteamStop(s);
             }
+        }
+
+        // ── Steam Controller 2026 (Triton): report 0x83 output write, 0x82 stop ──
+        private static void StreamSteam2026Tick(Sink s, float toneHz, float amp, bool streaming)
+        {
+            if (streaming)
+            {
+                bool pitchShift = !s.SteamOn || Math.Abs(toneHz - s.SteamLastFreq) > s.SteamLastFreq * 0.03f + 1f;
+                if (pitchShift)
+                {
+                    var blob = HapticToneEncoder.EncodeSteam2026(toneHz, amp);
+                    JoyConOutputWrite(s, ResizeOut(blob, s.OutLen));
+                    s.SteamOn = true;
+                    s.SteamLastFreq = toneHz;
+                }
+            }
+            else if (s.SteamOn)
+            {
+                JoyConOutputWrite(s, ResizeOut(HapticToneEncoder.EncodeSteam2026Stop(), s.OutLen));
+                s.SteamOn = false;
+            }
+        }
+
+        // ── Steam Deck (Jupiter): report 0xEA SET_FEATURE ──
+        private static void StreamSteamDeckTick(Sink s, float toneHz, float amp, bool streaming)
+        {
+            if (streaming)
+            {
+                bool pitchShift = !s.SteamOn || Math.Abs(toneHz - s.SteamLastFreq) > s.SteamLastFreq * 0.03f + 1f;
+                if (pitchShift)
+                {
+                    SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(toneHz, amp));
+                    s.SteamOn = true;
+                    s.SteamLastFreq = toneHz;
+                }
+            }
+            else if (s.SteamOn)
+            {
+                // 0 Hz / zero amp = quiet (no dedicated Deck note-off in the ref).
+                SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, durationMs: 0));
+                s.SteamOn = false;
+            }
+        }
+
+        // ── Switch 2 HD rumble: report 0x01 (Joy-Con2 L/R) / 0x02 (Pro2), byte
+        //    [0x01]=0x50|(seq&0xF), 5-byte HD at [0x02]; Pro mirrors [0x01..0x06]
+        //    to [0x11] (SDL_hidapi_switch2.c:1149-1170). Fixed carrier, so this is
+        //    an amplitude envelope at one pitch, not a pitch-varying tone, and the
+        //    transport is HID-best-effort (the SDL driver drives real Switch 2
+        //    rumble over WinUSB/BLE, which a raw-HID sink may not reach). ──
+        private static void StreamSwitch2Tick(Sink s, float amp, bool streaming)
+        {
+            if (streaming)
+            {
+                Switch2WriteRumble(s, HapticToneEncoder.EncodeSwitch2HD(amp));
+                s.JoyConWasStreaming = true;
+            }
+            else if (s.JoyConWasStreaming)
+            {
+                Switch2WriteRumble(s, HapticToneEncoder.EncodeSwitch2HD(0f));
+                s.JoyConWasStreaming = false;
+            }
+        }
+
+        private static void Switch2WriteRumble(Sink s, byte[] hd5)
+        {
+            if (s.Handle == IntPtr.Zero) return;
+            byte reportId = s.Family == Family.Switch2Pro ? (byte)0x02 : (byte)0x01;
+            var buf = new byte[s.OutLen < 24 ? 24 : s.OutLen];
+            buf[0] = reportId;
+            buf[0x01] = (byte)(0x50 | (s.Switch2Seq++ & 0x0F));
+            Array.Copy(hd5, 0, buf, 0x02, 5);
+            if (s.Family == Family.Switch2Pro)
+                Array.Copy(buf, 0x01, buf, 0x11, 6); // Pro mirrors [0x01..0x06] to [0x11]
+            JoyConOutputWrite(s, buf);
+        }
+
+        // Steam Deck 0xEA feature write: prepend the report-id byte, size to
+        // FeatureReportByteLength (same translation as the 2015 0x8F path).
+        private static void SteamFeatureWrite(Sink s, byte[] blob)
+        {
+            if (s.Handle == IntPtr.Zero) return;
+            int n = s.FeatLen > 0 ? s.FeatLen : blob.Length + 1;
+            var buf = new byte[n];
+            buf[0] = 0x00;
+            Array.Copy(blob, 0, buf, 1, Math.Min(blob.Length, n - 1));
+            try { HidD_SetFeature(s.Handle, buf, buf.Length); } catch { }
+        }
+
+        private static byte[] ResizeOut(byte[] report, int outLen)
+        {
+            if (report.Length >= outLen) return report;
+            var buf = new byte[outLen];
+            Array.Copy(report, buf, report.Length);
+            return buf;
         }
 
         /// <summary>Tears down every haptic-tone sink. Call on app shutdown

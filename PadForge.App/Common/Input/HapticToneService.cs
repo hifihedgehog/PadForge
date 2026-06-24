@@ -207,8 +207,6 @@ namespace PadForge.Common.Input
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         private static extern IntPtr CreateEventW(IntPtr attr, bool manualReset, bool initialState, string name);
         [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool ResetEvent(IntPtr h);
-        [DllImport("kernel32.dll", SetLastError = true)]
         private static extern uint WaitForSingleObject(IntPtr handle, uint ms);
         [DllImport("hid.dll")] private static extern bool HidD_GetPreparsedData(IntPtr h, out IntPtr preparsed);
         [DllImport("hid.dll")] private static extern bool HidD_FreePreparsedData(IntPtr preparsed);
@@ -561,6 +559,9 @@ namespace PadForge.Common.Input
             Array.Copy(neutral, 0, buf, 6, 4);
             buf[10] = subcommand;
             buf[11] = arg;
+            // Fire-and-forget init write: a failed subcommand just means this cue
+            // won't vibrate, never a crash (same swallow idiom as the Wii/Sony
+            // hardware writes). The stream's first rumble packet re-asserts state.
             try { HidD_SetOutputReport(h, buf, buf.Length); } catch { }
         }
 
@@ -590,6 +591,8 @@ namespace PadForge.Common.Input
                 if (OverlappedWrite(s.Handle, buf)) return;
                 s.UseWriteFile = false; // fall back for the rest of the cue
             }
+            // Fire-and-forget rumble write: a dropped tick is inaudible, never a
+            // crash. Same swallow idiom as the OverlappedWrite/ProbeWriteFile path.
             try { HidD_SetOutputReport(s.Handle, buf, buf.Length); } catch { }
         }
 

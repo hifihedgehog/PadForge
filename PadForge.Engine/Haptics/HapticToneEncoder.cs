@@ -212,8 +212,8 @@ namespace PadForge.Engine.Haptics
             ushort cmd = TritonTrackpad[NearestMidiNote(freqHz)];
             blob[3] = (byte)(cmd % 0xFF);
             blob[4] = (byte)(cmd / 0xFF);
-            blob[5] = 0xFF;
-            blob[6] = 0x7F;
+            blob[5] = 0xFF; // duration LSB (main.cpp:264, the 0xFF/0x7F sustain pair)
+            blob[6] = 0x7F; // duration MSB (main.cpp:265)
             return blob;
         }
 

@@ -21,6 +21,7 @@ namespace PadForge.Engine.Haptics
     {
         private readonly int _rate;
         private readonly float[] _ring;
+        private readonly double[] _scores; // per-lag autocorrelation, reused (no per-tick alloc)
         private int _filled;
         private float _lastFreq = 220f;
 
@@ -42,6 +43,7 @@ namespace PadForge.Engine.Haptics
         {
             _rate = rate;
             _ring = new float[Math.Max(512, rate / 12)]; // ~83 ms ring
+            _scores = new double[(int)(rate / MinFreq) + 2]; // covers every lag up to maxLag
         }
 
         /// <summary>Appends one tick of samples (newest at the end of the ring)
@@ -70,25 +72,38 @@ namespace PadForge.Engine.Haptics
             float amp = Math.Min(rms * 1.4f, 1.0f);
             if (amp < SilenceRms) return (_lastFreq, 0f);
 
-            // Pitch: normalized autocorrelation peak over the playable lag range.
+            // Pitch: normalized autocorrelation over the playable lag range, then
+            // the FIRST local-maximum lag above the voiced threshold (not the
+            // global max). The normalization divides by the fixed zero-lag energy
+            // (sumSq), which suppresses octave-DOWN errors but biases the raw peak
+            // toward the shortest lags: a low tone barely decorrelates over a few
+            // samples, so the descent off the zero-lag plateau near minLag scores
+            // ~1.0 and the global max would mis-report a near-maxFreq pitch. The
+            // true fundamental is the first peak AFTER that descending plateau, so
+            // walk up and take the first rise-then-fall above the threshold.
             int minLag = Math.Max(2, (int)(_rate / MaxFreq));
             int maxLag = Math.Min(len - 1, (int)(_rate / MinFreq));
             double energy = sumSq;
-            float bestFreq = _lastFreq;
-            double bestScore = 0;
             for (int lag = minLag; lag <= maxLag; lag++)
             {
                 double corr = 0;
                 int m = len - lag;
                 for (int i = 0; i < m; i++) corr += _ring[baseOff + i] * _ring[baseOff + i + lag];
-                double score = energy > 1e-9 ? corr / energy : 0;
-                if (score > bestScore)
+                _scores[lag] = energy > 1e-9 ? corr / energy : 0;
+            }
+            for (int lag = minLag + 1; lag <= maxLag; lag++)
+            {
+                // The lowest detectable tone has its period at maxLag, so treat the
+                // right edge as a falling neighbour to let a boundary peak count.
+                double right = lag < maxLag ? _scores[lag + 1] : double.NegativeInfinity;
+                if (_scores[lag] > VoicedThreshold && _scores[lag] >= _scores[lag - 1] && _scores[lag] > right)
                 {
-                    bestScore = score;
-                    bestFreq = (float)_rate / lag;
+                    _lastFreq = (float)_rate / lag;
+                    break;
                 }
             }
-            if (bestScore > VoicedThreshold) _lastFreq = bestFreq;
+            // No voiced local maximum: hold the last pitch (an unvoiced burst must
+            // not jump the coil), with the true amplitude already computed above.
             return (_lastFreq, amp);
         }
     }

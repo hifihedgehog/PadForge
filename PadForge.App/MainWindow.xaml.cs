@@ -563,6 +563,7 @@ namespace PadForge
                 // Issue #83. Controller-audio sinks follow assignments.
                 PadForge.Common.Input.AudioPassthroughService.Reconcile();
                 PadForge.Common.Input.WiiSpeakerService.Reconcile();
+                PadForge.Common.Input.HapticToneService.Reconcile();
 
                 // Issue #61 fix — bring the per-VC MappingSets up to
                 // date with every assigned device's PadSetting BEFORE

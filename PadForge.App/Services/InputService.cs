@@ -960,11 +960,14 @@ namespace PadForge.Services
             {
                 PadForge.Common.Input.AudioPassthroughService.Reconcile();
                 PadForge.Common.Input.WiiSpeakerService.Reconcile(); // pick up the Wii mirror too
+                PadForge.Common.Input.HapticToneService.Reconcile(); // and the Switch/Steam haptic mirror
             }
 
             // Wii Remote speaker sinks (#146): self-healing periodic reconcile
             // builds/tears down a sink as a Wii Remote is assigned to a slot.
             PadForge.Common.Input.WiiSpeakerService.EnsureStarted();
+            // Switch HD Rumble + Steam Controller haptic-tone sinks (#147).
+            PadForge.Common.Input.HapticToneService.EnsureStarted();
 
             _inputManager.TouchpadGestureSettingsProvider = (slotIndex, deviceGuid, padIdx) =>
             {

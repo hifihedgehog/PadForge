@@ -310,5 +310,59 @@ namespace PadForge.Tests
             Assert.Equal(-238, dec[0]);        // low nibble 15 first (large negative step)
             Assert.True(dec[1] > dec[0]);      // high nibble 0 second steps back up
         }
+
+        // ─── PCM->tone reducer (issue #147, the hardware-independent half) ───
+        // The reducer is the one part of the haptic-tone sink that runs entirely
+        // in software, so it gets a runtime positive control: feed a synthetic
+        // sine and confirm it recovers the pitch and loudness the coil would play.
+
+        private const int ReduceRate = 8000;
+
+        // Streams `seconds` of a sine through the reducer in 80-sample (10 ms)
+        // ticks and returns the final (Hz, Amp) read, after the analysis ring has
+        // filled.
+        private static (float Hz, float Amp) ReduceSine(float freq, float amp, double seconds = 0.2)
+        {
+            var r = new HapticToneReducer(ReduceRate);
+            int tick = ReduceRate / 100; // 80
+            int total = (int)(ReduceRate * seconds);
+            var buf = new float[tick];
+            (float Hz, float Amp) last = (0f, 0f);
+            int phase = 0;
+            for (int produced = 0; produced < total; produced += tick)
+            {
+                for (int i = 0; i < tick; i++)
+                    buf[i] = amp * (float)Math.Sin(2.0 * Math.PI * freq * (phase + i) / ReduceRate);
+                phase += tick;
+                last = r.Push(buf, tick);
+            }
+            return last;
+        }
+
+        [Fact]
+        public void Reducer_RecoversPitchAndLoudness_Of220HzSine()
+        {
+            var (hz, amp) = ReduceSine(220f, 0.5f);
+            // Autocorrelation lag is integer, so 220 Hz lands on lag 36 (222 Hz)
+            // or 37 (216 Hz). Accept the quantization neighbourhood.
+            Assert.InRange(hz, 210f, 232f);
+            // 0.5-amplitude sine -> RMS ~0.354 -> *1.4 ~0.495.
+            Assert.InRange(amp, 0.35f, 0.65f);
+        }
+
+        [Fact]
+        public void Reducer_RecoversPitch_Of440HzSine()
+        {
+            var (hz, _) = ReduceSine(440f, 0.6f);
+            // 440 Hz -> lag 18 (444 Hz) is the nearest integer lag.
+            Assert.InRange(hz, 420f, 460f);
+        }
+
+        [Fact]
+        public void Reducer_ReportsSilenceAsZeroAmplitude()
+        {
+            var (_, amp) = ReduceSine(330f, 0.0f);
+            Assert.Equal(0f, amp);
+        }
     }
 }

@@ -368,6 +368,12 @@ namespace PadForge.Views
                             // play through it like the Sony controller speaker.
                             hasAudio = true;
                         }
+                        else if (PadForge.Common.Input.HapticToneService.DeviceHasHaptics(ud))
+                        {
+                            // Switch HD Rumble / Steam Controller haptic tones (#147):
+                            // macro sounds play as tones through the actuator.
+                            hasAudio = true;
+                        }
                         // Grip-motor rumble: modern Xbox (impulse-trigger devices), the
                         // Sony lightbar family (DualSense / Edge / DS4 all rumble), and any
                         // generic SDL gamepad reporting rumble (covers Xbox 360 etc.).

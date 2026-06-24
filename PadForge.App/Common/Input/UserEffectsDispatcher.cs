@@ -575,6 +575,7 @@ namespace PadForge.Common.Input
             {
                 AudioPassthroughService.Reconcile(); // start/stop/repoint the mirror now
                 WiiSpeakerService.Reconcile();        // same for a Wii Remote speaker mirror
+                HapticToneService.Reconcile();        // and the Switch/Steam haptic-tone mirror
             }
             DispatchSnapshot();
         }

@@ -525,7 +525,15 @@ namespace PadForge.Common.Input
                 Marshal.WriteIntPtr(ol, 24, ev);
                 if (WriteFile(h, pin.AddrOfPinnedObject(), (uint)n, IntPtr.Zero, ol)) return true;
                 if (Marshal.GetLastWin32Error() != ERROR_IO_PENDING) return false;
-                if (WaitForSingleObject(ev, 500) != 0) { try { CancelIo(h); } catch { } return false; }
+                if (WaitForSingleObject(ev, 500) != 0)
+                {
+                    // Drain the cancelled write before the finally frees the
+                    // pinned buffer + OVERLAPPED (use-after-free otherwise; see
+                    // OverlappedWrite and WiiSpeakerService BtWritePool.Dispose).
+                    try { CancelIo(h); } catch { }
+                    try { WaitForSingleObject(ev, 200); } catch { }
+                    return false;
+                }
                 return GetOverlappedResult(h, ol, out _, false);
             }
             catch { return false; }
@@ -599,7 +607,18 @@ namespace PadForge.Common.Input
                 Marshal.WriteIntPtr(ol, 24, ev);
                 if (WriteFile(h, pin.AddrOfPinnedObject(), (uint)buf.Length, IntPtr.Zero, ol)) return true;
                 if (Marshal.GetLastWin32Error() != ERROR_IO_PENDING) return false;
-                if (WaitForSingleObject(ev, 1000) != 0) { try { CancelIo(h); } catch { } return false; }
+                if (WaitForSingleObject(ev, 1000) != 0)
+                {
+                    // Timed out with the write still in flight. CancelIo only
+                    // REQUESTS cancellation; the kernel/BT stack keeps a reference
+                    // to the pinned buffer + native OVERLAPPED until the (cancelled)
+                    // completion fires, so the finally must NOT free them yet.
+                    // Drain on the event first, exactly as WiiSpeakerService
+                    // BtWritePool.Dispose (which cites the Sony BtWritePool).
+                    try { CancelIo(h); } catch { }
+                    try { WaitForSingleObject(ev, 200); } catch { }
+                    return false;
+                }
                 return GetOverlappedResult(h, ol, out _, false);
             }
             catch { return false; }
@@ -731,6 +750,13 @@ namespace PadForge.Common.Input
                 bool pitchShift = !s.SteamOn || Math.Abs(toneHz - s.SteamLastFreq) > s.SteamLastFreq * 0.03f + 1f;
                 if (pitchShift)
                 {
+                    // Send NOTE_STOP (0x82) before re-arming a new note, per
+                    // SteamHapticsSinger main.cpp:428-436 (PlayNote(NOTE_STOP) then
+                    // the real note). Its comment: "Send note stop before playing
+                    // to prevent Steam Controller (2026) rebooting when using
+                    // motors." Only needed when a note is already armed.
+                    if (s.SteamOn)
+                        JoyConOutputWrite(s, ResizeOut(HapticToneEncoder.EncodeSteam2026Stop(), s.OutLen));
                     var blob = HapticToneEncoder.EncodeSteam2026(toneHz, amp);
                     JoyConOutputWrite(s, ResizeOut(blob, s.OutLen));
                     s.SteamOn = true;

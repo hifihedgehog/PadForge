@@ -55,8 +55,6 @@ namespace PadForge.Services
         private Vibration _routeCfScratchSony;
         // #107 absolute cursor-position sampler (publishes SourceCoercion.MouseCursorProvider).
         private CursorControlService _cursorControlService;
-        // #146 Wii IR camera -> OS cursor driver ("point at the screen" mode).
-        private WiiIrCursorService _wiiIrCursorService;
         // #146 Wii Balance Board: per-board parsed kg calibration (12 floats) and
         // tare offset (kg), keyed by device GUID. Calibration is parsed once from
         // the SDL "balance_board_calibration" hex property; tare is captured on
@@ -846,12 +844,7 @@ namespace PadForge.Services
             _cursorControlService?.Dispose();
             _cursorControlService = new CursorControlService();
 
-            // #146 Wii IR -> OS cursor ("point at the screen"), gated per device by
-            // the UserDevice.WiiIrAsCursor toggle on the Pad page's Pointer card.
-            _wiiIrCursorService?.Dispose();
-            _wiiIrCursorService = new WiiIrCursorService();
-
-            // — resolved Aim-Engage state for the slot. OR-combines the
+            // Resolved Aim-Engage state for the slot. OR-combines the
             // per-slot bit settled by UpdateGyroEngageStates (engage
             // button under Hold / Toggle semantics) with the bit written
             // by the SetGyroEngaged macro action. Returns true (always-on)
@@ -1311,8 +1304,6 @@ namespace PadForge.Services
                 // #107: stop sampling the cursor and unhook MouseCursorProvider.
                 _cursorControlService?.Dispose();
                 _cursorControlService = null;
-                _wiiIrCursorService?.Dispose();
-                _wiiIrCursorService = null;
                 lock (_gravityStateLock) _gravityState.Clear();
             }
 

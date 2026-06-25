@@ -113,7 +113,7 @@ namespace PadForge.Engine.Data
         /// or without a Nunchuk / Classic Controller. Excludes the Wii U Pro and the
         /// Balance Board (their names do not start with "Nintendo Wii Remote").
         /// Computed, not stored, so a stale persisted value can never linger. Gates
-        /// the IR descriptors, the Pad-page Pointer tab, and the IR-pointer read.</summary>
+        /// whether the "IR Pointer X/Y" mapping sources are offered for this device.</summary>
         [XmlIgnore]
         public bool HasIrCamera => VendorId == 0x057E
             && (ProductName ?? string.Empty).StartsWith("Nintendo Wii Remote", StringComparison.OrdinalIgnoreCase);
@@ -125,13 +125,6 @@ namespace PadForge.Engine.Data
         [XmlIgnore]
         public bool IsBalanceBoard => VendorId == 0x057E
             && (ProductName ?? string.Empty).IndexOf("Balance Board", StringComparison.OrdinalIgnoreCase) >= 0;
-
-        /// <summary>User toggle: drive the OS mouse cursor from this Wii Remote's IR
-        /// camera ("point at the screen", issue #146). Per device, persisted, off by
-        /// default. Read by WiiIrCursorService; only meaningful when
-        /// <see cref="HasIrCamera"/> is true.</summary>
-        [XmlElement]
-        public bool WiiIrAsCursor { get; set; }
 
         /// <summary>Whether the device has a touchpad (DS4/DualSense/Steam Deck).</summary>
         [XmlElement]

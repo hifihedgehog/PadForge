@@ -107,17 +107,24 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public bool HasAccel { get; set; }
 
-        /// <summary>Whether the device is a bare Wii Remote whose IR camera can be
-        /// surfaced as an "IR Pointer X/Y" mapping source (issue #146). Gates the
-        /// IR descriptors in the picker and the IR-pointer read.</summary>
-        [XmlElement]
-        public bool HasIrCamera { get; set; }
+        /// <summary>Whether the device is an IR-camera-capable Wii Remote (issue
+        /// #146). Identity-derived from VID + name, so it is correct whether the
+        /// remote is online or offline: a Wii Remote has the camera built in, with
+        /// or without a Nunchuk / Classic Controller. Excludes the Wii U Pro and the
+        /// Balance Board (their names do not start with "Nintendo Wii Remote").
+        /// Computed, not stored, so a stale persisted value can never linger. Gates
+        /// the IR descriptors, the Pad-page Pointer tab, and the IR-pointer read.</summary>
+        [XmlIgnore]
+        public bool HasIrCamera => VendorId == 0x057E
+            && (ProductName ?? string.Empty).StartsWith("Nintendo Wii Remote", StringComparison.OrdinalIgnoreCase);
 
         /// <summary>Whether the device is a Wii Balance Board, whose four corner
         /// load cells drive the derived "Balance Total Weight / Lean X / Lean Y"
-        /// sources (issue #146).</summary>
-        [XmlElement]
-        public bool IsBalanceBoard { get; set; }
+        /// sources (issue #146). Identity-derived from VID + name (online or
+        /// offline), computed not stored.</summary>
+        [XmlIgnore]
+        public bool IsBalanceBoard => VendorId == 0x057E
+            && (ProductName ?? string.Empty).IndexOf("Balance Board", StringComparison.OrdinalIgnoreCase) >= 0;
 
         /// <summary>User toggle: drive the OS mouse cursor from this Wii Remote's IR
         /// camera ("point at the screen", issue #146). Per device, persisted, off by
@@ -392,11 +399,9 @@ namespace PadForge.Engine.Data
             CapTouchpadCount = wrapper.NumTouchpads;
             CapTouchpadFingerCounts = wrapper.TouchpadFingerCounts;
             HasRumbleTriggers = wrapper.HasRumbleTriggers;
-            // IR camera / Balance Board are SDL-device-only capabilities (issue
-            // #146), not part of the general ISdlInputDevice surface, so read them
-            // off the concrete wrapper when this load is from one.
-            HasIrCamera = (wrapper as SdlDeviceWrapper)?.HasIrCamera ?? false;
-            IsBalanceBoard = (wrapper as SdlDeviceWrapper)?.IsBalanceBoard ?? false;
+            // HasIrCamera / IsBalanceBoard are identity-derived (computed from VID +
+            // ProductName), so nothing to assign here. They are correct online and
+            // offline, and never go stale (issue #146).
 
             VendorId = wrapper.VendorId;
             ProdId = wrapper.ProductId;

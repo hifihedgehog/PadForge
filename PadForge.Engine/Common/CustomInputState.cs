@@ -221,9 +221,9 @@ namespace PadForge.Engine
     /// type so <see cref="CustomInputState.Ir"/> needs no per-frame allocation.
     /// <see cref="X"/> / <see cref="Y"/> are the normalized screen position in the
     /// [-1..+1] stick range (the two-dot midpoint), valid only when
-    /// <see cref="Detected"/> is true. When no dot is seen the producer leaves the
-    /// previous X/Y and clears Detected, so a momentary loss does not snap the
-    /// pointer to center.</summary>
+    /// <see cref="Detected"/> is true. When no dot is seen this frame the producer
+    /// clears <see cref="Detected"/> and every consumer reads the source as centered
+    /// for that frame (X/Y are not carried over; the state is rebuilt each tick).</summary>
     public struct WiiIrState
     {
         public float X;

@@ -562,6 +562,8 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(HasSelectedDevice));
                     OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
+                    OnPropertyChanged(nameof(SelectedDeviceHasIrCamera));
+                    OnPropertyChanged(nameof(SelectedDeviceWiiIrAsCursor));
                     // The mirror source is per device; re-point the combo at
                     // the newly selected device's value.
                     if (SelectedConfigTab == AudioTabIndex) RefreshMirrorSources();
@@ -3333,6 +3335,43 @@ namespace PadForge.ViewModels
         }
 
         public bool SelectedDeviceHasNoSpeaker => !SelectedDeviceHasSpeaker;
+
+        /// <summary>True when the selected mapped device is an IR-camera-capable Wii
+        /// Remote (issue #146). Gates the Pad page's Pointer tab and its card.</summary>
+        public bool SelectedDeviceHasIrCamera
+        {
+            get
+            {
+                var sel = SelectedMappedDevice;
+                if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
+                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
+                return ud != null && ud.HasIrCamera;
+            }
+        }
+
+        /// <summary>User toggle: drive the OS cursor from the selected Wii Remote's
+        /// IR camera ("point at the screen", issue #146). Per device, persisted via
+        /// the dirty callback. Read at runtime by WiiIrCursorService.</summary>
+        public bool SelectedDeviceWiiIrAsCursor
+        {
+            get
+            {
+                var sel = SelectedMappedDevice;
+                if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
+                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
+                return ud?.WiiIrAsCursor ?? false;
+            }
+            set
+            {
+                var sel = SelectedMappedDevice;
+                if (sel == null || sel.InstanceGuid == Guid.Empty) return;
+                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
+                if (ud == null || ud.WiiIrAsCursor == value) return;
+                ud.WiiIrAsCursor = value;
+                OnPropertyChanged(nameof(SelectedDeviceWiiIrAsCursor));
+                ConfigItemDirtyCallback?.Invoke();
+            }
+        }
 
         /// <summary>A render endpoint the mirror can capture; Id "" = the
         /// system default device.</summary>

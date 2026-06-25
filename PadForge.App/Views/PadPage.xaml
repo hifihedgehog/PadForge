@@ -373,6 +373,12 @@
                              Visibility="Collapsed">
                     <TextBlock Text="{Binding Pad_Audio, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
+                <!-- Pointer tab: Wii Remote IR camera -> OS cursor (#146). Visible only
+                     when the selected mapped device is an IR-capable Wii Remote. -->
+                <RadioButton x:Name="TabPointer" Tag="13" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             Visibility="Collapsed">
+                    <TextBlock Text="{Binding Pad_Pointer, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
+                </RadioButton>
             </WrapPanel>
         </Border>
 
@@ -7278,6 +7284,33 @@
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- === TAB 13: Pointer (Wii Remote IR camera -> OS cursor, issue #146) === -->
+            <TabItem>
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="0,16,0,16">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="&#xE8B0;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20"
+                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding Pad_Pointer_Header, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Pad_Pointer_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
+
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Pad_Pointer_Desc, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+                                <CheckBox IsChecked="{Binding SelectedDeviceWiiIrAsCursor, Mode=TwoWay}"
+                                          Content="{Binding Settings_WiiIrAsCursor, Source={x:Static strings:Strings.Instance}}"
+                                          Margin="0,0,0,4"/>
                             </StackPanel>
                         </Border>
                     </StackPanel>

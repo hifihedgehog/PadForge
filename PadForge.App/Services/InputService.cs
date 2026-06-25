@@ -847,22 +847,9 @@ namespace PadForge.Services
             _cursorControlService = new CursorControlService();
 
             // #146 Wii IR -> OS cursor ("point at the screen"), gated per device by
-            // the UserDevice.WiiIrAsCursor toggle on the Devices page.
+            // the UserDevice.WiiIrAsCursor toggle on the Pad page's Pointer card.
             _wiiIrCursorService?.Dispose();
             _wiiIrCursorService = new WiiIrCursorService();
-
-            // Persist the per-device IR-cursor toggle when the user flips it on the
-            // Devices page: write it onto the UserDevice and mark settings dirty.
-            // Idempotent, so the row-build's initial load does not churn a save.
-            DeviceRowViewModel.WiiIrAsCursorPersist = (guid, val) =>
-            {
-                var ud = FindUserDevice(guid);
-                if (ud != null && ud.WiiIrAsCursor != val)
-                {
-                    ud.WiiIrAsCursor = val;
-                    _settingsService?.MarkDirty();
-                }
-            };
 
             // — resolved Aim-Engage state for the slot. OR-combines the
             // per-slot bit settled by UpdateGyroEngageStates (engage
@@ -6573,8 +6560,6 @@ namespace PadForge.Services
             row.HasGyro = ud.HasGyro;
             row.HasAccel = ud.HasAccel;
             row.HasTouchpad = ud.HasTouchpad;
-            row.HasIrCamera = ud.HasIrCamera;
-            row.WiiIrAsCursor = ud.WiiIrAsCursor; // #146 per-device "point at the screen"
             row.DevicePath = ud.DevicePath;
 
             // Resolve the HID instance path for display.

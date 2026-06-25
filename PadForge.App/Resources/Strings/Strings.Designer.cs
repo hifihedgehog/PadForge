@@ -1449,6 +1449,10 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_MotionAccel => Get("Mapping_MotionAccel");
     public string Mapping_MotionLean => Get("Mapping_MotionLean");
     public string Pad_Audio => Get("Pad_Audio");
+    public string Pad_Pointer => Get("Pad_Pointer");
+    public string Pad_Pointer_Header => Get("Pad_Pointer_Header");
+    public string Pad_Pointer_Subtitle => Get("Pad_Pointer_Subtitle");
+    public string Pad_Pointer_Desc => Get("Pad_Pointer_Desc");
     public string Pad_Audio_Header => Get("Pad_Audio_Header");
     public string Pad_Audio_Subtitle => Get("Pad_Audio_Subtitle");
     public string Pad_Audio_Output_Header => Get("Pad_Audio_Output_Header");

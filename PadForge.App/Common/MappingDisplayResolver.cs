@@ -752,8 +752,8 @@ namespace PadForge.Common
 
             // Wii Remote IR-camera pointer (#146). Absolute aim from the two
             // sensor-bar dots, per device (CustomInputState.Ir), so two remotes
-            // keep separate pointers. Maps to a stick like the cursor source, or
-            // drives the OS cursor through WiiIrCursorService.
+            // keep separate pointers. Map "IR Pointer X/Y" to Mouse X/Y on a KBM
+            // virtual controller to drive the cursor, or to a stick for aiming.
             if (ud.HasIrCamera)
             {
                 list.Add(new InputChoice { Descriptor = "IR Pointer X", DisplayName = si.Mapping_IrPointerX });

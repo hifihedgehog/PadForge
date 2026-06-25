@@ -1764,11 +1764,6 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Agrega colores para recorrer, uno por cada tope.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Restablecer retención de barra de luz</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Puntero</value></data>
-  <data name="Pad_Pointer_Header" xml:space="preserve"><value>Puntero IR</value></data>
-  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Apunta este mando de Wii a la pantalla con su cámara IR. Necesita una barra de sensores, o dos LED infrarrojos, encima o debajo de la pantalla.</value></data>
-  <data name="Pad_Pointer_CardTitle" xml:space="preserve"><value>Cursor del ratón</value></data>
-  <data name="Pad_Pointer_AsCursor" xml:space="preserve"><value>Mover el cursor del ratón de Windows</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Los sonidos de macro y el audio duplicado se reproducen por el altavoz integrado del mando seleccionado, por USB o Bluetooth. Elige el dispositivo en el desplegable de arriba: todo lo de aquí lo sigue.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Salida de sonido</value></data>

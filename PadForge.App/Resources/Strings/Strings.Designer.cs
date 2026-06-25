@@ -1451,6 +1451,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Pointer => Get("Pad_Pointer");
     public string Pad_Pointer_Header => Get("Pad_Pointer_Header");
     public string Pad_Pointer_Subtitle => Get("Pad_Pointer_Subtitle");
+    public string Pad_Pointer_CardTitle => Get("Pad_Pointer_CardTitle");
     public string Pad_Pointer_AsCursor => Get("Pad_Pointer_AsCursor");
     public string Pad_Audio_Header => Get("Pad_Audio_Header");
     public string Pad_Audio_Subtitle => Get("Pad_Audio_Subtitle");

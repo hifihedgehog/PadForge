@@ -1876,6 +1876,7 @@
   <data name="Pad_Pointer" xml:space="preserve"><value>Pointer</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR Pointer</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Aim this Wii Remote at the screen with its IR camera. Needs a sensor bar, or two infrared LEDs, above or below the display.</value></data>
+  <data name="Pad_Pointer_CardTitle" xml:space="preserve"><value>Mouse Cursor</value></data>
   <data name="Pad_Pointer_AsCursor" xml:space="preserve"><value>Move the Windows mouse cursor</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macro sounds and mirrored system audio play through the selected controller’s built-in speaker, over USB or Bluetooth. Pick the device in the dropdown above. Every setting here follows it.</value></data>

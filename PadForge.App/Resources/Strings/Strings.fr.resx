@@ -1767,6 +1767,7 @@
   <data name="Pad_Pointer" xml:space="preserve"><value>Pointeur</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Pointeur IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Visez l'écran avec la caméra IR de cette télécommande Wii. Nécessite une barre de capteurs, ou deux LED infrarouges, au-dessus ou en dessous de l'écran.</value></data>
+  <data name="Pad_Pointer_CardTitle" xml:space="preserve"><value>Curseur de la souris</value></data>
   <data name="Pad_Pointer_AsCursor" xml:space="preserve"><value>Déplacer le curseur de la souris Windows</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Les sons de macro et l’audio dupliqué jouent par le haut-parleur intégré de la manette sélectionnée, en USB ou Bluetooth. Choisissez le périphérique dans la liste au-dessus. Tout ici le suit.</value></data>

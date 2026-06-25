@@ -350,7 +350,6 @@ public class Strings : INotifyPropertyChanged
     public string Settings_InputEngineDesc => Get("Settings_InputEngineDesc");
     public string Settings_AutoStart => Get("Settings_AutoStart");
     public string Settings_BackgroundPolling => Get("Settings_BackgroundPolling");
-    public string Settings_WiiIrAsCursor => Get("Settings_WiiIrAsCursor");
     public string Settings_PollingInterval => Get("Settings_PollingInterval");
     public string Settings_HideDevices => Get("Settings_HideDevices");
     public string Settings_HideDevicesTooltip => Get("Settings_HideDevicesTooltip");
@@ -1452,7 +1451,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Pointer => Get("Pad_Pointer");
     public string Pad_Pointer_Header => Get("Pad_Pointer_Header");
     public string Pad_Pointer_Subtitle => Get("Pad_Pointer_Subtitle");
-    public string Pad_Pointer_Desc => Get("Pad_Pointer_Desc");
+    public string Pad_Pointer_AsCursor => Get("Pad_Pointer_AsCursor");
     public string Pad_Audio_Header => Get("Pad_Audio_Header");
     public string Pad_Audio_Subtitle => Get("Pad_Audio_Subtitle");
     public string Pad_Audio_Output_Header => Get("Pad_Audio_Output_Header");

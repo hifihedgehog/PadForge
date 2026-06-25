@@ -7305,13 +7305,8 @@
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
 
                         <Border Style="{StaticResource CardBorder}">
-                            <StackPanel>
-                                <TextBlock Text="{Binding Pad_Pointer_Desc, Source={x:Static strings:Strings.Instance}}"
-                                           Style="{StaticResource CardDescription}"/>
-                                <CheckBox IsChecked="{Binding SelectedDeviceWiiIrAsCursor, Mode=TwoWay}"
-                                          Content="{Binding Settings_WiiIrAsCursor, Source={x:Static strings:Strings.Instance}}"
-                                          Margin="0,0,0,4"/>
-                            </StackPanel>
+                            <CheckBox IsChecked="{Binding SelectedDeviceWiiIrAsCursor, Mode=TwoWay}"
+                                      Content="{Binding Pad_Pointer_AsCursor, Source={x:Static strings:Strings.Instance}}"/>
                         </Border>
                     </StackPanel>
                 </ScrollViewer>

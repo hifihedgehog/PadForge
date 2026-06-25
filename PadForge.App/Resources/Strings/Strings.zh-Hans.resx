@@ -1780,6 +1780,10 @@
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>音量</value></data>
   <data name="Mapping_MotionLean" xml:space="preserve"><value>体感倾斜</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>音频</value></data>
+  <data name="Pad_Pointer" xml:space="preserve"><value>指针</value></data>
+  <data name="Pad_Pointer_Header" xml:space="preserve"><value>红外指针</value></data>
+  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>用此 Wii 遥控器的红外摄像头指向屏幕。需要在显示屏上方或下方放置感应条（或两个红外 LED）。</value></data>
+  <data name="Pad_Pointer_AsCursor" xml:space="preserve"><value>移动 Windows 鼠标光标</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>音频</value></data>
   <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>声音由宏播放：一个触发（按键按下、松开、按住或公式）加一个“播放声音”动作。可在此处或“宏”选项卡中创建，延迟、重复和开关均可用。</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>声音宏</value></data>

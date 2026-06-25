@@ -275,7 +275,6 @@
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Configure polling behavior and background processing.</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Auto-start engine on launch</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continue polling when window loses focus</value></data>
-  <data name="Settings_WiiIrAsCursor" xml:space="preserve"><value>Use Wii Remote IR camera as the mouse cursor</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>Polling interval</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Hide devices from games</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Master switch for HidHide device hiding and low-level input hooks. When off, no devices are hidden regardless of per-device settings.</value></data>
@@ -1876,8 +1875,8 @@
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Pointer" xml:space="preserve"><value>Pointer</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR Pointer</value></data>
-  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Use the Wii Remote's IR camera as a screen pointer.</value></data>
-  <data name="Pad_Pointer_Desc" xml:space="preserve"><value>Point the Wii Remote at the screen to move the mouse cursor. Needs a sensor bar (or two IR LEDs) above or below the display. Works with a Nunchuk or Classic Controller attached.</value></data>
+  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Aim this Wii Remote at the screen with its IR camera. Needs a sensor bar, or two infrared LEDs, above or below the display.</value></data>
+  <data name="Pad_Pointer_AsCursor" xml:space="preserve"><value>Move the Windows mouse cursor</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macro sounds and mirrored system audio play through the selected controller’s built-in speaker, over USB or Bluetooth. Pick the device in the dropdown above. Every setting here follows it.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sound Output</value></data>

@@ -139,6 +139,15 @@ namespace PadForge.Engine.Data
         /// whose descriptor starts with "Mouse Position ".</summary>
         [XmlAttribute] public double MouseCursorSensitivity { get; set; } = 1.0;
 
+        /// <summary>Per-source Wii IR-pointer sensitivity multiplier (issue #146).
+        /// Applied to the normalized IR pointer offset during bipolar / unipolar /
+        /// bool coercion so each "IR Pointer X" / "IR Pointer Y" row tunes its own
+        /// reach. Default 1.0 = full stick deflection at the edge of the camera's
+        /// field of view. Values &gt; 1.0 reach full deflection with less aim
+        /// travel; values &lt; 1.0 need more. Only affects sources whose descriptor
+        /// starts with "IR Pointer ".</summary>
+        [XmlAttribute] public double IrPointerSensitivity { get; set; } = 1.0;
+
         /// <summary>
         /// v3.3 per-source Do-not-inherit slot. Reserved in the schema for
         /// future per-source / per-zone fall-through suppression

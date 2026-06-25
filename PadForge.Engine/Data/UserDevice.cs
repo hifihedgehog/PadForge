@@ -107,6 +107,18 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public bool HasAccel { get; set; }
 
+        /// <summary>Whether the device is a bare Wii Remote whose IR camera can be
+        /// surfaced as an "IR Pointer X/Y" mapping source (issue #146). Gates the
+        /// IR descriptors in the picker and the IR-pointer read.</summary>
+        [XmlElement]
+        public bool HasIrCamera { get; set; }
+
+        /// <summary>Whether the device is a Wii Balance Board, whose four corner
+        /// load cells drive the derived "Balance Total Weight / Lean X / Lean Y"
+        /// sources (issue #146).</summary>
+        [XmlElement]
+        public bool IsBalanceBoard { get; set; }
+
         /// <summary>Whether the device has a touchpad (DS4/DualSense/Steam Deck).</summary>
         [XmlElement]
         public bool HasTouchpad { get; set; }
@@ -373,6 +385,11 @@ namespace PadForge.Engine.Data
             CapTouchpadCount = wrapper.NumTouchpads;
             CapTouchpadFingerCounts = wrapper.TouchpadFingerCounts;
             HasRumbleTriggers = wrapper.HasRumbleTriggers;
+            // IR camera / Balance Board are SDL-device-only capabilities (issue
+            // #146), not part of the general ISdlInputDevice surface, so read them
+            // off the concrete wrapper when this load is from one.
+            HasIrCamera = (wrapper as SdlDeviceWrapper)?.HasIrCamera ?? false;
+            IsBalanceBoard = (wrapper as SdlDeviceWrapper)?.IsBalanceBoard ?? false;
 
             VendorId = wrapper.VendorId;
             ProdId = wrapper.ProductId;

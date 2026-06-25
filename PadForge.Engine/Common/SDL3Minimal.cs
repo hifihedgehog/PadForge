@@ -458,6 +458,21 @@ namespace SDL3
         public static bool SDL_GetBooleanProperty(uint props, string name, bool defaultValue) =>
             _SDL_GetBooleanProperty(props, name, defaultValue);
 
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetStringProperty")]
+        private static extern IntPtr _SDL_GetStringProperty(
+            uint props,
+            [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+            [MarshalAs(UnmanagedType.LPUTF8Str)] string default_value);
+
+        /// <summary>Reads a string property (e.g. the Wii Balance Board calibration
+        /// hex blob, "SDL.joystick.wii.balance_board_calibration", issue #146).
+        /// Returns <paramref name="defaultValue"/> when the property is unset.</summary>
+        public static string SDL_GetStringProperty(uint props, string name, string defaultValue)
+        {
+            IntPtr ptr = _SDL_GetStringProperty(props, name, defaultValue);
+            return ptr != IntPtr.Zero ? (Marshal.PtrToStringUTF8(ptr) ?? defaultValue) : defaultValue;
+        }
+
         // ─────────────────────────────────────────────
         //  Power info (replaces SDL_JoystickCurrentPowerLevel)
         // ─────────────────────────────────────────────

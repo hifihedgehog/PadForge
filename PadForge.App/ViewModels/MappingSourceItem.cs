@@ -242,6 +242,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsHalfAxisApplicable));
                     OnPropertyChanged(nameof(IsGyroSource));
                     OnPropertyChanged(nameof(IsMouseCursorSource));
+                    OnPropertyChanged(nameof(IsIrPointerSource));
                 }
             }
         }
@@ -258,6 +259,12 @@ namespace PadForge.ViewModels
         /// per-source Mouse Cursor Sensitivity slider's visibility.</summary>
         public bool IsMouseCursorSource => _descriptor != null
             && _descriptor.StartsWith("Mouse Position ", StringComparison.Ordinal);
+
+        /// <summary>True when this source's descriptor is a Wii IR pointer axis
+        /// ("IR Pointer X" / "IR Pointer Y", issue #146). Drives the per-source IR
+        /// Pointer Sensitivity slider's visibility.</summary>
+        public bool IsIrPointerSource => _descriptor != null
+            && _descriptor.StartsWith("IR Pointer ", StringComparison.Ordinal);
         public bool Invert
         {
             get => _invert;
@@ -431,6 +438,16 @@ namespace PadForge.ViewModels
         {
             get => _mouseCursorSensitivity;
             set => SetProperty(ref _mouseCursorSensitivity, System.Math.Clamp(value, 0.1, 5.0));
+        }
+
+        private double _irPointerSensitivity = 1.0;
+        /// <summary>Per-source Wii IR-pointer sensitivity (issue #146). Only applied
+        /// for "IR Pointer X/Y" descriptors. Default 1.0 = full deflection at the
+        /// edge of the camera's field of view.</summary>
+        public double IrPointerSensitivity
+        {
+            get => _irPointerSensitivity;
+            set => SetProperty(ref _irPointerSensitivity, System.Math.Clamp(value, 0.1, 5.0));
         }
         public bool ParamSticky { get => _paramSticky; set => SetProperty(ref _paramSticky, value); }
         public double ParamMin { get => _paramMin; set => SetProperty(ref _paramMin, value); }
@@ -698,6 +715,9 @@ namespace PadForge.ViewModels
         private RelayCommand _resetMouseCursorSensitivityCommand;
         public RelayCommand ResetMouseCursorSensitivityCommand =>
             _resetMouseCursorSensitivityCommand ??= new RelayCommand(() => MouseCursorSensitivity = 1.0);
+        private RelayCommand _resetIrPointerSensitivityCommand;
+        public RelayCommand ResetIrPointerSensitivityCommand =>
+            _resetIrPointerSensitivityCommand ??= new RelayCommand(() => IrPointerSensitivity = 1.0);
 
         private RelayCommand _resetGyroSensitivityCommand;
         public RelayCommand ResetGyroSensitivityCommand =>
@@ -723,6 +743,7 @@ namespace PadForge.ViewModels
             ParamModifier = _paramModifier ?? "",
             GyroSensitivity = _gyroSensitivity,
             MouseCursorSensitivity = _mouseCursorSensitivity,
+            IrPointerSensitivity = _irPointerSensitivity,
             ParamAttackTime = _paramAttackTime,
             ParamReleaseTime = _paramReleaseTime,
             ParamAutocenter = _paramAutocenter,
@@ -752,6 +773,7 @@ namespace PadForge.ViewModels
                 ParamModifier = src.ParamModifier ?? "",
                 GyroSensitivity = src.GyroSensitivity > 0 ? src.GyroSensitivity : 1.0,
                 MouseCursorSensitivity = src.MouseCursorSensitivity > 0 ? src.MouseCursorSensitivity : 1.0,
+                IrPointerSensitivity = src.IrPointerSensitivity > 0 ? src.IrPointerSensitivity : 1.0,
                 ParamAttackTime = src.ParamAttackTime,
                 ParamReleaseTime = src.ParamReleaseTime,
                 ParamAutocenter = src.ParamAutocenter,

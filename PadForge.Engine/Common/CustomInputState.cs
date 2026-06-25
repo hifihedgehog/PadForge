@@ -101,6 +101,15 @@ namespace PadForge.Engine
         /// </summary>
         public MidiInputState Midi;
 
+        /// <summary>Wii Remote IR-camera pointer (issue #146), normalized to the
+        /// [-1..+1] stick range per screen axis from the two sensor-bar dots, plus
+        /// a <see cref="WiiIrState.Detected"/> flag. A value type, so it is always
+        /// present and costs no allocation; <c>Detected == false</c> means "no IR
+        /// or no dots this frame". Populated by SdlDeviceWrapper from the raw
+        /// joystick axes 0-3, where the SDL hidapi_wii driver posts dot0/dot1 X/Y
+        /// for a bare Wii Remote with the camera powered.</summary>
+        public WiiIrState Ir;
+
         /// <summary>Battery percentage from SDL3 (0..100, or -1 if unknown).
         /// Refreshed periodically by SdlDeviceWrapper, not every frame.</summary>
         public int BatteryPercent;
@@ -152,6 +161,7 @@ namespace PadForge.Engine
                     clone.Touchpads[i] = Touchpads[i]?.Clone();
             }
             clone.Midi = Midi?.Clone();
+            clone.Ir = Ir; // value type copy (X/Y/Detected)
             clone.BatteryPercent = BatteryPercent;
             clone.BatteryCharging = BatteryCharging;
             return clone;
@@ -205,5 +215,19 @@ namespace PadForge.Engine
             }
         }
 
+    }
+
+    /// <summary>Wii Remote IR-camera pointer for one frame (issue #146). A value
+    /// type so <see cref="CustomInputState.Ir"/> needs no per-frame allocation.
+    /// <see cref="X"/> / <see cref="Y"/> are the normalized screen position in the
+    /// [-1..+1] stick range (the two-dot midpoint), valid only when
+    /// <see cref="Detected"/> is true. When no dot is seen the producer leaves the
+    /// previous X/Y and clears Detected, so a momentary loss does not snap the
+    /// pointer to center.</summary>
+    public struct WiiIrState
+    {
+        public float X;
+        public float Y;
+        public bool Detected;
     }
 }

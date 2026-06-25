@@ -55,6 +55,13 @@ namespace PadForge.Services
         private Vibration _routeCfScratchSony;
         // #107 absolute cursor-position sampler (publishes SourceCoercion.MouseCursorProvider).
         private CursorControlService _cursorControlService;
+        // #146 Wii Balance Board: per-board parsed kg calibration (12 floats) and
+        // tare offset (kg), keyed by device GUID. Calibration is parsed once from
+        // the SDL "balance_board_calibration" hex property; tare is captured on
+        // demand. Both back the SourceCoercion.Balance* providers.
+        private readonly System.Collections.Generic.Dictionary<Guid, float[]> _balanceCalibration = new();
+        private readonly System.Collections.Generic.Dictionary<Guid, float> _balanceTareKg = new();
+        private readonly object _balanceLock = new();
         private DispatcherTimer _uiTimer;
         private ForegroundMonitorService _foregroundMonitor;
         private ProfileData _defaultProfileSnapshot;
@@ -800,6 +807,37 @@ namespace PadForge.Services
                 return ms > 0 ? 1000f / ms : 60f;
             };
 
+            // Wii Balance Board (#146): per-board kg calibration + tare. The
+            // calibration arrives as the SDL "balance_board_calibration" hex
+            // property once the driver has read the board's EEPROM; parse it once
+            // and cache. SourceCoercion's Total-Weight reader interpolates each raw
+            // corner to kg through this and subtracts the tare.
+            PadForge.Engine.Common.Mapping.SourceCoercion.BalanceCalibrationProvider = deviceGuid =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return null;
+                lock (_balanceLock)
+                {
+                    if (_balanceCalibration.TryGetValue(g, out var cached)) return cached;
+                }
+                var ud = FindUserDevice(g);
+                if (ud?.Device is not PadForge.Engine.SdlDeviceWrapper sdl || sdl.Joystick == IntPtr.Zero)
+                    return null;
+                uint props = SDL3.SDL.SDL_GetJoystickProperties(sdl.Joystick);
+                if (props == 0) return null;
+                string hex = SDL3.SDL.SDL_GetStringProperty(props, "SDL.joystick.wii.balance_board_calibration", "");
+                var parsed = ParseBalanceCalibrationHex(hex);
+                if (parsed != null) lock (_balanceLock) _balanceCalibration[g] = parsed;
+                return parsed;
+            };
+            PadForge.Engine.Common.Mapping.SourceCoercion.BalanceTareKgProvider = deviceGuid =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return 0f;
+                lock (_balanceLock)
+                {
+                    return _balanceTareKg.TryGetValue(g, out var t) ? t : 0f;
+                }
+            };
+
             // Cursor-position source (#107): a 200 Hz sampler publishes the
             // normalized desktop cursor position into MouseCursorProvider for
             // "Mouse Position X/Y" mapping sources. Disposed on engine stop.
@@ -1256,6 +1294,8 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.SlotStickDeflectionProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.ButtonHeldProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.BalanceCalibrationProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.BalanceTareKgProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.PollHzProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.AimEngageStateProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureFiredProvider = null;
@@ -3069,6 +3109,7 @@ namespace PadForge.Services
                     mapping.IsBidirectional = primary.Bidirectional;
                     mapping.GyroSensitivity = primary.GyroSensitivity > 0 ? primary.GyroSensitivity : 1.0;
                     mapping.MouseCursorSensitivity = primary.MouseCursorSensitivity > 0 ? primary.MouseCursorSensitivity : 1.0;
+                    mapping.IrPointerSensitivity = primary.IrPointerSensitivity > 0 ? primary.IrPointerSensitivity : 1.0;
                     mapping.PrimarySourceDeviceGuid = primary.DeviceGuid ?? "";
                     mapping.PrimarySourceDeviceLabel = ResolveDeviceLabel(primary.DeviceGuid);
                     mapping.LoadPrimaryKind(null); // Direct primary, reset the kind holder
@@ -3091,6 +3132,7 @@ namespace PadForge.Services
                     mapping.IsBidirectional = false;
                     mapping.GyroSensitivity = 1.0;
                     mapping.MouseCursorSensitivity = 1.0;
+                    mapping.IrPointerSensitivity = 1.0;
                     mapping.LoadPrimaryKind(primaryIsKind ? primarySrc : null);
                 }
 
@@ -6928,6 +6970,78 @@ namespace PadForge.Services
             {
                 return devices.FirstOrDefault(d => d.InstanceGuid == instanceGuid);
             }
+        }
+
+        // Parse the Wii Balance Board calibration (#146) from the SDL hex property
+        // (24 bytes = 12 int16 big-endian). The board reports three reference rows
+        // (0 kg, 17 kg, 34 kg), each four sensors in the order TopRight,
+        // BottomRight, TopLeft, BottomLeft (WiiBrew / WiimoteLib calibration block
+        // at 0x04a40024). Re-laid out to the 12-float [corner × {Kg0,Kg17,Kg34}]
+        // shape SourceCoercion.ReadTunedBalanceBoard expects, with corner order
+        // TopLeft, BottomLeft, TopRight, BottomRight. Returns null on a malformed or
+        // not-yet-available blob. The row/sensor order is hypothesis-under-test (no
+        // board hardware); a transpose here is the one fix if kg reads wrong.
+        private static float[] ParseBalanceCalibrationHex(string hex)
+        {
+            if (string.IsNullOrEmpty(hex) || hex.Length < 48) return null;
+            var raw = new int[12]; // [row*4 + sensor], row 0/1/2 = Kg0/Kg17/Kg34
+            for (int i = 0; i < 12; i++)
+            {
+                if (!int.TryParse(hex.Substring(i * 4, 4), System.Globalization.NumberStyles.HexNumber,
+                        System.Globalization.CultureInfo.InvariantCulture, out int u16))
+                    return null;
+                raw[i] = (short)u16; // sign-extend the big-endian 16-bit word
+            }
+            // Source sensor order per row: 0=TR, 1=BR, 2=TL, 3=BL.
+            // Target corner order: 0=TL, 1=BL, 2=TR, 3=BR.
+            int[] srcSensor = { 2, 3, 0, 1 }; // TL, BL, TR, BR -> source column
+            var cal = new float[12];
+            for (int corner = 0; corner < 4; corner++)
+            {
+                int col = srcSensor[corner];
+                cal[corner * 3 + 0] = raw[0 * 4 + col]; // Kg0
+                cal[corner * 3 + 1] = raw[1 * 4 + col]; // Kg17
+                cal[corner * 3 + 2] = raw[2 * 4 + col]; // Kg34
+            }
+            return cal;
+        }
+
+        /// <summary>Captures the Wii Balance Board's current total weight (#146) as
+        /// the tare zero-point for the given device, so "Balance Total Weight" reads
+        /// 0 with whatever is currently on the board. Call again with no load to
+        /// clear. Reads the live corner load cells from the device's last input
+        /// state and the cached kg calibration.</summary>
+        public void SetBalanceTare(Guid deviceGuid)
+        {
+            var ud = FindUserDevice(deviceGuid);
+            var st = ud?.InputState;
+            if (st?.Axis == null) return;
+            float tl = Math.Max(0, st.Axis[0] - 32768);
+            float bl = Math.Max(0, st.Axis[1] - 32768);
+            float tr = Math.Max(0, st.Axis[3] - 32768);
+            float br = Math.Max(0, st.Axis[4] - 32768);
+
+            float[] cal = PadForge.Engine.Common.Mapping.SourceCoercion.BalanceCalibrationProvider?
+                .Invoke(deviceGuid.ToString());
+            float kg;
+            if (cal != null && cal.Length >= 12)
+                kg = CornerKg(tl, cal, 0) + CornerKg(bl, cal, 1) + CornerKg(tr, cal, 2) + CornerKg(br, cal, 3);
+            else
+                kg = (tl + bl + tr + br) / 200f;
+
+            lock (_balanceLock) _balanceTareKg[deviceGuid] = kg;
+        }
+
+        private static float CornerKg(float raw, float[] cal, int corner)
+        {
+            float kg0 = cal[corner * 3 + 0], kg17 = cal[corner * 3 + 1], kg34 = cal[corner * 3 + 2];
+            if (raw < kg17)
+            {
+                float span = kg17 - kg0;
+                return span > 0f ? 17f * (raw - kg0) / span : 0f;
+            }
+            float span2 = kg34 - kg17;
+            return span2 > 0f ? 17f * (raw - kg17) / span2 + 17f : 17f;
         }
 
         /// <summary>

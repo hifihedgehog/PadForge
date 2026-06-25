@@ -100,6 +100,13 @@ namespace PadForge.Engine
         /// <summary>Whether the device has a gyroscope sensor.</summary>
         public bool HasGyro { get; private set; }
 
+        /// <summary>Whether this is a bare Wii Remote whose IR camera PadForge
+        /// surfaces as an "IR Pointer" source (issue #146).</summary>
+        public bool HasIrCamera { get; private set; }
+
+        /// <summary>Whether this is a Wii Balance Board (issue #146).</summary>
+        public bool IsBalanceBoard { get; private set; }
+
         /// <summary>Whether the device has an accelerometer sensor.</summary>
         public bool HasAccel { get; private set; }
 
@@ -307,6 +314,24 @@ namespace PadForge.Engine
                 }
             }
 
+            // Wii Remote IR camera + Wii Balance Board (issue #146). Both are
+            // Nintendo VID 0x057E, and the board enumerates as a Wii Remote
+            // (PID 0x0306), so the board is told apart by its SDL name and a bare
+            // remote (no board) gets the IR-pointer capability. Enabling the accel
+            // sensor above also powers the IR camera in the SDL hidapi_wii driver,
+            // which then posts the two IR dots on raw joystick axes 0-3.
+            bool isWiiVendor = VendorId == 0x057E;
+            IsBalanceBoard = isWiiVendor && !string.IsNullOrEmpty(Name)
+                && Name.IndexOf("Balance Board", StringComparison.OrdinalIgnoreCase) >= 0;
+            // IR is BARE-remote only: the SDL driver names a remote with an
+            // extension "Nintendo Wii Remote with Nunchuk/Classic/..." and posts the
+            // extension (e.g. the Nunchuk stick) on axes 0-1, exactly where IR would
+            // be. So gate on the exact bare-remote name "Nintendo Wii Remote"
+            // (SDL_hidapi_wii.c:834) and not the PID, which is shared with the
+            // extension-equipped remote and the Balance Board.
+            HasIrCamera = isWiiVendor && !IsBalanceBoard
+                && string.Equals(Name, "Nintendo Wii Remote", StringComparison.Ordinal);
+
             // Always try the haptic API for force feedback devices (joysticks,
             // wheels, etc.). Some report HasRumble=true via SDL properties but
             // only actually work through the haptic effect system. The routing
@@ -451,10 +476,50 @@ namespace PadForge.Engine
             // so the same auto-mapping works for all recognized controllers.
             // ForceRaw bypasses this for devices whose SDL mapping is wrong
             // (e.g., DsHidMini DS3 in SDF mode).
-            if (!forceRaw && GameController != IntPtr.Zero)
-                return GetGamepadState();
+            CustomInputState state = (!forceRaw && GameController != IntPtr.Zero)
+                ? GetGamepadState()
+                : GetJoystickState();
 
-            return GetJoystickState();
+            // Wii Remote IR pointer rides raw joystick axes 0-3, which the gamepad
+            // mapping does not surface (a bare remote binds no gamepad axes), so it
+            // is read joystick-direct here regardless of which path built the state.
+            if (HasIrCamera && state != null)
+                ReadIrPointer(state);
+
+            return state;
+        }
+
+        // The SDL hidapi_wii driver posts the two IR dots on raw joystick axes 0-3
+        // for a bare Wii Remote with the camera powered (SDL_hidapi_wii.c
+        // HandleIRData): axis0 = dot0_x (0..1023), axis1 = dot0_y (0..767),
+        // axis2 = dot1_x, axis3 = dot1_y, with -1 meaning "dot not detected". The
+        // two dots are the two sensor-bar LEDs; their midpoint is the aim point.
+        private void ReadIrPointer(CustomInputState state)
+        {
+            short d0x = SDL_GetJoystickAxis(Joystick, 0);
+            short d0y = SDL_GetJoystickAxis(Joystick, 1);
+            short d1x = SDL_GetJoystickAxis(Joystick, 2);
+            short d1y = SDL_GetJoystickAxis(Joystick, 3);
+            bool f0 = d0x >= 0 && d0y >= 0;
+            bool f1 = d1x >= 0 && d1y >= 0;
+
+            float sx, sy;
+            if (f0 && f1) { sx = (d0x + d1x) * 0.5f; sy = (d0y + d1y) * 0.5f; }
+            else if (f0) { sx = d0x; sy = d0y; }
+            else if (f1) { sx = d1x; sy = d1y; }
+            else { state.Ir.Detected = false; return; } // no dot: hold last X/Y
+
+            // Camera frame is 1024x768. Normalize to the [-1..+1] stick range. The
+            // IR image is mirrored horizontally (aiming right moves the bar left in
+            // the frame) and the camera Y runs opposite screen Y, so both axes are
+            // flipped. These two signs are hypothesis-under-test (no IR hardware
+            // this session); each is a single negation to flip if a tester reports
+            // reversed aim.
+            float nx = sx / 1023f;
+            float ny = sy / 767f;
+            state.Ir.X = (0.5f - nx) * 2f;
+            state.Ir.Y = (0.5f - ny) * 2f;
+            state.Ir.Detected = true;
         }
 
         /// <summary>

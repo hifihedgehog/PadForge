@@ -750,6 +750,26 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = "Mouse Position Y", DisplayName = si.Mapping_MousePositionY });
             }
 
+            // Wii Remote IR-camera pointer (#146). Absolute aim from the two
+            // sensor-bar dots, per device (CustomInputState.Ir), so two remotes
+            // keep separate pointers. Maps to a stick like the cursor source, or
+            // drives the OS cursor through WiiIrCursorService.
+            if (ud.HasIrCamera)
+            {
+                list.Add(new InputChoice { Descriptor = "IR Pointer X", DisplayName = si.Mapping_IrPointerX });
+                list.Add(new InputChoice { Descriptor = "IR Pointer Y", DisplayName = si.Mapping_IrPointerY });
+            }
+
+            // Wii Balance Board derived sources (#146). The four corner load cells
+            // also arrive raw on the stick axes; these are the friendly derived
+            // channels (total weight + center-of-gravity lean).
+            if (ud.IsBalanceBoard)
+            {
+                list.Add(new InputChoice { Descriptor = "Balance Total Weight", DisplayName = si.Mapping_BalanceTotalWeight });
+                list.Add(new InputChoice { Descriptor = "Balance Lean X",       DisplayName = si.Mapping_BalanceLeanX });
+                list.Add(new InputChoice { Descriptor = "Balance Lean Y",       DisplayName = si.Mapping_BalanceLeanY });
+            }
+
             // Gravity-lean input: tilt the controller like a wheel and the lean
             // angle drives whatever axis the user maps it to. A normal input
             // descriptor — it does NOT override the target's other sources.

@@ -385,6 +385,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsHalfAxisApplicable));
                     OnPropertyChanged(nameof(IsGyroSource));
                     OnPropertyChanged(nameof(IsMouseCursorSource));
+                    OnPropertyChanged(nameof(IsIrPointerSource));
                     OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
                     // Toggling the primary source flips the row's
                     // effective source count, which can change whether
@@ -864,11 +865,27 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _mouseCursorSensitivity, Math.Clamp(value, 0.1, 5.0));
         }
 
+        private double _irPointerSensitivity = 1.0;
+        /// <summary>Per-source Wii IR-pointer sensitivity for the primary source
+        /// (issue #146). Mirrors <see cref="MappingSourceItem.IrPointerSensitivity"/>,
+        /// applied only when the primary descriptor is an "IR Pointer X/Y" axis.</summary>
+        public double IrPointerSensitivity
+        {
+            get => _irPointerSensitivity;
+            set => SetProperty(ref _irPointerSensitivity, Math.Clamp(value, 0.1, 5.0));
+        }
+
         /// <summary>True when the primary source descriptor is an absolute cursor
         /// axis ("Mouse Position X/Y"). Mirrors
         /// <see cref="MappingSourceItem.IsMouseCursorSource"/>.</summary>
         public bool IsMouseCursorSource => !string.IsNullOrEmpty(_sourceDescriptor)
             && _sourceDescriptor.StartsWith("Mouse Position ", StringComparison.Ordinal);
+
+        /// <summary>True when the primary source descriptor is a Wii IR pointer axis
+        /// ("IR Pointer X/Y", issue #146). Mirrors
+        /// <see cref="MappingSourceItem.IsIrPointerSource"/>.</summary>
+        public bool IsIrPointerSource => !string.IsNullOrEmpty(_sourceDescriptor)
+            && _sourceDescriptor.StartsWith("IR Pointer ", StringComparison.Ordinal);
 
         /// <summary>Per-source gyro sensitivity multiplier for the primary
         /// source. Mirrors <see cref="MappingSourceItem.GyroSensitivity"/>;
@@ -1060,6 +1077,11 @@ namespace PadForge.ViewModels
         /// <summary>Resets the primary source's mouse-cursor sensitivity to 1.0 (#107).</summary>
         public RelayCommand ResetMouseCursorSensitivityCommand =>
             _resetMouseCursorSensitivityCommand ??= new RelayCommand(() => MouseCursorSensitivity = 1.0);
+
+        private RelayCommand _resetIrPointerSensitivityCommand;
+        /// <summary>Resets the primary source's IR-pointer sensitivity to 1.0 (#146).</summary>
+        public RelayCommand ResetIrPointerSensitivityCommand =>
+            _resetIrPointerSensitivityCommand ??= new RelayCommand(() => IrPointerSensitivity = 1.0);
 
         private RelayCommand _resetGyroSensitivityCommand;
         /// <summary>Resets the primary source's gyro sensitivity to 1.0.</summary>

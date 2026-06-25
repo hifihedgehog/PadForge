@@ -1603,6 +1603,13 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_MousePositionY => Get("Mapping_MousePositionY");
     public string Mapping_MouseCursorSensitivity => Get("Mapping_MouseCursorSensitivity");
     public string Mapping_MouseCursorSensitivity_Tooltip => Get("Mapping_MouseCursorSensitivity_Tooltip");
+    public string Mapping_IrPointerX => Get("Mapping_IrPointerX");
+    public string Mapping_IrPointerY => Get("Mapping_IrPointerY");
+    public string Mapping_IrPointerSensitivity => Get("Mapping_IrPointerSensitivity");
+    public string Mapping_IrPointerSensitivity_Tooltip => Get("Mapping_IrPointerSensitivity_Tooltip");
+    public string Mapping_BalanceTotalWeight => Get("Mapping_BalanceTotalWeight");
+    public string Mapping_BalanceLeanX => Get("Mapping_BalanceLeanX");
+    public string Mapping_BalanceLeanY => Get("Mapping_BalanceLeanY");
     public string MappingCategory_Touchpad => Get("MappingCategory_Touchpad");
     public string DevObj_LeftStickX => Get("DevObj_LeftStickX");
     public string DevObj_LeftStickY => Get("DevObj_LeftStickY");

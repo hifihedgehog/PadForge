@@ -49,6 +49,17 @@ namespace PadForge.Engine.Common.Mapping
                              // Absolute desktop cursor position normalized to
                              // [-1..+1] per screen axis, read from the global
                              // MouseCursorProvider, not any device's axis array.
+            IrPointer,       // "IR Pointer X" / "IR Pointer Y" (issue #146).
+                             // Wii Remote IR-camera pointer, normalized to
+                             // [-1..+1] per screen axis from the two sensor-bar
+                             // dots. Read PER DEVICE from CustomInputState.Ir, so
+                             // two remotes keep separate pointers.
+            BalanceBoard,    // "Balance Total Weight" / "Balance Lean X" /
+                             // "Balance Lean Y" (issue #146). Derived from the Wii
+                             // Balance Board's four corner load cells (carried on
+                             // the gamepad stick axes) plus the per-board kg
+                             // calibration. Weight is unipolar [0..1]; lean is
+                             // bipolar [-1..+1] center-of-gravity offset.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -223,6 +234,27 @@ namespace PadForge.Engine.Common.Mapping
         /// samples <c>GetCursorPos</c> at 200 Hz, normalizes against the primary
         /// monitor, and publishes here. Returns (0, 0) when unwired.</summary>
         public static Func<(float normX, float normY)> MouseCursorProvider { get; set; }
+
+        /// <summary>Per-Wii-Balance-Board kg calibration (issue #146), keyed by the
+        /// device GUID string. Returns a 12-float array laid out as four corners
+        /// (TopLeft, BottomLeft, TopRight, BottomRight) × three reference points
+        /// (Kg0, Kg17, Kg34), each the raw load-cell reading at 0/17/34 kg, or null
+        /// when the board has not reported its calibration yet. The App layer reads
+        /// the SDL "SDL.joystick.wii.balance_board_calibration" hex property once
+        /// and parses it here. <see cref="ReadTunedBalanceBoard"/> interpolates each
+        /// raw corner to kg through this; without it, lean still works (a pure
+        /// ratio) but Total Weight reports raw-proportional, not kg.</summary>
+        public static Func<string, float[]> BalanceCalibrationProvider { get; set; }
+
+        /// <summary>Per-board tare offset in kg (issue #146), keyed by device GUID.
+        /// Subtracted from Total Weight so the user can zero the board with a stool
+        /// or shoes already on it. Returns 0 when untared.</summary>
+        public static Func<string, float> BalanceTareKgProvider { get; set; }
+
+        /// <summary>Full-scale weight (kg) that maps Total Weight to 1.0. A normal
+        /// adult stays well under this, so the normalized source keeps useful
+        /// resolution.</summary>
+        public const float BalanceMaxKg = 150f;
 
         private static GyroTuning GetGyroTuning(string deviceGuid, int slotIndex)
         {
@@ -408,6 +440,10 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.Gyro;
             if (s.StartsWith("Mouse Position ", StringComparison.Ordinal))
                 return SourceType.MouseCursor;
+            if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
+                return SourceType.IrPointer;
+            if (s.StartsWith("Balance ", StringComparison.Ordinal))
+                return SourceType.BalanceBoard;
             if (s.StartsWith("Midi ", StringComparison.Ordinal))
                 return SourceType.Midi;
 
@@ -644,6 +680,129 @@ namespace PadForge.Engine.Common.Mapping
             if (v < -1f) v = -1f;
             else if (v > 1f) v = 1f;
             return v;
+        }
+
+        /// <summary>True for the Wii IR-camera pointer descriptors ("IR Pointer X" /
+        /// "IR Pointer Y", issue #146). Drives the per-source IR Pointer Sensitivity
+        /// slider's visibility and the reader branches that pull from
+        /// <see cref="CustomInputState.Ir"/>.</summary>
+        public static bool IsIrPointerDescriptor(string descriptor)
+            => !string.IsNullOrEmpty(descriptor)
+            && descriptor.StartsWith("IR Pointer ", StringComparison.Ordinal);
+
+        /// <summary>True for the Wii Balance Board derived descriptors ("Balance
+        /// Total Weight" / "Balance Lean X" / "Balance Lean Y", issue #146).</summary>
+        public static bool IsBalanceDescriptor(string descriptor)
+            => !string.IsNullOrEmpty(descriptor)
+            && descriptor.StartsWith("Balance ", StringComparison.Ordinal);
+
+        /// <summary>Reads the per-source Wii IR pointer axis (issue #146): pulls the
+        /// normalized pointer from the device's own <see cref="CustomInputState.Ir"/>
+        /// (so two remotes never share a pointer), selects X or Y from the
+        /// descriptor, applies the per-source
+        /// <see cref="MappingSource.IrPointerSensitivity"/>, then clamps to
+        /// [-1..+1]. Returns 0 when no dot is seen this frame (Detected false), which
+        /// the callers read as "centered", so a brief loss of sight relaxes the
+        /// stick rather than snapping it. Invert is applied by the public Evaluate*
+        /// wrappers, matching the cursor and gyro paths.</summary>
+        private static float ReadTunedIrPointer(CustomInputState state, MappingSource src)
+        {
+            if (src == null || state == null) return 0f;
+            if (!state.Ir.Detected) return 0f;
+
+            string s = src.Descriptor ?? "";
+            float baseVal;
+            if (s.EndsWith(" X", StringComparison.Ordinal)) baseVal = state.Ir.X;
+            else if (s.EndsWith(" Y", StringComparison.Ordinal)) baseVal = state.Ir.Y;
+            else return 0f;
+
+            float v = baseVal * (float)src.IrPointerSensitivity;
+            if (v < -1f) v = -1f;
+            else if (v > 1f) v = 1f;
+            return v;
+        }
+
+        /// <summary>Reads a Wii Balance Board derived source (issue #146). The four
+        /// corner load cells arrive on the gamepad stick axes
+        /// (<see cref="CustomInputState.Axis"/> indices 0/1/3/4 = TopLeft /
+        /// BottomLeft / TopRight / BottomRight, each raw int16 + 32768). Returns:
+        ///   "Balance Lean X"  → center-of-gravity offset left↔right, bipolar [-1..+1]
+        ///   "Balance Lean Y"  → CoG offset back↔front, bipolar [-1..+1]
+        ///   "Balance Total Weight" → unipolar [0..1] of the kg sum over
+        ///       <see cref="BalanceMaxKg"/>, after the per-board tare.
+        /// Lean is a pure ratio and needs no calibration; Total Weight uses
+        /// <see cref="BalanceCalibrationProvider"/> per-corner kg interpolation when
+        /// available, else a raw-proportional fallback.</summary>
+        private static float ReadTunedBalanceBoard(CustomInputState state, MappingSource src)
+        {
+            if (src == null || state == null || state.Axis == null) return 0f;
+
+            // Raw int16 load cells (undo the +32768 unsigned shift). Clamp negatives
+            // to 0: an unloaded cell can read slightly below zero, which would skew
+            // the ratios and the sum.
+            float tl = Math.Max(0, state.Axis[0] - 32768);
+            float bl = Math.Max(0, state.Axis[1] - 32768);
+            float tr = Math.Max(0, state.Axis[3] - 32768);
+            float br = Math.Max(0, state.Axis[4] - 32768);
+
+            string s = src.Descriptor ?? "";
+
+            if (s.EndsWith("Lean X", StringComparison.Ordinal))
+            {
+                float left = tl + bl, right = tr + br;
+                float total = left + right;
+                if (total <= 1f) return 0f;
+                return Math.Max(-1f, Math.Min(1f, (right - left) / total));
+            }
+            if (s.EndsWith("Lean Y", StringComparison.Ordinal))
+            {
+                float top = tl + tr, bottom = bl + br;
+                float total = top + bottom;
+                if (total <= 1f) return 0f;
+                return Math.Max(-1f, Math.Min(1f, (top - bottom) / total));
+            }
+            if (s.EndsWith("Total Weight", StringComparison.Ordinal))
+            {
+                float kg;
+                var cal = BalanceCalibrationProvider?.Invoke(src.DeviceGuid ?? "");
+                if (cal != null && cal.Length >= 12)
+                {
+                    kg = RawCornerToKg(tl, cal, 0) + RawCornerToKg(bl, cal, 1)
+                       + RawCornerToKg(tr, cal, 2) + RawCornerToKg(br, cal, 3);
+                }
+                else
+                {
+                    // No calibration yet: approximate kg from the raw sum so the
+                    // source is still monotonic and usable (the 17 kg reference is
+                    // ~roughly a few thousand raw units; this is intentionally a
+                    // coarse fallback, replaced the moment calibration arrives).
+                    kg = (tl + bl + tr + br) / 200f;
+                }
+                float tare = BalanceTareKgProvider?.Invoke(src.DeviceGuid ?? "") ?? 0f;
+                kg -= tare;
+                if (kg < 0f) kg = 0f;
+                return Math.Min(1f, kg / BalanceMaxKg);
+            }
+            return 0f;
+        }
+
+        /// <summary>Interpolates one raw corner load-cell reading to kilograms using
+        /// the board's three reference points (Kg0, Kg17, Kg34), the documented Wii
+        /// Balance Board piecewise-linear curve (WiimoteLib GetBalanceBoardSensorValue):
+        /// below the 17 kg point it scales 0→17 kg across Kg0→Kg17, at or above it
+        /// scales 17→34 kg across Kg17→Kg34 and extrapolates past 34 kg.</summary>
+        private static float RawCornerToKg(float raw, float[] cal, int corner)
+        {
+            float kg0 = cal[corner * 3 + 0];
+            float kg17 = cal[corner * 3 + 1];
+            float kg34 = cal[corner * 3 + 2];
+            if (raw < kg17)
+            {
+                float span = kg17 - kg0;
+                return span > 0f ? 17f * (raw - kg0) / span : 0f;
+            }
+            float span2 = kg34 - kg17;
+            return span2 > 0f ? 17f * (raw - kg17) / span2 + 17f : 17f;
         }
 
         /// <summary>The gravity-lean input descriptor. A first-class picker
@@ -1146,6 +1305,20 @@ namespace PadForge.Engine.Common.Mapping
                 return Math.Abs(v) > Math.Max(cdz, 1) / 100f;
             }
 
+            if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
+            {
+                float v = ReadTunedIrPointer(state, src);
+                int cdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                return Math.Abs(v) > Math.Max(cdz, 1) / 100f;
+            }
+
+            if (s.StartsWith("Balance ", StringComparison.Ordinal))
+            {
+                float v = ReadTunedBalanceBoard(state, src);
+                int cdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                return Math.Abs(v) > Math.Max(cdz, 1) / 100f;
+            }
+
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return false;
 
@@ -1273,6 +1446,12 @@ namespace PadForge.Engine.Common.Mapping
             if (s.StartsWith("Mouse Position ", StringComparison.Ordinal))
                 return ReadTunedMouseCursor(src);
 
+            if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
+                return ReadTunedIrPointer(state, src);
+
+            if (s.StartsWith("Balance ", StringComparison.Ordinal))
+                return ReadTunedBalanceBoard(state, src);
+
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;
 
@@ -1368,6 +1547,12 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Mouse Position ", StringComparison.Ordinal))
                 return Math.Abs(ReadTunedMouseCursor(src));
+
+            if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
+                return Math.Abs(ReadTunedIrPointer(state, src));
+
+            if (s.StartsWith("Balance ", StringComparison.Ordinal))
+                return Math.Abs(ReadTunedBalanceBoard(state, src));
 
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;

@@ -696,6 +696,7 @@ namespace PadForge.Services
                             DeadZone = mapping.MappingDeadZone,
                             GyroSensitivity = mapping.GyroSensitivity > 0 ? mapping.GyroSensitivity : 1.0,
                             MouseCursorSensitivity = mapping.MouseCursorSensitivity > 0 ? mapping.MouseCursorSensitivity : 1.0,
+                            IrPointerSensitivity = mapping.IrPointerSensitivity > 0 ? mapping.IrPointerSensitivity : 1.0,
                         });
 
                         // For bipolar axis rows, also encode the Neg
@@ -726,6 +727,7 @@ namespace PadForge.Services
                                 DeadZone = mapping.MappingDeadZone,
                                 GyroSensitivity = mapping.GyroSensitivity > 0 ? mapping.GyroSensitivity : 1.0,
                                 MouseCursorSensitivity = mapping.MouseCursorSensitivity > 0 ? mapping.MouseCursorSensitivity : 1.0,
+                                IrPointerSensitivity = mapping.IrPointerSensitivity > 0 ? mapping.IrPointerSensitivity : 1.0,
                             });
                         }
                     }

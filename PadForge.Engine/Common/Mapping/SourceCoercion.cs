@@ -682,20 +682,6 @@ namespace PadForge.Engine.Common.Mapping
             return v;
         }
 
-        /// <summary>True for the Wii IR-camera pointer descriptors ("IR Pointer X" /
-        /// "IR Pointer Y", issue #146). Drives the per-source IR Pointer Sensitivity
-        /// slider's visibility and the reader branches that pull from
-        /// <see cref="CustomInputState.Ir"/>.</summary>
-        public static bool IsIrPointerDescriptor(string descriptor)
-            => !string.IsNullOrEmpty(descriptor)
-            && descriptor.StartsWith("IR Pointer ", StringComparison.Ordinal);
-
-        /// <summary>True for the Wii Balance Board derived descriptors ("Balance
-        /// Total Weight" / "Balance Lean X" / "Balance Lean Y", issue #146).</summary>
-        public static bool IsBalanceDescriptor(string descriptor)
-            => !string.IsNullOrEmpty(descriptor)
-            && descriptor.StartsWith("Balance ", StringComparison.Ordinal);
-
         /// <summary>Reads the per-source Wii IR pointer axis (issue #146): pulls the
         /// normalized pointer from the device's own <see cref="CustomInputState.Ir"/>
         /// (so two remotes never share a pointer), selects X or Y from the

@@ -509,7 +509,7 @@ namespace PadForge.Engine
             if (f0 && f1) { sx = (d0x + d1x) * 0.5f; sy = (d0y + d1y) * 0.5f; }
             else if (f0) { sx = d0x; sy = d0y; }
             else if (f1) { sx = d1x; sy = d1y; }
-            else { state.Ir.Detected = false; return; } // no dot: hold last X/Y
+            else { state.Ir.Detected = false; return; } // no dot this frame; consumers gate on Detected
 
             // Camera frame is 1024x768. Normalize to the [-1..+1] stick range. The
             // IR image is mirrored horizontally (aiming right moves the bar left in

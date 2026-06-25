@@ -285,6 +285,7 @@ namespace PadForge.Views
             bool hasIndicatorLeds = false;
             bool hasForceFeedback = false;
             bool hasGyro = false;
+            bool hasIrPointer = false; // #146 Wii Remote IR camera -> Pointer tab
             bool hasImpulseTriggers = false;
             bool hasRumble = false;
             bool hasTouchpad = false;
@@ -316,6 +317,7 @@ namespace PadForge.Views
                             || ud.CapType == InputDeviceType.FirstPerson;
 
                         hasGyro = ud.HasGyro;
+                        hasIrPointer = ud.HasIrCamera;
                         hasImpulseTriggers = ud.HasRumbleTriggers;
                         hasTouchpad = ud.HasTouchpad;
                         // Native-FFB wheel → the Wheel tab (rotation range, auto-center,
@@ -397,6 +399,8 @@ namespace PadForge.Views
                 TabTouchpad.Visibility = hasTouchpad ? Visibility.Visible : Visibility.Collapsed;
             if (TabAudio != null)
                 TabAudio.Visibility = hasAudio ? Visibility.Visible : Visibility.Collapsed;
+            if (TabPointer != null)
+                TabPointer.Visibility = hasIrPointer ? Visibility.Visible : Visibility.Collapsed;
             if (TabWheel != null)
                 TabWheel.Visibility = (hasWheel || hasGenericWheel) ? Visibility.Visible : Visibility.Collapsed;
             // Rotation range + RPM LEDs are vendor-HID-only; hide them for a generic
@@ -476,6 +480,8 @@ namespace PadForge.Views
                 else if (vm.SelectedConfigTab == 11 && !hasWheel)
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 12 && !hasAudio) // 12 = Audio
+                    vm.SelectedConfigTab = 0;
+                else if (vm.SelectedConfigTab == 13 && !hasIrPointer) // 13 = Pointer
                     vm.SelectedConfigTab = 0;
             }
         }

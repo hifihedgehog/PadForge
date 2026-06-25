@@ -1874,6 +1874,10 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Add colors to step through, one per lock.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Reset Lightbar Hold</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
+  <data name="Pad_Pointer" xml:space="preserve"><value>Pointer</value></data>
+  <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR Pointer</value></data>
+  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Use the Wii Remote's IR camera as a screen pointer.</value></data>
+  <data name="Pad_Pointer_Desc" xml:space="preserve"><value>Point the Wii Remote at the screen to move the mouse cursor. Needs a sensor bar (or two IR LEDs) above or below the display. Works with a Nunchuk or Classic Controller attached.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macro sounds and mirrored system audio play through the selected controller’s built-in speaker, over USB or Bluetooth. Pick the device in the dropdown above. Every setting here follows it.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sound Output</value></data>

@@ -235,14 +235,6 @@
                             <TextBlock FontSize="11" Opacity="0.6" Text="{Binding SelectedDevice.ProductIdHex, Mode=OneWay}"/>
                         </StackPanel>
 
-                        <!-- #146 Wii Remote IR camera -> OS cursor ("point at the screen"), per device.
-                             Shows only for an IR-capable Wii Remote. The TwoWay binding fires its setter
-                             only on a user click, which persists the flag onto the device. -->
-                        <CheckBox Content="{Binding Settings_WiiIrAsCursor, Source={x:Static strings:Strings.Instance}}"
-                                  IsChecked="{Binding SelectedDevice.WiiIrAsCursor, Mode=TwoWay}"
-                                  Visibility="{Binding SelectedDevice.HasIrCamera, Converter={StaticResource BoolToVisibilityConverter}}"
-                                  Margin="0,2,0,6"/>
-
                         <!-- Submit mapping (joysticks only, not gamepads, mice, or keyboards) -->
                         <Button Content="{Binding Devices_SubmitMapping, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
                                 Padding="8,4" HorizontalAlignment="Left"

@@ -316,21 +316,21 @@ namespace PadForge.Engine
 
             // Wii Remote IR camera + Wii Balance Board (issue #146). Both are
             // Nintendo VID 0x057E, and the board enumerates as a Wii Remote
-            // (PID 0x0306), so the board is told apart by its SDL name and a bare
-            // remote (no board) gets the IR-pointer capability. Enabling the accel
-            // sensor above also powers the IR camera in the SDL hidapi_wii driver,
-            // which then posts the two IR dots on raw joystick axes 0-3.
+            // (PID 0x0306), so the board is told apart by its SDL name. Enabling the
+            // accel sensor above also powers the IR camera in the SDL hidapi_wii
+            // driver, which posts the two IR dots on dedicated joystick axes 6-9
+            // (SDL#6 follow-up commit 41909fdc4e), working for a bare remote AND for
+            // one with a Nunchuk or Classic Controller (report 0x37, Basic IR).
             bool isWiiVendor = VendorId == 0x057E;
             IsBalanceBoard = isWiiVendor && !string.IsNullOrEmpty(Name)
                 && Name.IndexOf("Balance Board", StringComparison.OrdinalIgnoreCase) >= 0;
-            // IR is BARE-remote only: the SDL driver names a remote with an
-            // extension "Nintendo Wii Remote with Nunchuk/Classic/..." and posts the
-            // extension (e.g. the Nunchuk stick) on axes 0-1, exactly where IR would
-            // be. So gate on the exact bare-remote name "Nintendo Wii Remote"
-            // (SDL_hidapi_wii.c:834) and not the PID, which is shared with the
-            // extension-equipped remote and the Balance Board.
+            // A camera-capable Wii Remote is the one the driver gives the four extra
+            // IR axes (raw joystick axis count 10), regardless of extension. Wii U
+            // Pro and Balance Board stay at 6 axes and are excluded. Reading the raw
+            // joystick axis count (not NumAxes, which is pinned to 6 for a
+            // gamepad-opened device) is the stable signal the SDL contract defines.
             HasIrCamera = isWiiVendor && !IsBalanceBoard
-                && string.Equals(Name, "Nintendo Wii Remote", StringComparison.Ordinal);
+                && Joystick != IntPtr.Zero && SDL_GetNumJoystickAxes(Joystick) >= 10;
 
             // Always try the haptic API for force feedback devices (joysticks,
             // wheels, etc.). Some report HasRumble=true via SDL properties but
@@ -489,17 +489,19 @@ namespace PadForge.Engine
             return state;
         }
 
-        // The SDL hidapi_wii driver posts the two IR dots on raw joystick axes 0-3
-        // for a bare Wii Remote with the camera powered (SDL_hidapi_wii.c
-        // HandleIRData): axis0 = dot0_x (0..1023), axis1 = dot0_y (0..767),
-        // axis2 = dot1_x, axis3 = dot1_y, with -1 meaning "dot not detected". The
-        // two dots are the two sensor-bar LEDs; their midpoint is the aim point.
+        // The SDL hidapi_wii driver posts the two IR dots on DEDICATED joystick
+        // axes 6-9 (SDL#6 follow-up 41909fdc4e), separate from the gamepad sticks so
+        // an extension (Nunchuk/Classic) keeps axes 0-3: axis6 = dot0_x (0..1023),
+        // axis7 = dot0_y (0..767), axis8 = dot1_x, axis9 = dot1_y, with -1 meaning
+        // "dot not detected". The two dots are the two sensor-bar LEDs; their
+        // midpoint is the aim point. Works for a bare remote (Extended IR, 0x33) and
+        // one with an extension (Basic IR, 0x37). Both feed the same axes 6-9.
         private void ReadIrPointer(CustomInputState state)
         {
-            short d0x = SDL_GetJoystickAxis(Joystick, 0);
-            short d0y = SDL_GetJoystickAxis(Joystick, 1);
-            short d1x = SDL_GetJoystickAxis(Joystick, 2);
-            short d1y = SDL_GetJoystickAxis(Joystick, 3);
+            short d0x = SDL_GetJoystickAxis(Joystick, 6);
+            short d0y = SDL_GetJoystickAxis(Joystick, 7);
+            short d1x = SDL_GetJoystickAxis(Joystick, 8);
+            short d1y = SDL_GetJoystickAxis(Joystick, 9);
             bool f0 = d0x >= 0 && d0y >= 0;
             bool f1 = d1x >= 0 && d1y >= 0;
 

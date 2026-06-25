@@ -502,14 +502,6 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _enablePollingOnFocusLoss, value);
         }
 
-        private bool _wiiIrAsCursor;
-        /// <summary>When true, a bare Wii Remote's IR camera drives the OS mouse
-        /// cursor ("point at the screen", issue #146).</summary>
-        public bool WiiIrAsCursor
-        {
-            get => _wiiIrAsCursor;
-            set => SetProperty(ref _wiiIrAsCursor, value);
-        }
 
         private int _pollingRateMs = 1;
 

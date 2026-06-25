@@ -242,6 +242,30 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _hasGyro, value);
         }
 
+        private bool _hasIrCamera;
+        /// <summary>Whether this is an IR-camera-capable Wii Remote (issue #146).
+        /// Gates the visibility of the "point at the screen" toggle.</summary>
+        public bool HasIrCamera
+        {
+            get => _hasIrCamera;
+            set => SetProperty(ref _hasIrCamera, value);
+        }
+
+        private bool _wiiIrAsCursor;
+        /// <summary>User toggle: drive the OS cursor from this Wii Remote's IR camera
+        /// (issue #146). Persists to the device and marks settings dirty via
+        /// <see cref="WiiIrAsCursorPersist"/>.</summary>
+        public bool WiiIrAsCursor
+        {
+            get => _wiiIrAsCursor;
+            set { if (SetProperty(ref _wiiIrAsCursor, value)) WiiIrAsCursorPersist?.Invoke(InstanceGuid, value); }
+        }
+
+        /// <summary>Wired by InputService to write the per-device flag onto the
+        /// UserDevice and mark settings dirty. Keeps the VM decoupled from the
+        /// settings service.</summary>
+        public static Action<Guid, bool> WiiIrAsCursorPersist { get; set; }
+
         private bool _hasAccel;
 
         /// <summary>Whether the device has an accelerometer sensor.</summary>

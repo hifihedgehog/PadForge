@@ -64,6 +64,8 @@
                               IsChecked="{Binding AutoStartEngine}" Margin="0,0,0,8"/>
                     <CheckBox Content="{Binding Settings_BackgroundPolling, Source={x:Static strings:Strings.Instance}}"
                               IsChecked="{Binding EnablePollingOnFocusLoss}" Margin="0,0,0,8"/>
+                    <CheckBox Content="{Binding Settings_WiiIrAsCursor, Source={x:Static strings:Strings.Instance}}"
+                              IsChecked="{Binding WiiIrAsCursor}" Margin="0,0,0,8"/>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="{Binding Settings_PollingInterval, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                    Margin="0,0,8,0"/>

@@ -275,6 +275,7 @@
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Configure polling behavior and background processing.</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Auto-start engine on launch</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continue polling when window loses focus</value></data>
+  <data name="Settings_WiiIrAsCursor" xml:space="preserve"><value>Use Wii Remote IR camera as the mouse cursor</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>Polling interval</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Hide devices from games</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Master switch for HidHide device hiding and low-level input hooks. When off, no devices are hidden regardless of per-device settings.</value></data>

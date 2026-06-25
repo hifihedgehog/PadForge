@@ -1767,6 +1767,7 @@
   <data name="Pad_Pointer" xml:space="preserve"><value>Zeiger</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-Zeiger</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Richten Sie diese Wii-Fernbedienung mit ihrer IR-Kamera auf den Bildschirm. Erfordert eine Sensorleiste oder zwei Infrarot-LEDs ober- oder unterhalb des Bildschirms.</value></data>
+  <data name="Pad_Pointer_CardTitle" xml:space="preserve"><value>Mauszeiger</value></data>
   <data name="Pad_Pointer_AsCursor" xml:space="preserve"><value>Windows-Mauszeiger bewegen</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makro-Sounds und gespiegeltes Systemaudio laufen über den eingebauten Lautsprecher des ausgewählten Controllers, per USB oder Bluetooth. Wähle das Gerät im Dropdown darüber. Alle Einstellungen hier folgen ihm.</value></data>

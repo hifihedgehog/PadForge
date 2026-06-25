@@ -7305,8 +7305,16 @@
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
 
                         <Border Style="{StaticResource CardBorder}">
-                            <CheckBox IsChecked="{Binding SelectedDeviceWiiIrAsCursor, Mode=TwoWay}"
-                                      Content="{Binding Pad_Pointer_AsCursor, Source={x:Static strings:Strings.Instance}}"/>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE962;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Pointer_CardTitle, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
+                                <CheckBox IsChecked="{Binding SelectedDeviceWiiIrAsCursor, Mode=TwoWay}"
+                                          Content="{Binding Pad_Pointer_AsCursor, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
                         </Border>
                     </StackPanel>
                 </ScrollViewer>

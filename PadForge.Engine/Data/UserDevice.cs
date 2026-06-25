@@ -119,6 +119,13 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public bool IsBalanceBoard { get; set; }
 
+        /// <summary>User toggle: drive the OS mouse cursor from this Wii Remote's IR
+        /// camera ("point at the screen", issue #146). Per device, persisted, off by
+        /// default. Read by WiiIrCursorService; only meaningful when
+        /// <see cref="HasIrCamera"/> is true.</summary>
+        [XmlElement]
+        public bool WiiIrAsCursor { get; set; }
+
         /// <summary>Whether the device has a touchpad (DS4/DualSense/Steam Deck).</summary>
         [XmlElement]
         public bool HasTouchpad { get; set; }

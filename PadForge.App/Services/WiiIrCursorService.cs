@@ -35,13 +35,11 @@ namespace PadForge.Services
         private const int SM_CYSCREEN = 1;
         private const int SampleIntervalMs = 8; // ~120 Hz, smooth without pegging a core
 
-        private readonly Func<bool> _enabled;
         private Timer _timer;
         private volatile bool _disposed;
 
-        public WiiIrCursorService(Func<bool> enabled)
+        public WiiIrCursorService()
         {
-            _enabled = enabled ?? (() => false);
             _timer = new Timer(_ => Tick(), null, 0, SampleIntervalMs);
         }
 
@@ -50,8 +48,6 @@ namespace PadForge.Services
             if (_disposed) return;
             try
             {
-                if (!_enabled()) return;
-
                 var dev = FindActiveIrDevice();
                 var st = dev?.InputState;
                 if (st == null || !st.Ir.Detected) return;
@@ -80,7 +76,7 @@ namespace PadForge.Services
             lock (SettingsManager.UserDevices.SyncRoot)
             {
                 return devices.FirstOrDefault(d =>
-                    d != null && d.HasIrCamera && d.IsOnline && d.InputState != null);
+                    d != null && d.HasIrCamera && d.WiiIrAsCursor && d.IsOnline && d.InputState != null);
             }
         }
 

@@ -1221,7 +1221,6 @@ namespace PadForge.Services
             vm.StartMinimized = appSettings.StartMinimized;
             vm.StartAtLogin = appSettings.StartAtLogin;
             vm.EnablePollingOnFocusLoss = appSettings.EnablePollingOnFocusLoss;
-            vm.WiiIrAsCursor = appSettings.WiiIrAsCursor;
             vm.PollingRateMs = appSettings.PollingRateMs;
             vm.HmInactivityDestroyTimeoutSeconds = appSettings.HmInactivityDestroyTimeoutSeconds;
             vm.SelectedThemeIndex = appSettings.ThemeIndex;
@@ -2867,7 +2866,6 @@ namespace PadForge.Services
                 StartMinimized = vm.StartMinimized,
                 StartAtLogin = vm.StartAtLogin,
                 EnablePollingOnFocusLoss = vm.EnablePollingOnFocusLoss,
-                WiiIrAsCursor = vm.WiiIrAsCursor,
                 PollingRateMs = vm.PollingRateMs,
                 HmInactivityDestroyTimeoutSeconds = vm.HmInactivityDestroyTimeoutSeconds,
                 ThemeIndex = vm.SelectedThemeIndex,
@@ -3954,11 +3952,6 @@ namespace PadForge.Services
 
         [XmlElement]
         public bool EnablePollingOnFocusLoss { get; set; } = true;
-
-        /// <summary>When true, a bare Wii Remote's IR camera drives the OS mouse
-        /// cursor ("point at the screen", issue #146). Off by default.</summary>
-        [XmlElement]
-        public bool WiiIrAsCursor { get; set; }
 
         [XmlElement]
         public int PollingRateMs { get; set; } = 1;

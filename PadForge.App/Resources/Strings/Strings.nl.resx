@@ -1784,6 +1784,16 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Voeg kleuren toe om te doorlopen, één per stuuraanslag.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Lightbar-vasthouden resetten</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
+  <data name="Pad_Pointer" xml:space="preserve"><value>Aanwijzer</value></data>
+  <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-aanwijzer</value></data>
+  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Richt deze Wii-afstandsbediening met de IR-camera op het scherm. Vereist een sensorbalk of twee infraroodleds boven of onder het scherm.</value></data>
+  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Aanwijzer afstemmen</value></data>
+  <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Positie sensorbalk</value></data>
+  <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Gecentreerd</value></data>
+  <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Boven het scherm</value></data>
+  <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>Onder het scherm</value></data>
+  <data name="Pad_Pointer_Compensation" xml:space="preserve"><value>Verticale verschuiving</value></data>
+  <data name="Pad_Pointer_Smoothing" xml:space="preserve"><value>Vloeiend maken</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macrogeluiden en gespiegelde systeemaudio spelen via de ingebouwde speaker van de geselecteerde controller, via USB of Bluetooth. Kies het apparaat in de lijst hierboven. Alles hier volgt het.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Geluidsuitvoer</value></data>

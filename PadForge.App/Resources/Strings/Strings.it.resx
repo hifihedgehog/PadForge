@@ -1786,6 +1786,16 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Aggiungi colori da scorrere, uno per ogni fine corsa.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Ripristina mantenimento barra luminosa</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
+  <data name="Pad_Pointer" xml:space="preserve"><value>Puntatore</value></data>
+  <data name="Pad_Pointer_Header" xml:space="preserve"><value>Puntatore IR</value></data>
+  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Punta questo telecomando Wii verso lo schermo con la sua fotocamera IR. Richiede una barra sensori, o due LED a infrarossi, sopra o sotto lo schermo.</value></data>
+  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Regolazione del puntatore</value></data>
+  <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Posizione della barra sensori</value></data>
+  <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Centrata</value></data>
+  <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Sopra lo schermo</value></data>
+  <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>Sotto lo schermo</value></data>
+  <data name="Pad_Pointer_Compensation" xml:space="preserve"><value>Scostamento verticale</value></data>
+  <data name="Pad_Pointer_Smoothing" xml:space="preserve"><value>Smussatura</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>I suoni delle macro e l’audio duplicato escono dall’altoparlante integrato del controller selezionato, via USB o Bluetooth. Scegli il dispositivo nel menu sopra: tutto qui lo segue.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Uscita audio</value></data>

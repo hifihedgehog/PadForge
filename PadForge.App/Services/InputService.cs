@@ -838,6 +838,20 @@ namespace PadForge.Services
                 }
             };
 
+            // Wii IR pointer per-device tuning (#146 Pointer tab): resolve the
+            // sensor-bar vertical offset (above -> negative, below -> positive, like
+            // Touchmote's offsetY) and the smoothing factor from the UserDevice, for
+            // ReadIrPointer to apply.
+            PadForge.Engine.Common.Mapping.SourceCoercion.IrTuningProvider = deviceGuid =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return (0f, 0f);
+                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(g);
+                if (ud == null) return (0f, 0f);
+                float comp = (float)ud.IrSensorBarComp;
+                float off = ud.IrSensorBarPos == 1 ? -comp : ud.IrSensorBarPos == 2 ? comp : 0f;
+                return (off, (float)ud.IrSmoothing);
+            };
+
             // Cursor-position source (#107): a 200 Hz sampler publishes the
             // normalized desktop cursor position into MouseCursorProvider for
             // "Mouse Position X/Y" mapping sources. Disposed on engine stop.
@@ -1296,6 +1310,7 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.ButtonHeldProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.BalanceCalibrationProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.BalanceTareKgProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.IrTuningProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.PollHzProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.AimEngageStateProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureFiredProvider = null;

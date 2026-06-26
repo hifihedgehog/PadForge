@@ -1764,6 +1764,16 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>ロックごとに1色ずつ切り替える色を追加します。</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>ライトバーの保持をリセット</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>オーディオ</value></data>
+  <data name="Pad_Pointer" xml:space="preserve"><value>ポインター</value></data>
+  <data name="Pad_Pointer_Header" xml:space="preserve"><value>IRポインター</value></data>
+  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>このWiiリモコンのIRカメラで画面に向けます。ディスプレイの上または下にセンサーバー（または赤外線LED2個）が必要です。</value></data>
+  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>ポインター調整</value></data>
+  <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>センサーバーの位置</value></data>
+  <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>中央</value></data>
+  <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>画面の上</value></data>
+  <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>画面の下</value></data>
+  <data name="Pad_Pointer_Compensation" xml:space="preserve"><value>垂直オフセット</value></data>
+  <data name="Pad_Pointer_Smoothing" xml:space="preserve"><value>スムージング</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>オーディオ</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>マクロサウンドとミラーされたシステム音声は、選択中のコントローラーの内蔵スピーカーからUSBまたはBluetooth経由で再生されます。上のドロップダウンでデバイスを選択してください。</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>サウンド出力</value></data>

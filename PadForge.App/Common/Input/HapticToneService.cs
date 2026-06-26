@@ -455,21 +455,19 @@ namespace PadForge.Common.Input
             IntPtr h = IntPtr.Zero;
             try
             {
-                // Steam Controllers can be held open exclusively by SDL, so the raw
-                // write handle may fail. With an SDL gamepad handle we drive the tone
-                // through SDL_SendGamepadEffect (SteamSendBlob) and need no raw handle.
+                // Steam Controllers are already held and polled by SDL. Do NOT open a
+                // second raw HID handle to them: over Bluetooth two handles on one link
+                // contend and hitch the input poll rate (it was dropping to ~985 Hz).
+                // Drive the tone entirely through SDL's own connection
+                // (SDL_SendGamepadEffect, see SteamSendBlob) with no raw handle.
                 bool steamViaSdl = (s.Family == Family.Steam || s.Family == Family.Steam2026)
                                    && s.GamepadHandle != IntPtr.Zero;
-                h = CreateFileW(s.HidPath, GENERIC_WRITE | GENERIC_READ, SHARE_RW,
-                    IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, IntPtr.Zero);
-                if (h == INVALID || h == IntPtr.Zero)
+                if (!steamViaSdl)
                 {
-                    if (!steamViaSdl) return false;
-                    h = IntPtr.Zero; // SDL-routed: drive the tone via SDL_SendGamepadEffect
-                }
+                    h = CreateFileW(s.HidPath, GENERIC_WRITE | GENERIC_READ, SHARE_RW,
+                        IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, IntPtr.Zero);
+                    if (h == INVALID || h == IntPtr.Zero) return false;
 
-                if (h != IntPtr.Zero)
-                {
                     var (capOut, capFeat) = QueryReportLens(h);
                     s.OutLen = capOut > 0 ? capOut : 64;
                     s.FeatLen = capFeat > 0 ? capFeat : 65;
@@ -487,8 +485,8 @@ namespace PadForge.Common.Input
                         JoyConSendCommand(h, s, subcommand: 0x48, arg: 0x01); // enable vibration
                         Thread.Sleep(50);
                     }
-                    // Steam 2015 / 2026 (Triton) / Deck need no init: each feature write
-                    // (HidD_SetFeature, report id 0x00) is self-contained.
+                    // Steam 2015 (no SDL gamepad) / Deck need no init: each feature
+                    // write (HidD_SetFeature, report id 0x00) is self-contained.
                 }
 
                 var mono = new StereoToMonoSampleProvider(s.MacroMixer) { LeftVolume = 0.5f, RightVolume = 0.5f };
@@ -727,8 +725,11 @@ namespace PadForge.Common.Input
         private static void StreamLoop(Sink s)
         {
             var monoF = new float[SamplesPerTick];
-            try { Thread.CurrentThread.Priority = ThreadPriority.AboveNormal; } catch { }
-            timeBeginPeriod(1);
+            // Idle at BelowNormal so a silent haptic sink never preempts the input
+            // poll loop (that was occasionally dropping it to ~985 Hz). Only raise to
+            // AboveNormal + the 1 ms global timer while a tone is actually streaming.
+            try { Thread.CurrentThread.Priority = ThreadPriority.BelowNormal; } catch { }
+            bool fast = false;
             try
             {
                 var sw = System.Diagnostics.Stopwatch.StartNew();
@@ -742,7 +743,15 @@ namespace PadForge.Common.Input
                     try { got = s.MonoSource.Read(monoF, 0, SamplesPerTick); } catch { }
                     for (int i = got; i < SamplesPerTick; i++) monoF[i] = 0f;
 
-                    var (toneHz, amp) = s.Reducer.Push(monoF, SamplesPerTick);
+                    // Cheap silence gate: an idle sink must not run the per-tick
+                    // frequency reduction (an autocorrelation/FFT) on pure silence.
+                    // That was ~14% of a core per assigned haptic pad doing nothing.
+                    // Scan the peak first; only reduce when there is real signal.
+                    float peak = 0f;
+                    for (int i = 0; i < SamplesPerTick; i++) { float a = monoF[i]; if (a < 0f) a = -a; if (a > peak) peak = a; }
+                    float toneHz, amp;
+                    if (peak <= 0.002f) { toneHz = 0f; amp = 0f; }
+                    else { (toneHz, amp) = s.Reducer.Push(monoF, SamplesPerTick); }
 
                     long nowMs = Environment.TickCount64;
                     bool audible = amp > 0.02f;
@@ -771,15 +780,31 @@ namespace PadForge.Common.Input
 
                     if (streaming)
                     {
+                        if (!fast)
+                        {
+                            timeBeginPeriod(1);
+                            try { Thread.CurrentThread.Priority = ThreadPriority.AboveNormal; } catch { }
+                            fast = true;
+                        }
                         long spin = freq / 2000; // ~0.5 ms
                         while (s.Running && (next - sw.ElapsedTicks) > spin) Thread.Sleep(1);
                         while (s.Running && sw.ElapsedTicks < next) Thread.SpinWait(16);
                         next += intervalTicks;
                     }
-                    else { Thread.Sleep(2); next = sw.ElapsedTicks + intervalTicks; }
+                    else
+                    {
+                        if (fast)
+                        {
+                            try { Thread.CurrentThread.Priority = ThreadPriority.BelowNormal; } catch { }
+                            timeEndPeriod(1);
+                            fast = false;
+                        }
+                        Thread.Sleep(15); // idle: coarse timer, minimal CPU, no poll preemption
+                        next = sw.ElapsedTicks + intervalTicks;
+                    }
                 }
             }
-            finally { timeEndPeriod(1); }
+            finally { if (fast) timeEndPeriod(1); }
         }
 
         private static void StreamJoyConTick(Sink s, float toneHz, float amp, bool streaming)

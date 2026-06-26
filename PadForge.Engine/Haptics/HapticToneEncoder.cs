@@ -164,14 +164,83 @@ namespace PadForge.Engine.Haptics
         }
 
         // ─────────────────────────────────────────────────────────────
+        //  Steam Controller 2026 / Triton (OUTPUT report 0x83, 10 bytes)
+        //
+        //  The Triton does NOT speak the 2015 classic 0x8f TriggerHapticPulse
+        //  FEATURE report. Two independent references agree: Valve's own SDL
+        //  driver (SDL_hidapi_steam_triton.c) drives its actuators only through
+        //  OUTPUT reports and never sends 0x8f, and OpenPuck (haptics.cpp, whose
+        //  comments are marked "CONFIRMED from real Windows USB captures of the
+        //  Valve puck") uses output reports 0x80 (rumble) / 0x82 (click) / 0x87
+        //  (settings), also never 0x8f.
+        //
+        //  The Triton's tone generator is ID_OUT_REPORT_HAPTIC_LFO_TONE = 0x83
+        //  (SDL steam/controller_structs.h:229), payload MsgHapticLfoTone
+        //  (controller_structs.h:193-202, #pragma pack(1)):
+        //    side u8 | gain_db i8 | frequency u16 | duration_ms u16 |
+        //    lfo_freq u16 | lfo_depth u8        -> 9 bytes + 1 report-id = 10
+        //    (HID_HAPTIC_LFO_TONE_REPORT_BYTES, the #def includes the OR id).
+        //  side 0x03 = both actuators (the MsgTriggerHaptic field comment,
+        //  controller_structs.h:106). No cloned tool exercises 0x83, so the
+        //  tone-on-hardware result is hypothesis-under-test; the byte layout is
+        //  grounded, the audible outcome is not.
+        // ─────────────────────────────────────────────────────────────
+
+        public const float TritonFreqMin = 40.0f;
+        public const float TritonFreqMax = 1000.0f;
+
+        /// <summary>Encodes one (frequency Hz, amplitude 0..1) tone into the
+        /// Triton's 10-byte <c>0x83</c> LFO-tone OUTPUT report. amp maps to the
+        /// signed <c>gain_db</c> (amp=1 -> 0 dB, the no-clip ceiling; floored at
+        /// -40 dB). amp&lt;=0 or freq&lt;=0 emits the silent/stop form (gain at
+        /// the int8 floor, frequency 0, duration 0). lfo_freq/lfo_depth = 0 for a
+        /// pure tone (no tremolo).</summary>
+        public static byte[] EncodeTritonTone(float freqHz, float amp, int durationMs = 60)
+        {
+            var b = new byte[10];
+            b[0] = 0x83;   // ID_OUT_REPORT_HAPTIC_LFO_TONE
+            b[1] = 0x03;   // side: both L+R
+
+            int gainDb;
+            if (amp <= 0f || freqHz <= 0f)
+            {
+                gainDb = -128;     // int8 floor -> inaudible (stop form)
+                freqHz = 0f;
+                durationMs = 0;
+            }
+            else
+            {
+                if (amp > 1f) amp = 1f;
+                double db = 20.0 * Math.Log10(amp);   // amp=1 -> 0 dB
+                if (db > 0.0) db = 0.0;                // never push positive (avoids limiter)
+                if (db < -40.0) db = -40.0;
+                gainDb = (int)Math.Round(db, MidpointRounding.AwayFromZero);
+            }
+            b[2] = (byte)(sbyte)gainDb;
+
+            ushort f = freqHz <= 0f ? (ushort)0 : (freqHz > 65535f ? (ushort)65535 : (ushort)freqHz);
+            b[3] = (byte)(f & 0xFF);
+            b[4] = (byte)(f >> 8);
+
+            ushort dur = durationMs <= 0 ? (ushort)0 : (durationMs > 65535 ? (ushort)65535 : (ushort)durationMs);
+            b[5] = (byte)(dur & 0xFF);
+            b[6] = (byte)(dur >> 8);
+
+            b[7] = 0; b[8] = 0; // lfo_freq = 0
+            b[9] = 0;           // lfo_depth = 0
+            return b;
+        }
+
+        /// <summary>The Triton's reference-grounded "all haptics off": the
+        /// <c>0x80</c> rumble OUTPUT report with an all-zero MsgHapticRumble
+        /// (type 0 = off). OpenPuck haptics.cpp hapticSteamRumble(0,0) sends
+        /// exactly this (p[0]=0x00), confirmed from real puck captures. 10 bytes
+        /// (HID_RUMBLE_OUTPUT_REPORT_BYTES).</summary>
+        public static byte[] EncodeTritonRumbleOff() => new byte[10] { 0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+        // ─────────────────────────────────────────────────────────────
         //  Steam Deck (Jupiter, report 0xEA). Ground truth: SteamHapticsSinger
         //  main.cpp:279-294 (the device-specific Jupiter path).
-        //  The Steam Controller 2026 (Triton) plays tones via the classic 0x8f
-        //  TriggerHapticPulse FEATURE path (EncodeSteamClassic), the
-        //  Bluetooth-working route proven by the cloned steam_controller_tools
-        //  (WebHID sendFeatureReport) and SteamlessController (0x45 BLE state
-        //  report). Its old 0x83 OUTPUT encoder was SteamHapticsSinger's USB-only
-        //  note-player and never reached a BLE pad, so it was removed.
         // ─────────────────────────────────────────────────────────────
 
         /// <summary>Steam Deck (Jupiter) tone, report <c>0xEA</c>, 64-byte SET_FEATURE

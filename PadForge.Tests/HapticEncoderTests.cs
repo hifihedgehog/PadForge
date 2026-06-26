@@ -196,6 +196,53 @@ namespace PadForge.Tests
             Assert.Equal(0, blob[8]);
         }
 
+        // ─── Steam Controller 2026 / Triton: 0x83 LFO-tone OUTPUT report ───
+        // Layout from SDL steam/controller_structs.h MsgHapticLfoTone (193-202):
+        // [0]=0x83 id, [1]=side, [2]=gain_db i8, [3..4]=freq u16 LE,
+        // [5..6]=duration_ms u16 LE, [7..8]=lfo_freq, [9]=lfo_depth. 10 bytes.
+
+        [Fact]
+        public void TritonTone_LayoutAndFrequencyMatchStruct()
+        {
+            byte[] r = HapticToneEncoder.EncodeTritonTone(440f, 1.0f, durationMs: 60);
+            Assert.Equal(10, r.Length);
+            Assert.Equal(0x83, r[0]);          // ID_OUT_REPORT_HAPTIC_LFO_TONE
+            Assert.Equal(0x03, r[1]);          // side = both
+            Assert.Equal(0, unchecked((sbyte)r[2])); // amp 1.0 -> 0 dB (no-clip ceiling)
+            Assert.Equal(440, r[3] | (r[4] << 8));   // frequency in Hz, LE
+            Assert.Equal(60, r[5] | (r[6] << 8));    // duration_ms, LE
+            Assert.Equal(0, r[7]); Assert.Equal(0, r[8]); // lfo_freq = 0
+            Assert.Equal(0, r[9]);                        // lfo_depth = 0
+        }
+
+        [Fact]
+        public void TritonTone_AmplitudeMapsToNegativeGain_AndStopIsFloor()
+        {
+            // Quieter amplitude -> more-negative gain_db, monotonic, never positive.
+            sbyte gFull = unchecked((sbyte)HapticToneEncoder.EncodeTritonTone(440f, 1.0f)[2]);
+            sbyte gHalf = unchecked((sbyte)HapticToneEncoder.EncodeTritonTone(440f, 0.5f)[2]);
+            sbyte gQuiet = unchecked((sbyte)HapticToneEncoder.EncodeTritonTone(440f, 0.1f)[2]);
+            Assert.True(gFull >= gHalf && gHalf >= gQuiet, $"gain not monotonic: {gFull},{gHalf},{gQuiet}");
+            Assert.True(gFull <= 0, "0 dB ceiling, never positive");
+
+            // Stop form: amp<=0 or freq<=0 -> gain floor, freq 0, duration 0.
+            byte[] stop = HapticToneEncoder.EncodeTritonTone(0f, 0f);
+            Assert.Equal(unchecked((byte)(sbyte)-128), stop[2]);
+            Assert.Equal(0, stop[3] | (stop[4] << 8));
+            Assert.Equal(0, stop[5] | (stop[6] << 8));
+        }
+
+        [Fact]
+        public void TritonRumbleOff_IsZeroTypeReport0x80()
+        {
+            // OpenPuck hapticSteamRumble(0,0): report 0x80, MsgHapticRumble type 0
+            // (= off), all other fields zero. 10 bytes (HID_RUMBLE_OUTPUT_REPORT_BYTES).
+            byte[] off = HapticToneEncoder.EncodeTritonRumbleOff();
+            Assert.Equal(10, off.Length);
+            Assert.Equal(0x80, off[0]);
+            for (int i = 1; i < off.Length; i++) Assert.Equal(0, off[i]);
+        }
+
         // ─── Wii speaker Yamaha ADPCM (dolphin Speaker.cpp) ───
 
         [Fact]

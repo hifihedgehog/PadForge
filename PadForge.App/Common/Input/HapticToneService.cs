@@ -141,6 +141,9 @@ namespace PadForge.Common.Input
             public Family Family;
             public string HidPath;
             public IntPtr Handle = IntPtr.Zero;
+            // SDL gamepad handle, for Steam Controllers whose tone is sent through
+            // SDL's connection (SDL_SendGamepadEffect) rather than a raw write handle.
+            public IntPtr GamepadHandle = IntPtr.Zero;
             public MixingSampleProvider MacroMixer;
             // Anti-aliased mono downmix of MacroMixer to ReduceRate, so the stream
             // thread reads ReduceRate mono directly (same pattern as the Wii
@@ -287,7 +290,7 @@ namespace PadForge.Common.Input
             if (Interlocked.Exchange(ref _reconcileBusy, 1) == 1) return;
             try
             {
-                var desired = new List<(int Slot, Guid Guid, string Path, Family Fam)>();
+                var desired = new List<(int Slot, Guid Guid, string Path, Family Fam, IntPtr Gamepad)>();
                 var settings = SettingsManager.UserSettings;
                 if (settings != null)
                 {
@@ -313,7 +316,11 @@ namespace PadForge.Common.Input
                         if (ud == null || !ud.IsOnline || string.IsNullOrEmpty(ud.DevicePath)) continue;
                         var fam = FamilyOf(ud);
                         if (fam == Family.None) continue;
-                        desired.Add((mapTo, guid, ud.DevicePath, fam));
+                        // Capture the SDL gamepad handle: Steam Controllers are held open
+                        // by SDL, so a second raw write handle loses the BLE link. The
+                        // Steam tone is sent through SDL's own connection via
+                        // SDL_SendGamepadEffect instead (see SteamSendBlob).
+                        desired.Add((mapTo, guid, ud.DevicePath, fam, ud.Device?.GamepadHandle ?? IntPtr.Zero));
                     }
                 }
 
@@ -340,6 +347,7 @@ namespace PadForge.Common.Input
                             Slot = d.Slot,
                             Family = d.Fam,
                             HidPath = d.Path,
+                            GamepadHandle = d.Gamepad,
                             MacroMixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(MixRate, 2)) { ReadFully = true },
                         };
                         _sinks.Add(sink);
@@ -447,29 +455,41 @@ namespace PadForge.Common.Input
             IntPtr h = IntPtr.Zero;
             try
             {
+                // Steam Controllers can be held open exclusively by SDL, so the raw
+                // write handle may fail. With an SDL gamepad handle we drive the tone
+                // through SDL_SendGamepadEffect (SteamSendBlob) and need no raw handle.
+                bool steamViaSdl = (s.Family == Family.Steam || s.Family == Family.Steam2026)
+                                   && s.GamepadHandle != IntPtr.Zero;
                 h = CreateFileW(s.HidPath, GENERIC_WRITE | GENERIC_READ, SHARE_RW,
                     IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, IntPtr.Zero);
-                if (h == INVALID || h == IntPtr.Zero) return false;
-
-                var (capOut, capFeat) = QueryReportLens(h);
-                s.OutLen = capOut > 0 ? capOut : 64;
-                s.FeatLen = capFeat > 0 ? capFeat : 65;
-
-                if (IsJoyConGen1(s.Family))
+                if (h == INVALID || h == IntPtr.Zero)
                 {
-                    // Joy-Con gen-1 init: set input report mode 0x30 then enable
-                    // vibration 0x48, each an 0x01-prefixed 12-byte command packet
-                    // with the rolling timer byte, 50 ms apart. open_controller
-                    // does set_input_mode (main_pc.cpp:131) then enable_vibration
-                    // (132); reproduce that order.
-                    s.UseWriteFile = ProbeWriteFile(h, s.OutLen);
-                    JoyConSendCommand(h, s, subcommand: 0x03, arg: 0x30); // input report mode 0x30
-                    Thread.Sleep(50);
-                    JoyConSendCommand(h, s, subcommand: 0x48, arg: 0x01); // enable vibration
-                    Thread.Sleep(50);
+                    if (!steamViaSdl) return false;
+                    h = IntPtr.Zero; // SDL-routed: drive the tone via SDL_SendGamepadEffect
                 }
-                // Steam 2015 / 2026 (Triton) / Deck need no init: each feature write
-                // (HidD_SetFeature, report id 0x00) is self-contained.
+
+                if (h != IntPtr.Zero)
+                {
+                    var (capOut, capFeat) = QueryReportLens(h);
+                    s.OutLen = capOut > 0 ? capOut : 64;
+                    s.FeatLen = capFeat > 0 ? capFeat : 65;
+
+                    if (IsJoyConGen1(s.Family))
+                    {
+                        // Joy-Con gen-1 init: set input report mode 0x30 then enable
+                        // vibration 0x48, each an 0x01-prefixed 12-byte command packet
+                        // with the rolling timer byte, 50 ms apart. open_controller
+                        // does set_input_mode (main_pc.cpp:131) then enable_vibration
+                        // (132); reproduce that order.
+                        s.UseWriteFile = ProbeWriteFile(h, s.OutLen);
+                        JoyConSendCommand(h, s, subcommand: 0x03, arg: 0x30); // input report mode 0x30
+                        Thread.Sleep(50);
+                        JoyConSendCommand(h, s, subcommand: 0x48, arg: 0x01); // enable vibration
+                        Thread.Sleep(50);
+                    }
+                    // Steam 2015 / 2026 (Triton) / Deck need no init: each feature write
+                    // (HidD_SetFeature, report id 0x00) is self-contained.
+                }
 
                 var mono = new StereoToMonoSampleProvider(s.MacroMixer) { LeftVolume = 0.5f, RightVolume = 0.5f };
                 var resampled = new WdlResamplingSampleProvider(mono, ReduceRate);
@@ -505,7 +525,7 @@ namespace PadForge.Common.Input
             s.Running = false;
             bool exited = true;
             try { exited = s.Thread?.Join(3000) ?? true; } catch { exited = true; }
-            if (exited && s.Handle != IntPtr.Zero)
+            if (exited && (s.Handle != IntPtr.Zero || s.GamepadHandle != IntPtr.Zero))
             {
                 // Quiet the actuator on the way out, per family.
                 try
@@ -519,8 +539,11 @@ namespace PadForge.Common.Input
                     }
                 }
                 catch { }
-                try { CancelIo(s.Handle); } catch { }
-                try { CloseHandle(s.Handle); } catch { }
+                if (s.Handle != IntPtr.Zero)
+                {
+                    try { CancelIo(s.Handle); } catch { }
+                    try { CloseHandle(s.Handle); } catch { }
+                }
             }
             s.Handle = IntPtr.Zero;
             s.MonoSource = null;
@@ -658,17 +681,35 @@ namespace PadForge.Common.Input
             }
         }
 
-        // ── Steam Controller 2015 (0x8F SET_FEATURE) ──
+        // ── Steam Controller 2015 + 2026 (0x8F SET_FEATURE) ──
         // SteamControllerSinger sends the 64-byte 0x8F blob via
-        // libusb_control_transfer(0x21, 9 SET_REPORT, 0x0300 feature/id-0,
-        // interface 2). On Windows HID that is HidD_SetFeature with the report-id
-        // byte (0x00) prepended, sized to FeatureReportByteLength.
+        // libusb_control_transfer(0x21, 9 SET_REPORT, 0x0300 feature/id-0). On
+        // Windows HID that is a feature report with the report-id byte (0x00)
+        // prepended.
         private static void SteamSendBlob(Sink s, byte[] blob64)
         {
+            // Steam Controllers are held open by SDL (it reads input, and its own
+            // SDL_RumbleJoystick already drives this actuator), so a second raw write
+            // handle loses the BLE link and nothing buzzes. Send the tone through
+            // SDL's own connection: the Triton driver routes SDL_SendGamepadEffect ->
+            // SDL_hid_send_feature_report. It requires EXACTLY 64 bytes
+            // (HID_FEATURE_REPORT_BYTES, SDL controller_structs.h:26): report id 0x00
+            // followed by the 0x8f blob. Proven over Bluetooth by steam_controller_tools
+            // (WebHID sendFeatureReport) and SteamlessController.
+            if (s.GamepadHandle != IntPtr.Zero)
+            {
+                var eff = new byte[64];
+                eff[0] = 0x00;
+                Array.Copy(blob64, 0, eff, 1, Math.Min(blob64.Length, eff.Length - 1));
+                try { SDL3.SDL.SDL_SendGamepadEffect(s.GamepadHandle, eff, 0, eff.Length); } catch { }
+                return;
+            }
+            // Fallback: a raw feature write (no SDL gamepad handle, e.g. a 2015 pad
+            // SDL did not open as a gamepad).
             if (s.Handle == IntPtr.Zero) return;
             int n = s.FeatLen > 0 ? s.FeatLen : blob64.Length + 1;
             var buf = new byte[n];
-            buf[0] = 0x00; // report id 0 (unnumbered feature report)
+            buf[0] = 0x00;
             Array.Copy(blob64, 0, buf, 1, Math.Min(blob64.Length, n - 1));
             try { HidD_SetFeature(s.Handle, buf, buf.Length); } catch { }
         }
@@ -708,7 +749,9 @@ namespace PadForge.Common.Input
                     if (audible) s.LastContentMs = nowMs;
                     bool streaming = (nowMs - s.LastContentMs) < HangoverMs;
 
-                    if (s.Handle != IntPtr.Zero)
+                    // Run when we have either a raw write handle or an SDL gamepad
+                    // handle (the Steam SDL_SendGamepadEffect path needs no raw handle).
+                    if (s.Handle != IntPtr.Zero || s.GamepadHandle != IntPtr.Zero)
                     {
                         switch (s.Family)
                         {

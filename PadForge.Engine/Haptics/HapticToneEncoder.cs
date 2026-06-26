@@ -251,26 +251,35 @@ namespace PadForge.Engine.Haptics
         /// references disagree on the Deck. SteamHapticsSinger drives it with this
         /// dedicated 0xEA Jupiter report; the older SteamControllerSinger drives the
         /// Deck (0x1205) through the generic 2015 0x8F path. PadForge follows the
-        /// device-specific one (0xEA). The gain uses the same signed directVel
-        /// mapping as Triton (amp=1 -> 0x7F, amp=0 -> 0x80), not the reference's
-        /// 0x00 non-directVel default, because the sink feeds a continuous
-        /// amplitude, not discrete note velocities. haptic is the trackpad channel
-        /// only (the rumble-motor channel swap/table is out of this path's scope).</summary>
-        public static byte[] EncodeSteamDeck(float freqHz, float amp, int durationMs = 0x7FFF, int haptic = 0)
+        /// device-specific one (0xEA). amp&lt;=0 or freq&lt;=0 emits the reference
+        /// NOTE_STOP form (gain 0x80, byte9 0x80); the active form hardcodes the
+        /// 0x7FFF (sustain) duration bytes the reference uses, NOT a %0xFF split.
+        /// Byte for byte against SteamHapticsSinger main.cpp:287-305 (the Jupiter
+        /// case): byte2 = !channel, byte3 = 0x03, byte5 = signed velocity gain
+        /// (amp*255-128, directVel), byte6:7 = freq %0xFF / /0xFF, byte8:9 = 0xFF/0x7F.
+        /// haptic is the channel (0/1); both are driven for full output.</summary>
+        public static byte[] EncodeSteamDeck(float freqHz, float amp, int haptic = 0)
         {
             var blob = new byte[64];
             blob[0] = 0xEA;
-            blob[2] = (byte)(haptic == 0 ? 1 : 0); // !channel (main.cpp:280)
+            blob[2] = (byte)(haptic == 0 ? 1 : 0); // !channel (main.cpp:291/298)
             blob[3] = 0x03;
-            // Same velocity->gain mapping as Triton (main.cpp:282 directVel path),
-            // signed: amp=1 -> 0x7F, amp=0 -> 0x80.
-            int velDeck = (int)(amp * 127f);
-            blob[5] = (byte)(velDeck * 255 / 127 - 128);
-            int f = (int)freqHz;
-            blob[6] = (byte)(f % 0xFF);
+            if (amp <= 0f || freqHz <= 0f)
+            {
+                // NOTE_STOP (main.cpp:289-294): gain 0x80 silent, byte9 0x80.
+                blob[5] = 0x80;
+                blob[9] = 0x80;
+                return blob;
+            }
+            // directVel signed gain: amp=1 -> +127, amp->0 -> -128 (main.cpp:300).
+            int g = (int)Math.Round(amp * 255f, MidpointRounding.AwayFromZero) - 128;
+            if (g > 127) g = 127;
+            if (g < -128) g = -128;
+            blob[5] = (byte)(sbyte)g;
+            int f = freqHz > 65535f ? 65535 : (int)freqHz;
+            blob[6] = (byte)(f % 0xFF);            // freq %0xFF / /0xFF (main.cpp:301-302)
             blob[7] = (byte)(f / 0xFF);
-            blob[8] = (byte)(durationMs % 0xFF);
-            blob[9] = (byte)(durationMs / 0xFF);
+            blob[8] = 0xFF; blob[9] = 0x7F;        // duration 0x7FFF = sustain (hardcoded, main.cpp:303-304)
             return blob;
         }
 

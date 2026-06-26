@@ -91,12 +91,12 @@ namespace PadForge.Tests
                     Assert.Equal(64, d.Length);
                     Assert.Equal(0xEA, d[0]);
 
-                    // Triton 0x83 LFO tone: always 10 bytes, id 0x83, never throws
-                    // on NaN/Inf/huge/negative frequency or amplitude.
-                    var t = HapticToneEncoder.EncodeTritonTone(f, a);
+                    // Triton 0x83 LFO tone: always 10 bytes, id 0x83, actuator index
+                    // preserved in byte 1, never throws on NaN/Inf/huge/negative input.
+                    var t = HapticToneEncoder.EncodeTritonTone(3, f, a);
                     Assert.Equal(10, t.Length);
                     Assert.Equal(0x83, t[0]);
-                    Assert.Equal(0x03, t[1]);
+                    Assert.Equal(3, t[1]);
                 }
             }
         }

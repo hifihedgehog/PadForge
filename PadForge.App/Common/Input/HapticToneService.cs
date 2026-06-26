@@ -124,13 +124,6 @@ namespace PadForge.Common.Input
         private const int TickHz = 100;
         private const int SamplesPerTick = ReduceRate / TickHz; // 80
 
-        // Triton 0x83 tone duration. A held note re-sends this as a keep-alive just
-        // before it lapses (StreamTritonTick), so this also sets the worst-case
-        // stuck-on window after a cue ends and the re-attack cadence during a held
-        // note (~1/0.2s = 5 Hz). Long enough not to flood, short enough to stop
-        // promptly. Pitch changes always send immediately regardless.
-        private const int TritonToneMs = 200;
-
         // Once a cue starts, keep streaming for this long after the last frame
         // above the content threshold, so quiet dips inside a cue do not break the
         // stream. Same idea as the Wii speaker HangoverMs.
@@ -193,10 +186,10 @@ namespace PadForge.Common.Input
             // not every tick (a control transfer per 10 ms would saturate).
             public bool SteamOn;
             public float SteamLastFreq;
-            // Triton keep-alive: TickCount64 of the last 0x83 tone sent, so a held
-            // note re-sends only when the prior tone is about to lapse, not at the
-            // 100 Hz tick rate (which floods into a stuck tone).
-            public long TritonLastSendMs;
+            // Last amplitude sent on the gain-carrying paths (Triton 0x83, Deck
+            // 0xEA), so a sustained note re-arms when the envelope steps, not every
+            // tick. The 2015 0x8f square has no working gain, so it ignores this.
+            public float SteamLastAmp;
 
             // System-audio passthrough mirror (same option DualSense/Wii expose).
             public bool MirrorOn;
@@ -546,9 +539,12 @@ namespace PadForge.Common.Input
                 {
                     switch (s.Family)
                     {
-                        case Family.Steam: SteamStop(s); break;     // 2015: classic 0x8f feature stop
-                        case Family.Steam2026: TritonStop(s); break; // Triton: 0x83 silence + 0x80 rumble-off
-                        case Family.SteamDeck: SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, durationMs: 0)); break;
+                        case Family.Steam: SteamStop(s); break;     // 2015: classic 0x8f feature stop (both haptics)
+                        case Family.Steam2026: TritonStop(s); break; // Triton: 0x83 stop on all 4 actuators
+                        case Family.SteamDeck:                       // Deck: 0xEA quiet on both haptics
+                            SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, durationMs: 0, haptic: 0));
+                            SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, durationMs: 0, haptic: 1));
+                            break;
                         default: JoyConWriteRumble(s, HapticToneEncoder.JoyConNeutral()); break;
                     }
                 }
@@ -732,8 +728,9 @@ namespace PadForge.Common.Input
         private static void SteamStop(Sink s)
         {
             // EncodeSteamClassic(<=0 Hz) emits the reference NOTE_STOP blob
-            // (note 0, duration 0) per main.cpp:114-117.
-            SteamSendBlob(s, HapticToneEncoder.EncodeSteamClassic(0f, 0.0));
+            // (note 0, duration 0) per main.cpp:114-117. Stop both haptics.
+            SteamSendBlob(s, HapticToneEncoder.EncodeSteamClassic(0f, 0.0, haptic: 0));
+            SteamSendBlob(s, HapticToneEncoder.EncodeSteamClassic(0f, 0.0, haptic: 1));
             s.SteamOn = false;
         }
 
@@ -842,13 +839,17 @@ namespace PadForge.Common.Input
         private static void StreamSteamTick(Sink s, float toneHz, float amp, bool streaming)
         {
             // The 0x8F square wave sustains (repeat 0x7FFF), so re-arm only on an
-            // on->off / off->on edge or a pitch shift, not every tick.
+            // on->off / off->on edge or a pitch shift, not every tick. The 2015 pad
+            // has TWO haptics (left + right grip); SteamHapticsSinger drives channels
+            // 0 and 1, so play the tone on both for full output (the 0x8F square has
+            // no working gain, so amplitude is not encoded -- pitch only).
             if (streaming)
             {
                 bool pitchShift = !s.SteamOn || Math.Abs(toneHz - s.SteamLastFreq) > s.SteamLastFreq * 0.03f + 1f;
                 if (pitchShift)
                 {
-                    SteamSendBlob(s, HapticToneEncoder.EncodeSteamClassic(toneHz, durationSeconds: -1.0));
+                    SteamSendBlob(s, HapticToneEncoder.EncodeSteamClassic(toneHz, durationSeconds: -1.0, haptic: 0));
+                    SteamSendBlob(s, HapticToneEncoder.EncodeSteamClassic(toneHz, durationSeconds: -1.0, haptic: 1));
                     s.SteamOn = true;
                     s.SteamLastFreq = toneHz;
                 }
@@ -860,76 +861,78 @@ namespace PadForge.Common.Input
         }
 
         // ── Steam Controller 2026 / Triton: 0x83 LFO-tone OUTPUT report ──
-        // The 0x83 command plays a tone of frequency `freq` for `duration_ms`. Each
-        // command re-triggers the tone's attack, so re-sending every 10 ms tick (as
-        // the Joy-Con 0x10 lane does, because that one retunes live) re-attacks at
-        // 100 Hz and floods the BLE link, which latches into one stuck/buzzy tone.
-        // Instead, send a new tone only on a real pitch change (the note edges of
-        // the reduced series), plus a keep-alive just before the current tone would
-        // lapse so a held note sustains without a flood. The write is direct to our
-        // own handle; SDL is not in this path.
+        // Mirrors SteamHapticsSinger's Triton path: drive ALL FOUR LRAs (trackpad
+        // L/R + grip L/R, actuator ids 0,1,3,4), each its own 0x83 command, with a
+        // 0x7FFF (sustain) duration so a held note needs no re-send. Re-arm only on a
+        // pitch change or a meaningful amplitude step (the gain byte tracks the
+        // envelope), not every tick -- each 0x83 re-triggers the attack, so a 100 Hz
+        // flood latches into a stuck tone. Writes go direct to our own handle.
         private static void StreamTritonTick(Sink s, float toneHz, float amp, bool streaming)
         {
             if (streaming)
             {
-                long now = Environment.TickCount64;
                 bool pitchShift = !s.SteamOn || Math.Abs(toneHz - s.SteamLastFreq) > s.SteamLastFreq * 0.03f + 1f;
-                bool keepAlive = (now - s.TritonLastSendMs) >= (TritonToneMs - 20);
-                if (pitchShift || keepAlive)
+                bool ampStep = Math.Abs(amp - s.SteamLastAmp) > 0.10f;
+                if (pitchShift || ampStep)
                 {
-                    TritonSendTone(s, toneHz, amp, TritonToneMs);
+                    foreach (int hap in HapticToneEncoder.TritonActuators)
+                        TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, toneHz, amp));
                     s.SteamOn = true;
                     s.SteamLastFreq = toneHz;
-                    s.TritonLastSendMs = now;
+                    s.SteamLastAmp = amp;
                 }
             }
             else if (s.SteamOn)
             {
                 TritonStop(s);
                 s.SteamOn = false;
+                s.SteamLastAmp = 0f;
             }
         }
 
-        private static void TritonSendTone(Sink s, float toneHz, float amp, int durationMs)
+        private static void TritonSend(Sink s, byte[] report)
         {
             if (s.Handle == IntPtr.Zero) return;
             // Padded to the queried OutputReportByteLength (HID output writes require
-            // exactly that). duration_ms covers the gap until the next keep-alive so
-            // the tone abuts rather than gaps; the keep-alive cadence stays at/below
-            // 1/duration so consecutive tones never pile up if the firmware queues.
-            var report = HapticToneEncoder.EncodeTritonTone(toneHz, amp, durationMs);
+            // exactly that; SteamHapticsSinger writes the full 64-byte report).
             HidOutputWrite(s, ResizeOut(report, Math.Max(report.Length, s.OutLen)));
         }
 
         private static void TritonStop(Sink s)
         {
             if (s.Handle == IntPtr.Zero) return;
-            // Silence the tone (LFO tone at the gain floor) and assert the proven
-            // rumble-OFF (0x80, type 0 -- OpenPuck hapticSteamRumble(0,0)), the only
-            // reference-grounded "all haptics off" for this controller.
-            HidOutputWrite(s, ResizeOut(HapticToneEncoder.EncodeTritonTone(0f, 0f), Math.Max(10, s.OutLen)));
-            HidOutputWrite(s, ResizeOut(HapticToneEncoder.EncodeTritonRumbleOff(), Math.Max(10, s.OutLen)));
+            // Per-actuator 0x83 stop form (gain 0x80), the reference note-off.
+            foreach (int hap in HapticToneEncoder.TritonActuators)
+                TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, 0f, 0f));
         }
 
 
         // ── Steam Deck (Jupiter): report 0xEA SET_FEATURE ──
         private static void StreamSteamDeckTick(Sink s, float toneHz, float amp, bool streaming)
         {
+            // The Deck (0xEA) carries gain like the Triton, and has TWO haptics
+            // (SteamHapticsSinger Jupiter drives channels 0 and 1). Play both, and
+            // re-arm on a pitch change or an amplitude step so the gain tracks.
             if (streaming)
             {
                 bool pitchShift = !s.SteamOn || Math.Abs(toneHz - s.SteamLastFreq) > s.SteamLastFreq * 0.03f + 1f;
-                if (pitchShift)
+                bool ampStep = Math.Abs(amp - s.SteamLastAmp) > 0.10f;
+                if (pitchShift || ampStep)
                 {
-                    SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(toneHz, amp));
+                    SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(toneHz, amp, haptic: 0));
+                    SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(toneHz, amp, haptic: 1));
                     s.SteamOn = true;
                     s.SteamLastFreq = toneHz;
+                    s.SteamLastAmp = amp;
                 }
             }
             else if (s.SteamOn)
             {
                 // 0 Hz / zero amp = quiet (no dedicated Deck note-off in the ref).
-                SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, durationMs: 0));
+                SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, durationMs: 0, haptic: 0));
+                SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, durationMs: 0, haptic: 1));
                 s.SteamOn = false;
+                s.SteamLastAmp = 0f;
             }
         }
 

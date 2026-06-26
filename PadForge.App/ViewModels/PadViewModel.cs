@@ -562,6 +562,10 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(HasSelectedDevice));
                     OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
+                    OnPropertyChanged(nameof(SelectedDeviceHasIrCamera));
+                    OnPropertyChanged(nameof(SelectedDeviceIrSensorBarPos));
+                    OnPropertyChanged(nameof(SelectedDeviceIrSensorBarCompPercent));
+                    OnPropertyChanged(nameof(SelectedDeviceIrSmoothingPercent));
                     // The mirror source is per device; re-point the combo at
                     // the newly selected device's value.
                     if (SelectedConfigTab == AudioTabIndex) RefreshMirrorSources();
@@ -3333,6 +3337,78 @@ namespace PadForge.ViewModels
         }
 
         public bool SelectedDeviceHasNoSpeaker => !SelectedDeviceHasSpeaker;
+
+        /// <summary>True when the selected mapped device is an IR-camera-capable Wii
+        /// Remote (issue #146). Gates the Pad page's Pointer tab.</summary>
+        public bool SelectedDeviceHasIrCamera
+        {
+            get
+            {
+                var sel = SelectedMappedDevice;
+                if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
+                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
+                return ud != null && ud.HasIrCamera;
+            }
+        }
+
+        private UserDevice GetSelectedUserDevice()
+        {
+            var sel = SelectedMappedDevice;
+            if (sel == null || sel.InstanceGuid == Guid.Empty) return null;
+            return PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
+        }
+
+        /// <summary>Sensor-bar position for the selected Wii Remote's IR pointer
+        /// (issue #146): 0 = centered, 1 = above the screen, 2 = below. Persisted per
+        /// device. Read at runtime through SourceCoercion.IrTuningProvider.</summary>
+        public int SelectedDeviceIrSensorBarPos
+        {
+            get => GetSelectedUserDevice()?.IrSensorBarPos ?? 0;
+            set
+            {
+                var ud = GetSelectedUserDevice();
+                if (ud == null || ud.IrSensorBarPos == value) return;
+                ud.IrSensorBarPos = value;
+                OnPropertyChanged(nameof(SelectedDeviceIrSensorBarPos));
+                ConfigItemDirtyCallback?.Invoke();
+            }
+        }
+
+        /// <summary>Sensor-bar vertical-offset magnitude for the selected Wii Remote,
+        /// shown as a 0..50 percent of the pointer range and stored as 0..0.5 on
+        /// <see cref="UserDevice.IrSensorBarComp"/> (issue #146).</summary>
+        public int SelectedDeviceIrSensorBarCompPercent
+        {
+            get => (int)Math.Round((GetSelectedUserDevice()?.IrSensorBarComp ?? 0.0) * 100.0);
+            set
+            {
+                var ud = GetSelectedUserDevice();
+                if (ud == null) return;
+                double v = Math.Clamp(value, 0, 50) / 100.0;
+                if (Math.Abs(ud.IrSensorBarComp - v) < 0.0001) return;
+                ud.IrSensorBarComp = v;
+                OnPropertyChanged(nameof(SelectedDeviceIrSensorBarCompPercent));
+                ConfigItemDirtyCallback?.Invoke();
+            }
+        }
+
+        /// <summary>IR pointer smoothing for the selected Wii Remote, shown as 0..100
+        /// percent and stored as 0..1 on <see cref="UserDevice.IrSmoothing"/>
+        /// (issue #146).</summary>
+        public int SelectedDeviceIrSmoothingPercent
+        {
+            get => (int)Math.Round((GetSelectedUserDevice()?.IrSmoothing ?? 0.0) * 100.0);
+            set
+            {
+                var ud = GetSelectedUserDevice();
+                if (ud == null) return;
+                double v = Math.Clamp(value, 0, 100) / 100.0;
+                if (Math.Abs(ud.IrSmoothing - v) < 0.0001) return;
+                ud.IrSmoothing = v;
+                OnPropertyChanged(nameof(SelectedDeviceIrSmoothingPercent));
+                ConfigItemDirtyCallback?.Invoke();
+            }
+        }
 
         /// <summary>A render endpoint the mirror can capture; Id "" = the
         /// system default device.</summary>

@@ -126,6 +126,25 @@ namespace PadForge.Engine.Data
         public bool IsBalanceBoard => VendorId == 0x057E
             && (ProductName ?? string.Empty).IndexOf("Balance Board", StringComparison.OrdinalIgnoreCase) >= 0;
 
+        /// <summary>Wii IR pointer tuning (issue #146 Pointer tab), per device. Where
+        /// the sensor bar sits relative to the screen: 0 = centered (no offset),
+        /// 1 = above the screen, 2 = below. Drives a vertical aim-offset like
+        /// Touchmote's sensor-bar compensation. Only meaningful when
+        /// <see cref="HasIrCamera"/> is true.</summary>
+        [XmlElement]
+        public int IrSensorBarPos { get; set; }
+
+        /// <summary>Magnitude of the sensor-bar vertical offset, normalized 0..0.5 of
+        /// the pointer range. Applied above/below per <see cref="IrSensorBarPos"/>.
+        /// Touchmote exposes the same as pointer_sensorBarPosCompensation.</summary>
+        [XmlElement]
+        public double IrSensorBarComp { get; set; }
+
+        /// <summary>IR pointer smoothing, 0..1. 0 = raw (no lag), higher = heavier
+        /// low-pass on the jittery camera. Mirrors Touchmote's position smoothing.</summary>
+        [XmlElement]
+        public double IrSmoothing { get; set; }
+
         /// <summary>Whether the device has a touchpad (DS4/DualSense/Steam Deck).</summary>
         [XmlElement]
         public bool HasTouchpad { get; set; }

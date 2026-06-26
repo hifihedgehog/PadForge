@@ -1764,6 +1764,16 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Adicione cores para percorrer, uma por batente.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Redefinir Retenção da Barra de Luz</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Áudio</value></data>
+  <data name="Pad_Pointer" xml:space="preserve"><value>Apontador</value></data>
+  <data name="Pad_Pointer_Header" xml:space="preserve"><value>Apontador IR</value></data>
+  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Aponte este controle Wii para a tela com a câmera IR. Precisa de uma barra de sensores, ou dois LEDs infravermelhos, acima ou abaixo da tela.</value></data>
+  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Ajuste do apontador</value></data>
+  <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Posição da barra de sensores</value></data>
+  <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Centralizada</value></data>
+  <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Acima da tela</value></data>
+  <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>Abaixo da tela</value></data>
+  <data name="Pad_Pointer_Compensation" xml:space="preserve"><value>Deslocamento vertical</value></data>
+  <data name="Pad_Pointer_Smoothing" xml:space="preserve"><value>Suavização</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Áudio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Os sons de macro e o áudio espelhado tocam pelo alto-falante integrado do controle selecionado, por USB ou Bluetooth. Escolha o dispositivo na lista acima. Tudo aqui o acompanha.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Saída de Som</value></data>

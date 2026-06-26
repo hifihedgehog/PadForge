@@ -251,6 +251,15 @@ namespace PadForge.Engine.Common.Mapping
         /// or shoes already on it. Returns 0 when untared.</summary>
         public static Func<string, float> BalanceTareKgProvider { get; set; }
 
+        /// <summary>Per-device Wii IR pointer tuning (issue #146 Pointer tab), keyed
+        /// by device GUID. Returns the normalized vertical offset that compensates
+        /// for the sensor bar sitting above or below the screen, and the 0..1
+        /// smoothing factor that low-passes the jittery camera. Grounded in
+        /// Touchmote ScreenPositionCalculator.cs (the sensor-bar offsetY at 162-171
+        /// and the position smoothingBuffer). Returns (0, 0) when unset, i.e. no
+        /// offset and no smoothing.</summary>
+        public static Func<string, (float barOffset, float smoothing)> IrTuningProvider { get; set; }
+
         /// <summary>Full-scale weight (kg) that maps Total Weight to 1.0. A normal
         /// adult stays well under this, so the normalized source keeps useful
         /// resolution.</summary>

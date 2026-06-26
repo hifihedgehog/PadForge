@@ -1448,6 +1448,16 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_MotionAccel => Get("Mapping_MotionAccel");
     public string Mapping_MotionLean => Get("Mapping_MotionLean");
     public string Pad_Audio => Get("Pad_Audio");
+    public string Pad_Pointer => Get("Pad_Pointer");
+    public string Pad_Pointer_Header => Get("Pad_Pointer_Header");
+    public string Pad_Pointer_Subtitle => Get("Pad_Pointer_Subtitle");
+    public string Pad_Pointer_TuningTitle => Get("Pad_Pointer_TuningTitle");
+    public string Pad_Pointer_SensorBar => Get("Pad_Pointer_SensorBar");
+    public string Pad_Pointer_SensorBar_Centered => Get("Pad_Pointer_SensorBar_Centered");
+    public string Pad_Pointer_SensorBar_Above => Get("Pad_Pointer_SensorBar_Above");
+    public string Pad_Pointer_SensorBar_Below => Get("Pad_Pointer_SensorBar_Below");
+    public string Pad_Pointer_Compensation => Get("Pad_Pointer_Compensation");
+    public string Pad_Pointer_Smoothing => Get("Pad_Pointer_Smoothing");
     public string Pad_Audio_Header => Get("Pad_Audio_Header");
     public string Pad_Audio_Subtitle => Get("Pad_Audio_Subtitle");
     public string Pad_Audio_Output_Header => Get("Pad_Audio_Output_Header");

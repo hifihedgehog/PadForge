@@ -1764,6 +1764,16 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Farben hinzufügen, die pro Anschlag nacheinander durchlaufen werden.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Lightbar-Haltedauer zurücksetzen</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
+  <data name="Pad_Pointer" xml:space="preserve"><value>Zeiger</value></data>
+  <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-Zeiger</value></data>
+  <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Richten Sie diese Wii-Fernbedienung mit ihrer IR-Kamera auf den Bildschirm. Erfordert eine Sensorleiste oder zwei Infrarot-LEDs ober- oder unterhalb des Bildschirms.</value></data>
+  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Zeiger-Abstimmung</value></data>
+  <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Position der Sensorleiste</value></data>
+  <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Zentriert</value></data>
+  <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Über dem Bildschirm</value></data>
+  <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>Unter dem Bildschirm</value></data>
+  <data name="Pad_Pointer_Compensation" xml:space="preserve"><value>Vertikaler Versatz</value></data>
+  <data name="Pad_Pointer_Smoothing" xml:space="preserve"><value>Glättung</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makro-Sounds und gespiegeltes Systemaudio laufen über den eingebauten Lautsprecher des ausgewählten Controllers, per USB oder Bluetooth. Wähle das Gerät im Dropdown darüber. Alle Einstellungen hier folgen ihm.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Soundausgabe</value></data>

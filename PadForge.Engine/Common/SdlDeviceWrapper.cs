@@ -496,6 +496,11 @@ namespace PadForge.Engine
         // "dot not detected". The two dots are the two sensor-bar LEDs; their
         // midpoint is the aim point. Works for a bare remote (Extended IR, 0x33) and
         // one with an extension (Basic IR, 0x37). Both feed the same axes 6-9.
+        // Per-device IR smoothing state (the EMA's previous output), reset whenever
+        // the dots are lost so a re-acquire snaps instead of sliding in from stale.
+        private float _irPrevX, _irPrevY;
+        private bool _irHasPrev;
+
         private void ReadIrPointer(CustomInputState state)
         {
             short d0x = SDL_GetJoystickAxis(Joystick, 6);
@@ -509,18 +514,41 @@ namespace PadForge.Engine
             if (f0 && f1) { sx = (d0x + d1x) * 0.5f; sy = (d0y + d1y) * 0.5f; }
             else if (f0) { sx = d0x; sy = d0y; }
             else if (f1) { sx = d1x; sy = d1y; }
-            else { state.Ir.Detected = false; return; } // no dot this frame; consumers gate on Detected
+            else { state.Ir.Detected = false; _irHasPrev = false; return; } // no dot this frame; consumers gate on Detected
 
-            // Camera frame is 1024x768. Normalize to the [-1..+1] stick range. The
-            // IR image is mirrored horizontally (aiming right moves the bar left in
-            // the frame) and the camera Y runs opposite screen Y, so both axes are
-            // flipped. These two signs are hypothesis-under-test (no IR hardware
-            // this session); each is a single negation to flip if a tester reports
-            // reversed aim.
-            float nx = sx / 1023f;
-            float ny = sy / 767f;
-            state.Ir.X = (0.5f - nx) * 2f;
-            state.Ir.Y = (0.5f - ny) * 2f;
+            // Camera frame is 1024x768. Normalize the dot midpoint to the [-1..+1]
+            // stick range. X is mirrored, Y is NOT. Confirmed against the proven
+            // Wii-pointer references: Touchmote ScreenPositionCalculator.cs:173 does
+            // `relativePosition.X = 1 - X` (mirror) and applies no Y inversion (only a
+            // sensor-bar pixel offset, lines 162-171), and WiimoteLib Wiimote.cs:653/658
+            // normalizes both axes as raw/1023.5 and raw/767.5 with no flip. All four
+            // Touchmote variants agree. So screen-aligned aim is X mirrored, Y direct:
+            // X = -1 left / +1 right, Y = -1 top / +1 bottom.
+            float nx = sx / 1023.5f;
+            float ny = sy / 767.5f;
+            float x = (0.5f - nx) * 2f;   // mirrored
+            float y = (ny - 0.5f) * 2f;   // not flipped
+
+            // Per-device tuning from the Pointer tab (issue #146), grounded in
+            // Touchmote: a vertical offset for the sensor bar sitting above/below the
+            // screen (offsetY, ScreenPositionCalculator.cs:162-171), then an EMA
+            // low-pass that mirrors Touchmote's position smoothingBuffer.
+            var tuning = PadForge.Engine.Common.Mapping.SourceCoercion.IrTuningProvider?.Invoke(InstanceGuid.ToString());
+            if (tuning.HasValue)
+            {
+                y += tuning.Value.barOffset;
+                // Cap below 1 so "max smoothing" still tracks instead of freezing.
+                float s = Math.Clamp(tuning.Value.smoothing, 0f, 0.95f);
+                if (s > 0f && _irHasPrev)
+                {
+                    x = _irPrevX + (x - _irPrevX) * (1f - s);
+                    y = _irPrevY + (y - _irPrevY) * (1f - s);
+                }
+            }
+            _irPrevX = x; _irPrevY = y; _irHasPrev = true;
+
+            state.Ir.X = Math.Clamp(x, -1f, 1f);
+            state.Ir.Y = Math.Clamp(y, -1f, 1f);
             state.Ir.Detected = true;
         }
 

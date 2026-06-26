@@ -411,22 +411,35 @@ namespace PadForge.Tests
         }
 
         // ─── Steam Deck (Jupiter, SteamHapticsSinger) ───
-        // The SC2026 (Triton) now plays through the classic 0x8f feature path
-        // (see the EncodeSteamClassic tests above), the Bluetooth-working route
-        // proven by steam_controller_tools / SteamlessController. Its old 0x83
-        // output encoder and the tests for it were removed (commit history).
+        // The SC2026 (Triton) plays through the 0x83 OUTPUT report on a direct raw
+        // handle (see the Triton tests above), NOT 0x8f. The Deck (0xEA) is the
+        // other gain-carrying feature path.
 
         [Fact]
         public void SteamDeck_CarriesFrequencyInHz()
         {
-            // main.cpp:279-286: [0]=0xEA, [3]=0x03, [6..7]=int(freq) LSB/MSB.
+            // main.cpp:296-304 (Jupiter): [0]=0xEA, [3]=0x03, [6..7]=int(freq) LSB/MSB,
+            // [8..9]=0xFF/0x7F sustain (hardcoded, NOT a %0xFF split of 0x7FFF).
             var blob = HapticToneEncoder.EncodeSteamDeck(440f, 1.0f);
             Assert.Equal(0xEA, blob[0]);
             Assert.Equal(0x03, blob[3]);
             Assert.Equal(440 % 0xFF, blob[6]);
             Assert.Equal(440 / 0xFF, blob[7]);
-            // Gain: same signed velocity mapping (main.cpp:282), full amp -> 0x7F.
-            Assert.Equal(0x7F, blob[5]);
+            Assert.Equal(0x7F, blob[5]);    // full amp -> +127 (main.cpp:300 directVel)
+            Assert.Equal(0xFF, blob[8]);    // duration 0x7FFF sustain, low byte
+            Assert.Equal(0x7F, blob[9]);    // ... high byte (was 0x80 from the %0xFF bug)
+        }
+
+        [Fact]
+        public void SteamDeck_StopFormMatchesJupiter()
+        {
+            // main.cpp:289-294 NOTE_STOP: gain byte5 = 0x80 (silent), byte9 = 0x80.
+            var stop = HapticToneEncoder.EncodeSteamDeck(0f, 0f, haptic: 1);
+            Assert.Equal(0xEA, stop[0]);
+            Assert.Equal(0, stop[2]);       // !channel, haptic 1 -> 0
+            Assert.Equal(0x03, stop[3]);
+            Assert.Equal(0x80, stop[5]);    // silent gain
+            Assert.Equal(0x80, stop[9]);    // stop signal (was 0 before the fix)
         }
 
         // Switch 2 was dropped from the #147 tone scope (no reference plays a tone

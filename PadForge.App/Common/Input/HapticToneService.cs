@@ -542,8 +542,8 @@ namespace PadForge.Common.Input
                         case Family.Steam: SteamStop(s); break;     // 2015: classic 0x8f feature stop (both haptics)
                         case Family.Steam2026: TritonStop(s); break; // Triton: 0x83 stop on all 4 actuators
                         case Family.SteamDeck:                       // Deck: 0xEA quiet on both haptics
-                            SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, durationMs: 0, haptic: 0));
-                            SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, durationMs: 0, haptic: 1));
+                            SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, haptic: 0));
+                            SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, haptic: 1));
                             break;
                         default: JoyConWriteRumble(s, HapticToneEncoder.JoyConNeutral()); break;
                     }
@@ -929,8 +929,8 @@ namespace PadForge.Common.Input
             else if (s.SteamOn)
             {
                 // 0 Hz / zero amp = quiet (no dedicated Deck note-off in the ref).
-                SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, durationMs: 0, haptic: 0));
-                SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, durationMs: 0, haptic: 1));
+                SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, haptic: 0));
+                SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, haptic: 1));
                 s.SteamOn = false;
                 s.SteamLastAmp = 0f;
             }

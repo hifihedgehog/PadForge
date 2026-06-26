@@ -271,18 +271,28 @@ namespace PadForge.Common.Input
                 if (settings != null)
                 {
                     var seen = new HashSet<Guid>();
+                    var assigned = new List<(int MapTo, Guid Guid)>();
                     lock (settings.SyncRoot)
                     {
                         foreach (var us in settings.Items)
                         {
                             if (us == null || us.MapTo < 0) continue;
                             if (!seen.Add(us.InstanceGuid)) continue;
-                            var ud = SettingsManager.FindDeviceByInstanceGuid(us.InstanceGuid);
-                            if (ud == null || !ud.IsOnline || string.IsNullOrEmpty(ud.DevicePath)) continue;
-                            var fam = FamilyOf(ud);
-                            if (fam == Family.None) continue;
-                            desired.Add((us.MapTo, us.InstanceGuid, ud.DevicePath, fam));
+                            assigned.Add((us.MapTo, us.InstanceGuid));
                         }
+                    }
+                    // Resolve devices OUTSIDE the UserSettings lock. FindDeviceByInstanceGuid
+                    // takes UserDevices.SyncRoot, and holding UserSettings.SyncRoot while
+                    // acquiring it inverts UpdateDashboard's order (UserDevices then
+                    // UserSettings) and deadlocks. Same snapshot-then-resolve shape as
+                    // AudioPassthroughService.EnumerateAssignedSonyPads.
+                    foreach (var (mapTo, guid) in assigned)
+                    {
+                        var ud = SettingsManager.FindDeviceByInstanceGuid(guid);
+                        if (ud == null || !ud.IsOnline || string.IsNullOrEmpty(ud.DevicePath)) continue;
+                        var fam = FamilyOf(ud);
+                        if (fam == Family.None) continue;
+                        desired.Add((mapTo, guid, ud.DevicePath, fam));
                     }
                 }
 

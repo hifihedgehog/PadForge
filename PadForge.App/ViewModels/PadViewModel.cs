@@ -562,7 +562,6 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(HasSelectedDevice));
                     OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
-                    OnPropertyChanged(nameof(SelectedDeviceHasIrCamera));
                     OnPropertyChanged(nameof(SelectedDeviceIrSensorBarPos));
                     OnPropertyChanged(nameof(SelectedDeviceIrSensorBarCompPercent));
                     OnPropertyChanged(nameof(SelectedDeviceIrSmoothingPercent));
@@ -3337,19 +3336,6 @@ namespace PadForge.ViewModels
         }
 
         public bool SelectedDeviceHasNoSpeaker => !SelectedDeviceHasSpeaker;
-
-        /// <summary>True when the selected mapped device is an IR-camera-capable Wii
-        /// Remote (issue #146). Gates the Pad page's Pointer tab.</summary>
-        public bool SelectedDeviceHasIrCamera
-        {
-            get
-            {
-                var sel = SelectedMappedDevice;
-                if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
-                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
-                return ud != null && ud.HasIrCamera;
-            }
-        }
 
         private UserDevice GetSelectedUserDevice()
         {

@@ -5029,9 +5029,15 @@ namespace PadForge
             var settings = SettingsManager.UserSettings?.Items;
             if (settings != null)
             {
-                lock (SettingsManager.UserSettings.SyncRoot)
+                // Snapshot under the UserSettings lock, then build entries OUTSIDE it.
+                // AddEntry's unmapped path calls FindDeviceByInstanceGuid (which takes
+                // UserDevices.SyncRoot); holding UserSettings.SyncRoot while doing so
+                // inverts the canonical UserDevices->UserSettings order and can deadlock
+                // against the dashboard timer.
+                List<UserSetting> snapshot;
+                lock (SettingsManager.UserSettings.SyncRoot) { snapshot = settings.ToList(); }
                 {
-                    foreach (var us in settings)
+                    foreach (var us in snapshot)
                     {
                         // Skip this slot entirely — can't Copy From self.
                         if (us.MapTo == padVm.PadIndex) continue;
@@ -5063,7 +5069,7 @@ namespace PadForge
                             // the chosen donor.
                             if (donor != Guid.Empty && donor != us.InstanceGuid)
                             {
-                                var donorUs = settings.FirstOrDefault(
+                                var donorUs = snapshot.FirstOrDefault(
                                     u => u != null && u.MapTo == us.MapTo && u.InstanceGuid == donor);
                                 if (donorUs != null)
                                 {

@@ -186,57 +186,56 @@ namespace PadForge.Engine.Haptics
         //  grounded, the audible outcome is not.
         // ─────────────────────────────────────────────────────────────
 
-        public const float TritonFreqMin = 40.0f;
-        public const float TritonFreqMax = 1000.0f;
+        /// <summary>The Triton's four addressable LRAs, by actuator index. Per
+        /// SteamHapticsSinger main.cpp:255-259, the 4 channels map to haptic ids
+        /// 0,1,3,4 (the 0x83 byte-1 field): 0/1 = trackpads, 3/4 = grips. (Index 2
+        /// is skipped by the reference's <c>haptic + (haptic &gt;&gt; 1)</c> map.)</summary>
+        public static readonly int[] TritonActuators = { 0, 1, 3, 4 };
+        public static bool TritonIsGrip(int haptic) => haptic > 2;
 
-        /// <summary>Encodes one (frequency Hz, amplitude 0..1) tone into the
-        /// Triton's 10-byte <c>0x83</c> LFO-tone OUTPUT report. amp maps to the
-        /// signed <c>gain_db</c> (amp=1 -> 0 dB, the no-clip ceiling; floored at
-        /// -40 dB). amp&lt;=0 or freq&lt;=0 emits the silent/stop form (gain at
-        /// the int8 floor, frequency 0, duration 0). lfo_freq/lfo_depth = 0 for a
-        /// pure tone (no tremolo).</summary>
-        public static byte[] EncodeTritonTone(float freqHz, float amp, int durationMs = 60)
+        /// <summary>Encodes one (frequency Hz, amplitude 0..1) tone for ONE Triton
+        /// actuator into the 10-byte <c>0x83</c> LFO-tone OUTPUT report, byte for
+        /// byte against SteamHapticsSinger's Triton path (main.cpp:252-285):
+        /// byte1 = actuator index, byte2 = signed velocity gain (amp=1 -&gt; +127,
+        /// the <c>velocity*255/127-128</c> directVel mapping, NOT dB), freq u16 LE,
+        /// duration 0x7FFF = sustain. amp&lt;=0 or freq&lt;=0 emits the reference
+        /// stop form (byte2 = 0x80 silent, byte6 = 0x80). Drive every actuator with
+        /// its own report; the firmware addresses one LRA per command.</summary>
+        public static byte[] EncodeTritonTone(int haptic, float freqHz, float amp)
         {
             var b = new byte[10];
-            b[0] = 0x83;   // ID_OUT_REPORT_HAPTIC_LFO_TONE
-            b[1] = 0x03;   // side: both L+R
+            b[0] = 0x83;              // ID_OUT_REPORT_HAPTIC_LFO_TONE
+            b[1] = (byte)haptic;      // actuator index (0,1,3,4)
 
-            int gainDb;
             if (amp <= 0f || freqHz <= 0f)
             {
-                gainDb = -128;     // int8 floor -> inaudible (stop form)
-                freqHz = 0f;
-                durationMs = 0;
+                b[2] = 0x80;          // gain -128 = silent (reference stop form)
+                b[6] = 0x80;
+                return b;
             }
-            else
-            {
-                if (amp > 1f) amp = 1f;
-                double db = 20.0 * Math.Log10(amp);   // amp=1 -> 0 dB
-                if (db > 0.0) db = 0.0;                // never push positive (avoids limiter)
-                if (db < -40.0) db = -40.0;
-                gainDb = (int)Math.Round(db, MidpointRounding.AwayFromZero);
-            }
-            b[2] = (byte)(sbyte)gainDb;
 
-            ushort f = freqHz <= 0f ? (ushort)0 : (freqHz > 65535f ? (ushort)65535 : (ushort)freqHz);
+            if (amp > 1f) amp = 1f;
+            // directVel: amp 0..1 -> signed -128..+127, so amp=1 is full output.
+            // (SteamHapticsSinger main.cpp:271 velocity*255/127-128; here amp is the
+            // continuous reduced envelope, so amp*255-128.)
+            int gain = (int)Math.Round(amp * 255f, MidpointRounding.AwayFromZero) - 128;
+            if (gain > 127) gain = 127;
+            if (gain < -128) gain = -128;
+            b[2] = (byte)(sbyte)gain;
+
+            // Frequency: the SDL struct (controller_structs.h MsgHapticLfoTone) is a
+            // uint16 LE in Hz. Use exact LE (the firmware reads LE); the reference's
+            // freq%0xFF / freq/0xFF split is a propagated SteamControllerSinger quirk
+            // that is ~1 Hz off and inaudible, so the exact form is preferred.
+            ushort f = freqHz > 65535f ? (ushort)65535 : (ushort)freqHz;
             b[3] = (byte)(f & 0xFF);
             b[4] = (byte)(f >> 8);
 
-            ushort dur = durationMs <= 0 ? (ushort)0 : (durationMs > 65535 ? (ushort)65535 : (ushort)durationMs);
-            b[5] = (byte)(dur & 0xFF);
-            b[6] = (byte)(dur >> 8);
-
-            b[7] = 0; b[8] = 0; // lfo_freq = 0
-            b[9] = 0;           // lfo_depth = 0
+            b[5] = 0xFF; b[6] = 0x7F; // duration 0x7FFF = sustain (re-armed on note edges)
+            b[7] = 0; b[8] = 0;       // lfo_freq = 0
+            b[9] = 0;                 // lfo_depth = 0 (pure tone, no tremolo)
             return b;
         }
-
-        /// <summary>The Triton's reference-grounded "all haptics off": the
-        /// <c>0x80</c> rumble OUTPUT report with an all-zero MsgHapticRumble
-        /// (type 0 = off). OpenPuck haptics.cpp hapticSteamRumble(0,0) sends
-        /// exactly this (p[0]=0x00), confirmed from real puck captures. 10 bytes
-        /// (HID_RUMBLE_OUTPUT_REPORT_BYTES).</summary>
-        public static byte[] EncodeTritonRumbleOff() => new byte[10] { 0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
         // ─────────────────────────────────────────────────────────────
         //  Steam Deck (Jupiter, report 0xEA). Ground truth: SteamHapticsSinger

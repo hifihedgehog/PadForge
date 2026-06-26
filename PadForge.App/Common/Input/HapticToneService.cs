@@ -468,15 +468,8 @@ namespace PadForge.Common.Input
                     JoyConSendCommand(h, s, subcommand: 0x48, arg: 0x01); // enable vibration
                     Thread.Sleep(50);
                 }
-                else if (s.Family == Family.Steam2026)
-                {
-                    // SC2026 drives an 0x83 output report. Try WriteFile first;
-                    // JoyConOutputWrite falls back to HidD_SetOutputReport per
-                    // write if the stack rejects it. A Joy-Con-0x10 probe would be
-                    // a foreign report here, so skip it.
-                    s.UseWriteFile = true;
-                }
-                // Steam 2015 / Deck need no init: each feature write is self-contained.
+                // Steam 2015 / 2026 (Triton) / Deck need no init: each feature write
+                // (HidD_SetFeature, report id 0x00) is self-contained.
 
                 var mono = new StereoToMonoSampleProvider(s.MacroMixer) { LeftVolume = 0.5f, RightVolume = 0.5f };
                 var resampled = new WdlResamplingSampleProvider(mono, ReduceRate);
@@ -519,8 +512,8 @@ namespace PadForge.Common.Input
                 {
                     switch (s.Family)
                     {
-                        case Family.Steam: SteamStop(s); break;
-                        case Family.Steam2026: JoyConOutputWrite(s, ResizeOut(HapticToneEncoder.EncodeSteam2026Stop(), s.OutLen)); break;
+                        case Family.Steam:
+                        case Family.Steam2026: SteamStop(s); break; // Triton uses the classic 0x8f feature stop
                         case Family.SteamDeck: SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, durationMs: 0)); break;
                         default: JoyConWriteRumble(s, HapticToneEncoder.JoyConNeutral()); break;
                     }
@@ -719,8 +712,15 @@ namespace PadForge.Common.Input
                     {
                         switch (s.Family)
                         {
-                            case Family.Steam: StreamSteamTick(s, toneHz, amp, streaming); break;
-                            case Family.Steam2026: StreamSteam2026Tick(s, toneHz, amp, streaming); break;
+                            // SC2026 (Triton) speaks the classic Steam 0x8f TriggerHapticPulse
+                            // FEATURE report, the BLE-working path proven by steam_controller_tools
+                            // (device-base.ts sendFeatureReport, drives the 2026 over WebHID/BLE) and
+                            // SteamlessController (vendor 0xFF00 collection, handles the 0x45 BLE state
+                            // report). Its old 0x83 OUTPUT report was SteamHapticsSinger's USB-only
+                            // note-player (that project's BT support is WIP), so it never reached a
+                            // Bluetooth pad. Route Triton through the same feature path as the 2015.
+                            case Family.Steam:
+                            case Family.Steam2026: StreamSteamTick(s, toneHz, amp, streaming); break;
                             case Family.SteamDeck: StreamSteamDeckTick(s, toneHz, amp, streaming); break;
                             default: StreamJoyConTick(s, toneHz, amp, streaming); break;
                         }

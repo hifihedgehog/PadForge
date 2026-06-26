@@ -55,12 +55,14 @@ namespace PadForge.Common.Input
         private const ushort NintendoVid = 0x057E;
         private const ushort ValveVid = 0x28DE;
 
-        // Device families. Nintendo gen-1: Joy-Con L 0x2006, R 0x2007, Pro 0x2009
-        // (joycon-singer). Valve: Steam Controller 0x1101 + 2015 wired 0x1102 /
-        // dongle 0x1142 (all Original 0x8F, SteamHapticsSinger main.cpp:27,101-114),
-        // SC2026 0x1302 / Puck 0x1304 (Triton), Steam Deck 0x1205
-        // (Jupiter) (SteamControllerSinger / SteamHapticsSinger). Switch 2 is
-        // intentionally absent (no reference plays a tone on it, see class doc).
+        // Device families and the EXACT PIDs SDL sorts into each, mirrored from the
+        // bundled SDL's controller_list.h (the authoritative VID/PID -> controller-type
+        // table). Mirror that table rather than hand-picking PIDs, so a new transport or
+        // revision of the same controller is never silently dropped (which is exactly
+        // how a Triton-over-BLE Steam Controller 2026, 0x1303, got no Audio tab before).
+        // Protocol per family is verified against SteamHapticsSinger / SteamControllerSinger
+        // / joycon-singer; same-family PIDs are the same controller over a different
+        // transport (wired / BLE / dongle) and share the report format.
         private enum Family { None, JoyConL, JoyConR, Pro, Steam, Steam2026, SteamDeck }
 
         private static bool IsJoyConGen1(Family f) => f == Family.JoyConL || f == Family.JoyConR || f == Family.Pro;
@@ -70,18 +72,37 @@ namespace PadForge.Common.Input
             if (ud == null) return Family.None;
             if (ud.VendorId == NintendoVid)
             {
-                if (ud.ProdId == 0x2006) return Family.JoyConL;
-                if (ud.ProdId == 0x2007) return Family.JoyConR;
-                if (ud.ProdId == 0x2009) return Family.Pro;
-                // Switch 2 (0x2067/0x2066/0x2069) is intentionally NOT matched: no
-                // reference plays a tone on its actuator, so it gets no tone sink
-                // and no Audio tab (see class doc).
+                switch (ud.ProdId)
+                {
+                    case 0x2006: return Family.JoyConL;   // Switch Joy-Con (Left)
+                    case 0x2007: return Family.JoyConR;   // Switch Joy-Con (Right)
+                    case 0x2009: return Family.Pro;       // Switch Pro Controller
+                    // Switch 2 (0x2066/0x2067/0x2068/0x2069) intentionally excluded:
+                    // no reference plays a tone on its actuator (see class doc).
+                }
             }
             else if (ud.VendorId == ValveVid)
             {
-                if (ud.ProdId == 0x1101 || ud.ProdId == 0x1102 || ud.ProdId == 0x1142) return Family.Steam;
-                if (ud.ProdId == 0x1302 || ud.ProdId == 0x1304) return Family.Steam2026;
-                if (ud.ProdId == 0x1205) return Family.SteamDeck;
+                switch (ud.ProdId)
+                {
+                    // Steam Controller, 2015 gen (k_eControllerType_SteamController):
+                    // CHELL 0x1101, wired D0G 0x1102, BT D0G 0x1105/0x1106, dongle 0x1142.
+                    case 0x1101: case 0x1102: case 0x1105: case 0x1106: case 0x1142:
+                    // SteamControllerV2 (HEADCRAB prototype) 0x1201/0x1202: no dedicated
+                    // reference, so it rides the closest documented protocol (2015).
+                    // Unverified on hardware; rare prototype.
+                    case 0x1201: case 0x1202:
+                        return Family.Steam;
+                    // Steam Deck built-in (k_eControllerType_SteamControllerNeptune).
+                    case 0x1205:
+                        return Family.SteamDeck;
+                    // Steam Controller 2026 / Triton (k_eControllerType_SteamControllerTriton):
+                    // controller 0x1302, its BLE id 0x1303, Proteus dongle 0x1304, Nereid
+                    // dongle 0x1305. Same controller, same report format.
+                    case 0x1302: case 0x1303: case 0x1304: case 0x1305:
+                        return Family.Steam2026;
+                    // 0x11ff = Steam Virtual Gamepad (not real hardware) -> None.
+                }
             }
             return Family.None;
         }

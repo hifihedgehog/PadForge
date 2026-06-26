@@ -124,6 +124,13 @@ namespace PadForge.Common.Input
         private const int TickHz = 100;
         private const int SamplesPerTick = ReduceRate / TickHz; // 80
 
+        // Triton 0x83 tone duration. A held note re-sends this as a keep-alive just
+        // before it lapses (StreamTritonTick), so this also sets the worst-case
+        // stuck-on window after a cue ends and the re-attack cadence during a held
+        // note (~1/0.2s = 5 Hz). Long enough not to flood, short enough to stop
+        // promptly. Pitch changes always send immediately regardless.
+        private const int TritonToneMs = 200;
+
         // Once a cue starts, keep streaming for this long after the last frame
         // above the content threshold, so quiet dips inside a cue do not break the
         // stream. Same idea as the Wii speaker HangoverMs.
@@ -186,6 +193,10 @@ namespace PadForge.Common.Input
             // not every tick (a control transfer per 10 ms would saturate).
             public bool SteamOn;
             public float SteamLastFreq;
+            // Triton keep-alive: TickCount64 of the last 0x83 tone sent, so a held
+            // note re-sends only when the prior tone is about to lapse, not at the
+            // 100 Hz tick rate (which floods into a stuck tone).
+            public long TritonLastSendMs;
 
             // System-audio passthrough mirror (same option DualSense/Wii expose).
             public bool MirrorOn;
@@ -849,17 +860,28 @@ namespace PadForge.Common.Input
         }
 
         // ── Steam Controller 2026 / Triton: 0x83 LFO-tone OUTPUT report ──
-        // Unlike the 2015 0x8f square (pitch-only, sustains on a repeat count),
-        // the Triton tone carries gain_db, so we drive it every tick while a cue
-        // streams to track the amplitude envelope (the Joy-Con model), one output
-        // report per 10 ms tick. The write is direct to our own handle; SDL is not
-        // in this path.
+        // The 0x83 command plays a tone of frequency `freq` for `duration_ms`. Each
+        // command re-triggers the tone's attack, so re-sending every 10 ms tick (as
+        // the Joy-Con 0x10 lane does, because that one retunes live) re-attacks at
+        // 100 Hz and floods the BLE link, which latches into one stuck/buzzy tone.
+        // Instead, send a new tone only on a real pitch change (the note edges of
+        // the reduced series), plus a keep-alive just before the current tone would
+        // lapse so a held note sustains without a flood. The write is direct to our
+        // own handle; SDL is not in this path.
         private static void StreamTritonTick(Sink s, float toneHz, float amp, bool streaming)
         {
             if (streaming)
             {
-                TritonSendTone(s, toneHz, amp);
-                s.SteamOn = true;
+                long now = Environment.TickCount64;
+                bool pitchShift = !s.SteamOn || Math.Abs(toneHz - s.SteamLastFreq) > s.SteamLastFreq * 0.03f + 1f;
+                bool keepAlive = (now - s.TritonLastSendMs) >= (TritonToneMs - 20);
+                if (pitchShift || keepAlive)
+                {
+                    TritonSendTone(s, toneHz, amp, TritonToneMs);
+                    s.SteamOn = true;
+                    s.SteamLastFreq = toneHz;
+                    s.TritonLastSendMs = now;
+                }
             }
             else if (s.SteamOn)
             {
@@ -868,13 +890,14 @@ namespace PadForge.Common.Input
             }
         }
 
-        private static void TritonSendTone(Sink s, float toneHz, float amp)
+        private static void TritonSendTone(Sink s, float toneHz, float amp, int durationMs)
         {
             if (s.Handle == IntPtr.Zero) return;
-            // duration 60 ms > the 10 ms tick, so a single dropped tick leaves no
-            // audible gap; the next tick re-asserts. Padded to the queried
-            // OutputReportByteLength (HID output writes require exactly that).
-            var report = HapticToneEncoder.EncodeTritonTone(toneHz, amp, durationMs: 60);
+            // Padded to the queried OutputReportByteLength (HID output writes require
+            // exactly that). duration_ms covers the gap until the next keep-alive so
+            // the tone abuts rather than gaps; the keep-alive cadence stays at/below
+            // 1/duration so consecutive tones never pile up if the firmware queues.
+            var report = HapticToneEncoder.EncodeTritonTone(toneHz, amp, durationMs);
             HidOutputWrite(s, ResizeOut(report, Math.Max(report.Length, s.OutLen)));
         }
 

@@ -365,31 +365,11 @@ namespace PadForge.Tests
             Assert.Equal(0f, amp);
         }
 
-        // ─── Steam Controller 2026 (Triton) / Deck (SteamHapticsSinger) ───
-
-        [Fact]
-        public void Steam2026_FramesReport0x83()
-        {
-            // main.cpp:259-265: [0]=0x83, [5]=0xFF, [6]=0x7F, freq command non-zero.
-            var blob = HapticToneEncoder.EncodeSteam2026(440f, 1.0f);
-            Assert.Equal(65, blob.Length);
-            Assert.Equal(0x83, blob[0]);
-            Assert.Equal(0xFF, blob[5]);
-            Assert.Equal(0x7F, blob[6]);
-            Assert.True(blob[3] != 0 || blob[4] != 0); // a real frequency command
-            // Gain is the signed velocity mapping (velocity*255/127 - 128,
-            // main.cpp:261): full amplitude -> velocity 127 -> 0x7F.
-            Assert.Equal(0x7F, blob[2]);
-        }
-
-        [Fact]
-        public void Steam2026_StopIsReport0x82()
-        {
-            // main.cpp:254-257: note-off so the pad does not reboot.
-            var blob = HapticToneEncoder.EncodeSteam2026Stop(haptic: 1);
-            Assert.Equal(0x82, blob[0]);
-            Assert.Equal(1, blob[1]);
-        }
+        // ─── Steam Deck (Jupiter, SteamHapticsSinger) ───
+        // The SC2026 (Triton) now plays through the classic 0x8f feature path
+        // (see the EncodeSteamClassic tests above), the Bluetooth-working route
+        // proven by steam_controller_tools / SteamlessController. Its old 0x83
+        // output encoder and the tests for it were removed (commit history).
 
         [Fact]
         public void SteamDeck_CarriesFrequencyInHz()

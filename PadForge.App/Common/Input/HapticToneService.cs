@@ -777,33 +777,6 @@ namespace PadForge.Common.Input
             }
         }
 
-        // ── Steam Controller 2026 (Triton): report 0x83 output write, 0x82 stop ──
-        private static void StreamSteam2026Tick(Sink s, float toneHz, float amp, bool streaming)
-        {
-            if (streaming)
-            {
-                bool pitchShift = !s.SteamOn || Math.Abs(toneHz - s.SteamLastFreq) > s.SteamLastFreq * 0.03f + 1f;
-                if (pitchShift)
-                {
-                    // Send NOTE_STOP (0x82) before re-arming a new note, per
-                    // SteamHapticsSinger main.cpp:428-436 (PlayNote(NOTE_STOP) then
-                    // the real note). Its comment: "Send note stop before playing
-                    // to prevent Steam Controller (2026) rebooting when using
-                    // motors." Only needed when a note is already armed.
-                    if (s.SteamOn)
-                        JoyConOutputWrite(s, ResizeOut(HapticToneEncoder.EncodeSteam2026Stop(), s.OutLen));
-                    var blob = HapticToneEncoder.EncodeSteam2026(toneHz, amp);
-                    JoyConOutputWrite(s, ResizeOut(blob, s.OutLen));
-                    s.SteamOn = true;
-                    s.SteamLastFreq = toneHz;
-                }
-            }
-            else if (s.SteamOn)
-            {
-                JoyConOutputWrite(s, ResizeOut(HapticToneEncoder.EncodeSteam2026Stop(), s.OutLen));
-                s.SteamOn = false;
-            }
-        }
 
         // ── Steam Deck (Jupiter): report 0xEA SET_FEATURE ──
         private static void StreamSteamDeckTick(Sink s, float toneHz, float amp, bool streaming)

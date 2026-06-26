@@ -162,21 +162,11 @@ namespace PadForge.Tests
         [Theory]
         [InlineData(0.0f, 0x80)]   // signed: silent -> 0x80
         [InlineData(1.0f, 0x7F)]   // signed: full -> 0x7F
-        public void Steam2026AndDeck_GainByte_IsSigned(float amp, int expectedGain)
+        public void SteamDeck_GainByte_IsSigned(float amp, int expectedGain)
         {
-            var t = HapticToneEncoder.EncodeSteam2026(440f, amp);
             var d = HapticToneEncoder.EncodeSteamDeck(440f, amp);
-            Assert.Equal(0x83, t[0]);
-            Assert.Equal((byte)expectedGain, t[2]);
             Assert.Equal(0xEA, d[0]);
             Assert.Equal((byte)expectedGain, d[5]);
-        }
-
-        [Fact]
-        public void Steam2026Stop_IsNoteOff_0x82()
-        {
-            var stop = HapticToneEncoder.EncodeSteam2026Stop();
-            Assert.Equal(0x82, stop[0]);
         }
     }
 }

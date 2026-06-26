@@ -87,10 +87,6 @@ namespace PadForge.Tests
 
                 foreach (var a in HostileScalars)
                 {
-                    var t = HapticToneEncoder.EncodeSteam2026(f, a);
-                    Assert.Equal(65, t.Length);
-                    Assert.Equal(0x83, t[0]);
-
                     var d = HapticToneEncoder.EncodeSteamDeck(f, a);
                     Assert.Equal(64, d.Length);
                     Assert.Equal(0xEA, d[0]);

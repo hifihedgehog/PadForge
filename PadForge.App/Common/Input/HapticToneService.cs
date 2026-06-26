@@ -316,10 +316,11 @@ namespace PadForge.Common.Input
                         if (ud == null || !ud.IsOnline || string.IsNullOrEmpty(ud.DevicePath)) continue;
                         var fam = FamilyOf(ud);
                         if (fam == Family.None) continue;
-                        // Capture the SDL gamepad handle: Steam Controllers are held open
-                        // by SDL, so a second raw write handle loses the BLE link. The
-                        // Steam tone is sent through SDL's own connection via
-                        // SDL_SendGamepadEffect instead (see SteamSendBlob).
+                        // Capture the SDL gamepad handle: only the 2015 Steam path
+                        // (Family.Steam) still sends its 0x8f tone through SDL's
+                        // connection (SteamSendBlob). Joy-Con, Deck, and the 2026
+                        // Triton all write their own raw HID handle opened from
+                        // DevicePath; the handle is captured but unused for those.
                         desired.Add((mapTo, guid, ud.DevicePath, fam, ud.Device?.GamepadHandle ?? IntPtr.Zero));
                     }
                 }
@@ -455,13 +456,17 @@ namespace PadForge.Common.Input
             IntPtr h = IntPtr.Zero;
             try
             {
-                // Steam Controllers are already held and polled by SDL. Do NOT open a
-                // second raw HID handle to them: over Bluetooth two handles on one link
-                // contend and hitch the input poll rate (it was dropping to ~985 Hz).
-                // Drive the tone entirely through SDL's own connection
-                // (SDL_SendGamepadEffect, see SteamSendBlob) with no raw handle.
-                bool steamViaSdl = (s.Family == Family.Steam || s.Family == Family.Steam2026)
-                                   && s.GamepadHandle != IntPtr.Zero;
+                // The 2026 Triton is driven directly, like every other device:
+                // its tone is an OUTPUT report (0x83 LFO tone), which SDL's Steam
+                // effect API does not forward (it only sends FEATURE reports). The
+                // old "route through SDL, no raw handle" path was built on the
+                // belief that a second BT handle caused the ~985 Hz poll dip; that
+                // dip is the upstream SDL lizard-mode feature write every 3 s,
+                // independent of any second handle (and PadForge already opens its
+                // own write handle to a BT DualSense that SDL also owns). Only the
+                // 2015 Steam path (Family.Steam, classic 0x8f via SteamSendBlob)
+                // still has an SDL lane.
+                bool steamViaSdl = s.Family == Family.Steam && s.GamepadHandle != IntPtr.Zero;
                 if (!steamViaSdl)
                 {
                     h = CreateFileW(s.HidPath, GENERIC_WRITE | GENERIC_READ, SHARE_RW,
@@ -530,8 +535,8 @@ namespace PadForge.Common.Input
                 {
                     switch (s.Family)
                     {
-                        case Family.Steam:
-                        case Family.Steam2026: SteamStop(s); break; // Triton uses the classic 0x8f feature stop
+                        case Family.Steam: SteamStop(s); break;     // 2015: classic 0x8f feature stop
+                        case Family.Steam2026: TritonStop(s); break; // Triton: 0x83 silence + 0x80 rumble-off
                         case Family.SteamDeck: SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, durationMs: 0)); break;
                         default: JoyConWriteRumble(s, HapticToneEncoder.JoyConNeutral()); break;
                     }
@@ -624,12 +629,13 @@ namespace PadForge.Common.Input
             byte[] right = s.Family == Family.JoyConL ? neutral : group4;
             Array.Copy(left, 0, buf, 2, 4);
             Array.Copy(right, 0, buf, 6, 4);
-            JoyConOutputWrite(s, buf);
+            HidOutputWrite(s, buf);
         }
 
         // Output write with the probed path: overlapped WriteFile, else
-        // synchronous HidD_SetOutputReport (BT-Joy-Con err-87 fallback).
-        private static void JoyConOutputWrite(Sink s, byte[] buf)
+        // synchronous HidD_SetOutputReport (BT-Joy-Con err-87 fallback). Used by
+        // the Joy-Con 0x10 rumble lane and the Triton 0x80/0x83 output lane.
+        private static void HidOutputWrite(Sink s, byte[] buf)
         {
             if (s.UseWriteFile)
             {
@@ -764,15 +770,12 @@ namespace PadForge.Common.Input
                     {
                         switch (s.Family)
                         {
-                            // SC2026 (Triton) speaks the classic Steam 0x8f TriggerHapticPulse
-                            // FEATURE report, the BLE-working path proven by steam_controller_tools
-                            // (device-base.ts sendFeatureReport, drives the 2026 over WebHID/BLE) and
-                            // SteamlessController (vendor 0xFF00 collection, handles the 0x45 BLE state
-                            // report). Its old 0x83 OUTPUT report was SteamHapticsSinger's USB-only
-                            // note-player (that project's BT support is WIP), so it never reached a
-                            // Bluetooth pad. Route Triton through the same feature path as the 2015.
-                            case Family.Steam:
-                            case Family.Steam2026: StreamSteamTick(s, toneHz, amp, streaming); break;
+                            // 2015 Steam Controller: classic 0x8f TriggerHapticPulse FEATURE report.
+                            case Family.Steam: StreamSteamTick(s, toneHz, amp, streaming); break;
+                            // SC2026 (Triton): the 0x83 LFO-tone OUTPUT report written directly to our
+                            // own HID handle. The Triton does not use 0x8f (confirmed: Valve's SDL
+                            // driver and OpenPuck's real-capture both drive it via output reports only).
+                            case Family.Steam2026: StreamTritonTick(s, toneHz, amp, streaming); break;
                             case Family.SteamDeck: StreamSteamDeckTick(s, toneHz, amp, streaming); break;
                             default: StreamJoyConTick(s, toneHz, amp, streaming); break;
                         }
@@ -843,6 +846,46 @@ namespace PadForge.Common.Input
             {
                 SteamStop(s);
             }
+        }
+
+        // ── Steam Controller 2026 / Triton: 0x83 LFO-tone OUTPUT report ──
+        // Unlike the 2015 0x8f square (pitch-only, sustains on a repeat count),
+        // the Triton tone carries gain_db, so we drive it every tick while a cue
+        // streams to track the amplitude envelope (the Joy-Con model), one output
+        // report per 10 ms tick. The write is direct to our own handle; SDL is not
+        // in this path.
+        private static void StreamTritonTick(Sink s, float toneHz, float amp, bool streaming)
+        {
+            if (streaming)
+            {
+                TritonSendTone(s, toneHz, amp);
+                s.SteamOn = true;
+            }
+            else if (s.SteamOn)
+            {
+                TritonStop(s);
+                s.SteamOn = false;
+            }
+        }
+
+        private static void TritonSendTone(Sink s, float toneHz, float amp)
+        {
+            if (s.Handle == IntPtr.Zero) return;
+            // duration 60 ms > the 10 ms tick, so a single dropped tick leaves no
+            // audible gap; the next tick re-asserts. Padded to the queried
+            // OutputReportByteLength (HID output writes require exactly that).
+            var report = HapticToneEncoder.EncodeTritonTone(toneHz, amp, durationMs: 60);
+            HidOutputWrite(s, ResizeOut(report, Math.Max(report.Length, s.OutLen)));
+        }
+
+        private static void TritonStop(Sink s)
+        {
+            if (s.Handle == IntPtr.Zero) return;
+            // Silence the tone (LFO tone at the gain floor) and assert the proven
+            // rumble-OFF (0x80, type 0 -- OpenPuck hapticSteamRumble(0,0)), the only
+            // reference-grounded "all haptics off" for this controller.
+            HidOutputWrite(s, ResizeOut(HapticToneEncoder.EncodeTritonTone(0f, 0f), Math.Max(10, s.OutLen)));
+            HidOutputWrite(s, ResizeOut(HapticToneEncoder.EncodeTritonRumbleOff(), Math.Max(10, s.OutLen)));
         }
 
 

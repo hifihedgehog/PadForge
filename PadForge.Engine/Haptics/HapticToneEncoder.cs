@@ -193,6 +193,14 @@ namespace PadForge.Engine.Haptics
         public static readonly int[] TritonActuators = { 0, 1, 3, 4 };
         public static bool TritonIsGrip(int haptic) => haptic > 2;
 
+        /// <summary>Grip-LRA drive-frequency correction. SteamHapticsSinger's grip
+        /// table (midiFrequencyRb, main.cpp:36) is a constant 1.0205x the real note
+        /// frequency across the musical range (e.g. A4 440 Hz -&gt; Rb 449), while the
+        /// trackpad table (midiFrequencyTr) is ~= the real Hz. So a grip needs ~2%
+        /// higher drive than a trackpad to sound the same pitch; without it the grips
+        /// run ~0.35 semitone flat and beat against the trackpads.</summary>
+        public const float TritonGripFreqScale = 1.0205f;
+
         /// <summary>Encodes one (frequency Hz, amplitude 0..1) tone for ONE Triton
         /// actuator into the 10-byte <c>0x83</c> LFO-tone OUTPUT report, byte for
         /// byte against SteamHapticsSinger's Triton path (main.cpp:252-285):
@@ -228,7 +236,10 @@ namespace PadForge.Engine.Haptics
             // uint16 LE in Hz. Use exact LE (the firmware reads LE). The reference's
             // freq%0xFF / freq/0xFF split is a propagated SteamControllerSinger quirk
             // that is ~1 Hz off and inaudible, so the exact form is preferred.
-            ushort f = freqHz > 65535f ? (ushort)65535 : (ushort)freqHz;
+            // Grips need the +2% drive correction so they sound the same pitch as the
+            // trackpads (midiFrequencyRb vs midiFrequencyTr, main.cpp:36-37).
+            float driveHz = TritonIsGrip(haptic) ? freqHz * TritonGripFreqScale : freqHz;
+            ushort f = driveHz > 65535f ? (ushort)65535 : (ushort)driveHz;
             b[3] = (byte)(f & 0xFF);
             b[4] = (byte)(f >> 8);
 

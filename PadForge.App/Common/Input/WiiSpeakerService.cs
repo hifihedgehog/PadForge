@@ -882,13 +882,21 @@ namespace PadForge.Common.Input
         public static void Shutdown()
         {
             _suppressed = true;
+            // Snapshot under the lock, tear down OUTSIDE it. TeardownSink does a
+            // Thread.Join(3000) and BT capture/pool disposal; holding _lock across
+            // those stalls every other _lock caller (GetSlotSinkMixers macro routing,
+            // Reconcile) for up to 3 s per sink -- exactly what Reconcile's own comment
+            // says to avoid. Matches AudioPassthroughService.Shutdown and
+            // HapticToneService.Shutdown.
+            List<Sink> drop;
             lock (_lock)
             {
                 try { _reconcileTimer?.Dispose(); } catch { }
                 _reconcileTimer = null;
-                foreach (var s in _sinks) TeardownSink(s);
+                drop = _sinks.ToList();
                 _sinks.Clear();
             }
+            foreach (var s in drop) TeardownSink(s);
         }
     }
 }

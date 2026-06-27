@@ -970,9 +970,8 @@ namespace PadForge.Common.Input
             // Thread.Join(3000) and a WASAPI capture dispose; holding _lock across
             // those stalls every other _lock caller (GetSlotSinkMixers macro playback,
             // Reconcile) for up to 3 s per sink. This matches AudioPassthroughService.
-            // Shutdown and this service's own Reconcile, which both tear down outside
-            // the lock. (WiiSpeakerService.Shutdown still tears down under the lock --
-            // same latent stall, out of this change's scope.)
+            // Shutdown, WiiSpeakerService.Shutdown, and this service's own Reconcile,
+            // which all tear down outside the lock.
             List<Sink> drop;
             lock (_lock)
             {

@@ -159,14 +159,14 @@ namespace PadForge.Tests
             Assert.Equal(0x7FFF / 0xFF, blob[8]);
         }
 
-        [Theory]
-        [InlineData(0.0f, 0x80)]   // amp 0 -> stop form, gain 0x80 (silent)
-        [InlineData(1.0f, 0x00)]   // amp 1 -> 0 dB unity (gain_db, not +127)
-        public void SteamDeck_GainByte_IsDb(float amp, int expectedGain)
+        [Fact]
+        public void SteamDeck_UsesClassic0x8F_NotJupiter()
         {
-            var d = HapticToneEncoder.EncodeSteamDeck(440f, amp);
-            Assert.Equal(0xEA, d[0]);
-            Assert.Equal((byte)expectedGain, d[5]);
+            // The Deck reuses the 2015 Steam Controller 0x8F encoder (proven on the
+            // Deck by SteamControllerSinger), so a Deck tone is a 0x8F period square,
+            // not the removed 0xEA Jupiter report.
+            var d = HapticToneEncoder.EncodeSteamClassic(440f, durationSeconds: -1.0, haptic: 0);
+            Assert.Equal(0x8F, d[0]);
         }
     }
 }

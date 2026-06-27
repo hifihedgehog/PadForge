@@ -549,9 +549,9 @@ namespace PadForge.Common.Input
                     {
                         case Family.Steam: SteamStop(s); break;     // 2015: classic 0x8f feature stop (both haptics)
                         case Family.Steam2026: TritonStop(s); break; // Triton: 0x83 stop on all 4 actuators
-                        case Family.SteamDeck:                       // Deck: 0xEA quiet on both haptics
-                            SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, haptic: 0));
-                            SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, haptic: 1));
+                        case Family.SteamDeck:                       // Deck: 0x8F note-off on both haptics (same as 2015)
+                            SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamClassic(0f, 0.0, haptic: 0));
+                            SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamClassic(0f, 0.0, haptic: 1));
                             break;
                         default: JoyConWriteRumble(s, HapticToneEncoder.JoyConNeutral()); break;
                     }
@@ -915,29 +915,34 @@ namespace PadForge.Common.Input
         // ── Steam Deck (Jupiter): report 0xEA SET_FEATURE ──
         private static void StreamSteamDeckTick(Sink s, float toneHz, float amp, bool streaming)
         {
-            // The Deck (0xEA) carries gain like the Triton, and has TWO haptics
-            // (SteamHapticsSinger Jupiter drives channels 0 and 1). Play both, and
-            // re-arm on a pitch change or an amplitude step so the gain tracks.
+            // The Deck's built-in controller IS the Steam Controller 0x8F path.
+            // SteamControllerSinger opens 0x1205 (main.cpp:58) and drives it with the
+            // same SteamController_PlayNote 0x8F square wave as the wired pad (README:
+            // "the Steam Deck is also supported... very similar to the Steam
+            // Controller"), with a real period frequency. The earlier 0xEA path came
+            // from SteamHapticsSinger's Jupiter report, whose freq table was a stub
+            // (midiFrequencyDk = {440,0,0...}), so it never played a real note.
+            // Transport: our own feature handle (SteamFeatureWrite = SET_REPORT,
+            // report id 0, byte-identical to SteamControllerSinger's
+            // libusb_control_transfer(0x21,9,0x0300,2,blob,64)). NOT SDL -- the Deck's
+            // SDL driver (SDL_hidapi_steamdeck.c) only forwards 0xEB rumble, not 0x8F.
+            // The 0x8F square is pitch-only (no working gain), so amp just gates.
             if (streaming)
             {
                 bool pitchShift = !s.SteamOn || Math.Abs(toneHz - s.SteamLastFreq) > s.SteamLastFreq * 0.03f + 1f;
-                bool ampStep = Math.Abs(amp - s.SteamLastAmp) > 0.10f;
-                if (pitchShift || ampStep)
+                if (pitchShift)
                 {
-                    SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(toneHz, amp, haptic: 0));
-                    SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(toneHz, amp, haptic: 1));
+                    SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamClassic(toneHz, durationSeconds: -1.0, haptic: 0));
+                    SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamClassic(toneHz, durationSeconds: -1.0, haptic: 1));
                     s.SteamOn = true;
                     s.SteamLastFreq = toneHz;
-                    s.SteamLastAmp = amp;
                 }
             }
             else if (s.SteamOn)
             {
-                // 0 Hz / zero amp = quiet (no dedicated Deck note-off in the ref).
-                SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, haptic: 0));
-                SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamDeck(0f, 0f, haptic: 1));
+                SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamClassic(0f, 0.0, haptic: 0));
+                SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamClassic(0f, 0.0, haptic: 1));
                 s.SteamOn = false;
-                s.SteamLastAmp = 0f;
             }
         }
 

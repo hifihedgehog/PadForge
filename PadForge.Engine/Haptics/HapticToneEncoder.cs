@@ -180,10 +180,10 @@ namespace PadForge.Engine.Haptics
         //    side u8 | gain_db i8 | frequency u16 | duration_ms u16 |
         //    lfo_freq u16 | lfo_depth u8        -> 9 bytes + 1 report-id = 10
         //    (HID_HAPTIC_LFO_TONE_REPORT_BYTES, the #def includes the OR id).
-        //  side 0x03 = both actuators (the MsgTriggerHaptic field comment,
-        //  controller_structs.h:106). No cloned tool exercises 0x83, so the
-        //  tone-on-hardware result is hypothesis-under-test; the byte layout is
-        //  grounded, the audible outcome is not.
+        //  The "side" byte is the actuator index 0,1,3,4 (not a bitmask), per
+        //  SteamHapticsSinger main.cpp:255-259. The byte layout is reference-grounded
+        //  and runtime-confirmed audible. The remaining open part is per-actuator
+        //  tuning fidelity, not whether it makes sound.
         // ─────────────────────────────────────────────────────────────
 
         /// <summary>The Triton's four addressable LRAs, by actuator index. Per
@@ -196,11 +196,18 @@ namespace PadForge.Engine.Haptics
         /// <summary>Encodes one (frequency Hz, amplitude 0..1) tone for ONE Triton
         /// actuator into the 10-byte <c>0x83</c> LFO-tone OUTPUT report, byte for
         /// byte against SteamHapticsSinger's Triton path (main.cpp:252-285):
-        /// byte1 = actuator index, byte2 = signed velocity gain (amp=1 -&gt; +127,
-        /// the <c>velocity*255/127-128</c> directVel mapping, NOT dB), freq u16 LE,
-        /// duration 0x7FFF = sustain. amp&lt;=0 or freq&lt;=0 emits the reference
-        /// stop form (byte2 = 0x80 silent, byte6 = 0x80). Drive every actuator with
-        /// its own report; the firmware addresses one LRA per command.</summary>
+        /// byte1 = actuator index, byte2 = <c>gain_db</c> (signed int8 dB), freq
+        /// u16 LE, duration 0x7FFF = sustain. amp&lt;=0 or freq&lt;=0 emits the
+        /// reference stop form (byte2 = 0x80 silent, byte6 = 0x80). Drive every
+        /// actuator with its own report. The firmware addresses one LRA per command.
+        ///
+        /// gain_db is dB, NOT a linear velocity. SteamHapticsSinger's proven default
+        /// (directVel = false, main.cpp:51) sends the per-note gain CURVE, and the
+        /// shipped Triton curves are all zero (DEFAULT_GAIN = 0, main.cpp:24) -- so
+        /// the audible reference level is 0 dB = unity. amp tracks the envelope BELOW
+        /// 0 dB (20*log10(amp)), never positive. Positive dB drives the firmware
+        /// limiter into harsh clipping. The directVel velocity*255/127-128 path, which
+        /// hits +127, is a non-default experimental flag, not the song-playing one.</summary>
         public static byte[] EncodeTritonTone(int haptic, float freqHz, float amp)
         {
             var b = new byte[10];
@@ -215,16 +222,10 @@ namespace PadForge.Engine.Haptics
             }
 
             if (amp > 1f) amp = 1f;
-            // directVel: amp 0..1 -> signed -128..+127, so amp=1 is full output.
-            // (SteamHapticsSinger main.cpp:271 velocity*255/127-128; here amp is the
-            // continuous reduced envelope, so amp*255-128.)
-            int gain = (int)Math.Round(amp * 255f, MidpointRounding.AwayFromZero) - 128;
-            if (gain > 127) gain = 127;
-            if (gain < -128) gain = -128;
-            b[2] = (byte)(sbyte)gain;
+            b[2] = (byte)(sbyte)AmpToGainDb(amp);   // 0 dB at amp=1, floored at -40
 
             // Frequency: the SDL struct (controller_structs.h MsgHapticLfoTone) is a
-            // uint16 LE in Hz. Use exact LE (the firmware reads LE); the reference's
+            // uint16 LE in Hz. Use exact LE (the firmware reads LE). The reference's
             // freq%0xFF / freq/0xFF split is a propagated SteamControllerSinger quirk
             // that is ~1 Hz off and inaudible, so the exact form is preferred.
             ushort f = freqHz > 65535f ? (ushort)65535 : (ushort)freqHz;
@@ -235,6 +236,20 @@ namespace PadForge.Engine.Haptics
             b[7] = 0; b[8] = 0;       // lfo_freq = 0
             b[9] = 0;                 // lfo_depth = 0 (pure tone, no tremolo)
             return b;
+        }
+
+        /// <summary>Maps amplitude 0..1 to the Steam haptic <c>gain_db</c> field: 0 dB
+        /// at amp=1 (unity, the proven reference ceiling), 20*log10(amp) below, floored
+        /// at -40 dB. Never positive -- positive dB drives the firmware limiter into
+        /// clipping. Shared by the Triton (0x83) and Deck (0xEA) gain bytes.</summary>
+        public static int AmpToGainDb(float amp)
+        {
+            if (amp <= 0f) return -128;          // silent
+            if (amp > 1f) amp = 1f;
+            double db = 20.0 * Math.Log10(amp);  // amp=1 -> 0 dB
+            if (db > 0.0) db = 0.0;
+            if (db < -40.0) db = -40.0;
+            return (int)Math.Round(db, MidpointRounding.AwayFromZero);
         }
 
         // ─────────────────────────────────────────────────────────────
@@ -257,7 +272,7 @@ namespace PadForge.Engine.Haptics
         /// Byte for byte against SteamHapticsSinger main.cpp:287-305 (the Jupiter
         /// case): byte2 = !channel, byte3 = 0x03, byte5 = signed velocity gain
         /// (amp*255-128, directVel), byte6:7 = freq %0xFF / /0xFF, byte8:9 = 0xFF/0x7F.
-        /// haptic is the channel (0/1); both are driven for full output.</summary>
+        /// haptic is the channel (0/1). Both are driven for full output.</summary>
         public static byte[] EncodeSteamDeck(float freqHz, float amp, int haptic = 0)
         {
             var blob = new byte[64];
@@ -271,11 +286,11 @@ namespace PadForge.Engine.Haptics
                 blob[9] = 0x80;
                 return blob;
             }
-            // directVel signed gain: amp=1 -> +127, amp->0 -> -128 (main.cpp:300).
-            int g = (int)Math.Round(amp * 255f, MidpointRounding.AwayFromZero) - 128;
-            if (g > 127) g = 127;
-            if (g < -128) g = -128;
-            blob[5] = (byte)(sbyte)g;
+            // gain_db (dB): 0 dB at amp=1 = unity, the proven reference level. The
+            // shipped Jupiter gain curve is all zero (DEFAULT_GAIN = 0); +N dB would
+            // clip the limiter. (directVel velocity*255/127-128 at main.cpp:300 is the
+            // non-default flag.) Same mapping as the Triton 0x83 gain byte.
+            blob[5] = (byte)(sbyte)AmpToGainDb(amp);
             int f = freqHz > 65535f ? 65535 : (int)freqHz;
             blob[6] = (byte)(f % 0xFF);            // freq %0xFF / /0xFF (main.cpp:301-302)
             blob[7] = (byte)(f / 0xFF);

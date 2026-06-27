@@ -160,9 +160,9 @@ namespace PadForge.Tests
         }
 
         [Theory]
-        [InlineData(0.0f, 0x80)]   // signed: silent -> 0x80
-        [InlineData(1.0f, 0x7F)]   // signed: full -> 0x7F
-        public void SteamDeck_GainByte_IsSigned(float amp, int expectedGain)
+        [InlineData(0.0f, 0x80)]   // amp 0 -> stop form, gain 0x80 (silent)
+        [InlineData(1.0f, 0x00)]   // amp 1 -> 0 dB unity (gain_db, not +127)
+        public void SteamDeck_GainByte_IsDb(float amp, int expectedGain)
         {
             var d = HapticToneEncoder.EncodeSteamDeck(440f, amp);
             Assert.Equal(0xEA, d[0]);

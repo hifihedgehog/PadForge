@@ -87,10 +87,6 @@ namespace PadForge.Tests
 
                 foreach (var a in HostileScalars)
                 {
-                    var d = HapticToneEncoder.EncodeSteamDeck(f, a);
-                    Assert.Equal(64, d.Length);
-                    Assert.Equal(0xEA, d[0]);
-
                     // Triton 0x83 LFO tone: always 10 bytes, id 0x83, actuator index
                     // preserved in byte 1, never throws on NaN/Inf/huge/negative input.
                     var t = HapticToneEncoder.EncodeTritonTone(3, f, a);

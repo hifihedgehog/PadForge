@@ -193,22 +193,58 @@ namespace PadForge.Engine.Haptics
         public static readonly int[] TritonActuators = { 0, 1, 3, 4 };
         public static bool TritonIsGrip(int haptic) => haptic > 2;
 
-        /// <summary>Grip-LRA drive-frequency correction so a grip sounds the SAME
-        /// pitch as a trackpad. The matching ratio is the reference's grip table over
-        /// its trackpad table, Rb/Tr (SteamHapticsSinger main.cpp:36-37), because the
-        /// reference drives trackpad = Tr[n] and grip = Rb[n] for the same note and
-        /// they sound matched on hardware. Mean Rb/Tr over the musical range (notes
-        /// 48-84) is 1.0239 (range 1.0204-1.0273; a single constant cannot be exact at
-        /// every note, so the mean minimises the residual inter-actuator beat).
-        ///
-        /// NOT Rb/realHz (1.0205): that is the grip's ABSOLUTE pitch factor, and it
-        /// only matches if the trackpad were driven at Tr[n]. PadForge drives trackpads
-        /// at the raw note Hz, and Tr[n] is ~0.23% BELOW real Hz, so the grip-to-
-        /// trackpad ratio that cancels the beat is Rb/Tr, not Rb/realHz. The earlier
-        /// 1.0205 left grips ~0.33% flat of the trackpads. The audible size of that
-        /// residual is hypothesis-under-test (no Triton on hand), but 1.0239 is
-        /// strictly closer to the proven Rb/Tr relationship at the population mean.</summary>
-        public const float TritonGripFreqScale = 1.0239f;
+        // SteamHapticsSinger's per-note drive-frequency tables (main.cpp:36-37). The
+        // reference drives trackpad = TritonTrackpadHz[n] and grip = TritonGripHz[n]
+        // for the SAME note, and the two actuators sound matched on hardware. These are
+        // the proven grip/trackpad pitch relationship verbatim -- a grip needs a higher
+        // drive than a trackpad for the same pitch, and the exact ratio is per-note
+        // (it runs ~1.027 low, ~1.024 mid, ~1.016 high), NOT a single constant.
+        private static readonly ushort[] TritonTrackpadHz = new ushort[128]
+        {
+            0, 9, 9, 10, 10, 11, 12, 12, 13, 14, 15, 15, 16, 17, 18, 19,
+            21, 22, 23, 24, 26, 28, 29, 31, 33, 35, 37, 39, 41, 44, 46, 49,
+            52, 55, 58, 62, 65, 69, 73, 78, 82, 87, 92, 98, 104, 110, 117, 123,
+            131, 139, 147, 156, 165, 175, 185, 196, 208, 220, 233, 247, 261, 276, 293, 310,
+            328, 349, 369, 391, 414, 439, 466, 493, 522, 552, 584, 621, 658, 696, 738, 781,
+            828, 877, 929, 985, 1043, 1105, 1171, 1240, 1314, 1392, 1475, 1562, 1655, 1754, 1858, 1969,
+            2085, 2209, 2340, 2480, 2627, 2784, 2949, 3124, 3311, 3507, 3716, 3938, 4173, 4422, 4686, 4965,
+            5261, 5575, 5907, 6259, 6632, 7027, 7446, 7889, 8359, 8857, 9384, 9943, 10535, 11162, 11827, 12531
+        };
+
+        private static readonly ushort[] TritonGripHz = new ushort[128]
+        {
+            0, 10, 10, 11, 11, 12, 13, 13, 14, 15, 16, 16, 17, 18, 19, 20,
+            22, 23, 24, 25, 27, 29, 30, 32, 34, 36, 38, 40, 42, 45, 47, 50,
+            53, 56, 59, 63, 66, 70, 75, 80, 84, 89, 94, 100, 107, 113, 120, 126,
+            134, 142, 151, 160, 169, 179, 189, 200, 213, 226, 239, 253, 267, 283, 300, 318,
+            336, 357, 377, 399, 423, 449, 477, 505, 535, 566, 598, 636, 674, 713, 756, 800,
+            848, 898, 951, 1008, 1068, 1131, 1199, 1270, 1345, 1425, 1510, 1600, 1693, 1792, 1897, 2008,
+            2125, 2249, 2381, 2521, 2669, 2826, 2992, 3168, 3354, 3552, 3761, 3983, 4218, 4467, 4731, 5010,
+            5306, 5620, 5952, 6304, 6677, 7072, 7491, 7934, 8404, 8902, 9429, 9988, 10580, 11207, 11872, 12576
+        };
+
+        /// <summary>Grip-LRA drive frequency that perceives the SAME pitch as a trackpad
+        /// driven at <paramref name="trackpadHz"/>. The reference establishes the
+        /// matched pairs (trackpad = TritonTrackpadHz[n], grip = TritonGripHz[n]), so the
+        /// exact grip drive is the piecewise-linear image of trackpadHz under that map.
+        /// This reproduces the proven grip/trackpad pitch relationship at EVERY frequency
+        /// (the inter-actuator beat is ~0 at every tabulated point), not a constant
+        /// approximation that only fits one band.</summary>
+        public static float TritonGripDriveHz(float trackpadHz)
+        {
+            var tr = TritonTrackpadHz; var rb = TritonGripHz;
+            int last = tr.Length - 1;
+            if (trackpadHz <= tr[1]) return trackpadHz * ((float)rb[1] / tr[1]);          // below 9 Hz: low-end ratio
+            if (trackpadHz >= tr[last]) return trackpadHz * ((float)rb[last] / tr[last]);  // above 12.5 kHz: end ratio
+            int lo = 1;
+            for (int i = 1; i < last; i++)
+                if (tr[i] <= trackpadHz && trackpadHz < tr[i + 1]) { lo = i; break; }
+            int hi = lo + 1;
+            float span = tr[hi] - tr[lo];
+            if (span <= 0f) return rb[lo];
+            float t = (trackpadHz - tr[lo]) / span;
+            return rb[lo] + (rb[hi] - rb[lo]) * t;
+        }
 
         /// <summary>Encodes one (frequency Hz, amplitude 0..1) tone for ONE Triton
         /// actuator into the 10-byte <c>0x83</c> LFO-tone OUTPUT report, byte for
@@ -245,9 +281,9 @@ namespace PadForge.Engine.Haptics
             // uint16 LE in Hz. Use exact LE (the firmware reads LE). The reference's
             // freq%0xFF / freq/0xFF split is a propagated SteamControllerSinger quirk
             // that is ~1 Hz off and inaudible, so the exact form is preferred.
-            // Grips need the Rb/Tr drive correction (~+2.4%) so they sound the same
+            // Grips are driven through the per-note Tr->Rb map so they sound the same
             // pitch as the trackpads (midiFrequencyRb vs midiFrequencyTr, main.cpp:36-37).
-            float driveHz = TritonIsGrip(haptic) ? freqHz * TritonGripFreqScale : freqHz;
+            float driveHz = TritonIsGrip(haptic) ? TritonGripDriveHz(freqHz) : freqHz;
             ushort f = driveHz > 65535f ? (ushort)65535 : (ushort)driveHz;
             b[3] = (byte)(f & 0xFF);
             b[4] = (byte)(f >> 8);

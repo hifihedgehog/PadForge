@@ -209,19 +209,23 @@ namespace PadForge.Tests
             Assert.Equal(10, r.Length);
             Assert.Equal(0x83, r[0]);                    // ID_OUT_REPORT_HAPTIC_LFO_TONE
             Assert.Equal(3, r[1]);                       // actuator index in byte 1
-            Assert.Equal(127, unchecked((sbyte)r[2]));   // amp 1.0 -> +127 (full output)
+            Assert.Equal(0, unchecked((sbyte)r[2]));     // amp 1.0 -> 0 dB (unity, NOT +127)
             Assert.Equal(440, r[3] | (r[4] << 8));       // frequency Hz, LE
             Assert.Equal(0x7FFF, r[5] | (r[6] << 8));    // duration = sustain
         }
 
         [Fact]
-        public void TritonTone_GainMonotonicFullRange_AndStopForm()
+        public void TritonTone_GainIsDbNeverPositive_AndStopForm()
         {
+            // gain_db: 0 dB at full amp (unity, the reference level), 20*log10(amp)
+            // below, never positive (positive dB clips the firmware limiter).
             sbyte gFull = unchecked((sbyte)HapticToneEncoder.EncodeTritonTone(0, 440f, 1.0f)[2]);
             sbyte gMid = unchecked((sbyte)HapticToneEncoder.EncodeTritonTone(0, 440f, 0.5f)[2]);
             sbyte gLow = unchecked((sbyte)HapticToneEncoder.EncodeTritonTone(0, 440f, 0.1f)[2]);
-            Assert.Equal(127, gFull);                       // amp 1 -> max (not 0 dB / half)
-            Assert.True(gFull > gMid && gMid > gLow, $"gain not monotonic: {gFull},{gMid},{gLow}");
+            Assert.Equal(0, gFull);                         // amp 1 -> 0 dB unity
+            Assert.Equal(-6, gMid);                         // 20*log10(0.5) = -6 dB
+            Assert.Equal(-20, gLow);                        // 20*log10(0.1) = -20 dB
+            Assert.True(gFull > gMid && gMid > gLow, "monotonic, never positive");
 
             // Stop form: amp<=0 or freq<=0 -> byte2 0x80, byte6 0x80, actuator kept.
             byte[] stop = HapticToneEncoder.EncodeTritonTone(4, 0f, 0f);
@@ -425,7 +429,7 @@ namespace PadForge.Tests
             Assert.Equal(0x03, blob[3]);
             Assert.Equal(440 % 0xFF, blob[6]);
             Assert.Equal(440 / 0xFF, blob[7]);
-            Assert.Equal(0x7F, blob[5]);    // full amp -> +127 (main.cpp:300 directVel)
+            Assert.Equal(0x00, blob[5]);    // full amp -> 0 dB unity (gain_db, the proven curve level)
             Assert.Equal(0xFF, blob[8]);    // duration 0x7FFF sustain, low byte
             Assert.Equal(0x7F, blob[9]);    // ... high byte (was 0x80 from the %0xFF bug)
         }

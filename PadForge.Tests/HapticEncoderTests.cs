@@ -248,12 +248,14 @@ namespace PadForge.Tests
         [Fact]
         public void TritonGrip_GetsTwoPercentFreqCorrection_TrackpadDoesNot()
         {
-            // Trackpad (0,1): raw Hz (Tr table ~= real Hz). Grip (3,4): Hz * 1.0205
-            // (Rb table = real Hz * 1.0205), so both sound the same pitch.
+            // Trackpad (0,1): raw note Hz. Grip (3,4): Hz * Rb/Tr (1.0239) so the grip
+            // sounds the SAME pitch as the trackpad. At A4 the grip drive is 440*1.0239
+            // = 450, which equals 440 * (Rb[69]/Tr[69]) = 440 * 449/439 = 450.0 -- the
+            // reference's own grip-to-trackpad ratio for a trackpad driven at 440.
             byte[] pad = HapticToneEncoder.EncodeTritonTone(1, 440f, 1.0f);
             byte[] grip = HapticToneEncoder.EncodeTritonTone(3, 440f, 1.0f);
             Assert.Equal(440, pad[3] | (pad[4] << 8));           // trackpad: raw 440
-            Assert.Equal((int)(440 * 1.0205f), grip[3] | (grip[4] << 8)); // grip: 448 (matches Rb[69]=449 within rounding)
+            Assert.Equal((int)(440 * 1.0239f), grip[3] | (grip[4] << 8)); // grip: 450
         }
 
         // ─── Wii speaker Yamaha ADPCM (dolphin Speaker.cpp) ───

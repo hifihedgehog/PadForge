@@ -268,22 +268,23 @@ namespace PadForge.Engine.Haptics
         //  main.cpp:279-294 (the device-specific Jupiter path).
         // ─────────────────────────────────────────────────────────────
 
-        /// <summary>Steam Deck (Jupiter) tone, report <c>0xEA</c>, 64-byte SET_FEATURE
-        /// (control transfer in the reference). <paramref name="haptic"/> 0/1.
-        /// Frequency is carried in Hz directly. Mirrors SteamHapticsSinger
-        /// main.cpp:279-286, the device-specific Jupiter path.
+        /// <summary>Steam Deck (Jupiter) tone, report <c>0xEA</c>, 64-byte SET_FEATURE.
+        /// <paramref name="haptic"/> is the channel 0/1, both driven. amp&lt;=0 or
+        /// freq&lt;=0 emits the reference NOTE_STOP form (gain 0x80, byte9 0x80). The
+        /// active form, byte for byte against SteamHapticsSinger main.cpp:287-305:
+        /// byte2 = !channel, byte3 = 0x03, byte5 = gain_db (AmpToGainDb, 0 dB unity,
+        /// NOT the +127 velocity slam), byte6:7 = freq %0xFF / /0xFF, byte8:9 = 0xFF/0x7F
+        /// (0x7FFF sustain, hardcoded, not a %0xFF split).
         ///
-        /// Reference choice (hypothesis-under-test on hardware): the two Steam
-        /// references disagree on the Deck. SteamHapticsSinger drives it with this
-        /// dedicated 0xEA Jupiter report; the older SteamControllerSinger drives the
-        /// Deck (0x1205) through the generic 2015 0x8F path. PadForge follows the
-        /// device-specific one (0xEA). amp&lt;=0 or freq&lt;=0 emits the reference
-        /// NOTE_STOP form (gain 0x80, byte9 0x80); the active form hardcodes the
-        /// 0x7FFF (sustain) duration bytes the reference uses, NOT a %0xFF split.
-        /// Byte for byte against SteamHapticsSinger main.cpp:287-305 (the Jupiter
-        /// case): byte2 = !channel, byte3 = 0x03, byte5 = signed velocity gain
-        /// (amp*255-128, directVel), byte6:7 = freq %0xFF / /0xFF, byte8:9 = 0xFF/0x7F.
-        /// haptic is the channel (0/1). Both are driven for full output.</summary>
+        /// THIS PATH IS THE LEAST REFERENCE-GROUNDED, unresolved without Deck hardware.
+        /// Three references disagree. SteamControllerSinger drives the Deck (0x1205,
+        /// main.cpp:58) via the COMPLETE generic 0x8F path with a working period
+        /// frequency. SteamHapticsSinger drives it via this 0xEA Jupiter report but left
+        /// its freq table a stub (midiFrequencyDk = {440,0,0...}, main.cpp:35), so its
+        /// 0xEA frequency was never real. SDL's own Deck driver (SDL_hidapi_steamdeck.c:
+        /// 429) uses 0xEB SimpleRumbleCmd (amplitude rumble, NOT tones), so it cannot
+        /// break the 0xEA-vs-0x8F tie. PadForge sends raw Hz over 0xEA (the
+        /// device-specific report), but the choice is a coin flip until a Deck is tested.</summary>
         public static byte[] EncodeSteamDeck(float freqHz, float amp, int haptic = 0)
         {
             var blob = new byte[64];

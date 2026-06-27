@@ -205,12 +205,12 @@ namespace PadForge.Tests
         [Fact]
         public void TritonTone_LayoutMatchesSteamHapticsSinger()
         {
-            byte[] r = HapticToneEncoder.EncodeTritonTone(haptic: 3, freqHz: 440f, amp: 1.0f);
+            byte[] r = HapticToneEncoder.EncodeTritonTone(haptic: 1, freqHz: 440f, amp: 1.0f);
             Assert.Equal(10, r.Length);
             Assert.Equal(0x83, r[0]);                    // ID_OUT_REPORT_HAPTIC_LFO_TONE
-            Assert.Equal(3, r[1]);                       // actuator index in byte 1
+            Assert.Equal(1, r[1]);                       // actuator index in byte 1 (trackpad)
             Assert.Equal(0, unchecked((sbyte)r[2]));     // amp 1.0 -> 0 dB (unity, NOT +127)
-            Assert.Equal(440, r[3] | (r[4] << 8));       // frequency Hz, LE
+            Assert.Equal(440, r[3] | (r[4] << 8));       // trackpad: raw Hz, LE
             Assert.Equal(0x7FFF, r[5] | (r[6] << 8));    // duration = sustain
         }
 
@@ -243,6 +243,17 @@ namespace PadForge.Tests
             Assert.False(HapticToneEncoder.TritonIsGrip(1));  // trackpad
             Assert.True(HapticToneEncoder.TritonIsGrip(3));   // grip
             Assert.True(HapticToneEncoder.TritonIsGrip(4));   // grip
+        }
+
+        [Fact]
+        public void TritonGrip_GetsTwoPercentFreqCorrection_TrackpadDoesNot()
+        {
+            // Trackpad (0,1): raw Hz (Tr table ~= real Hz). Grip (3,4): Hz * 1.0205
+            // (Rb table = real Hz * 1.0205), so both sound the same pitch.
+            byte[] pad = HapticToneEncoder.EncodeTritonTone(1, 440f, 1.0f);
+            byte[] grip = HapticToneEncoder.EncodeTritonTone(3, 440f, 1.0f);
+            Assert.Equal(440, pad[3] | (pad[4] << 8));           // trackpad: raw 440
+            Assert.Equal((int)(440 * 1.0205f), grip[3] | (grip[4] << 8)); // grip: 448 (matches Rb[69]=449 within rounding)
         }
 
         // ─── Wii speaker Yamaha ADPCM (dolphin Speaker.cpp) ───

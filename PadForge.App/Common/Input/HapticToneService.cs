@@ -700,24 +700,21 @@ namespace PadForge.Common.Input
             }
         }
 
-        // ── Steam Controller 2015 + 2026 (0x8F SET_FEATURE) ──
-        // SteamControllerSinger sends the 64-byte 0x8F blob via
-        // libusb_control_transfer(0x21, 9 SET_REPORT, 0x0300 feature/id-0). On
-        // Windows HID that is a feature report with the report-id byte (0x00)
-        // prepended.
+        // ── Steam Controller 2015 (0x8F SET_FEATURE via SDL) ──
+        // Only the 2015 (Family.Steam) uses this now. The Triton drives its own raw
+        // handle (TritonSend). SteamControllerSinger sends the 64-byte 0x8F blob via
+        // libusb SET_REPORT (feature, id 0); on Windows HID that is the report-id
+        // byte (0x00) prepended, a 65-byte feature report.
         private static void SteamSendBlob(Sink s, byte[] blob64)
         {
-            // Steam Controllers are held open by SDL (it reads input, and its own
-            // SDL_RumbleJoystick already drives this actuator), so a second raw write
-            // handle loses the BLE link and nothing buzzes. Send the tone through
-            // SDL's own connection: the Triton driver routes SDL_SendGamepadEffect ->
-            // SDL_hid_send_feature_report. It requires EXACTLY 64 bytes
-            // (HID_FEATURE_REPORT_BYTES, SDL controller_structs.h:26): report id 0x00
-            // followed by the 0x8f blob. Proven over Bluetooth by steam_controller_tools
-            // (WebHID sendFeatureReport) and SteamlessController.
             if (s.GamepadHandle != IntPtr.Zero)
             {
-                var eff = new byte[64];
+                // SDL's 2015 Steam driver forwards the feature ONLY at size == 65
+                // (SDL_hidapi_steam.c:1307: SetFeatureReport of report-id 0x00 + the
+                // 64-byte 0x8f blob). Any other size returns SDL_Unsupported and
+                // silently drops the tone. The previous 64-byte send both missed that
+                // gate AND truncated blob64's last byte (Min(64, 63)).
+                var eff = new byte[65];
                 eff[0] = 0x00;
                 Array.Copy(blob64, 0, eff, 1, Math.Min(blob64.Length, eff.Length - 1));
                 try { SDL3.SDL.SDL_SendGamepadEffect(s.GamepadHandle, eff, 0, eff.Length); } catch { }

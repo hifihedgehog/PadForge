@@ -63,9 +63,9 @@ namespace PadForge.Common.Input
         // Protocol per family is verified against SteamHapticsSinger / SteamControllerSinger
         // / joycon-singer; same-family PIDs are the same controller over a different
         // transport (wired / BLE / dongle) and share the report format.
-        private enum Family { None, JoyConL, JoyConR, Pro, Steam, Steam2026, SteamDeck }
+        private enum Family { None, JoyConL, JoyConR, Pro, JoyConPair, Steam, Steam2026, SteamDeck }
 
-        private static bool IsJoyConGen1(Family f) => f == Family.JoyConL || f == Family.JoyConR || f == Family.Pro;
+        private static bool IsJoyConGen1(Family f) => f == Family.JoyConL || f == Family.JoyConR || f == Family.Pro || f == Family.JoyConPair;
 
         private static Family FamilyOf(Engine.Data.UserDevice ud)
         {
@@ -76,6 +76,14 @@ namespace PadForge.Common.Input
                 {
                     case 0x2006: return Family.JoyConL;   // Switch Joy-Con (Left)
                     case 0x2007: return Family.JoyConR;   // Switch Joy-Con (Right)
+                    // Combined gen-1 Joy-Con pair (SwitchJoyConPair, controller_list.h:589).
+                    // SDL combines two Joy-Cons by default (HIDAPI_COMBINE_JOY_CONS = "1",
+                    // SDL_hints.h:1623), so a paired set enumerates as 0x2008 -- without
+                    // this it would get no Audio tab. Two coils, same 0x10 packet as the
+                    // Pro (both halves filled). The handle reaches the Joy-Con its
+                    // DevicePath resolves to; full dual-coil drive would need the second
+                    // Joy-Con's path too, which the one-handle sink does not carry yet.
+                    case 0x2008: return Family.JoyConPair;
                     case 0x2009: return Family.Pro;       // Switch Pro Controller
                     // Switch 2 (0x2066/0x2067/0x2068/0x2069) intentionally excluded:
                     // no reference plays a tone on its actuator (see class doc).

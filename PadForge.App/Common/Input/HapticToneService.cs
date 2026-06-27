@@ -966,13 +966,22 @@ namespace PadForge.Common.Input
         public static void Shutdown()
         {
             _suppressed = true;
+            // Snapshot under the lock, tear down OUTSIDE it. TeardownSink does a
+            // Thread.Join(3000) and a WASAPI capture dispose; holding _lock across
+            // those stalls every other _lock caller (GetSlotSinkMixers macro playback,
+            // Reconcile) for up to 3 s per sink. This matches AudioPassthroughService.
+            // Shutdown and this service's own Reconcile, which both tear down outside
+            // the lock. (WiiSpeakerService.Shutdown still tears down under the lock --
+            // same latent stall, out of this change's scope.)
+            List<Sink> drop;
             lock (_lock)
             {
                 try { _reconcileTimer?.Dispose(); } catch { }
                 _reconcileTimer = null;
-                foreach (var s in _sinks) TeardownSink(s);
+                drop = _sinks.ToList();
                 _sinks.Clear();
             }
+            foreach (var s in drop) TeardownSink(s);
         }
     }
 }

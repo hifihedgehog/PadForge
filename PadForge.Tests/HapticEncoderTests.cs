@@ -248,14 +248,20 @@ namespace PadForge.Tests
         [Fact]
         public void TritonGrip_GetsTwoPercentFreqCorrection_TrackpadDoesNot()
         {
-            // Trackpad (0,1): raw note Hz. Grip (3,4): Hz * Rb/Tr (1.0239) so the grip
-            // sounds the SAME pitch as the trackpad. At A4 the grip drive is 440*1.0239
-            // = 450, which equals 440 * (Rb[69]/Tr[69]) = 440 * 449/439 = 450.0 -- the
-            // reference's own grip-to-trackpad ratio for a trackpad driven at 440.
-            byte[] pad = HapticToneEncoder.EncodeTritonTone(1, 440f, 1.0f);
-            byte[] grip = HapticToneEncoder.EncodeTritonTone(3, 440f, 1.0f);
-            Assert.Equal(440, pad[3] | (pad[4] << 8));           // trackpad: raw 440
-            Assert.Equal((int)(440 * 1.0239f), grip[3] | (grip[4] << 8)); // grip: 450
+            // Trackpad (0,1): raw note Hz. Grip (3,4): driven through the reference's
+            // per-note Tr->Rb map so it sounds the SAME pitch as the trackpad. At a
+            // TABULATED trackpad freq the grip drive equals Rb[n] exactly: Tr[69]=439 ->
+            // Rb[69]=449, Tr[81]=877 -> Rb[81]=898 (SteamHapticsSinger main.cpp:36-37).
+            byte[] pad = HapticToneEncoder.EncodeTritonTone(1, 439f, 1.0f);
+            byte[] grip = HapticToneEncoder.EncodeTritonTone(3, 439f, 1.0f);
+            Assert.Equal(439, pad[3] | (pad[4] << 8));            // trackpad: raw 439
+            Assert.Equal(449, grip[3] | (grip[4] << 8));          // grip: exact Rb[69]
+            byte[] gripHi = HapticToneEncoder.EncodeTritonTone(4, 877f, 1.0f);
+            Assert.Equal(898, gripHi[3] | (gripHi[4] << 8));      // grip: exact Rb[81]
+            // Grip drive is always above the trackpad drive (grip LRA needs more) and the
+            // ratio is per-note, not a fixed constant: higher at low freq than at high.
+            Assert.True(HapticToneEncoder.TritonGripDriveHz(110f) / 110f
+                      > HapticToneEncoder.TritonGripDriveHz(2093f) / 2093f);
         }
 
         // ─── Wii speaker Yamaha ADPCM (dolphin Speaker.cpp) ───

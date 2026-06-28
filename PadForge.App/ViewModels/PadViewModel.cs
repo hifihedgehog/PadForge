@@ -3511,12 +3511,12 @@ namespace PadForge.ViewModels
                 () =>
                 {
                     var dev = SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
-                    // Haptic devices get a fixed, known tone driven straight to the
-                    // encoder (deterministic -- no audio-path detection to garble).
-                    // The no-op-if-no-sink call is harmless for speaker-only devices,
-                    // which PlayTestBeep still demos through their audio path.
-                    PadForge.Common.Input.HapticToneService.TriggerTestTone(PadIndex, dev);
-                    PadForge.Common.Input.SoundMacroService.PlayTestBeep(PadIndex, dev);
+                    // Haptic devices get ONLY the fixed direct-drive tone -- no audio
+                    // beep is injected into their mixer at all, so the pitch reducer is
+                    // never involved and repeated presses at any interval can't garble.
+                    // Speaker-only devices (no haptic sink) fall back to the audio beep.
+                    if (!PadForge.Common.Input.HapticToneService.TriggerTestTone(PadIndex, dev))
+                        PadForge.Common.Input.SoundMacroService.PlayTestBeep(PadIndex, dev);
                 },
                 () => HasSelectedDevice);
 

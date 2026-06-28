@@ -67,6 +67,31 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void Reducer_Reset_ClearsHeldPitch_NoBleedFromPriorSound()
+        {
+            // The Audio-tab test beep is 880 Hz and runs through the same reducer as
+            // a sound macro. Without a reset on idle, _lastFreq stays at 880 and a
+            // macro played afterwards rings its unvoiced segments at 880 instead of
+            // the 220 default -- the phantom high-frequency component reported on a
+            // real Triton. Reset() (called when the sink goes idle) must clear it.
+            var r = new HapticToneReducer(Rate);
+            var buf = new float[Tick];
+            double ph = 0, dph = 2.0 * Math.PI * 880.0 / Rate;
+            for (int t = 0; t < 30; t++)
+            {
+                for (int i = 0; i < Tick; i++) { buf[i] = (float)(0.5 * Math.Sin(ph)); ph += dph; }
+                r.Push(buf, Tick);
+            }
+            var (heldBefore, _) = r.Push(new float[Tick], Tick); // unvoiced read holds the beep pitch
+            Assert.InRange(heldBefore, 880f * 0.80f, 880f * 1.22f);
+
+            r.Reset();
+            var (heldAfter, amp) = r.Push(new float[Tick], Tick); // silence after the reset
+            Assert.Equal(0f, amp);
+            Assert.Equal(220f, heldAfter); // back to default, NOT the leftover 880
+        }
+
+        [Fact]
         public void Reducer_Amplitude_TracksInputLevel()
         {
             var (_, loud) = DetectSine(220f, 0.8f);

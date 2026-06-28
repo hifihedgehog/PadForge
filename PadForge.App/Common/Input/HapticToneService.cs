@@ -127,9 +127,10 @@ namespace PadForge.Common.Input
         /// frequency the original test beep used and rendered cleanly -- it sits OFF
         /// the LRA resonance, so it does not overdrive/rumble the way a near-resonance
         /// tone at full amplitude does. No-op if no sink for (slot, device) exists.</summary>
-        public static void TriggerTestTone(int slot, Guid deviceGuid, float freqHz = 880f, int durationMs = 350)
+        public static bool TriggerTestTone(int slot, Guid deviceGuid, float freqHz = 880f, int durationMs = 350)
         {
-            if (deviceGuid == Guid.Empty) return;
+            if (deviceGuid == Guid.Empty) return false;
+            bool found = false;
             lock (_lock)
             {
                 foreach (var s in _sinks)
@@ -137,8 +138,10 @@ namespace PadForge.Common.Input
                     {
                         s.TestHz = freqHz;
                         s.TestUntilMs = Environment.TickCount64 + durationMs;
+                        found = true;
                     }
             }
+            return found;
         }
 
         // Mixer rate matches SoundMacroService so decoded PCM mixes in cleanly.

@@ -123,10 +123,11 @@ namespace PadForge.Common.Input
         /// <paramref name="durationMs"/>, bypassing the audio mixer + resampler +
         /// pitch reducer entirely. The Audio-tab Test button uses this for haptic
         /// devices: re-detecting a known frequency through the audio path is pure
-        /// failure surface and was the inconsistent "garbled test tone". 220 Hz sits
-        /// near the LRA's responsive band for a strong, clean buzz. No-op if no sink
-        /// for (slot, device) exists yet.</summary>
-        public static void TriggerTestTone(int slot, Guid deviceGuid, float freqHz = 220f, int durationMs = 350)
+        /// failure surface and was the inconsistent "garbled test tone". 880 Hz is the
+        /// frequency the original test beep used and rendered cleanly -- it sits OFF
+        /// the LRA resonance, so it does not overdrive/rumble the way a near-resonance
+        /// tone at full amplitude does. No-op if no sink for (slot, device) exists.</summary>
+        public static void TriggerTestTone(int slot, Guid deviceGuid, float freqHz = 880f, int durationMs = 350)
         {
             if (deviceGuid == Guid.Empty) return;
             lock (_lock)

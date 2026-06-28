@@ -66,6 +66,39 @@ namespace PadForge.Tests
             Assert.Equal(0f, last.Amp);
         }
 
+        [Theory]
+        [InlineData(0)]    // phase-aligned beep onset
+        [InlineData(3)]    // beep starts mid-tick (offset samples), worst-case alignment
+        [InlineData(7)]
+        [InlineData(40)]
+        public void Reducer_AfterReset_BeepOnsetIsStable_NoGarble(int startOffset)
+        {
+            // Simulate the Audio-tab test beep (880 Hz) starting right after a Reset
+            // (sink was idle). Every voiced tick from the onset must report ~880 with
+            // NO octave error / garble. "Hit or miss" garble = some onset tick lands
+            // on a wrong lag because the autocorrelation window is too short.
+            var r = new HapticToneReducer(Rate);
+            r.Reset();
+            var buf = new float[Tick];
+            double ph = 2.0 * Math.PI * 880.0 / Rate * startOffset; // vary onset phase
+            double dph = 2.0 * Math.PI * 880.0 / Rate;
+            float prev = -1f;
+            for (int t = 0; t < 12; t++)
+            {
+                for (int i = 0; i < Tick; i++) { buf[i] = (float)(1.0 * Math.Sin(ph)); ph += dph; }
+                var (hz, amp) = r.Push(buf, Tick);
+                if (amp <= 0.1f) continue;
+                Assert.InRange(hz, 880f * 0.80f, 880f * 1.22f); // no octave error
+                // Consecutive voiced ticks must not jump more than the Triton re-arm
+                // threshold (3% + 1 Hz). A tick-to-tick jitter past that re-triggers
+                // the 0x83 attack every tick = audible garble on a steady tone.
+                if (prev > 0f)
+                    Assert.True(Math.Abs(hz - prev) <= prev * 0.03f + 1f,
+                        $"onset jitter {prev}->{hz} Hz exceeds the re-arm threshold (garble)");
+                prev = hz;
+            }
+        }
+
         [Fact]
         public void Reducer_Reset_ClearsHeldPitch_NoBleedFromPriorSound()
         {

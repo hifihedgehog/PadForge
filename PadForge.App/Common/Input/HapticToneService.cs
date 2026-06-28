@@ -194,10 +194,13 @@ namespace PadForge.Common.Input
             // not every tick (a control transfer per 10 ms would saturate).
             public bool SteamOn;
             public float SteamLastFreq;
-            // Last amplitude sent on the gain-carrying paths (Triton 0x83, Deck
-            // 0xEA), so a sustained note re-arms when the envelope steps, not every
-            // tick. The 2015 0x8f square has no working gain, so it ignores this.
+            // Last amplitude sent on the gain-carrying paths (Triton 0x83), so a
+            // sustained note re-arms when the envelope steps, not every tick. The
+            // 0x8f square (2015 + Deck) has no working gain, so it ignores this.
             public float SteamLastAmp;
+            // True once the reducer has been cleared for the current idle period, so
+            // we reset it exactly once when a sound ends (not every idle tick).
+            public bool ReducerIdle;
 
             // System-audio passthrough mirror (same option DualSense/Wii expose).
             public bool MirrorOn;
@@ -769,8 +772,16 @@ namespace PadForge.Common.Input
                     float peak = 0f;
                     for (int i = 0; i < SamplesPerTick; i++) { float a = monoF[i]; if (a < 0f) a = -a; if (a > peak) peak = a; }
                     float toneHz, amp;
-                    if (peak <= 0.002f) { toneHz = 0f; amp = 0f; }
-                    else { (toneHz, amp) = s.Reducer.Push(monoF, SamplesPerTick); }
+                    if (peak <= 0.002f)
+                    {
+                        toneHz = 0f; amp = 0f;
+                        // Sink idle: clear the reducer's held pitch so the NEXT sound
+                        // starts fresh. Otherwise the prior sound (e.g. the 880 Hz test
+                        // beep) leaves _lastFreq high and bleeds a phantom high-frequency
+                        // component into the unvoiced segments of whatever plays next.
+                        if (!s.ReducerIdle) { s.Reducer.Reset(); s.ReducerIdle = true; }
+                    }
+                    else { s.ReducerIdle = false; (toneHz, amp) = s.Reducer.Push(monoF, SamplesPerTick); }
 
                     long nowMs = Environment.TickCount64;
                     bool audible = amp > 0.02f;

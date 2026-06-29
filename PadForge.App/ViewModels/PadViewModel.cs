@@ -3508,7 +3508,16 @@ namespace PadForge.ViewModels
         private RelayCommand _soundTestCommand;
         public RelayCommand SoundTestCommand =>
             _soundTestCommand ??= new RelayCommand(
-                () => PadForge.Common.Input.SoundMacroService.PlayTestBeep(PadIndex, SelectedMappedDevice?.InstanceGuid ?? Guid.Empty),
+                () =>
+                {
+                    var dev = SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+                    // Haptic devices play ONLY the direct fixed-tone (no beep injected,
+                    // so the reducer never sees it -> no detection garble, no bleed into
+                    // a following macro). Speaker-only devices (no haptic sink, returns
+                    // false) demo through the audio beep.
+                    if (!PadForge.Common.Input.HapticToneService.TriggerTestTone(dev))
+                        PadForge.Common.Input.SoundMacroService.PlayTestBeep(PadIndex, dev);
+                },
                 () => HasSelectedDevice);
 
         private RelayCommand _soundStopAllCommand;

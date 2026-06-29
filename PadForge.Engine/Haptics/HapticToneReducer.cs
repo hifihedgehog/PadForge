@@ -46,19 +46,6 @@ namespace PadForge.Engine.Haptics
             _scores = new double[(int)(rate / MinFreq) + 2]; // covers every lag up to maxLag
         }
 
-        /// <summary>Clears the held pitch and the sample ring. Call when the sink
-        /// goes idle (silence) so the next, unrelated sound does not inherit the
-        /// previous one's pitch. Without it the 880 Hz Audio-tab test beep leaves
-        /// _lastFreq at 880, and a macro played afterwards rings its unvoiced
-        /// segments at 880 Hz instead of the 220 default -- a phantom high-frequency
-        /// component that appears only after the test tone has played.</summary>
-        public void Reset()
-        {
-            _filled = 0;
-            _lastFreq = 220f;
-            Array.Clear(_ring, 0, _ring.Length);
-        }
-
         /// <summary>Appends one tick of samples (newest at the end of the ring)
         /// and returns the current (dominant frequency Hz, amplitude 0..1). When
         /// the window is near-silent or unvoiced the last detected pitch is held

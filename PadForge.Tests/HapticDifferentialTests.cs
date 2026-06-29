@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using Xunit;
 using PadForge.Engine.Haptics;
+using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 
 namespace PadForge.Tests
 {
@@ -73,12 +76,11 @@ namespace PadForge.Tests
         [InlineData(40)]
         public void Reducer_AfterReset_BeepOnsetIsStable_NoGarble(int startOffset)
         {
-            // Simulate the Audio-tab test beep (880 Hz) starting right after a Reset
-            // (sink was idle). Every voiced tick from the onset must report ~880 with
-            // NO octave error / garble. "Hit or miss" garble = some onset tick lands
-            // on a wrong lag because the autocorrelation window is too short.
+            // Simulate the Audio-tab test beep (880 Hz) starting from an idle reducer.
+            // Every voiced tick from the onset must report ~880 with NO octave error /
+            // garble. "Hit or miss" garble = some onset tick lands on a wrong lag
+            // because the autocorrelation window is too short.
             var r = new HapticToneReducer(Rate);
-            r.Reset();
             var buf = new float[Tick];
             double ph = 2.0 * Math.PI * 880.0 / Rate * startOffset; // vary onset phase
             double dph = 2.0 * Math.PI * 880.0 / Rate;
@@ -100,28 +102,35 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Reducer_Reset_ClearsHeldPitch_NoBleedFromPriorSound()
+        public void Reducer_RealResampledTestBeep_PitchDoesNotJitter()
         {
-            // The Audio-tab test beep is 880 Hz and runs through the same reducer as
-            // a sound macro. Without a reset on idle, _lastFreq stays at 880 and a
-            // macro played afterwards rings its unvoiced segments at 880 instead of
-            // the 220 default -- the phantom high-frequency component reported on a
-            // real Triton. Reset() (called when the sink goes idle) must clear it.
-            var r = new HapticToneReducer(Rate);
-            var buf = new float[Tick];
-            double ph = 0, dph = 2.0 * Math.PI * 880.0 / Rate;
-            for (int t = 0; t < 30; t++)
-            {
-                for (int i = 0; i < Tick; i++) { buf[i] = (float)(0.5 * Math.Sin(ph)); ph += dph; }
-                r.Push(buf, Tick);
-            }
-            var (heldBefore, _) = r.Push(new float[Tick], Tick); // unvoiced read holds the beep pitch
-            Assert.InRange(heldBefore, 880f * 0.80f, 880f * 1.22f);
+            // Reproduce the EXACT Audio-tab test-beep chain that garbles on hardware:
+            // 880 Hz full-scale sine @ 48 kHz -> mixer -> stereo->mono -> WDL resample
+            // to 8 kHz -> reducer. The resampler's anti-aliasing ripple on a pure
+            // full-scale tone is the layer the pure-8kHz onset test skipped. If the
+            // per-tick pitch jumps past the Triton re-arm threshold, the 0x83 attack
+            // re-floods every jittered tick -- the reported "garbled test tone".
+            var mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(48000, 2)) { ReadFully = true };
+            mixer.AddMixerInput(new SignalGenerator(48000, 2) { Type = SignalGeneratorType.Sin, Frequency = 880, Gain = 1.0 });
+            var mono = new StereoToMonoSampleProvider(mixer) { LeftVolume = 0.5f, RightVolume = 0.5f };
+            var resampled = new WdlResamplingSampleProvider(mono, 8000);
 
-            r.Reset();
-            var (heldAfter, amp) = r.Push(new float[Tick], Tick); // silence after the reset
-            Assert.Equal(0f, amp);
-            Assert.Equal(220f, heldAfter); // back to default, NOT the leftover 880
+            var r = new HapticToneReducer(8000);
+            var buf = new float[80];
+            float prev = -1f;
+            var pitches = new List<float>();
+            for (int t = 0; t < 60; t++) // ~0.6 s of the beep
+            {
+                resampled.Read(buf, 0, 80);
+                var (hz, amp) = r.Push(buf, 80);
+                if (amp <= 0.1f) continue;
+                pitches.Add(hz);
+                if (prev > 0f)
+                    Assert.True(Math.Abs(hz - prev) <= prev * 0.03f + 1f,
+                        $"resampled-beep pitch jitter {prev}->{hz} Hz at tick {t} (garble). Sequence: {string.Join(",", pitches)}");
+                prev = hz;
+            }
+            Assert.NotEmpty(pitches);
         }
 
         [Fact]

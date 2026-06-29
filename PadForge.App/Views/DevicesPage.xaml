@@ -245,6 +245,16 @@
                             </Button.Style>
                         </Button>
 
+                        <!-- Register / manage NFC tags (NFC readers only, issue #150) -->
+                        <Button Content="Register / Manage NFC Tags" Margin="0,6,0,8"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="RegisterNfcTag_Click"
+                                Visibility="{Binding SelectedDevice.ShowRegisterNfcTag, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
+
                         <Separator Margin="0,2,0,6"/>
 
                         <!-- Assign to slot -->

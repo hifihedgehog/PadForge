@@ -1197,6 +1197,8 @@ namespace PadForge.Services
             var vm = _mainVm.Settings;
             PadForge.Common.SoundPackageManager.LoadRegistry(
                 appSettings.SoundPackages?.Select(p => (p.Name, p.Path)));
+            PadForge.Common.Input.NfcTagRegistry.LoadRegistry(
+                appSettings.NfcTags?.Select(t => (t.Uid, t.Name)));
 
             // Remote Link (issue #138): carry the stored identity + trust list into
             // the runtime holder. No minting here — the identity is created lazily
@@ -2772,6 +2774,9 @@ namespace PadForge.Services
             var soundPackages = PadForge.Common.SoundPackageManager.SaveRegistry()
                 .Select(p => new SoundPackageData { Name = p.Name, Path = p.Path })
                 .ToArray();
+            var nfcTags = PadForge.Common.Input.NfcTagRegistry.SaveRegistry()
+                .Select(t => new NfcTagData { Uid = t.Uid, Name = t.Name })
+                .ToArray();
             // Sync the ViewModel toggle to the static state.
             SettingsManager.EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching;
 
@@ -2855,6 +2860,7 @@ namespace PadForge.Services
             return new AppSettingsData
             {
                 SoundPackages = soundPackages,
+                NfcTags = nfcTags,
                 // Remote Link (issue #138): persist the identity + trust list from
                 // the runtime holder (set on load / updated on pairing + revocation).
                 RemoteLinkIdentityPrivate = RemoteLink?.ProtectedPrivateBase64 ?? "",
@@ -3848,6 +3854,16 @@ namespace PadForge.Services
         public string Path { get; set; }
     }
 
+    /// <summary>A registered NFC tag (issue #150): UID (uppercase hex) + name.</summary>
+    public class NfcTagData
+    {
+        [XmlAttribute]
+        public string Uid { get; set; }
+
+        [XmlAttribute]
+        public string Name { get; set; }
+    }
+
     /// <summary>
     /// Root element for the PadForge settings XML file.
     /// </summary>
@@ -3905,6 +3921,12 @@ namespace PadForge.Services
         [XmlArray("SoundPackages")]
         [XmlArrayItem("Package")]
         public SoundPackageData[] SoundPackages { get; set; }
+
+        /// <summary>Registered NFC tags (issue #150): each UID + chosen name,
+        /// exposed by the NFC reader device as a named, bindable button.</summary>
+        [XmlArray("NfcTags")]
+        [XmlArrayItem("Tag")]
+        public NfcTagData[] NfcTags { get; set; }
 
         // ── Remote Link (issue #138) — global (per-machine), not per-profile ──
         /// <summary>This instance's static identity private key, DPAPI-protected

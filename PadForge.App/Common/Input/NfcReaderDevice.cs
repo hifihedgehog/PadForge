@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using PadForge.Engine;
@@ -12,19 +13,19 @@ namespace PadForge.Common.Input
     /// can trigger a macro through the existing raw-button machinery
     /// (issue #150, Path A). Modeled on <see cref="MidiInputDevice"/>.
     ///
-    /// M1 scope: the reader exposes a single momentary button, "Any NFC
-    /// Tag" (raw button 0). Presenting any ISO 14443 tag pulses it for
-    /// <see cref="PulseMs"/>, which is long enough for a 60 Hz macro poll
-    /// to catch the rising edge. The macro evaluator is untouched: it reads
-    /// <c>CustomInputState.Buttons[0]</c> through <c>CheckRawButtonTrigger</c>
+    /// Buttons: raw button 0 is "Any NFC Tag" (any ISO 14443 tag pulses it).
+    /// Each tag registered in <see cref="NfcTagRegistry"/> is its own button:
+    /// the n-th registered tag is raw button n (1-based), so a specific tag
+    /// fires only the macros bound to that tag. On a tap the reader pulses the
+    /// any-tag button AND, when the UID is registered, that tag's button, for
+    /// <see cref="PulseMs"/> -- long enough for a 60 Hz macro poll to catch the
+    /// rising edge. The macro evaluator is untouched: it reads
+    /// <c>CustomInputState.Buttons[n]</c> through <c>CheckRawButtonTrigger</c>
     /// exactly as for any other device assigned to the slot.
     ///
-    /// Per-UID specific-tag binding (a registry mapping each tag's UID to a
-    /// distinct button + a "Register tag" flow) is deferred to M3. The UID
-    /// the reader returns is already surfaced via <see cref="NfcReaderService.
-    /// TagDetected"/> for that later work; M1 deliberately matches "any tag"
-    /// so it needs no persisted registry and never touches the settings
-    /// serializer.
+    /// The tag set is read live from <see cref="NfcTagRegistry"/>, so registering
+    /// or removing a tag changes the exposed buttons immediately; the picker is
+    /// refreshed off <see cref="NfcTagRegistry.RegistryChanged"/> by InputService.
     /// </summary>
     internal sealed class NfcReaderDevice : ISdlInputDevice
     {
@@ -36,15 +37,16 @@ namespace PadForge.Common.Input
         /// falling edge and one OnPress per tap at any realistic poll rate.</summary>
         private const int PulseMs = 175;
 
-        // Raw button 0 = "Any NFC Tag".
+        // Raw button 0 = "Any NFC Tag". Registered tags are buttons 1..N.
         private const int AnyTagButton = 0;
 
         private readonly object _stateLock = new();
         private CustomInputState _state;
         private volatile bool _attached;
 
-        // Pulse expiry for the any-tag button (TickCount64). 0 = released.
-        private long _pulseUntil;
+        // Per-button pulse expiry (TickCount64); index 0 = any-tag, 1..N = tags.
+        // Sized to the engine's button capacity so a large tag set never overflows.
+        private readonly long[] _pulseUntil = new long[CustomInputState.MaxButtons];
 
         private readonly string _readerName;
         private Action<string, string> _handler;
@@ -60,16 +62,27 @@ namespace PadForge.Common.Input
             _state = new CustomInputState();
         }
 
+        // Button count is the any-tag button plus one per registered tag, read
+        // live so a newly registered tag is bindable without re-enumerating.
+        private static int ButtonCount => 1 + NfcTagRegistry.Count;
+
         // ─── ISdlInputDevice identity / capabilities ───
         public uint SdlInstanceId { get; }
         public string Name { get; }
         public int NumAxes => 0;
-        // One mappable button. RawButtonCount feeds the offline picker
-        // fallback; the live picker uses GetDeviceObjects below.
-        public int NumButtons => 1;
-        public int RawButtonCount => 1;
+        public int NumButtons => ButtonCount;
+        public int RawButtonCount => ButtonCount;
         public int NumHats => 0;
-        public int[] SupportedButtonIndices => new[] { AnyTagButton };
+        public int[] SupportedButtonIndices
+        {
+            get
+            {
+                int n = ButtonCount;
+                var a = new int[n];
+                for (int i = 0; i < n; i++) a[i] = i;
+                return a;
+            }
+        }
         public IntPtr GamepadHandle => IntPtr.Zero;
         public bool HasRumble => false;
         public bool HasRumbleTriggers => false;
@@ -94,19 +107,29 @@ namespace PadForge.Common.Input
         public bool SetRumble(ushort low, ushort high, uint durationMs = uint.MaxValue) => false;
         public bool StopRumble() => false;
 
-        // One DeviceObjectItem so the mapping picker lists "Any NFC Tag" as a
-        // bindable button (the deliberate divergence from MidiInputDevice's
-        // empty list). The macro stores its InputIndex as the raw button.
-        public DeviceObjectItem[] GetDeviceObjects() => new[]
+        // The mapping picker lists "Any NFC Tag" plus every registered tag by its
+        // chosen name, each a bindable button whose InputIndex is the raw button.
+        public DeviceObjectItem[] GetDeviceObjects()
         {
-            new DeviceObjectItem
+            var tags = NfcTagRegistry.Tags;
+            var items = new DeviceObjectItem[1 + tags.Count];
+            items[0] = new DeviceObjectItem
             {
                 Name = "Any NFC Tag",
                 ObjectType = DeviceObjectTypeFlags.PushButton,
                 ObjectTypeGuid = ObjectGuid.Button,
                 InputIndex = AnyTagButton,
-            }
-        };
+            };
+            for (int i = 0; i < tags.Count; i++)
+                items[i + 1] = new DeviceObjectItem
+                {
+                    Name = tags[i].Name,
+                    ObjectType = DeviceObjectTypeFlags.PushButton,
+                    ObjectTypeGuid = ObjectGuid.Button,
+                    InputIndex = i + 1,
+                };
+            return items;
+        }
 
         // ─── Lifecycle ───
 
@@ -139,9 +162,13 @@ namespace PadForge.Common.Input
             // The monitor fans out to every device; take only our reader.
             if (!string.Equals(reader, _readerName, StringComparison.OrdinalIgnoreCase))
                 return;
+            long until = Environment.TickCount64 + PulseMs;
+            int tagButton = NfcTagRegistry.ButtonForUid(uid); // -1 when unregistered
             lock (_stateLock)
             {
-                _pulseUntil = Environment.TickCount64 + PulseMs;
+                _pulseUntil[AnyTagButton] = until;            // any tap fires "Any NFC Tag"
+                if (tagButton > 0 && tagButton < _pulseUntil.Length)
+                    _pulseUntil[tagButton] = until;           // ...and the specific tag, if registered
             }
         }
 
@@ -150,11 +177,14 @@ namespace PadForge.Common.Input
             lock (_stateLock)
             {
                 long now = Environment.TickCount64;
-                bool pressed = _pulseUntil != 0 && now < _pulseUntil;
-                if (!pressed) _pulseUntil = 0;
-
                 var s = _state.Clone();
-                s.Buttons[AnyTagButton] = pressed;
+                for (int b = 0; b < _pulseUntil.Length; b++)
+                {
+                    long until = _pulseUntil[b];
+                    if (until == 0) continue;
+                    if (now < until) s.Buttons[b] = true;
+                    else _pulseUntil[b] = 0; // expired
+                }
                 _state = s;
                 return s.Clone();
             }

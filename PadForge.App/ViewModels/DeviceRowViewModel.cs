@@ -440,7 +440,11 @@ namespace PadForge.ViewModels
         public bool IsGamepad => DeviceTypeKey == "Gamepad";
 
         /// <summary>True if this device can have community mappings submitted (joysticks only, not gamepads/mice/keyboards).</summary>
-        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Midi";
+        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc";
+
+        /// <summary>True for an NFC reader (issue #150): shows the "Register/Manage
+        /// NFC Tags" button, which opens the tap-to-name registration flow.</summary>
+        public bool ShowRegisterNfcTag => DeviceTypeKey == "Nfc";
 
         /// <summary>Capabilities summary string for display.</summary>
         public string CapabilitiesSummary

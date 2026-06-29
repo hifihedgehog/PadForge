@@ -426,6 +426,12 @@ namespace PadForge.Services
                 _mainVm.Pads[i].ActivePlayStationConfigPropertyChanged += OnPlayStationConfigChanged;
             }
 
+            // NFC tag registry (issue #150): when a tag is registered/removed,
+            // rebuild every pad's input picker so the named tag appears/disappears
+            // as a bindable row, and persist the registry. Subscribed here (after
+            // settings load), so the load-time LoadRegistry fan-out is not handled.
+            PadForge.Common.Input.NfcTagRegistry.RegistryChanged += OnNfcTagRegistryChanged;
+
             // Subscribe to engine events (raised on background thread).
             _inputManager.DevicesUpdated += OnDevicesUpdated;
             _inputManager.FrequencyUpdated += OnFrequencyUpdated;
@@ -1282,6 +1288,7 @@ namespace PadForge.Services
             // seconds.  Runs on whatever thread Stop was called from;
             // engine-toggle button wraps this whole method in Task.Run
             // for that reason.
+            try { PadForge.Common.Input.NfcTagRegistry.RegistryChanged -= OnNfcTagRegistryChanged; } catch { }
             if (_inputManager != null)
             {
                 _inputManager.DevicesUpdated -= OnDevicesUpdated;
@@ -4438,6 +4445,26 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
 
         /// <summary>
+        /// Issue #150: a tag was registered or removed. Rebuild every pad's input
+        /// picker so the named tag appears/disappears as a bindable row, and persist
+        /// the registry. Marshalled to the UI thread (the dialog raises this there;
+        /// the picker rebuild and Save touch UI/VM state).
+        /// </summary>
+        private void OnNfcTagRegistryChanged(object sender, EventArgs e)
+        {
+            _dispatcher.BeginInvoke(new Action(() =>
+            {
+                try
+                {
+                    foreach (var padVm in _mainVm.Pads)
+                        if (padVm != null) RefreshAvailableInputsForSlot(padVm);
+                }
+                catch { /* picker refresh is cosmetic */ }
+                try { _settingsService?.Save(); } catch { /* persisted on next save regardless */ }
+            }));
+        }
+
+        /// <summary>
         /// Called on the background thread when the device list changes.
         /// Marshals to the UI thread to sync DevicesViewModel.
         /// </summary>
@@ -6624,6 +6651,7 @@ namespace PadForge.Services
                 InputDeviceType.Keyboard => "Keyboard",
                 InputDeviceType.Touchpad => "Touchpad",
                 InputDeviceType.Midi => "Midi",
+                InputDeviceType.Nfc => "Nfc",
                 _ => "Device"
             };
 

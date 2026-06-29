@@ -347,6 +347,14 @@ namespace PadForge.Views
             });
         }
 
+        // ── NFC tag registration (issue #150) ──
+
+        private void RegisterNfcTag_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new RegisterNfcTagDialog { Owner = Window.GetWindow(this) };
+            dlg.ShowDialog();
+        }
+
         // ── Device card drag (to sidebar controller cards) ──
 
         private Point _deviceDragStart;

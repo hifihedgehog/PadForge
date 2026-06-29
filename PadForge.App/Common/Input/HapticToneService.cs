@@ -119,6 +119,33 @@ namespace PadForge.Common.Input
         /// tab, mirrors the Sony/Wii speaker checks).</summary>
         public static bool DeviceHasHaptics(Engine.Data.UserDevice ud) => FamilyOf(ud) != Family.None;
 
+        /// <summary>Plays a fixed, known test tone (880 Hz, off the LRA resonance) on
+        /// the device's haptics for <paramref name="durationMs"/>, driven straight to
+        /// the encoder. It bypasses the mixer / resampler / pitch reducer entirely, so
+        /// the pure tone is never pitch-detected (no garble) and the reducer never
+        /// caches it (no bleed into a following macro). Matched by device GUID, not
+        /// slot, because a device has exactly one sink and its mapped slot may differ
+        /// from the pad index. Forces a clean re-arm so the tone attacks at 880
+        /// regardless of prior state. Returns true if a haptic sink received it; the
+        /// caller plays the audio beep only when this returns false (speaker devices).</summary>
+        public static bool TriggerTestTone(Guid deviceGuid, float freqHz = 880f, int durationMs = 350)
+        {
+            if (deviceGuid == Guid.Empty) return false;
+            bool found = false;
+            lock (_lock)
+            {
+                foreach (var s in _sinks)
+                    if (s.DeviceGuid == deviceGuid)
+                    {
+                        s.TestHz = freqHz;
+                        s.TestUntilMs = Environment.TickCount64 + durationMs;
+                        s.SteamOn = false;   // force the override's first tick to re-arm at 880
+                        found = true;
+                    }
+            }
+            return found;
+        }
+
         // Mixer rate matches SoundMacroService so decoded PCM mixes in cleanly.
         private const int MixRate = 48000;
 
@@ -198,6 +225,14 @@ namespace PadForge.Common.Input
             // sustained note re-arms when the envelope steps, not every tick. The
             // 0x8f square (2015 + Deck) has no working gain, so it ignores this.
             public float SteamLastAmp;
+
+            // Direct test-tone window (Audio-tab Test button). While TestUntilMs is in
+            // the future the stream loop drives TestHz at full amplitude straight to
+            // the encoder, NEVER through the mixer / resampler / pitch reducer. So a
+            // pure tone is never pitch-detected (no garble) and the reducer never sees
+            // it (no held-pitch bleed into the next macro). No beep is injected either.
+            public float TestHz;
+            public long TestUntilMs;
 
             // System-audio passthrough mirror (same option DualSense/Wii expose).
             public bool MirrorOn;
@@ -767,15 +802,30 @@ namespace PadForge.Common.Input
                     // That was ~14% of a core per assigned haptic pad doing nothing.
                     // Scan the peak first; only reduce when there is real signal.
                     long nowMs = Environment.TickCount64;
-                    float peak = 0f;
-                    for (int i = 0; i < SamplesPerTick; i++) { float a = monoF[i]; if (a < 0f) a = -a; if (a > peak) peak = a; }
                     float toneHz, amp;
-                    if (peak <= 0.002f) { toneHz = 0f; amp = 0f; }
-                    else { (toneHz, amp) = s.Reducer.Push(monoF, SamplesPerTick); }
+                    bool testActive = s.TestUntilMs > nowMs;
+                    if (testActive)
+                    {
+                        // Direct fixed test tone: a KNOWN frequency driven straight to
+                        // the encoder, never through the mixer/resampler/pitch reducer.
+                        // A pure tone is never detected (no garble) and the reducer never
+                        // caches it (no bleed). The mono mix is drained but unused; no
+                        // beep is injected for haptic devices (see the Test button).
+                        toneHz = s.TestHz; amp = 1.0f;
+                    }
+                    else
+                    {
+                        // Cheap silence gate: an idle sink must not run the per-tick
+                        // frequency reduction (autocorrelation) on pure silence.
+                        float peak = 0f;
+                        for (int i = 0; i < SamplesPerTick; i++) { float a = monoF[i]; if (a < 0f) a = -a; if (a > peak) peak = a; }
+                        if (peak <= 0.002f) { toneHz = 0f; amp = 0f; }
+                        else { (toneHz, amp) = s.Reducer.Push(monoF, SamplesPerTick); }
+                    }
 
                     bool audible = amp > 0.02f;
                     if (audible) s.LastContentMs = nowMs;
-                    bool streaming = (nowMs - s.LastContentMs) < HangoverMs;
+                    bool streaming = testActive || (nowMs - s.LastContentMs) < HangoverMs;
 
                     // Run when we have either a raw write handle or an SDL gamepad
                     // handle (the Steam SDL_SendGamepadEffect path needs no raw handle).

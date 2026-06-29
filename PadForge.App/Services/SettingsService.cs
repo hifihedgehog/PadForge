@@ -1198,7 +1198,7 @@ namespace PadForge.Services
             PadForge.Common.SoundPackageManager.LoadRegistry(
                 appSettings.SoundPackages?.Select(p => (p.Name, p.Path)));
             PadForge.Common.Input.NfcTagRegistry.LoadRegistry(
-                appSettings.NfcTags?.Select(t => (t.Uid, t.Name)));
+                appSettings.NfcTags?.Select(t => (t.Uid, t.Name, t.Button)));
 
             // Remote Link (issue #138): carry the stored identity + trust list into
             // the runtime holder. No minting here — the identity is created lazily
@@ -2775,7 +2775,7 @@ namespace PadForge.Services
                 .Select(p => new SoundPackageData { Name = p.Name, Path = p.Path })
                 .ToArray();
             var nfcTags = PadForge.Common.Input.NfcTagRegistry.SaveRegistry()
-                .Select(t => new NfcTagData { Uid = t.Uid, Name = t.Name })
+                .Select(t => new NfcTagData { Uid = t.Uid, Name = t.Name, Button = t.Button })
                 .ToArray();
             // Sync the ViewModel toggle to the static state.
             SettingsManager.EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching;
@@ -3854,7 +3854,8 @@ namespace PadForge.Services
         public string Path { get; set; }
     }
 
-    /// <summary>A registered NFC tag (issue #150): UID (uppercase hex) + name.</summary>
+    /// <summary>A registered NFC tag (issue #150): UID (uppercase hex), name, and
+    /// the stable raw-button index it occupies (so saved macro bindings survive).</summary>
     public class NfcTagData
     {
         [XmlAttribute]
@@ -3862,6 +3863,9 @@ namespace PadForge.Services
 
         [XmlAttribute]
         public string Name { get; set; }
+
+        [XmlAttribute]
+        public int Button { get; set; }
     }
 
     /// <summary>

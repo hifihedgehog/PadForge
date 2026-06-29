@@ -62,25 +62,28 @@ namespace PadForge.Common.Input
             _state = new CustomInputState();
         }
 
-        // Button count is the any-tag button plus one per registered tag, read
-        // live so a newly registered tag is bindable without re-enumerating.
-        private static int ButtonCount => 1 + NfcTagRegistry.Count;
+        // Raw-button span: button 0 (any) through the highest stable tag button in
+        // use, read live so a newly registered tag is bindable without re-enumerating.
+        // Spans the range (not the count) because tag buttons are stable, so removing
+        // a middle tag leaves a gap rather than renumbering the others.
+        private static int ButtonSpan => 1 + NfcTagRegistry.MaxButtonInUse;
 
         // ─── ISdlInputDevice identity / capabilities ───
         public uint SdlInstanceId { get; }
         public string Name { get; }
         public int NumAxes => 0;
-        public int NumButtons => ButtonCount;
-        public int RawButtonCount => ButtonCount;
+        public int NumButtons => ButtonSpan;
+        public int RawButtonCount => ButtonSpan;
         public int NumHats => 0;
         public int[] SupportedButtonIndices
         {
             get
             {
-                int n = ButtonCount;
-                var a = new int[n];
-                for (int i = 0; i < n; i++) a[i] = i;
-                return a;
+                // The any-tag button plus each tag's stable button (the live picker
+                // uses GetDeviceObjects; this is the offline-picker fallback set).
+                var list = new List<int> { AnyTagButton };
+                foreach (var t in NfcTagRegistry.Tags) list.Add(t.Button);
+                return list.ToArray();
             }
         }
         public IntPtr GamepadHandle => IntPtr.Zero;
@@ -126,7 +129,7 @@ namespace PadForge.Common.Input
                     Name = tags[i].Name,
                     ObjectType = DeviceObjectTypeFlags.PushButton,
                     ObjectTypeGuid = ObjectGuid.Button,
-                    InputIndex = i + 1,
+                    InputIndex = tags[i].Button, // stable per-UID button, not list position
                 };
             return items;
         }

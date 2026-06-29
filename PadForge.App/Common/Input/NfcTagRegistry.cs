@@ -19,14 +19,23 @@ namespace PadForge.Common.Input
     /// reader-agnostic (one tag set across all readers), since a UID identifies the
     /// tag, not the reader.
     /// </summary>
-    internal static class NfcTagRegistry
+    public static class NfcTagRegistry
     {
         public sealed class TagEntry
         {
             // Properties (not fields) so WPF list bindings can read them.
             public string Uid { get; set; }   // uppercase hex, no separators
             public string Name { get; set; }
+            /// <summary>STABLE 1-based raw-button index this tag occupies. Assigned
+            /// once at registration and never changed, so a macro bound to this tag
+            /// keeps firing it even after OTHER tags are added or removed. Button 0
+            /// is the reader's "Any NFC Tag" button, so tag buttons start at 1.</summary>
+            public int Button { get; set; }
         }
+
+        // Buttons live in CustomInputState.Buttons[256], so 0 = Any and 1..255 are
+        // tags. A registry beyond that is rejected rather than overflowing the array.
+        private const int MaxButton = 255;
 
         private static readonly object _lock = new();
         private static readonly List<TagEntry> _tags = new();
@@ -34,14 +43,34 @@ namespace PadForge.Common.Input
         /// <summary>Raised when the registry changes (input-picker refresh).</summary>
         public static event EventHandler RegistryChanged;
 
-        /// <summary>Snapshot of the registered tags, in button order
-        /// (index 0 -> button 1, index 1 -> button 2, ...).</summary>
+        /// <summary>Snapshot of the registered tags (ordered by their stable
+        /// button), each with the button it occupies.</summary>
         public static IReadOnlyList<TagEntry> Tags
         {
-            get { lock (_lock) return _tags.Select(t => new TagEntry { Uid = t.Uid, Name = t.Name }).ToList(); }
+            get
+            {
+                lock (_lock)
+                    return _tags.OrderBy(t => t.Button)
+                                .Select(t => new TagEntry { Uid = t.Uid, Name = t.Name, Button = t.Button })
+                                .ToList();
+            }
         }
 
         public static int Count { get { lock (_lock) return _tags.Count; } }
+
+        /// <summary>Highest button index in use (0 if no tags), so the device can
+        /// report a raw-button count that spans every assigned tag.</summary>
+        public static int MaxButtonInUse { get { lock (_lock) return _tags.Count == 0 ? 0 : _tags.Max(t => t.Button); } }
+
+        // Lowest 1..MaxButton not currently occupied, or -1 if the registry is full.
+        // Caller holds _lock.
+        private static int LowestFreeButton()
+        {
+            for (int b = 1; b <= MaxButton; b++)
+                if (!_tags.Any(t => t.Button == b))
+                    return b;
+            return -1;
+        }
 
         /// <summary>Normalises a UID to the stored form: uppercase hex with any
         /// spaces / colons / dashes (some readers format the UID) stripped, so a
@@ -59,7 +88,7 @@ namespace PadForge.Common.Input
             return new string(buf[..n]);
         }
 
-        /// <summary>The 1-based button index for a UID, or -1 if the UID is not
+        /// <summary>The STABLE button index a UID occupies, or -1 if the UID is not
         /// registered. Button 0 is the reader's "Any NFC Tag" button.</summary>
         public static int ButtonForUid(string uid)
         {
@@ -67,16 +96,17 @@ namespace PadForge.Common.Input
             if (norm.Length == 0) return -1;
             lock (_lock)
             {
-                for (int i = 0; i < _tags.Count; i++)
-                    if (string.Equals(_tags[i].Uid, norm, StringComparison.Ordinal))
-                        return i + 1;
+                var t = _tags.FirstOrDefault(x => string.Equals(x.Uid, norm, StringComparison.Ordinal));
+                return t?.Button ?? -1;
             }
-            return -1;
         }
 
         /// <summary>Registers (or renames) a tag. The UID is the identity; a second
-        /// register of the same UID just updates its name. Names are deduped so two
-        /// tags never share a picker label. Returns the final stored name.</summary>
+        /// register of the same UID just updates its name and KEEPS its button. A new
+        /// UID is assigned the lowest free button, which never changes afterward, so
+        /// adding or removing other tags can't rebind this one. Names are deduped so
+        /// two tags never share a picker label. Returns the final stored name, or null
+        /// if the UID is empty or the registry is full (255 tags).</summary>
         public static string Register(string uid, string name)
         {
             string norm = NormalizeUid(uid);
@@ -85,13 +115,19 @@ namespace PadForge.Common.Input
             lock (_lock)
             {
                 var existing = _tags.FirstOrDefault(t => string.Equals(t.Uid, norm, StringComparison.Ordinal));
+                if (existing == null)
+                {
+                    int button = LowestFreeButton();
+                    if (button < 0) return null; // registry full
+                    existing = new TagEntry { Uid = norm, Button = button };
+                    _tags.Add(existing);
+                }
                 string final = baseName;
                 int k = 2;
                 while (_tags.Any(t => !ReferenceEquals(t, existing)
                         && string.Equals(t.Name, final, StringComparison.OrdinalIgnoreCase)))
                     final = $"{baseName} ({k++})";
-                if (existing != null) existing.Name = final;
-                else _tags.Add(new TagEntry { Uid = norm, Name = final });
+                existing.Name = final;
                 RegistryChanged?.Invoke(null, EventArgs.Empty);
                 return final;
             }
@@ -105,28 +141,37 @@ namespace PadForge.Common.Input
             if (removed) RegistryChanged?.Invoke(null, EventArgs.Empty);
         }
 
-        /// <summary>Replaces the registry from persisted settings (load time).</summary>
-        public static void LoadRegistry(IEnumerable<(string Uid, string Name)> entries)
+        /// <summary>Replaces the registry from persisted settings (load time). The
+        /// stored button is honoured so existing macro bindings stay valid across
+        /// restarts; an absent / out-of-range / colliding button (older saves, hand
+        /// edits) is reassigned the lowest free one.</summary>
+        public static void LoadRegistry(IEnumerable<(string Uid, string Name, int Button)> entries)
         {
             lock (_lock)
             {
                 _tags.Clear();
                 if (entries != null)
-                    foreach (var (uid, name) in entries)
+                    foreach (var (uid, name, button) in entries)
                     {
                         string norm = NormalizeUid(uid);
                         if (norm.Length == 0 || string.IsNullOrWhiteSpace(name)) continue;
                         if (_tags.Any(t => string.Equals(t.Uid, norm, StringComparison.Ordinal))) continue;
-                        _tags.Add(new TagEntry { Uid = norm, Name = name.Trim() });
+                        int b = button;
+                        if (b < 1 || b > MaxButton || _tags.Any(t => t.Button == b))
+                        {
+                            b = LowestFreeButton();
+                            if (b < 0) break; // full
+                        }
+                        _tags.Add(new TagEntry { Uid = norm, Name = name.Trim(), Button = b });
                     }
             }
             RegistryChanged?.Invoke(null, EventArgs.Empty);
         }
 
         /// <summary>Serialisable view for the settings round-trip (save time).</summary>
-        public static List<(string Uid, string Name)> SaveRegistry()
+        public static List<(string Uid, string Name, int Button)> SaveRegistry()
         {
-            lock (_lock) return _tags.Select(t => (t.Uid, t.Name)).ToList();
+            lock (_lock) return _tags.Select(t => (t.Uid, t.Name, t.Button)).ToList();
         }
     }
 }

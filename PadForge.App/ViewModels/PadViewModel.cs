@@ -3508,16 +3508,7 @@ namespace PadForge.ViewModels
         private RelayCommand _soundTestCommand;
         public RelayCommand SoundTestCommand =>
             _soundTestCommand ??= new RelayCommand(
-                () =>
-                {
-                    var dev = SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
-                    // Haptic devices get a fixed, known tone driven straight to the
-                    // encoder (deterministic -- no audio-path detection to garble).
-                    // The no-op-if-no-sink call is harmless for speaker-only devices,
-                    // which PlayTestBeep still demos through their audio path.
-                    PadForge.Common.Input.HapticToneService.TriggerTestTone(PadIndex, dev);
-                    PadForge.Common.Input.SoundMacroService.PlayTestBeep(PadIndex, dev);
-                },
+                () => PadForge.Common.Input.SoundMacroService.PlayTestBeep(PadIndex, SelectedMappedDevice?.InstanceGuid ?? Guid.Empty),
                 () => HasSelectedDevice);
 
         private RelayCommand _soundStopAllCommand;

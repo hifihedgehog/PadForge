@@ -112,6 +112,7 @@ namespace PadForge.Common.Input
             string norm = NormalizeUid(uid);
             if (norm.Length == 0) return null;
             string baseName = string.IsNullOrWhiteSpace(name) ? "Tag " + norm : name.Trim();
+            string final;
             lock (_lock)
             {
                 var existing = _tags.FirstOrDefault(t => string.Equals(t.Uid, norm, StringComparison.Ordinal));
@@ -122,15 +123,17 @@ namespace PadForge.Common.Input
                     existing = new TagEntry { Uid = norm, Button = button };
                     _tags.Add(existing);
                 }
-                string final = baseName;
+                final = baseName;
                 int k = 2;
                 while (_tags.Any(t => !ReferenceEquals(t, existing)
                         && string.Equals(t.Name, final, StringComparison.OrdinalIgnoreCase)))
                     final = $"{baseName} ({k++})";
                 existing.Name = final;
-                RegistryChanged?.Invoke(null, EventArgs.Empty);
-                return final;
             }
+            // Raise OUTSIDE the lock (mirrors SoundPackageManager): a handler must not
+            // run while _lock is held, or a synchronous re-entrant read would matter.
+            RegistryChanged?.Invoke(null, EventArgs.Empty);
+            return final;
         }
 
         public static void Remove(string uid)

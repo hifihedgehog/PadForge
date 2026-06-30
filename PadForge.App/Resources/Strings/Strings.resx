@@ -367,6 +367,7 @@
   <data name="DeviceType_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>All Touchpads (Merged)</value></data>
   <data name="DeviceType_Device" xml:space="preserve"><value>Device</value></data>
+  <data name="DeviceType_Nfc" xml:space="preserve"><value>NFC Reader</value></data>
 
   <!-- ═══ Devices ═══ -->
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>All Keyboards (Merged)</value></data>

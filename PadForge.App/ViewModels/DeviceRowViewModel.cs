@@ -221,6 +221,7 @@ namespace PadForge.ViewModels
             "Keyboard" => Strings.Instance.DeviceType_Keyboard,
             "Touchpad" => Strings.Instance.DeviceType_Touchpad,
             "Midi" => Strings.Instance.DeviceType_Midi,
+            "Nfc" => Strings.Instance.DeviceType_Nfc,
             _ => Strings.Instance.DeviceType_Device
         };
 

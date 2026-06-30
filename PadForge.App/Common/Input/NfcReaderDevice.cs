@@ -184,9 +184,14 @@ namespace PadForge.Common.Input
                 for (int b = 0; b < _pulseUntil.Length; b++)
                 {
                     long until = _pulseUntil[b];
-                    if (until == 0) continue;
-                    if (now < until) s.Buttons[b] = true;
-                    else _pulseUntil[b] = 0; // expired
+                    bool pressed = until != 0 && now < until;
+                    // Set the button's state EVERY poll -- true during the pulse,
+                    // FALSE once it expires. Skipping the clear (an earlier `continue`)
+                    // left the button latched true forever after the first tap, so the
+                    // tag never produced a falling edge: OnPress fired once and never
+                    // again, WhileHeld ran forever.
+                    if (!pressed) _pulseUntil[b] = 0;
+                    s.Buttons[b] = pressed;
                 }
                 _state = s;
                 return s.Clone();

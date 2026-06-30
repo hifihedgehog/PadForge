@@ -91,6 +91,10 @@ namespace PadForge.Services
         // OnLinkPeersChanged fires from the discovery, UDP-reconcile, reaper and handshake threads.
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, long> _autoReconnectCooldown = new(StringComparer.OrdinalIgnoreCase);
         private const long AutoReconnectCooldownMs = 5000;
+        // How long an NFC tag row stays lit in the Devices preview after a tap
+        // (issue #150). Longer than the ~175 ms button pulse so the highlight is
+        // clearly visible, then it clears on its own.
+        private const long NfcPreviewHoldMs = 900;
         private InputHookManager _hookManager;
         private SettingsService _settingsService;
         private bool _disposed;
@@ -1899,8 +1903,9 @@ namespace PadForge.Services
                 bool isMouse = ud.CapType == InputDeviceType.Mouse;
                 bool isTouchpad = ud.CapType == InputDeviceType.Touchpad;
                 bool isMidi = ud.CapType == InputDeviceType.Midi;
+                bool isNfc = ud.CapType == InputDeviceType.Nfc;
                 int[] btnIndices = ResolveButtonIndices(ud);
-                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad, isMidi);
+                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad, isMidi, isNfc);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad;
@@ -1938,8 +1943,9 @@ namespace PadForge.Services
                 bool isMouse = ud.CapType == InputDeviceType.Mouse;
                 bool isTouchpad2 = ud.CapType == InputDeviceType.Touchpad;
                 bool isMidi2 = ud.CapType == InputDeviceType.Midi;
+                bool isNfc2 = ud.CapType == InputDeviceType.Nfc;
                 int[] btnIndices = ResolveButtonIndices(ud);
-                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad2, isMidi2);
+                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad2, isMidi2, isNfc2);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad2;
@@ -1998,6 +2004,23 @@ namespace PadForge.Services
             // message arrives.
             if (devVm.IsMidiDevice)
                 devVm.LiveMidi = state.Midi;
+
+            // NFC tag preview (issue #150): light the tapped tag's named row.
+            // The button pulse is only ~175 ms, so latch IsActive for a longer
+            // visible window (NfcPreviewHoldMs) past the last tap so it doesn't
+            // just flicker -- and clears itself afterward.
+            if (devVm.IsNfcDevice)
+            {
+                long now = Environment.TickCount64;
+                var btns = state.Buttons;
+                for (int i = 0; i < devVm.NfcTags.Count; i++)
+                {
+                    var tag = devVm.NfcTags[i];
+                    if (tag.Button >= 0 && tag.Button < btns.Length && btns[tag.Button])
+                        tag.LastActiveTick = now;
+                    tag.IsActive = tag.LastActiveTick != 0 && (now - tag.LastActiveTick) < NfcPreviewHoldMs;
+                }
+            }
 
             // Update POV hat values in-place.
             for (int i = 0; i < devVm.RawPovs.Count; i++)
@@ -4478,6 +4501,10 @@ namespace PadForge.Services
                         if (padVm != null) RefreshAvailableInputsForSlot(padVm);
                 }
                 catch { /* picker refresh is cosmetic */ }
+                // Refresh the Devices-page tag preview if an NFC reader is selected,
+                // so a just-registered/removed tag appears in the list immediately.
+                try { if (_mainVm.Devices?.IsNfcDevice == true) _mainVm.Devices.RebuildNfcTags(); }
+                catch { }
                 try { _settingsService?.Save(); } catch { /* persisted on next save regardless */ }
             }));
         }

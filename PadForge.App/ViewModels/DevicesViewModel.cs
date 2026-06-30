@@ -92,6 +92,11 @@ namespace PadForge.ViewModels
         /// <summary>Structured button states for visual display (circles).</summary>
         public ObservableCollection<ButtonDisplayItem> RawButtons { get; } = new();
 
+        /// <summary>Named NFC tag rows for the selected reader's live preview
+        /// (issue #150): "Any NFC Tag" plus each registered tag, highlighting while
+        /// tapped. Shown instead of the numbered-circle grid for NFC readers.</summary>
+        public ObservableCollection<NfcTagDisplayItem> NfcTags { get; } = new();
+
         /// <summary>Structured POV hat values for visual display (compass).</summary>
         public ObservableCollection<PovDisplayItem> RawPovs { get; } = new();
 
@@ -129,6 +134,26 @@ namespace PadForge.ViewModels
         {
             get => _isMidiDevice;
             set => SetProperty(ref _isMidiDevice, value);
+        }
+
+        private bool _isNfcDevice;
+        /// <summary>Whether the selected device is an NFC reader (issue #150):
+        /// drives the named tag preview list in place of the numbered button grid.</summary>
+        public bool IsNfcDevice
+        {
+            get => _isNfcDevice;
+            set => SetProperty(ref _isNfcDevice, value);
+        }
+
+        /// <summary>Rebuilds the NFC tag preview rows from the registry: "Any NFC
+        /// Tag" first, then each registered tag at its stable button index. Called on
+        /// device selection and whenever the tag registry changes.</summary>
+        public void RebuildNfcTags()
+        {
+            NfcTags.Clear();
+            NfcTags.Add(new NfcTagDisplayItem { Name = Strings.Instance.Mapping_NfcAnyTag, Uid = string.Empty, Button = 0 });
+            foreach (var t in PadForge.Common.Input.NfcTagRegistry.Tags)
+                NfcTags.Add(new NfcTagDisplayItem { Name = t.Name, Uid = t.Uid, Button = t.Button });
         }
 
         /// <summary>Live MIDI input state of the selected MIDI device, set
@@ -273,8 +298,10 @@ namespace PadForge.ViewModels
         /// are stored verbatim and used by the InputService update loop
         /// to read the matching <c>state.Buttons[Index]</c>.
         /// </summary>
-        internal void RebuildRawStateCollections(int axisCount, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false)
+        internal void RebuildRawStateCollections(int axisCount, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false)
         {
+            IsNfcDevice = isNfc;
+            if (isNfc) RebuildNfcTags(); else NfcTags.Clear();
             RawAxes.Clear();
             if (!isMouse && !isMidi)
             {
@@ -335,6 +362,8 @@ namespace PadForge.ViewModels
             IsMouseDevice = false;
             IsTouchpadDevice = false;
             IsMidiDevice = false;
+            IsNfcDevice = false;
+            NfcTags.Clear();
             LiveMidi = null;
             HasRawData = false;
             HasGyroData = false;
@@ -658,6 +687,27 @@ namespace PadForge.ViewModels
         {
             get => _isPressed;
             set => SetProperty(ref _isPressed, value);
+        }
+    }
+
+    /// <summary>One row in the NFC reader's live tag preview (issue #150): a
+    /// registered tag (or "Any NFC Tag"), highlighting while its button pulses.</summary>
+    public class NfcTagDisplayItem : ObservableObject
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Uid { get; set; } = string.Empty;
+        /// <summary>Stable raw-button index this tag occupies (0 = Any NFC Tag).</summary>
+        public int Button { get; set; }
+        /// <summary>TickCount64 of the last tap. The feed holds <see cref="IsActive"/>
+        /// for a visible window past the ~175 ms button pulse so it doesn't flicker.</summary>
+        public long LastActiveTick { get; set; }
+
+        private bool _isActive;
+        /// <summary>True while this tag is lit in the preview (recently tapped).</summary>
+        public bool IsActive
+        {
+            get => _isActive;
+            set => SetProperty(ref _isActive, value);
         }
     }
 

@@ -371,6 +371,9 @@
                                         <DataTrigger Binding="{Binding IsMidiDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsNfcDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
@@ -390,6 +393,9 @@
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsMidiDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsNfcDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -435,6 +441,9 @@
                                         <DataTrigger Binding="{Binding IsMidiDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsNfcDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
@@ -450,6 +459,9 @@
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsMidiDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsNfcDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -481,6 +493,43 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
+
+                        <!-- NFC: named tag list (issue #150). Shown for NFC readers in
+                             place of the numbered button grid; each registered tag (and
+                             "Any NFC Tag") lights up when its tag is tapped. -->
+                        <StackPanel Visibility="{Binding IsNfcDevice, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Margin="0,0,0,8">
+                            <TextBlock Text="NFC Tags" FontSize="11" Opacity="0.6" Margin="0,0,0,3"/>
+                            <ItemsControl ItemsSource="{Binding NfcTags}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="4" Margin="0,1" Padding="8,5">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Background" Value="#18888888"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource SystemAccentColorSecondaryBrush}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Name}" FontSize="12" VerticalAlignment="Center"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding Uid}" FontFamily="Consolas"
+                                                           FontSize="10" Opacity="0.55" VerticalAlignment="Center"
+                                                           Margin="8,0,0,0"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
 
                         <!-- Keyboard: visual QWERTY layout -->
                         <TextBlock Text="{Binding Devices_Keyboard, Source={x:Static strings:Strings.Instance}}" FontSize="11" Opacity="0.6" Margin="0,0,0,3">

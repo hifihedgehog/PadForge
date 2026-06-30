@@ -4454,6 +4454,24 @@ namespace PadForge.Services
         {
             _dispatcher.BeginInvoke(new Action(() =>
             {
+                // UserDevice.DeviceObjects is a cache populated ONCE at device init
+                // (UserDevice.LoadFromSdlDevice). Re-read it from the NFC reader's
+                // live GetDeviceObjects() so a just-registered/removed tag is present
+                // before the picker rebuilds off it -- otherwise the rebuild reads a
+                // stale snapshot and the new tag never appears. Snapshot under
+                // UserDevices.SyncRoot, then refresh OUTSIDE the lock (UserDevices
+                // before any UserSettings lock RefreshAvailableInputsForSlot may take).
+                try
+                {
+                    lock (SettingsManager.UserDevices.SyncRoot)
+                    {
+                        foreach (var ud in SettingsManager.UserDevices.Items)
+                            if (ud != null && ud.CapType == PadForge.Engine.InputDeviceType.Nfc && ud.Device != null)
+                                ud.DeviceObjects = ud.Device.GetDeviceObjects();
+                    }
+                }
+                catch { /* refresh is best-effort */ }
+
                 try
                 {
                     foreach (var padVm in _mainVm.Pads)

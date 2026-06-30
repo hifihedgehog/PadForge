@@ -452,6 +452,7 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_MidiCcDown_Format => Get("Mapping_MidiCcDown_Format");
     public string Mapping_MidiPitchBend => Get("Mapping_MidiPitchBend");
     public string DeviceType_Device => Get("DeviceType_Device");
+    public string DeviceType_Nfc => Get("DeviceType_Nfc");
     public string Devices_AllKeyboardsMerged => Get("Devices_AllKeyboardsMerged");
     public string Devices_AllMiceMerged => Get("Devices_AllMiceMerged");
     public string Devices_AllTouchpadsMerged => Get("Devices_AllTouchpadsMerged");

@@ -2058,4 +2058,18 @@
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} をペアリングしました。デバイス一覧に表示されます。</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Bluetoothアダプターが見つかりません。Bluetoothアダプターを接続してから再試行してください。</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>完了</value></data>
+  <data name="Common_Close" xml:space="preserve"><value>閉じる</value></data>
+  <data name="Nfc_Title" xml:space="preserve"><value>NFCタグ</value></data>
+  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>タグを登録</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>タグをリーダーにかざしてUIDを取得します。</value></data>
+  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
+  <data name="Nfc_Waiting" xml:space="preserve"><value>(待機中)</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>名前:</value></data>
+  <data name="Nfc_RegisterButton" xml:space="preserve"><value>登録</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>登録済みのタグ</value></data>
+  <data name="Nfc_NoReader" xml:space="preserve"><value>NFCリーダーが検出されませんでした。PC/SCリーダーを接続して開き直してください。</value></data>
+  <data name="Nfc_TagCaptured" xml:space="preserve"><value>タグを取得しました。名前を入力して「登録」をクリックしてください。別のタグをかざすと置き換えられます。</value></data>
+  <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>「{0}」を登録しました。別のタグをかざすと追加できます。</value></data>
+  <data name="Nfc_ManageButton" xml:space="preserve"><value>NFCタグの登録・管理</value></data>
+  <data name="DeviceType_Nfc" xml:space="preserve"><value>NFCリーダー</value></data>
 </root>

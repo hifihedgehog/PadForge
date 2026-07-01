@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 using PadForge.Common.Input;
+using PadForge.Resources.Strings;
 using PadForge.Services;
 
 namespace PadForge.Views
@@ -28,7 +29,7 @@ namespace PadForge.Views
 
             if (_svc == null)
             {
-                StatusText.Text = "No NFC reader detected. Connect a PC/SC reader and reopen.";
+                StatusText.Text = Strings.Instance.Nfc_NoReader;
                 return;
             }
             _handler = OnTagDetected;
@@ -54,7 +55,7 @@ namespace PadForge.Views
                 _capturedUid = NfcTagRegistry.NormalizeUid(uid);
                 UidText.Text = _capturedUid;
                 RegisterBtn.IsEnabled = !string.IsNullOrEmpty(_capturedUid);
-                StatusText.Text = "Tag captured. Enter a name and click Register. Tap another tag to replace it.";
+                StatusText.Text = Strings.Instance.Nfc_TagCaptured;
                 if (string.IsNullOrWhiteSpace(NameBox.Text)) NameBox.Focus();
             }));
         }
@@ -63,9 +64,9 @@ namespace PadForge.Views
         {
             if (string.IsNullOrEmpty(_capturedUid)) return;
             string name = NfcTagRegistry.Register(_capturedUid, NameBox.Text);
-            StatusText.Text = $"Registered \"{name}\". Tap another tag to add more.";
+            StatusText.Text = string.Format(Strings.Instance.Nfc_RegisteredFormat, name);
             NameBox.Text = string.Empty;
-            UidText.Text = "(waiting)";
+            UidText.Text = Strings.Instance.Nfc_Waiting;
             _capturedUid = null;
             RegisterBtn.IsEnabled = false;
             RefreshList();

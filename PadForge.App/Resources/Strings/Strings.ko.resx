@@ -2058,4 +2058,18 @@
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} 페어링됨. 장치 목록에 표시됩니다.</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Bluetooth 라디오를 찾을 수 없습니다. Bluetooth 어댑터를 연결한 후 다시 시도하세요.</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>완료</value></data>
+  <data name="Common_Close" xml:space="preserve"><value>닫기</value></data>
+  <data name="Nfc_Title" xml:space="preserve"><value>NFC 태그</value></data>
+  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>태그 등록</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>태그를 리더기에 대어 UID를 캡처하세요.</value></data>
+  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
+  <data name="Nfc_Waiting" xml:space="preserve"><value>(대기 중)</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>이름:</value></data>
+  <data name="Nfc_RegisterButton" xml:space="preserve"><value>등록</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>등록된 태그</value></data>
+  <data name="Nfc_NoReader" xml:space="preserve"><value>NFC 리더기가 감지되지 않았습니다. PC/SC 리더기를 연결하고 다시 여세요.</value></data>
+  <data name="Nfc_TagCaptured" xml:space="preserve"><value>태그를 캡처했습니다. 이름을 입력하고 등록을 클릭하세요. 다른 태그를 대면 교체됩니다.</value></data>
+  <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>"{0}"을(를) 등록했습니다. 다른 태그를 대면 더 추가할 수 있습니다.</value></data>
+  <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC 태그 등록/관리</value></data>
+  <data name="DeviceType_Nfc" xml:space="preserve"><value>NFC 리더기</value></data>
 </root>

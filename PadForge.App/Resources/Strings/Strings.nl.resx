@@ -2078,4 +2078,18 @@
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} gekoppeld. Het verschijnt in je apparatenlijst.</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Geen Bluetooth-radio gevonden. Sluit een Bluetooth-adapter aan en probeer het opnieuw.</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Klaar</value></data>
+  <data name="Common_Close" xml:space="preserve"><value>Sluiten</value></data>
+  <data name="Nfc_Title" xml:space="preserve"><value>NFC-tags</value></data>
+  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>Een tag registreren</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>Houd een tag bij de lezer om de UID vast te leggen.</value></data>
+  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
+  <data name="Nfc_Waiting" xml:space="preserve"><value>(wachten)</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Naam:</value></data>
+  <data name="Nfc_RegisterButton" xml:space="preserve"><value>Registreren</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Geregistreerde tags</value></data>
+  <data name="Nfc_NoReader" xml:space="preserve"><value>Geen NFC-lezer gedetecteerd. Sluit een PC/SC-lezer aan en open opnieuw.</value></data>
+  <data name="Nfc_TagCaptured" xml:space="preserve"><value>Tag vastgelegd. Voer een naam in en klik op Registreren. Houd een andere tag bij om te vervangen.</value></data>
+  <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>'{0}' geregistreerd. Houd een andere tag bij om er meer toe te voegen.</value></data>
+  <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC-tags registreren/beheren</value></data>
+  <data name="DeviceType_Nfc" xml:space="preserve"><value>NFC-lezer</value></data>
 </root>

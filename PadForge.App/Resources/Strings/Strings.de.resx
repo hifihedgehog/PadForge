@@ -2058,4 +2058,18 @@
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} gekoppelt. Der Controller erscheint in Ihrer Geräteliste.</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Kein Bluetooth-Funkmodul gefunden. Schließen Sie einen Bluetooth-Adapter an und versuchen Sie es erneut.</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Fertig</value></data>
+  <data name="Common_Close" xml:space="preserve"><value>Schließen</value></data>
+  <data name="Nfc_Title" xml:space="preserve"><value>NFC-Tags</value></data>
+  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>Tag registrieren</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>Halten Sie ein Tag an den Leser, um seine UID zu erfassen.</value></data>
+  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
+  <data name="Nfc_Waiting" xml:space="preserve"><value>(wartet)</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Name:</value></data>
+  <data name="Nfc_RegisterButton" xml:space="preserve"><value>Registrieren</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Registrierte Tags</value></data>
+  <data name="Nfc_NoReader" xml:space="preserve"><value>Kein NFC-Leser erkannt. Schließen Sie einen PC/SC-Leser an und öffnen Sie das Fenster erneut.</value></data>
+  <data name="Nfc_TagCaptured" xml:space="preserve"><value>Tag erfasst. Geben Sie einen Namen ein und klicken Sie auf „Registrieren“. Halten Sie ein anderes Tag an, um es zu ersetzen.</value></data>
+  <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>„{0}“ registriert. Halten Sie ein weiteres Tag an, um mehr hinzuzufügen.</value></data>
+  <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC-Tags registrieren/verwalten</value></data>
+  <data name="DeviceType_Nfc" xml:space="preserve"><value>NFC-Leser</value></data>
 </root>

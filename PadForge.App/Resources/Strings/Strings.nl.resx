@@ -1097,6 +1097,13 @@
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>Knop {0}</value></data>
   <data name="Mapping_NfcAnyTag" xml:space="preserve"><value>Elke NFC-tag</value></data>
+  <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-aanwijzer X</value></data>
+  <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-aanwijzer Y</value></data>
+  <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
+  <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheid van de IR-aanwijzer per bron. 1.0 bereikt de volledige stick-uitslag aan de rand van het gezichtsveld van de camera. Waarden boven 1.0 bereiken de volledige uitslag met minder richtbeweging. Waarden onder 1.0 hebben meer nodig.</value></data>
+  <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Totaalgewicht (Balance)</value></data>
+  <data name="Mapping_BalanceLeanX" xml:space="preserve"><value>Helling X (Balance)</value></data>
+  <data name="Mapping_BalanceLeanY" xml:space="preserve"><value>Helling Y (Balance)</value></data>
   <data name="DevObj_AxisN" xml:space="preserve"><value>As {0}</value></data>
   <data name="DevObj_Misc1" xml:space="preserve"><value>Delen</value></data>
   <data name="DevObj_Misc2" xml:space="preserve"><value>Diversen 2</value></data>

@@ -1097,6 +1097,13 @@
   <data name="DevObj_POVN" xml:space="preserve"><value>POV {0}</value></data>
   <data name="DevObj_Button" xml:space="preserve"><value>Pulsante {0}</value></data>
   <data name="Mapping_NfcAnyTag" xml:space="preserve"><value>Qualsiasi tag NFC</value></data>
+  <data name="Mapping_IrPointerX" xml:space="preserve"><value>Puntatore IR X</value></data>
+  <data name="Mapping_IrPointerY" xml:space="preserve"><value>Puntatore IR Y</value></data>
+  <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensibilità</value></data>
+  <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Sensibilità del puntatore IR per sorgente. 1.0 raggiunge lo spostamento completo dello stick al bordo del campo visivo della fotocamera. I valori sopra 1.0 raggiungono lo spostamento completo con meno movimento di mira. I valori sotto 1.0 ne richiedono di più.</value></data>
+  <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Peso totale (Balance)</value></data>
+  <data name="Mapping_BalanceLeanX" xml:space="preserve"><value>Inclinazione X (Balance)</value></data>
+  <data name="Mapping_BalanceLeanY" xml:space="preserve"><value>Inclinazione Y (Balance)</value></data>
   <data name="DevObj_AxisN" xml:space="preserve"><value>Asse {0}</value></data>
   <data name="DevObj_Misc1" xml:space="preserve"><value>Condividi</value></data>
   <data name="DevObj_Misc2" xml:space="preserve"><value>Vari 2</value></data>

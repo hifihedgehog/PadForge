@@ -1079,6 +1079,7 @@
   <data name="Mapping_NfcAnyTag" xml:space="preserve"><value>Qualquer Tag NFC</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Apontador IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Apontador IR Y</value></data>
+  <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Brilho IR</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensibilidade</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Sensibilidade do apontador IR por fonte. 1.0 atinge o deslocamento total do analógico na borda do campo de visão da câmera. Valores acima de 1.0 atingem o deslocamento total com menos movimento de mira. Valores abaixo de 1.0 precisam de mais.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Peso Total (Balance)</value></data>

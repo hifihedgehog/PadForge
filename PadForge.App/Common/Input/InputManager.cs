@@ -548,6 +548,16 @@ namespace PadForge.Common.Input
                 // (no Switch 2 hardware has validated it yet).
                 SDL_SetHint(SDL_HINT_JOYSTICK_BLE_SWITCH2, "1");
 
+                // Enable the SDL3 fork's right Joy-Con NIR camera scalar (issue
+                // #151, hifihedgehog/SDL#7, fork commit a31980950a). With the hint
+                // on, a STANDALONE right Joy-Con powers its IR MCU when sensors are
+                // enabled (PadForge enables sensors for gyro) and posts the MCU's
+                // average-intensity byte, buf[53] scaled 0..32767, on dedicated
+                // joystick axis 6. Covered sensor = bright = high value, so the
+                // "IR Brightness" source reads cover/proximity. Combined pairs are
+                // excluded by the fork (their shared joystick has no IR axis).
+                SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_JOYCON_IR_SENSOR, "1");
+
                 // Allow screensaver/sleep even while SDL video is active.
                 SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
 

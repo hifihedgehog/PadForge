@@ -1079,6 +1079,7 @@
   <data name="Mapping_NfcAnyTag" xml:space="preserve"><value>Beliebiger NFC-Tag</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-Zeiger X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-Zeiger Y</value></data>
+  <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR-Helligkeit</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Empfindlichkeit</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Empfindlichkeit des IR-Zeigers pro Quelle. 1.0 erreicht die volle Stick-Auslenkung am Rand des Sichtfelds der Kamera. Werte über 1.0 erreichen die volle Auslenkung mit weniger Zielbewegung. Werte unter 1.0 brauchen mehr.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Balance-Gesamtgewicht</value></data>

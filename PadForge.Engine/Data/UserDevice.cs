@@ -126,6 +126,19 @@ namespace PadForge.Engine.Data
         public bool IsBalanceBoard => VendorId == 0x057E
             && (ProductName ?? string.Empty).IndexOf("Balance Board", StringComparison.OrdinalIgnoreCase) >= 0;
 
+        /// <summary>Whether the device is a standalone right Joy-Con, whose NIR
+        /// camera drives the "IR Brightness" cover/proximity source (issue #151).
+        /// Identity-derived from VID + name like the two properties above, so it
+        /// is correct online or offline. The SDL driver names it exactly
+        /// "Nintendo Switch Joy-Con (R)" (SDL_hidapi_switch.c:1786/1838); a
+        /// combined pair's "(L/R)" suffix cannot match, so the pair (whose shared
+        /// joystick has no IR axis) is excluded. Computed, not stored, so a stale
+        /// persisted value can never linger. Gates whether the "IR Brightness"
+        /// mapping source is offered for this device.</summary>
+        [XmlIgnore]
+        public bool HasJoyConIr => VendorId == 0x057E
+            && (ProductName ?? string.Empty).EndsWith("Joy-Con (R)", StringComparison.OrdinalIgnoreCase);
+
         /// <summary>Wii IR pointer tuning (issue #146 Pointer tab), per device. Where
         /// the sensor bar sits relative to the screen: 0 = centered (no offset),
         /// 1 = above the screen, 2 = below. Drives a vertical aim-offset like

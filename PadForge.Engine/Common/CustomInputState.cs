@@ -110,6 +110,14 @@ namespace PadForge.Engine
         /// for a bare Wii Remote with the camera powered.</summary>
         public WiiIrState Ir;
 
+        /// <summary>Right Joy-Con NIR camera average intensity, 0..1 (issue #151).
+        /// The SDL fork's hidapi_switch posts the MCU's per-frame average-intensity
+        /// byte on dedicated joystick axis 6 for a standalone right Joy-Con with the
+        /// camera powered (SDL#7). A covered sensor reads bright (high), an
+        /// uncovered one dark (low), so this is a cover/proximity scalar. 0 while
+        /// the camera is off. Populated by SdlDeviceWrapper.</summary>
+        public float JoyConIrIntensity;
+
         /// <summary>Battery percentage from SDL3 (0..100, or -1 if unknown).
         /// Refreshed periodically by SdlDeviceWrapper, not every frame.</summary>
         public int BatteryPercent;
@@ -162,6 +170,7 @@ namespace PadForge.Engine
             }
             clone.Midi = Midi?.Clone();
             clone.Ir = Ir; // value type copy (X/Y/Detected)
+            clone.JoyConIrIntensity = JoyConIrIntensity;
             clone.BatteryPercent = BatteryPercent;
             clone.BatteryCharging = BatteryCharging;
             return clone;

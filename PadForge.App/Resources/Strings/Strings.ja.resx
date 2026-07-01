@@ -1079,6 +1079,7 @@
   <data name="Mapping_NfcAnyTag" xml:space="preserve"><value>任意の NFC タグ</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IRポインター X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IRポインター Y</value></data>
+  <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR輝度</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>感度</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>ソースごとの IR ポインター感度。1.0 はカメラの視野の端でスティックの最大傾きに達します。1.0 より大きい値は少ない照準移動で最大傾きに達します。1.0 より小さい値はより多くの移動が必要です。</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>バランス合計重量</value></data>

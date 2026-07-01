@@ -1099,6 +1099,7 @@
   <data name="Mapping_NfcAnyTag" xml:space="preserve"><value>Elke NFC-tag</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-aanwijzer X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-aanwijzer Y</value></data>
+  <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR-helderheid</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheid van de IR-aanwijzer per bron. 1.0 bereikt de volledige stick-uitslag aan de rand van het gezichtsveld van de camera. Waarden boven 1.0 bereiken de volledige uitslag met minder richtbeweging. Waarden onder 1.0 hebben meer nodig.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Totaalgewicht (Balance)</value></data>

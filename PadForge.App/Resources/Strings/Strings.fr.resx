@@ -1079,6 +1079,7 @@
   <data name="Mapping_NfcAnyTag" xml:space="preserve"><value>N'importe quelle étiquette NFC</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Pointeur IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Pointeur IR Y</value></data>
+  <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Luminosité IR</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Sensibilité du pointeur IR par source. 1.0 atteint le déplacement complet du stick au bord du champ de vision de la caméra. Les valeurs supérieures à 1.0 atteignent le déplacement complet avec moins de mouvement de visée. Les valeurs inférieures à 1.0 en demandent davantage.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Poids total (Balance)</value></data>

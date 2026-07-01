@@ -1079,6 +1079,7 @@
   <data name="Mapping_NfcAnyTag" xml:space="preserve"><value>任意 NFC 标签</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>红外指针 X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>红外指针 Y</value></data>
+  <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>红外亮度</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>灵敏度</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>每个来源的红外指针灵敏度。1.0 在相机视野边缘达到摇杆最大偏移。大于 1.0 的值以更少的瞄准移动达到最大偏移。小于 1.0 的值需要更多移动。</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>平衡板总重量</value></data>

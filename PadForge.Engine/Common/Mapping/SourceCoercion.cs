@@ -60,6 +60,11 @@ namespace PadForge.Engine.Common.Mapping
                              // the gamepad stick axes) plus the per-board kg
                              // calibration. Weight is unipolar [0..1]; lean is
                              // bipolar [-1..+1] center-of-gravity offset.
+            JoyConIr,        // "IR Brightness" (issue #151). Right Joy-Con NIR
+                             // camera average intensity, unipolar [0..1], read
+                             // PER DEVICE from CustomInputState.JoyConIrIntensity.
+                             // Covered sensor = bright = 1; uncovered = dark = 0,
+                             // so it works as a cover button or proximity trigger.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -483,6 +488,8 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.MouseCursor;
             if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
                 return SourceType.IrPointer;
+            if (s.Equals("IR Brightness", StringComparison.Ordinal))
+                return SourceType.JoyConIr;
             if (s.StartsWith("Balance ", StringComparison.Ordinal))
                 return SourceType.BalanceBoard;
             if (s.StartsWith("Midi ", StringComparison.Ordinal))
@@ -1346,6 +1353,15 @@ namespace PadForge.Engine.Common.Mapping
                 return Math.Abs(v) > Math.Max(cdz, 1) / 100f;
             }
 
+            if (s.Equals("IR Brightness", StringComparison.Ordinal))
+            {
+                // Cover-as-button (issue #151): pressed while the sensor reads
+                // brighter than the threshold. Same per-row DeadZone override /
+                // global-threshold fallback as the other derived sources.
+                int cdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                return state.JoyConIrIntensity > Math.Max(cdz, 1) / 100f;
+            }
+
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return false;
 
@@ -1479,6 +1495,9 @@ namespace PadForge.Engine.Common.Mapping
             if (s.StartsWith("Balance ", StringComparison.Ordinal))
                 return ReadTunedBalanceBoard(state, src);
 
+            if (s.Equals("IR Brightness", StringComparison.Ordinal))
+                return state.JoyConIrIntensity;
+
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;
 
@@ -1580,6 +1599,9 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Balance ", StringComparison.Ordinal))
                 return Math.Abs(ReadTunedBalanceBoard(state, src));
+
+            if (s.Equals("IR Brightness", StringComparison.Ordinal))
+                return state.JoyConIrIntensity; // already unipolar 0..1
 
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;

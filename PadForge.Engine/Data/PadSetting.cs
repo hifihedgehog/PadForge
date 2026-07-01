@@ -516,6 +516,14 @@ namespace PadForge.Engine.Data
         /// Issue #120.</summary>
         [XmlElement] public string GyroEngageStickSide { get; set; } = "Right";
 
+        /// <summary>Which component of the engage stick(s) the Easy-Aim
+        /// gate compares against the threshold (issue #120): "Full"
+        /// (default, radial max(|x|,|y|), preserves existing profiles),
+        /// "X"/"Y" (full horizontal/vertical), or "XNeg"/"XPos"/"YNeg"/
+        /// "YPos" (single direction: left/right/down/up). Composes with
+        /// GyroEngageStickSide. Only consulted when the threshold &gt; 0.</summary>
+        [XmlElement] public string GyroEngageStickDirection { get; set; } = "Full";
+
         /// <summary>At-rest bias for Pitch axis (rad/s), subtracted from
         /// the raw SDL3 gyro reading at the source-coercion read point.
         /// Per-(device, slot) — re-running calibration on slot A doesn't
@@ -1230,6 +1238,7 @@ namespace PadForge.Engine.Data
             sb.Append(GyroSensitivityUnits); sb.Append('|');
             sb.Append(GyroEasyAimStickThreshold); sb.Append('|');
             sb.Append(GyroEngageStickSide); sb.Append('|');
+            sb.Append(GyroEngageStickDirection); sb.Append('|');
             sb.Append(GyroBiasPitch); sb.Append('|');
             sb.Append(GyroBiasYaw); sb.Append('|');
             sb.Append(GyroBiasRoll); sb.Append('|');
@@ -1687,7 +1696,7 @@ namespace PadForge.Engine.Data
             nameof(GyroDeadZoneDegPerSec), nameof(GyroSmoothingAlpha),
             nameof(GyroAcceleration), nameof(GyroOutputCurve),
             nameof(GyroSensitivityUnits), nameof(GyroEasyAimStickThreshold),
-            nameof(GyroEngageStickSide),
+            nameof(GyroEngageStickSide), nameof(GyroEngageStickDirection),
             nameof(GyroBiasPitch), nameof(GyroBiasYaw), nameof(GyroBiasRoll),
             nameof(GyroCalibratedAtUtc),
             nameof(GyroSpace), nameof(GyroPlayerSpaceYawRelaxFactor),

@@ -6313,6 +6313,30 @@
                                             ToolTip="{Binding Pad_ResetGyroEngageStickSide, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
+                                <!-- Engage stick direction (#120). Which
+                                     component of the stick(s) above the
+                                     threshold gates on. Full (default,
+                                     radial) preserves existing profiles. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <TextBlock Text="{Binding Settings_GyroEngageStickDirection, Source={x:Static strings:Strings.Instance}}"
+                                               Width="270" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_GyroEngageStickDirection_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBox SelectedValue="{Binding GyroEngageStickDirection, Mode=TwoWay}"
+                                              SelectedValuePath="Tag"
+                                              Width="200" VerticalAlignment="Center"
+                                              ToolTip="{Binding Settings_GyroEngageStickDirection_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBoxItem Content="{Binding Settings_GyroEngageStickDirection_Full, Source={x:Static strings:Strings.Instance}}" Tag="Full"/>
+                                        <ComboBoxItem Content="{Binding Settings_GyroEngageStickDirection_X, Source={x:Static strings:Strings.Instance}}" Tag="X"/>
+                                        <ComboBoxItem Content="{Binding Settings_GyroEngageStickDirection_Y, Source={x:Static strings:Strings.Instance}}" Tag="Y"/>
+                                        <ComboBoxItem Content="{Binding Settings_GyroEngageStickDirection_XNeg, Source={x:Static strings:Strings.Instance}}" Tag="XNeg"/>
+                                        <ComboBoxItem Content="{Binding Settings_GyroEngageStickDirection_XPos, Source={x:Static strings:Strings.Instance}}" Tag="XPos"/>
+                                        <ComboBoxItem Content="{Binding Settings_GyroEngageStickDirection_YNeg, Source={x:Static strings:Strings.Instance}}" Tag="YNeg"/>
+                                        <ComboBoxItem Content="{Binding Settings_GyroEngageStickDirection_YPos, Source={x:Static strings:Strings.Instance}}" Tag="YPos"/>
+                                    </ComboBox>
+                                    <Button Command="{Binding ResetGyroEngageStickDirectionCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroEngageStickDirection, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
                                 <!-- Aim Engage button — cross-device picker that writes
                                      both the descriptor and owning device GUID atomically.
                                      ItemsSource is the slot's combined cross-device InputChoice

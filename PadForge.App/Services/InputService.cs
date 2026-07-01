@@ -736,6 +736,7 @@ namespace PadForge.Services
                     OutputCurve = ps.GyroOutputCurve ?? "Linear",
                     EasyAimStickThreshold01 = TryParseFloatPs(ps.GyroEasyAimStickThreshold, 0f) / 100f,
                     EasyAimStickSide = string.IsNullOrEmpty(ps.GyroEngageStickSide) ? "Right" : ps.GyroEngageStickSide,
+                    EasyAimStickDirection = string.IsNullOrEmpty(ps.GyroEngageStickDirection) ? "Full" : ps.GyroEngageStickDirection,
                     // Jibb-canon extensions
                     Space = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace,
                     PlayerYawRelax = TryParseFloatPs(ps.GyroPlayerSpaceYawRelaxFactor, 1.41f),
@@ -752,23 +753,23 @@ namespace PadForge.Services
                 };
             };
 
-            // Stick-deflection provider for Easy Aim gating. The gyro
-            // reader passes its slotIndex and the side it needs (issue
-            // #120: true = left stick, false = right). We look up the
-            // slot's combined gamepad output and compute the larger
-            // absolute of that stick's two axes, normalized to 0..1.
+            // Stick-position provider for Easy Aim gating. The gyro reader
+            // passes its slotIndex and the side it needs (issue #120: true =
+            // left stick, false = right). We look up the slot's combined
+            // gamepad output and return the signed (x, y) in -1..+1 so the
+            // engine can gate on radial magnitude OR a single direction.
+            // XInput frame: x>0 right, x<0 left, y>0 up, y<0 down (see
+            // HMaestroVirtualController: ThumbLY +32767 = up, -32768 = down).
             PadForge.Engine.Common.Mapping.SourceCoercion.SlotStickDeflectionProvider = (slotIndex, isLeft) =>
             {
-                if (_inputManager == null) return 0f;
-                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return 0f;
+                if (_inputManager == null) return (0f, 0f);
+                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return (0f, 0f);
                 var gp = _inputManager.CombinedOutputStates[slotIndex];
                 short rawX = isLeft ? gp.ThumbLX : gp.ThumbRX;
                 short rawY = isLeft ? gp.ThumbLY : gp.ThumbRY;
                 float x = (rawX - (float)short.MinValue) / 65535f * 2f - 1f;
                 float y = (rawY - (float)short.MinValue) / 65535f * 2f - 1f;
-                float ax = x < 0 ? -x : x;
-                float ay = y < 0 ? -y : y;
-                return ax > ay ? ax : ay;
+                return (x, y);
             };
 
             // Player/World Space gyro — gravity vector estimator.
@@ -2687,6 +2688,7 @@ namespace PadForge.Services
             ps.GyroSensitivityUnits = padVm.GyroSensitivityUnits ?? "Multiplier";
             ps.GyroEasyAimStickThreshold = padVm.GyroEasyAimStickThreshold.ToString("F0", ic);
             ps.GyroEngageStickSide = string.IsNullOrEmpty(padVm.GyroEngageStickSide) ? "Right" : padVm.GyroEngageStickSide;
+            ps.GyroEngageStickDirection = string.IsNullOrEmpty(padVm.GyroEngageStickDirection) ? "Full" : padVm.GyroEngageStickDirection;
             // JoyShockMapper-canon extensions.
             ps.GyroSpace = padVm.GyroSpace ?? "Local";
             ps.GyroPlayerSpaceYawRelaxFactor = padVm.GyroPlayerSpaceYawRelaxFactor.ToString("F2", ic);
@@ -3009,6 +3011,7 @@ namespace PadForge.Services
             padVm.GyroSensitivityUnits = string.IsNullOrEmpty(ps.GyroSensitivityUnits) ? "Multiplier" : ps.GyroSensitivityUnits;
             padVm.GyroEasyAimStickThreshold = TryParseDouble(ps.GyroEasyAimStickThreshold, 0);
             padVm.GyroEngageStickSide = string.IsNullOrEmpty(ps.GyroEngageStickSide) ? "Right" : ps.GyroEngageStickSide;
+            padVm.GyroEngageStickDirection = string.IsNullOrEmpty(ps.GyroEngageStickDirection) ? "Full" : ps.GyroEngageStickDirection;
             // JoyShockMapper-canon extensions.
             padVm.GyroSpace = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace;
             padVm.GyroPlayerSpaceYawRelaxFactor = TryParseDouble(ps.GyroPlayerSpaceYawRelaxFactor, 1.41);

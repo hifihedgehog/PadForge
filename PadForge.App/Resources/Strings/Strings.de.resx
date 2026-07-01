@@ -1154,6 +1154,7 @@
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Aktivierungs-Taste zurücksetzen</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Aktivierungsmodus zurücksetzen</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Aktivierungs-Stick zurücksetzen</value></data>
+  <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Aktivierungsrichtung zurücksetzen</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Bewegungsdurchleitung</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Gyro-Abstimmung auf Bewegungsdurchleitung anwenden</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Wendet die optionale Gyro-Abstimmung dieses Tabs (Totzone, Empfindlichkeit, Glättung, Antwortkurve, Invertierung) auf die Bewegungsdaten an, die der virtuelle Controller an das Spiel oder den Emulator meldet. Deaktiviere es, um nur die kalibrierte Messung zu senden und das Spiel seine eigene Empfindlichkeit und Glättung anwenden zu lassen. Die Kalibrierungs-Driftkorrektur greift in beiden Fällen.</value></data>
@@ -1206,6 +1207,15 @@
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Rechter Stick</value></data>
   <data name="Settings_GyroEngageStickSide_Left" xml:space="preserve"><value>Linker Stick</value></data>
   <data name="Settings_GyroEngageStickSide_Either" xml:space="preserve"><value>Beide Sticks</value></data>
+  <data name="Settings_GyroEngageStickDirection" xml:space="preserve"><value>Aktivierungsrichtung</value></data>
+  <data name="Settings_GyroEngageStickDirection_Tooltip" xml:space="preserve"><value>Welcher Teil des Aktivierungs-Sticks die Easy-Aim-Schwelle steuert. Voll (Standard) verwendet die gesamte Auslenkung und lässt vorhandene Profile unverändert. X oder Y steuern über waagerechte oder senkrechte Bewegung. Die vorzeichenbehafteten Optionen steuern nur über eine Richtung.</value></data>
+  <data name="Settings_GyroEngageStickDirection_Full" xml:space="preserve"><value>Voll</value></data>
+  <data name="Settings_GyroEngageStickDirection_X" xml:space="preserve"><value>Waagerecht (X)</value></data>
+  <data name="Settings_GyroEngageStickDirection_Y" xml:space="preserve"><value>Senkrecht (Y)</value></data>
+  <data name="Settings_GyroEngageStickDirection_XNeg" xml:space="preserve"><value>Links (X-)</value></data>
+  <data name="Settings_GyroEngageStickDirection_XPos" xml:space="preserve"><value>Rechts (X+)</value></data>
+  <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Unten (Y-)</value></data>
+  <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Oben (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktivierung</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optionale Bedingungen, wann das Gyro aktiv ist. Stick-Auslenkung und eine Aktivierungs-Taste können das Gyro jeweils freigeben. Eine oder beide sind konfigurierbar. Sind beide gesetzt, müssen beide aktiv sein, damit das Gyro feuert.</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Empfindlichkeit</value></data>

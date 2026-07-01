@@ -1313,6 +1313,15 @@
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Right Stick</value></data>
   <data name="Settings_GyroEngageStickSide_Left" xml:space="preserve"><value>Left Stick</value></data>
   <data name="Settings_GyroEngageStickSide_Either" xml:space="preserve"><value>Either Stick</value></data>
+  <data name="Settings_GyroEngageStickDirection" xml:space="preserve"><value>Engage Direction</value></data>
+  <data name="Settings_GyroEngageStickDirection_Tooltip" xml:space="preserve"><value>Which part of the engage stick the Easy Aim threshold gates on. Full (the default) uses the stick's total deflection and keeps existing profiles unchanged. X or Y gate on horizontal or vertical movement. The signed options gate on one direction only.</value></data>
+  <data name="Settings_GyroEngageStickDirection_Full" xml:space="preserve"><value>Full</value></data>
+  <data name="Settings_GyroEngageStickDirection_X" xml:space="preserve"><value>Horizontal (X)</value></data>
+  <data name="Settings_GyroEngageStickDirection_Y" xml:space="preserve"><value>Vertical (Y)</value></data>
+  <data name="Settings_GyroEngageStickDirection_XNeg" xml:space="preserve"><value>Left (X-)</value></data>
+  <data name="Settings_GyroEngageStickDirection_XPos" xml:space="preserve"><value>Right (X+)</value></data>
+  <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Down (Y-)</value></data>
+  <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Up (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Engage</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optional gates that limit when gyro is active. Right-stick deflection and the aim engage button can each be configured. Gyro fires only while every configured gate is active.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Local</value></data>
@@ -1348,6 +1357,7 @@
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Reset Aim Engage Button</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Reset Engage Mode</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Reset Engage Stick</value></data>
+  <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Reset Engage Direction</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Motion Passthrough</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Apply Gyro Tuning to Motion Passthrough</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Runs this tab's discretionary gyro tuning (deadzone, sensitivity, smoothing, response curve, invert) on the motion the virtual controller reports to the game or emulator. Turn it off to send only the calibrated reading and let the game apply its own sensitivity and smoothing. Calibration drift correction always applies either way.</value></data>

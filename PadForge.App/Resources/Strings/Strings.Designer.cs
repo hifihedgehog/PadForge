@@ -1566,6 +1566,15 @@ public class Strings : INotifyPropertyChanged
     public string Settings_GyroEngageStickSide_Right => Get("Settings_GyroEngageStickSide_Right");
     public string Settings_GyroEngageStickSide_Left => Get("Settings_GyroEngageStickSide_Left");
     public string Settings_GyroEngageStickSide_Either => Get("Settings_GyroEngageStickSide_Either");
+    public string Settings_GyroEngageStickDirection => Get("Settings_GyroEngageStickDirection");
+    public string Settings_GyroEngageStickDirection_Tooltip => Get("Settings_GyroEngageStickDirection_Tooltip");
+    public string Settings_GyroEngageStickDirection_Full => Get("Settings_GyroEngageStickDirection_Full");
+    public string Settings_GyroEngageStickDirection_X => Get("Settings_GyroEngageStickDirection_X");
+    public string Settings_GyroEngageStickDirection_Y => Get("Settings_GyroEngageStickDirection_Y");
+    public string Settings_GyroEngageStickDirection_XNeg => Get("Settings_GyroEngageStickDirection_XNeg");
+    public string Settings_GyroEngageStickDirection_XPos => Get("Settings_GyroEngageStickDirection_XPos");
+    public string Settings_GyroEngageStickDirection_YNeg => Get("Settings_GyroEngageStickDirection_YNeg");
+    public string Settings_GyroEngageStickDirection_YPos => Get("Settings_GyroEngageStickDirection_YPos");
     public string Pad_Gyro_Engage_Header => Get("Pad_Gyro_Engage_Header");
     public string Pad_Gyro_Engage_Subtitle => Get("Pad_Gyro_Engage_Subtitle");
     public string Pad_Gyro_Space_Local => Get("Pad_Gyro_Space_Local");
@@ -1605,6 +1614,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetGyroAimEngageButton => Get("Pad_ResetGyroAimEngageButton");
     public string Pad_ResetGyroAimEngageMode => Get("Pad_ResetGyroAimEngageMode");
     public string Pad_ResetGyroEngageStickSide => Get("Pad_ResetGyroEngageStickSide");
+    public string Pad_ResetGyroEngageStickDirection => Get("Pad_ResetGyroEngageStickDirection");
     public string Mapping_GyroSensitivity => Get("Mapping_GyroSensitivity");
     public string Mapping_GyroSensitivity_Tooltip => Get("Mapping_GyroSensitivity_Tooltip");
     public string Mapping_MouseSpeedX => Get("Mapping_MouseSpeedX");

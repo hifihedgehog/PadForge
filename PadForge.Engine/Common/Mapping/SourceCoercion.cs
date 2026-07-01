@@ -118,6 +118,12 @@ namespace PadForge.Engine.Common.Mapping
             // two deflections). Empty / unrecognized reads as "Right" for
             // back-compat with profiles saved before the selector existed.
             public string EasyAimStickSide;
+            // Which component of the selected stick(s) the threshold gates
+            // on (issue #120): "Full" (default, radial max(|x|,|y|), the
+            // legacy behavior), "X"/"Y" (full horizontal/vertical), or
+            // "XNeg"/"XPos"/"YNeg"/"YPos" (single direction: left/right/
+            // down/up). Empty / unrecognized reads as "Full".
+            public string EasyAimStickDirection;
 
             // Player / World space
             public string Space;                     // "Local" / "Player" / "World"
@@ -159,36 +165,62 @@ namespace PadForge.Engine.Common.Mapping
         /// game-binding configurations.</summary>
         public static Func<string, int, GyroTuning> GyroTuningProvider { get; set; }
 
-        /// <summary>Reads the slot's right-stick deflection (0..1) so
-        /// Easy Aim can gate gyro output on aim-stick movement without
-        /// the binding layer needing direct access to the combined
-        /// gamepad state. App wires this against
+        /// <summary>Reads the slot's stick as signed (x, y) in -1..+1 so
+        /// Easy Aim can gate on radial magnitude OR one direction (issue
+        /// #120). App wires this against
         /// <c>InputManager.CombinedOutputStates[slot]</c> at startup.
-        /// Returns 0 when slot is empty / state unavailable. The bool
-        /// argument selects the stick: true = left, false = right (issue
-        /// #120 generalized this from the right-stick-only Easy Aim gate).</summary>
-        public static Func<int, bool, float> SlotStickDeflectionProvider { get; set; }
+        /// XInput frame: x&gt;0 = right, x&lt;0 = left, y&gt;0 = up, y&lt;0 = down.
+        /// Returns (0, 0) when slot is empty / state unavailable. The bool
+        /// argument selects the stick: true = left, false = right.</summary>
+        public static Func<int, bool, (float x, float y)> SlotStickDeflectionProvider { get; set; }
+
+        /// <summary>Reduces a stick's signed (x, y) to the 0..1 deflection
+        /// the Easy-Aim threshold compares against, per the direction gate
+        /// (issue #120). "Full" (default / empty / unrecognized) = radial
+        /// max(|x|,|y|), matching the legacy gate. "X"/"Y" = full-axis
+        /// magnitude. "XNeg"/"XPos"/"YNeg"/"YPos" = one direction, clamped
+        /// to 0 so the opposite push never gates (x&gt;0 right, y&gt;0 up).</summary>
+        private static float ApplyDirectionGate(float x, float y, string direction)
+        {
+            switch (direction)
+            {
+                case "X":    return x < 0 ? -x : x;
+                case "Y":    return y < 0 ? -y : y;
+                case "XNeg": return x < 0 ? -x : 0f;
+                case "XPos": return x > 0 ?  x : 0f;
+                case "YNeg": return y < 0 ? -y : 0f;
+                case "YPos": return y > 0 ?  y : 0f;
+                default:
+                    // "Full" (default) is the original radial magnitude.
+                    float ax = x < 0 ? -x : x;
+                    float ay = y < 0 ? -y : y;
+                    return ax > ay ? ax : ay;
+            }
+        }
 
         /// <summary>Resolves the Easy-Aim gating deflection (0..1) for the
-        /// configured stick side. "Left" / "Either" read accordingly;
-        /// anything else (including "Right", empty, or null) reads the
-        /// right stick so profiles saved before the selector existed keep
-        /// their original right-stick behavior. Returns 1f (gate fully
-        /// open) when the provider is unwired, matching the prior
-        /// <c>?? 1f</c> fallback at the call sites.</summary>
-        private static float ResolveStickDeflection(int slotIndex, string side)
+        /// configured stick side and direction. "Left" / "Either" read
+        /// accordingly; anything else (including "Right", empty, or null)
+        /// reads the right stick so profiles saved before the selector
+        /// existed keep their original right-stick behavior. "Either"
+        /// applies the direction gate to each stick independently, then
+        /// takes the larger. Returns 1f (gate fully open) when the provider
+        /// is unwired, matching the prior <c>?? 1f</c> fallback.</summary>
+        private static float ResolveStickDeflection(int slotIndex, string side, string direction)
         {
             var p = SlotStickDeflectionProvider;
             if (p == null) return 1f;
-            if (string.Equals(side, "Left", StringComparison.OrdinalIgnoreCase))
-                return p(slotIndex, true);
             if (string.Equals(side, "Either", StringComparison.OrdinalIgnoreCase))
             {
-                float l = p(slotIndex, true);
-                float r = p(slotIndex, false);
+                var (lx, ly) = p(slotIndex, true);
+                var (rx, ry) = p(slotIndex, false);
+                float l = ApplyDirectionGate(lx, ly, direction);
+                float r = ApplyDirectionGate(rx, ry, direction);
                 return l > r ? l : r;
             }
-            return p(slotIndex, false);
+            bool isLeft = string.Equals(side, "Left", StringComparison.OrdinalIgnoreCase);
+            var (x, y) = p(slotIndex, isLeft);
+            return ApplyDirectionGate(x, y, direction);
         }
 
         /// <summary>— per-device gravity vector estimator. The app
@@ -863,7 +895,7 @@ namespace PadForge.Engine.Common.Mapping
             // configured threshold. Threshold 0 = always-on (default).
             if (tuning.EasyAimStickThreshold01 > 0f && slotIndex >= 0)
             {
-                float defl = ResolveStickDeflection(slotIndex, tuning.EasyAimStickSide);
+                float defl = ResolveStickDeflection(slotIndex, tuning.EasyAimStickSide, tuning.EasyAimStickDirection);
                 if (defl < tuning.EasyAimStickThreshold01) return 0f;
             }
             // Aim Engage — per-slot resolved engaged bit. Held button or
@@ -1020,7 +1052,7 @@ namespace PadForge.Engine.Common.Mapping
             // while engage is active.
             if (tuning.EasyAimStickThreshold01 > 0f && slotIndex >= 0)
             {
-                float defl = ResolveStickDeflection(slotIndex, tuning.EasyAimStickSide);
+                float defl = ResolveStickDeflection(slotIndex, tuning.EasyAimStickSide, tuning.EasyAimStickDirection);
                 if (defl < tuning.EasyAimStickThreshold01) return;
             }
             if (slotIndex >= 0)

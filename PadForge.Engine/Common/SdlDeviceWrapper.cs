@@ -107,6 +107,11 @@ namespace PadForge.Engine
         /// <summary>Whether this is a Wii Balance Board (issue #146).</summary>
         public bool IsBalanceBoard { get; private set; }
 
+        /// <summary>Whether this is a standalone right Joy-Con whose NIR camera
+        /// PadForge surfaces as an "IR Brightness" cover/proximity source
+        /// (issue #151).</summary>
+        public bool HasJoyConIr { get; private set; }
+
         /// <summary>Whether the device has an accelerometer sensor.</summary>
         public bool HasAccel { get; private set; }
 
@@ -332,6 +337,16 @@ namespace PadForge.Engine
             HasIrCamera = isWiiVendor && !IsBalanceBoard
                 && Joystick != IntPtr.Zero && SDL_GetNumJoystickAxes(Joystick) >= 10;
 
+            // Right Joy-Con NIR camera (issue #151). The SDL fork's hidapi_switch
+            // gives a STANDALONE right Joy-Con (VID 0x057E PID 0x2007, not a
+            // combined pair) one extra joystick axis beyond the six gamepad axes
+            // (raw axis count 7, SDL#7 commit a31980950a) and posts the MCU's
+            // average-intensity byte there once the camera powers (hint + sensors
+            // enabled). Same detection idiom as the Wii IR axes above: the raw
+            // joystick axis count is the stable signal the SDL contract defines.
+            HasJoyConIr = VendorId == 0x057E && ProductId == 0x2007
+                && Joystick != IntPtr.Zero && SDL_GetNumJoystickAxes(Joystick) >= 7;
+
             // Always try the haptic API for force feedback devices (joysticks,
             // wheels, etc.). Some report HasRumble=true via SDL properties but
             // only actually work through the haptic effect system. The routing
@@ -486,7 +501,25 @@ namespace PadForge.Engine
             if (HasIrCamera && state != null)
                 ReadIrPointer(state);
 
+            // Right Joy-Con NIR camera scalar rides dedicated joystick axis 6
+            // (SDL#7), also outside the gamepad mapping, so it is read
+            // joystick-direct the same way.
+            if (HasJoyConIr && state != null)
+                ReadJoyConIr(state);
+
             return state;
+        }
+
+        // The SDL fork posts the right Joy-Con MCU's average-intensity byte
+        // (buf[53], 0-255) on dedicated joystick axis 6, scaled 0..32767
+        // (SDL_hidapi_switch.c HandleMcuIRReport, SDL#7 commit a31980950a). The
+        // axis reads 0 while the camera is off, so no sentinel handling is
+        // needed: normalize the positive range to 0..1 and clamp any negative
+        // (never posted by the fork) to 0.
+        private void ReadJoyConIr(CustomInputState state)
+        {
+            short raw = SDL_GetJoystickAxis(Joystick, 6);
+            state.JoyConIrIntensity = raw <= 0 ? 0f : raw / 32767f;
         }
 
         // The SDL hidapi_wii driver posts the two IR dots on DEDICATED joystick

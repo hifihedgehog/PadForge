@@ -770,6 +770,13 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = "Balance Lean Y",       DisplayName = si.Mapping_BalanceLeanY });
             }
 
+            // Right Joy-Con NIR camera cover/proximity scalar (#151). Covered =
+            // bright = 1, uncovered = dark = 0, per device
+            // (CustomInputState.JoyConIrIntensity). Map it to a button for
+            // cover-to-press, or to a trigger for analog proximity.
+            if (ud.HasJoyConIr)
+                list.Add(new InputChoice { Descriptor = "IR Brightness", DisplayName = si.Mapping_JoyConIrBrightness });
+
             // Gravity-lean input: tilt the controller like a wheel and the lean
             // angle drives whatever axis the user maps it to. A normal input
             // descriptor — it does NOT override the target's other sources.

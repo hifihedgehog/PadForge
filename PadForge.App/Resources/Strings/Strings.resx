@@ -1373,6 +1373,7 @@
   <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Per-source cursor sensitivity. 1.0 reaches full stick deflection at 10% of screen width from center. Values above 1.0 reach full deflection with less cursor travel. Values below 1.0 need more.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR Pointer X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR Pointer Y</value></data>
+  <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR Brightness</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Per-source IR pointer sensitivity. 1.0 reaches full stick deflection at the edge of the camera's field of view. Values above 1.0 reach full deflection with less aim travel. Values below 1.0 need more.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Balance Total Weight</value></data>

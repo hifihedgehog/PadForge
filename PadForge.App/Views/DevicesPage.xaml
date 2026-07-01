@@ -246,7 +246,7 @@
                         </Button>
 
                         <!-- Register / manage NFC tags (NFC readers only, issue #150) -->
-                        <Button Content="Register / Manage NFC Tags" Margin="0,6,0,8"
+                        <Button Content="{Binding Nfc_ManageButton, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
                                 Padding="8,4" HorizontalAlignment="Left"
                                 Click="RegisterNfcTag_Click"
                                 Visibility="{Binding SelectedDevice.ShowRegisterNfcTag, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -499,7 +499,7 @@
                              "Any NFC Tag") lights up when its tag is tapped. -->
                         <StackPanel Visibility="{Binding IsNfcDevice, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Margin="0,0,0,8">
-                            <TextBlock Text="NFC Tags" FontSize="11" Opacity="0.6" Margin="0,0,0,3"/>
+                            <TextBlock Text="{Binding Nfc_Title, Source={x:Static strings:Strings.Instance}}" FontSize="11" Opacity="0.6" Margin="0,0,0,3"/>
                             <ItemsControl ItemsSource="{Binding NfcTags}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>

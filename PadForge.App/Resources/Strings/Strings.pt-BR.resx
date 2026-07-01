@@ -2058,4 +2058,18 @@
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} pareado. Ele vai aparecer na sua lista de dispositivos.</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Nenhum rádio Bluetooth encontrado. Conecte um adaptador Bluetooth e tente novamente.</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Concluído</value></data>
+  <data name="Common_Close" xml:space="preserve"><value>Fechar</value></data>
+  <data name="Nfc_Title" xml:space="preserve"><value>Tags NFC</value></data>
+  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>Registrar uma Tag</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>Aproxime uma tag do leitor para capturar seu UID.</value></data>
+  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
+  <data name="Nfc_Waiting" xml:space="preserve"><value>(aguardando)</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Nome:</value></data>
+  <data name="Nfc_RegisterButton" xml:space="preserve"><value>Registrar</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Tags Registradas</value></data>
+  <data name="Nfc_NoReader" xml:space="preserve"><value>Nenhum leitor NFC detectado. Conecte um leitor PC/SC e abra novamente.</value></data>
+  <data name="Nfc_TagCaptured" xml:space="preserve"><value>Tag capturada. Digite um nome e clique em Registrar. Aproxime outra tag para substituir.</value></data>
+  <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>"{0}" registrada. Aproxime outra tag para adicionar mais.</value></data>
+  <data name="Nfc_ManageButton" xml:space="preserve"><value>Registrar/Gerenciar Tags NFC</value></data>
+  <data name="DeviceType_Nfc" xml:space="preserve"><value>Leitor NFC</value></data>
 </root>

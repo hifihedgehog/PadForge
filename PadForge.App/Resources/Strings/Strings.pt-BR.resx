@@ -1169,6 +1169,15 @@
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Analógico Direito</value></data>
   <data name="Settings_GyroEngageStickSide_Left" xml:space="preserve"><value>Analógico Esquerdo</value></data>
   <data name="Settings_GyroEngageStickSide_Either" xml:space="preserve"><value>Qualquer Analógico</value></data>
+  <data name="Settings_GyroEngageStickDirection" xml:space="preserve"><value>Direção de Ativação</value></data>
+  <data name="Settings_GyroEngageStickDirection_Tooltip" xml:space="preserve"><value>Qual parte do analógico de ativação controla o limiar do Easy Aim. Completa (padrão) usa o deslocamento total do analógico e mantém os perfis existentes inalterados. X ou Y usam o movimento horizontal ou vertical. As opções com sinal usam apenas uma direção.</value></data>
+  <data name="Settings_GyroEngageStickDirection_Full" xml:space="preserve"><value>Completa</value></data>
+  <data name="Settings_GyroEngageStickDirection_X" xml:space="preserve"><value>Horizontal (X)</value></data>
+  <data name="Settings_GyroEngageStickDirection_Y" xml:space="preserve"><value>Vertical (Y)</value></data>
+  <data name="Settings_GyroEngageStickDirection_XNeg" xml:space="preserve"><value>Esquerda (X-)</value></data>
+  <data name="Settings_GyroEngageStickDirection_XPos" xml:space="preserve"><value>Direita (X+)</value></data>
+  <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Baixo (Y-)</value></data>
+  <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Cima (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Ativação</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Restrições opcionais que limitam quando o giroscópio está ativo. A deflexão do analógico direito e um botão de ativação podem controlar a saída cada um. Configure um ou ambos. Se ambos estiverem configurados, devem estar ativos simultaneamente.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Local</value></data>
@@ -1204,6 +1213,7 @@
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Restaurar Botão de Ativação</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Restaurar Modo de Ativação</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Restaurar Analógico de Ativação</value></data>
+  <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Restaurar Direção de Ativação</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Transmissão do Movimento</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Aplicar o Ajuste do Giroscópio à Transmissão do Movimento</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Aplica o ajuste opcional do giroscópio desta aba (zona morta, sensibilidade, suavização, curva de resposta, inversão) ao movimento que o controle virtual envia ao jogo ou emulador. Desative para enviar apenas a leitura calibrada e deixar o jogo aplicar a própria sensibilidade e suavização. A correção de deriva por calibração se aplica de qualquer forma.</value></data>

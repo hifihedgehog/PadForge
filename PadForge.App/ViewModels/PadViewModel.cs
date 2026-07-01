@@ -1507,6 +1507,17 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gyroEngageStickSide, string.IsNullOrEmpty(value) ? "Right" : value);
         }
 
+        private string _gyroEngageStickDirection = "Full";
+        /// <summary>Which component of the engage stick(s) drives the
+        /// Easy-Aim threshold gate (issue #120): "Full" (default, radial),
+        /// "X"/"Y", or "XNeg"/"XPos"/"YNeg"/"YPos". Empty collapses to
+        /// "Full" so old profiles keep their original radial behavior.</summary>
+        public string GyroEngageStickDirection
+        {
+            get => _gyroEngageStickDirection;
+            set => SetProperty(ref _gyroEngageStickDirection, string.IsNullOrEmpty(value) ? "Full" : value);
+        }
+
         /// <summary>Tells the view to re-resolve
         /// <see cref="GyroAimEngageSelectedInput"/> after
         /// <see cref="SlotAvailableInputs"/> is populated. Called by
@@ -1708,6 +1719,10 @@ namespace PadForge.ViewModels
         public RelayCommand ResetGyroEngageStickSideCommand =>
             _resetGyroEngageStickSideCommand ??= new RelayCommand(() => GyroEngageStickSide = "Right");
 
+        private RelayCommand _resetGyroEngageStickDirectionCommand;
+        public RelayCommand ResetGyroEngageStickDirectionCommand =>
+            _resetGyroEngageStickDirectionCommand ??= new RelayCommand(() => GyroEngageStickDirection = "Full");
+
         /// <summary>Whether the Aim Engage recorder is currently
         /// listening for the next physical input. Drives the record
         /// button's icon + tooltip swap so the affordance matches the
@@ -1789,6 +1804,7 @@ namespace PadForge.ViewModels
             {
                 GyroEasyAimStickThreshold = 0;
                 GyroEngageStickSide = "Right";
+                GyroEngageStickDirection = "Full";
                 GyroAimEngageButton = "";
                 GyroAimEngageDeviceGuid = "";
                 GyroAimEngageMode = "Hold";

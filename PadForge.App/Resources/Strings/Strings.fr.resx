@@ -1169,6 +1169,15 @@
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Stick droit</value></data>
   <data name="Settings_GyroEngageStickSide_Left" xml:space="preserve"><value>Stick gauche</value></data>
   <data name="Settings_GyroEngageStickSide_Either" xml:space="preserve"><value>Les deux sticks</value></data>
+  <data name="Settings_GyroEngageStickDirection" xml:space="preserve"><value>Direction d'activation</value></data>
+  <data name="Settings_GyroEngageStickDirection_Tooltip" xml:space="preserve"><value>Quelle partie du stick d'activation conditionne le seuil Easy Aim. Complète (par défaut) utilise le déplacement total du stick et laisse les profils existants inchangés. X ou Y utilisent le mouvement horizontal ou vertical. Les options signées n'utilisent qu'une seule direction.</value></data>
+  <data name="Settings_GyroEngageStickDirection_Full" xml:space="preserve"><value>Complète</value></data>
+  <data name="Settings_GyroEngageStickDirection_X" xml:space="preserve"><value>Horizontal (X)</value></data>
+  <data name="Settings_GyroEngageStickDirection_Y" xml:space="preserve"><value>Vertical (Y)</value></data>
+  <data name="Settings_GyroEngageStickDirection_XNeg" xml:space="preserve"><value>Gauche (X-)</value></data>
+  <data name="Settings_GyroEngageStickDirection_XPos" xml:space="preserve"><value>Droite (X+)</value></data>
+  <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Bas (Y-)</value></data>
+  <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Haut (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Activation</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Restrictions optionnelles qui limitent l'activité du gyroscope. La déflexion du stick droit et un bouton d'activation peuvent chacun conditionner la sortie. Configurez l'un ou les deux. Si les deux sont configurés, ils doivent être actifs simultanément.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Local</value></data>
@@ -1204,6 +1213,7 @@
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Réinitialiser le bouton d'activation</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Réinitialiser le mode d'activation</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Réinitialiser le stick d'activation</value></data>
+  <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Réinitialiser la direction d'activation</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Transmission du mouvement</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Appliquer le réglage du gyroscope à la transmission du mouvement</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Applique le réglage facultatif du gyroscope de cet onglet (zone morte, sensibilité, lissage, courbe de réponse, inversion) au mouvement que la manette virtuelle transmet au jeu ou à l'émulateur. Désactivez-le pour n'envoyer que la lecture étalonnée et laisser le jeu appliquer sa propre sensibilité et son propre lissage. La correction de dérive par étalonnage s'applique dans tous les cas.</value></data>

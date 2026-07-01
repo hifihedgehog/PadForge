@@ -1169,6 +1169,15 @@
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>오른쪽 스틱</value></data>
   <data name="Settings_GyroEngageStickSide_Left" xml:space="preserve"><value>왼쪽 스틱</value></data>
   <data name="Settings_GyroEngageStickSide_Either" xml:space="preserve"><value>양쪽 스틱</value></data>
+  <data name="Settings_GyroEngageStickDirection" xml:space="preserve"><value>활성화 방향</value></data>
+  <data name="Settings_GyroEngageStickDirection_Tooltip" xml:space="preserve"><value>Easy Aim 임계값을 활성화 스틱의 어느 성분으로 게이트할지 결정합니다. 전체(기본값)는 스틱의 전체 기울기를 사용하며 기존 프로필을 그대로 유지합니다. X 또는 Y는 수평 또는 수직 이동으로 게이트합니다. 부호 옵션은 한 방향으로만 게이트합니다.</value></data>
+  <data name="Settings_GyroEngageStickDirection_Full" xml:space="preserve"><value>전체</value></data>
+  <data name="Settings_GyroEngageStickDirection_X" xml:space="preserve"><value>수평 (X)</value></data>
+  <data name="Settings_GyroEngageStickDirection_Y" xml:space="preserve"><value>수직 (Y)</value></data>
+  <data name="Settings_GyroEngageStickDirection_XNeg" xml:space="preserve"><value>왼쪽 (X-)</value></data>
+  <data name="Settings_GyroEngageStickDirection_XPos" xml:space="preserve"><value>오른쪽 (X+)</value></data>
+  <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>아래 (Y-)</value></data>
+  <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>위 (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>활성화</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>자이로 활성 시점을 선택적으로 제한. 오른쪽 스틱 편향과 활성화 버튼 각각이 자이로 출력을 게이트할 수 있음. 둘 다 설정한 경우 둘 다 활성화되어야 자이로가 작동.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>로컬</value></data>
@@ -1204,6 +1213,7 @@
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>활성화 버튼 재설정</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>활성화 모드 재설정</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>활성화 스틱 재설정</value></data>
+  <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>활성화 방향 재설정</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>모션 패스스루</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>자이로 조정을 모션 패스스루에 적용</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>이 탭의 선택적 자이로 조정(데드존, 감도, 스무딩, 응답 커브, 반전)을 가상 컨트롤러가 게임이나 에뮬레이터에 보고하는 모션에 적용합니다. 끄면 보정된 값만 전송하고 감도와 스무딩은 게임에 맡깁니다. 보정 드리프트 교정은 어느 쪽이든 항상 적용됩니다.</value></data>

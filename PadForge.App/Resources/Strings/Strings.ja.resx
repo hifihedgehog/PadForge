@@ -1169,6 +1169,15 @@
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>右スティック</value></data>
   <data name="Settings_GyroEngageStickSide_Left" xml:space="preserve"><value>左スティック</value></data>
   <data name="Settings_GyroEngageStickSide_Either" xml:space="preserve"><value>両スティック</value></data>
+  <data name="Settings_GyroEngageStickDirection" xml:space="preserve"><value>起動方向</value></data>
+  <data name="Settings_GyroEngageStickDirection_Tooltip" xml:space="preserve"><value>Easy Aim しきい値を起動スティックのどの成分でゲートするか。全体（既定）はスティックの合計の傾きを使用し、既存のプロファイルをそのまま維持します。X または Y は水平または垂直の動きでゲートします。符号付きの選択肢は 1 方向のみでゲートします。</value></data>
+  <data name="Settings_GyroEngageStickDirection_Full" xml:space="preserve"><value>全体</value></data>
+  <data name="Settings_GyroEngageStickDirection_X" xml:space="preserve"><value>水平 (X)</value></data>
+  <data name="Settings_GyroEngageStickDirection_Y" xml:space="preserve"><value>垂直 (Y)</value></data>
+  <data name="Settings_GyroEngageStickDirection_XNeg" xml:space="preserve"><value>左 (X-)</value></data>
+  <data name="Settings_GyroEngageStickDirection_XPos" xml:space="preserve"><value>右 (X+)</value></data>
+  <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>下 (Y-)</value></data>
+  <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>上 (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>アクティベート</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ジャイロの作動条件を任意で制限。右スティック偏倚とアクティベートボタンのいずれかで出力をゲート可能。両方設定した場合は両方アクティブでなければ作動しません。</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>ローカル</value></data>
@@ -1204,6 +1213,7 @@
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>アクティベートボタンをリセット</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>起動モードをリセット</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>起動スティックをリセット</value></data>
+  <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>起動方向をリセット</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>モーションのパススルー</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>ジャイロ調整をモーションのパススルーに適用</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>このタブの任意のジャイロ調整 (デッドゾーン、感度、スムージング、応答カーブ、反転) を、仮想コントローラーがゲームまたはエミュレーターに報告するモーションに適用します。オフにすると校正済みの値のみを送り、感度とスムージングはゲーム側に任せます。校正によるドリフト補正はどちらの場合も常に適用されます。</value></data>

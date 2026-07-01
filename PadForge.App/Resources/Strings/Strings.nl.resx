@@ -1189,6 +1189,15 @@
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Rechterstick</value></data>
   <data name="Settings_GyroEngageStickSide_Left" xml:space="preserve"><value>Linkerstick</value></data>
   <data name="Settings_GyroEngageStickSide_Either" xml:space="preserve"><value>Beide sticks</value></data>
+  <data name="Settings_GyroEngageStickDirection" xml:space="preserve"><value>Activeringsrichting</value></data>
+  <data name="Settings_GyroEngageStickDirection_Tooltip" xml:space="preserve"><value>Welk deel van de activeringsstick de Easy Aim-drempel regelt. Volledig (standaard) gebruikt de totale uitslag van de stick en laat bestaande profielen ongewijzigd. X of Y regelen op horizontale of verticale beweging. De opties met teken regelen op één richting.</value></data>
+  <data name="Settings_GyroEngageStickDirection_Full" xml:space="preserve"><value>Volledig</value></data>
+  <data name="Settings_GyroEngageStickDirection_X" xml:space="preserve"><value>Horizontaal (X)</value></data>
+  <data name="Settings_GyroEngageStickDirection_Y" xml:space="preserve"><value>Verticaal (Y)</value></data>
+  <data name="Settings_GyroEngageStickDirection_XNeg" xml:space="preserve"><value>Links (X-)</value></data>
+  <data name="Settings_GyroEngageStickDirection_XPos" xml:space="preserve"><value>Rechts (X+)</value></data>
+  <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Omlaag (Y-)</value></data>
+  <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Omhoog (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Activering</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optionele beperkingen op wanneer de gyro actief is. Stickuitslag rechts en een activatieknop kunnen elk de gyro-uitvoer beperken. Configureer één of beide. Als beide zijn ingesteld moeten beide actief zijn voor de gyro werkt.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokaal</value></data>
@@ -1224,6 +1233,7 @@
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Activatieknop resetten</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Activeringsmodus resetten</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Activeringsstick resetten</value></data>
+  <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Activeringsrichting resetten</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Bewegingsdoorgifte</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Gyro-afstemming toepassen op bewegingsdoorgifte</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Past de optionele gyro-afstemming van dit tabblad (dode zone, gevoeligheid, afvlakking, responscurve, omkering) toe op de beweging die de virtuele controller aan het spel of de emulator doorgeeft. Schakel het uit om alleen de gekalibreerde meting te sturen en het spel zijn eigen gevoeligheid en afvlakking te laten toepassen. De kalibratie-driftcorrectie geldt in beide gevallen.</value></data>

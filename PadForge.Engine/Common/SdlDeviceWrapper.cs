@@ -480,9 +480,9 @@ namespace PadForge.Engine
                 ? GetGamepadState()
                 : GetJoystickState();
 
-            // Wii Remote IR pointer rides raw joystick axes 0-3, which the gamepad
-            // mapping does not surface (a bare remote binds no gamepad axes), so it
-            // is read joystick-direct here regardless of which path built the state.
+            // Wii Remote IR pointer rides dedicated raw joystick axes 6-9 (SDL#6
+            // follow-up 41909fdc4e), which the gamepad mapping does not surface, so
+            // it is read joystick-direct here regardless of which path built the state.
             if (HasIrCamera && state != null)
                 ReadIrPointer(state);
 

@@ -558,6 +558,15 @@ namespace PadForge.Common.Input
                 // excluded by the fork (their shared joystick has no IR axis).
                 SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_JOYCON_IR_SENSOR, "1");
 
+                // Enable the SDL3 fork's Joy-Con 2 optical mouse axes (issue
+                // #154, hifihedgehog/SDL#8, fork commit 9b32ec13b8). With the
+                // hint on, the BLE driver enables the sensor via the feature
+                // init+enable frames at connect and posts the absolute 16-bit
+                // counters on joystick axes 6/7 (raw axis count 8 signals
+                // availability). SdlDeviceWrapper derives per-poll wraparound
+                // deltas for the "Mouse Motion X/Y" sources.
+                SDL_SetHint(SDL_HINT_JOYSTICK_BLE_SWITCH2_MOUSE, "1");
+
                 // Allow screensaver/sleep even while SDL video is active.
                 SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
 

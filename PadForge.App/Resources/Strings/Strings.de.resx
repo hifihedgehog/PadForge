@@ -2107,7 +2107,7 @@
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Nur Bluetooth. Der Controller wechselt in den Ruhezustand, sobald die Verbindung getrennt ist.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Trennung bei Inaktivität</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>Energie</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>Minuten (0 = aus)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>Minuten (0 = nie)</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Trennt diesen Bluetooth-Controller nach so vielen Minuten ohne Eingabe, sodass er in den Ruhezustand wechselt und Akku spart. Löst nie über USB aus.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Ein/Aus</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menü</value></data>

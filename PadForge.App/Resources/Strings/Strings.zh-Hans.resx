@@ -2107,7 +2107,7 @@
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>仅适用于蓝牙。连接断开后控制器进入休眠。</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>空闲断开</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>电源</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>分钟（0 = 关闭）</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>分钟（0 = 从不）</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>在无输入达到设定分钟数后断开此蓝牙控制器，使其休眠以节省电量。USB 连接时不会触发。</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>电源</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>菜单</value></data>

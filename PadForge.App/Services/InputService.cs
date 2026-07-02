@@ -6794,9 +6794,10 @@ namespace PadForge.Services
             row.IsHidHideAvailable = _mainVm.Settings.IsHidHideInstalled;
 
             // Idle disconnect countdown (#162): stored in seconds, edited in
-            // minutes, only meaningful for Bluetooth-pathed devices.
+            // minutes, shown for any disconnect-capable device (Bluetooth HID
+            // path, or a wireless XInput-backend pad).
             row.IdleDisconnectMinutes = ud.IdleDisconnectSeconds / 60;
-            row.ShowIdleDisconnect = PadForge.Common.Input.SonyEffectWriter.IsBluetoothPath(ud.DevicePath);
+            row.ShowIdleDisconnect = PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath);
 
             // Set internal device type key (DeviceType display is computed from this).
             row.DeviceTypeKey = ud.CapType switch

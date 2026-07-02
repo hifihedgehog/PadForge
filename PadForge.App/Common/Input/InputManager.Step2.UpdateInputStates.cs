@@ -319,7 +319,7 @@ namespace PadForge.Common.Input
 
             if (now - ud.LastActiveTick < ud.IdleDisconnectSeconds * 1000L) return;
             if (state.BatteryCharging) return;
-            if (!PadForge.Common.Input.SonyEffectWriter.IsBluetoothPath(ud.DevicePath)) return;
+            if (!PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath)) return;
 
             // Re-arm so a failed or ignored disconnect retries after a full
             // countdown instead of hammering the radio every second.

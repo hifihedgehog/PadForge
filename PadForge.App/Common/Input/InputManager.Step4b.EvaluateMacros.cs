@@ -1202,15 +1202,16 @@ namespace PadForge.Common.Input
             { VendorId = vid; ProductId = pid; DevicePath = path; Serial = serial; }
         }
 
-        /// <summary>Applies the #162 eligibility gates (online, Bluetooth path,
-        /// not charging) and captures the disconnect dispatch fields. No serial
-        /// gate here: the Steam and Xbox lanes work without one, and the BR/EDR
-        /// fallback rejects an empty serial itself.</summary>
+        /// <summary>Applies the #162 eligibility gates (online, wireless per
+        /// IsDisconnectTarget, not charging) and captures the disconnect
+        /// dispatch fields. No serial gate here: the Steam and Xbox lanes work
+        /// without one, and the BR/EDR fallback rejects an empty serial
+        /// itself.</summary>
         private static void AddDisconnectCandidate(
             System.Collections.Generic.List<DisconnectTarget> targets, UserDevice ud)
         {
             if (ud == null || !ud.IsOnline) return;
-            if (!PadForge.Common.Input.SonyEffectWriter.IsBluetoothPath(ud.DevicePath)) return;
+            if (!PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath)) return;
             if (ud.InputState != null && ud.InputState.BatteryCharging) return;
             foreach (var t in targets)
                 if (t.DevicePath == ud.DevicePath) return;

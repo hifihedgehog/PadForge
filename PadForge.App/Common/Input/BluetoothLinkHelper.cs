@@ -37,15 +37,24 @@ namespace PadForge.Common.Input
         /// <summary>Device-aware disconnect (issue #162). The radio IOCTL below
         /// only drops BR/EDR ACL links (every reference uses it on {00001124}
         /// classic-BT pads), so BLE controllers need their own lane:
+        /// XInput-backend pads (SDL path "XInput#N", the N IS the XInput user
+        /// index per SDL_xinputjoystick.c:211) get XInputPowerOff on that slot,
         /// Valve pads get the Steam protocol's power-off command
         /// (ID_TURN_OFF_CONTROLLER 0x9F, SDL controller_constants.h:74) as a
-        /// feature report on the device's own vendor collection, and Xbox pads
-        /// get XInputPowerOff (xinput1_4 ordinal 103), slot-matched by VID/PID
-        /// through XInputGetCapabilitiesEx (ordinal 108). Everything else falls
+        /// feature report on the device's own vendor collection, HID-pathed
+        /// Xbox pads get XInputPowerOff slot-matched by VID/PID through
+        /// XInputGetCapabilitiesEx (ordinal 108). Everything else falls
         /// through to the BR/EDR link drop by serial (the DS4Windows path).</summary>
         public static bool TryDisconnectDevice(ushort vendorId, ushort productId,
             string devicePath, string serial)
         {
+            if (TryParseXInputSlot(devicePath, out uint slot))
+            {
+                try { return XInputPowerOff(slot) == 0; }
+                catch (DllNotFoundException) { return false; }
+                catch (EntryPointNotFoundException) { return false; }
+            }
+
             if (vendorId == ValveVid && TrySteamPowerOff(devicePath))
                 return true;
 
@@ -55,31 +64,75 @@ namespace PadForge.Common.Input
             return TryDisconnect(serial);
         }
 
+        /// <summary>Whether a device can be targeted by the #162 disconnect at
+        /// all: a Bluetooth HID path, or an SDL XInput-backend pad running on
+        /// battery. This predicate gates the macro candidates, the idle
+        /// countdown, the Devices-page control, and the Specific-device picker,
+        /// so all four surfaces agree.</summary>
+        public static bool IsDisconnectTarget(string devicePath)
+        {
+            if (SonyEffectWriter.IsBluetoothPath(devicePath)) return true;
+            return IsXInputWireless(devicePath);
+        }
+
+        /// <summary>Parses SDL's XInput-backend joystick path ("XInput#N",
+        /// SDL_xinputjoystick.c:211, where N is the XInput user index).</summary>
+        public static bool TryParseXInputSlot(string devicePath, out uint slot)
+        {
+            slot = 0;
+            const string prefix = "XInput#";
+            if (string.IsNullOrEmpty(devicePath)) return false;
+            if (!devicePath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) return false;
+            return uint.TryParse(devicePath.Substring(prefix.Length), out slot) && slot < 4;
+        }
+
+        /// <summary>True when the XInput-pathed pad reports a battery (alkaline
+        /// or NiMH), meaning it is wireless. Wired pads report
+        /// BATTERY_TYPE_WIRED and cannot be powered off.</summary>
+        private static bool IsXInputWireless(string devicePath)
+        {
+            if (!TryParseXInputSlot(devicePath, out uint slot)) return false;
+            try
+            {
+                if (XInputGetBatteryInformation(slot, 0 /* BATTERY_DEVTYPE_GAMEPAD */,
+                        out XINPUT_BATTERY_INFORMATION info) != 0)
+                    return false;
+                return info.BatteryType == 2 /* ALKALINE */ || info.BatteryType == 3 /* NIMH */;
+            }
+            catch (DllNotFoundException) { return false; }
+            catch (EntryPointNotFoundException) { return false; }
+        }
+
         /// <summary>The Steam power-off feature report: report id 0x00, protocol
-        /// id 0x9F, payload length 4, the firmware's "off!" confirmation magic.
-        /// HandheldCompanion GordonController.cs:94-105 sends exactly these
-        /// payload bytes (0x6f 0x66 0x66 0x21); steam_controller_tools
-        /// controller.ts:204-206 sends the bare 0x9F to the 2026 controller.
-        /// The magic-bearing form is the superset: a validating parser (the
-        /// firmware images carry the "off!" string) accepts it, and a parser
-        /// that ignores the payload still reads the 0x9F command.</summary>
-        public static byte[] BuildSteamPowerOffReport(int featureReportLength)
+        /// id 0x9F (ID_TURN_OFF_CONTROLLER). Two framings exist in the proven
+        /// references, split by generation. The 2026 controller's own tool sends
+        /// the BARE command (steam_controller_tools controller.ts:204-206:
+        /// send([TurnOffController]) with a zero payload), while the 2015 Gordon
+        /// requires the "off!" confirmation magic (HandheldCompanion
+        /// GordonController.cs:94-105: 0x9F, 0x04, 0x6f 0x66 0x66 0x21). The
+        /// caller sends the bare form first and the magic form second, so each
+        /// generation receives the framing its own reference proves.</summary>
+        public static byte[] BuildSteamPowerOffReport(int featureReportLength, bool withOffMagic)
         {
             var buf = new byte[featureReportLength > 7 ? featureReportLength : 7];
             buf[0] = 0x00; // report id (SDL_hidapi_steam.c sends 0x00 + 64-byte blob)
             buf[1] = 0x9F; // ID_TURN_OFF_CONTROLLER
-            buf[2] = 0x04; // payload size
-            buf[3] = (byte)'o';
-            buf[4] = (byte)'f';
-            buf[5] = (byte)'f';
-            buf[6] = (byte)'!';
+            if (withOffMagic)
+            {
+                buf[2] = 0x04; // payload size
+                buf[3] = (byte)'o';
+                buf[4] = (byte)'f';
+                buf[5] = (byte)'f';
+                buf[6] = (byte)'!';
+            }
             return buf;
         }
 
         /// <summary>Sends the Steam power-off on the device's own HID handle,
         /// the raw-write channel HapticToneService already uses for the 2026
         /// controller's haptics (open from DevicePath, query
-        /// FeatureReportByteLength from caps, HidD_SetFeature).</summary>
+        /// FeatureReportByteLength from caps, HidD_SetFeature). Both framings
+        /// go out back-to-back: a powered-off pad ignores the second write.</summary>
         private static bool TrySteamPowerOff(string devicePath)
         {
             if (string.IsNullOrEmpty(devicePath)) return false;
@@ -103,8 +156,13 @@ namespace PadForge.Common.Input
                 if (featLen <= 0)
                     return false; // wrong collection: no feature report surface
 
-                byte[] buf = BuildSteamPowerOffReport(featLen);
-                return HidD_SetFeature(h, buf, buf.Length);
+                byte[] bare = BuildSteamPowerOffReport(featLen, withOffMagic: false);
+                bool ok = HidD_SetFeature(h, bare, bare.Length);
+
+                byte[] magic = BuildSteamPowerOffReport(featLen, withOffMagic: true);
+                ok |= HidD_SetFeature(h, magic, magic.Length);
+
+                return ok;
             }
             finally
             {
@@ -291,5 +349,16 @@ namespace PadForge.Common.Input
 
         [DllImport("xinput1_4.dll", EntryPoint = "#103")]
         private static extern uint XInputPowerOff(uint userIndex);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct XINPUT_BATTERY_INFORMATION
+        {
+            public byte BatteryType;  // 0 disconnected, 1 wired, 2 alkaline, 3 NiMH, 0xFF unknown
+            public byte BatteryLevel;
+        }
+
+        [DllImport("xinput1_4.dll", EntryPoint = "XInputGetBatteryInformation")]
+        private static extern uint XInputGetBatteryInformation(uint userIndex, byte devType,
+            out XINPUT_BATTERY_INFORMATION info);
     }
 }

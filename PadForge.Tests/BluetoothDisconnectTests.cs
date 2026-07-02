@@ -62,13 +62,13 @@ namespace PadForge.Tests
         // ── Steam power-off report (SC2026 and 2015 Gordon) ──
 
         [Fact]
-        public void SteamPowerOffReport_MatchesHandheldCompanionBytes()
+        public void SteamPowerOffReport_MagicForm_MatchesHandheldCompanionBytes()
         {
-            // HandheldCompanion GordonController.cs TurnOff sends
+            // HandheldCompanion GordonController.cs TurnOff (2015 Gordon) sends
             // [0x9F, 0x04, 0x6f, 0x66, 0x66, 0x21] ("off!"), and the on-wire
             // feature buffer prepends report id 0x00 (SDL_hidapi_steam.c's
             // 0x00 + blob framing, mirrored by HapticToneService).
-            byte[] buf = BluetoothLinkHelper.BuildSteamPowerOffReport(65);
+            byte[] buf = BluetoothLinkHelper.BuildSteamPowerOffReport(65, withOffMagic: true);
             Assert.Equal(65, buf.Length);
             Assert.Equal(0x00, buf[0]);
             Assert.Equal(0x9F, buf[1]);
@@ -79,6 +79,44 @@ namespace PadForge.Tests
             Assert.Equal((byte)'!', buf[6]);
             for (int i = 7; i < buf.Length; i++)
                 Assert.Equal(0x00, buf[i]);
+        }
+
+        [Fact]
+        public void SteamPowerOffReport_BareForm_MatchesSteamControllerTools()
+        {
+            // steam_controller_tools controller.ts turnOff (2026 controller)
+            // sends the bare protocol id with a zero payload.
+            byte[] buf = BluetoothLinkHelper.BuildSteamPowerOffReport(65, withOffMagic: false);
+            Assert.Equal(65, buf.Length);
+            Assert.Equal(0x00, buf[0]);
+            Assert.Equal(0x9F, buf[1]);
+            for (int i = 2; i < buf.Length; i++)
+                Assert.Equal(0x00, buf[i]);
+        }
+
+        // ── SDL XInput-backend path parsing ──
+
+        [Theory]
+        [InlineData("XInput#0", 0u)]
+        [InlineData("XInput#1", 1u)]
+        [InlineData("XInput#3", 3u)]
+        public void XInputSlot_ParsesSdlBackendPath(string path, uint expected)
+        {
+            // SDL_xinputjoystick.c:211: path = "XInput#%u" with the XInput
+            // user index. The user's Xbox Series pad persists as "XInput#1".
+            Assert.True(BluetoothLinkHelper.TryParseXInputSlot(path, out uint slot));
+            Assert.Equal(expected, slot);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("XInput#4")]   // beyond XUSER_MAX_COUNT
+        [InlineData("XInput#x")]
+        [InlineData(@"\\?\HID#VID_054C&PID_0CE6#...")]
+        public void XInputSlot_RejectsNonBackendPaths(string path)
+        {
+            Assert.False(BluetoothLinkHelper.TryParseXInputSlot(path, out _));
         }
 
         [Fact]

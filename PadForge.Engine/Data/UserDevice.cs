@@ -130,14 +130,17 @@ namespace PadForge.Engine.Data
         /// camera drives the "IR Brightness" cover/proximity source (issue #151).
         /// Identity-derived from VID + name like the two properties above, so it
         /// is correct online or offline. The SDL driver names it exactly
-        /// "Nintendo Switch Joy-Con (R)" (SDL_hidapi_switch.c:1786/1838); a
-        /// combined pair's "(L/R)" suffix cannot match, so the pair (whose shared
-        /// joystick has no IR axis) is excluded. Computed, not stored, so a stale
-        /// persisted value can never linger. Gates whether the "IR Brightness"
-        /// mapping source is offered for this device.</summary>
+        /// "Nintendo Switch Joy-Con (R)" (SDL_hidapi_switch.c:1786/1838), so the
+        /// match is exact equality, not a suffix test: the Switch 2 right
+        /// Joy-Con is "Nintendo Switch 2 Joy-Con (R)" under the same Nintendo
+        /// VID (SDL_ble_switch2joystick.c:1331) and has a mouse sensor, not an
+        /// IR camera, so a suffix match would offer a dead source there. The
+        /// combined pair's "(L/R)" name cannot match either way. Computed, not
+        /// stored, so a stale persisted value can never linger. Gates whether
+        /// the "IR Brightness" mapping source is offered for this device.</summary>
         [XmlIgnore]
         public bool HasJoyConIr => VendorId == 0x057E
-            && (ProductName ?? string.Empty).EndsWith("Joy-Con (R)", StringComparison.OrdinalIgnoreCase);
+            && string.Equals(ProductName, "Nintendo Switch Joy-Con (R)", StringComparison.OrdinalIgnoreCase);
 
         // Wii IR pointer tuning (sensor-bar position/compensation, smoothing)
         // moved to PadSetting (issue #146 follow-up) so each (device, slot)

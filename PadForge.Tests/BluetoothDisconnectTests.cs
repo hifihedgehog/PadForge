@@ -59,6 +59,36 @@ namespace PadForge.Tests
             Assert.False(BluetoothLinkHelper.TryDisconnect(null));
         }
 
+        // ── Steam power-off report (SC2026 and 2015 Gordon) ──
+
+        [Fact]
+        public void SteamPowerOffReport_MatchesHandheldCompanionBytes()
+        {
+            // HandheldCompanion GordonController.cs TurnOff sends
+            // [0x9F, 0x04, 0x6f, 0x66, 0x66, 0x21] ("off!"), and the on-wire
+            // feature buffer prepends report id 0x00 (SDL_hidapi_steam.c's
+            // 0x00 + blob framing, mirrored by HapticToneService).
+            byte[] buf = BluetoothLinkHelper.BuildSteamPowerOffReport(65);
+            Assert.Equal(65, buf.Length);
+            Assert.Equal(0x00, buf[0]);
+            Assert.Equal(0x9F, buf[1]);
+            Assert.Equal(0x04, buf[2]);
+            Assert.Equal((byte)'o', buf[3]);
+            Assert.Equal((byte)'f', buf[4]);
+            Assert.Equal((byte)'f', buf[5]);
+            Assert.Equal((byte)'!', buf[6]);
+            for (int i = 7; i < buf.Length; i++)
+                Assert.Equal(0x00, buf[i]);
+        }
+
+        [Fact]
+        public void XInputCapabilitiesEx_AbiSizeIsPinned()
+        {
+            // 20-byte XINPUT_CAPABILITIES + WORD VID/PID/version/pad + DWORD,
+            // per Special K include/SpecialK/input/xinput.h:162-169.
+            Assert.Equal(32, BluetoothLinkHelper.CapabilitiesExSize);
+        }
+
         // ── Idle truth table (gamepad absolute test) ──
 
         private static CustomInputState NeutralGamepadState()

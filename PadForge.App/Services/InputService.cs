@@ -755,18 +755,33 @@ namespace PadForge.Services
 
             // Stick-position provider for Easy Aim gating. The gyro reader
             // passes its slotIndex and the side it needs (issue #120: true =
-            // left stick, false = right). We look up the slot's combined
-            // gamepad output and return the signed (x, y) in -1..+1 so the
-            // engine can gate on radial magnitude OR a single direction.
-            // XInput frame: x>0 right, x<0 left, y>0 up, y<0 down (see
-            // HMaestroVirtualController: ThumbLY +32767 = up, -32768 = down).
+            // left stick, false = right). Reads the slot's PRE-DEADZONE mapped
+            // thumbs (each device's RawMappedState, combined per axis by
+            // largest magnitude like Step 4), NOT the post-deadzone combined
+            // output: the requester's headline QoL is a gyro threshold BELOW
+            // the stick's own deadzone, so a micro-deflection activates gyro
+            // without moving the camera. Steam gates on physical deflection
+            // the same way. XInput frame: x>0 right, x<0 left, y>0 up,
+            // y<0 down (HMaestroVirtualController: ThumbLY +32767 = up).
             PadForge.Engine.Common.Mapping.SourceCoercion.SlotStickDeflectionProvider = (slotIndex, isLeft) =>
             {
-                if (_inputManager == null) return (0f, 0f);
                 if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return (0f, 0f);
-                var gp = _inputManager.CombinedOutputStates[slotIndex];
-                short rawX = isLeft ? gp.ThumbLX : gp.ThumbRX;
-                short rawY = isLeft ? gp.ThumbLY : gp.ThumbRY;
+                var dzSettings = SettingsManager.UserSettings;
+                if (dzSettings == null) return (0f, 0f);
+                short rawX = 0, rawY = 0;
+                lock (dzSettings.SyncRoot)
+                {
+                    for (int i = 0; i < dzSettings.Items.Count; i++)
+                    {
+                        var us = dzSettings.Items[i];
+                        if (us == null || us.MapTo != slotIndex) continue;
+                        var rm = us.RawMappedState;
+                        short sx = isLeft ? rm.ThumbLX : rm.ThumbRX;
+                        short sy = isLeft ? rm.ThumbLY : rm.ThumbRY;
+                        if (Math.Abs((int)sx) > Math.Abs((int)rawX)) rawX = sx;
+                        if (Math.Abs((int)sy) > Math.Abs((int)rawY)) rawY = sy;
+                    }
+                }
                 float x = (rawX - (float)short.MinValue) / 65535f * 2f - 1f;
                 float y = (rawY - (float)short.MinValue) / 65535f * 2f - 1f;
                 return (x, y);

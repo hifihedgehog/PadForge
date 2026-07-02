@@ -172,11 +172,15 @@ namespace PadForge.Engine.Common.Mapping
 
         /// <summary>Reads the slot's stick as signed (x, y) in -1..+1 so
         /// Easy Aim can gate on radial magnitude OR one direction (issue
-        /// #120). App wires this against
-        /// <c>InputManager.CombinedOutputStates[slot]</c> at startup.
-        /// XInput frame: x&gt;0 = right, x&lt;0 = left, y&gt;0 = up, y&lt;0 = down.
-        /// Returns (0, 0) when slot is empty / state unavailable. The bool
-        /// argument selects the stick: true = left, false = right.</summary>
+        /// #120). App wires this against the slot's PRE-DEADZONE mapped
+        /// thumbs (per-device RawMappedState, combined per axis), so the
+        /// engage threshold can sit BELOW the stick's own deadzone and a
+        /// micro-deflection activates gyro without moving the camera (the
+        /// requester's dual-deadzone QoL; Steam gates on physical deflection
+        /// the same way). XInput frame: x&gt;0 = right, x&lt;0 = left,
+        /// y&gt;0 = up, y&lt;0 = down. Returns (0, 0) when slot is empty /
+        /// state unavailable. The bool argument selects the stick:
+        /// true = left, false = right.</summary>
         public static Func<int, bool, (float x, float y)> SlotStickDeflectionProvider { get; set; }
 
         /// <summary>Reduces a stick's signed (x, y) to the 0..1 deflection

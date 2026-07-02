@@ -1,5 +1,10 @@
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
+// The wire codecs' framing internals (device-list encode/decode) are
+// pinned by tests so a layout change can never ship silently.
+[assembly: InternalsVisibleTo("PadForge.Tests")]
 
 [assembly: AssemblyTitle("PadForge.Engine")]
 [assembly: AssemblyDescription("PadForge input engine — SDL3, Raw Input, and HID device enumeration.")]

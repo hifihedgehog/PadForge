@@ -1973,6 +1973,27 @@ namespace PadForge.Services
         {
             if (ud.CapType != InputDeviceType.ConsumerControl) return null;
 
+            // A Remote Link consumer device carries the OWNER's named inputs on
+            // the device list (fixed table + whatever dynamic usages the owner
+            // has seen), so the preview here reads identically to the owner's
+            // own Devices page. The local dynamic-slot table below describes
+            // this machine's aggregate consumer state and would be wrong for a
+            // remote device.
+            if (ud.Device is PadForge.Engine.RemoteLink.RemotePeerDevice remote)
+            {
+                var remoteItems = new System.Collections.Generic.List<ConsumerButtonDisplayItem>();
+                foreach (var obj in remote.GetDeviceObjects())
+                {
+                    if (!obj.IsButton) continue;
+                    remoteItems.Add(new ConsumerButtonDisplayItem
+                    {
+                        Index = obj.InputIndex,
+                        Name = PadForge.Common.MappingDisplayResolver.LocalizeObjectName(obj.Name),
+                    });
+                }
+                return remoteItems;
+            }
+
             var items = new System.Collections.Generic.List<ConsumerButtonDisplayItem>(
                 PadForge.Engine.Common.ConsumerUsageTable.Fixed.Length);
             for (int i = 0; i < PadForge.Engine.Common.ConsumerUsageTable.Fixed.Length; i++)
@@ -2119,19 +2140,25 @@ namespace PadForge.Services
                 // here. Slots are handed out in strictly increasing order and
                 // chips are stored in slot order, so the next unprobed slot is
                 // Fixed.Length + (chip count - Fixed.Length). O(1) when
-                // nothing new has appeared.
-                int fixedLen = PadForge.Engine.Common.ConsumerUsageTable.Fixed.Length;
-                for (int slot = fixedLen + (devVm.ConsumerButtons.Count - fixedLen);
-                     slot < PadForge.Engine.Common.ConsumerUsageTable.TotalSlots; slot++)
+                // nothing new has appeared. LOCAL devices only: the dynamic
+                // table describes this machine's consumer aggregate; a Remote
+                // Link device's chips (including the owner's dynamic usages)
+                // arrive on the device list and refresh via the periodic push.
+                if (ud.Device is not PadForge.Engine.RemoteLink.RemotePeerDevice)
                 {
-                    ushort usage = PadForge.Engine.RawInputListener.GetDynamicSlotUsage(slot);
-                    if (usage == 0) break;
-                    devVm.ConsumerButtons.Add(new ConsumerButtonDisplayItem
+                    int fixedLen = PadForge.Engine.Common.ConsumerUsageTable.Fixed.Length;
+                    for (int slot = fixedLen + (devVm.ConsumerButtons.Count - fixedLen);
+                         slot < PadForge.Engine.Common.ConsumerUsageTable.TotalSlots; slot++)
                     {
-                        Index = slot,
-                        Name = PadForge.Engine.Common.ConsumerUsageTable.DynamicName(usage),
-                        IsPressed = slot < state.Buttons.Length && state.Buttons[slot],
-                    });
+                        ushort usage = PadForge.Engine.RawInputListener.GetDynamicSlotUsage(slot);
+                        if (usage == 0) break;
+                        devVm.ConsumerButtons.Add(new ConsumerButtonDisplayItem
+                        {
+                            Index = slot,
+                            Name = PadForge.Engine.Common.ConsumerUsageTable.DynamicName(usage),
+                            IsPressed = slot < state.Buttons.Length && state.Buttons[slot],
+                        });
+                    }
                 }
             }
             else
@@ -5661,6 +5688,8 @@ namespace PadForge.Services
                                 slot = 0; while (used.Contains(slot)) slot++; // lowest free slot
                                 _exposedSlots[id] = slot; used.Add(slot);
                             }
+                            DeviceObjectItem[] objects = null;
+                            try { objects = dev.GetDeviceObjects(); } catch { }
                             var info = new RemotePeerDeviceInfo
                             {
                                 Slot = slot,
@@ -5669,6 +5698,7 @@ namespace PadForge.Services
                                 Name = dev.Name,
                                 VendorId = dev.VendorId,
                                 ProductId = dev.ProductId,
+                                SerialNumber = dev.SerialNumber ?? "",
                                 NumAxes = dev.NumAxes,
                                 NumButtons = dev.NumButtons,
                                 NumHats = dev.NumHats,
@@ -5678,7 +5708,15 @@ namespace PadForge.Services
                                 HasGyro = dev.HasGyro,
                                 HasAccel = dev.HasAccel,
                                 HasTouchpad = dev.HasTouchpad,
+                                NumTouchpads = dev.NumTouchpads,
+                                TouchpadFingerCounts = dev.TouchpadFingerCounts,
                                 InputDeviceType = dev.GetInputDeviceType(),
+                                // Forward the owner's named inputs so the peer's
+                                // mapping picker and Devices preview read identically
+                                // to local (consumer-control names, wheel axes, NFC
+                                // tag buttons). The periodic device-list push refreshes
+                                // this as dynamic slots appear.
+                                DeviceObjects = objects,
                             };
                             list.Add(info);
                             sources.Add((info, dev, slot));

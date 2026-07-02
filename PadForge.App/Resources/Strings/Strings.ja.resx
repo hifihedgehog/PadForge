@@ -2106,6 +2106,7 @@
   <data name="MacroDisconnect_Device_Label" xml:space="preserve"><value>デバイス</value></data>
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Bluetooth接続のみ対象です。接続が切れるとコントローラーはスリープします。</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>アイドル切断</value></data>
+  <data name="Devices_Power" xml:space="preserve"><value>電源</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>分 (0 = オフ)</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>入力がないままこの分数が経過すると、このBluetoothコントローラーを切断してスリープさせ、バッテリーを節約します。USB接続時には作動しません。</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>電源</value></data>

@@ -2128,6 +2128,7 @@
   <data name="MacroDisconnect_Device_Label" xml:space="preserve"><value>Dispositivo</value></data>
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Solo Bluetooth. Il controller entra in sospensione quando il collegamento cade.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Disconnessione per inattività</value></data>
+  <data name="Devices_Power" xml:space="preserve"><value>Alimentazione</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuti (0 = disattivato)</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Disconnette questo controller Bluetooth dopo questi minuti senza input, così entra in sospensione e risparmia batteria. Non si attiva mai via USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Accensione</value></data>

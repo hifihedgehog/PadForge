@@ -2126,6 +2126,7 @@
   <data name="MacroDisconnect_Device_Label" xml:space="preserve"><value>Apparaat</value></data>
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Alleen Bluetooth. De controller gaat in slaapstand zodra de verbinding wegvalt.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Loskoppelen bij inactiviteit</value></data>
+  <data name="Devices_Power" xml:space="preserve"><value>Energie</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuten (0 = uit)</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Koppelt deze Bluetooth-controller los na dit aantal minuten zonder invoer, zodat deze in slaapstand gaat en batterij bespaart. Wordt nooit geactiveerd via USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Aan/uit</value></data>

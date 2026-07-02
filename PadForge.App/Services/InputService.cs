@@ -644,16 +644,16 @@ namespace PadForge.Services
                 return _inputManager.TestRumbleTargetGuid[padIndex];
             };
 
-            // Per-slot battery percent for Battery lightbar mode. Clamp
-            // negative ("unknown") to 100 so unknown reads as full charge,
-            // matching the SlotBatteryPercentProvider default.
-            UserEffectsDispatcher.SlotBatteryPercentProvider = padIndex =>
+            // Per-(slot, device) battery percent for Battery lightbar mode.
+            // The lightbar is a per-device output, so read the SPECIFIC
+            // device's live battery rather than the slot-collapsed value.
+            // Clamp negative ("unknown") to 100 so unknown reads as full
+            // charge, matching the SlotBatteryPercentProvider default.
+            UserEffectsDispatcher.SlotBatteryPercentProvider = (padIndex, deviceGuid) =>
             {
-                if (_inputManager == null) return (byte)100;
-                if (padIndex < 0 || padIndex >= InputManager.MaxPads) return (byte)100;
-                int pct = _inputManager.BatteryPercents[padIndex];
-                if (pct < 0) return (byte)100;
-                if (pct > 100) return (byte)100;
+                var ud = FindUserDevice(deviceGuid);
+                int pct = (ud != null && ud.IsOnline) ? (ud.InputState?.BatteryPercent ?? -1) : -1;
+                if (pct < 0 || pct > 100) return (byte)100;
                 return (byte)pct;
             };
 

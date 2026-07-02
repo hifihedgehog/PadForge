@@ -374,6 +374,18 @@ namespace PadForge.Common.Input
         /// <summary>Per-slot battery charging flag, paired with <see cref="BatteryPercents"/>.</summary>
         public bool[] BatteryCharging { get; } = new bool[MaxPads];
 
+        /// <summary>Per-slot hash of every assigned device's (percent, charging)
+        /// so the Battery lightbar repaint kick fires on ANY device's change,
+        /// not just the slot-collapsed first-match. Init -1 (never a real hash)
+        /// so the first scan always kicks. Polling thread only.</summary>
+        private readonly int[] _batterySignature = InitBatterySignature();
+        private static int[] InitBatterySignature()
+        {
+            var a = new int[MaxPads];
+            for (int i = 0; i < a.Length; i++) a[i] = -1;
+            return a;
+        }
+
         /// <summary>Per-slot gyro engage state contributed by the
         /// dedicated <c>GyroAimEngageButton</c> field. Settled once per
         /// tick by <see cref="UpdateGyroEngageStates"/>: Hold mode tracks
@@ -1581,11 +1593,17 @@ namespace PadForge.Common.Input
                     continue;
                 }
 
-                // Battery scan stays as a first-online-with-data walk over
-                // the slot's assigned devices. Independent of motion.
+                // Battery scan over the slot's assigned devices. Two values
+                // come out of one walk: the slot-collapsed first-online-with-
+                // data reading (BatteryPercents/Charging, which the virtual
+                // controller reports to the OS as the slot's single battery),
+                // and an all-device change signature so the Battery lightbar's
+                // per-device repaint kick fires when ANY device's battery
+                // changes, not just the first. Independent of motion.
                 int slotCount = settings.FindByPadIndex(padIndex, _padIndexBuffer);
                 int batteryPercent = -1;
                 bool batteryCharging = false;
+                int batterySignature = 17;
                 for (int i = 0; i < slotCount; i++)
                 {
                     var us = _padIndexBuffer[i];
@@ -1598,15 +1616,18 @@ namespace PadForge.Common.Input
                     {
                         batteryPercent = state.BatteryPercent;
                         batteryCharging = state.BatteryCharging;
-                        break;
                     }
+                    batterySignature = batterySignature * 31
+                        + state.BatteryPercent * 2 + (state.BatteryCharging ? 1 : 0);
                 }
 
-                int prevPct = BatteryPercents[padIndex];
                 BatteryPercents[padIndex] = batteryPercent;
                 BatteryCharging[padIndex] = batteryCharging;
-                if (prevPct != batteryPercent)
+                if (_batterySignature[padIndex] != batterySignature)
+                {
+                    _batterySignature[padIndex] = batterySignature;
                     UserEffectsDispatcher.NotifyBatteryPercentChanged(padIndex);
+                }
 
                 // Motion source resolution from the slot's MappingSet.
                 // Sony-class slots (and any future motion-capable VC) have

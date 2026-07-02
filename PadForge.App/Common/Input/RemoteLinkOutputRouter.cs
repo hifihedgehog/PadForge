@@ -96,12 +96,13 @@ namespace PadForge.Common.Input
             _lastSony.TryRemove(devicePath, out _);
             _lastVib.TryRemove(devicePath, out _);
             _lastWheel.TryRemove(devicePath, out _);
+            _lastTone.TryRemove(devicePath, out _);
         }
 
         public static void Clear()
         {
             _byPath.Clear();
-            _lastSony.Clear(); _lastVib.Clear(); _lastWheel.Clear();
+            _lastSony.Clear(); _lastVib.Clear(); _lastWheel.Clear(); _lastTone.Clear();
             // Drop output leases too, or a stale lease would keep the owner's local
             // output suppressed for up to OutputLeaseMs after Remote Link stops.
             _outputLease.Clear();
@@ -155,6 +156,24 @@ namespace PadForge.Common.Input
             if (_lastWheel.TryGetValue(devicePath, out var prev) && prev.AsSpan().SequenceEqual(blob))
                 return true;
             _lastWheel[devicePath] = blob;
+            Dispatch(t, blob);
+            return true;
+        }
+
+        // ── Ship: HD haptic tone (#147, consumer-reduced, owner re-encodes) ─
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, (float Hz, float Amp)> _lastTone = new();
+
+        public static bool ShipHapticTone(string devicePath, float toneHz, float amplitude)
+        {
+            if (!_byPath.TryGetValue(devicePath, out var t)) return false;
+            // Dedup only the silent steady state: while a tone plays, every
+            // tick ships (the owner's hangover expiry needs the refresh), but
+            // silence after silence sends nothing.
+            if (amplitude <= 0f && _lastTone.TryGetValue(devicePath, out var prev) && prev.Amp <= 0f)
+                return true;
+            _lastTone[devicePath] = (toneHz, amplitude);
+            byte[] blob = OutputEffectCodec.EncodeHapticTone(toneHz, amplitude);
             Dispatch(t, blob);
             return true;
         }

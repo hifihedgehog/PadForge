@@ -971,7 +971,13 @@ namespace PadForge
                         nameof(PadViewModel.SteeringLockLightbarColorSource) or
                         nameof(PadViewModel.SteeringLockLightbarPaletteCsv) or
                         nameof(PadViewModel.SteeringLockLightbarHoldMs) or
-                        nameof(PadViewModel.SteeringLockLightbarFadeMs))
+                        nameof(PadViewModel.SteeringLockLightbarFadeMs) or
+                        // Motion Lean steering tunables. Without these, edits
+                        // to only this card never dirtied settings and were
+                        // lost on exit (audit lens 1m, F2).
+                        nameof(PadViewModel.MotionSteerInnerDz) or
+                        nameof(PadViewModel.MotionSteerOuterDz) or
+                        nameof(PadViewModel.MotionSteerOrientIndex))
                     {
                         _settingsService.MarkDirty();
                     }

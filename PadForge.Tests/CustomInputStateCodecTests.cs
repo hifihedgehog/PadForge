@@ -1,3 +1,4 @@
+using System.Linq;
 using PadForge.Engine;
 using PadForge.Engine.RemoteLink;
 
@@ -223,6 +224,141 @@ namespace PadForge.Tests
             var rt = CustomInputStateCodec.Decode(CustomInputStateCodec.Encode(s, NoSensors));
             Assert.Equal(65535, rt.Axis[6]);
             Assert.Equal(1, rt.Axis[7]);
+        }
+
+        // ── Post-3.5.0 families (#146 IR / #151 NIR / #154 JC2 mouse) ────────
+
+        [Fact]
+        public void WiiIr_RoundTripsWhenDetected()
+        {
+            var s = new CustomInputState();
+            s.Ir = new WiiIrState { X = -0.5f, Y = 0.25f, Detected = true };
+            var rt = CustomInputStateCodec.Decode(CustomInputStateCodec.Encode(s, NoSensors));
+            Assert.True(rt.Ir.Detected);
+            Assert.Equal(-0.5f, rt.Ir.X);
+            Assert.Equal(0.25f, rt.Ir.Y);
+        }
+
+        [Fact]
+        public void WiiIr_OmittedWhenNotDetected_XYDoNotLeak()
+        {
+            // Producer contract: X/Y are only valid while Detected. An
+            // undetected frame must not ship stale coordinates.
+            var s = new CustomInputState();
+            s.Ir = new WiiIrState { X = 0.9f, Y = 0.9f, Detected = false };
+            var rt = CustomInputStateCodec.Decode(CustomInputStateCodec.Encode(s, NoSensors));
+            Assert.False(rt.Ir.Detected);
+            Assert.Equal(0f, rt.Ir.X);
+            Assert.Equal(0f, rt.Ir.Y);
+        }
+
+        [Fact]
+        public void JoyConIrAndMouse_RoundTrip()
+        {
+            var s = new CustomInputState();
+            s.JoyConIrIntensity = 0.75f;
+            s.JoyCon2MouseDX = -13f;
+            s.JoyCon2MouseDY = 42f;
+            var rt = CustomInputStateCodec.Decode(CustomInputStateCodec.Encode(s, NoSensors));
+            Assert.Equal(0.75f, rt.JoyConIrIntensity);
+            Assert.Equal(-13f, rt.JoyCon2MouseDX);
+            Assert.Equal(42f, rt.JoyCon2MouseDY);
+        }
+
+        [Fact]
+        public void NewFamilies_NeutralStateStillEncodesToThreeBytes()
+        {
+            // The compactness contract survives the new blocks: an idle pad
+            // (no IR dot, camera off, mouse still) sends none of them.
+            var bytes = CustomInputStateCodec.Encode(Centered(), NoSensors);
+            Assert.Equal(3, bytes.Length);
+        }
+
+        [Fact]
+        public void OldFrame_ClearsStaleNewFamilyStateInTarget()
+        {
+            // A pre-#146 peer's frame carries no new blocks. Decoding it into
+            // a target holding stale IR/mouse values must clear them (the
+            // absolute-frame contract extends to the new families).
+            var target = new CustomInputState();
+            target.Ir = new WiiIrState { X = 1f, Y = 1f, Detected = true };
+            target.JoyConIrIntensity = 1f;
+            target.JoyCon2MouseDX = 5f; target.JoyCon2MouseDY = 5f;
+
+            Assert.True(CustomInputStateCodec.DecodeInto(
+                CustomInputStateCodec.Encode(Centered(), NoSensors), target));
+            Assert.False(target.Ir.Detected);
+            Assert.Equal(0f, target.JoyConIrIntensity);
+            Assert.Equal(0f, target.JoyCon2MouseDX);
+            Assert.Equal(0f, target.JoyCon2MouseDY);
+        }
+
+        [Fact]
+        public void TrailingBytes_Tolerated()
+        {
+            // This is the mechanism that makes appended blocks mixed-version
+            // safe: an old decoder treats a newer frame's extra blocks as a
+            // tail it never reads. Pin the tolerance.
+            var s = new CustomInputState();
+            s.Axis[0] = 12000;
+            var full = CustomInputStateCodec.Encode(s, NoSensors);
+            var padded = new byte[full.Length + 10];
+            full.CopyTo(padded, 0);
+            var target = new CustomInputState();
+            Assert.True(CustomInputStateCodec.DecodeInto(padded, target));
+            Assert.Equal(12000, target.Axis[0]);
+        }
+
+        [Fact]
+        public void MalformedFrame_ResetsNewFamiliesAndMidiToNeutral()
+        {
+            var target = new CustomInputState { Midi = new MidiInputState() };
+            target.Ir = new WiiIrState { X = 1f, Y = 1f, Detected = true };
+            target.JoyCon2MouseDX = 9f;
+            target.Midi.Notes[10] = true;
+            target.Midi.PitchBend = 60000;
+
+            Assert.False(CustomInputStateCodec.DecodeInto(new byte[] { 1, 0 }, target));
+            Assert.False(target.Ir.Detected);
+            Assert.Equal(0f, target.JoyCon2MouseDX);
+            Assert.False(target.Midi.Notes[10]);
+            Assert.Equal(MidiInputState.PitchBendCenter, target.Midi.PitchBend);
+        }
+
+        [Fact]
+        public void BatteryCharging_SurvivesUnknownPercent()
+        {
+            var s = new CustomInputState { BatteryPercent = -1, BatteryCharging = true };
+            var rt = CustomInputStateCodec.Decode(CustomInputStateCodec.Encode(s, NoSensors));
+            Assert.True(rt.BatteryCharging);
+            Assert.Equal(-1, rt.BatteryPercent);
+        }
+
+        /// <summary>
+        /// Mirror-surface tripwire (code-audit lens 1m). CustomInputState's
+        /// public field list must exactly match the set the codec knowingly
+        /// carries. Adding a field to the class makes this test FAIL until
+        /// the field is wired into Encode + DecodeInto + ResetToNeutral +
+        /// Clone, or explicitly excluded here with a comment saying why.
+        /// An unwired field is exactly how the #146/#151/#154 fields shipped
+        /// dead over Remote Link for a month without any test noticing.
+        /// </summary>
+        [Fact]
+        public void EveryStateField_IsAccountedForByTheCodec()
+        {
+            var known = new[]
+            {
+                "Axis", "Sliders", "Povs", "Buttons", "Gyro", "Accel",
+                "Touchpads", "Midi", "Ir", "JoyConIrIntensity",
+                "JoyCon2MouseDX", "JoyCon2MouseDY",
+                "BatteryPercent", "BatteryCharging",
+            };
+            var actual = typeof(CustomInputState)
+                .GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)
+                .Select(f => f.Name)
+                .OrderBy(n => n)
+                .ToArray();
+            Assert.Equal(known.OrderBy(n => n).ToArray(), actual);
         }
     }
 }

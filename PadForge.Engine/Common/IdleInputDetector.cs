@@ -46,6 +46,8 @@ namespace PadForge.Engine.Common
 
             if (AnyFingerDown(s)) return false;
 
+            if (PointerOrMouseActive(s)) return false;
+
             return true;
         }
 
@@ -72,8 +74,20 @@ namespace PadForge.Engine.Common
 
             if (AnyFingerDown(current)) return false;
 
+            if (PointerOrMouseActive(current)) return false;
+
             return true;
         }
+
+        /// <summary>The post-3.5.0 pointer/mouse families count as activity:
+        /// a user aiming only the Wii IR pointer (#146) or moving a Joy-Con 2
+        /// as a mouse (#154) must not read as idle and get disconnected
+        /// mid-use by the #162 countdown. IR is gated on Detected (dots in
+        /// view), the mouse deltas are exactly 0 when the sensor is still.
+        /// JoyConIrIntensity stays excluded like the motion sensors: it is a
+        /// passive ambient-light scalar that never settles to a rest value.</summary>
+        private static bool PointerOrMouseActive(CustomInputState s) =>
+            s.Ir.Detected || s.JoyCon2MouseDX != 0f || s.JoyCon2MouseDY != 0f;
 
         // DS4Windows treats LX <= 127-slop or LX >= 128+slop as active
         // (strictly outside the band is centered), scaled to 16-bit.

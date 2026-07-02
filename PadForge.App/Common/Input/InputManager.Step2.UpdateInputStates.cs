@@ -297,6 +297,19 @@ namespace PadForge.Common.Input
         {
             long now = Environment.TickCount64;
 
+            // First tick after a (re)connect: each connection opens a fresh
+            // wrapper instance, so a reference mismatch marks it exactly once.
+            // Stamp fresh so the countdown starts from reconnect, never from a
+            // stale pre-disconnect stamp (InputState is not cleared on
+            // disconnect, so the stale stamp would otherwise fire the
+            // disconnect instantly on an idle reconnecting pad).
+            if (!ReferenceEquals(ud.IdleTrackedConnection, ud.Device))
+            {
+                ud.IdleTrackedConnection = ud.Device;
+                ud.LastActiveTick = now;
+                return;
+            }
+
             if (ud.IdleDisconnectSeconds <= 0)
             {
                 ud.LastActiveTick = now;

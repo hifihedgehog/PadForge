@@ -1245,6 +1245,12 @@ namespace PadForge.Services
             if (_stopped) return;
             _stopped = true;
 
+            // Re-enable any Bluetooth LE devnodes still inside their #162
+            // disconnect window. The delayed re-enable task dies with the
+            // process, and a stranded-disabled node leaves the pad unable
+            // to reconnect until the user finds it in Device Manager.
+            PadForge.Common.Input.BluetoothLinkHelper.ReEnablePendingDevNodes();
+
             // UI-bound housekeeping (timer, event subscriptions, overlay
             // windows, foreground monitor) — dispatch via _dispatcher so
             // this method is safe to call from a worker thread (e.g. the

@@ -291,6 +291,46 @@ namespace PadForge.Common
                 "Mouse Speed X" => s.Mapping_MouseSpeedX,
                 "Mouse Speed Y" => s.Mapping_MouseSpeedY,
                 "Mouse Scroll" => s.Mapping_MouseScroll,
+                // Consumer Control buttons (issue #168), invariant names from
+                // ConsumerUsageTable. Volume/track names deliberately shadow
+                // the same-named keyboard VK objects: same physical button,
+                // same translation (the documented double-visibility case).
+                "Power" => s.DevObj_ConsumerPower,
+                "Menu" => s.DevObj_ConsumerMenu,
+                "OK" => s.DevObj_ConsumerOk,
+                "Menu Up" => s.DevObj_ConsumerMenuUp,
+                "Menu Down" => s.DevObj_ConsumerMenuDown,
+                "Menu Left" => s.DevObj_ConsumerMenuLeft,
+                "Menu Right" => s.DevObj_ConsumerMenuRight,
+                "Menu Escape" => s.DevObj_ConsumerMenuEscape,
+                "Media Play" => s.DevObj_ConsumerPlay,
+                "Media Pause" => s.DevObj_ConsumerPause,
+                "Record" => s.DevObj_ConsumerRecord,
+                "Fast Forward" => s.DevObj_ConsumerFastForward,
+                "Rewind" => s.DevObj_ConsumerRewind,
+                "Next Track" => s.DevObj_ConsumerNextTrack,
+                "Previous Track" => s.DevObj_ConsumerPreviousTrack,
+                "Media Stop" => s.DevObj_ConsumerMediaStop,
+                "Eject" => s.DevObj_ConsumerEject,
+                "Play/Pause" => s.DevObj_ConsumerPlayPause,
+                "Voice Command" => s.DevObj_ConsumerVoiceCommand,
+                "Mute" => s.DevObj_ConsumerMute,
+                "Volume Up" => s.DevObj_ConsumerVolumeUp,
+                "Volume Down" => s.DevObj_ConsumerVolumeDown,
+                "Quit" => s.DevObj_ConsumerQuit,
+                "Channel Up" => s.DevObj_ConsumerChannelUp,
+                "Channel Down" => s.DevObj_ConsumerChannelDown,
+                "Media Player" => s.DevObj_ConsumerMediaPlayer,
+                "Email" => s.DevObj_ConsumerEmail,
+                "Calculator" => s.DevObj_ConsumerCalculator,
+                "File Browser" => s.DevObj_ConsumerFileBrowser,
+                "Browser Search" => s.DevObj_ConsumerBrowserSearch,
+                "Browser Home" => s.DevObj_ConsumerBrowserHome,
+                "Browser Back" => s.DevObj_ConsumerBrowserBack,
+                "Browser Forward" => s.DevObj_ConsumerBrowserForward,
+                "Browser Stop" => s.DevObj_ConsumerBrowserStop,
+                "Browser Refresh" => s.DevObj_ConsumerBrowserRefresh,
+                "Browser Bookmarks" => s.DevObj_ConsumerBrowserBookmarks,
                 _ => null
             };
             if (localized != null) return localized;
@@ -824,7 +864,10 @@ namespace PadForge.Common
              ud.CapType != InputDeviceType.Keyboard &&
              // NFC readers carry one named button ("Any NFC Tag"); show the
              // friendly name from GetDeviceObjects, not "Button 0" (#150).
-             ud.CapType != InputDeviceType.Nfc);
+             ud.CapType != InputDeviceType.Nfc &&
+             // Consumer Control buttons are named from the canonical usage
+             // table ("Play/Pause", "Voice Command"), not "Button 0" (#168).
+             ud.CapType != InputDeviceType.ConsumerControl);
 
         /// <summary>Surfaces touchpad gesture descriptors in the input
         /// picker, one block per touchpad surface the device exposes.

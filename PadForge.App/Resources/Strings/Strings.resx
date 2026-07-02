@@ -369,6 +369,43 @@
   <data name="DeviceType_Device" xml:space="preserve"><value>Device</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>NFC Reader</value></data>
 
+  <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>Consumer Control</value></data>
+  <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Power</value></data>
+  <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>
+  <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>
+  <data name="DevObj_ConsumerMenuUp" xml:space="preserve"><value>Menu Up</value></data>
+  <data name="DevObj_ConsumerMenuDown" xml:space="preserve"><value>Menu Down</value></data>
+  <data name="DevObj_ConsumerMenuLeft" xml:space="preserve"><value>Menu Left</value></data>
+  <data name="DevObj_ConsumerMenuRight" xml:space="preserve"><value>Menu Right</value></data>
+  <data name="DevObj_ConsumerMenuEscape" xml:space="preserve"><value>Menu Escape</value></data>
+  <data name="DevObj_ConsumerPlay" xml:space="preserve"><value>Play</value></data>
+  <data name="DevObj_ConsumerPause" xml:space="preserve"><value>Pause</value></data>
+  <data name="DevObj_ConsumerRecord" xml:space="preserve"><value>Record</value></data>
+  <data name="DevObj_ConsumerFastForward" xml:space="preserve"><value>Fast Forward</value></data>
+  <data name="DevObj_ConsumerRewind" xml:space="preserve"><value>Rewind</value></data>
+  <data name="DevObj_ConsumerNextTrack" xml:space="preserve"><value>Next Track</value></data>
+  <data name="DevObj_ConsumerPreviousTrack" xml:space="preserve"><value>Previous Track</value></data>
+  <data name="DevObj_ConsumerMediaStop" xml:space="preserve"><value>Stop</value></data>
+  <data name="DevObj_ConsumerEject" xml:space="preserve"><value>Eject</value></data>
+  <data name="DevObj_ConsumerPlayPause" xml:space="preserve"><value>Play/Pause</value></data>
+  <data name="DevObj_ConsumerVoiceCommand" xml:space="preserve"><value>Voice Command</value></data>
+  <data name="DevObj_ConsumerMute" xml:space="preserve"><value>Mute</value></data>
+  <data name="DevObj_ConsumerVolumeUp" xml:space="preserve"><value>Volume Up</value></data>
+  <data name="DevObj_ConsumerVolumeDown" xml:space="preserve"><value>Volume Down</value></data>
+  <data name="DevObj_ConsumerQuit" xml:space="preserve"><value>Quit</value></data>
+  <data name="DevObj_ConsumerChannelUp" xml:space="preserve"><value>Channel Up</value></data>
+  <data name="DevObj_ConsumerChannelDown" xml:space="preserve"><value>Channel Down</value></data>
+  <data name="DevObj_ConsumerMediaPlayer" xml:space="preserve"><value>Media Player</value></data>
+  <data name="DevObj_ConsumerEmail" xml:space="preserve"><value>Email</value></data>
+  <data name="DevObj_ConsumerCalculator" xml:space="preserve"><value>Calculator</value></data>
+  <data name="DevObj_ConsumerFileBrowser" xml:space="preserve"><value>File Browser</value></data>
+  <data name="DevObj_ConsumerBrowserSearch" xml:space="preserve"><value>Search</value></data>
+  <data name="DevObj_ConsumerBrowserHome" xml:space="preserve"><value>Browser Home</value></data>
+  <data name="DevObj_ConsumerBrowserBack" xml:space="preserve"><value>Browser Back</value></data>
+  <data name="DevObj_ConsumerBrowserForward" xml:space="preserve"><value>Browser Forward</value></data>
+  <data name="DevObj_ConsumerBrowserStop" xml:space="preserve"><value>Browser Stop</value></data>
+  <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>Refresh</value></data>
+  <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>Bookmarks</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>All Keyboards (Merged)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>All Mice (Merged)</value></data>

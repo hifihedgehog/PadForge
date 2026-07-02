@@ -83,6 +83,10 @@ namespace PadForge.Engine
         public const int Touchpad = 26;
         public const int Midi = 27;
         public const int Nfc = 28;
+        // Consumer Control HID collections (issue #168): media remotes,
+        // headset strips, keyboard media rows. APPEND-ONLY here (CapType
+        // serializes as an int in PadForge.xml).
+        public const int ConsumerControl = 29;
     }
 
     // ─────────────────────────────────────────────────────────────────

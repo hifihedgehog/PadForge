@@ -301,6 +301,11 @@ namespace PadForge.Engine.Data
         [XmlIgnore]
         public bool IsTouchpad => CapType == InputDeviceType.Touchpad;
 
+        /// <summary>True if this device is a Consumer Control HID collection
+        /// (issue #168: media remotes, headset strips, keyboard media rows).</summary>
+        [XmlIgnore]
+        public bool IsConsumerControl => CapType == InputDeviceType.ConsumerControl;
+
         /// <summary>True if the device has at least one force-feedback actuator, SDL rumble, or SDL haptic support.</summary>
         [XmlIgnore]
         public bool HasForceFeedback => ActuatorCount > 0 || (Device != null && (Device.HasRumble || Device.HasHaptic));
@@ -456,6 +461,15 @@ namespace PadForge.Engine.Data
         /// Populates the device identity and capabilities from a <see cref="SdlKeyboardWrapper"/>.
         /// </summary>
         public void LoadFromKeyboardDevice(SdlKeyboardWrapper wrapper)
+        {
+            if (wrapper == null)
+                throw new ArgumentNullException(nameof(wrapper));
+            LoadFromDevice(wrapper);
+        }
+
+        /// <summary>Populates identity and capabilities from a Consumer
+        /// Control wrapper (issue #168), same delegation as the keyboard.</summary>
+        public void LoadFromConsumerDevice(ConsumerControlWrapper wrapper)
         {
             if (wrapper == null)
                 throw new ArgumentNullException(nameof(wrapper));

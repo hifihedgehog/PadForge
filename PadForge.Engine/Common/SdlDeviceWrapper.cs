@@ -529,11 +529,6 @@ namespace PadForge.Engine
         // "dot not detected". The two dots are the two sensor-bar LEDs; their
         // midpoint is the aim point. Works for a bare remote (Extended IR, 0x33) and
         // one with an extension (Basic IR, 0x37). Both feed the same axes 6-9.
-        // Per-device IR smoothing state (the EMA's previous output), reset whenever
-        // the dots are lost so a re-acquire snaps instead of sliding in from stale.
-        private float _irPrevX, _irPrevY;
-        private bool _irHasPrev;
-
         private void ReadIrPointer(CustomInputState state)
         {
             short d0x = SDL_GetJoystickAxis(Joystick, 6);
@@ -550,7 +545,6 @@ namespace PadForge.Engine
             if (d0x == 0 && d0y == 0 && d1x == 0 && d1y == 0)
             {
                 state.Ir.Detected = false;
-                _irHasPrev = false;
                 return;
             }
 
@@ -561,7 +555,7 @@ namespace PadForge.Engine
             if (f0 && f1) { sx = (d0x + d1x) * 0.5f; sy = (d0y + d1y) * 0.5f; }
             else if (f0) { sx = d0x; sy = d0y; }
             else if (f1) { sx = d1x; sy = d1y; }
-            else { state.Ir.Detected = false; _irHasPrev = false; return; } // no dot this frame; consumers gate on Detected
+            else { state.Ir.Detected = false; return; } // no dot this frame; consumers gate on Detected
 
             // Camera frame is 1024x768. Normalize the dot midpoint to the [-1..+1]
             // stick range. X is mirrored, Y is NOT. Confirmed against the proven
@@ -576,24 +570,12 @@ namespace PadForge.Engine
             float x = (0.5f - nx) * 2f;   // mirrored
             float y = (ny - 0.5f) * 2f;   // not flipped
 
-            // Per-device tuning from the Pointer tab (issue #146), grounded in
-            // Touchmote: a vertical offset for the sensor bar sitting above/below the
-            // screen (offsetY, ScreenPositionCalculator.cs:162-171), then an EMA
-            // low-pass that mirrors Touchmote's position smoothingBuffer.
-            var tuning = PadForge.Engine.Common.Mapping.SourceCoercion.IrTuningProvider?.Invoke(InstanceGuid.ToString());
-            if (tuning.HasValue)
-            {
-                y += tuning.Value.barOffset;
-                // Cap below 1 so "max smoothing" still tracks instead of freezing.
-                float s = Math.Clamp(tuning.Value.smoothing, 0f, 0.95f);
-                if (s > 0f && _irHasPrev)
-                {
-                    x = _irPrevX + (x - _irPrevX) * (1f - s);
-                    y = _irPrevY + (y - _irPrevY) * (1f - s);
-                }
-            }
-            _irPrevX = x; _irPrevY = y; _irHasPrev = true;
-
+            // Pointer-tab tuning (sensor-bar offset, smoothing) is applied at
+            // the SLOT-scoped read (SourceCoercion.ReadTunedIrPointer), not
+            // here: this wrapper is per-device and one remote can feed several
+            // virtual controllers, each with its own Pointer-tab settings
+            // (issue #146 follow-up). state.Ir carries the raw screen-aligned
+            // aim only.
             state.Ir.X = Math.Clamp(x, -1f, 1f);
             state.Ir.Y = Math.Clamp(y, -1f, 1f);
             state.Ir.Detected = true;

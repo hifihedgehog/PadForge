@@ -524,6 +524,23 @@ namespace PadForge.Engine.Data
         /// GyroEngageStickSide. Only consulted when the threshold &gt; 0.</summary>
         [XmlElement] public string GyroEngageStickDirection { get; set; } = "Full";
 
+        /// <summary>Wii IR pointer: where the sensor bar sits relative to the
+        /// screen (0 = centered, 1 = above, 2 = below). Per (device, slot) like
+        /// every other pad-page tunable. Moved here from UserDevice so two
+        /// virtual controllers sharing one remote keep independent pointer
+        /// feel (issue #146, same move the gyro tuning made in v3.3).</summary>
+        [XmlElement] public string IrSensorBarPos { get; set; } = "0";
+
+        /// <summary>Wii IR pointer: sensor-bar vertical compensation magnitude,
+        /// 0..0.5 of the pointer range (Touchmote pointer_sensorBarPosCompensation).
+        /// Applied above/below per <see cref="IrSensorBarPos"/>.</summary>
+        [XmlElement] public string IrSensorBarComp { get; set; } = "0";
+
+        /// <summary>Wii IR pointer smoothing, 0..1. 0 = raw (no lag), higher =
+        /// heavier low-pass on the jittery camera (Touchmote position
+        /// smoothing).</summary>
+        [XmlElement] public string IrSmoothing { get; set; } = "0";
+
         /// <summary>At-rest bias for Pitch axis (rad/s), subtracted from
         /// the raw SDL3 gyro reading at the source-coercion read point.
         /// Per-(device, slot) — re-running calibration on slot A doesn't
@@ -1239,6 +1256,9 @@ namespace PadForge.Engine.Data
             sb.Append(GyroEasyAimStickThreshold); sb.Append('|');
             sb.Append(GyroEngageStickSide); sb.Append('|');
             sb.Append(GyroEngageStickDirection); sb.Append('|');
+            sb.Append(IrSensorBarPos); sb.Append('|');
+            sb.Append(IrSensorBarComp); sb.Append('|');
+            sb.Append(IrSmoothing); sb.Append('|');
             sb.Append(GyroBiasPitch); sb.Append('|');
             sb.Append(GyroBiasYaw); sb.Append('|');
             sb.Append(GyroBiasRoll); sb.Append('|');
@@ -1697,6 +1717,7 @@ namespace PadForge.Engine.Data
             nameof(GyroAcceleration), nameof(GyroOutputCurve),
             nameof(GyroSensitivityUnits), nameof(GyroEasyAimStickThreshold),
             nameof(GyroEngageStickSide), nameof(GyroEngageStickDirection),
+            nameof(IrSensorBarPos), nameof(IrSensorBarComp), nameof(IrSmoothing),
             nameof(GyroBiasPitch), nameof(GyroBiasYaw), nameof(GyroBiasRoll),
             nameof(GyroCalibratedAtUtc),
             nameof(GyroSpace), nameof(GyroPlayerSpaceYawRelaxFactor),

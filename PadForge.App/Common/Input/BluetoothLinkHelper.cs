@@ -65,7 +65,8 @@ namespace PadForge.Common.Input
         /// XInputGetCapabilitiesEx (ordinal 108). Everything else falls
         /// through to the BR/EDR link drop by serial (the DS4Windows path).</summary>
         public static bool TryDisconnectDevice(ushort vendorId, ushort productId,
-            string devicePath, string serial)
+            string devicePath, string serial,
+            System.Collections.Generic.IReadOnlyList<string> bthInstanceIds = null)
         {
             Trace($"dispatch vid={vendorId:X4} pid={productId:X4} path='{devicePath}' serial='{serial}'");
 
@@ -80,7 +81,18 @@ namespace PadForge.Common.Input
                 bool off = TryXInputPowerOff(vendorId, productId);
                 Trace($"xinput lane result={off}");
                 if (off) return true;
-                // fall through: maybe the same pad is reachable another way
+
+                // Last resort for Bluetooth LE pads whose driver rejects the
+                // power-down: disable-cycle the pad's BTHLE device node, which
+                // severs the LE link at the stack. The node instance ids are
+                // already cached per device for HidHide. The pad blinks,
+                // retries briefly, then sleeps (same end state DS4Windows'
+                // link drop produces on Sony pads).
+                if (TryCycleBthDevNodes(bthInstanceIds))
+                {
+                    Trace("devnode cycle lane succeeded");
+                    return true;
+                }
             }
 
             if (vendorId == ValveVid && TrySteamPowerOff(devicePath))
@@ -97,7 +109,42 @@ namespace PadForge.Common.Input
 
             bool ioctl = TryDisconnect(serial);
             Trace($"br/edr ioctl lane result={ioctl}");
+            if (!ioctl && TryCycleBthDevNodes(bthInstanceIds))
+            {
+                Trace("devnode cycle lane succeeded");
+                return true;
+            }
             return ioctl;
+        }
+
+        /// <summary>Disable-cycles every cached BTHLEDEVICE node for the
+        /// device, forcing the Bluetooth LE link down. Requires elevation,
+        /// which PadForge always runs with. Nodes of paired-but-sleeping pads
+        /// cycle harmlessly. Returns true when at least one node cycled.</summary>
+        private static bool TryCycleBthDevNodes(
+            System.Collections.Generic.IReadOnlyList<string> instanceIds)
+        {
+            if (instanceIds == null) return false;
+
+            bool any = false;
+            foreach (string id in instanceIds)
+            {
+                if (string.IsNullOrEmpty(id)) continue;
+                if (id.IndexOf("BTHLEDEVICE", StringComparison.OrdinalIgnoreCase) < 0) continue;
+
+                int locate = CM_Locate_DevNodeW(out uint devInst, id, 0);
+                if (locate != 0)
+                {
+                    Trace($"devnode '{id}': locate cr={locate}");
+                    continue;
+                }
+                int disable = CM_Disable_DevNode(devInst, 0);
+                System.Threading.Thread.Sleep(400);
+                int enable = CM_Enable_DevNode(devInst, 0);
+                Trace($"devnode '{id}': disable cr={disable} enable cr={enable}");
+                if (disable == 0) any = true;
+            }
+            return any;
         }
 
         /// <summary>Whether a device can be targeted by the #162 disconnect at
@@ -411,6 +458,17 @@ namespace PadForge.Common.Input
 
         [DllImport("xinput1_4.dll", EntryPoint = "#103")]
         private static extern uint XInputPowerOff(uint userIndex);
+
+        // ── BTHLE devnode cycle surface (cfgmgr32, elevation required) ──
+
+        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
+        private static extern int CM_Locate_DevNodeW(out uint devInst, string deviceId, uint flags);
+
+        [DllImport("cfgmgr32.dll")]
+        private static extern int CM_Disable_DevNode(uint devInst, uint flags);
+
+        [DllImport("cfgmgr32.dll")]
+        private static extern int CM_Enable_DevNode(uint devInst, uint flags);
 
     }
 }

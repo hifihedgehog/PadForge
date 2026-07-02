@@ -1189,7 +1189,7 @@ namespace PadForge.Common.Input
             {
                 foreach (var t in victims)
                     PadForge.Common.Input.BluetoothLinkHelper.TryDisconnectDevice(
-                        t.VendorId, t.ProductId, t.DevicePath, t.Serial);
+                        t.VendorId, t.ProductId, t.DevicePath, t.Serial, t.BthInstanceIds);
             });
         }
 
@@ -1201,8 +1201,9 @@ namespace PadForge.Common.Input
             public readonly ushort ProductId;
             public readonly string DevicePath;
             public readonly string Serial;
-            public DisconnectTarget(ushort vid, ushort pid, string path, string serial)
-            { VendorId = vid; ProductId = pid; DevicePath = path; Serial = serial; }
+            public readonly string[] BthInstanceIds;
+            public DisconnectTarget(ushort vid, ushort pid, string path, string serial, string[] bthIds)
+            { VendorId = vid; ProductId = pid; DevicePath = path; Serial = serial; BthInstanceIds = bthIds; }
         }
 
         /// <summary>Applies the #162 eligibility gates (online, wireless per
@@ -1218,7 +1219,8 @@ namespace PadForge.Common.Input
             if (ud.InputState != null && ud.InputState.BatteryCharging) return;
             foreach (var t in targets)
                 if (t.DevicePath == ud.DevicePath) return;
-            targets.Add(new DisconnectTarget(ud.VendorId, ud.ProdId, ud.DevicePath, ud.SerialNumber ?? string.Empty));
+            targets.Add(new DisconnectTarget(ud.VendorId, ud.ProdId, ud.DevicePath,
+                ud.SerialNumber ?? string.Empty, ud.HidHideInstanceIds?.ToArray()));
         }
 
         /// <summary>Enumerates every per-device PlayStationSlotConfig

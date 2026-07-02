@@ -208,12 +208,14 @@ namespace PadForge.Engine.Data
 
         private static readonly Dictionary<string, MappingSlot> _kbmAxisMap = new()
         {
-            ["KbmMouseX"]    = new(ControlCategory.Axis, 0),
-            ["KbmMouseY"]    = new(ControlCategory.Axis, 1),
-            ["KbmScroll"]    = new(ControlCategory.Axis, 2),
-            ["KbmMouseXNeg"] = new(ControlCategory.AxisNeg, 0),
-            ["KbmMouseYNeg"] = new(ControlCategory.AxisNeg, 1),
-            ["KbmScrollNeg"] = new(ControlCategory.AxisNeg, 2),
+            ["KbmMouseX"]     = new(ControlCategory.Axis, 0),
+            ["KbmMouseY"]     = new(ControlCategory.Axis, 1),
+            ["KbmScroll"]     = new(ControlCategory.Axis, 2),
+            ["KbmScrollH"]    = new(ControlCategory.Axis, 3),
+            ["KbmMouseXNeg"]  = new(ControlCategory.AxisNeg, 0),
+            ["KbmMouseYNeg"]  = new(ControlCategory.AxisNeg, 1),
+            ["KbmScrollNeg"]  = new(ControlCategory.AxisNeg, 2),
+            ["KbmScrollHNeg"] = new(ControlCategory.AxisNeg, 3),
         };
 
         private static readonly string[] _kbmDPadKeys =
@@ -256,6 +258,7 @@ namespace PadForge.Engine.Data
                 0 => "KbmMouseX",
                 1 => "KbmMouseY",
                 2 => "KbmScroll",
+                3 => "KbmScrollH",
                 _ => null
             },
             ControlCategory.AxisNeg => slot.Position switch
@@ -263,6 +266,7 @@ namespace PadForge.Engine.Data
                 0 => "KbmMouseXNeg",
                 1 => "KbmMouseYNeg",
                 2 => "KbmScrollNeg",
+                3 => "KbmScrollHNeg",
                 _ => null
             },
             ControlCategory.DPad => slot.Position < _kbmDPadKeys.Length

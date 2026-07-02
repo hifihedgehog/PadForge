@@ -1627,6 +1627,8 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_IrPointerX => Get("Mapping_IrPointerX");
     public string Mapping_IrPointerY => Get("Mapping_IrPointerY");
     public string Mapping_JoyConIrBrightness => Get("Mapping_JoyConIrBrightness");
+    public string Mapping_MouseMotionX => Get("Mapping_MouseMotionX");
+    public string Mapping_MouseMotionY => Get("Mapping_MouseMotionY");
     public string Mapping_IrPointerSensitivity => Get("Mapping_IrPointerSensitivity");
     public string Mapping_IrPointerSensitivity_Tooltip => Get("Mapping_IrPointerSensitivity_Tooltip");
     public string Mapping_BalanceTotalWeight => Get("Mapping_BalanceTotalWeight");
@@ -1852,6 +1854,7 @@ public class Strings : INotifyPropertyChanged
     public string Mouse_X => Get("Mouse_X");
     public string Mouse_Y => Get("Mouse_Y");
     public string Mouse_Scroll => Get("Mouse_Scroll");
+    public string Mouse_ScrollH => Get("Mouse_ScrollH");
     public string Extended_Stick_Format => Get("Extended_Stick_Format");
     public string Extended_StickY_Format => Get("Extended_StickY_Format");
     public string Extended_Trigger_Format => Get("Extended_Trigger_Format");

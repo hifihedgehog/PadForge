@@ -112,6 +112,12 @@ namespace PadForge.Engine
         /// (issue #151).</summary>
         public bool HasJoyConIr { get; private set; }
 
+        /// <summary>Whether this is a Joy-Con 2 (L or R) whose optical mouse
+        /// sensor PadForge surfaces as "Mouse Motion X/Y" sources (issue #154).
+        /// True when the fork's BLE Switch 2 driver posts the sensor counters
+        /// on joystick axes 6/7 (SDL#8, raw axis count 8).</summary>
+        public bool HasJoyCon2Mouse { get; private set; }
+
         /// <summary>Whether the device has an accelerometer sensor.</summary>
         public bool HasAccel { get; private set; }
 
@@ -347,6 +353,15 @@ namespace PadForge.Engine
             HasJoyConIr = VendorId == 0x057E && ProductId == 0x2007
                 && Joystick != IntPtr.Zero && SDL_GetNumJoystickAxes(Joystick) >= 7;
 
+            // Joy-Con 2 optical mouse sensor (issue #154). The fork's BLE Switch 2
+            // driver posts the sensor's absolute 16-bit counters on joystick axes
+            // 6/7 for a Joy-Con 2 L (PID 0x2067) or R (PID 0x2066) when its mouse
+            // hint is set (SDL#8, raw axis count 8). Same raw-naxes contract idiom
+            // as the Wii IR axes and the Joy-Con NIR scalar above.
+            HasJoyCon2Mouse = VendorId == 0x057E
+                && (ProductId == 0x2066 || ProductId == 0x2067)
+                && Joystick != IntPtr.Zero && SDL_GetNumJoystickAxes(Joystick) >= 8;
+
             // Always try the haptic API for force feedback devices (joysticks,
             // wheels, etc.). Some report HasRumble=true via SDL properties but
             // only actually work through the haptic effect system. The routing
@@ -507,7 +522,43 @@ namespace PadForge.Engine
             if (HasJoyConIr && state != null)
                 ReadJoyConIr(state);
 
+            // Joy-Con 2 optical mouse counters ride dedicated joystick axes 6/7
+            // (SDL#8), read joystick-direct the same way.
+            if (HasJoyCon2Mouse && state != null)
+                ReadJoyCon2Mouse(state);
+
             return state;
+        }
+
+        // Joy-Con 2 optical mouse sensor (issue #154). The fork's BLE Switch 2
+        // driver posts the sensor's ABSOLUTE 16-bit X/Y counters on joystick
+        // axes 6/7, bit-preserved as Sint16 (SDL#8; report 0x05 bytes 0x10-0x13
+        // per switch2_controller_research hid_reports.md, cross-confirmed by
+        // joycon2cpp GetRawOpticalMouse, joycon2mouse joycon.py:105-106, and
+        // jc2mouse driver.py:71-74). PadForge derives per-poll deltas with
+        // 16-bit wraparound, the jc2mouse delta_u16 idiom (driver.py:174-176):
+        // the counter wraps at 0x10000, so the signed 16-bit difference is the
+        // true motion for any delta under half the counter range. The first
+        // read only primes the previous value (joycon2mouse's None guard), so
+        // connect never emits a spurious jump from counter 0.
+        private int _jc2MousePrevX, _jc2MousePrevY;
+        private bool _jc2MouseHasPrev;
+
+        private void ReadJoyCon2Mouse(CustomInputState state)
+        {
+            ushort curX = (ushort)SDL_GetJoystickAxis(Joystick, 6);
+            ushort curY = (ushort)SDL_GetJoystickAxis(Joystick, 7);
+            if (!_jc2MouseHasPrev)
+            {
+                _jc2MousePrevX = curX;
+                _jc2MousePrevY = curY;
+                _jc2MouseHasPrev = true;
+                return; // state fields stay 0 for the priming poll
+            }
+            state.JoyCon2MouseDX = (short)(curX - _jc2MousePrevX);
+            state.JoyCon2MouseDY = (short)(curY - _jc2MousePrevY);
+            _jc2MousePrevX = curX;
+            _jc2MousePrevY = curY;
         }
 
         // The SDL fork posts the right Joy-Con MCU's average-intensity byte

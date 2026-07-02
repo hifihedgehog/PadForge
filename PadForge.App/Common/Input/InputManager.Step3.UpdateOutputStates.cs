@@ -541,6 +541,7 @@ namespace PadForge.Common.Input
             s.Equals("IR Brightness", StringComparison.Ordinal) ||
             s.StartsWith("Balance ", StringComparison.Ordinal) ||
             s.StartsWith("Mouse Position ", StringComparison.Ordinal) ||
+            s.StartsWith("Mouse Motion ", StringComparison.Ordinal) ||
             s.StartsWith("Midi ", StringComparison.Ordinal);
 
         /// <summary>
@@ -1847,10 +1848,50 @@ namespace PadForge.Common.Input
             raw.PreDzScrollDelta = raw.ScrollDelta;
 
             // ── Scroll deadzone + sensitivity (uses Right Thumb settings, scroll on Y axis) ──
-            // Scroll is a signed bidirectional axis — use stick deadzone with X=0.
+            // Scroll is a signed bidirectional axis. Use stick deadzone with X=0.
             {
                 short scrollX = 0;
                 ApplyDeadZone(ref scrollX, ref raw.ScrollDelta,
+                    TryParseDoubleStatic(ps.RightThumbDeadZoneX, 0),
+                    TryParseDoubleStatic(ps.RightThumbDeadZoneY, 0),
+                    TryParseDoubleStatic(ps.RightThumbAntiDeadZoneX, 0),
+                    TryParseDoubleStatic(ps.RightThumbAntiDeadZoneY, 0),
+                    TryParseDoubleStatic(ps.RightThumbLinear, 0),
+                    TryParseDoubleStatic(ps.RightThumbMaxRangeX, 100),
+                    TryParseDoubleStatic(ps.RightThumbMaxRangeY, 100),
+                    TryParseDoubleStatic(ps.RightThumbMaxRangeXNeg, TryParseDoubleStatic(ps.RightThumbMaxRangeX, 100)),
+                    TryParseDoubleStatic(ps.RightThumbMaxRangeYNeg, TryParseDoubleStatic(ps.RightThumbMaxRangeY, 100)),
+                    Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveX),
+                    Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveY),
+                    ParseDeadZoneShape(ps.RightThumbDeadZoneShape));
+            }
+
+            // ── Horizontal scroll (issue #154, office-mouse tilt wheel) ──
+            // Same shape as the vertical block above. Positive = scroll RIGHT,
+            // which is both the SDL X-axis positive direction and
+            // MOUSEEVENTF_HWHEEL's positive, so no sign correction is needed on
+            // either path (the vertical negation exists only because scroll-up
+            // opposes SDL's Y-positive-down).
+            {
+                string posDesc = ps.GetKbmMapping("KbmScrollH");
+                string negDesc = ps.GetKbmMapping("KbmScrollHNeg");
+                if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
+                        slotIndex, "KbmScrollH", out short scrollHValue))
+                {
+                    raw.ScrollDeltaH = scrollHValue;
+                }
+                else if (!string.IsNullOrEmpty(posDesc) || !string.IsNullOrEmpty(negDesc))
+                {
+                    raw.ScrollDeltaH = MapToThumbAxisWithNeg(state, posDesc, negDesc);
+                }
+            }
+
+            raw.PreDzScrollDeltaH = raw.ScrollDeltaH;
+
+            // Horizontal scroll deadzone: same Right Thumb settings, H on the X axis.
+            {
+                short scrollHy = 0;
+                ApplyDeadZone(ref raw.ScrollDeltaH, ref scrollHy,
                     TryParseDoubleStatic(ps.RightThumbDeadZoneX, 0),
                     TryParseDoubleStatic(ps.RightThumbDeadZoneY, 0),
                     TryParseDoubleStatic(ps.RightThumbAntiDeadZoneX, 0),

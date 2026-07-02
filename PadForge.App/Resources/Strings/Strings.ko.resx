@@ -1044,6 +1044,7 @@
   <data name="Mouse_X" xml:space="preserve"><value>마우스 X</value></data>
   <data name="Mouse_Y" xml:space="preserve"><value>마우스 Y</value></data>
   <data name="Mouse_Scroll" xml:space="preserve"><value>스크롤</value></data>
+  <data name="Mouse_ScrollH" xml:space="preserve"><value>가로 스크롤</value></data>
   <data name="Extended_Stick_Format" xml:space="preserve"><value>스틱 {0} X</value></data>
   <data name="Extended_StickY_Format" xml:space="preserve"><value>스틱 {0} Y</value></data>
   <data name="Extended_Trigger_Format" xml:space="preserve"><value>트리거 {0}</value></data>
@@ -1080,6 +1081,8 @@
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR 포인터 X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR 포인터 Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR 밝기</value></data>
+  <data name="Mapping_MouseMotionX" xml:space="preserve"><value>마우스 이동 X</value></data>
+  <data name="Mapping_MouseMotionY" xml:space="preserve"><value>마우스 이동 Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>감도</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>소스별 IR 포인터 감도입니다. 1.0은 카메라 시야의 가장자리에서 스틱 최대 기울기에 도달합니다. 1.0보다 큰 값은 더 적은 조준 이동으로 최대 기울기에 도달합니다. 1.0보다 작은 값은 더 많은 이동이 필요합니다.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>밸런스 총 무게</value></data>

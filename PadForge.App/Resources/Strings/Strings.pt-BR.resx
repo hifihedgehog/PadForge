@@ -1044,6 +1044,7 @@
   <data name="Mouse_X" xml:space="preserve"><value>Mouse X</value></data>
   <data name="Mouse_Y" xml:space="preserve"><value>Mouse Y</value></data>
   <data name="Mouse_Scroll" xml:space="preserve"><value>Rolagem</value></data>
+  <data name="Mouse_ScrollH" xml:space="preserve"><value>Rolagem Horizontal</value></data>
   <data name="Extended_Stick_Format" xml:space="preserve"><value>Analógico {0} X</value></data>
   <data name="Extended_StickY_Format" xml:space="preserve"><value>Analógico {0} Y</value></data>
   <data name="Extended_Trigger_Format" xml:space="preserve"><value>Gatilho {0}</value></data>
@@ -1080,6 +1081,8 @@
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Apontador IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Apontador IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Brilho IR</value></data>
+  <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Movimento do Mouse X</value></data>
+  <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Movimento do Mouse Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensibilidade</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Sensibilidade do apontador IR por fonte. 1.0 atinge o deslocamento total do analógico na borda do campo de visão da câmera. Valores acima de 1.0 atingem o deslocamento total com menos movimento de mira. Valores abaixo de 1.0 precisam de mais.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Peso Total (Balance)</value></data>

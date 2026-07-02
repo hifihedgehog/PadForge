@@ -2359,6 +2359,7 @@ namespace PadForge.Services
                     "KbmMouseX"  => kbm.MouseDeltaX,
                     "KbmMouseY"  => kbm.MouseDeltaY,
                     "KbmScroll"  => kbm.ScrollDelta,
+                    "KbmScrollH" => kbm.ScrollDeltaH,
                     _ => null,
                 };
             }

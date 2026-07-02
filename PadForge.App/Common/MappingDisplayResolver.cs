@@ -780,6 +780,16 @@ namespace PadForge.Common
             if (ud.HasJoyConIr)
                 list.Add(new InputChoice { Descriptor = "IR Brightness", DisplayName = si.Mapping_JoyConIrBrightness });
 
+            // Joy-Con 2 optical mouse sensor (#154). Per-poll motion velocity in
+            // mouse counts, per device (CustomInputState.JoyCon2MouseDX/DY),
+            // scaled to feel like a real mouse's motion axes. Map to sticks,
+            // scroll, buttons (threshold = the per-row deadzone), or a trigger.
+            if (ud.HasJoyCon2Mouse)
+            {
+                list.Add(new InputChoice { Descriptor = "Mouse Motion X", DisplayName = si.Mapping_MouseMotionX });
+                list.Add(new InputChoice { Descriptor = "Mouse Motion Y", DisplayName = si.Mapping_MouseMotionY });
+            }
+
             // Gravity-lean input: tilt the controller like a wheel and the lean
             // angle drives whatever axis the user maps it to. A normal input
             // descriptor — it does NOT override the target's other sources.

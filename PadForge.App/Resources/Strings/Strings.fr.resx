@@ -1044,6 +1044,7 @@
   <data name="Mouse_X" xml:space="preserve"><value>Souris X</value></data>
   <data name="Mouse_Y" xml:space="preserve"><value>Souris Y</value></data>
   <data name="Mouse_Scroll" xml:space="preserve"><value>Défilement</value></data>
+  <data name="Mouse_ScrollH" xml:space="preserve"><value>Défilement horizontal</value></data>
   <data name="Extended_Stick_Format" xml:space="preserve"><value>Stick {0} X</value></data>
   <data name="Extended_StickY_Format" xml:space="preserve"><value>Stick {0} Y</value></data>
   <data name="Extended_Trigger_Format" xml:space="preserve"><value>Gâchette {0}</value></data>
@@ -1080,6 +1081,8 @@
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Pointeur IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Pointeur IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Luminosité IR</value></data>
+  <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Mouvement de la souris X</value></data>
+  <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Mouvement de la souris Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Sensibilité du pointeur IR par source. 1.0 atteint le déplacement complet du stick au bord du champ de vision de la caméra. Les valeurs supérieures à 1.0 atteignent le déplacement complet avec moins de mouvement de visée. Les valeurs inférieures à 1.0 en demandent davantage.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Poids total (Balance)</value></data>

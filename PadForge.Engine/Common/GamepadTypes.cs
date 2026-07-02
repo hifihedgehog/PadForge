@@ -182,6 +182,13 @@ namespace PadForge.Engine
         /// <summary>Scroll delta before deadzone (for stick preview).</summary>
         public short PreDzScrollDelta;
 
+        /// <summary>Horizontal scroll delta, positive = scroll right (issue
+        /// #154, the office-mouse tilt wheel). Same signed-axis semantics as
+        /// <see cref="ScrollDelta"/>; the KBM virtual controller sends it as
+        /// MOUSEEVENTF_HWHEEL.</summary>
+        public short ScrollDeltaH;
+        public short PreDzScrollDeltaH;
+
         /// <summary>Absolute pointer aim, normalized [-1..+1] screen-aligned
         /// (issue #146: Wii IR pointing). When <see cref="MouseAbsValid"/> is
         /// true the KBM virtual controller positions the OS cursor here
@@ -232,6 +239,7 @@ namespace PadForge.Engine
         {
             Keys0 = Keys1 = Keys2 = Keys3 = 0;
             MouseDeltaX = MouseDeltaY = ScrollDelta = 0;
+            ScrollDeltaH = PreDzScrollDeltaH = 0;
             MouseButtons = 0;
             PreDzMouseDeltaX = PreDzMouseDeltaY = PreDzScrollDelta = 0;
             MouseAbsX = MouseAbsY = 0f;
@@ -257,6 +265,8 @@ namespace PadForge.Engine
                 PreDzMouseDeltaX = Math.Abs(a.PreDzMouseDeltaX) >= Math.Abs(b.PreDzMouseDeltaX) ? a.PreDzMouseDeltaX : b.PreDzMouseDeltaX,
                 PreDzMouseDeltaY = Math.Abs(a.PreDzMouseDeltaY) >= Math.Abs(b.PreDzMouseDeltaY) ? a.PreDzMouseDeltaY : b.PreDzMouseDeltaY,
                 PreDzScrollDelta = Math.Abs(a.PreDzScrollDelta) >= Math.Abs(b.PreDzScrollDelta) ? a.PreDzScrollDelta : b.PreDzScrollDelta,
+                ScrollDeltaH = Math.Abs(a.ScrollDeltaH) >= Math.Abs(b.ScrollDeltaH) ? a.ScrollDeltaH : b.ScrollDeltaH,
+                PreDzScrollDeltaH = Math.Abs(a.PreDzScrollDeltaH) >= Math.Abs(b.PreDzScrollDeltaH) ? a.PreDzScrollDeltaH : b.PreDzScrollDeltaH,
                 // Absolute pointer: whichever side is tracking wins (only one
                 // IR-pointing device feeds a slot in practice).
                 MouseAbsX = a.MouseAbsValid ? a.MouseAbsX : b.MouseAbsX,

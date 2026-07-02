@@ -1044,6 +1044,7 @@
   <data name="Mouse_X" xml:space="preserve"><value>Maus X</value></data>
   <data name="Mouse_Y" xml:space="preserve"><value>Maus Y</value></data>
   <data name="Mouse_Scroll" xml:space="preserve"><value>Scrollen</value></data>
+  <data name="Mouse_ScrollH" xml:space="preserve"><value>Horizontal scrollen</value></data>
   <data name="Extended_Stick_Format" xml:space="preserve"><value>Stick {0} X</value></data>
   <data name="Extended_StickY_Format" xml:space="preserve"><value>Stick {0} Y</value></data>
   <data name="Extended_Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
@@ -1080,6 +1081,8 @@
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-Zeiger X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-Zeiger Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR-Helligkeit</value></data>
+  <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Mausbewegung X</value></data>
+  <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Mausbewegung Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Empfindlichkeit</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Empfindlichkeit des IR-Zeigers pro Quelle. 1.0 erreicht die volle Stick-Auslenkung am Rand des Sichtfelds der Kamera. Werte über 1.0 erreichen die volle Auslenkung mit weniger Zielbewegung. Werte unter 1.0 brauchen mehr.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Balance-Gesamtgewicht</value></data>

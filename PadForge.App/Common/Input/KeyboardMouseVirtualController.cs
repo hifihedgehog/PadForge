@@ -33,6 +33,7 @@ namespace PadForge.Common.Input
         private float _mxAccumulator;
         private float _myAccumulator;
         private float _scrollAccumulator;
+        private float _scrollAccumulatorH;
 
         // Mouse sensitivity: pixels per frame at full axis deflection.
         private const float MouseSensitivity = 15.0f;
@@ -65,6 +66,7 @@ namespace PadForge.Common.Input
             _mxAccumulator = 0f;
             _myAccumulator = 0f;
             _scrollAccumulator = 0f;
+            _scrollAccumulatorH = 0f;
         }
 
         /// <summary>
@@ -129,6 +131,18 @@ namespace PadForge.Common.Input
                 _scrollAccumulator -= scroll;
                 if (scroll != 0)
                     SendMouseWheel(scroll * 120); // 120 = WHEEL_DELTA
+            }
+
+            // --- Horizontal mouse scroll (issue #154, the office-mouse tilt
+            //     wheel). Same accumulator idiom; positive = scroll right,
+            //     matching MOUSEEVENTF_HWHEEL's positive direction. ---
+            if (raw.ScrollDeltaH != 0)
+            {
+                _scrollAccumulatorH += raw.ScrollDeltaH / 32767.0f * ScrollSensitivity;
+                int scrollH = (int)_scrollAccumulatorH;
+                _scrollAccumulatorH -= scrollH;
+                if (scrollH != 0)
+                    SendMouseWheelH(scrollH * 120); // 120 = WHEEL_DELTA
             }
         }
 
@@ -222,6 +236,7 @@ namespace PadForge.Common.Input
         private const uint MOUSEEVENTF_XDOWN = 0x0080;
         private const uint MOUSEEVENTF_XUP = 0x0100;
         private const uint MOUSEEVENTF_WHEEL = 0x0800;
+        private const uint MOUSEEVENTF_HWHEEL = 0x01000;
 
         private const uint XBUTTON1 = 0x0001;
         private const uint XBUTTON2 = 0x0002;
@@ -350,6 +365,23 @@ namespace PadForge.Common.Input
                     mi = new MOUSEINPUT
                     {
                         dwFlags = MOUSEEVENTF_WHEEL,
+                        mouseData = (uint)delta
+                    }
+                }
+            };
+            SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
+        }
+
+        private static void SendMouseWheelH(int delta)
+        {
+            var input = new INPUT
+            {
+                type = INPUT_MOUSE,
+                u = new InputUnion
+                {
+                    mi = new MOUSEINPUT
+                    {
+                        dwFlags = MOUSEEVENTF_HWHEEL,
                         mouseData = (uint)delta
                     }
                 }

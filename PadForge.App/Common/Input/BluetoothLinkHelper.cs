@@ -34,6 +34,25 @@ namespace PadForge.Common.Input
         /// 20-byte XINPUT_CAPABILITIES + VID/PID/version/pad + DWORD = 32.</summary>
         public static int CapabilitiesExSize => Marshal.SizeOf<XINPUT_CAPABILITIES_EX>();
 
+        /// <summary>Appends one line to C:\PadForge\disconnect-trace.log so a
+        /// failed hardware round reads as data instead of a guess. Every lane
+        /// of the #162 dispatch logs its inputs and Win32 results. Best-effort:
+        /// any I/O failure is swallowed, and the file restarts once it grows
+        /// past a quarter megabyte.</summary>
+        public static void Trace(string message)
+        {
+            try
+            {
+                const string path = @"C:\PadForge\disconnect-trace.log";
+                var fi = new System.IO.FileInfo(path);
+                if (fi.Exists && fi.Length > 256 * 1024)
+                    fi.Delete();
+                System.IO.File.AppendAllText(path,
+                    $"{DateTime.Now:HH:mm:ss.fff} {message}{Environment.NewLine}");
+            }
+            catch { }
+        }
+
         /// <summary>Device-aware disconnect (issue #162). The radio IOCTL below
         /// only drops BR/EDR ACL links (every reference uses it on {00001124}
         /// classic-BT pads), so BLE controllers need their own lane:
@@ -48,31 +67,51 @@ namespace PadForge.Common.Input
         public static bool TryDisconnectDevice(ushort vendorId, ushort productId,
             string devicePath, string serial)
         {
-            if (TryParseXInputSlot(devicePath, out uint slot))
+            Trace($"dispatch vid={vendorId:X4} pid={productId:X4} path='{devicePath}' serial='{serial}'");
+
+            if (TryParseXInputSlot(devicePath, out _))
             {
-                try { return XInputPowerOff(slot) == 0; }
-                catch (DllNotFoundException) { return false; }
-                catch (EntryPointNotFoundException) { return false; }
+                // The stored slot digit goes stale across reconnects (a pad
+                // recorded as XInput#1 was measured live on slot 0), so target
+                // by VID/PID walk instead. In-process this is the OpenXInput
+                // fork's packed index space, which contains ONLY physical pads
+                // (HM virtuals never occupy an index, per the XInput filter
+                // architecture), so the walk cannot hit our own slots.
+                bool off = TryXInputPowerOff(vendorId, productId);
+                Trace($"xinput lane result={off}");
+                if (off) return true;
+                // fall through: maybe the same pad is reachable another way
             }
 
             if (vendorId == ValveVid && TrySteamPowerOff(devicePath))
+            {
+                Trace("steam lane succeeded");
                 return true;
+            }
 
             if (vendorId == MicrosoftVid && TryXInputPowerOff(vendorId, productId))
+            {
+                Trace("xinput lane (hid-pathed) succeeded");
                 return true;
+            }
 
-            return TryDisconnect(serial);
+            bool ioctl = TryDisconnect(serial);
+            Trace($"br/edr ioctl lane result={ioctl}");
+            return ioctl;
         }
 
         /// <summary>Whether a device can be targeted by the #162 disconnect at
-        /// all: a Bluetooth HID path, or an SDL XInput-backend pad running on
-        /// battery. This predicate gates the macro candidates, the idle
-        /// countdown, the Devices-page control, and the Specific-device picker,
-        /// so all four surfaces agree.</summary>
+        /// all: a Bluetooth HID path, or an SDL XInput-backend pad. XInput
+        /// paths qualify unconditionally: the battery API was measured
+        /// unreliable (a live Bluetooth pad reported BATTERY_TYPE_DISCONNECTED),
+        /// and a power-off attempt on a wired pad is a harmless no-op. This
+        /// predicate gates the macro candidates, the idle countdown, the
+        /// Devices-page control, and the Specific-device picker, so all four
+        /// surfaces agree.</summary>
         public static bool IsDisconnectTarget(string devicePath)
         {
             if (SonyEffectWriter.IsBluetoothPath(devicePath)) return true;
-            return IsXInputWireless(devicePath);
+            return TryParseXInputSlot(devicePath, out _);
         }
 
         /// <summary>Parses SDL's XInput-backend joystick path ("XInput#N",
@@ -86,24 +125,6 @@ namespace PadForge.Common.Input
             return uint.TryParse(devicePath.Substring(prefix.Length), out slot) && slot < 4;
         }
 
-        /// <summary>True when the XInput-pathed pad is not wired. Battery types
-        /// per Special K xinput.h:80-84 (0 disconnected, 1 wired, 2 alkaline,
-        /// 3 NiMH, 0xFF unknown). Deliberately loose: a wireless pad reporting
-        /// UNKNOWN stays targetable, and a power-off attempt on a mislabeled
-        /// wired pad is a harmless no-op.</summary>
-        private static bool IsXInputWireless(string devicePath)
-        {
-            if (!TryParseXInputSlot(devicePath, out uint slot)) return false;
-            try
-            {
-                if (XInputGetBatteryInformation(slot, 0 /* BATTERY_DEVTYPE_GAMEPAD */,
-                        out XINPUT_BATTERY_INFORMATION info) != 0)
-                    return false;
-                return info.BatteryType != 0 /* DISCONNECTED */ && info.BatteryType != 1 /* WIRED */;
-            }
-            catch (DllNotFoundException) { return false; }
-            catch (EntryPointNotFoundException) { return false; }
-        }
 
         /// <summary>The Steam power-off feature report: report id 0x00, protocol
         /// id 0x9F (ID_TURN_OFF_CONTROLLER). Two framings exist in the proven
@@ -141,7 +162,11 @@ namespace PadForge.Common.Input
 
             IntPtr h = CreateFileW(devicePath, GENERIC_READ | GENERIC_WRITE, SHARE_RW,
                 IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
-            if (h == IntPtr.Zero || h == INVALID_HANDLE) return false;
+            if (h == IntPtr.Zero || h == INVALID_HANDLE)
+            {
+                Trace($"steam open FAILED err={Marshal.GetLastWin32Error()}");
+                return false;
+            }
 
             try
             {
@@ -156,15 +181,21 @@ namespace PadForge.Common.Input
                     finally { HidD_FreePreparsedData(pp); }
                 }
                 if (featLen <= 0)
-                    return false; // wrong collection: no feature report surface
+                {
+                    Trace("steam open ok but FeatureReportByteLength=0 (wrong collection)");
+                    return false;
+                }
 
                 byte[] bare = BuildSteamPowerOffReport(featLen, withOffMagic: false);
-                bool ok = HidD_SetFeature(h, bare, bare.Length);
+                bool okBare = HidD_SetFeature(h, bare, bare.Length);
+                int errBare = okBare ? 0 : Marshal.GetLastWin32Error();
 
                 byte[] magic = BuildSteamPowerOffReport(featLen, withOffMagic: true);
-                ok |= HidD_SetFeature(h, magic, magic.Length);
+                bool okMagic = HidD_SetFeature(h, magic, magic.Length);
+                int errMagic = okMagic ? 0 : Marshal.GetLastWin32Error();
 
-                return ok;
+                Trace($"steam featLen={featLen} bare={okBare}(err={errBare}) magic={okMagic}(err={errMagic})");
+                return okBare || okMagic;
             }
             finally
             {
@@ -181,21 +212,31 @@ namespace PadForge.Common.Input
         /// own slots.</summary>
         private static bool TryXInputPowerOff(ushort vendorId, ushort productId)
         {
+            bool any = false;
             for (uint slot = 0; slot < 4; slot++)
             {
                 try
                 {
-                    if (XInputGetCapabilitiesEx(1, slot, 0, out XINPUT_CAPABILITIES_EX caps) != 0)
+                    uint capsResult = XInputGetCapabilitiesEx(1, slot, 0, out XINPUT_CAPABILITIES_EX caps);
+                    if (capsResult != 0)
+                    {
+                        Trace($"xinput slot {slot}: caps err={capsResult}");
                         continue;
+                    }
                     if (caps.VendorId != vendorId || caps.ProductId != productId)
+                    {
+                        Trace($"xinput slot {slot}: vid={caps.VendorId:X4} pid={caps.ProductId:X4} (no match)");
                         continue;
-                    if (XInputPowerOff(slot) == 0)
-                        return true;
+                    }
+                    uint offResult = XInputPowerOff(slot);
+                    Trace($"xinput slot {slot}: MATCH, PowerOff={offResult}");
+                    if (offResult == 0)
+                        any = true;
                 }
-                catch (DllNotFoundException) { return false; }
-                catch (EntryPointNotFoundException) { return false; }
+                catch (DllNotFoundException) { Trace("xinput: dll missing"); return false; }
+                catch (EntryPointNotFoundException) { Trace("xinput: ordinal missing"); return false; }
             }
-            return false;
+            return any;
         }
 
         /// <summary>Parses a HID serial string ("aa:bb:cc:dd:ee:ff",
@@ -233,7 +274,10 @@ namespace PadForge.Common.Input
         public static bool TryDisconnect(string serial)
         {
             if (!TryParseAddress(serial, out long address))
+            {
+                Trace($"ioctl: serial '{serial}' not a MAC, skipped");
                 return false;
+            }
 
             var findParams = new BLUETOOTH_FIND_RADIO_PARAMS
             {
@@ -352,15 +396,5 @@ namespace PadForge.Common.Input
         [DllImport("xinput1_4.dll", EntryPoint = "#103")]
         private static extern uint XInputPowerOff(uint userIndex);
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct XINPUT_BATTERY_INFORMATION
-        {
-            public byte BatteryType;  // 0 disconnected, 1 wired, 2 alkaline, 3 NiMH, 0xFF unknown
-            public byte BatteryLevel;
-        }
-
-        [DllImport("xinput1_4.dll", EntryPoint = "XInputGetBatteryInformation")]
-        private static extern uint XInputGetBatteryInformation(uint userIndex, byte devType,
-            out XINPUT_BATTERY_INFORMATION info);
     }
 }

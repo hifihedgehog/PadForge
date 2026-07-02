@@ -327,6 +327,8 @@ namespace PadForge.Common.Input
 
             ushort vid = ud.VendorId, pid = ud.ProdId;
             string path = ud.DevicePath, serial = ud.SerialNumber ?? string.Empty;
+            PadForge.Common.Input.BluetoothLinkHelper.Trace(
+                $"idle countdown fired: {ud.ResolvedName} after {ud.IdleDisconnectSeconds}s");
             System.Threading.Tasks.Task.Run(() =>
                 PadForge.Common.Input.BluetoothLinkHelper.TryDisconnectDevice(vid, pid, path, serial));
         }

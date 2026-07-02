@@ -2094,4 +2094,41 @@
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>"{0}"을(를) 등록했습니다. 다른 태그를 대면 더 추가할 수 있습니다.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC 태그 등록/관리</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>NFC 리더기</value></data>
+  <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>소비자 컨트롤</value></data>
+  <data name="DevObj_ConsumerPower" xml:space="preserve"><value>전원</value></data>
+  <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>메뉴</value></data>
+  <data name="DevObj_ConsumerOk" xml:space="preserve"><value>확인</value></data>
+  <data name="DevObj_ConsumerMenuUp" xml:space="preserve"><value>메뉴 위</value></data>
+  <data name="DevObj_ConsumerMenuDown" xml:space="preserve"><value>메뉴 아래</value></data>
+  <data name="DevObj_ConsumerMenuLeft" xml:space="preserve"><value>메뉴 왼쪽</value></data>
+  <data name="DevObj_ConsumerMenuRight" xml:space="preserve"><value>메뉴 오른쪽</value></data>
+  <data name="DevObj_ConsumerMenuEscape" xml:space="preserve"><value>메뉴 나가기</value></data>
+  <data name="DevObj_ConsumerPlay" xml:space="preserve"><value>재생</value></data>
+  <data name="DevObj_ConsumerPause" xml:space="preserve"><value>일시 정지</value></data>
+  <data name="DevObj_ConsumerRecord" xml:space="preserve"><value>녹화</value></data>
+  <data name="DevObj_ConsumerFastForward" xml:space="preserve"><value>빨리 감기</value></data>
+  <data name="DevObj_ConsumerRewind" xml:space="preserve"><value>되감기</value></data>
+  <data name="DevObj_ConsumerNextTrack" xml:space="preserve"><value>다음 트랙</value></data>
+  <data name="DevObj_ConsumerPreviousTrack" xml:space="preserve"><value>이전 트랙</value></data>
+  <data name="DevObj_ConsumerMediaStop" xml:space="preserve"><value>정지</value></data>
+  <data name="DevObj_ConsumerEject" xml:space="preserve"><value>꺼내기</value></data>
+  <data name="DevObj_ConsumerPlayPause" xml:space="preserve"><value>재생/일시 정지</value></data>
+  <data name="DevObj_ConsumerVoiceCommand" xml:space="preserve"><value>음성 명령</value></data>
+  <data name="DevObj_ConsumerMute" xml:space="preserve"><value>음소거</value></data>
+  <data name="DevObj_ConsumerVolumeUp" xml:space="preserve"><value>볼륨 높이기</value></data>
+  <data name="DevObj_ConsumerVolumeDown" xml:space="preserve"><value>볼륨 낮추기</value></data>
+  <data name="DevObj_ConsumerQuit" xml:space="preserve"><value>종료</value></data>
+  <data name="DevObj_ConsumerChannelUp" xml:space="preserve"><value>채널 위</value></data>
+  <data name="DevObj_ConsumerChannelDown" xml:space="preserve"><value>채널 아래</value></data>
+  <data name="DevObj_ConsumerMediaPlayer" xml:space="preserve"><value>미디어 플레이어</value></data>
+  <data name="DevObj_ConsumerEmail" xml:space="preserve"><value>이메일</value></data>
+  <data name="DevObj_ConsumerCalculator" xml:space="preserve"><value>계산기</value></data>
+  <data name="DevObj_ConsumerFileBrowser" xml:space="preserve"><value>파일 탐색기</value></data>
+  <data name="DevObj_ConsumerBrowserSearch" xml:space="preserve"><value>검색</value></data>
+  <data name="DevObj_ConsumerBrowserHome" xml:space="preserve"><value>브라우저 홈</value></data>
+  <data name="DevObj_ConsumerBrowserBack" xml:space="preserve"><value>브라우저 뒤로</value></data>
+  <data name="DevObj_ConsumerBrowserForward" xml:space="preserve"><value>브라우저 앞으로</value></data>
+  <data name="DevObj_ConsumerBrowserStop" xml:space="preserve"><value>브라우저 정지</value></data>
+  <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>새로 고침</value></data>
+  <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>북마크</value></data>
 </root>

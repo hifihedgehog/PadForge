@@ -2094,4 +2094,41 @@
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>「{0}」を登録しました。別のタグをかざすと追加できます。</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFCタグの登録・管理</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>NFCリーダー</value></data>
+  <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>コンシューマーコントロール</value></data>
+  <data name="DevObj_ConsumerPower" xml:space="preserve"><value>電源</value></data>
+  <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>メニュー</value></data>
+  <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>
+  <data name="DevObj_ConsumerMenuUp" xml:space="preserve"><value>メニュー上</value></data>
+  <data name="DevObj_ConsumerMenuDown" xml:space="preserve"><value>メニュー下</value></data>
+  <data name="DevObj_ConsumerMenuLeft" xml:space="preserve"><value>メニュー左</value></data>
+  <data name="DevObj_ConsumerMenuRight" xml:space="preserve"><value>メニュー右</value></data>
+  <data name="DevObj_ConsumerMenuEscape" xml:space="preserve"><value>メニュー終了</value></data>
+  <data name="DevObj_ConsumerPlay" xml:space="preserve"><value>再生</value></data>
+  <data name="DevObj_ConsumerPause" xml:space="preserve"><value>一時停止</value></data>
+  <data name="DevObj_ConsumerRecord" xml:space="preserve"><value>録画</value></data>
+  <data name="DevObj_ConsumerFastForward" xml:space="preserve"><value>早送り</value></data>
+  <data name="DevObj_ConsumerRewind" xml:space="preserve"><value>巻き戻し</value></data>
+  <data name="DevObj_ConsumerNextTrack" xml:space="preserve"><value>次のトラック</value></data>
+  <data name="DevObj_ConsumerPreviousTrack" xml:space="preserve"><value>前のトラック</value></data>
+  <data name="DevObj_ConsumerMediaStop" xml:space="preserve"><value>停止</value></data>
+  <data name="DevObj_ConsumerEject" xml:space="preserve"><value>取り出し</value></data>
+  <data name="DevObj_ConsumerPlayPause" xml:space="preserve"><value>再生/一時停止</value></data>
+  <data name="DevObj_ConsumerVoiceCommand" xml:space="preserve"><value>音声コマンド</value></data>
+  <data name="DevObj_ConsumerMute" xml:space="preserve"><value>ミュート</value></data>
+  <data name="DevObj_ConsumerVolumeUp" xml:space="preserve"><value>音量を上げる</value></data>
+  <data name="DevObj_ConsumerVolumeDown" xml:space="preserve"><value>音量を下げる</value></data>
+  <data name="DevObj_ConsumerQuit" xml:space="preserve"><value>終了</value></data>
+  <data name="DevObj_ConsumerChannelUp" xml:space="preserve"><value>チャンネル上</value></data>
+  <data name="DevObj_ConsumerChannelDown" xml:space="preserve"><value>チャンネル下</value></data>
+  <data name="DevObj_ConsumerMediaPlayer" xml:space="preserve"><value>メディアプレーヤー</value></data>
+  <data name="DevObj_ConsumerEmail" xml:space="preserve"><value>メール</value></data>
+  <data name="DevObj_ConsumerCalculator" xml:space="preserve"><value>電卓</value></data>
+  <data name="DevObj_ConsumerFileBrowser" xml:space="preserve"><value>ファイルブラウザー</value></data>
+  <data name="DevObj_ConsumerBrowserSearch" xml:space="preserve"><value>検索</value></data>
+  <data name="DevObj_ConsumerBrowserHome" xml:space="preserve"><value>ブラウザーホーム</value></data>
+  <data name="DevObj_ConsumerBrowserBack" xml:space="preserve"><value>ブラウザー戻る</value></data>
+  <data name="DevObj_ConsumerBrowserForward" xml:space="preserve"><value>ブラウザー進む</value></data>
+  <data name="DevObj_ConsumerBrowserStop" xml:space="preserve"><value>ブラウザー停止</value></data>
+  <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>更新</value></data>
+  <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>ブックマーク</value></data>
 </root>

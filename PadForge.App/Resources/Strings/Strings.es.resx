@@ -2094,4 +2094,41 @@
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>«{0}» registrada. Acerca otra etiqueta para añadir más.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Registrar o gestionar etiquetas NFC</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>Lector NFC</value></data>
+  <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>Control multimedia</value></data>
+  <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Encendido</value></data>
+  <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menú</value></data>
+  <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>
+  <data name="DevObj_ConsumerMenuUp" xml:space="preserve"><value>Menú arriba</value></data>
+  <data name="DevObj_ConsumerMenuDown" xml:space="preserve"><value>Menú abajo</value></data>
+  <data name="DevObj_ConsumerMenuLeft" xml:space="preserve"><value>Menú izquierda</value></data>
+  <data name="DevObj_ConsumerMenuRight" xml:space="preserve"><value>Menú derecha</value></data>
+  <data name="DevObj_ConsumerMenuEscape" xml:space="preserve"><value>Salir del menú</value></data>
+  <data name="DevObj_ConsumerPlay" xml:space="preserve"><value>Reproducir</value></data>
+  <data name="DevObj_ConsumerPause" xml:space="preserve"><value>Pausa</value></data>
+  <data name="DevObj_ConsumerRecord" xml:space="preserve"><value>Grabar</value></data>
+  <data name="DevObj_ConsumerFastForward" xml:space="preserve"><value>Avance rápido</value></data>
+  <data name="DevObj_ConsumerRewind" xml:space="preserve"><value>Rebobinar</value></data>
+  <data name="DevObj_ConsumerNextTrack" xml:space="preserve"><value>Pista siguiente</value></data>
+  <data name="DevObj_ConsumerPreviousTrack" xml:space="preserve"><value>Pista anterior</value></data>
+  <data name="DevObj_ConsumerMediaStop" xml:space="preserve"><value>Detener</value></data>
+  <data name="DevObj_ConsumerEject" xml:space="preserve"><value>Expulsar</value></data>
+  <data name="DevObj_ConsumerPlayPause" xml:space="preserve"><value>Reproducir/Pausa</value></data>
+  <data name="DevObj_ConsumerVoiceCommand" xml:space="preserve"><value>Comando de voz</value></data>
+  <data name="DevObj_ConsumerMute" xml:space="preserve"><value>Silencio</value></data>
+  <data name="DevObj_ConsumerVolumeUp" xml:space="preserve"><value>Subir volumen</value></data>
+  <data name="DevObj_ConsumerVolumeDown" xml:space="preserve"><value>Bajar volumen</value></data>
+  <data name="DevObj_ConsumerQuit" xml:space="preserve"><value>Salir</value></data>
+  <data name="DevObj_ConsumerChannelUp" xml:space="preserve"><value>Canal siguiente</value></data>
+  <data name="DevObj_ConsumerChannelDown" xml:space="preserve"><value>Canal anterior</value></data>
+  <data name="DevObj_ConsumerMediaPlayer" xml:space="preserve"><value>Reproductor multimedia</value></data>
+  <data name="DevObj_ConsumerEmail" xml:space="preserve"><value>Correo</value></data>
+  <data name="DevObj_ConsumerCalculator" xml:space="preserve"><value>Calculadora</value></data>
+  <data name="DevObj_ConsumerFileBrowser" xml:space="preserve"><value>Explorador de archivos</value></data>
+  <data name="DevObj_ConsumerBrowserSearch" xml:space="preserve"><value>Buscar</value></data>
+  <data name="DevObj_ConsumerBrowserHome" xml:space="preserve"><value>Inicio del navegador</value></data>
+  <data name="DevObj_ConsumerBrowserBack" xml:space="preserve"><value>Atrás del navegador</value></data>
+  <data name="DevObj_ConsumerBrowserForward" xml:space="preserve"><value>Adelante del navegador</value></data>
+  <data name="DevObj_ConsumerBrowserStop" xml:space="preserve"><value>Detener navegador</value></data>
+  <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>Actualizar</value></data>
+  <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>Marcadores</value></data>
 </root>

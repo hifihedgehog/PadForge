@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using PadForge.Engine.Common;
 
 namespace PadForge.Engine
 {
@@ -28,8 +29,16 @@ namespace PadForge.Engine
         private const ushort HID_USAGE_GENERIC_MOUSE = 0x02;
         private const ushort HID_USAGE_GENERIC_KEYBOARD = 0x06;
 
+        // Consumer Control collection (issue #168): media remotes, headset
+        // strips, and keyboard media rows live on page 0x0C usage 0x01,
+        // invisible to both the keyboard path (usages never become VKs) and
+        // SDL (which deliberately excludes consumer collections).
+        private const ushort HID_USAGE_PAGE_CONSUMER = 0x0C;
+        private const ushort HID_USAGE_CONSUMER_CONTROL = 0x01;
+
         private const uint RIDEV_INPUTSINK = 0x00000100;
         private const uint RID_INPUT = 0x10000003;
+        private const uint RIDI_PREPARSEDDATA = 0x20000005;
 
         private const uint RIM_TYPEMOUSE = 0;
         private const uint RIM_TYPEKEYBOARD = 1;
@@ -309,8 +318,45 @@ namespace PadForge.Engine
             public readonly bool[] Buttons = new bool[5];
         }
 
-        /// <summary>Aggregate mouse state — accumulates from all mice independently.</summary>
+        /// <summary>Aggregate mouse state. Accumulates from all mice independently.</summary>
         private static readonly MouseDeviceState _aggregateMouseState = new();
+
+        // ── Consumer Control state (issue #168) ──
+
+        /// <summary>Per-device held-button state, keyed by hDevice and indexed
+        /// by ConsumerUsageTable slot (fixed block + session-dynamic block).
+        /// Consumer input reports carry the FULL currently-held usage set (not
+        /// edges), so each report rebuilds the device's array from scratch.
+        /// Getting this wrong latches every press forever.</summary>
+        private static readonly ConcurrentDictionary<IntPtr, bool[]> _consumerStates = new();
+
+        /// <summary>Per-handle preparsed HID data for HidP_GetUsages, fetched
+        /// once on first report (mirrors PrecisionTouchpadReader's cache).
+        /// AllocHGlobal buffers, freed on Stop. A hot-unplugged handle's entry
+        /// lingers until Stop (bounded, a few KB per replug).</summary>
+        private static readonly ConcurrentDictionary<IntPtr, IntPtr> _consumerPreparsed = new();
+
+        /// <summary>Per-handle verdict of "is this a Consumer Control
+        /// collection" (page 0x0C usage 0x01 per RIDI_DEVICEINFO). PTP reports
+        /// go to their own window, but future registrations on this window
+        /// might not, so the gate is cheap insurance.</summary>
+        private static readonly ConcurrentDictionary<IntPtr, bool> _isConsumerHandle = new();
+
+        /// <summary>Session-dynamic usage → slot index for usages not in the
+        /// fixed table, appended after the fixed block up to DynamicSlack.</summary>
+        private static readonly ConcurrentDictionary<ushort, int> _dynamicUsageSlots = new();
+        private static int _nextDynamicSlot = ConsumerUsageTable.Fixed.Length;
+        private static readonly object _dynamicSlotLock = new();
+
+        /// <summary>Usages a device reports that got a session-dynamic slot,
+        /// so wrappers can name them ("Consumer 0xNNNN"). Index into this by
+        /// (slot - Fixed.Length).</summary>
+        public static ushort GetDynamicSlotUsage(int slot)
+        {
+            foreach (var kvp in _dynamicUsageSlots)
+                if (kvp.Value == slot) return kvp.Key;
+            return 0;
+        }
 
         private static volatile bool _running;
         private static IntPtr _hwnd;
@@ -349,6 +395,14 @@ namespace PadForge.Engine
 
             _keyboardStates.Clear();
             _mouseStates.Clear();
+            _consumerStates.Clear();
+            _isConsumerHandle.Clear();
+            foreach (var kvp in _consumerPreparsed)
+            {
+                if (kvp.Value != IntPtr.Zero)
+                    Marshal.FreeHGlobal(kvp.Value);
+            }
+            _consumerPreparsed.Clear();
 
             // Reset aggregate mouse state.
             Interlocked.Exchange(ref _aggregateMouseState.DeltaX, 0);
@@ -401,6 +455,60 @@ namespace PadForge.Engine
             };
             Array.Copy(devices, 0, result, 1, devices.Length);
             return result;
+        }
+
+        /// <summary>
+        /// Enumerates all currently connected Consumer Control collections
+        /// (issue #168), prepending the "All Consumer Controls" aggregate the
+        /// same way the keyboard and mouse enumerations do.
+        /// </summary>
+        public static DeviceInfo[] EnumerateConsumerControls()
+        {
+            var matches = new List<DeviceInfo>
+            {
+                new DeviceInfo
+                {
+                    Handle = AggregateConsumerHandle,
+                    Name = "All Consumer Controls (Merged)",
+                    DevicePath = "aggregate://consumercontrols",
+                    Type = RIM_TYPEHID
+                }
+            };
+
+            uint numDevices = 0;
+            uint structSize = (uint)Marshal.SizeOf<RAWINPUTDEVICELIST>();
+            if (GetRawInputDeviceList(null, ref numDevices, structSize) != 0 || numDevices == 0)
+                return matches.ToArray();
+
+            var deviceList = new RAWINPUTDEVICELIST[numDevices];
+            uint result = GetRawInputDeviceList(deviceList, ref numDevices, structSize);
+            if (result == unchecked((uint)-1))
+                return matches.ToArray();
+
+            for (int i = 0; i < (int)result; i++)
+            {
+                if (deviceList[i].dwType != RIM_TYPEHID)
+                    continue;
+                IntPtr hDevice = deviceList[i].hDevice;
+                if (!_isConsumerHandle.GetOrAdd(hDevice, IsConsumerControlHandle))
+                    continue;
+
+                string devicePath = GetDeviceName(hDevice);
+                string friendlyName = ExtractFriendlyName(devicePath, RIM_TYPEHID);
+                GetDeviceVidPid(hDevice, devicePath, out ushort vid, out ushort pid);
+
+                matches.Add(new DeviceInfo
+                {
+                    Handle = hDevice,
+                    Name = friendlyName,
+                    DevicePath = devicePath ?? string.Empty,
+                    Type = RIM_TYPEHID,
+                    VendorId = vid,
+                    ProductId = pid
+                });
+            }
+
+            return matches.ToArray();
         }
 
         private static DeviceInfo[] EnumerateDevicesByType(uint targetType)
@@ -568,7 +676,9 @@ namespace PadForge.Engine
         /// </summary>
         public static string ExtractFriendlyName(string devicePath, uint type)
         {
-            string fallback = type == RIM_TYPEKEYBOARD ? "Keyboard" : "Mouse";
+            string fallback = type == RIM_TYPEKEYBOARD ? "Keyboard"
+                : type == RIM_TYPEHID ? "Consumer Control"
+                : "Mouse";
             if (string.IsNullOrEmpty(devicePath)) return fallback;
 
             // 1. HID product string (works for some USB HID devices).
@@ -824,6 +934,42 @@ namespace PadForge.Engine
         public static readonly IntPtr AggregateMouseHandle = new IntPtr(-98);
 
         /// <summary>
+        /// Sentinel handle for the "All Consumer Controls" aggregate device
+        /// (issue #168). Next free value after keyboard -99 and mouse -98.
+        /// </summary>
+        public static readonly IntPtr AggregateConsumerHandle = new IntPtr(-97);
+
+        /// <summary>
+        /// Copies the consumer-control button state for a specific device into
+        /// the destination array (indexed by ConsumerUsageTable slot). Pass
+        /// <see cref="AggregateConsumerHandle"/> for the OR-merged state of all
+        /// consumer devices, mirroring <see cref="GetKeyboardState"/>.
+        /// </summary>
+        public static void GetConsumerState(IntPtr hDevice, bool[] dest, int count)
+        {
+            int n = Math.Min(count, ConsumerUsageTable.TotalSlots);
+
+            if (hDevice == AggregateConsumerHandle)
+            {
+                foreach (var kvp in _consumerStates)
+                {
+                    bool[] state = kvp.Value;
+                    int m = Math.Min(n, state.Length);
+                    for (int i = 0; i < m; i++)
+                    {
+                        if (state[i])
+                            dest[i] = true;
+                    }
+                }
+                return;
+            }
+
+            if (_consumerStates.TryGetValue(hDevice, out bool[] devState))
+                Array.Copy(devState, dest, Math.Min(n, devState.Length));
+            // No input from this device yet: dest stays all-false (default).
+        }
+
+        /// <summary>
         /// Copies the keyboard state for a specific device into the destination array.
         /// Pass <see cref="AggregateKeyboardHandle"/> to get the OR-merged state of all keyboards.
         /// </summary>
@@ -991,10 +1137,20 @@ namespace PadForge.Engine
                         usUsage = HID_USAGE_GENERIC_MOUSE,
                         dwFlags = RIDEV_INPUTSINK,
                         hwndTarget = _hwnd
+                    },
+                    // Consumer Control (issue #168): same hidden window, same
+                    // pump thread. RIDEV_NOLEGACY is a keyboard/mouse-only
+                    // flag and is deliberately absent here.
+                    new RAWINPUTDEVICE
+                    {
+                        usUsagePage = HID_USAGE_PAGE_CONSUMER,
+                        usUsage = HID_USAGE_CONSUMER_CONTROL,
+                        dwFlags = RIDEV_INPUTSINK,
+                        hwndTarget = _hwnd
                     }
                 };
 
-                if (!RegisterRawInputDevices(devices, 2, (uint)Marshal.SizeOf<RAWINPUTDEVICE>()))
+                if (!RegisterRawInputDevices(devices, 3, (uint)Marshal.SizeOf<RAWINPUTDEVICE>()))
                 {
                     DestroyWindow(_hwnd);
                     _hwnd = IntPtr.Zero;
@@ -1139,11 +1295,149 @@ namespace PadForge.Engine
                         Interlocked.Add(ref _aggregateMouseState.ScrollDelta, delta);
                     }
                 }
+                else if (header.dwType == RIM_TYPEHID)
+                {
+                    ProcessConsumerInput(hDevice, dataPtr);
+                }
             }
             finally
             {
                 handle.Free();
             }
         }
+
+        // ─────────────────────────────────────────────
+        //  Consumer Control processing (issue #168)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Scratch usage buffer for HidP_GetUsages, pump-thread only.
+        /// 64 covers any real consumer report's simultaneous-press count.</summary>
+        [ThreadStatic]
+        private static ushort[] _consumerUsageBuffer;
+
+        private static void ProcessConsumerInput(IntPtr hDevice, IntPtr dataPtr)
+        {
+            // Gate: only Consumer Control collections (page 0x0C usage 0x01).
+            // Verdict cached per handle via RIDI_DEVICEINFO.
+            if (!_isConsumerHandle.GetOrAdd(hDevice, IsConsumerControlHandle))
+                return;
+
+            IntPtr preparsed = _consumerPreparsed.GetOrAdd(hDevice, FetchPreparsedData);
+            if (preparsed == IntPtr.Zero)
+                return;
+
+            // RAWHID layout at dataPtr: dwSizeHid (uint), dwCount (uint),
+            // then dwCount raw reports of dwSizeHid bytes each.
+            int sizeHid = Marshal.ReadInt32(dataPtr);
+            int count = Marshal.ReadInt32(dataPtr, 4);
+            if (sizeHid <= 0 || count <= 0)
+                return;
+            IntPtr reportPtr = IntPtr.Add(dataPtr, 8);
+
+            bool[] state = _consumerStates.GetOrAdd(
+                hDevice, _ => new bool[ConsumerUsageTable.TotalSlots]);
+            _consumerUsageBuffer ??= new ushort[64];
+
+            // Only the LAST report in the batch matters: each consumer report
+            // is the full currently-held usage set, so intermediate reports
+            // in one WM_INPUT batch are already-superseded snapshots.
+            IntPtr lastReport = IntPtr.Add(reportPtr, (count - 1) * sizeHid);
+            uint usageCount = (uint)_consumerUsageBuffer.Length;
+            uint hr = HidP_GetUsages(HidP_Input, HID_USAGE_PAGE_CONSUMER, 0,
+                _consumerUsageBuffer, ref usageCount, preparsed,
+                lastReport, (uint)sizeHid);
+            if (hr != HIDP_STATUS_SUCCESS)
+                return;
+
+            // Full-state rebuild: clear, then set what is currently held.
+            System.Array.Clear(state, 0, state.Length);
+            for (int i = 0; i < (int)usageCount; i++)
+            {
+                int slot = ResolveConsumerSlot(_consumerUsageBuffer[i]);
+                if (slot >= 0 && slot < state.Length)
+                    state[slot] = true;
+            }
+        }
+
+        private static int ResolveConsumerSlot(ushort usage)
+        {
+            int idx = ConsumerUsageTable.IndexOf(usage);
+            if (idx >= 0) return idx;
+
+            if (_dynamicUsageSlots.TryGetValue(usage, out int dyn))
+                return dyn;
+
+            lock (_dynamicSlotLock)
+            {
+                if (_dynamicUsageSlots.TryGetValue(usage, out dyn))
+                    return dyn;
+                if (_nextDynamicSlot >= ConsumerUsageTable.TotalSlots)
+                    return -1; // slack exhausted, ignore the oddball usage
+                dyn = _nextDynamicSlot++;
+                _dynamicUsageSlots[usage] = dyn;
+                return dyn;
+            }
+        }
+
+        private static bool IsConsumerControlHandle(IntPtr hDevice)
+        {
+            try
+            {
+                uint size = (uint)Marshal.SizeOf<RID_DEVICE_INFO>();
+                IntPtr buffer = Marshal.AllocHGlobal((int)size);
+                try
+                {
+                    Marshal.WriteInt32(buffer, (int)size); // cbSize
+                    uint written = GetRawInputDeviceInfoW(hDevice, RIDI_DEVICEINFO, buffer, ref size);
+                    if (written == unchecked((uint)-1) || written == 0)
+                        return false;
+                    var info = Marshal.PtrToStructure<RID_DEVICE_INFO>(buffer);
+                    return info.dwType == RIM_TYPEHID
+                        && info.hid.usUsagePage == HID_USAGE_PAGE_CONSUMER
+                        && info.hid.usUsage == HID_USAGE_CONSUMER_CONTROL;
+                }
+                finally
+                {
+                    Marshal.FreeHGlobal(buffer);
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>Fetches preparsed HID data for a handle (caller caches).
+        /// Mirrors PrecisionTouchpadReader's fetch. Returns IntPtr.Zero on
+        /// failure; buffers are freed in Stop().</summary>
+        private static IntPtr FetchPreparsedData(IntPtr hDevice)
+        {
+            try
+            {
+                uint ppSize = 0;
+                GetRawInputDeviceInfoW(hDevice, RIDI_PREPARSEDDATA, IntPtr.Zero, ref ppSize);
+                if (ppSize == 0) return IntPtr.Zero;
+                IntPtr ppData = Marshal.AllocHGlobal((int)ppSize);
+                if (GetRawInputDeviceInfoW(hDevice, RIDI_PREPARSEDDATA, ppData, ref ppSize) == unchecked((uint)-1))
+                {
+                    Marshal.FreeHGlobal(ppData);
+                    return IntPtr.Zero;
+                }
+                return ppData;
+            }
+            catch
+            {
+                return IntPtr.Zero;
+            }
+        }
+
+        private const int HidP_Input = 0;
+        private const uint HIDP_STATUS_SUCCESS = 0x00110000;
+
+        [DllImport("hid.dll")]
+        private static extern uint HidP_GetUsages(
+            int ReportType, ushort UsagePage, ushort LinkCollection,
+            [Out] ushort[] UsageList, ref uint UsageLength, IntPtr PreparsedData,
+            IntPtr Report, uint ReportLength);
     }
 }

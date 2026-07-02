@@ -6740,6 +6740,7 @@ namespace PadForge.Services
                 InputDeviceType.Touchpad => "Touchpad",
                 InputDeviceType.Midi => "Midi",
                 InputDeviceType.Nfc => "Nfc",
+                InputDeviceType.ConsumerControl => "ConsumerControl",
                 _ => "Device"
             };
 

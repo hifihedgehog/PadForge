@@ -63,6 +63,7 @@ namespace PadForge.Common.Input
         private volatile bool _rawInputEnumRunning;
         private RawInputListener.DeviceInfo[] _cachedKeyboards;
         private RawInputListener.DeviceInfo[] _cachedMice;
+        private RawInputListener.DeviceInfo[] _cachedConsumerControls;
         private readonly object _rawInputCacheLock = new object();
 
         /// <summary>
@@ -148,26 +149,30 @@ namespace PadForge.Common.Input
             // immediately at startup.
             if (_cachedKeyboards == null)
             {
-                // First call — synchronous so devices are ready before Step 2.
+                // First call runs synchronous so devices are ready before Step 2.
                 _cachedKeyboards = RawInputListener.EnumerateKeyboards();
                 _cachedMice = RawInputListener.EnumerateMice();
+                _cachedConsumerControls = RawInputListener.EnumerateConsumerControls();
                 _rawInputEnumPending = true;
             }
 
             if (_rawInputEnumPending)
             {
-                RawInputListener.DeviceInfo[] keyboards, mice;
+                RawInputListener.DeviceInfo[] keyboards, mice, consumers;
                 lock (_rawInputCacheLock)
                 {
                     keyboards = _cachedKeyboards;
                     mice = _cachedMice;
+                    consumers = _cachedConsumerControls;
                     _rawInputEnumPending = false;
                 }
 
                 changed |= EnumerateKeyboards(keyboards);
                 changed |= EnumerateMice(mice);
+                changed |= EnumerateConsumerControls(consumers);
                 changed |= DetectDisconnectedHandles(_openedKeyboardHandles, keyboards);
                 changed |= DetectDisconnectedHandles(_openedMouseHandles, mice);
+                changed |= DetectDisconnectedHandles(_openedConsumerHandles, consumers);
             }
 
             // Kick off the next async enumeration so results are ready
@@ -181,10 +186,12 @@ namespace PadForge.Common.Input
                     {
                         var kb = RawInputListener.EnumerateKeyboards();
                         var ms = RawInputListener.EnumerateMice();
+                        var cc = RawInputListener.EnumerateConsumerControls();
                         lock (_rawInputCacheLock)
                         {
                             _cachedKeyboards = kb;
                             _cachedMice = ms;
+                            _cachedConsumerControls = cc;
                             _rawInputEnumPending = true;
                         }
                     }
@@ -686,6 +693,53 @@ namespace PadForge.Common.Input
                 catch (Exception ex)
                 {
                     RaiseError($"Error opening keyboard ({kb.Name})", ex);
+                }
+                finally
+                {
+                    wrapper?.Dispose();
+                }
+            }
+
+            return changed;
+        }
+
+        private readonly HashSet<IntPtr> _openedConsumerHandles = new HashSet<IntPtr>();
+
+        /// <summary>
+        /// Processes pre-fetched Consumer Control device info (issue #168) and
+        /// creates UserDevice records for any new collections. Mirrors
+        /// <see cref="EnumerateKeyboards"/>. Returns true if a new device was found.
+        /// </summary>
+        private bool EnumerateConsumerControls(RawInputListener.DeviceInfo[] consumers)
+        {
+            // Prune tracked handles whose UserDevice was removed (e.g. via UI "Remove").
+            PruneOrphanedHandles(_openedConsumerHandles);
+
+            bool changed = false;
+
+            foreach (var cc in consumers)
+            {
+                if (_openedConsumerHandles.Contains(cc.Handle))
+                    continue;
+
+                ConsumerControlWrapper wrapper = null;
+                try
+                {
+                    wrapper = new ConsumerControlWrapper();
+                    if (!wrapper.Open(cc))
+                        continue;
+
+                    UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid);
+                    ud.LoadFromConsumerDevice(wrapper);
+                    ud.IsOnline = true;
+
+                    _openedConsumerHandles.Add(cc.Handle);
+                    wrapper = null; // ownership transferred to UserDevice
+                    changed = true;
+                }
+                catch (Exception ex)
+                {
+                    RaiseError($"Error opening consumer control ({cc.Name})", ex);
                 }
                 finally
                 {

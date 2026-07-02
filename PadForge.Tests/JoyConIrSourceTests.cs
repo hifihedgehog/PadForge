@@ -87,10 +87,14 @@ namespace PadForge.Tests
         {
             // Standalone right Joy-Con has the camera (SDL names it exactly
             // "Nintendo Switch Joy-Con (R)"); the left Joy-Con and the combined
-            // pair ("(L/R)") do not, and neither does a non-Nintendo VID.
+            // pair ("(L/R)") do not, and neither does a non-Nintendo VID. The
+            // Switch 2 right Joy-Con shares the Nintendo VID and ends with the
+            // same "Joy-Con (R)" (SDL_ble_switch2joystick.c:1331) but carries a
+            // mouse sensor, not an IR camera, so the gate must be exact.
             Assert.True(new UserDevice { VendorId = 0x057E, ProductName = "Nintendo Switch Joy-Con (R)" }.HasJoyConIr);
             Assert.False(new UserDevice { VendorId = 0x057E, ProductName = "Nintendo Switch Joy-Con (L)" }.HasJoyConIr);
             Assert.False(new UserDevice { VendorId = 0x057E, ProductName = "Nintendo Switch Joy-Con (L/R)" }.HasJoyConIr);
+            Assert.False(new UserDevice { VendorId = 0x057E, ProductName = "Nintendo Switch 2 Joy-Con (R)" }.HasJoyConIr);
             Assert.False(new UserDevice { VendorId = 0x045E, ProductName = "Nintendo Switch Joy-Con (R)" }.HasJoyConIr);
         }
     }

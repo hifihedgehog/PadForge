@@ -1178,11 +1178,8 @@ namespace PadForge.Common.Input
                 }
             }
 
-            PadForge.Common.Input.BluetoothLinkHelper.Trace(
-                $"macro action fired: mode={action.DisconnectTarget} pad={macro.PadIndex} candidates={targets.Count}");
-
             if (targets.Count == 0)
-                return; // nothing eligible (charging, USB, no trigger device)
+                return; // nothing eligible (USB, or no trigger device)
 
             DisconnectTarget[] victims = targets.ToArray();
             System.Threading.Tasks.Task.Run(() =>

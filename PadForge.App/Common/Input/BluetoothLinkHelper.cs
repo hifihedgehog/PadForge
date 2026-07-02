@@ -34,43 +34,24 @@ namespace PadForge.Common.Input
         /// 20-byte XINPUT_CAPABILITIES + VID/PID/version/pad + DWORD = 32.</summary>
         public static int CapabilitiesExSize => Marshal.SizeOf<XINPUT_CAPABILITIES_EX>();
 
-        /// <summary>Appends one line to C:\PadForge\disconnect-trace.log so a
-        /// failed hardware round reads as data instead of a guess. Every lane
-        /// of the #162 dispatch logs its inputs and Win32 results. Best-effort:
-        /// any I/O failure is swallowed, and the file restarts once it grows
-        /// past a quarter megabyte.</summary>
-        public static void Trace(string message)
-        {
-            try
-            {
-                const string path = @"C:\PadForge\disconnect-trace.log";
-                var fi = new System.IO.FileInfo(path);
-                if (fi.Exists && fi.Length > 256 * 1024)
-                    fi.Delete();
-                System.IO.File.AppendAllText(path,
-                    $"{DateTime.Now:HH:mm:ss.fff} {message}{Environment.NewLine}");
-            }
-            catch { }
-        }
+        /// <summary>Per-device debounce: a held chord retriggers its macro
+        /// every frame (a dozen overlapping dispatches were recorded from one
+        /// press), so each device gets one attempt per window.</summary>
+        private static readonly System.Collections.Generic.Dictionary<string, long> _lastAttemptTick = new();
+        private const int DebounceMs = 3000;
 
         /// <summary>Device-aware disconnect (issue #162). The radio IOCTL below
         /// only drops BR/EDR ACL links (every reference uses it on {00001124}
         /// classic-BT pads), so BLE controllers need their own lane:
-        /// XInput-backend pads (SDL path "XInput#N", the N IS the XInput user
-        /// index per SDL_xinputjoystick.c:211) get XInputPowerOff on that slot,
-        /// Valve pads get the Steam protocol's power-off command
-        /// (ID_TURN_OFF_CONTROLLER 0x9F, SDL controller_constants.h:74) as a
-        /// feature report on the device's own vendor collection, HID-pathed
-        /// Xbox pads get XInputPowerOff slot-matched by VID/PID through
-        /// XInputGetCapabilitiesEx (ordinal 108). Everything else falls
-        /// through to the BR/EDR link drop by serial (the DS4Windows path).</summary>
-        /// <summary>Per-device debounce: a held chord retriggers its macro every
-        /// frame, and the first trace-instrumented round recorded a dozen
-        /// overlapping dispatches from one press. One attempt per device per
-        /// window is the intent.</summary>
-        private static readonly System.Collections.Generic.Dictionary<string, long> _lastAttemptTick = new();
-        private const int DebounceMs = 3000;
-
+        /// XInput-backend pads (SDL path "XInput#N") get XInputPowerOff with a
+        /// devnode-cycle fallback, Valve pads get the Steam protocol's
+        /// power-off command (ID_TURN_OFF_CONTROLLER 0x9F, SDL
+        /// controller_constants.h:74) on the device's own vendor collection,
+        /// Switch 2 pads get their protocol's shutdown through the SDL fork's
+        /// effect passthrough, HID-pathed Xbox pads get XInputPowerOff
+        /// slot-matched by VID/PID. Everything else falls through to the
+        /// BR/EDR link drop by serial (the DS4Windows path, hardware-confirmed
+        /// on DualSense and Wii Remote).</summary>
         public static bool TryDisconnectDevice(ushort vendorId, ushort productId,
             string devicePath, string serial,
             System.Collections.Generic.IReadOnlyList<string> bthInstanceIds = null,
@@ -81,11 +62,9 @@ namespace PadForge.Common.Input
             lock (_lastAttemptTick)
             {
                 if (_lastAttemptTick.TryGetValue(key, out long last) && now - last < DebounceMs)
-                    return false; // debounced, deliberately untraced to keep the log readable
+                    return false;
                 _lastAttemptTick[key] = now;
             }
-
-            Trace($"dispatch vid={vendorId:X4} pid={productId:X4} path='{devicePath}' serial='{serial}'");
 
             if (TryParseXInputSlot(devicePath, out _))
             {
@@ -95,64 +74,42 @@ namespace PadForge.Common.Input
                 // fork's packed index space, which contains ONLY physical pads
                 // (HM virtuals never occupy an index, per the XInput filter
                 // architecture), so the walk cannot hit our own slots.
-                bool off = TryXInputPowerOff(vendorId, productId);
-                Trace($"xinput lane result={off}");
-                if (off) return true;
+                if (TryXInputPowerOff(vendorId, productId))
+                    return true;
 
                 // Last resort for Bluetooth LE pads whose driver rejects the
-                // power-down: disable-cycle the pad's BTHLE device node, which
-                // severs the LE link at the stack. The node instance ids are
-                // already cached per device for HidHide. The pad blinks,
-                // retries briefly, then sleeps (same end state DS4Windows'
-                // link drop produces on Sony pads).
+                // power-down (xinputhid refuses it for BLE Series pads,
+                // hardware-measured): disable-cycle the pad's BTHLE device
+                // node, severing the LE link at the stack. The pad blinks,
+                // fails to reconnect, and powers itself down.
                 if (TryCycleBthDevNodes(bthInstanceIds))
-                {
-                    Trace("devnode cycle lane succeeded");
                     return true;
-                }
             }
 
             if (vendorId == ValveVid && TrySteamPowerOff(devicePath))
-            {
-                Trace("steam lane succeeded");
                 return true;
-            }
 
             if (IsSwitch2(vendorId, productId))
             {
-                // Preferred: send the shutdown through SDL's own GATT session
-                // via the raw-effect passthrough. A second session cannot
-                // reach the command characteristic (SharingViolation, traced
-                // on hardware: SDL's session is non-shared and Windows
-                // requires ALL openers to be shared). Requires the fork's
-                // BLE_JoystickSendEffect passthrough; until that ships,
-                // SDL_Unsupported falls through to the GATT attempt below.
+                // The shutdown must travel through SDL's own GATT session: a
+                // second session cannot reach the command characteristic
+                // (Windows requires ALL openers of a service to be shared, and
+                // the driver's session is not). The fork's SendEffect
+                // passthrough (SDL#9) is that session's entry point; the
+                // direct GATT attempt remains as a fallback for SDL builds
+                // that predate it.
                 if (TrySwitch2EffectPassthrough(gamepadHandle))
-                {
-                    Trace("switch2 effect lane succeeded");
                     return true;
-                }
                 if (TrySwitch2PowerOff())
-                {
-                    Trace("switch2 gatt lane succeeded");
                     return true;
-                }
             }
 
             if (vendorId == MicrosoftVid && TryXInputPowerOff(vendorId, productId))
-            {
-                Trace("xinput lane (hid-pathed) succeeded");
                 return true;
-            }
 
-            bool ioctl = TryDisconnect(serial);
-            Trace($"br/edr ioctl lane result={ioctl}");
-            if (!ioctl && TryCycleBthDevNodes(bthInstanceIds))
-            {
-                Trace("devnode cycle lane succeeded");
+            if (TryDisconnect(serial))
                 return true;
-            }
-            return ioctl;
+            return TryCycleBthDevNodes(bthInstanceIds);
         }
 
         /// <summary>How long a cycled BTHLE node stays disabled. The first
@@ -182,15 +139,10 @@ namespace PadForge.Common.Input
                 if (string.IsNullOrEmpty(id)) continue;
                 if (id.IndexOf("BTHLEDEVICE", StringComparison.OrdinalIgnoreCase) < 0) continue;
 
-                int locate = CM_Locate_DevNodeW(out uint devInst, id, 0);
-                if (locate != 0)
-                {
-                    Trace($"devnode '{id}': locate cr={locate}");
+                if (CM_Locate_DevNodeW(out uint devInst, id, 0) != 0)
                     continue;
-                }
-                int disable = CM_Disable_DevNode(devInst, 0);
-                Trace($"devnode '{id}': disable cr={disable}");
-                if (disable == 0) disabled.Add(devInst);
+                if (CM_Disable_DevNode(devInst, 0) == 0)
+                    disabled.Add(devInst);
             }
 
             if (disabled.Count == 0) return false;
@@ -200,10 +152,7 @@ namespace PadForge.Common.Input
             {
                 await System.Threading.Tasks.Task.Delay(DevNodeReEnableMs).ConfigureAwait(false);
                 foreach (uint devInst in toEnable)
-                {
-                    int enable = CM_Enable_DevNode(devInst, 0);
-                    Trace($"devnode re-enable cr={enable}");
-                }
+                    CM_Enable_DevNode(devInst, 0);
             });
             return true;
         }
@@ -271,9 +220,8 @@ namespace PadForge.Common.Input
             {
                 return TrySwitch2PowerOffAsync().GetAwaiter().GetResult();
             }
-            catch (Exception ex)
+            catch
             {
-                Trace($"switch2 lane exception: {ex.Message}");
                 return false;
             }
         }
@@ -286,23 +234,17 @@ namespace PadForge.Common.Input
         private static bool TrySwitch2EffectPassthrough(IntPtr gamepadHandle)
         {
             if (gamepadHandle == IntPtr.Zero)
-            {
-                Trace("switch2 effect: no SDL gamepad handle captured");
                 return false;
-            }
             try
             {
                 var effect = new byte[14];
                 effect[0] = 0x06; // command: power
                 effect[1] = 0x02; // subcommand: shutdown
                 // 12 zero payload bytes follow
-                bool ok = SDL3.SDL.SDL_SendGamepadEffect(gamepadHandle, effect, 0, effect.Length);
-                Trace($"switch2 effect: SendGamepadEffect={ok}");
-                return ok;
+                return SDL3.SDL.SDL_SendGamepadEffect(gamepadHandle, effect, 0, effect.Length);
             }
-            catch (Exception ex)
+            catch
             {
-                Trace($"switch2 effect: {ex.Message}");
                 return false;
             }
         }
@@ -324,10 +266,7 @@ namespace PadForge.Common.Input
                     Windows.Devices.Bluetooth.BluetoothConnectionStatus.Connected);
             var infos = await Windows.Devices.Enumeration.DeviceInformation.FindAllAsync(selector);
             if (infos.Count == 0)
-            {
-                Trace("switch2: no connected LE devices enumerated");
                 return false;
-            }
 
             bool any = false;
             foreach (var info in infos)
@@ -337,10 +276,7 @@ namespace PadForge.Common.Input
                 {
                     dev = await Windows.Devices.Bluetooth.BluetoothLEDevice.FromIdAsync(info.Id);
                     if (dev == null)
-                    {
-                        Trace($"switch2 candidate '{info.Name}': open denied");
                         continue;
-                    }
                     var svcResult = await dev.GetGattServicesForUuidAsync(Switch2ServiceUuid,
                         Windows.Devices.Bluetooth.BluetoothCacheMode.Uncached);
                     if (svcResult.Status != Windows.Devices.Bluetooth.GenericAttributeProfile
@@ -352,23 +288,19 @@ namespace PadForge.Common.Input
                     var svc = svcResult.Services[0];
                     try
                     {
-                        // The SDL driver's own session holds this service, and a
-                        // bare characteristic query from a second session came
-                        // back AccessDenied (traced on hardware). Sharing is
-                        // arbitrated per application and both sessions are
-                        // PadForge.exe, so ask for access explicitly and open
-                        // shared before touching characteristics.
-                        var access = await svc.RequestAccessAsync();
-                        var open = await svc.OpenAsync(Windows.Devices.Bluetooth
+                        // Ask for access and open shared before touching
+                        // characteristics: a bare query from a second session
+                        // is refused while the SDL driver's session holds the
+                        // service.
+                        await svc.RequestAccessAsync();
+                        await svc.OpenAsync(Windows.Devices.Bluetooth
                             .GenericAttributeProfile.GattSharingMode.SharedReadAndWrite);
-                        Trace($"switch2 '{info.Name}': access={access} open={open}");
 
                         var chars = await svc.GetCharacteristicsForUuidAsync(Switch2CommandUuid);
                         if (chars.Status != Windows.Devices.Bluetooth.GenericAttributeProfile
                                 .GattCommunicationStatus.Success
                             || chars.Characteristics.Count == 0)
                         {
-                            Trace($"switch2 '{info.Name}': command characteristic unavailable ({chars.Status})");
                             continue;
                         }
                         var writer = new Windows.Storage.Streams.DataWriter();
@@ -377,7 +309,6 @@ namespace PadForge.Common.Input
                             writer.DetachBuffer(),
                             Windows.Devices.Bluetooth.GenericAttributeProfile
                                 .GattWriteOption.WriteWithoutResponse);
-                        Trace($"switch2 '{info.Name}': shutdown write={status}");
                         any |= status == Windows.Devices.Bluetooth.GenericAttributeProfile
                             .GattCommunicationStatus.Success;
                     }
@@ -386,17 +317,15 @@ namespace PadForge.Common.Input
                         svc.Dispose();
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
-                    Trace($"switch2 candidate '{info.Name}': {ex.Message}");
+                    // Not a Switch 2, or its link dropped mid-probe: skip.
                 }
                 finally
                 {
                     dev?.Dispose();
                 }
             }
-            if (!any)
-                Trace($"switch2: probed {infos.Count} connected LE devices, none accepted the shutdown");
             return any;
         }
 
@@ -453,10 +382,7 @@ namespace PadForge.Common.Input
             IntPtr h = CreateFileW(devicePath, GENERIC_READ | GENERIC_WRITE, SHARE_RW,
                 IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
             if (h == IntPtr.Zero || h == INVALID_HANDLE)
-            {
-                Trace($"steam open FAILED err={Marshal.GetLastWin32Error()}");
                 return false;
-            }
 
             try
             {
@@ -471,33 +397,27 @@ namespace PadForge.Common.Input
                     finally { HidD_FreePreparsedData(pp); }
                 }
                 if (featLen <= 0)
-                {
-                    Trace("steam open ok but FeatureReportByteLength=0 (wrong collection)");
-                    return false;
-                }
+                    return false; // wrong collection: no feature report surface
 
                 // Report id by generation, primary pick from the collection's
                 // own caps: featLen 64 is the Triton shape (report id 1),
                 // featLen 65 the Gordon/Deck shape (report id 0). The other id
-                // is tried as fallback; a wrong id fails instantly with
+                // is tried as fallback. A wrong id fails instantly with
                 // ERROR_INVALID_PARAMETER and writes nothing.
                 byte primaryId = featLen == 65 ? (byte)0 : (byte)1;
                 byte fallbackId = (byte)(1 - primaryId);
-                bool ok = false;
                 foreach (byte id in new[] { primaryId, fallbackId })
                 {
                     byte[] bare = BuildSteamPowerOffReport(featLen, id, withOffMagic: false);
                     bool okBare = HidD_SetFeature(h, bare, bare.Length);
-                    int errBare = okBare ? 0 : Marshal.GetLastWin32Error();
 
                     byte[] magic = BuildSteamPowerOffReport(featLen, id, withOffMagic: true);
                     bool okMagic = HidD_SetFeature(h, magic, magic.Length);
-                    int errMagic = okMagic ? 0 : Marshal.GetLastWin32Error();
 
-                    Trace($"steam featLen={featLen} id={id} bare={okBare}(err={errBare}) magic={okMagic}(err={errMagic})");
-                    if (okBare || okMagic) { ok = true; break; }
+                    if (okBare || okMagic)
+                        return true;
                 }
-                return ok;
+                return false;
             }
             finally
             {
@@ -519,24 +439,15 @@ namespace PadForge.Common.Input
             {
                 try
                 {
-                    uint capsResult = XInputGetCapabilitiesEx(1, slot, 0, out XINPUT_CAPABILITIES_EX caps);
-                    if (capsResult != 0)
-                    {
-                        Trace($"xinput slot {slot}: caps err={capsResult}");
+                    if (XInputGetCapabilitiesEx(1, slot, 0, out XINPUT_CAPABILITIES_EX caps) != 0)
                         continue;
-                    }
                     if (caps.VendorId != vendorId || caps.ProductId != productId)
-                    {
-                        Trace($"xinput slot {slot}: vid={caps.VendorId:X4} pid={caps.ProductId:X4} (no match)");
                         continue;
-                    }
-                    uint offResult = XInputPowerOff(slot);
-                    Trace($"xinput slot {slot}: MATCH, PowerOff={offResult}");
-                    if (offResult == 0)
+                    if (XInputPowerOff(slot) == 0)
                         any = true;
                 }
-                catch (DllNotFoundException) { Trace("xinput: dll missing"); return false; }
-                catch (EntryPointNotFoundException) { Trace("xinput: ordinal missing"); return false; }
+                catch (DllNotFoundException) { return false; }
+                catch (EntryPointNotFoundException) { return false; }
             }
             return any;
         }
@@ -576,10 +487,7 @@ namespace PadForge.Common.Input
         public static bool TryDisconnect(string serial)
         {
             if (!TryParseAddress(serial, out long address))
-            {
-                Trace($"ioctl: serial '{serial}' not a MAC, skipped");
                 return false;
-            }
 
             var findParams = new BLUETOOTH_FIND_RADIO_PARAMS
             {

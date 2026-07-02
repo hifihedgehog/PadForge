@@ -179,8 +179,23 @@ namespace PadForge.Common
                     string.Equals(x.FullName, entry, StringComparison.OrdinalIgnoreCase)
                     || string.Equals(x.Name, entry, StringComparison.OrdinalIgnoreCase));
                 if (e == null) return null;
-                using var ms = new MemoryStream((int)Math.Min(e.Length, int.MaxValue));
-                using (var s = e.Open()) s.CopyTo(ms);
+                // Pre-size from the DECLARED length only up to a sane sound
+                // size, and bound the actual copy: both numbers are archive
+                // metadata a crafted package controls (audit G2).
+                const long MaxSoundBytes = 64L * 1024 * 1024;
+                using var ms = new MemoryStream((int)Math.Clamp(e.Length, 0, 1024 * 1024));
+                using (var s = e.Open())
+                {
+                    var chunk = new byte[81920];
+                    long total = 0;
+                    int got;
+                    while ((got = s.Read(chunk, 0, chunk.Length)) > 0)
+                    {
+                        total += got;
+                        if (total > MaxSoundBytes) return null;
+                        ms.Write(chunk, 0, got);
+                    }
+                }
                 return ms.ToArray();
             }
             catch { return null; }
@@ -273,8 +288,14 @@ namespace PadForge.Common
                 var man = zip.GetEntry("manifest.json");
                 if (man != null)
                 {
+                    // A manifest only carries a name: cap the read so a
+                    // crafted package whose manifest decompresses to
+                    // gigabytes can't force the allocation (audit G2).
+                    const int MaxManifestChars = 64 * 1024;
                     using var r = new StreamReader(man.Open());
-                    string json = r.ReadToEnd();
+                    var chars = new char[MaxManifestChars];
+                    int read = r.ReadBlock(chars, 0, MaxManifestChars);
+                    string json = new string(chars, 0, read);
                     try
                     {
                         using var doc = System.Text.Json.JsonDocument.Parse(json);

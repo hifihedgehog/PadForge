@@ -146,24 +146,33 @@ namespace PadForge.Common.Input
             return found;
         }
 
+        // On-demand RemoteDriven sink creation state: one pending build at a
+        // time per device, and a backoff window after a failed open so a
+        // 100 Hz tone stream cannot spin CreateFile retries (audit F4).
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, byte> _remoteSinkPending = new();
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, long> _remoteSinkFailUntil = new();
+
         /// <summary>A paired peer shipped one reduced haptic-tone frame for a local
         /// device it consumes over Remote Link (#138 x #147). Sets the direct-drive
         /// override on the device's sink; when the device has no locally-assigned
         /// sink (the owner may not map it to any slot), a RemoteDriven sink is
         /// created on demand and reaped by Reconcile once frames stop. Runs on the
-        /// UDP receive thread; the field writes follow the TestHz idiom (value
-        /// fields first, the Until gate last).</summary>
+        /// UDP receive thread, so it must NEVER block: sink construction (raw HID
+        /// open + per-family init sleeps, up to ~800 ms) is queued to the thread
+        /// pool and frames simply drop until the sink is live (audit F4). The
+        /// field writes follow the TestHz idiom (value fields first, the Until
+        /// gate last).</summary>
         public static void ApplyRemoteTone(Engine.Data.UserDevice ud, float toneHz, float amplitude)
         {
             if (ud == null || _suppressed) return;
             var fam = FamilyOf(ud);
             if (fam == Family.None) return;
 
-            long until = Environment.TickCount64 + 250;
-            Sink toCreate = null;
+            long now = Environment.TickCount64;
+            long until = now + 250;
+            bool found = false;
             lock (_lock)
             {
-                bool found = false;
                 foreach (var s in _sinks)
                     if (s.DeviceGuid == ud.InstanceGuid)
                     {
@@ -172,27 +181,57 @@ namespace PadForge.Common.Input
                         s.RemoteUntilMs = until;
                         found = true;
                     }
-                if (!found && amplitude > 0f)
+            }
+            if (found || amplitude <= 0f) return;
+
+            // No sink yet: queue the build off this thread. One in flight per
+            // device, and a failed open backs off before the next attempt.
+            if (_remoteSinkFailUntil.TryGetValue(ud.InstanceGuid, out long failUntil) && now < failUntil)
+                return;
+            if (!_remoteSinkPending.TryAdd(ud.InstanceGuid, 0)) return;
+
+            var guid = ud.InstanceGuid;
+            var path = ud.DevicePath;
+            var gamepad = ud.Device?.GamepadHandle ?? IntPtr.Zero;
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                try
                 {
-                    toCreate = new Sink
+                    var sink = new Sink
                     {
-                        DeviceGuid = ud.InstanceGuid,
+                        DeviceGuid = guid,
                         Slot = -1,
                         Family = fam,
-                        HidPath = ud.DevicePath,
-                        GamepadHandle = ud.Device?.GamepadHandle ?? IntPtr.Zero,
+                        HidPath = path,
+                        GamepadHandle = gamepad,
                         RemoteDriven = true,
                         RemoteHz = toneHz,
                         RemoteAmp = Math.Clamp(amplitude, 0f, 1f),
-                        RemoteUntilMs = until,
+                        RemoteUntilMs = Environment.TickCount64 + 250,
                         MacroMixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(MixRate, 2)) { ReadFully = true },
                     };
-                    _sinks.Add(toCreate);
+                    lock (_lock)
+                    {
+                        if (_suppressed) return;
+                        // A slot sink may have appeared while we queued
+                        // (Reconcile ran): it supersedes; do not add a second
+                        // writer for the same handle (audit F5).
+                        if (_sinks.Exists(s => s.DeviceGuid == guid)) return;
+                        _sinks.Add(sink);
+                    }
+                    if (!BuildSink(sink))
+                    {
+                        lock (_lock) _sinks.Remove(sink);
+                        _remoteSinkFailUntil[guid] = Environment.TickCount64 + 3000;
+                    }
+                    else
+                    {
+                        _remoteSinkFailUntil.TryRemove(guid, out _);
+                    }
                 }
-            }
-            // Open the handle outside the lock, same discipline as Reconcile.
-            if (toCreate != null && !BuildSink(toCreate))
-                lock (_lock) _sinks.Remove(toCreate);
+                catch { _remoteSinkFailUntil[guid] = Environment.TickCount64 + 3000; }
+                finally { _remoteSinkPending.TryRemove(guid, out _); }
+            });
         }
 
         // Mixer rate matches SoundMacroService so decoded PCM mixes in cleanly.
@@ -474,9 +513,14 @@ namespace PadForge.Common.Input
                             // Owner-side link-driven sink: not slot-derived, so
                             // the desired list never contains it. Alive while
                             // frames stay fresh (10 s) and the device is online.
+                            // A slot assignment supersedes it: two sinks on one
+                            // handle would interleave writes with independent
+                            // rolling timers (audit F5). The slot sink takes
+                            // over and ApplyRemoteTone drives it instead.
+                            bool superseded = desired.Exists(d => d.Guid == s.DeviceGuid);
                             bool stale = !remoteOnline.Contains(s.DeviceGuid)
                                 || (staleNow - s.RemoteUntilMs) > 10_000;
-                            if (!stale) continue;
+                            if (!superseded && !stale) continue;
                         }
                         else if (desired.Exists(d => d.Guid == s.DeviceGuid && d.Slot == s.Slot))
                         {

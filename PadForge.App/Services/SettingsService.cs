@@ -2208,8 +2208,12 @@ namespace PadForge.Services
                     stick.AntiDeadZoneX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}AdzX"), 0);
                     stick.AntiDeadZoneY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}AdzY"), 0);
                     stick.Linear = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}Linear"), 0);
-                    stick.SensitivityCurveX = ps.GetExtendedMapping($"ExtendedStick{g}CurveX") ?? "0,0;1,1";
-                    stick.SensitivityCurveY = ps.GetExtendedMapping($"ExtendedStick{g}CurveY") ?? "0,0;1,1";
+                    // GetExtendedMapping returns "" (never null) for a missing
+                    // key, so a bare ?? default never fires (audit G4).
+                    string curveX = ps.GetExtendedMapping($"ExtendedStick{g}CurveX");
+                    string curveY = ps.GetExtendedMapping($"ExtendedStick{g}CurveY");
+                    stick.SensitivityCurveX = string.IsNullOrEmpty(curveX) ? "0,0;1,1" : curveX;
+                    stick.SensitivityCurveY = string.IsNullOrEmpty(curveY) ? "0,0;1,1" : curveY;
                     stick.CenterOffsetX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}CofX"), 0);
                     stick.CenterOffsetY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}CofY"), 0);
                     stick.MaxRangeX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}MrX"), 100);
@@ -2224,7 +2228,8 @@ namespace PadForge.Services
                     trig.DeadZone = TryParseDouble(ps.GetExtendedMapping($"ExtendedTrigger{g}Dz"), 0);
                     trig.AntiDeadZone = TryParseDouble(ps.GetExtendedMapping($"ExtendedTrigger{g}Adz"), 0);
                     trig.MaxRange = TryParseDouble(ps.GetExtendedMapping($"ExtendedTrigger{g}Mr"), 100);
-                    trig.SensitivityCurve = ps.GetExtendedMapping($"ExtendedTrigger{g}Curve") ?? "0,0;1,1";
+                    string trigCurve = ps.GetExtendedMapping($"ExtendedTrigger{g}Curve");
+                    trig.SensitivityCurve = string.IsNullOrEmpty(trigCurve) ? "0,0;1,1" : trigCurve;
                 }
 
                 // Steering is per assigned device (#94): the Sticks-tab card loads the
@@ -3809,11 +3814,29 @@ namespace PadForge.Services
 
         /// <summary>
         /// Marks settings as dirty (unsaved changes) and schedules an autosave
-        /// after a 2-second debounce period.
+        /// after a 250 ms debounce period. Safe from any thread: a
+        /// DispatcherTimer constructed on a non-pumping threadpool thread
+        /// never ticks, and the first caller can be a worker (gyro
+        /// auto-calibration persists via this method), which would have left
+        /// autosave dead for the whole session (audit F8). The dirty flags
+        /// are set immediately; the timer work marshals to the UI dispatcher.
         /// </summary>
         public void MarkDirty()
         {
             IsDirty = true;
+
+            var dispatcher = System.Windows.Application.Current?.Dispatcher;
+            if (dispatcher == null) return; // shutdown: OnClosing's dirty-gated save covers it
+            if (!dispatcher.CheckAccess())
+            {
+                dispatcher.BeginInvoke(new Action(MarkDirtyOnUiThread));
+                return;
+            }
+            MarkDirtyOnUiThread();
+        }
+
+        private void MarkDirtyOnUiThread()
+        {
             _mainVm.Settings.HasUnsavedChanges = true;
 
             // Start or restart the autosave debounce timer.

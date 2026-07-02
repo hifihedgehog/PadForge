@@ -204,7 +204,13 @@ namespace PadForge.Engine.RemoteLink
 
             // Metadata extension (one section per v1 record, same order), so
             // a remote device's mapping picker and Devices-page preview show
-            // the SAME named inputs the owner sees locally.
+            // the SAME named inputs the owner sees locally. Budgeted: the
+            // periodic push travels as ONE UDP datagram and old peers receive
+            // into a 4 KB buffer, so once the payload nears that floor the
+            // remaining devices get empty object sections (the consumer falls
+            // back to synthesized names for them) rather than the whole list
+            // becoming undeliverable.
+            const int PayloadBudget = 3800;
             buf.Add(DeviceListExtMagic);
             for (int i = 0; i < count; i++)
             {
@@ -220,6 +226,15 @@ namespace PadForge.Engine.RemoteLink
                 }
                 var objs = d.DeviceObjects ?? Array.Empty<DeviceObjectItem>();
                 int objCount = Math.Min(objs.Length, 1024);
+                // Estimate this section before committing to it: per object
+                // 26 fixed bytes + UTF-8 name. Over budget -> empty section.
+                if (objCount > 0)
+                {
+                    int estimate = 0;
+                    for (int j = 0; j < objCount; j++)
+                        estimate += 26 + Encoding.UTF8.GetByteCount(objs[j].Name ?? "");
+                    if (buf.Count + 2 + estimate > PayloadBudget) objCount = 0;
+                }
                 WriteU16(buf, (ushort)objCount);
                 for (int j = 0; j < objCount; j++)
                 {
@@ -284,6 +299,12 @@ namespace PadForge.Engine.RemoteLink
                         info.NumTouchpads = pads;
                         info.TouchpadFingerCounts = fingers;
                         int objCount = ReadU16(data, ref o);
+                        // Sanity-bound the allocation against what the payload
+                        // can actually hold (>= 26 bytes per object): a count
+                        // the bytes cannot back is malformed, fail to the
+                        // v1 fallback below rather than allocating for it.
+                        if (objCount > (data.Length - o) / 26 + 1)
+                            throw new InvalidOperationException("object count exceeds payload");
                         if (objCount > 0)
                         {
                             var objs = new DeviceObjectItem[objCount];
@@ -306,9 +327,15 @@ namespace PadForge.Engine.RemoteLink
             }
             catch
             {
+                // The documented contract: a malformed extension tail costs
+                // nothing but the metadata. Reset EVERY extension-carried
+                // field on EVERY record, or a mid-record throw leaves garbage
+                // (a string byte read as a touchpad count) half-applied.
                 foreach (var info in list)
                 {
-                    info.SerialNumber = info.SerialNumber ?? "";
+                    info.SerialNumber = "";
+                    info.NumTouchpads = 0;
+                    info.TouchpadFingerCounts = null;
                     info.DeviceObjects = null;
                 }
             }

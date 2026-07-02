@@ -404,9 +404,13 @@ namespace PadForge.Engine.RemoteLink
 
         private async Task UdpLoopAsync(CancellationToken ct)
         {
-            // Large enough for a speaker PCM block (s16 48k stereo, 512 frames = 2048 B)
-            // plus the 14-byte header and 16-byte AEAD tag.
-            var buf = new byte[4096];
+            // 64 KB (the UDP maximum): an oversized datagram makes ReceiveFrom
+            // throw and the frame vanishes into DiagLastError, which is how a
+            // too-large device-list push silently killed device sync (audit
+            // F1). The send side budgets the device list under the OLD peers'
+            // 4 KB buffer; receiving at the protocol maximum costs one buffer
+            // and removes this failure mode for anything a peer sends.
+            var buf = new byte[65536];
             var any = new IPEndPoint(IPAddress.Any, 0);
             while (!ct.IsCancellationRequested)
             {
@@ -507,8 +511,11 @@ namespace PadForge.Engine.RemoteLink
                         existing.Info.DeviceObjects = info.DeviceObjects;
                     if (info.NumTouchpads > 0)
                     {
-                        existing.Info.NumTouchpads = info.NumTouchpads;
+                        // Counts before the count-of-counts, so a concurrent
+                        // reader that sees the new NumTouchpads also sees the
+                        // matching array (readers bounds-check regardless).
                         existing.Info.TouchpadFingerCounts = info.TouchpadFingerCounts;
+                        existing.Info.NumTouchpads = info.NumTouchpads;
                     }
                     if (!string.IsNullOrEmpty(info.SerialNumber))
                         existing.Info.SerialNumber = info.SerialNumber;

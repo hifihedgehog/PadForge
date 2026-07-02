@@ -1447,8 +1447,9 @@ namespace PadForge.Views
         /// <c>ApplyProfile</c> path during profile switching. <c>OnDataContextChanged</c>
         /// and the <c>OutputType</c> PropertyChanged trigger already handle
         /// the slot-switch and type-switch cases, so we only need to react
-        /// to the three fields ApplyExtendedConfigs writes through:
-        /// Customize, OemNameOverride, ProductString.
+        /// to the fields ApplyExtendedConfigs writes through (the full
+        /// ExtendedSlotConfigData set: Customize, OemNameOverride,
+        /// ProductString, the identity overrides, and ForceFeedbackEnabled).
         ///
         /// <para>The <see cref="_syncingExtendedConfig"/> guard short-circuits
         /// when SyncExtendedFields is mid-flight. SyncExtendedFields writes

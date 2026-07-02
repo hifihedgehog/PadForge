@@ -467,7 +467,10 @@ namespace PadForge.ViewModels
             && (_devicePath.StartsWith("web://", StringComparison.Ordinal)
              || _devicePath.StartsWith("overlay://", StringComparison.Ordinal)
              || _devicePath.StartsWith("midi://", StringComparison.Ordinal)
-             || _devicePath.StartsWith("peer://", StringComparison.Ordinal));
+             || _devicePath.StartsWith("peer://", StringComparison.Ordinal)
+             // PC/SC readers aren't HID devices either: the checkbox was a
+             // silent no-op (fake VID/PID resolves no instance, audit M3).
+             || _devicePath.StartsWith("nfc://", StringComparison.Ordinal));
 
         /// <summary>True when at least one input-hiding toggle would be shown,
         /// so the "Input Hiding" section can hide its heading along with its

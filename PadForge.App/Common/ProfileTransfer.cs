@@ -115,7 +115,33 @@ namespace PadForge.Common
                                 target = Path.Combine(appDir, $"{stem} ({n++}){SoundPackageManager.FileExtension}");
                             } while (File.Exists(target));
                         }
-                        e.ExtractToFile(target);
+                        // Bounded copy instead of ExtractToFile: the entry's
+                        // DECLARED length is attacker metadata and the real
+                        // stream is unbounded, so a highly-compressed entry
+                        // could fill the disk (zip bomb). Cap the bytes
+                        // actually written and delete the partial file on
+                        // any failure or overrun.
+                        try
+                        {
+                            const long MaxPackageBytes = 512L * 1024 * 1024;
+                            using var src = e.Open();
+                            using var dst = File.Create(target);
+                            var chunk = new byte[81920];
+                            long total = 0;
+                            int got;
+                            while ((got = src.Read(chunk, 0, chunk.Length)) > 0)
+                            {
+                                total += got;
+                                if (total > MaxPackageBytes)
+                                    throw new IOException("bundled package exceeds the size cap");
+                                dst.Write(chunk, 0, got);
+                            }
+                        }
+                        catch
+                        {
+                            try { File.Delete(target); } catch { }
+                            continue; // skip this package, keep importing the profile
+                        }
                     }
 
                     string name = SoundPackageManager.Register(target, out string probedName);

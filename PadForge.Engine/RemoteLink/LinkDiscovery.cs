@@ -182,11 +182,13 @@ namespace PadForge.Engine.RemoteLink
                 if (data[4] != Version) return false;
                 int o = 5;
                 linkPort = BinaryPrimitives.ReadUInt16LittleEndian(data.Slice(o, 2)); o += 2;
+                // Accept only what the builder emits (64-byte caps): a hostile
+                // beacon must not plant a 255-byte name in the peers UI list.
                 int fpLen = data[o++];
-                if (o + fpLen > data.Length) return false;
+                if (fpLen > 64 || o + fpLen > data.Length) return false;
                 fingerprintHex = Encoding.ASCII.GetString(data.Slice(o, fpLen)); o += fpLen;
                 int nameLen = data[o++];
-                if (o + nameLen > data.Length) return false;
+                if (nameLen > 64 || o + nameLen > data.Length) return false;
                 displayName = Encoding.UTF8.GetString(data.Slice(o, nameLen));
                 return true;
             }

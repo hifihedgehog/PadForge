@@ -182,8 +182,12 @@ namespace PadForge.Views
 
             // Warn when enabling input blocking on a mouse or keyboard. After a
             // click the box has already toggled, so IsChecked == true means the
-            // user just turned it on.
-            if (cb?.IsChecked == true && dev.ShowConsumeToggle)
+            // user just turned it on. Consumer Control rows get the same
+            // warning: HidHide's base-container sibling expansion cloaks the
+            // WHOLE physical keyboard the consumer collection belongs to, and
+            // doing that silently locked users out of their system (audit M1).
+            bool cloaksKeyboardClass = dev.ShowConsumeToggle || dev.DeviceTypeKey == "ConsumerControl";
+            if (cb?.IsChecked == true && cloaksKeyboardClass)
             {
                 bool isHidHide = cb.Content?.ToString()?.Contains("HidHide") == true;
                 string action = isHidHide

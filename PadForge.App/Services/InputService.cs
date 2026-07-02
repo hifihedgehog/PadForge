@@ -984,14 +984,13 @@ namespace PadForge.Services
                 };
             };
 
-            // — touchpad-as-mouse tuning. Slot-keyed: the same physical
+            // Touchpad-as-mouse tuning. Slot-keyed: the same physical
             // touchpad in two virtual-controller slots carries its own
             // MouseSensitivityX/Y + MouseInvertX/Y per slot, stored on
             // each slot's UserSetting's PadSetting. Walk UserSettings
-            // filtered by `MapTo == slotIndex && InstanceGuid == device`
-            // — the existing TouchpadGestureSettingsProvider returns the
-            // first match by device alone, which would route every slot
-            // through slot 0's tuning.
+            // filtered by `MapTo == slotIndex && InstanceGuid == device`,
+            // the same (slot, device, pad) key TouchpadGestureSettingsProvider
+            // uses since the May 2026 slot-collapse fix.
             PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseSettingsProvider =
                 (slotIndex, deviceGuid, padIdx) =>
             {
@@ -5688,8 +5687,20 @@ namespace PadForge.Services
                                 slot = 0; while (used.Contains(slot)) slot++; // lowest free slot
                                 _exposedSlots[id] = slot; used.Add(slot);
                             }
+                            // Forward named inputs ONLY for device types whose
+                            // names the consumer cannot derive locally: consumer
+                            // usages (per-session dynamic slots) and NFC tags
+                            // (named from THIS machine's tag registry). Gamepad /
+                            // joystick / keyboard / mouse / MIDI shapes are
+                            // synthesized identically on the consumer, and the
+                            // periodic device list rides ONE UDP datagram into a
+                            // 4 KB receive buffer on old peers, so shipping every
+                            // device's objects could push past it and silently
+                            // kill device sync (audit F1).
+                            int devType = dev.GetInputDeviceType();
                             DeviceObjectItem[] objects = null;
-                            try { objects = dev.GetDeviceObjects(); } catch { }
+                            if (devType == InputDeviceType.ConsumerControl || devType == InputDeviceType.Nfc)
+                                try { objects = dev.GetDeviceObjects(); } catch { }
                             var info = new RemotePeerDeviceInfo
                             {
                                 Slot = slot,

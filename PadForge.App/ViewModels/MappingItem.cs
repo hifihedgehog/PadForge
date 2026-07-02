@@ -386,6 +386,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsGyroSource));
                     OnPropertyChanged(nameof(IsMouseCursorSource));
                     OnPropertyChanged(nameof(IsIrPointerSource));
+                    OnPropertyChanged(nameof(IsMouseMotionSource));
                     OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
                     // Toggling the primary source flips the row's
                     // effective source count, which can change whether
@@ -890,6 +891,14 @@ namespace PadForge.ViewModels
         public bool IsIrPointerSource => !string.IsNullOrEmpty(_sourceDescriptor)
             && _sourceDescriptor.StartsWith("IR Pointer ", StringComparison.Ordinal);
 
+        /// <summary>True for a "Mouse Motion X/Y" primary source (#154).
+        /// Mirrors <see cref="MappingSourceItem.IsMouseMotionSource"/> so the
+        /// per-source sensitivity slider's visibility binding resolves on the
+        /// legacy-row template too (a missing property leaves the failed
+        /// binding at Visibility's default, which is Visible on EVERY row).</summary>
+        public bool IsMouseMotionSource => !string.IsNullOrEmpty(_sourceDescriptor)
+            && _sourceDescriptor.StartsWith("Mouse Motion ", StringComparison.Ordinal);
+
         /// <summary>Per-source gyro sensitivity multiplier for the primary
         /// source. Mirrors <see cref="MappingSourceItem.GyroSensitivity"/>;
         /// applied only when the primary descriptor is a Gyro axis (see
@@ -920,12 +929,24 @@ namespace PadForge.ViewModels
                 // Check source is axis/slider.
                 var desc = _sourceDescriptor;
                 if (string.IsNullOrEmpty(desc)) return false;
-                int start = 0;
-                if (start < desc.Length && desc[start] == 'I') start++;
-                if (start < desc.Length && desc[start] == 'H') start++;
-                var body = desc.AsSpan(start);
-                if (!body.StartsWith("Axis") && !body.StartsWith("Slider"))
-                    return false;
+
+                // Engine-owned continuous families whose button-thresholding
+                // reads the per-source DeadZone (same set the grid's
+                // MappingSourceItem.IsDeadZoneApplicable exposes, #154).
+                bool engineFamily =
+                    desc.StartsWith("Mouse Motion ", StringComparison.Ordinal)
+                    || desc.StartsWith("IR Pointer ", StringComparison.Ordinal)
+                    || desc.StartsWith("IR Brightness", StringComparison.Ordinal)
+                    || desc.StartsWith("Balance ", StringComparison.Ordinal);
+                if (!engineFamily)
+                {
+                    int start = 0;
+                    if (start < desc.Length && desc[start] == 'I') start++;
+                    if (start < desc.Length && desc[start] == 'H') start++;
+                    var body = desc.AsSpan(start);
+                    if (!body.StartsWith("Axis") && !body.StartsWith("Slider"))
+                        return false;
+                }
 
                 // Check target is a discrete (button-type) output, not an axis.
                 var t = TargetSettingName;
@@ -957,6 +978,12 @@ namespace PadForge.ViewModels
 
                 // Gyro is always axis-like.
                 if (desc.StartsWith("Gyro ", StringComparison.Ordinal))
+                    return true;
+
+                // Joy-Con 2 mouse motion is a signed velocity: Half picks one
+                // direction, Invert chooses which (#154, mirrors the grid's
+                // MappingSourceItem.IsHalfAxisApplicable).
+                if (desc.StartsWith("Mouse Motion ", StringComparison.Ordinal))
                     return true;
 
                 // Touchpad: X / Y / Pressure are continuous; Click and

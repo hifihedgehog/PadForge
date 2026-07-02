@@ -1639,6 +1639,16 @@ namespace PadForge.Services
                 UpdateMappingLiveValues();
             }
 
+            // ── Battery indicators (#167): slow lane, the wrapper's own cache
+            //    only refreshes every 5 s, so ticking faster reads the same
+            //    numbers. Updates the Devices rows and the pad device roster. ──
+            long nowTick = Environment.TickCount64;
+            if (nowTick - _lastBatteryUiRefreshTick >= 5000)
+            {
+                _lastBatteryUiRefreshTick = nowTick;
+                UpdateBatteryIndicators();
+            }
+
             // ── Macro trigger recording (accumulate buttons) ──
             UpdateMacroTriggerRecording();
 
@@ -1980,6 +1990,35 @@ namespace PadForge.Services
                 });
             }
             return items;
+        }
+
+        private long _lastBatteryUiRefreshTick;
+
+        /// <summary>Pushes the latest per-device battery readings into the
+        /// Devices-page rows and every pad's device-roster items (#167).
+        /// Runs on the UI timer at a 5 s cadence, matching the SDL wrapper's
+        /// own battery cache interval. Offline devices read as no-battery so
+        /// the indicator disappears instead of freezing.</summary>
+        private void UpdateBatteryIndicators()
+        {
+            foreach (var row in _mainVm.Devices.Devices)
+            {
+                var ud = FindUserDevice(row.InstanceGuid);
+                bool online = ud != null && ud.IsOnline;
+                row.BatteryPercent = online ? (ud.InputState?.BatteryPercent ?? -1) : -1;
+                row.BatteryCharging = online && (ud.InputState?.BatteryCharging ?? false);
+            }
+
+            foreach (var padVm in _mainVm.Pads)
+            {
+                foreach (var dev in padVm.MappedDevices)
+                {
+                    var ud = FindUserDevice(dev.InstanceGuid);
+                    bool online = ud != null && ud.IsOnline;
+                    int pct = online ? (ud.InputState?.BatteryPercent ?? -1) : -1;
+                    dev.BatteryText = pct >= 0 ? $"{pct}%" : string.Empty;
+                }
+            }
         }
 
         /// <summary>
@@ -6798,6 +6837,11 @@ namespace PadForge.Services
             // path, or a wireless XInput-backend pad).
             row.IdleDisconnectMinutes = ud.IdleDisconnectSeconds / 60;
             row.ShowIdleDisconnect = PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath, ud.VendorId, ud.ProdId);
+
+            // Battery indicator (#167): seed from the latest state snapshot.
+            // The UI tick refreshes it on a slow cadence afterward.
+            row.BatteryPercent = ud.IsOnline ? (ud.InputState?.BatteryPercent ?? -1) : -1;
+            row.BatteryCharging = ud.IsOnline && (ud.InputState?.BatteryCharging ?? false);
 
             // Set internal device type key (DeviceType display is computed from this).
             row.DeviceTypeKey = ud.CapType switch

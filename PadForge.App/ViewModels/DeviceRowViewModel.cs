@@ -381,6 +381,64 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _showIdleDisconnect, value);
         }
 
+        private int _batteryPercent = -1;
+
+        /// <summary>Battery percentage from SDL, -1 when the device reports
+        /// none (wired, unknown, or offline). Drives the row's battery
+        /// indicator (issue #167).</summary>
+        public int BatteryPercent
+        {
+            get => _batteryPercent;
+            set
+            {
+                if (SetProperty(ref _batteryPercent, value))
+                {
+                    OnPropertyChanged(nameof(HasBattery));
+                    OnPropertyChanged(nameof(BatteryText));
+                    OnPropertyChanged(nameof(BatteryGlyph));
+                }
+            }
+        }
+
+        private bool _batteryCharging;
+
+        /// <summary>True while the device reports charging or charged.</summary>
+        public bool BatteryCharging
+        {
+            get => _batteryCharging;
+            set
+            {
+                if (SetProperty(ref _batteryCharging, value))
+                    OnPropertyChanged(nameof(BatteryGlyph));
+            }
+        }
+
+        /// <summary>Whether the battery indicator renders at all.</summary>
+        public bool HasBattery => _batteryPercent >= 0;
+
+        /// <summary>"78%" for the row's metadata line.</summary>
+        public string BatteryText => _batteryPercent >= 0 ? $"{_batteryPercent}%" : string.Empty;
+
+        /// <summary>Segoe MDL2 Assets battery glyph bucketed to the nearest
+        /// tenth: Battery0-Battery9 are U+E850-U+E859 with Battery10 at
+        /// U+E83F, and the charging variants are BatteryCharging0-8 at
+        /// U+E85A-U+E862, BatteryCharging9 at U+EA93, BatteryCharging10 at
+        /// U+E83E (all codepoints verified against the installed font).</summary>
+        public string BatteryGlyph
+        {
+            get
+            {
+                if (_batteryPercent < 0) return string.Empty;
+                int tenth = Math.Clamp((_batteryPercent + 5) / 10, 0, 10);
+                int code;
+                if (_batteryCharging)
+                    code = tenth == 10 ? 0xE83E : tenth == 9 ? 0xEA93 : 0xE85A + tenth;
+                else
+                    code = tenth == 10 ? 0xE83F : 0xE850 + tenth;
+                return char.ConvertFromUtf32(code);
+            }
+        }
+
         private bool _isHidHideAvailable;
 
         /// <summary>Whether HidHide is installed and available (controls IsEnabled on the toggle).</summary>

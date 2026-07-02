@@ -508,6 +508,16 @@ namespace PadForge.ViewModels
                 set => SetProperty(ref _isOnline, value);
             }
 
+            private string _batteryText = string.Empty;
+
+            /// <summary>"78%" while the device reports a battery, empty
+            /// otherwise (issue #167). Refreshed on the UI timer's slow lane.</summary>
+            public string BatteryText
+            {
+                get => _batteryText;
+                set => SetProperty(ref _batteryText, value ?? string.Empty);
+            }
+
             public override string ToString() => Name;
         }
 

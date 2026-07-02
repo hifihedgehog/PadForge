@@ -307,6 +307,17 @@ namespace PadForge.Common.Input
                     var svc = svcResult.Services[0];
                     try
                     {
+                        // The SDL driver's own session holds this service, and a
+                        // bare characteristic query from a second session came
+                        // back AccessDenied (traced on hardware). Sharing is
+                        // arbitrated per application and both sessions are
+                        // PadForge.exe, so ask for access explicitly and open
+                        // shared before touching characteristics.
+                        var access = await svc.RequestAccessAsync();
+                        var open = await svc.OpenAsync(Windows.Devices.Bluetooth
+                            .GenericAttributeProfile.GattSharingMode.SharedReadAndWrite);
+                        Trace($"switch2 '{info.Name}': access={access} open={open}");
+
                         var chars = await svc.GetCharacteristicsForUuidAsync(Switch2CommandUuid);
                         if (chars.Status != Windows.Devices.Bluetooth.GenericAttributeProfile
                                 .GattCommunicationStatus.Success

@@ -1085,6 +1085,7 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Mausbewegung Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Empfindlichkeit</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Empfindlichkeit des IR-Zeigers pro Quelle. 1.0 erreicht die volle Stick-Auslenkung am Rand des Sichtfelds der Kamera. Werte über 1.0 erreichen die volle Auslenkung mit weniger Zielbewegung. Werte unter 1.0 brauchen mehr.</value></data>
+  <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Empfindlichkeit der Mausbewegung pro Quelle. 1,0 erreicht die volle Auslenkung bei derselben Geschwindigkeit wie eine echte Maus, Werte über 1,0 brauchen weniger Bewegung, Werte darunter mehr.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Balance-Gesamtgewicht</value></data>
   <data name="Mapping_BalanceLeanX" xml:space="preserve"><value>Balance-Neigung X</value></data>
   <data name="Mapping_BalanceLeanY" xml:space="preserve"><value>Balance-Neigung Y</value></data>

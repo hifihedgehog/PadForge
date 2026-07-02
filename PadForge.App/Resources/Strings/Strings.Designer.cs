@@ -1631,6 +1631,7 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_MouseMotionY => Get("Mapping_MouseMotionY");
     public string Mapping_IrPointerSensitivity => Get("Mapping_IrPointerSensitivity");
     public string Mapping_IrPointerSensitivity_Tooltip => Get("Mapping_IrPointerSensitivity_Tooltip");
+    public string Mapping_MouseMotionSensitivity_Tooltip => Get("Mapping_MouseMotionSensitivity_Tooltip");
     public string Mapping_BalanceTotalWeight => Get("Mapping_BalanceTotalWeight");
     public string Mapping_BalanceLeanX => Get("Mapping_BalanceLeanX");
     public string Mapping_BalanceLeanY => Get("Mapping_BalanceLeanY");

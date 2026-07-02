@@ -2868,6 +2868,21 @@
                                                             <TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                                         </StackPanel>
+                                                        <!-- Per-source mouse-motion sensitivity (#154). Renders for "Mouse Motion X/Y". -->
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0"
+                                                                    Visibility="{Binding IsMouseMotionSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                            <TextBlock Text="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}"
+                                                                       VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                            <Slider Value="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                    Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
+                                                                    Width="120" VerticalAlignment="Center"
+                                                                    ToolTip="{Binding Mapping_MouseMotionSensitivity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <TextBox Text="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                                                     Width="50" Margin="4,0,4,0" Padding="2,1"
+                                                                     VerticalContentAlignment="Center"/>
+                                                            <TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                            <Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}"/>
+                                                        </StackPanel>
                                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0" Width="230"
                                                                     Visibility="{Binding IsKindDescriptorless, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
                                                             <StackPanel.Style>
@@ -3511,6 +3526,21 @@
                                                         Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
                                                         Width="120" VerticalAlignment="Center"
                                                         ToolTip="{Binding Mapping_IrPointerSensitivity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBox Text="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                                         Width="50" Margin="4,0,4,0" Padding="2,1"
+                                                         VerticalContentAlignment="Center"/>
+                                                <TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                <Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}"/>
+                                            </StackPanel>
+                                            <!-- Per-source mouse-motion sensitivity (#154). Renders only for "Mouse Motion X/Y". -->
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0"
+                                                        Visibility="{Binding IsMouseMotionSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Text="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                <Slider Value="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
+                                                        Width="120" VerticalAlignment="Center"
+                                                        ToolTip="{Binding Mapping_MouseMotionSensitivity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                 <TextBox Text="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                          Width="50" Margin="4,0,4,0" Padding="2,1"
                                                          VerticalContentAlignment="Center"/>

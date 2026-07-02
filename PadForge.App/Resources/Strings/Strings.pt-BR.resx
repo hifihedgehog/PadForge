@@ -1085,6 +1085,7 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Movimento do Mouse Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensibilidade</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Sensibilidade do apontador IR por fonte. 1.0 atinge o deslocamento total do analógico na borda do campo de visão da câmera. Valores acima de 1.0 atingem o deslocamento total com menos movimento de mira. Valores abaixo de 1.0 precisam de mais.</value></data>
+  <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Sensibilidade do movimento do mouse por origem. 1.0 atinge a deflexão total na mesma velocidade de um mouse real, valores acima de 1.0 exigem menos movimento e valores abaixo exigem mais.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Peso Total (Balance)</value></data>
   <data name="Mapping_BalanceLeanX" xml:space="preserve"><value>Inclinação X (Balance)</value></data>
   <data name="Mapping_BalanceLeanY" xml:space="preserve"><value>Inclinação Y (Balance)</value></data>

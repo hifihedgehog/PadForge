@@ -243,6 +243,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsGyroSource));
                     OnPropertyChanged(nameof(IsMouseCursorSource));
                     OnPropertyChanged(nameof(IsIrPointerSource));
+                    OnPropertyChanged(nameof(IsMouseMotionSource));
                 }
             }
         }
@@ -265,6 +266,13 @@ namespace PadForge.ViewModels
         /// Pointer Sensitivity slider's visibility.</summary>
         public bool IsIrPointerSource => _descriptor != null
             && _descriptor.StartsWith("IR Pointer ", StringComparison.Ordinal);
+
+        /// <summary>True for "Mouse Motion X/Y" (issue #154). Drives the
+        /// per-source sensitivity slider's visibility, which shares the
+        /// stored field with the IR pointer's slider (both scale their
+        /// family's read in SourceCoercion).</summary>
+        public bool IsMouseMotionSource => _descriptor != null
+            && _descriptor.StartsWith("Mouse Motion ", StringComparison.Ordinal);
         public bool Invert
         {
             get => _invert;

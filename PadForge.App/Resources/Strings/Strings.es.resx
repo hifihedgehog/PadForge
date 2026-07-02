@@ -1085,6 +1085,7 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Movimiento del ratón Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Sensibilidad del puntero IR por fuente. 1.0 alcanza el desplazamiento completo del stick en el borde del campo de visión de la cámara. Los valores mayores que 1.0 alcanzan el desplazamiento completo con menos recorrido de puntería. Los valores menores que 1.0 necesitan más.</value></data>
+  <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Sensibilidad del movimiento del ratón por origen. 1.0 alcanza la deflexión completa a la misma velocidad que un ratón real, los valores superiores a 1.0 necesitan menos movimiento y los inferiores más.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Peso total (Balance)</value></data>
   <data name="Mapping_BalanceLeanX" xml:space="preserve"><value>Inclinación X (Balance)</value></data>
   <data name="Mapping_BalanceLeanY" xml:space="preserve"><value>Inclinación Y (Balance)</value></data>

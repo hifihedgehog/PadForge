@@ -2096,7 +2096,7 @@
   <data name="DeviceType_Nfc" xml:space="preserve"><value>NFC-Leser</value></data>
   <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>Consumer Control</value></data>
   <data name="MacroAction_Type_DisconnectController" xml:space="preserve"><value>Controller trennen</value></data>
-  <data name="MacroAction_DisconnectController_Tooltip" xml:space="preserve"><value>Trennt die Bluetooth-Verbindung des Controllers, sodass er in den Ruhezustand wechselt. Nur Bluetooth-Verbindungen. Geräte, die gerade laden, werden übersprungen.</value></data>
+  <data name="MacroAction_DisconnectController_Tooltip" xml:space="preserve"><value>Trennt die Bluetooth-Verbindung des Controllers, sodass er in den Ruhezustand wechselt. Nur Bluetooth-Verbindungen.</value></data>
   <data name="MacroAction_DisconnectController_Format" xml:space="preserve"><value>Controller trennen: {0}</value></data>
   <data name="MacroDisconnect_Target_Label" xml:space="preserve"><value>Ziel</value></data>
   <data name="MacroDisconnect_TriggeringDevice" xml:space="preserve"><value>Auslösendes Gerät</value></data>
@@ -2104,10 +2104,10 @@
   <data name="MacroDisconnect_SlotDevices" xml:space="preserve"><value>Alle Geräte dieses Slots</value></data>
   <data name="MacroDisconnect_AllDevices" xml:space="preserve"><value>Alle Bluetooth-Geräte</value></data>
   <data name="MacroDisconnect_Device_Label" xml:space="preserve"><value>Gerät</value></data>
-  <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Nur Bluetooth. Der Controller wechselt in den Ruhezustand, sobald die Verbindung getrennt ist. Geräte, die gerade laden, werden übersprungen.</value></data>
+  <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Nur Bluetooth. Der Controller wechselt in den Ruhezustand, sobald die Verbindung getrennt ist.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Trennung bei Inaktivität</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>Minuten (0 = aus)</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Trennt diesen Bluetooth-Controller nach so vielen Minuten ohne Eingabe, sodass er in den Ruhezustand wechselt und Akku spart. Löst nie beim Laden oder über USB aus.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Trennt diesen Bluetooth-Controller nach so vielen Minuten ohne Eingabe, sodass er in den Ruhezustand wechselt und Akku spart. Löst nie über USB aus.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Ein/Aus</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menü</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>

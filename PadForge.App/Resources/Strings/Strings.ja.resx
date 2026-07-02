@@ -2096,7 +2096,7 @@
   <data name="DeviceType_Nfc" xml:space="preserve"><value>NFCリーダー</value></data>
   <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>コンシューマーコントロール</value></data>
   <data name="MacroAction_Type_DisconnectController" xml:space="preserve"><value>コントローラーを切断</value></data>
-  <data name="MacroAction_DisconnectController_Tooltip" xml:space="preserve"><value>コントローラーのBluetooth接続を切断してスリープさせます。Bluetooth接続のみ対象です。充電中のデバイスはスキップされます。</value></data>
+  <data name="MacroAction_DisconnectController_Tooltip" xml:space="preserve"><value>コントローラーのBluetooth接続を切断してスリープさせます。Bluetooth接続のみ対象です。</value></data>
   <data name="MacroAction_DisconnectController_Format" xml:space="preserve"><value>コントローラーを切断: {0}</value></data>
   <data name="MacroDisconnect_Target_Label" xml:space="preserve"><value>対象</value></data>
   <data name="MacroDisconnect_TriggeringDevice" xml:space="preserve"><value>トリガーしたデバイス</value></data>
@@ -2104,10 +2104,10 @@
   <data name="MacroDisconnect_SlotDevices" xml:space="preserve"><value>このスロットの全デバイス</value></data>
   <data name="MacroDisconnect_AllDevices" xml:space="preserve"><value>すべてのBluetoothデバイス</value></data>
   <data name="MacroDisconnect_Device_Label" xml:space="preserve"><value>デバイス</value></data>
-  <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Bluetooth接続のみ対象です。接続が切れるとコントローラーはスリープします。充電中のデバイスはスキップされます。</value></data>
+  <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Bluetooth接続のみ対象です。接続が切れるとコントローラーはスリープします。</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>アイドル切断</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>分 (0 = オフ)</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>入力がないままこの分数が経過すると、このBluetoothコントローラーを切断してスリープさせ、バッテリーを節約します。充電中やUSB接続時には作動しません。</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>入力がないままこの分数が経過すると、このBluetoothコントローラーを切断してスリープさせ、バッテリーを節約します。USB接続時には作動しません。</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>電源</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>メニュー</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>

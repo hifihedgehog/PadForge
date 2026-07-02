@@ -2096,7 +2096,7 @@
   <data name="DeviceType_Nfc" xml:space="preserve"><value>NFC 리더기</value></data>
   <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>소비자 컨트롤</value></data>
   <data name="MacroAction_Type_DisconnectController" xml:space="preserve"><value>컨트롤러 연결 해제</value></data>
-  <data name="MacroAction_DisconnectController_Tooltip" xml:space="preserve"><value>컨트롤러의 Bluetooth 연결을 끊어 절전 상태로 전환합니다. Bluetooth 연결에만 적용됩니다. 충전 중인 장치는 건너뜁니다.</value></data>
+  <data name="MacroAction_DisconnectController_Tooltip" xml:space="preserve"><value>컨트롤러의 Bluetooth 연결을 끊어 절전 상태로 전환합니다. Bluetooth 연결에만 적용됩니다.</value></data>
   <data name="MacroAction_DisconnectController_Format" xml:space="preserve"><value>컨트롤러 연결 해제: {0}</value></data>
   <data name="MacroDisconnect_Target_Label" xml:space="preserve"><value>대상</value></data>
   <data name="MacroDisconnect_TriggeringDevice" xml:space="preserve"><value>트리거한 장치</value></data>
@@ -2104,10 +2104,10 @@
   <data name="MacroDisconnect_SlotDevices" xml:space="preserve"><value>이 슬롯의 모든 장치</value></data>
   <data name="MacroDisconnect_AllDevices" xml:space="preserve"><value>모든 Bluetooth 장치</value></data>
   <data name="MacroDisconnect_Device_Label" xml:space="preserve"><value>장치</value></data>
-  <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Bluetooth 전용입니다. 연결이 끊기면 컨트롤러가 절전 상태가 됩니다. 충전 중인 장치는 건너뜁니다.</value></data>
+  <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Bluetooth 전용입니다. 연결이 끊기면 컨트롤러가 절전 상태가 됩니다.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>유휴 연결 해제</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>분 (0 = 끄기)</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>입력이 없는 상태로 설정한 분이 지나면 이 Bluetooth 컨트롤러의 연결을 끊어 절전 상태로 전환하고 배터리를 절약합니다. 충전 중이거나 USB 연결 시에는 작동하지 않습니다.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>입력이 없는 상태로 설정한 분이 지나면 이 Bluetooth 컨트롤러의 연결을 끊어 절전 상태로 전환하고 배터리를 절약합니다. USB 연결 시에는 작동하지 않습니다.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>전원</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>메뉴</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>확인</value></data>

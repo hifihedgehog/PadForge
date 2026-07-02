@@ -2118,7 +2118,7 @@
   <data name="DeviceType_Nfc" xml:space="preserve"><value>Lettore NFC</value></data>
   <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>Controllo multimediale</value></data>
   <data name="MacroAction_Type_DisconnectController" xml:space="preserve"><value>Disconnetti controller</value></data>
-  <data name="MacroAction_DisconnectController_Tooltip" xml:space="preserve"><value>Interrompe il collegamento Bluetooth del controller in modo che entri in sospensione. Solo connessioni Bluetooth. I dispositivi in carica vengono ignorati.</value></data>
+  <data name="MacroAction_DisconnectController_Tooltip" xml:space="preserve"><value>Interrompe il collegamento Bluetooth del controller in modo che entri in sospensione. Solo connessioni Bluetooth.</value></data>
   <data name="MacroAction_DisconnectController_Format" xml:space="preserve"><value>Disconnetti controller: {0}</value></data>
   <data name="MacroDisconnect_Target_Label" xml:space="preserve"><value>Destinazione</value></data>
   <data name="MacroDisconnect_TriggeringDevice" xml:space="preserve"><value>Dispositivo attivante</value></data>
@@ -2126,10 +2126,10 @@
   <data name="MacroDisconnect_SlotDevices" xml:space="preserve"><value>Tutti i dispositivi di questo slot</value></data>
   <data name="MacroDisconnect_AllDevices" xml:space="preserve"><value>Tutti i dispositivi Bluetooth</value></data>
   <data name="MacroDisconnect_Device_Label" xml:space="preserve"><value>Dispositivo</value></data>
-  <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Solo Bluetooth. Il controller entra in sospensione quando il collegamento cade. I dispositivi in carica vengono ignorati.</value></data>
+  <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Solo Bluetooth. Il controller entra in sospensione quando il collegamento cade.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Disconnessione per inattività</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuti (0 = disattivato)</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Disconnette questo controller Bluetooth dopo questi minuti senza input, così entra in sospensione e risparmia batteria. Non si attiva mai durante la carica o via USB.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Disconnette questo controller Bluetooth dopo questi minuti senza input, così entra in sospensione e risparmia batteria. Non si attiva mai via USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Accensione</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>

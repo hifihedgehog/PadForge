@@ -2096,7 +2096,7 @@
   <data name="DeviceType_Nfc" xml:space="preserve"><value>Lecteur NFC</value></data>
   <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>Contrôle multimédia</value></data>
   <data name="MacroAction_Type_DisconnectController" xml:space="preserve"><value>Déconnecter la manette</value></data>
-  <data name="MacroAction_DisconnectController_Tooltip" xml:space="preserve"><value>Coupe la liaison Bluetooth de la manette pour qu'elle se mette en veille. Connexions Bluetooth uniquement. Les appareils en charge sont ignorés.</value></data>
+  <data name="MacroAction_DisconnectController_Tooltip" xml:space="preserve"><value>Coupe la liaison Bluetooth de la manette pour qu'elle se mette en veille. Connexions Bluetooth uniquement.</value></data>
   <data name="MacroAction_DisconnectController_Format" xml:space="preserve"><value>Déconnecter la manette : {0}</value></data>
   <data name="MacroDisconnect_Target_Label" xml:space="preserve"><value>Cible</value></data>
   <data name="MacroDisconnect_TriggeringDevice" xml:space="preserve"><value>Appareil déclencheur</value></data>
@@ -2104,10 +2104,10 @@
   <data name="MacroDisconnect_SlotDevices" xml:space="preserve"><value>Tous les appareils de cet emplacement</value></data>
   <data name="MacroDisconnect_AllDevices" xml:space="preserve"><value>Tous les appareils Bluetooth</value></data>
   <data name="MacroDisconnect_Device_Label" xml:space="preserve"><value>Appareil</value></data>
-  <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Bluetooth uniquement. La manette se met en veille dès que la liaison est coupée. Les appareils en charge sont ignorés.</value></data>
+  <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Bluetooth uniquement. La manette se met en veille dès que la liaison est coupée.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Déconnexion en cas d'inactivité</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutes (0 = désactivé)</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Déconnecte cette manette Bluetooth après ce nombre de minutes sans entrée, pour qu'elle se mette en veille et économise la batterie. Ne se déclenche jamais pendant la charge ni en USB.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Déconnecte cette manette Bluetooth après ce nombre de minutes sans entrée, pour qu'elle se mette en veille et économise la batterie. Ne se déclenche jamais en USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Alimentation</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>

@@ -136,12 +136,15 @@ namespace PadForge.Common.Input
         /// <c>InputManager.TestRumbleTargetGuid</c>.</summary>
         public static Func<int, Guid> TestRumbleTargetGuidProvider { get; set; }
 
-        /// <summary>Static provider for the slot's reported battery percent
-        /// (0..100). Drives the Battery lightbar mode's low→full gradient
-        /// lerp. Returns 100 when the slot has no battery info (defaults to
-        /// "full" so the lightbar shows the high-charge color rather than
-        /// the empty color when battery telemetry is unavailable).</summary>
-        public static Func<int, byte> SlotBatteryPercentProvider { get; set; }
+        /// <summary>Static provider for a specific physical device's reported
+        /// battery percent (0..100). Drives the Battery lightbar mode's
+        /// low→full gradient lerp. Keyed by (slot, device InstanceGuid)
+        /// because the Battery lightbar is a per-device output: two Sony pads
+        /// on one slot each light to their own charge. Returns 100 when the
+        /// device has no battery info (defaults to "full" so the lightbar
+        /// shows the high-charge color rather than the empty color when
+        /// battery telemetry is unavailable).</summary>
+        public static Func<int, Guid, byte> SlotBatteryPercentProvider { get; set; }
 
         /// <summary>Static provider for the per-(slot, physical device)
         /// impulse-trigger motor values (8-bit right / left). Returns the
@@ -188,6 +191,14 @@ namespace PadForge.Common.Input
         private PlayStationSlotConfig _config;
         private System.Threading.Timer _animTimer;
         private bool _animTickActive;
+        // Guards the _animTimer / _animTickActive read-modify-write.
+        // UpdateAnimTimer is reached from BOTH the polling thread
+        // (OnPollingTickInstance) and the UI thread (OnConfigChanged /
+        // Open / Rebind); without this lock two threads observing
+        // !_animTickActive in the same window would each construct a
+        // Timer, orphan the first (33 ms leak for process life), and
+        // double-dispatch effect packets to the pad.
+        private readonly object _animTimerLock = new();
         private volatile bool _disposed;
 
         // Per-mode runtime state. The synthesizer is stateless; the
@@ -698,31 +709,49 @@ namespace PadForge.Common.Input
                     wantTimer = true;
             }
 
-            if (wantTimer && !_animTickActive)
+            bool dispatchFinal = false;
+            lock (_animTimerLock)
             {
-                _animTickActive = true;
-                _animTimer = new System.Threading.Timer(
-                    OnAnimTick, null, AnimTickMs, AnimTickMs);
+                if (wantTimer && !_animTickActive)
+                {
+                    _animTickActive = true;
+                    _animTimer = new System.Threading.Timer(
+                        OnAnimTick, null, AnimTickMs, AnimTickMs);
+                }
+                else if (!wantTimer && _animTickActive)
+                {
+                    // Stop the timer under the lock, but defer the final
+                    // snapshot dispatch until after releasing it (dispatch
+                    // touches HID/effect paths and must not run under the
+                    // lifecycle lock).
+                    StopAnimTimerLocked();
+                    dispatchFinal = true;
+                }
             }
-            else if (!wantTimer && _animTickActive)
-            {
-                // Dispatch a final snapshot before stopping so the rumble
+
+            if (dispatchFinal)
+                // Dispatch a final snapshot after stopping so the rumble
                 // bytes (now zeroed) reach the firmware. Without this,
                 // the dispatcher's last per-tick write was the live
                 // rumble; when the polling thread reports gameRumble=false
-                // and we stop the timer here, the controller never gets
-                // a "rumble = 0" packet and keeps rumbling until the next
+                // and we stop the timer, the controller never gets a
+                // "rumble = 0" packet and keeps rumbling until the next
                 // dispatch (which can be 6-8s away if the user has no
                 // animated lightbar / audio rumble running). This is the
                 // OnPollingTickInstance counterpart to OnAnimTick's
                 // early-exit final snapshot at line ~479.
                 DispatchSnapshot();
-                StopAnimTimer();
-            }
         }
 
 
         private void StopAnimTimer()
+        {
+            lock (_animTimerLock)
+                StopAnimTimerLocked();
+        }
+
+        /// <summary>Timer teardown; caller must hold <see cref="_animTimerLock"/>.</summary>
+        private void StopAnimTimerLocked()
         {
             _animTickActive = false;
             try { _animTimer?.Dispose(); } catch { }
@@ -1287,7 +1316,7 @@ namespace PadForge.Common.Input
                     // the synthesizer's Battery lightbar mode lerp. Default
                     // to 100 ("full") when the provider isn't wired so a
                     // misconfigured slot doesn't paint empty-battery red.
-                    byte pctByte = SlotBatteryPercentProvider?.Invoke(_padIndex) ?? (byte)100;
+                    byte pctByte = SlotBatteryPercentProvider?.Invoke(_padIndex, ud.InstanceGuid) ?? (byte)100;
                     bool assertRightTrig = padForgeWantsRightAt
                         || devOverrides.RightTriggerEffect != null
                         || prevPadForgeWantsRightAt;

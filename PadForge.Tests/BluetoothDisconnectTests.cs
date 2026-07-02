@@ -62,13 +62,12 @@ namespace PadForge.Tests
         // ── Steam power-off report (SC2026 and 2015 Gordon) ──
 
         [Fact]
-        public void SteamPowerOffReport_MagicForm_MatchesHandheldCompanionBytes()
+        public void SteamPowerOffReport_GordonForm_MatchesHandheldCompanionBytes()
         {
             // HandheldCompanion GordonController.cs TurnOff (2015 Gordon) sends
-            // [0x9F, 0x04, 0x6f, 0x66, 0x66, 0x21] ("off!"), and the on-wire
-            // feature buffer prepends report id 0x00 (SDL_hidapi_steam.c's
-            // 0x00 + blob framing, mirrored by HapticToneService).
-            byte[] buf = BluetoothLinkHelper.BuildSteamPowerOffReport(65, withOffMagic: true);
+            // [0x9F, 0x04, 0x6f, 0x66, 0x66, 0x21] ("off!") in a 65-byte
+            // report-id-0 buffer (SDL_hidapi_steamdeck.c:98 shape).
+            byte[] buf = BluetoothLinkHelper.BuildSteamPowerOffReport(65, 0x00, withOffMagic: true);
             Assert.Equal(65, buf.Length);
             Assert.Equal(0x00, buf[0]);
             Assert.Equal(0x9F, buf[1]);
@@ -82,13 +81,16 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void SteamPowerOffReport_BareForm_MatchesSteamControllerTools()
+        public void SteamPowerOffReport_TritonForm_MatchesSdlLizardFraming()
         {
-            // steam_controller_tools controller.ts turnOff (2026 controller)
-            // sends the bare protocol id with a zero payload.
-            byte[] buf = BluetoothLinkHelper.BuildSteamPowerOffReport(65, withOffMagic: false);
-            Assert.Equal(65, buf.Length);
-            Assert.Equal(0x00, buf[0]);
+            // The 2026 Triton takes a 64-byte report-id-1 buffer
+            // (SDL_hidapi_steam_triton.c:130, buffer[64] = { 1 }) with the
+            // bare protocol id per steam_controller_tools controller.ts:204.
+            // Report id 0 on this collection fails with
+            // ERROR_INVALID_PARAMETER, traced on hardware 2026-07-02.
+            byte[] buf = BluetoothLinkHelper.BuildSteamPowerOffReport(64, 0x01, withOffMagic: false);
+            Assert.Equal(64, buf.Length);
+            Assert.Equal(0x01, buf[0]);
             Assert.Equal(0x9F, buf[1]);
             for (int i = 2; i < buf.Length; i++)
                 Assert.Equal(0x00, buf[i]);

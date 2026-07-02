@@ -118,6 +118,16 @@ namespace PadForge.Engine
         /// the camera is off. Populated by SdlDeviceWrapper.</summary>
         public float JoyConIrIntensity;
 
+        /// <summary>Joy-Con 2 optical mouse sensor motion, in raw sensor counts
+        /// accumulated since the previous poll (issue #154). The SDL fork's BLE
+        /// Switch 2 driver posts the sensor's absolute 16-bit X/Y counters on
+        /// dedicated joystick axes 6/7 (SDL#8); SdlDeviceWrapper turns them into
+        /// per-poll deltas with 16-bit wraparound (the jc2mouse delta_u16 idiom).
+        /// Screen convention: +X = right, +Y = toward the user (down), matching
+        /// how joycon2mouse/jc2mouse feed the OS cursor. 0 when idle or absent.</summary>
+        public float JoyCon2MouseDX;
+        public float JoyCon2MouseDY;
+
         /// <summary>Battery percentage from SDL3 (0..100, or -1 if unknown).
         /// Refreshed periodically by SdlDeviceWrapper, not every frame.</summary>
         public int BatteryPercent;
@@ -171,6 +181,8 @@ namespace PadForge.Engine
             clone.Midi = Midi?.Clone();
             clone.Ir = Ir; // value type copy (X/Y/Detected)
             clone.JoyConIrIntensity = JoyConIrIntensity;
+            clone.JoyCon2MouseDX = JoyCon2MouseDX;
+            clone.JoyCon2MouseDY = JoyCon2MouseDY;
             clone.BatteryPercent = BatteryPercent;
             clone.BatteryCharging = BatteryCharging;
             return clone;

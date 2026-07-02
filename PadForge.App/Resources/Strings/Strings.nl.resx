@@ -1053,6 +1053,7 @@
   <data name="Mouse_Y" xml:space="preserve"><value>Muis Y</value></data>
   <data name="Mouse_Scroll" xml:space="preserve"><value>Scrollen</value></data>
 
+  <data name="Mouse_ScrollH" xml:space="preserve"><value>Horizontaal scrollen</value></data>
   <!-- ═══ Extended Custom Labels ═══ -->
   <data name="Extended_Stick_Format" xml:space="preserve"><value>Stick {0} X</value></data>
   <data name="Extended_StickY_Format" xml:space="preserve"><value>Stick {0} Y</value></data>
@@ -1100,6 +1101,8 @@
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-aanwijzer X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-aanwijzer Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR-helderheid</value></data>
+  <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Muisbeweging X</value></data>
+  <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Muisbeweging Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheid van de IR-aanwijzer per bron. 1.0 bereikt de volledige stick-uitslag aan de rand van het gezichtsveld van de camera. Waarden boven 1.0 bereiken de volledige uitslag met minder richtbeweging. Waarden onder 1.0 hebben meer nodig.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Totaalgewicht (Balance)</value></data>

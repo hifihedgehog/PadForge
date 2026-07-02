@@ -1192,6 +1192,9 @@ namespace PadForge.ViewModels
 
             // ── Mouse scroll (bidirectional, visualized as Right Stick Y) ──
             Mappings.Add(new MappingItem(Strings.Instance.Mouse_Scroll, "KbmScroll", MappingCategory.RightStick, negSettingName: "KbmScrollNeg"));
+
+            // ── Horizontal mouse scroll (issue #154, office-mouse tilt wheel) ──
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_ScrollH, "KbmScrollH", MappingCategory.RightStick, negSettingName: "KbmScrollHNeg"));
         }
 
         /// <summary>

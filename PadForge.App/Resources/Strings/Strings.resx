@@ -1374,6 +1374,8 @@
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR Pointer X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR Pointer Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR Brightness</value></data>
+  <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Mouse Motion X</value></data>
+  <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Mouse Motion Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Per-source IR pointer sensitivity. 1.0 reaches full stick deflection at the edge of the camera's field of view. Values above 1.0 reach full deflection with less aim travel. Values below 1.0 need more.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Balance Total Weight</value></data>
@@ -1725,6 +1727,7 @@
   <data name="Mouse_Y" xml:space="preserve"><value>Mouse Y</value></data>
   <data name="Mouse_Scroll" xml:space="preserve"><value>Scroll</value></data>
 
+  <data name="Mouse_ScrollH" xml:space="preserve"><value>Scroll Horizontal</value></data>
   <!-- ═══ Extended Custom Labels ═══ -->
   <data name="Extended_Stick_Format" xml:space="preserve"><value>Stick {0} X</value></data>
   <data name="Extended_StickY_Format" xml:space="preserve"><value>Stick {0} Y</value></data>

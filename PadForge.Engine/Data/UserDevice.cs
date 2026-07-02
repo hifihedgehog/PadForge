@@ -142,6 +142,18 @@ namespace PadForge.Engine.Data
         public bool HasJoyConIr => VendorId == 0x057E
             && string.Equals(ProductName, "Nintendo Switch Joy-Con (R)", StringComparison.OrdinalIgnoreCase);
 
+        /// <summary>Whether the device is a Joy-Con 2 (L or R), whose optical
+        /// mouse sensor drives the "Mouse Motion X/Y" sources (issue #154).
+        /// Identity-derived like the gates above, exact-equality against the
+        /// BLE driver's names (SDL_ble_switch2joystick.c:1328/:1331) so no
+        /// suffix collision is possible. The Switch 2 Pro and GameCube have no
+        /// mouse sensor, and the gen-1 Joy-Cons carry a camera instead.
+        /// Computed, not stored. Gates the picker offering.</summary>
+        [XmlIgnore]
+        public bool HasJoyCon2Mouse => VendorId == 0x057E
+            && (string.Equals(ProductName, "Nintendo Switch 2 Joy-Con (L)", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(ProductName, "Nintendo Switch 2 Joy-Con (R)", StringComparison.OrdinalIgnoreCase));
+
         // Wii IR pointer tuning (sensor-bar position/compensation, smoothing)
         // moved to PadSetting (issue #146 follow-up) so each (device, slot)
         // pair gets its own pointer feel, the same move the gyro tuning made

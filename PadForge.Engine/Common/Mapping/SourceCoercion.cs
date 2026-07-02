@@ -65,6 +65,12 @@ namespace PadForge.Engine.Common.Mapping
                              // PER DEVICE from CustomInputState.JoyConIrIntensity.
                              // Covered sensor = bright = 1; uncovered = dark = 0,
                              // so it works as a cover button or proximity trigger.
+            JoyCon2Mouse,    // "Mouse Motion X" / "Mouse Motion Y" (issue #154).
+                             // Joy-Con 2 optical mouse sensor motion, bipolar
+                             // [-1..+1] per-poll velocity, read PER DEVICE from
+                             // CustomInputState.JoyCon2MouseDX/DY. Scaled to
+                             // match a real mouse's motion axes (SdlMouseWrapper
+                             // MotionScale) so both feel identical in the grid.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -501,6 +507,8 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.Gyro;
             if (s.StartsWith("Mouse Position ", StringComparison.Ordinal))
                 return SourceType.MouseCursor;
+            if (s.StartsWith("Mouse Motion ", StringComparison.Ordinal))
+                return SourceType.JoyCon2Mouse;
             if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
                 return SourceType.IrPointer;
             if (s.Equals("IR Brightness", StringComparison.Ordinal))
@@ -808,6 +816,36 @@ namespace PadForge.Engine.Common.Mapping
             }
 
             float v = baseVal * (float)src.IrPointerSensitivity;
+            if (v < -1f) v = -1f;
+            else if (v > 1f) v = 1f;
+            return v;
+        }
+
+        /// <summary>Per-poll sensor counts that map to full deflection for the
+        /// Joy-Con 2 mouse sources (issue #154). Chosen for parity with a real
+        /// mouse in PadForge: SdlMouseWrapper turns Raw Input deltas into axis
+        /// values at MotionScale 2048 per count over the 0..65535 range, i.e.
+        /// 16 counts in one poll = full scale. The sensor and a physical mouse
+        /// therefore feel identical through the same mapping grid.</summary>
+        private const float JoyCon2MouseCountsFullScale = 16f;
+
+        /// <summary>Reads a Joy-Con 2 optical mouse motion source
+        /// ("Mouse Motion X" / "Mouse Motion Y", issue #154) as a bipolar
+        /// [-1..+1] per-poll velocity. The per-source
+        /// <see cref="MappingSource.IrPointerSensitivity"/> scales it like the
+        /// IR pointer (default 1.0), so a row can be made faster or slower
+        /// without touching the shared constant. Invert rides the public
+        /// Evaluate* wrappers, matching the other engine families.</summary>
+        private static float ReadJoyCon2MouseMotion(CustomInputState state, MappingSource src)
+        {
+            if (state == null || src?.Descriptor == null) return 0f;
+            string s = src.Descriptor;
+            float counts;
+            if (s.EndsWith(" X", StringComparison.Ordinal)) counts = state.JoyCon2MouseDX;
+            else if (s.EndsWith(" Y", StringComparison.Ordinal)) counts = state.JoyCon2MouseDY;
+            else return 0f;
+
+            float v = counts / JoyCon2MouseCountsFullScale * (float)src.IrPointerSensitivity;
             if (v < -1f) v = -1f;
             else if (v > 1f) v = 1f;
             return v;
@@ -1419,6 +1457,16 @@ namespace PadForge.Engine.Common.Mapping
                 return state.JoyConIrIntensity > Math.Max(cdz, 1) / 100f;
             }
 
+            if (s.StartsWith("Mouse Motion ", StringComparison.Ordinal))
+            {
+                // Motion-as-button (issue #154, the "invisible weapon wheel"):
+                // fires while the sensor moves faster than the threshold. The
+                // per-row Invert + HalfAxis flags select a single direction.
+                float v = ReadJoyCon2MouseMotion(state, src);
+                int cdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                return Math.Abs(v) > Math.Max(cdz, 1) / 100f;
+            }
+
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return false;
 
@@ -1555,6 +1603,9 @@ namespace PadForge.Engine.Common.Mapping
             if (s.Equals("IR Brightness", StringComparison.Ordinal))
                 return state.JoyConIrIntensity;
 
+            if (s.StartsWith("Mouse Motion ", StringComparison.Ordinal))
+                return ReadJoyCon2MouseMotion(state, src);
+
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;
 
@@ -1659,6 +1710,12 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.Equals("IR Brightness", StringComparison.Ordinal))
                 return state.JoyConIrIntensity; // already unipolar 0..1
+
+            if (s.StartsWith("Mouse Motion ", StringComparison.Ordinal))
+                // Motion-as-trigger (issue #154): speed = pull, direction-blind
+                // by default (Math.Abs, same as the IR Pointer trigger read);
+                // HalfAxis on the row selects one direction.
+                return Math.Abs(ReadJoyCon2MouseMotion(state, src));
 
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;

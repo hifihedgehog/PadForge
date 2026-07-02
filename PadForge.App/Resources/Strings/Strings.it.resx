@@ -1053,6 +1053,7 @@
   <data name="Mouse_Y" xml:space="preserve"><value>Mouse Y</value></data>
   <data name="Mouse_Scroll" xml:space="preserve"><value>Scorrimento</value></data>
 
+  <data name="Mouse_ScrollH" xml:space="preserve"><value>Scorrimento orizzontale</value></data>
   <!-- ═══ Extended Custom Labels ═══ -->
   <data name="Extended_Stick_Format" xml:space="preserve"><value>Levetta {0} X</value></data>
   <data name="Extended_StickY_Format" xml:space="preserve"><value>Levetta {0} Y</value></data>
@@ -1100,6 +1101,8 @@
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Puntatore IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Puntatore IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Luminosità IR</value></data>
+  <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Movimento del mouse X</value></data>
+  <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Movimento del mouse Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensibilità</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Sensibilità del puntatore IR per sorgente. 1.0 raggiunge lo spostamento completo dello stick al bordo del campo visivo della fotocamera. I valori sopra 1.0 raggiungono lo spostamento completo con meno movimento di mira. I valori sotto 1.0 ne richiedono di più.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Peso totale (Balance)</value></data>

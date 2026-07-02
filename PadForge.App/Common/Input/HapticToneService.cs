@@ -225,6 +225,14 @@ namespace PadForge.Common.Input
             // sustained note re-arms when the envelope steps, not every tick. The
             // 0x8f square (2015 + Deck) has no working gain, so it ignores this.
             public float SteamLastAmp;
+            // Wall-clock of the last re-arm burst on the Steam-family paths.
+            // Busy audio (a macro's wobbling pitch) crosses the 3% pitch gate on
+            // many consecutive ticks; the resulting edge flood is what wedged the
+            // Triton's haptic engine into a garbled state that persisted into
+            // later cues (observed on hardware, 2026-07-01). Bursts are capped at
+            // SDL's own write cadence for this pad (40 ms,
+            // TRITON_RUMBLE_RESEND_INTERVAL_MS in SDL_hidapi_steam_triton.c).
+            public long SteamLastBurstMs;
 
             // Direct test-tone window (Audio-tab Test button). While TestUntilMs is in
             // the future the stream loop drives TestHz at full amplitude straight to
@@ -823,6 +831,15 @@ namespace PadForge.Common.Input
                         else { (toneHz, amp) = s.Reducer.Push(monoF, SamplesPerTick); }
                     }
 
+                    // On-controller sinks own their loudness (SoundMacroService
+                    // deliberately skips master-volume scaling for OnController
+                    // placements; the Sony dispatcher applies the slot volume as
+                    // the firmware volume byte per report). Apply the same slot
+                    // volume here at the sink: it reaches the Triton/Joy-Con gain
+                    // and gates the pitch-only 0x8F square. Covers macro sounds,
+                    // the system-audio mirror, and the Test button alike.
+                    amp *= Math.Clamp(SoundMacroService.GetSlotVolume(s.Slot) / 100f, 0f, 1f);
+
                     bool audible = amp > 0.02f;
                     if (audible) s.LastContentMs = nowMs;
                     bool streaming = testActive || (nowMs - s.LastContentMs) < HangoverMs;
@@ -900,13 +917,19 @@ namespace PadForge.Common.Input
             // no working gain, so amplitude is not encoded -- pitch only).
             if (streaming)
             {
-                bool pitchShift = !s.SteamOn || Math.Abs(toneHz - s.SteamLastFreq) > s.SteamLastFreq * 0.03f + 1f;
-                if (pitchShift)
+                bool firstArm = !s.SteamOn;
+                bool pitchShift = firstArm || Math.Abs(toneHz - s.SteamLastFreq) > s.SteamLastFreq * 0.03f + 1f;
+                // Same 40 ms re-arm cap as the Triton path: a pitch-edge flood is
+                // a feature-report control transfer per tick here, which the
+                // stream comments already flag as saturating. A fresh cue always
+                // arms immediately.
+                if (pitchShift && (firstArm || Environment.TickCount64 - s.SteamLastBurstMs >= 40))
                 {
                     SteamSendBlob(s, HapticToneEncoder.EncodeSteamClassic(toneHz, durationSeconds: -1.0, haptic: 0));
                     SteamSendBlob(s, HapticToneEncoder.EncodeSteamClassic(toneHz, durationSeconds: -1.0, haptic: 1));
                     s.SteamOn = true;
                     s.SteamLastFreq = toneHz;
+                    s.SteamLastBurstMs = Environment.TickCount64;
                 }
             }
             else if (s.SteamOn)
@@ -926,15 +949,32 @@ namespace PadForge.Common.Input
         {
             if (streaming)
             {
-                bool pitchShift = !s.SteamOn || Math.Abs(toneHz - s.SteamLastFreq) > s.SteamLastFreq * 0.03f + 1f;
+                bool firstArm = !s.SteamOn;
+                bool pitchShift = firstArm || Math.Abs(toneHz - s.SteamLastFreq) > s.SteamLastFreq * 0.03f + 1f;
                 bool ampStep = Math.Abs(amp - s.SteamLastAmp) > 0.10f;
-                if (pitchShift || ampStep)
+                long nowMs = Environment.TickCount64;
+                // Re-arm bursts are capped at 40 ms (SDL's TRITON_RUMBLE_RESEND_
+                // INTERVAL_MS, Valve's own write cadence for this pad). Without the
+                // cap, busy audio re-arms 4 actuators at up to 100 Hz and the flood
+                // wedges the haptic engine into a garbled state that persists into
+                // later cues (observed on hardware, 2026-07-01). A fresh cue always
+                // arms immediately.
+                if ((pitchShift || ampStep) && (firstArm || nowMs - s.SteamLastBurstMs >= 40))
                 {
+                    if (firstArm)
+                    {
+                        // A plain zero rumble command resets the haptic engine out
+                        // of the wedged state (observed on hardware: a normal
+                        // rumble signal clears the garble). Same zero form SDL's
+                        // RumbleJoystick sends (report 0x80, payload all zero).
+                        TritonSend(s, HapticToneEncoder.EncodeTritonRumbleClear());
+                    }
                     foreach (int hap in HapticToneEncoder.TritonActuators)
                         TritonSend(s, HapticToneEncoder.EncodeTritonTone(hap, toneHz, amp));
                     s.SteamOn = true;
                     s.SteamLastFreq = toneHz;
                     s.SteamLastAmp = amp;
+                    s.SteamLastBurstMs = nowMs;
                 }
             }
             else if (s.SteamOn)
@@ -979,13 +1019,16 @@ namespace PadForge.Common.Input
             // The 0x8F square is pitch-only (no working gain), so amp just gates.
             if (streaming)
             {
-                bool pitchShift = !s.SteamOn || Math.Abs(toneHz - s.SteamLastFreq) > s.SteamLastFreq * 0.03f + 1f;
-                if (pitchShift)
+                bool firstArm = !s.SteamOn;
+                bool pitchShift = firstArm || Math.Abs(toneHz - s.SteamLastFreq) > s.SteamLastFreq * 0.03f + 1f;
+                // Same 40 ms re-arm cap as the Triton/2015 paths (see those ticks).
+                if (pitchShift && (firstArm || Environment.TickCount64 - s.SteamLastBurstMs >= 40))
                 {
                     SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamClassic(toneHz, durationSeconds: -1.0, haptic: 0));
                     SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamClassic(toneHz, durationSeconds: -1.0, haptic: 1));
                     s.SteamOn = true;
                     s.SteamLastFreq = toneHz;
+                    s.SteamLastBurstMs = Environment.TickCount64;
                 }
             }
             else if (s.SteamOn)

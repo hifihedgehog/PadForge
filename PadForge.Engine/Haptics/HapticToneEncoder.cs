@@ -294,6 +294,20 @@ namespace PadForge.Engine.Haptics
             return b;
         }
 
+        /// <summary>The Triton zero-rumble command: report 0x80
+        /// (ID_OUT_REPORT_HAPTIC_RUMBLE) with the whole payload zero, byte-identical
+        /// to SDL's HIDAPI_DriverSteamTriton_RumbleJoystick with both speeds 0
+        /// (SDL_hidapi_steam_triton.c: type 0, intensity 0, left/right speed 0,
+        /// gain 0). Sent before arming a fresh tone cue because a plain rumble
+        /// write is what clears the haptic engine's wedged/garbled state on real
+        /// hardware (observed 2026-07-01).</summary>
+        public static byte[] EncodeTritonRumbleClear()
+        {
+            var b = new byte[10];
+            b[0] = 0x80; // ID_OUT_REPORT_HAPTIC_RUMBLE, payload all zero
+            return b;
+        }
+
         /// <summary>Maps amplitude 0..1 to the Steam haptic <c>gain_db</c> field: 0 dB
         /// at amp=1 (unity, the proven reference ceiling), 20*log10(amp) below, floored
         /// at -40 dB. Never positive -- positive dB drives the firmware limiter into

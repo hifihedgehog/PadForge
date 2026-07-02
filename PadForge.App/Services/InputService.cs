@@ -849,18 +849,35 @@ namespace PadForge.Services
                 }
             };
 
-            // Wii IR pointer per-device tuning (#146 Pointer tab): resolve the
-            // sensor-bar vertical offset (above -> negative, below -> positive, like
-            // Touchmote's offsetY) and the smoothing factor from the UserDevice, for
-            // ReadIrPointer to apply.
-            PadForge.Engine.Common.Mapping.SourceCoercion.IrTuningProvider = deviceGuid =>
+            // Wii IR pointer tuning (#146 Pointer tab), per (device, slot): the
+            // sensor-bar vertical offset (above -> negative, below -> positive,
+            // like Touchmote's offsetY) and the smoothing factor come from the
+            // pair's PadSetting, same lookup shape as GyroTuningProvider, so
+            // each virtual controller sharing one remote keeps its own feel.
+            PadForge.Engine.Common.Mapping.SourceCoercion.IrTuningProvider = (deviceGuid, slotIndex) =>
             {
                 if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return (0f, 0f);
-                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(g);
-                if (ud == null) return (0f, 0f);
-                float comp = (float)ud.IrSensorBarComp;
-                float off = ud.IrSensorBarPos == 1 ? -comp : ud.IrSensorBarPos == 2 ? comp : 0f;
-                return (off, (float)ud.IrSmoothing);
+                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return (0f, 0f);
+                var irSettings = SettingsManager.UserSettings;
+                if (irSettings == null) return (0f, 0f);
+                PadSetting irPs = null;
+                lock (irSettings.SyncRoot)
+                {
+                    for (int i = 0; i < irSettings.Items.Count; i++)
+                    {
+                        var us = irSettings.Items[i];
+                        if (us == null) continue;
+                        if (us.InstanceGuid != g) continue;
+                        if (us.MapTo != slotIndex) continue;
+                        irPs = us.GetPadSetting();
+                        break;
+                    }
+                }
+                if (irPs == null) return (0f, 0f);
+                int pos = (int)TryParseFloatPs(irPs.IrSensorBarPos, 0f);
+                float comp = TryParseFloatPs(irPs.IrSensorBarComp, 0f);
+                float off = pos == 1 ? -comp : pos == 2 ? comp : 0f;
+                return (off, TryParseFloatPs(irPs.IrSmoothing, 0f));
             };
 
             // Cursor-position source (#107): a 200 Hz sampler publishes the
@@ -2690,6 +2707,9 @@ namespace PadForge.Services
             ps.GyroEasyAimStickThreshold = padVm.GyroEasyAimStickThreshold.ToString("F0", ic);
             ps.GyroEngageStickSide = string.IsNullOrEmpty(padVm.GyroEngageStickSide) ? "Right" : padVm.GyroEngageStickSide;
             ps.GyroEngageStickDirection = string.IsNullOrEmpty(padVm.GyroEngageStickDirection) ? "Full" : padVm.GyroEngageStickDirection;
+            ps.IrSensorBarPos = padVm.IrSensorBarPos.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            ps.IrSensorBarComp = (padVm.IrSensorBarCompPercent / 100.0).ToString(System.Globalization.CultureInfo.InvariantCulture);
+            ps.IrSmoothing = (padVm.IrSmoothingPercent / 100.0).ToString(System.Globalization.CultureInfo.InvariantCulture);
             // JoyShockMapper-canon extensions.
             ps.GyroSpace = padVm.GyroSpace ?? "Local";
             ps.GyroPlayerSpaceYawRelaxFactor = padVm.GyroPlayerSpaceYawRelaxFactor.ToString("F2", ic);
@@ -3013,6 +3033,9 @@ namespace PadForge.Services
             padVm.GyroEasyAimStickThreshold = TryParseDouble(ps.GyroEasyAimStickThreshold, 0);
             padVm.GyroEngageStickSide = string.IsNullOrEmpty(ps.GyroEngageStickSide) ? "Right" : ps.GyroEngageStickSide;
             padVm.GyroEngageStickDirection = string.IsNullOrEmpty(ps.GyroEngageStickDirection) ? "Full" : ps.GyroEngageStickDirection;
+            padVm.IrSensorBarPos = (int)TryParseFloatPs(ps.IrSensorBarPos, 0f);
+            padVm.IrSensorBarCompPercent = (int)Math.Round(TryParseFloatPs(ps.IrSensorBarComp, 0f) * 100f);
+            padVm.IrSmoothingPercent = (int)Math.Round(TryParseFloatPs(ps.IrSmoothing, 0f) * 100f);
             // JoyShockMapper-canon extensions.
             padVm.GyroSpace = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace;
             padVm.GyroPlayerSpaceYawRelaxFactor = TryParseDouble(ps.GyroPlayerSpaceYawRelaxFactor, 1.41);

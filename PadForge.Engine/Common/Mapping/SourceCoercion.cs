@@ -288,14 +288,25 @@ namespace PadForge.Engine.Common.Mapping
         /// or shoes already on it. Returns 0 when untared.</summary>
         public static Func<string, float> BalanceTareKgProvider { get; set; }
 
-        /// <summary>Per-device Wii IR pointer tuning (issue #146 Pointer tab), keyed
-        /// by device GUID. Returns the normalized vertical offset that compensates
-        /// for the sensor bar sitting above or below the screen, and the 0..1
-        /// smoothing factor that low-passes the jittery camera. Grounded in
-        /// Touchmote ScreenPositionCalculator.cs (the sensor-bar offsetY at 162-171
-        /// and the position smoothingBuffer). Returns (0, 0) when unset, i.e. no
-        /// offset and no smoothing.</summary>
-        public static Func<string, (float barOffset, float smoothing)> IrTuningProvider { get; set; }
+        /// <summary>Per-(device, slot) Wii IR pointer tuning (issue #146 Pointer
+        /// tab), keyed by device GUID + VC slot so two virtual controllers
+        /// sharing one remote keep independent pointer feel (stored on
+        /// PadSetting like every other pad-page tunable). Returns the normalized
+        /// vertical offset that compensates for the sensor bar sitting above or
+        /// below the screen, and the 0..1 smoothing factor that low-passes the
+        /// jittery camera. Grounded in Touchmote ScreenPositionCalculator.cs
+        /// (the sensor-bar offsetY at 162-171 and the position smoothingBuffer).
+        /// Returns (0, 0) when unset, i.e. no offset and no smoothing.</summary>
+        public static Func<string, int, (float barOffset, float smoothing)> IrTuningProvider { get; set; }
+
+        // Per-(device, slot, axis) EMA state for the IR pointer smoothing. The
+        // smoothing must live at the slot-scoped read (not the per-device
+        // wrapper) so each virtual controller's Pointer-tab setting applies
+        // independently. Entries are removed on sight loss so a re-acquire
+        // snaps instead of sliding in from stale, and the population is
+        // bounded by (devices x slots x 2 axes).
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<
+            (string Dev, int Slot, char Axis), float> _irEmaPrev = new();
 
         /// <summary>Full-scale weight (kg) that maps Total Weight to 1.0. A normal
         /// adult stays well under this, so the normalized source keeps useful
@@ -752,16 +763,45 @@ namespace PadForge.Engine.Common.Mapping
         /// the callers read as "centered", so a brief loss of sight relaxes the
         /// stick rather than snapping it. Invert is applied by the public Evaluate*
         /// wrappers, matching the cursor and gyro paths.</summary>
-        private static float ReadTunedIrPointer(CustomInputState state, MappingSource src)
+        private static float ReadTunedIrPointer(CustomInputState state, MappingSource src, int slotIndex)
         {
             if (src == null || state == null) return 0f;
-            if (!state.Ir.Detected) return 0f;
 
             string s = src.Descriptor ?? "";
-            float baseVal;
-            if (s.EndsWith(" X", StringComparison.Ordinal)) baseVal = state.Ir.X;
-            else if (s.EndsWith(" Y", StringComparison.Ordinal)) baseVal = state.Ir.Y;
+            char axis;
+            if (s.EndsWith(" X", StringComparison.Ordinal)) axis = 'X';
+            else if (s.EndsWith(" Y", StringComparison.Ordinal)) axis = 'Y';
             else return 0f;
+
+            string dev = src.DeviceGuid ?? "";
+            if (!state.Ir.Detected)
+            {
+                // Sight lost: relax to center and drop the smoothing state so a
+                // re-acquire snaps instead of sliding in from stale.
+                _irEmaPrev.TryRemove((dev, slotIndex, axis), out _);
+                return 0f;
+            }
+
+            float baseVal = axis == 'X' ? state.Ir.X : state.Ir.Y;
+
+            // Per-(device, slot) Pointer-tab tuning: sensor-bar vertical offset
+            // (Y only, Touchmote offsetY) then EMA smoothing, applied HERE at
+            // the slot-scoped read (not the per-device wrapper) so each virtual
+            // controller keeps its own pointer feel. Same order the wrapper
+            // used: offset -> smoothing -> sensitivity -> clamp.
+            var tuning = IrTuningProvider?.Invoke(dev, slotIndex);
+            if (tuning.HasValue)
+            {
+                if (axis == 'Y') baseVal += tuning.Value.barOffset;
+                float sm = Math.Clamp(tuning.Value.smoothing, 0f, 0.95f);
+                if (sm > 0f)
+                {
+                    var key = (dev, slotIndex, axis);
+                    if (_irEmaPrev.TryGetValue(key, out float prev))
+                        baseVal = prev + (baseVal - prev) * (1f - sm);
+                    _irEmaPrev[key] = baseVal;
+                }
+            }
 
             float v = baseVal * (float)src.IrPointerSensitivity;
             if (v < -1f) v = -1f;
@@ -1354,7 +1394,7 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
             {
-                float v = ReadTunedIrPointer(state, src);
+                float v = ReadTunedIrPointer(state, src, slotIndex);
                 int cdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
                 return Math.Abs(v) > Math.Max(cdz, 1) / 100f;
             }
@@ -1503,7 +1543,7 @@ namespace PadForge.Engine.Common.Mapping
                 return ReadTunedMouseCursor(src);
 
             if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
-                return ReadTunedIrPointer(state, src);
+                return ReadTunedIrPointer(state, src, slotIndex);
 
             if (s.StartsWith("Balance ", StringComparison.Ordinal))
                 return ReadTunedBalanceBoard(state, src);
@@ -1608,7 +1648,7 @@ namespace PadForge.Engine.Common.Mapping
                 return Math.Abs(ReadTunedMouseCursor(src));
 
             if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
-                return Math.Abs(ReadTunedIrPointer(state, src));
+                return Math.Abs(ReadTunedIrPointer(state, src, slotIndex));
 
             if (s.StartsWith("Balance ", StringComparison.Ordinal))
                 return Math.Abs(ReadTunedBalanceBoard(state, src));

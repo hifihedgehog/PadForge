@@ -7336,7 +7336,7 @@
                                 <TextBlock Text="{Binding Pad_Pointer_SensorBar, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,0,4"/>
                                 <ComboBox Width="240" HorizontalAlignment="Left"
-                                          SelectedIndex="{Binding SelectedDeviceIrSensorBarPos, Mode=TwoWay}">
+                                          SelectedIndex="{Binding IrSensorBarPos, Mode=TwoWay}">
                                     <ComboBoxItem Content="{Binding Pad_Pointer_SensorBar_Centered, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBoxItem Content="{Binding Pad_Pointer_SensorBar_Above, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBoxItem Content="{Binding Pad_Pointer_SensorBar_Below, Source={x:Static strings:Strings.Instance}}"/>
@@ -7345,18 +7345,18 @@
                                 <TextBlock Text="{Binding Pad_Pointer_Compensation, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,12,0,4"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <Slider Value="{Binding SelectedDeviceIrSensorBarCompPercent, Mode=TwoWay}"
+                                    <Slider Value="{Binding IrSensorBarCompPercent, Mode=TwoWay}"
                                             Minimum="0" Maximum="50" Width="240" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding SelectedDeviceIrSensorBarCompPercent, StringFormat={}{0}%}"
+                                    <TextBlock Text="{Binding IrSensorBarCompPercent, StringFormat={}{0}%}"
                                                VerticalAlignment="Center" Margin="8,0,0,0" MinWidth="36"/>
                                 </StackPanel>
 
                                 <TextBlock Text="{Binding Pad_Pointer_Smoothing, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,12,0,4"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <Slider Value="{Binding SelectedDeviceIrSmoothingPercent, Mode=TwoWay}"
+                                    <Slider Value="{Binding IrSmoothingPercent, Mode=TwoWay}"
                                             Minimum="0" Maximum="100" Width="240" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding SelectedDeviceIrSmoothingPercent, StringFormat={}{0}%}"
+                                    <TextBlock Text="{Binding IrSmoothingPercent, StringFormat={}{0}%}"
                                                VerticalAlignment="Center" Margin="8,0,0,0" MinWidth="36"/>
                                 </StackPanel>
                             </StackPanel>

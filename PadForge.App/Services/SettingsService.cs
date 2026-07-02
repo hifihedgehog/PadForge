@@ -2083,6 +2083,9 @@ namespace PadForge.Services
                 padVm.GyroEasyAimStickThreshold = TryParseDouble(ps.GyroEasyAimStickThreshold, 0);
                 padVm.GyroEngageStickSide = string.IsNullOrEmpty(ps.GyroEngageStickSide) ? "Right" : ps.GyroEngageStickSide;
                 padVm.GyroEngageStickDirection = string.IsNullOrEmpty(ps.GyroEngageStickDirection) ? "Full" : ps.GyroEngageStickDirection;
+                padVm.IrSensorBarPos = TryParseInt(ps.IrSensorBarPos, 0);
+                padVm.IrSensorBarCompPercent = (int)Math.Round(TryParseDouble(ps.IrSensorBarComp, 0) * 100.0);
+                padVm.IrSmoothingPercent = (int)Math.Round(TryParseDouble(ps.IrSmoothing, 0) * 100.0);
 
                 // Load JoyShockMapper-canongyro extensions.
                 padVm.GyroSpace = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace;
@@ -3316,6 +3319,9 @@ namespace PadForge.Services
                     ps.GyroEasyAimStickThreshold = padVm.GyroEasyAimStickThreshold.ToString(ic);
                     ps.GyroEngageStickSide = string.IsNullOrEmpty(padVm.GyroEngageStickSide) ? "Right" : padVm.GyroEngageStickSide;
                     ps.GyroEngageStickDirection = string.IsNullOrEmpty(padVm.GyroEngageStickDirection) ? "Full" : padVm.GyroEngageStickDirection;
+                    ps.IrSensorBarPos = padVm.IrSensorBarPos.ToString(ic);
+                    ps.IrSensorBarComp = (padVm.IrSensorBarCompPercent / 100.0).ToString(ic);
+                    ps.IrSmoothing = (padVm.IrSmoothingPercent / 100.0).ToString(ic);
 
                     // Write JoyShockMapper-canongyro extensions.
                     ps.GyroSpace = padVm.GyroSpace ?? "Local";

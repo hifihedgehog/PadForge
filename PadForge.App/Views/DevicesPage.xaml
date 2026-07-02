@@ -374,6 +374,9 @@
                                         <DataTrigger Binding="{Binding IsNfcDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsConsumerDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
@@ -396,6 +399,9 @@
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsNfcDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsConsumerDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -444,6 +450,9 @@
                                         <DataTrigger Binding="{Binding IsNfcDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsConsumerDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
@@ -462,6 +471,9 @@
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsNfcDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsConsumerDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -525,6 +537,41 @@
                                                            FontSize="10" Opacity="0.55" VerticalAlignment="Center"
                                                            Margin="8,0,0,0"/>
                                             </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <!-- Consumer Control: named button chips (issue #168). Shown for
+                             consumer collections in place of the numbered grid and the
+                             empty axes section; each canonical button ("Play/Pause",
+                             "Voice Command", the OK button) lights while held. -->
+                        <StackPanel Visibility="{Binding IsConsumerDevice, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Margin="0,0,0,8">
+                            <TextBlock Text="{Binding Devices_Buttons, Source={x:Static strings:Strings.Instance}}"
+                                       FontSize="11" Opacity="0.6" Margin="0,0,0,3"/>
+                            <ItemsControl ItemsSource="{Binding ConsumerButtons}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="4" Margin="2" Padding="8,4">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Background" Value="#18888888"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsPressed}" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource SystemAccentColorSecondaryBrush}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <TextBlock Text="{Binding Name}" FontSize="11"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>

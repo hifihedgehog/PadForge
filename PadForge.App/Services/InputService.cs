@@ -1938,13 +1938,48 @@ namespace PadForge.Services
                 bool isMidi = ud.CapType == InputDeviceType.Midi;
                 bool isNfc = ud.CapType == InputDeviceType.Nfc;
                 int[] btnIndices = ResolveButtonIndices(ud);
-                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad, isMidi, isNfc);
+                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad, isMidi, isNfc,
+                    consumerButtons: BuildConsumerPreviewItems(ud));
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad;
             }
 
             devVm.HasRawData = true;
+        }
+
+        /// <summary>Builds the named chips for the Consumer Control live
+        /// preview (issue #168): every canonical-table button with its
+        /// localized name, plus any session-dynamic usage the device has
+        /// reported ("Consumer 0xNNNN"). Returns null for other device types
+        /// so the VM keeps its generic sections.</summary>
+        private static System.Collections.Generic.List<ConsumerButtonDisplayItem> BuildConsumerPreviewItems(UserDevice ud)
+        {
+            if (ud.CapType != InputDeviceType.ConsumerControl) return null;
+
+            var items = new System.Collections.Generic.List<ConsumerButtonDisplayItem>(
+                PadForge.Engine.Common.ConsumerUsageTable.Fixed.Length);
+            for (int i = 0; i < PadForge.Engine.Common.ConsumerUsageTable.Fixed.Length; i++)
+            {
+                items.Add(new ConsumerButtonDisplayItem
+                {
+                    Index = i,
+                    Name = PadForge.Common.MappingDisplayResolver.LocalizeObjectName(
+                        PadForge.Engine.Common.ConsumerUsageTable.Fixed[i].Name),
+                });
+            }
+            for (int i = PadForge.Engine.Common.ConsumerUsageTable.Fixed.Length;
+                 i < PadForge.Engine.Common.ConsumerUsageTable.TotalSlots; i++)
+            {
+                ushort usage = PadForge.Engine.RawInputListener.GetDynamicSlotUsage(i);
+                if (usage == 0) continue; // no oddball usage seen this session
+                items.Add(new ConsumerButtonDisplayItem
+                {
+                    Index = i,
+                    Name = PadForge.Engine.Common.ConsumerUsageTable.DynamicName(usage),
+                });
+            }
+            return items;
         }
 
         /// <summary>
@@ -1978,7 +2013,8 @@ namespace PadForge.Services
                 bool isMidi2 = ud.CapType == InputDeviceType.Midi;
                 bool isNfc2 = ud.CapType == InputDeviceType.Nfc;
                 int[] btnIndices = ResolveButtonIndices(ud);
-                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad2, isMidi2, isNfc2);
+                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad2, isMidi2, isNfc2,
+                    consumerButtons: BuildConsumerPreviewItems(ud));
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad2;
@@ -2020,6 +2056,16 @@ namespace PadForge.Services
                 {
                     int vk = devVm.KeyboardKeys[i].VKeyIndex;
                     devVm.KeyboardKeys[i].IsPressed = KeyboardKeyItem.IsVKeyPressed(state.Buttons, vk);
+                }
+            }
+            else if (devVm.IsConsumerDevice)
+            {
+                // Consumer Control (issue #168): light the named chips.
+                for (int i = 0; i < devVm.ConsumerButtons.Count; i++)
+                {
+                    var chip = devVm.ConsumerButtons[i];
+                    int idx = chip.Index;
+                    chip.IsPressed = idx >= 0 && idx < state.Buttons.Length && state.Buttons[idx];
                 }
             }
             else

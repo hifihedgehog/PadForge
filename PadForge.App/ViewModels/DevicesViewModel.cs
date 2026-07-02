@@ -145,6 +145,21 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isNfcDevice, value);
         }
 
+        private bool _isConsumerDevice;
+        /// <summary>Whether the selected device is a Consumer Control
+        /// collection (issue #168): drives the named button-chip preview in
+        /// place of the numbered grid and the empty axes section.</summary>
+        public bool IsConsumerDevice
+        {
+            get => _isConsumerDevice;
+            set => SetProperty(ref _isConsumerDevice, value);
+        }
+
+        /// <summary>Named button chips for the Consumer Control preview
+        /// (issue #168): the canonical table's localized names, plus any
+        /// session-dynamic usages the device has reported.</summary>
+        public ObservableCollection<ConsumerButtonDisplayItem> ConsumerButtons { get; } = new();
+
         /// <summary>Rebuilds the NFC tag preview rows from the registry: "Any NFC
         /// Tag" first, then each registered tag at its stable button index. Called on
         /// device selection and whenever the tag registry changes.</summary>
@@ -298,12 +313,25 @@ namespace PadForge.ViewModels
         /// are stored verbatim and used by the InputService update loop
         /// to read the matching <c>state.Buttons[Index]</c>.
         /// </summary>
-        internal void RebuildRawStateCollections(int axisCount, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false)
+        internal void RebuildRawStateCollections(int axisCount, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false, IReadOnlyList<ConsumerButtonDisplayItem> consumerButtons = null)
         {
             IsNfcDevice = isNfc;
             if (isNfc) RebuildNfcTags(); else NfcTags.Clear();
+
+            // Consumer Control (issue #168): named chips replace both the
+            // numbered grid and the (empty) axes section, the same treatment
+            // the NFC reader's tag list got in #150.
+            bool isConsumer = consumerButtons != null;
+            IsConsumerDevice = isConsumer;
+            ConsumerButtons.Clear();
+            if (isConsumer)
+            {
+                foreach (var b in consumerButtons)
+                    ConsumerButtons.Add(b);
+            }
+
             RawAxes.Clear();
-            if (!isMouse && !isMidi)
+            if (!isMouse && !isMidi && !isConsumer)
             {
                 for (int i = 0; i < axisCount; i++)
                     RawAxes.Add(new AxisDisplayItem { Index = i, Name = string.Format(Strings.Instance.Devices_Axis_Format, i) });
@@ -335,7 +363,7 @@ namespace PadForge.ViewModels
                 foreach (var key in KeyboardKeyItem.BuildLayout())
                     KeyboardKeys.Add(key);
             }
-            else
+            else if (!isConsumer) // consumer devices use the named-chip list
             {
                 // Mouse visual handles button display, but RawButtons still
                 // needs entries so InputService can update IsPressed for the
@@ -364,6 +392,8 @@ namespace PadForge.ViewModels
             IsMidiDevice = false;
             IsNfcDevice = false;
             NfcTags.Clear();
+            IsConsumerDevice = false;
+            ConsumerButtons.Clear();
             LiveMidi = null;
             HasRawData = false;
             HasGyroData = false;
@@ -683,6 +713,28 @@ namespace PadForge.ViewModels
 
         private bool _isPressed;
         /// <summary>Whether the button is currently pressed.</summary>
+        public bool IsPressed
+        {
+            get => _isPressed;
+            set => SetProperty(ref _isPressed, value);
+        }
+    }
+
+    /// <summary>One named chip in the Consumer Control live preview
+    /// (issue #168): a canonical button ("Play/Pause", "Voice Command", the
+    /// reporter's OK), highlighting while held. Shown instead of the numbered
+    /// grid, the same replacement the NFC reader got in #150.</summary>
+    public class ConsumerButtonDisplayItem : ObservableObject
+    {
+        /// <summary>Slot index into <c>state.Buttons[]</c> (the canonical
+        /// ConsumerUsageTable index, persistence-stable).</summary>
+        public int Index { get; set; }
+
+        /// <summary>Localized button name.</summary>
+        public string Name { get; set; } = string.Empty;
+
+        private bool _isPressed;
+        /// <summary>Whether the button is currently held.</summary>
         public bool IsPressed
         {
             get => _isPressed;

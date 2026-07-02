@@ -126,19 +126,23 @@ namespace PadForge.Common.Input
         }
 
 
-        /// <summary>The Steam power-off feature report: report id 0x00, protocol
-        /// id 0x9F (ID_TURN_OFF_CONTROLLER). Two framings exist in the proven
-        /// references, split by generation. The 2026 controller's own tool sends
-        /// the BARE command (steam_controller_tools controller.ts:204-206:
-        /// send([TurnOffController]) with a zero payload), while the 2015 Gordon
-        /// requires the "off!" confirmation magic (HandheldCompanion
-        /// GordonController.cs:94-105: 0x9F, 0x04, 0x6f 0x66 0x66 0x21). The
-        /// caller sends the bare form first and the magic form second, so each
-        /// generation receives the framing its own reference proves.</summary>
-        public static byte[] BuildSteamPowerOffReport(int featureReportLength, bool withOffMagic)
+        /// <summary>The Steam power-off feature report: a report id byte, then
+        /// protocol id 0x9F (ID_TURN_OFF_CONTROLLER). The report id differs by
+        /// generation, measured and cited: the 2026 Triton uses a 64-byte
+        /// buffer with report id 1 (SDL_hidapi_steam_triton.c:130,
+        /// buffer[HID_FEATURE_REPORT_BYTES] = { 1 }, and the pad's BLE
+        /// collection reports FeatureReportByteLength=64; report id 0 there
+        /// fails with ERROR_INVALID_PARAMETER, traced on hardware), while the
+        /// 2015 Gordon and the Deck use 65 bytes with report id 0
+        /// (SDL_hidapi_steamdeck.c:98, SDL_hidapi_steam.c's 0x00 + 64-byte
+        /// blob). Payload split also by generation: bare command per
+        /// steam_controller_tools controller.ts:204-206 (2026), the "off!"
+        /// confirmation magic per HandheldCompanion GordonController.cs:94-105
+        /// (2015).</summary>
+        public static byte[] BuildSteamPowerOffReport(int featureReportLength, byte reportId, bool withOffMagic)
         {
             var buf = new byte[featureReportLength > 7 ? featureReportLength : 7];
-            buf[0] = 0x00; // report id (SDL_hidapi_steam.c sends 0x00 + 64-byte blob)
+            buf[0] = reportId;
             buf[1] = 0x9F; // ID_TURN_OFF_CONTROLLER
             if (withOffMagic)
             {
@@ -186,16 +190,28 @@ namespace PadForge.Common.Input
                     return false;
                 }
 
-                byte[] bare = BuildSteamPowerOffReport(featLen, withOffMagic: false);
-                bool okBare = HidD_SetFeature(h, bare, bare.Length);
-                int errBare = okBare ? 0 : Marshal.GetLastWin32Error();
+                // Report id by generation, primary pick from the collection's
+                // own caps: featLen 64 is the Triton shape (report id 1),
+                // featLen 65 the Gordon/Deck shape (report id 0). The other id
+                // is tried as fallback; a wrong id fails instantly with
+                // ERROR_INVALID_PARAMETER and writes nothing.
+                byte primaryId = featLen == 65 ? (byte)0 : (byte)1;
+                byte fallbackId = (byte)(1 - primaryId);
+                bool ok = false;
+                foreach (byte id in new[] { primaryId, fallbackId })
+                {
+                    byte[] bare = BuildSteamPowerOffReport(featLen, id, withOffMagic: false);
+                    bool okBare = HidD_SetFeature(h, bare, bare.Length);
+                    int errBare = okBare ? 0 : Marshal.GetLastWin32Error();
 
-                byte[] magic = BuildSteamPowerOffReport(featLen, withOffMagic: true);
-                bool okMagic = HidD_SetFeature(h, magic, magic.Length);
-                int errMagic = okMagic ? 0 : Marshal.GetLastWin32Error();
+                    byte[] magic = BuildSteamPowerOffReport(featLen, id, withOffMagic: true);
+                    bool okMagic = HidD_SetFeature(h, magic, magic.Length);
+                    int errMagic = okMagic ? 0 : Marshal.GetLastWin32Error();
 
-                Trace($"steam featLen={featLen} bare={okBare}(err={errBare}) magic={okMagic}(err={errMagic})");
-                return okBare || okMagic;
+                    Trace($"steam featLen={featLen} id={id} bare={okBare}(err={errBare}) magic={okMagic}(err={errMagic})");
+                    if (okBare || okMagic) { ok = true; break; }
+                }
+                return ok;
             }
             finally
             {

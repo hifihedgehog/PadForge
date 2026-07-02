@@ -360,6 +360,27 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _forceRawJoystickMode, value);
         }
 
+        private int _idleDisconnectMinutes;
+
+        /// <summary>Idle disconnect countdown in minutes, 0 = off (issue #162).
+        /// Shown only for Bluetooth-pathed devices; persisted on UserDevice in
+        /// seconds through the same channel as the hiding toggles.</summary>
+        public int IdleDisconnectMinutes
+        {
+            get => _idleDisconnectMinutes;
+            set => SetProperty(ref _idleDisconnectMinutes, Math.Max(0, value));
+        }
+
+        private bool _showIdleDisconnect;
+
+        /// <summary>Whether the idle-disconnect control applies to this device
+        /// (Bluetooth path detected).</summary>
+        public bool ShowIdleDisconnect
+        {
+            get => _showIdleDisconnect;
+            set => SetProperty(ref _showIdleDisconnect, value);
+        }
+
         private bool _isHidHideAvailable;
 
         /// <summary>Whether HidHide is installed and available (controls IsEnabled on the toggle).</summary>

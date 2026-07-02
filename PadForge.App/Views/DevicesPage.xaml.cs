@@ -222,6 +222,20 @@ namespace PadForge.Views
         }
 
         /// <summary>
+        /// Persists the idle-disconnect minutes (#162) when the box loses focus.
+        /// LostFocus fires after the TwoWay binding has pushed the value into the
+        /// row, so the notify propagates the final number through the same
+        /// DevicesViewModel → DeviceService channel as the hiding toggles.
+        /// </summary>
+        private void IdleDisconnect_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as ViewModels.DevicesViewModel;
+            var dev = vm?.SelectedDevice;
+            if (dev == null) return;
+            vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
+        }
+
+        /// <summary>
         /// Shows a WPF UI Flyout with a warning and Proceed/Cancel buttons.
         /// Re-checks the toggle and notifies only if the user clicks Proceed.
         /// </summary>

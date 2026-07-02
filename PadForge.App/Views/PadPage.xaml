@@ -1266,7 +1266,40 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_MouseLimitRegion, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.MouseLimitRegion}"
                                                           ToolTip="{Binding MacroAction_MouseLimitRegion_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_DisconnectController, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.DisconnectController}"
+                                                          ToolTip="{Binding MacroAction_DisconnectController_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         </ComboBox>
+                                    </StackPanel>
+
+                                    <!-- Disconnect Controller editor (#162). Target mode + device picker -->
+                                    <StackPanel Margin="0,0,0,6"
+                                                Visibility="{Binding IsDisconnectControllerType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="{Binding MacroDisconnect_Target_Label, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="60" VerticalAlignment="Center"/>
+                                            <ComboBox SelectedValue="{Binding DisconnectTarget, Mode=TwoWay}"
+                                                      SelectedValuePath="Tag"
+                                                      Width="220" VerticalAlignment="Center"
+                                                      ToolTip="{Binding MacroAction_DisconnectController_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                                <ComboBoxItem Content="{Binding MacroDisconnect_TriggeringDevice, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroDisconnectTarget.TriggeringDevice}"/>
+                                                <ComboBoxItem Content="{Binding MacroDisconnect_SpecificDevice, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroDisconnectTarget.SpecificDevice}"/>
+                                                <ComboBoxItem Content="{Binding MacroDisconnect_SlotDevices, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroDisconnectTarget.SlotDevices}"/>
+                                                <ComboBoxItem Content="{Binding MacroDisconnect_AllDevices, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroDisconnectTarget.AllDevices}"/>
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                                    Visibility="{Binding IsDisconnectSpecificDevice, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <TextBlock Text="{Binding MacroDisconnect_Device_Label, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="60" VerticalAlignment="Center"/>
+                                            <ComboBox ItemsSource="{Binding DisconnectDeviceOptions}"
+                                                      SelectedValue="{Binding DisconnectDeviceGuid, Mode=TwoWay}"
+                                                      SelectedValuePath="Guid" DisplayMemberPath="Name"
+                                                      Width="220" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding MacroDisconnect_Caveat, Source={x:Static strings:Strings.Instance}}"
+                                                   FontSize="11" TextWrapping="Wrap"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
 
                                     <!-- SetGyroEngaged Mode picker — Toggle / On / Off -->

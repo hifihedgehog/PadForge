@@ -2095,6 +2095,19 @@
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Registrar/Gerenciar Tags NFC</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>Leitor NFC</value></data>
   <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>Controle de Consumidor</value></data>
+  <data name="MacroAction_Type_DisconnectController" xml:space="preserve"><value>Desconectar Controle</value></data>
+  <data name="MacroAction_DisconnectController_Tooltip" xml:space="preserve"><value>Corta o link Bluetooth do controle para que ele entre em repouso. Somente conexões Bluetooth. Dispositivos em carregamento são ignorados.</value></data>
+  <data name="MacroAction_DisconnectController_Format" xml:space="preserve"><value>Desconectar Controle: {0}</value></data>
+  <data name="MacroDisconnect_Target_Label" xml:space="preserve"><value>Alvo</value></data>
+  <data name="MacroDisconnect_TriggeringDevice" xml:space="preserve"><value>Dispositivo Acionador</value></data>
+  <data name="MacroDisconnect_SpecificDevice" xml:space="preserve"><value>Dispositivo Específico</value></data>
+  <data name="MacroDisconnect_SlotDevices" xml:space="preserve"><value>Todos os Dispositivos deste Slot</value></data>
+  <data name="MacroDisconnect_AllDevices" xml:space="preserve"><value>Todos os Dispositivos Bluetooth</value></data>
+  <data name="MacroDisconnect_Device_Label" xml:space="preserve"><value>Dispositivo</value></data>
+  <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Somente Bluetooth. O controle entra em repouso quando o link cai. Dispositivos em carregamento são ignorados.</value></data>
+  <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Desconexão por Inatividade</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutos (0 = desativado)</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Desconecta este controle Bluetooth após esses minutos sem entrada, para que entre em repouso e economize bateria. Nunca dispara durante o carregamento ou via USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Liga/Desliga</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>

@@ -1495,6 +1495,9 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsMouseRecenterType));
                     OnPropertyChanged(nameof(IsMouseFixPositionType));
                     OnPropertyChanged(nameof(IsMouseLimitRegionType));
+                    OnPropertyChanged(nameof(IsDisconnectControllerType));
+                    OnPropertyChanged(nameof(IsDisconnectSpecificDevice));
+                    OnPropertyChanged(nameof(DisconnectDeviceOptions));
                     OnPropertyChanged(nameof(IsRumbleReactiveHold));
                     OnPropertyChanged(nameof(IsRumbleStickyHold));
 
@@ -1623,6 +1626,17 @@ namespace PadForge.ViewModels
         /// Cursor Clamp Mode dropdown plus the Inset X / Inset Y spinboxes.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsMouseLimitRegionType => _type == MacroActionType.MouseLimitRegion;
+
+        /// <summary>True when Type is DisconnectController (issue #162). Surfaces
+        /// the target-mode dropdown.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsDisconnectControllerType => _type == MacroActionType.DisconnectController;
+
+        /// <summary>True when the Disconnect action is in Specific-device mode.
+        /// Surfaces the device picker.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsDisconnectSpecificDevice =>
+            IsDisconnectControllerType && _disconnectTarget == MacroDisconnectTarget.SpecificDevice;
 
         /// <summary>True when Type is any rumble-related action — drives
         /// the macro editor's grouping into a single CardBorder.</summary>
@@ -2500,6 +2514,76 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _soundLoop, value);
         }
 
+        // ── Bluetooth disconnect (for MacroActionType.DisconnectController, issue #162) ──
+
+        private MacroDisconnectTarget _disconnectTarget = MacroDisconnectTarget.TriggeringDevice;
+        /// <summary>Which device(s) the disconnect targets. Explicit on the
+        /// action: the trigger alone cannot express "turn off device X from
+        /// device Y".</summary>
+        public MacroDisconnectTarget DisconnectTarget
+        {
+            get => _disconnectTarget;
+            set
+            {
+                if (SetProperty(ref _disconnectTarget, value))
+                {
+                    OnPropertyChanged(nameof(DisplayText));
+                    OnPropertyChanged(nameof(IsDisconnectSpecificDevice));
+                }
+            }
+        }
+
+        private Guid _disconnectDeviceGuid = Guid.Empty;
+        /// <summary>The victim device for
+        /// <see cref="MacroDisconnectTarget.SpecificDevice"/> mode.</summary>
+        public Guid DisconnectDeviceGuid
+        {
+            get => _disconnectDeviceGuid;
+            set
+            {
+                if (SetProperty(ref _disconnectDeviceGuid, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        /// <summary>Devices offered by the Specific-device picker: every known
+        /// device on a Bluetooth path. Computed on read so the list is fresh
+        /// each time the editor shows it.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public List<MacroDisconnectDeviceOption> DisconnectDeviceOptions
+        {
+            get
+            {
+                var options = new List<MacroDisconnectDeviceOption>();
+                lock (SettingsManager.UserDevices.SyncRoot)
+                {
+                    foreach (var ud in SettingsManager.UserDevices.Items)
+                    {
+                        if (ud == null || ud.InstanceGuid == Guid.Empty) continue;
+                        if (!PadForge.Common.Input.SonyEffectWriter.IsBluetoothPath(ud.DevicePath)) continue;
+                        options.Add(new MacroDisconnectDeviceOption
+                        {
+                            Guid = ud.InstanceGuid,
+                            Name = ud.ResolvedName ?? ud.InstanceGuid.ToString(),
+                        });
+                    }
+                }
+                // The saved victim may be offline/forgotten: keep it pickable
+                // (and its selection visible) rather than silently blanking.
+                if (_disconnectDeviceGuid != Guid.Empty
+                    && !options.Exists(o => o.Guid == _disconnectDeviceGuid))
+                {
+                    options.Add(new MacroDisconnectDeviceOption
+                    {
+                        Guid = _disconnectDeviceGuid,
+                        Name = SettingsManager.FindDeviceByInstanceGuid(_disconnectDeviceGuid)?.ResolvedName
+                               ?? _disconnectDeviceGuid.ToString(),
+                    });
+                }
+                return options;
+            }
+        }
+
         private string _lightbarPaletteCsv = string.Empty;
         /// <summary>CSV of "R,G,B" hex triplets defining the per-macro
         /// palette for <see cref="MacroLightbarColorSource.PaletteStep"/>.
@@ -2919,8 +3003,30 @@ namespace PadForge.ViewModels
                     MacroActionType.MouseLimitRegion => string.Format(
                         Strings.Instance.MacroAction_MouseLimitRegion_Format,
                         CursorClampModeDisplayName(_cursorClampMode)),
+                    MacroActionType.DisconnectController => string.Format(
+                        Strings.Instance.MacroAction_DisconnectController_Format,
+                        DisconnectTargetDisplayName()),
                     _ => Strings.Instance.Macro_UnknownAction
                 };
+            }
+        }
+
+        /// <summary>Display label for the Disconnect action's current target:
+        /// the picked device's name in Specific mode, the mode label otherwise.</summary>
+        private string DisconnectTargetDisplayName()
+        {
+            switch (_disconnectTarget)
+            {
+                case MacroDisconnectTarget.SpecificDevice:
+                    return SettingsManager.FindDeviceByInstanceGuid(_disconnectDeviceGuid)?.ResolvedName
+                           ?? Strings.Instance.MacroDisconnect_SpecificDevice;
+                case MacroDisconnectTarget.SlotDevices:
+                    return Strings.Instance.MacroDisconnect_SlotDevices;
+                case MacroDisconnectTarget.AllDevices:
+                    return Strings.Instance.MacroDisconnect_AllDevices;
+                case MacroDisconnectTarget.TriggeringDevice:
+                default:
+                    return Strings.Instance.MacroDisconnect_TriggeringDevice;
             }
         }
 
@@ -3303,7 +3409,42 @@ namespace PadForge.ViewModels
         /// is outside. <see cref="MacroItem.CursorClampMode"/> picks which axes are
         /// clamped, and <c>CursorClampInsetX</c> / <c>CursorClampInsetY</c> set the
         /// margin held back from each edge. A second press releases the clamp.</summary>
-        MouseLimitRegion
+        MouseLimitRegion,
+
+        /// <summary>Disconnects a Bluetooth controller so it sleeps (issue #162),
+        /// the DS4Windows "Disconnect BT" special action. The host radio drops
+        /// the link via IOCTL_BTH_DISCONNECT_DEVICE; there is no per-family
+        /// power-off command. <see cref="MacroAction.DisconnectTarget"/> picks
+        /// the victim: the device(s) whose inputs form this macro's trigger,
+        /// one specific device (<see cref="MacroAction.DisconnectDeviceGuid"/>),
+        /// every Bluetooth device on this pad's slot, or every Bluetooth device
+        /// PadForge knows. Skips devices that are charging or not on a
+        /// Bluetooth path.</summary>
+        DisconnectController
+    }
+
+    /// <summary>Target selector for <see cref="MacroActionType.DisconnectController"/>
+    /// (issue #162). Explicit on the action because the trigger alone cannot
+    /// express "turn off device X from device Y".</summary>
+    public enum MacroDisconnectTarget
+    {
+        /// <summary>The device(s) named by this macro's trigger entries. No-ops
+        /// when the trigger names no device (Always / expression triggers).</summary>
+        TriggeringDevice = 0,
+        /// <summary>The device picked in <see cref="MacroAction.DisconnectDeviceGuid"/>.</summary>
+        SpecificDevice = 1,
+        /// <summary>Every Bluetooth-pathed device mapped to this macro's pad slot.</summary>
+        SlotDevices = 2,
+        /// <summary>Every Bluetooth-pathed device PadForge knows.</summary>
+        AllDevices = 3
+    }
+
+    /// <summary>One row in the Disconnect-action device picker (issue #162):
+    /// a known Bluetooth-pathed device by GUID and display name.</summary>
+    public class MacroDisconnectDeviceOption
+    {
+        public Guid Guid { get; set; }
+        public string Name { get; set; } = string.Empty;
     }
 
     /// <summary>Which axes a <see cref="MacroActionType.MouseRecenter"/> action

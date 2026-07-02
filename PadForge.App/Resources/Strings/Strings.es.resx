@@ -2095,6 +2095,19 @@
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Registrar o gestionar etiquetas NFC</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>Lector NFC</value></data>
   <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>Control multimedia</value></data>
+  <data name="MacroAction_Type_DisconnectController" xml:space="preserve"><value>Desconectar mando</value></data>
+  <data name="MacroAction_DisconnectController_Tooltip" xml:space="preserve"><value>Corta el enlace Bluetooth del mando para que entre en reposo. Solo conexiones Bluetooth. Se omiten los dispositivos que se están cargando.</value></data>
+  <data name="MacroAction_DisconnectController_Format" xml:space="preserve"><value>Desconectar mando: {0}</value></data>
+  <data name="MacroDisconnect_Target_Label" xml:space="preserve"><value>Objetivo</value></data>
+  <data name="MacroDisconnect_TriggeringDevice" xml:space="preserve"><value>Dispositivo activador</value></data>
+  <data name="MacroDisconnect_SpecificDevice" xml:space="preserve"><value>Dispositivo específico</value></data>
+  <data name="MacroDisconnect_SlotDevices" xml:space="preserve"><value>Todos los dispositivos de esta ranura</value></data>
+  <data name="MacroDisconnect_AllDevices" xml:space="preserve"><value>Todos los dispositivos Bluetooth</value></data>
+  <data name="MacroDisconnect_Device_Label" xml:space="preserve"><value>Dispositivo</value></data>
+  <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Solo Bluetooth. El mando entra en reposo al cortarse el enlace. Se omiten los dispositivos que se están cargando.</value></data>
+  <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Desconexión por inactividad</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutos (0 = desactivado)</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Desconecta este mando Bluetooth tras esos minutos sin entrada, para que entre en reposo y ahorre batería. Nunca se activa durante la carga ni por USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Encendido</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menú</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>

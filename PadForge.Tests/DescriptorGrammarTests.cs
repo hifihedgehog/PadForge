@@ -41,6 +41,11 @@ namespace PadForge.Tests
         [InlineData("IR Pointer X")]
         [InlineData("IR Pointer Y")]
         [InlineData("IR Brightness")]
+        [InlineData("Balance Total Weight")]
+        [InlineData("Balance Lean X")]
+        [InlineData("Balance Lean Y")]
+        [InlineData("Mouse Position X")]
+        [InlineData("Mouse Position Y")]
         public void BuildFromLegacy_KeepsExemptDescriptorsIntact_NoPhantomInvert(string descriptor)
         {
             var ps = new PadSetting { LeftThumbAxisX = descriptor };

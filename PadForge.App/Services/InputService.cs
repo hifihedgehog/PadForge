@@ -7094,8 +7094,11 @@ namespace PadForge.Services
         // at 0x04a40024). Re-laid out to the 12-float [corner × {Kg0,Kg17,Kg34}]
         // shape SourceCoercion.ReadTunedBalanceBoard expects, with corner order
         // TopLeft, BottomLeft, TopRight, BottomRight. Returns null on a malformed or
-        // not-yet-available blob. The row/sensor order is hypothesis-under-test (no
-        // board hardware); a transpose here is the one fix if kg reads wrong.
+        // not-yet-available blob. Row/sensor order and the signed reads are
+        // reference-confirmed against WiimoteLib-Trihy Wiimote.cs:534-547 (Kg0/17/34
+        // rows x TR,BR,TL,BL sensors, each (short) big-endian, starting 4 bytes into
+        // the 0x04a40020 block, which is exactly the fork's 24-byte 0x04a40024 read).
+        // Live-board byte truth remains the only hardware-gated residual.
         private static float[] ParseBalanceCalibrationHex(string hex)
         {
             if (string.IsNullOrEmpty(hex) || hex.Length < 48) return null;

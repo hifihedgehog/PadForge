@@ -2067,6 +2067,27 @@ namespace PadForge.Services
                     int idx = chip.Index;
                     chip.IsPressed = idx >= 0 && idx < state.Buttons.Length && state.Buttons[idx];
                 }
+
+                // Session-dynamic usages can be assigned their slot AFTER this
+                // device was selected, and re-selecting the same device does
+                // not retrigger the structural rebuild, so append their chips
+                // here. Slots are handed out in strictly increasing order and
+                // chips are stored in slot order, so the next unprobed slot is
+                // Fixed.Length + (chip count - Fixed.Length). O(1) when
+                // nothing new has appeared.
+                int fixedLen = PadForge.Engine.Common.ConsumerUsageTable.Fixed.Length;
+                for (int slot = fixedLen + (devVm.ConsumerButtons.Count - fixedLen);
+                     slot < PadForge.Engine.Common.ConsumerUsageTable.TotalSlots; slot++)
+                {
+                    ushort usage = PadForge.Engine.RawInputListener.GetDynamicSlotUsage(slot);
+                    if (usage == 0) break;
+                    devVm.ConsumerButtons.Add(new ConsumerButtonDisplayItem
+                    {
+                        Index = slot,
+                        Name = PadForge.Engine.Common.ConsumerUsageTable.DynamicName(usage),
+                        IsPressed = slot < state.Buttons.Length && state.Buttons[slot],
+                    });
+                }
             }
             else
             {

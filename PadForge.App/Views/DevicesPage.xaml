@@ -127,6 +127,15 @@
                                     </StackPanel>
                                     <TextBlock Text=" &#x2022; " FontSize="11" Opacity="0.3"/>
                                     <TextBlock Text="{Binding CapabilitiesSummary}" FontSize="11" Opacity="0.45"/>
+                                    <!-- Battery (issue #167): shown only when the device reports one -->
+                                    <StackPanel Orientation="Horizontal"
+                                                Visibility="{Binding HasBattery, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text=" &#x2022; " FontSize="11" Opacity="0.3"/>
+                                        <TextBlock Text="{Binding BatteryGlyph}" FontFamily="Segoe MDL2 Assets"
+                                                   FontSize="11" Opacity="0.55" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding BatteryText}" FontSize="11" Opacity="0.55"
+                                                   Margin="4,0,0,0" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </Border>

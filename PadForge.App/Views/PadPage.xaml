@@ -288,6 +288,9 @@
                                     </Ellipse.Style>
                                 </Ellipse>
                                 <TextBlock Text="{Binding Name}"/>
+                                <!-- Battery (issue #167): quiet suffix, empty when unreported -->
+                                <TextBlock Text="{Binding BatteryText}" Opacity="0.55"
+                                           Margin="8,0,0,0" VerticalAlignment="Center"/>
                             </StackPanel>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>

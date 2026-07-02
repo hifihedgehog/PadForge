@@ -81,6 +81,21 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void BidirectionalHalfAxis_RestoresEitherDirection()
+        {
+            // The UI's "Either" checkbox contract: with HalfAxis on,
+            // Bidirectional fires on absolute deflection either side and
+            // Invert has no effect.
+            var src = Src("X", deadZone: 25);
+            src.HalfAxis = true;
+            src.Bidirectional = true;
+            src.Invert = true; // must be irrelevant in this mode
+            Assert.True(SourceCoercion.EvaluateForButtonTarget(State(dx: 8f), src, 25));
+            Assert.True(SourceCoercion.EvaluateForButtonTarget(State(dx: -8f), src, 25));
+            Assert.False(SourceCoercion.EvaluateForButtonTarget(State(dx: 2f), src, 25));
+        }
+
+        [Fact]
         public void DirectionalTrigger_HalfAxisPullsOneWay()
         {
             // "Up/down movements control the trigger 0-100%": HalfAxis+Invert

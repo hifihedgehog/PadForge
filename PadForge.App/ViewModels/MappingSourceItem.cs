@@ -325,6 +325,12 @@ namespace PadForge.ViewModels
                 if (d.StartsWith("Gyro ", System.StringComparison.Ordinal))
                     return true;
 
+                // Joy-Con 2 mouse motion is a signed velocity: Half picks ONE
+                // direction and Invert chooses which (right/down vs left/up),
+                // which is how issue #154's four-way "weapon wheel" is built.
+                if (d.StartsWith("Mouse Motion ", System.StringComparison.Ordinal))
+                    return true;
+
                 // Touchpad: X / Y / Pressure are continuous; Click and
                 // Finger Down are discrete.
                 if (d.StartsWith("Touchpad ", System.StringComparison.Ordinal))
@@ -370,6 +376,20 @@ namespace PadForge.ViewModels
             {
                 var desc = _descriptor ?? "";
                 if (string.IsNullOrEmpty(desc)) return false;
+
+                // Engine-owned continuous families whose button-thresholding
+                // reads the per-source DeadZone (SourceCoercion's button
+                // branches use "src.DeadZone > 0 ? src.DeadZone : global").
+                // Without this the column was hidden and the per-row
+                // threshold those branches honor was never user-settable
+                // (issue #154's "small deadzone" wheel, and retroactively
+                // the IR / Balance rows shipped with #146/#151).
+                if (desc.StartsWith("Mouse Motion ", System.StringComparison.Ordinal)
+                    || desc.StartsWith("IR Pointer ", System.StringComparison.Ordinal)
+                    || desc.StartsWith("IR Brightness", System.StringComparison.Ordinal)
+                    || desc.StartsWith("Balance ", System.StringComparison.Ordinal))
+                    return _parentTargetIsDiscrete;
+
                 int start = 0;
                 if (start < desc.Length && (desc[start] == 'I' || desc[start] == 'i')) start++;
                 if (start < desc.Length && (desc[start] == 'H' || desc[start] == 'h')) start++;

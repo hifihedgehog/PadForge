@@ -1480,7 +1480,13 @@ namespace PadForge.Engine.Common.Mapping
                 int cdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
                 float th = Math.Max(cdz, 1) / 100f;
                 if (src.HalfAxis)
+                {
+                    // Bidirectional ("Either") restores the any-direction test,
+                    // matching the generic Axis contract the UI documents
+                    // ("either side of center counts; Invert has no effect").
+                    if (src.Bidirectional) return Math.Abs(v) > th;
                     return src.Invert ? v < -th : v > th;
+                }
                 return Math.Abs(v) > th;
             }
 

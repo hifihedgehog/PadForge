@@ -545,6 +545,44 @@ namespace PadForge.Common.Input
             s.StartsWith("Midi ", StringComparison.Ordinal);
 
         /// <summary>
+        /// Recognizes an engine-owned descriptor including its legacy I/IH/H
+        /// invert/half-axis prefix form. A legacy row's invert toggle rebuilds
+        /// the descriptor as "IMouse Motion X" (MappingItem.RebuildDescriptor),
+        /// which fails the plain IsEngineOwnedDescriptor check AND the legacy
+        /// Axis/Button grammar, so the row silently evaluated dead. The strip
+        /// is REMAINDER-GATED: a prefix letter comes off only when what remains
+        /// is itself engine-owned, which makes the parse self-exempting for the
+        /// 'I'-leading families ("IR Pointer X" keeps its I because "R Pointer
+        /// X" is not engine-owned) with no reliance on the exemption predicate.
+        /// </summary>
+        private static bool TryGetEngineOwnedSource(string descriptor,
+            out string clean, out bool inverted, out bool halfAxis)
+        {
+            inverted = false;
+            halfAxis = false;
+            clean = descriptor?.Trim() ?? "";
+            if (clean.Length == 0) return false;
+
+            if (clean.StartsWith("IH", StringComparison.OrdinalIgnoreCase)
+                && IsEngineOwnedDescriptor(clean.Substring(2)))
+            {
+                inverted = true; halfAxis = true; clean = clean.Substring(2);
+            }
+            else if (clean.StartsWith("I", StringComparison.OrdinalIgnoreCase)
+                && clean.Length > 1 && IsEngineOwnedDescriptor(clean.Substring(1)))
+            {
+                inverted = true; clean = clean.Substring(1);
+            }
+            else if (clean.StartsWith("H", StringComparison.OrdinalIgnoreCase)
+                && clean.Length > 1 && IsEngineOwnedDescriptor(clean.Substring(1)))
+            {
+                halfAxis = true; clean = clean.Substring(1);
+            }
+
+            return IsEngineOwnedDescriptor(clean);
+        }
+
+        /// <summary>
         /// Maps a single descriptor to a boolean button press.
         /// </summary>
         private static bool MapToButtonPressedSingle(CustomInputState state, string descriptor,
@@ -568,13 +606,18 @@ namespace PadForge.Common.Input
             }
 
             // Engine-owned families (IR Pointer / IR Brightness / Balance /
-            // Mouse Position / Midi): threshold like the mapping grid does.
-            if (!string.IsNullOrEmpty(descriptor) && IsEngineOwnedDescriptor(descriptor.Trim()))
+            // Mouse Position / Mouse Motion / Midi): threshold like the mapping
+            // grid does. Accepts the legacy I/IH/H prefix form so an inverted
+            // legacy row still evaluates.
+            if (!string.IsNullOrEmpty(descriptor)
+                && TryGetEngineOwnedSource(descriptor, out string engClean, out bool engInv, out bool engHalf))
             {
                 var engineSrc = new PadForge.Engine.Data.MappingSource
                 {
-                    Descriptor = descriptor.Trim(),
+                    Descriptor = engClean,
                     DeadZone = deadZonePercent,
+                    Invert = engInv,
+                    HalfAxis = engHalf,
                 };
                 return PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForButtonTarget(
                     state, engineSrc, globalThresholdPercent);
@@ -855,10 +898,11 @@ namespace PadForge.Common.Input
             // Engine-owned families (IR Pointer / IR Brightness / Balance /
             // Mouse Position / Midi): bipolar [-1..+1] scaled to the signed
             // axis range, same evaluator the mapping grid uses.
-            if (!string.IsNullOrWhiteSpace(descriptor) && IsEngineOwnedDescriptor(descriptor.Trim()))
+            if (!string.IsNullOrWhiteSpace(descriptor)
+                && TryGetEngineOwnedSource(descriptor, out string engClean, out bool engInv, out bool engHalf))
             {
                 float v = PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForBipolarAxisTarget(
-                    state, new PadForge.Engine.Data.MappingSource { Descriptor = descriptor.Trim() });
+                    state, new PadForge.Engine.Data.MappingSource { Descriptor = engClean, Invert = engInv, HalfAxis = engHalf });
                 return (short)Math.Clamp((int)(v * short.MaxValue), short.MinValue, short.MaxValue);
             }
 
@@ -951,10 +995,10 @@ namespace PadForge.Common.Input
                     return short.MinValue;
                 // Engine-owned families read unipolar [0..1] for a trigger
                 // target and map to the wire range (rest = short.MinValue).
-                if (IsEngineOwnedDescriptor(posDescriptor.Trim()))
+                if (TryGetEngineOwnedSource(posDescriptor, out string engClean, out bool engInv, out bool engHalf))
                 {
                     float t = PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForTriggerTarget(
-                        state, new PadForge.Engine.Data.MappingSource { Descriptor = posDescriptor.Trim() });
+                        state, new PadForge.Engine.Data.MappingSource { Descriptor = engClean, Invert = engInv, HalfAxis = engHalf });
                     return (short)Math.Clamp((int)(t * 65535f) - 32768, short.MinValue, short.MaxValue);
                 }
                 var desc = ParseDescriptor(posDescriptor);

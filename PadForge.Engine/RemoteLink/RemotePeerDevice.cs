@@ -115,7 +115,6 @@ namespace PadForge.Engine.RemoteLink
             Name = info.Name;
             VendorId = info.VendorId;
             ProductId = info.ProductId;
-            SerialNumber = info.SerialNumber ?? "";
             NumAxes = info.NumAxes;
             NumButtons = info.NumButtons;
             NumHats = info.NumHats;
@@ -168,7 +167,10 @@ namespace PadForge.Engine.RemoteLink
         public Guid InstanceGuid { get; }
         public Guid ProductGuid { get; }
         public string DevicePath { get; }
-        public string SerialNumber { get; }
+        /// <summary>Live read from Info: the device-list reconcile refreshes
+        /// Info.SerialNumber in place for already-registered devices, and a
+        /// constructor snapshot would never see it (audit F7).</summary>
+        public string SerialNumber => Info.SerialNumber ?? "";
         public string SdlGuid => string.Empty;
 
         public int GetInputDeviceType() => Info.InputDeviceType;

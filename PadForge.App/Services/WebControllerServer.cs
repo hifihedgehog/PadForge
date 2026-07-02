@@ -361,11 +361,19 @@ namespace PadForge.Services
                         ProcessMessage(device, buffer, result.Count);
                 }
 
-                // Cleanup.
-                device.SetConnected(false);
-                _clients.TryRemove(compositeKey, out _);
-
-                DeviceDisconnected?.Invoke(device);
+                // Cleanup. Conditional: a browser that reconnected with the
+                // same client id already replaced this session in _clients
+                // (the indexer overwrite above), and an unconditional remove
+                // here would evict the NEW session and offline the device the
+                // new connection just brought up (audit F9). Only tear down
+                // when this session is still the registered one.
+                bool stillRegistered = ((System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, ClientSession>>)_clients)
+                    .Remove(new System.Collections.Generic.KeyValuePair<string, ClientSession>(compositeKey, session));
+                if (stillRegistered)
+                {
+                    device.SetConnected(false);
+                    DeviceDisconnected?.Invoke(device);
+                }
                 StatusChanged?.Invoke(this, _clients.Count > 0
                     ? string.Format(Strings.Instance.Server_RunningClients_Format, _clients.Count)
                     : string.Format(Strings.Instance.Server_RunningOn_Format, $"http://{_localIp}:{_port}"));

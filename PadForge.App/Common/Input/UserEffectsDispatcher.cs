@@ -517,7 +517,9 @@ namespace PadForge.Common.Input
                 d.OnPollingTickInstance(slotHasGameRumble, slotHasAudioRumbleEnabled);
         }
 
-        private bool _slotNeedsRumbleTimer;
+        // Volatile: written by the polling thread's edge-triggered poke, read
+        // by the anim-timer thread's self-stop re-check under _animTimerLock.
+        private volatile bool _slotNeedsRumbleTimer;
         private void OnPollingTickInstance(bool gameRumble, bool audioRumbleEnabled)
         {
             bool need = gameRumble || audioRumbleEnabled;
@@ -712,7 +714,11 @@ namespace PadForge.Common.Input
             bool dispatchFinal = false;
             lock (_animTimerLock)
             {
-                if (wantTimer && !_animTickActive)
+                // _disposed re-checked INSIDE the lock: a polling-thread call
+                // that computed wantTimer before Dispose ran must not
+                // resurrect a timer on the dead instance (audit F2). The
+                // outside check only saves the provider walk.
+                if (wantTimer && !_animTickActive && !_disposed)
                 {
                     _animTickActive = true;
                     _animTimer = new System.Threading.Timer(
@@ -748,6 +754,23 @@ namespace PadForge.Common.Input
         {
             lock (_animTimerLock)
                 StopAnimTimerLocked();
+        }
+
+        /// <summary>OnAnimTick's self-stop path: re-verify the polling-thread
+        /// rumble poke under the lock before stopping. The poke is
+        /// edge-triggered (OnPollingTickInstance calls UpdateAnimTimer only on
+        /// a need transition), so a rumble onset landing between the tick's
+        /// unlocked read and this stop would otherwise leave the slot with no
+        /// effect writer until the next rumble edge (audit F3). The lightbar
+        /// conditions need no re-check here: config changes always re-poke via
+        /// OnConfigChanged.</summary>
+        private void StopAnimTimerIfStillIdle()
+        {
+            lock (_animTimerLock)
+            {
+                if (_slotNeedsRumbleTimer) return; // onset raced the stop: keep running
+                StopAnimTimerLocked();
+            }
         }
 
         /// <summary>Timer teardown; caller must hold <see cref="_animTimerLock"/>.</summary>
@@ -824,7 +847,7 @@ namespace PadForge.Common.Input
                     DispatchSnapshot();
                 }
                 _lastTickOverrideActive = false;
-                StopAnimTimer();
+                StopAnimTimerIfStillIdle();
                 return;
             }
             _lastTickOverrideActive = anyReactiveRunning;

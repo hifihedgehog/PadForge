@@ -470,24 +470,30 @@ namespace PadForge.Services
                     continue;
                 }
 
-                // ── Touchpad click rides Buttons[16] — record with the
+                // ── Touchpad click rides Buttons[16]. Record it with the
                 //     canonical "Touchpad 0 Click" descriptor so the user
                 //     sees the touchpad-friendly name instead of "Button 16".
                 //     Checked before the generic Buttons[] sweep so the
-                //     descriptor wins. ──
-                if (current.Buttons.Length > 16 && current.Buttons[16]
+                //     descriptor wins. Gated on the device actually having a
+                //     touchpad: consumer button 16 is Eject and an NFC tag
+                //     can land on slot 16, and neither should record as a
+                //     touchpad click (audit M2). ──
+                bool hasTouchpad = ud.HasTouchpad;
+                if (hasTouchpad
+                    && current.Buttons.Length > 16 && current.Buttons[16]
                     && baseline.Buttons.Length > 16 && !baseline.Buttons[16])
                 {
                     CompleteRecordingWithDescriptor("Touchpad 0 Click", dg);
                     return;
                 }
 
-                // ── Check buttons first (instant detection). Skip index 16:
-                //     handled above as "Touchpad 0 Click" so the recorder
-                //     never reports the touchpad as raw "Button 16". ──
+                // ── Check buttons first (instant detection). Skip index 16
+                //     on touchpad devices: handled above as "Touchpad 0
+                //     Click" so the recorder never reports the touchpad as
+                //     raw "Button 16". ──
                 for (int i = 0; i < CustomInputState.MaxButtons; i++)
                 {
-                    if (i == 16) continue;
+                    if (i == 16 && hasTouchpad) continue;
                     if (current.Buttons[i] && !baseline.Buttons[i])
                     {
                         CompleteRecording(MapType.Button, i, null, axisPositive: false, winningDevice: dg);

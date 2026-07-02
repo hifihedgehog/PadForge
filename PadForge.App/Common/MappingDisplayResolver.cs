@@ -56,7 +56,8 @@ namespace PadForge.Common
             string prefix = "";
             if (s.StartsWith("IH", System.StringComparison.OrdinalIgnoreCase))
             { prefix = s.Substring(0, 2); s = s.Substring(2); }
-            else if (s.StartsWith("I", System.StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
+            else if (s.StartsWith("I", System.StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1])
+                     && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(s))
             { prefix = s.Substring(0, 1); s = s.Substring(1); }
             else if (s.StartsWith("H", System.StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
             { prefix = s.Substring(0, 1); s = s.Substring(1); }
@@ -141,7 +142,8 @@ namespace PadForge.Common
             string prefix = "";
             if (s.StartsWith("IH", System.StringComparison.OrdinalIgnoreCase))
             { prefix = s.Substring(0, 2); s = s.Substring(2); }
-            else if (s.StartsWith("I", System.StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
+            else if (s.StartsWith("I", System.StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1])
+                     && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(s))
             { prefix = s.Substring(0, 1); s = s.Substring(1); }
             else if (s.StartsWith("H", System.StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
             { prefix = s.Substring(0, 1); s = s.Substring(1); }
@@ -400,7 +402,8 @@ namespace PadForge.Common
             string prefix = "";
             if (s.StartsWith("IH", System.StringComparison.OrdinalIgnoreCase))
             { prefix = s.Substring(0, 2); s = s.Substring(2); }
-            else if (s.StartsWith("I", System.StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
+            else if (s.StartsWith("I", System.StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1])
+                     && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(s))
             { prefix = s.Substring(0, 1); s = s.Substring(1); }
             else if (s.StartsWith("H", System.StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
             { prefix = s.Substring(0, 1); s = s.Substring(1); }

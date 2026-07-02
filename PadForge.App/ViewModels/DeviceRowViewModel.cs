@@ -422,8 +422,10 @@ namespace PadForge.ViewModels
         /// <summary>Segoe MDL2 Assets battery glyph bucketed to the nearest
         /// tenth: Battery0-Battery9 are U+E850-U+E859 with Battery10 at
         /// U+E83F, and the charging variants are BatteryCharging0-8 at
-        /// U+E85A-U+E862, BatteryCharging9 at U+EA93, BatteryCharging10 at
-        /// U+E83E (all codepoints verified against the installed font).</summary>
+        /// U+E85A-U+E862, BatteryCharging9 at U+E83E, BatteryCharging10 at
+        /// U+EA93. Names per the Segoe MDL2 documentation table
+        /// (segoe-ui-symbol-font.md rows for E83E/E83F/EA93), all codepoints
+        /// verified against the installed font.</summary>
         public string BatteryGlyph
         {
             get
@@ -432,7 +434,7 @@ namespace PadForge.ViewModels
                 int tenth = Math.Clamp((_batteryPercent + 5) / 10, 0, 10);
                 int code;
                 if (_batteryCharging)
-                    code = tenth == 10 ? 0xE83E : tenth == 9 ? 0xEA93 : 0xE85A + tenth;
+                    code = tenth == 10 ? 0xEA93 : tenth == 9 ? 0xE83E : 0xE85A + tenth;
                 else
                     code = tenth == 10 ? 0xE83F : 0xE850 + tenth;
                 return char.ConvertFromUtf32(code);

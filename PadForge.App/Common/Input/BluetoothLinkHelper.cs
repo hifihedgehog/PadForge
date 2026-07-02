@@ -368,6 +368,14 @@ namespace PadForge.Common.Input
             return any;
         }
 
+        /// <summary>The XInput user-index space PadForge actually runs in:
+        /// SDL enumerates 16 slots (SDL_xinput.h:45 XUSER_MAX_COUNT=16,
+        /// SDL_xinputjoystick.c:246), and the bundled OpenXInput fork is
+        /// built with OPENXINPUT_XUSER_MAX_COUNT=16, so its ordinals accept
+        /// the full range in-process. Microsoft's 4-slot limit does not
+        /// apply here.</summary>
+        private const uint XInputSlotCount = 16;
+
         /// <summary>Parses SDL's XInput-backend joystick path ("XInput#N",
         /// SDL_xinputjoystick.c:211, where N is the XInput user index).</summary>
         public static bool TryParseXInputSlot(string devicePath, out uint slot)
@@ -376,7 +384,7 @@ namespace PadForge.Common.Input
             const string prefix = "XInput#";
             if (string.IsNullOrEmpty(devicePath)) return false;
             if (!devicePath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) return false;
-            return uint.TryParse(devicePath.Substring(prefix.Length), out slot) && slot < 4;
+            return uint.TryParse(devicePath.Substring(prefix.Length), out slot) && slot < XInputSlotCount;
         }
 
 
@@ -474,7 +482,7 @@ namespace PadForge.Common.Input
         private static bool TryXInputPowerOff(ushort vendorId, ushort productId)
         {
             bool any = false;
-            for (uint slot = 0; slot < 4; slot++)
+            for (uint slot = 0; slot < XInputSlotCount; slot++)
             {
                 try
                 {

@@ -102,10 +102,15 @@ namespace PadForge.Tests
         [InlineData("XInput#0", 0u)]
         [InlineData("XInput#1", 1u)]
         [InlineData("XInput#3", 3u)]
+        [InlineData("XInput#4", 4u)]   // SDL enumerates 16 slots (SDL_xinput.h:45)
+        [InlineData("XInput#15", 15u)]
         public void XInputSlot_ParsesSdlBackendPath(string path, uint expected)
         {
             // SDL_xinputjoystick.c:211: path = "XInput#%u" with the XInput
-            // user index. The user's Xbox Series pad persists as "XInput#1".
+            // user index. SDL's own XUSER_MAX_COUNT is 16 (SDL_xinput.h:45)
+            // and the bundled OpenXInput fork is built to match, so the full
+            // range must parse. The user's Xbox Series pad persists as
+            // "XInput#1".
             Assert.True(BluetoothLinkHelper.TryParseXInputSlot(path, out uint slot));
             Assert.Equal(expected, slot);
         }
@@ -113,7 +118,7 @@ namespace PadForge.Tests
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        [InlineData("XInput#4")]   // beyond XUSER_MAX_COUNT
+        [InlineData("XInput#16")]  // beyond SDL's XUSER_MAX_COUNT of 16
         [InlineData("XInput#x")]
         [InlineData(@"\\?\HID#VID_054C&PID_0CE6#...")]
         public void XInputSlot_RejectsNonBackendPaths(string path)

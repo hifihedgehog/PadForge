@@ -602,7 +602,8 @@ namespace PadForge.ViewModels
                 string clean = _sourceDescriptor;
                 if (clean.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
                     clean = clean.Substring(2);
-                else if (clean.StartsWith("I", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
+                else if (clean.StartsWith("I", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1])
+                         && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(clean))
                     clean = clean.Substring(1);
                 else if (clean.StartsWith("H", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
                     clean = clean.Substring(1);
@@ -702,7 +703,8 @@ namespace PadForge.ViewModels
                 inv = true;
                 half = true;
             }
-            else if (d.StartsWith("I", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1]))
+            else if (d.StartsWith("I", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1])
+                     && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(d))
             {
                 inv = true;
             }
@@ -752,7 +754,8 @@ namespace PadForge.ViewModels
             string clean = neg;
             if (clean.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
             { inv = true; half = true; clean = clean.Substring(2); }
-            else if (clean.StartsWith("I", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
+            else if (clean.StartsWith("I", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1])
+                     && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(clean))
             { inv = true; clean = clean.Substring(1); }
             else if (clean.StartsWith("H", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
             { half = true; clean = clean.Substring(1); }
@@ -987,6 +990,14 @@ namespace PadForge.ViewModels
         private void RebuildDescriptor()
         {
             if (string.IsNullOrEmpty(_sourceDescriptor))
+                return;
+
+            // Engine-owned families ("IR Pointer X/Y", "IR Brightness") do not
+            // use the legacy I/H prefix encoding: their names legitimately start
+            // with 'I', so stripping would corrupt them and prefixing would
+            // produce an unrecognizable "IIR Pointer X". Their Invert rides the
+            // mapping-set row flag instead.
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(_sourceDescriptor))
                 return;
 
             // Strip existing prefixes.
@@ -1524,7 +1535,8 @@ namespace PadForge.ViewModels
                 string clean = _sourceDescriptor ?? "";
                 if (clean.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
                     clean = clean.Substring(2);
-                else if (clean.StartsWith("I", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
+                else if (clean.StartsWith("I", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1])
+                         && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(clean))
                     clean = clean.Substring(1);
                 else if (clean.StartsWith("H", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
                     clean = clean.Substring(1);

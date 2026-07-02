@@ -540,6 +540,20 @@ namespace PadForge.Engine
             short d0y = SDL_GetJoystickAxis(Joystick, 7);
             short d1x = SDL_GetJoystickAxis(Joystick, 8);
             short d1y = SDL_GetJoystickAxis(Joystick, 9);
+
+            // Before the first IR report arrives, SDL axes read their default 0,
+            // which is indistinguishable from "dot at pixel (0,0)" per axis. All
+            // four at exactly 0 means both dots on the same pixel, which is
+            // physically impossible for two sensor-bar LEDs, so treat it as
+            // "no report yet" rather than yanking the pointer to a corner on
+            // connect (seen on first hardware contact, 2026-07-01 log).
+            if (d0x == 0 && d0y == 0 && d1x == 0 && d1y == 0)
+            {
+                state.Ir.Detected = false;
+                _irHasPrev = false;
+                return;
+            }
+
             bool f0 = d0x >= 0 && d0y >= 0;
             bool f1 = d1x >= 0 && d1y >= 0;
 

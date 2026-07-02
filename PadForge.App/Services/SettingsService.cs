@@ -680,7 +680,8 @@ namespace PadForge.Services
                         string clean = primaryDesc;
                         if (clean.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
                         { inv = true; half = true; clean = clean.Substring(2); }
-                        else if (clean.StartsWith("I", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
+                        else if (clean.StartsWith("I", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1])
+                                 && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(clean))
                         { inv = true; clean = clean.Substring(1); }
                         else if (clean.StartsWith("H", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
                         { half = true; clean = clean.Substring(1); }
@@ -710,7 +711,8 @@ namespace PadForge.Services
                             string ncl = negRaw;
                             if (ncl.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
                             { ninv = true; nhalf = true; ncl = ncl.Substring(2); }
-                            else if (ncl.StartsWith("I", StringComparison.OrdinalIgnoreCase) && ncl.Length > 1 && !char.IsDigit(ncl[1]))
+                            else if (ncl.StartsWith("I", StringComparison.OrdinalIgnoreCase) && ncl.Length > 1 && !char.IsDigit(ncl[1])
+                                     && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(ncl))
                             { ninv = true; ncl = ncl.Substring(1); }
                             else if (ncl.StartsWith("H", StringComparison.OrdinalIgnoreCase) && ncl.Length > 1 && !char.IsDigit(ncl[1]))
                             { nhalf = true; ncl = ncl.Substring(1); }
@@ -985,7 +987,8 @@ namespace PadForge.Services
         {
             if (string.IsNullOrEmpty(d)) return "";
             if (d.StartsWith("IH", StringComparison.OrdinalIgnoreCase)) return d.Substring(2);
-            if (d.StartsWith("I", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1])) return d.Substring(1);
+            if (d.StartsWith("I", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1])
+                && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(d)) return d.Substring(1);
             if (d.StartsWith("H", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1])) return d.Substring(1);
             return d;
         }

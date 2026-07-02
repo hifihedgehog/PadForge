@@ -409,7 +409,8 @@ namespace PadForge.Common.Input
                 result.HalfAxis = true;
                 s = s.Substring(1);
             }
-            else if (s.StartsWith("I", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
+            else if (s.StartsWith("I", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1])
+                     && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(s))
             {
                 result.Inverted = true;
                 s = s.Substring(1);
@@ -493,6 +494,55 @@ namespace PadForge.Common.Input
             return MapToButtonPressedSingle(state, descriptor, deadZonePercent, globalThresholdPercent, bidirectional);
         }
 
+        /// <summary>Finds the "IR Pointer" source feeding a KBM mouse target, so
+        /// the Wii pointer can be routed as an ABSOLUTE cursor position
+        /// (Touchmote-style) instead of a velocity delta (issue #146). Checks
+        /// the mapping-set row's sources first (only ones owned by
+        /// <paramref name="thisDeviceGuid"/>, since Step 3 runs per assigned
+        /// device and state.Ir belongs to that device), then the legacy per-key
+        /// descriptor. Returns null when the target is not IR-driven, which
+        /// keeps the existing delta path untouched for every other source.</summary>
+        private static PadForge.Engine.Data.MappingSource FindIrPointerSource(
+            MappingSet mappingSet, string targetName, string legacyDesc, string thisDeviceGuid)
+        {
+            var row = FindBaseRowForTarget(mappingSet, targetName);
+            if (row?.Sources != null)
+            {
+                foreach (var src in row.Sources)
+                {
+                    if (src?.Descriptor == null) continue;
+                    if (!src.Descriptor.StartsWith("IR Pointer ", StringComparison.Ordinal)) continue;
+                    if (!string.IsNullOrEmpty(src.DeviceGuid)
+                        && !string.Equals(src.DeviceGuid, thisDeviceGuid, StringComparison.OrdinalIgnoreCase))
+                        continue;
+                    return src;
+                }
+            }
+            if (!string.IsNullOrEmpty(legacyDesc)
+                && legacyDesc.Trim().StartsWith("IR Pointer ", StringComparison.Ordinal))
+                return new PadForge.Engine.Data.MappingSource { Descriptor = legacyDesc.Trim() };
+            return null;
+        }
+
+        /// <summary>
+        /// Engine-evaluated source families ("IR Pointer X/Y", "IR Brightness",
+        /// "Balance ...", "Mouse Position X/Y", "Midi ...") are owned by
+        /// SourceCoercion and are not part of the legacy Axis/Button/Slider/POV
+        /// grammar, so ParseDescriptor silently drops them. Found on first Wii IR
+        /// hardware contact (2026-07-01): "IR Pointer X" assigned to KbmMouseX
+        /// tracked perfectly at the driver yet the mouse never moved, because the
+        /// per-key KBM path fell through to ParseDescriptor. Same pre-parse
+        /// delegation shape as the Touchpad branch in MapToButtonPressedSingle.
+        /// Per-slot-tuned families (gyro, touchpad gestures) stay on the
+        /// mapping-set path, which carries the slot context they need.
+        /// </summary>
+        private static bool IsEngineOwnedDescriptor(string s) =>
+            s.StartsWith("IR Pointer ", StringComparison.Ordinal) ||
+            s.Equals("IR Brightness", StringComparison.Ordinal) ||
+            s.StartsWith("Balance ", StringComparison.Ordinal) ||
+            s.StartsWith("Mouse Position ", StringComparison.Ordinal) ||
+            s.StartsWith("Midi ", StringComparison.Ordinal);
+
         /// <summary>
         /// Maps a single descriptor to a boolean button press.
         /// </summary>
@@ -514,6 +564,19 @@ namespace PadForge.Common.Input
                 && descriptor.StartsWith("Touchpad ", StringComparison.Ordinal))
             {
                 return MapTouchpadButton(state, descriptor.Trim());
+            }
+
+            // Engine-owned families (IR Pointer / IR Brightness / Balance /
+            // Mouse Position / Midi): threshold like the mapping grid does.
+            if (!string.IsNullOrEmpty(descriptor) && IsEngineOwnedDescriptor(descriptor.Trim()))
+            {
+                var engineSrc = new PadForge.Engine.Data.MappingSource
+                {
+                    Descriptor = descriptor.Trim(),
+                    DeadZone = deadZonePercent,
+                };
+                return PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForButtonTarget(
+                    state, engineSrc, globalThresholdPercent);
             }
 
             var desc = ParseDescriptor(descriptor);
@@ -788,6 +851,16 @@ namespace PadForge.Common.Input
         /// </summary>
         private static short MapToThumbAxisSingle(CustomInputState state, string descriptor)
         {
+            // Engine-owned families (IR Pointer / IR Brightness / Balance /
+            // Mouse Position / Midi): bipolar [-1..+1] scaled to the signed
+            // axis range, same evaluator the mapping grid uses.
+            if (!string.IsNullOrWhiteSpace(descriptor) && IsEngineOwnedDescriptor(descriptor.Trim()))
+            {
+                float v = PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForBipolarAxisTarget(
+                    state, new PadForge.Engine.Data.MappingSource { Descriptor = descriptor.Trim() });
+                return (short)Math.Clamp((int)(v * short.MaxValue), short.MinValue, short.MaxValue);
+            }
+
             var desc = ParseDescriptor(descriptor);
             if (!desc.IsValid)
                 return 0;
@@ -875,6 +948,14 @@ namespace PadForge.Common.Input
                 // 0 here, which is wrong for trigger rest).
                 if (string.IsNullOrWhiteSpace(posDescriptor))
                     return short.MinValue;
+                // Engine-owned families read unipolar [0..1] for a trigger
+                // target and map to the wire range (rest = short.MinValue).
+                if (IsEngineOwnedDescriptor(posDescriptor.Trim()))
+                {
+                    float t = PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForTriggerTarget(
+                        state, new PadForge.Engine.Data.MappingSource { Descriptor = posDescriptor.Trim() });
+                    return (short)Math.Clamp((int)(t * 65535f) - 32768, short.MinValue, short.MaxValue);
+                }
                 var desc = ParseDescriptor(posDescriptor);
                 if (!desc.IsValid)
                     return short.MinValue;
@@ -1659,7 +1740,19 @@ namespace PadForge.Common.Input
             {
                 string posDesc = ps.GetKbmMapping("KbmMouseX");
                 string negDesc = ps.GetKbmMapping("KbmMouseXNeg");
-                if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
+                var irSrcX = FindIrPointerSource(mappingSet, "KbmMouseX", posDesc, thisDeviceGuid);
+                if (irSrcX != null)
+                {
+                    // Wii IR pointing is ABSOLUTE aim (Touchmote-style): the
+                    // cursor goes where the remote points, not where a velocity
+                    // integral drifts. Route the evaluated [-1..+1] aim to the
+                    // absolute-pointer channel; the KBM VC positions the OS
+                    // cursor (Touchmote MouseSimulator.cs:154 SetCursorPos).
+                    raw.MouseAbsX = PadForge.Engine.Common.Mapping.SourceCoercion
+                        .EvaluateForBipolarAxisTarget(state, irSrcX, slotIndex);
+                    if (state.Ir.Detected) raw.MouseAbsValid = true;
+                }
+                else if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
                         slotIndex, "KbmMouseX", out short msxValue))
                 {
                     raw.MouseDeltaX = msxValue;
@@ -1672,7 +1765,17 @@ namespace PadForge.Common.Input
             {
                 string posDesc = ps.GetKbmMapping("KbmMouseY");
                 string negDesc = ps.GetKbmMapping("KbmMouseYNeg");
-                if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
+                var irSrcY = FindIrPointerSource(mappingSet, "KbmMouseY", posDesc, thisDeviceGuid);
+                if (irSrcY != null)
+                {
+                    // Absolute aim, same as the X block. state.Ir.Y is already
+                    // screen-aligned (+1 = bottom, Touchmote convention applied
+                    // at the wrapper), so no velocity-convention negation here.
+                    raw.MouseAbsY = PadForge.Engine.Common.Mapping.SourceCoercion
+                        .EvaluateForBipolarAxisTarget(state, irSrcY, slotIndex);
+                    if (state.Ir.Detected) raw.MouseAbsValid = true;
+                }
+                else if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
                         slotIndex, "KbmMouseY", out short msyValue))
                 {
                     // KbmMouseY convention is positive = UP (the VC negates it to

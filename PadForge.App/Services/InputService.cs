@@ -2389,7 +2389,8 @@ namespace PadForge.Services
             // Strip prefixes.
             if (s.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
                 s = s.Substring(2);
-            else if (s.StartsWith("I", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
+            else if (s.StartsWith("I", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1])
+                     && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(s))
                 s = s.Substring(1);
             else if (s.StartsWith("H", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
                 s = s.Substring(1);

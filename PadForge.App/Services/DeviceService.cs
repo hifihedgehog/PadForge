@@ -673,7 +673,8 @@ namespace PadForge.Services
                 s = s.Substring(2);
             else if ((s.StartsWith("I", StringComparison.OrdinalIgnoreCase)
                       || s.StartsWith("H", StringComparison.OrdinalIgnoreCase))
-                     && s.Length > 1 && !char.IsDigit(s[1]))
+                     && s.Length > 1 && !char.IsDigit(s[1])
+                     && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(s))
                 s = s.Substring(1);
 
             var parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);

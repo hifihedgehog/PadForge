@@ -511,6 +511,19 @@ namespace PadForge.Engine.Common.Mapping
         /// <summary>True for any MIDI-input descriptor
         /// (<c>"Midi Note N"</c> / <c>"Midi CC N"</c> /
         /// <c>"Midi Pitch Bend"</c>).</summary>
+        /// <summary>True when the descriptor belongs to an engine-evaluated
+        /// family whose name legitimately begins with 'I' ("IR Pointer X/Y",
+        /// "IR Brightness"), so the legacy I/H invert/half prefix grammar must
+        /// NOT strip its first letter. Found on first Wii IR hardware contact
+        /// (2026-07-01): the legacy-to-set migration read "IR Pointer X" as
+        /// Invert + "R Pointer X" and persisted the mangled descriptor, so the
+        /// pointer row evaluated to 0 forever. Every prefix-strip site guards
+        /// on this before interpreting 'I'/'H'.</summary>
+        public static bool IsPrefixExemptDescriptor(string s) =>
+            !string.IsNullOrEmpty(s)
+            && (s.StartsWith("IR Pointer ", StringComparison.OrdinalIgnoreCase)
+                || s.StartsWith("IR Brightness", StringComparison.OrdinalIgnoreCase));
+
         public static bool IsMidiDescriptor(string descriptor)
             => !string.IsNullOrEmpty(descriptor)
             && descriptor.StartsWith("Midi ", StringComparison.Ordinal);

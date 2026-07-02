@@ -107,6 +107,20 @@ namespace PadForge.Common.Input
                     SendMouseMove(dx, dy);
             }
 
+            // --- Absolute pointer (Wii IR pointing, issue #146) ---
+            // Touchmote idiom: position the OS cursor directly at the aim point
+            // (Touchmote MouseSimulator.cs:154, SetCursorPos), mapped over the
+            // primary screen. Only while the camera tracks the sensor bar; on
+            // sight loss the cursor holds its last position instead of snapping,
+            // exactly like Touchmote when the bar leaves the camera's view.
+            if (raw.MouseAbsValid
+                && PadForge.Services.CursorControlService.TryGetPrimarySize(out int absW, out int absH))
+            {
+                int px = (int)MathF.Round((raw.MouseAbsX * 0.5f + 0.5f) * (absW - 1));
+                int py = (int)MathF.Round((raw.MouseAbsY * 0.5f + 0.5f) * (absH - 1));
+                SetCursorPos(Math.Clamp(px, 0, absW - 1), Math.Clamp(py, 0, absH - 1));
+            }
+
             // --- Mouse scroll (deadzone already applied in Step 3) ---
             if (raw.ScrollDelta != 0)
             {
@@ -251,6 +265,11 @@ namespace PadForge.Common.Input
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
+
+        // Absolute cursor positioning for the Wii IR pointer (issue #146),
+        // the same call Touchmote's MouseSimulator uses (SetCursorPosition).
+        [DllImport("user32.dll")]
+        private static extern bool SetCursorPos(int x, int y);
 
         [DllImport("user32.dll")]
         private static extern uint MapVirtualKeyW(uint uCode, uint uMapType);

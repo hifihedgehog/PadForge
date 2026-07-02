@@ -390,17 +390,25 @@ namespace PadForge.Engine
             if (_hwnd != IntPtr.Zero)
                 PostMessageW(_hwnd, WM_QUIT, IntPtr.Zero, IntPtr.Zero);
 
-            _thread?.Join(TimeSpan.FromSeconds(2));
+            bool pumpExited = _thread?.Join(TimeSpan.FromSeconds(2)) ?? true;
             _thread = null;
 
             _keyboardStates.Clear();
             _mouseStates.Clear();
             _consumerStates.Clear();
             _isConsumerHandle.Clear();
-            foreach (var kvp in _consumerPreparsed)
+            // Free the preparsed buffers ONLY when the pump thread confirmed
+            // exit. On a join timeout the thread may still be inside
+            // HidP_GetUsages with one of these pointers, so freeing would be a
+            // use-after-free; leak the few KB to process exit instead (the
+            // same join-gated release the Wii speaker and NFC teardowns use).
+            if (pumpExited)
             {
-                if (kvp.Value != IntPtr.Zero)
-                    Marshal.FreeHGlobal(kvp.Value);
+                foreach (var kvp in _consumerPreparsed)
+                {
+                    if (kvp.Value != IntPtr.Zero)
+                        Marshal.FreeHGlobal(kvp.Value);
+                }
             }
             _consumerPreparsed.Clear();
 
@@ -1338,24 +1346,28 @@ namespace PadForge.Engine
                 hDevice, _ => new bool[ConsumerUsageTable.TotalSlots]);
             _consumerUsageBuffer ??= new ushort[64];
 
-            // Only the LAST report in the batch matters: each consumer report
-            // is the full currently-held usage set, so intermediate reports
-            // in one WM_INPUT batch are already-superseded snapshots.
-            IntPtr lastReport = IntPtr.Add(reportPtr, (count - 1) * sizeHid);
-            uint usageCount = (uint)_consumerUsageBuffer.Length;
-            uint hr = HidP_GetUsages(HidP_Input, HID_USAGE_PAGE_CONSUMER, 0,
-                _consumerUsageBuffer, ref usageCount, preparsed,
-                lastReport, (uint)sizeHid);
-            if (hr != HIDP_STATUS_SUCCESS)
-                return;
-
-            // Full-state rebuild: clear, then set what is currently held.
-            System.Array.Clear(state, 0, state.Length);
-            for (int i = 0; i < (int)usageCount; i++)
+            // Process every report in the batch in order, the same loop the
+            // proven PTP reader runs over RAWHID batches. Each consumer report
+            // carries the FULL currently-held usage set, so each one rebuilds
+            // the device's state from scratch (state, not edges: treating
+            // reports as press events would latch buttons forever).
+            for (int r = 0; r < count; r++)
             {
-                int slot = ResolveConsumerSlot(_consumerUsageBuffer[i]);
-                if (slot >= 0 && slot < state.Length)
-                    state[slot] = true;
+                IntPtr report = IntPtr.Add(reportPtr, r * sizeHid);
+                uint usageCount = (uint)_consumerUsageBuffer.Length;
+                uint hr = HidP_GetUsages(HidP_Input, HID_USAGE_PAGE_CONSUMER, 0,
+                    _consumerUsageBuffer, ref usageCount, preparsed,
+                    report, (uint)sizeHid);
+                if (hr != HIDP_STATUS_SUCCESS)
+                    continue;
+
+                System.Array.Clear(state, 0, state.Length);
+                for (int i = 0; i < (int)usageCount; i++)
+                {
+                    int slot = ResolveConsumerSlot(_consumerUsageBuffer[i]);
+                    if (slot >= 0 && slot < state.Length)
+                        state[slot] = true;
+                }
             }
         }
 

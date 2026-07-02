@@ -1220,7 +1220,7 @@ namespace PadForge.Common.Input
             System.Collections.Generic.List<DisconnectTarget> targets, UserDevice ud)
         {
             if (ud == null || !ud.IsOnline) return;
-            if (!PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath)) return;
+            if (!PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath, ud.VendorId, ud.ProdId)) return;
             foreach (var t in targets)
                 if (t.DevicePath == ud.DevicePath) return;
             targets.Add(new DisconnectTarget(ud.VendorId, ud.ProdId, ud.DevicePath,

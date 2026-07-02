@@ -6797,7 +6797,7 @@ namespace PadForge.Services
             // minutes, shown for any disconnect-capable device (Bluetooth HID
             // path, or a wireless XInput-backend pad).
             row.IdleDisconnectMinutes = ud.IdleDisconnectSeconds / 60;
-            row.ShowIdleDisconnect = PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath);
+            row.ShowIdleDisconnect = PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath, ud.VendorId, ud.ProdId);
 
             // Set internal device type key (DeviceType display is computed from this).
             row.DeviceTypeKey = ud.CapType switch

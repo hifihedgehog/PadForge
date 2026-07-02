@@ -117,6 +117,12 @@ namespace PadForge.Common.Input
                 return true;
             }
 
+            if (IsSwitch2(vendorId, productId) && TrySwitch2PowerOff())
+            {
+                Trace("switch2 lane succeeded");
+                return true;
+            }
+
             if (vendorId == MicrosoftVid && TryXInputPowerOff(vendorId, productId))
             {
                 Trace("xinput lane (hid-pathed) succeeded");
@@ -198,6 +204,121 @@ namespace PadForge.Common.Input
         {
             if (SonyEffectWriter.IsBluetoothPath(devicePath)) return true;
             return TryParseXInputSlot(devicePath, out _);
+        }
+
+        /// <summary>Device-aware overload: Switch 2 controllers connect through
+        /// the SDL fork's BLE GATT driver, which populates neither DevicePath
+        /// nor serial, so the path predicate alone cannot see them. Use this
+        /// form at every gate site.</summary>
+        public static bool IsDisconnectTarget(string devicePath, ushort vendorId, ushort productId)
+        {
+            return IsSwitch2(vendorId, productId) || IsDisconnectTarget(devicePath);
+        }
+
+        /// <summary>The Switch 2 family, mirroring SDL usb_ids.h:126-130 in
+        /// full (Joy-Con 2 L/R/pair, Pro 2, NSO GameCube), never a hand-picked
+        /// subset.</summary>
+        public static bool IsSwitch2(ushort vendorId, ushort productId)
+        {
+            if (vendorId != 0x057E) return false;
+            return productId == 0x2066 || productId == 0x2067 || productId == 0x2068
+                || productId == 0x2069 || productId == 0x2073;
+        }
+
+        /// <summary>The Switch 2 BLE shutdown command, from the protocol
+        /// research (switch2_controller_research commands.md, command 0x06
+        /// subcommand 0x02, the request the console sends when it sleeps):
+        /// 8-byte header (cmd 0x06, direction 0x91 host-to-device, transport
+        /// 0x01 Bluetooth, subcmd 0x02, data length 0x0C) plus 12 zero bytes.</summary>
+        public static byte[] BuildSwitch2ShutdownCommand()
+        {
+            var buf = new byte[20];
+            buf[0] = 0x06;
+            buf[1] = 0x91;
+            buf[2] = 0x01;
+            buf[3] = 0x02;
+            buf[5] = 0x0C;
+            return buf;
+        }
+
+        /// <summary>Sends the shutdown command to every connected Switch 2
+        /// controller through a second GATT client session on the link the
+        /// SDL BLE driver already holds. Targeting is family-wide: the driver
+        /// exposes no per-joystick BLE address, so one chord shuts down every
+        /// connected Switch 2 pad. Service and characteristic UUIDs per
+        /// SDL_ble_switch2joystick.c:120,122; the command characteristic is
+        /// write-without-response per the #153 hardware log. Blocking, worker
+        /// thread only.</summary>
+        private static bool TrySwitch2PowerOff()
+        {
+            try
+            {
+                return TrySwitch2PowerOffAsync().GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                Trace($"switch2 lane exception: {ex.Message}");
+                return false;
+            }
+        }
+
+        private static readonly Guid Switch2ServiceUuid = new("ab7de9be-89fe-49ad-828f-118f09df7fd0");
+        private static readonly Guid Switch2CommandUuid = new("649d4ac9-8eb7-4e6c-af44-1ea54fe5f005");
+
+        private static async System.Threading.Tasks.Task<bool> TrySwitch2PowerOffAsync()
+        {
+            string selector = Windows.Devices.Bluetooth.GenericAttributeProfile
+                .GattDeviceService.GetDeviceSelectorFromUuid(Switch2ServiceUuid);
+            var infos = await Windows.Devices.Enumeration.DeviceInformation.FindAllAsync(selector);
+            if (infos.Count == 0)
+            {
+                Trace("switch2: no service instances found");
+                return false;
+            }
+
+            bool any = false;
+            foreach (var info in infos)
+            {
+                try
+                {
+                    var svc = await Windows.Devices.Bluetooth.GenericAttributeProfile
+                        .GattDeviceService.FromIdAsync(info.Id);
+                    if (svc == null)
+                    {
+                        Trace($"switch2 '{info.Name}': service open denied");
+                        continue;
+                    }
+                    try
+                    {
+                        var chars = await svc.GetCharacteristicsForUuidAsync(Switch2CommandUuid);
+                        if (chars.Status != Windows.Devices.Bluetooth.GenericAttributeProfile
+                                .GattCommunicationStatus.Success
+                            || chars.Characteristics.Count == 0)
+                        {
+                            Trace($"switch2 '{info.Name}': command characteristic unavailable ({chars.Status})");
+                            continue;
+                        }
+                        var writer = new Windows.Storage.Streams.DataWriter();
+                        writer.WriteBytes(BuildSwitch2ShutdownCommand());
+                        var status = await chars.Characteristics[0].WriteValueAsync(
+                            writer.DetachBuffer(),
+                            Windows.Devices.Bluetooth.GenericAttributeProfile
+                                .GattWriteOption.WriteWithoutResponse);
+                        Trace($"switch2 '{info.Name}': shutdown write={status}");
+                        any |= status == Windows.Devices.Bluetooth.GenericAttributeProfile
+                            .GattCommunicationStatus.Success;
+                    }
+                    finally
+                    {
+                        svc.Dispose();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Trace($"switch2 '{info.Name}': {ex.Message}");
+                }
+            }
+            return any;
         }
 
         /// <summary>Parses SDL's XInput-backend joystick path ("XInput#N",

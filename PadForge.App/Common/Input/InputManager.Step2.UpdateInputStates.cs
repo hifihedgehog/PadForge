@@ -322,7 +322,7 @@ namespace PadForge.Common.Input
             // an idle pad to disconnect while it charges (the countdown's
             // whole point is that the pad is sitting untouched), and dropping
             // Bluetooth does not interrupt charging.
-            if (!PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath)) return;
+            if (!PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath, ud.VendorId, ud.ProdId)) return;
 
             // Re-arm so a failed or ignored disconnect retries after a full
             // countdown instead of hammering the radio every second.

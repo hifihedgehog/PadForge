@@ -121,6 +121,45 @@ namespace PadForge.Tests
             Assert.False(BluetoothLinkHelper.TryParseXInputSlot(path, out _));
         }
 
+        // ── Switch 2 BLE shutdown ──
+
+        [Fact]
+        public void Switch2Shutdown_MatchesResearchWireExample()
+        {
+            // switch2_controller_research commands.md, command 0x06 subcmd
+            // 0x02: header 06 91 xx 02 00 0C 00 00 + 12 zero bytes, with the
+            // transport byte 0x01 for Bluetooth (commands.md Command Header).
+            byte[] cmd = BluetoothLinkHelper.BuildSwitch2ShutdownCommand();
+            Assert.Equal(20, cmd.Length);
+            Assert.Equal(0x06, cmd[0]); // command id
+            Assert.Equal(0x91, cmd[1]); // host -> device
+            Assert.Equal(0x01, cmd[2]); // transport: Bluetooth
+            Assert.Equal(0x02, cmd[3]); // subcommand: shutdown
+            Assert.Equal(0x00, cmd[4]);
+            Assert.Equal(0x0C, cmd[5]); // payload length
+            for (int i = 6; i < cmd.Length; i++)
+                Assert.Equal(0x00, cmd[i]);
+        }
+
+        [Theory]
+        [InlineData(0x2066)] // Joy-Con 2 (Right)
+        [InlineData(0x2067)] // Joy-Con 2 (Left)
+        [InlineData(0x2068)] // Joy-Con 2 pair
+        [InlineData(0x2069)] // Switch 2 Pro
+        [InlineData(0x2073)] // NSO GameCube
+        public void Switch2Family_MirrorsSdlUsbIds(int pid)
+        {
+            // The full family from SDL usb_ids.h:126-130, never a subset.
+            Assert.True(BluetoothLinkHelper.IsSwitch2(0x057E, (ushort)pid));
+        }
+
+        [Fact]
+        public void Switch2Family_RejectsGen1AndOtherVendors()
+        {
+            Assert.False(BluetoothLinkHelper.IsSwitch2(0x057E, 0x2009)); // gen-1 Switch Pro
+            Assert.False(BluetoothLinkHelper.IsSwitch2(0x054C, 0x2069)); // wrong vendor
+        }
+
         // ── DTO round-trip (the #112 persistence lane; a field missing here
         //    silently resets the action on every save/load) ──
 

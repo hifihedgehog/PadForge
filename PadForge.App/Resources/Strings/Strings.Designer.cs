@@ -465,6 +465,7 @@ public class Strings : INotifyPropertyChanged
     public string MacroDisconnect_Device_Label => Get("MacroDisconnect_Device_Label");
     public string MacroDisconnect_Caveat => Get("MacroDisconnect_Caveat");
     public string Devices_IdleDisconnect => Get("Devices_IdleDisconnect");
+    public string Devices_Power => Get("Devices_Power");
     public string Devices_IdleDisconnectMinutes => Get("Devices_IdleDisconnectMinutes");
     public string Devices_IdleDisconnectTooltip => Get("Devices_IdleDisconnectTooltip");
     public string DevObj_ConsumerPower => Get("DevObj_ConsumerPower");

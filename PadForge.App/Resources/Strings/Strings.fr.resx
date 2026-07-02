@@ -2106,6 +2106,7 @@
   <data name="MacroDisconnect_Device_Label" xml:space="preserve"><value>Appareil</value></data>
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Bluetooth uniquement. La manette se met en veille dès que la liaison est coupée.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Déconnexion en cas d'inactivité</value></data>
+  <data name="Devices_Power" xml:space="preserve"><value>Alimentation</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutes (0 = désactivé)</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Déconnecte cette manette Bluetooth après ce nombre de minutes sans entrée, pour qu'elle se mette en veille et économise la batterie. Ne se déclenche jamais en USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Alimentation</value></data>

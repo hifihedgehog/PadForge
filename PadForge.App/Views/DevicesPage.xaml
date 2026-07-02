@@ -347,22 +347,26 @@
                             </CheckBox.Style>
                         </CheckBox>
 
-                        <!-- Idle disconnect countdown (#162). Bluetooth devices only:
-                             after this many idle minutes the link is dropped so the
-                             controller sleeps. 0 disables. -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
-                                    Visibility="{Binding SelectedDevice.ShowIdleDisconnect, Converter={StaticResource BoolToVisibilityConverter}}"
-                                    ToolTip="{Binding Devices_IdleDisconnectTooltip, Source={x:Static strings:Strings.Instance}}">
-                            <TextBlock Text="{Binding Devices_IdleDisconnect, Source={x:Static strings:Strings.Instance}}"
-                                       VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <TextBox Text="{Binding SelectedDevice.IdleDisconnectMinutes, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     Width="60" VerticalAlignment="Center"
-                                     LostFocus="IdleDisconnect_LostFocus"/>
-                            <TextBlock Text="{Binding Devices_IdleDisconnectMinutes, Source={x:Static strings:Strings.Instance}}"
-                                       VerticalAlignment="Center" Margin="8,0,0,0" Opacity="0.7"/>
-                        </StackPanel>
-
                         <Separator Margin="0,4,0,8"/>
+
+                        <!-- ─── Power (#162, wireless controllers only) ─── -->
+                        <StackPanel Visibility="{Binding SelectedDevice.ShowIdleDisconnect, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="{Binding Devices_Power, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
+                                       FontSize="13" Margin="0,0,0,6"/>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                        ToolTip="{Binding Devices_IdleDisconnectTooltip, Source={x:Static strings:Strings.Instance}}">
+                                <TextBlock Text="{Binding Devices_IdleDisconnect, Source={x:Static strings:Strings.Instance}}"
+                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBox Text="{Binding SelectedDevice.IdleDisconnectMinutes, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         Width="60" VerticalAlignment="Center"
+                                         LostFocus="IdleDisconnect_LostFocus"/>
+                                <TextBlock Text="{Binding Devices_IdleDisconnectMinutes, Source={x:Static strings:Strings.Instance}}"
+                                           VerticalAlignment="Center" Margin="8,0,0,0" Opacity="0.7"/>
+                            </StackPanel>
+
+                            <Separator Margin="0,2,0,8"/>
+                        </StackPanel>
 
                         <!-- ─── Raw Input State (Visual) ─── -->
                         <TextBlock Text="{Binding Devices_RawInputState, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"

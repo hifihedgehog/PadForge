@@ -2106,6 +2106,7 @@
   <data name="MacroDisconnect_Device_Label" xml:space="preserve"><value>장치</value></data>
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Bluetooth 전용입니다. 연결이 끊기면 컨트롤러가 절전 상태가 됩니다.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>유휴 연결 해제</value></data>
+  <data name="Devices_Power" xml:space="preserve"><value>전원</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>분 (0 = 끄기)</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>입력이 없는 상태로 설정한 분이 지나면 이 Bluetooth 컨트롤러의 연결을 끊어 절전 상태로 전환하고 배터리를 절약합니다. USB 연결 시에는 작동하지 않습니다.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>전원</value></data>

@@ -1306,6 +1306,12 @@ namespace PadForge.Engine.Common.Mapping
             // this outer flip turned it back to false).
             string desc = src.Descriptor ?? "";
             if (desc.StartsWith("Axis", System.StringComparison.Ordinal)) return raw;
+            // Mouse Motion internalizes Invert the same way (issue #154):
+            // with HalfAxis it picks the direction (left/up vs right/down),
+            // and without HalfAxis the any-direction test makes Invert
+            // irrelevant. Flipping here would double-cancel the directional
+            // rows exactly like the axis case above.
+            if (desc.StartsWith("Mouse Motion ", System.StringComparison.Ordinal)) return raw;
 
             return src.Invert ? !raw : raw;
         }
@@ -1344,6 +1350,10 @@ namespace PadForge.Engine.Common.Mapping
             if (state == null || src == null) return 0f;
 
             float raw = ReadAsUnipolar(state, src, slotIndex);
+            // Mouse Motion internalizes Invert (issue #154): with HalfAxis it
+            // picks which direction pulls the trigger; 1-v on a velocity would
+            // read "full pull while still", which is never wanted.
+            if ((src.Descriptor ?? "").StartsWith("Mouse Motion ", StringComparison.Ordinal)) return raw;
             return src.Invert ? 1f - raw : raw;
         }
 
@@ -1459,12 +1469,19 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Mouse Motion ", StringComparison.Ordinal))
             {
-                // Motion-as-button (issue #154, the "invisible weapon wheel"):
-                // fires while the sensor moves faster than the threshold. The
-                // per-row Invert + HalfAxis flags select a single direction.
+                // Motion-as-button (issue #154, the "invisible weapon wheel").
+                // Default = ANY direction past the threshold (the issue's
+                // "activates when cursor leaves small deadzone"). HalfAxis
+                // selects ONE direction, Invert picks which (the grid's
+                // direction grammar for bipolar sources): HalfAxis = right /
+                // down, HalfAxis+Invert = left / up. Four rows give the full
+                // up/down/left/right wheel the issue asks for.
                 float v = ReadJoyCon2MouseMotion(state, src);
                 int cdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
-                return Math.Abs(v) > Math.Max(cdz, 1) / 100f;
+                float th = Math.Max(cdz, 1) / 100f;
+                if (src.HalfAxis)
+                    return src.Invert ? v < -th : v > th;
+                return Math.Abs(v) > th;
             }
 
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
@@ -1712,10 +1729,16 @@ namespace PadForge.Engine.Common.Mapping
                 return state.JoyConIrIntensity; // already unipolar 0..1
 
             if (s.StartsWith("Mouse Motion ", StringComparison.Ordinal))
+            {
                 // Motion-as-trigger (issue #154): speed = pull, direction-blind
-                // by default (Math.Abs, same as the IR Pointer trigger read);
-                // HalfAxis on the row selects one direction.
-                return Math.Abs(ReadJoyCon2MouseMotion(state, src));
+                // by default. HalfAxis selects ONE direction (Invert picks
+                // which), so "up movement presses the trigger 0-100%" is a
+                // HalfAxis+Invert row on Mouse Motion Y, per the issue's
+                // driving use case.
+                float mv = ReadJoyCon2MouseMotion(state, src);
+                if (src.HalfAxis) return Math.Max(0f, src.Invert ? -mv : mv);
+                return Math.Abs(mv);
+            }
 
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;

@@ -61,6 +61,37 @@ namespace PadForge.Tests
             Assert.Equal(expected, pressed);
         }
 
+        [Theory]
+        [InlineData(8f, false, false)]   // right motion, left-only row: no fire
+        [InlineData(-8f, false, true)]   // left motion, left-only row: fires
+        [InlineData(-8f, true, false)]   // left motion, right-only row: no fire
+        [InlineData(8f, true, true)]     // right motion, right-only row: fires
+        public void DirectionalButton_HalfAxisPicksOneDirection(float counts, bool rightOnly, bool expected)
+        {
+            // The issue's four-direction weapon wheel: HalfAxis = one
+            // direction, Invert picks which (Invert = left/up). The wrapper
+            // must NOT double-flip (Mouse Motion internalizes Invert like the
+            // generic Axis case).
+            var src = Src("X", deadZone: 25);
+            src.HalfAxis = true;
+            src.Invert = !rightOnly;
+            bool pressed = SourceCoercion.EvaluateForButtonTarget(
+                State(dx: counts), src, globalThresholdPercent: 25);
+            Assert.Equal(expected, pressed);
+        }
+
+        [Fact]
+        public void DirectionalTrigger_HalfAxisPullsOneWay()
+        {
+            // "Up/down movements control the trigger 0-100%": HalfAxis+Invert
+            // on Mouse Motion Y = up-motion pulls, down-motion rests at 0.
+            var src = Src("Y");
+            src.HalfAxis = true;
+            src.Invert = true; // up (negative Y) pulls
+            Assert.Equal(0.5f, SourceCoercion.EvaluateForTriggerTarget(State(dy: -8f), src), precision: 5);
+            Assert.Equal(0f, SourceCoercion.EvaluateForTriggerTarget(State(dy: 8f), src), precision: 5);
+        }
+
         [Fact]
         public void PerRowDeadZone_OverridesGlobalThreshold()
         {

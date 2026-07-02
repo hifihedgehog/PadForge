@@ -320,15 +320,15 @@ namespace PadForge.Common.Input
             if (now - ud.LastActiveTick < ud.IdleDisconnectSeconds * 1000L) return;
             if (state.BatteryCharging) return;
             if (!PadForge.Common.Input.SonyEffectWriter.IsBluetoothPath(ud.DevicePath)) return;
-            if (string.IsNullOrEmpty(ud.SerialNumber)) return;
 
             // Re-arm so a failed or ignored disconnect retries after a full
             // countdown instead of hammering the radio every second.
             ud.LastActiveTick = now;
 
-            string serial = ud.SerialNumber;
+            ushort vid = ud.VendorId, pid = ud.ProdId;
+            string path = ud.DevicePath, serial = ud.SerialNumber ?? string.Empty;
             System.Threading.Tasks.Task.Run(() =>
-                PadForge.Common.Input.BluetoothLinkHelper.TryDisconnect(serial));
+                PadForge.Common.Input.BluetoothLinkHelper.TryDisconnectDevice(vid, pid, path, serial));
         }
 
         // ─────────────────────────────────────────────

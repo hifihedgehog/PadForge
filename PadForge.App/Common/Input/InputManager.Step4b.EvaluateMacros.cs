@@ -1120,12 +1120,12 @@ namespace PadForge.Common.Input
         /// !isCharging + ConnectionType.BT).</summary>
         private void ExecuteDisconnectControllerAction(MacroItem macro, MacroAction action)
         {
-            var serials = new System.Collections.Generic.List<string>();
+            var targets = new System.Collections.Generic.List<DisconnectTarget>();
 
             switch (action.DisconnectTarget)
             {
                 case MacroDisconnectTarget.SpecificDevice:
-                    AddDisconnectCandidate(serials,
+                    AddDisconnectCandidate(targets,
                         SettingsManager.FindDeviceByInstanceGuid(action.DisconnectDeviceGuid));
                     break;
 
@@ -1143,7 +1143,7 @@ namespace PadForge.Common.Input
                         }
                     }
                     foreach (var g in guids)
-                        AddDisconnectCandidate(serials, SettingsManager.FindDeviceByInstanceGuid(g));
+                        AddDisconnectCandidate(targets, SettingsManager.FindDeviceByInstanceGuid(g));
                     break;
                 }
 
@@ -1159,7 +1159,7 @@ namespace PadForge.Common.Input
                             devices.Items.CopyTo(snapshot, 0);
                         }
                         foreach (var ud in snapshot)
-                            AddDisconnectCandidate(serials, ud);
+                            AddDisconnectCandidate(targets, ud);
                     }
                     break;
                 }
@@ -1173,32 +1173,48 @@ namespace PadForge.Common.Input
                     if (seen.Count == 0 && macro.TriggerDeviceGuid != Guid.Empty)
                         seen.Add(macro.TriggerDeviceGuid); // legacy single-device trigger
                     foreach (var g in seen)
-                        AddDisconnectCandidate(serials, SettingsManager.FindDeviceByInstanceGuid(g));
+                        AddDisconnectCandidate(targets, SettingsManager.FindDeviceByInstanceGuid(g));
                     break;
                 }
             }
 
-            if (serials.Count == 0)
-                return; // nothing eligible (charging, USB, no trigger device, no serial)
+            if (targets.Count == 0)
+                return; // nothing eligible (charging, USB, no trigger device)
 
-            string[] targets = serials.ToArray();
+            DisconnectTarget[] victims = targets.ToArray();
             System.Threading.Tasks.Task.Run(() =>
             {
-                foreach (var serial in targets)
-                    PadForge.Common.Input.BluetoothLinkHelper.TryDisconnect(serial);
+                foreach (var t in victims)
+                    PadForge.Common.Input.BluetoothLinkHelper.TryDisconnectDevice(
+                        t.VendorId, t.ProductId, t.DevicePath, t.Serial);
             });
         }
 
-        /// <summary>Applies the #162 eligibility gates and collects the
-        /// device's serial (its Bluetooth MAC) for the disconnect worker.</summary>
+        /// <summary>One disconnect victim (#162): everything the device-aware
+        /// dispatch needs, captured on the polling thread.</summary>
+        private readonly struct DisconnectTarget
+        {
+            public readonly ushort VendorId;
+            public readonly ushort ProductId;
+            public readonly string DevicePath;
+            public readonly string Serial;
+            public DisconnectTarget(ushort vid, ushort pid, string path, string serial)
+            { VendorId = vid; ProductId = pid; DevicePath = path; Serial = serial; }
+        }
+
+        /// <summary>Applies the #162 eligibility gates (online, Bluetooth path,
+        /// not charging) and captures the disconnect dispatch fields. No serial
+        /// gate here: the Steam and Xbox lanes work without one, and the BR/EDR
+        /// fallback rejects an empty serial itself.</summary>
         private static void AddDisconnectCandidate(
-            System.Collections.Generic.List<string> serials, UserDevice ud)
+            System.Collections.Generic.List<DisconnectTarget> targets, UserDevice ud)
         {
             if (ud == null || !ud.IsOnline) return;
             if (!PadForge.Common.Input.SonyEffectWriter.IsBluetoothPath(ud.DevicePath)) return;
             if (ud.InputState != null && ud.InputState.BatteryCharging) return;
-            if (string.IsNullOrEmpty(ud.SerialNumber)) return;
-            if (!serials.Contains(ud.SerialNumber)) serials.Add(ud.SerialNumber);
+            foreach (var t in targets)
+                if (t.DevicePath == ud.DevicePath) return;
+            targets.Add(new DisconnectTarget(ud.VendorId, ud.ProdId, ud.DevicePath, ud.SerialNumber ?? string.Empty));
         }
 
         /// <summary>Enumerates every per-device PlayStationSlotConfig

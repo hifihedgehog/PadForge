@@ -318,9 +318,10 @@ namespace PadForge.Common.Input
             ud.LastIdleCheckTick = now;
 
             if (now - ud.LastActiveTick < ud.IdleDisconnectSeconds * 1000L) return;
-            // No charging gate: SDL's power state was measured unreliable (a
-            // full on-battery DualSense reads CHARGED), and disconnecting a
-            // wall-charging pad from Bluetooth is harmless. It keeps charging.
+            // No charging gate, diverging from DS4Windows: the user may want
+            // an idle pad to disconnect while it charges (the countdown's
+            // whole point is that the pad is sitting untouched), and dropping
+            // Bluetooth does not interrupt charging.
             if (!PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath)) return;
 
             // Re-arm so a failed or ignored disconnect retries after a full

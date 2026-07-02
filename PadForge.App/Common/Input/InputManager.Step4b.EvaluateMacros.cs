@@ -1209,12 +1209,13 @@ namespace PadForge.Common.Input
         /// <summary>Applies the #162 eligibility gates (online, wireless per
         /// IsDisconnectTarget) and captures the disconnect dispatch fields.
         /// No serial gate: the Steam and Xbox lanes work without one, and the
-        /// BR/EDR fallback rejects an empty serial itself. No battery gate
-        /// either. DS4Windows skips charging pads, but SDL's power state was
-        /// measured unreliable twice in one day (a connected Xbox pad read
-        /// DISCONNECTED, a full on-battery DualSense read CHARGED and was
-        /// silently dropped from every mode), and the Bluetooth-path gate
-        /// already excludes wired transports.</summary>
+        /// BR/EDR fallback rejects an empty serial itself. No charging gate
+        /// either, a deliberate divergence from DS4Windows: a charging pad is
+        /// exactly the pad sitting idle within reach of a power-off chord,
+        /// and the user's explicit command should be obeyed (hardware round,
+        /// 2026-07-02: a plugged-in DualSense was correctly reported charging
+        /// and wrongly dropped from every target mode). Disconnecting
+        /// Bluetooth does not interrupt charging.</summary>
         private static void AddDisconnectCandidate(
             System.Collections.Generic.List<DisconnectTarget> targets, UserDevice ud)
         {

@@ -64,10 +64,26 @@ namespace PadForge.Common.Input
         /// Xbox pads get XInputPowerOff slot-matched by VID/PID through
         /// XInputGetCapabilitiesEx (ordinal 108). Everything else falls
         /// through to the BR/EDR link drop by serial (the DS4Windows path).</summary>
+        /// <summary>Per-device debounce: a held chord retriggers its macro every
+        /// frame, and the first trace-instrumented round recorded a dozen
+        /// overlapping dispatches from one press. One attempt per device per
+        /// window is the intent.</summary>
+        private static readonly System.Collections.Generic.Dictionary<string, long> _lastAttemptTick = new();
+        private const int DebounceMs = 3000;
+
         public static bool TryDisconnectDevice(ushort vendorId, ushort productId,
             string devicePath, string serial,
             System.Collections.Generic.IReadOnlyList<string> bthInstanceIds = null)
         {
+            string key = devicePath ?? string.Empty;
+            long now = Environment.TickCount64;
+            lock (_lastAttemptTick)
+            {
+                if (_lastAttemptTick.TryGetValue(key, out long last) && now - last < DebounceMs)
+                    return false; // debounced, deliberately untraced to keep the log readable
+                _lastAttemptTick[key] = now;
+            }
+
             Trace($"dispatch vid={vendorId:X4} pid={productId:X4} path='{devicePath}' serial='{serial}'");
 
             if (TryParseXInputSlot(devicePath, out _))
@@ -117,16 +133,28 @@ namespace PadForge.Common.Input
             return ioctl;
         }
 
-        /// <summary>Disable-cycles every cached BTHLEDEVICE node for the
-        /// device, forcing the Bluetooth LE link down. Requires elevation,
-        /// which PadForge always runs with. Nodes of paired-but-sleeping pads
-        /// cycle harmlessly. Returns true when at least one node cycled.</summary>
+        /// <summary>How long a cycled BTHLE node stays disabled. The first
+        /// hardware round used 400 ms and the pad reconnected instantly on
+        /// re-enable, never registering link loss. A Series pad that loses its
+        /// link and cannot reconnect powers itself down within roughly 15
+        /// seconds (the console-shutdown behavior), so the node stays down
+        /// well past that, then re-enables in the background so the guide
+        /// button reconnects normally afterward.</summary>
+        private const int DevNodeReEnableMs = 30000;
+
+        /// <summary>Disables every cached BTHLEDEVICE node for the device,
+        /// forcing the Bluetooth LE link down, and re-enables them in the
+        /// background after <see cref="DevNodeReEnableMs"/>. Requires
+        /// elevation, which PadForge always runs with. Nodes of other paired
+        /// pads in the cache go down for the same window; the cache cannot
+        /// distinguish the connected pairing. Returns true when at least one
+        /// node was disabled.</summary>
         private static bool TryCycleBthDevNodes(
             System.Collections.Generic.IReadOnlyList<string> instanceIds)
         {
             if (instanceIds == null) return false;
 
-            bool any = false;
+            var disabled = new System.Collections.Generic.List<uint>();
             foreach (string id in instanceIds)
             {
                 if (string.IsNullOrEmpty(id)) continue;
@@ -139,12 +167,23 @@ namespace PadForge.Common.Input
                     continue;
                 }
                 int disable = CM_Disable_DevNode(devInst, 0);
-                System.Threading.Thread.Sleep(400);
-                int enable = CM_Enable_DevNode(devInst, 0);
-                Trace($"devnode '{id}': disable cr={disable} enable cr={enable}");
-                if (disable == 0) any = true;
+                Trace($"devnode '{id}': disable cr={disable}");
+                if (disable == 0) disabled.Add(devInst);
             }
-            return any;
+
+            if (disabled.Count == 0) return false;
+
+            uint[] toEnable = disabled.ToArray();
+            System.Threading.Tasks.Task.Run(async () =>
+            {
+                await System.Threading.Tasks.Task.Delay(DevNodeReEnableMs).ConfigureAwait(false);
+                foreach (uint devInst in toEnable)
+                {
+                    int enable = CM_Enable_DevNode(devInst, 0);
+                    Trace($"devnode re-enable cr={enable}");
+                }
+            });
+            return true;
         }
 
         /// <summary>Whether a device can be targeted by the #162 disconnect at

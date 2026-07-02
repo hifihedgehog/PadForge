@@ -1105,6 +1105,7 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Muisbeweging Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheid van de IR-aanwijzer per bron. 1.0 bereikt de volledige stick-uitslag aan de rand van het gezichtsveld van de camera. Waarden boven 1.0 bereiken de volledige uitslag met minder richtbeweging. Waarden onder 1.0 hebben meer nodig.</value></data>
+  <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheid van de muisbeweging per bron. 1.0 bereikt volledige uitslag bij dezelfde snelheid als een echte muis, waarden boven 1.0 hebben minder beweging nodig, waarden eronder meer.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Totaalgewicht (Balance)</value></data>
   <data name="Mapping_BalanceLeanX" xml:space="preserve"><value>Helling X (Balance)</value></data>
   <data name="Mapping_BalanceLeanY" xml:space="preserve"><value>Helling Y (Balance)</value></data>

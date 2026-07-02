@@ -121,6 +121,12 @@ namespace PadForge.Common.Input
         /// button reconnects normally afterward.</summary>
         private const int DevNodeReEnableMs = 30000;
 
+        /// <summary>Devnodes disabled by <see cref="TryCycleBthDevNodes"/> whose
+        /// delayed re-enable has not run yet. <see cref="ReEnablePendingDevNodes"/>
+        /// flushes them at shutdown so an app exit inside the 30 s window cannot
+        /// strand a pad's Bluetooth node disabled.</summary>
+        private static readonly System.Collections.Generic.HashSet<uint> _pendingReEnable = new();
+
         /// <summary>Disables every cached BTHLEDEVICE node for the device,
         /// forcing the Bluetooth LE link down, and re-enables them in the
         /// background after <see cref="DevNodeReEnableMs"/>. Requires
@@ -147,14 +153,47 @@ namespace PadForge.Common.Input
 
             if (disabled.Count == 0) return false;
 
+            lock (_pendingReEnable)
+            {
+                foreach (uint devInst in disabled)
+                    _pendingReEnable.Add(devInst);
+            }
+
             uint[] toEnable = disabled.ToArray();
             System.Threading.Tasks.Task.Run(async () =>
             {
                 await System.Threading.Tasks.Task.Delay(DevNodeReEnableMs).ConfigureAwait(false);
                 foreach (uint devInst in toEnable)
-                    CM_Enable_DevNode(devInst, 0);
+                    ReEnableDevNode(devInst);
             });
             return true;
+        }
+
+        private static void ReEnableDevNode(uint devInst)
+        {
+            lock (_pendingReEnable)
+            {
+                if (!_pendingReEnable.Remove(devInst))
+                    return; // already re-enabled (shutdown flush won the race)
+            }
+            CM_Enable_DevNode(devInst, 0);
+        }
+
+        /// <summary>Immediately re-enables every devnode still waiting on its
+        /// delayed re-enable. Called from app shutdown: the delayed task dies
+        /// with the process, and a stranded-disabled node would leave the pad
+        /// unable to reconnect until the user finds it in Device Manager.</summary>
+        public static void ReEnablePendingDevNodes()
+        {
+            uint[] pending;
+            lock (_pendingReEnable)
+            {
+                pending = new uint[_pendingReEnable.Count];
+                _pendingReEnable.CopyTo(pending);
+                _pendingReEnable.Clear();
+            }
+            foreach (uint devInst in pending)
+                CM_Enable_DevNode(devInst, 0);
         }
 
         /// <summary>Whether a device can be targeted by the #162 disconnect at
@@ -303,7 +342,7 @@ namespace PadForge.Common.Input
                         {
                             continue;
                         }
-                        var writer = new Windows.Storage.Streams.DataWriter();
+                        using var writer = new Windows.Storage.Streams.DataWriter();
                         writer.WriteBytes(BuildSwitch2ShutdownCommand());
                         var status = await chars.Characteristics[0].WriteValueAsync(
                             writer.DetachBuffer(),

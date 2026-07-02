@@ -274,6 +274,15 @@ namespace PadForge.Engine.Data
         [XmlIgnore]
         public long LastActiveTick { get; set; }
 
+        /// <summary>The wrapper instance the idle countdown last stamped
+        /// against. Each (re)connect creates a fresh wrapper, so a mismatch
+        /// marks the first tick of a new connection and restarts the
+        /// countdown. Without this, a reconnecting idle pad inherits its
+        /// pre-disconnect stamp and can be disconnected again instantly.
+        /// Polling thread only.</summary>
+        [XmlIgnore]
+        public object IdleTrackedConnection { get; set; }
+
         /// <summary>Last tick the #162 idle countdown was checked, so the check
         /// runs about once a second instead of at poll rate. Polling thread only.</summary>
         [XmlIgnore]

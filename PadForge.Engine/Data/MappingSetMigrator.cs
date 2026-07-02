@@ -317,7 +317,8 @@ namespace PadForge.Engine.Data
                 halfAxis = true;
                 s = s.Substring(1);
             }
-            else if (s.StartsWith("I", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
+            else if (s.StartsWith("I", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1])
+                     && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(s))
             {
                 inverted = true;
                 s = s.Substring(1);

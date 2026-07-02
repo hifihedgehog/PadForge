@@ -4479,7 +4479,8 @@ namespace PadForge
             string d = descriptor;
             if (d.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
                 d = d.Substring(2);
-            else if (d.StartsWith("I", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1]))
+            else if (d.StartsWith("I", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1])
+                     && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(d))
                 d = d.Substring(1);
             else if (d.StartsWith("H", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1]))
                 d = d.Substring(1);

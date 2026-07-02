@@ -182,6 +182,16 @@ namespace PadForge.Engine
         /// <summary>Scroll delta before deadzone (for stick preview).</summary>
         public short PreDzScrollDelta;
 
+        /// <summary>Absolute pointer aim, normalized [-1..+1] screen-aligned
+        /// (issue #146: Wii IR pointing). When <see cref="MouseAbsValid"/> is
+        /// true the KBM virtual controller positions the OS cursor here
+        /// (Touchmote MouseSimulator SetCursorPos idiom) instead of integrating
+        /// MouseDelta velocity. Valid only while the camera sees the sensor
+        /// bar; on sight loss the cursor holds its last position.</summary>
+        public float MouseAbsX;
+        public float MouseAbsY;
+        public bool MouseAbsValid;
+
         public bool GetKey(byte vk)
         {
             int word = vk / 64;
@@ -224,6 +234,8 @@ namespace PadForge.Engine
             MouseDeltaX = MouseDeltaY = ScrollDelta = 0;
             MouseButtons = 0;
             PreDzMouseDeltaX = PreDzMouseDeltaY = PreDzScrollDelta = 0;
+            MouseAbsX = MouseAbsY = 0f;
+            MouseAbsValid = false;
         }
 
         /// <summary>
@@ -244,7 +256,12 @@ namespace PadForge.Engine
                 MouseButtons = (byte)(a.MouseButtons | b.MouseButtons),
                 PreDzMouseDeltaX = Math.Abs(a.PreDzMouseDeltaX) >= Math.Abs(b.PreDzMouseDeltaX) ? a.PreDzMouseDeltaX : b.PreDzMouseDeltaX,
                 PreDzMouseDeltaY = Math.Abs(a.PreDzMouseDeltaY) >= Math.Abs(b.PreDzMouseDeltaY) ? a.PreDzMouseDeltaY : b.PreDzMouseDeltaY,
-                PreDzScrollDelta = Math.Abs(a.PreDzScrollDelta) >= Math.Abs(b.PreDzScrollDelta) ? a.PreDzScrollDelta : b.PreDzScrollDelta
+                PreDzScrollDelta = Math.Abs(a.PreDzScrollDelta) >= Math.Abs(b.PreDzScrollDelta) ? a.PreDzScrollDelta : b.PreDzScrollDelta,
+                // Absolute pointer: whichever side is tracking wins (only one
+                // IR-pointing device feeds a slot in practice).
+                MouseAbsX = a.MouseAbsValid ? a.MouseAbsX : b.MouseAbsX,
+                MouseAbsY = a.MouseAbsValid ? a.MouseAbsY : b.MouseAbsY,
+                MouseAbsValid = a.MouseAbsValid || b.MouseAbsValid
             };
         }
     }

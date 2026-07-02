@@ -164,6 +164,14 @@ namespace PadForge.Engine.RemoteLink
 
         // ── Device-list framing ─────────────────────────────────────────────
 
+        // Marks the metadata extension appended after the v1 records: serial,
+        // touchpad shape, and the forwarded DeviceObjects (named inputs). An
+        // old decoder reads its `count` records and never looks at the tail,
+        // so mixed versions interoperate; a new decoder facing an old sender
+        // simply finds no tail. Same compat mechanism as the input codec's
+        // appended blocks.
+        private const byte DeviceListExtMagic = 0xE2;
+
         // Shared by the handshake exchange AND the post-connect DeviceList sync (#138).
         // Each entry leads with the owner's STABLE slot, and caps now carry HasHaptic +
         // Online so a remote wheel's FFB pipeline runs and active/inactive propagates.
@@ -192,6 +200,36 @@ namespace PadForge.Engine.RemoteLink
                 if (d.Online) caps |= 64;
                 buf.Add(caps);
                 WriteU16(buf, (ushort)d.InputDeviceType);
+            }
+
+            // Metadata extension (one section per v1 record, same order), so
+            // a remote device's mapping picker and Devices-page preview show
+            // the SAME named inputs the owner sees locally.
+            buf.Add(DeviceListExtMagic);
+            for (int i = 0; i < count; i++)
+            {
+                var d = devices[i];
+                WriteString(buf, d.SerialNumber);
+                int pads = Math.Clamp(d.NumTouchpads, 0, 255);
+                buf.Add((byte)pads);
+                for (int p = 0; p < pads; p++)
+                {
+                    int fingers = (d.TouchpadFingerCounts != null && p < d.TouchpadFingerCounts.Length)
+                        ? d.TouchpadFingerCounts[p] : 0;
+                    buf.Add((byte)Math.Clamp(fingers, 0, 255));
+                }
+                var objs = d.DeviceObjects ?? Array.Empty<DeviceObjectItem>();
+                int objCount = Math.Min(objs.Length, 1024);
+                WriteU16(buf, (ushort)objCount);
+                for (int j = 0; j < objCount; j++)
+                {
+                    var obj = objs[j];
+                    WriteString(buf, obj.Name);
+                    WriteU16(buf, (ushort)Math.Clamp(obj.InputIndex, 0, ushort.MaxValue));
+                    WriteU16(buf, (ushort)Math.Clamp(obj.Offset, 0, ushort.MaxValue));
+                    WriteU32(buf, (uint)obj.ObjectType);
+                    buf.AddRange(obj.ObjectTypeGuid.ToByteArray());
+                }
             }
             return buf.ToArray();
         }
@@ -226,6 +264,54 @@ namespace PadForge.Engine.RemoteLink
                 info.InputDeviceType = ReadU16(data, ref o);
                 list.Add(info);
             }
+
+            // Metadata extension: absent from an old sender's payload, and a
+            // malformed tail must not cost the already-decoded v1 records, so
+            // any parse failure falls back to the v1 result (the consumer then
+            // synthesizes generic objects exactly as it did before).
+            try
+            {
+                if (o < data.Length && data[o] == DeviceListExtMagic)
+                {
+                    o++;
+                    for (int i = 0; i < count; i++)
+                    {
+                        var info = list[i];
+                        info.SerialNumber = ReadString(data, ref o);
+                        int pads = data[o++];
+                        var fingers = pads > 0 ? new int[pads] : Array.Empty<int>();
+                        for (int p = 0; p < pads; p++) fingers[p] = data[o++];
+                        info.NumTouchpads = pads;
+                        info.TouchpadFingerCounts = fingers;
+                        int objCount = ReadU16(data, ref o);
+                        if (objCount > 0)
+                        {
+                            var objs = new DeviceObjectItem[objCount];
+                            for (int j = 0; j < objCount; j++)
+                            {
+                                var obj = new DeviceObjectItem
+                                {
+                                    Name = ReadString(data, ref o),
+                                    InputIndex = ReadU16(data, ref o),
+                                    Offset = ReadU16(data, ref o),
+                                    ObjectType = (DeviceObjectTypeFlags)ReadU32(data, ref o),
+                                };
+                                obj.ObjectTypeGuid = new Guid(data.AsSpan(o, 16)); o += 16;
+                                objs[j] = obj;
+                            }
+                            info.DeviceObjects = objs;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                foreach (var info in list)
+                {
+                    info.SerialNumber = info.SerialNumber ?? "";
+                    info.DeviceObjects = null;
+                }
+            }
             return list;
         }
 
@@ -254,6 +340,21 @@ namespace PadForge.Engine.RemoteLink
         {
             ushort v = (ushort)(data[o] | (data[o + 1] << 8));
             o += 2;
+            return v;
+        }
+
+        private static void WriteU32(List<byte> buf, uint v)
+        {
+            buf.Add((byte)(v & 0xFF));
+            buf.Add((byte)((v >> 8) & 0xFF));
+            buf.Add((byte)((v >> 16) & 0xFF));
+            buf.Add((byte)(v >> 24));
+        }
+
+        private static uint ReadU32(byte[] data, ref int o)
+        {
+            uint v = (uint)(data[o] | (data[o + 1] << 8) | (data[o + 2] << 16) | (data[o + 3] << 24));
+            o += 4;
             return v;
         }
     }

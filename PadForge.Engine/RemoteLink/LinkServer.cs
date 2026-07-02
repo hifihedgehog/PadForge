@@ -497,7 +497,21 @@ namespace PadForge.Engine.RemoteLink
                 {
                     bool slotChanged = existing.LinkSlot != info.Slot;
                     existing.LinkSlot = info.Slot;
-                    existing.SetConnected(info.Online); // same device — just active/inactive (+ maybe a new slot)
+                    existing.SetConnected(info.Online); // same device, just active/inactive (+ maybe a new slot)
+                    // Refresh relayed metadata in place: the owner's named
+                    // inputs grow as session-dynamic usages appear, and the
+                    // periodic push is how they reach an already-registered
+                    // device. Identity fields (ids, the peer-labeled Name)
+                    // stay untouched. Reference swap, atomic for readers.
+                    if (info.DeviceObjects != null && info.DeviceObjects.Length > 0)
+                        existing.Info.DeviceObjects = info.DeviceObjects;
+                    if (info.NumTouchpads > 0)
+                    {
+                        existing.Info.NumTouchpads = info.NumTouchpads;
+                        existing.Info.TouchpadFingerCounts = info.TouchpadFingerCounts;
+                    }
+                    if (!string.IsNullOrEmpty(info.SerialNumber))
+                        existing.Info.SerialNumber = info.SerialNumber;
                     next[info.Slot] = existing;
                     // Re-register only when the slot moved, so the slot-stamped output route refreshes.
                     if (slotChanged) DeviceConnected?.Invoke(existing);
